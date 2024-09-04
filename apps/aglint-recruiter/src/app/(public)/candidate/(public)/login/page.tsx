@@ -1,4 +1,4 @@
-import { Login } from '@/src/components/CandiatePortal/Login';
+import { Login } from '@/components/CandiatePortal/Login';
 
 const Page = () => {
   return <Login />;

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { requestReschdule } from '@/src/utils/automation/utils/reschedule_request';
-import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
+import { requestReschdule } from '@/utils/automation/utils/reschedule_request';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type setting = {
   application_id: string;

@@ -1,15 +1,15 @@
+import { RecentDeclineList } from '@devlink3/RecentDeclineList';
+import { RecentDeclines as RecentDeclinesDev } from '@devlink3/RecentDeclines';
 import Avatar from '@mui/material/Avatar';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
-import { RecentDeclineList } from '@/devlink3/RecentDeclineList';
-import { RecentDeclines as RecentDeclinesDev } from '@/devlink3/RecentDeclines';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
-} from '@/src/context/SchedulingAnalytics';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/context/SchedulingAnalytics';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
 

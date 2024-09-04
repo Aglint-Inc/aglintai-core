@@ -18,9 +18,9 @@ import { type GridColDef, DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { emailTemplateCopy } from '@/types/companyEmailTypes';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 type CronEntryRowType = {
   completed_at: string | null;

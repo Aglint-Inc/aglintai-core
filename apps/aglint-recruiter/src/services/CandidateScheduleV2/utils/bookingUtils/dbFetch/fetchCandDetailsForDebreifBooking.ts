@@ -2,7 +2,7 @@ import { type APIScheduleDebreif } from '@aglint/shared-types';
 import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
 import * as v from 'valibot';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { userTzDayjs } from '../../userTzDayjs';
 
@@ -11,11 +11,11 @@ export const fetchCandDetailsForDebreifBooking = async (
 ) => {
   const [cand_debreif_details] = supabaseWrap(
     await supabaseAdmin
-      .from('interview_schedule')
+      .from('interview_filter_json')
       .select(
-        'recruiter_id,recruiter(id,name),applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title))',
+        '*,applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title),recruiter(id,name))',
       )
-      .eq('id', req_body.schedule_id),
+      .eq('id', req_body.filter_id),
   );
   if (!cand_debreif_details) {
     throw new Error('Availabiluty does not exist');
@@ -42,7 +42,7 @@ export const fetchCandDetailsForDebreifBooking = async (
   return {
     application: cand_debreif_details.applications,
     candidate: cand_debreif_details.applications.candidates,
-    company: cand_debreif_details.recruiter,
+    company: cand_debreif_details.applications.recruiter,
     job: cand_debreif_details.applications.public_jobs,
     zod_options,
     cand_tz: req_body.user_tz,

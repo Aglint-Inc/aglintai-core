@@ -1,8 +1,8 @@
 'use client';
+import { EmptyState } from '@components/empty-state';
 import { useRouter } from 'next/navigation';
 
-import { EmptyState } from '@/components/empty-state';
-import TrainingDashboard from '@/src/components/Reports/TrainingDashboard';
+import TrainingDashboard from '@/components/Reports/TrainingDashboard';
 
 export default function ReportsPage() {
   const router = useRouter(); // Add this line

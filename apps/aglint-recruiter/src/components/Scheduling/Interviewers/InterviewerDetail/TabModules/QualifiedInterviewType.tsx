@@ -1,10 +1,10 @@
+import { MemberListCard } from '@devlink2/MemberListCard';
 import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { MemberListCard } from '@/devlink2/MemberListCard';
-import dayjs from '@/src/utils/dayjs';
-import ROUTES from '@/src/utils/routing/routes';
+import dayjs from '@/utils/dayjs';
+import ROUTES from '@/utils/routing/routes';
 
 import { type useModuleRelations } from '../hooks';
 import ThreeDot from './ThreeDot';

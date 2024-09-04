@@ -1,8 +1,8 @@
+import { NewTabPill } from '@devlink3/NewTabPill';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { NewTabPill } from '@/devlink3/NewTabPill';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
+import { useKeyPress } from '@/hooks/useKeyPress';
 
 import { type TabInterviewerDetail } from '.';
 

@@ -1,11 +1,10 @@
+import { AddJob } from '@devlink/AddJob';
+import { AddJobList } from '@devlink/AddJobList';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { ButtonSurface } from '@devlink/ButtonSurface';
 import { Popover } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
-import { AddJob } from '@/devlink/AddJob';
-import { AddJobList } from '@/devlink/AddJobList';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ButtonSurface } from '@/devlink/ButtonSurface';
 
 type newCandJob = {
   title: string;

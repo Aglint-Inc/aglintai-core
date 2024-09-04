@@ -1,13 +1,13 @@
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-// import { Permissions } from '@/src/types/permissions'; // Add this import
-import { capitalize } from '@/src/utils/text/textUtils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+// import { Permissions } from '@/types/permissions'; // Add this import
+import { capitalize } from '@/utils/text/textUtils';
 
 import { ShadcnPhoneInput } from '../Common/UIPhoneInput/PhoneInput';
 import { PasswordUpdate } from './components/PasswordUpdate';

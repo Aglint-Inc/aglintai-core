@@ -1,15 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseTableInsert } from '@aglint/shared-types';
-import { SystemAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { getFullName } from '@/src/utils/jsonResume';
-import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { createFilterJson } from '@/utils/scheduling/createFilterJson';
+import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamTaskCreate = {
   schedule_id: string;
@@ -66,34 +63,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     const jobData = await fetchJob(application_id);
-    const recruiter_id = jobData.public_jobs.recruiter.id;
     const session_id = selectedDebrief.interview_session.id;
     const recruiter_user = jobData.public_jobs.recruiter_user;
     const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
-    const filterJson = await createFilterJson({
+    await createFilterJson({
       dateRange,
       organizer_name: recruiter_user.first_name,
       sessions_ids: [session_id],
       supabase: supabaseAdmin,
       rec_user_id: organizer_id,
       application_id,
-    });
-
-    const filter_id = filterJson.id;
-
-    // create task for scheduling debrief which picks and hit shcedule_individual api
-    const task = await createTask({
-      application_id,
-      dateRange,
-      filter_id,
-      recruiter_user_name: getFullName(
-        recruiter_user.first_name,
-        recruiter_user.last_name,
-      ),
-      rec_user_id: recruiter_user.user_id,
-      recruiter_id,
-      session_id,
     });
 
     await addScheduleActivity({
@@ -105,7 +85,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     return res.status(200).send({
-      task,
       checkSessionRelations,
       previousMeeting,
       selectedDebrief,
@@ -172,21 +151,21 @@ const findSessionRelations = (
   return {
     session_relations: sessionRelationIds as Awaited<
       ReturnType<typeof fetchScheduleMeetingsSession>
-    >['interview_meeting'][0]['interview_session'][0]['interview_session_relation'],
+    >[0]['interview_session'][0]['interview_session_relation'],
     meeting_id: selectedDebriefId as string,
   };
 };
 
-const fetchScheduleMeetingsSession = async (schedule_id: string) => {
+const fetchScheduleMeetingsSession = async (application_id: string) => {
   const { data, error } = await supabaseAdmin
-    .from('interview_schedule')
+    .from('interview_plan')
     .select(
-      '*,interview_meeting(*,interview_session(*,interview_session_relation(id,is_confirmed,interview_module_relation(user_id))))',
+      '*,interview_session(*,interview_meeting(*),interview_session_relation(id,is_confirmed,interview_module_relation(user_id)))',
     )
-    .eq('id', schedule_id);
+    .eq('id', application_id);
 
   if (error) throw new Error(error.message);
-  else return data[0];
+  else return data;
 };
 
 const sortBySessionOrderFilterConfirmedRelations = (
@@ -194,27 +173,28 @@ const sortBySessionOrderFilterConfirmedRelations = (
     ReturnType<typeof fetchScheduleMeetingsSession>
   >,
 ) => {
-  return scheduleMeetingsSessions.interview_meeting
+  return scheduleMeetingsSessions
     .sort(
       (s1, s2) =>
         s1.interview_session[0].session_order -
         s2.interview_session[0].session_order,
     )
-    .map((meet) => {
+    .map((ses) => {
+      const session = ses.interview_session[0];
+      const meet = ses.interview_session[0].interview_meeting[0];
       return {
         id: meet.id,
         status: meet.status,
         start_time: meet.start_time,
         end_time: meet.end_time,
         interview_session: {
-          id: meet.interview_session[0].id,
-          name: meet.interview_session[0].name,
-          session_order: meet.interview_session[0].session_order,
-          session_type: meet.interview_session[0].session_type,
-          interview_session_relation:
-            meet.interview_session[0].interview_session_relation.filter(
-              (sesresl) => sesresl.is_confirmed,
-            ),
+          id: session.id,
+          name: session.name,
+          session_order: session.session_order,
+          session_type: session.session_type,
+          interview_session_relation: session.interview_session_relation.filter(
+            (sesresl) => sesresl.is_confirmed,
+          ),
         },
       };
     });
@@ -231,73 +211,4 @@ const fetchJob = async (application_id: string) => {
 
   if (error) throw new Error(error.message);
   else return data;
-};
-
-const createTask = async ({
-  session_id,
-  application_id,
-  rec_user_id,
-  recruiter_id,
-  dateRange,
-  filter_id,
-  recruiter_user_name,
-}: {
-  session_id: string;
-  application_id: string;
-  rec_user_id: string;
-  recruiter_id: string;
-  dateRange: {
-    start_date: string;
-    end_date: string;
-  };
-  filter_id: string;
-  recruiter_user_name: string;
-}) => {
-  const { data: session, error } = await supabaseAdmin
-    .from('interview_session')
-    .select(
-      '*,interview_meeting(*),interview_session_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image))',
-    )
-    .eq('id', session_id)
-    .single();
-
-  if (error) throw new Error(error.message);
-
-  const { data: task, error: errorTasks } = await supabaseAdmin
-    .from('new_tasks')
-    .insert({
-      name: `Scheduling Debrief ${session.name}`,
-      application_id,
-      created_by: rec_user_id,
-      type: 'schedule',
-      status: 'scheduled',
-      recruiter_id,
-      due_date: dateRange.end_date,
-      start_date: new Date().toISOString(),
-      schedule_date_range: dateRange,
-      assignee: [SystemAgentId],
-      filter_id: filter_id,
-      trigger_count: 0,
-    })
-    .select()
-    .single();
-
-  if (errorTasks) throw new Error(errorTasks.message);
-
-  const insertTaskSesRels: DatabaseTableInsert['task_session_relation'][] = [
-    {
-      task_id: task.id,
-      session_id: session_id,
-    },
-  ];
-
-  const { error: errorTaskSesRel } = await supabaseAdmin
-    .from('task_session_relation')
-    .insert(insertTaskSesRels);
-
-  if (errorTaskSesRel) throw new Error(errorTaskSesRel.message);
-
-  console.log(`Created task ${task.id}`, recruiter_user_name);
-
-  return { task, session };
 };

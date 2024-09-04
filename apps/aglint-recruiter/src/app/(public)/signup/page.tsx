@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 
-import SignUpForm from '@/src/components/Auth/SignupForm';
-import Footer from '@/src/components/Common/Footer';
+import SignUpForm from '@/components/Auth/SignupForm';
+import Footer from '@/components/Common/Footer';
 
 export const metadata: Metadata = {
   title: 'Sign Up | Aglint AI',

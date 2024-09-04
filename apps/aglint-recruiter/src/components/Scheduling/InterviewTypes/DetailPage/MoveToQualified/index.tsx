@@ -1,12 +1,12 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
 import { Dialog } from '@mui/material';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
+import { supabase } from '@/utils/supabase/client';
 
 import { setIsMovedToQualifiedDialogOpen, useModulesStore } from '../../store';
 

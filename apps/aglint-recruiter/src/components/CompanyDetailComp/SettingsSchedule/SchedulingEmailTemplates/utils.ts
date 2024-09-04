@@ -2,8 +2,8 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
-import { supabase } from '@/src/utils/supabase/client';
+import { emailTemplateCopy } from '@/types/companyEmailTypes';
+import { supabase } from '@/utils/supabase/client';
 
 export enum TEMPLATE_TABS {
   Email = 'emailTemplate',

@@ -17,8 +17,8 @@ import {
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
-import { supabase } from '@/src/utils/supabase/client';
-import aglintToast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import aglintToast from '@/utils/toast';
 
 import { appKey, GC_TIME } from '..';
 import {

@@ -198,7 +198,9 @@ export class CandidatesSchedulingV2 {
         const curr_day_combs: PlanCombinationRespType[] = [];
         curr_date_slots.slots.forEach((slot_time) => {
           const comb = curr_day_slots.find(
-            (c) => c.sessions[0].start_time === slot_time.startTime,
+            (c) =>
+              c.no_slot_reasons.length === 0 &&
+              c.sessions[0].start_time === slot_time.startTime,
           );
           if (comb) {
             curr_day_combs.push({ ...comb });

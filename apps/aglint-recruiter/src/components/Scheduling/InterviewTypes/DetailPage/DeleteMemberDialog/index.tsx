@@ -1,14 +1,14 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { Text } from '@devlink/Text';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
 import { Dialog, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { Text } from '@/devlink/Text';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { useDeleteRelationHandler } from '../../queries/hooks';
 import {

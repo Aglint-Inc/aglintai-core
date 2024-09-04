@@ -1,14 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { ScheduleProgress } from '@devlink2/ScheduleProgress';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
-import { useRequest } from '@/src/context/RequestContext';
-import toast from '@/src/utils/toast';
+import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
+import { useRequest } from '@/context/RequestContext';
+import toast from '@/utils/toast';
 
 import { deleteRequestWorkflowAction } from '../../utils';
 import { type ProgressTenseType, type RequestProgressMapType } from '../types';

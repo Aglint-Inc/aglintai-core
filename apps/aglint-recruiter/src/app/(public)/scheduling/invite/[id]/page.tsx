@@ -1,6 +1,6 @@
-import Seo from '@/src/components/Common/Seo';
-import CandidateInviteNew from '@/src/components/Scheduling/CandidateInvite';
-import CandidateInviteProvider from '@/src/context/CandidateInviteContext';
+import Seo from '@/components/Common/Seo';
+import CandidateInviteNew from '@/components/Scheduling/CandidateInvite';
+import CandidateInviteProvider from '@/context/CandidateInviteContext';
 
 const CandidateInvitePage = () => {
   return (

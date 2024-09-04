@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 
-import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
+import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
 
 import FilterHeader from '../../Common/FilterHeader';
 

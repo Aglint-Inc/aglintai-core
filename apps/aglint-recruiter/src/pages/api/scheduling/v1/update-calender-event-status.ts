@@ -1,6 +1,6 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
 type BodyParams = {
   event_id: string;

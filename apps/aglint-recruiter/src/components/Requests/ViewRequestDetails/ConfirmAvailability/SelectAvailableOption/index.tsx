@@ -2,10 +2,10 @@ import {
   type CandReqSlotsType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { Stepper } from '@devlink2/Stepper';
 import { Divider, Stack } from '@mui/material';
 
-import { Stepper } from '@/devlink2/Stepper';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ShowCode } from '@/components/Common/ShowCode';
 
 import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import FinalScreen from '../FinalScreen';

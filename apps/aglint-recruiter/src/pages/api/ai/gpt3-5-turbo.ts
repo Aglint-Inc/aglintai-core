@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
-import { type MessageType } from '@/src/utils/prompts/types';
+import { type MessageType } from '@/utils/prompts/types';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,

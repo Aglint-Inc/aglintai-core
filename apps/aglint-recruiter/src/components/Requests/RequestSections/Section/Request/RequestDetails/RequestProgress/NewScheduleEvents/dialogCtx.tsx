@@ -3,7 +3,6 @@ import React, {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -27,6 +26,10 @@ interface SelectedActionsDetailsContextType {
     }>
   >;
   emailTemplateTargetAPI: DatabaseEnums['email_slack_types'];
+  tiptapLoadStatus: { email: boolean; agent: boolean };
+  setTiptapLoadStatus: React.Dispatch<
+    React.SetStateAction<{ email: boolean; agent: boolean }>
+  >;
 }
 
 // Create the context with a default value
@@ -47,36 +50,22 @@ interface SelectedActionsDetailsProviderProps {
 
 export const SelectedActionsDetailsProvider: React.FC<
   SelectedActionsDetailsProviderProps
-> = ({ children, defaultSelectedActionsDetails, companyTemplatesMp }) => {
+> = ({ children, defaultSelectedActionsDetails }) => {
   const [selectedActionsDetails, setSelectedActionsDetails] = useState<
     Omit<DatabaseTable['workflow_action'], 'payload'>
   >(defaultSelectedActionsDetails);
-  const [agentInstructions, setAgentInstructions] = useState<string>('');
+  const [agentInstructions, setAgentInstructions] = useState<string>(null);
+  const [tiptapLoadStatus, setTiptapLoadStatus] = useState({
+    email: false,
+    agent: false,
+  });
   const [emailTemplate, setEmailTemplate] = useState<{
     body: string;
     subject: string;
   }>({
-    body: defaultSelectedActionsDetails.payload?.email.body,
-    subject: defaultSelectedActionsDetails.payload?.email.subject,
+    body: defaultSelectedActionsDetails.payload?.email?.body ?? '',
+    subject: defaultSelectedActionsDetails.payload?.email?.subject ?? '',
   });
-
-  useEffect(() => {
-    if (!selectedActionsDetails) return;
-    if (
-      companyTemplatesMp[
-        agentTargetApiEmailEndPoint[selectedActionsDetails.target_api]
-      ]
-    ) {
-      const companyTemp =
-        companyTemplatesMp[
-          agentTargetApiEmailEndPoint[selectedActionsDetails.target_api]
-        ];
-      setEmailTemplate({
-        body: companyTemp.body,
-        subject: companyTemp.subject,
-      });
-    }
-  }, [selectedActionsDetails]);
 
   const emailTemplateTargetAPI = useMemo(() => {
     if (
@@ -99,6 +88,8 @@ export const SelectedActionsDetailsProvider: React.FC<
         emailTemplate,
         setEmailTemplate,
         emailTemplateTargetAPI,
+        setTiptapLoadStatus,
+        tiptapLoadStatus,
       }}
     >
       {children}
@@ -115,8 +106,7 @@ export const useSelectedActionsDetails = () => {
   }
   return context;
 };
-
-const agentTargetApiEmailEndPoint: Partial<
+export const agentTargetApiEmailEndPoint: Partial<
   Record<DatabaseEnums['email_slack_types'], DatabaseEnums['email_slack_types']>
 > = {
   onRequestSchedule_emailLink_sendSelfSchedulingLink:

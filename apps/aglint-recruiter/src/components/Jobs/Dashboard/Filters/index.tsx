@@ -2,9 +2,9 @@ import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type Job } from '@/src/queries/jobs/types';
-import { useAllMembers } from '@/src/queries/members';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type Job } from '@/queries/jobs/types';
+import { useAllMembers } from '@/queries/members';
 
 import FilterHeader from '../../../Common/FilterHeader';
 import { initalFilterValue } from '..';

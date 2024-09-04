@@ -3,11 +3,11 @@ import type {
   CustomAgentInstructionPayload,
   Trigger_API_Action_Mapper,
 } from '@aglint/shared-types';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { type ReactNode } from 'react';
 
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import type { Workflow } from '@/src/types/workflow.types';
-import { SafeObject } from '@/src/utils/safeObject';
+import type { Workflow } from '@/types/workflow.types';
+import { SafeObject } from '@/utils/safeObject';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
@@ -377,7 +377,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       name: 'Request Availability through link',
       value: {
         target_api: 'onRequestSchedule_emailLink_getCandidateAvailability',
-        action_type: 'agent_instruction',
+        action_type: 'email',
         payload: null,
       },
     },

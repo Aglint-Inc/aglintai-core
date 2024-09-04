@@ -1,13 +1,12 @@
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
-
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { Text } from '@/devlink/Text';
 
 import SearchField from '../SearchField/SearchField';
 import { ShowCode } from '../ShowCode';
 import DateRangeSelector from './DateRangeSelector';
-import { type FilterTypes,FiltersComponent } from './FilterComponents';
+import { type FilterTypes, FiltersComponent } from './FilterComponents';
 import SortComponent, { type sortComponentType } from './SortComponent';
 
 export default function FilterHeader({

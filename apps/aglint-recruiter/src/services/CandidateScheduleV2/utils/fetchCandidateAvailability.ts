@@ -1,7 +1,7 @@
 import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
 import * as v from 'valibot';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 export const fetchCandidateAvailability = async (request_id: string) => {
   const [avail_details] = supabaseWrap(
     await supabaseAdmin

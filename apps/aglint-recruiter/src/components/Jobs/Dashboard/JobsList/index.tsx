@@ -1,18 +1,18 @@
+import { AtsBadge } from '@devlink/AtsBadge';
+import { JobEmptyState } from '@devlink/JobEmptyState';
+import { JobsListingCard } from '@devlink/JobsListingCard';
 import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
-import { AtsBadge } from '@/devlink/AtsBadge';
-import { JobEmptyState } from '@/devlink/JobEmptyState';
-import { JobsListingCard } from '@/devlink/JobsListingCard';
-import { useApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
-import { useJobs } from '@/src/context/JobsContext';
-import { type Job } from '@/src/queries/jobs/types';
-import { type Application } from '@/src/types/applications.types';
-import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+import { useApplicationsParams } from '@/context/ApplicationsContext/hooks';
+import { useJobs } from '@/context/JobsContext';
+import { type Job } from '@/queries/jobs/types';
+import { type Application } from '@/types/applications.types';
+import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import {

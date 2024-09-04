@@ -21,7 +21,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
-import { addHttps, getUrlHost } from '@/src/utils/fetchCompDetails';
+import { addHttps, getUrlHost } from '@/utils/fetchCompDetails';
 
 const supabaseAdmin = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',

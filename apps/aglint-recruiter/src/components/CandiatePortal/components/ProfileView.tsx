@@ -6,6 +6,7 @@ import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_p
 import { getFullName } from '@aglint/shared-utils';
 
 import { ProfileEdit } from './ProfileEdit';
+import { ProfileEdit } from './ProfileEdit';
 
 export default function ProfileView({
   application_id,

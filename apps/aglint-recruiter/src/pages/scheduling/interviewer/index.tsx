@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InterviewTab from '@/src/components/Scheduling/Interviewers';
+import InterviewTab from '@/components/Scheduling/Interviewers';
 
 function InterviewerPage() {
   return (

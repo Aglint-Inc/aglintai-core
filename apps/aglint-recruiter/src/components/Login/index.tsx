@@ -1,19 +1,14 @@
-import {
-  Box,
-  Container,
-  Stack,
-  Typography
-} from '@mui/material';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { RecLoginPage } from '@devlink2/RecLoginPage';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { RecLoginPage } from '@/devlink2/RecLoginPage';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import Footer from '../Common/Footer';
 import UITextField from '../Common/UITextField';

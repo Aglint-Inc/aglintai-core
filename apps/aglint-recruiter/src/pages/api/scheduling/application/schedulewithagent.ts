@@ -2,11 +2,11 @@
 import { type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { agentTrigger } from '@/src/utils/scheduling/agentTrigger';
-import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
-import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { agentTrigger } from '@/utils/scheduling/agentTrigger';
+import { createFilterJson } from '@/utils/scheduling/createFilterJson';
+import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
@@ -127,7 +127,6 @@ export const scheduleWithAgent = async ({
       selectedSessions: sessions.map((ses) => ({
         interview_session_id: ses.id,
         interview_meeting_id: ses.interview_meeting.id,
-        interview_schedule_id: ses.interview_meeting.interview_schedule_id,
         job_id: ses.interview_meeting.job_id,
         recruiter_id: ses.interview_meeting.recruiter_id,
       })),

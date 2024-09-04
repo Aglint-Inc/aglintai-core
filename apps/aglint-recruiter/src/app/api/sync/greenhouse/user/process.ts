@@ -1,7 +1,7 @@
 import { type SupabaseType } from '@aglint/shared-types';
 
-import { registerMember } from '@/src/pages/api/invite_user';
-import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { registerMember } from '@/pages/api/invite_user';
+import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { getDepartment } from '../departments/process';
 import { getOfficeLocations } from '../office_locations/process';

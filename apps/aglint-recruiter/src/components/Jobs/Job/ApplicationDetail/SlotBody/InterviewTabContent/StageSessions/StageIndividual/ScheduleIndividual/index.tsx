@@ -1,19 +1,19 @@
 'use strict';
 
+import { StatusBadge } from '@devlink2/StatusBadge';
+import { GlobalScheduleCard } from '@devlink3/GlobalScheduleCard';
 import { Checkbox, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
-import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
-import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { type StageWithSessions } from '@/src/queries/application';
-import { useAllIntegrations } from '@/src/queries/intergrations';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import IconSessionType from '@/components/Common/Icons/IconSessionType';
+import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
+import { type StageWithSessions } from '@/queries/application';
+import { useAllIntegrations } from '@/queries/intergrations';
+import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';

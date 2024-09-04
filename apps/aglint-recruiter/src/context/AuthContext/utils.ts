@@ -5,11 +5,11 @@ import {
   type RecruiterDB,
 } from '@aglint/shared-types';
 
-import axios from '@/src/client/axios';
-import { type GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
-import { type API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import axios from '@/client/axios';
+import { type GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
+import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 export const fetchUserLocation = async () => {
   try {

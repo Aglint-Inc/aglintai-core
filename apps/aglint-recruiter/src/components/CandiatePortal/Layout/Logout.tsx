@@ -1,7 +1,6 @@
 'use client';
+import { DropdownMenuItem } from '@components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
-
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 export const Logout = () => {
   const { push } = useRouter();
   return (

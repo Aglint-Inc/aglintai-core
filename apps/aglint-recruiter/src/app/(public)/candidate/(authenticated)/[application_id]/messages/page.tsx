@@ -2,11 +2,9 @@
 import { Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { type apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_message/route';
-import EmptyState from '@/src/components/CandiatePortal/components/EmptyState';
-import MessageCard from '@/src/components/CandiatePortal/components/MessageCard';
-import { usePortalMessage } from '@/src/components/CandiatePortal/hook';
-import Loader from '@/src/components/Common/Loader';
+import { type apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
+import { usePortalMessage } from '@/components/CandiatePortal/hook';
+import Loader from '@/components/Common/Loader';
 
 export default function MessagesPage({ params }) {
   const application_id = params.application_id;

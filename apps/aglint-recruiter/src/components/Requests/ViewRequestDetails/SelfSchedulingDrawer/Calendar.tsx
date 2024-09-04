@@ -1,9 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useMemo } from 'react';
 
-import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
-import { type Event } from '@/src/components/Common/CalendarResourceView/types';
-import { getStringColor } from '@/src/components/Common/MuiAvatar';
+import CalendarResourceView from '@/components/Common/CalendarResourceView';
+import { type Event } from '@/components/Common/CalendarResourceView/types';
+import { getStringColor } from '@/components/Common/MuiAvatar';
 
 import { setCalendarDate, useSelfSchedulingFlowStore } from './store';
 

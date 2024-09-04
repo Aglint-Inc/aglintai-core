@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { CandidateDetail } from '@devlink/CandidateDetail';
+import { GlobalIcon } from '@devlink/GlobalIcon';
 import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
 
-import { CandidateDetail } from '@/devlink/CandidateDetail';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 import { getIconName } from '../../utils';
 import { EmptyDetailState } from '../Common/EmptyDetailState';
@@ -45,13 +45,13 @@ export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
         isEmpty ? (
           <EmptyDetailState section='Analysis' />
         ) : (
-          props.children ?? (
+          (props.children ?? (
             <>
               <Education />
               <Skills />
               <Experience />
             </>
-          )
+          ))
         )
       }
       slotIcon={<GlobalIcon size={5} iconName={getIconName('Analysis')} />}

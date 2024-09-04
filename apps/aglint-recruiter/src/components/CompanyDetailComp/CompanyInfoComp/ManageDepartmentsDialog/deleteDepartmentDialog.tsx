@@ -1,15 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import Loader from '@/src/components/Common/Loader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import Loader from '@/components/Common/Loader';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 function DeleteDepartmentsDialog({
   handleClose,

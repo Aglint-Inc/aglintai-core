@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { type AxiosResponse } from 'axios';
 
-import { type ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
-import toast from '@/src/utils/toast';
+import { type ApiResponseActivities } from '@/pages/api/scheduling/fetch_activities';
+import toast from '@/utils/toast';
 
 export const useAllActivities = ({
   application_id,

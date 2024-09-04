@@ -1,11 +1,11 @@
+import { NavJobSubLink } from '@devlink/NavJobSubLink';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 
-import { NavJobSubLink } from '@/devlink/NavJobSubLink';
-import { AddJob } from '@/src/components/Jobs/Dashboard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import ROUTES from '@/src/utils/routing/routes';
+import { AddJob } from '@/components/Jobs/Dashboard';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobs } from '@/context/JobsContext';
+import ROUTES from '@/utils/routing/routes';
 
 function JobSubNavbar() {
   const router = useRouter();

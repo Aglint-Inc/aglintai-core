@@ -1,9 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { TaskSwitchButton } from '@devlink3/TaskSwitchButton';
 import { Grid, Stack, Typography } from '@mui/material';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 
 function CalendarHeader({
   handleMode,

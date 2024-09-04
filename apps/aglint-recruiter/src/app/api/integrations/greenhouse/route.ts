@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server';
 
-import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
+import { routeHandlerFactory } from '@/utils/apiUtils/responseFactoryPro';
 
 import { getGreenhouseMeta, setGreenhouseMeta } from './process';
 import { type GreenhouseAPI } from './type';

@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
+import { DragPill } from '@devlink3/DragPill';
 import { Stack } from '@mui/material';
 import { type PropsWithChildren } from 'react';
 import { type XYCoord, DndProvider, useDragLayer } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { DragPill } from '@/devlink3/DragPill';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useMousePosition } from '@/src/hooks/useMousePosition';
+import { useApplications } from '@/context/ApplicationsContext';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useMousePosition } from '@/hooks/useMousePosition';
 
 const DNDProvider = (props: PropsWithChildren) => {
   const count = useApplicationsStore(({ checklist }) => checklist.length);

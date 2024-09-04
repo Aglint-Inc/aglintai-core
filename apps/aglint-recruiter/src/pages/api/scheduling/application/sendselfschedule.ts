@@ -12,10 +12,10 @@ import {
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { selfScheduleMailToCandidate } from '@/src/utils/scheduling/mailUtils';
-import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { selfScheduleMailToCandidate } from '@/utils/scheduling/mailUtils';
+import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { type ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
 
@@ -97,7 +97,6 @@ const sendToCandidate = async ({
     selectedSessions: allSessions.map((ses) => ({
       interview_session_id: ses.interview_session.id,
       interview_meeting_id: ses.interview_meeting.id,
-      interview_schedule_id: ses.interview_meeting.interview_schedule_id,
       job_id: ses.interview_meeting.job_id,
       recruiter_id: ses.interview_meeting.recruiter_id,
     })),

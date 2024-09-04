@@ -1,24 +1,24 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
-import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
-import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
-import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useAllMembers } from '@/src/queries/members';
-import dayjs from '@/src/utils/dayjs';
+import IconSessionType from '@/components/Common/Icons/IconSessionType';
+import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
+import { useApplication } from '@/context/ApplicationContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useAllMembers } from '@/queries/members';
+import dayjs from '@/utils/dayjs';
 
 import {
   setIsScheduleOpen,

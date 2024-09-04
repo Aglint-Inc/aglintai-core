@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { type StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/queries/application';
 
 import { type Interviewer } from './types';
 

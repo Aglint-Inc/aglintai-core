@@ -1,11 +1,11 @@
 import { DatabaseTable } from '@aglint/shared-types';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UITypography from '@/src/components/Common/UITypography';
+import { ShowCode } from '@/components/Common/ShowCode';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UITypography from '@/components/Common/UITypography';
 
 import { useSelectedActionsDetails } from '../NewScheduleEvents/dialogCtx';
 
@@ -40,8 +40,12 @@ const EmailTemplate = () => {
 };
 
 const EmailSubject = () => {
-  const { setEmailTemplate, emailTemplateTargetAPI, emailTemplate } =
-    useSelectedActionsDetails();
+  const {
+    setEmailTemplate,
+    emailTemplateTargetAPI,
+    emailTemplate,
+    tiptapLoadStatus,
+  } = useSelectedActionsDetails();
   return (
     <Stack>
       <UITypography type='small'>Email Subject</UITypography>
@@ -54,7 +58,7 @@ const EmailSubject = () => {
         }}
       >
         <Stack>
-          {emailTemplate.subject.length > 0 && (
+          {!tiptapLoadStatus.email && (
             <TipTapAIEditor
               singleLine={true}
               padding={1}
@@ -78,8 +82,12 @@ const EmailSubject = () => {
 EmailSubject.displayName = 'EmailSubject';
 
 const EmailBody = () => {
-  const { setEmailTemplate, emailTemplate, emailTemplateTargetAPI } =
-    useSelectedActionsDetails();
+  const {
+    setEmailTemplate,
+    emailTemplate,
+    emailTemplateTargetAPI,
+    tiptapLoadStatus,
+  } = useSelectedActionsDetails();
 
   return (
     <Stack>
@@ -92,7 +100,7 @@ const EmailBody = () => {
           borderRadius: 'var(--radius-2)',
         }}
       >
-        {emailTemplate.body.length > 0 && (
+        {!tiptapLoadStatus.email && (
           <TipTapAIEditor
             toolbar={false}
             editor_type='email'
@@ -101,7 +109,7 @@ const EmailBody = () => {
             handleChange={(s) => {
               setEmailTemplate((prev) => ({
                 ...prev,
-                boby: s,
+                body: s,
               }));
             }}
           />
@@ -148,7 +156,7 @@ const AgentInstructionTemplate = () => {
 };
 
 const AgentInstructionBody = () => {
-  const { agentInstructions, setAgentInstructions } =
+  const { agentInstructions, setAgentInstructions, tiptapLoadStatus } =
     useSelectedActionsDetails();
   return (
     <Stack>
@@ -161,15 +169,17 @@ const AgentInstructionBody = () => {
           borderRadius: 'var(--radius-2)',
         }}
       >
-        <TipTapAIEditor
-          toolbar={false}
-          editor_type='regular'
-          initialValue={agentInstructions}
-          handleChange={(s) => {
-            setAgentInstructions(s);
-          }}
-          placeholder='Provide the instructions to guide the agent through this action.'
-        />
+        {tiptapLoadStatus.agent === false && (
+          <TipTapAIEditor
+            toolbar={false}
+            editor_type='regular'
+            initialValue={agentInstructions}
+            handleChange={(s) => {
+              setAgentInstructions(s);
+            }}
+            placeholder='Provide the instructions to guide the agent through this action.'
+          />
+        )}
       </Stack>
     </Stack>
   );

@@ -41,13 +41,13 @@ export type indicatorType =
   | 'ASSIGNED_TO_AGENT'
   | 'COMPLETED'
   | 'CLOSED';
-import { type sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
-import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
-import { useAllMembers } from '@/src/queries/members';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
+import { type sortComponentType } from '@/components/Common/FilterHeader/SortComponent';
+import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
+import { useAllMembers } from '@/queries/members';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';

@@ -5,7 +5,7 @@ import axios from 'axios';
 import formidable from 'formidable';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
+import { EmailWebHook } from '@/services/EmailWebhook/EmailWebhook';
 
 export const config = {
   api: {

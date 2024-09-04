@@ -8,8 +8,8 @@ import {
   useState,
 } from 'react';
 
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 interface AuthContextInterface {
   user_id: string;

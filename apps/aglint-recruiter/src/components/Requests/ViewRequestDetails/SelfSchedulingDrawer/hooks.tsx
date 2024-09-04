@@ -3,13 +3,13 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiBodyParamsSelfSchedule,
   ApiResponseSelfSchedule,
-} from '@/src/pages/api/scheduling/application/sendselfschedule';
-import { type ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
-import toast from '@/src/utils/toast';
+} from '@/pages/api/scheduling/application/sendselfschedule';
+import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import toast from '@/utils/toast';
 
 import { useMeetingList } from '../hooks';
 import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';

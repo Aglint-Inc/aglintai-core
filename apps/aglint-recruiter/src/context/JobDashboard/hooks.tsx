@@ -5,7 +5,7 @@ import {
   useJobSchedules,
   useJobSkills,
   useJobTenureAndExperience,
-} from '@/src/queries/job-dashboard';
+} from '@/queries/job-dashboard';
 
 import { useJob } from '../JobContext';
 

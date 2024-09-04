@@ -1,5 +1,6 @@
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
-import type { WorkflowStore } from '@/src/context/Workflows/store';
+import { RcCheckbox } from '@devlink2/RcCheckbox';
+
+import type { WorkflowStore } from '@/context/Workflows/store';
 
 import UITextField from '../Common/UITextField';
 

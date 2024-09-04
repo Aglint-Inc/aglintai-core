@@ -1,11 +1,11 @@
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 
-import { Text } from '@/devlink/Text';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getFullName } from '@/utils/jsonResume';
 
 import { type ChatType } from '../hooks/fetch';
 import Widgets from '../Widgets';

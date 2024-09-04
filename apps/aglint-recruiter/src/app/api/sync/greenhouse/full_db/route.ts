@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
-import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
-import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
+import { routeHandlerFactory } from '@/utils/apiUtils/responseFactoryPro';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { getSyncDetails } from '../util';
 import { runFullSync } from './process';

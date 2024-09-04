@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { InterviewPlanEmpty } from '@devlink2/InterviewPlanEmpty';
+import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
 import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
-import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { type CompanyMember } from '@/src/queries/company-members';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { type CompanyMember } from '@/queries/company-members';
 
 import { type DrawerType } from '.';
 import BreakForms, {

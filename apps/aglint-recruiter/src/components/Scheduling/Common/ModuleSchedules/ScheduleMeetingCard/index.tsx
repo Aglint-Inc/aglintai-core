@@ -1,22 +1,22 @@
+import { StatusBadge } from '@devlink2/StatusBadge';
+import { AvatarWithName } from '@devlink3/AvatarWithName';
+import { MembersList } from '@devlink3/MembersList';
+import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
 import { Collapse, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { MembersList } from '@/devlink3/MembersList';
-import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { getFullName } from '@/src/utils/jsonResume';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getFullName } from '@/utils/jsonResume';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../Candidates/utils';
+} from '../../../../../utils/scheduling/colors_and_enums';
 import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';

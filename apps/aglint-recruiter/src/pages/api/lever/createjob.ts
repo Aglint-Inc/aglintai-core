@@ -1,18 +1,21 @@
 /* eslint-disable no-console */
-import { type DatabaseTable, type DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { processEmailsInBatches } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
-import { type LeverApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/applications';
-import { type LeverJob } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/job';
+import { processEmailsInBatches } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
+import { type LeverApplication } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/applications';
+import { type LeverJob } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/job';
 import {
   extractLinkedInURL,
   POSTED_BY,
   splitFullName,
-} from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+} from '@/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
+import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../decryptApiKey';
 

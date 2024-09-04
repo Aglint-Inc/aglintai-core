@@ -1,24 +1,21 @@
 'use client';
-import { useRef, useState } from 'react';
-import axios from 'axios';
-
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { type candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
-import { supabase } from '@/src/utils/supabase/client';
-import timeZone from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+} from '@components/ui/select';
+import axios from 'axios';
+import { useRef, useState } from 'react';
 
-import { useNavbar } from '../hook';
+import { type candidatePortalProfileType } from '@/app/api/candidate_portal/get_profile/route';
+import { supabase } from '@/utils/supabase/client';
+import timeZone from '@/utils/timeZone';
 
 import ImageUploadManual from './ImageUpload';
 

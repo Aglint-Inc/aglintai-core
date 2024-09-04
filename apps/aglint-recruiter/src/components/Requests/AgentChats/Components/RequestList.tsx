@@ -1,12 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Text } from '@devlink//Text';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Box, Stack, Tooltip } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
-import { Text } from '@/devlink//Text';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 
 export type RequestListProps = {
   type: DatabaseTable['request']['type'];

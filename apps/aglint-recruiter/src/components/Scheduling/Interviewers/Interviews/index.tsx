@@ -1,14 +1,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
+import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
+import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import SearchField from '@/components/Common/SearchField/SearchField';
+import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 import {

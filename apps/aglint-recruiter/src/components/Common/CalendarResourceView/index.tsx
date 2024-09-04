@@ -1,12 +1,11 @@
 import './customcss.css';
 
 import { dayjsLocal } from '@aglint/shared-utils';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import { Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
-
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
 import RenderEventContent from './RenderEventContent';
 import RenderResourceContent from './RenderResource';

@@ -1,12 +1,12 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import UITextField from '@/src/components/Common/UITextField';
-import { supabase } from '@/src/utils/supabase/client';
+import UITextField from '@/components/Common/UITextField';
+import { supabase } from '@/utils/supabase/client';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';

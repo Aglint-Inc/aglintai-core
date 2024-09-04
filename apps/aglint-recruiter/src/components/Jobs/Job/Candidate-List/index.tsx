@@ -1,11 +1,11 @@
+import { JobDetails } from '@devlink2/JobDetails';
+import { PageLayout } from '@devlink2/PageLayout';
 import { CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
-import { JobDetails } from '@/devlink2/JobDetails';
-import { PageLayout } from '@/devlink2/PageLayout';
-import Loader from '@/src/components/Common/Loader';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useJob } from '@/src/context/JobContext';
+import Loader from '@/components/Common/Loader';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useJob } from '@/context/JobContext';
 
 import JobNotFound from '../Common/JobNotFound';
 import { SharedActions } from '../Common/SharedTopNav/actions';

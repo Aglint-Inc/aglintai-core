@@ -1,4 +1,4 @@
-import { type useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
+import { type useInviteParams } from '@/context/CandidateInviteContext/hooks';
 
 import { appKey } from '..';
 import { type InviteSlotsParams } from '.';

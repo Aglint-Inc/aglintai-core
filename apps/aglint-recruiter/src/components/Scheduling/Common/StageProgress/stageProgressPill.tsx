@@ -1,7 +1,6 @@
+import { StagePipelineSmall } from '@devlink3/StagePipelineSmall';
 import { Stack } from '@mui/material';
 import { type Ref, forwardRef, memo } from 'react';
-
-import { StagePipelineSmall } from '@/devlink3/StagePipelineSmall';
 
 import type { StageProgressProps } from '.';
 

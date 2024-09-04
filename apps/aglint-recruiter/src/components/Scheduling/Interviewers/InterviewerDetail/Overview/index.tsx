@@ -1,12 +1,11 @@
-
+import { ButtonSurface } from '@devlink/ButtonSurface';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { useRouter } from 'next/router';
 
-import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
-import Heatmap from '@/src/components/Common/Heatmap/HeatmapUser';
-import Loader from '@/src/components/Common/Loader';
-import { type ApiResponseGetMember } from '@/src/pages/api/get_member';
+import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
+import Loader from '@/components/Common/Loader';
+import { type ApiResponseGetMember } from '@/pages/api/get_member';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { type SchedulesSupabase } from '../../../schedules-query';
@@ -130,7 +129,6 @@ function Overview({
                     textDesc='No Interview type found.'
                     size={6}
                     iconName='school'
-                    
                   />
                 </>
               )}

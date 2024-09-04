@@ -2,12 +2,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  interviewCancelReasons,
-  userDetails,
-} from '@/src/utils/scheduling/const';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
+import { supabase } from '@/utils/supabase/client';
 
 import { type MemberType } from '../InterviewTypes/types';
 
@@ -51,7 +48,6 @@ async function getSchedule(meeting_id: string) {
         application_id: res.application_id,
         created_at: res.created_at,
         id: res.id,
-        interview_schedule_id: res.interview_schedule_id,
         cal_event_id: res.cal_event_id,
         candidate_feedback: res.candidate_feedback,
         confirmed_date: res.confirmed_date,

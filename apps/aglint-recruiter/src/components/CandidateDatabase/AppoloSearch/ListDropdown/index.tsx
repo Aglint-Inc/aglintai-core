@@ -1,9 +1,8 @@
+import { SavedList } from '@devlink/SavedList';
+import { SavedListMenu } from '@devlink/SavedListMenu';
 import { Popover } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-import { SavedList } from '@/devlink/SavedList';
-import { SavedListMenu } from '@/devlink/SavedListMenu';
 
 import {
   setIsSelectAll,

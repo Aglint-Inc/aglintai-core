@@ -1,8 +1,11 @@
-import { type APIEventAttendeeStatus, type SupabaseType } from '@aglint/shared-types';
+import {
+  type APIEventAttendeeStatus,
+  type SupabaseType,
+} from '@aglint/shared-types';
 import axios from 'axios';
 
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 export const removeSessionsFromFilterJson = async ({
   supabase,

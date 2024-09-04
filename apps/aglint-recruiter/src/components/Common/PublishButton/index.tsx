@@ -1,8 +1,8 @@
+import { Button } from '@components/ui/button';
 import { Rocket } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
+import { useJobDashboardStore } from '@/context/JobDashboard/store';
 
 const PublishButton = ({
   onClick,

@@ -1,4 +1,4 @@
-import { type nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
+import { type nestedObjectToArray } from '@/components/Common/FilterHeader/utils';
 
 import { type CreateSlice } from '.';
 

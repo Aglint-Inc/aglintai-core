@@ -1,24 +1,23 @@
 'use client';
 
-import { Check, ChevronsUpDown } from 'lucide-react';
-import React from 'react';
-import { useEffect, useRef, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from '@/components/ui/command';
-import { Input } from '@/components/ui/input';
+} from '@components/ui/command';
+import { Input } from '@components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+} from '@components/ui/popover';
+import { cn } from '@lib/utils';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const countries = [
   { name: 'United States', code: 'US', dialCode: '+1', flag: '🇺🇸' },

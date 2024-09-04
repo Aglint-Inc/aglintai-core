@@ -1,13 +1,13 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
+import { DcPopup } from '@devlink/DcPopup';
+import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
+import { SessionAndTime } from '@devlink/SessionAndTime';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
-import { DcPopup } from '@/devlink/DcPopup';
-import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
-import { SessionAndTime } from '@/devlink/SessionAndTime';
-import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { useCandidateInvite } from '@/context/CandidateInviteContext';
 
 import { dayJS } from './utils';
 

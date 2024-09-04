@@ -1,7 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { SelectActionBar } from '@/devlink2/SelectActionBar';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { SelectActionBar } from '@devlink2/SelectActionBar';
+
+import { useApplications } from '@/context/ApplicationsContext';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
 
 import { MoveCandidate } from './moveCandidate';
 
@@ -20,9 +21,7 @@ const Actions = () => {
   const count = checklist.length;
   return (
     <>
-    
       <SelectActionBar
-
         onclickSelectAll={null}
         onClickDelete={{ style: { display: 'none' } }}
         isAssessmentVisible={

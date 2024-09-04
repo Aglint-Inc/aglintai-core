@@ -1,12 +1,12 @@
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
+import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
+import ROUTES from '@/utils/routing/routes';
+import toast from '@/utils/toast';
 
 import { useModuleAndUsers } from '../queries/hooks';
 import { unArchiveModuleById } from '../utils';

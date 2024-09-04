@@ -1,25 +1,25 @@
 import '@styles/globals.css';
 
-import { useQueryClient } from '@tanstack/react-query';
-import { LogOut } from 'lucide-react';
-import Link from 'next/link';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import NotFoundPage from '@/src/pages/404';
-import { isEnvProd } from '@/src/utils/isEnvProd';
-import PERMISSIONS from '@/src/utils/routing/permissions';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@components/ui/tooltip';
+import { ResponsiveBanner } from '@devlink2/ResponsiveBanner';
+import { useQueryClient } from '@tanstack/react-query';
+import { LogOut } from 'lucide-react';
+import Link from 'next/link';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useResizeWindow } from '@/context/ResizeWindow/ResizeWindow';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import NotFoundPage from '@/pages/404';
+import { isEnvProd } from '@/utils/isEnvProd';
+import PERMISSIONS from '@/utils/routing/permissions';
+import ROUTES from '@/utils/routing/routes';
 
 // import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
