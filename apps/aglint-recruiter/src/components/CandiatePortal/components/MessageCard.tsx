@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { Parser } from 'html-to-react';
 import Image from 'next/image';
 
 import { apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
@@ -9,6 +10,7 @@ const MessageCard = ({
 }: {
   message: apiResponsePortalMessage[number];
 }) => {
+  const htmlParser = Parser();
   return (
     <Card className='mx-auto rounded-lg overflow-hidden border  mb-4'>
       <CardHeader className='flex items-center px-6 py-4'>
@@ -27,33 +29,15 @@ const MessageCard = ({
             <p className='text-sm mt-2 text-gray-500'>
               {dayjsLocal(message.created_at).fromNow()}
             </p>
-            {/*eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            {/* <a href='#' className='text-blue-500 hover:underline'>
-              View in email
-            </a> */}
           </div>
         </div>
       </CardHeader>
       <CardContent className='px-6'>
         <h2 className='text-md font-semibold'>{message.title}</h2>
         <p className='text-sm font-normal mt-2'>
-          <iframe
-            height={'100%'}
-            width={'100%'}
-            color='white'
-            srcDoc={message.message}
-            title='Previw Email'
-          />
+          {htmlParser.parse(message.message)}
         </p>
       </CardContent>
-      {/* <CardFooter className='px-6 py-4'>
-          <Button
-            variant='outline'
-            className='w-full py-2 px-4 rounded border border-gray-300'
-          >
-            Submit Availability
-          </Button>
-        </CardFooter> */}
     </Card>
   );
 };
