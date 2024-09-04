@@ -1,4 +1,10 @@
 import { supabaseWrap } from '@aglint/shared-utils';
+import { AddSkillPIll } from '@devlink/AddSkillPIll';
+import { ButtonGenerate } from '@devlink/ButtonGenerate';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { CandidateFilter } from '@devlink/CandidateFilter';
+import { JobPills } from '@devlink/JobPills';
+import { SkillsGenerate } from '@devlink/SkillsGenerate';
 import { Slider, Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { cloneDeep, set } from 'lodash';
@@ -6,16 +12,10 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { AddSkillPIll } from '@/devlink/AddSkillPIll';
-import { ButtonGenerate } from '@/devlink/ButtonGenerate';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { CandidateFilter } from '@/devlink/CandidateFilter';
-import { JobPills } from '@/devlink/JobPills';
-import { SkillsGenerate } from '@/devlink/SkillsGenerate';
-import { useJobs } from '@/src/context/JobsContext';
-import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
-import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
-import { supabase } from '@/src/utils/supabase/client';
+import { useJobs } from '@/context/JobsContext';
+import { similarJobs } from '@/utils/prompts/candidateDb/similarJobs';
+import { similarSkills } from '@/utils/prompts/candidateDb/similarSkills';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   type CandidateSearchState,

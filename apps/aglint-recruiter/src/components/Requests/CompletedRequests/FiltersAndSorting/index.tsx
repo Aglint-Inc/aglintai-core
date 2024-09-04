@@ -3,10 +3,10 @@
 
 import { useEffect, useState } from 'react';
 
-import FilterHeader from '@/src/components/Common/FilterHeader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type GetRequestParams } from '@/src/queries/requests';
-import { supabase } from '@/src/utils/supabase/client';
+import FilterHeader from '@/components/Common/FilterHeader';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type GetRequestParams } from '@/queries/requests';
+import { supabase } from '@/utils/supabase/client';
 
 import { setCompletedFilters, useCompletedRequestsStore } from '../store';
 

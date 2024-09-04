@@ -1,10 +1,10 @@
+import { MembersList } from '@devlink3/MembersList';
 import dayjs from 'dayjs';
 
-import { MembersList } from '@/devlink3/MembersList';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { convertTimeZoneToAbbreviation } from '@/src/components/Scheduling/utils';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { convertTimeZoneToAbbreviation } from '@/components/Scheduling/utils';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { getFullName } from '@/utils/jsonResume';
 
 function InterviewerDetailsCard({
   profile_image,

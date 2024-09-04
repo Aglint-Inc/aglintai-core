@@ -1,3 +1,17 @@
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select';
 import {
   endOfDay,
   endOfMonth,
@@ -14,21 +28,6 @@ import {
 } from 'date-fns';
 import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
 import React, { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 export default function Component() {
   const [job, setJob] = useState('');

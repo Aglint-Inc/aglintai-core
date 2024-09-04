@@ -1,8 +1,3 @@
-import { Dialog, Popover, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { useState } from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,21 +5,26 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ConnectedJobsList } from '@/devlink/ConnectedJobsList';
-import { DcPopup } from '@/devlink/DcPopup';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { MoreMenu } from '@/devlink3/MoreMenu';
-import { TextWithIcon } from '@/devlink3/TextWithIcon';
-import { useWorkflows } from '@/src/context/Workflows';
-import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { useWorkflowStore } from '@/src/context/Workflows/store';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll, capitalizeSentence } from '@/src/utils/text/textUtils';
+} from '@components/ui/breadcrumb';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { ConnectedJobsList } from '@devlink/ConnectedJobsList';
+import { DcPopup } from '@devlink/DcPopup';
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { PageLayout } from '@devlink2/PageLayout';
+import { MoreMenu } from '@devlink3/MoreMenu';
+import { TextWithIcon } from '@devlink3/TextWithIcon';
+import { Dialog, Popover, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { useState } from 'react';
+
+import { useWorkflows } from '@/context/Workflows';
+import { useWorkflow } from '@/context/Workflows/[id]';
+import { useWorkflowStore } from '@/context/Workflows/store';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll, capitalizeSentence } from '@/utils/text/textUtils';
 
 import UITextField from '../../Common/UITextField';
 import { WithPermission } from '../../withPermission';

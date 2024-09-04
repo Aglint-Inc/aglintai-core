@@ -1,15 +1,14 @@
 /* eslint-disable no-unused-vars */
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { EmptyState } from '@devlink2/EmptyState';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { EmptyState } from '@/devlink2/EmptyState';
-import { meetingCardType } from '@/src/components/Common/SessionCard';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ShowCode } from '@/components/Common/ShowCode';
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 
 import { sessionType } from '..';
 

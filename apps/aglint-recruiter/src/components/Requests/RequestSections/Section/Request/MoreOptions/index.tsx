@@ -1,6 +1,18 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { AssignedToList } from '@devlink2/AssignedToList';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
+import { RequestCardSkeleton } from '@devlink2/RequestCardSkeleton';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
+import { ConfirmationPopup } from '@devlink3/ConfirmationPopup';
+import {
   Avatar,
   List,
   ListItem,
@@ -10,25 +22,13 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { AssignedToList } from '@/devlink2/AssignedToList';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import { useMemberList } from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
-import { useRequests } from '@/src/context/RequestsContext';
-import { type Request } from '@/src/queries/requests/types';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+import MuiPopup from '@/components/Common/MuiPopup';
+import { useMemberList } from '@/components/Requests/ViewRequestDetails/Components/MemberList';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+import { useRequests } from '@/context/RequestsContext';
+import { type Request } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 type actionType = Request['status'] | 'change_assignee';
 

@@ -3,21 +3,21 @@ import type {
   CustomAgentInstructionPayload,
   DatabaseTable,
 } from '@aglint/shared-types';
+import OptimisticWrapper from '@components/loadingWapper';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { WorkflowAddAction } from '@devlink3/WorkflowAddAction';
+import { WorkflowButton } from '@devlink3/WorkflowButton';
+import { WorkflowConnector } from '@devlink3/WorkflowConnector';
+import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { Stack } from '@mui/material';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { WorkflowAddAction } from '@/devlink3/WorkflowAddAction';
-import { WorkflowButton } from '@/devlink3/WorkflowButton';
-import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
-import { WorkflowItem } from '@/devlink3/WorkflowItem';
-import Loader from '@/src/components/Common/Loader';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UISelect from '@/src/components/Common/Uiselect';
-import UITypography from '@/src/components/Common/UITypography';
-import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { type WorkflowAction } from '@/src/types/workflow.types';
+import Loader from '@/components/Common/Loader';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UISelect from '@/components/Common/Uiselect';
+import UITypography from '@/components/Common/UITypography';
+import { useWorkflow } from '@/context/Workflows/[id]';
+import { type WorkflowAction } from '@/types/workflow.types';
 
 import { getWorkflowTagIcon } from '../../constants';
 import { useActions } from './context';

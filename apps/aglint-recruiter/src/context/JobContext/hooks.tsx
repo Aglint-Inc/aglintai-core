@@ -3,20 +3,16 @@ import { isEqual } from 'lodash';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 
-import { handleJobApi } from '@/src/apiUtils/job/utils';
-import {
-  jobQueries,
-  useInvalidateJobQueries,
-  useJobSync,
-} from '@/src/queries/job';
+import { handleJobApi } from '@/apiUtils/job/utils';
+import { jobQueries, useInvalidateJobQueries, useJobSync } from '@/queries/job';
 import {
   useUploadApplication,
   useUploadCsv,
   useUploadResume,
-} from '@/src/queries/job-applications';
-import { useJobUpdate } from '@/src/queries/jobs';
-import { type Job } from '@/src/queries/jobs/types';
-import toast from '@/src/utils/toast';
+} from '@/queries/job-applications';
+import { useJobUpdate } from '@/queries/jobs';
+import { type Job } from '@/queries/jobs/types';
+import toast from '@/utils/toast';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';

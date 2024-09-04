@@ -1,17 +1,17 @@
 /* eslint-disable security/detect-object-injection */
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Checkbox } from '@devlink/Checkbox';
+import { DcPopup } from '@devlink/DcPopup';
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { Checkbox } from '@/devlink/Checkbox';
-import { DcPopup } from '@/devlink/DcPopup';
-import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { manageOfficeLocation } from '@/src/context/AuthContext/utils';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
-import timeZone from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+import UITextField from '@/components/Common/UITextField';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { manageOfficeLocation } from '@/context/AuthContext/utils';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
+import timeZone from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 import { debounce, geoCodeLocation, handleValidate } from './until';
 

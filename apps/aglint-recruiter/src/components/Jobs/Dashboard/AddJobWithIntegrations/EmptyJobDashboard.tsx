@@ -1,8 +1,8 @@
+import { JobDashboardEmpty } from '@devlink/JobDashboardEmpty';
 import { useRouter } from 'next/router';
 
-import { JobDashboardEmpty } from '@/devlink/JobDashboardEmpty';
-import { useAllIntegrations } from '@/src/queries/intergrations';
-import ROUTES from '@/src/utils/routing/routes';
+import { useAllIntegrations } from '@/queries/intergrations';
+import ROUTES from '@/utils/routing/routes';
 
 export default function EmptyJobDashboard({
   heading,

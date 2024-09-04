@@ -1,8 +1,7 @@
 import type { Database } from "../schema.types";
-import type { CustomizableTypes, Custom } from "../utils.types";
+import type { Custom, CustomizableTypes } from "../utils.types";
 import { CustomAllInterviewers } from "./all_interviewer";
 import { CustomApplicationView } from "./application_view.types";
-import { CustomInterviewDataView } from "./interview_data_view";
 import { CustomInterviewTypesView } from "./interview_types_view";
 import { CustomJobView } from "./job_view.types";
 import { CustomMeetingInterviewersView } from "./meeting_interviewers.types";
@@ -38,6 +37,5 @@ export type Views = Custom<
     all_interviewers: CustomAllInterviewers;
     interview_types_view: CustomInterviewTypesView;
     module_relations_view: CustomModuleRelationView;
-    interview_data_view: CustomInterviewDataView;
   }
 >;

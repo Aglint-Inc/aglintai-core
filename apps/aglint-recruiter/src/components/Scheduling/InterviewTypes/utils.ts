@@ -1,7 +1,7 @@
 import { type InterviewMeetingTypeDb } from '@aglint/shared-types';
 
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 export const fetchInterviewModule = async (recruiter_id: string) => {
   try {

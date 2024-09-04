@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,12 +5,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+} from '@components/ui/breadcrumb';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { PageLayout } from '@devlink2/PageLayout';
+import React from 'react';
+
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Seo from '../../Common/Seo';
 import GreenhouseSettings from './Greenhouse';

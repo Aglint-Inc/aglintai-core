@@ -1,39 +1,39 @@
 /* eslint-disable security/detect-object-injection */
+import OptimisticWrapper from '@components/loadingWapper';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
+import { RcCheckbox } from '@devlink2/RcCheckbox';
+import { GeneralPopupLarge } from '@devlink3/GeneralPopupLarge';
+import { WorkflowCard } from '@devlink3/WorkflowCard';
+import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
 import { Dialog, Stack } from '@mui/material';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
-import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
-import { WorkflowCard } from '@/devlink3/WorkflowCard';
-import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
-import Loader from '@/src/components/Common/Loader';
-import { getTriggerOption } from '@/src/components/Workflow/constants';
-import { WorkflowTags } from '@/src/components/Workflow/index/body/content';
+import Loader from '@/components/Common/Loader';
+import { getTriggerOption } from '@/components/Workflow/constants';
+import { WorkflowTags } from '@/components/Workflow/index/body/content';
 import {
   getFilteredWorkflows,
   useWorkflowFilterOptions,
-} from '@/src/components/Workflow/index/body/filters';
-import { JobIcon } from '@/src/components/Workflow/index/body/icons';
-import { useJob } from '@/src/context/JobContext';
+} from '@/components/Workflow/index/body/filters';
+import { JobIcon } from '@/components/Workflow/index/body/icons';
+import { useJob } from '@/context/JobContext';
 import {
   type JobDashboardStore,
   useJobDashboardStore,
-} from '@/src/context/JobDashboard/store';
-import { useWorkflows } from '@/src/context/Workflows';
+} from '@/context/JobDashboard/store';
+import { useWorkflows } from '@/context/Workflows';
 import {
   useJobWorkflowConnect,
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
-} from '@/src/queries/job-workflow';
-import { useWorkflowQuery } from '@/src/queries/workflow';
-import { type Workflow } from '@/src/types/workflow.types';
-import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
+} from '@/queries/job-workflow';
+import { useWorkflowQuery } from '@/queries/workflow';
+import { type Workflow } from '@/types/workflow.types';
+import ROUTES from '@/utils/routing/routes';
+import toast from '@/utils/toast';
 
 const useJobWorkflowActions = () => {
   const { job_id, devlinkProps } = useJob();

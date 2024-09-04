@@ -1,44 +1,44 @@
 /* eslint-disable security/detect-object-injection */
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalBanner } from '@devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { PageLayout } from '@devlink2/PageLayout';
+import { BannerLoading } from '@devlink3/BannerLoading';
+import { DarkPill } from '@devlink3/DarkPill';
+import { GraphBlock } from '@devlink3/GraphBlock';
+import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
+import { JobRole } from '@devlink3/JobRole';
+import { JobsBanner } from '@devlink3/JobsBanner';
+import { NoData } from '@devlink3/NoData';
+import { PipeLine } from '@devlink3/PipeLine';
+import { RoleList } from '@devlink3/RoleList';
+import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
 import { CircularProgress, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Fragment, useMemo, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { BannerLoading } from '@/devlink3/BannerLoading';
-import { DarkPill } from '@/devlink3/DarkPill';
-import { GraphBlock } from '@/devlink3/GraphBlock';
-import { JobDashboard as JobDashboardDev } from '@/devlink3/JobDashboard';
-import { JobRole } from '@/devlink3/JobRole';
-import { JobsBanner } from '@/devlink3/JobsBanner';
-import { NoData } from '@/devlink3/NoData';
-import { PipeLine } from '@/devlink3/PipeLine';
-import { RoleList } from '@/devlink3/RoleList';
-import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
-import Loader from '@/src/components/Common/Loader';
-// import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import Loader from '@/components/Common/Loader';
+// import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
+import MuiAvatar from '@/components/Common/MuiAvatar';
 import {
   type ApplicationsParams,
   useApplicationsParams,
-} from '@/src/context/ApplicationsContext/hooks';
-import { useJob } from '@/src/context/JobContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useLocalStorage } from '@/src/hooks/useLocalStorage';
-import { useCompanyMembers } from '@/src/queries/company-members';
-import { type Job } from '@/src/queries/jobs/types';
-import { type Application } from '@/src/types/applications.types';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/context/ApplicationsContext/hooks';
+import { useJob } from '@/context/JobContext';
+import { useJobDashboard } from '@/context/JobDashboard';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useCompanyMembers } from '@/queries/company-members';
+import { type Job } from '@/queries/jobs/types';
+import { type Application } from '@/types/applications.types';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
+import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
+import { capitalize, capitalizeAll } from '@/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
 import { SharedActions } from '../Common/SharedTopNav/actions';

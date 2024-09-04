@@ -16,16 +16,14 @@
     "noErrorTruncation": true,
     "jsx": "preserve",
     "paths": {
-      "@/*": ["./*"],
-      "@devlink": ["./devlink/*"],
-      "@components/*": ["./src/components/*"],
-      "@config/*": ["./src/config/*"],
-      "@context/*": ["./src/context/*"],
-      "@defaultData/*": ["./src/defaultData/*"],
+      "@/*": ["./src/*"],
+      "@devlink/*": ["./devlink/*"],
+      "@devlink2/*": ["./devlink2/*"],
+      "@devlink3/*": ["./devlink3/*"],
+      "@components/*": ["./components/*"],
       "@styles/*": ["./styles/*"],
-      "@utils/*": ["./src/utils/*"],
       "@public/*": ["./public/*"],
-      "@types/*": ["./src/types/*"]
+      "@lib/*": ["./lib/*"]
     },
     "plugins": [
       {

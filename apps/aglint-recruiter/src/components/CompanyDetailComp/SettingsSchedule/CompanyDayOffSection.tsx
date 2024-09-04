@@ -1,3 +1,12 @@
+import { Calendar } from '@components/ui/calendar';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { CompanyDayOff } from '@devlink2/CompanyDayOff';
+import { DayoffList } from '@devlink2/DayoffList';
+import { TextWithBg } from '@devlink2/TextWithBg';
+import { DayOffHelper } from '@devlink3/DayOffHelper';
 import {
   Autocomplete,
   Dialog,
@@ -13,17 +22,8 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import React, { useRef } from 'react';
 
-import { Calendar } from '@/components/ui/calendar';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
-import { DayoffList } from '@/devlink2/DayoffList';
-import { TextWithBg } from '@/devlink2/TextWithBg';
-import { DayOffHelper } from '@/devlink3/DayOffHelper';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import toast from '@/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';

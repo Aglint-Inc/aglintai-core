@@ -1,4 +1,4 @@
-import dayjs from '@/src/utils/dayjs';
+import dayjs from '@/utils/dayjs';
 
 export const getDatesArray = (count: number, format: string) => {
   const dates = [];

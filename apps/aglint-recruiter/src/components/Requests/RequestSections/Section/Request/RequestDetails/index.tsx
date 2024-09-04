@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Text } from '@devlink/Text';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { RequestCardDetail } from '@devlink2/RequestCardDetail';
 import { Stack } from '@mui/material';
 import { type PropsWithChildren } from 'react';
 
-import { Text } from '@/devlink/Text';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
-import type { Request as RequestType } from '@/src/queries/requests/types';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
+import type { Request as RequestType } from '@/queries/requests/types';
 
 import CandidateDetails from './Components/CandidateDetails';
 import SessionsCardAndActions from './Components/SessionsCardAndActions';

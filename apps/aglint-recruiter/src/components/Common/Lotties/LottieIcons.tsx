@@ -1,7 +1,6 @@
 // import { Stack } from '@mui/material';
+import allLottie from '@public/lottie/allLottie';
 import Lottie from 'lottie-react';
-
-import allLottie from '@/public/lottie/allLottie';
 
 const LottieAnimations = ({
   animation,

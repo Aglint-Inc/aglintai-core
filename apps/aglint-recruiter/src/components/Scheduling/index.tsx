@@ -1,15 +1,15 @@
+import { PageLayout } from '@devlink2/PageLayout';
+import { GlobalSwitch } from '@devlink3/GlobalSwitch';
+import { GlobalSwitchPill } from '@devlink3/GlobalSwitchPill';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { PageLayout } from '@/devlink2/PageLayout';
-import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
-import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { ShowCode } from '../Common/ShowCode';
 import SchedulingDashboard from './Dashboard';

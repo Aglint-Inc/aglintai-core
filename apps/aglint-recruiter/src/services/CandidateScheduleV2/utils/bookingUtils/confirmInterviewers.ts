@@ -1,7 +1,7 @@
 import { type SessionInterviewerType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { type BookedMeetingDetails } from './types';
 

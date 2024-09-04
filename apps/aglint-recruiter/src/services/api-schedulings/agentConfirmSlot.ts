@@ -1,6 +1,6 @@
 // import { supabaseWrap } from '@aglint/shared-utils';
 
-// import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+// import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 // import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 

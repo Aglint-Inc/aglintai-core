@@ -1,17 +1,17 @@
+import { AtsCard } from '@devlink/AtsCard';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { NoResultAts } from '@devlink/NoResultAts';
+import { SkeletonLoaderAtsCard } from '@devlink/SkeletonLoaderAtsCard';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { AtsCard } from '@/devlink/AtsCard';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { NoResultAts } from '@/devlink/NoResultAts';
-import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
-import { useJobs } from '@/src/context/JobsContext';
-import { useAllIntegrations } from '@/src/queries/intergrations';
-import toast from '@/src/utils/toast';
+import { useIntegration } from '@/context/IntegrationProvider/IntegrationProvider';
+import { STATE_GREENHOUSE_DIALOG } from '@/context/IntegrationProvider/utils';
+import { useJobs } from '@/context/JobsContext';
+import { useAllIntegrations } from '@/queries/intergrations';
+import toast from '@/utils/toast';
 
 import { POSTED_BY } from '../utils';
 import { type JobGreenhouse } from './types';

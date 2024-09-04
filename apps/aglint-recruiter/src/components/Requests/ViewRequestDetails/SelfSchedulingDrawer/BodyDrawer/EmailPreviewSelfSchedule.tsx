@@ -1,16 +1,16 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
-import Loader from '@/src/components/Common/Loader';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import Loader from '@/components/Common/Loader';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import toast from '@/utils/toast';
 
 import { useMeetingList } from '../../hooks';
 import { setEmailData, useSelfSchedulingFlowStore } from '../store';

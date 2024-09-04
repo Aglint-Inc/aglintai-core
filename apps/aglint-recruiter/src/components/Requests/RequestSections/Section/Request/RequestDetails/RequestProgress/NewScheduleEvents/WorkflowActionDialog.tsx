@@ -2,21 +2,24 @@ import {
   type DatabaseEnums,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { get } from 'lodash';
 import React, { useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { WorkflowItem } from '@/devlink3/WorkflowItem';
-import UISelect from '@/src/components/Common/Uiselect';
-import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequest } from '@/src/context/RequestContext';
-import toast from '@/src/utils/toast';
+import UISelect from '@/components/Common/Uiselect';
+import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequest } from '@/context/RequestContext';
+import toast from '@/utils/toast';
 
 import { createRequestWorkflowAction } from '../../utils';
 import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
 import { useNewScheduleRequestPr } from '.';
-import { useSelectedActionsDetails } from './dialogCtx';
+import {
+  agentTargetApiEmailEndPoint,
+  useSelectedActionsDetails,
+} from './dialogCtx';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
@@ -34,12 +37,14 @@ const WorkflowActionDialog = () => {
     setSelectedActionsDetails,
     setEmailTemplate,
     emailTemplate,
+    setTiptapLoadStatus,
   } = useSelectedActionsDetails();
 
   const [isAddingAction, setIsAddingAction] = useState(false);
   const handleChangeSelectedAction = (
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
+    setTiptapLoadStatus({ email: true, agent: true });
     if (
       get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
       reqTriggerActionsMap[editTrigger][0].target_api === target_api
@@ -54,7 +59,11 @@ const WorkflowActionDialog = () => {
         ...existing_workflow_action,
       });
     } else {
-      const emailSlackTemplate = companyEmailTemplatesMp[target_api];
+      let emailTempKey = target_api;
+      if (agentTargetApiEmailEndPoint[target_api]) {
+        emailTempKey = agentTargetApiEmailEndPoint[target_api];
+      }
+      const emailSlackTemplate = companyEmailTemplatesMp[emailTempKey];
       setEmailTemplate({
         body: emailSlackTemplate?.body || '',
         subject: emailSlackTemplate?.subject || '',
@@ -71,6 +80,8 @@ const WorkflowActionDialog = () => {
         workflow_id: undefined,
       });
     }
+
+    setTiptapLoadStatus({ email: false, agent: false });
   };
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],

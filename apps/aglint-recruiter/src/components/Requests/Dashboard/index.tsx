@@ -1,13 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
+import { Skeleton } from '@components/ui/skeleton';
+import { RequestDashboard } from '@devlink2/RequestDashboard';
+import { RequestList } from '@devlink2/RequestList';
+import { ReqUrgent } from '@devlink2/ReqUrgent';
 
-import { Skeleton } from '@/components/ui/skeleton';
-import { RequestDashboard } from '@/devlink2/RequestDashboard';
-import { RequestList } from '@/devlink2/RequestList';
-import { ReqUrgent } from '@/devlink2/ReqUrgent';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import CompletedRequestsBox from './Components/CompletedRequestsBox';
 import CompletionProgress from './Components/CompletionProgress';

@@ -2,8 +2,8 @@ import { schema_verify_interviewer_selected_slots } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { fetchCandidateAvailability } from '@/src/services/CandidateScheduleV2/utils/fetchCandidateAvailability';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { fetchCandidateAvailability } from '@/services/CandidateScheduleV2/utils/fetchCandidateAvailability';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsedData = v.parse(schema_verify_interviewer_selected_slots, {
@@ -29,12 +29,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_selected_slots,
     );
 
-    return res
-      .status(200)
-      .send({
-        slots: all_combs,
-        availabilities: cand_schedule.calendar_events,
-      });
+    return res.status(200).send({
+      slots: all_combs,
+      availabilities: cand_schedule.calendar_events,
+    });
   } catch (error) {
     console.error(error);
     return res

@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   training_ints: {

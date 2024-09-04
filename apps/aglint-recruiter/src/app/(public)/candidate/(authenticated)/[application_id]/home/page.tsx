@@ -4,17 +4,17 @@
 import { getFullName } from '@aglint/shared-utils';
 
 // import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
-import CompanyImage from '@/src/components/CandiatePortal/components/CompanyImage';
-import CompanyTabs from '@/src/components/CandiatePortal/components/CompanyTabs';
-import GreetingCandidate from '@/src/components/CandiatePortal/components/GreetingCandidate';
-import InterviewProgress from '@/src/components/CandiatePortal/components/InterviewProgress';
-// import InterviewProgressCard from '@/src/components/CandiatePortal/components/InterviewProgressCard';
-// import MessageCard from '@/src/components/CandiatePortal/components/MessageCard';
-import RequestedAvailability from '@/src/components/CandiatePortal/components/RequestedAvailability';
-import SelfScheduling from '@/src/components/CandiatePortal/components/SelfScheduling';
-import UpcomingInterview from '@/src/components/CandiatePortal/components/UpcomingInterview';
-import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
-import Loader from '@/src/components/Common/Loader';
+import CompanyImage from '@/components/CandiatePortal/components/CompanyImage';
+import CompanyTabs from '@/components/CandiatePortal/components/CompanyTabs';
+import GreetingCandidate from '@/components/CandiatePortal/components/GreetingCandidate';
+import InterviewProgress from '@/components/CandiatePortal/components/InterviewProgress';
+// import InterviewProgressCard from '@/components/CandiatePortal/components/InterviewProgressCard';
+// import MessageCard from '@/components/CandiatePortal/components/MessageCard';
+import RequestedAvailability from '@/components/CandiatePortal/components/RequestedAvailability';
+import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
+import UpcomingInterview from '@/components/CandiatePortal/components/UpcomingInterview';
+import { usePortalHomePage } from '@/components/CandiatePortal/hook';
+import Loader from '@/components/Common/Loader';
 
 export default function Component({ params }) {
   const application_id = params.application_id;

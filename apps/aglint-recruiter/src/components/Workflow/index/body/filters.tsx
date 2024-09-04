@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
+import { GlobalIcon } from '@devlink2/GlobalIcon';
+import { GlobalBadge } from '@devlink3/GlobalBadge';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { memo, useMemo } from 'react';
 
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { GlobalBadge } from '@/devlink3/GlobalBadge';
-import { useWorkflows } from '@/src/context/Workflows';
-import { type Workflow } from '@/src/types/workflow.types';
-import { SafeObject } from '@/src/utils/safeObject';
+import { useWorkflows } from '@/context/Workflows';
+import { type Workflow } from '@/types/workflow.types';
+import { SafeObject } from '@/utils/safeObject';
 
 import {
   type WorkflowStore,

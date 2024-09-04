@@ -1,14 +1,17 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { Skeleton } from '@devlink2/Skeleton';
+import { InterviewersCardList } from '@devlink3/InterviewersCardList';
+import { InterviewersDash } from '@devlink3/InterviewersDash';
+import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { memo, useState } from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { InterviewersCardList } from '@/devlink3/InterviewersCardList';
-import { InterviewersDash } from '@/devlink3/InterviewersDash';
-import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { type useMatricsInterviewersType,useMatricsInterviewers } from '../Hook';
+import {
+  type useMatricsInterviewersType,
+  useMatricsInterviewers,
+} from '../Hook';
 
 const LIMIT = 4;
 

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { type ReactNode, createContext, useContext } from 'react';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 interface InterviewerContextInterface {
   // eslint-disable-next-line no-unused-vars
@@ -21,11 +21,11 @@ const initialInterviewerContext: InterviewerContextInterface = {
   // eslint-disable-next-line no-unused-vars
   handelRemoveMemberFormPanel: (x) => Promise.resolve(),
   // eslint-disable-next-line no-unused-vars
-  handelUpdateSchedule: (x) => Promise.resolve()
+  handelUpdateSchedule: (x) => Promise.resolve(),
 };
 
 const InterviewerContext = createContext<InterviewerContextInterface>(
-  initialInterviewerContext
+  initialInterviewerContext,
 );
 
 const useInterviewerContext = () => useContext(InterviewerContext);
@@ -40,7 +40,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
       return removeMemberFormPanel({
         panel_id,
         user_id,
-        training_status
+        training_status,
       }).then(() => {});
     };
 
@@ -52,7 +52,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
         panel_id,
         user_id: user_id,
         pause_json,
-        training_status
+        training_status,
       }).then(() => {});
     };
 
@@ -60,7 +60,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
     <InterviewerContext.Provider
       value={{
         handelRemoveMemberFormPanel,
-        handelUpdateSchedule
+        handelUpdateSchedule,
       }}
     >
       {children}
@@ -73,7 +73,7 @@ export { InterviewerContextProvider, useInterviewerContext };
 const removeMemberFormPanel = async ({
   panel_id,
   user_id,
-  training_status
+  training_status,
 }: {
   panel_id?: string;
   user_id: string;
@@ -83,7 +83,9 @@ const removeMemberFormPanel = async ({
     .from('interview_module_relation')
     .delete()
     .match(
-      panel_id ? { module_id: panel_id, user_id } : { user_id, training_status }
+      panel_id
+        ? { module_id: panel_id, user_id }
+        : { user_id, training_status },
     )
     .then(({ error }) => {
       if (error) {
@@ -97,7 +99,7 @@ const updateSchedule = async ({
   panel_id,
   user_id,
   pause_json,
-  training_status
+  training_status,
 }: {
   panel_id?: string;
   user_id: string;
@@ -108,7 +110,9 @@ const updateSchedule = async ({
     .from('interview_module_relation')
     .update({ pause_json })
     .match(
-      panel_id ? { module_id: panel_id, user_id } : { user_id, training_status }
+      panel_id
+        ? { module_id: panel_id, user_id }
+        : { user_id, training_status },
     )
     .then(({ error }) => {
       if (error) {

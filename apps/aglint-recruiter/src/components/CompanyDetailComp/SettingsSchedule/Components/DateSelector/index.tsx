@@ -1,17 +1,16 @@
-import { format } from 'date-fns';
-import dayjs from 'dayjs';
-import { Calendar as CalendarIcon } from 'lucide-react';
-import { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { cn } from '@/lib/utils';
+} from '@components/ui/popover';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { cn } from '@lib/utils';
+import { format } from 'date-fns';
+import dayjs from 'dayjs';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { useState } from 'react';
 
 function DateSelect({
   getDate,

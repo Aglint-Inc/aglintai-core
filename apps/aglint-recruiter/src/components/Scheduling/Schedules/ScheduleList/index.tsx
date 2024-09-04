@@ -1,8 +1,8 @@
+import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
 import { Stack } from '@mui/material';
 import { Box } from '@mui/material';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import Loader from '@/src/components/Common/Loader';
+import Loader from '@/components/Common/Loader';
 
 import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
@@ -28,7 +28,7 @@ function ScheduleList() {
             backgroundColor: 'var(--neutral-2)', // replace with your desired background color
           }}
         >
-          <Box maxWidth="sm" width="300px" p={2}>
+          <Box maxWidth='sm' width='300px' p={2}>
             <AllInterviewEmpty textDynamic='No schedule found' />
           </Box>
         </Box>

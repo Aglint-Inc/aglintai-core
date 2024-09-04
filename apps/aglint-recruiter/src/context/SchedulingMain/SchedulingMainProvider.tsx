@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
-// import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+// import { resetInterviewState } from '@/components/Scheduling/Agent/store';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiFetchUserDetails,
   type BodyParamsFetchUserDetails,
-} from '@/src/pages/api/scheduling/fetchUserDetails';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@/pages/api/scheduling/fetchUserDetails';
+import { supabase } from '@/utils/supabase/client';
 
 export type InterviewScheduleContextType = {
   loading: boolean;

@@ -1,10 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  type Form,
-  type JobDetailsForm,
-  type JobMetaFormProps,
-  useJobForms,
-} from '@components/Jobs/Create/form';
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
+import { SavedChanges } from '@devlink/SavedChanges';
+import { PageLayout } from '@devlink2/PageLayout';
+import { JobDetailBlock } from '@devlink3/JobDetailBlock';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import {
@@ -16,24 +21,19 @@ import {
 } from 'react';
 
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { SavedChanges } from '@/devlink/SavedChanges';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
-import { useJob } from '@/src/context/JobContext';
+  type Form,
+  type JobDetailsForm,
+  type JobMetaFormProps,
+  useJobForms,
+} from '@/components/Jobs/Create/form';
+import { useJob } from '@/context/JobContext';
 import {
   validateDescription,
   validateString,
-} from '@/src/context/JobContext/utils';
-import { type Job } from '@/src/queries/jobs/types';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+} from '@/context/JobContext/utils';
+import { type Job } from '@/queries/jobs/types';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
 import JobNotFound from '../Common/JobNotFound';

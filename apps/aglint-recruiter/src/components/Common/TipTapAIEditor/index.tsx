@@ -1,9 +1,8 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
+import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
 import { Stack } from '@mui/system';
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useState } from 'react';
-
-import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
 import { type TipTapAIEditorCtxType, TipTapCtx } from './context';
 import {

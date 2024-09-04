@@ -1,6 +1,5 @@
+import { _Builtin } from '@devlink/_Builtin';
 import React from 'react';
-
-import { _Builtin } from '@/devlink/_Builtin';
 
 import _styles from './IconReLoad.module.css';
 import * as _utils from './utils';

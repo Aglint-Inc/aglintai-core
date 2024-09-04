@@ -1,6 +1,5 @@
+import { Skeleton } from '@components/ui/skeleton';
 import React from 'react';
-
-import { Skeleton } from '@/components/ui/skeleton';
 
 const MessageSkeleton: React.FC<{ isUser?: boolean }> = ({
   isUser = false,

@@ -1,23 +1,18 @@
 'use client';
 
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { Skeleton } from '@components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Skeleton } from '@/components/ui/skeleton';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 interface ForgotPasswordFormInputs {
   email: string;

@@ -1,19 +1,18 @@
+import { Checkbox } from '@devlink/Checkbox';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { LinearProgress, Popover, Stack, Typography } from '@mui/material';
 import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import SearchField from '@/components/Common/SearchField/SearchField';
 import { useToast } from '@/components/hooks/use-toast';
-import { Checkbox } from '@/devlink/Checkbox';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
 
-import { FilterType } from '../../../Candidates/filter-store';
 import { setCreatedBy, useFilterModuleStore } from '../../filter-store';
 
 type UserType = {
@@ -102,7 +101,7 @@ function FilterCreatedBy() {
         isActive={createdBy.length > 0}
         isDotVisible={createdBy.length > 0}
         onClickStatus={{
-          id: FilterType.coordinator + 'click',
+          id: 'cordinator' + 'click',
           onClick: handleClick,
         }}
         textLabel={'Created by'}

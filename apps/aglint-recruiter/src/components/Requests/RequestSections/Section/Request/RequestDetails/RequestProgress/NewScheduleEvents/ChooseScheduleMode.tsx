@@ -1,18 +1,18 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { NoWorkflow } from '@devlink2/NoWorkflow';
 import { Stack } from '@mui/material';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { NoWorkflow } from '@/devlink2/NoWorkflow';
-import { setCandidateAvailabilityDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import { useMeetingList } from '@/src/components/Requests/ViewRequestDetails/hooks';
-import { useSelfSchedulingDrawer } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/hooks';
+import { setCandidateAvailabilityDrawerOpen } from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
+import { useMeetingList } from '@/components/Requests/ViewRequestDetails/hooks';
+import { useSelfSchedulingDrawer } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/hooks';
 import {
   initialFilters,
   setIsSelfScheduleDrawerOpen,
   useSelfSchedulingFlowStore,
-} from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
+} from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 
 import { useNewScheduleRequestPr } from '.';
 

@@ -1,19 +1,19 @@
 /* eslint-disable security/detect-object-injection */
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Input } from '@components/ui/input';
+// import relativeTime from 'dayjs/plugin/relativeTime';
+import { AtsSettings } from '@devlink/AtsSettings';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { type GreenHouseFullSyncAPI } from '@/app/api/sync/greenhouse/full_sync/type';
+import axios from '@/client/axios';
+import AutoCompletePro from '@/components/Common/AutoCompletePro';
 import GreenhouseIcon from '@/components/icons/GreenhouseIcon.svg';
 import GreenInCircle from '@/components/icons/GreenInCircle.svg';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-// import relativeTime from 'dayjs/plugin/relativeTime';
-import { AtsSettings } from '@/devlink/AtsSettings';
-import { type GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
-import axios from '@/src/client/axios';
-import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { useGreenhouseDetails } from '@/src/queries/greenhouse';
+import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
+import { useGreenhouseDetails } from '@/queries/greenhouse';
 
 function GreenhouseSettings() {
   const { data, isPending, setOptions, refetch } = useGreenhouseDetails();

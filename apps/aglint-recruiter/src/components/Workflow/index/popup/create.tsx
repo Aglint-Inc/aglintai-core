@@ -1,11 +1,11 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { useWorkflows } from '@/src/context/Workflows';
-import { useWorkflowStore } from '@/src/context/Workflows/store';
+import { useWorkflows } from '@/context/Workflows';
+import { useWorkflowStore } from '@/context/Workflows/store';
 
 import { type Form, Forms, validate } from '../../common';
 

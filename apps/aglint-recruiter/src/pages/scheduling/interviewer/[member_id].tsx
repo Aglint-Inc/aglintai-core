@@ -1,6 +1,6 @@
-import Seo from '@/src/components/Common/Seo';
-import Interviewer from '@/src/components/Scheduling/Interviewers/InterviewerDetail';
-import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
+import Seo from '@/components/Common/Seo';
+import Interviewer from '@/components/Scheduling/Interviewers/InterviewerDetail';
+import { InterviewerContextProvider } from '@/context/InterviewerContext/InterviewerContext';
 
 function InterviewerPage() {
   return (

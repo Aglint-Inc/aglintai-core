@@ -1,18 +1,18 @@
+import OptimisticWrapper from '@components/loadingWapper';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { CandidateSideDrawer } from '@devlink/CandidateSideDrawer';
+import { GeneralError } from '@devlink/GeneralError';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { ResumeErrorBlock } from '@devlink2/ResumeErrorBlock';
+import { ButtonSolid } from '@devlink3/ButtonSolid';
+import { GlobalCta } from '@devlink3/GlobalCta';
 import { Stack } from '@mui/material';
+import ResumeWait from '@public/lottie/ResumeWait';
 import { type ReactNode, useCallback, useState } from 'react';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
-import { GeneralError } from '@/devlink/GeneralError';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
-import { ButtonSolid } from '@/devlink3/ButtonSolid';
-import { GlobalCta } from '@/devlink3/GlobalCta';
-import ResumeWait from '@/public/lottie/ResumeWait';
-import Loader from '@/src/components/Common/Loader';
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useApplicationStore } from '@/src/context/ApplicationContext/store';
+import Loader from '@/components/Common/Loader';
+import { useApplication } from '@/context/ApplicationContext';
+import { useApplicationStore } from '@/context/ApplicationContext/store';
 
 import { ResumeUploadComp } from '../UploadApplications/importManual';
 import { Activity } from './Activity';

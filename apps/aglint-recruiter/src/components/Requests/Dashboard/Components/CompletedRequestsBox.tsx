@@ -1,7 +1,8 @@
-import { ReqCompleted } from '@/devlink2/ReqCompleted';
-import { Text } from '@/devlink2/Text';
-import { useRequests } from '@/src/context/RequestsContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { ReqCompleted } from '@devlink2/ReqCompleted';
+import { Text } from '@devlink2/Text';
+
+import { useRequests } from '@/context/RequestsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 function CompletedRequestsBox({
   completedRequest,

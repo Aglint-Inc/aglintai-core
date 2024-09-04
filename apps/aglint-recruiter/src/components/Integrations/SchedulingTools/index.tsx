@@ -1,3 +1,8 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { IntegrationCard } from '@devlink2/IntegrationCard';
+import { IntegrationUpload } from '@devlink2/IntegrationUpload';
+import { ToggleButton } from '@devlink2/ToggleButton';
 import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -5,12 +10,7 @@ import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IntegrationCard } from '@/devlink2/IntegrationCard';
-import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
-import { ToggleButton } from '@/devlink2/ToggleButton';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';

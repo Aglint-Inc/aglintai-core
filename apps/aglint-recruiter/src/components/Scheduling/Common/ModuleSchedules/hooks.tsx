@@ -1,8 +1,11 @@
-import { type DatabaseEnums, type schedulingSettingType } from '@aglint/shared-types';
+import {
+  type DatabaseEnums,
+  type schedulingSettingType,
+} from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 const today = dayjs().startOf('day');
 const firstDayOfWeek = dayjs().startOf('week').startOf('day').format();

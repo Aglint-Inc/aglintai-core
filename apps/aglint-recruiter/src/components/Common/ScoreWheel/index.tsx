@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
+import { Card } from '@components/ui/card';
+import { Progress } from '@components/ui/progress';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
+import { getOverallResumeScore } from '@/utils/support/supportUtils';
 
 export const scoreWheelDependencies = {
   initialScoreWheelScores: {

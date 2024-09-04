@@ -6,7 +6,7 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { splitFullName } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
+import { splitFullName } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 
 import { decrypt } from '../decryptApiKey';
 

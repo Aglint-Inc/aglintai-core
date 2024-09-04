@@ -9,10 +9,10 @@ import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookCandidateSelectedOption } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
-import { fetchDBScheduleDetails } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
+import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

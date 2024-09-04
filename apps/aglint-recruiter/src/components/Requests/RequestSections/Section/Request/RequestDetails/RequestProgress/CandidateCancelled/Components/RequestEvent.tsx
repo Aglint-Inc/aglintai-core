@@ -1,7 +1,6 @@
+import { ButtonSolid } from '@devlink2/ButtonSolid';
+import { ScheduleProgress } from '@devlink2/ScheduleProgress';
 import { CircularProgress } from '@mui/material';
-
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
 
 import { SlackIcon } from '../../../Components/SlackIcon';
 import { workflowCopy } from '../../utils/copy';

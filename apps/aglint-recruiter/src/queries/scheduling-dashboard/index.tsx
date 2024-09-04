@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type getInterviewTrainingProgressType } from '@/src/pages/api/scheduling/get_interview_training_progress';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type getInterviewTrainingProgressType } from '@/pages/api/scheduling/get_interview_training_progress';
+import { supabase } from '@/utils/supabase/client';
 
 import { getNthDateFromToday, groupDateBy } from '../utils';
 import { schedulingDashboardQueryKeys } from './keys';
@@ -155,9 +155,9 @@ export const useCancelRescheduleReasonsUsers = () => {
 
       if (
         curr.session_relation_id == null &&
-        temp_item?.interview_schedule.application_id
+        temp_item?.interview_meeting.application_id
       ) {
-        acc['candidate'].add(temp_item.interview_schedule.application_id);
+        acc['candidate'].add(temp_item.interview_meeting.application_id);
       } else if (curr.session_relation_id) {
         acc['interviewer'].add(curr.session_relation_id);
       }
@@ -265,45 +265,45 @@ export const getInterviewTrainingProgressAPI = async ({
 };
 
 const getAnalyticsData = async (rec_id: string) => {
-  return (
-    supabase
-      .from('interview_schedule')
-      .select('*,interview_meeting(*,interview_session(*))')
-      // .eq('interview_schedule.recruiter_id', rec_id)
-      .match({ recruiter_id: rec_id })
-      .throwOnError()
-      .then(({ data }) =>
-        data.reduce(
-          (acc, curr) => {
-            curr.interview_meeting.map((item) => {
-              const temp: (typeof acc)[0] = {
-                interview_meeting: null,
-                interview_schedule: null,
-                interview_session: null,
-              };
-              temp['interview_session'] = item.interview_session[0];
-              delete item.interview_session;
-              temp['interview_meeting'] = item;
-              const interview_schedule = {
-                ...curr,
-                interview_meeting: undefined,
-              };
-              const temp_schedule = { ...interview_schedule };
-              delete temp_schedule.interview_meeting;
-              temp['interview_schedule'] = temp_schedule;
-
-              acc.push(temp);
+  return supabase
+    .from('interview_plan')
+    .select('*,interview_session(*,interview_meeting(*))')
+    .eq('recruiter_id', rec_id)
+    .throwOnError()
+    .then(({ data }) =>
+      data.reduce(
+        (acc, curr) => {
+          curr.interview_session.map((item) => {
+            acc.push({
+              interview_meeting: item.interview_meeting,
+              interview_session: {
+                break_duration: item.break_duration,
+                id: item.id,
+                session_order: item.session_order,
+                created_at: item.created_at,
+                interview_plan_id: item.interview_plan_id,
+                interviewer_cnt: item.interviewer_cnt,
+                location: item.location,
+                meeting_id: item.meeting_id,
+                members_meta: item.members_meta,
+                module_id: item.module_id,
+                name: item.name,
+                session_duration: item.session_duration,
+                parent_session_id: item.parent_session_id,
+                recruiter_id: item.recruiter_id,
+                schedule_type: item.schedule_type,
+                session_type: item.session_type,
+              },
             });
-            return acc;
-          },
-          [] as {
-            interview_meeting: DatabaseTable['interview_meeting'];
-            interview_schedule: DatabaseTable['interview_schedule'];
-            interview_session: DatabaseTable['interview_session'];
-          }[],
-        ),
-      )
-  );
+          });
+          return acc;
+        },
+        [] as {
+          interview_meeting: DatabaseTable['interview_meeting'];
+          interview_session: DatabaseTable['interview_session'];
+        }[],
+      ),
+    );
 };
 
 const getCancelRescheduleReasons = async (rec_id: string) => {

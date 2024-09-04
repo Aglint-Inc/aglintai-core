@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
-import ProfileDashboard from '@/src/components/Profile';
-import SeoSettings from '@/src/components/Profile/SeoSettings';
+import ProfileDashboard from '@/components/Profile';
+import SeoSettings from '@/components/Profile/SeoSettings';
 
 const ProfilePage = () => {
   const {

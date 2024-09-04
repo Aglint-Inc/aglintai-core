@@ -1,24 +1,18 @@
-/* eslint-disable security/detect-object-injection */
-import {
-  type DB,
-  type InterviewMeetingTypeDb
-} from '@aglint/shared-types';
-import { type createServerClient } from '@supabase/ssr';
+import { type DB, type InterviewMeetingTypeDb } from '@aglint/shared-types';
 
+// export interface TimeSlot {
+//   startTime: string;
+//   endTime: string;
+//   user_ids: string[];
+//   isSelected?: boolean;
+// }
 
-export interface TimeSlot {
-  startTime: string;
-  endTime: string;
-  user_ids: string[];
-  isSelected?: boolean;
-}
-
-export type MailHandlerparam = {
-  application_id: string;
-  filter_id: string;
-  supabase: ReturnType<typeof createServerClient<DB>>;
-  task_id: string;
-};
+// export type MailHandlerparam = {
+//   application_id: string;
+//   filter_id: string;
+//   supabase: ReturnType<typeof createServerClient<DB>>;
+//   task_id: string;
+// };
 
 const TYPE_LABELS = {
   google_meet: 'Google Meet',

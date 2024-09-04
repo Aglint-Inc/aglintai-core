@@ -5,8 +5,8 @@ import {
   type UpdateDebriefSession,
   editInterviewSession,
   updateDebriefSession,
-} from '@/src/queries/interview-plans';
-import toast from '@/src/utils/toast';
+} from '@/queries/interview-plans';
+import toast from '@/utils/toast';
 
 import {
   initialError,

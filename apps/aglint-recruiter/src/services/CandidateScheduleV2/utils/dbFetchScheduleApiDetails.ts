@@ -11,9 +11,12 @@ import {
 } from '@aglint/shared-types';
 import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
-import { type ScheduleApiDetails, type ScheduleDBDetailsParams } from '../types';
+import {
+  type ScheduleApiDetails,
+  type ScheduleDBDetailsParams,
+} from '../types';
 import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {

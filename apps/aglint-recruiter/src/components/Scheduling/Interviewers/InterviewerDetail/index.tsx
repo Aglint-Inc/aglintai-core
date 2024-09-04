@@ -1,6 +1,5 @@
+import { PageLayout } from '@devlink2/PageLayout';
 import { useRouter } from 'next/router';
-
-import { PageLayout } from '@/devlink2/PageLayout';
 
 import BodyComp from './BodyComp';
 import Breadcrumb from './Breadcrumb';

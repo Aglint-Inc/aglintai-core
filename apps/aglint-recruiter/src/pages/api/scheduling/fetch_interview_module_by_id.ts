@@ -1,9 +1,9 @@
 import { type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { type ModuleType } from '@/components/Scheduling/InterviewTypes/types';
+import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiResponseInterviewModuleById = {
   request: {

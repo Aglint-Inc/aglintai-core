@@ -5,9 +5,9 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 
-import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 export function filterSchedulingOptionsArray({
   schedulingOptions,

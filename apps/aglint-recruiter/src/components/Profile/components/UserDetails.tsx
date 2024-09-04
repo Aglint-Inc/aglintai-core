@@ -1,17 +1,17 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { ProfileList } from '@devlink/ProfileList';
+import { UserDetails } from '@devlink/UserDetails';
 import { Avatar, Dialog, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { ProfileList } from '@/devlink/ProfileList';
-import { UserDetails } from '@/devlink/UserDetails';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import ImageUploadManual from '../../Common/ImageUpload/ImageUploadManual';
 import { ProfileForms } from '..';

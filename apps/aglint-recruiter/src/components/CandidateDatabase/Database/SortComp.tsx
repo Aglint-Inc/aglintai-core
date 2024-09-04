@@ -1,10 +1,9 @@
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Sort } from '@devlink/Sort';
+import { SortButton } from '@devlink/SortButton';
 import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { Sort } from '@/devlink/Sort';
-import { SortButton } from '@/devlink/SortButton';
 
 import UISelect from '../../Common/Uiselect';
 const sortdisplay = [

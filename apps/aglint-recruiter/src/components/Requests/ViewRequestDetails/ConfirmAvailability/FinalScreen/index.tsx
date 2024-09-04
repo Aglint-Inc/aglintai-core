@@ -2,15 +2,15 @@ import type {
   EmailTemplateAPi,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
-import Loader from '@/src/components/Common/Loader';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import Loader from '@/components/Common/Loader';
+import { ShowCode } from '@/components/Common/ShowCode';
 
 import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';

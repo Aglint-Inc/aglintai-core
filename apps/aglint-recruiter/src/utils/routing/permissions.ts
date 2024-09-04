@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-import { PATHS } from '@/src/constant/allPaths';
+import { PATHS } from '@/constant/allPaths';
 
 // import ROUTES from './routes';
 

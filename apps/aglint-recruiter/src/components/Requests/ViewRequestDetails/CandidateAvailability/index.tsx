@@ -7,29 +7,29 @@ import {
   createRequestProgressLogger,
   ScheduleUtils,
 } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { ButtonSolid } from '@devlink2/ButtonSolid';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
+import { RequestCandidate } from '@devlink2/RequestCandidate';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { RequestCandidate } from '@/devlink2/RequestCandidate';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import axios from '@/src/client/axios';
+import axios from '@/client/axios';
 import {
   requestDaysListOptions,
   slotsListOptions,
-} from '@/src/components/Scheduling/RequestAvailability/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type Request as RequestType } from '@/src/queries/requests/types';
-import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
-import dayjs from '@/src/utils/dayjs';
-import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+} from '@/components/Scheduling/RequestAvailability/utils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type Request as RequestType } from '@/queries/requests/types';
+import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
+import dayjs from '@/utils/dayjs';
+import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { useMeetingList } from '../hooks';
 import EmailTemplate from './Components/EmailTemplate';
@@ -133,7 +133,6 @@ function CandidateAvailability({
       selectedSessions: sessions.map((ses) => ({
         interview_session_id: ses.interview_session.id,
         interview_meeting_id: ses.interview_meeting.id,
-        interview_schedule_id: ses.interview_meeting.interview_schedule_id,
         job_id: ses.interview_meeting.job_id,
         recruiter_id: ses.interview_meeting.recruiter_id,
       })),

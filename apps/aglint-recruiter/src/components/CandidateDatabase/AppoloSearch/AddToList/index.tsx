@@ -1,19 +1,19 @@
 import { type CandidateListTypeDB } from '@aglint/shared-types';
+import { ToastAction } from '@components/ui/toast';
+import { AddToList } from '@devlink/AddToList';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { CdSavedList } from '@devlink/CdSavedList';
+import { SavedList } from '@devlink/SavedList';
+import { SavedListMenu } from '@devlink/SavedListMenu';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
-import { ToastAction } from '@/components/ui/toast';
-import { AddToList } from '@/devlink/AddToList';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CdSavedList } from '@/devlink/CdSavedList';
-import { SavedList } from '@/devlink/SavedList';
-import { SavedListMenu } from '@/devlink/SavedListMenu';
-import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   setIsSelectAll,

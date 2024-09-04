@@ -1,10 +1,10 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { type StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/queries/application';
 
 import {
   setDebriefMembers,

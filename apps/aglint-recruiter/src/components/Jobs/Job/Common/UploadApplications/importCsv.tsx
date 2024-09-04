@@ -1,10 +1,10 @@
+import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
 import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useJob } from '@/src/context/JobContext';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useJob } from '@/context/JobContext';
 
 type Candidate = {
   first_name: string;

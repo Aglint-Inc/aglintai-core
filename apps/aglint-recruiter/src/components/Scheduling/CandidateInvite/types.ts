@@ -1,4 +1,4 @@
-import { type useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 
 export type ScheduleCardProps = {
   round: ScheduleCardsProps['rounds'][number];

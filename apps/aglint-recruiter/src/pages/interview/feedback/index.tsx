@@ -1,14 +1,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { FeedbackCandidate } from '@devlink3/FeedbackCandidate';
 import { Avatar, TextField } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import Seo from '@/components/Common/Seo';
 import { useToast } from '@/components/hooks/use-toast';
-import { FeedbackCandidate } from '@/devlink3/FeedbackCandidate';
-import Seo from '@/src/components/Common/Seo';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 
 import { type API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
 import { type API_save_interview_feedback } from '../../api/save_interview_feedback/types';

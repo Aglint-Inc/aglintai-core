@@ -1,5 +1,17 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Text } from '@devlink/Text';
+import { RcCheckbox } from '@devlink2/RcCheckbox';
+import { ScheduleSettings } from '@devlink2/ScheduleSettings';
+import { TimeRangeInput } from '@devlink2/TimeRangeInput';
+import { WorkingHourDay } from '@devlink2/WorkingHourDay';
+import { InterviewLoadCard } from '@devlink3/InterviewLoadCard';
+import { InterviewLoadDetails } from '@devlink3/InterviewLoadDetails';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
+import { WorkingDaysList } from '@devlink3/WorkingDaysList';
+import { WorkingHourDetails } from '@devlink3/WorkingHourDetails';
 import {
   Autocomplete,
   Drawer,
@@ -12,25 +24,13 @@ import {
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { Text } from '@/devlink/Text';
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
-import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
-import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
-import { InterviewLoadCard } from '@/devlink3/InterviewLoadCard';
-import { InterviewLoadDetails } from '@/devlink3/InterviewLoadDetails';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { WorkingDaysList } from '@/devlink3/WorkingDaysList';
-import { WorkingHourDetails } from '@/devlink3/WorkingHourDetails';
-import UITextField from '@/src/components/Common/UITextField';
-import { LoadMax } from '@/src/components/CompanyDetailComp/SettingsSchedule';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
-import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { updateMember } from '@/src/context/AuthContext/utils';
-import timeZones from '@/src/utils/timeZone';
+import UITextField from '@/components/Common/UITextField';
+import { LoadMax } from '@/components/CompanyDetailComp/SettingsSchedule';
+import MuiNumberfield from '@/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
+import SelectTime from '@/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { updateMember } from '@/context/AuthContext/utils';
+import timeZones from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';

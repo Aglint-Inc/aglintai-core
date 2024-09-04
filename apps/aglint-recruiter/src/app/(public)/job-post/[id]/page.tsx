@@ -1,14 +1,14 @@
 'use client';
+import { InvalidJob } from '@devlink/InvalidJob';
+import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
+import InvalidJobPostLottie from '@public/lottie/InvalidJobPostLottie';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { InvalidJob } from '@/devlink/InvalidJob';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import InvalidJobPostLottie from '@/public/lottie/InvalidJobPostLottie';
-import { SeoPro } from '@/src/components/Common/SeoPro';
-import JobPostPublic from '@/src/components/JobPost';
-import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
+import { SeoPro } from '@/components/Common/SeoPro';
+import JobPostPublic from '@/components/JobPost';
+import { type PublicJobAPI } from '@/pages/api/jobpost/read';
 
 function JobPost({
   params: { id },

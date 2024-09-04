@@ -1,4 +1,4 @@
-import type { ApplicationDetails } from '@/src/context/ApplicationContext/type';
+import type { ApplicationDetails } from '@/context/ApplicationContext/type';
 
 export const getSafeReasoningType = (
   type: keyof ApplicationDetails<'details'>['score_json']['scores'],

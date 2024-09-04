@@ -1,6 +1,6 @@
 'use client';
 
-import TrainingDashboard from '@/src/components/Reports/TrainingDashboard';
+import TrainingDashboard from '@/components/Reports/TrainingDashboard';
 
 export default function ReportsPage() {
   return (

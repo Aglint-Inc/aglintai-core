@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
+import { RequestProgress } from '@devlink2/RequestProgress';
 import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
-import { RequestProgress } from '@/devlink2/RequestProgress';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
-import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequest } from '@/src/context/RequestContext';
+import MuiPopup from '@/components/Common/MuiPopup';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { fetchEmailTemplates } from '@/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
+import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequest } from '@/context/RequestContext';
 
 import {
   type RequestProgressMapType,
@@ -185,18 +185,15 @@ const getInitialActionDetails = ({
     return reqTriggerActionsMap[editTrigger][0];
   } else {
     let template: DatabaseTable['company_email_template'];
-    if (
-      ACTION_TRIGGER_MAP[editTrigger][0].value.target_api ===
-      'onRequestSchedule_emailAgent_getCandidateAvailability'
-    ) {
+    if (editTrigger === 'onRequestSchedule') {
       template =
-        companyEmailTemplatesMp['sendAvailabilityRequest_email_applicant'];
-    } else if (
-      ACTION_TRIGGER_MAP[editTrigger][0].value.target_api ===
-      ('onRequestSchedule_emailAgent_selfScheduleInterview' as any)
-    ) {
+        companyEmailTemplatesMp['sendSelfScheduleRequest_email_applicant'];
+    } else if (editTrigger === 'sendAvailReqReminder') {
       template =
-        companyEmailTemplatesMp['selfScheduleInterview_email_applicant'];
+        companyEmailTemplatesMp['sendAvailReqReminder_email_applicant'];
+    } else if (editTrigger === 'selfScheduleReminder') {
+      template =
+        companyEmailTemplatesMp['selfScheduleReminder_email_applicant'];
     }
 
     let wAction: DatabaseTable['workflow_action'] = {

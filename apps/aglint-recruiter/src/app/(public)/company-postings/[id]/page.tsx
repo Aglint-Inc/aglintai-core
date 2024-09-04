@@ -3,11 +3,11 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import Loader from '@/src/components/Common/Loader';
-import { SeoPro } from '@/src/components/Common/SeoPro';
-import CompanyJobPost from '@/src/components/CompanyJobPost';
-import JobNotFound from '@/src/components/Jobs/Job/Common/JobNotFound';
-import { type CompanyPostAPI } from '@/src/pages/api/jobpost/company';
+import Loader from '@/components/Common/Loader';
+import { SeoPro } from '@/components/Common/SeoPro';
+import CompanyJobPost from '@/components/CompanyJobPost';
+import JobNotFound from '@/components/Jobs/Job/Common/JobNotFound';
+import { type CompanyPostAPI } from '@/pages/api/jobpost/company';
 
 function JobPost({ params: { id } }: { params: { id: string } }) {
   let jobId = id;

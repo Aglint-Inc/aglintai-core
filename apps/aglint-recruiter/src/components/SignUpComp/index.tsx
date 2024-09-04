@@ -2,8 +2,8 @@
 
 import { Box, Container } from '@mui/material';
 
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import ROUTES from '@/src/utils/routing/routes';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
 
 import Footer from '../Common/Footer';
 import SlideTwoSignUp from './SlideSignup';

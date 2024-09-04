@@ -5,7 +5,7 @@ import { type CustomMembersMeta } from '@aglint/shared-types/src/db/common.types
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { type ApiBodyParamTaskCreate } from '../debrief/task_create';
 
@@ -72,38 +72,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       members_meta.hiring_manager &&
       filterJson.applications.public_jobs.hiring_manager
     ) {
-      allUserIds.push(
-        filterJson.applications.public_jobs.hiring_manager,
-      );
+      allUserIds.push(filterJson.applications.public_jobs.hiring_manager);
     }
 
     if (
       members_meta.recruiter &&
       filterJson.applications.public_jobs.recruiter
     ) {
-      allUserIds.push(
-        filterJson.applications.public_jobs.recruiter,
-      );
+      allUserIds.push(filterJson.applications.public_jobs.recruiter);
     }
 
     if (
       members_meta.recruiting_coordinator &&
-      filterJson.applications.public_jobs
-        .recruiting_coordinator
+      filterJson.applications.public_jobs.recruiting_coordinator
     ) {
       allUserIds.push(
-        filterJson.applications.public_jobs
-          .recruiting_coordinator,
+        filterJson.applications.public_jobs.recruiting_coordinator,
       );
     }
 
-    if (
-      members_meta.sourcer &&
-      filterJson.applications.public_jobs.sourcer
-    ) {
-      allUserIds.push(
-        filterJson.applications.public_jobs.sourcer,
-      );
+    if (members_meta.sourcer && filterJson.applications.public_jobs.sourcer) {
+      allUserIds.push(filterJson.applications.public_jobs.sourcer);
     }
 
     let eligibleUserIds = [...new Set(allUserIds)];
@@ -167,7 +156,7 @@ const fetchMeetingsSessions = async (application_id: string) => {
   const { data: intMeetSessions, error: errSessions } = await supabaseAdmin
     .from('interview_meeting')
     .select(
-      'id,interview_schedule_id,status,interview_session(*,interview_session_relation(*,interview_module_relation(*)))',
+      'id,status,interview_session(*,interview_session_relation(*,interview_module_relation(*)))',
     )
     .eq('application_id', application_id);
 

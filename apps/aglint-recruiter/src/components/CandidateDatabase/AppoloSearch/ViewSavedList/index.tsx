@@ -1,12 +1,16 @@
+import { CdSavedList } from '@devlink/CdSavedList';
+import { SavedList } from '@devlink/SavedList';
+import { SavedListMenu } from '@devlink/SavedListMenu';
 import { Popover } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { CdSavedList } from '@/devlink/CdSavedList';
-import { SavedList } from '@/devlink/SavedList';
-import { SavedListMenu } from '@/devlink/SavedListMenu';
-
-import { setIsSelectAll, setSelectedCandidate, setSelectedCandidates, useCandidateStore } from '../store';
+import {
+  setIsSelectAll,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 
 function ViewSavedList() {
   const router = useRouter();

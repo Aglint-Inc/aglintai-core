@@ -1,27 +1,27 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Text } from '@devlink/Text';
+import { AvailabilityReq } from '@devlink2/AvailabilityReq';
+import { MultiDaySelect } from '@devlink2/MultiDaySelect';
+import { GlobalCta } from '@devlink3/GlobalCta';
 import { Stack } from '@mui/material';
+import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Text } from '@/devlink/Text';
-import { AvailabilityReq } from '@/devlink2/AvailabilityReq';
-import { MultiDaySelect } from '@/devlink2/MultiDaySelect';
-import { GlobalCta } from '@/devlink3/GlobalCta';
-import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
-import Footer from '@/src/components/Common/Footer';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { ConfirmedInvitePage } from '@/src/components/Scheduling/CandidateInvite/CandidateConfirm';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
-import timeZones from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+import Footer from '@/components/Common/Footer';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { ConfirmedInvitePage } from '@/components/Scheduling/CandidateInvite/CandidateConfirm';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { getFullName } from '@/utils/jsonResume';
+import timeZones from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 import {
   insertTaskProgress,
