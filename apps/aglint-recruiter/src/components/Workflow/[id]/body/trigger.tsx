@@ -75,7 +75,10 @@ const DurationForm = () => {
       label='Interval between the trigger and action'
       disabled={!manageWorkflow}
       value={interval}
-      menuOptions={DURATION_OPTIONS}
+      menuOptions={DURATION_OPTIONS.map(({ name, value }) => ({
+        name,
+        value: value + '', // value should be in string type
+      }))}
       onChange={(value) => handleUpdateWorkflow({ interval: Number(value) })}
     />
   );
