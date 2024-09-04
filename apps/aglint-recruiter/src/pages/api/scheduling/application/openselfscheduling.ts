@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
+import { addScheduleActivity } from '@/src/utils/scheduling/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyOpenSelfScheduling {

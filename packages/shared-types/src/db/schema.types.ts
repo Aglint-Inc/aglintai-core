@@ -1402,7 +1402,6 @@ export type Database = {
           end_time: string | null
           id: string
           instructions: string | null
-          interview_schedule_id: string
           job_id: string
           meeting_flow: Database["public"]["Enums"]["meeting_flow"]
           meeting_json: Json | null
@@ -1422,7 +1421,6 @@ export type Database = {
           end_time?: string | null
           id?: string
           instructions?: string | null
-          interview_schedule_id: string
           job_id: string
           meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
@@ -1442,7 +1440,6 @@ export type Database = {
           end_time?: string | null
           id?: string
           instructions?: string | null
-          interview_schedule_id?: string
           job_id?: string
           meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
@@ -1522,13 +1519,6 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
-            columns: ["interview_schedule_id"]
-            isOneToOne: false
-            referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
         ]
@@ -2017,43 +2007,43 @@ export type Database = {
             referencedColumns: ["application_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
-            columns: ["coordinator_id"]
+            foreignKeyName: "interview_schedule_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "all_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
-            columns: ["coordinator_id"]
+            foreignKeyName: "interview_schedule_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
-            columns: ["coordinator_id"]
+            foreignKeyName: "interview_schedule_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
             isOneToOne: false
             referencedRelation: "all_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
             isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
@@ -3267,7 +3257,7 @@ export type Database = {
           m_v_statement: string | null
           name: string | null
           phone_number: string | null
-          primary_admin: string | null
+          primary_admin: string
           primary_contact: Json | null
           recruiter_type: string | null
           scheduling_reason: Json | null
@@ -3290,7 +3280,7 @@ export type Database = {
           m_v_statement?: string | null
           name?: string | null
           phone_number?: string | null
-          primary_admin?: string | null
+          primary_admin: string
           primary_contact?: Json | null
           recruiter_type?: string | null
           scheduling_reason?: Json | null
@@ -3313,7 +3303,7 @@ export type Database = {
           m_v_statement?: string | null
           name?: string | null
           phone_number?: string | null
-          primary_admin?: string | null
+          primary_admin?: string
           primary_contact?: Json | null
           recruiter_type?: string | null
           scheduling_reason?: Json | null
@@ -3477,11 +3467,11 @@ export type Database = {
           calendar_sync_token: string | null
           created_at: string
           department_id: number | null
-          email: string | null
+          email: string
           email_auth: Json | null
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
-          first_name: string | null
+          first_name: string
           is_calendar_connected: boolean
           joined_at: string | null
           last_name: string | null
@@ -3501,11 +3491,11 @@ export type Database = {
           calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
-          email?: string | null
+          email: string
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
-          first_name?: string | null
+          first_name: string
           is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
@@ -3525,11 +3515,11 @@ export type Database = {
           calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
-          email?: string | null
+          email?: string
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
-          first_name?: string | null
+          first_name?: string
           is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
@@ -3572,7 +3562,7 @@ export type Database = {
         Row: {
           application_id: string | null
           assignee_id: string | null
-          assigner_id: string
+          assigner_id: string | null
           completed_at: string | null
           created_at: string
           id: string
@@ -3588,7 +3578,7 @@ export type Database = {
         Insert: {
           application_id?: string | null
           assignee_id?: string | null
-          assigner_id?: string
+          assigner_id?: string | null
           completed_at?: string | null
           created_at?: string
           id?: string
@@ -3604,7 +3594,7 @@ export type Database = {
         Update: {
           application_id?: string | null
           assignee_id?: string | null
-          assigner_id?: string
+          assigner_id?: string | null
           completed_at?: string | null
           created_at?: string
           id?: string
@@ -4655,7 +4645,7 @@ export type Database = {
           created_at: string
           id: string
           order: number
-          payload: Json | null
+          payload: Json
           target_api: Database["public"]["Enums"]["email_slack_types"]
           workflow_id: string
         }
@@ -4664,7 +4654,7 @@ export type Database = {
           created_at?: string
           id?: string
           order: number
-          payload?: Json | null
+          payload?: Json
           target_api: Database["public"]["Enums"]["email_slack_types"]
           workflow_id?: string
         }
@@ -4673,7 +4663,7 @@ export type Database = {
           created_at?: string
           id?: string
           order?: number
-          payload?: Json | null
+          payload?: Json
           target_api?: Database["public"]["Enums"]["email_slack_types"]
           workflow_id?: string
         }
@@ -5083,27 +5073,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      interview_data_view: {
-        Row: {
-          applications: Json | null
-          candidates: Json | null
-          interview_session_meetings: Json | null
-          last_log_time: string | null
-          public_jobs: Json | null
-          recruiter_id: string | null
-          schedule: Json | null
-          search_query: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_jobs_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]

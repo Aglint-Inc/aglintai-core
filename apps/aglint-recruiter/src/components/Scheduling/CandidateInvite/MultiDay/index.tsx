@@ -1,6 +1,11 @@
 import { type SessionsCombType } from '@aglint/shared-types';
 import { Dialog, Stack, Typography } from '@mui/material';
-import React, { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -13,13 +18,13 @@ import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
+import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
 import toast from '@/src/utils/toast';
 
-import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '../../Candidates/utils';
+import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import { SessionIcon } from '../../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,

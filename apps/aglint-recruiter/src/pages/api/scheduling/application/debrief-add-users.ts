@@ -167,7 +167,7 @@ const fetchMeetingsSessions = async (application_id: string) => {
   const { data: intMeetSessions, error: errSessions } = await supabaseAdmin
     .from('interview_meeting')
     .select(
-      'id,interview_schedule_id,status,interview_session(*,interview_session_relation(*,interview_module_relation(*)))',
+      'id,status,interview_session(*,interview_session_relation(*,interview_module_relation(*)))',
     )
     .eq('application_id', application_id);
 

@@ -51,7 +51,6 @@ async function getSchedule(meeting_id: string) {
         application_id: res.application_id,
         created_at: res.created_at,
         id: res.id,
-        interview_schedule_id: res.interview_schedule_id,
         cal_event_id: res.cal_event_id,
         candidate_feedback: res.candidate_feedback,
         confirmed_date: res.confirmed_date,

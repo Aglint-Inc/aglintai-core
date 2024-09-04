@@ -20,11 +20,10 @@ import { NoData } from '@/devlink3/NoData';
 import { PipeLine } from '@/devlink3/PipeLine';
 import { RoleList } from '@/devlink3/RoleList';
 import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
+import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
 import Loader from '@/src/components/Common/Loader';
 // import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import {
   type ApplicationsParams,
   useApplicationsParams,
@@ -38,6 +37,7 @@ import { type Job } from '@/src/queries/jobs/types';
 import { type Application } from '@/src/types/applications.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
+import { getScheduleType } from '@/src/utils/scheduling/colors_and_enums';
 import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
