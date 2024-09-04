@@ -6,6 +6,7 @@ import type {
 import { Stack } from '@mui/material';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowAddAction } from '@/devlink3/WorkflowAddAction';
 import { WorkflowButton } from '@/devlink3/WorkflowButton';
@@ -15,7 +16,6 @@ import Loader from '@/src/components/Common/Loader';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITypography from '@/src/components/Common/UITypography';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { type WorkflowAction } from '@/src/types/workflow.types';
 
@@ -281,7 +281,7 @@ const AgentInstructionBody: React.FC<
   const { handleUpdateAction } = useWorkflow();
   const safePayload = payload as CustomAgentInstructionPayload;
   const [instruction, setInstruction] = useState(
-    safePayload?.instruction ?? '',
+    safePayload?.agent?.instruction ?? '',
   );
   const initialRef = useRef(true);
   useEffect(() => {
@@ -289,10 +289,15 @@ const AgentInstructionBody: React.FC<
       initialRef.current = false;
       return;
     }
-    if (instruction !== safePayload?.instruction) {
+    if (instruction !== safePayload?.agent?.instruction) {
       const timeout = setTimeout(
         () =>
-          handleUpdateAction({ id, payload: { ...safePayload, instruction } }),
+          handleUpdateAction({
+            id,
+            payload: {
+              ...safePayload,
+            },
+          }),
         400,
       );
       return () => clearTimeout(timeout);
@@ -314,7 +319,7 @@ const AgentInstructionBody: React.FC<
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          initialValue={payload.instruction}
+          initialValue={payload.agent.instruction}
           handleChange={(newInstruction) => setInstruction(newInstruction)}
           placeholder='Provide the instructions to guide the agent through this action.'
         />

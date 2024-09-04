@@ -10,6 +10,7 @@ import {
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
@@ -18,11 +19,10 @@ import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestCandidate } from '@/devlink2/RequestCandidate';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import axios from '@/src/client/axios';
-import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import {
   requestDaysListOptions,
   slotsListOptions,
-} from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
+} from '@/src/components/Scheduling/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
@@ -134,6 +134,8 @@ function CandidateAvailability({
         interview_session_id: ses.interview_session.id,
         interview_meeting_id: ses.interview_meeting.id,
         interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+        job_id: ses.interview_meeting.job_id,
+        recruiter_id: ses.interview_meeting.recruiter_id,
       })),
       supabase,
     });
@@ -168,6 +170,7 @@ function CandidateAvailability({
       let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
         request_id: selectedRequest.id,
         supabaseAdmin: supabase,
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
       });
       const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
@@ -179,12 +182,10 @@ function CandidateAvailability({
         ...payload,
       });
       await reqProgressLogger({
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         is_progress_step: false,
         status: 'completed',
       });
       await reqProgressLogger({
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         is_progress_step: true,
         status: 'completed',
         meta: {
@@ -296,7 +297,7 @@ function CandidateAvailability({
                   onChange={(_, value) => {
                     setSelectedDays(value);
                   }}
-                  popupIcon={<PopUpArrowIcon />}
+                  popupIcon={<ArrowUpRight />}
                 />
               }
               slotMinNumberSlot={
@@ -315,7 +316,7 @@ function CandidateAvailability({
                   onChange={(_, value) => {
                     setSelectedSlots(value);
                   }}
-                  popupIcon={<PopUpArrowIcon />}
+                  popupIcon={<ArrowUpRight />}
                 />
               }
               slotEmailTemplateHolder={

@@ -23,7 +23,6 @@ function ImageUploadManual({
   function onImageChange(file) {
     if (file.size > 5 * 1000000) {
       setLoading(false);
-      // toast.error('size is maximum');
       return;
     }
     imageFile.current = file;

@@ -1,16 +1,12 @@
-import Icon from '@components/Common/Icons/Icon';
-import {
-  type FilledInputProps,
-  type InputProps,
-  type OutlinedInputProps,
-  Stack,
-  Typography,
-} from '@mui/material';
-import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
-import React, { useState } from 'react';
+import { AlertCircle } from 'lucide-react';
+import React, { forwardRef, useState } from 'react';
 
-import UITypography from '../UITypography';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+
 type Props = {
   value?: string | number;
   type?: React.HTMLInputTypeAttribute;
@@ -27,22 +23,14 @@ type Props = {
   placeholder?: string;
   fullWidth?: boolean;
   name?: string;
-  rest?: any;
   onSelect?: () => void;
-  // eslint-disable-next-line no-unused-vars
-  onFocus?: (e: any) => void;
-  // eslint-disable-next-line no-unused-vars
-  onBlur?: (e: any) => void;
-  // eslint-disable-next-line no-unused-vars
-  onKeyDown?: (e: any) => void;
-  InputProps?:
-    | Partial<FilledInputProps>
-    | Partial<OutlinedInputProps>
-    | Partial<InputProps>;
+  onFocus?: () => void;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement> &
+    React.FocusEventHandler<HTMLInputElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement> &
+    React.KeyboardEventHandler<HTMLInputElement>;
   defaultValue?: string | number;
-  children?: any;
   height?: number;
-  noBorder?: boolean;
   width?: string;
   select?: boolean;
   secondaryText?: string;
@@ -53,7 +41,7 @@ type Props = {
 };
 
 // eslint-disable-next-line react/display-name
-const UITextField = React.forwardRef(
+const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
   (
     {
       disabled,
@@ -71,126 +59,96 @@ const UITextField = React.forwardRef(
       fullWidth = false,
       name = null,
       multiline = false,
-      minRows = 4.7,
-      maxRows = 4.7,
-      rest = undefined,
-      onKeyDown = () => {},
-      onBlur = () => {},
-      InputProps,
-      children,
+      minRows = 4,
+      onKeyDown,
+      onBlur,
       defaultValue,
       width,
-      select,
       height,
       secondaryText,
       labelBold = 'default',
       id,
       defaultLabelColor = null,
       ...props
-    }: Props,
-    ref?: React.Ref<HTMLInputElement>,
+    },
+    ref,
   ) => {
     const [contentExceeded, setContentExceeded] = useState(false);
-    let labelColor = defaultLabelColor
-      ? defaultLabelColor
-      : 'var(--neutral-12)';
 
-    if (disabled) {
-      labelColor = defaultLabelColor ? defaultLabelColor : 'var(--neutral-11)';
-    }
+    const labelClasses = cn(
+      'text-neutral-900',
+      labelBold === 'default' ? 'font-semibold' : 'font-normal',
+      {
+        'text-sm': labelSize === 'small',
+        'text-base': labelSize === 'medium',
+        'text-lg': labelSize === 'large',
+        'text-xl': labelSize === 'xLarge',
+        'text-2xl': labelSize === 'xxLarge',
+        'text-3xl': labelSize === 'xxxLarge',
+      },
+      disabled && 'text-neutral-500',
+      defaultLabelColor,
+    );
+
+    const inputClasses = cn(
+      'w-full',
+      fullWidth && 'w-full',
+      error && 'border-error-500',
+      disabled && 'bg-neutral-100 text-neutral-500',
+      height && `h-[${height}px]`,
+      width && `w-[${width}]`,
+    );
+
+    const InputComponent = multiline ? Textarea : Input;
 
     return (
-      <Stack
-        width={fullWidth ? '100%' : 'inherit'}
-        direction={'column'}
-        gap={'var(--space-1)'}
-      >
+      <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
         {label && (
-          <Stack direction={'row'}>
-            <UITypography
-              type={labelSize}
-              color={labelColor}
-              fontBold={labelBold}
-            >
+          <div className='flex flex-row items-center'>
+            <Label htmlFor={id} className={labelClasses}>
               {label}
-            </UITypography>
-            {required && (
-              <Typography sx={{ color: 'var(--error-9)' }}>&nbsp;*</Typography>
-            )}
-          </Stack>
+            </Label>
+            {required && <span className='text-error-500 ml-1'>*</span>}
+          </div>
         )}
         {secondaryText && (
-          <Typography variant='body1'>{secondaryText}</Typography>
+          <p className='text-sm text-neutral-600'>{secondaryText}</p>
         )}
-        <MuiTextField
+        <InputComponent
           {...props}
-          name={name}
-          margin='none'
-          select={select}
-          fullWidth={fullWidth}
-          value={value}
-          onFocus={onFocus}
-          defaultValue={defaultValue}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          onSelect={onSelect}
           id={id}
-          error={error || contentExceeded}
-          disabled={disabled}
-          required={required}
-          variant='outlined'
-          placeholder={placeholder}
-          inputRef={ref}
-          multiline={multiline}
-          minRows={minRows}
-          maxRows={maxRows}
-          InputProps={{
-            ...InputProps,
-          }}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onFocus={onFocus}
           onBlur={(e) => {
-            onBlur(e);
+            onBlur?.(e);
             setContentExceeded(false);
           }}
+          onKeyDown={onKeyDown}
+          onSelect={onSelect}
+          disabled={disabled}
+          required={required}
+          placeholder={placeholder}
+          ref={ref as any}
+          rows={multiline ? minRows : undefined}
           type={type}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              height: !multiline
-                ? height
-                  ? `${height}px !important`
-                  : '32px'
-                : 'auto',
-            },
-            width: width,
-            '& input:-webkit-autofill': {
-              WebkitBoxShadow: '0 0 0 30px white inset !important',
-              WebkitTextFillColor: 'black !important',
-            },
-            '& input:-moz-autofill': {
-              boxShadow: '0 0 0 30px white inset !important',
-              textFillColor: 'black !important',
-            },
-          }}
-          {...rest}
-        >
-          {children}
-        </MuiTextField>
+          className={inputClasses}
+          defaultValue={defaultValue}
+        />
         {(error || contentExceeded) && helperText && (
-          <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'start'}
-          >
-            <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
-            <UITypography type='small' color={'var(--error-11)'}>
+          <div className='flex flex-row items-center mt-1'>
+            <AlertCircle className='w-4 h-4 text-error-500 mr-1' />
+            <p className='text-sm text-error-700'>
               {error
                 ? helperText
                 : contentExceeded
                   ? errorMessages.maxCharExceeded
                   : ''}
-            </UITypography>
-          </Stack>
+            </p>
+          </div>
         )}
-      </Stack>
+      </div>
     );
   },
 );

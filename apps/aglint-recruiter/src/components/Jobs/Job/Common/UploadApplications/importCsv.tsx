@@ -1,21 +1,25 @@
-import { Stack } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ImportCandidatesCsv } from '@/devlink/ImportCandidatesCsv';
-import { ImportCsv as ImportCsvDev } from '@/devlink/ImportCsv';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { useToast } from '@/components/hooks/use-toast';
+import { Avatar } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { type CsvUploadApi } from '@/src/apiUtils/job/candidateUpload/types';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
-import toast from '@/src/utils/toast';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
@@ -65,6 +69,8 @@ const ImportCsv = () => {
     setImportPopup(false);
   }
 
+  const { toast } = useToast();
+
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     maxSize: 20000000,
@@ -97,7 +103,9 @@ const ImportCsv = () => {
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {
-              toast.error('Candidates are not in CSV format.');
+              toast({
+                title: 'Candidates are not in CSV format.',
+              });
               setIsLoading(false);
               return;
             }
@@ -113,7 +121,9 @@ const ImportCsv = () => {
 
               setbulkImportdata(data);
             } else {
-              toast.error('Invalid header.');
+              toast({
+                title: 'Invalid header.',
+              });
               // console.log('invalid header');
             }
           }
@@ -124,193 +134,92 @@ const ImportCsv = () => {
       else reader.readAsArrayBuffer(file);
     },
     onDropRejected: () => {
-      toast.error('Invalid file.');
+      toast({
+        title: 'Invalid file.',
+      });
     },
   });
   return (
-    <Stack
-      sx={{
-        bgcolor: 'white',
-        borderRadius: '10px',
-        height: '100%',
-      }}
-    >
-      <Stack spacing={1} height={'100%'}>
+    <Card className='bg-white rounded-lg h-full'>
+      <div className='space-y-4 h-full'>
         {isLoading && (
-          <Stack
-            justifyContent={'center'}
-            alignItems={'center'}
-            direction={'row'}
-            width={'100%'}
-            height={'200px'}
-          >
-            <LoaderSvg />
-          </Stack>
+          <div className='flex justify-center items-center w-full h-[200px]'>
+            <Loader2 className='w-8 h-8 animate-spin text-gray-500' />
+          </div>
         )}
         {!isLoading && (
-          <ImportCsvDev
-            slotReuploadButton={
-              <Stack {...getRootProps()} sx={{ height: '100%' }}>
-                <input id='uploadCsv' {...getInputProps()} />
-                <ButtonGhost textButton='Reupload' size={2} color={'neutral'} />
-              </Stack>
-            }
-            textListingCount={`Listing ${bulkImportdata?.length} candidates`}
-            textCountExistinJob={'0 candidates already exists in this job'}
-            isExistWarningVisible={false} // enable for showing the existing candidates
-            isImportDescVisible={bulkImportdata?.length === 0}
-            isListingCountVisible={bulkImportdata?.length !== 0}
-            slotImportCandidatesCsv={
-              bulkImportdata?.length > 0 ? (
-                <CandidatesListTable importedCandidate={bulkImportdata} />
-              ) : (
-                <>
-                  <Stack direction={'row'} pb={1}>
-                    <Typography fontSize={'14px'}>Need help?&nbsp;</Typography>
-                    <CSVLink filename={'candidates-sample.csv'} data={csvData}>
-                      <Typography
-                        sx={{
-                          textDecoration: 'underline',
-                        }}
-                        color={'blue.600'}
-                        fontSize={'14px'}
-                      >
-                        Download our sample file here.
-                      </Typography>
-                    </CSVLink>
-                  </Stack>
-                  <Stack {...getRootProps()}>
-                    <input id='uploadCsv' {...getInputProps()} />
-                    <ImportCandidatesCsv />
-                  </Stack>
-                </>
-              )
-            }
-            onClickImport={{
-              onClick: async () => {
-                await createCandidates(bulkImportdata);
-              },
-            }}
-          />
+          <div>
+            {/* Replace ImportCsvDev with custom implementation */}
+            <div {...getRootProps()} className='h-full'>
+              <input id='uploadCsv' {...getInputProps()} />
+              <Button variant='ghost'>Reupload</Button>
+            </div>
+            <p className='text-sm'>{`Listing ${bulkImportdata?.length} candidates`}</p>
+            {bulkImportdata?.length > 0 ? (
+              <CandidatesListTable importedCandidate={bulkImportdata} />
+            ) : (
+              <>
+                <div className='flex pb-1'>
+                  <p className='text-sm'>Need help?&nbsp;</p>
+                  <CSVLink filename={'candidates-sample.csv'} data={csvData}>
+                    <p className='text-sm text-blue-600 underline'>
+                      Download our sample file here.
+                    </p>
+                  </CSVLink>
+                </div>
+                <div {...getRootProps()}>
+                  <input id='uploadCsv' {...getInputProps()} />
+                  {/* Replace ImportCandidatesCsv with custom implementation */}
+                  <div className='border-2 border-dashed border-gray-300 p-6 text-center'>
+                    <p>
+                      Drag and drop your CSV file here, or click to select a
+                      file
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+            <Button onClick={() => createCandidates(bulkImportdata)}>
+              Import
+            </Button>
+          </div>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </Card>
   );
 };
-export { ImportCsv };
 
 function CandidatesListTable({ importedCandidate }) {
   return (
-    <Stack
-      borderRadius={'10px'}
-      border={'1px solid '}
-      borderColor={'grey.200'}
-      height={'100%'}
-      overflow={'auto'}
-    >
-      <TableHeader />
-      {importedCandidate.map((ele, i) => {
-        return (
-          <YTransform key={i} uniqueKey={i}>
-            <TableRow
-              index={i}
-              name={ele.first_name + ' ' + ele.last_name}
-              email={ele.email}
-              phone={ele.phone}
-              profile_image={ele.profile_image}
-            />
-          </YTransform>
-        );
-      })}
-    </Stack>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Candidate</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Phone</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {importedCandidate.map((ele, i) => (
+          <TableRow key={i}>
+            <TableCell className='flex items-center space-x-2'>
+              <Avatar>
+                <Image
+                  src={ele.profile_image}
+                  alt={ele.first_name}
+                  width={40}
+                  height={40}
+                />
+              </Avatar>
+              <span>{`${ele.first_name} ${ele.last_name}`}</span>
+            </TableCell>
+            <TableCell>{ele.email}</TableCell>
+            <TableCell>{ele.phone}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 
-function TableHeader() {
-  return (
-    <Stack
-      bgcolor={'grey.100'}
-      py={'10px'}
-      px={'20px'}
-      justifyContent={'left'}
-      direction={'row'}
-      alignItems={'center'}
-      spacing={'5px'}
-      position={'sticky'}
-      top={0}
-      zIndex={2}
-    >
-      {headerObject.map((ele, i) => {
-        const { heading, icon } = ele;
-        return (
-          <Stack
-            key={i}
-            width={`${100 / 3}%`}
-            direction={'row'}
-            alignItems={'center'}
-            spacing={'5px'}
-          >
-            {icon}
-            <Typography variant='body1'>{heading}</Typography>
-          </Stack>
-        );
-      })}
-    </Stack>
-  );
-}
-
-const headerObject = [
-  {
-    heading: 'Candidate',
-    icon: <GlobalIcon iconName='person' size='4' color='neutral' />,
-  },
-  {
-    heading: 'Email',
-    icon: <GlobalIcon iconName='mail' size='4' color='neutral-8' />,
-  },
-  {
-    heading: 'Phone',
-    icon: <GlobalIcon iconName='phone' size='4' color='neutral-8' />,
-  },
-];
-
-function TableRow({ name, email, phone, profile_image, index }) {
-  return (
-    <Stack
-      key={index}
-      py={'4px'}
-      px={'20px'}
-      justifyContent={'left'}
-      direction={'row'}
-      alignItems={'center'}
-      // bgcolor={'yellow.100'} // background color for duplicate candidate row
-    >
-      <Stack
-        width={`${100 / 3}%`}
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'5px'}
-      >
-        <MuiAvatar src={profile_image} level={name} variant={'rounded-small'} />
-        <Typography variant='body1' className='one-line-clamp'>
-          {name}
-        </Typography>
-      </Stack>
-      <Typography
-        variant='body1'
-        className='one-line-clamp'
-        width={`${100 / 3}%`}
-      >
-        {email}
-      </Typography>
-      <Typography
-        variant='body1'
-        className='one-line-clamp'
-        width={`${100 / 3}%`}
-        pl={'10px'}
-      >
-        {phone}
-      </Typography>
-    </Stack>
-  );
-}
+export { ImportCsv };

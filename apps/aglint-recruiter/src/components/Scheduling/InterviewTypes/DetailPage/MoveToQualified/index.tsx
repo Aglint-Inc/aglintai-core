@@ -1,16 +1,17 @@
 import { Dialog } from '@mui/material';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { setIsMovedToQualifiedDialogOpen, useModulesStore } from '../../store';
 
 function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
+  const { toast } = useToast();
   const { recruiterUser } = useAuthDetails();
   const { members } = useSchedulingContext();
   const isMovedToQualifiedDialogOpen = useModulesStore(
@@ -30,7 +31,11 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
         .throwOnError();
       refetch();
     } catch (error) {
-      toast.error(error.message);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message,
+      });
     } finally {
       setIsMovedToQualifiedDialogOpen(false);
     }

@@ -104,85 +104,80 @@ const InterviewScheduled = () => {
       textRequestProgress={'On Inteview is Scheduled'}
       slotProgress={
         <>
-          {ACTION_TRIGGER_MAP.candidateBook.map((action) => {
-            return apiTargetToEvents[action.value.target_api].map((ev) => {
-              const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
-                (a) => a.target_api === action.value.target_api,
-              );
-              const slack_status =
-                reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']?.[0];
+          {ACTION_TRIGGER_MAP.candidateBook.map((action, idx) => {
+            const eventAction = apiTargetToEvents[action.value.target_api];
+            const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
+              (a) => a.target_api === action.value.target_api,
+            );
+            const slack_status =
+              reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']?.[0];
 
-              return (
-                <>
-                  <ScheduleProgress
-                    textProgress={workflowCopy[ev][tense]}
-                    status={getProgressCompStatus(slack_status?.status)}
-                    slotRightIcon={
-                      <>
-                        <ShowCode.When isTrue={tense === 'future'}>
-                          <ShowCode.When isTrue={!addedAction}>
-                            <IconButtonSoft
-                              iconName={'add'}
-                              size={1}
-                              color={'neutral'}
-                              onClickButton={{
-                                onClick: () => {
-                                  handleAddAction(action.value.target_api);
-                                },
-                              }}
-                            />
-                          </ShowCode.When>
-                          <ShowCode.When isTrue={Boolean(addedAction)}>
-                            <IconButtonSoft
-                              iconName={'delete'}
-                              size={1}
-                              color={'error'}
-                              onClickButton={{
-                                onClick: () => {
-                                  handleDeleteScheduleAction(addedAction.id);
-                                },
-                              }}
-                            />
-                          </ShowCode.When>
-                        </ShowCode.When>
-                      </>
-                    }
-                    slotAiText={
-                      <>
-                        <ShowCode.When
-                          isTrue={
-                            tense === 'past' &&
-                            !reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']
-                          }
-                        >
-                          <Stack direction={'row'}>
-                            <ButtonSoft
-                              size={1}
-                              textButton={
-                                rsvpSending ? 'Sending' : 'Send rsvp reminder'
-                              }
-                              onClickButton={{
-                                onClick: () => {
-                                  handleSendRsVpReminder();
-                                },
-                              }}
-                            />
-                          </Stack>
-                        </ShowCode.When>
-                      </>
-                    }
-                    slotLoader={
-                      tense === 'present' ? (
-                        <LottieAnimations
-                          animation='loading_spinner'
-                          size={1.5}
+            return (
+              <ScheduleProgress
+                key={idx}
+                textProgress={workflowCopy[eventAction][tense]}
+                status={getProgressCompStatus(slack_status?.status)}
+                slotRightIcon={
+                  <>
+                    <ShowCode.When isTrue={tense === 'future'}>
+                      <ShowCode.When isTrue={!addedAction}>
+                        <IconButtonSoft
+                          iconName={'add'}
+                          size={1}
+                          color={'neutral'}
+                          onClickButton={{
+                            onClick: () => {
+                              handleAddAction(action.value.target_api);
+                            },
+                          }}
                         />
-                      ) : undefined
-                    }
-                  />
-                </>
-              );
-            });
+                      </ShowCode.When>
+                      <ShowCode.When isTrue={Boolean(addedAction)}>
+                        <IconButtonSoft
+                          iconName={'delete'}
+                          size={1}
+                          color={'error'}
+                          onClickButton={{
+                            onClick: () => {
+                              handleDeleteScheduleAction(addedAction.id);
+                            },
+                          }}
+                        />
+                      </ShowCode.When>
+                    </ShowCode.When>
+                  </>
+                }
+                slotAiText={
+                  <>
+                    <ShowCode.When
+                      isTrue={
+                        tense === 'past' &&
+                        !reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']
+                      }
+                    >
+                      <Stack direction={'row'}>
+                        <ButtonSoft
+                          size={1}
+                          textButton={
+                            rsvpSending ? 'Sending' : 'Send rsvp reminder'
+                          }
+                          onClickButton={{
+                            onClick: () => {
+                              handleSendRsVpReminder();
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </ShowCode.When>
+                  </>
+                }
+                slotLoader={
+                  tense === 'present' ? (
+                    <LottieAnimations animation='loading_spinner' size={1.5} />
+                  ) : undefined
+                }
+              />
+            );
           })}
         </>
       }

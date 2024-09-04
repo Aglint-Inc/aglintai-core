@@ -9,11 +9,11 @@ import { type LeverJob } from '@/src/components/Jobs/Dashboard/AddJobWithIntegra
 import {
   extractLinkedInURL,
   POSTED_BY,
+  splitFullName,
 } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { splitFullName } from '../../loading';
 import { decrypt } from '../decryptApiKey';
 
 export type ApiLeverCreateJob = {
@@ -227,6 +227,7 @@ const createJobApplications = async ({
     const dbApplications: DatabaseTableInsert['applications'][] =
       refCandidates.map((ref) => {
         return {
+          recruiter_id,
           applied_at: ref.created_at,
           candidate_id: allCandidates.filter(
             (cand) => cand.email === ref.email,

@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { InputAdornment, Stack } from '@mui/material';
-import Image from 'next/image';
+import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
@@ -14,7 +14,6 @@ import { type JobCreate } from '@/src/queries/jobs/types';
 import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
 
 export type JobHiringTeamForm = Pick<
   Required<Form>,
@@ -165,7 +164,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobTitle.displayName = 'JobTitle';
 
 const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  // const { recruiter } = useAuthDetails();
   return (
     <UITextField
       label={'Company'}
@@ -176,22 +175,22 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
       error={value.error.value}
       helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position='start'>
-            <Image
-              style={{
-                borderRadius: 'var(--radius-2)',
-                objectFit: 'contain',
-              }}
-              alt='building'
-              src={`${recruiter?.logo ?? '/images/svg/Building.svg'}`}
-              width={26}
-              height={26}
-            />
-          </InputAdornment>
-        ),
-      }}
+      // InputProps={{
+      //   startAdornment: (
+      //     <InputAdornment position='start'>
+      //       <Image
+      //         style={{
+      //           borderRadius: 'var(--radius-2)',
+      //           objectFit: 'contain',
+      //         }}
+      //         alt='building'
+      //         src={`${recruiter?.logo ?? '/images/svg/Building.svg'}`}
+      //         width={26}
+      //         height={26}
+      //       />
+      //     </InputAdornment>
+      //   ),
+      // }}
     />
   );
 });
@@ -375,13 +374,16 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobWorkPlace.displayName = 'JobWorkPlace';
 
 const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
+  const { toast } = useToast();
   const { job } = useJobDashboard();
   const disable = job?.scoring_criteria_loading;
   const handleToast = () => {
     if (disable)
-      toast.warning(
-        'This job description is currently being used for another task. Please wait.',
-      );
+      toast({
+        variant: 'destructive',
+        title:
+          'This job description is currently being used for another task. Please wait.',
+      });
   };
   return (
     <Stack onClick={() => handleToast()}>

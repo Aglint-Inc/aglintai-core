@@ -2,8 +2,8 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import StageProgress from '@/src/components/Scheduling/Common/StageProgress';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';

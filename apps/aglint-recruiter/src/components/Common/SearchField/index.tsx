@@ -1,78 +1,57 @@
-//not using
-import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon from '@mui/icons-material/Search';
-import { Collapse, InputAdornment, Stack } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import UITextField from '@/src/components/Common/UITextField';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-const SearchField = ({
-  val,
-  handleSearch,
-}: {
+interface SearchFieldProps {
   val: string;
-  // eslint-disable-next-line no-unused-vars
-  handleSearch: (val: string, signal?: AbortSignal) => Promise<void>;
-}) => {
+  handleSearch: () => Promise<void>;
+}
+
+const SearchField = ({ val, handleSearch }: SearchFieldProps) => {
   const [value, setValue] = useState(val);
   const initialRef = useRef(true);
 
   useEffect(() => {
     if (initialRef.current) {
       initialRef.current = false;
-    } else {
-      const controller = new AbortController();
-      const timer = setTimeout(async () => {
-        await handleSearch(value, controller.signal);
-      }, 400);
-      return () => {
-        controller.abort();
-        clearTimeout(timer);
-      };
+      return;
     }
-  }, [value]);
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => handleSearch(), 400);
+
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [value, handleSearch]);
 
   return (
-    <UITextField
-      width={'250px'}
-      onChange={(e) => {
-        setValue(e.target.value);
-      }}
-      value={value || ''}
-      placeholder='Search'
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position='start'>
-            <Stack
-              position={'absolute'}
-              style={{ transform: 'translateX(-12px)' }}
-            >
-              <Collapse
-                in={!(value === '' || value === null)}
-                sx={{ position: 'relative' }}
-              >
-                <IconButton
-                  onClick={() => setValue(null)}
-                  style={{ transform: 'translateX(-4px)' }}
-                >
-                  <CloseIcon sx={{ opacity: 0.5 }} />
-                </IconButton>
-              </Collapse>
-              <Collapse
-                in={value === '' || value === null}
-                sx={{ position: 'relative' }}
-              >
-                <SearchIcon
-                  sx={{ opacity: 0.5 }}
-                  style={{ transform: 'translateY(2px)' }}
-                />
-              </Collapse>
-            </Stack>
-          </InputAdornment>
-        ),
-      }}
-    />
+    <div className='relative w-64'>
+      <Input
+        type='text'
+        placeholder='Search'
+        value={value || ''}
+        onChange={(e) => setValue(e.target.value)}
+        className='pr-10'
+      />
+      <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+        {value ? (
+          <Button
+            variant='ghost'
+            size='icon'
+            onClick={() => setValue('')}
+            className='h-8 w-8'
+          >
+            <X className='h-4 w-4' />
+          </Button>
+        ) : (
+          <Search className='h-4 w-4 text-gray-400' />
+        )}
+      </div>
+    </div>
   );
 };
 

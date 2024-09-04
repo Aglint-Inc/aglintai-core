@@ -2,12 +2,12 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { CdAglintDb } from '@/devlink/CdAglintDb';
 import { Checkbox } from '@/devlink/Checkbox';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
@@ -40,6 +40,7 @@ import { processCandidatesInBatches } from './utils';
 import ViewSavedList from './ViewSavedList';
 
 function AppoloSearch() {
+  const { toast } = useToast();
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const list = useCandidateStore((state) => state.list);
@@ -78,7 +79,10 @@ function AppoloSearch() {
         await fetchList(String(router.query.list));
       }
     } catch (e) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       setLoading(false);
     }
@@ -145,7 +149,10 @@ function AppoloSearch() {
       setText('');
       setIsEditVisible(false);
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -200,7 +207,10 @@ function AppoloSearch() {
         onClickEmailOutReach={{
           onClick: () => {
             if (selectedCandidates.length === 0) {
-              toast.warning('Please select at least one candidate.');
+              toast({
+                variant: 'destructive',
+                title: 'Please select at least one candidate.',
+              });
               return;
             } else {
               setEmailOutReach('multiple');

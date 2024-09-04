@@ -11,6 +11,7 @@
     "asce",
     "Breadcrum",
     "devlink",
+    "fullcalendar",
     "nextjs",
     "notprovidet",
     "posthog",
@@ -29,8 +30,8 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/.retool_types/**": true,
-    "**/*tsconfig.json": true,
     ".cache": true,
-    "retool.config.json": true
+    "retool.config.json": true,
+    "**/*tsconfig.json": true
   }
 }

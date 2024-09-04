@@ -15,8 +15,8 @@ import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';
 

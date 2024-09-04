@@ -1,17 +1,20 @@
-import { type CandidateListTypeDB, type SearchHistoryType } from '@aglint/shared-types';
+import {
+  type CandidateListTypeDB,
+  type SearchHistoryType,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
 import { ClearHistory } from '@/devlink/ClearHistory';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedList } from '@/devlink/SavedList';
@@ -26,7 +29,6 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { type CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../Common/Loader';
@@ -38,6 +40,7 @@ import EmptyState from './Search/EmptyState';
 import { getRelevantCndidates } from './utils';
 
 function CandidateSearchHistory() {
+  const { toast } = useToast();
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
@@ -75,7 +78,6 @@ function CandidateSearchHistory() {
       await fetchList();
       setHistory(history);
     } catch (err) {
-      // toast.error('Something went wrong. Please try again.');
       return err.message;
     } finally {
       setIsHistoryLoading(false);
@@ -97,7 +99,11 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -112,7 +118,11 @@ function CandidateSearchHistory() {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setDeleteHistoryId(-1);
       setDeleteHistory(false);
@@ -148,7 +158,11 @@ function CandidateSearchHistory() {
       );
     } catch (err) {
       // console.log(err);
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsQrySearching(false);
     }
@@ -165,7 +179,11 @@ function CandidateSearchHistory() {
       });
 
       if (res.data.error) {
-        toast.error(res.data.error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: res.data.error,
+        });
         return;
       }
 
@@ -183,7 +201,11 @@ function CandidateSearchHistory() {
           );
 
         if (errorCompanies) {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
           return;
         }
 
@@ -230,7 +252,11 @@ function CandidateSearchHistory() {
       });
 
       if (resCand.data.error) {
-        toast.error(resCand.data.error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: resCand.data.error,
+        });
         return;
       }
 
@@ -264,7 +290,11 @@ function CandidateSearchHistory() {
       router.push(`/candidates/aglintdb?id=${history.id}`);
     } catch (err) {
       // console.log(err);
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsQrySearching(false);
     }
@@ -293,10 +323,18 @@ function CandidateSearchHistory() {
         setText('');
         setIsInputVisible(false);
       } else {
-        toast.error('Something went wrong. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+        });
       }
     } else {
-      toast.error('Please enter the list name then submit');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Please enter the list name then submit',
+      });
     }
   };
 
@@ -318,7 +356,11 @@ function CandidateSearchHistory() {
       setEditListText('');
       setEditList(null);
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -329,7 +371,11 @@ function CandidateSearchHistory() {
       );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setDeleteList(null);
     }
@@ -371,16 +417,15 @@ function CandidateSearchHistory() {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                             }}
-                            InputProps={{
-                              onKeyDown: async (e) => {
-                                if (e.code === 'Enter') {
-                                  await getCandsFromApi();
+                            onKeyDown={(e) => {
+                              if (e.code === 'Enter') {
+                                getCandsFromApi().then(() =>
                                   localStorage.setItem(
                                     'discoverTalent',
                                     'true',
-                                  );
-                                }
-                              },
+                                  ),
+                                );
+                              }
                             }}
                           />
                         }
@@ -427,23 +472,24 @@ function CandidateSearchHistory() {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                             }}
-                            InputProps={{
-                              onKeyDown: async (e) => {
-                                if (e.code === 'Enter') {
-                                  if (isCandidates) {
-                                    await getMatchingCandsFromQry();
-                                    localStorage.setItem(
-                                      'talentRediscovery',
-                                      'true',
-                                    );
-                                  } else {
-                                    toast.error(
-                                      'No candidates are linked to the jobs. Please add candidates.',
-                                    );
-                                  }
-                                }
-                              },
-                            }}
+                            // onKeyDown={(e) => {
+                            //   if (e.code === 'Enter') {
+                            //     if (isCandidates) {
+                            //       await getMatchingCandsFromQry();
+                            //       localStorage.setItem(
+                            //         'talentRediscovery',
+                            //         'true',
+                            //       );
+                            //     } else {
+                            //       toast({
+                            //         variant: 'destructive',
+                            //         title: 'Error',
+                            //         description:
+                            //           'No candidates are linked to the jobs. Please add candidates.',
+                            //       });
+                            //     }
+                            //   }
+                            // }}
                           />
                         }
                       />
@@ -495,31 +541,31 @@ function CandidateSearchHistory() {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                             }}
-                            InputProps={{
-                              onKeyDown: (e) => {
-                                if (e.code === 'Enter') {
-                                  if (currentTab === 'talent rediscovery') {
-                                    getMatchingCandsFromQry();
-                                  } else {
-                                    getCandsFromApi();
-                                  }
+                            onKeyDown={(e) => {
+                              if (e.code === 'Enter') {
+                                if (currentTab === 'talent rediscovery') {
+                                  getMatchingCandsFromQry();
+                                } else {
+                                  getCandsFromApi();
                                 }
-                              },
-                              endAdornment: searchQuery && (
-                                <Stack
-                                  onClick={() => setSearchQuery('')}
-                                  sx={{
-                                    p: '3px',
-                                    '&:hover': {
-                                      backgroundColor: 'var(--neutral-3)',
-                                      cursor: 'pointer',
-                                    },
-                                  }}
-                                >
-                                  <GlobalIcon iconName='close' size={5} />
-                                </Stack>
-                              ),
+                              }
                             }}
+                            // InputProps={{
+                            //   endAdornment: searchQuery && (
+                            //     <Stack
+                            //       onClick={() => setSearchQuery('')}
+                            //       sx={{
+                            //         p: '3px',
+                            //         '&:hover': {
+                            //           backgroundColor: 'var(--neutral-3)',
+                            //           cursor: 'pointer',
+                            //         },
+                            //       }}
+                            //     >
+                            //       <GlobalIcon iconName='close' size={5} />
+                            //     </Stack>
+                            //   ),
+                            // }}
                           />
                         }
                         isSavedListEmpty={
@@ -527,7 +573,6 @@ function CandidateSearchHistory() {
                         }
                         slotInput={
                           <UITextField
-                            rest={{ autoFocus: true }}
                             placeholder='Enter List name'
                             value={text}
                             onChange={(e) => {

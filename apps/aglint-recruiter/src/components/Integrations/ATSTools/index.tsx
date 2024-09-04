@@ -2,15 +2,14 @@ import { IconButton, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
 
 import ATSPopUps from '../ATSPopUps';
 import { type ATSType, type PopUpReasonTypes } from '../types';
@@ -22,6 +21,7 @@ import {
 } from '../utils';
 
 function ATSTools({ integrations, refetch }) {
+  const { toast } = useToast();
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -64,19 +64,27 @@ function ATSTools({ integrations, refetch }) {
               responseRec.status === 200 &&
               responseRec.data[0]?.greenhouse_key
             ) {
-              posthog.capture('Green House Data Fetched');
-              router.push('/integrations/greenhouse');
+              // Removedposthog.capture('Greenhouse Data Fetched');
             }
           } else {
-            toast.error('API is invalid!');
+            toast({
+              variant: 'destructive',
+              title: 'API is invalid!',
+            });
             setLoading(false);
             return;
           }
         } catch (error) {
-          toast.error('Something went wrong.');
+          toast({
+            variant: 'destructive',
+            title: 'Something went wrong.',
+          });
         }
       } else {
-        toast.warning('Please provide API key.');
+        toast({
+          variant: 'destructive',
+          title: 'Please provide API key.',
+        });
         setLoading(false);
         return;
       }
@@ -97,18 +105,27 @@ function ATSTools({ integrations, refetch }) {
               apiKey: apiKey,
             });
             if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-              posthog.capture('Ashby Data Fetched');
+              //Removedposthog posthog.capture('Ashby Data Fetched');
             }
           } else {
-            toast.error('API is invalid.');
+            toast({
+              variant: 'destructive',
+              title: 'API is invalid.',
+            });
             setLoading(false);
             return;
           }
         } catch (error) {
-          toast.error('Something went wrong!');
+          toast({
+            variant: 'destructive',
+            title: 'Something went wrong!',
+          });
         }
       } else {
-        toast.warning('Please provide API key!');
+        toast({
+          variant: 'destructive',
+          title: 'Please provide API key!',
+        });
         setLoading(false);
         return;
       }
@@ -129,18 +146,27 @@ function ATSTools({ integrations, refetch }) {
               apiKey: apiKey,
             });
             if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
-              posthog.capture('Lever Data Fetched');
+              // Removed posthog.capture('Lever Data Fetched');
             }
           } else {
-            toast.error('API is invalid!');
+            toast({
+              variant: 'destructive',
+              title: 'API is invalid!',
+            });
             setLoading(false);
             return;
           }
         } catch (error) {
-          toast.error('Something went wrong.');
+          toast({
+            variant: 'destructive',
+            title: 'Something went wrong.',
+          });
         }
       } else {
-        toast.warning('Please provide API key!');
+        toast({
+          variant: 'destructive',
+          title: 'Please provide API key!',
+        });
         setLoading(false);
         return;
       }
@@ -199,7 +225,10 @@ function ATSTools({ integrations, refetch }) {
             }
           });
       } catch (error) {
-        toast.error('Something went wrong.');
+        toast({
+          variant: 'destructive',
+          title: 'Something went wrong.',
+        });
       }
       setLoading(false);
     }

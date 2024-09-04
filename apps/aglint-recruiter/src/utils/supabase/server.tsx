@@ -2,12 +2,12 @@ import { type DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-export function createAdminClient() {
+export function createClient() {
   const cookieStore = cookies();
 
   return createServerClient<DB>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {

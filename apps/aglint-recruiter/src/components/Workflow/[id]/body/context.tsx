@@ -57,8 +57,10 @@ const useActionsContext = () => {
               target_api,
               order,
               payload: {
-                body: emailTemplate?.body ?? '',
-                subject: emailTemplate?.subject ?? '',
+                email: {
+                  body: emailTemplate?.body ?? '',
+                  subject: emailTemplate?.subject ?? '',
+                },
               },
             });
           }
@@ -93,9 +95,11 @@ const useActionsContext = () => {
               target_api,
               order,
               payload: {
-                instruction: '',
-                ai_response_status: 'not_started',
-                ai_response: AI_RESPONSE_PLACEHOLDER,
+                agent: {
+                  instruction: '',
+                  ai_response_status: 'not_started',
+                  ai_response: AI_RESPONSE_PLACEHOLDER,
+                },
               },
             });
           }

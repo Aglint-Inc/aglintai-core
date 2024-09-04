@@ -7,6 +7,7 @@ import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { Checkbox } from '@/devlink/Checkbox';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
@@ -25,7 +26,6 @@ import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
 
 import {
   fetchEmailTemplates,
@@ -48,6 +48,7 @@ function SchedulerEmailTemps({ setSaving }) {
   );
   const [searchQry, setSearchQry] = useState('');
   const router = useRouter();
+  const { toast } = useToast();
 
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
@@ -85,7 +86,10 @@ function SchedulerEmailTemps({ setSaving }) {
           setIsEditorLoad(false);
         }, 500);
       } catch (err) {
-        toast.error('Something went wrong');
+        toast({
+          variant: 'destructive',
+          title: 'Something went wrong',
+        });
       }
     })();
   }, [recruiter_id]);
@@ -110,7 +114,10 @@ function SchedulerEmailTemps({ setSaving }) {
         setSaving('saved');
       }, 1000);
     } catch (err) {
-      toast.error('Something went wrong!');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong!',
+      });
     }
   }
   const preview = async () => {
@@ -126,7 +133,10 @@ function SchedulerEmailTemps({ setSaving }) {
       return data;
     } catch (error) {
       setPopOverLoading(false);
-      toast.error(`Error fetching preview: ${error}`);
+      toast({
+        variant: 'destructive',
+        title: `Error fetching preview: ${error}`,
+      });
     }
   };
 

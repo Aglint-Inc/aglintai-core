@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonGenerate } from '@/devlink/ButtonGenerate';
 import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
 import { ConnectedMail } from '@/devlink/ConnectedMail';
@@ -16,12 +17,12 @@ import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getTimeDifference } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
 
 import { useOutReachCtx } from './OutReachCtx';
 
 const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
   const router = useRouter();
+  const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
     state: OutreachState,
@@ -33,14 +34,14 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
   const [defaultTemplate, setDefaultTemplate] = useState(null);
   const [selectedEmailTemplate, setSelectedEmailTemp] = useState(0);
   const [isEditorLoading, setIsEditorLoading] = useState(false);
-  const [editorJson, setEditoJson] = useState({
+  const [editorJson, setEditorJson] = useState({
     subject: '',
     templateJson: '',
   });
 
   useEffect(() => {
     if (emailTemplates.length > 0) {
-      setEditoJson({
+      setEditorJson({
         subject: emailTemplates[0].subject,
         templateJson: '',
       });
@@ -63,11 +64,16 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
     });
 
     if (res.status === 200) {
-      toast.success(
-        'Emails are being fetched in the background. Once that process is complete, emails will be sent to the candidates.',
-      );
+      toast({
+        variant: 'default',
+        title:
+          'Emails are being fetched in the background. Once that process is complete, emails will be sent to the candidates.',
+      });
     } else {
-      toast.error('Error sending emails.');
+      toast({
+        variant: 'destructive',
+        title: 'Error sending emails.',
+      });
     }
   };
 
@@ -80,7 +86,10 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
 
       return router.push(authUrl);
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -135,7 +144,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
           <>
             <UITextField
               onChange={(e) => {
-                setEditoJson((prev) => ({ ...prev, subject: e.target.value }));
+                setEditorJson((prev) => ({ ...prev, subject: e.target.value }));
               }}
               value={editorJson.subject}
               defaultValue={editorJson.subject}
@@ -163,7 +172,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
                 <EmailTemplateEditor
                   defaultJson={defaultTemplate}
                   onChangeUpdateJson={(s) => {
-                    setEditoJson((prev) => ({ ...prev, templateJson: s }));
+                    setEditorJson((prev) => ({ ...prev, templateJson: s }));
                   }}
                 />
               )}
@@ -198,8 +207,6 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
         slotTemplateButton={
           <>
             <UISelect
-              size='sm'
-              fullWidth
               menuOptions={emailTemplates.map((e) => ({
                 name: e.name,
                 value: e.id,
@@ -211,7 +218,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
                 setDefaultTemplate(
                   emailTemplates[Number(e.target.value)].templateJson,
                 );
-                setEditoJson({
+                setEditorJson({
                   subject: emailTemplates[Number(e.target.value)].subject,
                   templateJson: '',
                 });

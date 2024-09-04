@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { createToast } from 'vercel-toast';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { AddToList } from '@/devlink/AddToList';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CdSavedList } from '@/devlink/CdSavedList';
@@ -13,7 +14,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import {
   setIsSelectAll,
@@ -25,6 +25,7 @@ import {
 
 function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const router = useRouter();
+  const { toast } = useToast();
   const { recruiter } = useAuthDetails();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -59,7 +60,11 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       setLists([...candidateLists, data[0]]);
       setIsInputVisible(false);
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -82,7 +87,11 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       setLists([...oldList, ...data]);
       setSelectedList([]);
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -126,10 +135,18 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
           timeout: 3000,
         });
       } else {
-        toast.error('Something went wrong. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+        });
       }
     } catch {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -151,7 +168,11 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       if (!oldList.candidates.includes(selectedCandidate.id)) {
         updateListHandler(list);
       } else {
-        toast.error('The candidate is already on the list.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'The candidate is already on the list.',
+        });
       }
     }
   };

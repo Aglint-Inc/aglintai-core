@@ -1,7 +1,10 @@
-import { type DatabaseTableUpdate, type RecruiterType } from '@aglint/shared-types';
+import {
+  type DatabaseTableUpdate,
+  type RecruiterType,
+} from '@aglint/shared-types';
 
+// import { useToast } from '@/components/hooks/use-toast';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 export async function updateRecruiter(id: string, obj: RecruiterType) {
   const { data, error } = await supabase
@@ -26,7 +29,10 @@ export const updateIntegrations = async (
       .eq('recruiter_id', rec_id)
       .throwOnError();
   } catch {
-    toast.error('Failed to update integrations');
+    // toast({
+    //   variant: 'destructive',
+    //   title: 'Failed to update integrations',
+    // });
   }
 };
 

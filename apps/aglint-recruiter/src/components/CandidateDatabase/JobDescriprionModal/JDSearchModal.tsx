@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash';
 import router from 'next/router';
 import React, { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
@@ -12,12 +13,12 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import UITextField from '../../Common/UITextField';
 import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {
+  const { toast } = useToast();
   const defaultValue = '';
   const { recruiter } = useAuthDetails();
   const { jobs } = useJobs();
@@ -59,7 +60,10 @@ ${jdText}
         `/candidates/search?searchQryId=${history.id}&search_title=${jobRole}`,
       );
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
       //
     } finally {
       setJdPopup(false);

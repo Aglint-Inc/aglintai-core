@@ -49,14 +49,10 @@ const TimezoneSelector: React.FC<TimezoneSelectorProps> = ({
         renderInput={(params) => {
           return (
             <UITextField
-              rest={{ ...params }}
+              {...params}
               labelSize='medium'
               label=''
               placeholder='Ex. America/Los_Angeles (GMT-08:00)'
-              InputProps={{
-                ...params.InputProps,
-                autoComplete: 'new-password',
-              }}
             />
           );
         }}

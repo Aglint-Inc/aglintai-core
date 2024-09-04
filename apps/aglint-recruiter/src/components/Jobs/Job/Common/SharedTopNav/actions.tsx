@@ -4,19 +4,18 @@ import { CircularProgress, Dialog } from '@mui/material';
 import {
   BarChart,
   Calendar,
-  ClipboardList,
   FileText,
   MoreHorizontal,
   PlusCircle,
   RefreshCw,
-  ShieldCheck,
   UserPlus,
   Workflow,
-  XCircle,
+  XCircle
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -28,7 +27,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import UITextField from '@/src/components/Common/UITextField';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -311,12 +309,7 @@ const Close = () => {
 const Modules = () => {
   const { manageJob } = useJob();
   const { currentPath } = useSettings();
-  const {
-    isAssessmentEnabled,
-    isScreeningEnabled,
-    isSchedulingEnabled,
-    isScoringEnabled,
-  } = useRolesAndPermissions();
+  const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();
   if (!manageJob)
     return (
       <>
@@ -333,12 +326,7 @@ const Modules = () => {
       {currentPath !== '/jobs/[id]/interview-plan' && isSchedulingEnabled && (
         <InterviewModule />
       )}
-      {currentPath !== '/jobs/[id]/assessment' && isAssessmentEnabled && (
-        <AssessmentModule />
-      )}
-      {currentPath !== '/jobs/[id]/screening' && isScreeningEnabled && (
-        <ScreeningModule />
-      )}
+
       {currentPath !== '/jobs/[id]/workflows' && <WorkflowModule />}
     </>
   );
@@ -380,26 +368,6 @@ const JobDetailsModule = () => {
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/job-details')}>
       <FileText className='mr-2 h-4 w-4' />
       <span>Job Details</span>
-    </DropdownMenuItem>
-  );
-};
-
-const AssessmentModule = () => {
-  const { handlePush } = useSettings();
-  return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/assessment')}>
-      <ClipboardList className='mr-2 h-4 w-4' />
-      <span>Assessment</span>
-    </DropdownMenuItem>
-  );
-};
-
-const ScreeningModule = () => {
-  const { handlePush } = useSettings();
-  return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/screening')}>
-      <ShieldCheck className='mr-2 h-4 w-4' />
-      <span>Screening</span>
     </DropdownMenuItem>
   );
 };
