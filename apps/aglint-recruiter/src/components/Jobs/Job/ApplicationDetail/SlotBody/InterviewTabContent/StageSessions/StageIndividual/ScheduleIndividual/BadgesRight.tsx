@@ -1,10 +1,10 @@
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import {
-  type TooltipProps,
   Stack,
   styled,
   Tooltip,
   tooltipClasses,
+  type TooltipProps,
 } from '@mui/material';
 
 import { type StageWithSessions } from '@/queries/application';

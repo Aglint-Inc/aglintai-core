@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { debounce } from 'lodash';
 import {
+  createToast,
   type Message,
   type Toast as Toaster,
   type ToastOptions,
-  createToast,
 } from 'vercel-toast';
 
 const toastOptions: ToastOptions = {

@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import useJobInterviewPlanActions from './hooks';
 import { type JobInterviewPlanContextType } from './types';
