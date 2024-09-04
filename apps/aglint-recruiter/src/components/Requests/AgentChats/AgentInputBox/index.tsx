@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -14,7 +13,7 @@ import { useAgentIEditor } from '../AgentEditorContext';
 import { useUserChat } from '../ChatMessageList/hooks/fetch';
 import AgentEditor from './AgentEditor';
 import CreateSchedulePopUp from './CreateSchedulePopUp';
-import { type selectedItemsType,scheduleTypes } from './utils';
+import { type selectedItemsType, scheduleTypes } from './utils';
 
 function AgentInputBox() {
   const { recruiter_id } = useAuthDetails();
@@ -139,11 +138,7 @@ function AgentInputBox() {
                   )
                   .map((ele) => ({
                     id: ele.id,
-                    display: getRequestTitle({
-                      title: ele.title,
-                      first_name: ele.applications.candidates.first_name,
-                      last_name: ele.applications.candidates.last_name,
-                    }),
+                    display: ele.title,
                   }))
               : []
           }
@@ -183,18 +178,6 @@ function AgentInputBox() {
 
 export default AgentInputBox;
 
-export const getRequestTitle = ({
-  title,
-  first_name,
-  last_name,
-}: {
-  title: string;
-  first_name: string;
-  last_name: string;
-}) => {
-  return title.replace('{{candidateName}}', getFullName(first_name, last_name));
-};
-
 export const useAllJobsAndApplications = ({
   recruiter_id,
   schedule_type,
@@ -209,7 +192,6 @@ export const useAllJobsAndApplications = ({
     queryFn: () =>
       getJobsAndApplications({
         recruiter_id,
-        schedule_type,
       }),
     gcTime: 20000,
     enabled: !!recruiter_id,
@@ -222,10 +204,8 @@ export const useAllJobsAndApplications = ({
 
 async function getJobsAndApplications({
   recruiter_id,
-  schedule_type,
 }: {
   recruiter_id: string;
-  schedule_type: selectedItemsType['schedule_type'][0]['id'];
 }) {
   const { data: jobs } = await supabase
     .from('public_jobs')
@@ -240,33 +220,6 @@ async function getJobsAndApplications({
     ({ applications }) => applications,
   );
   const applications = applicationsList.map((ele) => {
-    // eslint-disable-next-line no-console
-    console.log(schedule_type); // remove this line latter
-
-    // const requestSessions =
-    //   ele.request
-    //     .filter((request) => {
-    //       if (schedule_type === 're_schedule') {
-    //         return request.status === 'in_progress';
-    //       } else {
-    //         return request;
-    //       }
-    //     })
-    //     ?.map((req) => req.request_relation)
-    //     .flat()
-    //     .map((rel) => rel.session_id)
-    //     .flat() || [];
-
-    // const applicantSessions = (
-    //   ele.interview_schedule?.interview_meeting
-    //     ? ele.interview_schedule.interview_meeting
-    //         .map((meeting) => meeting.interview_session)
-    //         .flat()
-    //     : []
-    // ).filter(
-    //   (session) =>
-    //     !requestSessions.includes(session.id) && session.name !== 'Debrief',
-    // );
     const applicantSessions = ele.interview_schedule?.interview_meeting
       ? ele.interview_schedule.interview_meeting
           .filter((meeting) => meeting.status !== 'waiting')
@@ -290,28 +243,3 @@ async function getJobsAndApplications({
     applications: applications.filter((ele) => ele.applicantSessions.length),
   };
 }
-
-// async function getApplicationWithName(name: string, sessions_name: string[]) {
-//   const { data, error } = await supabase
-//     .from('applications')
-//     .select(`*, candidates(first_name,last_name), public_jobs(id,job_title), request(request_relation(session_id)), interview_schedule(interview_meeting(interview_session(id,name)))`)
-//     .eq('status', 'interview')
-//     .ilike('candidates.first_name', `%${name}%`);
-//   // .ilike('candidates.last_name', `%${name}%`);
-
-//   if (error) {
-//     throw error;
-//   }
-
-//   if (data.length > 1) {
-//     console.log('More that one applications', data);
-//   }
-//   if (data.length === 0) {
-//     console.log('No application found');
-//   }
-//   if (data.length === 1) {
-//     console.log('One application found', data);
-//   }
-
-//   return data;
-// }

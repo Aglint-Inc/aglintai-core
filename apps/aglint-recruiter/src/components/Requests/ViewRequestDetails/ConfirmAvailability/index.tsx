@@ -4,7 +4,6 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer, Stack } from '@mui/material';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
@@ -16,12 +15,12 @@ import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';
 
 import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './Calendar';
+import { useRequestAvailabilityDetails } from './hooks';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import SelectAvailableOption from './SelectAvailableOption';
 import {
@@ -259,43 +258,3 @@ function ConfirmAvailability() {
 }
 
 export default ConfirmAvailability;
-
-export const useRequestAvailabilityDetails = ({
-  request_id,
-}: {
-  request_id: string;
-}) => {
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['get_request_availability_details', { request_id }],
-    queryFn: () => getRequestAvailabilityDetails(request_id),
-    // refetchInterval: 2000,
-    enabled: true,
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({
-      queryKey: ['get_request_availability_details', { request_id }],
-    });
-  return { ...query, refetch };
-};
-
-async function getRequestAvailabilityDetails(request_id: string) {
-  if (request_id) {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      const { data } = await axios.post(
-        '/api/scheduling/v1/get-candidate-selected-slots',
-        {
-          cand_availability_id: request_id,
-          user_tz: userTzDayjs.tz.guess(),
-        },
-      );
-      return data as {
-        slots: CandReqSlotsType[];
-        availabilities: ApiResponseFindAvailability['availabilities'];
-      };
-    } catch (error) {
-      throw error;
-    }
-  }
-}
