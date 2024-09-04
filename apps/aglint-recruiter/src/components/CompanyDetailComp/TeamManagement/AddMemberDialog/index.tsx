@@ -3,27 +3,27 @@ import {
   type RecruiterUserType,
   type schedulingSettingType,
 } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { InviteTeamCard } from '@devlink/InviteTeamCard';
+import { TeamInvite } from '@devlink/TeamInvite';
+import { TeamInvitesBlock } from '@devlink/TeamInvitesBlock';
+import { TeamPendingInvites } from '@devlink/TeamPendingInvites';
 import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { InviteTeamCard } from '@/devlink/InviteTeamCard';
-import { TeamInvite } from '@/devlink/TeamInvite';
-import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
-import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useAllDepartments } from '@/src/queries/departments';
-import { useAllMembers } from '@/src/queries/members';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
-import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import timeZone from '@/src/utils/timeZone';
+import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useAllDepartments } from '@/queries/departments';
+import { useAllMembers } from '@/queries/members';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
+import { getFullName } from '@/utils/jsonResume';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import timeZone from '@/utils/timeZone';
 
 import { useRolesOptions } from '../hooks';
 import { inviteUserApi, reinviteUser } from '../utils';

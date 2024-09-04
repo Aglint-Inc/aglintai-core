@@ -1,22 +1,22 @@
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { TeamSync } from '@devlink/TeamSync';
+import { TeamUsersList } from '@devlink/TeamUsersList';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { TeamEmpty } from '@devlink3/TeamEmpty';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { TeamSync } from '@/devlink/TeamSync';
-import { TeamUsersList } from '@/devlink/TeamUsersList';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { TeamEmpty } from '@/devlink3/TeamEmpty';
-import { type GreenHouseUserSyncAPI } from '@/src/app/api/sync/greenhouse/user/type';
-import axios from '@/src/client/axios';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { type API_get_last_login } from '@/src/pages/api/get_last_login/types';
-import { useGreenhouseDetails } from '@/src/queries/greenhouse';
-import { useAllMembers } from '@/src/queries/members';
-import dayjs from '@/src/utils/dayjs';
+import { type GreenHouseUserSyncAPI } from '@/app/api/sync/greenhouse/user/type';
+import axios from '@/client/axios';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { type API_get_last_login } from '@/pages/api/get_last_login/types';
+import { useGreenhouseDetails } from '@/queries/greenhouse';
+import { useAllMembers } from '@/queries/members';
+import dayjs from '@/utils/dayjs';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';

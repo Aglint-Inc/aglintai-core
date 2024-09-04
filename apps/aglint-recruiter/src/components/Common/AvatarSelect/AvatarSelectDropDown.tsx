@@ -1,14 +1,13 @@
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 
-import { palette } from '@/src/context/Theme/Theme';
+import { palette } from '@/context/Theme/Theme';
 
 import Icon from '../Icons/Icon';
 import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
 
 type MenuOption = {
-  
   name: string;
   value: string | number;
   start_icon_url?:
@@ -167,7 +166,6 @@ const AvatarSelectDropDown = ({
                           />
                         </Stack>
                       )}
-
                     </Stack>
                   ) : !menu.start_icon_url ||
                     typeof menu.start_icon_url === 'string' ? (

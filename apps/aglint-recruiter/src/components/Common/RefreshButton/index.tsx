@@ -1,6 +1,5 @@
+import { Button } from '@components/ui/button';
 import { RefreshCw } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
 
 const RefreshBtn = ({ text, isDisabled, onClick, animatedDisable = true }) => {
   return (

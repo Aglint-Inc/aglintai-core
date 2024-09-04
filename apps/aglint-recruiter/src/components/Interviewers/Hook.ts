@@ -6,10 +6,10 @@ import {
 } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type initUser } from '@/src/pages/api/interviewers';
-import { type allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type initUser } from '@/pages/api/interviewers';
+import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
+import { supabase } from '@/utils/supabase/client';
 
 import { type LeaderAnalyticsFilterType } from './types';
 

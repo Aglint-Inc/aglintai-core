@@ -17,11 +17,15 @@ import {
 } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
-import { supabase } from '@/src/utils/supabase/client';
-import aglintToast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import aglintToast from '@/utils/toast';
 
 import { appKey, GC_TIME } from '..';
-import { type Request, type RequestProgress, type RequestResponse } from './types';
+import {
+  type Request,
+  type RequestProgress,
+  type RequestResponse,
+} from './types';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,

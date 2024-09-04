@@ -3,11 +3,11 @@ import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
-import { SafeObject } from '@/src/utils/safeObject';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
+import { SafeObject } from '@/utils/safeObject';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import { useUserChat } from '../ChatMessageList/hooks/fetch';

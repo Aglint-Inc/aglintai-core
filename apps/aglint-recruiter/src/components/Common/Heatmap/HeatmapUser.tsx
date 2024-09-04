@@ -1,10 +1,9 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
-
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
 import { type Meeting } from './type';
 import {

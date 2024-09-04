@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import type { nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
+import type { nestedObjectToArray } from '@/components/Common/FilterHeader/utils';
 import {
   applicationsQueries,
   useDeleteApplication,
@@ -13,9 +13,9 @@ import {
   useMoveApplicationsToInterview,
   useReuploadResume,
   useUpdateApplication,
-} from '@/src/queries/job-applications';
-import { type Application } from '@/src/types/applications.types';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@/queries/job-applications';
+import { type Application } from '@/types/applications.types';
+import ROUTES from '@/utils/routing/routes';
 
 import { useApplicationStore } from '../ApplicationContext/store';
 import { useJob } from '../JobContext';

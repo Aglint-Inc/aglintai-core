@@ -1,18 +1,18 @@
 import { supabaseWrap } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { JobDescriptionModal } from '@devlink/JobDescriptionModal';
 import { Stack } from '@mui/material';
 import { isEmpty } from 'lodash';
 import router from 'next/router';
 import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobs } from '@/context/JobsContext';
+import { searchJdToJson } from '@/utils/prompts/candidateDb/jdToJson';
+import { supabase } from '@/utils/supabase/client';
 
 import UITextField from '../../Common/UITextField';
 import { getRelevantCndidates } from '../utils';

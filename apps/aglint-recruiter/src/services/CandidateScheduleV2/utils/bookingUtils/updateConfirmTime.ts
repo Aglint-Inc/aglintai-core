@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const updateConfirmTime = async (filter_id: string) => {
   try {

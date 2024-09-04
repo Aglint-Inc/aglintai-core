@@ -1,7 +1,3 @@
-import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,18 +5,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { EmptyState } from '@/devlink2/EmptyState';
-import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
-import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@components/ui/breadcrumb';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { EmptyState } from '@devlink2/EmptyState';
+import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
+import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
+import { PageLayout } from '@devlink2/PageLayout';
+import { TaskSwitchButton } from '@devlink3/TaskSwitchButton';
+import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
 
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';

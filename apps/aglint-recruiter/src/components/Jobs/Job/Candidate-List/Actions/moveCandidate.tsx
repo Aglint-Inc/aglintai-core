@@ -1,17 +1,17 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
 import { Checkbox, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { useApplications } from '@/context/ApplicationsContext';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { capitalize } from '@/utils/text/textUtils';
 
 import { formatSessions } from '../utils';
 import CreateTask from './createTask';

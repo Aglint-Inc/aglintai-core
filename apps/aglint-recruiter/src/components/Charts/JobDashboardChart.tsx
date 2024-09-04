@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import React from 'react';
 import {
   Bar,
@@ -7,8 +8,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const data = [
   { stage: 'Application Received', candidates: 150 },

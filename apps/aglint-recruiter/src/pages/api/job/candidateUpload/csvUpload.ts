@@ -12,13 +12,13 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   type CsvUploadApi,
   type Supabase,
-} from '@/src/apiUtils/job/candidateUpload/types';
+} from '@/apiUtils/job/candidateUpload/types';
 import {
   bulkCreateApplications,
   bulkCreateCandidate,
   bulkCreateFiles,
-} from '@/src/apiUtils/job/candidateUpload/utils';
-import { type CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
+} from '@/apiUtils/job/candidateUpload/utils';
+import { type CandidateFilesBulkCreateAction } from '@/context/CandidatesContext/types';
 
 const handler = async (
   req: NextApiRequest,

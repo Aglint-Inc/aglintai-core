@@ -5,7 +5,7 @@ import { candidate_avail_request_schema } from '@aglint/shared-utils/src/schedul
 import axios from 'axios';
 import * as v from 'valibot';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateAvailReRequest = async ({
   end_date_str,

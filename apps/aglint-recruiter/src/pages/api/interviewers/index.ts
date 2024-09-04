@@ -3,9 +3,9 @@ import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/table
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { getCalEventType } from '@/src/services/CandidateScheduleV2/utils/fetchIntsCalEventsDetails';
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getCalEventType } from '@/services/CandidateScheduleV2/utils/fetchIntsCalEventsDetails';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 type allInterviewerType = Awaited<ReturnType<typeof getAllInterviewers>>;
 

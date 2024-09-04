@@ -1,14 +1,14 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { HistoryPill } from '@devlink3/HistoryPill';
+import { InterviewerTraining } from '@devlink3/InterviewerTraining';
+import { InterviewerTrainingList } from '@devlink3/InterviewerTrainingList';
 import { Avatar, Stack } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { HistoryPill } from '@/devlink3/HistoryPill';
-import { InterviewerTraining } from '@/devlink3/InterviewerTraining';
-import { InterviewerTrainingList } from '@/devlink3/InterviewerTrainingList';
-import { useJobs } from '@/src/context/JobsContext';
-import { type SchedulingAnalyticsContextType } from '@/src/context/SchedulingAnalytics';
-import { useAllDepartments } from '@/src/queries/departments';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
+import { useJobs } from '@/context/JobsContext';
+import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
+import { useAllDepartments } from '@/queries/departments';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';

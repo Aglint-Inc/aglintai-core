@@ -30,7 +30,7 @@
     "src/components/JobTracker/Activities/devlink",
     "src/types/*",
     ".github",
-    "src/components/shadcn/ui"
+    "components/ui"
   ],
   "rules": {
     "no-unused-vars": "error",

@@ -1,9 +1,9 @@
+import { Checkbox } from '@devlink/Checkbox';
 import { Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import posthog from 'posthog-js';
 
-import { Checkbox } from '@/devlink/Checkbox';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';

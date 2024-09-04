@@ -4,17 +4,14 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
-import { upsertRequestNotes } from '@/src/components/Requests/ViewRequestDetails/RequestNotes/utils';
-import { type APICreateScheduleRequest } from '@/src/pages/api/request/schedule-request';
-import {
-  applicationQuery,
-  useUpdateApplication,
-} from '@/src/queries/application';
-import { diffApplication } from '@/src/queries/job-applications';
-import dayjs from '@/src/utils/dayjs';
-import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
+import type { ResumePreviewer } from '@/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
+import { upsertRequestNotes } from '@/components/Requests/ViewRequestDetails/RequestNotes/utils';
+import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
+import { applicationQuery, useUpdateApplication } from '@/queries/application';
+import { diffApplication } from '@/queries/job-applications';
+import dayjs from '@/utils/dayjs';
+import ROUTES from '@/utils/routing/routes';
+import toast from '@/utils/toast';
 
 import { useApplications } from '../ApplicationsContext';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';

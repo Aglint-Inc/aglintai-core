@@ -4,12 +4,12 @@
 // import { useRouter } from 'next/router';
 // import React, { useEffect, useState } from 'react';
 
-// import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-// import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-// import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
-// import Loader from '@/src/components/Common/Loader';
-// import SearchField from '@/src/components/Common/SearchField/SearchField';
-// import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+// import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
+// import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
+// import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
+// import Loader from '@/components/Common/Loader';
+// import SearchField from '@/components/Common/SearchField/SearchField';
+// import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 
 // import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 // import { transformDataSchedules } from '../../schedules-query';

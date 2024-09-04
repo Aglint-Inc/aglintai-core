@@ -1,15 +1,19 @@
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { PasswordUpdated } from '@devlink/PasswordUpdated';
+import { UserPasswordChange } from '@devlink/UserPasswordChange';
 import { Dialog, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { PasswordUpdated } from '@/devlink/PasswordUpdated';
-import { UserPasswordChange } from '@/devlink/UserPasswordChange';
-import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
+import { handleUpdatePassword } from '@/context/AuthContext/utils';
 
 import Icon from '../../Common/Icons/Icon';
 import UITypography from '../../Common/UITypography';
 import { ProfileForms } from '..';
-import { type FormValues, type PasswordFormFields, validatePassword } from '../util';
+import {
+  type FormValues,
+  type PasswordFormFields,
+  validatePassword,
+} from '../util';
 
 export const PasswordUpdate = () => {
   const [passwordChange, setPasswordChange] = useState(false);

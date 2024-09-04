@@ -2,10 +2,9 @@
 
 import 'react-phone-input-2/lib/style.css';
 
+import { cn } from '@lib/utils';
 import React, { forwardRef } from 'react';
 import PhoneInput from 'react-phone-input-2';
-
-import { cn } from '@/lib/utils';
 
 interface PhoneInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {

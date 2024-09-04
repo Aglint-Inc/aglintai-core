@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import {
   type useInterviewConversion,
   type useInterviewMeetingStatus,
-} from '@/src/queries/scheduling-dashboard';
+} from '@/queries/scheduling-dashboard';
 
 export const interviewConversionTimeFormat = (
   type: Parameters<typeof useInterviewConversion>[0],

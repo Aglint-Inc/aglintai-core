@@ -1,8 +1,8 @@
+import { SchedulingDashboard as SchedulingDashboardDev } from '@devlink3/SchedulingDashboard';
 import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
-import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3/SchedulingDashboard';
-import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
+import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
 
 import Loader from '../../Common/Loader';
 import { CompletedInterviews } from './completedInterviews';

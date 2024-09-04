@@ -1,12 +1,12 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSurface } from '@devlink/ButtonSurface';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { RescheduleCard } from '@devlink3/RescheduleCard';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { RescheduleCard } from '@/devlink3/RescheduleCard';
-import ROUTES from '@/src/utils/routing/routes';
+import ROUTES from '@/utils/routing/routes';
 
 import BookingConfirmation from './BookingConfirmation';
 

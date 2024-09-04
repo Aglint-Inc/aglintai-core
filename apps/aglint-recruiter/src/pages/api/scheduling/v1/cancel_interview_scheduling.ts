@@ -9,7 +9,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { session_ids } = req.body as ApiCancelScheduledInterview;

@@ -1,12 +1,12 @@
+import { Skeleton } from '@devlink2/Skeleton';
+import { ActivitiesCard } from '@devlink3/ActivitiesCard';
+import { SkeletonActivitiesCard } from '@devlink3/SkeletonActivitiesCard';
 import dayjs from 'dayjs';
 import { FileText } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
-import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
-import SlotContent from '@/src/components/Activities/SlotWidgets';
-import { useApplication } from '@/src/context/ApplicationContext';
+import SlotContent from '@/components/Activities/SlotWidgets';
+import { useApplication } from '@/context/ApplicationContext';
 
 import { EmptyState } from './Common/EmptyState';
 import { Loader } from './Common/Loader';

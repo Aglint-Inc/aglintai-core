@@ -1,6 +1,6 @@
-import Seo from '@/src/components/Common/Seo';
-import ModuleMembersComp from '@/src/components/Scheduling/InterviewTypes/DetailPage';
-import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import Seo from '@/components/Common/Seo';
+import ModuleMembersComp from '@/components/Scheduling/InterviewTypes/DetailPage';
+import SchedulingProvider from '@/context/SchedulingMain/SchedulingMainProvider';
 
 const ModuleMembers = () => {
   return (

@@ -1,16 +1,16 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { Text } from '@devlink/Text';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Checkbox, Dialog, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useEffect } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { Text } from '@/devlink/Text';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
-import dayjs from '@/src/utils/dayjs';
-import { supabase } from '@/src/utils/supabase/client';
+import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import dayjs from '@/utils/dayjs';
+import { supabase } from '@/utils/supabase/client';
 
 import { useModuleRelations } from '../hooks';
 import { setIsPauseDialogOpen, useInterviewerDetailStore } from '../store';

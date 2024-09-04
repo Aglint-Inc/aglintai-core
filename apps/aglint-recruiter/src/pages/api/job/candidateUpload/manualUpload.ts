@@ -11,7 +11,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import {
   type ManualUploadApi,
   type Supabase,
-} from '@/src/apiUtils/job/candidateUpload/types';
+} from '@/apiUtils/job/candidateUpload/types';
 import {
   createApplication,
   createFile,
@@ -21,7 +21,7 @@ import {
   getFiles,
   uploadResume,
   verifyAndCreateCandidate,
-} from '@/src/apiUtils/job/candidateUpload/utils';
+} from '@/apiUtils/job/candidateUpload/utils';
 
 export const config = {
   api: {

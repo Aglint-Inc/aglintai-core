@@ -1,17 +1,17 @@
+import { Skeleton } from '@devlink2/Skeleton';
+import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
+import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
+import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { InterviewModuleStats } from '@/devlink3/InterviewModuleStats';
-import { InterviewModuleStatsCard } from '@/devlink3/InterviewModuleStatsCard';
-import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
-} from '@/src/context/SchedulingAnalytics';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/context/SchedulingAnalytics';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
 

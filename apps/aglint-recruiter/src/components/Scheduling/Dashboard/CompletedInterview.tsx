@@ -1,11 +1,11 @@
+import { CompletedInterviews } from '@devlink3/CompletedInterviews';
+import { NoData } from '@devlink3/NoData';
 import { Stack } from '@mui/material';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { CompletedInterviews } from '@/devlink3/CompletedInterviews';
-import { NoData } from '@/devlink3/NoData';
-import { useCompletedInterviewDetails } from '@/src/queries/scheduling-dashboard';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { useCompletedInterviewDetails } from '@/queries/scheduling-dashboard';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { type getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 

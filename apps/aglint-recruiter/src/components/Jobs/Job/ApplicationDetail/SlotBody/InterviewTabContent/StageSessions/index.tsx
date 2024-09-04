@@ -2,8 +2,8 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
+import { useApplication } from '@/context/ApplicationContext';
+import { useKeyPress } from '@/hooks/useKeyPress';
 
 import StageIndividual from './StageIndividual';
 

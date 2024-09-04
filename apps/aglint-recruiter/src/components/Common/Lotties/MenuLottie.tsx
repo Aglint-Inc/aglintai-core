@@ -1,7 +1,6 @@
+import { menuLottieValue } from '@public/lottie/menuLottieValue';
 import Lottie from 'lottie-react';
 import { useEffect } from 'react';
-
-import { menuLottieValue } from '@/public/lottie/menuLottieValue';
 
 function MenuLottie({ lottieRef, isStop }) {
   useEffect(() => {

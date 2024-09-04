@@ -1,9 +1,9 @@
+import { Text } from '@devlink/Text';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { MenuItem, Popover, Select, Stack } from '@mui/material';
 import React, { type ReactNode } from 'react';
 
-import { Text } from '@/devlink/Text';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export type sortComponentType = {
   sortOptions: {

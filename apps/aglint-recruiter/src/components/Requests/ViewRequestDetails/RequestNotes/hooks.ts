@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 export const useRequestNotes = ({ request_id }: { request_id: string }) => {
   const queryClient = useQueryClient();

@@ -1,22 +1,22 @@
+import { ButtonGenerate } from '@devlink/ButtonGenerate';
+import { CdEmailOutreach } from '@devlink/CdEmailOutreach';
+import { ConnectedMail } from '@devlink/ConnectedMail';
+import { ConnectMailModal } from '@devlink/ConnectMailModal';
+import { EmailSuccessCard } from '@devlink/EmailSuccessCard';
+import { LoaderSvg } from '@devlink/LoaderSvg';
+import { MailLink } from '@devlink/MailLink';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import EmailTemplateEditor from '@/components/Common/EmailTemplateEditor/EmailTemplateEditor';
+import MuiPopup from '@/components/Common/MuiPopup';
+import UISelect from '@/components/Common/Uiselect';
+import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonGenerate } from '@/devlink/ButtonGenerate';
-import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
-import { ConnectedMail } from '@/devlink/ConnectedMail';
-import { ConnectMailModal } from '@/devlink/ConnectMailModal';
-import { EmailSuccessCard } from '@/devlink/EmailSuccessCard';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { MailLink } from '@/devlink/MailLink';
-import EmailTemplateEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import UISelect from '@/src/components/Common/Uiselect';
-import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getTimeDifference } from '@/src/utils/jsonResume';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getTimeDifference } from '@/utils/jsonResume';
 
 import { useOutReachCtx } from './OutReachCtx';
 

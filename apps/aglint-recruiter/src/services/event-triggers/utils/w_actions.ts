@@ -1,6 +1,6 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 export const getWActions = async ({
   company_id,
   request_id,

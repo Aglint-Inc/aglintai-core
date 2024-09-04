@@ -1,17 +1,17 @@
+import { CompanyListing } from '@devlink/CompanyListing';
+import { CompanyListingLinks } from '@devlink/CompanyListingLinks';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { OfficeLocationCard } from '@devlink/OfficeLocationCard';
+import { OpenJobListingCard } from '@devlink/OpenJobListingCard';
 import { Avatar, Stack } from '@mui/material';
 import { Building2 } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
-import { CompanyListing } from '@/devlink/CompanyListing';
-import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
-import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type CompanyPostAPI } from '@/src/pages/api/jobpost/company';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type CompanyPostAPI } from '@/pages/api/jobpost/company';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Footer from '../Common/Footer';
 

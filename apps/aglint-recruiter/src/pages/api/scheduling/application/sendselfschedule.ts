@@ -12,10 +12,10 @@ import {
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { selfScheduleMailToCandidate } from '@/src/utils/scheduling/mailUtils';
-import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
-import { addScheduleActivity } from '@/src/utils/scheduling/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { selfScheduleMailToCandidate } from '@/utils/scheduling/mailUtils';
+import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { type ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
 

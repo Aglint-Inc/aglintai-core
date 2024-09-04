@@ -1,14 +1,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
   const [isLoading, setLoading] = useState(false);

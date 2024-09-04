@@ -2,10 +2,10 @@ import { type DatabaseTable, type PauseJson } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import axios from '@/client/axios';
 import { useToast } from '@/components/hooks/use-toast';
-import axios from '@/src/client/axios';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type ApiResponseInterviewModuleById } from '@/pages/api/scheduling/fetch_interview_module_by_id';
 
 import { type MemberTypeAutoComplete } from '../../Common/MembersTextField';
 import { type PauseType } from '../DetailPage/type';

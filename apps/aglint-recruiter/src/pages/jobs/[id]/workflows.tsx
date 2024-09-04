@@ -1,7 +1,7 @@
-import Seo from '@/src/components/Common/Seo';
-import JobWorkflowDashboard from '@/src/components/Jobs/Job/Workflow';
-import { JobProvider } from '@/src/context/JobContext';
-import JobDashboardProvider from '@/src/context/JobDashboard';
+import Seo from '@/components/Common/Seo';
+import JobWorkflowDashboard from '@/components/Jobs/Job/Workflow';
+import { JobProvider } from '@/context/JobContext';
+import JobDashboardProvider from '@/context/JobDashboard';
 
 const JobWorkflowsPage = () => {
   return <JobWorkflowDashboard />;

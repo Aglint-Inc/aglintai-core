@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
+import { NoData } from '@devlink3/NoData';
 import { Stack } from '@mui/material';
 import {
   BarElement,
@@ -10,9 +12,7 @@ import {
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
-import { NoData } from '@/devlink3/NoData';
-import { useInterviewMeetingStatus } from '@/src/queries/scheduling-dashboard';
+import { useInterviewMeetingStatus } from '@/queries/scheduling-dashboard';
 
 import Loader from '../../Common/Loader';
 import { interviewMeetingTimeFormat } from './utils';

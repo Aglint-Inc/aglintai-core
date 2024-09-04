@@ -1,11 +1,11 @@
+import { BookMark } from '@devlink/BookMark';
+import { Download } from '@devlink/Download';
+import { ResumeWrap } from '@devlink3/ResumeWrap';
 import { Dialog, Stack } from '@mui/material';
 import { useMemo } from 'react';
 
-import { BookMark } from '@/devlink/BookMark';
-import { Download } from '@/devlink/Download';
-import { ResumeWrap } from '@/devlink3/ResumeWrap';
-import Loader from '@/src/components/Common/Loader';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import Loader from '@/components/Common/Loader';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const ResumePreviewer = ({
   open,

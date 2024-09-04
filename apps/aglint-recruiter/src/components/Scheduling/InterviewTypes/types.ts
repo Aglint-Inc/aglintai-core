@@ -3,10 +3,10 @@ import {
   type DB,
   type InterviewModuleRelationType,
   type InterviewModuleType,
-  type PauseJson
+  type PauseJson,
 } from '@aglint/shared-types';
 
-import { type CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
 
 import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
 import { type fetchInterviewModules } from './queries/utils';

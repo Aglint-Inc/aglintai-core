@@ -1,14 +1,14 @@
 import { supabaseWrap } from '@aglint/shared-utils';
+import { EmailTemplateModal } from '@devlink/EmailTemplateModal';
 import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
+import EmailAiEditor from '@/components/Common/EmailTemplateEditor/EmailTemplateEditor';
+import UITextField from '@/components/Common/UITextField';
+import UITypography from '@/components/Common/UITypography';
 import { useToast } from '@/components/hooks/use-toast';
-import { EmailTemplateModal } from '@/devlink/EmailTemplateModal';
-import EmailAiEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
-import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 import { useOutReachCtx } from './OutReachCtx';
 import { type TemplateType, outReachTemplates } from './seedTemplates';

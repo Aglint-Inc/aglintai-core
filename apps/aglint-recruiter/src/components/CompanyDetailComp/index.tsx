@@ -1,13 +1,13 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
+import { CompanySetting } from '@devlink/CompanySetting';
+import { SavedChanges } from '@devlink/SavedChanges';
 import { CircularProgress, Stack } from '@mui/material';
+import LoaderGrey from '@public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CompanySetting } from '@/devlink/CompanySetting';
-import { SavedChanges } from '@/devlink/SavedChanges';
-import LoaderGrey from '@/public/lottie/LoaderGrey';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 import CompanyInfoComp from './CompanyInfoComp';
 import SchedulingSettings, { SettingsSubNabItem } from './SettingsSchedule';

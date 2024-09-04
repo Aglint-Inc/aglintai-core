@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
+import { cloneWorkflows } from '@/utils/request/cloneWorkflows';
 
 export const onInsertRequest = async ({
   new_data,

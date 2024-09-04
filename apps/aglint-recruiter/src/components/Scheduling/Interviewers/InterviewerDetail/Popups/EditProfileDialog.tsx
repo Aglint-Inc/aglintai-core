@@ -1,13 +1,13 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { UserDetails } from '@devlink/UserDetails';
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { UserDetails } from '@/devlink/UserDetails';
-import ImageUploadManual from '@/src/components/Common/ImageUpload/ImageUploadManual';
-import UITextField from '@/src/components/Common/UITextField';
-import { ProfileForms } from '@/src/components/Profile';
+import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import UITextField from '@/components/Common/UITextField';
+import { ProfileForms } from '@/components/Profile';
 import {
   type FormFields,
   type FormValues,
@@ -16,11 +16,11 @@ import {
   validateMail,
   validatePhone,
   validateString,
-} from '@/src/components/Profile/util';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import timeZone from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+} from '@/components/Profile/util';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import timeZone from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 const initialFormValues: FormValues = {
   value: null,

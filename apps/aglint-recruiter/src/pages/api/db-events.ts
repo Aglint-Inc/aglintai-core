@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { db_event_triggers } from '@/src/services/event-triggers/eventTriggers';
+import { db_event_triggers } from '@/services/event-triggers/eventTriggers';
 
 type BodyParams = {
   new_data: any;

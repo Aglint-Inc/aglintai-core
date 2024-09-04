@@ -1,3 +1,5 @@
+import { InterviewRatio } from '@devlink3/InterviewRatio';
+import { NoData } from '@devlink3/NoData';
 import { Stack, useMediaQuery } from '@mui/material';
 import {
   BarElement,
@@ -10,9 +12,7 @@ import { capitalize } from 'lodash';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { InterviewRatio } from '@/devlink3/InterviewRatio';
-import { NoData } from '@/devlink3/NoData';
-import { useInterviewConversion } from '@/src/queries/scheduling-dashboard';
+import { useInterviewConversion } from '@/queries/scheduling-dashboard';
 
 import Loader from '../../Common/Loader';
 import SchedulingDropdown from './SchedulingDropdown';

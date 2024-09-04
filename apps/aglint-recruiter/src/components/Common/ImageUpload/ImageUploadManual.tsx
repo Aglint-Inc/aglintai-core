@@ -1,3 +1,5 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import {
   Building2,
   Loader2,
@@ -10,9 +12,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import ROUTES from '@/src/utils/routing/routes';
+import ROUTES from '@/utils/routing/routes';
 
 function ImageUploadManual({
   image,

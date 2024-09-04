@@ -1,8 +1,7 @@
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
 import { Search, X } from 'lucide-react';
 import React, { ChangeEvent } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 interface SearchFieldProps {
   value: string;

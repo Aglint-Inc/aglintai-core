@@ -1,12 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { useRequests } from '@/src/context/RequestsContext';
-import {
-  type Request,
-  type RequestResponse,
-} from '@/src/queries/requests/types';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+
+import { useRequests } from '@/context/RequestsContext';
+import { type Request, type RequestResponse } from '@/queries/requests/types';
 
 import Section from './Section';
 

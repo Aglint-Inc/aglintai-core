@@ -6,9 +6,9 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { seed_email_templates } from '@/src/utils/seedCompanyData/seed_email_templates';
-import { seed_workflow_actions } from '@/src/utils/seedCompanyData/seed_workflow';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { seed_email_templates } from '@/utils/seedCompanyData/seed_email_templates';
+import { seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
   req: NextApiRequest,

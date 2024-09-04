@@ -1,9 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { dayjsLocal,supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { getWActions } from '@/src/services/event-triggers/utils/w_actions';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getWActions } from '@/services/event-triggers/utils/w_actions';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

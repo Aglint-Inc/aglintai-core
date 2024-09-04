@@ -8,8 +8,8 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/utils/scheduling/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { type ApiDebriefAddUsers } from './debrief-add-users';
 

@@ -1,16 +1,16 @@
 import { getFullName } from '@aglint/shared-utils';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { Text } from '@devlink/Text';
+import { AvatarWithName } from '@devlink3/AvatarWithName';
+import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { Text } from '@/devlink/Text';
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { RequestHistoryCard } from '@/devlink3/RequestHistoryCard';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';

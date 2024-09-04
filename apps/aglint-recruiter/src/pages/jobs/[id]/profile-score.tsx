@@ -1,8 +1,7 @@
-import Seo from '@components/Common/Seo';
-
-import JobProfileScoreDashboard from '@/src/components/Jobs/Job/Profile-Score';
-import { JobProvider } from '@/src/context/JobContext';
-import JobDashboardProvider from '@/src/context/JobDashboard';
+import Seo from '@/components/Common/Seo';
+import JobProfileScoreDashboard from '@/components/Jobs/Job/Profile-Score';
+import { JobProvider } from '@/context/JobContext';
+import JobDashboardProvider from '@/context/JobDashboard';
 
 const ProfileScoreJobPage = () => {
   return (

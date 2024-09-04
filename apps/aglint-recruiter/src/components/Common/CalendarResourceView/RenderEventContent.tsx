@@ -1,12 +1,11 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Stack, Typography } from '@mui/material';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@components/ui/tooltip';
+import { Stack, Typography } from '@mui/material';
 
 import InterviewerAcceptDeclineIcon from '../Icons/InterviewerAcceptDeclineIcon';
 import MuiAvatar from '../MuiAvatar';

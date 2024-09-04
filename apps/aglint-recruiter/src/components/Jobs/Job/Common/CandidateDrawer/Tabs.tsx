@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
+import { NewTabPill } from '@devlink3/NewTabPill';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 
-import { NewTabPill } from '@/devlink3/NewTabPill';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 import {
   type ApplicationStore,
   useApplicationStore,
-} from '@/src/context/ApplicationContext/store';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
+} from '@/context/ApplicationContext/store';
+import { useKeyPress } from '@/hooks/useKeyPress';
 
 import {
   ApplicationInterviewActionsProvider,

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

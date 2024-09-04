@@ -1,3 +1,15 @@
+import { Button } from '@components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 import {
   AlignLeft,
   AlignRight,
@@ -12,19 +24,6 @@ import {
   Undo,
 } from 'lucide-react';
 import React, { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 import { useTipTap } from './context';
 

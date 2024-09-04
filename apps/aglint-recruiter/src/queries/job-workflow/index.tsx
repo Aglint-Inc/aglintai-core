@@ -4,8 +4,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { type JobRequisite } from '../job';
 import { workflowQueryKeys } from '../workflow/keys';

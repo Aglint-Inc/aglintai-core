@@ -1,12 +1,12 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { MemberRow } from '@devlink3/MemberRow';
+import { SessionDetails } from '@devlink3/SessionDetails';
 
-import { MemberRow } from '@/devlink3/MemberRow';
-import { SessionDetails } from '@/devlink3/SessionDetails';
-import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { getFullName } from '@/src/utils/jsonResume';
+import IconSessionType from '@/components/Common/Icons/IconSessionType';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getFullName } from '@/utils/jsonResume';
 
 import ConflictWithHover from './ConflictWithHover';
 

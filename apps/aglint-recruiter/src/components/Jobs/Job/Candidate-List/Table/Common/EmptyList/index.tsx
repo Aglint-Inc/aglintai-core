@@ -1,8 +1,7 @@
+import { ApplicantsListEmpty } from '@devlink2/ApplicantsListEmpty';
 import { Stack } from '@mui/material';
+import NoApplicants from '@public/lottie/NoApplicants';
 import { memo } from 'react';
-
-import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
-import NoApplicants from '@/public/lottie/NoApplicants';
 
 export const EmptyList = memo(() => {
   return (

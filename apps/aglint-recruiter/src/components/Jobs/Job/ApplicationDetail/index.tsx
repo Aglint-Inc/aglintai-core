@@ -1,7 +1,7 @@
+import { PageLayout } from '@devlink2/PageLayout';
 import { useRouter } from 'next/router';
 
-import { PageLayout } from '@/devlink2/PageLayout';
-import { Application } from '@/src/context/ApplicationContext';
+import { Application } from '@/context/ApplicationContext';
 
 import BreadCrumb from './BreadCrumb';
 import SlotBody from './SlotBody';

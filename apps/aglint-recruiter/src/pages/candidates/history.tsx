@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router';
 
-import CandidateSearchHistory from '@/src/components/CandidateDatabase';
-import Seo from '@/src/components/Common/Seo';
+import CandidateSearchHistory from '@/components/CandidateDatabase';
+import Seo from '@/components/Common/Seo';
 
 const History = () => {
   const {

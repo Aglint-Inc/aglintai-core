@@ -1,4 +1,4 @@
-import { errorMessages } from '@/src/utils/errorMessages';
+import { errorMessages } from '@/utils/errorMessages';
 
 import { type FieldError } from './types';
 

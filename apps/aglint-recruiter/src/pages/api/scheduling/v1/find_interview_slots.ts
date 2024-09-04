@@ -3,8 +3,8 @@ import { schema_find_interview_slot } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { combineSlots } from '@/src/utils/scheduling_v2/utils';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { combineSlots } from '@/utils/scheduling_v2/utils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

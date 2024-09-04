@@ -1,20 +1,20 @@
 import { type DB } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
-import dayjs from 'dayjs';
-import { type Ref, forwardRef, memo } from 'react';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
-import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink/ScheduleProgressPill';
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
+} from '@components/ui/tooltip';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
+import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/ScheduleProgressPill';
+import { StatusBadge } from '@devlink2/StatusBadge';
+import { Stack } from '@mui/material';
+import dayjs from 'dayjs';
+import { type Ref, forwardRef, memo } from 'react';
+
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 

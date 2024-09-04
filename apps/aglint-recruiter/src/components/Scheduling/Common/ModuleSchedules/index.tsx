@@ -1,10 +1,10 @@
+import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
+import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { Box, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import SearchField from '@/components/Common/SearchField/SearchField';
+import { ShowCode } from '@/components/Common/ShowCode';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { type fetchModuleSchedules } from '../../InterviewTypes/queries/utils';
@@ -29,9 +29,7 @@ function ModuleSchedules({
     return newScheduleList.filter(
       (sch) =>
         sch.status === tab &&
-        sch.session_name
-          .toLowerCase()
-          .includes(changeText.toLowerCase()),
+        sch.session_name.toLowerCase().includes(changeText.toLowerCase()),
     );
   };
 

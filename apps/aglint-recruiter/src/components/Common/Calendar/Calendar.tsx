@@ -3,6 +3,15 @@ import '@styles/fullcalendar-theme.css';
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
@@ -18,16 +27,7 @@ import {
   useState,
 } from 'react';
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
 import Loader from '../Loader';

@@ -3,7 +3,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@components/ui/tooltip';
 
 import MuiAvatar from '../MuiAvatar';
 import { type Resource } from './types';

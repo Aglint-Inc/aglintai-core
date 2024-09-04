@@ -1,17 +1,17 @@
+import { CandidateDialog } from '@devlink/CandidateDialog';
+import { CandidateExperience } from '@devlink/CandidateExperience';
+import { CdExperienceCard } from '@devlink/CdExperienceCard';
+import { EmailOutReach } from '@devlink/EmailOutReach';
 import { Avatar, Collapse, Stack } from '@mui/material';
+import LoaderGrey from '@public/lottie/LoaderGrey';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
+import CompanyLogo from '@/components/Common/CompanyLogo';
 import { useToast } from '@/components/hooks/use-toast';
-import { CandidateDialog } from '@/devlink/CandidateDialog';
-import { CandidateExperience } from '@/devlink/CandidateExperience';
-import { CdExperienceCard } from '@/devlink/CdExperienceCard';
-import { EmailOutReach } from '@/devlink/EmailOutReach';
-import LoaderGrey from '@/public/lottie/LoaderGrey';
-import CompanyLogo from '@/src/components/Common/CompanyLogo';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
 
 import MuiAvatar from '../../../Common/MuiAvatar';
 import AddToListComp from '../AddToList';

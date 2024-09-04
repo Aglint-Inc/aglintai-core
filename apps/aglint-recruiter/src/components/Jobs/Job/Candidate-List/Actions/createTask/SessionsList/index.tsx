@@ -1,17 +1,16 @@
 /* eslint-disable no-unused-vars */
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { EmptyState } from '@devlink2/EmptyState';
 import { Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { EmptyState } from '@/devlink2/EmptyState';
-import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
-import { meetingCardType } from '@/src/components/Common/SessionCard';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { meetingCardType } from '@/components/Common/SessionCard';
+import { ShowCode } from '@/components/Common/ShowCode';
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 
 type OnChangeProps = {
   sessions: meetingCardType[];

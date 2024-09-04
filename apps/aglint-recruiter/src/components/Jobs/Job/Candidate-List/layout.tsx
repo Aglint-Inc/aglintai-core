@@ -1,6 +1,3 @@
-import { useRouter } from 'next/router';
-import React from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,10 +5,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+} from '@components/ui/breadcrumb';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import { useApplications } from '@/context/ApplicationsContext';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 export const BreadCrumbs = () => {
   const { push } = useRouter();

@@ -1,4 +1,8 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Checkbox } from '@devlink/Checkbox';
+import { DcPopup } from '@devlink/DcPopup';
 import {
   Autocomplete,
   capitalize,
@@ -10,16 +14,12 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { Checkbox } from '@/devlink/Checkbox';
-import { DcPopup } from '@/devlink/DcPopup';
-import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useAllDepartments } from '@/src/queries/departments';
-import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
+import UITextField from '@/components/Common/UITextField';
+import UITypography from '@/components/Common/UITypography';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useAllDepartments } from '@/queries/departments';
+import ROUTES from '@/utils/routing/routes';
+import toast from '@/utils/toast';
 
 import {
   setIsCreateDialogOpen,

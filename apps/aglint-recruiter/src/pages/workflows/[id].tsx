@@ -1,5 +1,5 @@
-import Workflow from '@/src/components/Workflow/[id]';
-import WorkflowProvider from '@/src/context/Workflows/[id]';
+import Workflow from '@/components/Workflow/[id]';
+import WorkflowProvider from '@/context/Workflows/[id]';
 
 const WorkflowPage = () => {
   return <Workflow />;

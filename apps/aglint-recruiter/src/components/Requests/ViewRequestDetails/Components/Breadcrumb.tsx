@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useRouter } from 'next/router';
-import React from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@components/ui/breadcrumb';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import ROUTES from '@/utils/routing/routes';
 
 interface BreadcrumbComponentProps {
   selectedRequest: {

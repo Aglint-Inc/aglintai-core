@@ -1,16 +1,16 @@
 import { type DB } from '@aglint/shared-types';
+import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
+import { Skeleton } from '@devlink2/Skeleton';
 import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
-import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { meetingCardType } from '@/src/components/Common/SessionCard';
-import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJob } from '@/src/context/JobContext';
-import { useAllMembers } from '@/src/queries/members';
+import { meetingCardType } from '@/components/Common/SessionCard';
+import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
+import { useApplications } from '@/context/ApplicationsContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJob } from '@/context/JobContext';
+import { useAllMembers } from '@/queries/members';
 
 import {
   RangePicker,

@@ -1,14 +1,14 @@
+import { Checkbox } from '@devlink/Checkbox';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import DateRange from '@/src/components/Common/DateRange';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import DateRange from '@/components/Common/DateRange';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type FilterOptionsType } from '../../types';
 

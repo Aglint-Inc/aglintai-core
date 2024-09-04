@@ -1,11 +1,11 @@
+import { GlobalSwitch } from '@devlink3/GlobalSwitch';
+import { GlobalSwitchPill } from '@devlink3/GlobalSwitchPill';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
-import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
-import ROUTES from '@/src/utils/routing/routes';
+import { useKeyPress } from '@/hooks/useKeyPress';
+import ROUTES from '@/utils/routing/routes';
 
 import { type interviewersTab } from './types';
 

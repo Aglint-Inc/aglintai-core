@@ -1,12 +1,11 @@
-import Image from 'next/image';
-import { type PropsWithChildren } from 'react';
-
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '@/components/ui/input-otp';
+} from '@components/ui/input-otp';
+import Image from 'next/image';
+import { type PropsWithChildren } from 'react';
 
 export const FormLayout = ({ children }: PropsWithChildren) => {
   return (

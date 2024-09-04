@@ -1,9 +1,8 @@
+import { JobEmptyState } from '@devlink/JobEmptyState';
+import { EmptyState as DevlinkEmptyState } from '@devlink2/EmptyState';
 import { Stack } from '@mui/material';
+import NoApplicants from '@public/lottie/NoApplicants';
 import React from 'react';
-
-import { JobEmptyState } from '@/devlink/JobEmptyState';
-import { EmptyState as DevlinkEmptyState } from '@/devlink2/EmptyState';
-import NoApplicants from '@/public/lottie/NoApplicants';
 
 import Icon from '../../Common/Icons/Icon';
 

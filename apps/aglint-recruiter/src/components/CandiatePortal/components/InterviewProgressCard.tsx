@@ -1,9 +1,9 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { Badge } from '@components/ui/badge';
+import { Card, CardContent } from '@components/ui/card';
 import React from 'react';
 
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { apiHomepageResponse } from '@/src/app/api/candidate_portal/home_page/route';
+import { apiHomepageResponse } from '@/app/api/candidate_portal/home_page/route';
 
 interface InterviewProgressCardProps {
   interview: apiHomepageResponse['interviewPlan'][number];

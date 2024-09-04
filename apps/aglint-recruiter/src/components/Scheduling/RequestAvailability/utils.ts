@@ -6,7 +6,7 @@ import {
 } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
+import { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 
 const daysList = Array.from({ length: 10 }, (_, index) => {
   const day = index + 1;

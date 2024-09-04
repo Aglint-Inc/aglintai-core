@@ -1,7 +1,7 @@
 import { useMutationState } from '@tanstack/react-query';
 
-import { useCompanyMembers } from '@/src/queries/company-members';
-import { useInterviewModules } from '@/src/queries/interview-modules';
+import { useCompanyMembers } from '@/queries/company-members';
+import { useInterviewModules } from '@/queries/interview-modules';
 import {
   type CreateDebriefSession,
   type CreateInterviewSession,
@@ -17,8 +17,8 @@ import {
   useSwapInterviewPlan,
   useUpdateInterviewPlan,
   useUpdateInterviewSession,
-} from '@/src/queries/interview-plans';
-import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys';
+} from '@/queries/interview-plans';
+import { interviewSessionMutationKeys } from '@/queries/interview-plans/keys';
 
 import { useJob } from '../JobContext';
 

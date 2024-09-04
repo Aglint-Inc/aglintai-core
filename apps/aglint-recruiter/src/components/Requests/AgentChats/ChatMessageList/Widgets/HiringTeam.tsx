@@ -1,19 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { Text } from '@devlink/Text';
+import { UserNameCard } from '@devlink3/UserNameCard';
 import { Stack } from '@mui/material';
 import Link from 'next/link';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { Text } from '@/devlink/Text';
-import { UserNameCard } from '@/devlink3/UserNameCard';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import MuiAvatar from '@/components/Common/MuiAvatar';
 
 import { type ChatType } from '../hooks/fetch';
 
-function HiringTeam({
-  chat,
-}: {
-  chat: ChatType;
-}) {
+function HiringTeam({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
   const job = meta.findLast(
     (m) => m.function_name === 'fetch_hiring_team',

@@ -1,20 +1,20 @@
-import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-
-import OptimisticWrapper from '@/components/loadingWapper';
-import { Button } from '@/components/ui/button';
+import OptimisticWrapper from '@components/loadingWapper';
+import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { JobsDashboard } from '@/devlink/JobsDashboard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@components/ui/dropdown-menu';
+import { JobsDashboard } from '@devlink/JobsDashboard';
+import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobs } from '@/context/JobsContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import ROUTES from '@/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';

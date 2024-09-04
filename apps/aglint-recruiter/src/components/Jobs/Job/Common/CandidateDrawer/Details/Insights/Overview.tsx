@@ -1,8 +1,8 @@
+import { CandidateOverview } from '@devlink/CandidateOverview';
+import { SkeletonTextSmall } from '@devlink/SkeletonTextSmall';
 import { Stack } from '@mui/material';
 
-import { CandidateOverview } from '@/devlink/CandidateOverview';
-import { SkeletonTextSmall } from '@/devlink/SkeletonTextSmall';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 const Overview = () => {
   const {

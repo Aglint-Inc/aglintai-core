@@ -2,11 +2,11 @@
 import { type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { agentTrigger } from '@/src/utils/scheduling/agentTrigger';
-import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
-import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
-import { addScheduleActivity } from '@/src/utils/scheduling/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { agentTrigger } from '@/utils/scheduling/agentTrigger';
+import { createFilterJson } from '@/utils/scheduling/createFilterJson';
+import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';

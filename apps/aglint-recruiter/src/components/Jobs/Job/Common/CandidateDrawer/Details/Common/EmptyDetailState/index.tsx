@@ -1,5 +1,6 @@
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+
+import { capitalize } from '@/utils/text/textUtils';
 
 import { type Section, getIconName } from '../../../utils';
 

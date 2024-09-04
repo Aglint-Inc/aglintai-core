@@ -1,6 +1,5 @@
+import { GlobalIcon } from '@devlink/GlobalIcon';
 import React from 'react';
-
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 
 function UserRoleIcon() {
   return (

@@ -1,10 +1,14 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { type JobInsert } from '@/src/queries/jobs/types';
+import { type JobInsert } from '@/queries/jobs/types';
 
 import { POSTED_BY } from '../utils';
-import { type AshbyApplication, type ExtendedJobAshby, type JobAshby } from './types';
+import {
+  type AshbyApplication,
+  type ExtendedJobAshby,
+  type JobAshby,
+} from './types';
 
 export const fetchAllCandidates = async (
   apiKey: string,
