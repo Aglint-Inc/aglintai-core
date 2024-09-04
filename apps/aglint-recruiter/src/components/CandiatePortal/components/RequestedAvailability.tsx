@@ -1,4 +1,3 @@
-import { dayjsLocal } from '@aglint/shared-utils';
 import React from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import {
   type availability,
 } from '@/src/app/api/candidate_portal/home_page/route';
 import dayjs from '@/src/utils/dayjs';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 function RequestedAvailability({
   availabilityData,

@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
-import { useCompany } from '../hook';
+import { useNavbar } from '../hook';
 import NavProfile from './NavProfile';
 
 export default function Navigation() {
@@ -15,8 +15,11 @@ export default function Navigation() {
 
   const application_id = pathname.split('/').filter((a) => a)[1];
   const currentTab = pathname.split('/').filter((a) => a)[2];
-  const { data: company } = useCompany({ application_id });
+  const { data, isLoading } = useNavbar({ application_id });
 
+  if (isLoading) return <></>;
+
+  const { company } = data;
   return (
     <div className='sticky w-full px-5 top-3 z-50 flex items-center justify-center'>
       <header className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border w-full max-w-screen-xl container mx-auto'>
@@ -66,7 +69,10 @@ export default function Navigation() {
 
           <div className='flex items-center space-x-2'>
             <ThemeSwitcher />
-            <NavProfile application_id={application_id} />
+            <NavProfile
+              application_id={application_id}
+              candidate={data?.candidate}
+            />
           </div>
         </div>
       </header>

@@ -1,6 +1,6 @@
 'use client';
-import axios from 'axios';
 import { useRef, useState } from 'react';
+import axios from 'axios';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,20 +16,29 @@ import {
 import { type candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import { supabase } from '@/src/utils/supabase/client';
 import timeZone from '@/src/utils/timeZone';
+import toast from '@/src/utils/toast';
+
+import { useNavbar } from '../hook';
 
 import ImageUploadManual from './ImageUpload';
 
 export default function CandidateForm({
   formData,
   application_id,
+  refetchProfile,
+  closeDialog,
 }: {
   formData: candidatePortalProfileType;
   application_id: string;
+  refetchProfile: any;
+  closeDialog: () => void;
 }) {
   const [form, setForm] = useState<candidatePortalProfileType>(formData);
   const [loading, setLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const imageFile = useRef(null);
+
+  const { refetch: refetchNav } = useNavbar({ application_id });
 
   const handleUpdateProfile = async () => {
     try {
@@ -73,8 +82,12 @@ export default function CandidateForm({
       if (status !== 200) {
         throw new Error('Profile update failed');
       }
+      await refetchNav();
+      await refetchProfile();
+      toast.success('Profile update success');
+      closeDialog();
     } catch (e) {
-      console.error(e.message);
+      toast.error(e.message);
       //
     } finally {
       setLoading(false);

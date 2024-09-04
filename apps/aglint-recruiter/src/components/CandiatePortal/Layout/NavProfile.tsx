@@ -11,15 +11,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { apiResponsePortalNavBar } from '@/src/app/api/candidate_portal/get_navbar/route';
 
-export default function NavProfile({ application_id }) {
+export default function NavProfile({
+  application_id,
+  candidate,
+}: {
+  application_id: string;
+  candidate: apiResponsePortalNavBar['candidate'];
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='w-10 h-10 cursor-pointer rounded-md'>
-          <AvatarImage src='/images/user-4.jpg' alt='@shadcn' />
+          <AvatarImage src={candidate.avatar} alt='@shadcn' />
           <AvatarFallback className='bg-primary text-primary-foreground'>
-            FU
+            {candidate.first_name.slice(0, 2)}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { type apiResponsePortalCompany } from '@/src/app/api/candidate_portal/get_company/route';
 import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
 import { type apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_message/route';
+import { apiResponsePortalNavBar } from '@/src/app/api/candidate_portal/get_navbar/route';
+import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import { type apiHomepageResponse } from '@/src/app/api/candidate_portal/home_page/route';
 
 // home page ----------------------------------------------------
@@ -86,22 +87,49 @@ const fetchInterviews = async (application_id: string) => {
 
   return data;
 };
-
 // interviews ----------------------------------------------------
-export const useCompany = ({ application_id }: { application_id: string }) => {
+export const usePortalProfile = ({
+  application_id,
+}: {
+  application_id: string;
+}) => {
   const query = useQuery({
-    queryKey: ['candidate_portal-company', application_id],
+    queryKey: ['candidate_portal-interview', application_id],
     refetchOnMount: true,
-    queryFn: () => fetchCompany(application_id),
+    queryFn: () => fetchProfile(application_id),
+    enabled: !!application_id,
+    retry: false,
+  });
+
+  return { ...query };
+};
+
+const fetchProfile = async (application_id: string) => {
+  const { data } = await axios.post<candidatePortalProfileType>(
+    '/api/candidate_portal/get_profile',
+    {
+      application_id,
+    },
+  );
+
+  return data;
+};
+
+// Nav ----------------------------------------------------
+export const useNavbar = ({ application_id }: { application_id: string }) => {
+  const query = useQuery({
+    queryKey: ['candidate_portal_navbar', application_id],
+    refetchOnMount: true,
+    queryFn: () => fetchNav(application_id),
     enabled: !!application_id,
   });
 
   return { ...query };
 };
 
-const fetchCompany = async (application_id: string) => {
-  const { data } = await axios.post<apiResponsePortalCompany>(
-    '/api/candidate_portal/get_company',
+const fetchNav = async (application_id: string) => {
+  const { data } = await axios.post<apiResponsePortalNavBar>(
+    '/api/candidate_portal/get_navbar',
     {
       application_id,
     },

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export type apiResponsePortalCompany = Awaited<ReturnType<typeof getCompany>>;
+export type apiResponsePortalNavBar = Awaited<ReturnType<typeof getCompany>>;
 
 export async function POST(req) {
   try {
@@ -23,13 +23,20 @@ const getCompany = async (application_id) => {
   const company = supabaseWrap(
     await supabaseAdmin
       .from('applications')
-      .select('candidates(recruiter(name,logo))')
+      .select('candidates(avatar,first_name,last_name,recruiter(name,logo))')
       .eq('id', application_id)
       .single()
       .throwOnError(),
   );
 
-  return company.candidates.recruiter;
+  return {
+    candidate: {
+      first_name: company.candidates.first_name,
+      last_name: company.candidates.last_name,
+      avatar: company.candidates.avatar,
+    },
+    company: company.candidates.recruiter,
+  };
 };
 
 // candidates(recruiter(name,logo)
