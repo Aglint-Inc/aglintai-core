@@ -23,11 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     payload,
   } = req.body;
   try {
+    const event = apiTargetToEvents[target_api];
     const reqProgressLogger = createRequestProgressLogger({
       request_id,
       event_run_id,
       supabaseAdmin,
-      event_type: apiTargetToEvents[target_api],
+      event_type: event,
     });
     await reqProgressLogger.resetEventProgress();
 
@@ -104,6 +105,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     return res.status(200).send('OK');
   } catch (err) {
+    console.error(err);
     return res.status(500).json({ error: err.message });
   }
 };
