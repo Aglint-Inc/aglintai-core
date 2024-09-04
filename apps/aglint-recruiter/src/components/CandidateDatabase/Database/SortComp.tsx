@@ -77,9 +77,9 @@ const SortComp = () => {
               defaultValue={'first_name'}
               menuOptions={sortdisplay}
               value={sortType}
-              onChange={(e) => {
-                if (e.target.value === '') return;
-                setSortType(e.target.value as any);
+              onChange={(value) => {
+                if (value === '') return;
+                setSortType(value as any);
               }}
             />
           }

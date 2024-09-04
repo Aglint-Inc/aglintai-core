@@ -213,16 +213,14 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
               }))}
               value={selectedEmailTemplate}
               defaultValue={0}
-              onChange={(e) => {
+              onChange={(value) => {
                 setIsEditorLoading(true);
-                setDefaultTemplate(
-                  emailTemplates[Number(e.target.value)].templateJson,
-                );
+                setDefaultTemplate(emailTemplates[Number(value)].templateJson);
                 setEditorJson({
-                  subject: emailTemplates[Number(e.target.value)].subject,
+                  subject: emailTemplates[Number(value)].subject,
                   templateJson: '',
                 });
-                setSelectedEmailTemp(Number(e.target.value));
+                setSelectedEmailTemp(Number(value));
                 setTimeout(() => {
                   setIsEditorLoading(false);
                 }, 500);
