@@ -377,7 +377,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       name: 'Request Availability through link',
       value: {
         target_api: 'onRequestSchedule_emailLink_getCandidateAvailability',
-        action_type: 'agent_instruction',
+        action_type: 'email',
         payload: null,
       },
     },
