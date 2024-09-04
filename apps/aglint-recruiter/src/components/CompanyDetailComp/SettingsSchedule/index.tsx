@@ -26,8 +26,18 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
+import * as React from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -46,6 +56,7 @@ import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
 import { HelperDropdown } from '@/devlink3/HelperDropdown';
 import { InterviewLoadHelper } from '@/devlink3/InterviewLoadHelper';
 import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
+import { cn } from '@/lib/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
@@ -55,7 +66,6 @@ import toast from '@/src/utils/toast';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
-import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulerEmailTemps from './SchedulingEmailTemplates';
@@ -428,11 +438,48 @@ function SchedulingSettings({
                               *
                             </Typography>
                           </Stack>
-                          <DateSelect
-                            selectedDates={daysOff}
-                            dateRef={dateRef}
-                            getDate={getDate}
-                          />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant={'outline'}
+                                className={cn(
+                                  'w-[280px] justify-start text-left font-normal',
+                                  !dateRef.current?.value &&
+                                    'text-muted-foreground',
+                                )}
+                              >
+                                <CalendarIcon className='mr-2 h-4 w-4' />
+                                {dateRef.current?.value ? (
+                                  format(new Date(dateRef.current.value), 'PPP')
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className='w-auto p-0'>
+                              <Calendar
+                                mode='single'
+                                selected={
+                                  dateRef.current?.value
+                                    ? new Date(dateRef.current.value)
+                                    : undefined
+                                }
+                                onSelect={(date) => {
+                                  if (date) {
+                                    getDate(date);
+                                  }
+                                }}
+                                disabled={(date) =>
+                                  daysOff.some(
+                                    (day) =>
+                                      new Date(day.date).toDateString() ===
+                                      date.toDateString(),
+                                  )
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
 
                           <Typography variant='body1'>Location</Typography>
                           <Stack

@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, ChevronsUpDown } from 'lucide-react';
+import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -32,13 +33,23 @@ const countries = [
   { name: 'China', code: 'CN', dialCode: '+86', flag: '🇨🇳' },
 ];
 
-export default function UIPhoneInput() {
+export default function UIPhoneInput({
+  phoneNumber,
+  setPhoneNumber,
+  country,
+  isError,
+}: {
+  phoneNumber: string;
+  // eslint-disable-next-line no-unused-vars
+  setPhoneNumber: (value: string) => void;
+  country: string;
+  isError: boolean;
+}) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('US');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [value, setValue] = useState(country);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const selectedCountry = countries.find((country) => country.code === value);
+  const selectedCountry = countries.find((c) => c.code === value);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -46,14 +57,15 @@ export default function UIPhoneInput() {
     }
   }, [value]);
 
-  // eslint-disable-next-line no-undef
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.replace(/\D/g, '');
-    setPhoneNumber(input);
+    setPhoneNumber(`${selectedCountry?.dialCode} ${input}`);
   };
 
   return (
-    <div className='w-full max-w-sm mx-auto'>
+    <div
+      className={`w-full max-w-sm mx-auto ${isError ? 'border-red-500' : ''}`}
+    >
       <div className='relative'>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -96,9 +108,9 @@ export default function UIPhoneInput() {
         <Input
           type='tel'
           placeholder='Phone number'
-          value={`${selectedCountry?.dialCode} ${phoneNumber}`}
+          value={phoneNumber}
           onChange={handlePhoneChange}
-          className='pl-[90px]'
+          className={`pl-[90px] ${isError ? 'border-red-500' : ''}`}
           ref={inputRef}
         />
       </div>

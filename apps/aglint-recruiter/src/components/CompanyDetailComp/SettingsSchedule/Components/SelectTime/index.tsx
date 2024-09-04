@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { Clock } from 'lucide-react';
 import * as React from 'react';
 
@@ -13,12 +13,12 @@ import { cn } from '@/lib/utils';
 
 interface SelectTimeProps {
   i?: number;
-  value: Date;
+  value: dayjs.Dayjs;
   // eslint-disable-next-line no-unused-vars
-  onSelect: (value: Date | undefined, index?: number) => void;
+  onSelect: (value: dayjs.Dayjs | undefined, index?: number) => void;
   disable?: boolean;
-  minTime?: Date;
-  maxTime?: Date;
+  minTime?: dayjs.Dayjs;
+  maxTime?: dayjs.Dayjs;
   width?: string;
   disableIgnoringDatePartForTimeValidation?: boolean;
 }
@@ -34,11 +34,9 @@ function SelectTime({
 }: SelectTimeProps) {
   const [open, setOpen] = React.useState(false);
 
-  const handleTimeChange = (newTime: Date | undefined) => {
+  const handleTimeChange = (newTime: dayjs.Dayjs | undefined) => {
     if (newTime) {
-      const newDate = new Date(value);
-      newDate.setHours(newTime.getHours());
-      newDate.setMinutes(newTime.getMinutes());
+      const newDate = value.hour(newTime.hour()).minute(newTime.minute());
       onSelect(newDate, i);
     }
   };
@@ -56,25 +54,23 @@ function SelectTime({
           disabled={disable}
         >
           <ClockIcon className='mr-2 h-4 w-4' />
-          {value ? format(value, 'HH:mm') : <span>Pick a time</span>}
+          {value ? value.format('HH:mm') : <span>Pick a time</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-auto p-0'>
         <div className='p-4'>
           <Input
             type='time'
-            value={format(value, 'HH:mm')}
+            value={value.format('HH:mm')}
             onChange={(e) => {
               const [hours, minutes] = e.target.value.split(':').map(Number);
-              const newDate = new Date(value);
-              newDate.setHours(hours);
-              newDate.setMinutes(minutes);
+              const newDate = value.hour(hours).minute(minutes);
               handleTimeChange(newDate);
             }}
             className='w-full'
             disabled={disable}
-            min={minTime ? format(minTime, 'HH:mm') : undefined}
-            max={maxTime ? format(maxTime, 'HH:mm') : undefined}
+            min={minTime ? minTime.format('HH:mm') : undefined}
+            max={maxTime ? maxTime.format('HH:mm') : undefined}
           />
         </div>
       </PopoverContent>

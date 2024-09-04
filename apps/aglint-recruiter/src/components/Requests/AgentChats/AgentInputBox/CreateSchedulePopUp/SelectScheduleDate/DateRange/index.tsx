@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 import { DateRange } from 'react-day-picker';
@@ -14,8 +15,8 @@ import { cn } from '@/lib/utils';
 
 interface DateRangeProps {
   // eslint-disable-next-line no-unused-vars
-  onChange: (date: DateRange | undefined) => void;
-  value: DateRange | undefined;
+  onChange: (date: [dayjs.Dayjs, dayjs.Dayjs] | null) => void;
+  value: { from: dayjs.Dayjs; to?: dayjs.Dayjs } | undefined;
   disablePast?: boolean;
   calendars?: 1 | 2 | 3;
 }
@@ -26,10 +27,24 @@ function DateRangePicker({
   disablePast = true,
   calendars = 2,
 }: DateRangeProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>(value);
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    value
+      ? {
+          from: value.from.toDate(),
+          to: value.to?.toDate(),
+        }
+      : undefined,
+  );
 
   React.useEffect(() => {
-    setDate(value);
+    if (value) {
+      setDate({
+        from: value.from.toDate(),
+        to: value.to?.toDate(),
+      });
+    } else {
+      setDate(undefined);
+    }
   }, [value]);
 
   return (
@@ -67,7 +82,9 @@ function DateRangePicker({
             selected={date}
             onSelect={(newDate) => {
               setDate(newDate);
-              onChange(newDate);
+              onChange(
+                newDate ? [dayjs(newDate.from), dayjs(newDate.to)] : null,
+              );
             }}
             numberOfMonths={calendars}
             disabled={disablePast ? { before: new Date() } : undefined}

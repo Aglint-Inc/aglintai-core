@@ -1,4 +1,7 @@
+'use client';
+
 import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 import { DateRange } from 'react-day-picker';
@@ -15,22 +18,42 @@ import { cn } from '@/lib/utils';
 interface DateRangePickerProps {
   // eslint-disable-next-line no-unused-vars
   onChange: (date: DateRange | undefined) => void;
-  value: DateRange | undefined;
+
+  value: [dayjs.Dayjs, dayjs.Dayjs] | undefined;
   disablePast?: boolean;
   className?: string;
 }
 
-function DateRangePicker({
+export function DateRangePicker({
   className,
   onChange,
   value,
   disablePast = true,
 }: DateRangePickerProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>(value);
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    value
+      ? {
+          from: value[0].toDate(),
+          to: value[1].toDate(),
+        }
+      : undefined,
+  );
 
   React.useEffect(() => {
-    setDate(value);
+    if (value) {
+      setDate({
+        from: value[0].toDate(),
+        to: value[1].toDate(),
+      });
+    } else {
+      setDate(undefined);
+    }
   }, [value]);
+
+  const handleSelect = (newDate: DateRange | undefined) => {
+    setDate(newDate);
+    onChange(newDate);
+  };
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -55,7 +78,7 @@ function DateRangePicker({
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Pick a date range</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -65,10 +88,7 @@ function DateRangePicker({
             mode='range'
             defaultMonth={date?.from}
             selected={date}
-            onSelect={(newDate) => {
-              setDate(newDate);
-              onChange(newDate);
-            }}
+            onSelect={handleSelect}
             numberOfMonths={2}
             disabled={disablePast ? { before: new Date() } : undefined}
           />

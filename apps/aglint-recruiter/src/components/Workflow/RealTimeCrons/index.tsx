@@ -14,7 +14,7 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import { type GridColDef,DataGrid } from '@mui/x-data-grid';
+import { type GridColDef, DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 

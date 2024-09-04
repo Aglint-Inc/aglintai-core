@@ -66,10 +66,10 @@ function InterviewDateList({
             onChange={(value) => {
               setDate(value);
             }}
-            value={[
-              dayjs(selectedFilter.startDate),
-              dayjs(selectedFilter.endDate),
-            ]}
+            value={{
+              from: dayjs(selectedFilter.startDate),
+              to: dayjs(selectedFilter.endDate),
+            }}
           />
           <Stack
             direction={'row'}

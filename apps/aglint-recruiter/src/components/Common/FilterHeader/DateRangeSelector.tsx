@@ -98,14 +98,10 @@ function DateRangeSelector({
                         setSelectedDate([dayjs(e.from), dayjs(e.to)]);
                       }
                     }}
-                    value={{
-                      from: dayjs(values[0]).isValid()
-                        ? dayjs(values[0]).toDate()
-                        : undefined,
-                      to: dayjs(values[1]).isValid()
-                        ? dayjs(values[1]).toDate()
-                        : undefined,
-                    }}
+                    value={[
+                      dayjs(values[0]).isValid() ? dayjs(values[0]) : undefined,
+                      dayjs(values[1]).isValid() ? dayjs(values[1]) : undefined,
+                    ]}
                   />
                 </ShowCode.When>
                 <ShowCode.Else>
