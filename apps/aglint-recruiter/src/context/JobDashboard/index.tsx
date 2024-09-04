@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useContext, useEffect } from 'react';
+import { createContext, type ReactNode, useContext, useEffect } from 'react';
 
 import useProviderJobDashboardActions from './hooks';
 import { useJobDashboardStore } from './store';

@@ -15,15 +15,15 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { type ReactNode, memo } from 'react';
+import React, { memo, type ReactNode } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import UITextField from '../UITextField';
 import ToggleBtn from '../UIToggle';
 import {
-  type nestedType,
   nestedOptionMapper,
+  type nestedType,
   setValueInNestedObject,
 } from './utils';
 

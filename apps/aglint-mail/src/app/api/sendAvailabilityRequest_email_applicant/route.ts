@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       company_id,
       react_email_placeholders,
       recipient_email,
+      application_id,
     } = await dbUtil(supabaseAdmin, req_body);
 
     const is_preview = req_body.preview_details;
@@ -32,6 +33,7 @@ export async function POST(req: Request) {
       recipient_email,
       payload: req_body.payload,
       is_preview,
+      application_id,
     });
 
     if (is_preview) {

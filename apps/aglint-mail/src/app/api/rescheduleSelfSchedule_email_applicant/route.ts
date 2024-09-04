@@ -30,6 +30,7 @@ export async function POST(req: Request) {
       react_email_placeholders,
       payload: req_body.payload,
       recipient_email,
+      application_id: parsed_body.application_id,
     });
     return NextResponse.json('success', {
       status: 200,

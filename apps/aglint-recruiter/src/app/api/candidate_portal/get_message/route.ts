@@ -10,6 +10,7 @@ export async function POST(req) {
     const { application_id } = await req.json();
 
     const messages = await getMessages(application_id);
+
     return NextResponse.json(messages, { status: 200 });
   } catch (e) {
     return NextResponse.json(
@@ -20,15 +21,24 @@ export async function POST(req) {
 }
 
 const getMessages = async (application_id) => {
-  const message = supabaseWrap(
+  const { data } = await supabaseAdmin
+    .from('applications')
+    .select('candidates(recruiter(name,logo))')
+    .eq('id', application_id)
+    .single();
+
+  const messages = supabaseWrap(
     await supabaseAdmin
       .from('candidate_portal_message')
-      .select(
-        'id,message,created_at,message,is_readed,title,recruiter_user(first_name,last_name,profile_image)',
-      )
+      .select('id,message,created_at,message,is_readed,title')
       .eq('application_id', application_id)
       .throwOnError(),
   );
 
-  return message;
+  const messagesWithCompany = messages.map((message) => ({
+    ...message,
+    company_name: data.candidates.recruiter.name,
+    company_logo: data.candidates.recruiter.logo,
+  }));
+  return messagesWithCompany;
 };

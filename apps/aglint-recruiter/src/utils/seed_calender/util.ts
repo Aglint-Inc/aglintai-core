@@ -15,8 +15,8 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import {
   type MeetingLimit,
   type MeetingLimitsConfig,
-  type RandMeetingType,
   MeetingTypeEnum,
+  type RandMeetingType,
 } from './types';
 
 // 4. free times 10% per per month 8

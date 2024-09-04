@@ -1,9 +1,9 @@
-import { type StateCreator,create } from 'zustand';
+import { create, type StateCreator } from 'zustand';
 
 import { type ActionsLoadSlice, createActionsLoadSlice } from './actionLoader';
-import { type DeletionSlice, createDeletionSlice } from './delete';
-import { type FiltersSlice, createFiltersSlice } from './filters';
-import { type PopupSlice, createPopupSlice } from './popup';
+import { createDeletionSlice, type DeletionSlice } from './delete';
+import { createFiltersSlice, type FiltersSlice } from './filters';
+import { createPopupSlice, type PopupSlice } from './popup';
 
 type Slices = FiltersSlice & PopupSlice & ActionsLoadSlice & DeletionSlice;
 

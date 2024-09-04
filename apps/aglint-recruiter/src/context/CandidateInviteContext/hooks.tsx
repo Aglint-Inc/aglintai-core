@@ -9,9 +9,9 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
 import { type BodyParamsCandidateInvite } from '@/pages/api/scheduling/invite';
 import {
-  type useInviteSlots,
   useConfirmSlots,
   useInviteMeta,
+  type useInviteSlots,
 } from '@/queries/candidate-invite';
 import dayjs from '@/utils/dayjs';
 import timeZones from '@/utils/timeZone';
