@@ -11,7 +11,6 @@ import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Autocomplete, Avatar, Drawer, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -28,18 +27,13 @@ import toast from '@/utils/toast';
 import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
-import CompanyJdComp from '../CompanyJdComp';
-import SchedulingRegions from '../SettingsSchedule/SchedulingReason';
-import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
 import AddLocationDialog from './AddLocationDialog';
 import AddDepartmentsDialog from './ManageDepartmentsDialog/addDepartmentsDialog';
 import DeleteDepartmentsDialog from './ManageDepartmentsDialog/deleteDepartmentDialog';
-import RolesAndPermissions from './RolesAndPermissions';
 import SocialComp from './SocialComp';
 
-const CompanyInfoComp = ({ setIsSaving }) => {
-  const router = useRouter();
+const CompanyInfoComp = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const { recruiter, setRecruiter } = useAuthDetails();
   const { data: locations, refetch: refetchLocations } =
@@ -115,242 +109,236 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           id={deleteDialog.id as number}
         />
       )}
-      {router.query?.tab === 'company-info' && (
-        <>
-          <EditBasicInfoSlider
-            editDrawer={editDrawer}
-            setEditDrawer={setEditDrawer}
-          />
-          <MuiPopup
-            props={{
-              open: dialog.deletelocation.open,
-              onClose: () => {
+      <>
+        <EditBasicInfoSlider
+          editDrawer={editDrawer}
+          setEditDrawer={setEditDrawer}
+        />
+        <MuiPopup
+          props={{
+            open: dialog.deletelocation.open,
+            onClose: () => {
+              setDialog({
+                ...dialog,
+                deletelocation: { open: false, edit: -1 },
+              });
+            },
+          }}
+        >
+          <DeletePopup
+            textDescription={
+              'Are you sure you want to delete this office location? This action is permanent.'
+            }
+            textTitle={'Delete Office Location'}
+            isIcon={false}
+            onClickCancel={{
+              onClick: () => {
                 setDialog({
                   ...dialog,
                   deletelocation: { open: false, edit: -1 },
                 });
               },
             }}
-          >
-            <DeletePopup
-              textDescription={
-                'Are you sure you want to delete this office location? This action is permanent.'
-              }
-              textTitle={'Delete Office Location'}
-              isIcon={false}
-              onClickCancel={{
-                onClick: () => {
-                  setDialog({
-                    ...dialog,
-                    deletelocation: { open: false, edit: -1 },
-                  });
-                },
-              }}
-              onClickDelete={{
-                onClick: () => {
-                  handleDeleteLocation(dialog.deletelocation.edit);
-                  setDialog({
-                    ...dialog,
-                    deletelocation: { open: false, edit: -1 },
-                  });
-                },
-              }}
-            />
-          </MuiPopup>
-          <Stack
-            width={'100%'}
-            height={'calc(100vh - 48px)'}
-            bgcolor={'white'}
-            overflow={'auto'}
-          >
-            <CompanyInfo
-              isEditable={!isFormDisabled}
-              slotCompanyInfoDetails={
-                <CompanyInfoDetails
-                  slotDetails={
-                    <>
-                      <TextWithIcon
-                        iconName='warehouse'
-                        iconSize={4}
-                        fontWeight={'regular'}
-                        textContent={recruiter.industry}
-                      />
+            onClickDelete={{
+              onClick: () => {
+                handleDeleteLocation(dialog.deletelocation.edit);
+                setDialog({
+                  ...dialog,
+                  deletelocation: { open: false, edit: -1 },
+                });
+              },
+            }}
+          />
+        </MuiPopup>
+        <Stack
+          width={'100%'}
+          height={'calc(100vh - 48px)'}
+          bgcolor={'white'}
+          overflow={'auto'}
+        >
+          <CompanyInfo
+            isEditable={!isFormDisabled}
+            slotCompanyInfoDetails={
+              <CompanyInfoDetails
+                slotDetails={
+                  <>
+                    <TextWithIcon
+                      iconName='warehouse'
+                      iconSize={4}
+                      fontWeight={'regular'}
+                      textContent={recruiter.industry}
+                    />
 
-                      <TextWithIcon
-                        iconName='group'
-                        iconSize={4}
-                        textContent={`${recruiter.employee_size} People`}
-                        fontWeight={'regular'}
-                      />
-                    </>
-                  }
-                  slotEditButton={
-                    !isFormDisabled ? (
-                      <ButtonSoft
-                        textButton='Edit'
-                        size={2}
-                        color={'neutral'}
-                        onClickButton={{
-                          onClick: () => {
-                            setEditDrawer(true);
-                          },
-                        }}
-                      />
-                    ) : (
-                      <></>
-                    )
-                  }
-                  slotImage={
-                    <Stack
-                      justifyContent={'center'}
-                      alignItems='center'
-                      height={'50px'}
-                      width={'50px'}
-                    >
-                      <Avatar
-                        src={recruiter.logo}
-                        alt={recruiter.name}
-                        variant='rounded'
-                      />
-                    </Stack>
-                  }
-                  textCompanyName={recruiter.name}
-                  textCompanySites={recruiter.company_website}
-                  slotSocialLink={
-                    <>
-                      {Object.entries(recruiter.socials)
-                        .filter((key) => key[0] !== 'custom')
-                        .map(([key, val]) => {
-                          return (
-                            <TextWithIcon
-                              key={key}
-                              slotIcon={
-                                <Stack
-                                  justifyContent={'center'}
-                                  alignItems={'center'}
-                                >
-                                  <Image
-                                    src={`/images/logo/${key}.svg`}
-                                    height={14}
-                                    width={14}
-                                    alt=''
-                                    style={{ filter: 'grayscale(100%)' }}
-                                  />
-                                </Stack>
-                              }
-                              fontWeight={'regular'}
-                              textContent={
-                                <Link href={val as string} target='_blank'>
-                                  {
-                                    // @ts-ignore
-                                    val.replace('https://www.', '')
-                                  }
-                                </Link>
-                              }
-                            />
-                          );
-                        })}
-                    </>
-                  }
-                />
-              }
-              slotLocation={
-                <>
-                  {locations.map((loc) => {
-                    const location = [loc.city, loc.region, loc.country]
-                      .filter(Boolean)
-                      .join(', ');
-                    const [address] = [loc.line1];
-                    const timeZone = [loc.timezone];
-                    const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
-
-                    return (
-                      <>
-                        <Stack p={'var(--space-1)'}>
-                          <CompanyLocation
-                            isHeadQuaterVisible={isHeadQuaterVisible}
-                            isEditDeleteVisible={!isFormDisabled}
-                            onClickEdit={{
-                              onClick: () => {
-                                setDialog({
-                                  ...dialog,
-                                  location: { open: true, edit: loc.id },
-                                });
-                              },
-                            }}
-                            textFullAddress={address || '-'}
-                            textLocationHeader={location}
-                            textTimeZone={timeZone}
-                            onClickDelete={{
-                              onClick: () => {
-                                setDialog({
-                                  ...dialog,
-                                  deletelocation: {
-                                    open: true,
-                                    edit: loc.id,
-                                  },
-                                });
-                              },
-                            }}
+                    <TextWithIcon
+                      iconName='group'
+                      iconSize={4}
+                      textContent={`${recruiter.employee_size} People`}
+                      fontWeight={'regular'}
+                    />
+                  </>
+                }
+                slotEditButton={
+                  !isFormDisabled ? (
+                    <ButtonSoft
+                      textButton='Edit'
+                      size={2}
+                      color={'neutral'}
+                      onClickButton={{
+                        onClick: () => {
+                          setEditDrawer(true);
+                        },
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )
+                }
+                slotImage={
+                  <Stack
+                    justifyContent={'center'}
+                    alignItems='center'
+                    height={'50px'}
+                    width={'50px'}
+                  >
+                    <Avatar
+                      src={recruiter.logo}
+                      alt={recruiter.name}
+                      variant='rounded'
+                    />
+                  </Stack>
+                }
+                textCompanyName={recruiter.name}
+                textCompanySites={recruiter.company_website}
+                slotSocialLink={
+                  <>
+                    {Object.entries(recruiter.socials)
+                      .filter((key) => key[0] !== 'custom')
+                      .map(([key, val]) => {
+                        return (
+                          <TextWithIcon
+                            key={key}
+                            slotIcon={
+                              <Stack
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                              >
+                                <Image
+                                  src={`/images/logo/${key}.svg`}
+                                  height={14}
+                                  width={14}
+                                  alt=''
+                                  style={{ filter: 'grayscale(100%)' }}
+                                />
+                              </Stack>
+                            }
+                            fontWeight={'regular'}
+                            textContent={
+                              <Link href={val as string} target='_blank'>
+                                {
+                                  // @ts-ignore
+                                  val.replace('https://www.', '')
+                                }
+                              </Link>
+                            }
                           />
-                        </Stack>
-                      </>
-                    );
-                  })}
-                </>
-              }
-              slotRolesPills={<></>}
-              slotDepartmentPills={departments?.map((dep) => {
-                return (
-                  <RolesPill
-                    key={dep.id}
-                    textRoles={dep.name}
-                    onClickRemoveRoles={{
-                      onClick: () => {
-                        setDeleteDialog({
-                          ...deleteDialog,
-                          open: true,
-                          id: dep.id,
-                        });
-                      },
-                    }}
-                  />
-                );
-              })}
-              slotTechStackPills={<></>}
-              onClickAddLocation={{
-                onClick: () => {
-                  setDialog({ ...dialog, location: { open: true, edit: -1 } });
-                },
-              }}
-              onClickAddAvailableRoles={{
-                onClick: () => {
-                  setDialog({ ...dialog, roles: true });
-                },
-              }}
-              onClickAddDepartments={{
-                onClick: () => {
-                  setDialog((prev) => ({
-                    ...prev,
-                    departments: true,
-                  }));
-                },
-              }}
-              onClickAddTechStacks={{
-                onClick: () => {
-                  setDialog({ ...dialog, stacks: true });
-                },
-              }}
-              isAvailableRolesVisible={true}
-              isSpecialistVisible={true}
-              slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
-            />
-          </Stack>
-        </>
-      )}
-      {router.query?.tab === 'team' && <TeamManagement />}
-      {router.query?.tab === 'roles' && <RolesAndPermissions />}
-      {router.query?.tab === 'schedulingReasons' && <SchedulingRegions />}
+                        );
+                      })}
+                  </>
+                }
+              />
+            }
+            slotLocation={
+              <>
+                {locations.map((loc) => {
+                  const location = [loc.city, loc.region, loc.country]
+                    .filter(Boolean)
+                    .join(', ');
+                  const [address] = [loc.line1];
+                  const timeZone = [loc.timezone];
+                  const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
+
+                  return (
+                    <>
+                      <Stack p={'var(--space-1)'}>
+                        <CompanyLocation
+                          isHeadQuaterVisible={isHeadQuaterVisible}
+                          isEditDeleteVisible={!isFormDisabled}
+                          onClickEdit={{
+                            onClick: () => {
+                              setDialog({
+                                ...dialog,
+                                location: { open: true, edit: loc.id },
+                              });
+                            },
+                          }}
+                          textFullAddress={address || '-'}
+                          textLocationHeader={location}
+                          textTimeZone={timeZone}
+                          onClickDelete={{
+                            onClick: () => {
+                              setDialog({
+                                ...dialog,
+                                deletelocation: {
+                                  open: true,
+                                  edit: loc.id,
+                                },
+                              });
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </>
+                  );
+                })}
+              </>
+            }
+            slotRolesPills={<></>}
+            slotDepartmentPills={departments?.map((dep) => {
+              return (
+                <RolesPill
+                  key={dep.id}
+                  textRoles={dep.name}
+                  onClickRemoveRoles={{
+                    onClick: () => {
+                      setDeleteDialog({
+                        ...deleteDialog,
+                        open: true,
+                        id: dep.id,
+                      });
+                    },
+                  }}
+                />
+              );
+            })}
+            slotTechStackPills={<></>}
+            onClickAddLocation={{
+              onClick: () => {
+                setDialog({ ...dialog, location: { open: true, edit: -1 } });
+              },
+            }}
+            onClickAddAvailableRoles={{
+              onClick: () => {
+                setDialog({ ...dialog, roles: true });
+              },
+            }}
+            onClickAddDepartments={{
+              onClick: () => {
+                setDialog((prev) => ({
+                  ...prev,
+                  departments: true,
+                }));
+              },
+            }}
+            onClickAddTechStacks={{
+              onClick: () => {
+                setDialog({ ...dialog, stacks: true });
+              },
+            }}
+            isAvailableRolesVisible={true}
+            isSpecialistVisible={true}
+          />
+        </Stack>
+      </>
     </Stack>
   );
 };

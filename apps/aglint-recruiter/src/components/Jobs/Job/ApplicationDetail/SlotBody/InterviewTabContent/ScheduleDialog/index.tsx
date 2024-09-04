@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
-import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
 import { useApplication } from '@/context/ApplicationContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

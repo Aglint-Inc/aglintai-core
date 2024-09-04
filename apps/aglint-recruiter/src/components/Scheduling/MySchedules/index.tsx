@@ -16,7 +16,7 @@ import { useAllIntegrations } from '@/queries/intergrations';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
-import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
   fetchSchedulesCountByUserId,

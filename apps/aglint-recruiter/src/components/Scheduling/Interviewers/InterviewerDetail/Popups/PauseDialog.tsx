@@ -8,7 +8,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useEffect } from 'react';
 
-import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 

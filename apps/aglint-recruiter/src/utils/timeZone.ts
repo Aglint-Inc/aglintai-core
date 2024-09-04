@@ -1,10 +1,9 @@
-const timeZone = [
+export const timeZone = [
   {
     label: 'Pacific/Midway (GMT-11:00)',
     tzCode: 'Pacific/Midway',
     name: '(GMT-11:00) Midway',
     utc: '-11:00',
-    
   },
   {
     label: 'Pacific/Niue (GMT-11:00)',

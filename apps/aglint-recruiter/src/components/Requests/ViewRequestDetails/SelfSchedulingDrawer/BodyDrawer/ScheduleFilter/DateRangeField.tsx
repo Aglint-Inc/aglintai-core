@@ -14,7 +14,7 @@ import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { ClockIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { ClockIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import toast from '@/utils/toast';
 
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';

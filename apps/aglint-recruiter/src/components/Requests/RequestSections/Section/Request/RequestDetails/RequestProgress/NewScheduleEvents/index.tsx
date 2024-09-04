@@ -6,7 +6,7 @@ import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { fetchEmailTemplates } from '@/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
+import { fetchEmailTemplates } from '@/components/CompanyDetailComp/Templates/utils';
 import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';

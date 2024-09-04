@@ -21,7 +21,7 @@ import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
 import Loader from '../../Common/Loader';
-import { TimezoneSelector } from '../../CompanyDetailComp/SettingsSchedule';
+import { TimezoneSelector } from '../../CompanyDetailComp/Scheduling';
 import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
