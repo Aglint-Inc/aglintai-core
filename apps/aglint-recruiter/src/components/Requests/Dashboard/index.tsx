@@ -1,11 +1,9 @@
-/* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import { RequestDashboard } from '@/devlink2/RequestDashboard';
 import { RequestList } from '@/devlink2/RequestList';
 import { ReqUrgent } from '@/devlink2/ReqUrgent';
-import { Skeleton } from '@/devlink2/Skeleton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -66,7 +64,7 @@ function Dashboard() {
     ) || 0;
 
   return (
-    <>
+    <div>
       <RequestDashboard
         textGreetingTitle={`👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
         textGreetingDescription={formatRequestCountText(
@@ -78,14 +76,9 @@ function Dashboard() {
         slotProgressBar={<CompletionProgress value={completed_percentage} />}
         slotGraph={
           status === 'pending' ? (
-            <Stack
-              borderRadius={'10px'}
-              position={'relative'}
-              width={485}
-              height={150}
-            >
-              <Skeleton />
-            </Stack>
+            <div className='relative w-[485px] h-[150px] rounded-[10px]'>
+              <Skeleton className='w-full h-full' />
+            </div>
           ) : (
             requestCount?.chat && (
               <RequestsBarChart
@@ -110,22 +103,20 @@ function Dashboard() {
                 },
               }}
             />
-            {requestTypes.map(({ title, iconName }) => {
-              return (
-                <RequestList
-                  iconName={iconName}
-                  textTitle={capitalizeFirstLetter(title)}
-                  key={title}
-                  textCount={requestCount?.card?.[title] ?? 0}
-                  onClickCard={{
-                    onClick: () => {
-                      setSections({ ...initialSections, [title]: true });
-                      setQueryParams({ tab: 'requests', section: title });
-                    },
-                  }}
-                />
-              );
-            })}
+            {requestTypes.map(({ title, iconName }) => (
+              <RequestList
+                iconName={iconName}
+                textTitle={capitalizeFirstLetter(title)}
+                key={title}
+                textCount={requestCount?.card?.[title] ?? 0}
+                onClickCard={{
+                  onClick: () => {
+                    setSections({ ...initialSections, [title]: true });
+                    setQueryParams({ tab: 'requests', section: title });
+                  },
+                }}
+              />
+            ))}
             <CompletedRequestsBox
               status={status}
               completedRequest={completedToday || 0}
@@ -133,7 +124,7 @@ function Dashboard() {
           </>
         }
       />
-    </>
+    </div>
   );
 }
 

@@ -273,10 +273,10 @@ const FilterField = ({
               name: a.label,
               value: a.type,
             }))}
-            onChange={(e) => {
-              if (e.target.value === '') return;
+            onChange={(value) => {
+              if (value === '') return;
               const updFilter: FilterType = { ...filter };
-              updFilter.type = e.target.value as any;
+              updFilter.type = value as any;
               onChange(updFilter);
             }}
             value={filter.type}

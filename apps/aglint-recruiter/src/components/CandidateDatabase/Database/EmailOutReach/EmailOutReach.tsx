@@ -296,15 +296,15 @@ const EmailOutReach = ({
               }))}
               value={selectedTemplate}
               defaultValue={0}
-              onChange={(e) => {
+              onChange={(value) => {
                 genEmailFromTempJson(
-                  emailTemplates[Number(e.target.value)].templateJson,
+                  emailTemplates[Number(value)].templateJson,
                 );
                 dispatch({
                   type: 'updateState',
                   payload: {
                     path: 'selectedTemplate',
-                    value: Number(e.target.value),
+                    value: Number(value),
                   },
                 });
                 dispatch({
@@ -312,7 +312,7 @@ const EmailOutReach = ({
                   payload: {
                     path: 'email.subject',
                     value: emailTemplates.find(
-                      (prev) => prev.id === Number(e.target.value),
+                      (prev) => prev.id === Number(value),
                     )?.subject,
                   },
                 });

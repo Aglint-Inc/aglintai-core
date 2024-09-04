@@ -23,7 +23,6 @@ import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -449,80 +448,78 @@ function SchedulerEmailTemps({ setSaving }) {
                   </>
                 )}
                 {!isEditorLoad && (
-                  <YTransform uniqueKey={temp_email}>
-                    <>
-                      <EditEmail
-                        currentModule={'scheduler'}
-                        slotSaveButton={<></>}
-                        onClickPreview={{
-                          onClick: (e) => {
-                            preview();
-                            setAnchorEl(e.currentTarget);
-                          },
-                        }}
-                        isPreviewVisible={router.query.tab === 'emailTemplate'}
-                        textTipsMessage={undefined}
-                        editEmailDescription={
-                          emailTemplateCopy[temp_email].description
-                        }
-                        isSaveChangesButtonVisible={false}
-                        textEmailName={emailTemplateCopy[temp_email].heading}
-                        slotForm={
-                          tiptapLoader ? (
-                            <Stack
-                              alignItems={'center'}
-                              justifyContent={'center'}
-                              sx={{
-                                height: 'calc(100vh - 220px)',
-                                width: '100%',
-                              }}
-                            >
-                              <LoaderSvg />
-                            </Stack>
-                          ) : (
-                            <EmailTemplateEditForm
-                              onBlur={() => setIsFocus(false)}
-                              onFocus={() => setIsFocus(true)}
-                              senderNameChange={(e) => {
-                                handleUpdateEmailTemp({
-                                  ...selectedTemplate,
-                                  from_name: e.target.value,
-                                });
-                              }}
-                              emailBodyChange={(str) => {
-                                handleUpdateEmailTemp({
-                                  ...selectedTemplate,
-                                  body: str,
-                                });
-                              }}
-                              emailSubjectChange={(str) => {
-                                handleUpdateEmailTemp({
-                                  ...selectedTemplate,
-                                  subject: str,
-                                });
-                              }}
-                              selectedTemplate={{ ...selectedTemplate }}
-                              showSender={
-                                router.query.template_tab !== 'slack' &&
-                                router.query.template_tab !== 'calender'
-                              }
-                              showSubject={
-                                router.query.template_tab !== 'slack' &&
-                                router.query.template_tab !== 'calender'
-                              }
-                            />
-                          )
-                        }
-                      />
-                      <EmailPreviewPopover
-                        anchorEl={anchorEl}
-                        setAnchorEl={setAnchorEl}
-                        setHtml={setHtml}
-                        isHtml={isHtml}
-                        Loading={popOverLoading}
-                      />
-                    </>
-                  </YTransform>
+                  <>
+                    <EditEmail
+                      currentModule={'scheduler'}
+                      slotSaveButton={<></>}
+                      onClickPreview={{
+                        onClick: (e) => {
+                          preview();
+                          setAnchorEl(e.currentTarget);
+                        },
+                      }}
+                      isPreviewVisible={router.query.tab === 'emailTemplate'}
+                      textTipsMessage={undefined}
+                      editEmailDescription={
+                        emailTemplateCopy[temp_email].description
+                      }
+                      isSaveChangesButtonVisible={false}
+                      textEmailName={emailTemplateCopy[temp_email].heading}
+                      slotForm={
+                        tiptapLoader ? (
+                          <Stack
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                            sx={{
+                              height: 'calc(100vh - 220px)',
+                              width: '100%',
+                            }}
+                          >
+                            <LoaderSvg />
+                          </Stack>
+                        ) : (
+                          <EmailTemplateEditForm
+                            onBlur={() => setIsFocus(false)}
+                            onFocus={() => setIsFocus(true)}
+                            senderNameChange={(e) => {
+                              handleUpdateEmailTemp({
+                                ...selectedTemplate,
+                                from_name: e.target.value,
+                              });
+                            }}
+                            emailBodyChange={(str) => {
+                              handleUpdateEmailTemp({
+                                ...selectedTemplate,
+                                body: str,
+                              });
+                            }}
+                            emailSubjectChange={(str) => {
+                              handleUpdateEmailTemp({
+                                ...selectedTemplate,
+                                subject: str,
+                              });
+                            }}
+                            selectedTemplate={{ ...selectedTemplate }}
+                            showSender={
+                              router.query.template_tab !== 'slack' &&
+                              router.query.template_tab !== 'calender'
+                            }
+                            showSubject={
+                              router.query.template_tab !== 'slack' &&
+                              router.query.template_tab !== 'calender'
+                            }
+                          />
+                        )
+                      }
+                    />
+                    <EmailPreviewPopover
+                      anchorEl={anchorEl}
+                      setAnchorEl={setAnchorEl}
+                      setHtml={setHtml}
+                      isHtml={isHtml}
+                      Loading={popOverLoading}
+                    />
+                  </>
                 )}
               </>
             }

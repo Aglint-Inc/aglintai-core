@@ -1,8 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
-import { Divider, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
@@ -39,100 +40,79 @@ function ChatMessageList() {
   });
 
   return (
-    <Stack
+    <ScrollArea
       ref={chatContainerRef}
-      spacing={'var(--space-4)'}
-      sx={{
-        overflowY: 'auto',
-        maxHeight: 'calc(100vh - 170px)',
-        px: 'var(--space-4)',
-      }}
+      className='h-[calc(100vh-170px)] px-4 space-y-4'
     >
-      <>
-        {!viewHistory ? (
-          <>
-            <AglintAiWelcome
-              slotStartOption={
-                <>
-                  <CommandShortCuts />
-                  <Stack direction={'row'} justifyContent={'center'}>
-                    <ButtonSoft
-                      textButton={'View History'}
-                      size={1}
-                      onClickButton={{
-                        onClick: async () => {
-                          setViewList(true);
-                          setViewHistory(true);
-                          setCursor(0);
-                          setFetchingChat(true);
-                          await fetchChat(0);
-                          setFetchingChat(false);
-                        },
-                      }}
-                    />
-                  </Stack>
-                </>
-              }
-              textAiHeader={
-                `Good morning, ` + getFullName(recruiterUser.first_name, '')
-              }
-            />
-          </>
-        ) : (
-          <>
-            {fetchingChat ? (
-              <>
-                {Array.from({ length: 15 }).map((_, index) => (
-                  <SkeletonMessage key={index} />
-                ))}
-              </>
-            ) : !viewList ? (
-              <Stack
-                direction={'row'}
-                justifyContent={'center'}
-                spacing={'var(--space-2)'}
-                alignItems={'center'}
-                pt={'var(--space-4)'}
+      {!viewHistory ? (
+        <AglintAiWelcome
+          slotStartOption={
+            <>
+              <CommandShortCuts />
+              <div className='flex justify-center'>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={async () => {
+                    setViewList(true);
+                    setViewHistory(true);
+                    setCursor(0);
+                    setFetchingChat(true);
+                    await fetchChat(0);
+                    setFetchingChat(false);
+                  }}
+                >
+                  View History
+                </Button>
+              </div>
+            </>
+          }
+          textAiHeader={
+            `Good morning, ` + getFullName(recruiterUser.first_name, '')
+          }
+        />
+      ) : (
+        <>
+          {fetchingChat ? (
+            <>
+              {Array.from({ length: 15 }).map((_, index) => (
+                <SkeletonMessage key={index} />
+              ))}
+            </>
+          ) : !viewList ? (
+            <div className='flex items-center justify-center space-x-2 pt-4'>
+              <Separator className='w-36' />
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={async () => {
+                  if (isFetchingNextPage || tempLoading) return;
+                  setViewList(true);
+                  await fetchChat(chatList.length);
+                }}
               >
-                <Divider sx={{ width: '150px' }} />
-                <Stack>
-                  <ButtonSoft
-                    color={'neutral'}
-                    textButton={'View History'}
-                    size={1}
-                    onClickButton={{
-                      onClick: async () => {
-                        if (isFetchingNextPage || tempLoading) {
-                          return;
-                        }
-                        setViewList(true);
-                        await fetchChat(chatList.length);
-                      },
-                    }}
-                  />
-                </Stack>
-
-                <Divider sx={{ width: '150px' }} />
-              </Stack>
-            ) : (
-              <div ref={topRef} style={{ height: '1px' }} />
-            )}
-            {isFetchingNextPage && (
-              <>
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <SkeletonMessage key={index} />
-                ))}
-              </>
-            )}
-            {chatList.map((chat, ind) => {
-              return <MessageIndividual chat={chat} key={ind} />;
-            })}
-            {isResponding && <SkeletonMessage />}
-            <div id={'bottomRef'} />
-          </>
-        )}
-      </>
-    </Stack>
+                View History
+              </Button>
+              <Separator className='w-36' />
+            </div>
+          ) : (
+            <div ref={topRef} className='h-px' />
+          )}
+          {isFetchingNextPage && (
+            <>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <SkeletonMessage key={index} />
+              ))}
+            </>
+          )}
+          {chatList.map((chat, ind) => (
+            <MessageIndividual chat={chat} key={ind} />
+          ))}
+          {isResponding && <SkeletonMessage />}
+          <div id='bottomRef' />
+        </>
+      )}
+    </ScrollArea>
   );
 }
 

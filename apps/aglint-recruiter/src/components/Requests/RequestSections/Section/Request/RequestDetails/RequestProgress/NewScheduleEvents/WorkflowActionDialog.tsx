@@ -101,8 +101,8 @@ const WorkflowActionDialog = () => {
         <>
           <UISelect
             label='Do this'
-            onChange={(e) => {
-              handleChangeSelectedAction(e.target.value as any);
+            onChange={(value) => {
+              handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
             menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({

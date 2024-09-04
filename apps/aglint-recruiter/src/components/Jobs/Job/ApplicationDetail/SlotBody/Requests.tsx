@@ -7,7 +7,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Text } from '@/devlink/Text';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getRequestTitle } from '@/src/components/Requests/AgentChats/AgentInputBox';
+// import { getRequestTitle } from '@/src/components/Requests/AgentChats/AgentInputBox';
 import { useApplication } from '@/src/context/ApplicationContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -18,12 +18,16 @@ function Requests() {
     requests: { data: requests, isLoading },
   } = useApplication();
 
-  const {
-    meta: { data: detail },
-  } = useApplication();
+  // const {
+  //   meta: { data: detail },
+  // } = useApplication();
 
   return (
-    <Stack padding={'var(--space-4)'} spacing={'var(--space-2)'} width={'850px'}>
+    <Stack
+      padding={'var(--space-4)'}
+      spacing={'var(--space-2)'}
+      width={'850px'}
+    >
       {!isLoading &&
         requests?.map((req) => {
           return (
@@ -51,11 +55,12 @@ function Requests() {
                 justifyContent={'space-between'}
               >
                 <Text
-                  content={getRequestTitle({
-                    title: req.title,
-                    first_name: detail.name,
-                    last_name: '',
-                  })}
+                  content={''}
+                  // getRequestTitle({
+                  //   title: req.title,
+                  //   first_name: detail.name,
+                  //   last_name: '',
+                  // })
                 />
                 <GlobalBadge
                   size={1}

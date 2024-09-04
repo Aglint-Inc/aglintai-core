@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import React, { useRef } from 'react';
 
+import { Calendar } from '@/components/ui/calendar';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -26,7 +27,6 @@ import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
-import DateSelect from './Components/DateSelector';
 
 interface CompanyDayOffSectionProps {
   daysOff: any[];
@@ -67,7 +67,6 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
   closeDialog,
 }) => {
   const eventRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
   const { recruiter } = useAuthDetails();
   const [selectedLocations, setSelectedLocations] = React.useState<string[]>(
     [],
@@ -152,10 +151,22 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
                         *
                       </Typography>
                     </Stack>
-                    <DateSelect
-                      selectedDates={daysOff}
-                      dateRef={dateRef}
-                      getDate={getDate}
+                    <Calendar
+                      mode='single'
+                      selected={new Date(selectedDate)}
+                      onSelect={(date) => {
+                        if (date) {
+                          setSelectedDate(date.toISOString().split('T')[0]);
+                          getDate(date);
+                        }
+                      }}
+                      disabled={(date) =>
+                        daysOff.some(
+                          (dayOff) =>
+                            dayOff.date === date.toISOString().split('T')[0],
+                        )
+                      }
+                      initialFocus
                     />
 
                     <Typography variant='body1'>Location</Typography>

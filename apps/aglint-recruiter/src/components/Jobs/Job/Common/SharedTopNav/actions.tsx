@@ -10,7 +10,7 @@ import {
   RefreshCw,
   UserPlus,
   Workflow,
-  XCircle
+  XCircle,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';

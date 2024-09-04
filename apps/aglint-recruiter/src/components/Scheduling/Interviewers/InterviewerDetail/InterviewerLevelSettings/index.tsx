@@ -8,16 +8,25 @@ import {
   Autocomplete,
   Chip,
   FormControlLabel,
-  Popover,
   Radio,
   RadioGroup,
   Stack,
   Typography,
 } from '@mui/material';
+import { format } from 'date-fns';
 import { capitalize, cloneDeep } from 'lodash';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { type MouseEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { RolesPill } from '@/devlink/RolesPill';
 import { DayOff } from '@/devlink2/DayOff';
 import { KeywordCard } from '@/devlink2/KeywordCard';
@@ -26,10 +35,10 @@ import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
+import { cn } from '@/lib/utils';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
 import UITextField from '@/src/components/Common/UITextField';
 import { LoadMax } from '@/src/components/CompanyDetailComp/SettingsSchedule';
-import DateSelect from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import timeZones from '@/src/utils/timeZone';
@@ -191,21 +200,9 @@ function InterviewerLevelSettings({
     });
   };
 
-  ///////////// DayOff Popup //////////////
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const openAddCompany = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
   function getDate(e: any) {
     const selectedDate = dayjsLocal(e).format('DD MMM YYYY');
     setDaysOff((pre) => [...pre, { date: selectedDate } as holidayType]);
-    handleClose();
     dateRef.current.value = String(new Date(e.$d));
   }
 
@@ -532,7 +529,7 @@ function InterviewerLevelSettings({
             </>
           }
           onClickAddDate={{
-            onClick: openAddCompany,
+            onClick: '',
           }}
           isCompanyDaysOffVisible={false}
           slotDayOff={
@@ -548,21 +545,33 @@ function InterviewerLevelSettings({
                   />
                 );
               })}
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-              >
-                <DateSelect
-                  selectedDates={daysOff}
-                  dateRef={dateRef}
-                  getDate={getDate}
-                />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant='outline'
+                    className={cn(
+                      'w-[280px] justify-start text-left font-normal',
+                      daysOff.length === 0 && 'text-muted-foreground',
+                    )}
+                  >
+                    <CalendarIcon className='mr-2 h-4 w-4' />
+                    {daysOff.length > 0 ? (
+                      daysOff
+                        .map((date) => format(new Date(date.date), 'PPP'))
+                        .join(', ')
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0'>
+                  <Calendar
+                    mode='multiple'
+                    selected={daysOff.map((date) => new Date(date.date))}
+                    onSelect={(dates) => getDate(dates)}
+                    initialFocus
+                  />
+                </PopoverContent>
               </Popover>
             </>
           }
