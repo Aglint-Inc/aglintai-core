@@ -4,14 +4,7 @@ import {
   type JobApplcationDB,
   type JobTypeDB,
 } from '@aglint/shared-types';
-import { CompanyListingLinks } from '@devlink/CompanyListingLinks';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewCompleted } from '@devlink/InterviewCompleted';
-import { JobListing } from '@devlink/JobListing';
-import { LoaderSvg } from '@devlink/LoaderSvg';
-import { OpenJobListingCard } from '@devlink/OpenJobListingCard';
-import { Avatar, Stack, TextField, Typography } from '@mui/material';
-import ThankYou from '@public/lottie/ThankYouLottie';
+import Typography from '@mui/material/Typography';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Building2 } from 'lucide-react';
@@ -28,13 +21,19 @@ import {
 } from 'react-share';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { useRouterPro } from '@/hooks/useRouterPro';
-import { type PublicJobAPI } from '@/pages/api/jobpost/read';
-import ROUTES from '@/utils/routing/routes';
-import { supabase } from '@/utils/supabase/client';
+import { Avatar } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import ThankYou from '@/public/lottie/ThankYouLottie';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
+import ROUTES from '@/src/utils/routing/routes';
+import { supabase } from '@/src/utils/supabase/client';
 
 import Footer from '../Common/Footer';
-import Icon from '../Common/Icons/Icon';
 import UploadDB from './UploadDB';
 
 type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
@@ -42,7 +41,7 @@ type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
 const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   const { toast } = useToast();
   const router = useRouterPro();
-  const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [thank, setThank] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -72,15 +71,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               .select();
             setEmail('');
             toast({
-              variant: 'default',
-              title:
-                'Thank you for subscribing! You will be notified via email.',
+              description: 'Thank you for subscribing! You will be notified via email.',
             });
           } else {
             toast({
-              variant: 'default',
-              title:
-                'Thank you for subscribing! You will be notified via email.',
+              description: 'Thank you for subscribing! You will be notified via email.',
             });
           }
         });
@@ -94,52 +89,33 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
     .filter((job: JobTypeDB) => job.status === 'published');
 
   return (
-    <Stack width={'100%'} position={'relative'} minHeight={'100vh'}>
+    <div className="relative min-h-screen w-full">
       {thank && (
-        <Stack
-          height={'100vh'}
-          position={'absolute'}
-          zIndex={10000}
-          width={'100%'}
-          bgcolor={'var(--sand-3)'}
-          paddingBottom={'16px'}
-        >
-          <InterviewCompleted
-            onClickSupport={{
-              onClick: () => {
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-background">
+          <Card className="p-6 space-y-4">
+            <ThankYou />
+            <Typography variant="h3">Application submitted successfully.</Typography>
+            <Typography>
+              Thank you {candidate[0]?.first_name} for taking the time to apply for this role. 
+              We will be in touch with you soon. If you have any questions, please
+            </Typography>
+            <Button 
+              onClick={() => {
                 application?.id &&
                   window.open(
                     `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application?.id}`,
                   );
-              },
-            }}
-            slotLottie={<ThankYou />}
-            textTitle={'Application submitted successfully.'}
-            textDescription={`Thank you ${candidate[0]?.first_name} for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
-            slotCompanyLogo={
-              <Stack alignItems={'center'} spacing={1} width={'100%'}>
-                <Avatar
-                  id='topAvatar'
-                  variant='rounded'
-                  src={recruiter?.logo}
-                  sx={{
-                    p: 'var(--space-1)',
-                    color: 'common.black',
-                    '& .MuiAvatar-img ': {
-                      objectFit: 'contain',
-                    },
-                    height: '78px',
-                    width: '78px',
-                    borderRadius: 'var(--radius-4)',
-                    // background={'var(--neutral-1)'},
-                  }}
-                >
-                  <Building2 size={48} />
-                </Avatar>
-                <Typography variant='h3'>
-                  {(recruiter as { name: string })?.name}
-                </Typography>
-                <Typography variant='body1'>
+              }}
+            >
+              Contact Support
+            </Button>
+            <div className="flex items-center space-x-4">
+              <Avatar src={recruiter?.logo}>
+                <Building2 className="h-10 w-10" />
+              </Avatar>
+              <div>
+                <Typography variant="h4">{recruiter?.name}</Typography>
+                <Typography variant="muted">
                   {[
                     recruiter?.office_locations[0]?.city,
                     recruiter?.office_locations[0]?.region,
@@ -148,239 +124,197 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     .filter(Boolean)
                     .join(', ')}
                 </Typography>
-              </Stack>
-            }
-          />
-          <Footer brand={true} />
-        </Stack>
+              </div>
+            </div>
+          </Card>
+        </div>
       )}
       {loading && (
-        <Stack
-          height={'100vh'}
-          position={'absolute'}
-          zIndex={10}
-          width={'100%'}
-          bgcolor={'#fff'}
-        >
-          <Stack
-            width={'100%'}
-            alignItems={'center'}
-            height={'100vh'}
-            justifyContent={'center'}
-          >
-            <LoaderSvg />
-          </Stack>
-        </Stack>
+        <div className="absolute inset-0 z-40 flex items-center justify-center bg-background">
+          <Skeleton className="h-12 w-12 rounded-full" />
+        </div>
       )}
 
-      <Stack
-        sx={{
-          height: '100vh',
-          overflow: thank || loading ? 'hidden' : 'scroll',
-          background: 'var(--sand-3)',
-          paddingBottom: '16px',
-        }}
-      >
-        <JobListing
-          slotCompanyLogo={
-            <Avatar
-              id='topAvatar'
-              variant='rounded'
-              src={recruiter?.logo}
-              sx={{
-                p: 'var(--space-1)',
-                color: 'common.black',
-                '& .MuiAvatar-img ': {
-                  objectFit: 'contain',
-                },
-                height: '80px',
-                width: '80px',
-              }}
-            >
-              <Building2 size={48} />
-            </Avatar>
-          }
-          onClickApplyNow={{
-            onClick: () => {
-              const targetElement = document.getElementById('scrollTarget');
-              if (targetElement) {
-                // Scroll to the target element smoothly
-                targetElement.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'center',
-                  inline: 'center',
-                });
-              }
-            },
-          }}
-          textRole={post?.job_title}
-          textCompanyName={recruiter?.name}
-          textCompanyType={recruiter?.industry}
-          textAboutJob={'Ask your queries about this job to the recruiter. '}
-          textCompanyDescription={recruiter?.company_overview}
-          isDiscriptionEmpty={Boolean(recruiter?.company_overview)}
-          textCompanyLocation={'--'}
-          textEmployeeCount={recruiter?.employee_size || '--'}
-          slotDescription={
-            <>
-              <EditorContent editor={editor} />
-            </>
-          }
-          slotApplyForThisJob={
-            <UploadDB
-              post={post}
-              setThank={setThank}
-              setLoading={setLoading}
-              setApplication={setApplication}
-              recruiter={recruiter}
-              setCandidate={setCandidate}
-            />
-          }
-          slotLinks={
-            recruiter?.socials &&
-            Object.entries(recruiter?.socials)?.map((soc, ind) => {
-              if (soc[0] === 'custom') {
-                return null;
-              }
-              return (
-                <CompanyListingLinks
-                  key={ind}
-                  slotIcon={
-                    <Avatar
-                      variant='rounded'
-                      sx={{ width: '16px', height: '16px' }}
-                      src={`${process.env.NEXT_PUBLIC_HOST_NAME}/images/logo/${soc[0]}.svg`}
-                      alt=''
-                    />
-                  }
-                  textLinkName={soc[0]}
-                  onClickLink={{
-                    onClick: () => {
-                      window.open(soc[1] as string, '_blank');
-                    },
+      <ScrollArea className={`h-screen ${thank || loading ? 'overflow-hidden' : ''}`}>
+        <div className="flex space-x-6 p-6 justify-center">
+
+          {/* Left side */}
+          
+          <div className="w-2/3 space-y-6">
+            <Card className="p-6">
+              <div className="flex items-center space-x-4 mb-6 justify-between">
+                <div className="flex items-center space-x-4">
+                <Avatar className="h-20 w-20 border rounded overflow-hidden">
+                  {recruiter?.logo ? (
+                    <img src={recruiter.logo} alt={recruiter?.name || 'Company logo'} className="h-full w-full object-cover" style={{ objectFit: 'cover' }} />
+                  ) : (
+                    <Building2 className="h-10 w-10" />
+                  )}
+                </Avatar>
+                <div>
+                  <Typography variant="h4" className="font-semibold">{post?.job_title}</Typography>
+                  <Typography variant="body2" color="text.secondary">{recruiter?.name} • {recruiter?.industry}</Typography>
+                </div>
+                </div>
+                
+                <Button 
+                  onClick={() => {
+                    const targetElement = document.getElementById('scrollTarget');
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                    }
                   }}
-                />
-              );
-            })
-          }
-          slotImageAskJob={
-            <Avatar
-              variant='rounded'
-              src={''}
-              sx={{
-                p: 'var(--space-1)',
-                color: 'common.black',
-                '& .MuiAvatar-img ': {
-                  objectFit: 'contain',
-                },
-                height: 'var(--space-8)',
-                width: 'var(--space-8)',
-                background: 'var(--neutral-3)',
-              }}
-            >
-              <Icon variant='Person' />
-            </Avatar>
-          }
-          slotOpenJobListing={
-            <Stack spacing={2}>
-              {filteredJobs.length > 0 ? (
-                filteredJobs.map((job, ind) => {
-                  return (
-                    <OpenJobListingCard
-                      key={ind}
-                      textJobRole={job.job_title || '--'}
-                      textCompanyType={job.departments?.name || '--'}
-                      textLocation={'--'}
-                      textWorkingType={job.job_type || '--'}
-                      onClickApplyNow={{
-                        onClick: () => {
-                          const targetElement =
-                            document.getElementById('topAvatar');
-                          if (targetElement) {
-                            targetElement.scrollIntoView({
-                              behavior: 'instant',
-                              block: 'end',
-                              inline: 'end',
-                            });
-                          }
-                          router.push(job.id);
-                        },
-                      }}
-                    />
-                  );
-                })
-              ) : (
-                <GlobalEmptyState
-                  textDesc='No jobs found.'
-                  iconName='work'
-                  size={5}
-                />
+                  size="sm"
+                >
+                  Apply Now
+                </Button>
+              </div>
+              
+              <div className="mt-6">
+                <Typography variant="h4" className='font-semibold'>About the Job</Typography>
+                <Typography>Ask your queries about this job to the recruiter.</Typography>
+              </div>
+              {recruiter?.company_overview && (
+                <div className="mt-6">
+                  <Typography variant="h4" className='font-semibold'>Company Description</Typography>
+                  <div dangerouslySetInnerHTML={{ __html: recruiter.company_overview }} />
+                </div>
               )}
-            </Stack>
-          }
-          onClickViewMore={{
-            onClick: () => {
-              window.open(
-                process.env.NEXT_PUBLIC_WEBSITE +
-                  '/' +
-                  ROUTES['/company-postings/[id]']({ id: recruiter.id }),
-                '_blank',
-              );
-            },
-          }}
-          slotInputForm={
-            <TextField
-              required
-              fullWidth
-              id='email'
-              label='Email'
-              name='email'
-              autoComplete='email'
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              error={error}
-              helperText={error ? 'Email is required' : ''}
-            />
-          }
-          onClickNotifyMe={{
-            onClick: () => {
-              notifyMe();
-            },
-          }}
-          slotSocialLink={
-            <Stack direction={'row'} spacing={'var(--space-2)'}>
-              <LinkedinShareButton
-                style={{ padding: 0, margin: 0 }}
-                title={`Job Post - ${post.job_title}`}
-                url={window.location.href}
-                source={window.location.href}
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <Card className="p-4">
+                  <div className="flex items-center space-x-3">
+                    
+                    <div>
+                      <Typography color="text.secondary" className="text-sm">Location</Typography>
+                      <Typography className="font-medium">
+                        {recruiter?.office_locations[0]?.city || '--'}, 
+                        {recruiter?.office_locations[0]?.region || '--'}, 
+                        {recruiter?.office_locations[0]?.country || '--'}
+                      </Typography>
+                    </div>
+                  </div>
+                </Card>
+                <Card className="p-4">
+                  <div className="flex items-center space-x-3">
+                    <div>
+                      <Typography color="text.secondary" className="text-sm">Employee Count</Typography>
+                      <Typography className="font-medium">{recruiter?.employee_size || '--'}</Typography>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+              <div className="mt-6">
+                <Typography variant="h4" className='font-semibold'>Job Description</Typography>
+                <EditorContent editor={editor} />
+              </div>
+              <div className="mt-12" id="scrollTarget">
+                <UploadDB
+                  post={post}
+                  setThank={setThank}
+                  setLoading={setLoading}
+                  setApplication={setApplication}
+                  recruiter={recruiter}
+                  setCandidate={setCandidate}
+                />
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <Typography variant="h4" className="mb-4 font-semibold">Other Open Positions</Typography>
+              {filteredJobs.length > 0 ? (
+                filteredJobs.map((job, ind) => (
+                  <Card key={ind} className="p-4 mb-4">
+                    <Typography variant="h5">{job.job_title || '--'}</Typography>
+                    <Typography variant="body2" color="text.secondary">{job.departments?.name || '--'}</Typography>
+                    <Typography>Location: --</Typography>
+                    <Typography>Type: {job.job_type || '--'}</Typography>
+                    <Button
+                      className="mt-2"
+                      onClick={() => {
+                        const targetElement = document.getElementById('topAvatar');
+                        if (targetElement) {
+                          targetElement.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'end' });
+                        }
+                        router.push(job.id);
+                      }}
+                    >
+                      Apply Now
+                    </Button>
+                  </Card>
+                ))
+              ) : (
+                <div className="p-4 flex flex-col items-center justify-center h-24">
+                  <Building2 className="w-8 h-8 text-gray-400 mb-2" />
+                  <Typography variant="body1" color="text.secondary">No jobs found.</Typography>
+                </div>
+              )}
+              <Button
+                size='sm'
+                className="mt-4 text-sm py-1 px-3"
+                onClick={() => {
+                  window.open(
+                    process.env.NEXT_PUBLIC_WEBSITE +
+                      '/' +
+                      ROUTES['/company-postings/[id]']({ id: recruiter.id }),
+                    '_blank',
+                  );
+                }}
               >
-                <LinkedinIcon borderRadius={8} size={24} />
-              </LinkedinShareButton>
-              <TwitterShareButton
-                url={window.location.href}
-                title={`Job Post - ${post.job_title}`}
-              >
-                <TwitterIcon borderRadius={8} size={24} />
-              </TwitterShareButton>
-              <FacebookShareButton url={window.location.href}>
-                <FacebookIcon borderRadius={8} size={24} />
-              </FacebookShareButton>
-              <RedditShareButton
-                url={window.location.href}
-                title={`Job Post - ${post.job_title}`}
-              >
-                <RedditIcon borderRadius={8} size={24} />
-              </RedditShareButton>
-            </Stack>
-          }
-        />
+                View More
+              </Button>
+            </Card>
+          </div>
+
+          <div className="w-1/4">
+            <div className="sticky top-6 space-y-6">
+              <Card className="p-6">
+                <Typography variant="h4" className="mb-4 font-semibold">Share Job Post</Typography>
+                <div className="flex space-x-2">
+                  <LinkedinShareButton
+                    title={`Job Post - ${post.job_title}`}
+                    url={window.location.href}
+                    source={window.location.href}
+                  >
+                    <LinkedinIcon size={24} round />
+                  </LinkedinShareButton>
+                  <TwitterShareButton
+                    url={window.location.href}
+                    title={`Job Post - ${post.job_title}`}
+                  >
+                    <TwitterIcon size={24} round />
+                  </TwitterShareButton>
+                  <FacebookShareButton url={window.location.href}>
+                    <FacebookIcon size={24} round />
+                  </FacebookShareButton>
+                  <RedditShareButton
+                    url={window.location.href}
+                    title={`Job Post - ${post.job_title}`}
+                  >
+                    <RedditIcon size={24} round />
+                  </RedditShareButton>
+                </div>
+                
+                <div className="my-4 border-t border-gray-200"></div>
+                
+                <Typography variant="h4" className="mb-1 font-semibold">Get Notified</Typography>
+                <Typography className="mb-4 text-sm text-muted-foreground">Stay updated with new job opportunities</Typography>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mb-4"
+                />
+                <Button onClick={notifyMe} variant="default" className="w-full text-sm py-1">Notify Me</Button>
+                {error && <Typography className="text-destructive text-sm mt-2">Email is required</Typography>}
+              </Card>
+            </div>
+          </div>
+        </div>
 
         <Footer brand={true} />
-      </Stack>
-    </Stack>
+      </ScrollArea>
+    </div>
   );
 };
 

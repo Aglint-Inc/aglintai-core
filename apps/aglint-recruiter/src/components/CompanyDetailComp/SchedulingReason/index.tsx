@@ -11,19 +11,33 @@ import { ReasonList } from '@devlink3/ReasonList';
 import { ScheduleReason } from '@devlink3/ScheduleReason';
 import { ScheduleReasonSection } from '@devlink3/ScheduleReasonSection';
 import {
-  Box,
   capitalize,
-  Dialog,
-  Stack,
-  TextField,
-  Typography,
 } from '@mui/material';
+import { Check, Edit2, GripVertical, Trash2, X } from "lucide-react"
 import { useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { supabase } from '@/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ScheduleReason } from '@/devlink3/ScheduleReason';
+import { ScheduleReasonSection } from '@/devlink3/ScheduleReasonSection';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
 const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   candidate: {
@@ -63,6 +77,23 @@ const SchedulingReasons = () => {
       return true;
     });
   };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(reason[tab][result.draggableId]);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    const updatedReason = {
+      [result.draggableId]: items,
+    };
+
+    handelUpdateReasons(updatedReason);
+  };
+
   return (
     <>
       <ScheduleReason
@@ -98,7 +129,7 @@ const SchedulingReasons = () => {
             : 'Set predefined reasons for interviewers to decline or request rescheduling, and for canceling interviews. These reasons will be available as options for interviewers when they need to modify their scheduled interviews.'
         }
         slotScheduleReasonSection={
-          <>
+          <DragDropContext onDragEnd={onDragEnd}>
             {Object.keys(reason[tab]).map(<T extends typeof tab>(item) => {
               const typedItem =
                 item as keyof DatabaseTable['recruiter']['scheduling_reason'][T] &
@@ -121,7 +152,7 @@ const SchedulingReasons = () => {
                 />
               );
             })}
-          </>
+          </DragDropContext>
         }
       />
     </>
@@ -146,86 +177,119 @@ const ScheduleReasonSectionCard = <
   ) => Promise<boolean>;
   scheduleReasonItems: string[];
 }) => {
-  const [edit, setEdit] = useState<{
-    state: boolean;
-    index: number;
-  }>({ state: false, index: null });
+  const [newReason, setNewReason] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddReason = () => {
+    if (newReason.trim()) {
+      const updatedItems = [...scheduleReasonItems, newReason.trim()];
+      updateReasons({ [scheduleReason]: updatedItems }).then(() => {
+        toast.success('New reason added successfully.');
+        setNewReason('');
+        setIsAdding(false);
+      });
+    }
+  };
+
+  const handleCancelAdd = () => {
+    setNewReason('');
+    setIsAdding(false);
+  };
+
   return (
     <ScheduleReasonSection
       slotAddButton={
-        <ButtonSoft
-          highContrast={false}
-          iconName={'add'}
-          isLeftIcon={true}
-          size={2}
-          textButton='Add'
-          onClickButton={{
-            onClick: () => {
-              setEdit({ state: true, index: null });
-            },
-          }}
-        />
+        isAdding ? (
+          <div className='w-full'>
+            <Card className="border-none bg-neutral-100 w-full mb-2">
+            <CardContent className="p-3 w-full">
+              <div className="flex items-center space-x-2 w-full">
+                <Input
+                  value={newReason}
+                  onChange={(e) => setNewReason(e.target.value)}
+                  placeholder="Enter new reason"
+                  className="h-8"
+                />
+                <Button onClick={handleAddReason} size="icon" variant="outline" className='w-7 h-7 flex-shrink-0'>
+                  <Check className="h-3 w-3" />
+                </Button>
+                <Button onClick={handleCancelAdd} size="icon" variant="outline" className='w-7 h-7 flex-shrink-0'>
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+          </div>
+          
+        ) : (
+          <div className='flex justify-start'>
+             <ButtonSoft
+            highContrast={false}
+            iconName={'add'}
+            isLeftIcon={true}
+            size={2}
+            textButton='Add'
+            onClickButton={{
+              onClick: () => setIsAdding(true),
+            }}
+          />
+          </div>
+         
+        )
       }
       textHeading={`${capitalize(scheduleReason)} Reason`}
       textDesc={description}
       onClickAdd={{
-        onClick: () => {
-          setEdit({ state: true, index: null });
-        },
+        onClick: () => setIsAdding(true),
       }}
       slotReasonList={
-        <>
-          {scheduleReasonItems.map((item, index) => (
-            <ReasonListItem
-              key={item + index}
-              text={item}
-              onEdit={() => setEdit({ state: true, index })}
-              onDelete={() => {
-                const temp: DatabaseTable['recruiter']['scheduling_reason'][T] =
-                  {
-                    [scheduleReason]:
-                      scheduleReasonItems?.filter((_, ind) => index !== ind) ||
-                      [],
-                  };
-                updateReasons(temp).then(() => {
-                  toast.success('Deleted Successfully.');
-                });
-              }}
-            />
-          ))}
-          {edit.state && (
-            <AddEditReasonsDialogs
-              type={edit.index === null ? 'add' : 'update'}
-              title={`${capitalizeFirstLetter(scheduleReason)} Reasons`}
-              item={
-                edit.index !== null
-                  ? {
-                      text: scheduleReasonItems[Number(edit.index)],
-                      index: edit.index,
-                    }
-                  : null
-              }
-              onSubmit={({ text, index }) => {
-                const temp = { [scheduleReason]: scheduleReasonItems || [] };
-
-                if (index !== null) {
-                  temp[String(scheduleReason)][Number(index)] = text;
-                } else {
-                  temp[String(scheduleReason)].push(text);
-                }
-                updateReasons(temp).then(() => {
-                  toast.success(
-                    `${index === null ? 'Added' : 'Updated'} Successfully.`,
-                  );
-                  setEdit({ state: false, index: null });
-                });
-              }}
-              onClose={() => {
-                setEdit({ state: false, index: null });
-              }}
-            />
+        <Droppable droppableId={scheduleReason}>
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {scheduleReasonItems.map((item, index) => (
+                <Draggable key={item + index} draggableId={item + index} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      className="flex items-center mb-2 relative group"
+                    >
+                      <div 
+                        {...provided.dragHandleProps} 
+                        className="cursor-move mr-2 absolute left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        style={{ transform: 'translateX(-100%)' }}
+                      >
+                        <GripVertical className="h-4 w-4" />
+                      </div>
+                      <ReasonListItem
+                        text={item}
+                        onEdit={(updatedText) => {
+                          const temp = { [scheduleReason]: [...scheduleReasonItems] };
+                          temp[String(scheduleReason)][index] = updatedText;
+                          updateReasons(temp).then(() => {
+                            toast.success('Updated Successfully.');
+                          });
+                        }}
+                        onDelete={() => {
+                          const temp: DatabaseTable['recruiter']['scheduling_reason'][T] =
+                            {
+                              [scheduleReason]:
+                                scheduleReasonItems?.filter((_, ind) => index !== ind) ||
+                                [],
+                            };
+                          updateReasons(temp).then(() => {
+                            toast.success('Deleted Successfully.');
+                          });
+                        }}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
           )}
-        </>
+        </Droppable>
       }
     />
   );
@@ -237,91 +301,99 @@ const ReasonListItem = ({
   onDelete,
 }: {
   text: string;
-  // eslint-disable-next-line no-unused-vars
-  onEdit: (x: {
-    type: keyof DatabaseTable['recruiter']['scheduling_reason'];
-    index: number;
-  }) => void;
-  // eslint-disable-next-line no-unused-vars
-  onDelete: (x: { index: number }) => void;
+  onEdit: (updatedText: string) => void;
+  onDelete: () => void;
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(text);
+  const [isHovered, setIsHovered] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const handleSave = () => {
+    onEdit(editedText);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditedText(text);
+    setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    onDelete();
+    setShowDeleteDialog(false);
+  };
+
   return (
-    <ReasonList
-      textReason={text}
-      onClickEdit={{ onClick: onEdit }}
-      onClickDelete={{ onClick: onDelete }}
-    />
+    <>
+      <Card 
+        className={`w-full ${isEditing ? 'bg-gray-100 border-none' : ''}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <CardContent className="p-3">
+          {isEditing ? (
+            <div className="flex items-center space-x-2">
+              <Input
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                className=" h-8"
+              />
+              <Button onClick={handleSave} size="icon" variant="outline" className='w-7 h-7 flex-shrink-0'>
+                <Check className="h-3 w-3" />
+              </Button>
+              <Button onClick={handleCancel} size="icon" variant="outline" className='w-7 h-7 flex-shrink-0'>
+                <X className="h-3 w-3" />
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <span>{text}</span>
+              
+              <div className="space-x-2">
+                <Button 
+                  onClick={() => setIsEditing(true)} 
+                  size="icon"
+                  variant="outline"
+                  className={`w-7 h-7 transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  <Edit2 className="h-3 w-3" />
+                </Button>
+                <Button
+                  onClick={() => setShowDeleteDialog(true)} 
+                  size="icon"
+                  variant="outline"
+                  className={`w-7 h-7 bg-red-100 hover:bg-red-200 transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the reason.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel  onClick={() => setShowDeleteDialog(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
-const AddEditReasonsDialogs = ({
-  type,
-  title,
-  item,
-  onSubmit,
-  onClose,
-}: {
-  type: 'add' | 'update';
-  title: string;
-  item: { text: string; index: number } | null;
-  // eslint-disable-next-line no-unused-vars
-  onSubmit: (x: { text: string; index: number }) => void;
-  onClose: () => void;
-}) => {
-  const [val, setVal] = useState<string>(item?.text || null);
-  return (
-    <Dialog open={true} onClose={onClose}>
-      <Stack p={3} gap={2} width={{ md: '500px' }}>
-        <Stack
-          direction={'row'}
-          width={'100%'}
-          justifyContent={'space-between'}
-        >
-          <Typography fontSize={'14px'} fontWeight={600}>
-            {capitalizeFirstLetter(type) + ' ' + title}
-          </Typography>
-          <Box onClick={onClose} sx={{ cursor: 'pointer' }}>
-            <GlobalIcon iconName='close' />
-            {/* <svg
-              width='16'
-              height='17'
-              viewBox='0 0 16 17'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M2.28125 1.71875L8 7.4375L13.7188 1.71875C14.0729 1.42708 14.4271 1.42708 14.7812 1.71875C15.0729 2.07292 15.0729 2.42708 14.7812 2.78125L9.0625 8.5L14.7812 14.2188C15.0729 14.5729 15.0729 14.9271 14.7812 15.2812C14.4271 15.5729 14.0729 15.5729 13.7188 15.2812L8 9.5625L2.28125 15.2812C1.92708 15.5729 1.57292 15.5729 1.21875 15.2812C0.927083 14.9271 0.927083 14.5729 1.21875 14.2188L6.9375 8.5L1.21875 2.78125C0.927083 2.42708 0.927083 2.07292 1.21875 1.71875C1.57292 1.42708 1.92708 1.42708 2.28125 1.71875Z'
-                fill='#68737D'
-              />
-            </svg> */}
-          </Box>
-        </Stack>
-        <TextField
-          value={val}
-          onChange={(e) => {
-            e.target.value?.trim().length && setVal(e.target.value);
-          }}
-          fullWidth
-          multiline
-          minRows={3}
-        />
-        <ButtonSolid
-          size={2}
-          onClickButton={{
-            onClick: () => {
-              val?.trim().length &&
-                onSubmit({
-                  text: val.trim(),
-                  index: item?.index ?? null,
-                });
-            },
-          }}
-          textButton={capitalizeFirstLetter(type)}
-        />
-      </Stack>
-    </Dialog>
-  );
-};
+
 
 const setRecruiter = async (
   data: Omit<DatabaseTableUpdate['recruiter'], 'id'> & { id: string },
