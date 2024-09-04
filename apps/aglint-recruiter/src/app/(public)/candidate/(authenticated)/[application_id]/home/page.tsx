@@ -59,25 +59,6 @@ export default function Component({ params }) {
             </div>
           </div>
 
-          <div className='space-y-8'>
-            {interviewPlan.length > 0 && (
-              <InterviewProgress interviews={interviewPlan} />
-            )}
-            <div className='p-8 pt-20 pb-0'>
-              <h1 className='text-2xl font-semibold mb-1 mt-2'>
-                {getFullName(candidate.first_name, candidate.last_name)}
-              </h1>
-              <p className='text-sm'>
-                for {job.name} at {company.name}
-              </p>
-              <GreetingCandidate sentence={job.greetings} />
-            </div>
-            <CompanyTabs
-              companyImages={job.images}
-              aboutContent={company.company_overview}
-              job={job}
-            />
-          </div>
           <div className='flex flex-col gap-4'>
             {interviewPlan.length > 0 && (
               <InterviewProgress interviews={interviewPlan} />
