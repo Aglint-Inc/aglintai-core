@@ -24,7 +24,11 @@ export default function NavProfile({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='w-10 h-10 cursor-pointer rounded-md'>
-          <AvatarImage src={candidate.avatar} alt='@shadcn' />
+          <AvatarImage
+            className='object-cover rounded-md'
+            src={candidate?.avatar}
+            alt='@shadcn'
+          />
           <AvatarFallback className='bg-primary text-primary-foreground'>
             {candidate.first_name.slice(0, 2)}
           </AvatarFallback>

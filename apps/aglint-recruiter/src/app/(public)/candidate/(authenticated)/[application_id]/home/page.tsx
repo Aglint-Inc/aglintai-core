@@ -2,26 +2,27 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
-// import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+import CandidatePortalLoader from '@/components/CandiatePortal/components/CandidatePortalLoader';
 import CompanyImage from '@/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/components/CandiatePortal/components/GreetingCandidate';
 import InterviewProgress from '@/components/CandiatePortal/components/InterviewProgress';
-// import InterviewProgressCard from '@/components/CandiatePortal/components/InterviewProgressCard';
-// import MessageCard from '@/components/CandiatePortal/components/MessageCard';
 import RequestedAvailability from '@/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
 import UpcomingInterview from '@/components/CandiatePortal/components/UpcomingInterview';
 import { usePortalHomePage } from '@/components/CandiatePortal/hook';
-import Loader from '@/components/Common/Loader';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
   const { isLoading, data } = usePortalHomePage({ application_id });
 
   if (isLoading) {
-    return <Loader />;
+    return <CandidatePortalLoader loadingText='Loading your details..' />;
   }
+
+  // if (!data) return <ReorderableInterviewPlan />;
+
+  if (!data) return <>No data</>;
 
   const {
     availability,
@@ -57,7 +58,27 @@ export default function Component({ params }) {
               />
             </div>
           </div>
+
           <div className='space-y-8'>
+            {interviewPlan.length > 0 && (
+              <InterviewProgress interviews={interviewPlan} />
+            )}
+            <div className='p-8 pt-20 pb-0'>
+              <h1 className='text-2xl font-semibold mb-1 mt-2'>
+                {getFullName(candidate.first_name, candidate.last_name)}
+              </h1>
+              <p className='text-sm'>
+                for {job.name} at {company.name}
+              </p>
+              <GreetingCandidate sentence={job.greetings} />
+            </div>
+            <CompanyTabs
+              companyImages={job.images}
+              aboutContent={company.company_overview}
+              job={job}
+            />
+          </div>
+          <div className='flex flex-col gap-4'>
             {interviewPlan.length > 0 && (
               <InterviewProgress interviews={interviewPlan} />
             )}

@@ -1,8 +1,8 @@
 'use client';
 
+import ProfileSkeleton from '@/components/CandiatePortal/components/ProfileSkeleton';
 import ProfileView from '@/components/CandiatePortal/components/ProfileView';
 import { usePortalProfile } from '@/components/CandiatePortal/hook';
-import Loader from '@/components/Common/Loader';
 
 export default function ProfilePage({ params }) {
   const application_id = params.application_id;
@@ -13,7 +13,11 @@ export default function ProfilePage({ params }) {
   } = usePortalProfile({ application_id });
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className='mt-12'>
+        <ProfileSkeleton />
+      </div>
+    );
   }
 
   if (data)

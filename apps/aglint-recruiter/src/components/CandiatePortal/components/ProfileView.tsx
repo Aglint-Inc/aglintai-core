@@ -20,10 +20,14 @@ export default function ProfileView({
     <Card className='w-full max-w-3xl mx-auto'>
       <CardHeader className='flex flex-row items-start justify-between'>
         <div className='flex flex-col gap-4'>
-          <Avatar>
-            <AvatarImage src={formData?.avatar || ''} />
-            <AvatarFallback>{formData?.first_name.slice(0, 2)}</AvatarFallback>
-          </Avatar>
+          <div className='flex items-center gap-2'>
+            <Avatar>
+              <AvatarImage src={formData?.avatar || ''} />
+              <AvatarFallback>
+                {formData?.first_name.slice(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+          </div>
           <h2 className='text-xl font-semibold'>
             {getFullName(formData?.first_name || '', formData?.last_name || '')}
           </h2>

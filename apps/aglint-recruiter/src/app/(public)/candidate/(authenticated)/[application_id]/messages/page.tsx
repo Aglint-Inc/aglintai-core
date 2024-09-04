@@ -3,10 +3,10 @@ import { Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { type apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
+import CandidatePortalLoader from '@/components/CandiatePortal/components/CandidatePortalLoader';
 import EmptyState from '@/components/CandiatePortal/components/EmptyState';
 import MessageCard from '@/components/CandiatePortal/components/MessageCard';
 import { usePortalMessage } from '@/components/CandiatePortal/hook';
-import Loader from '@/components/Common/Loader';
 
 export default function MessagesPage({ params }) {
   const application_id = params.application_id;
@@ -21,7 +21,7 @@ export default function MessagesPage({ params }) {
   }, [data]);
 
   if (isLoading) {
-    return <Loader />;
+    return <CandidatePortalLoader loadingText='Loading messages..' />;
   }
   if (data === undefined || data?.length === 0)
     return <EmptyState icon={Mail} text='No Past interviews' />;

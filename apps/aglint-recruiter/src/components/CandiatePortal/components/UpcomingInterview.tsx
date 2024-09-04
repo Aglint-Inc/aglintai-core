@@ -17,11 +17,11 @@ function UpcomingInterview({
 
   return (
     <div>
-      <Card className='bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
-        <CardHeader>
-          <h3 className='text-xl font-semibold'>Upcoming Interview</h3>
+      <Card className='bg-background/80 backdrop-blur-sm shadow-sm border border-border '>
+        <CardHeader className='p-4'>
+          <h3 className='text-md font-semibold'>Upcoming Interview</h3>
         </CardHeader>
-        <CardContent>
+        <CardContent className='p-4 pt-0'>
           {latestUpcoming ? (
             <UpcomingCard latestUpcoming={latestUpcoming} />
           ) : (
@@ -36,7 +36,7 @@ function UpcomingInterview({
 export default UpcomingInterview;
 
 const UpcomingEmpty = () => {
-  return <h1>No Upcoming Interviews</h1>;
+  return <h1 className='text-muted-foreground'>No Upcoming Interviews</h1>;
 };
 
 const UpcomingCard = ({
