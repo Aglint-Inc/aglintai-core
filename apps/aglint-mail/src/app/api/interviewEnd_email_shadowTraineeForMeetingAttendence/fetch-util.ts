@@ -21,7 +21,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*,recruiter_table:recruiter(name,logo)),candidates(*))))',
+        '*,interview_module(*), interview_meeting(*, recruiter_user(*),  applications(*, public_jobs(*,recruiter_table:recruiter(name,logo)),candidates(*)))',
       )
       .eq('id', req_body.session_id),
   );
@@ -37,13 +37,10 @@ export async function fetchUtil(
     false,
   );
 
-  const candidate =
-    session_detail.interview_meeting.interview_schedule.applications.candidates;
+  const candidate = session_detail.interview_meeting.applications.candidates;
   const organizer = session_detail.interview_meeting.recruiter_user;
 
-  const job =
-    session_detail.interview_meeting.interview_schedule.applications
-      .public_jobs;
+  const job = session_detail.interview_meeting.applications.public_jobs;
   const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
 
   const mail_details = training_ints.map((trainee) => {
