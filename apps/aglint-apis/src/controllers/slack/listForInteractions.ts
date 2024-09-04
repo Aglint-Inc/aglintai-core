@@ -16,47 +16,47 @@ export const listForInteractions = async (req: Request, res: Response) => {
     switch (metadata.event_type) {
       case 'candidate_confirm_slot':
         if (action.value === 'available')
-          candidate_interview_accept(interaction_data);
+          await candidate_interview_accept(interaction_data);
         else if (action.value === 'not_available')
-          candidate_interview_decline(interaction_data);
+          await candidate_interview_decline(interaction_data);
         break;
 
       case 'interviewer_feedback':
         if (action.value === 'feedBack_submit')
-          interview_feedback_submit(interaction_data);
+          await interview_feedback_submit(interaction_data);
         break;
 
       case 'shadow_complete_trainee_confirmation':
         if (action.value === 'accept')
-          shadow_complete_trainee_accept(interaction_data);
+          await shadow_complete_trainee_accept(interaction_data);
         else if (action.value === 'decline')
-          shadow_complete_trainee_decline(interaction_data);
+          await shadow_complete_trainee_decline(interaction_data);
         break;
 
       case 'reverse_shadow_complete_trainee_confirmation':
         if (action.value === 'accept')
-          reverse_shadow_trainee_accept(interaction_data);
+          await reverse_shadow_trainee_accept(interaction_data);
         else if (action.value === 'decline')
-          reverse_shadow_trainee_decline(interaction_data);
+          await reverse_shadow_trainee_decline(interaction_data);
         break;
       case 'approver_qualified_confirmation':
         if (action.value === 'accept')
-          qualified_approver_confirmation_accept(interaction_data);
+          await qualified_approver_confirmation_accept(interaction_data);
         else if (action.value === 'decline')
-          qualified_approver_confirmation_decline(interaction_data);
+          await qualified_approver_confirmation_decline(interaction_data);
 
         break;
       case 'interviewer_attend_comfirmation':
         if (action.value === 'accept')
-          interview_attent_confirmation_accept(interaction_data);
+          await interview_attent_confirmation_accept(interaction_data);
         else if (action.value === 'decline')
-          interview_attent_confirmation_decline(interaction_data);
+          await interview_attent_confirmation_decline(interaction_data);
         break;
       case 'meeting_status_organizer':
         if (action.value === 'meeting_completed')
-          meeting_status_organizer_accept(interaction_data);
+          await meeting_status_organizer_accept(interaction_data);
         else if (action.value === 'meeting_not_completed')
-          meeting_status_organizer_decline(interaction_data);
+          await meeting_status_organizer_decline(interaction_data);
         break;
     }
 
@@ -177,11 +177,20 @@ const candidate_interview_accept = async (interaction_data: any) => {
 const candidate_interview_decline = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
   const metadata = interaction_data.message.metadata;
-  supabaseWrap(
+  const [rec] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_relation')
       .update({accepted_status: 'declined'})
       .eq('id', metadata.event_payload.session_relation_id)
+      .select()
+  );
+
+  await supabaseWrap(
+    await supabaseAdmin.from('interview_session_cancel').insert({
+      reason: 'interview declined',
+      session_id: rec.session_id,
+      session_relation_id: metadata.event_payload.session_relation_id,
+    })
   );
   const response = await slackWeb.chat.update({
     channel: channel_id,

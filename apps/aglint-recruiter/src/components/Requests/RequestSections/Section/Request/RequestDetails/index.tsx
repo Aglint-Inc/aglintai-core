@@ -109,7 +109,7 @@ function RequestDetails({
       isBodyVisible={false}
       slotBody={
         <>
-          <RequestProgress requestDetails={request} />
+          <RequestProgress />
           {Boolean(
             request.status === 'to_do' &&
               request.type === 'schedule_request' &&
