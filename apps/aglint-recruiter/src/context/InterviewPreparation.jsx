@@ -1,17 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 // ** React Imports
-// import { useResumeBuilderContext } from '@context/ResumeBuilderContext';
+// import { useResumeBuilderContext } from '@/context/ResumeBuilderContext';
 import { calculateCompletionPercentage } from '@components/ResumeBuilderDashboard/CreateResume';
-import { useAuthDetails } from '@context/AuthContext';
-import { useJobTrack } from '@context/JobTrackingContext';
-import { createSkillsPrompt } from '@utils/ai-prompts/createSkills';
-import { improveAnswerPrompt } from '@utils/ai-prompts/improve_answer';
-import { prePrompts } from '@utils/ai-prompts/interview_prompts';
-import interviewerList from '@utils/interviewer_list';
-import { updateProgressStatusInDb } from '@utils/temp/authUtils';
-//import { toast } from 'react-toastify';
-import toast from '@utils/toast';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
@@ -19,8 +10,17 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 
+import { useAuthDetails } from '@/context/AuthContext';
+import { useJobTrack } from '@/context/JobTrackingContext';
+import { createSkillsPrompt } from '@/utils/ai-prompts/createSkills';
+import { improveAnswerPrompt } from '@/utils/ai-prompts/improve_answer';
+import { prePrompts } from '@/utils/ai-prompts/interview_prompts';
+import interviewerList from '@/utils/interviewer_list';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
+import { updateProgressStatusInDb } from '@/utils/temp/authUtils';
+//import { toast } from 'react-toastify';
+import toast from '@/utils/toast';
 
 import { selectJobApplicationQuery } from '../apiUtils/job/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';

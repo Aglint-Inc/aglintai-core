@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import dayjs from '@utils/dayjs';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
@@ -14,6 +13,7 @@ import {
   useConfirmSlots,
   useInviteMeta,
 } from '@/queries/candidate-invite';
+import dayjs from '@/utils/dayjs';
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 

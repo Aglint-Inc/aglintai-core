@@ -1,5 +1,5 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { DevlinkMainProvider } from '@context/DevlinkContext';
+import { DevlinkMainProvider } from '@/context/DevlinkContext';
 import { PostHogProvider } from 'posthog-js/react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import JobsProvider from '../context/JobsContext';

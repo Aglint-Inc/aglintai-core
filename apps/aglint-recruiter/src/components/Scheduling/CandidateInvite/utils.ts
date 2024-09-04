@@ -2,9 +2,9 @@ import {
   type APICreateCandidateRequest,
   type DatabaseTable,
 } from '@aglint/shared-types';
-import dayjs from '@utils/dayjs';
 import axios from 'axios';
 
+import dayjs from '@/utils/dayjs';
 import timeZones from '@/utils/timeZone';
 
 import { type TimezoneObj } from '../../CompanyDetailComp/SettingsSchedule';

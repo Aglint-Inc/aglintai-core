@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseView } from '@aglint/shared-types';
-import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   useJobCreate,
   useJobDelete,

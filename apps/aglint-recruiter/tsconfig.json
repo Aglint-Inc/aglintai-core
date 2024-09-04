@@ -21,13 +21,8 @@
       "@devlink2/*": ["./devlink2/*"],
       "@devlink3/*": ["./devlink3/*"],
       "@components/*": ["./components/*"],
-      "@config/*": ["./src/config/*"],
-      "@context/*": ["./src/context/*"],
-      "@defaultData/*": ["./src/defaultData/*"],
       "@styles/*": ["./styles/*"],
-      "@utils/*": ["./src/utils/*"],
       "@public/*": ["./public/*"],
-      "@types/*": ["./src/types/*"],
       "@lib/*": ["./lib/*"]
     },
     "plugins": [
