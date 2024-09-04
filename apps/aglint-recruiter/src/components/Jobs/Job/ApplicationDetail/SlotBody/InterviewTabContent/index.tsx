@@ -1,5 +1,7 @@
 import { Stack } from '@mui/material';
 
+import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { InterviewStage } from '@/devlink3/InterviewStage';
 import Loader from '@/src/components/Common/Loader';
 import { useApplication } from '@/src/context/ApplicationContext';
@@ -36,10 +38,24 @@ function InterviewTabContent() {
   return (
     <>
       <SideDrawerEdit refetch={refetch} />
-      <InterviewStage
-        slotInterviewStage={<StageSessions />}
-        slotPiplineTab={<Progress />}
-      />
+      <Tabs defaultValue='candidate'>
+        <TabsList>
+          <TabsTrigger value='internal'>Internal</TabsTrigger>
+          <TabsTrigger value='candidate'>Candidate</TabsTrigger>
+        </TabsList>
+        <TabsContent value='internal'>
+          <InterviewStage
+            slotInterviewStage={<StageSessions />}
+            slotPiplineTab={<Progress />}
+          />
+        </TabsContent>
+        <TabsContent value='candidate'>
+          <ReorderableInterviewPlan
+            applicationId={stages[0].interview_plan.application_id}
+            jobId={null}
+          />
+        </TabsContent>
+      </Tabs>
 
       <DialogSchedule />
     </>

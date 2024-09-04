@@ -3,9 +3,18 @@ import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
@@ -162,36 +171,28 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
   );
 });
 JobTitle.displayName = 'JobTitle';
-
 const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
   // const { recruiter } = useAuthDetails();
   return (
-    <UITextField
-      label={'Company'}
-      name={name}
-      required
-      placeholder={'Ex : Google'}
-      value={value.value as string}
-      error={value.error.value}
-      helperText={value.error.helper}
-      onChange={(e) => onChange(name, e.target.value)}
-      // InputProps={{
-      //   startAdornment: (
-      //     <InputAdornment position='start'>
-      //       <Image
-      //         style={{
-      //           borderRadius: 'var(--radius-2)',
-      //           objectFit: 'contain',
-      //         }}
-      //         alt='building'
-      //         src={`${recruiter?.logo ?? '/images/svg/Building.svg'}`}
-      //         width={26}
-      //         height={26}
-      //       />
-      //     </InputAdornment>
-      //   ),
-      // }}
-    />
+    <div className='relative'>
+      <Input
+        id={name}
+        name={name}
+        placeholder='Ex : Google'
+        value={value.value as string}
+        onChange={(e) => onChange(name, e.target.value)}
+        className={cn('pl-10', value.error.value && 'border-destructive')}
+      />
+      <Label
+        htmlFor={name}
+        className='absolute left-3 top-1/2 -translate-y-1/2'
+      >
+        Company
+      </Label>
+      {value.error.value && (
+        <p className='text-sm text-destructive mt-1'>{value.error.helper}</p>
+      )}
+    </div>
   );
 });
 JobCompany.displayName = 'JobCompany';
@@ -203,15 +204,26 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
     value: s.id,
   }));
   return (
-    <UISelect
-      label={'Location'}
-      menuOptions={options}
-      error={value.error.value}
-      helperText={value.error.helper}
-      required={value.required}
-      value={value.value as string}
-      onChange={(e) => onChange(name, e.target.value)}
-    />
+    <div>
+      <Label htmlFor={name}>Job Location</Label>
+      <Select
+        onValueChange={(value) => {
+          onChange(name, value);
+        }}
+        value={value.value as string}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder='Select a location' />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={String(option.value)}>
+              {option.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 });
 JobLocation.displayName = 'JobLocation';
@@ -251,15 +263,26 @@ const getOptions = (type: keyof Defaults) => {
 const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const options = getOptions('job_type');
   return (
-    <UISelect
-      label={'Job type'}
-      menuOptions={options}
-      value={value.value as string}
-      required={value.required}
-      error={value.error.value}
-      helperText={value.error.helper}
-      onChange={(e) => onChange(name, e.target.value)}
-    />
+    <div>
+      <Label htmlFor={name}>Job Type</Label>
+      <Select
+        onValueChange={(value) => {
+          onChange(name, value);
+        }}
+        value={value.value as string}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder='Select a type' />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={String(option.value)}>
+              {option.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 });
 JobType.displayName = 'JobType';
@@ -272,15 +295,26 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
   }));
 
   return (
-    <UISelect
-      label={'Department'}
-      menuOptions={options}
-      error={value.error.value}
-      helperText={value.error.helper}
-      required={value.required}
-      value={value.value as string}
-      onChange={(e) => onChange(name, e.target.value)}
-    />
+    <div>
+      <Label htmlFor={name}>Department</Label>
+      <Select
+        onValueChange={(value) => {
+          onChange(name, value);
+        }}
+        value={value.value as string}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder='Select a department' />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={String(option.value)}>
+              {option.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 });
 JobDepartment.displayName = 'JobDepartment';
@@ -360,15 +394,26 @@ JobCoordinator.displayName = 'JobCoordinator';
 const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const options = getOptions('workplace_type');
   return (
-    <UISelect
-      label={'Workplace type'}
-      menuOptions={options}
-      error={value.error.value}
-      required={value.required}
-      helperText={value.error.helper}
-      value={value.value as string}
-      onChange={(e) => onChange(name, e.target.value)}
-    />
+    <div>
+      <Label htmlFor={name}>Workplace Type</Label>
+      <Select
+        onValueChange={(value) => {
+          onChange(name, value);
+        }}
+        value={value.value as string}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder='Select a type' />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={String(option.value)}>
+              {option.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 });
 JobWorkPlace.displayName = 'JobWorkPlace';

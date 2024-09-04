@@ -16,7 +16,6 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import { getStatusColor } from '../../../utils';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
@@ -54,11 +53,7 @@ export const Request = (
                   variant={'solid'}
                 />
               }
-              textTitle={getRequestTitle({
-                title: props.title,
-                first_name: props.applications.candidates.first_name,
-                last_name: props.applications.candidates.last_name,
-              })}
+              textTitle={props.title}
               slotRightIcons={
                 <>
                   <div

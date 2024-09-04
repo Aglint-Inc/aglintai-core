@@ -130,16 +130,14 @@ const InterviewPlanPage = () => {
         slotTopbarRight={<Settings />}
         slotBody={
           //cand and inter
-          <Stack>
-            <Tabs>
+          <Stack className='p-4'>
+            <Tabs defaultValue='candidate'>
               <TabsList>
-                <TabsTrigger defaultValue={'internal'} value='internal'>
-                  Internal
-                </TabsTrigger>
+                <TabsTrigger value='internal'>Internal</TabsTrigger>
                 <TabsTrigger value='candidate'>Candidate</TabsTrigger>
               </TabsList>
               <TabsContent value='internal'>
-                <Stack gap={1} margin={2} width={'800px'}>
+                <Stack gap={1} className='max-w-2xl my-8 mb-10 '>
                   {data?.length ? (
                     data.map((plan) => (
                       <InterviewPlan
@@ -163,8 +161,11 @@ const InterviewPlanPage = () => {
                 </Stack>
               </TabsContent>
               <TabsContent value='candidate'>
-                <ReorderableInterviewPlan jobId={data[0].job_id} />
-                candidate
+                {/* job level interview plan */}
+                <ReorderableInterviewPlan
+                  jobId={data[0].job_id}
+                  applicationId={null}
+                />
               </TabsContent>
             </Tabs>
           </Stack>

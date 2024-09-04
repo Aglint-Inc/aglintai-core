@@ -13,7 +13,7 @@ import {
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
 } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability';
+import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/hooks';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,

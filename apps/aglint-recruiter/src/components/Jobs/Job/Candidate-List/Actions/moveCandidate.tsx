@@ -189,7 +189,7 @@ const MoveCandidateInterview = () => {
         const name =
           (data?.pages ?? [])
             .flatMap((list) => list)
-            .find(({ id }) => id === application_id)?.name ?? ``;
+            .find(({ id }) => id === application_id)?.name ?? '';
         return {
           assignee_id: request.assignee_id,
           type: request.type,

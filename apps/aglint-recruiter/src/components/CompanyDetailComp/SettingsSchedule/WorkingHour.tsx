@@ -1,29 +1,28 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { type schedulingSettingType } from '@aglint/shared-types';
-import { Drawer, Stack, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
-import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
-import { WorkingHours } from '@/devlink2/WorkingHours';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { WorkingDaysList } from '@/devlink3/WorkingDaysList';
-import { WorkingHourDetails } from '@/devlink3/WorkingHourDetails';
-import { WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Drawer } from '@/components/ui/drawer';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import dayjs from '@/src/utils/dayjs';
-import timeZones from '@/src/utils/timeZone';
 
 import { type TimezoneObj, TimezoneSelector } from '.';
-import SelectTime from './Components/SelectTime';
-import ToggleBtn from './Components/ToggleBtn';
 
 let schedulingSettingObj = {};
 
 export default function WorkingHour({ updateSettings, initialData }) {
-  const [helperWorking, setHelperWorking] = useState(420);
+  const [helperWorking] = useState(420);
   const [workingHours, setWorkingHours] = useState([]);
   const [isTimeZone, setIsTimeZone] = useState(true);
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
@@ -47,10 +46,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
       return [...data];
     });
   };
-  const toggleHelperWorking = () => {
-    // Toggle between 0px and 420px
-    setHelperWorking(helperWorking === 10 ? 420 : 10);
-  };
+
   function initialLoad() {
     if (initialData) {
       const schedulingSettingData = cloneDeep(
@@ -101,365 +97,335 @@ export default function WorkingHour({ updateSettings, initialData }) {
   };
 
   return (
-    <Stack
-      display={'flex'}
-      flexDirection={'row'}
-      width={'100%'}
-      justifyContent={'space-between'}
-      alignItems={'start'}
-      sx={{ overflowX: 'hidden' }}
-    >
-      <Stack
+    <div className='flex w-full justify-between items-start overflow-x-hidden'>
+      <div
+        className='relative w-[700px] overflow-auto space-y-2 rounded-lg bg-white m-2'
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        width={'700px'}
-        overflow={'auto'}
-        spacing={2}
-        borderRadius={'8px'}
-        bgcolor={'white'}
-        margin={2}
-        position={'relative'}
       >
         {isHover && (
-          <Stack position={'absolute'} top={'16px'} right={'16px'}>
-            <ButtonSoft
-              textButton='Edit'
-              color={'neutral'}
-              size={2}
-              onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-            />
-          </Stack>
+          <div className='absolute top-4 right-4'>
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => setIsDrawerOpen(true)}
+            >
+              Edit
+            </Button>
+          </div>
         )}
         <TimeZone timeZone={initialData?.timeZone?.label} />
         <WorkingHourView workingHours={initialData.workingHours} />
         <Debreif breaktime={initialData.break_hour} />
-        <Drawer
-          anchor={'right'}
-          open={isDrawerOpen}
-          onClose={() => setIsDrawerOpen(false)}
-        >
-          <SideDrawerLarge
-            onClickCancel={{
-              onClick: () => {
-                setIsDrawerOpen(false);
-              },
-            }}
-            isHeaderIconVisible={false}
-            textDrawertitle='Update Working Hours'
-            drawerSize={'medium'}
-            slotButtons={
-              <>
-                <ButtonSoft
-                  size={2}
-                  textButton='Cancel'
-                  color={'neutral'}
-                  onClickButton={{ onClick: () => setIsDrawerOpen(false) }}
+        <Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
+          <div className='p-4 bg-white h-full overflow-y-auto'>
+            <h2 className='text-lg font-semibold mb-4'>Update Working Hours</h2>
+            <div className='flex flex-col space-y-4'>
+              <div className='flex flex-col space-y-2'>
+                <label className='text-sm font-medium'>Time Zone</label>
+                <TimezoneSelector
+                  disabled={isTimeZone}
+                  value={selectedTimeZone}
+                  setValue={setSelectedTimeZone}
                 />
-                <ButtonSolid
-                  size={2}
-                  textButton='Update'
-                  isLoading={isUpdating}
-                  isDisabled={isUpdating}
-                  onClickButton={{ onClick: handleUpdate }}
-                />
-              </>
-            }
-            slotSideDrawerbody={
-              <WorkingHours
-                slotTimeZoneInput={
-                  <TimezoneSelector
-                    disabled={isTimeZone}
-                    value={selectedTimeZone}
-                    setValue={setSelectedTimeZone}
-                  />
-                }
-                // slotTimeZoneToggle={}
-                slotWorkingHourDay={
-                  <Stack direction={'column'} paddingBottom={'50px'}>
-                    {!!workingHours.length &&
-                      workingHours.map((day, i) => {
-                        return (
-                          <>
-                            <WorkingHourDay
-                              slotRcCheckbox={
-                                <RcCheckbox
-                                  onclickCheck={{
-                                    onClick: () => {
-                                      setWorkingHours((pre) => {
-                                        const data = pre;
-                                        data[Number(i)].isWorkDay =
-                                          !data[Number(i)].isWorkDay;
+              </div>
+              <div className='flex flex-col space-y-2'>
+                <label className='text-sm font-medium'>Working Hours</label>
+                <div className='flex flex-col space-y-2'>
+                  {workingHours.map((day, i) => (
+                    <div key={i} className='flex items-center space-x-2'>
+                      <Checkbox
+                        checked={day.isWorkDay}
+                        onCheckedChange={() => {
+                          setWorkingHours((pre) => {
+                            const data = pre;
+                            data[Number(i)].isWorkDay =
+                              !data[Number(i)].isWorkDay;
 
-                                        return [...data];
-                                      });
-                                    },
-                                  }}
-                                  isChecked={day.isWorkDay}
-                                  text={capitalize(day.day)}
-                                />
-                              }
-                              slotTimeRageInput={
-                                <TimeRangeInput
-                                  slotStartTimeInput={
-                                    <SelectTime
-                                      disable={!day.isWorkDay}
-                                      value={dayjs()
-                                        .set(
-                                          'hour',
-                                          parseInt(
-                                            day.timeRange.startTime.split(
-                                              ':',
-                                            )[0],
-                                          ),
-                                        )
-                                        .set(
-                                          'minute',
-                                          parseInt(
-                                            day.timeRange.startTime.split(
-                                              ':',
-                                            )[1],
-                                          ),
-                                        )}
-                                      onSelect={selectStartTime}
-                                      i={i}
-                                    />
-                                  }
-                                  slotEndTimeInput={
-                                    <SelectTime
-                                      disable={!day.isWorkDay}
-                                      value={dayjs()
-                                        .set(
-                                          'hour',
-                                          parseInt(
-                                            day.timeRange.endTime.split(':')[0],
-                                          ),
-                                        )
-                                        .set(
-                                          'minute',
-                                          parseInt(
-                                            day.timeRange.endTime.split(':')[1],
-                                          ),
-                                        )}
-                                      onSelect={selectEndTime}
-                                      i={i}
-                                    />
-                                  }
-                                />
-                              }
-                            />
-                          </>
-                        );
-                      })}
-
-                    <Stack
-                      direction={'column'}
-                      spacing={2}
-                      marginTop={'var(--space-5)'}
-                    >
-                      <Stack direction={'column'}>
-                        <Typography variant='body1medium'>
-                          Default Break Times
-                        </Typography>
-                        <Typography variant='body1'>
-                          Define standard break times for the company.
-                        </Typography>
-                      </Stack>
-                      <Stack spacing={1} direction={'row'}>
-                        <Stack direction={'column'} spacing={1}>
-                          <Typography width={120} fontSize={'14px'}>
-                            Break Start Time
-                          </Typography>
-
-                          {selectedHourBreak?.start_time &&
-                            workingHours[1]?.timeRange?.startTime && (
-                              <SelectTime
-                                // width='130px'
-                                disableIgnoringDatePartForTimeValidation={true}
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      selectedHourBreak?.start_time?.split(
-                                        ':',
-                                      )[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      selectedHourBreak?.start_time?.split(
-                                        ':',
-                                      )[1],
-                                    ),
-                                  )}
-                                onSelect={(e) => {
-                                  setSelectedHourBreak((pre) => {
-                                    pre.start_time = `${dayjs(e).format('HH:mm')}`;
-                                    return { ...pre };
-                                  });
-                                }}
-                                key={0}
-                              />
-                            )}
-                        </Stack>
-                        <Stack spacing={1} direction={'column'}>
-                          <Typography width={120} fontSize={'14px'}>
-                            Break End Time
-                          </Typography>
-
-                          {workingHours[1]?.timeRange?.endTime &&
-                            selectedHourBreak?.end_time && (
-                              <SelectTime
-                                // width='130px'
-                                disableIgnoringDatePartForTimeValidation={true}
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      selectedHourBreak?.end_time?.split(
-                                        ':',
-                                      )[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      selectedHourBreak?.end_time?.split(
-                                        ':',
-                                      )[1],
-                                    ),
-                                  )}
-                                onSelect={(e) => {
-                                  setSelectedHourBreak((pre) => {
-                                    pre.end_time = `${dayjs(e).format('HH:mm')}`;
-                                    return { ...pre };
-                                  });
-                                }}
-                                key={0}
-                              />
-                            )}
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                }
-                slotTimeZoneToggle={
-                  <ToggleBtn
-                    handleChange={(e: any) => {
-                      setIsTimeZone(e);
-                      if (e) {
-                        setSelectedTimeZone(
-                          timeZones.filter((item) =>
-                            item.label.includes(dayjs.tz.guess()),
-                          )[0],
-                        );
-                      }
-                    }}
-                    isChecked={isTimeZone}
-                  />
-                }
-              />
-            }
-          />
+                            return [...data];
+                          });
+                        }}
+                      />
+                      <label className='text-sm font-medium'>
+                        {capitalize(day.day)}
+                      </label>
+                      <div className='flex space-x-2'>
+                        <Select
+                          disabled={!day.isWorkDay}
+                          value={day.timeRange.startTime.split(':')[0]}
+                          onValueChange={(value) =>
+                            selectStartTime(
+                              `${value}:${day.timeRange.startTime.split(':')[1]}`,
+                              i,
+                            )
+                          }
+                        >
+                          <SelectTrigger className='w-[80px]'>
+                            <SelectValue placeholder='Hour' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <SelectItem
+                                key={i}
+                                value={i.toString().padStart(2, '0')}
+                              >
+                                {i.toString().padStart(2, '0')}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select
+                          disabled={!day.isWorkDay}
+                          value={day.timeRange.startTime.split(':')[1]}
+                          onValueChange={(value) =>
+                            selectStartTime(
+                              `${day.timeRange.startTime.split(':')[0]}:${value}`,
+                              i,
+                            )
+                          }
+                        >
+                          <SelectTrigger className='w-[80px]'>
+                            <SelectValue placeholder='Minute' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 60 }, (_, i) => (
+                              <SelectItem
+                                key={i}
+                                value={i.toString().padStart(2, '0')}
+                              >
+                                {i.toString().padStart(2, '0')}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <span>-</span>
+                      <div className='flex space-x-2'>
+                        <Select
+                          disabled={!day.isWorkDay}
+                          value={day.timeRange.endTime.split(':')[0]}
+                          onValueChange={(value) =>
+                            selectEndTime(
+                              `${value}:${day.timeRange.endTime.split(':')[1]}`,
+                              i,
+                            )
+                          }
+                        >
+                          <SelectTrigger className='w-[80px]'>
+                            <SelectValue placeholder='Hour' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <SelectItem
+                                key={i}
+                                value={i.toString().padStart(2, '0')}
+                              >
+                                {i.toString().padStart(2, '0')}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select
+                          disabled={!day.isWorkDay}
+                          value={day.timeRange.endTime.split(':')[1]}
+                          onValueChange={(value) =>
+                            selectEndTime(
+                              `${day.timeRange.endTime.split(':')[0]}:${value}`,
+                              i,
+                            )
+                          }
+                        >
+                          <SelectTrigger className='w-[80px]'>
+                            <SelectValue placeholder='Minute' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 60 }, (_, i) => (
+                              <SelectItem
+                                key={i}
+                                value={i.toString().padStart(2, '0')}
+                              >
+                                {i.toString().padStart(2, '0')}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className='flex flex-col space-y-2'>
+                <label className='text-sm font-medium'>
+                  Default Break Times
+                </label>
+                <div className='flex space-x-2'>
+                  <div className='flex flex-col space-y-1'>
+                    <label className='text-sm'>Break Start Time</label>
+                    {selectedHourBreak?.start_time &&
+                      workingHours[1]?.timeRange?.startTime && (
+                        <div className='flex space-x-2'>
+                          <Select
+                            value={selectedHourBreak?.start_time?.split(':')[0]}
+                            onValueChange={(value) => {
+                              setSelectedHourBreak((pre) => ({
+                                ...pre,
+                                start_time: `${value}:${pre.start_time?.split(':')[1] || '00'}`,
+                              }));
+                            }}
+                          >
+                            <SelectTrigger className='w-[80px]'>
+                              <SelectValue placeholder='Hour' />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({ length: 24 }, (_, i) => (
+                                <SelectItem
+                                  key={i}
+                                  value={i.toString().padStart(2, '0')}
+                                >
+                                  {i.toString().padStart(2, '0')}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Select
+                            value={selectedHourBreak?.start_time?.split(':')[1]}
+                            onValueChange={(value) => {
+                              setSelectedHourBreak((pre) => ({
+                                ...pre,
+                                start_time: `${pre.start_time?.split(':')[0] || '00'}:${value}`,
+                              }));
+                            }}
+                          >
+                            <SelectTrigger className='w-[80px]'>
+                              <SelectValue placeholder='Minute' />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({ length: 60 }, (_, i) => (
+                                <SelectItem
+                                  key={i}
+                                  value={i.toString().padStart(2, '0')}
+                                >
+                                  {i.toString().padStart(2, '0')}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                  </div>
+                  <div className='flex flex-col space-y-1'>
+                    <label className='text-sm'>Break End Time</label>
+                    {workingHours[1]?.timeRange?.endTime &&
+                      selectedHourBreak?.end_time && (
+                        <Select
+                          onValueChange={(value) => {
+                            const [hour, minute] = value.split(':');
+                            setSelectedHourBreak((pre) => ({
+                              ...pre,
+                              end_time: `${hour}:${minute}`,
+                            }));
+                          }}
+                        >
+                          <SelectTrigger className='w-[180px]'>
+                            <SelectValue placeholder='Select end time' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 24 }, (_, hour) => (
+                              <SelectGroup key={hour}>
+                                <SelectLabel>{`${hour.toString().padStart(2, '0')}:00`}</SelectLabel>
+                                {[
+                                  0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55,
+                                ].map((minute) => (
+                                  <SelectItem
+                                    key={`${hour}:${minute}`}
+                                    value={`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`}
+                                  >
+                                    {`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='flex justify-end space-x-2 mt-4'>
+              <Button variant='outline' onClick={() => setIsDrawerOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleUpdate} disabled={isUpdating}>
+                {isUpdating ? 'Updating...' : 'Update'}
+              </Button>
+            </div>
+          </div>
         </Drawer>
-      </Stack>
-      <WorkingHoursHelper
-        styleWidth={{ style: { width: helperWorking } }}
-        onClickArrow={{
-          style: {
-            transform: `rotate(${helperWorking === 420 ? '0deg' : '180deg'})`,
-          },
-          onClick: () => {
-            toggleHelperWorking();
-          },
-        }}
-      />
-    </Stack>
+      </div>
+      <div
+        className='transition-all duration-300 ease-in-out'
+        style={{ width: helperWorking }}
+      >
+        {/* WorkingHoursHelper content */}
+      </div>
+    </div>
   );
 }
 
 const WorkingHourView = ({ workingHours }) => {
   return (
-    <Stack>
-      <WorkingHourDetails
-        slotEdit={<Stack pl={2} height={'20px'}></Stack>}
-        slotDays={workingHours
+    <div className='flex flex-col'>
+      <div className='space-y-2'>
+        <div className='pl-2 h-5'></div>
+        {workingHours
           .filter((day) => day.isWorkDay)
           .map((day, i) => (
-            <WorkingDaysList
-              key={i}
-              textDay={<Typography>{capitalize(day.day)}</Typography>}
-              textTime={
-                <Typography>
-                  {dayjs()
-                    .set(
-                      'hour',
-                      parseInt(day?.timeRange.startTime?.split(':')[0]),
-                    )
-                    .set(
-                      'minute',
-                      parseInt(day?.timeRange.startTime?.split(':')[1]),
-                    )
-                    .format('hh:mm A')}
-                  {' - '}
-                  {dayjs()
-                    .set(
-                      'hour',
-                      parseInt(day?.timeRange.endTime?.split(':')[0]),
-                    )
-                    .set(
-                      'minute',
-                      parseInt(day?.timeRange.endTime?.split(':')[1]),
-                    )
-                    .format('hh:mm A')}
-                </Typography>
-              }
-            />
+            <div key={i} className='flex justify-between items-center'>
+              <span className='font-medium'>{capitalize(day.day)}</span>
+              <span>
+                {dayjs()
+                  .set(
+                    'hour',
+                    parseInt(day?.timeRange.startTime?.split(':')[0]),
+                  )
+                  .set(
+                    'minute',
+                    parseInt(day?.timeRange.startTime?.split(':')[1]),
+                  )
+                  .format('hh:mm A')}
+                {' - '}
+                {dayjs()
+                  .set('hour', parseInt(day?.timeRange.endTime?.split(':')[0]))
+                  .set(
+                    'minute',
+                    parseInt(day?.timeRange.endTime?.split(':')[1]),
+                  )
+                  .format('hh:mm A')}
+              </span>
+            </div>
           ))}
-      />
-    </Stack>
+      </div>
+    </div>
   );
 };
 const TimeZone = ({ timeZone }) => {
   return (
-    <Stack bgcolor={'white'} width={'600px'} marginTop={'0px !important'}>
-      <Stack
-        fontWeight={500}
-        alignItems={'center'}
-        height={'10px'}
-        paddingBlock={2}
-        direction={'row'}
-      >
-        Time Zone
-        {/* {isEditHover && (
-          // <Stack pl={2}>
-          //   <ButtonGhost
-          //     textButton='Edit'
-          //     size={1}
-          //     onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-          //   />
-          // </Stack>
-        )} */}
-      </Stack>
-      <Typography>{timeZone}</Typography>
-    </Stack>
+    <div className='bg-white w-[600px] mt-0'>
+      <div className='flex items-center h-10 py-2 font-medium'>Time Zone</div>
+      <p>{timeZone}</p>
+    </div>
   );
 };
 const Debreif = ({ breaktime }) => {
   return (
-    <Stack bgcolor={'white'} width={'600px'}>
-      <Stack
-        fontWeight={500}
-        alignItems={'center'}
-        height={'10px'}
-        paddingBlock={2}
-        direction={'row'}
-      >
-        Default Break Times{' '}
-      </Stack>
-      <Typography pb={'4px'}>
-        <span style={{ fontWeight: '500' }}>Break Start Time</span>
-        <span style={{ marginLeft: '20px' }}>
+    <div className='bg-white w-[600px]'>
+      <div className='flex items-center h-10 py-2 font-medium'>
+        Default Break Times
+      </div>
+      <p className='pb-1'>
+        <span className='font-medium'>Break Start Time</span>
+        <span className='ml-5'>
           {dayjs()
             .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
             .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
@@ -470,8 +436,7 @@ const Debreif = ({ breaktime }) => {
           .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
           .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
           .format('hh:mm A')}
-      </Typography>
-      <Typography></Typography>
-    </Stack>
+      </p>
+    </div>
   );
 };

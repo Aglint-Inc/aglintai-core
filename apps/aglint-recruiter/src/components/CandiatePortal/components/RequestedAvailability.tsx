@@ -27,38 +27,63 @@ function RequestedAvailability({
   return (
     <div>
       <Card className='bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
-        <CardHeader>
-          <h2 className='font-semibold'>
-            Availability Requested for {job.name}
-          </h2>
-          <p className='text-sm text-gray-600'>
-            Requested on{' '}
-            {dayjs(latestavailability.created_at).format('mmm DD, hh:mm A')}
-          </p>
-          {/* <p className='text-sm text-gray-600'>Requested on Aug 22, 05:00 PM</p> */}
-        </CardHeader>
-        <CardContent>
-          <div className='bg-gray-100 p-4 rounded-lg mb-4'>
-            <h4 className='font-medium mb-2'>A note from your recruiter</h4>
-            <p className='text-sm text-gray-600'>
-              Make sure to study &quot;Coding Essentials&quot; content shared
-              with you in email!, also please submit your availability before
-              Aug 30, 05:00 PM.
-            </p>
-          </div>
-          <Button
-            className='w-full'
-            variant='outline'
-            onClick={() => {
-              window.open(latestavailability.link, '_blank');
-            }}
-          >
-            Submit availability
-          </Button>
-        </CardContent>
+        {latestavailability ? (
+          <AvailabilityCard latestavailability={latestavailability} job={job} />
+        ) : (
+          <AvailabilityEmpty />
+        )}
       </Card>
     </div>
   );
 }
 
 export default RequestedAvailability;
+
+const AvailabilityEmpty = () => {
+  return (
+    <CardContent>
+      <CardHeader>Availability Request</CardHeader>
+      <p>No availability request found</p>
+    </CardContent>
+  );
+};
+
+const AvailabilityCard = ({
+  latestavailability,
+  job,
+}: {
+  latestavailability: availability[number];
+  job: apiHomepageResponse['job'];
+}) => {
+  return (
+    <>
+      <CardHeader>
+        <h2 className='font-semibold'>Availability Requested for {job.name}</h2>
+        <p className='text-sm text-gray-600'>
+          Requested on{' '}
+          {dayjs(latestavailability.created_at).format('mmm DD, hh:mm A')}
+        </p>
+        {/* <p className='text-sm text-gray-600'>Requested on Aug 22, 05:00 PM</p> */}
+      </CardHeader>
+      <CardContent>
+        <div className='bg-gray-100 p-4 rounded-lg mb-4'>
+          <h4 className='font-medium mb-2'>A note from your recruiter</h4>
+          <p className='text-sm text-gray-600'>
+            Make sure to study &quot;Coding Essentials&quot; content shared with
+            you in email!, also please submit your availability before Aug 30,
+            05:00 PM.
+          </p>
+        </div>
+        <Button
+          className='w-full'
+          variant='outline'
+          onClick={() => {
+            window.open(latestavailability.link, '_blank');
+          }}
+        >
+          Submit availability
+        </Button>
+      </CardContent>
+    </>
+  );
+};

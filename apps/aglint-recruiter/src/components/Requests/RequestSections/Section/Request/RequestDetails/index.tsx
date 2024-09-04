@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
@@ -11,7 +10,6 @@ import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
-import { supabase } from '@/src/utils/supabase/client';
 
 import CandidateDetails from './Components/CandidateDetails';
 import SessionsCardAndActions from './Components/SessionsCardAndActions';
@@ -108,11 +106,7 @@ function RequestDetails({
           </Stack>
         </>
       }
-      isBodyVisible={Boolean(
-        request.status === 'to_do' &&
-          request.type === 'schedule_request' &&
-          request.applications.public_jobs.workflow_job_relation.length > 0,
-      )}
+      isBodyVisible={false}
       slotBody={
         <>
           <RequestProgress requestDetails={request} />
@@ -156,16 +150,3 @@ function RequestDetails({
 }
 
 export default RequestDetails;
-
-export const updateRequestSessionRelations = async ({
-  id,
-  ...rest
-}: DatabaseTableUpdate['request']) =>
-  (
-    await supabase
-      .from('request')
-      .update({ ...rest })
-      .eq('id', id)
-      .select('*')
-      .throwOnError()
-  ).data;

@@ -25,7 +25,6 @@ import { WelcomeMatTalentDirectory } from '@/devlink2/WelcomeMatTalentDirectory'
 import { WelcomeMatTalentRediscovery } from '@/devlink2/WelcomeMatTalentRediscovery';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
@@ -405,391 +404,374 @@ function CandidateSearchHistory() {
             {isHistoryLoading ? (
               <Loader />
             ) : (
-              <YTransform uniqueKey={router.query.currentTab}>
-                <>
-                  {currentTab === 'discover talent' &&
-                    localStorage.getItem('discoverTalent') !== 'true' && (
-                      <WelcomeMatDiscoverTalent
-                        slotSearch={
-                          <UITextField
-                            value={searchQuery}
-                            placeholder={'Software Engineer in San Francisco'}
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.code === 'Enter') {
-                                getCandsFromApi().then(() =>
-                                  localStorage.setItem(
-                                    'discoverTalent',
-                                    'true',
-                                  ),
-                                );
-                              }
-                            }}
-                          />
-                        }
-                        slotLoader={
-                          <CircularProgress
-                            color='inherit'
-                            size={'15px'}
-                            sx={{ color: 'var(--neutral-6)' }}
-                          />
-                        }
-                        isLoading={isQrySearching}
-                        onClickSearch={{
-                          onClick: async () => {
-                            await getCandsFromApi();
-                            localStorage.setItem('discoverTalent', 'true');
-                          },
-                        }}
-                      />
-                    )}
-                  {currentTab === 'talent rediscovery' &&
-                    localStorage.getItem('talentRediscovery') !== 'true' && (
-                      <WelcomeMatTalentRediscovery
-                        isSearchVisible={isCandidates}
-                        isLoading={isQrySearching}
-                        slotLoader={
-                          <CircularProgress
-                            color='inherit'
-                            size={'15px'}
-                            sx={{ color: 'var(--neutral-6)' }}
-                          />
-                        }
-                        onclickSearch={{
-                          onClick: async () => {
-                            await getMatchingCandsFromQry();
-                            localStorage.setItem('talentRediscovery', 'true');
-                          },
-                        }}
-                        slotSearch={
-                          <UITextField
-                            value={searchQuery}
-                            placeholder={
-                              'Ex: Software engineer with 2 years of experience'
+              <>
+                {currentTab === 'discover talent' &&
+                  localStorage.getItem('discoverTalent') !== 'true' && (
+                    <WelcomeMatDiscoverTalent
+                      slotSearch={
+                        <UITextField
+                          value={searchQuery}
+                          placeholder={'Software Engineer in San Francisco'}
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.code === 'Enter') {
+                              getCandsFromApi().then(() =>
+                                localStorage.setItem('discoverTalent', 'true'),
+                              );
                             }
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                            }}
-                            // onKeyDown={(e) => {
-                            //   if (e.code === 'Enter') {
-                            //     if (isCandidates) {
-                            //       await getMatchingCandsFromQry();
-                            //       localStorage.setItem(
-                            //         'talentRediscovery',
-                            //         'true',
-                            //       );
-                            //     } else {
-                            //       toast({
-                            //         variant: 'destructive',
-                            //         title: 'Error',
-                            //         description:
-                            //           'No candidates are linked to the jobs. Please add candidates.',
-                            //       });
-                            //     }
-                            //   }
-                            // }}
-                          />
-                        }
-                      />
-                    )}
-                  {currentTab === 'talent directory' && !isCandidates && (
-                    <WelcomeMatTalentDirectory />
+                          }}
+                        />
+                      }
+                      slotLoader={
+                        <CircularProgress
+                          color='inherit'
+                          size={'15px'}
+                          sx={{ color: 'var(--neutral-6)' }}
+                        />
+                      }
+                      isLoading={isQrySearching}
+                      onClickSearch={{
+                        onClick: async () => {
+                          await getCandsFromApi();
+                          localStorage.setItem('discoverTalent', 'true');
+                        },
+                      }}
+                    />
                   )}
-                  {(currentTab === 'talent rediscovery' ||
-                    currentTab === 'discover talent') &&
-                    isWelMatVisible() && (
-                      <SearchAglintCd
-                        // isViewAllCandidateVisible={true}
-                        slotSearchButton={
-                          <ButtonSolid
-                            textButton='Search'
-                            size={2}
-                            isLoading={isQrySearching}
-                            onClickButton={{
-                              onClick: () => {
-                                if (currentTab === 'talent rediscovery') {
-                                  getMatchingCandsFromQry();
-                                } else {
-                                  getCandsFromApi();
-                                }
-                              },
-                            }}
-                          />
-                        }
-                        isSearchByJdVisible={
-                          currentTab === 'talent rediscovery'
-                        }
-                        isSearchInAglintVisible={
-                          currentTab === 'discover talent'
-                        }
-                        isSearchInAllVisible={
-                          currentTab === 'talent rediscovery'
-                        }
-                        isSavedListVisible={currentTab === 'discover talent'}
-                        isInputVisible={isInputVisible}
-                        slotInputSearch={
-                          <UITextField
-                            height={32}
-                            value={searchQuery}
-                            placeholder={
-                              currentTab === 'talent rediscovery'
-                                ? 'Ex: Software engineer with 2 years of experience'
-                                : 'Software Engineer in San Francisco'
+                {currentTab === 'talent rediscovery' &&
+                  localStorage.getItem('talentRediscovery') !== 'true' && (
+                    <WelcomeMatTalentRediscovery
+                      isSearchVisible={isCandidates}
+                      isLoading={isQrySearching}
+                      slotLoader={
+                        <CircularProgress
+                          color='inherit'
+                          size={'15px'}
+                          sx={{ color: 'var(--neutral-6)' }}
+                        />
+                      }
+                      onclickSearch={{
+                        onClick: async () => {
+                          await getMatchingCandsFromQry();
+                          localStorage.setItem('talentRediscovery', 'true');
+                        },
+                      }}
+                      slotSearch={
+                        <UITextField
+                          value={searchQuery}
+                          placeholder={
+                            'Ex: Software engineer with 2 years of experience'
+                          }
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                          }}
+                          // onKeyDown={(e) => {
+                          //   if (e.code === 'Enter') {
+                          //     if (isCandidates) {
+                          //       await getMatchingCandsFromQry();
+                          //       localStorage.setItem(
+                          //         'talentRediscovery',
+                          //         'true',
+                          //       );
+                          //     } else {
+                          //       toast({
+                          //         variant: 'destructive',
+                          //         title: 'Error',
+                          //         description:
+                          //           'No candidates are linked to the jobs. Please add candidates.',
+                          //       });
+                          //     }
+                          //   }
+                          // }}
+                        />
+                      }
+                    />
+                  )}
+                {currentTab === 'talent directory' && !isCandidates && (
+                  <WelcomeMatTalentDirectory />
+                )}
+                {(currentTab === 'talent rediscovery' ||
+                  currentTab === 'discover talent') &&
+                  isWelMatVisible() && (
+                    <SearchAglintCd
+                      // isViewAllCandidateVisible={true}
+                      slotSearchButton={
+                        <ButtonSolid
+                          textButton='Search'
+                          size={2}
+                          isLoading={isQrySearching}
+                          onClickButton={{
+                            onClick: () => {
+                              if (currentTab === 'talent rediscovery') {
+                                getMatchingCandsFromQry();
+                              } else {
+                                getCandsFromApi();
+                              }
+                            },
+                          }}
+                        />
+                      }
+                      isSearchByJdVisible={currentTab === 'talent rediscovery'}
+                      isSearchInAglintVisible={currentTab === 'discover talent'}
+                      isSearchInAllVisible={currentTab === 'talent rediscovery'}
+                      isSavedListVisible={currentTab === 'discover talent'}
+                      isInputVisible={isInputVisible}
+                      slotInputSearch={
+                        <UITextField
+                          height={32}
+                          value={searchQuery}
+                          placeholder={
+                            currentTab === 'talent rediscovery'
+                              ? 'Ex: Software engineer with 2 years of experience'
+                              : 'Software Engineer in San Francisco'
+                          }
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.code === 'Enter') {
+                              if (currentTab === 'talent rediscovery') {
+                                getMatchingCandsFromQry();
+                              } else {
+                                getCandsFromApi();
+                              }
                             }
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.code === 'Enter') {
-                                if (currentTab === 'talent rediscovery') {
-                                  getMatchingCandsFromQry();
-                                } else {
-                                  getCandsFromApi();
-                                }
-                              }
-                            }}
-                            // InputProps={{
-                            //   endAdornment: searchQuery && (
-                            //     <Stack
-                            //       onClick={() => setSearchQuery('')}
-                            //       sx={{
-                            //         p: '3px',
-                            //         '&:hover': {
-                            //           backgroundColor: 'var(--neutral-3)',
-                            //           cursor: 'pointer',
-                            //         },
-                            //       }}
-                            //     >
-                            //       <GlobalIcon iconName='close' size={5} />
-                            //     </Stack>
-                            //   ),
-                            // }}
-                          />
-                        }
-                        isSavedListEmpty={
-                          !isHistoryLoading && list.length === 0
-                        }
-                        slotInput={
-                          <UITextField
-                            placeholder='Enter List name'
-                            value={text}
-                            onChange={(e) => {
-                              setText(e.target.value);
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                submitHandler();
-                              }
-                            }}
-                          />
-                        }
-                        onClickSubmit={{
-                          onClick: () => {
-                            submitHandler();
-                          },
-                        }}
-                        onClickCreateNewList={{
-                          onClick: () => {
-                            setIsInputVisible(true);
-                          },
-                        }}
-                        onClickClose={{
-                          onClick: () => {
-                            setText('');
-                            setIsInputVisible(false);
-                          },
-                        }}
-                        slotSavedList={
-                          isHistoryLoading ? (
-                            <>
-                              <SavedListLoader /> <SavedListLoader />
-                              <SavedListLoader />
-                            </>
-                          ) : (
-                            list.map((list) => (
-                              <SavedList
-                                // isInlineEditVisible={editList?.id === list.id}
-
-                                slotInputTextSavedList={
-                                  <Stack
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                  >
-                                    <UITextField
-                                      placeholder='Enter List name'
-                                      ref={multiTextFieldRef}
-                                      value={editListText}
-                                      onChange={(e) => {
-                                        setEditListText(e.target.value);
-                                      }}
-                                    />
-                                  </Stack>
-                                }
-                                onClickDelete={{
-                                  onClick: (e) => {
-                                    e.stopPropagation();
-                                    setDeleteList(list);
-                                  },
-                                }}
-                                isSavedListInputVisible={
-                                  editList?.id === list.id
-                                }
-                                isSavedListTextVisible={
-                                  editList?.id !== list.id
-                                }
-                                onClickClose={{
-                                  onClick: (e) => {
-                                    e.stopPropagation();
-                                    setEditList(null);
-                                  },
-                                }}
-                                onClickSubmit={{
-                                  onClick: (e) => {
-                                    e.stopPropagation();
-                                    updateHandler();
-                                  },
-                                }}
-                                onClickEdit={{
-                                  onClick: (e) => {
-                                    e.stopPropagation();
-                                    setEditListText(list.name);
-                                    setEditList(list);
-                                    setTimeout(() => {
-                                      if (multiTextFieldRef.current) {
-                                        multiTextFieldRef.current.focus();
-                                      }
-                                    }, 100);
-                                  },
-                                }}
-                                isCardVisible={editList?.id !== list.id}
-                                isEditVisible={editList?.id !== list.id}
-                                key={list.id}
-                                textRole={list.name}
-                                textCountCandidate={`${list.candidates.length} candidates`}
-                                onClickList={{
-                                  onClick: () => {
-                                    router.push(
-                                      `/candidates/aglintdb?list=${list.id}`,
-                                    );
-                                  },
-                                }}
-                              />
-                            ))
-                          )
-                        }
-                        slotCandidateHistoryCard={
+                          }}
+                          // InputProps={{
+                          //   endAdornment: searchQuery && (
+                          //     <Stack
+                          //       onClick={() => setSearchQuery('')}
+                          //       sx={{
+                          //         p: '3px',
+                          //         '&:hover': {
+                          //           backgroundColor: 'var(--neutral-3)',
+                          //           cursor: 'pointer',
+                          //         },
+                          //       }}
+                          //     >
+                          //       <GlobalIcon iconName='close' size={5} />
+                          //     </Stack>
+                          //   ),
+                          // }}
+                        />
+                      }
+                      isSavedListEmpty={!isHistoryLoading && list.length === 0}
+                      slotInput={
+                        <UITextField
+                          placeholder='Enter List name'
+                          value={text}
+                          onChange={(e) => {
+                            setText(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              submitHandler();
+                            }
+                          }}
+                        />
+                      }
+                      onClickSubmit={{
+                        onClick: () => {
+                          submitHandler();
+                        },
+                      }}
+                      onClickCreateNewList={{
+                        onClick: () => {
+                          setIsInputVisible(true);
+                        },
+                      }}
+                      onClickClose={{
+                        onClick: () => {
+                          setText('');
+                          setIsInputVisible(false);
+                        },
+                      }}
+                      slotSavedList={
+                        isHistoryLoading ? (
                           <>
-                            {isHistoryLoading && (
-                              <>
-                                <CdSearchHistoryLoader />
-                                <CdSearchHistoryLoader />
-                                <CdSearchHistoryLoader />
-                                <CdSearchHistoryLoader />
-                                <CdSearchHistoryLoader />
-                              </>
-                            )}
-                            {!isHistoryLoading &&
-                              history.filter((h) => {
-                                if (currentTab === 'talent rediscovery') {
-                                  return h.db_search === 'candidate';
-                                } else {
-                                  return h.db_search === 'aglint';
-                                }
-                              }).length === 0 && (
+                            <SavedListLoader /> <SavedListLoader />
+                            <SavedListLoader />
+                          </>
+                        ) : (
+                          list.map((list) => (
+                            <SavedList
+                              // isInlineEditVisible={editList?.id === list.id}
+
+                              slotInputTextSavedList={
                                 <Stack
-                                  alignItems={'center'}
-                                  height={'100%'}
-                                  justifyContent={'center'}
-                                  pt={10}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                  }}
                                 >
-                                  <EmptyState />
-                                  <Typography variant='body1'>
-                                    No search history found.
-                                  </Typography>
-                                </Stack>
-                              )}
-                            {history
-                              .sort((h1, h2) => {
-                                const d1 = new Date(h1.created_at);
-                                const d2 = new Date(h2.created_at);
-                                return d2.getTime() - d1.getTime();
-                              })
-                              .filter((h) => {
-                                if (currentTab === 'talent rediscovery') {
-                                  return h.db_search === 'candidate';
-                                } else {
-                                  return h.db_search === 'aglint';
-                                }
-                              })
-                              .map((hist, index) => {
-                                let diffrence = getTimeDifference(
-                                  hist.created_at,
-                                  new Date().toISOString(),
-                                );
-                                return (
-                                  <CandidateHistoryCard
-                                    onClickKebab={{
-                                      onClick: (e) => {
-                                        e.stopPropagation();
-                                      },
-                                    }}
-                                    colorPropsCategory={{
-                                      style: {
-                                        backgroundColor:
-                                          hist.db_search == 'candidate'
-                                            ? '#EDF7FF'
-                                            : '#FF622433',
-                                      },
-                                    }}
-                                    key={index}
-                                    textCategory={
-                                      hist.db_search == 'candidate'
-                                        ? 'My Candidates'
-                                        : 'Aglint DB'
-                                    }
-                                    isSearchByJobVisible={true}
-                                    onClickDelete={{
-                                      onClick: (e) => {
-                                        e.stopPropagation();
-                                        setDeleteHistoryId(hist.id);
-                                        setDeleteHistory(true);
-                                      },
-                                    }}
-                                    textHeader={
-                                      hist.search_query ??
-                                      queryJsonToTitle(hist.query_json as any)
-                                    }
-                                    textPosted={diffrence}
-                                    onClickCard={{
-                                      onClick: () => {
-                                        if (hist.db_search === 'aglint') {
-                                          router.push(
-                                            `/candidates/aglintdb?id=${hist.id}`,
-                                          );
-                                          return;
-                                        }
-                                        router.push(
-                                          `/candidates/search?searchQryId=${hist.id}&search_title=${hist.search_query}`,
-                                        );
-                                      },
+                                  <UITextField
+                                    placeholder='Enter List name'
+                                    ref={multiTextFieldRef}
+                                    value={editListText}
+                                    onChange={(e) => {
+                                      setEditListText(e.target.value);
                                     }}
                                   />
-                                );
-                              })}
-                          </>
-                        }
-                        onClickSearchJobDescription={{
-                          onClick: () => {
-                            setIsJdPopUPopOpen(true);
-                          },
-                        }}
-                      />
-                    )}
-                </>
-              </YTransform>
+                                </Stack>
+                              }
+                              onClickDelete={{
+                                onClick: (e) => {
+                                  e.stopPropagation();
+                                  setDeleteList(list);
+                                },
+                              }}
+                              isSavedListInputVisible={editList?.id === list.id}
+                              isSavedListTextVisible={editList?.id !== list.id}
+                              onClickClose={{
+                                onClick: (e) => {
+                                  e.stopPropagation();
+                                  setEditList(null);
+                                },
+                              }}
+                              onClickSubmit={{
+                                onClick: (e) => {
+                                  e.stopPropagation();
+                                  updateHandler();
+                                },
+                              }}
+                              onClickEdit={{
+                                onClick: (e) => {
+                                  e.stopPropagation();
+                                  setEditListText(list.name);
+                                  setEditList(list);
+                                  setTimeout(() => {
+                                    if (multiTextFieldRef.current) {
+                                      multiTextFieldRef.current.focus();
+                                    }
+                                  }, 100);
+                                },
+                              }}
+                              isCardVisible={editList?.id !== list.id}
+                              isEditVisible={editList?.id !== list.id}
+                              key={list.id}
+                              textRole={list.name}
+                              textCountCandidate={`${list.candidates.length} candidates`}
+                              onClickList={{
+                                onClick: () => {
+                                  router.push(
+                                    `/candidates/aglintdb?list=${list.id}`,
+                                  );
+                                },
+                              }}
+                            />
+                          ))
+                        )
+                      }
+                      slotCandidateHistoryCard={
+                        <>
+                          {isHistoryLoading && (
+                            <>
+                              <CdSearchHistoryLoader />
+                              <CdSearchHistoryLoader />
+                              <CdSearchHistoryLoader />
+                              <CdSearchHistoryLoader />
+                              <CdSearchHistoryLoader />
+                            </>
+                          )}
+                          {!isHistoryLoading &&
+                            history.filter((h) => {
+                              if (currentTab === 'talent rediscovery') {
+                                return h.db_search === 'candidate';
+                              } else {
+                                return h.db_search === 'aglint';
+                              }
+                            }).length === 0 && (
+                              <Stack
+                                alignItems={'center'}
+                                height={'100%'}
+                                justifyContent={'center'}
+                                pt={10}
+                              >
+                                <EmptyState />
+                                <Typography variant='body1'>
+                                  No search history found.
+                                </Typography>
+                              </Stack>
+                            )}
+                          {history
+                            .sort((h1, h2) => {
+                              const d1 = new Date(h1.created_at);
+                              const d2 = new Date(h2.created_at);
+                              return d2.getTime() - d1.getTime();
+                            })
+                            .filter((h) => {
+                              if (currentTab === 'talent rediscovery') {
+                                return h.db_search === 'candidate';
+                              } else {
+                                return h.db_search === 'aglint';
+                              }
+                            })
+                            .map((hist, index) => {
+                              let diffrence = getTimeDifference(
+                                hist.created_at,
+                                new Date().toISOString(),
+                              );
+                              return (
+                                <CandidateHistoryCard
+                                  onClickKebab={{
+                                    onClick: (e) => {
+                                      e.stopPropagation();
+                                    },
+                                  }}
+                                  colorPropsCategory={{
+                                    style: {
+                                      backgroundColor:
+                                        hist.db_search == 'candidate'
+                                          ? '#EDF7FF'
+                                          : '#FF622433',
+                                    },
+                                  }}
+                                  key={index}
+                                  textCategory={
+                                    hist.db_search == 'candidate'
+                                      ? 'My Candidates'
+                                      : 'Aglint DB'
+                                  }
+                                  isSearchByJobVisible={true}
+                                  onClickDelete={{
+                                    onClick: (e) => {
+                                      e.stopPropagation();
+                                      setDeleteHistoryId(hist.id);
+                                      setDeleteHistory(true);
+                                    },
+                                  }}
+                                  textHeader={
+                                    hist.search_query ??
+                                    queryJsonToTitle(hist.query_json as any)
+                                  }
+                                  textPosted={diffrence}
+                                  onClickCard={{
+                                    onClick: () => {
+                                      if (hist.db_search === 'aglint') {
+                                        router.push(
+                                          `/candidates/aglintdb?id=${hist.id}`,
+                                        );
+                                        return;
+                                      }
+                                      router.push(
+                                        `/candidates/search?searchQryId=${hist.id}&search_title=${hist.search_query}`,
+                                      );
+                                    },
+                                  }}
+                                />
+                              );
+                            })}
+                        </>
+                      }
+                      onClickSearchJobDescription={{
+                        onClick: () => {
+                          setIsJdPopUPopOpen(true);
+                        },
+                      }}
+                    />
+                  )}
+              </>
             )}
           </>
         }

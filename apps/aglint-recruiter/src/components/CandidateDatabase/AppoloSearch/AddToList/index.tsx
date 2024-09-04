@@ -2,9 +2,9 @@ import { type CandidateListTypeDB } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { createToast } from 'vercel-toast';
 
 import { useToast } from '@/components/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 import { AddToList } from '@/devlink/AddToList';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CdSavedList } from '@/devlink/CdSavedList';
@@ -120,19 +120,22 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
         if (isSelectAll) {
           setIsSelectAll(false);
         }
-        createToast('Candidates added to list successfully', {
-          type: 'success',
-          action: {
-            text: 'View',
-            callback(toast) {
-              setSelectedCandidate(null);
-              router.push(
-                ROUTES['/candidates/aglintdb']() + `?list=${data[0].id}`,
-              );
-              toast.destroy();
-            },
-          },
-          timeout: 3000,
+        toast({
+          title: 'Success',
+          description: 'Candidates added to list successfully',
+          action: (
+            <ToastAction
+              altText='View'
+              onClick={() => {
+                setSelectedCandidate(null);
+                router.push(
+                  ROUTES['/candidates/aglintdb']() + `?list=${data[0].id}`,
+                );
+              }}
+            >
+              View
+            </ToastAction>
+          ),
         });
       } else {
         toast({
