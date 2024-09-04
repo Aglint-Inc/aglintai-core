@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import React, { useEffect, useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { fetchEmailTemplates } from '@/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
+import { fetchEmailTemplates } from '@/components/CompanyDetailComp/Templates/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 
