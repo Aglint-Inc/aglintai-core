@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import GreenhouseIcon from '@components/icons/GreenhouseIcon.svg';
+import GreenInCircle from '@components/icons/GreenInCircle.svg';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
@@ -10,8 +12,6 @@ import React from 'react';
 import { type GreenHouseFullSyncAPI } from '@/app/api/sync/greenhouse/full_sync/type';
 import axios from '@/client/axios';
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
-import GreenhouseIcon from '@/components/icons/GreenhouseIcon.svg';
-import GreenInCircle from '@/components/icons/GreenInCircle.svg';
 import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
 
