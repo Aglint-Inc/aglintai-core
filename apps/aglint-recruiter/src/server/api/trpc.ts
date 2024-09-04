@@ -7,10 +7,11 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from '@trpc/server';
+import { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import superjson from 'superjson';
-import { ZodError } from 'zod';
+import { type z, ZodError } from 'zod';
 
 import { createPrivateClient, createPublicClient } from '../db';
 import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
@@ -187,6 +188,20 @@ export const publicProcedure = t.procedure
   .use(timingMiddleware)
   .use(adminClientMiddleware);
 
+export type PublicProcedure<T extends z.ZodObject<any, any, any, any, any>> =
+  typeof publicProcedure extends ProcedureBuilder<
+    any,
+    any,
+    infer Ctx,
+    any,
+    any,
+    any,
+    any,
+    any
+  >
+    ? { ctx: Ctx; input: z.infer<T> }
+    : never;
+
 /**
  * Private (authenticated) procedure
  *
@@ -197,3 +212,17 @@ export const publicProcedure = t.procedure
 export const privateProcedure = t.procedure
   .use(timingMiddleware)
   .use(authMiddleware);
+
+export type PrivateProcedure<T extends z.ZodObject<any, any, any, any, any>> =
+  typeof privateProcedure extends ProcedureBuilder<
+    any,
+    any,
+    infer Ctx,
+    any,
+    any,
+    any,
+    any,
+    any
+  >
+    ? { ctx: Ctx; input: z.infer<T> }
+    : never;
