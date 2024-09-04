@@ -45,13 +45,16 @@ export default function CandidateForm({
 
       let profile_image = form.avatar;
       if (isImageChanged) {
-        const { data } = await supabase.storage
+        const { error, data } = await supabase.storage
           .from('candidate-files')
           .upload(`profile/${form.id}`, imageFile.current, {
             cacheControl: '3600',
             upsert: true,
           });
 
+        if (error) {
+          throw new Error(error.message);
+        }
         if (data?.path && imageFile?.current?.size) {
           profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
         } else {

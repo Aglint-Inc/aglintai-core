@@ -1,7 +1,6 @@
 'use client';
 
 import ProfileView from '@/components/CandiatePortal/components/ProfileView';
-import { ThemeSelector } from '@/components/CandiatePortal/components/ThemeSelector';
 import { usePortalProfile } from '@/components/CandiatePortal/hook';
 import Loader from '@/components/Common/Loader';
 
@@ -16,7 +15,6 @@ export default function ProfilePage({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return <ThemeSelector />;
 
   if (data)
     return (
