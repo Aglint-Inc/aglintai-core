@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { getRecruiterUser, handleRedirect } from '@/src/utils/auth';
-import { createClient } from '@/src/utils/supabase/server';
+import { getRecruiterUser, handleRedirect } from '@/utils/auth';
+import { createClient } from '@/utils/supabase/server';
 
 export const dynamic = 'force-dynamic';
 

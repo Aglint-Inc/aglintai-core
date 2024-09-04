@@ -1,6 +1,6 @@
-import Seo from '@components/Common/Seo';
+import Seo from '@/components/Common/Seo';
 
-// import { PageNothing } from '@/devlink/PageNothing';
+// import { PageNothing } from '@devlink/PageNothing';
 
 export default function InternalServerError() {
   return (

@@ -1,8 +1,7 @@
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { MemberListCardOption } from '@devlink2/MemberListCardOption';
 import { Popover, Stack } from '@mui/material';
 import { useState } from 'react';
-
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 
 import { type useModuleRelations } from '../hooks';
 import {

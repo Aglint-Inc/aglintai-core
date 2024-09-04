@@ -1,15 +1,12 @@
+import { Checkbox } from '@devlink/Checkbox';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { type ReactNode } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import {
-  capitalizeAll,
-  capitalizeFirstLetter,
-} from '@/src/utils/text/textUtils';
+import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
 type ItemType = string;
 
 function FilterDropDown({

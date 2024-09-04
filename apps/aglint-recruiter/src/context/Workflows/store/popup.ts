@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { cloneDeep } from 'lodash';
 
-import { initialForm } from '@/src/components/Workflow/common';
-import { type Workflow } from '@/src/types/workflow.types';
+import { initialForm } from '@/components/Workflow/common';
+import { type Workflow } from '@/types/workflow.types';
 
 import { type CreateSlice } from '.';
 

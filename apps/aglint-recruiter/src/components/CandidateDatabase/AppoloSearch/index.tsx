@@ -1,13 +1,13 @@
+import { CdAglintDb } from '@devlink/CdAglintDb';
+import { Checkbox } from '@devlink/Checkbox';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { CdAglintDb } from '@/devlink/CdAglintDb';
-import { Checkbox } from '@/devlink/Checkbox';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';

@@ -1,21 +1,20 @@
-import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
-import { useState } from 'react';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@components/ui/select';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@components/ui/tooltip';
+import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
+import { useState } from 'react';
 
 import InterviewersDeclineTable from './InterviewersDeclineTable';
 import InterviewersTable from './InterviewersTable';

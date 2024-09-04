@@ -1,7 +1,7 @@
 import React from 'react';
 
-import RealTimeCrons from '@/src/components/Workflow/RealTimeCrons';
-import WorkflowProvider from '@/src/context/Workflows/[id]';
+import RealTimeCrons from '@/components/Workflow/RealTimeCrons';
+import WorkflowProvider from '@/context/Workflows/[id]';
 
 const Page = () => {
   return (

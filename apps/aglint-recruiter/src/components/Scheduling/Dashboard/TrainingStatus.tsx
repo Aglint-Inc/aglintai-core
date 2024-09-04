@@ -1,13 +1,13 @@
+import { Skeleton } from '@devlink2/Skeleton';
+import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
+import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
+import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
+import { NoData } from '@devlink3/NoData';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { InterviewModuleStats } from '@/devlink3/InterviewModuleStats';
-import { InterviewModuleStatsCard } from '@/devlink3/InterviewModuleStatsCard';
-import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
-import { NoData } from '@/devlink3/NoData';
-import { useInterviewTrainingStatus } from '@/src/queries/scheduling-dashboard';
-import ROUTES from '@/src/utils/routing/routes';
+import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
+import ROUTES from '@/utils/routing/routes';
 
 const LIMIT = 6;
 

@@ -1,15 +1,15 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { RolesPill } from '@devlink/RolesPill';
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { RolesPill } from '@/devlink/RolesPill';
-import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { manageDepartments } from '@/src/context/AuthContext/utils';
-import { useAllDepartments } from '@/src/queries/departments';
-import toast from '@/src/utils/toast';
+import UITextField from '@/components/Common/UITextField';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { manageDepartments } from '@/context/AuthContext/utils';
+import { useAllDepartments } from '@/queries/departments';
+import toast from '@/utils/toast';
 
 interface DepartmentsProps {
   handleClose: () => void;

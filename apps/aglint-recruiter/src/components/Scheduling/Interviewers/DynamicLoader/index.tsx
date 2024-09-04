@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import Loader from '@/src/components/Common/Loader';
+import Loader from '@/components/Common/Loader';
 
 function DynamicLoader({ height = '100%' }: { height?: string }) {
   return (

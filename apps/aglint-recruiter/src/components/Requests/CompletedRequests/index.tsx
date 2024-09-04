@@ -1,7 +1,6 @@
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { RequestsWrapper } from '@devlink2/RequestsWrapper';
 import { Stack } from '@mui/material';
-
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { RequestsWrapper } from '@/devlink2/RequestsWrapper';
 
 import { sectionDefaultsData } from '../RequestSections';
 import Section from '../RequestSections/Section';

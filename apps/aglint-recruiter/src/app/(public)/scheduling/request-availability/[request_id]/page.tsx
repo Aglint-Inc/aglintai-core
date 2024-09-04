@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
 
-import Seo from '@/src/components/Common/Seo';
-import CandidateAvailability from '@/src/components/Scheduling/RequestAvailability/CandidateAvailability';
-import { RequestAvailabilityProvider } from '@/src/components/Scheduling/RequestAvailability/RequestAvailabilityContext';
+import Seo from '@/components/Common/Seo';
+import CandidateAvailability from '@/components/Scheduling/RequestAvailability/CandidateAvailability';
+import { RequestAvailabilityProvider } from '@/components/Scheduling/RequestAvailability/RequestAvailabilityContext';
 
 function RequestAvailability() {
   return (

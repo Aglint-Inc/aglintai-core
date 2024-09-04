@@ -1,6 +1,5 @@
-import Seo from '@components/Common/Seo';
-
-import JobCreate from '@/src/components/Jobs/Create';
+import Seo from '@/components/Common/Seo';
+import JobCreate from '@/components/Jobs/Create';
 
 const CreateJobPage = () => {
   return (

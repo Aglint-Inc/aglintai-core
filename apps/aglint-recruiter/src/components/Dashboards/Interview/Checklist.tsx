@@ -1,14 +1,11 @@
-import { Check, X } from 'lucide-react';
-import { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from '@components/ui/dropdown-menu';
+import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Table,
   TableBody,
@@ -16,7 +13,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@components/ui/table';
+import { Check, X } from 'lucide-react';
+import { useState } from 'react';
 
 // Mock data
 const checklistData = [

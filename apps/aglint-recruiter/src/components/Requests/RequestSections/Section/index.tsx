@@ -1,17 +1,17 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { ButtonGhost } from '@devlink2/ButtonGhost';
+import { RequestCardSkeleton } from '@devlink2/RequestCardSkeleton';
+import { Text } from '@devlink2/Text';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { Stack } from '@mui/material';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { ButtonGhost } from '@/devlink2/ButtonGhost';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
-import { Text } from '@/devlink2/Text';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { RequestProvider } from '@/src/context/RequestContext';
-import { useRequests } from '@/src/context/RequestsContext';
+import { RequestProvider } from '@/context/RequestContext';
+import { useRequests } from '@/context/RequestsContext';
 import {
   type Request as RequestType,
   type RequestResponse,
-} from '@/src/queries/requests/types';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+} from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { ShowCode } from '../../../Common/ShowCode';
 import { setCompletedMode } from '../../CompletedRequests/store';

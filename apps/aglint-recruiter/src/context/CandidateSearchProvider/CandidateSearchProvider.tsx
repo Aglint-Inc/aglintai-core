@@ -6,8 +6,8 @@ import set from 'lodash/set';
 import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 export interface CandidateSearchRes {
   application_id: string;

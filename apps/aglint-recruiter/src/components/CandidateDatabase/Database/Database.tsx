@@ -1,15 +1,15 @@
+import { CandidateDatabaseRow } from '@devlink/CandidateDatabaseRow';
+import { CandidateDatabaseTable } from '@devlink/CandidateDatabaseTable';
+import { CandidateEmpty } from '@devlink/CandidateEmpty';
+import { Pagination } from '@devlink/Pagination';
 import { Collapse, Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { CandidateDatabaseRow } from '@/devlink/CandidateDatabaseRow';
-import { CandidateDatabaseTable } from '@/devlink/CandidateDatabaseTable';
-import { CandidateEmpty } from '@/devlink/CandidateEmpty';
-import { Pagination } from '@/devlink/Pagination';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { getFullName } from '@/src/utils/jsonResume';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobs } from '@/context/JobsContext';
+import { getFullName } from '@/utils/jsonResume';
 
 import Loader from '../../Common/Loader';
 import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';

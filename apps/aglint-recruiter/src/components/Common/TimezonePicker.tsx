@@ -1,10 +1,6 @@
 'use client';
 
-import cityTimezones from 'city-timezones';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import * as React from 'react';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -12,13 +8,16 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command';
+} from '@components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+} from '@components/ui/popover';
+import { cn } from '@lib/utils';
+import cityTimezones from 'city-timezones';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import * as React from 'react';
 
 interface CityData {
   city: string;

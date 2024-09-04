@@ -1,9 +1,8 @@
 'use client';
+import { Button } from '@components/ui/button';
 import { Avatar, Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
-
-import { Button } from '@/components/ui/button';
 
 function ImageUploadManual({
   image,
@@ -48,22 +47,20 @@ function ImageUploadManual({
     >
       <Stack>
         <div className='rounded-lg overflow-hidden '>
-        <Avatar
-          src={initImage ? initImage : '/images/emptyProfile.jpg'}
-          sx={{
-            width: size ? size : '100%',
-            height: size ? size : '100%',
-            borderRadius: 'var(--radius-4)',
-            '& .MuiAvatar-img ': {
-              objectFit: 'cover',
-            },
-            textTransform: 'capitalize',
-            bgcolor: 'transparent'
-          }}
-          variant='square'
-        >
-          
-        </Avatar>
+          <Avatar
+            src={initImage ? initImage : '/images/emptyProfile.jpg'}
+            sx={{
+              width: size ? size : '100%',
+              height: size ? size : '100%',
+              borderRadius: 'var(--radius-4)',
+              '& .MuiAvatar-img ': {
+                objectFit: 'cover',
+              },
+              textTransform: 'capitalize',
+              bgcolor: 'transparent',
+            }}
+            variant='square'
+          ></Avatar>
         </div>
       </Stack>
       {loading && (
@@ -84,41 +81,44 @@ function ImageUploadManual({
         </Stack>
       )}
       <div className='flex flex-col gap-2'>
-      <div className='text-sm '>Please upload an image that is less than 5 MB in size and in either PNG or JPEG format.</div>
-      <div className='flex flex-row gap-2'>
-      <FileUploader
-        handleChange={onImageChange}
-        name='file'
-        types={['PNG', 'JPEG', 'JPG']}
-      >
-        <Button
-          variant='secondary'
-          type='submit'
-          size='sm'
-          className='p-4 h-[10px] text-[12px]'
-          disabled={loading}
-        >
-          Upload Image
-        </Button>
-      </FileUploader>
-      
-      <Button
-        variant='outline'
-        type='submit'
-        disabled={loading}
-        size='sm'
-        className='p-4 h-[10px] text-[12px]'
-        onClick={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setInitImage(null);
-          imageFile.current = null;
-          if (setChanges) setChanges();
-        }}
-      >
-        Remove
-      </Button>
-      </div>
+        <div className='text-sm '>
+          Please upload an image that is less than 5 MB in size and in either
+          PNG or JPEG format.
+        </div>
+        <div className='flex flex-row gap-2'>
+          <FileUploader
+            handleChange={onImageChange}
+            name='file'
+            types={['PNG', 'JPEG', 'JPG']}
+          >
+            <Button
+              variant='secondary'
+              type='submit'
+              size='sm'
+              className='p-4 h-[10px] text-[12px]'
+              disabled={loading}
+            >
+              Upload Image
+            </Button>
+          </FileUploader>
+
+          <Button
+            variant='outline'
+            type='submit'
+            disabled={loading}
+            size='sm'
+            className='p-4 h-[10px] text-[12px]'
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setInitImage(null);
+              imageFile.current = null;
+              if (setChanges) setChanges();
+            }}
+          >
+            Remove
+          </Button>
+        </div>
       </div>
     </Stack>
   );

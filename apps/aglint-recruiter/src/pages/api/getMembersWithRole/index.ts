@@ -4,8 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 import {
   type NextApiRequest,
   type NextApiResponse,
-} from '@/src/interface/NextApiRequest.interface';
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+} from '@/interface/NextApiRequest.interface';
+import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 
 import type { API_getMembersWithRole } from './type';
 

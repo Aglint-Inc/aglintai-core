@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 export const useInterviewerRelations = ({
   session_ids,

@@ -8,8 +8,8 @@ import {
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { type GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import {

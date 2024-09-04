@@ -1,6 +1,6 @@
-import CandidatesSearch from '@/src/components/CandidateDatabase/Search/Search';
-import Seo from '@/src/components/Common/Seo';
-import CandidateSearchProvider from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
+import CandidatesSearch from '@/components/CandidateDatabase/Search/Search';
+import Seo from '@/components/Common/Seo';
+import CandidateSearchProvider from '@/context/CandidateSearchProvider/CandidateSearchProvider';
 
 function CandidatesPage() {
   return (

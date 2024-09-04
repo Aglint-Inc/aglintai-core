@@ -1,28 +1,28 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
-import React, { type FC, memo } from 'react';
-
-import { useToast } from '@/components/hooks/use-toast';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { cn } from '@/lib/utils';
-import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
-import { useCompanyMembers } from '@/src/queries/company-members';
-import { type JobCreate } from '@/src/queries/jobs/types';
-import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
-import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@components/ui/select';
+import { cn } from '@lib/utils';
+import { Stack } from '@mui/material';
+import React, { type FC, memo } from 'react';
+
+import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UITextField from '@/components/Common/UITextField';
+import { useToast } from '@/components/hooks/use-toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobDashboard } from '@/context/JobDashboard';
+import { useCompanyMembers } from '@/queries/company-members';
+import { type JobCreate } from '@/queries/jobs/types';
+import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
+import { getFullName } from '@/utils/jsonResume';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 export type JobHiringTeamForm = Pick<
   Required<Form>,

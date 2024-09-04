@@ -1,22 +1,25 @@
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseTable, type DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Page404 } from '@devlink/Page404';
+import { AvailabilityEmpty } from '@devlink2/AvailabilityEmpty';
+import { CalendarPick } from '@devlink2/CalendarPick';
+import { DatePicker } from '@devlink2/DatePicker';
+import { PickSlotDay } from '@devlink2/PickSlotDay';
+import { TimePick } from '@devlink2/TimePick';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { Page404 } from '@/devlink/Page404';
-import { AvailabilityEmpty } from '@/devlink2/AvailabilityEmpty';
-import { CalendarPick } from '@/devlink2/CalendarPick';
-import { DatePicker } from '@/devlink2/DatePicker';
-import { PickSlotDay } from '@/devlink2/PickSlotDay';
-import { TimePick } from '@/devlink2/TimePick';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { getFullName } from '@/utils/jsonResume';
+import toast from '@/utils/toast';
 
 import {
   insertTaskProgress,

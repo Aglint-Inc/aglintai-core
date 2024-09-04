@@ -1,8 +1,8 @@
+import { LoaderSvg } from '@devlink/LoaderSvg';
+import { Integration } from '@devlink2/Integration';
 import { Stack } from '@mui/material';
 
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { Integration } from '@/devlink2/Integration';
-import { useAllIntegrations } from '@/src/queries/intergrations';
+import { useAllIntegrations } from '@/queries/intergrations';
 
 import ATSTools from './ATSTools';
 import MessagingTools from './MessagingTools';

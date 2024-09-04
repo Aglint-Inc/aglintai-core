@@ -1,12 +1,12 @@
+import { Checkbox } from '@devlink/Checkbox';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { useAllDepartments } from '@/src/queries/departments';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { useAllDepartments } from '@/queries/departments';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { setDepartments, useFilterModuleStore } from '../../filter-store';
 

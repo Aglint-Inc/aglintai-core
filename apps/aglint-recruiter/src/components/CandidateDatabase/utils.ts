@@ -3,7 +3,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { isArray } from 'lodash';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   type CandidateSearchRes,

@@ -1,6 +1,6 @@
 import { type PostgrestError } from '@supabase/supabase-js';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   type CandidateBulkCreateAction,

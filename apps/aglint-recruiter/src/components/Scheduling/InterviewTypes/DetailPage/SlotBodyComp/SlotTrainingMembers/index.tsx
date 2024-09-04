@@ -1,8 +1,7 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { Stack } from '@mui/material';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {

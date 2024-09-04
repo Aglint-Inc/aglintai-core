@@ -1,9 +1,9 @@
 import { CandReqSlotsType } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import axios from '@/src/client/axios';
-import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import axios from '@/client/axios';
+import { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 export const useRequestAvailabilityDetails = ({
   request_id,

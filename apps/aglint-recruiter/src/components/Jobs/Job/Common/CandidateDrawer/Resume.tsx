@@ -1,12 +1,12 @@
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
+import { Skeleton } from '@devlink2/Skeleton';
 import { Stack } from '@mui/material';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { type PropsWithChildren } from 'react';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 // import { ResumeEmbed } from '../../Candidate-List/Common/ResumePreviewer';
 import { EmptyState } from './Common/EmptyState';

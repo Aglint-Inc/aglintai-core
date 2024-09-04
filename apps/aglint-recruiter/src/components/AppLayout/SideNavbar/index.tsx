@@ -1,4 +1,10 @@
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import {
   BriefcaseBusiness,
   Calendar,
   LayoutGrid,
@@ -14,14 +20,8 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { type LinkProps } from './type';
 import { navList } from './utils';

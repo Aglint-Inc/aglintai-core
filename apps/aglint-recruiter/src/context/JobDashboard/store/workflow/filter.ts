@@ -1,4 +1,4 @@
-import { type WorkflowStore } from '@/src/context/Workflows/store';
+import { type WorkflowStore } from '@/context/Workflows/store';
 
 import { type CreateSlice } from '.';
 

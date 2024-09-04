@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 // getting ava_request_id ------------------------------------------------------
 export async function fetchLatestCandidateAvailability(requestId) {

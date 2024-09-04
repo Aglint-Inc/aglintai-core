@@ -1,21 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 import { supabaseWrap } from '@aglint/shared-utils';
+import { BookmarkEmpty } from '@devlink/BookmarkEmpty';
+import { CandidateDatabaseDetail } from '@devlink/CandidateDatabaseDetail';
+import { CandidateDetailsCard } from '@devlink/CandidateDetailsCard';
+import { CandidateEmpty } from '@devlink/CandidateEmpty';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { ViewMoreSkills } from '@devlink/ViewMoreSkills';
 import { Collapse, Dialog, Drawer, Stack } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
 import { useMemo } from 'react';
 
-import { BookmarkEmpty } from '@/devlink/BookmarkEmpty';
-import { CandidateDatabaseDetail } from '@/devlink/CandidateDatabaseDetail';
-import { CandidateDetailsCard } from '@/devlink/CandidateDetailsCard';
-import { CandidateEmpty } from '@/devlink/CandidateEmpty';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { ViewMoreSkills } from '@/devlink/ViewMoreSkills';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobs } from '@/context/JobsContext';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   type CandidateSearchRes,
@@ -29,7 +29,7 @@ import AddToJobOptions from '../Database/CandAddToJobMenu';
 import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
 import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
 import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
-// import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
+// import { similarSkills } from '@/utils/prompts/candidateDb/similarSkills';
 import SearchFilter from './SearchFilter';
 import SelectedCandidate from './SelectedCandidate';
 

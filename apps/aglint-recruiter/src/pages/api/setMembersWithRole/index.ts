@@ -1,8 +1,8 @@
 import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { type API_setMembersWithRole } from './type';
 

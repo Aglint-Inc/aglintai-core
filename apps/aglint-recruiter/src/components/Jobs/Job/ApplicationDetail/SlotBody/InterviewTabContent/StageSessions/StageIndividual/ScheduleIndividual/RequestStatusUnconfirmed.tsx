@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { TextWithIcon } from '@devlink3/TextWithIcon';
 import React from 'react';
-
-import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
 function RequestStatusUnconfirmed({
   interview_meeting,

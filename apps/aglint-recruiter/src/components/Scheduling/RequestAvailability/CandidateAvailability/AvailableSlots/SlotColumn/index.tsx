@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { AvailableTimeRange } from '@devlink/AvailableTimeRange';
+import { SlotPicker } from '@devlink2/SlotPicker';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-
-import { AvailableTimeRange } from '@/devlink/AvailableTimeRange';
-import { SlotPicker } from '@/devlink2/SlotPicker';
 
 import { useRequestAvailabilityContext } from '../../../RequestAvailabilityContext';
 

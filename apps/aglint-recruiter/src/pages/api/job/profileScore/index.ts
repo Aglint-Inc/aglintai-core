@@ -11,7 +11,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { type ChatCompletionMessageParam } from 'openai/resources';
 
-import { distributeScoreWeights } from '@/src/components/Jobs/Job/Profile-Score';
+import { distributeScoreWeights } from '@/components/Jobs/Job/Profile-Score';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,

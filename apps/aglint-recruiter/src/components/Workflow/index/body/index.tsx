@@ -1,8 +1,8 @@
+import { WorkflowLanding } from '@devlink3/WorkflowLanding';
 import { useCallback, useMemo, useState } from 'react';
 
-import { WorkflowLanding } from '@/devlink3/WorkflowLanding';
-import Seo from '@/src/components/Common/Seo';
-import { useTour } from '@/src/context/TourContext';
+import Seo from '@/components/Common/Seo';
+import { useTour } from '@/context/TourContext';
 
 import Content from './content';
 import Filters from './filters';

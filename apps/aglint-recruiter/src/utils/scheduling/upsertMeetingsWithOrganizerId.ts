@@ -7,7 +7,7 @@ import {
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
-} from '@/src/components/Scheduling/ScheduleDetails/utils';
+} from '@/components/Scheduling/ScheduleDetails/utils';
 
 import { getOrganizerId } from './getOrganizerId';
 import { resetSessionRelations } from './resetSessionRelations';
@@ -38,7 +38,7 @@ export const handleMeetingsOrganizerResetRelations = async ({
     selectedSessions.map((ses) => ({
       status: 'waiting',
       id: ses.interview_meeting_id,
-      organizer_id,
+      organizer_id: organizer_id,
       meeting_flow,
       application_id,
       job_id: ses.job_id,

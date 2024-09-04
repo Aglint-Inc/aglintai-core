@@ -1,27 +1,27 @@
+import { AddedJobList } from '@devlink/AddedJobList';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { CandidateDialog } from '@devlink/CandidateDialog';
+import { CandidateEducation } from '@devlink/CandidateEducation';
+import { CandidateEducationCard } from '@devlink/CandidateEducationCard';
+import { CandidateExperience } from '@devlink/CandidateExperience';
+import { CandidateExperienceCard } from '@devlink/CandidateExperienceCard';
+import { EmailOutReach } from '@devlink/EmailOutReach';
+import { ScreeningLandingPop } from '@devlink2/ScreeningLandingPop';
 import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
+import CompanyLogo from '@/components/Common/CompanyLogo';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import MuiPopup from '@/components/Common/MuiPopup';
+import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
-import { AddedJobList } from '@/devlink/AddedJobList';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CandidateDialog } from '@/devlink/CandidateDialog';
-import { CandidateEducation } from '@/devlink/CandidateEducation';
-import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
-import { CandidateExperience } from '@/devlink/CandidateExperience';
-import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
-import { EmailOutReach } from '@/devlink/EmailOutReach';
-import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
-import CompanyLogo from '@/src/components/Common/CompanyLogo';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type CandidateSearchRes } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
-import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type CandidateSearchRes } from '@/context/CandidateSearchProvider/CandidateSearchProvider';
+import { getformatedDate, getFullName } from '@/utils/jsonResume';
 
 import AddToJobOptions from './CandAddToJobMenu';
 

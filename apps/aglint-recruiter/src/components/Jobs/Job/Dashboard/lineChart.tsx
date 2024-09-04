@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { NoData } from '@devlink3/NoData';
 import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
@@ -10,9 +11,8 @@ import {
 import React, { type FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { NoData } from '@/devlink3/NoData';
-import Loader from '@/src/components/Common/Loader';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import Loader from '@/components/Common/Loader';
+import { useJobDashboard } from '@/context/JobDashboard';
 
 import { type DashboardGraphOptions } from '.';
 

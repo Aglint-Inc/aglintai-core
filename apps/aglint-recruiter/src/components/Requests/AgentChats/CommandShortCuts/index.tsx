@@ -1,8 +1,8 @@
+import { Button } from '@components/ui/button';
 import { Calendar, SendHorizontal } from 'lucide-react';
 import React from 'react';
 
-import { Button } from '@/components/ui/button';
-import KeyboardShortcut from '@/src/components/Common/KeyboardShortcut';
+import KeyboardShortcut from '@/components/Common/KeyboardShortcut';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import { scheduleTypes } from '../AgentInputBox/utils';

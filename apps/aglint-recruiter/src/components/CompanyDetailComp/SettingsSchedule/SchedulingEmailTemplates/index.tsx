@@ -1,30 +1,30 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { Checkbox } from '@devlink/Checkbox';
+import { EditEmail } from '@devlink/EditEmail';
+import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
+import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { LoaderSvg } from '@devlink/LoaderSvg';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Box, Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
+import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
+import Loader from '@/components/Common/Loader';
+import SearchField from '@/components/Common/SearchField/SearchField';
 import { useToast } from '@/components/hooks/use-toast';
-import { Checkbox } from '@/devlink/Checkbox';
-import { EditEmail } from '@/devlink/EditEmail';
-import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
-import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
-import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
-import Loader from '@/src/components/Common/Loader';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
-import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useKeyPress } from '@/hooks/useKeyPress';
+import { emailTemplateCopy } from '@/types/companyEmailTypes';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
   fetchEmailTemplates,

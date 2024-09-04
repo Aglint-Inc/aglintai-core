@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type profileDetailsPayload = Pick<
   DatabaseTable['candidates'],

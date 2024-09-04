@@ -1,7 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { keyframes } from '@emotion/react';
 
-import { type initUser } from '@/src/pages/api/interviewers';
+import { type initUser } from '@/pages/api/interviewers';
 
 import { type CalendarEventWithType, type EventType } from '../types';
 import { color, oneDayPx } from './constant';

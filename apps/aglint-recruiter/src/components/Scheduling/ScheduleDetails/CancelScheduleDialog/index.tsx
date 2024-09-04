@@ -1,13 +1,13 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
 import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
+import toast from '@/utils/toast';
 
 function CancelScheduleDialog({
   isDeclineOpen,

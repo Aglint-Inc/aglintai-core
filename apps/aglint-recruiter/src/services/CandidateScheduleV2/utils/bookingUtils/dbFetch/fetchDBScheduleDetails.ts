@@ -4,7 +4,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import type * as v from 'valibot';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const fetchDBScheduleDetails = async (
   parsed_body: v.InferInput<typeof schema_candidate_direct_booking>,

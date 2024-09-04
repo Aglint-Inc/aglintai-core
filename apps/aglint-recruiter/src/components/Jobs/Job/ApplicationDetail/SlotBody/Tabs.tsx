@@ -1,11 +1,11 @@
+import { NewTabPill } from '@devlink3/NewTabPill';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { NewTabPill } from '@/devlink3/NewTabPill';
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
+import { useApplication } from '@/context/ApplicationContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useKeyPress } from '@/hooks/useKeyPress';
 
 export type TabsType =
   | 'interview'

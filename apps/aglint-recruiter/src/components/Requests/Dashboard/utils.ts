@@ -1,4 +1,4 @@
-import { type RequestResponse } from '@/src/queries/requests/types';
+import { type RequestResponse } from '@/queries/requests/types';
 
 export type barChartDataType = {
   name: string;

@@ -1,4 +1,4 @@
-import { GlobalInfo } from '@/devlink2/GlobalInfo';
+import { GlobalInfo } from '@devlink2/GlobalInfo';
 
 function InfoStepSelectState() {
   return (

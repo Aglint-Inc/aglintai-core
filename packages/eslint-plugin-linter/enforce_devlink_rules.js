@@ -3,7 +3,7 @@ module.exports = {
     type: "suggestion",
     docs: {
       description:
-        'disallow importing components from "@/devlink", "@/devlink2", and "@/devlink3" for better performance',
+        'disallow importing components from "@devlink", "@devlink2", and "@devlink3" for better performance',
       category: "Best Practices",
       recommended: true,
     },
@@ -13,7 +13,7 @@ module.exports = {
   create: function (context) {
     return {
       ImportDeclaration(node) {
-        const disallowedSources = ["@/devlink", "@/devlink2", "@/devlink3"];
+        const disallowedSources = ["@devlink", "@devlink2", "@devlink3"];
         if (
           disallowedSources.includes(node.source.value) &&
           node.specifiers.length > 0

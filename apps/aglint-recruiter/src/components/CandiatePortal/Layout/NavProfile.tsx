@@ -1,7 +1,4 @@
-import { LogOut, User } from 'lucide-react';
-import Link from 'next/link';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +7,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@components/ui/dropdown-menu';
+import { LogOut, User } from 'lucide-react';
+import Link from 'next/link';
 
 export default function NavProfile({ application_id }) {
   return (

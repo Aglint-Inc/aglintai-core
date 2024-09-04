@@ -1,16 +1,16 @@
 'use client';
 import { getFullName } from '@aglint/shared-utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
 import { Linkedin } from 'lucide-react';
 import { Calendar } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
-import EmptyState from '@/src/components/CandiatePortal/components/EmptyState';
-import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
-import Loader from '@/src/components/Common/Loader';
-import dayjs from '@/src/utils/dayjs';
+import { type apiPortalInterviewsResponse } from '@/app/api/candidate_portal/get_interviews/route';
+import EmptyState from '@/components/CandiatePortal/components/EmptyState';
+import { usePortalInterviews } from '@/components/CandiatePortal/hook';
+import Loader from '@/components/Common/Loader';
+import dayjs from '@/utils/dayjs';
 
 export default function InterviewsPage({ params }) {
   const application_id = params.application_id;

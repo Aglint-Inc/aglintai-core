@@ -1,17 +1,17 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { RolesPopover } from '@devlink/RolesPopover';
+import { UserNameRoleCard } from '@devlink/UserNameRoleCard';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Avatar, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { RolesPopover } from '@/devlink/RolesPopover';
-import { UserNameRoleCard } from '@/devlink/UserNameRoleCard';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { updateMember } from '@/src/context/AuthContext/utils';
-import { useAllMembers } from '@/src/queries/members';
-import { useRoleAndPermissionsHook } from '@/src/queries/RolesSettings';
+import SearchField from '@/components/Common/SearchField/SearchField';
+import { updateMember } from '@/context/AuthContext/utils';
+import { useAllMembers } from '@/queries/members';
+import { useRoleAndPermissionsHook } from '@/queries/RolesSettings';
 
 function RoleEditMember({
   role,

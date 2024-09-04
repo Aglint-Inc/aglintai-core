@@ -1,4 +1,8 @@
 /* eslint-disable security/detect-object-injection */
+import { Switch } from '@components/ui/switch';
+import { Attendee } from '@devlink2/Attendee';
+import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
+import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import { Stack, Typography } from '@mui/material';
 import React, {
   type ChangeEventHandler,
@@ -8,21 +12,17 @@ import React, {
   useMemo,
 } from 'react';
 
-import { Switch } from '@/components/ui/switch';
-import { Attendee } from '@/devlink2/Attendee';
-import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
-import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
-import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
-import { validateString } from '@/src/context/JobContext/utils';
-import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { type CompanyMember } from '@/src/queries/company-members';
-import { type CreateDebriefSession } from '@/src/queries/interview-plans';
-import { type InterviewSessionType } from '@/src/queries/interview-plans/types';
-import { type Job } from '@/src/queries/jobs/types';
-import { getFullName } from '@/src/utils/jsonResume';
-import { capitalize } from '@/src/utils/text/textUtils';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import UITextField from '@/components/Common/UITextField';
+import { validateString } from '@/context/JobContext/utils';
+import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { type CompanyMember } from '@/queries/company-members';
+import { type CreateDebriefSession } from '@/queries/interview-plans';
+import { type InterviewSessionType } from '@/queries/interview-plans/types';
+import { type Job } from '@/queries/jobs/types';
+import { getFullName } from '@/utils/jsonResume';
+import { capitalize } from '@/utils/text/textUtils';
 
 import { RoleIcon } from '.';
 import { DropDown, WarningSvg } from './sessionForms';

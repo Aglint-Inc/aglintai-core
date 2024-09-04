@@ -2,7 +2,7 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { useState } from 'react';
 
-import { useRequest } from '@/src/context/RequestContext';
+import { useRequest } from '@/context/RequestContext';
 
 import { apiTargetToEvents } from '../utils/progressMaps';
 import RequestProgressWrapper from './Components/RequestProgressWrapper';

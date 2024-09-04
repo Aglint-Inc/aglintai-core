@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { NoData } from '@devlink3/NoData';
 import { Stack, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -12,9 +13,8 @@ import { capitalize } from 'lodash';
 import React, { type FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import { NoData } from '@/devlink3/NoData';
-import Loader from '@/src/components/Common/Loader';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import Loader from '@/components/Common/Loader';
+import { useJobDashboard } from '@/context/JobDashboard';
 
 import { type DashboardGraphOptions } from '.';
 import { getOrderedGraphValues } from './utils';

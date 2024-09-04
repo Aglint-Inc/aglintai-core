@@ -1,7 +1,6 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
 import React from 'react';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 
 import { useEditSession } from './hooks';
 import { useEditSessionDrawerStore } from './store';

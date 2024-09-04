@@ -1,7 +1,6 @@
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
-
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 
 import BodyDrawer from './BodyDrawer';
 import ButtonMain from './ButtonGroup';

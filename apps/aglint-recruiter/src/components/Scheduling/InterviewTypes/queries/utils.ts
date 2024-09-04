@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 import _ from 'lodash';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { schedulesSupabase } from '../../schedules-query';
 import { type MemberType, type StatusTraining } from '../types';

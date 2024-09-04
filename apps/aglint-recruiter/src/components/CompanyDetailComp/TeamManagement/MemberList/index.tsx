@@ -1,4 +1,8 @@
 import { type RecruiterUserType } from '@aglint/shared-types';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { TeamListItem } from '@devlink/TeamListItem';
+import { UserInfoTeam } from '@devlink/UserInfoTeam';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { Avatar, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -7,16 +11,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { TeamListItem } from '@/devlink/TeamListItem';
-import { UserInfoTeam } from '@/devlink/UserInfoTeam';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { UserListThreeDot } from './ThreeDot';
 

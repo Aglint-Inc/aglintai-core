@@ -1,8 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Stack, Tooltip, Typography } from '@mui/material';
 import React from 'react';
-
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 
 function InterviewerAcceptDeclineIcon({
   type,

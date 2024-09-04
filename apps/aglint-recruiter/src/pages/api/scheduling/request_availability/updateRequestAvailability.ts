@@ -3,8 +3,8 @@ import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { fetchAllActivities } from '../fetch_activities';
 

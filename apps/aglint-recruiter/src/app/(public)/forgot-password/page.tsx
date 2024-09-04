@@ -1,8 +1,8 @@
 import { type Metadata } from 'next';
 import React from 'react';
 
-import ForgotPasswordForm from '@/src/components/Auth/ForgotPasswordForm';
-import Footer from '@/src/components/Common/Footer';
+import ForgotPasswordForm from '@/components/Auth/ForgotPasswordForm';
+import Footer from '@/components/Common/Footer';
 
 export const metadata: Metadata = {
   title: 'Forgot Password | Aglint AI',

@@ -1,16 +1,16 @@
 import { getFullName } from '@aglint/shared-utils';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { Text } from '@devlink/Text';
+import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { Text } from '@/devlink/Text';
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-// import { getRequestTitle } from '@/src/components/Requests/AgentChats/AgentInputBox';
-import { useApplication } from '@/src/context/ApplicationContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+// import { getRequestTitle } from '@/components/Requests/AgentChats/AgentInputBox';
+import { useApplication } from '@/context/ApplicationContext';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function Requests() {
   const router = useRouter();

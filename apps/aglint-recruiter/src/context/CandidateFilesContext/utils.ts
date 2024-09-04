@@ -1,7 +1,10 @@
-import { supportedTypes } from '@/src/apiUtils/job/candidateUpload/utils';
-import { supabase } from '@/src/utils/supabase/client';
+import { supportedTypes } from '@/apiUtils/job/candidateUpload/utils';
+import { supabase } from '@/utils/supabase/client';
 
-import { type CandidateResumesContext, type CandidateResumesCreateAction } from './types';
+import {
+  type CandidateResumesContext,
+  type CandidateResumesCreateAction,
+} from './types';
 
 export const initialCandidateResumesContext: CandidateResumesContext = {
   handleCandidateResumesCreate: undefined,

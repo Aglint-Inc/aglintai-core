@@ -1,6 +1,6 @@
-import CandDbProvider from '@/src/components/CandidateDatabase/Database/CandDbProvider';
-import CandDatabase from '@/src/components/CandidateDatabase/Database/Database';
-import Seo from '@/src/components/Common/Seo';
+import CandDbProvider from '@/components/CandidateDatabase/Database/CandDbProvider';
+import CandDatabase from '@/components/CandidateDatabase/Database/Database';
+import Seo from '@/components/Common/Seo';
 
 const Candidates = () => {
   return (

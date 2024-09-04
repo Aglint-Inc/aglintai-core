@@ -4,8 +4,8 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { getResponseFactory } from '@/src/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getResponseFactory } from '@/utils/apiUtils/responseFactory';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('incoming body', req.body);

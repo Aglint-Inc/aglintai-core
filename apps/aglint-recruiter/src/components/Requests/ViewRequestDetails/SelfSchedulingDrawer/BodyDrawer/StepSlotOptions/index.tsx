@@ -1,12 +1,12 @@
 import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { ScheduleOptionsList } from '@devlink3/ScheduleOptionsList';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
-import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
 
 import {
   setCalendarDate,

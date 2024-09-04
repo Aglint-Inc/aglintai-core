@@ -1,12 +1,11 @@
+import { UserNameCard } from '@devlink3/UserNameCard';
 import { Stack } from '@mui/material';
 import Link from 'next/link';
 
-import { UserNameCard } from '@/devlink3/UserNameCard';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getFullName } from '@/src/utils/jsonResume';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { getFullName } from '@/utils/jsonResume';
 
 import { useScheduleDetails } from '../hooks';
-
 
 function AllRolesMeetings() {
   const { data } = useScheduleDetails();

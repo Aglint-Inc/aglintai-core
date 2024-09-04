@@ -1,4 +1,15 @@
 /* eslint-disable security/detect-object-injection */
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
+import { SavedChanges } from '@devlink/SavedChanges';
+import { PageLayout } from '@devlink2/PageLayout';
+import { JobDetailBlock } from '@devlink3/JobDetailBlock';
 import { useRouter } from 'next/router';
 import {
   type Dispatch,
@@ -8,22 +19,11 @@ import {
   useState,
 } from 'react';
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { SavedChanges } from '@/devlink/SavedChanges';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
-import { useJob } from '@/src/context/JobContext';
-import { validateString } from '@/src/context/JobContext/utils';
-import { type Job } from '@/src/queries/jobs/types';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+import { useJob } from '@/context/JobContext';
+import { validateString } from '@/context/JobContext/utils';
+import { type Job } from '@/queries/jobs/types';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
 import {

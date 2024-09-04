@@ -1,20 +1,20 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { Collapse, Stack } from '@mui/material';
-import { type PropsWithChildren, useState } from 'react';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
-import { RequestCard } from '@/devlink2/RequestCard';
-import { useRequest } from '@/src/context/RequestContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import type { Request as RequestType } from '@/src/queries/requests/types';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+} from '@components/ui/tooltip';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { GlobalBadge } from '@devlink2/GlobalBadge';
+import { RequestCard } from '@devlink2/RequestCard';
+import { Collapse, Stack } from '@mui/material';
+import { type PropsWithChildren, useState } from 'react';
+
+import { useRequest } from '@/context/RequestContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import type { Request as RequestType } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { getStatusColor } from '../../../utils';
 import MoreOptions from './MoreOptions';

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { type supportedTypes } from '@/src/apiUtils/job/candidateUpload/utils';
+import { type supportedTypes } from '@/apiUtils/job/candidateUpload/utils';
 
 import {
   type createCandidateResumeDbAction,

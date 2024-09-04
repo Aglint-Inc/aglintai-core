@@ -1,16 +1,16 @@
 import { supabaseWrap } from '@aglint/shared-utils';
+import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
 import {
   AuthProvider,
   useAuthDetails,
-} from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 const AuthHoc = () => {
   return (

@@ -1,8 +1,8 @@
+import { Page404 } from '@devlink/Page404';
+import { ButtonSoft } from '@devlink3/ButtonSoft';
 import { useRouter } from 'next/router';
 
-import { Page404 } from '@/devlink/Page404';
-import { ButtonSoft } from '@/devlink3/ButtonSoft';
-import ROUTES from '@/src/utils/routing/routes';
+import ROUTES from '@/utils/routing/routes';
 
 const JobNotFound = () => {
   const { replace } = useRouter();

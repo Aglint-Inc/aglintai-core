@@ -1,11 +1,11 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
 import MembersAutoComplete from '../../../Common/MembersTextField';
 import { useAddMemberHandler } from '../../queries/hooks';

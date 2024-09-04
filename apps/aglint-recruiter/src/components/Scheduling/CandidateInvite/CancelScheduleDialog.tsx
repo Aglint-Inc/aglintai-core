@@ -1,5 +1,8 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { RequestReschedule } from '@devlink2/RequestReschedule';
 import {
   Dialog,
   FormControl,
@@ -13,11 +16,8 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { RequestReschedule } from '@/devlink2/RequestReschedule';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 

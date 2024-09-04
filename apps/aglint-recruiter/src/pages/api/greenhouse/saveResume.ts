@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 if (!storageUrl) {

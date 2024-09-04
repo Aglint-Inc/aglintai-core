@@ -1,10 +1,10 @@
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { GlobalBadge } from '@devlink2/GlobalBadge';
 import { Stack } from '@mui/material';
 import { type PropsWithChildren } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
-import type { Request as RequestType } from '@/src/queries/requests/types';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import type { Request as RequestType } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function SessionsCardAndActions({
   request,

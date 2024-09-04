@@ -104,7 +104,6 @@ export type APICandidateConfirmSlotNoConflict = v.InferOutput<
 
 export type APIScheduleDebreif = {
   selectedOption: PlanCombinationRespType;
-  schedule_id: string;
   user_tz: string;
   filter_id: string;
   session_id: string;

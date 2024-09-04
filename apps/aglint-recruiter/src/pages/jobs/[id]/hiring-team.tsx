@@ -1,7 +1,6 @@
-import Seo from '@components/Common/Seo';
-
-import JobHiringTeamDashboard from '@/src/components/Jobs/Job/Hiring-Team';
-import { JobProvider } from '@/src/context/JobContext';
+import Seo from '@/components/Common/Seo';
+import JobHiringTeamDashboard from '@/components/Jobs/Job/Hiring-Team';
+import { JobProvider } from '@/context/JobContext';
 
 const JobHiringTeamPage = () => {
   return (

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import dayjs from '@/src/utils/dayjs';
+import dayjs from '@/utils/dayjs';
 
 export interface SelfSchedulingFlow {
   candidateAvailabilityId: string;

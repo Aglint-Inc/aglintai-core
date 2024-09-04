@@ -7,8 +7,8 @@ import {
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
   req: NextApiRequest,

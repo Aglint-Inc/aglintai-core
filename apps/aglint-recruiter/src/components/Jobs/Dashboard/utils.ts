@@ -1,7 +1,7 @@
 import { type DatabaseTable, type JobApplcationDB } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { type JobType, type Status } from './types';
 

@@ -1,7 +1,7 @@
 import { type DB } from '@aglint/shared-types';
 import { type SupabaseClient } from '@supabase/supabase-js';
 
-import { decrypt } from '@/src/pages/api/decryptApiKey';
+import { decrypt } from '@/pages/api/decryptApiKey';
 
 const decryptKey = process.env.ENCRYPTION_KEY!;
 if (!decryptKey) {

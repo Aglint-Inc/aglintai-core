@@ -7,7 +7,7 @@ import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import axios from 'axios';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 type FuncParams = {
   request_id: string;
   session_id: string;

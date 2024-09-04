@@ -1,7 +1,7 @@
+import { ApplicantInfoBox } from '@devlink2/ApplicantInfoBox';
 import { User } from 'lucide-react';
 
-import { ApplicantInfoBox } from '@/devlink2/ApplicantInfoBox';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 function CandidateInfo() {
   const {

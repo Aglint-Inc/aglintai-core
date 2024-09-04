@@ -1,13 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import { debounce } from 'lodash';
-import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,21 +8,28 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { EditEmail } from '@/devlink/EditEmail';
-import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
-import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
-import { PageLayout } from '@/devlink2/PageLayout';
-import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
-import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
-import Loader from '@/src/components/Common/Loader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJob } from '@/src/context/JobContext';
-import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalize } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+} from '@components/ui/breadcrumb';
+import { EditEmail } from '@devlink/EditEmail';
+import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
+import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
+import { PageLayout } from '@devlink2/PageLayout';
+import { Stack } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { debounce } from 'lodash';
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
+
+import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
+import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
+import Loader from '@/components/Common/Loader';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJob } from '@/context/JobContext';
+import { emailTemplateCopy } from '@/types/companyEmailTypes';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import { capitalize } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import { Settings } from '../Common/SharedTopNav/actions';
 

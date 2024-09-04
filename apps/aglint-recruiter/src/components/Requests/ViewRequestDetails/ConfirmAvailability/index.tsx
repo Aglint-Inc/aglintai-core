@@ -3,20 +3,20 @@ import {
   type CandReqSlotsType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink2/ButtonSolid';
+import { GlobalCta } from '@devlink3/GlobalCta';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { GlobalCta } from '@/devlink3/GlobalCta';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import toast from '@/src/utils/toast';
+import { ShowCode } from '@/components/Common/ShowCode';
+import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import toast from '@/utils/toast';
 
 import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './Calendar';

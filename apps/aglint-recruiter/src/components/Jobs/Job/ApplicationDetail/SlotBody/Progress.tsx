@@ -1,9 +1,9 @@
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { PiplelineTab } from '@devlink3/PiplelineTab';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { PiplelineTab } from '@/devlink3/PiplelineTab';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 import { setSelectedSessionIds } from '../store';
 

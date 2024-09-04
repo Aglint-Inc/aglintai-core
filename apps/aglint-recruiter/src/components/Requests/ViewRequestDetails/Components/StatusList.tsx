@@ -1,13 +1,13 @@
+import { GlobalBadge } from '@devlink2/GlobalBadge';
+import { IconButtonSoft } from '@devlink3/IconButtonSoft';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
-import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
-import { useRequests } from '@/src/context/RequestsContext';
-import { type Request } from '@/src/queries/requests/types';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+import { useRequests } from '@/context/RequestsContext';
+import { type Request } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import { getStatusColor } from '../../utils';
 

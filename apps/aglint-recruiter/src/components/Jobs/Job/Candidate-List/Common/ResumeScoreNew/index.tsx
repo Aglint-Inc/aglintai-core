@@ -1,8 +1,8 @@
+import { ResumeTag } from '@devlink2/ResumeTag';
 import { Stack, Tooltip } from '@mui/material';
+import { CalculatingResumeScore } from '@public/lottie/CalculatingResumeScore';
 
-import { ResumeTag } from '@/devlink2/ResumeTag';
-import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
-import { type Application } from '@/src/types/applications.types';
+import { type Application } from '@/types/applications.types';
 
 import { ScoreTag } from './ScoreTag';
 

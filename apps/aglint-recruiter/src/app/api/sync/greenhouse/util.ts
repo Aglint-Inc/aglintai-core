@@ -1,11 +1,14 @@
 import axios from 'axios';
 
-import { type JobGreenhouse } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
-import { decrypt } from '@/src/pages/api/decryptApiKey';
-import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { type JobGreenhouse } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
+import { decrypt } from '@/pages/api/decryptApiKey';
+import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { JobStageData } from './dummy.data';
-import { type GreenhouseCandidateAPI, type GreenhouseJobStagesAPI } from './types';
+import {
+  type GreenhouseCandidateAPI,
+  type GreenhouseJobStagesAPI,
+} from './types';
 
 const decryptKey = process.env.ENCRYPTION_KEY!;
 if (!decryptKey) {

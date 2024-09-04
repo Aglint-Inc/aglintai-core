@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
+import { PanelMemberPill } from '@devlink2/PanelMemberPill';
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React, { useRef } from 'react';
 
-import { PanelMemberPill } from '@/devlink2/PanelMemberPill';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { getFullName } from '@/src/utils/jsonResume';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { getFullName } from '@/utils/jsonResume';
 
 export type MemberTypeAutoComplete = {
   user_id: string;

@@ -1,10 +1,9 @@
+import { Switch } from '@components/ui/switch';
+import { Text } from '@devlink/Text';
+import { SchedulerConflictCard } from '@devlink3/SchedulerConflictCard';
+import { ToggleWithText } from '@devlink3/ToggleWithText';
 import { Grid, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
-
-import { Switch } from '@/components/ui/switch';
-import { Text } from '@/devlink/Text';
-import { SchedulerConflictCard } from '@/devlink3/SchedulerConflictCard';
-import { ToggleWithText } from '@/devlink3/ToggleWithText';
 
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
 import { filterSchedulingOptionsArray } from './utils';

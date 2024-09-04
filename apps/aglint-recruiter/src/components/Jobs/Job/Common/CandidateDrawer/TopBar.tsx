@@ -1,13 +1,13 @@
+import { CandidateName } from '@devlink/CandidateName';
+import { CandidateSidedrawerTop } from '@devlink/CandidateSidedrawerTop';
 import { Stack } from '@mui/material';
 import { type PropsWithChildren, useEffect, useMemo } from 'react';
 
-import { CandidateName } from '@/devlink/CandidateName';
-import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useApplicationStore } from '@/src/context/ApplicationContext/store';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useApplication } from '@/context/ApplicationContext';
+import { useApplicationStore } from '@/context/ApplicationContext/store';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useKeyPress } from '@/hooks/useKeyPress';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 const Info = () => {
   const {

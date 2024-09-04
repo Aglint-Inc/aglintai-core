@@ -4,7 +4,14 @@ import {
   type JobApplcationDB,
   type JobTypeDB,
 } from '@aglint/shared-types';
+import { CompanyListingLinks } from '@devlink/CompanyListingLinks';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { InterviewCompleted } from '@devlink/InterviewCompleted';
+import { JobListing } from '@devlink/JobListing';
+import { LoaderSvg } from '@devlink/LoaderSvg';
+import { OpenJobListingCard } from '@devlink/OpenJobListingCard';
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
+import ThankYou from '@public/lottie/ThankYouLottie';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Building2 } from 'lucide-react';
@@ -21,17 +28,10 @@ import {
 } from 'react-share';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { InterviewCompleted } from '@/devlink/InterviewCompleted';
-import { JobListing } from '@/devlink/JobListing';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import ThankYou from '@/public/lottie/ThankYouLottie';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type PublicJobAPI } from '@/pages/api/jobpost/read';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';

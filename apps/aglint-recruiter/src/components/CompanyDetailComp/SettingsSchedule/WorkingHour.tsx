@@ -1,11 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { type schedulingSettingType } from '@aglint/shared-types';
-import { capitalize, cloneDeep } from 'lodash';
-import React, { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Drawer } from '@/components/ui/drawer';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Drawer } from '@components/ui/drawer';
 import {
   Select,
   SelectContent,
@@ -14,8 +11,11 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import dayjs from '@/src/utils/dayjs';
+} from '@components/ui/select';
+import { capitalize, cloneDeep } from 'lodash';
+import React, { useEffect, useState } from 'react';
+
+import dayjs from '@/utils/dayjs';
 
 import { type TimezoneObj, TimezoneSelector } from '.';
 import TimezonePicker from '@/src/components/Common/TimezonePicker';

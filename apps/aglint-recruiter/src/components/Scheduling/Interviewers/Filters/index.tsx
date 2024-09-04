@@ -1,10 +1,10 @@
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { QualifiedIcons } from '@devlink2/QualifiedIcons';
 import { Stack } from '@mui/material';
 import React, { useEffect, useState, useTransition } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { QualifiedIcons } from '@/devlink2/QualifiedIcons';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import FilterDropDown from '@/src/components/CompanyDetailComp/TeamManagement/FilterDropDown';
+import SearchField from '@/components/Common/SearchField/SearchField';
+import FilterDropDown from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
 import { useInterviewerList } from '..';
 
