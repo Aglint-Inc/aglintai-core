@@ -1,4 +1,4 @@
-import { type ReactNode,Component } from 'react';
+import { Component, type ReactNode } from 'react';
 
 interface Props {
   fallback: ReactNode;

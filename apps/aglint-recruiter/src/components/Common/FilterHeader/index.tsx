@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import SearchField from '../SearchField/SearchField';
 import { ShowCode } from '../ShowCode';
 import DateRangeSelector from './DateRangeSelector';
-import { type FilterTypes, FiltersComponent } from './FilterComponents';
+import { FiltersComponent, type FilterTypes } from './FilterComponents';
 import SortComponent, { type sortComponentType } from './SortComponent';
 
 export default function FilterHeader({

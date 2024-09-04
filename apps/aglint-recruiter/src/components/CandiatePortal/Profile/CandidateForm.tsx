@@ -16,20 +16,28 @@ import { useRef, useState } from 'react';
 import { type candidatePortalProfileType } from '@/app/api/candidate_portal/get_profile/route';
 import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
+import { useNavbar } from '../hook';
 import ImageUploadManual from './ImageUpload';
 
 export default function CandidateForm({
   formData,
   application_id,
+  refetchProfile,
+  closeDialog,
 }: {
   formData: candidatePortalProfileType;
   application_id: string;
+  refetchProfile: any;
+  closeDialog: () => void;
 }) {
   const [form, setForm] = useState<candidatePortalProfileType>(formData);
   const [loading, setLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const imageFile = useRef(null);
+
+  const { refetch: refetchNav } = useNavbar({ application_id });
 
   const handleUpdateProfile = async () => {
     try {
@@ -37,13 +45,16 @@ export default function CandidateForm({
 
       let profile_image = form.avatar;
       if (isImageChanged) {
-        const { data } = await supabase.storage
+        const { error, data } = await supabase.storage
           .from('candidate-files')
           .upload(`profile/${form.id}`, imageFile.current, {
             cacheControl: '3600',
             upsert: true,
           });
 
+        if (error) {
+          throw new Error(error.message);
+        }
         if (data?.path && imageFile?.current?.size) {
           profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
         } else {
@@ -73,8 +84,12 @@ export default function CandidateForm({
       if (status !== 200) {
         throw new Error('Profile update failed');
       }
+      await refetchNav();
+      await refetchProfile();
+      toast.success('Profile update success');
+      closeDialog();
     } catch (e) {
-      console.error(e.message);
+      toast.error(e.message);
       //
     } finally {
       setLoading(false);

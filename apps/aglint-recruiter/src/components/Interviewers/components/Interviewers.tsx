@@ -9,8 +9,8 @@ import { memo, useState } from 'react';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
-  type useMatricsInterviewersType,
   useMatricsInterviewers,
+  type useMatricsInterviewersType,
 } from '../Hook';
 
 const LIMIT = 4;

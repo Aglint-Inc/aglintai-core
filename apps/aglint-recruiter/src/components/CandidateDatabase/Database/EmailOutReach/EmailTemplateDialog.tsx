@@ -11,7 +11,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 
 import { useOutReachCtx } from './OutReachCtx';
-import { type TemplateType, outReachTemplates } from './seedTemplates';
+import { outReachTemplates, type TemplateType } from './seedTemplates';
 
 const EmailTemplateModalComp = ({
   selectedTemplate,

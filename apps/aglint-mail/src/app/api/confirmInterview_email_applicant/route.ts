@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       is_preview,
       api_target: 'confirmInterview_email_applicant',
       payload: req_body.payload,
+      application_id: parsed_body.application_id,
     });
     if (is_preview) {
       return NextResponse.json(

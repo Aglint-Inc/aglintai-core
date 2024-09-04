@@ -5,15 +5,17 @@ export async function dbUtil(
   supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'],
 ) {
+  let application_id;
   const fetchCandDetailsFromAvailability = async () => {
     const [avail_req] = supabaseWrap(
       await supabaseAdmin
         .from('candidate_request_availability')
         .select(
-          'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs(job_title))',
+          'id,application_id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs(job_title))',
         )
         .eq('id', req_body.avail_req_id),
     );
+    application_id = avail_req.application_id;
     return avail_req.applications;
   };
   const fetchCandDetailsFromApplication = async () => {
@@ -25,6 +27,7 @@ export async function dbUtil(
         )
         .eq('id', req_body.preview_details.application_id),
     );
+    application_id = application.id;
     return application;
   };
   const fetchOrganzierDetails = async () => {
@@ -87,6 +90,7 @@ export async function dbUtil(
 
   return {
     company_id: recruiter_id,
+    application_id,
     comp_email_placeholder,
     react_email_placeholders,
     recipient_email: cand_email,

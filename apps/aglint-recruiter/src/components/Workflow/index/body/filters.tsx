@@ -9,8 +9,8 @@ import { type Workflow } from '@/types/workflow.types';
 import { SafeObject } from '@/utils/safeObject';
 
 import {
-  type WorkflowStore,
   useWorkflowStore,
+  type WorkflowStore,
 } from '../../../../context/Workflows/store';
 import { TAG_OPTIONS } from '../../constants';
 

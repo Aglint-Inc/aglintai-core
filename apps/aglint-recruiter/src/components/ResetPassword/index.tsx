@@ -13,8 +13,8 @@ import React, { useEffect, useState } from 'react';
 import {
   type FieldError,
   type SubmitHandler,
-  type UseFormRegisterReturn,
   useForm,
+  type UseFormRegisterReturn,
 } from 'react-hook-form';
 
 import { useRouterPro } from '@/hooks/useRouterPro';

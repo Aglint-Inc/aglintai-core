@@ -12,6 +12,7 @@ import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
 import { fetchCompEmailTemp, fetchJobEmailTemp } from './fetchCompEmailTemp';
+import sendMessageToCandidatePortal from './sendMessageToCandidatePortal';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],
@@ -22,6 +23,7 @@ export const sendMailFun = async <
   attachments,
   is_preview,
   api_target,
+  application_id,
   company_id,
   job_id,
   payload,
@@ -34,6 +36,7 @@ export const sendMailFun = async <
   is_preview?: boolean;
   attachments?: ICSAttachment[];
   job_id?: string;
+  application_id?: string;
   payload?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
   supabaseAdmin: SupabaseType;
@@ -72,6 +75,7 @@ export const sendMailFun = async <
   if (is_preview) {
     return { html, subject: filled_comp_template.subject };
   }
+
   await sendMail({
     email: recipient_email,
     html,
@@ -80,5 +84,12 @@ export const sendMailFun = async <
     fromName: filled_comp_template.from_name,
     attachments,
   });
+  if (application_id) {
+    await sendMessageToCandidatePortal({
+      application_id,
+      body: html,
+      subject: filled_comp_template.subject,
+    });
+  }
   return null;
 };
