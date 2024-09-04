@@ -14,8 +14,8 @@ import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
 import { createRequestWorkflowAction } from '../../utils';
+import { useRequestProgressProvider } from '../progressCtx';
 import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
-import { useNewScheduleRequestPr } from '.';
 import {
   agentTargetApiEmailEndPoint,
   useSelectedActionsDetails,
@@ -23,14 +23,13 @@ import {
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
-  const { request_workflow } = useRequest();
+  const { request_workflow, requestDetails: currentRequest } = useRequest();
   const {
     reqTriggerActionsMap,
     companyEmailTemplatesMp,
-    currentRequest,
     editTrigger,
     setShowEditDialog,
-  } = useNewScheduleRequestPr();
+  } = useRequestProgressProvider();
 
   const {
     selectedActionsDetails,

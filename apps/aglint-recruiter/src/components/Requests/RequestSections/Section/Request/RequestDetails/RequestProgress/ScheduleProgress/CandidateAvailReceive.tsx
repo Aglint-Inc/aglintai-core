@@ -23,12 +23,12 @@ import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import {
   apiTargetToEvents,
   groupedTriggerEventMap,
 } from '../utils/progressMaps';
-import { useNewScheduleRequestPr } from '.';
 import EventNode from './EventNode';
 
 const CandidateAvailReceive = () => {
@@ -109,7 +109,7 @@ const RequestEvents = ({
     request_id: candidateAvailabilityId,
   });
 
-  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
+  const { reqTriggerActionsMap } = useRequestProgressProvider();
   const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
 
@@ -243,7 +243,7 @@ const RequestEvents = ({
 
 const WActionMenu = () => {
   const { setEditTrigger, setShowEditDialog, reqTriggerActionsMap } =
-    useNewScheduleRequestPr();
+    useRequestProgressProvider();
   return (
     <>
       <RequestProgress

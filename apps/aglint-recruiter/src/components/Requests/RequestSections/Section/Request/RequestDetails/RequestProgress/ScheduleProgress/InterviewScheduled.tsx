@@ -21,23 +21,20 @@ import {
   createRequestWorkflowAction,
   deleteRequestWorkflowAction,
 } from '../../utils';
+import { useRequestProgressProvider } from '../progressCtx';
 import { workflowCopy } from '../utils/copy';
 import {
   getProgressCompStatus,
   progressStatusToTense,
 } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
-import { useNewScheduleRequestPr } from '.';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {
-  const {
-    reqTriggerActionsMap: triggerActionMp,
-    currentRequest,
-    reqProgressMap,
-  } = useNewScheduleRequestPr();
+  const { reqTriggerActionsMap: triggerActionMp, reqProgressMap } =
+    useRequestProgressProvider();
   const { recruiter } = useAuthDetails();
-  const { request_workflow } = useRequest();
+  const { request_workflow, requestDetails: currentRequest } = useRequest();
   const [rsvpSending, setRsvpSending] = React.useState(false);
   const event_status = reqProgressMap['CAND_CONFIRM_SLOT']?.[0];
 
