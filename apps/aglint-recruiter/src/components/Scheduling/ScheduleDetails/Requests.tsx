@@ -14,15 +14,15 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import { getRequestTitle } from '../../Requests/AgentChats/AgentInputBox';
-import { useScheduleDetails } from './hooks';
+// import { getRequestTitle } from '../../Requests/AgentChats/AgentInputBox';
+// import { useScheduleDetails } from './hooks';
 
 function Requests({ session_id }) {
   const router = useRouter();
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
-  const { data } = useScheduleDetails();
+  // const { data } = useScheduleDetails();
 
-  const schedule = data?.schedule_data;
+  // const schedule = data?.schedule_data;
   return (
     <Stack spacing={'var(--space-2)'}>
       <Text
@@ -60,11 +60,12 @@ function Requests({ session_id }) {
                       );
                     },
                   }}
-                  textHistory={getRequestTitle({
-                    title: request.title,
-                    first_name: schedule.candidates.first_name,
-                    last_name: schedule.candidates.last_name,
-                  })}
+                  textHistory=''
+                  // {getRequestTitle({
+                  //   title: request.title,
+                  //   first_name: schedule.candidates.first_name,
+                  //   last_name: schedule.candidates.last_name,
+                  // })}
                   slotAssignedTo={
                     <AvatarWithName
                       slotAvatar={
