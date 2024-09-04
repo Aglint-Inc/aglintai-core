@@ -1,13 +1,20 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
-import { RcCheckbox } from '@devlink2/RcCheckbox';
-import { GeneralPopupLarge } from '@devlink3/GeneralPopupLarge';
 import { WorkflowCard } from '@devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
-import { Dialog, Stack } from '@mui/material';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
+import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
@@ -18,7 +25,6 @@ import {
   getFilteredWorkflows,
   useWorkflowFilterOptions,
 } from '@/components/Workflow/index/body/filters';
-import { JobIcon } from '@/components/Workflow/index/body/icons';
 import { useJob } from '@/context/JobContext';
 import {
   type JobDashboardStore,
@@ -88,12 +94,10 @@ const JobWorkflowComp = () => {
   const value = useJobWorkflowActions();
   return (
     <JobWorkflowContext.Provider value={value}>
-      <Stack>
-        <Stack gap={'1px'} bgcolor={'var(--neutral-6)'}>
-          <JobWorkflows />
-        </Stack>
+      <div className='flex flex-col gap-1 bg-neutral-6'>
+        <JobWorkflows />
         <WorkflowBrowser />
-      </Stack>
+      </div>
     </JobWorkflowContext.Provider>
   );
 };
@@ -108,22 +112,22 @@ const JobWorkflows = () => {
     return (
       <>
         {[...Array(3)].map((e, i) => (
-          <Stack bgcolor={'white'} key={i}>
+          <div key={i} className='bg-white'>
             <AssessmentListCardLoader border={'none'} />
-          </Stack>
+          </div>
         ))}
       </>
     );
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-      <Stack bgcolor={'white'} padding={'12px'}>
+      <div className='bg-white p-3'>
         <GlobalEmptyState
           iconName={'lan'}
           styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
           textDesc={'No workflows connected'}
         />
-      </Stack>
+      </div>
     );
   const cards = workflows
     .toSorted((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
@@ -146,7 +150,7 @@ const JobWorkflows = () => {
             }}
             textJobs={<></>}
             textWorkflowName={
-              <Stack maxWidth={'420px'}>{workflow.title}</Stack>
+              <div className='max-w-[420px]'>{workflow.title}</div>
             }
             textWorkflowTrigger={getTriggerOption(
               workflow.trigger,
@@ -216,14 +220,12 @@ const WorkflowBrowser = () => {
           border={'visible'}
           key={id}
           isCheckboxVisible={true}
-          // isChecked={checked}
           slotCheckbox={
-            <RcCheckbox
-              isChecked={checked}
-              onclickCheck={{
-                onClick: () => handleClick(checked ? 'delete' : 'insert', id),
-              }}
-              text={<></>}
+            <Checkbox
+              checked={checked}
+              onCheckedChange={() =>
+                handleClick(checked ? 'delete' : 'insert', id)
+              }
             />
           }
           textWorkflowName={title}
@@ -248,53 +250,28 @@ const WorkflowBrowser = () => {
     handleClose();
   };
   return (
-    <Dialog
-      open={open}
-      onClose={() => handleClose()}
-      sx={{
-        '& .MuiPaper-root': {
-          width: '600px !important',
-          maxWidth: '600px !important',
-        },
-      }}
-    >
-      <GeneralPopupLarge
-        isIcon={false}
-        onClickAction={{ onClick: () => handleSubmit() }}
-        textPopupTitle={'Add Workflow'}
-        textPopupButton={
-          <Stack direction={'row'} gap={1}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
+      <DialogContent className='sm:max-w-[600px]'>
+        <DialogHeader>
+          <DialogTitle>Add Workflow</DialogTitle>
+        </DialogHeader>
+        <div className='mt-4'>
+          <Filters />
+        </div>
+        <ScrollArea className='h-[calc(100vh-300px)] mt-4'>
+          {cards.length ? cards : <WorkflowEmpty />}
+        </ScrollArea>
+        <div className='mt-4 flex justify-end'>
+          <Button onClick={handleSubmit}>
             Add
-            <Stack
-              px={'8px'}
-              style={{
-                display: count ? 'flex' : 'none',
-                alignItems: 'center',
-
-                backgroundColor: 'var(--white)',
-                color: 'var(--accent-11)',
-                borderRadius: 'var(--radius-1)',
-              }}
-            >
-              {count}
-            </Stack>
-          </Stack>
-        }
-        isDescriptionVisibe={true}
-        slotPopup={
-          <Stack
-            style={{
-              height: 'calc(100vh - 300px)',
-              gap: '8px',
-              overflow: 'scroll',
-            }}
-          >
-            {cards.length ? cards : <WorkflowEmpty />}
-          </Stack>
-        }
-        onClickClose={{ onClick: () => handleClose() }}
-        textDescription={<Filters />}
-      />
+            {count > 0 && (
+              <span className='ml-2 px-2 py-1 bg-white text-accent-11 rounded-md'>
+                {count}
+              </span>
+            )}
+          </Button>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 };
@@ -346,12 +323,20 @@ const Filters = () => {
   return component;
 };
 
+// const FilterDropdown = ({ filter }) => {
+//   // Implement the dropdown for each filter
+//   // You can use the shadcn Dropdown component here
+// };
+
 type FilterIconProps = {
   filter: keyof Omit<JobDashboardStore['filters'], 'search'>;
 };
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
-      return <JobIcon />;
+      return <Briefcase className='h-4 w-4' />;
+    // Add more cases for other filter types
+    default:
+      return null;
   }
 };

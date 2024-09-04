@@ -1,4 +1,5 @@
 import '@styles/globals.css';
+import '@styles/globals.scss';
 import 'regenerator-runtime/runtime';
 
 import { ThemeProvider } from '@components/theme-provider';
