@@ -1,37 +1,38 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
-import { DcPopup } from '@devlink/DcPopup';
+import { Button } from '@components/ui/button';
+import { Checkbox as ShadcnCheckbox } from '@components/ui/checkbox';
 import {
-  Autocomplete,
-  capitalize,
   Dialog,
-  MenuItem,
-  Stack,
-  Typography,
-} from '@mui/material';
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
-import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import ROUTES from '@/utils/routing/routes';
+import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
-import {
-  setIsCreateDialogOpen,
-  setSelectedUsers,
-  useModulesStore,
-} from '../store';
+import * as store from '../store';
 import { createModule } from '../utils';
 
 function CreateModuleDialog() {
   const router = useRouter();
   const { recruiter_id } = useAuthDetails();
-  const { isCreateDialogOpen } = useModulesStore();
+  const { isCreateDialogOpen } = store.useModulesStore();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
@@ -73,11 +74,11 @@ function CreateModuleDialog() {
             type_id: res.id,
           }),
         );
-        setIsCreateDialogOpen(null);
-        setSelectedUsers([]);
+        store.setIsCreateDialogOpen(null);
+        store.setSelectedUsers([]);
       } catch (e) {
         toast.error(e.message);
-        setIsCreateDialogOpen(null);
+        store.setIsCreateDialogOpen(null);
       } finally {
         setLoading(true);
       }
@@ -87,26 +88,24 @@ function CreateModuleDialog() {
   return (
     <Dialog
       open={isCreateDialogOpen}
-      onClose={() => {
-        setIsCreateDialogOpen(false);
-      }}
+      onOpenChange={(open) => store.setIsCreateDialogOpen(open)}
     >
-      <DcPopup
-        popupName={'Create Interview Type'}
-        slotBody={
-          <Stack>
-            <Typography mb={2}>
-              Create a new interview type by specifying the name, department,
-              and objective, and indicate if training is required.
-            </Typography>
-            <Stack spacing={2} width={'100%'}>
-              <UITextField
-                label='Name'
-                required
-                error={nameError}
-                helperText={`Name cannot be empty.`}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create Interview Type</DialogTitle>
+        </DialogHeader>
+        <div className='space-y-4'>
+          <p className='mb-2 text-sm text-gray-600'>
+            Create a new interview type by specifying the name, department, and
+            objective, and indicate if training is required.
+          </p>
+          <div className='space-y-4 w-full'>
+            {/* Name Input */}
+            <div className='space-y-2'>
+              <Label htmlFor='name'>Name</Label>
+              <Input
+                id='name'
                 placeholder='Ex: Initial Screening'
-                fullWidth
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -119,52 +118,53 @@ function CreateModuleDialog() {
                     createModuleHandler();
                   }
                 }}
+                className={nameError ? 'border-red-500' : ''}
               />
-              <Stack gap={'var(--space-1)'}>
-                <Stack direction={'row'}>
-                  <UITypography
-                    type={'small'}
-                    fontBold={'default'}
-                    color='var(--neutral-12)'
-                  >
-                    Department
-                  </UITypography>
-                </Stack>
-                <Autocomplete
-                  id='country-select-demo'
-                  options={departments}
-                  value={selDepartment}
-                  onChange={(event, newValue) => {
-                    setSelDepartment(newValue);
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  renderOption={(props, option) => {
-                    const { ...optionProps } = props;
-                    return (
-                      <MenuItem {...optionProps}>
-                        {capitalize(option.name)}
-                      </MenuItem>
-                    );
-                  }}
-                  renderInput={(params) => (
-                    <UITextField
-                      {...params}
-                      placeholder='Select Department'
-                      fullWidth
-                      error={departmentError}
-                      helperText={`Department is required`}
-                    />
-                  )}
-                />
-              </Stack>
+              {nameError && (
+                <p className='text-xs text-red-500'>Name cannot be empty.</p>
+              )}
+            </div>
 
-              <UITextField
-                minRows={1}
-                required
-                label='Objective'
-                multiline
+            {/* Department Select */}
+            <div className='space-y-2'>
+              <Label htmlFor='department'>Department</Label>
+              <Select
+                value={selDepartment?.id.toString() || ''}
+                onValueChange={(value) => {
+                  const department = departments.find(
+                    (d) => d.id.toString() === value,
+                  );
+                  setSelDepartment(department || null);
+                }}
+              >
+                <SelectTrigger
+                  id='department'
+                  className={`w-full ${departmentError ? 'border-red-500' : ''}`}
+                >
+                  <SelectValue placeholder='Select Department' />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((department) => (
+                    <SelectItem
+                      key={department.id}
+                      value={department.id.toString()}
+                    >
+                      {capitalize(department.name)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {departmentError && (
+                <p className='text-xs text-red-500'>Department is required</p>
+              )}
+            </div>
+
+            {/* Objective Input */}
+            <div className='space-y-2'>
+              <Label htmlFor='objective'>Objective</Label>
+              <Input
+                id='objective'
                 placeholder='Add a brief description of the interview'
-                fullWidth
                 value={objective}
                 onChange={(e) => {
                   setObjective(e.target.value);
@@ -175,61 +175,39 @@ function CreateModuleDialog() {
                   }
                 }}
               />
-              <Stack>
-                <Stack spacing={1} direction={'row'} alignItems={'center'}>
-                  <Checkbox
-                    isChecked={isTraining}
-                    onClickCheck={{
-                      onClick: () => {
-                        setIsTraining(!isTraining);
-                      },
-                    }}
-                  />
-                  <Typography variant='inherit'>Requires Training</Typography>
-                </Stack>
-                <Stack
-                  style={{
-                    fontSize: '12px',
-                    lineHeight: '14px',
-                    marginTop: '8px',
-                    marginLeft: '26px',
-                    color: '#68737d',
-                  }}
-                >
-                  <Typography variant='inherit'>
-                    Select if the interviewer requires training before
-                    conducting this interview
-                  </Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </Stack>
-        }
-        onClickClosePopup={{
-          onClick: () => {
-            setIsCreateDialogOpen(false);
-          },
-        }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  setIsCreateDialogOpen(false);
-                },
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Create'}
-              onClickButton={{ onClick: createModuleHandler }}
-            />
-          </>
-        }
-      />
+            </div>
+
+            {/* Checkbox */}
+            <div className='flex items-center space-x-2'>
+              <ShadcnCheckbox
+                id='training'
+                checked={isTraining}
+                onCheckedChange={(checked) => {
+                  setIsTraining(checked as boolean);
+                }}
+              />
+              <Label htmlFor='training' className='text-sm font-normal'>
+                Requires Training
+              </Label>
+            </div>
+            <p className='text-xs text-gray-500 ml-6'>
+              Select if the interviewer requires training before conducting this
+              interview
+            </p>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button
+            variant='outline'
+            onClick={() => {
+              store.setIsCreateDialogOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button onClick={createModuleHandler}>Create</Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 }

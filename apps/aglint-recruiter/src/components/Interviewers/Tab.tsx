@@ -1,5 +1,4 @@
-import { GlobalSwitch } from '@devlink3/GlobalSwitch';
-import { GlobalSwitchPill } from '@devlink3/GlobalSwitchPill';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -55,51 +54,14 @@ function InterviewersTabs() {
 
   return (
     <Stack>
-      <GlobalSwitch
-        slotGlobalSwitchPill={
-          <>
-            <GlobalSwitchPill
-              isActive={tab === 'interview_load'}
-              textPill={'Interview Load'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(
-                    `${ROUTES['/interviewers']()}?tab=interview_load`,
-                  );
-                },
-              }}
-            />
-            <GlobalSwitchPill
-              isActive={tab === 'availability'}
-              textPill={'Availability'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(`${ROUTES['/interviewers']()}?tab=availability`);
-                },
-              }}
-            />
-            <GlobalSwitchPill
-              isActive={tab === 'training' || !tab}
-              textPill={'Training'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(`${ROUTES['/interviewers']()}?tab=training`);
-                },
-              }}
-            />
-
-            <GlobalSwitchPill
-              isActive={tab === 'metrics' || !tab}
-              textPill={'Metrics'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(`${ROUTES['/interviewers']()}?tab=metrics`);
-                },
-              }}
-            />
-          </>
-        }
-      />
+      <Tabs value={tab} onValueChange={setTabHandle}>
+        <TabsList>
+          <TabsTrigger value='interview_load'>Interview Load</TabsTrigger>
+          <TabsTrigger value='availability'>Availability</TabsTrigger>
+          <TabsTrigger value='training'>Training</TabsTrigger>
+          <TabsTrigger value='metrics'>Metrics</TabsTrigger>
+        </TabsList>
+      </Tabs>
     </Stack>
   );
 }
