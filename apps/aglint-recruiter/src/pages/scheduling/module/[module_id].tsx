@@ -21,12 +21,11 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
 import { useToast } from '@/components/hooks/use-toast';
-import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/components/Scheduling/Candidates/utils';
 import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
@@ -39,6 +38,7 @@ import {
 import { useAllInterviewersDetails } from '@/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
+import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 import { supabase } from '@/utils/supabase/client';
 
 const ModuleMembers = () => {

@@ -18,13 +18,13 @@ import React, {
   useState,
 } from 'react';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
 import toast from '@/utils/toast';
 
-import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '../../Candidates/utils';
+import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import { SessionIcon } from '../../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,

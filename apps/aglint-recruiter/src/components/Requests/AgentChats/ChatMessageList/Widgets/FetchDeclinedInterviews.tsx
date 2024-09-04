@@ -2,9 +2,9 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 
-import { getScheduleType } from '@/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import ROUTES from '@/utils/routing/routes';
+import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import ScheduleList, {
   type ScheduleListProps,

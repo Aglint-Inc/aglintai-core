@@ -8,14 +8,14 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
 
+import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import IconSessionType from '../../../Common/Icons/IconSessionType';
-import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';

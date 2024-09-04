@@ -20,11 +20,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Fragment, useMemo, useState } from 'react';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/components/Scheduling/Candidates/utils';
 import {
   type ApplicationsParams,
   useApplicationsParams,
@@ -38,6 +37,7 @@ import { type Job } from '@/queries/jobs/types';
 import { type Application } from '@/types/applications.types';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
+import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 import { capitalize, capitalizeAll } from '@/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';

@@ -6,9 +6,9 @@ import { Stack } from '@mui/material';
 
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 
+import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
+import IconScheduleType from '../../Common/Icons/IconScheduleType';
 import IconSessionType from '../../Common/Icons/IconSessionType';
-import IconScheduleType from '../../Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '../../Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '../../Scheduling/utils';
 
 function BookingConfirmation({

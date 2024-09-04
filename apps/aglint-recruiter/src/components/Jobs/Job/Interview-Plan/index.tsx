@@ -38,10 +38,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/context/JobContext';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';

@@ -8,15 +8,15 @@ import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/utils/jsonResume';
 
-import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../Candidates/utils';
+} from '../../../../../utils/scheduling/colors_and_enums';
 import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';

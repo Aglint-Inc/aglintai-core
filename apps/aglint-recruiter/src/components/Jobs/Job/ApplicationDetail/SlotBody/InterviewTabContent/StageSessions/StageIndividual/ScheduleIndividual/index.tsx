@@ -6,14 +6,14 @@ import { Checkbox, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
-import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { type StageWithSessions } from '@/queries/application';
 import { useAllIntegrations } from '@/queries/intergrations';
+import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';

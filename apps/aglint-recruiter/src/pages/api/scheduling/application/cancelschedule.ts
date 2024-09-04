@@ -9,12 +9,12 @@ import {
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/components/Scheduling/Candidates/queries/utils';
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
 } from '@/components/Scheduling/ScheduleDetails/utils';
 import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;

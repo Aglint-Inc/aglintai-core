@@ -18,9 +18,9 @@ import React, {
 } from 'react';
 
 import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
 import { type CreateInterviewSession } from '@/queries/interview-plans';

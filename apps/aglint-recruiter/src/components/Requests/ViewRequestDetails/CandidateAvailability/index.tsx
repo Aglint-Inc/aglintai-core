@@ -133,7 +133,6 @@ function CandidateAvailability({
       selectedSessions: sessions.map((ses) => ({
         interview_session_id: ses.interview_session.id,
         interview_meeting_id: ses.interview_meeting.id,
-        interview_schedule_id: ses.interview_meeting.interview_schedule_id,
         job_id: ses.interview_meeting.job_id,
         recruiter_id: ses.interview_meeting.recruiter_id,
       })),
