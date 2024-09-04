@@ -56,13 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('Missing required parameters');
     }
 
-    const { data: schedule } = await supabaseAdmin
-      .from('interview_schedule')
-      .select()
-      .eq('application_id', application_id)
-      .single()
-      .throwOnError();
-
     const availabilities = await findAvailibilityNoConflictOnly({
       recruiter_id: recruiter_id,
       session_id,
@@ -75,7 +68,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (availabilities.slots?.length > 0 && firstSlot?.length > 0) {
       await confirmSlot({
-        schedule_id: schedule.id,
         task_id,
         user_tz,
         selectedDebrief: firstSlot[0],
@@ -102,20 +94,17 @@ export default handler;
 
 const confirmSlot = async ({
   user_tz,
-  schedule_id,
   task_id,
   selectedDebrief,
   filter_id,
 }: {
   task_id: string;
   user_tz: string;
-  schedule_id: string;
   selectedDebrief: PlanCombinationRespType;
   filter_id: string;
 }) => {
   const bodyParams: APIScheduleDebreif = {
     session_id: selectedDebrief.sessions[0].session_id,
-    schedule_id,
     user_tz,
     selectedOption: selectedDebrief,
     task_id,

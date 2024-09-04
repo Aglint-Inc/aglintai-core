@@ -7,7 +7,6 @@ import { useScheduleSessionsAnalytics } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 type scheduleType = {
   interview_meeting: DatabaseTable['interview_meeting'];
-  interview_schedule: DatabaseTable['interview_schedule'];
   interview_session: DatabaseTable['interview_session'];
 };
 type sessionStatusType = DatabaseTable['interview_meeting']['status'];
