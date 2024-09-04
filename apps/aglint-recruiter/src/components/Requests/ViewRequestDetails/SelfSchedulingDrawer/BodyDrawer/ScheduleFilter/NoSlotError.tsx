@@ -1,6 +1,5 @@
+import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { Stack } from '@mui/material';
-
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
 
 import { useSelfSchedulingFlowStore } from '../../store';
 

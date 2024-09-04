@@ -9,7 +9,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { ApiResponseFindAvailability } from '../v1/find_availability';
 

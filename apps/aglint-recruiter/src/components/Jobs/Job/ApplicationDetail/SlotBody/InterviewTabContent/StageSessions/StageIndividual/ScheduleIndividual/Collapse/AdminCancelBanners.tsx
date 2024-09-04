@@ -1,9 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalBanner } from '@devlink2/GlobalBanner';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type StageWithSessions } from '@/src/queries/application';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type StageWithSessions } from '@/queries/application';
 
 function CancelBanners({
   session,

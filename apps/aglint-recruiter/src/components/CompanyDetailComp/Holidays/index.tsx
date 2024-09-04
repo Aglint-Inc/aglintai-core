@@ -1,4 +1,20 @@
 import { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { CompanyDayOff } from '@devlink2/CompanyDayOff';
+import { DayoffList } from '@devlink2/DayoffList';
+import { TextWithBg } from '@devlink2/TextWithBg';
+import { DayOffHelper } from '@devlink3/DayOffHelper';
+import { cn } from '@lib/utils';
 import {
   Autocomplete,
   Dialog,
@@ -15,25 +31,9 @@ import { capitalize, cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
-import { DayoffList } from '@/devlink2/DayoffList';
-import { TextWithBg } from '@/devlink2/TextWithBg';
-import { DayOffHelper } from '@/devlink3/DayOffHelper';
-import { cn } from '@/lib/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import dayjs from '@/src/utils/dayjs';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import dayjs from '@/utils/dayjs';
+import toast from '@/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';

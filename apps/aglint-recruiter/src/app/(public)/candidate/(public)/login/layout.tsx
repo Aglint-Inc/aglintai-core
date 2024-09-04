@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from 'react';
 
-import { Footer } from '@/src/components/CandiatePortal/Layout/Footer';
+import { Footer } from '@/components/CandiatePortal/Layout/Footer';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (

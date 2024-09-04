@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type getInterviewTrainingProgressType } from '@/src/pages/api/scheduling/get_interview_training_progress';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type getInterviewTrainingProgressType } from '@/pages/api/scheduling/get_interview_training_progress';
+import { supabase } from '@/utils/supabase/client';
 
 import { getNthDateFromToday, groupDateBy } from '../utils';
 import { schedulingDashboardQueryKeys } from './keys';

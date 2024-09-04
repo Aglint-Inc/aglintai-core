@@ -1,5 +1,5 @@
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
 
 import { useSelfSchedulingDrawer } from '../hooks';
 import { setStepScheduling, useSelfSchedulingFlowStore } from '../store';

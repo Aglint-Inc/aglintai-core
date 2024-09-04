@@ -1,16 +1,16 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Text } from '@devlink/Text';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
+import { RequestSetting } from '@devlink2/RequestSetting';
 import { Checkbox, MenuItem, Stack } from '@mui/material';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useState } from 'react';
 
-import { Text } from '@/devlink/Text';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { RequestSetting } from '@/devlink2/RequestSetting';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import SelectionComp from '@/src/components/Common/SelectionComp';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import ToggleBtn from '@/src/components/Common/UIToggle';
+import MuiPopup from '@/components/Common/MuiPopup';
+import SelectionComp from '@/components/Common/SelectionComp';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import ToggleBtn from '@/components/Common/UIToggle';
 function ClockIcon() {
   return <GlobalIcon iconName='schedule' />;
 }

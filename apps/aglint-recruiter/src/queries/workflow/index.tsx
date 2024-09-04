@@ -1,4 +1,7 @@
-import { type DatabaseTableInsert, type DatabaseTableUpdate } from '@aglint/shared-types';
+import {
+  type DatabaseTableInsert,
+  type DatabaseTableUpdate,
+} from '@aglint/shared-types';
 import {
   useMutation,
   useMutationState,
@@ -6,10 +9,10 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type Workflow, type WorkflowAction } from '@/src/types/workflow.types';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type Workflow, type WorkflowAction } from '@/types/workflow.types';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { workflowActionQueryKeys } from '../workflow-action/keys';
 import { workflowMutationKeys, workflowQueryKeys } from './keys';

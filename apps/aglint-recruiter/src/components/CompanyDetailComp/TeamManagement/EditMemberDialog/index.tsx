@@ -1,32 +1,32 @@
 import { type employmentTypeEnum } from '@aglint/shared-types';
-import { useEffect, useRef, useState } from 'react';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@components/ui/select';
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/sheet';
-import axios from '@/src/client/axios';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type ApiResponseGetMember } from '@/src/pages/api/get_member';
-import { type API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
-import { useAllDepartments } from '@/src/queries/departments';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+} from '@components/ui/sheet';
+import { useEffect, useRef, useState } from 'react';
+
+import axios from '@/client/axios';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type ApiResponseGetMember } from '@/pages/api/get_member';
+import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
+import { useAllDepartments } from '@/queries/departments';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import { useRolesOptions } from '../hooks';
 

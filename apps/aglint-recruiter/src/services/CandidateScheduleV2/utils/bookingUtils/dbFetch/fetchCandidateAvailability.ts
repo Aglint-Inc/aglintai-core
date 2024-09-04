@@ -2,7 +2,7 @@ import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
 import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
 import * as v from 'valibot';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 export const fetchCandAvailForBooking = async (
   req_body: APIConfirmRecruiterSelectedOption,
 ) => {

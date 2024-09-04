@@ -3,6 +3,22 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { RolesPill } from '@devlink/RolesPill';
+import { DayOff } from '@devlink2/DayOff';
+import { KeywordCard } from '@devlink2/KeywordCard';
+import { Keywords } from '@devlink2/Keywords';
+import { RcCheckbox } from '@devlink2/RcCheckbox';
+import { ScheduleSettings } from '@devlink2/ScheduleSettings';
+import { TimeRangeInput } from '@devlink2/TimeRangeInput';
+import { WorkingHourDay } from '@devlink2/WorkingHourDay';
+import { cn } from '@lib/utils';
 import {
   Alert,
   Autocomplete,
@@ -20,29 +36,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { RolesPill } from '@/devlink/RolesPill';
-import { DayOff } from '@/devlink2/DayOff';
-import { KeywordCard } from '@/devlink2/KeywordCard';
-import { Keywords } from '@/devlink2/Keywords';
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
-import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
-import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
-import { cn } from '@/lib/utils';
-import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
-import UITextField from '@/src/components/Common/UITextField';
-import { LoadMax } from '@/src/components/CompanyDetailComp/Holidays';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
-import SelectTime from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
-import timeZones from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+import FilterInput from '@/components/CandidateDatabase/Search/FilterInput';
+import UITextField from '@/components/Common/UITextField';
+import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
+import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
+import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
+import timeZones from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 import { useImrQuery } from '../hooks';
 type interviewLoadType = {

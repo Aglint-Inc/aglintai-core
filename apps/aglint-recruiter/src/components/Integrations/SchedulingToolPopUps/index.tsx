@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { DeletePopup } from '@devlink3/DeletePopup';
 import { Dialog } from '@mui/material';
 import { type ReactNode } from 'react';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { DeletePopup } from '@/devlink3/DeletePopup';
 
 import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';

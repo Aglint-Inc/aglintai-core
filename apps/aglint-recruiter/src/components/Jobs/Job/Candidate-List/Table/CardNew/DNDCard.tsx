@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { type Application } from '@/src/types/applications.types';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { type Application } from '@/types/applications.types';
 
 import ApplicationCard from '.';
 

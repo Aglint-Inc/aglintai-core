@@ -2,7 +2,7 @@
 
 import { type APISendgridPayload } from '@aglint/shared-types';
 
-import { getOutboundEmail } from '@/src/utils/scheduling_v2/get-outbound-email';
+import { getOutboundEmail } from '@/utils/scheduling_v2/get-outbound-email';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

@@ -1,7 +1,7 @@
 import { type JsonResume } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { type Candidate } from './candFilter.type';
 

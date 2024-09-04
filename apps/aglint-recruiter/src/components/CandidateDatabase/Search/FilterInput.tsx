@@ -1,8 +1,7 @@
+import { AddPreference } from '@devlink/AddPreference';
 import { Popover } from '@mui/material';
 import { isNumber } from 'lodash';
 import { useState } from 'react';
-
-import { AddPreference } from '@/devlink/AddPreference';
 
 import UITextField from '../../Common/UITextField';
 import { dialogFormContent } from '../utils';

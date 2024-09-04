@@ -1,3 +1,4 @@
+import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
 import Stack from '@mui/material/Stack';
 import {
   BarElement,
@@ -9,13 +10,12 @@ import {
 import { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
-} from '@/src/context/SchedulingAnalytics';
-import { SafeObject } from '@/src/utils/safeObject';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/context/SchedulingAnalytics';
+import { SafeObject } from '@/utils/safeObject';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 

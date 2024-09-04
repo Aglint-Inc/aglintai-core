@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
 
 const Outlook = () => {
   const router = useRouter();

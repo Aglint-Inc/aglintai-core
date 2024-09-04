@@ -1,18 +1,18 @@
+import { Skeleton } from '@devlink2/Skeleton';
+import { HistoryPill as HistoryPillDev } from '@devlink3/HistoryPill';
+import { NoData } from '@devlink3/NoData';
+import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
+import { TrainingProgressList } from '@devlink3/TrainingProgressList';
+import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import { Avatar } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { HistoryPill as HistoryPillDev } from '@/devlink3/HistoryPill';
-import { NoData } from '@/devlink3/NoData';
-import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
-import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@/devlink3/TrainingProgressLoader';
-import { useInterviewTrainingProgress } from '@/src/queries/scheduling-dashboard';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useInterviewTrainingProgress } from '@/queries/scheduling-dashboard';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 const LIMIT = 4;
 

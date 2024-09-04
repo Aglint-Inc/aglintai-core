@@ -1,9 +1,9 @@
+import { CompanySetting } from '@devlink/CompanySetting';
+import { SavedChanges } from '@devlink/SavedChanges';
 import { CircularProgress, Stack } from '@mui/material';
+import LoaderGrey from '@public/lottie/LoaderGrey';
 
-import { CompanySetting } from '@/devlink/CompanySetting';
-import { SavedChanges } from '@/devlink/SavedChanges';
-import LoaderGrey from '@/public/lottie/LoaderGrey';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import CompanyInfoComp from './CompanyInfoComp';
 import Holidays from './Holidays';

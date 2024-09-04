@@ -3,10 +3,10 @@
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { addScheduleActivity } from '@/src/utils/scheduling/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { createFilterJson } from '@/utils/scheduling/createFilterJson';
+import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamTaskCreate = {
   schedule_id: string;

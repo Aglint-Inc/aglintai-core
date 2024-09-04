@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { encrypt } from '../encryptData';
 

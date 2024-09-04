@@ -1,21 +1,21 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
-import React from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { Checkbox } from '@/devlink/Checkbox';
-import { RolesPill } from '@/devlink/RolesPill';
-import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
-import { ClockIcon } from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
-import toast from '@/src/utils/toast';
+} from '@components/ui/popover';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { Checkbox } from '@devlink/Checkbox';
+import { RolesPill } from '@devlink/RolesPill';
+import { TimeRangeSelector } from '@devlink3/TimeRangeSelector';
+import { Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import React from 'react';
+
+import { ClockIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
+import toast from '@/utils/toast';
 
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
 

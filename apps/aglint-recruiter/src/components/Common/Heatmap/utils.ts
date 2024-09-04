@@ -2,7 +2,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { type Meeting, type Meetings } from './type';
 

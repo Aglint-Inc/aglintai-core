@@ -1,4 +1,4 @@
-// import { PageNothing } from '@/devlink/PageNothing';
+// import { PageNothing } from '@devlink/PageNothing';
 
 import Seo from '../components/Seo';
 

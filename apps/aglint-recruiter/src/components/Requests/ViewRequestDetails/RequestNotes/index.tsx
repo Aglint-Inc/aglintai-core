@@ -1,13 +1,13 @@
+import { NotesRequestDetail } from '@devlink2/NotesRequestDetail';
+import { RequestCardSkeleton } from '@devlink2/RequestCardSkeleton';
+import { Text } from '@devlink2/Text';
 import { Stack, TextField } from '@mui/material';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { NotesRequestDetail } from '@/devlink2/NotesRequestDetail';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
-import { Text } from '@/devlink2/Text';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import dayjs from '@/src/utils/dayjs';
+import { ShowCode } from '@/components/Common/ShowCode';
+import dayjs from '@/utils/dayjs';
 
 import { useRequestNotes } from './hooks';
 import { upsertRequestNotes } from './utils';

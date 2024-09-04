@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@components/ui/button';
+import { Textarea } from '@components/ui/textarea';
 import html2canvas from 'html2canvas';
 import { AlertCircle, Camera, Send } from 'lucide-react';
 import Image from 'next/image';
@@ -7,10 +9,8 @@ import React from 'react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { submitErrorReport } from '@/src/app/actions';
-import { supabase } from '@/src/utils/supabase/client';
+import { submitErrorReport } from '@/app/actions';
+import { supabase } from '@/utils/supabase/client';
 
 export default function ErrorPage() {
   const [errorDescription, setErrorDescription] = useState('');

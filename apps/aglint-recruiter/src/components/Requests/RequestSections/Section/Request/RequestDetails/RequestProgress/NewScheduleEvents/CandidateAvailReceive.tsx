@@ -1,27 +1,27 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonGhost } from '@devlink2/ButtonGhost';
+import { RequestProgress } from '@devlink2/RequestProgress';
 import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonGhost } from '@/devlink2/ButtonGhost';
-import { RequestProgress } from '@/devlink2/RequestProgress';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ShowCode } from '@/components/Common/ShowCode';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
-} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/hooks';
+} from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
+import { useRequestAvailabilityDetails } from '@/components/Requests/ViewRequestDetails/ConfirmAvailability/hooks';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
-import { useRequest } from '@/src/context/RequestContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+} from '@/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
+import { useRequest } from '@/context/RequestContext';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { type RequestProgressMapType } from '../types';
 import {

@@ -1,3 +1,11 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { AddFilter } from '@devlink2/AddFilter';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
+import { Skeleton } from '@devlink2/Skeleton';
+import { FilterItem } from '@devlink3/FilterItem';
+import { MultiFilterLayout } from '@devlink3/MultiFilterLayout';
 import {
   Checkbox,
   List,
@@ -7,17 +15,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { type ReactNode,memo } from 'react';
+import React, { type ReactNode, memo } from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { AddFilter } from '@/devlink2/AddFilter';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { FilterItem } from '@/devlink3/FilterItem';
-import { MultiFilterLayout } from '@/devlink3/MultiFilterLayout';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import UITextField from '../UITextField';
 import ToggleBtn from '../UIToggle';

@@ -1,8 +1,7 @@
-import Seo from '@components/Common/Seo';
-
-import ApplicationsDashboard from '@/src/components/Jobs/Job/Candidate-List';
-import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
-import { JobProvider } from '@/src/context/JobContext';
+import Seo from '@/components/Common/Seo';
+import ApplicationsDashboard from '@/components/Jobs/Job/Candidate-List';
+import { ApplicationsProvider } from '@/context/ApplicationsContext';
+import { JobProvider } from '@/context/JobContext';
 
 const JobCandidateListPage = () => {
   return (

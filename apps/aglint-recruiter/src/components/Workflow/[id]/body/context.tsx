@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { emailTemplateQueries } from '@/src/queries/email-templates';
-import type { WorkflowAction } from '@/src/types/workflow.types';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useWorkflow } from '@/context/Workflows/[id]';
+import { emailTemplateQueries } from '@/queries/email-templates';
+import type { WorkflowAction } from '@/types/workflow.types';
+import toast from '@/utils/toast';
 
 import { ACTION_TRIGGER_MAP, AI_RESPONSE_PLACEHOLDER } from '../../constants';
 

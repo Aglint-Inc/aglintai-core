@@ -1,8 +1,8 @@
+import { AddFilter } from '@devlink2/AddFilter';
 import { List, ListItemButton, Popover, Stack } from '@mui/material';
 import React from 'react';
 
-import { AddFilter } from '@/devlink2/AddFilter';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export function AddFilterComp({
   filterList,

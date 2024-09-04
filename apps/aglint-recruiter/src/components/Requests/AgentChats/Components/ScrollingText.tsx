@@ -1,8 +1,7 @@
 /* eslint-disable security/detect-object-injection */
+import { Text } from '@devlink//Text';
 import { Box } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
-
-import { Text } from '@/devlink//Text';
 
 const ScrollingText = () => {
   const textArray = [

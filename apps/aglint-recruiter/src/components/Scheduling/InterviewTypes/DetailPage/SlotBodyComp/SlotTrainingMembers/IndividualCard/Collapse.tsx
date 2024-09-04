@@ -1,20 +1,20 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { Text } from '@devlink/Text';
+import { TrainingDetailList } from '@devlink2/TrainingDetailList';
+import { TrainingProgressDetail } from '@devlink2/TrainingProgressDetail';
+import { TrainingStatus } from '@devlink2/TrainingStatus';
 import { Collapse, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { Text } from '@/devlink/Text';
-import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
-import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
-import { TrainingStatus } from '@/devlink2/TrainingStatus';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
-import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
-import { supabase } from '@/src/utils/supabase/client';
+import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getFullName } from '@/utils/jsonResume';
+import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
+import { supabase } from '@/utils/supabase/client';
 
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
 

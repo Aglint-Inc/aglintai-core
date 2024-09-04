@@ -1,9 +1,9 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import { TextWithIconSkeleton } from '@devlink2/TextWithIconSkeleton';
 import { Stack } from '@mui/material';
 
-import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useRequest } from '@/src/context/RequestContext';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { useRequest } from '@/context/RequestContext';
 
 import CandidateCancelled from './CandidateCancelled';
 import NewScheduleEvents from './NewScheduleEvents';
@@ -26,6 +26,9 @@ function RequestProgress({
           <ShowCode>
             <ShowCode.When isTrue={requestDetails.type === 'schedule_request'}>
               <NewScheduleEvents />
+            </ShowCode.When>
+            <ShowCode.When isTrue={requestDetails.type === 'decline_request'}>
+              <>decline</>
             </ShowCode.When>
             <ShowCode.When
               isTrue={requestDetails.type === 'reschedule_request'}

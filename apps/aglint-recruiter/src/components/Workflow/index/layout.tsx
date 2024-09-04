@@ -1,12 +1,11 @@
-import React from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
-import { PageLayout } from '@/devlink2/PageLayout';
+} from '@components/ui/breadcrumb';
+import { PageLayout } from '@devlink2/PageLayout';
+import React from 'react';
 
 import { WithPermission } from '../../withPermission';
 import Create from './popup/create';

@@ -1,13 +1,13 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
+import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-import CalendarComp from '@/src/components/Common/Calendar/Calendar';
-import Loader from '@/src/components/Common/Loader';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
+import CalendarComp from '@/components/Common/Calendar/Calendar';
+import Loader from '@/components/Common/Loader';
+import SearchField from '@/components/Common/SearchField/SearchField';
 
 import { useAllSchedulesByModuleId } from '../queries/hooks';
 import { fetchSchedulesCountByModule } from '../queries/utils';
@@ -77,7 +77,6 @@ function SchedulesModules() {
             <Stack width={'820px'}>
               <AllInterviewEmpty textDynamic='No schedule found' />
             </Stack>
-            
           ) : (
             <>
               <CalendarComp

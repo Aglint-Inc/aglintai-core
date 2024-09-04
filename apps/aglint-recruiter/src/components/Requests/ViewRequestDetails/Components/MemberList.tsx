@@ -1,20 +1,20 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { AssignedNameCard } from '@devlink2/AssignedNameCard';
+import { AssignedToList } from '@devlink2/AssignedToList';
+import { RequestCardSkeleton } from '@devlink2/RequestCardSkeleton';
 import { Avatar, Popover, Stack, TextField } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
-import { AssignedToList } from '@/devlink2/AssignedToList';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
-import axios from '@/src/client/axios';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import axios from '@/client/axios';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type BodyParamsFetchUserDetails,
   type CompanyMembersAPI,
-} from '@/src/pages/api/scheduling/fetchUserDetails';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+} from '@/pages/api/scheduling/fetchUserDetails';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 type MemberType = CompanyMembersAPI[number];
 function MemberList({
   members,

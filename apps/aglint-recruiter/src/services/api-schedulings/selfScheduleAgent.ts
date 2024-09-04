@@ -1,8 +1,8 @@
 import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
-import { type InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { type InitAgentBodyParams } from '@/components/ScheduleAgent/types';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const selfScheduleAgent = async ({
   agent_type,

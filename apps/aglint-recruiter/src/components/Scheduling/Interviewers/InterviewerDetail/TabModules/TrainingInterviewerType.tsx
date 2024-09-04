@@ -1,11 +1,11 @@
+import { MemberListCard } from '@devlink2/MemberListCard';
+import { HistoryPill } from '@devlink3/HistoryPill';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { MemberListCard } from '@/devlink2/MemberListCard';
-import { HistoryPill } from '@/devlink3/HistoryPill';
-import dayjs from '@/src/utils/dayjs';
-import ROUTES from '@/src/utils/routing/routes';
+import dayjs from '@/utils/dayjs';
+import ROUTES from '@/utils/routing/routes';
 
 import { type PillsTraining } from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard';
 import CollapseTrainingProgress from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard/Collapse';

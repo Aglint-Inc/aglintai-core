@@ -1,4 +1,4 @@
-import { FilterPageLayout } from '@/devlink2/FilterPageLayout';
+import { FilterPageLayout } from '@devlink2/FilterPageLayout';
 
 import Filters from './Filters';
 import ScheduleList from './ScheduleList';

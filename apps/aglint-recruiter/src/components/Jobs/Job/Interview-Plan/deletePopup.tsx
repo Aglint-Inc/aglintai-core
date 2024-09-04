@@ -1,8 +1,8 @@
+import { DeletePopup } from '@devlink3/DeletePopup';
 import { useCallback } from 'react';
 
-import { DeletePopup } from '@/devlink3/DeletePopup';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
+import MuiPopup from '@/components/Common/MuiPopup';
+import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
 
 export type InterviewDeletePopupType = {
   open: boolean;

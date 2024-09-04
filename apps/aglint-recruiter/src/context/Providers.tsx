@@ -1,5 +1,5 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { DevlinkMainProvider } from '@context/DevlinkContext';
+import { DevlinkMainProvider } from '@/context/DevlinkContext';
 import { PostHogProvider } from 'posthog-js/react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import JobsProvider from '../context/JobsContext';
@@ -11,7 +11,7 @@ import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
 import { type PropsWithChildren, Suspense } from 'react';
 import WorkflowsProvider from './Workflows';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
 
 export const PrivateProviders = ({

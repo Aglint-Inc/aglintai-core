@@ -2,9 +2,9 @@ import { type CalendarEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { type CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import { type CalEventAttendeesAuthDetails } from '@/utils/event_book/book_session';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   calender_event: CalendarEvent;

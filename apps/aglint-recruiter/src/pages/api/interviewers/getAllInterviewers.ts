@@ -2,7 +2,7 @@ import { type CalendarEvent } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type allInterviewerType = Awaited<ReturnType<typeof getAllInterviewers>>;
 

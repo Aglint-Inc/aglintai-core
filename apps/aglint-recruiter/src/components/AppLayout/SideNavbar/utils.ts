@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-import { type PATHS } from '@/src/constant/allPaths';
-import ROUTES from '@/src/utils/routing/routes';
+import { type PATHS } from '@/constant/allPaths';
+import ROUTES from '@/utils/routing/routes';
 
 import { type LinkProps } from './type';
 

@@ -1,13 +1,13 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { InterviewerMetricList } from '@devlink3/InterviewerMetricList';
+import { InterviewerMetrics } from '@devlink3/InterviewerMetrics';
+import { MetricsLeaderboard } from '@devlink3/MetricsLeaderboard';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { InterviewerMetricList } from '@/devlink3/InterviewerMetricList';
-import { InterviewerMetrics } from '@/devlink3/InterviewerMetrics';
-import { MetricsLeaderboard } from '@/devlink3/MetricsLeaderboard';
-import { useAllDepartments } from '@/src/queries/departments';
+import { useAllDepartments } from '@/queries/departments';
 
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';

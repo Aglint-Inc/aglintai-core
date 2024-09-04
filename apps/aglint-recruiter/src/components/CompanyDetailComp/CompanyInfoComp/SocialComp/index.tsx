@@ -1,24 +1,24 @@
 /* eslint-disable security/detect-object-injection */
-import { Box, Dialog, Stack, Typography } from '@mui/material';
-import Image from 'next/image';
-import { type Dispatch, type SetStateAction, useState } from 'react';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { AddSocialLink } from '@/devlink/AddSocialLink';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
-import UITextField from '@/src/components/Common/UITextField';
+} from '@components/ui/tooltip';
+import { AddSocialLink } from '@devlink/AddSocialLink';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { NewSocialLinkPop } from '@devlink/NewSocialLinkPop';
+import { Box, Dialog, Stack, Typography } from '@mui/material';
+import Image from 'next/image';
+import { type Dispatch, type SetStateAction, useState } from 'react';
+
+import UITextField from '@/components/Common/UITextField';
 import {
   type ContextValue,
   useAuthDetails,
-} from '@/src/context/AuthContext/AuthContext';
+} from '@/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
 

@@ -4,18 +4,18 @@ import {
   type RecruiterType,
   type RecruiterUserType,
 } from '@aglint/shared-types';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { WelcomeSlider3 } from '@devlink/WelcomeSlider3';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type ApiBodyParamsSignup } from '@/src/pages/api/signup';
-import { errorMessages } from '@/src/utils/errorMessages';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type ApiBodyParamsSignup } from '@/pages/api/signup';
+import { errorMessages } from '@/utils/errorMessages';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 import type * as types from './types';
 import { handleEmail, handlePassword } from './utils';

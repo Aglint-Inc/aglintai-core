@@ -1,12 +1,12 @@
+import { SublinkTab } from '@devlink2/SublinkTab';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { SublinkTab } from '@/devlink2/SublinkTab';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { emailTemplateQueries } from '@/src/queries/email-templates';
-import ROUTES from '@/src/utils/routing/routes';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { emailTemplateQueries } from '@/queries/email-templates';
+import ROUTES from '@/utils/routing/routes';
 
 import { emailTempKeys } from '../Templates/utils';
 import { settingsItems, settingSubNavItem } from './utils';

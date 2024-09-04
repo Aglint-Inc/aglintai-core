@@ -1,6 +1,5 @@
+import { AglintAiChat } from '@devlink2/AglintAiChat';
 import { useState } from 'react';
-
-import { AglintAiChat } from '@/devlink2/AglintAiChat';
 
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';

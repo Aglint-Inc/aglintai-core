@@ -1,5 +1,16 @@
 import { type SessionsCombType } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { ButtonSurface } from '@devlink/ButtonSurface';
+import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
+import { SessionAndTime } from '@devlink/SessionAndTime';
+import { SessionInfo } from '@devlink/SessionInfo';
 import { Dialog, Stack, Typography } from '@mui/material';
+import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -7,22 +18,11 @@ import React, {
   useState,
 } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
-import { SessionAndTime } from '@/devlink/SessionAndTime';
-import { SessionInfo } from '@/devlink/SessionInfo';
-import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
-import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
-import { useInviteSlots } from '@/src/queries/candidate-invite';
-import toast from '@/src/utils/toast';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { useCandidateInvite } from '@/context/CandidateInviteContext';
+import { useInviteSlots } from '@/queries/candidate-invite';
+import toast from '@/utils/toast';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import { SessionIcon } from '../../Common/ScheduleProgress/ScheduleProgressPillComp';

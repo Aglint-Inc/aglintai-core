@@ -5,10 +5,10 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import axios from '@/src/client/axios';
-import { getActiveSection } from '@/src/context/JobsContext/hooks';
-import { type ApiInterviewStages } from '@/src/pages/api/scheduling/application/fetchinterviewstages';
-import { supabase } from '@/src/utils/supabase/client';
+import axios from '@/client/axios';
+import { getActiveSection } from '@/context/JobsContext/hooks';
+import { type ApiInterviewStages } from '@/pages/api/scheduling/application/fetchinterviewstages';
+import { supabase } from '@/utils/supabase/client';
 
 import { jobQueries } from '../job';
 import { diffApplication, updateApplication } from '../job-applications';

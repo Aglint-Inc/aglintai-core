@@ -1,11 +1,11 @@
 import { Drawer as DrawerDev } from '@mui/material';
 import { useMemo } from 'react';
 
-import { Application } from '@/src/context/ApplicationContext';
-import { useApplicationStore } from '@/src/context/ApplicationContext/store';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { getActiveSection } from '@/src/context/JobsContext/hooks';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { Application } from '@/context/ApplicationContext';
+import { useApplicationStore } from '@/context/ApplicationContext/store';
+import { useApplications } from '@/context/ApplicationsContext';
+import { getActiveSection } from '@/context/JobsContext/hooks';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const Drawer = () => {
   const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();

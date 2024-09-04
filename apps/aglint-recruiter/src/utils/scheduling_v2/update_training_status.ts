@@ -1,7 +1,7 @@
 // import { AssignTrainingInt } from '@aglint/shared-types';
 // import axios from 'axios';
 
-// import { createMeetingEvents } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/createMeetingEvents';
+// import { createMeetingEvents } from '@/services/CandidateScheduleV2/utils/bookingUtils/createMeetingEvents';
 
 // type BookedMeetingDetails = Awaited<ReturnType<typeof createMeetingEvents>>;
 

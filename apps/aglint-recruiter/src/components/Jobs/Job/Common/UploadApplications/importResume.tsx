@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { ImportResume as ImportResumeDev } from '@devlink/ImportResume';
+import { UploadedResume } from '@devlink/UploadedResume';
+import { UploadedResumeList } from '@devlink/UploadedResumeList';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ImportResume as ImportResumeDev } from '@/devlink/ImportResume';
-import { UploadedResume } from '@/devlink/UploadedResume';
-import { UploadedResumeList } from '@/devlink/UploadedResumeList';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useJob } from '@/src/context/JobContext';
-import toast from '@/src/utils/toast';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useJob } from '@/context/JobContext';
+import toast from '@/utils/toast';
 
 const ImportResume = () => {
   const [selectedfile, setSelectedFile] = useState([]);

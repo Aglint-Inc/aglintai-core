@@ -3,9 +3,9 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import {
   type JobDetailsForm,
   type JobHiringTeamForm,
-} from '@/src/components/Jobs/Create/form';
-import { type Job } from '@/src/queries/jobs/types';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/components/Jobs/Create/form';
+import { type Job } from '@/queries/jobs/types';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 type DetailsValidity = {
   validity: boolean;

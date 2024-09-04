@@ -2,8 +2,8 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayjs from 'dayjs';
 
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/src/utils/jsonResume';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { getFullName } from '@/utils/jsonResume';
 
 export function getLastDayOfMonth(date: string) {
   return dayjs(date).endOf('month').date();

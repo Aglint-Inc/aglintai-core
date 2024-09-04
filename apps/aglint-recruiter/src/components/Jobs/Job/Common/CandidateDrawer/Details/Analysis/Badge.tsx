@@ -1,4 +1,4 @@
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 import ResumeScore from '../../../../Candidate-List/Common/ResumeScoreNew';
 

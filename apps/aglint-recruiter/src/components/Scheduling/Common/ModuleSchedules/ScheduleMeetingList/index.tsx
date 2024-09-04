@@ -1,8 +1,7 @@
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
 import {
   type SchedulesSupabase,

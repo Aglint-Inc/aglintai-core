@@ -4,7 +4,7 @@ import {
 } from '@aglint/shared-types';
 
 // import { useToast } from '@/components/hooks/use-toast';
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 export async function updateRecruiter(id: string, obj: RecruiterType) {
   const { data, error } = await supabase

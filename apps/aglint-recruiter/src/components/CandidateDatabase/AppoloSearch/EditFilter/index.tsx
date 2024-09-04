@@ -1,3 +1,6 @@
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { CdEditQuerry } from '@devlink/CdEditQuerry';
+import { JobPills } from '@devlink/JobPills';
 import { Autocomplete, Dialog, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
@@ -5,10 +8,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CdEditQuerry } from '@/devlink/CdEditQuerry';
-import { JobPills } from '@/devlink/JobPills';
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import FilterInput from '../../Search/FilterInput';
 import {

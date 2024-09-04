@@ -1,11 +1,11 @@
+import { AvailableTimeRange } from '@devlink/AvailableTimeRange';
+import { CandidateCalender } from '@devlink/CandidateCalender';
+import { DayColumn } from '@devlink/DayColumn';
 import { Stack, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 
-import { AvailableTimeRange } from '@/devlink/AvailableTimeRange';
-import { CandidateCalender } from '@/devlink/CandidateCalender';
-import { DayColumn } from '@/devlink/DayColumn';
-import { type useCandidateInvite } from '@/src/context/CandidateInviteContext';
-import { type useInviteSlots } from '@/src/queries/candidate-invite';
+import { type useCandidateInvite } from '@/context/CandidateInviteContext';
+import { type useInviteSlots } from '@/queries/candidate-invite';
 
 import { dayJS } from './utils';
 

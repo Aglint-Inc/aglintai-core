@@ -1,11 +1,11 @@
+import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { InterviewStage } from '@devlink3/InterviewStage';
 import { Stack } from '@mui/material';
 
-import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { InterviewStage } from '@/devlink3/InterviewStage';
-import Loader from '@/src/components/Common/Loader';
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useInterviewModules } from '@/src/queries/interview-modules';
+import Loader from '@/components/Common/Loader';
+import { useApplication } from '@/context/ApplicationContext';
+import { useInterviewModules } from '@/queries/interview-modules';
 
 import { ActionEmptyState } from '../../../Common/CandidateDrawer/Common/ActionEmptyState';
 import Progress from '../Progress';

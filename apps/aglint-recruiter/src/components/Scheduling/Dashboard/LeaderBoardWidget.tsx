@@ -1,16 +1,16 @@
+import { Skeleton } from '@devlink2/Skeleton';
+import { LeaderBoard } from '@devlink3/LeaderBoard';
+import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
+import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
+import { NoData } from '@devlink3/NoData';
 import { Avatar, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { LeaderBoard } from '@/devlink3/LeaderBoard';
-import { LeaderBoardCard } from '@/devlink3/LeaderBoardCard';
-import { LeaderBoardLoader } from '@/devlink3/LeaderBoardLoader';
-import { NoData } from '@/devlink3/NoData';
-import { useInterviewLeaderboard } from '@/src/queries/scheduling-dashboard';
-import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useInterviewLeaderboard } from '@/queries/scheduling-dashboard';
+import { getFullName } from '@/utils/jsonResume';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import SchedulingDropdown from './SchedulingDropdown';
 

@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/src/utils/supabase/supabaseAdmin";
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const getInterviewersRelations = async (session_ids) => {
   const { data, error } = await supabaseAdmin

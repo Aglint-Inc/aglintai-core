@@ -15,13 +15,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
-import { handleJobApi } from '@/src/apiUtils/job/utils';
-import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type Application } from '@/src/types/applications.types';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
+import { handleJobApi } from '@/apiUtils/job/utils';
+import type { ApplicationsParams } from '@/context/ApplicationsContext/hooks';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type Application } from '@/types/applications.types';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { GC_TIME } from '..';
 import { jobQueries, useInvalidateJobQueries } from '../job';

@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import { useJobs } from '@/src/context/JobsContext';
+import { useJobs } from '@/context/JobsContext';
 
 import { type newCandJob } from '../Search/Search';
 import { useCandFilter } from './CandDbProvider';

@@ -1,7 +1,7 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
 import React, { type Dispatch } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { useScheduleDetails } from './hooks';
 

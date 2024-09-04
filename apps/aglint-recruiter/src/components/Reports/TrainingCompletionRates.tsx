@@ -1,23 +1,19 @@
-import { format } from 'date-fns';
-import { ArrowUpDown, CalendarIcon, DownloadIcon, Search } from 'lucide-react';
-import React, { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Input } from '@components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from '@components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@components/ui/select';
 import {
   Table,
   TableBody,
@@ -25,7 +21,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@components/ui/table';
+import { format } from 'date-fns';
+import { ArrowUpDown, CalendarIcon, DownloadIcon, Search } from 'lucide-react';
+import React, { useState } from 'react';
 
 const initialReportData = [
   {

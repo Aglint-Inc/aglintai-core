@@ -1,11 +1,14 @@
-import { type DatabaseTable, type DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
 import {
   queryOptions,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { appKey } from '..';
 

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   type ResumeUploadApi,
   type Supabase,
-} from '@/src/apiUtils/job/candidateUpload/types';
+} from '@/apiUtils/job/candidateUpload/types';
 import {
   createAndUploadCandidate,
   createApplication,
@@ -21,7 +21,7 @@ import {
   deleteFile,
   deleteResume,
   getFiles,
-} from '@/src/apiUtils/job/candidateUpload/utils';
+} from '@/apiUtils/job/candidateUpload/utils';
 
 export const config = {
   api: {

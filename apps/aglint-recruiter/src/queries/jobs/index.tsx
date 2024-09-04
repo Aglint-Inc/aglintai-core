@@ -2,10 +2,10 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEqual } from 'lodash';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { syncGreenhouseJobs } from '@/src/utils/jobs.api';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { syncGreenhouseJobs } from '@/utils/jobs.api';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';

@@ -1,7 +1,6 @@
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Stack } from '@mui/material';
 import { memo } from 'react';
-
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 
 export const ActionEmptyState = memo(() => {
   return (

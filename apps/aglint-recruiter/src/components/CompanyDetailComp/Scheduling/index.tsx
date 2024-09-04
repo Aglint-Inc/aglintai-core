@@ -14,23 +14,23 @@ import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { GlobalInfo } from '@devlink2/GlobalInfo';
+import { InterviewLoad } from '@devlink2/InterviewLoad';
+import { KeywordCard } from '@devlink2/KeywordCard';
+import { Keywords } from '@devlink2/Keywords';
+import { DebreifHelperText } from '@devlink3/DebreifHelperText';
+import { HelperDropdown } from '@devlink3/HelperDropdown';
+import { InterviewLoadHelper } from '@devlink3/InterviewLoadHelper';
+import { KeywordsHelper } from '@devlink3/KeywordsHelper';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { GlobalInfo } from '@/devlink2/GlobalInfo';
-import { InterviewLoad } from '@/devlink2/InterviewLoad';
-import { KeywordCard } from '@/devlink2/KeywordCard';
-import { Keywords } from '@/devlink2/Keywords';
-import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
-import { HelperDropdown } from '@/devlink3/HelperDropdown';
-import { InterviewLoadHelper } from '@/devlink3/InterviewLoadHelper';
-import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import timeZone from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import UITextField from '../../Common/UITextField';
@@ -598,7 +598,7 @@ function SchedulingSettings({ updateSettings, isOverflow = true }) {
 
 export default SchedulingSettings;
 
-type TZ = (typeof timeZones)[number];
+type TZ = (typeof timeZone)[number];
 
 export type TimezoneObj = {
   [key in keyof TZ]: TZ[key];
@@ -619,7 +619,7 @@ export const TimezoneSelector = ({
       <Autocomplete
         disabled={disabled}
         disableClearable
-        options={timeZones}
+        options={timeZone}
         value={value}
         onChange={(event, value) => {
           if (value) {

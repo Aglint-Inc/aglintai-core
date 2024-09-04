@@ -1,8 +1,7 @@
 import { Stack } from '@mui/material';
+import { loaderLottie } from '@public/lottie/loader-loattie';
 import Lottie from 'lottie-react';
 import React from 'react';
-
-import { loaderLottie } from '@/public/lottie/loader-loattie';
 
 function Loader() {
   return (

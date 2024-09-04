@@ -3,6 +3,13 @@ import {
   type DatabaseTable,
   type DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { NewTabPill } from '@devlink3/NewTabPill';
+import { ReasonList } from '@devlink3/ReasonList';
+import { ScheduleReason } from '@devlink3/ScheduleReason';
+import { ScheduleReasonSection } from '@devlink3/ScheduleReasonSection';
 import {
   Box,
   capitalize,
@@ -13,17 +20,10 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { NewTabPill } from '@/devlink3/NewTabPill';
-import { ReasonList } from '@/devlink3/ReasonList';
-import { ScheduleReason } from '@/devlink3/ScheduleReason';
-import { ScheduleReasonSection } from '@/devlink3/ScheduleReasonSection';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   candidate: {

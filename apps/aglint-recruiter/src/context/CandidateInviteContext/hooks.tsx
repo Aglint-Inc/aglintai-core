@@ -1,21 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import dayjs from '@utils/dayjs';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { type TimezoneObj } from '@/src/components/CompanyDetailComp/Scheduling';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
-import { type BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
+import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
+import { type BodyParamsCandidateInvite } from '@/pages/api/scheduling/invite';
 import {
   type useInviteSlots,
   useConfirmSlots,
   useInviteMeta,
-} from '@/src/queries/candidate-invite';
-import timeZones from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+} from '@/queries/candidate-invite';
+import dayjs from '@/utils/dayjs';
+import timeZones from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 const useInviteActions = () => {
   const router = useRouterPro<{ filter_id: string; task_id?: string }>();

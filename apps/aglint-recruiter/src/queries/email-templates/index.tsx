@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { appKey } from '..';
 

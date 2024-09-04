@@ -3,8 +3,8 @@ import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { type CalEventAttendeesAuthDetails } from '@/utils/event_book/book_session';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../../decryptApiKey';
 

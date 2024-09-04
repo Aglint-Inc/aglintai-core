@@ -1,20 +1,20 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { InterviewersCardList } from '@devlink3/InterviewersCardList';
+import { InterviewersDash } from '@devlink3/InterviewersDash';
+import { NoData } from '@devlink3/NoData';
 import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { InterviewersCardList } from '@/devlink3/InterviewersCardList';
-import { InterviewersDash } from '@/devlink3/InterviewersDash';
-import { NoData } from '@/devlink3/NoData';
-import axios from '@/src/client/axios';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import axios from '@/client/axios';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiBodyGetUsersByIds,
   type ApiResponseGetUsersByIds,
-} from '@/src/pages/api/get_users_by_ids';
-import { schedulingDashboardQueryKeys } from '@/src/queries/scheduling-dashboard/keys';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@/pages/api/get_users_by_ids';
+import { schedulingDashboardQueryKeys } from '@/queries/scheduling-dashboard/keys';
+import { supabase } from '@/utils/supabase/client';
 
 const InterviewersAnalyticCards = () => {
   const [type, setType] =

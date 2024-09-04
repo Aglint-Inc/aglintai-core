@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { Separator } from '@components/ui/separator';
+import { AglintAiWelcome } from '@devlink2/AglintAiWelcome';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import CommandShortCuts from '../CommandShortCuts';

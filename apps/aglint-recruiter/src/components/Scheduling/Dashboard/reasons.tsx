@@ -1,3 +1,5 @@
+import { DarkPill } from '@devlink3/DarkPill';
+import { Reason } from '@devlink3/Reason';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -11,9 +13,7 @@ import {
 import { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import { DarkPill } from '@/devlink3/DarkPill';
-import { Reason } from '@/devlink3/Reason';
-import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
+import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
 
 import Loader from '../../Common/Loader';
 import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';

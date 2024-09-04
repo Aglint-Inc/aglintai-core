@@ -8,8 +8,8 @@ import {
   useWorkflowMutations,
   useWorkflowQuery,
   useWorkflowUpdate,
-} from '@/src/queries/workflow';
-import { SafeObject } from '@/src/utils/safeObject';
+} from '@/queries/workflow';
+import { SafeObject } from '@/utils/safeObject';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';

@@ -2,8 +2,8 @@ import { schedulingSettingType } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   generateDepartments,

@@ -1,8 +1,8 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 
-import { mailSender } from '@/src/utils/mailSender';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { mailSender } from '@/utils/mailSender';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateSelfSchedule = async ({
   cloned_sessn_ids,

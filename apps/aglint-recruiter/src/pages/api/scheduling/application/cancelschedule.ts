@@ -12,9 +12,9 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
-} from '@/src/components/Scheduling/ScheduleDetails/utils';
-import { cancelMailHandler } from '@/src/utils/scheduling/mailUtils';
-import { addScheduleActivity } from '@/src/utils/scheduling/utils';
+} from '@/components/Scheduling/ScheduleDetails/utils';
+import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
