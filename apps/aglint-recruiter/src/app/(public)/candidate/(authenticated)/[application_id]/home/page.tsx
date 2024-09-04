@@ -11,6 +11,7 @@ import RequestedAvailability from '@/components/CandiatePortal/components/Reques
 import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
 import UpcomingInterview from '@/components/CandiatePortal/components/UpcomingInterview';
 import { usePortalHomePage } from '@/components/CandiatePortal/hook';
+import UpcomingInterviewSkeleton from '@/components/CandiatePortal/components/UpcomingInterviewSkeleton';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
@@ -65,9 +66,12 @@ export default function Component({ params }) {
             )}
 
             <UpcomingInterview upcomingData={upcoming} />
+            
 
             <RequestedAvailability availabilityData={availability} job={job} />
             <SelfScheduling scheduleData={schedule} />
+
+            <UpcomingInterviewSkeleton />
           </div>
         </div>
       </main>
