@@ -77,7 +77,7 @@ const DurationForm = () => {
       value={interval}
       menuOptions={DURATION_OPTIONS.map(({ name, value }) => ({
         name,
-        value: value + '',
+        value: value + '', // value should be in string type
       }))}
       onChange={(value) => handleUpdateWorkflow({ interval: Number(value) })}
     />
