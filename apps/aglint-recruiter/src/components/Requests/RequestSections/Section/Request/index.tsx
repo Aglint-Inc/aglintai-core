@@ -2,7 +2,6 @@
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
@@ -79,22 +78,20 @@ export const Request = (
                     </Stack>
                   </div>
                   {props?.request_note[0]?.note && (
-                    <TooltipProvider>
-                      <Tooltip delayDuration={500}>
-                        <TooltipTrigger asChild>
-                          <Stack>
-                            <GlobalBadge
-                              showIcon={true}
-                              textBadge={''}
-                              iconName={'note_stack'}
-                            />
-                          </Stack>
-                        </TooltipTrigger>
-                        <TooltipContent side='bottom' align='start'>
-                          <p>{props?.request_note[0].note}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip delayDuration={500}>
+                      <TooltipTrigger asChild>
+                        <Stack>
+                          <GlobalBadge
+                            showIcon={true}
+                            textBadge={''}
+                            iconName={'note_stack'}
+                          />
+                        </Stack>
+                      </TooltipTrigger>
+                      <TooltipContent side='bottom' align='start'>
+                        <p>{props?.request_note[0].note}</p>
+                      </TooltipContent>
+                    </Tooltip>
                   )}
                   <GlobalBadge
                     size={1}

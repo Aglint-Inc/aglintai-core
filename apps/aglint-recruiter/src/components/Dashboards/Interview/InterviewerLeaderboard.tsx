@@ -10,7 +10,6 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
@@ -184,96 +183,86 @@ export default function ComprehensiveInterviewerLeaderboard() {
                   </div>
                 </div>
                 <div className='flex-1 grid grid-cols-4 sm:grid-cols-5 gap-4 w-full'>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                          <Clock className='h-5 w-5 text-muted-foreground mb-1' />
-                          <span className='text-lg font-semibold'>
-                            {interviewer.hours.toFixed(1)}
-                          </span>
-                          <span className='text-xs text-muted-foreground'>
-                            Hours
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Total interview hours</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                          <Users className='h-5 w-5 text-muted-foreground mb-1' />
-                          <span className='text-lg font-semibold'>
-                            {interviewer.interviews}
-                          </span>
-                          <span className='text-xs text-muted-foreground'>
-                            Interviews
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Total interviews conducted</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                          <ThumbsUp className='h-5 w-5 text-muted-foreground mb-1' />
-                          <span className='text-lg font-semibold'>
-                            {interviewer.satisfactionRate}%
-                          </span>
-                          <span className='text-xs text-muted-foreground'>
-                            Accepence Rate
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Candidate satisfaction rate</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                          <Zap className='h-5 w-5 text-muted-foreground mb-1' />
-                          <span className='text-lg font-semibold'>
-                            {interviewer.hiringRate}%
-                          </span>
-                          <span className='text-xs text-muted-foreground'>
-                            Decline Rate
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Percentage of interviewed candidates hired</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                          <BarChart className='h-5 w-5 text-muted-foreground mb-1' />
-                          <span className='text-lg font-semibold'>
-                            {interviewer.averageScore}
-                          </span>
-                          <span className='text-xs text-muted-foreground'>
-                            Avg. Response
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Average interview score given</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
+                        <Clock className='h-5 w-5 text-muted-foreground mb-1' />
+                        <span className='text-lg font-semibold'>
+                          {interviewer.hours.toFixed(1)}
+                        </span>
+                        <span className='text-xs text-muted-foreground'>
+                          Hours
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Total interview hours</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
+                        <Users className='h-5 w-5 text-muted-foreground mb-1' />
+                        <span className='text-lg font-semibold'>
+                          {interviewer.interviews}
+                        </span>
+                        <span className='text-xs text-muted-foreground'>
+                          Interviews
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Total interviews conducted</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
+                        <ThumbsUp className='h-5 w-5 text-muted-foreground mb-1' />
+                        <span className='text-lg font-semibold'>
+                          {interviewer.satisfactionRate}%
+                        </span>
+                        <span className='text-xs text-muted-foreground'>
+                          Accepence Rate
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Candidate satisfaction rate</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
+                        <Zap className='h-5 w-5 text-muted-foreground mb-1' />
+                        <span className='text-lg font-semibold'>
+                          {interviewer.hiringRate}%
+                        </span>
+                        <span className='text-xs text-muted-foreground'>
+                          Decline Rate
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Percentage of interviewed candidates hired</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
+                        <BarChart className='h-5 w-5 text-muted-foreground mb-1' />
+                        <span className='text-lg font-semibold'>
+                          {interviewer.averageScore}
+                        </span>
+                        <span className='text-xs text-muted-foreground'>
+                          Avg. Response
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Average interview score given</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
             ))}

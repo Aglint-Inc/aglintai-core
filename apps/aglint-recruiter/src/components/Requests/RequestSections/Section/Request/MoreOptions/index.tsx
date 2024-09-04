@@ -3,7 +3,6 @@ import { getFullName } from '@aglint/shared-utils';
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
@@ -88,45 +87,43 @@ function MoreOptions({ request_id }: { request_id: string }) {
         e.stopPropagation();
       }}
     >
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Stack
-              onClick={() => {
-                setTooltipOpen(!tooltipOpen);
-              }}
-            >
-              <GlobalIcon iconName={'more_vert'} size={4} />
-            </Stack>
-          </TooltipTrigger>
-          <TooltipContent side='bottom' align='start'>
-            <Stack style={{ cursor: 'pointer' }} px={1}>
-              <List>
-                {items.map(
-                  ({ iconName, iconSize, textContent, color, action }, i) => {
-                    return (
-                      <ListItem key={i} disablePadding>
-                        <ListItemButton
-                          onClick={() => {
-                            handleClick(action);
-                          }}
-                        >
-                          <TextWithIcon
-                            iconName={iconName}
-                            iconSize={iconSize}
-                            textContent={textContent}
-                            color={color}
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  },
-                )}
-              </List>
-            </Stack>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Stack
+            onClick={() => {
+              setTooltipOpen(!tooltipOpen);
+            }}
+          >
+            <GlobalIcon iconName={'more_vert'} size={4} />
+          </Stack>
+        </TooltipTrigger>
+        <TooltipContent side='bottom' align='start'>
+          <Stack style={{ cursor: 'pointer' }} px={1}>
+            <List>
+              {items.map(
+                ({ iconName, iconSize, textContent, color, action }, i) => {
+                  return (
+                    <ListItem key={i} disablePadding>
+                      <ListItemButton
+                        onClick={() => {
+                          handleClick(action);
+                        }}
+                      >
+                        <TextWithIcon
+                          iconName={iconName}
+                          iconSize={iconSize}
+                          textContent={textContent}
+                          color={color}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                },
+              )}
+            </List>
+          </Stack>
+        </TooltipContent>
+      </Tooltip>
       <MembersPopUps
         openAssigneePopup={openAssigneePopup}
         setOpenAssigneePopup={setOpenAssigneePopup}

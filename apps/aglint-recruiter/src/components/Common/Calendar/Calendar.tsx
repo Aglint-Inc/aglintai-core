@@ -6,7 +6,6 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { ButtonSoft } from '@devlink/ButtonSoft';
@@ -170,30 +169,28 @@ export default CalendarComp;
 function renderEventContent(eventInfo) {
   const { data, color } = eventInfo.event.extendedProps;
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div
-            style={{
-              backgroundColor: color?.bg,
-              borderRadius: '4px',
-              padding: '5px 10px',
-              borderLeft: `3px solid ${color.pri}`,
-              width: '100%',
-            }}
-          >
-            <p style={{ fontWeight: 500 }}>{eventInfo.event.title}</p>
-            <p style={{ fontSize: '10px' }}>
-              {dayjsLocal(data.start_time).format('hh:mm A -')}
-              {dayjsLocal(data.end_time).format('hh:mm A')}
-            </p>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <TooltipComp data={data} />
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          style={{
+            backgroundColor: color?.bg,
+            borderRadius: '4px',
+            padding: '5px 10px',
+            borderLeft: `3px solid ${color.pri}`,
+            width: '100%',
+          }}
+        >
+          <p style={{ fontWeight: 500 }}>{eventInfo.event.title}</p>
+          <p style={{ fontSize: '10px' }}>
+            {dayjsLocal(data.start_time).format('hh:mm A -')}
+            {dayjsLocal(data.end_time).format('hh:mm A')}
+          </p>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>
+        <TooltipComp data={data} />
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
