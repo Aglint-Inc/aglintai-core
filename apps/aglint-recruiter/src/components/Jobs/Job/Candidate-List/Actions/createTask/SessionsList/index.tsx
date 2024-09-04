@@ -11,10 +11,6 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
-import {
-  type ApiRequestInterviewSessionTask,
-  type ApiResponseInterviewSessionTask,
-} from '@/pages/api/scheduling/fetch_interview_session_task';
 
 type OnChangeProps = {
   sessions: meetingCardType[];
