@@ -44,6 +44,7 @@ export const usePortalMessage = ({
     refetchOnMount: true,
     queryFn: () => fetchMessage(application_id),
     enabled: !!application_id,
+    retry: false,
   });
 
   return { ...query };

@@ -24,6 +24,7 @@ export async function POST(req: Request) {
       recipient_email,
       api_target: 'interviewStart_email_applicant',
       payload: req_body.payload,
+      application_id: req_body.application_id,
     });
     return NextResponse.json('success', {
       status: 200,
