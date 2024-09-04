@@ -1,17 +1,17 @@
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from '@/components/ui/navigation-menu';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { emailTemplateQueries } from '@/src/queries/email-templates';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@components/ui/navigation-menu';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { emailTemplateQueries } from '@/queries/email-templates';
+import ROUTES from '@/utils/routing/routes';
 
 import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import { settingsItems, settingSubNavItem } from './utils';

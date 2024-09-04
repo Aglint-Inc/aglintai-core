@@ -1,14 +1,14 @@
+import { EmptyState } from '@devlink2/EmptyState';
+import { Skeleton } from '@devlink2/Skeleton';
+import { Activities } from '@devlink3/Activities';
+import { ActivitiesCard } from '@devlink3/ActivitiesCard';
+import { SkeletonActivitiesCard } from '@devlink3/SkeletonActivitiesCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { ActivityIcon, FileText } from 'lucide-react'; 
+import { ActivityIcon, FileText } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import { EmptyState } from '@/devlink2/EmptyState';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { Activities } from '@/devlink3/Activities';
-import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
-import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
-import { type useAllActivities } from '@/src/queries/activities';
+import { type useAllActivities } from '@/queries/activities';
 
 import SlotContent from './SlotWidgets';
 

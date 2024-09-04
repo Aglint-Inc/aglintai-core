@@ -1,17 +1,17 @@
+import OptimisticWrapper from '@components/loadingWapper';
+import { CandidateListItem } from '@devlink2/CandidateListItem';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import { CandidateListItem } from '@/devlink2/CandidateListItem';
-import StageProgress from '@/src/components/Scheduling/Common/StageProgress';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { type Application } from '@/src/types/applications.types';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import StageProgress from '@/components/Scheduling/Common/StageProgress';
+import { useApplications } from '@/context/ApplicationsContext';
+import { useKeyPress } from '@/context/ApplicationsContext/hooks';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { type Application } from '@/types/applications.types';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import ResumeScore from '../../Common/ResumeScoreNew';
 import { formatTimeStamp } from '../../utils';

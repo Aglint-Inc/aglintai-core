@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
+import { NewTabPill } from '@devlink3/NewTabPill';
 import { capitalize, Stack } from '@mui/material';
 import { type Ref, forwardRef, useEffect, useState } from 'react';
 
-import { NewTabPill } from '@/devlink3/NewTabPill';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useJob } from '@/src/context/JobContext';
-import type { Application } from '@/src/types/applications.types';
+import { useApplications } from '@/context/ApplicationsContext';
+import { useJob } from '@/context/JobContext';
+import type { Application } from '@/types/applications.types';
 
 const Tab = forwardRef(
   (

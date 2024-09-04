@@ -1,11 +1,11 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
+import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Drawer, Stack } from '@mui/material';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
-import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
-import UITextField from '@/src/components/Common/UITextField';
-import { ScheduleTypeField } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
+import UITextField from '@/components/Common/UITextField';
+import { ScheduleTypeField } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 
 import DebriedForm from './DebriefFrom';
 import SessionDuration from './DurationDropdown';

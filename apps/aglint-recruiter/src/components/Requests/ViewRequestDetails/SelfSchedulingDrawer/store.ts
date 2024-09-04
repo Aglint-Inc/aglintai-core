@@ -1,9 +1,9 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { ApiResponseSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
-import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
-import dayjs from '@/src/utils/dayjs';
+import { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
+import { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import dayjs from '@/utils/dayjs';
 
 import {
   type Event,

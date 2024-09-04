@@ -1,11 +1,12 @@
-import { CandidateBasicInfo } from '@/devlink/CandidateBasicInfo';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { CandidateBasicInfo } from '@devlink/CandidateBasicInfo';
+
+import { useApplication } from '@/context/ApplicationContext';
 
 const Meta = () => {
   const {
     meta: { data, status },
   } = useApplication();
-  if(status === 'pending') return <></>;
+  if (status === 'pending') return <></>;
   return (
     <CandidateBasicInfo
       textLocation={data.city ?? '---'}

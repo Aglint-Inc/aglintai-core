@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 //get filter id --------------------------
 export const getFilterJson = async (request_id) => {

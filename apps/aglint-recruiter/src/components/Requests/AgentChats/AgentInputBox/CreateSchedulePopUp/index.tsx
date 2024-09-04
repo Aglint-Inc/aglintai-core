@@ -1,13 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { Text } from '@devlink/Text';
+import { AiChatSuggest } from '@devlink2/AiChatSuggest';
 import { Stack } from '@mui/material';
 import React, { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { Text } from '@/devlink/Text';
-import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
-import dayjs from '@/src/utils/dayjs';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
+import dayjs from '@/utils/dayjs';
 
 import { type selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';

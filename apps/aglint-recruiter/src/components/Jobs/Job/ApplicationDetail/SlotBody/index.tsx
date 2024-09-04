@@ -1,9 +1,9 @@
+import { ApplicationDetail } from '@devlink2/ApplicationDetail';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { ApplicationDetail } from '@/devlink2/ApplicationDetail';
-import Loader from '@/src/components/Common/Loader';
-import { Application, useApplication } from '@/src/context/ApplicationContext';
+import Loader from '@/components/Common/Loader';
+import { Application, useApplication } from '@/context/ApplicationContext';
 
 import { Activity } from '../../Common/CandidateDrawer/Activity';
 import { Resume } from '../../Common/CandidateDrawer/Resume';

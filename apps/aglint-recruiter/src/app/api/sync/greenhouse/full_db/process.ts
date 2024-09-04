@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { syncDepartments } from '../departments/process';
 import { type GreenHouseJobsSyncAPI } from '../jobs/type';

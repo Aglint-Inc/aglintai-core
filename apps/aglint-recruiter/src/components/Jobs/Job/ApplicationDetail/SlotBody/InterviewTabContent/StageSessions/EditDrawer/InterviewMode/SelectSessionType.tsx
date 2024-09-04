@@ -1,7 +1,7 @@
+import { InterviewModePill } from '@devlink2/InterviewModePill';
 import React from 'react';
 
-import { InterviewModePill } from '@/devlink2/InterviewModePill';
-import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
+import IconSessionType from '@/components/Common/Icons/IconSessionType';
 
 import { setEditSession, useEditSessionDrawerStore } from '../store';
 

@@ -1,10 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
 import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useRequest } from '@/src/context/RequestContext';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { useRequest } from '@/context/RequestContext';
 
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';

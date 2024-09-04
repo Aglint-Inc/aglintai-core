@@ -1,13 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { type DatabaseEnums, type RecruiterUserType } from '@aglint/shared-types';
+import {
+  type DatabaseEnums,
+  type RecruiterUserType,
+} from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useLocalStorage } from '@/src/hooks/useLocalStorage';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
-import { type SchedulesSupabase, schedulesSupabase } from '../../schedules-query';
+import {
+  type SchedulesSupabase,
+  schedulesSupabase,
+} from '../../schedules-query';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';

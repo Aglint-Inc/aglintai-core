@@ -19,11 +19,11 @@ import {
   useState,
 } from 'react';
 
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { supabase } from '@/src/utils/supabase/client';
-import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
-import toast from '@/src/utils/toast';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { supabase } from '@/utils/supabase/client';
+import { fillEmailTemplate } from '@/utils/support/supportUtils';
+import toast from '@/utils/toast';
 
 export type candidateRequestAvailabilityType =
   DatabaseTable['candidate_request_availability'] & {

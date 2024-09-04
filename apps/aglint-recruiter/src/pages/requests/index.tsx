@@ -1,7 +1,6 @@
-import Seo from '@components/Common/Seo';
-
-import Requests from '@/src/components/Requests/index';
-import { RequestsProvider } from '@/src/context/RequestsContext';
+import Seo from '@/components/Common/Seo';
+import Requests from '@/components/Requests/index';
+import { RequestsProvider } from '@/context/RequestsContext';
 
 const RequestsPage = () => {
   return (

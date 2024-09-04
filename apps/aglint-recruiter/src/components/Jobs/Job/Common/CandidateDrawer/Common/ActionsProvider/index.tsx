@@ -7,7 +7,7 @@ import {
   useMemo,
 } from 'react';
 
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 const ApplicationInterviewActionsContext =
   createContext<ReturnType<typeof useApplicationInterviewActionsContext>>(

@@ -2,13 +2,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import axios from '@/src/client/axios';
-import { app_modules } from '@/src/constant/role_and_permissions';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useSearchQuery } from '@/src/hooks/useSearchQuery';
-import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
-import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
-import toast from '@/src/utils/toast';
+import axios from '@/client/axios';
+import { app_modules } from '@/constant/role_and_permissions';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useSearchQuery } from '@/hooks/useSearchQuery';
+import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
+import { type SetRoleAndPermissionAPI } from '@/pages/api/setRoleAndPermission/type';
+import toast from '@/utils/toast';
 
 export const useRoleAndPermissionsHook = () => {
   const { queryParams, setQueryParams } = useSearchQuery<{

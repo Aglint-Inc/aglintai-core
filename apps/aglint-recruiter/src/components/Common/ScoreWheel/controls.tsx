@@ -1,11 +1,10 @@
 /* eslint-disable security/detect-object-injection */
+import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
+import { Slider } from '@components/ui/slider';
 import { capitalize } from 'lodash';
 import { RefreshCw } from 'lucide-react';
 import React from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
 
 import { type ScoreWheelParams, scoreWheelDependencies } from '.';
 

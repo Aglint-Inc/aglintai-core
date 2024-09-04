@@ -1,12 +1,10 @@
 import '@styles/globals.css';
 import 'regenerator-runtime/runtime';
-import '@/styles/globals.css';
 
+import { ThemeProvider } from '@components/theme-provider';
+import { Toaster } from '@components/ui/toaster';
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-
-import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
 
 import ErrorPage from './error';
 

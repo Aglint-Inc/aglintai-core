@@ -1,3 +1,6 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
 import {
   Autocomplete,
   capitalize,
@@ -8,14 +11,11 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { useAllDepartments } from '@/src/queries/departments';
-import { supabase } from '@/src/utils/supabase/client';
+import UITextField from '@/components/Common/UITextField';
+import UITypography from '@/components/Common/UITypography';
+import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
+import { useAllDepartments } from '@/queries/departments';
+import { supabase } from '@/utils/supabase/client';
 
 import { useModuleAndUsers } from '../../../queries/hooks';
 import { setIsSettingsDialogOpen, useModulesStore } from '../../../store';
@@ -114,7 +114,7 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
               />
             </Stack>
             <UITextField
-            height={32}
+              height={32}
               label='Objective'
               minRows={1}
               multiline

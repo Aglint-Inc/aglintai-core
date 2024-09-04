@@ -2,9 +2,9 @@
 import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookRecruiterSelectedOption } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
-import { fetchCandAvailForBooking } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { bookRecruiterSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
+import { fetchCandAvailForBooking } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

@@ -2,9 +2,9 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import dayjs from '@/src/utils/dayjs';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import dayjs from '@/utils/dayjs';
+import { supabase } from '@/utils/supabase/client';
 
 import { responseCreatedCompletedType, SectionRequests } from './utils';
 

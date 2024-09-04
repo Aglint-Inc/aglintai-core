@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   type ApiInterface,
   type NextApiRequest,
-} from '@/src/interface/NextRoute.interface';
+} from '@/interface/NextRoute.interface';
 
 import { AglintLogger } from '../logger/logger';
 

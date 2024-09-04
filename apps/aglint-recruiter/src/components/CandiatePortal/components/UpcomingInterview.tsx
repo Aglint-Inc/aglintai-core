@@ -1,10 +1,10 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
+import { type apiPortalInterviewsResponse } from '@/app/api/candidate_portal/get_interviews/route';
 
 function UpcomingInterview({
   upcomingData,

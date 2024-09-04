@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
-import axios from '@/src/client/axios';
-import { type ApiInterviewSessionRequest } from '@/src/pages/api/scheduling/application/fetchInterviewSessionByRequest';
+import axios from '@/client/axios';
+import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 
 export const useMeetingList = () => {
   const router = useRouter();

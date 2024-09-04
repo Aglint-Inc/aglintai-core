@@ -1,4 +1,4 @@
-import { ResumeTag } from '@/devlink2/ResumeTag';
+import { ResumeTag } from '@devlink2/ResumeTag';
 export const ScoreTag = ({ score }: { score: number }) => {
   const props = getResumeScore(score);
   return (

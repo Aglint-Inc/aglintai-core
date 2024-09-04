@@ -1,10 +1,10 @@
+import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { useModuleAndUsers } from '../../queries/hooks';
 import { type ModuleType } from '../../types';

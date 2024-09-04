@@ -11,9 +11,9 @@ import {
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { type CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import { type CalEventAttendeesAuthDetails } from '@/utils/event_book/book_session';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

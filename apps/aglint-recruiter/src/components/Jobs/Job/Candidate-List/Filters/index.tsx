@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import { useMemo } from 'react';
 
-import FilterHeader from '@/src/components/Common/FilterHeader';
+import FilterHeader from '@/components/Common/FilterHeader';
 import {
   arrayToNestedObject,
   nestedObjectToArray,
-} from '@/src/components/Common/FilterHeader/utils';
-import { useApplications } from '@/src/context/ApplicationsContext';
-import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
-import { useJob } from '@/src/context/JobContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { capitalize } from '@/src/utils/text/textUtils';
+} from '@/components/Common/FilterHeader/utils';
+import { useApplications } from '@/context/ApplicationsContext';
+import type { ApplicationsParams } from '@/context/ApplicationsContext/hooks';
+import { useJob } from '@/context/JobContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { capitalize } from '@/utils/text/textUtils';
 
 const Filters = () => {
   const {

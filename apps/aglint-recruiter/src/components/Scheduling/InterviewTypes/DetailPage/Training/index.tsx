@@ -1,27 +1,27 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { Text } from '@devlink/Text';
+import { GlobalBanner } from '@devlink2/GlobalBanner';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { ModuleSetting } from '@devlink2/ModuleSetting';
+import { TrainingSetting } from '@devlink2/TrainingSetting';
+import { TrainingSettingItem } from '@devlink2/TrainingSettingItem';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Checkbox, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import _ from 'lodash';
 import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import MuiNumberfield from '@/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { Text } from '@/devlink/Text';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { ModuleSetting } from '@/devlink2/ModuleSetting';
-import { TrainingSetting } from '@/devlink2/TrainingSetting';
-import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { supabase } from '@/src/utils/supabase/client';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
+import { supabase } from '@/utils/supabase/client';
 
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,

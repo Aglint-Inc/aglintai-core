@@ -1,19 +1,19 @@
 /* eslint-disable security/detect-object-injection */
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { RolesAndPermissions } from '@devlink/RolesAndPermissions';
+import { RolesRow } from '@devlink/RolesRow';
+import { RolesRowSkeleton } from '@devlink/RolesRowSkeleton';
+import { Skeleton } from '@devlink2/Skeleton';
 import { Avatar, Typography } from '@mui/material';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { RolesAndPermissions } from '@/devlink/RolesAndPermissions';
-import { RolesRow } from '@/devlink/RolesRow';
-import { RolesRowSkeleton } from '@/devlink/RolesRowSkeleton';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { rolesOrder } from '@/src/constant/role_and_permissions';
-import { useAllMembers } from '@/src/queries/members';
+import { rolesOrder } from '@/constant/role_and_permissions';
+import { useAllMembers } from '@/queries/members';
 import {
   type getRoleAndPermissionsWithUserCount,
   useRoleAndPermissionsHook,
-} from '@/src/queries/RolesSettings';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+} from '@/queries/RolesSettings';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleDetails from './RoleDetails';
 

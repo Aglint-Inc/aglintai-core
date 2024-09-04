@@ -1,11 +1,8 @@
 import { Stack, Typography } from '@mui/material';
 
-import MembersAutoComplete from '@/src/components/Scheduling/Common/MembersTextField';
+import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 
-import {
-  setLocalFilters,
-  useSelfSchedulingFlowStore,
-} from '../../store';
+import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
 
 function PreferedInterviewers() {
   const { schedulingOptions, localFilters } = useSelfSchedulingFlowStore(

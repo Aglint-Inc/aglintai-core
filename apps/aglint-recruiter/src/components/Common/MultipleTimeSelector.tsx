@@ -1,23 +1,22 @@
 'use client';
 
-import dayjs from 'dayjs';
-import { Clock, Plus, X } from 'lucide-react';
-import * as React from 'react';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from '@components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+} from '@components/ui/select';
+import { cn } from '@lib/utils';
+import dayjs from 'dayjs';
+import { Clock, Plus, X } from 'lucide-react';
+import * as React from 'react';
 
 interface TimeRange {
   id: string;

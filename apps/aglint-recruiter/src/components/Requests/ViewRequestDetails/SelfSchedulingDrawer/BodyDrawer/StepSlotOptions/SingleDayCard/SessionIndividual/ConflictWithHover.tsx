@@ -1,16 +1,15 @@
 import { type ConflictReason as ConflictReasonType } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
-import React from 'react';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { ConflictPopover } from '@/devlink3/ConflictPopover';
-import { ConflictReason } from '@/devlink3/ConflictReason';
+} from '@components/ui/tooltip';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { ConflictPopover } from '@devlink3/ConflictPopover';
+import { ConflictReason } from '@devlink3/ConflictReason';
+import { Stack } from '@mui/material';
+import React from 'react';
 
 function ConflictWithHover({
   isNoConflict,

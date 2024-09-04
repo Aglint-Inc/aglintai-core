@@ -4,6 +4,7 @@ import {
   type RecruiterUserType,
   type SocialsType,
 } from '@aglint/shared-types';
+import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import {
@@ -15,12 +16,11 @@ import {
   useState,
 } from 'react';
 
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import type { GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import type { GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { type Session } from './types';
 import {

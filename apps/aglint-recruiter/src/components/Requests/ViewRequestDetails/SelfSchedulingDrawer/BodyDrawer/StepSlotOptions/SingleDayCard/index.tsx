@@ -2,14 +2,14 @@ import {
   type PlanCombinationRespType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { SingleDaySchedule } from '@devlink3/SingleDaySchedule';
 import { Collapse } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
-import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import ConflictWithHover from './SessionIndividual/ConflictWithHover';
 import SessionIndividual from './SessionIndividual/SessionIndividual';

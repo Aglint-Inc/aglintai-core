@@ -1,11 +1,11 @@
 import { DatabaseTable } from '@aglint/shared-types';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UITypography from '@/src/components/Common/UITypography';
+import { ShowCode } from '@/components/Common/ShowCode';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UITypography from '@/components/Common/UITypography';
 
 import { useSelectedActionsDetails } from '../NewScheduleEvents/dialogCtx';
 

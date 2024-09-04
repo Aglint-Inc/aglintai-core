@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
+import { Badge as BadgeDev } from '@devlink/Badge';
+import { Skeleton } from '@devlink2/Skeleton';
 import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
 
-import { Badge as BadgeDev } from '@/devlink/Badge';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { useApplication } from '@/src/context/ApplicationContext';
-import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
-import { BADGE_CONSTANTS } from '@/src/queries/job-applications';
+import { useApplication } from '@/context/ApplicationContext';
+import type { ApplicationsParams } from '@/context/ApplicationsContext/hooks';
+import { BADGE_CONSTANTS } from '@/queries/job-applications';
 
 import { Loader } from '../../Common/Loader';
 

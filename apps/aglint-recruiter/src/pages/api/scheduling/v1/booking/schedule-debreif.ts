@@ -2,9 +2,9 @@
 import { type APIScheduleDebreif } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookRecruiterSelectedDebreif } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedDebreif';
-import { fetchCandDetailsForDebreifBooking } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandDetailsForDebreifBooking';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { bookRecruiterSelectedDebreif } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedDebreif';
+import { fetchCandDetailsForDebreifBooking } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandDetailsForDebreifBooking';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

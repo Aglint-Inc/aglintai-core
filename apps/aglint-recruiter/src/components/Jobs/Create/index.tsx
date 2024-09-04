@@ -1,17 +1,22 @@
 /* eslint-disable security/detect-object-injection */
+import { PageLayout } from '@devlink2/PageLayout';
+import { CreateJobLoader } from '@devlink3/CreateJobLoader';
+import { EditJobTopbarLeft } from '@devlink3/EditJobTopbarLeft';
+import { JobDetailBlock } from '@devlink3/JobDetailBlock';
 import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { type Dispatch, type SetStateAction, useCallback, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useState,
+} from 'react';
 
-import { PageLayout } from '@/devlink2/PageLayout';
-import { CreateJobLoader } from '@/devlink3/CreateJobLoader';
-import { EditJobTopbarLeft } from '@/devlink3/EditJobTopbarLeft';
-import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
-import Loader from '@/src/components/Common/Loader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { useCompanyMembers } from '@/src/queries/company-members';
-import ROUTES from '@/src/utils/routing/routes';
+import Loader from '@/components/Common/Loader';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useJobs } from '@/context/JobsContext';
+import { useCompanyMembers } from '@/queries/company-members';
+import ROUTES from '@/utils/routing/routes';
 
 import { WarningSvg } from '../Job/Interview-Plan/sessionForms';
 import { type Form, type JobMetaFormProps, useJobForms } from './form';

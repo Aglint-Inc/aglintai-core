@@ -2,7 +2,7 @@
 import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
-import { useInterviewPrep } from '@/src/context/InterviewPreparation';
+import { useInterviewPrep } from '@/context/InterviewPreparation';
 
 function MicLevelLottie({ children }) {
   const { mediaRecorder, animationFrameId, micLevel, blinkLayer } =

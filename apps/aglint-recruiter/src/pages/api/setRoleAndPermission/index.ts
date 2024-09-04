@@ -2,7 +2,7 @@ import { type DatabaseTable, type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 
 import { type SetRoleAndPermissionAPI } from './type';
 

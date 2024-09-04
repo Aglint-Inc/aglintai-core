@@ -8,8 +8,8 @@ import {
 } from '@supabase/ssr';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { handleGenEmail } from '@/src/components/CandidateDatabase/Database/EmailOutReach/OutReachCtx';
-import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
+import { handleGenEmail } from '@/components/CandidateDatabase/Database/EmailOutReach/OutReachCtx';
+import { resolveAiCmd } from '@/utils/prompts/candidateDb/email';
 const { schema } = require('prosemirror-schema-basic');
 const { Node, DOMSerializer } = require('prosemirror-model');
 const jsdom = require('jsdom').JSDOM;

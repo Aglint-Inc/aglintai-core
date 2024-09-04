@@ -1,5 +1,5 @@
-import AppoloSearch from '@/src/components/CandidateDatabase/AppoloSearch';
-import Seo from '@/src/components/Common/Seo';
+import AppoloSearch from '@/components/CandidateDatabase/AppoloSearch';
+import Seo from '@/components/Common/Seo';
 
 function CandidatesPage() {
   return (

@@ -1,8 +1,6 @@
-import { ClockIcon, DownloadIcon } from 'lucide-react';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import {
   Table,
   TableBody,
@@ -10,8 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from '@components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { ClockIcon, DownloadIcon } from 'lucide-react';
 
 const interviewers = [
   {

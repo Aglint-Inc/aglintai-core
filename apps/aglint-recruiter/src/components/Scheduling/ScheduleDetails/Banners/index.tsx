@@ -1,10 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { Stack } from '@mui/material';
 import React from 'react';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
 
 import { useScheduleDetails } from '../hooks';
 import { onClickAccept } from '../utils';

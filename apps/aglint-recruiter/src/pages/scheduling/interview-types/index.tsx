@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { InterviewTypes } from '@/src/components/Scheduling/InterviewTypes';
+import { InterviewTypes } from '@/components/Scheduling/InterviewTypes';
 
 function InterviewTypesPages() {
   return (

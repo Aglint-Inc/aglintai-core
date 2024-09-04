@@ -1,4 +1,4 @@
-import Workflows from '@/src/components/Workflow/index';
+import Workflows from '@/components/Workflow/index';
 
 const WorkflowsPage = () => {
   return <Workflows />;

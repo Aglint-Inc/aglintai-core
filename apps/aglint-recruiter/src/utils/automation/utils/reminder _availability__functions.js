@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const getAvaRequestId = async (request_id) => {
   const {

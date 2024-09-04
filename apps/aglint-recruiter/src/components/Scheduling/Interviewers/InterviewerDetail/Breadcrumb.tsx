@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import ROUTES from '@/src/utils/routing/routes';
+import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
+import ROUTES from '@/utils/routing/routes';
 
 import { type useImrQuery } from './hooks';
 

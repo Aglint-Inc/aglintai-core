@@ -1,10 +1,9 @@
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { LoaderSvg } from '@devlink/LoaderSvg';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { PreviewEmail } from '@devlink2/PreviewEmail';
 import { Dialog, Stack } from '@mui/material';
 import React, { type Dispatch, type SetStateAction } from 'react';
-
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { PreviewEmail } from '@/devlink2/PreviewEmail';
 
 interface Prop {
   Loading: boolean;
@@ -68,7 +67,7 @@ export default function EmailPreviewPopover({
               </Stack>
               <Stack height={'100%'}>
                 <iframe
-                height={'100%'}
+                  height={'100%'}
                   width={'100%'}
                   color='white'
                   srcDoc={isHtml}

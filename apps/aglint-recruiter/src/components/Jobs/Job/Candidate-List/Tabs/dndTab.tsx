@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { useDrop } from 'react-dnd';
 
-import { useApplications } from '@/src/context/ApplicationsContext';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import type { Application } from '@/src/types/applications.types';
+import { useApplications } from '@/context/ApplicationsContext';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import type { Application } from '@/types/applications.types';
 
 import Tab from './tab';
 

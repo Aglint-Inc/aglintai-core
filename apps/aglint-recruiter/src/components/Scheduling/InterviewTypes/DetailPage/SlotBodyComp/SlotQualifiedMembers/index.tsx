@@ -1,16 +1,16 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { EmptyGeneral } from '@devlink2/EmptyGeneral';
+import { MemberListCard } from '@devlink2/MemberListCard';
+import { MemberListCardOption } from '@devlink2/MemberListCardOption';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
-import { MemberListCard } from '@/devlink2/MemberListCard';
-import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
 
 import {
   setIsAddMemberDialogOpen,

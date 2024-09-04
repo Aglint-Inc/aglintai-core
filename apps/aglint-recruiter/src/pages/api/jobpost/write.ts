@@ -6,7 +6,7 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
+import { fillEmailTemplate } from '@/utils/support/supportUtils';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

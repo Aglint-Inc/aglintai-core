@@ -1,7 +1,10 @@
-import { type DatabaseTable, type RecruiterUserType } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type RecruiterUserType,
+} from '@aglint/shared-types';
 
-import axios from '@/src/client/axios';
-import { supabase } from '@/src/utils/supabase/client';
+import axios from '@/client/axios';
+import { supabase } from '@/utils/supabase/client';
 
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,

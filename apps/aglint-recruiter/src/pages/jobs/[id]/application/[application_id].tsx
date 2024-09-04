@@ -1,5 +1,5 @@
-import ApplicationDetail from '@/src/components/Jobs/Job/ApplicationDetail';
-import { JobProvider } from '@/src/context/JobContext';
+import ApplicationDetail from '@/components/Jobs/Job/ApplicationDetail';
+import { JobProvider } from '@/context/JobContext';
 
 function ApplicationDetailPage() {
   return (

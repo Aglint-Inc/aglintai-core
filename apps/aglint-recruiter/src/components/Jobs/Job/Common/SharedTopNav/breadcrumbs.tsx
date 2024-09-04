@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,11 +5,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { useJob } from '@/src/context/JobContext';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+} from '@components/ui/breadcrumb';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { useRouter } from 'next/router';
+
+import { useJob } from '@/context/JobContext';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 export const SharedBreadCrumbs = () => {
   const router = useRouter();

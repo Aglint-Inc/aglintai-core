@@ -1,4 +1,29 @@
 /* eslint-disable security/detect-object-injection */
+import OptimisticWrapper from '@components/loadingWapper';
+import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { PageLayout } from '@devlink2/PageLayout';
+import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
+import { AddScheduleOption } from '@devlink3/AddScheduleOption';
+import { AvatarWithName } from '@devlink3/AvatarWithName';
+import { InterviewBreakCard } from '@devlink3/InterviewBreakCard';
+import { InterviewPlanDetail } from '@devlink3/InterviewPlanDetail';
+import { InterviewPlanWrap } from '@devlink3/InterviewPlanWrap';
 import {
   Collapse,
   MenuItem,
@@ -13,53 +38,28 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
-import { AddScheduleOption } from '@/devlink3/AddScheduleOption';
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
-import { InterviewPlanDetail } from '@/devlink3/InterviewPlanDetail';
-import { InterviewPlanWrap } from '@/devlink3/InterviewPlanWrap';
-import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
-import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
-import { useJob } from '@/src/context/JobContext';
-import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { type CompanyMember as CompanyMemberGlobal } from '@/src/queries/company-members';
-import { type DeleteInterviewSession } from '@/src/queries/interview-plans';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import Loader from '@/components/Common/Loader';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import UITextField from '@/components/Common/UITextField';
+import { useJob } from '@/context/JobContext';
+import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
+import { type DeleteInterviewSession } from '@/queries/interview-plans';
 import {
   type InterviewPlansType,
   type InterviewSessionType,
-} from '@/src/queries/interview-plans/types';
-import { jobQueries } from '@/src/queries/job';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
-import { breakDurations } from '@/src/utils/scheduling/const';
+} from '@/queries/interview-plans/types';
+import { jobQueries } from '@/queries/job';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
+import { breakDurations } from '@/utils/scheduling/const';
 import {
   capitalizeAll,
   capitalizeFirstLetter,
   capitalizeSentence,
-} from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+} from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';

@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { AlertCircle } from 'lucide-react';
-import React from 'react';
-
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@components/ui/select';
+import { AlertCircle } from 'lucide-react';
+import React from 'react';
 
 type MenuOption = {
   name: string;

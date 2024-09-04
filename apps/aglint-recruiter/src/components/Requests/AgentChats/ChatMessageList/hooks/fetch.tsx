@@ -1,4 +1,7 @@
-import { type ApiBodyAgentSupervisor, type Message } from '@aglint/shared-types';
+import {
+  type ApiBodyAgentSupervisor,
+  type Message,
+} from '@aglint/shared-types';
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import axios from 'axios';
 
@@ -11,10 +14,10 @@ import {
   setViewHistory,
   setViewList,
   useAgentChatStore,
-} from '@/src/components/Requests/AgentChats/ChatMessageList/store';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+} from '@/components/Requests/AgentChats/ChatMessageList/store';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { scrollToElementById } from './scroll';
 

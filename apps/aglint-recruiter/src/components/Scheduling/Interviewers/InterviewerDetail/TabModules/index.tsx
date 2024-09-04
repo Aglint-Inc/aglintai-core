@@ -1,10 +1,10 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
-import Loader from '@/src/components/Common/Loader';
+import Loader from '@/components/Common/Loader';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
@@ -120,7 +120,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   textDesc='No Interview type found.'
                   size={6}
                   iconName='school'
-                  styleEmpty={{style:{backgroundColor:'var(--neutral-2)'}}}
+                  styleEmpty={{
+                    style: { backgroundColor: 'var(--neutral-2)' },
+                  }}
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>

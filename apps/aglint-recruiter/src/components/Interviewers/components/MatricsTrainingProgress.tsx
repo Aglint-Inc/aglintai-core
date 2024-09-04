@@ -1,18 +1,18 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { Skeleton } from '@devlink2/Skeleton';
+import { HistoryPill } from '@devlink3/HistoryPill';
+import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
+import { TrainingProgressList } from '@devlink3/TrainingProgressList';
+import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 import { memo, useMemo } from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { HistoryPill } from '@/devlink3/HistoryPill';
-import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
-import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@/devlink3/TrainingProgressLoader';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { type useTrainingProgressType,useTrainingProgress } from '../Hook';
+import { type useTrainingProgressType, useTrainingProgress } from '../Hook';
 
 const LIMIT = 4;
 

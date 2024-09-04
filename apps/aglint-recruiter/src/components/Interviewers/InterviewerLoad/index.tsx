@@ -1,18 +1,18 @@
 import { getFullName } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { InterviewerWorkload } from '@devlink3/InterviewerWorkload';
+import { InterviewWorkloadList } from '@devlink3/InterviewWorkloadList';
 import { Avatar, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { InterviewerWorkload } from '@/devlink3/InterviewerWorkload';
-import { InterviewWorkloadList } from '@/devlink3/InterviewWorkloadList';
-import { useJobs } from '@/src/context/JobsContext';
-import { type allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
-import { useAllDepartments } from '@/src/queries/departments';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
-import dayjs from '@/src/utils/dayjs';
-import ROUTES from '@/src/utils/routing/routes';
+import { useJobs } from '@/context/JobsContext';
+import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
+import { useAllDepartments } from '@/queries/departments';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
+import dayjs from '@/utils/dayjs';
+import ROUTES from '@/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';

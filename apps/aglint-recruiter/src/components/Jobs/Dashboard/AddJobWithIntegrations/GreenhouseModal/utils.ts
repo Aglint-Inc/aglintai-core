@@ -6,9 +6,9 @@ import {
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { type useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type JobInsert } from '@/src/queries/jobs/types';
-import { supabase } from '@/src/utils/supabase/client';
+import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type JobInsert } from '@/queries/jobs/types';
+import { supabase } from '@/utils/supabase/client';
 
 import { POSTED_BY } from '../utils';
 import {

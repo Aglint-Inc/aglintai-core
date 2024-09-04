@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
-import { useApplication } from '@/src/context/ApplicationContext';
-import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import { useJobsRead } from '@/src/queries/jobs';
-import ROUTES from '@/src/utils/routing/routes';
+import { useApplication } from '@/context/ApplicationContext';
+import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
+import { useJobsRead } from '@/queries/jobs';
+import ROUTES from '@/utils/routing/routes';
 
 function BreadCrumb() {
   const { breadcrum, setBreadcrum } = useBreadcrumContext();

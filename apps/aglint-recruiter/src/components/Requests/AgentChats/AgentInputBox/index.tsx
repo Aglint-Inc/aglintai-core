@@ -3,11 +3,11 @@ import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
-import { SafeObject } from '@/src/utils/safeObject';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
+import { SafeObject } from '@/utils/safeObject';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import { useUserChat } from '../ChatMessageList/hooks/fetch';
@@ -210,7 +210,7 @@ async function getJobsAndApplications({
   const { data: jobs } = await supabase
     .from('public_jobs')
     .select(
-      '*, applications(*, candidates(first_name,last_name), public_jobs(id,job_title), request(status,request_relation(session_id)), interview_schedule(interview_meeting(status,interview_session(id,name))))',
+      '*, applications(*, candidates(first_name,last_name), public_jobs(id,job_title), request(status,request_relation(session_id)), interview_meeting(status,interview_session(id,name)))',
     )
     .eq('recruiter_id', recruiter_id)
     .eq('status', 'published')
@@ -220,8 +220,8 @@ async function getJobsAndApplications({
     ({ applications }) => applications,
   );
   const applications = applicationsList.map((ele) => {
-    const applicantSessions = ele.interview_schedule?.interview_meeting
-      ? ele.interview_schedule.interview_meeting
+    const applicantSessions = ele?.interview_meeting
+      ? ele.interview_meeting
           .filter((meeting) => meeting.status !== 'waiting')
           .map((meeting) => meeting.interview_session)
           .flat()

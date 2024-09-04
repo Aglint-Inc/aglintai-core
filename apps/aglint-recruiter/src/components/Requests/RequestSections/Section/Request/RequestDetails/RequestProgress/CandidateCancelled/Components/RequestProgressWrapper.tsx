@@ -1,4 +1,4 @@
-import { RequestProgress } from '@/devlink2/RequestProgress';
+import { RequestProgress } from '@devlink2/RequestProgress';
 
 import { type EventProgressItem, type ProgressDataItem } from '../types';
 import RequestEvent from './RequestEvent';

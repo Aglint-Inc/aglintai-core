@@ -1,23 +1,23 @@
+import { ButtonGenerate } from '@devlink/ButtonGenerate';
+import { CdEmailOutreach } from '@devlink/CdEmailOutreach';
+import { ConnectedMail } from '@devlink/ConnectedMail';
+import { ConnectMailModal } from '@devlink/ConnectMailModal';
+import { EmailSuccessCard } from '@devlink/EmailSuccessCard';
+import { LoaderSvg } from '@devlink/LoaderSvg';
+import { MailLink } from '@devlink/MailLink';
 import { CircularProgress, Paper, Stack } from '@mui/material';
+import EmailGenerating from '@public/lottie/EmailGenerating';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import MuiPopup from '@/components/Common/MuiPopup';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UISelect from '@/components/Common/Uiselect';
+import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonGenerate } from '@/devlink/ButtonGenerate';
-import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
-import { ConnectedMail } from '@/devlink/ConnectedMail';
-import { ConnectMailModal } from '@/devlink/ConnectMailModal';
-import { EmailSuccessCard } from '@/devlink/EmailSuccessCard';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { MailLink } from '@/devlink/MailLink';
-import EmailGenerating from '@/public/lottie/EmailGenerating';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import UISelect from '@/src/components/Common/Uiselect';
-import UITextField from '@/src/components/Common/UITextField';
-import { getTimeDifference } from '@/src/utils/jsonResume';
+import { getTimeDifference } from '@/utils/jsonResume';
 
 import EmailTemplateModalComp from './EmailTemplateDialog';
 import { useOutReachCtx } from './OutReachCtx';

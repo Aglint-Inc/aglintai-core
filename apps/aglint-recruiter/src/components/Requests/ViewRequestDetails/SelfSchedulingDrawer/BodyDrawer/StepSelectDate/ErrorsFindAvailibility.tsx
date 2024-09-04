@@ -1,6 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-
-import { GlobalInfo } from '@/devlink2/GlobalInfo';
+import { GlobalInfo } from '@devlink2/GlobalInfo';
 
 import { useSelfSchedulingFlowStore } from '../../store';
 

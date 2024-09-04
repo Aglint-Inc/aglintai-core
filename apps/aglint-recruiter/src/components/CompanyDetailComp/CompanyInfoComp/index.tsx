@@ -1,29 +1,29 @@
+import { BasicInfo } from '@devlink/BasicInfo';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { CompanyInfo } from '@devlink/CompanyInfo';
+import { CompanyInfoDetails } from '@devlink/CompanyInfoDetails';
+import { CompanyLocation } from '@devlink/CompanyLocation';
+import { RolesPill } from '@devlink/RolesPill';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
+import { DeletePopup } from '@devlink3/DeletePopup';
+import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Autocomplete, Avatar, Drawer, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import { BasicInfo } from '@/devlink/BasicInfo';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CompanyInfo } from '@/devlink/CompanyInfo';
-import { CompanyInfoDetails } from '@/devlink/CompanyInfoDetails';
-import { CompanyLocation } from '@/devlink/CompanyLocation';
-import { RolesPill } from '@/devlink/RolesPill';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { DeletePopup } from '@/devlink3/DeletePopup';
-import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   manageDepartments,
   manageOfficeLocation,
-} from '@/src/context/AuthContext/utils';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useAllDepartments } from '@/src/queries/departments';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+} from '@/context/AuthContext/utils';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useAllDepartments } from '@/queries/departments';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';

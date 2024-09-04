@@ -1,3 +1,4 @@
+import { GlobalBadge } from '@devlink/GlobalBadge';
 import {
   type TooltipProps,
   Stack,
@@ -6,8 +7,7 @@ import {
   tooltipClasses,
 } from '@mui/material';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { type StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/queries/application';
 
 function BadgesRight({
   session,

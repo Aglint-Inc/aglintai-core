@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Seo from '@/src/components/Common/Seo';
-import Interviewer from '@/src/components/Scheduling/Interviewers/InterviewerDetail';
-import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
+import Seo from '@/components/Common/Seo';
+import Interviewer from '@/components/Scheduling/Interviewers/InterviewerDetail';
+import { InterviewerContextProvider } from '@/context/InterviewerContext/InterviewerContext';
 
 function UserProfilePage() {
   return (
@@ -17,7 +17,7 @@ function UserProfilePage() {
 }
 
 UserProfilePage.privateProvider = function privateProvider(page) {
-    return <InterviewerContextProvider>{page}</InterviewerContextProvider>;
-  };
+  return <InterviewerContextProvider>{page}</InterviewerContextProvider>;
+};
 
 export default UserProfilePage;

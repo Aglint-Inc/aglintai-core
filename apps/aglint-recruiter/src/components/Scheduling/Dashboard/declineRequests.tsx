@@ -1,4 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
 import Stack from '@mui/material/Stack';
 import {
   BarElement,
@@ -10,11 +11,10 @@ import {
 import { memo, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
-} from '@/src/context/SchedulingAnalytics';
+} from '@/context/SchedulingAnalytics';
 
 import Loader from '../../Common/Loader';
 import { Empty } from './common';

@@ -1,6 +1,5 @@
+import { Checkbox } from '@devlink/Checkbox';
 import { Stack, Typography } from '@mui/material';
-
-import { Checkbox } from '@/devlink/Checkbox';
 
 function CalendarFilter({ setFilter, filter }) {
   return (

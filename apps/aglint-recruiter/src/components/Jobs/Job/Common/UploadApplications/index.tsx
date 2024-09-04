@@ -1,7 +1,7 @@
+import { ImportCandidates } from '@devlink/ImportCandidates';
 import { Dialog } from '@mui/material';
 
-import { ImportCandidates } from '@/devlink/ImportCandidates';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
 
 import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';

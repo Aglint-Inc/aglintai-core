@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { DeletePopup } from '@devlink3/DeletePopup';
 import { Dialog, List, ListItem, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { DeletePopup } from '@/devlink3/DeletePopup';
-import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { JobCoordinator } from '@/src/components/Jobs/Create/form';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useAllMembers } from '@/src/queries/members';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import AutoCompletePro from '@/components/Common/AutoCompletePro';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { JobCoordinator } from '@/components/Jobs/Create/form';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useAllMembers } from '@/queries/members';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function DeleteMemberDialog({
   name,

@@ -9,10 +9,10 @@ import {
 import axios from 'axios';
 import { useCallback } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
-import { syncGreenhouseJob } from '@/src/utils/jobs.api';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
+import { syncGreenhouseJob } from '@/utils/jobs.api';
+import toast from '@/utils/toast';
 
 import { GC_TIME, noPollingKey } from '..';
 import { readJob } from '../jobs';

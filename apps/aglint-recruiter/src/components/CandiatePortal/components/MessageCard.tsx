@@ -1,13 +1,7 @@
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import Image from 'next/image';
 import React from 'react';
-
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
 
 const MessageCard = () => {
   return (
@@ -21,7 +15,9 @@ const MessageCard = () => {
               alt='Profile'
             />
             <div className='ml-2'>
-              <p className='text-sm font-semibold leading-tight'>Brittany Emmanuel</p>
+              <p className='text-sm font-semibold leading-tight'>
+                Brittany Emmanuel
+              </p>
               <p className='text-sm leading-tight text-gray-600'>
                 Hiring Manager
               </p>
@@ -48,7 +44,10 @@ const MessageCard = () => {
         </p>
       </CardContent>
       <CardFooter className='px-6 py-4'>
-        <Button variant='outline' className='w-full py-2 px-4 rounded border border-gray-300'>
+        <Button
+          variant='outline'
+          className='w-full py-2 px-4 rounded border border-gray-300'
+        >
           Submit Availability
         </Button>
       </CardFooter>

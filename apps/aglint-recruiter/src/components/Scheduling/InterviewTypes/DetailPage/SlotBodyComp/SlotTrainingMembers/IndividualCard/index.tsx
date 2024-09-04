@@ -1,15 +1,15 @@
+import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { MemberListCard } from '@devlink2/MemberListCard';
+import { MemberListCardOption } from '@devlink2/MemberListCardOption';
+import { HistoryPill } from '@devlink3/HistoryPill';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { MemberListCard } from '@/devlink2/MemberListCard';
-import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
-import { HistoryPill } from '@/devlink3/HistoryPill';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
 
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
 import {

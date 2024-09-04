@@ -1,14 +1,11 @@
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Checkbox, Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import {
-  capitalizeAll,
-  capitalizeFirstLetter,
-} from '@/src/utils/text/textUtils';
+import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export const Filter = ({
   selectedItems,

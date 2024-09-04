@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { createContext } from 'react';
 
-import { DevLinkProvider as DevLinkProvider1 } from '@/devlink/DevLinkProvider';
-import { RenderLink } from '@/devlink/devlinkContext';
-import { DevLinkProvider as DevLinkProvider2 } from '@/devlink2/DevLinkProvider';
-import { DevLinkProvider as DevLinkProvider3 } from '@/devlink3/DevLinkProvider';
+import { DevLinkProvider as DevLinkProvider1 } from '@devlink/DevLinkProvider';
+import { RenderLink } from '@devlink/devlinkContext';
+import { DevLinkProvider as DevLinkProvider2 } from '@devlink2/DevLinkProvider';
+import { DevLinkProvider as DevLinkProvider3 } from '@devlink3/DevLinkProvider';
 
 export const DevlinkMainProvider = ({ children }) => {
   return (

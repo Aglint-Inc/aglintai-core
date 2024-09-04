@@ -1,4 +1,34 @@
 import {
+  type holidayType,
+  type schedulingSettingType,
+} from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { CompanyDayOff } from '@devlink2/CompanyDayOff';
+import { DayoffList } from '@devlink2/DayoffList';
+import { GlobalInfo } from '@devlink2/GlobalInfo';
+import { InterviewLoad } from '@devlink2/InterviewLoad';
+import { KeywordCard } from '@devlink2/KeywordCard';
+import { Keywords } from '@devlink2/Keywords';
+import { SublinkTab } from '@devlink2/SublinkTab';
+import { TextWithBg } from '@devlink2/TextWithBg';
+import { DayOffHelper } from '@devlink3/DayOffHelper';
+import { DebreifHelperText } from '@devlink3/DebreifHelperText';
+import { HelperDropdown } from '@devlink3/HelperDropdown';
+import { InterviewLoadHelper } from '@devlink3/InterviewLoadHelper';
+import { KeywordsHelper } from '@devlink3/KeywordsHelper';
+import { cn } from '@lib/utils';
+import {
   Alert,
   Autocomplete,
   Chip,
@@ -11,57 +41,23 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
-import { type MouseEvent, useEffect, useRef, useState } from 'react';
-
-import timeZones from '@/src/utils/timeZone';
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-import {
-  type holidayType,
-  type schedulingSettingType,
-} from '@aglint/shared-types';
-import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
+import { type MouseEvent, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
-import { DayoffList } from '@/devlink2/DayoffList';
-import { GlobalInfo } from '@/devlink2/GlobalInfo';
-import { InterviewLoad } from '@/devlink2/InterviewLoad';
-import { KeywordCard } from '@/devlink2/KeywordCard';
-import { Keywords } from '@/devlink2/Keywords';
-import { SublinkTab } from '@/devlink2/SublinkTab';
-import { TextWithBg } from '@/devlink2/TextWithBg';
-import { DayOffHelper } from '@/devlink3/DayOffHelper';
-import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
-import { HelperDropdown } from '@/devlink3/HelperDropdown';
-import { InterviewLoadHelper } from '@/devlink3/InterviewLoadHelper';
-import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
-import { cn } from '@/lib/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { emailTemplateQueries } from '@/src/queries/email-templates';
-import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { emailTemplateQueries } from '@/queries/email-templates';
+import ROUTES from '@/utils/routing/routes';
+import timeZones from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import { ShowCode } from '../../Common/ShowCode';
@@ -73,6 +69,9 @@ import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
 import { settingsItems, settingSubNavItem } from './utils';
 import WorkingHour from './WorkingHour';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 let schedulingSettingObj = {};
 let changeValue = null;

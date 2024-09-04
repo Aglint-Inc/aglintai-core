@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
+import { Text } from '@devlink2/Text';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { Text } from '@/devlink2/Text';
-import { useRequests } from '@/src/context/RequestsContext';
+import { useRequests } from '@/context/RequestsContext';
 
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   const { query } = useRouter();

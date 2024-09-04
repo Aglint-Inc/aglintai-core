@@ -6,11 +6,11 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiTargetToEvents } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
-import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
-import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { apiTargetToEvents } from '@/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
+import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
+import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
+import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];

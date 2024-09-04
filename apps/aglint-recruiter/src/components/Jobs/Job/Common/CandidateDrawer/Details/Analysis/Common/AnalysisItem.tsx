@@ -1,8 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { JdAnalysisItem } from '@/devlink/JdAnalysisItem';
-import { useApplication } from '@/src/context/ApplicationContext';
-import type { ApplicationDetails } from '@/src/context/ApplicationContext/type';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { JdAnalysisItem } from '@devlink/JdAnalysisItem';
+
+import { useApplication } from '@/context/ApplicationContext';
+import type { ApplicationDetails } from '@/context/ApplicationContext/type';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { getSafeReasoningType } from '../Util/getSafeReasoningType';
 import { getScoreTier } from '../Util/getScoreTier';

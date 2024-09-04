@@ -1,21 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { IconButtonSoft } from '@devlink/IconButtonSoft';
+import { RequestProgress } from '@devlink2/RequestProgress';
+import { ScheduleProgress } from '@devlink2/ScheduleProgress';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import React from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { RequestProgress } from '@/devlink2/RequestProgress';
-import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
-import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequest } from '@/src/context/RequestContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequest } from '@/context/RequestContext';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import {
   createRequestWorkflowAction,

@@ -3,11 +3,11 @@ import type {
   CustomAgentInstructionPayload,
   Trigger_API_Action_Mapper,
 } from '@aglint/shared-types';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { type ReactNode } from 'react';
 
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import type { Workflow } from '@/src/types/workflow.types';
-import { SafeObject } from '@/src/utils/safeObject';
+import type { Workflow } from '@/types/workflow.types';
+import { SafeObject } from '@/utils/safeObject';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {

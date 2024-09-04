@@ -8,7 +8,7 @@ import {
   useWorkflowActionMutations,
   useWorkflowActions,
   useWorkflowActionUpdate,
-} from '@/src/queries/workflow-action';
+} from '@/queries/workflow-action';
 
 import { useWorkflows } from '..';
 

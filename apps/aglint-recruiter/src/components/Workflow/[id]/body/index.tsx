@@ -1,28 +1,28 @@
+import OptimisticWrapper from '@components/loadingWapper';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { Page404 } from '@devlink/Page404';
+import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
+import { WorkflowDetail } from '@devlink3/WorkflowDetail';
 import { Dialog, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { Page404 } from '@/devlink/Page404';
-import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
-import { WorkflowDetail } from '@/devlink3/WorkflowDetail';
-import Loader from '@/src/components/Common/Loader';
-import Seo from '@/src/components/Common/Seo';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useWorkflow } from '@/src/context/Workflows/[id]';
+import Loader from '@/components/Common/Loader';
+import Seo from '@/components/Common/Seo';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useWorkflow } from '@/context/Workflows/[id]';
 import {
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
-} from '@/src/queries/job-workflow';
-import { type Workflow } from '@/src/types/workflow.types';
-import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/queries/job-workflow';
+import { type Workflow } from '@/types/workflow.types';
+import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Edit from '../edit';
 import Actions from './action';
