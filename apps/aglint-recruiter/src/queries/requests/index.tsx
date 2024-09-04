@@ -113,6 +113,7 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
+      placeholderData: [],
       refetchOnMount: true,
       refetchInterval:
         process.env.NODE_ENV === 'development' ? 1000 : undefined,

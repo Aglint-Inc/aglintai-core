@@ -36,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('OK');
   } catch (err) {
+    console.error(err);
     if (err instanceof CApiError) {
       return res.status(500).json({
         type: err.type,

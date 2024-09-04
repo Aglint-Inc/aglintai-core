@@ -134,8 +134,8 @@ const notifyInts = async ({
           },
         ],
       });
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error(err.data);
     }
   }
   await logger({

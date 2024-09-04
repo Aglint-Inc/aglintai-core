@@ -22,7 +22,7 @@ function CandidateCancelled() {
 
   const events = isManualFlow ? manualEvents : eventTargetMap.onRequestCancel;
   const EventProgress = events.map((api) => {
-    const eventType = apiTargetToEvents[api][0];
+    const eventType = apiTargetToEvents[api];
     const requestProgress = reqProgressMap[eventType]?.find(
       (row) => !row.is_progress_step,
     );

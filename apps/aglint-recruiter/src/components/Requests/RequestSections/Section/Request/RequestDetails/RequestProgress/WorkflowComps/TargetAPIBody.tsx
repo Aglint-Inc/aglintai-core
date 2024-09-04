@@ -7,7 +7,7 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UITypography from '@/components/Common/UITypography';
 
-import { useSelectedActionsDetails } from '../NewScheduleEvents/dialogCtx';
+import { useSelectedActionsDetails } from '../ScheduleProgress/dialogCtx';
 
 export type WActionProps = {
   action: Omit<DatabaseTable['workflow_action'], 'payload'>;
