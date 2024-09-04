@@ -1,11 +1,10 @@
-import { type DB } from '@aglint/shared-types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
 import { Skeleton } from '@/devlink2/Skeleton';
-import { meetingCardType } from '@/src/components/Common/SessionCard';
 import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -18,34 +17,28 @@ import {
 } from '../../../ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
 import SessionList from './SessionsList';
 
-export type TaskType = {
-  assignee: string[];
-  schedule_date_range: { start_date: string; end_date: string };
-  session_ids: any[];
-  task_owner: string;
-  status: DB['public']['Enums']['task_status'];
-  priority: DB['public']['Enums']['task_priority'];
-  type: DB['public']['Enums']['task_type_enum'];
-  due_date: string;
-  start_date: string;
+export type sessionType = {
+  id: string;
   name: string;
+  type: 'debrief' | 'panel' | 'individual';
 };
-function CreateTask({
-  setTask,
-  applications,
-  job_id,
+
+function CreateRequest({
+  setRequest,
   priority,
   setPriority,
   note,
   setNote,
+  setSelectedSession,
+  selectedSession,
 }: {
-  setTask: Dispatch<SetStateAction<TaskType>>;
-  applications: string[];
-  job_id: string;
+  setRequest: Dispatch<SetStateAction<DatabaseTableInsert['request']>>;
   priority: 'urgent' | 'standard';
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
   note: string;
   setNote: Dispatch<SetStateAction<string>>;
+  setSelectedSession: Dispatch<SetStateAction<sessionType[]>>;
+  selectedSession: sessionType[];
 }) {
   const { members } = useAllMembers();
 
@@ -54,7 +47,6 @@ function CreateTask({
   } = useApplications();
   const { recruiterUser } = useAuthDetails();
 
-  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
   const [selectedInterviewer, setSelectedInterviewer] = useState<string | null>(
     null,
   );
@@ -73,28 +65,24 @@ function CreateTask({
       setSelectedSession(
         interview_session
           .slice(0, 2)
-          .map((ele) => ({ id: ele.id, name: ele.name }) as meetingCardType),
+          .map((ele) => ({ id: ele.id, name: ele.name }) as sessionType),
       );
-
-      setTask((pre) => {
-        const preTask = { ...pre };
+      setRequest((pre) => {
+        const preRequest = { ...pre };
         return {
-          ...preTask,
-          session_ids: interview_session.slice(0, 2),
-          schedule_date_range: {
-            start_date: dateRange.start,
-            end_date: dateRange.end,
-          },
-          start_date: dayjs().add(5, 'minute').toString(),
-          due_date: dayjs().add(1, 'day').toString(),
-          assignee: [
+          ...preRequest,
+          schedule_start_date: dateRange.start,
+          schedule_end_date: dateRange.end,
+          assignee_id:
             selectedInterviewer ||
-              recruiting_coordinator ||
-              hiring_manager ||
-              sourcer ||
-              recruiter,
-          ],
-          task_owner: recruiterUser.user_id,
+            recruiting_coordinator ||
+            hiring_manager ||
+            sourcer ||
+            recruiter,
+
+          assigner_id: recruiterUser.user_id,
+          type: 'schedule_request',
+          status: 'to_do',
         };
       });
     }
@@ -102,12 +90,11 @@ function CreateTask({
 
   useEffect(() => {
     if (priority) {
-      //@ts-ignore
-      setTask((pre) => {
-        const preTask = { ...pre };
+      setRequest((pre) => {
+        const preData = { ...pre };
         return {
-          ...preTask,
-          priority,
+          ...preData,
+          priority: priority,
         };
       });
     }
@@ -122,17 +109,20 @@ function CreateTask({
             <SessionList
               selectedSession={selectedSession}
               setSelectedSession={setSelectedSession}
-              application_id={applications[0]}
-              job_id={job_id}
               onChange={({ sessions }) => {
-                setTask((pre) => {
-                  const preTask = { ...pre };
-                  return {
-                    ...preTask,
-                    session_ids: sessions,
-                  };
-                });
+                setSelectedSession([...sessions]);
               }}
+              sessionList={
+                data?.flatMap((item) =>
+                  item.interview_session
+                    .filter((ele) => ele.session_type !== 'debrief')
+                    .flatMap((ele) => ({
+                      id: ele.id,
+                      name: ele.name,
+                      type: ele.session_type,
+                    })),
+                ) as sessionType[]
+              }
             />
           </>
         }
@@ -154,12 +144,11 @@ function CreateTask({
               width='436px'
               onChange={(user_id) => {
                 setSelectedInterviewer(user_id);
-                setTask((pre) => {
-                  const preTask = { ...pre };
+                setRequest((pre) => {
+                  const preData = { ...pre };
                   return {
-                    ...preTask,
-                    assignee: [user_id],
-                    status: 'not_started',
+                    ...preData,
+                    assignee_id: user_id,
                   };
                 });
               }}
@@ -181,11 +170,11 @@ function CreateTask({
               setNote(e.target.value);
             }}
             placeholder='Add note'
-            multiline // Enables textarea behavior
-            minRows={2} // Minimum number of rows
-            maxRows={4} // Maximum number of rows
-            variant='outlined' // Uses the outlined variant
-            fullWidth // Takes full width of the container
+            multiline
+            minRows={2}
+            maxRows={4}
+            variant='outlined'
+            fullWidth
           />
         }
       />
@@ -193,4 +182,4 @@ function CreateTask({
   );
 }
 
-export default CreateTask;
+export default CreateRequest;

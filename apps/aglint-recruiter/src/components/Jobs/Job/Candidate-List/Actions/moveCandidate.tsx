@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { Checkbox, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -14,7 +14,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import { formatSessions } from '../utils';
-import CreateTask from './createTask';
+import CreateRequest, { sessionType } from './CreateRequest';
 
 const MoveCandidate = () => {
   const { emailVisibilities } = useApplications();
@@ -165,24 +165,10 @@ const MoveCandidateAssessment = () => {
   );
 };
 
-type TaskType = {
-  assignee: string[];
-  schedule_date_range: { start_date: string; end_date: string };
-  session_ids: any[];
-  task_owner: string;
-  status: DatabaseEnums['task_status'];
-  priority: DatabaseEnums['task_priority'];
-  type: DatabaseEnums['task_type_enum'];
-  due_date: string;
-  start_date: string;
-  name: string;
-};
-
 const MoveCandidateInterview = () => {
   const { recruiterUser } = useAuthDetails();
   const {
     handleMoveApplicationToInterview,
-    job,
     sectionApplication: { data },
   } = useApplications();
   const { resetActionPopup, checklist } = useApplicationsStore(
@@ -192,9 +178,10 @@ const MoveCandidateInterview = () => {
     }),
   );
 
-  const [task, setTask] = useState<TaskType>(null);
+  const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
+  const [selectedSession, setSelectedSession] = useState<sessionType[]>([]);
   const buttonText = 'Request and Move';
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
@@ -202,39 +189,35 @@ const MoveCandidateInterview = () => {
         const name =
           (data?.pages ?? [])
             .flatMap((list) => list)
-            .find(({ id }) => id === application_id)?.name ??
-          `{{candidateName}}`;
+            .find(({ id }) => id === application_id)?.name ?? ``;
         return {
-          assignee_id: task.assignee[0] ?? null,
-          assigner_id: recruiterUser?.user_id ?? null,
-          title:
-            task?.name ??
-            `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for ${name}`,
-          type: 'schedule_request',
+          assignee_id: request.assignee_id,
+          type: request.type,
           priority: priority,
-          status: 'to_do',
-          schedule_end_date: task.schedule_date_range.end_date,
-          schedule_start_date: task.schedule_date_range.start_date,
+          status: request.status,
+          schedule_end_date: request.schedule_end_date,
+          schedule_start_date: request.schedule_start_date,
+          assigner_id: recruiterUser?.user_id ?? null,
+          title: `Schedule ${formatSessions(selectedSession.map(({ name }) => name))} for ${name}`,
           application_id,
           note,
         };
       }),
-      sessions: (task?.session_ids ?? []).map(({ id }) => id),
+      sessions: selectedSession.map(({ id }) => id),
     });
     resetActionPopup();
   }, buttonText);
 
   return (
-    // <TaskStatesProvider>
     <DcPopup
       popupName={title}
       slotBody={
         <Stack gap={2}>
           {capitalize(description)}
-          <CreateTask
-            applications={checklist}
-            setTask={setTask}
-            job_id={job?.id}
+          <CreateRequest
+            setRequest={setRequest}
+            setSelectedSession={setSelectedSession}
+            selectedSession={selectedSession}
             setPriority={setPriority}
             priority={priority}
             note={note}
@@ -245,7 +228,6 @@ const MoveCandidateInterview = () => {
       onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
-    // </TaskStatesProvider>
   );
 };
 
@@ -298,7 +280,7 @@ const MoveCandidateDisqualified = () => {
               textDescription={
                 <Stack px={1}>
                   <li>All the schedules will be cancelled</li>
-                  <li>All the related tasks will be closed</li>
+                  <li>All the related requests will be closed</li>
                   <li>You can still view the candidate details</li>
                   <li>Move to new state to start the process again</li>
                 </Stack>

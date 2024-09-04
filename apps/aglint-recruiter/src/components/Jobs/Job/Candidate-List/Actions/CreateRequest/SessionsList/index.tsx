@@ -1,24 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { Popover, Stack, Typography } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { EmptyState } from '@/devlink2/EmptyState';
-import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
 import { meetingCardType } from '@/src/components/Common/SessionCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import {
-  type ApiRequestInterviewSessionTask,
-  type ApiResponseInterviewSessionTask,
-} from '@/src/pages/api/scheduling/fetch_interview_session_task';
+
+import { sessionType } from '..';
 
 type OnChangeProps = {
-  sessions: meetingCardType[];
+  sessions: sessionType[];
   selected_session_id?: string;
   action?: 'add' | 'remove';
 };
@@ -27,15 +23,13 @@ function SessionList({
   setSelectedSession,
   isOptionList = true,
   onChange,
-  application_id,
-  job_id,
+  sessionList,
 }: {
-  selectedSession: meetingCardType[] | null;
-  setSelectedSession: (x: meetingCardType[]) => void;
+  selectedSession: sessionType[] | null;
+  setSelectedSession: (x: sessionType[]) => void;
   isOptionList?: boolean;
   onChange?: (props: OnChangeProps) => void;
-  application_id: string;
-  job_id: string;
+  sessionList: sessionType[];
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -47,21 +41,6 @@ function SessionList({
     setAnchorEl(null);
   };
 
-  const [sessionList, setSessionList] =
-    useState<ApiResponseInterviewSessionTask['data']>(null);
-  async function getSessionList() {
-    const {
-      data: { data },
-    } = await axios.post('/api/scheduling/fetch_interview_session_task', {
-      application_id: application_id,
-      job_id: job_id,
-    } as ApiRequestInterviewSessionTask);
-    const sessions = data as ApiResponseInterviewSessionTask['data'];
-    setSessionList(sessions);
-  }
-  useEffect(() => {
-    getSessionList();
-  }, [application_id]);
   return (
     <>
       <Stack
@@ -150,30 +129,22 @@ function SessionList({
                               .map((ele: { id: any }) => ele.id)
                               .includes(item.id)
                           ) {
-                            const data = pre
-                              .filter(
-                                (ele: { id: string }) => ele.id !== item.id,
-                              )
-                              .map((ele) => ({
-                                id: ele.id,
-                                name: ele.name,
-                              }));
+                            const data = pre.filter(
+                              (ele: { id: string }) => ele.id !== item.id,
+                            );
                             if (onChange) {
                               onChange({
-                                sessions: data as meetingCardType[],
+                                sessions: data,
                                 selected_session_id: item.id,
                                 action: 'remove',
                               });
                             }
                             return data;
                           }
-                          const data = [item, ...pre].map((ele) => ({
-                            id: ele.id,
-                            name: ele.name,
-                          }));
+                          const data = [item, ...pre];
                           if (onChange) {
                             onChange({
-                              sessions: data as meetingCardType[],
+                              sessions: data,
                               selected_session_id: item.id,
                               action: 'add',
                             });
@@ -184,7 +155,7 @@ function SessionList({
                     >
                       <Stack direction={'row'} spacing={1} width={'100%'}>
                         <ShowCode>
-                          <ShowCode.When isTrue={item.session_type === 'panel'}>
+                          <ShowCode.When isTrue={item.type === 'panel'}>
                             <PanelIcon />
                           </ShowCode.When>
                           <ShowCode.Else>
