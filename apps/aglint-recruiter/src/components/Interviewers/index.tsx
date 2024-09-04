@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ShowCode } from '@/components/Common/ShowCode';
 
 import Availability from './Availability';
 import InterviewerLoad from './InterviewerLoad';

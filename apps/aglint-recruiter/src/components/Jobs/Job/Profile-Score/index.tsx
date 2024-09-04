@@ -1,5 +1,32 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Checkbox } from '@devlink/Checkbox';
+import { ScoreCard } from '@devlink/ScoreCard';
+import { ScoreCardEdit } from '@devlink/ScoreCardEdit';
+import { ScorePercentage } from '@devlink/ScorePercentage';
+import { ScorePillMust } from '@devlink/ScorePillMust';
+import { ScorePillNice } from '@devlink/ScorePillNice';
+import { ScoreSetting } from '@devlink/ScoreSetting';
+import { ScoreWeightage } from '@devlink/ScoreWeightage';
+import { Text } from '@devlink/Text';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { GlobalInfo } from '@devlink2/GlobalInfo';
+import { PageLayout } from '@devlink2/PageLayout';
+import { Skeleton } from '@devlink2/Skeleton';
+import { BannerAlert } from '@devlink3/BannerAlert';
+import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
+import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
 import { Popover, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
@@ -13,45 +40,18 @@ import {
   useState,
 } from 'react';
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { Checkbox } from '@/devlink/Checkbox';
-import { ScoreCard } from '@/devlink/ScoreCard';
-import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
-import { ScorePercentage } from '@/devlink/ScorePercentage';
-import { ScorePillMust } from '@/devlink/ScorePillMust';
-import { ScorePillNice } from '@/devlink/ScorePillNice';
-import { ScoreSetting } from '@/devlink/ScoreSetting';
-import { ScoreWeightage } from '@/devlink/ScoreWeightage';
-import { Text } from '@/devlink/Text';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { GlobalInfo } from '@/devlink2/GlobalInfo';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { BannerAlert } from '@/devlink3/BannerAlert';
-import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
-import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
-import Loader from '@/src/components/Common/Loader';
+import Loader from '@/components/Common/Loader';
 import ScoreWheel, {
   type ScoreWheelParams,
-} from '@/src/components/Common/ScoreWheel';
-import UITextField from '@/src/components/Common/UITextField';
-import { useJob } from '@/src/context/JobContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useTour } from '@/src/context/TourContext';
-import { type Job } from '@/src/queries/jobs/types';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+} from '@/components/Common/ScoreWheel';
+import UITextField from '@/components/Common/UITextField';
+import { useJob } from '@/context/JobContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useTour } from '@/context/TourContext';
+import { type Job } from '@/queries/jobs/types';
+import ROUTES from '@/utils/routing/routes';
+import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';

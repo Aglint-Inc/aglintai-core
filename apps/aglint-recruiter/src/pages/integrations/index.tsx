@@ -1,10 +1,10 @@
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { PageLayout } from '@devlink2/PageLayout';
 import { useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { PageLayout } from '@/devlink2/PageLayout';
-import Seo from '@/src/components/Common/Seo';
-import Integrations from '@/src/components/Integrations';
-import RequestNew from '@/src/components/Integrations/RequestNewPopUp';
+import Seo from '@/components/Common/Seo';
+import Integrations from '@/components/Integrations';
+import RequestNew from '@/components/Integrations/RequestNewPopUp';
 
 function IntegrationsPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ function IntegrationsPage() {
             onClickButton={{
               onClick: () => {
                 setIsOpen(true);
-              }
+              },
             }}
             isLeftIcon={true}
             iconName={'mail'}

@@ -1,6 +1,3 @@
-import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,10 +5,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { AllInterview } from '@/devlink2/AllInterview';
-import { PageLayout } from '@/devlink2/PageLayout';
-import ROUTES from '@/src/utils/routing/routes';
+} from '@components/ui/breadcrumb';
+import { AllInterview } from '@devlink2/AllInterview';
+import { PageLayout } from '@devlink2/PageLayout';
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+
+import ROUTES from '@/utils/routing/routes';
 
 import AllList from './AllList';
 import AllFilters from './Filters';

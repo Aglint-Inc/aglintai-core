@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { Application } from '@/src/context/ApplicationContext';
+import { Application } from '@/context/ApplicationContext';
 
 function CandidateInfo({ application_id, job_id }) {
   return (

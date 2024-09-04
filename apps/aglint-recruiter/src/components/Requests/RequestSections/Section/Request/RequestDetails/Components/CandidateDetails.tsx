@@ -1,11 +1,11 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import ROUTES from '@/src/utils/routing/routes';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
 
 function CandidateDetails({
   candidateDetails,

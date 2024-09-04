@@ -1,3 +1,5 @@
+import { Card, CardContent } from '@components/ui/card';
+import { ToggleGroup, ToggleGroupItem } from '@components/ui/toggle-group';
 import React, { useState } from 'react';
 import {
   Bar,
@@ -11,9 +13,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { Card, CardContent } from '@/components/ui/card';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 import DeclineLeadTimeChart from './DeclineLeadTimeChart';
 // Mock data - replace with actual data fetching logic

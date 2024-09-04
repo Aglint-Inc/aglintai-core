@@ -1,9 +1,8 @@
 'use client';
+import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import React from 'react';
-
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 
 const Container = styled(Box)`
   display: flex;

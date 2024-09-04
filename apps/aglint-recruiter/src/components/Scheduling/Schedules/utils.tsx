@@ -1,5 +1,5 @@
-import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { getFullName } from '@/utils/jsonResume';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type ScheduleListType } from '../Common/ModuleSchedules/hooks';
 import { type FilterOptionsType } from './types';

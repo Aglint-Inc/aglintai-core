@@ -1,21 +1,21 @@
+import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
+import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
-import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import UITextField from '@/components/Common/UITextField';
 import {
   DropDown,
   ScheduleTypeField,
-} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
-import { getFullName } from '@/src/utils/jsonResume';
-import { sessionDurations } from '@/src/utils/scheduling/const';
+} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
+import { getFullName } from '@/utils/jsonResume';
+import { sessionDurations } from '@/utils/scheduling/const';
 
 import {
   setDebriefMembers,

@@ -1,17 +1,17 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { StatusBadge } from '@devlink2/StatusBadge';
+import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
+import { NewScheduleDetail } from '@devlink3/NewScheduleDetail';
+import { UserNameCard } from '@devlink3/UserNameCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
-import { NewScheduleDetail } from '@/devlink3/NewScheduleDetail';
-import { UserNameCard } from '@/devlink3/UserNameCard';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { getFullName } from '@/src/utils/jsonResume';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { getFullName } from '@/utils/jsonResume';
 
 import IconSessionType from '../../../Common/Icons/IconSessionType';
 import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';

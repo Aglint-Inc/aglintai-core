@@ -15,18 +15,18 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+} from '@components/ui/select';
+import { Textarea } from '@components/ui/textarea';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 type Step = Awaited<ReturnType<typeof fetchProgress>>;
 

@@ -1,16 +1,16 @@
+import { Skeleton } from '@devlink2/Skeleton';
+import { LeaderBoard } from '@devlink3/LeaderBoard';
+import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
+import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
-import { Skeleton } from '@/devlink2/Skeleton';
-import { LeaderBoard } from '@/devlink3/LeaderBoard';
-import { LeaderBoardCard } from '@/devlink3/LeaderBoardCard';
-import { LeaderBoardLoader } from '@/devlink3/LeaderBoardLoader';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
-} from '@/src/context/SchedulingAnalytics';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/context/SchedulingAnalytics';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';

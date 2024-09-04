@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
-import Seo from '@/src/components/Common/Seo';
-import SchedulingViewComp from '@/src/components/Scheduling/ScheduleDetails';
+import Seo from '@/components/Common/Seo';
+import SchedulingViewComp from '@/components/Scheduling/ScheduleDetails';
 
 function SchedulingViewPage() {
   const {

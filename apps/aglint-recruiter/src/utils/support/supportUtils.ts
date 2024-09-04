@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 
-import { type Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/queries/jobs/types';
 
 const Priority = {
   low: '#467B7C',

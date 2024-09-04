@@ -1,11 +1,10 @@
 'use client';
 
+import { Card, CardContent } from '@components/ui/card';
+import { Label } from '@components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { Palette } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const pageThemes = [
   { name: 'Default', value: 'default', icon: Palette },

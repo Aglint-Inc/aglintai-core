@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { Analysis } from './Analysis';
 import { Education } from './Education';
@@ -33,4 +33,3 @@ Details.Education = Education;
 Details.Skills = Skills;
 
 export { Details };
-

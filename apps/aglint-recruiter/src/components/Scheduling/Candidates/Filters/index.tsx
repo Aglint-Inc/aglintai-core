@@ -1,6 +1,5 @@
+import { ButtonGhost } from '@devlink/ButtonGhost';
 import { useEffect } from 'react';
-
-import { ButtonGhost } from '@/devlink/ButtonGhost';
 
 import {
   FilterType,

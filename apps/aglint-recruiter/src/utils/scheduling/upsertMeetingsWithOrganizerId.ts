@@ -7,7 +7,7 @@ import {
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
-} from '@/src/components/Scheduling/ScheduleDetails/utils';
+} from '@/components/Scheduling/ScheduleDetails/utils';
 
 import { getOrganizerId } from './getOrganizerId';
 import { resetSessionRelations } from './resetSessionRelations';

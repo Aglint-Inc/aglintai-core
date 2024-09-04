@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const userCalendarCheck = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/check_calendar_status`;
 

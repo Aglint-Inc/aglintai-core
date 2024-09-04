@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SchedulingDashboard from '@/src/components/Scheduling/Dashboard';
+import SchedulingDashboard from '@/components/Scheduling/Dashboard';
 
 function DashboardSchedulingPage() {
   return <SchedulingDashboard />;

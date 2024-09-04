@@ -1,12 +1,12 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import axios from '@/src/client/axios';
+import axios from '@/client/axios';
 import {
   type ApiBodyGetMember,
   type ApiResponseGetMember,
-} from '@/src/pages/api/get_member';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@/pages/api/get_member';
+import { supabase } from '@/utils/supabase/client';
 
 export const useImrQuery = ({ user_id }) => {
   const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { capitalize as cap } from 'lodash';
 
-import { palette } from '@/src/context/Theme/Theme';
+import { palette } from '@/context/Theme/Theme';
 
 export const capitalize = (str: string) => {
   return (

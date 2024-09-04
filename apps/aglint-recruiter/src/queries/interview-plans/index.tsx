@@ -5,9 +5,9 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useJob } from '@/src/context/JobContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useJob } from '@/context/JobContext';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { jobQueries } from '../job';
 import { interviewSessionMutationKeys } from './keys';

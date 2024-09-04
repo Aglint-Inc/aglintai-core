@@ -1,18 +1,18 @@
 // import Feedback from './Feedback';
+import { GlobalBanner } from '@devlink2/GlobalBanner';
+import { PageLayout } from '@devlink2/PageLayout';
+import { Skeleton } from '@devlink2/Skeleton';
+import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useKeyPress } from '@/src/hooks/useKeyPress';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useKeyPress } from '@/hooks/useKeyPress';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import ButtonGroup from './ButtonGroup';

@@ -1,10 +1,9 @@
+import { ScheduleProgress } from '@devlink/ScheduleProgress';
+import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
+import { Skeleton } from '@devlink2/Skeleton';
+import { SkeletonAllInterviewCard } from '@devlink2/SkeletonAllInterviewCard';
 import { Box, Stack } from '@mui/material';
 import React from 'react';
-
-import { ScheduleProgress } from '@/devlink/ScheduleProgress';
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { SkeletonAllInterviewCard } from '@/devlink2/SkeletonAllInterviewCard';
 
 function InitialLoader({
   isLoading,

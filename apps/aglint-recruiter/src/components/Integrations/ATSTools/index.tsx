@@ -1,3 +1,7 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { IntegrationCard } from '@devlink2/IntegrationCard';
 import { IconButton, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -5,11 +9,7 @@ import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { IntegrationCard } from '@/devlink2/IntegrationCard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import ATSPopUps from '../ATSPopUps';
 import { type ATSType, type PopUpReasonTypes } from '../types';

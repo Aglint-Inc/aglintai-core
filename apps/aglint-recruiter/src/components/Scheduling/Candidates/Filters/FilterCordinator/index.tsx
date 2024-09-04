@@ -1,17 +1,17 @@
+import { Checkbox } from '@devlink/Checkbox';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Text } from '@devlink/Text';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { capitalize, Popover, Stack, Typography } from '@mui/material';
 import { debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink/Checkbox';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Text } from '@/devlink/Text';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import {
   FilterType,

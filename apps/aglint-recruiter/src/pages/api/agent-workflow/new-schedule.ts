@@ -11,13 +11,13 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { apiTargetToEvents } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
-import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateAvailRequest';
-import { candidateAvailReRequest } from '@/src/services/api-schedulings/candidateAvailReRequest';
-import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
-import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { apiTargetToEvents } from '@/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
+import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
+import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
+import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
+import { findPlanCombs } from '@/services/api-schedulings/findPlanCombs';
+import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {

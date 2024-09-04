@@ -1,10 +1,10 @@
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export function FilterDropDownDash<T>({
   itemList,

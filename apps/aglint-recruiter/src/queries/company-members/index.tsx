@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
 
 import { companyMembersKeys } from './keys';
 

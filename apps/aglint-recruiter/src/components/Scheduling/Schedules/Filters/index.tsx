@@ -3,9 +3,9 @@ import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 
-import FilterHeader from '@/src/components/Common/FilterHeader';
-import { useJobs } from '@/src/context/JobsContext';
-import { useAllMembers } from '@/src/queries/members';
+import FilterHeader from '@/components/Common/FilterHeader';
+import { useJobs } from '@/context/JobsContext';
+import { useAllMembers } from '@/queries/members';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
 

@@ -7,7 +7,7 @@ import {
   bookSelfScheudle,
   getFilterJson,
   getSelfSchudleSlots,
-} from '@/src/utils/automation/utils/confirm_selfSchedule';
+} from '@/utils/automation/utils/confirm_selfSchedule';
 
 export const dynamic = 'force-dynamic';
 

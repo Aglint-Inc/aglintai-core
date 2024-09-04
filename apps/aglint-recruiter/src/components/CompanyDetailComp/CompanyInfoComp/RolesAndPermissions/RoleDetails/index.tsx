@@ -1,3 +1,10 @@
+import { Switch } from '@components/ui/switch';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { Permissions } from '@devlink/Permissions';
+import { RolesAndPermissionsDetail } from '@devlink/RolesAndPermissionsDetail';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { ToggleWithText } from '@devlink3/ToggleWithText';
 import {
   List,
   ListItemButton,
@@ -7,23 +14,13 @@ import {
 } from '@mui/material';
 import { type MouseEvent, useEffect, useState } from 'react';
 
-import { Switch } from '@/components/ui/switch';
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { Permissions } from '@/devlink/Permissions';
-import { RolesAndPermissionsDetail } from '@/devlink/RolesAndPermissionsDetail';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { ToggleWithText } from '@/devlink3/ToggleWithText';
-import {
-  allPermissions,
-  rolesOrder,
-} from '@/src/constant/role_and_permissions';
-import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useSearchQuery } from '@/src/hooks/useSearchQuery';
-import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
-import { useAllMembers } from '@/src/queries/members';
-import { type useRoleAndPermissionsHook } from '@/src/queries/RolesSettings';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { allPermissions, rolesOrder } from '@/constant/role_and_permissions';
+import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useSearchQuery } from '@/hooks/useSearchQuery';
+import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
+import { useAllMembers } from '@/queries/members';
+import { type useRoleAndPermissionsHook } from '@/queries/RolesSettings';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleEditMember from './RoleEditMember';
 import { RoleUserWidget } from './RoleUserWidget';

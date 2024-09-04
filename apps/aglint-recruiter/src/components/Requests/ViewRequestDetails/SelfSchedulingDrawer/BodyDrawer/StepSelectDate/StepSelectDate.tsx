@@ -1,13 +1,13 @@
+import { TextWithIcon } from '@devlink2/TextWithIcon';
+import { DatePickerBody } from '@devlink3/DatePickerBody';
+import { ScheduleSelectPill } from '@devlink3/ScheduleSelectPill';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { DateRange as DateRangeType } from 'react-day-picker';
 
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { DatePickerBody } from '@/devlink3/DatePickerBody';
-import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
-import { DateRangePicker } from '@/src/components/Common/DateRange';
-import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
-import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
+import { DateRangePicker } from '@/components/Common/DateRange';
+import IconSessionType from '@/components/Common/Icons/IconSessionType';
+import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 
 import { useMeetingList } from '../../../hooks';
 import InfoStepSelectState from '../../InfoStepSelectState';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SearchField from '@/src/components/Common/SearchField/SearchField';
+import SearchField from '@/components/Common/SearchField/SearchField';
 
 import { setFilter, useFilterCandidateStore } from '../../filter-store';
 

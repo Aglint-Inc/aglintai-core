@@ -2,8 +2,8 @@ import { type DatabaseTable, type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { allPermissions } from '@/src/constant/role_and_permissions';
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { allPermissions } from '@/constant/role_and_permissions';
+import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 
 import { type GetRoleAndPermissionsAPI } from './type';
 

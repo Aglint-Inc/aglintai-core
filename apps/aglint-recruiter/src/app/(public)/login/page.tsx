@@ -1,8 +1,8 @@
 import { type Metadata } from 'next';
 import React from 'react';
 
-import LoginForm from '@/src/components/Auth/LoginForm';
-import Footer from '@/src/components/Common/Footer';
+import LoginForm from '@/components/Auth/LoginForm';
+import Footer from '@/components/Common/Footer';
 
 export const metadata: Metadata = {
   title: 'Login | Aglint AI',

@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 //getting requests
 export async function fetchTodoRequests(count = 15, type = 'to_do') {

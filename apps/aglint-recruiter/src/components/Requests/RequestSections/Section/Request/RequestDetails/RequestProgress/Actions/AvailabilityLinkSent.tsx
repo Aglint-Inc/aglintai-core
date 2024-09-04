@@ -1,10 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Text } from '@devlink2/Text';
 import { Stack } from '@mui/material';
 import React, { useState } from 'react';
-
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Text } from '@/devlink2/Text';
 
 const AvailabilityLinkSent = (
   progress_row: DatabaseTable['request_progress'],

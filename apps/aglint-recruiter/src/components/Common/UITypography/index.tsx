@@ -1,6 +1,5 @@
+import { cn } from '@lib/utils';
 import React, { JSX } from 'react';
-
-import { cn } from '@/lib/utils';
 
 const typesDefinition = {
   extraSmall: 'text-xs leading-4',

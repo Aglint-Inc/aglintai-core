@@ -19,8 +19,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 import { selectJobApplicationQuery } from '../apiUtils/job/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';

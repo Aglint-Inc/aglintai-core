@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type getInterviewModulesType } from '@/src/pages/api/scheduling/get_interview_modules';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type getInterviewModulesType } from '@/pages/api/scheduling/get_interview_modules';
 
 import { interviewModuleKeys } from './keys';
 

@@ -1,32 +1,32 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
+import { CdFeedback } from '@devlink3/CdFeedback';
+import { FeedbackCard } from '@devlink3/FeedbackCard';
+import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
+import { RoundedNumber } from '@devlink3/RoundedNumber';
 import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { CdFeedback } from '@/devlink3/CdFeedback';
-import { FeedbackCard } from '@/devlink3/FeedbackCard';
-import { MyFeedbackPopup } from '@/devlink3/MyFeedbackPopup';
-import { RoundedNumber } from '@/devlink3/RoundedNumber';
-import Avatar from '@/src/components/Common/MuiAvatar';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
+import Avatar from '@/components/Common/MuiAvatar';
+import { ShowCode } from '@/components/Common/ShowCode';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { type API_request_feedback } from '@/src/pages/api/request_feedback/type';
-import { getFullName } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
+} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { type API_request_feedback } from '@/pages/api/request_feedback/type';
+import { getFullName } from '@/utils/jsonResume';
+import toast from '@/utils/toast';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
 import {

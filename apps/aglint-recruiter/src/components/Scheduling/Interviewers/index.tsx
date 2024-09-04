@@ -1,8 +1,3 @@
-import { Stack } from '@mui/material';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,18 +5,23 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { AllInterviewers } from '@/devlink2/AllInterviewers';
-import { AllInterviewersCard } from '@/devlink2/AllInterviewersCard';
-import { EmptyState } from '@/devlink2/EmptyState';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { TextWithBg } from '@/devlink2/TextWithBg';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@components/ui/breadcrumb';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { AllInterviewers } from '@devlink2/AllInterviewers';
+import { AllInterviewersCard } from '@devlink2/AllInterviewersCard';
+import { EmptyState } from '@devlink2/EmptyState';
+import { PageLayout } from '@devlink2/PageLayout';
+import { TextWithBg } from '@devlink2/TextWithBg';
+import { Stack } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';

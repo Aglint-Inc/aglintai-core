@@ -1,19 +1,23 @@
 /* eslint-disable no-unused-vars */
 import './EditorStyle.css'; // We will define some styles here
 
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { AiChatSuggest } from '@devlink2/AiChatSuggest';
+import { Kbd } from '@devlink3/Kbd';
 import { Stack } from '@mui/material';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
-import { Kbd } from '@/devlink3/Kbd';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ShowCode } from '@/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
 import { type ScheduleType, type selectedItemsType } from '../utils';
-import { type MentionComponentProps, type MentionInputProps, type MentionType } from './utils';
+import {
+  type MentionComponentProps,
+  type MentionInputProps,
+  type MentionType,
+} from './utils';
 
 interface AgentEditorProps {
   applicationsList?: { id: string; display: string }[];

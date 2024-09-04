@@ -14,11 +14,11 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidV4 } from 'uuid';
 
-import { type InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
-import { getFullName } from '@/src/utils/jsonResume';
-import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { type InitAgentBodyParams } from '@/components/ScheduleAgent/types';
+import { EmailWebHook } from '@/services/EmailWebhook/EmailWebhook';
+import { getFullName } from '@/utils/jsonResume';
+import { agent_activities } from '@/utils/scheduling_v2/agents_activity';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 

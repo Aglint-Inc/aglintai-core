@@ -1,20 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
+import { ButtonGhost } from '@devlink/ButtonGhost';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { PwResetConfirm } from '@devlink2/PwResetConfirm';
+import { PwResetForm } from '@devlink2/PwResetForm';
 import { Box, Container, Stack } from '@mui/material';
 import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { PwResetConfirm } from '@/devlink2/PwResetConfirm';
-import { PwResetForm } from '@/devlink2/PwResetForm';
-let tempEmail = '';
-
-import { useRouter } from 'next/navigation';
-
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import ROUTES from '@/src/utils/routing/routes';
+import ROUTES from '@/utils/routing/routes';
 
 import Footer from '../Common/Footer';
 import UITextField from '../Common/UITextField';
+
+let tempEmail = '';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -108,70 +107,70 @@ export default function ForgotPasswordComponent() {
         }}
       >
         {changetext == 'Send' && (
-            <PwResetForm
-              slotButton={
-                <Stack spacing={'var(--space-2)'}>
-                  <ButtonSolid
-                    textButton='Reset'
-                    size={2}
-                    onClickButton={{ onClick: handleSubmit }}
-                  />
-                  <ButtonGhost
-                    textButton='Back to Login'
-                    size={1}
-                    color={'neutral'}
-                    onClickButton={{
-                      onClick: () => {
-                        router.push(ROUTES['/login']());
-                      },
-                    }}
+          <PwResetForm
+            slotButton={
+              <Stack spacing={'var(--space-2)'}>
+                <ButtonSolid
+                  textButton='Reset'
+                  size={2}
+                  onClickButton={{ onClick: handleSubmit }}
+                />
+                <ButtonGhost
+                  textButton='Back to Login'
+                  size={1}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      router.push(ROUTES['/login']());
+                    },
+                  }}
+                />
+              </Stack>
+            }
+            slotForm={
+              <Box component='form' onSubmit={handleSubmit}>
+                <Stack spacing={2}>
+                  <UITextField
+                    ref={email}
+                    fullWidth
+                    onFocus={() =>
+                      setError({
+                        ...error,
+                        valid: {
+                          error: false,
+                        },
+                      })
+                    }
+                    error={error.valid.error}
+                    helperText={error.valid.error ? error.valid.msg : ''}
+                    placeholder='Enter a email'
+                    id='Email'
+                    required
                   />
                 </Stack>
-              }
-              slotForm={
-                <Box component='form' onSubmit={handleSubmit}>
-                  <Stack spacing={2}>
-                    <UITextField
-                      ref={email}
-                      fullWidth
-                      onFocus={() =>
-                        setError({
-                          ...error,
-                          valid: {
-                            error: false,
-                          },
-                        })
-                      }
-                      error={error.valid.error}
-                      helperText={error.valid.error ? error.valid.msg : ''}
-                      placeholder='Enter a email'
-                      id='Email'
-                      required
-                    />
-                  </Stack>
-                </Box>
-              }
-              contactLink={{
-                href: 'mailto:admin@aglinthq.com',
-              }}
+              </Box>
+            }
+            contactLink={{
+              href: 'mailto:admin@aglinthq.com',
+            }}
           />
         )}
         {changetext === 'Sent' && (
           <PwResetConfirm
-              onclickBack={{
-                onClick: () => {
-                  router.push(ROUTES['/login']());
-                },
-              }}
-              contactLink={{
-                href: 'mailto:admin@aglinthq.com',
-              }}
-              onclickReset={{
-                onClick: (e) => {
-                  handleSubmit(e);
-                },
-              }}
-            />
+            onclickBack={{
+              onClick: () => {
+                router.push(ROUTES['/login']());
+              },
+            }}
+            contactLink={{
+              href: 'mailto:admin@aglinthq.com',
+            }}
+            onclickReset={{
+              onClick: (e) => {
+                handleSubmit(e);
+              },
+            }}
+          />
         )}
       </Box>
       <Box

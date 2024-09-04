@@ -1,6 +1,6 @@
-import Seo from '@/src/components/Common/Seo';
-import DashboardComp from '@/src/components/Jobs/Dashboard';
-import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
+import Seo from '@/components/Common/Seo';
+import DashboardComp from '@/components/Jobs/Dashboard';
+import IntegrationProvider from '@/context/IntegrationProvider/IntegrationProvider';
 
 const Dashboard = () => {
   return (

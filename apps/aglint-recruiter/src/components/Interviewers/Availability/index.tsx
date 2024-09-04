@@ -1,6 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import {
   Box,
   Checkbox,
@@ -9,21 +13,23 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
-import { useJobs } from '@/src/context/JobsContext';
+import { useJobs } from '@/context/JobsContext';
 import {
   type initUser,
   type initUserUIGroupedByDate,
-} from '@/src/pages/api/interviewers';
-import { useAllDepartments } from '@/src/queries/departments';
-import { useAllOfficeLocations } from '@/src/queries/officeLocations';
-import dayjs from '@/src/utils/dayjs';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+} from '@/pages/api/interviewers';
+import { useAllDepartments } from '@/queries/departments';
+import { useAllOfficeLocations } from '@/queries/officeLocations';
+import dayjs from '@/utils/dayjs';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';

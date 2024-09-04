@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
 
-import CandidateMetrics from '@/src/components/Dashboards/Interview/CandidateMetrics';
-import Checklist from '@/src/components/Dashboards/Interview/Checklist';
-import DashboardDataFilter from '@/src/components/Dashboards/Interview/DashboardDataFilter';
-import InterviewCount from '@/src/components/Dashboards/Interview/InterviewCount';
-import InterviewDashboardSideNav from '@/src/components/Dashboards/Interview/InterviewDashboardSideNav';
-import InterviewerLeaderboard from '@/src/components/Dashboards/Interview/InterviewerLeaderboard';
-import JobMetrics from '@/src/components/Dashboards/Jobs/JobMetrics';
-import TrainingDashboard from '@/src/components/Reports/TrainingDashboard';
+import CandidateMetrics from '@/components/Dashboards/Interview/CandidateMetrics';
+import Checklist from '@/components/Dashboards/Interview/Checklist';
+import DashboardDataFilter from '@/components/Dashboards/Interview/DashboardDataFilter';
+import InterviewCount from '@/components/Dashboards/Interview/InterviewCount';
+import InterviewDashboardSideNav from '@/components/Dashboards/Interview/InterviewDashboardSideNav';
+import InterviewerLeaderboard from '@/components/Dashboards/Interview/InterviewerLeaderboard';
+import JobMetrics from '@/components/Dashboards/Jobs/JobMetrics';
+import TrainingDashboard from '@/components/Reports/TrainingDashboard';
 
 export default function InterviewDashboard() {
   const [activeTab, setActiveTab] = useState('default_tab');

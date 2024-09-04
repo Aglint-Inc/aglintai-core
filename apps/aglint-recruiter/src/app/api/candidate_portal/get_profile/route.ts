@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type candidatePortalProfileType = Awaited<
   ReturnType<typeof getCandidateDetails>

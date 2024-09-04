@@ -1,5 +1,6 @@
 'use client';
 
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import React from 'react';
 import {
   Area,
@@ -11,8 +12,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function MonthlyRequestWorkloadChart() {
   const data = [

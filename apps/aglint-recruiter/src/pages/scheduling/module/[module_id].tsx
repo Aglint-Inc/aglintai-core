@@ -1,10 +1,4 @@
 import { type DatabaseTableUpdate } from '@aglint/shared-types';
-import { Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
-import { useMemo, useState } from 'react';
-
-import { useToast } from '@/components/hooks/use-toast';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,34 +6,40 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
-import { MemberListCard } from '@/devlink2/MemberListCard';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { ShadowSession } from '@/devlink2/ShadowSession';
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import { DarkPill } from '@/devlink3/DarkPill';
-import { HistoryPill } from '@/devlink3/HistoryPill';
-import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
-import { InterviewerPage } from '@/devlink3/InterviewerPage';
-import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import Seo from '@/src/components/Common/Seo';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import { type ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
+} from '@components/ui/breadcrumb';
+import { EmptyGeneral } from '@devlink2/EmptyGeneral';
+import { MemberListCard } from '@devlink2/MemberListCard';
+import { PageLayout } from '@devlink2/PageLayout';
+import { ShadowSession } from '@devlink2/ShadowSession';
+import { StatusBadge } from '@devlink2/StatusBadge';
+import { DarkPill } from '@devlink3/DarkPill';
+import { HistoryPill } from '@devlink3/HistoryPill';
+import { HistoryTrainingCard } from '@devlink3/HistoryTrainingCard';
+import { InterviewerPage } from '@devlink3/InterviewerPage';
+import { Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import { capitalize } from 'lodash';
+import { useMemo, useState } from 'react';
+
+import Loader from '@/components/Common/Loader';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import Seo from '@/components/Common/Seo';
+import { useToast } from '@/components/hooks/use-toast';
+import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
+import { getScheduleType } from '@/components/Scheduling/Candidates/utils';
+import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
   useProgressModuleUsers,
-} from '@/src/components/Scheduling/InterviewTypes/queries/hooks';
+} from '@/components/Scheduling/InterviewTypes/queries/hooks';
 import {
   type MemberType,
   type ModuleType,
-} from '@/src/components/Scheduling/InterviewTypes/types';
-import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@/components/Scheduling/InterviewTypes/types';
+import { useAllInterviewersDetails } from '@/components/Scheduling/ScheduleDetails/hooks';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
 
 const ModuleMembers = () => {
   return (

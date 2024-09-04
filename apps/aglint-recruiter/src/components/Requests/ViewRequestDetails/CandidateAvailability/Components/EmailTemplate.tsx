@@ -1,13 +1,13 @@
 import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { EmailTemplateHolder } from '@devlink2/EmailTemplateHolder';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { EmailTemplateHolder } from '@/devlink2/EmailTemplateHolder';
-import axios from '@/src/client/axios';
-import Loader from '@/src/components/Common/Loader';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import axios from '@/client/axios';
+import Loader from '@/components/Common/Loader';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import toast from '@/utils/toast';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
 

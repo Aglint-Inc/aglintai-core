@@ -3,8 +3,8 @@ import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { resetSessionRelations } from '@/src/utils/scheduling/resetSessionRelations';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { resetSessionRelations } from '@/utils/scheduling/resetSessionRelations';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type APICreateScheduleRequest = v.InferInput<
   typeof createScheduleRequest

@@ -1,15 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ButtonFilter } from '@devlink2/ButtonFilter';
+import { FilterDropdown } from '@devlink2/FilterDropdown';
+import { NoData } from '@devlink3/NoData';
+import { Reason } from '@devlink3/Reason';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { type ReactNode, useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { NoData } from '@/devlink3/NoData';
-import { Reason } from '@/devlink3/Reason';
-import { useCancelRescheduleReasons } from '@/src/queries/scheduling-dashboard';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { useCancelRescheduleReasons } from '@/queries/scheduling-dashboard';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { DoughnutChart } from '../../Jobs/Job/Dashboard/doughnut';
 import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';

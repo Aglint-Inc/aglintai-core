@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo, useState } from 'react';
 
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { requestQueries } from '@/src/queries/requests';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { requestQueries } from '@/queries/requests';
 
 import { useRequests } from '../RequestsContext';
 

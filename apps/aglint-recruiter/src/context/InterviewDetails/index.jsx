@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import ROUTES from '@/src/utils/routing/routes';
+import ROUTES from '@/utils/routing/routes';
 
 import { getCandidateDetails, getJobDetails } from './utils';
 

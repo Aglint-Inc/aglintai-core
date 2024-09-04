@@ -1,3 +1,6 @@
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { ResetPassword } from '@devlink/ResetPassword';
 import {
   Box,
   Container,
@@ -14,13 +17,10 @@ import {
   useForm,
 } from 'react-hook-form';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ResetPassword } from '@/devlink/ResetPassword';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import Footer from '../Common/Footer';
 

@@ -1,5 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
+import { Switch } from '@components/ui/switch';
+import { ButtonSolid } from '@devlink2/ButtonSolid';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { InterviewMode } from '@devlink2/InterviewMode';
+import { InterviewModePill } from '@devlink2/InterviewModePill';
+import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
+import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, {
@@ -10,24 +17,17 @@ import React, {
   useMemo,
 } from 'react';
 
-import { Switch } from '@/components/ui/switch';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { InterviewMode } from '@/devlink2/InterviewMode';
-import { InterviewModePill } from '@/devlink2/InterviewModePill';
-import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
-import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
-import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { validateString } from '@/src/context/JobContext/utils';
-import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { type CreateInterviewSession } from '@/src/queries/interview-plans';
-import { type InterviewSessionType } from '@/src/queries/interview-plans/types';
-import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
-import { sessionDurations } from '@/src/utils/scheduling/const';
+import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
+import MuiAvatar from '@/components/Common/MuiAvatar';
+import UITextField from '@/components/Common/UITextField';
+import IconScheduleType from '@/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
+import { validateString } from '@/context/JobContext/utils';
+import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { type CreateInterviewSession } from '@/queries/interview-plans';
+import { type InterviewSessionType } from '@/queries/interview-plans/types';
+import { getFullName } from '@/utils/jsonResume';
+import ROUTES from '@/utils/routing/routes';
+import { sessionDurations } from '@/utils/scheduling/const';
 
 import { type CompanyMember, PausedBadge, RoleIcon } from '.';
 import { getBreakLabelV2 } from './utils';

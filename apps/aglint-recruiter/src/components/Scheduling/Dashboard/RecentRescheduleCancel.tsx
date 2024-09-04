@@ -1,19 +1,19 @@
 /* eslint-disable security/detect-object-injection */
+import { NoData } from '@devlink3/NoData';
+import { RecentDeclineList } from '@devlink3/RecentDeclineList';
+import { RecentDeclines } from '@devlink3/RecentDeclines';
+import { RecentReschedule } from '@devlink3/RecentReschedule';
+import { RecentRescheduleList } from '@devlink3/RecentRescheduleList';
 import { Avatar, Skeleton } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import { NoData } from '@/devlink3/NoData';
-import { RecentDeclineList } from '@/devlink3/RecentDeclineList';
-import { RecentDeclines } from '@/devlink3/RecentDeclines';
-import { RecentReschedule } from '@/devlink3/RecentReschedule';
-import { RecentRescheduleList } from '@/devlink3/RecentRescheduleList';
 import {
   useCancelRescheduleReasons,
   useCancelRescheduleReasonsUsers,
   useScheduleSessionsAnalytics,
-} from '@/src/queries/scheduling-dashboard';
+} from '@/queries/scheduling-dashboard';
 
 import { FilterDropDownDash } from './FilterDropDownDash';
 

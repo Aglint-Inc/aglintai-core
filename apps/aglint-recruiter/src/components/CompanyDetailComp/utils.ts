@@ -1,11 +1,11 @@
 import { type RecruiterDB } from '@aglint/shared-types';
 
 // import debounce from 'lodash/debounce';
-import { getAIResponse } from '@/src/utils/prompts/addNewJob';
-import { type MessageType } from '@/src/utils/prompts/types';
-import { requestJson } from '@/src/utils/prompts/utils';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/ToastPro';
+import { getAIResponse } from '@/utils/prompts/addNewJob';
+import { type MessageType } from '@/utils/prompts/types';
+import { requestJson } from '@/utils/prompts/utils';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/ToastPro';
 
 export const saveToDatabase = async (recruit: RecruiterDB, id: string) => {
   return supabase

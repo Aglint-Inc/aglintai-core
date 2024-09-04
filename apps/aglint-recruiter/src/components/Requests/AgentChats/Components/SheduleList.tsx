@@ -1,9 +1,8 @@
+import { Text } from '@devlink//Text';
+import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Box, Stack } from '@mui/material';
 import Link from 'next/link';
 import React, { useState } from 'react';
-
-import { Text } from '@/devlink//Text';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 
 export type ScheduleListProps = {
   time: string;

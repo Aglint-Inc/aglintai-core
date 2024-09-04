@@ -5,11 +5,11 @@ import { SystemAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { getFullName } from '@/src/utils/jsonResume';
-import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { addScheduleActivity } from '@/components/Scheduling/Candidates/queries/utils';
+import { getFullName } from '@/utils/jsonResume';
+import { createFilterJson } from '@/utils/scheduling/createFilterJson';
+import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamTaskCreate = {
   schedule_id: string;

@@ -1,29 +1,29 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Page404 } from '@devlink/Page404';
+import { UserInfoTeam } from '@devlink/UserInfoTeam';
+import { AiTaskBanner } from '@devlink2/AiTaskBanner';
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { ButtonSolid } from '@devlink2/ButtonSolid';
+import { GlobalBadge } from '@devlink2/GlobalBadge';
+import { PageLayout } from '@devlink2/PageLayout';
+import { RequestDetail } from '@devlink2/RequestDetail';
+import { RequestDetailRight } from '@devlink2/RequestDetailRight';
+import { SkeletonScheduleCard } from '@devlink2/SkeletonScheduleCard';
+import { Text } from '@devlink2/Text';
+import { TextWithIcon } from '@devlink2/TextWithIcon';
+import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Page404 } from '@/devlink/Page404';
-import { UserInfoTeam } from '@/devlink/UserInfoTeam';
-import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
-import { PageLayout } from '@/devlink2/PageLayout';
-import { RequestDetail } from '@/devlink2/RequestDetail';
-import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
-import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
-import { Text } from '@/devlink2/Text';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequest } from '@/src/context/RequestContext';
-import { useRequests } from '@/src/context/RequestsContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequest } from '@/context/RequestContext';
+import { useRequests } from '@/context/RequestsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';

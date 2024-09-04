@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { subscriptions } from '@/src/hooks/useRealtime';
+import { subscriptions } from '@/hooks/useRealtime';
 import {
   type GetRequestParams,
   requestQueries,
@@ -10,10 +10,10 @@ import {
   useRequestsCreate,
   useRequestsDelete,
   useRequestsUpdate,
-} from '@/src/queries/requests';
-import { type RequestResponse } from '@/src/queries/requests/types';
-import { SafeObject } from '@/src/utils/safeObject';
-import { supabase } from '@/src/utils/supabase/client';
+} from '@/queries/requests';
+import { type RequestResponse } from '@/queries/requests/types';
+import { SafeObject } from '@/utils/safeObject';
+import { supabase } from '@/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 

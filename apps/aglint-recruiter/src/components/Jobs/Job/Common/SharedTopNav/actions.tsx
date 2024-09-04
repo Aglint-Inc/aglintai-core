@@ -1,5 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import { dayjsLocal } from '@aglint/shared-utils';
+import OptimisticWrapper from '@components/loadingWapper';
+import { Button } from '@components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { CloseJobModal } from '@devlink/CloseJobModal';
+import { ScoreSetting } from '@devlink3/ScoreSetting';
 import { CircularProgress, Dialog } from '@mui/material';
 import {
   BarChart,
@@ -15,23 +26,12 @@ import {
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
-import OptimisticWrapper from '@/components/loadingWapper';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CloseJobModal } from '@/devlink/CloseJobModal';
-import { ScoreSetting } from '@/devlink3/ScoreSetting';
-import UITextField from '@/src/components/Common/UITextField';
-import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useJob } from '@/src/context/JobContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import ROUTES from '@/src/utils/routing/routes';
+import UITextField from '@/components/Common/UITextField';
+import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useJob } from '@/context/JobContext';
+import { useJobs } from '@/context/JobsContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import ROUTES from '@/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
 

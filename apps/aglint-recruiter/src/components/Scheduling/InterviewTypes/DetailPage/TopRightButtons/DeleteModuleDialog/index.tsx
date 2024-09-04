@@ -1,16 +1,16 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { Text } from '@devlink/Text';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { Text } from '@/devlink/Text';
-import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import UITextField from '@/src/components/Common/UITextField';
-import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import UITextField from '@/components/Common/UITextField';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';

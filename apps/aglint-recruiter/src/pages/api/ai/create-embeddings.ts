@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
-import { tokenMeter } from '@/src/utils/tokenCounter';
+import { tokenMeter } from '@/utils/tokenCounter';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,

@@ -1,8 +1,8 @@
+import { GlobalIcon } from '@devlink/GlobalIcon';
 import { capitalize, MenuItem, Stack, TextField } from '@mui/material';
 import React from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { useInterviewModules } from '@/src/queries/interview-modules';
+import { useInterviewModules } from '@/queries/interview-modules';
 
 import {
   setEditSession,

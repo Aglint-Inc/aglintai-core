@@ -1,12 +1,14 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 
-import { Text } from '@/devlink/Text';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import ROUTES from '@/src/utils/routing/routes';
+import { getScheduleType } from '@/components/Scheduling/Candidates/utils';
+import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
+import ROUTES from '@/utils/routing/routes';
 
-import ScheduleList, { type ScheduleListProps } from '../../Components/SheduleList';
+import ScheduleList, {
+  type ScheduleListProps,
+} from '../../Components/SheduleList';
 import { type ChatType } from '../hooks/fetch';
 
 function FetchScheduledInterviews({ chat }: { chat: ChatType }) {

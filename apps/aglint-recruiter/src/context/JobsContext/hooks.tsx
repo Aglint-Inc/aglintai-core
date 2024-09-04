@@ -9,8 +9,8 @@ import {
   useJobsRead,
   useJobsSync,
   useJobUpdate,
-} from '@/src/queries/jobs';
-import { type Job } from '@/src/queries/jobs/types';
+} from '@/queries/jobs';
+import { type Job } from '@/queries/jobs/types';
 
 import { type ApplicationStore } from '../ApplicationContext/store';
 import { handleGenerateJd } from '../JobContext/hooks';

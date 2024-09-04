@@ -5,17 +5,17 @@ import dayjs from '@utils/dayjs';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { type TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
-import { type BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
+import { type TimezoneObj } from '@/components/CompanyDetailComp/SettingsSchedule';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
+import { type BodyParamsCandidateInvite } from '@/pages/api/scheduling/invite';
 import {
   type useInviteSlots,
   useConfirmSlots,
   useInviteMeta,
-} from '@/src/queries/candidate-invite';
-import timeZones from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+} from '@/queries/candidate-invite';
+import timeZones from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 const useInviteActions = () => {
   const router = useRouterPro<{ filter_id: string; task_id?: string }>();

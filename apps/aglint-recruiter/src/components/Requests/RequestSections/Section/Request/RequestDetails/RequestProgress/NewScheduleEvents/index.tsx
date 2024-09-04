@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
+import { RequestProgress } from '@devlink2/RequestProgress';
 import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
-import { RequestProgress } from '@/devlink2/RequestProgress';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
-import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequest } from '@/src/context/RequestContext';
+import MuiPopup from '@/components/Common/MuiPopup';
+import { ShowCode } from '@/components/Common/ShowCode';
+import { fetchEmailTemplates } from '@/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
+import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequest } from '@/context/RequestContext';
 
 import {
   type RequestProgressMapType,

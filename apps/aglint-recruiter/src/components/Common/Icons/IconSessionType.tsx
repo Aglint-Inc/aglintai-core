@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Box } from '@mui/material';
-
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 
 function IconSessionType({
   type,

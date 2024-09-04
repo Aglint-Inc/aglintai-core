@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export async function getGreenhouseMeta(recruiter_id: string) {
   const { greenhouse_metadata, greenhouse_key } = (

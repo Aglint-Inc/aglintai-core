@@ -1,12 +1,12 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { DcPopup } from '@devlink/DcPopup';
+import { Text } from '@devlink/Text';
 import { Dialog } from '@mui/material';
 import React from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
-import { Text } from '@/devlink/Text';
-import dayjs from '@/src/utils/dayjs';
-import { supabase } from '@/src/utils/supabase/client';
+import dayjs from '@/utils/dayjs';
+import { supabase } from '@/utils/supabase/client';
 
 import { useModuleRelations } from '../hooks';
 import {

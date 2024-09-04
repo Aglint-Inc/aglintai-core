@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AllCandidatesScheduling from '@/src/components/Scheduling/Candidates';
+import AllCandidatesScheduling from '@/components/Scheduling/Candidates';
 
 function AllCandidatesSchedulingPage() {
   return (

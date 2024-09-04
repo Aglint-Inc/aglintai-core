@@ -1,9 +1,8 @@
 'use client';
+import { ButtonSoft } from '@devlink/ButtonSoft';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 
 function ProfilePage() {
   const { push } = useRouter();

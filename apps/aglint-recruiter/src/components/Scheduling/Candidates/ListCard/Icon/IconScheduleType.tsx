@@ -2,7 +2,7 @@ import { type DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { PhoneOutgoing, Video } from 'lucide-react';
 
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ShowCode } from '@/components/Common/ShowCode';
 
 function IconScheduleType({
   type,

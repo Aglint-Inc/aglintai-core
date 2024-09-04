@@ -1,13 +1,13 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Text } from '@devlink/Text';
+import { GeneralPopupLarge } from '@devlink3/GeneralPopupLarge';
 import { Dialog, Stack } from '@mui/material';
 import { marked } from 'marked';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Text } from '@/devlink/Text';
-import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
+import { ShowCode } from '@/components/Common/ShowCode';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 
 function Instructions({
   instruction,
@@ -17,7 +17,7 @@ function Instructions({
   isBorder = false,
   isPadding = true,
   isWidth = true,
-  isMinWidth= true,
+  isMinWidth = true,
 }: {
   instruction: string;
   updateInstruction: any;

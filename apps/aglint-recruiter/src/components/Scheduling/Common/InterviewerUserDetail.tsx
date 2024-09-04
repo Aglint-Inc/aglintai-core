@@ -1,17 +1,16 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
-import Link from 'next/link';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { Text } from '@/devlink/Text';
-import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
+} from '@components/ui/tooltip';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { Text } from '@devlink/Text';
+import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
+import { Stack } from '@mui/material';
+import Link from 'next/link';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';

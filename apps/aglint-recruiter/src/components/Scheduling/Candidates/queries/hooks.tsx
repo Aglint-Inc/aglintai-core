@@ -4,7 +4,7 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 import { type FilterCandidateState } from '../filter-store';
 

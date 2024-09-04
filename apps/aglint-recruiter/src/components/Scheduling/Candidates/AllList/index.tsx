@@ -1,13 +1,13 @@
+import { ScheduleProgress } from '@devlink/ScheduleProgress';
+import { Skeleton } from '@devlink2/Skeleton';
+import { SkeletonAllInterviewCard } from '@devlink2/SkeletonAllInterviewCard';
 import { Stack } from '@mui/material';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 
-import { ScheduleProgress } from '@/devlink/ScheduleProgress';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { SkeletonAllInterviewCard } from '@/devlink2/SkeletonAllInterviewCard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ROUTES from '@/src/utils/routing/routes';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import ROUTES from '@/utils/routing/routes';
 
 import { useFilterCandidateStore } from '../filter-store';
 import ListCardInterviewSchedule from '../ListCard';

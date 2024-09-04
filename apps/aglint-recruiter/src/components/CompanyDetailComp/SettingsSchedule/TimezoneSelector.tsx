@@ -1,7 +1,7 @@
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import timeZones from '@/src/utils/timeZone';
+import timeZones from '@/utils/timeZone';
 
 import UITextField from '../../Common/UITextField';
 

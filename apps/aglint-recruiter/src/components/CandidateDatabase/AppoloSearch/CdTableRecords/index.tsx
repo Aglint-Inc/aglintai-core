@@ -1,21 +1,21 @@
+import { CdAglintEmptyTable } from '@devlink/CdAglintEmptyTable';
+import { CdExperienceCard } from '@devlink/CdExperienceCard';
+import { CdLoadMore } from '@devlink/CdLoadMore';
+import { CdTableAglint } from '@devlink/CdTableAglint';
+import { CdTableLoader } from '@devlink/CdTableLoader';
+import { Checkbox } from '@devlink/Checkbox';
 import { Avatar, Stack, Typography } from '@mui/material';
+import { EmptyStateCandidateSearchAglint } from '@public/lottie/EmptyLottie';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import CompanyLogo from '@/components/Common/CompanyLogo';
+import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useToast } from '@/components/hooks/use-toast';
-import { CdAglintEmptyTable } from '@/devlink/CdAglintEmptyTable';
-import { CdExperienceCard } from '@/devlink/CdExperienceCard';
-import { CdLoadMore } from '@/devlink/CdLoadMore';
-import { CdTableAglint } from '@/devlink/CdTableAglint';
-import { CdTableLoader } from '@/devlink/CdTableLoader';
-import { Checkbox } from '@/devlink/Checkbox';
-import { EmptyStateCandidateSearchAglint } from '@/public/lottie/EmptyLottie';
-import CompanyLogo from '@/src/components/Common/CompanyLogo';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
+import { getFullName } from '@/utils/jsonResume';
+import { supabase } from '@/utils/supabase/client';
 
 import {
   setCandidateHistory,

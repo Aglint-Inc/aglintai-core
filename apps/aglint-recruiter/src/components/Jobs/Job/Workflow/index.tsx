@@ -1,6 +1,3 @@
-import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,16 +5,19 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { WorkflowJobs } from '@/devlink/WorkflowJobs';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { PageLayout } from '@/devlink2/PageLayout';
-import Loader from '@/src/components/Common/Loader';
-import { useJob } from '@/src/context/JobContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
-import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+} from '@components/ui/breadcrumb';
+import { WorkflowJobs } from '@devlink/WorkflowJobs';
+import { ButtonSolid } from '@devlink2/ButtonSolid';
+import { PageLayout } from '@devlink2/PageLayout';
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+
+import Loader from '@/components/Common/Loader';
+import { useJob } from '@/context/JobContext';
+import { useJobDashboard } from '@/context/JobDashboard';
+import { useJobDashboardStore } from '@/context/JobDashboard/store';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';

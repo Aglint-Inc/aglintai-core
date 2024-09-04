@@ -3,13 +3,13 @@
 /* eslint-disable no-console */
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
+import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import {
   type MeetingLimitsConfig,
   MeetingTypeEnum,
-} from '@/src/utils/seed_calender/types';
-import { seedCalendersUtil } from '@/src/utils/seed_calender/util';
+} from '@/utils/seed_calender/types';
+import { seedCalendersUtil } from '@/utils/seed_calender/util';
 // Define an enumeration for meeting types
 
 const cal_start_date = userTzDayjs('2024/06/14').startOf('day').format();

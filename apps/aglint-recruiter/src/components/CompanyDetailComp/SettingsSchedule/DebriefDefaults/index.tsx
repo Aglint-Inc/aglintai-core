@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { type schedulingSettingType } from '@aglint/shared-types';
+import { Switch } from '@components/ui/switch';
+import { Attendee } from '@devlink2/Attendee';
+import { DebriefDefaults as DebriefDefaultsDev } from '@devlink3/DebriefDefaults';
 import { Stack } from '@mui/material';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import { Switch } from '@/components/ui/switch';
-import { Attendee } from '@/devlink2/Attendee';
-import { DebriefDefaults as DebriefDefaultsDev } from '@/devlink3/DebriefDefaults';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 type MembersMeta = schedulingSettingType['debrief_defaults'];
 

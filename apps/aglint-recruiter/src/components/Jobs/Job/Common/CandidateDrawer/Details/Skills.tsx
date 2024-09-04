@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
+import { CandidateDetail } from '@devlink/CandidateDetail';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Skeleton } from '@devlink2/Skeleton';
 import { Stack } from '@mui/material';
 
-import { CandidateDetail } from '@/devlink/CandidateDetail';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { useApplication } from '@/src/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
 import { getIconName } from '../utils';

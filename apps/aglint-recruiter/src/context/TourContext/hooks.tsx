@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
-import { tourQuery, useCreateTourLog } from '@/src/queries/tour';
+import { tourQuery, useCreateTourLog } from '@/queries/tour';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
