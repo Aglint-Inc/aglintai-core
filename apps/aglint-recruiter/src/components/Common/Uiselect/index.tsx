@@ -62,7 +62,7 @@ const UISelect = ({
           {startIcon && <span className='mr-2'>{startIcon}</span>}
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='z-[2000]'>
           {menuOptions.length === 0 ? (
             <div className='px-2 py-1 italic text-gray-500 cursor-default'>
               No options available
