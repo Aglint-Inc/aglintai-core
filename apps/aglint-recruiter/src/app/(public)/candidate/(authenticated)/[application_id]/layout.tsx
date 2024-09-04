@@ -7,7 +7,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <Navigation/>
-      <div className='w-full container max-w-screen-xl mx-auto mt-5' style={{ minHeight: '80vh' }}>{children}</div>
+      <div className='w-full container max-w-screen-xl mx-auto mt-5' style={{ minHeight: 'calc(100vh - 260px)' }}>{children}</div>
       <Footer/>
     </div>
   );

@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
 import EmptyState from '@/src/components/CandiatePortal/components/EmptyState';
+import InterviewsSkeleton from '@/src/components/CandiatePortal/components/InterviewSkeleton';
 import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
-import Loader from '@/src/components/Common/Loader';
+// import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';
 
 export default function InterviewsPage({ params }) {
@@ -17,7 +18,7 @@ export default function InterviewsPage({ params }) {
   const { isLoading, data } = usePortalInterviews({ application_id });
 
   if (isLoading) {
-    return <Loader />;
+    return <InterviewsSkeleton />;
   }
 
   const upcoming =
@@ -27,7 +28,7 @@ export default function InterviewsPage({ params }) {
 
   return (
     <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
-      <main className='lg:w-[70%] space-y-6'>
+      <main className='lg:w-[70%] space-y-6 mx-auto'>
         <div>
           <h2 className='text-lg font-semibold mb-4'>Upcoming interviews</h2>
           {upcoming?.length > 0 ? (
@@ -35,7 +36,7 @@ export default function InterviewsPage({ params }) {
               <InterviewCard key={index} interview={interview} />
             ))
           ) : (
-            <div>
+            <div className='h-60'>
               <EmptyState icon={Calendar} text='No upcoming interviews' />
             </div>
           )}
@@ -47,13 +48,15 @@ export default function InterviewsPage({ params }) {
               <InterviewCard key={index} interview={interview} />
             ))
           ) : (
-            <EmptyState icon={Calendar} text='No Past interviews' />
+            <div className='h-60'>
+            <EmptyState  icon={Calendar} text='No Past interviews' />
+            </div>
           )}
         </div>
       </main>
-      <aside className='lg:w-[30%] space-y-6'>
-        {/* You can add additional content or widgets here */}
-      </aside>
+      {/* <aside className='lg:w-[30%] space-y-6'>
+      
+      </aside> */}
     </div>
   );
 }

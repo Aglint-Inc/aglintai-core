@@ -12,6 +12,7 @@ export default function ProfileView({application_id,formData}:{application_id:st
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader className="flex flex-row items-start justify-between">
         <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
           <Image
             src={formData.avatar}
             alt="Profile picture"
@@ -19,6 +20,7 @@ export default function ProfileView({application_id,formData}:{application_id:st
             width={120}
             height={120}
           />
+          </div>
           <h2 className="text-xl font-semibold">{getFullName(formData.first_name,formData.last_name)}</h2>
         </div>
         <ProfileEdit application_id={application_id} formData={formData} />

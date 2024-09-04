@@ -41,9 +41,9 @@ export default RequestedAvailability;
 
 const AvailabilityEmpty = () => {
   return (
-    <CardContent>
-      <CardHeader>Availability Request</CardHeader>
-      <p>No availability request found</p>
+    <CardContent className='p-0 pl-4 pb-4'>
+      <CardHeader className='p-4 pl-0 text-md font-semibold'>Availability Request</CardHeader>
+      <p className='text-muted-foreground'>No Availability Requests</p>
     </CardContent>
   );
 };

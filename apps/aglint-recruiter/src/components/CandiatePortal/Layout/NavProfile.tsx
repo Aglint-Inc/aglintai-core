@@ -17,8 +17,8 @@ export default function NavProfile({ application_id }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='w-10 h-10 cursor-pointer rounded-md'>
-          <AvatarImage src='/images/user-4.jpg' alt='@shadcn' />
-          <AvatarFallback className='bg-primary text-primary-foreground'>
+          <AvatarImage className='object-cover rounded-md' src='/images/user-4.jpg' alt='@shadcn' />
+          <AvatarFallback className='bg-primary text-primary-foreground rounded-md'>
             FU
           </AvatarFallback>
         </Avatar>

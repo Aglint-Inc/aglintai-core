@@ -18,7 +18,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
 
   const isActive =
     status === 'Scheduled' || status === 'Completed' || status === 'Upcoming';
-  const cardClasses = `w-full mb-3 ${isActive ? '' : 'opacity-50 cursor-not-allowed'}`;
+  const cardClasses = `w-full mb-3 ${isActive ? '' : 'cursor-not-allowed'}`;
 
   return (
     <div className='flex flex-row gap-2'>
