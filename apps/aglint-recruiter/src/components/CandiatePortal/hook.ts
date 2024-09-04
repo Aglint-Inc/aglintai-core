@@ -70,6 +70,7 @@ export const usePortalInterviews = ({
     refetchOnMount: true,
     queryFn: () => fetchInterviews(application_id),
     enabled: !!application_id,
+    retry: false,
   });
 
   return { ...query };
