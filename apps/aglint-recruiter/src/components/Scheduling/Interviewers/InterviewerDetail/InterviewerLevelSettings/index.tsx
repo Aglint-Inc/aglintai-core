@@ -38,9 +38,9 @@ import * as React from 'react';
 
 import FilterInput from '@/components/CandidateDatabase/Search/FilterInput';
 import UITextField from '@/components/Common/UITextField';
-import { LoadMax } from '@/components/CompanyDetailComp/SettingsSchedule';
-import MuiNumberfield from '@/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
-import SelectTime from '@/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
+import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
+import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 

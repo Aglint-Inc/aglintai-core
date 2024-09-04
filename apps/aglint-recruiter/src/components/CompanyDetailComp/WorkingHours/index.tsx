@@ -15,10 +15,10 @@ import {
 import { capitalize, cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
+import TimezonePicker from '@/components/Common/TimezonePicker';
 import dayjs from '@/utils/dayjs';
 
-import { type TimezoneObj, TimezoneSelector } from '.';
-import TimezonePicker from '@/src/components/Common/TimezonePicker';
+import { type TimezoneObj } from '../Scheduling';
 
 let schedulingSettingObj = {};
 
@@ -125,6 +125,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
               <div className='flex flex-col space-y-2'>
                 <label className='text-sm font-medium'>Time Zone</label>
                 <TimezonePicker
+                  // @ts-ignore
                   disabled={isTimeZone}
                   value={selectedTimeZone}
                   setValue={setSelectedTimeZone}
