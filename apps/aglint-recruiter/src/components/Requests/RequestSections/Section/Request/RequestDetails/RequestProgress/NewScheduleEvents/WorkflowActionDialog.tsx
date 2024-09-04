@@ -14,11 +14,9 @@ import { useRequest } from '@/src/context/RequestContext';
 import toast from '@/src/utils/toast';
 
 import { createRequestWorkflowAction } from '../../utils';
-import {
-  type WActionProps,
-  TargetAPIBody,
-} from '../WorkflowComps/TargetAPIBody';
+import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
 import { useNewScheduleRequestPr } from '.';
+import { useSelectedActionsDetails } from './dialogCtx';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
@@ -31,33 +29,12 @@ const WorkflowActionDialog = () => {
     setShowEditDialog,
   } = useNewScheduleRequestPr();
 
-  const [selectedActionsDetails, setSelectedActionsDetails] = useState<
-    WActionProps['action']
-  >(
-    reqTriggerActionsMap[editTrigger] &&
-      reqTriggerActionsMap[editTrigger].length > 0
-      ? reqTriggerActionsMap[editTrigger][0]
-      : {
-          action_type: ACTION_TRIGGER_MAP[editTrigger][0].value
-            .action_type as any,
-          created_at: '',
-          id: '',
-          order: 0,
-          target_api: ACTION_TRIGGER_MAP[editTrigger][0].value
-            .target_api as any,
-          workflow_id: '',
-          payload: {
-            body:
-              companyEmailTemplatesMp[
-                ACTION_TRIGGER_MAP[editTrigger][0].value.target_api
-              ]?.body ?? '',
-            subject:
-              companyEmailTemplatesMp[
-                ACTION_TRIGGER_MAP[editTrigger][0].value.target_api
-              ]?.subject ?? '',
-          },
-        },
-  );
+  const {
+    selectedActionsDetails,
+    setSelectedActionsDetails,
+    setEmailTemplate,
+    emailTemplate,
+  } = useSelectedActionsDetails();
 
   const [isAddingAction, setIsAddingAction] = useState(false);
   const handleChangeSelectedAction = (
@@ -68,25 +45,33 @@ const WorkflowActionDialog = () => {
       reqTriggerActionsMap[editTrigger][0].target_api === target_api
     ) {
       const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
-      setSelectedActionsDetails(existing_workflow_action);
+      setEmailTemplate({
+        body: existing_workflow_action.payload?.email?.body || '',
+        subject: existing_workflow_action.payload?.email?.subject || '',
+      });
+      existing_workflow_action.payload = undefined;
+      setSelectedActionsDetails({
+        ...existing_workflow_action,
+      });
     } else {
       const emailSlackTemplate = companyEmailTemplatesMp[target_api];
+      setEmailTemplate({
+        body: emailSlackTemplate?.body || '',
+        subject: emailSlackTemplate?.subject || '',
+      });
+      const defaultActDetails = ACTION_TRIGGER_MAP[editTrigger].find(
+        (t) => t.value.target_api === target_api,
+      );
       setSelectedActionsDetails({
-        action_type: ACTION_TRIGGER_MAP[editTrigger][0].value
-          .action_type as any,
-        created_at: '',
-        id: '',
+        id: undefined,
+        action_type: defaultActDetails.value.action_type,
+        created_at: new Date().toISOString(),
         order: 0,
         target_api: target_api as any,
-        workflow_id: '',
-        payload: {
-          body: emailSlackTemplate?.body || '',
-          subject: emailSlackTemplate?.subject || '',
-        },
+        workflow_id: undefined,
       });
     }
   };
-
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
@@ -133,9 +118,11 @@ const WorkflowActionDialog = () => {
                 handleSaveScheduleAction({
                   action_type: selectedActionsDetails.action_type as any,
                   target_api: selectedActionsDetails.target_api as any,
-                  payload: selectedActionsDetails.payload as any,
                   order: 0,
                   workflow_id: selectedActionsDetails.workflow_id,
+                  payload: {
+                    email: emailTemplate,
+                  },
                 });
               },
             }}

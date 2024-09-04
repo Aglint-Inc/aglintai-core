@@ -1,10 +1,15 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
-import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
@@ -26,9 +31,7 @@ function DateRangeField() {
 
   return (
     <Stack spacing={0.5}>
-      <Typography variant='body1'> 
-        Preferred Date Ranges
-      </Typography>
+      <Typography variant='body1'>Preferred Date Ranges</Typography>
       <TimeRangeSelector
         slotButton={
           <ButtonSoft
@@ -98,50 +101,84 @@ function DateRangeField() {
         isMultiDay={false}
         slotTimeinputs={
           <Stack direction={'row'} spacing={2}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopTimePicker
-                value={value?.startTime}
-                onAccept={(value) => {
-                  setValue((prev) => ({
-                    startTime: value,
-                    endTime: prev?.endTime,
-                  }));
-                }}
-                format='hh:mm A'
-                slots={{
-                  openPickerIcon: ClockIcon,
-                }}
-                sx={{
-                  width: '100%',
-                  '& input': {
-                    height: '17px',
-                    fontSize: '14px',
-                  },
-                }}
-              />
-            </LocalizationProvider>{' '}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopTimePicker
-                value={value?.endTime}
-                onAccept={(value) => {
-                  setValue((prev) => ({
-                    startTime: prev?.startTime,
-                    endTime: value,
-                  }));
-                }}
-                format='hh:mm A'
-                slots={{
-                  openPickerIcon: ClockIcon,
-                }}
-                sx={{
-                  width: '100%',
-                  '& input': {
-                    height: '17px',
-                    fontSize: '14px',
-                  },
-                }}
-              />
-            </LocalizationProvider>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant='outline'
+                  className='w-full justify-start text-left font-normal h-9 px-3 py-2'
+                >
+                  <ClockIcon className='mr-2 h-4 w-4' />
+                  {value?.startTime ? (
+                    dayjs(value.startTime).format('hh:mm A')
+                  ) : (
+                    <span>Pick a start time</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='w-auto p-0'>
+                <div className='grid gap-2'>
+                  <Input
+                    type='time'
+                    value={
+                      value?.startTime
+                        ? dayjs(value.startTime).format('HH:mm')
+                        : ''
+                    }
+                    onChange={(e) => {
+                      const [hours, minutes] = e.target.value.split(':');
+                      const newDate = dayjs()
+                        .hour(parseInt(hours, 10))
+                        .minute(parseInt(minutes, 10));
+                      setValue((prev) => ({
+                        startTime: newDate.toDate(),
+                        endTime: prev?.endTime,
+                      }));
+                    }}
+                    className='w-full'
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
+            <div className='w-full'>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant='outline'
+                    className='w-full justify-start text-left font-normal h-9 px-3 py-2'
+                  >
+                    <ClockIcon className='mr-2 h-4 w-4' />
+                    {value?.endTime ? (
+                      dayjs(value.endTime).format('hh:mm A')
+                    ) : (
+                      <span>Pick an end time</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0'>
+                  <div className='grid gap-2'>
+                    <Input
+                      type='time'
+                      value={
+                        value?.endTime
+                          ? dayjs(value.endTime).format('HH:mm')
+                          : ''
+                      }
+                      onChange={(e) => {
+                        const [hours, minutes] = e.target.value.split(':');
+                        const newDate = dayjs()
+                          .hour(parseInt(hours, 10))
+                          .minute(parseInt(minutes, 10));
+                        setValue((prev) => ({
+                          startTime: prev?.startTime,
+                          endTime: newDate.toDate(),
+                        }));
+                      }}
+                      className='w-full'
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
           </Stack>
         }
         textDay={'Day'}

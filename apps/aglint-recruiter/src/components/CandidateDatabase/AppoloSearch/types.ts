@@ -1,5 +1,4 @@
 import { type DB } from '@aglint/shared-types';
-import { type Json } from '@trigger.dev/sdk';
 
 export type Candidate = Omit<
   DB['public']['Tables']['aglint_candidates']['Row'],
@@ -65,7 +64,7 @@ interface Organization {
   linkedin_url: string | null;
   twitter_url: string | null;
   facebook_url: string | null;
-  primary_phone: Json;
+  primary_phone: JSON;
   languages: string[];
   alexa_ranking: number;
   phone: string | null;

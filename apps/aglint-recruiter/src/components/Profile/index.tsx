@@ -1,16 +1,15 @@
-import { Autocomplete, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { NavSublink } from '@/devlink/NavSublink';
-import { UserProfile } from '@/devlink/UserProfile';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { type PermissionEnums } from '@/src/utils/routing/permissions';
+// import { Permissions } from '@/src/types/permissions'; // Add this import
 import { capitalize } from '@/src/utils/text/textUtils';
 
-import UIPhoneInput from '../Common/UIPhoneInput';
-import UITextField from '../Common/UITextField';
+import { ShadcnPhoneInput } from '../Common/UIPhoneInput/PhoneInput';
 import { PasswordUpdate } from './components/PasswordUpdate';
 import { UserDetail } from './components/UserDetails';
 import {
@@ -21,69 +20,51 @@ import {
   type PreferenceFormFields,
 } from './util';
 
-const navTabs: {
+const navTabs: Array<{
   label: string;
   route: string;
-  roles?: PermissionEnums[];
-}[] = [
-  {
-    label: 'Your Details',
-    route: 'user_detail',
-  },
-  {
-    label: 'Password Update',
-    route: 'password_update',
-  },
+  roles?: (Permissions | 'authorized')[];
+}> = [
+  { label: 'Your Details', route: 'user_detail' },
+  { label: 'Password Update', route: 'password_update' },
 ];
 
 const ProfileDashboard = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const router = useRouter();
-
-  const [currTab, setCurrTab] = useState<
-    'user_detail' | 'change_email' | 'password_update'
-  >('user_detail');
+  const [currTab, setCurrTab] = useState('user_detail');
 
   useEffect(() => {
-    if (router.query?.tab)
-      setCurrTab(router.query?.tab as unknown as typeof currTab);
+    if (router.query?.tab) setCurrTab(router.query?.tab as string);
   }, [router.query?.tab]);
 
   return (
-    <>
-      <Stack>
-        <UserProfile
-          slotInfo={
-            <>
-              {currTab === 'user_detail' && <UserDetail />}
-              {currTab === 'password_update' && <PasswordUpdate />}
-            </>
-          }
-          // slotPreferenceForm={<>fjerknferjkn</>}
-          slotNavSublink={
-            <>
-              {navTabs
-                .filter((item) =>
-                  item.roles ? checkPermissions(item.roles) : true,
-                )
-                .map((item) => (
-                  <NavSublink
-                    key={item.route}
-                    isActive={currTab === item.route}
-                    onClickNav={{
-                      onClick: () => {
-                        router.query.tab = item.route;
-                        router.push(router);
-                      },
-                    }}
-                    textLink={item.label}
-                  />
-                ))}
-            </>
-          }
-        />
-      </Stack>
-    </>
+    <div className='p-4'>
+      <Tabs
+        value={currTab}
+        onValueChange={(value) => {
+          router.push({ query: { ...router.query, tab: value } });
+        }}
+      >
+        <TabsList>
+          {navTabs
+            .filter((item) =>
+              item.roles ? checkPermissions(item.roles as any) : true,
+            )
+            .map((item) => (
+              <TabsTrigger key={item.route} value={item.route}>
+                {item.label}
+              </TabsTrigger>
+            ))}
+        </TabsList>
+        <TabsContent value='user_detail'>
+          <UserDetail />
+        </TabsContent>
+        <TabsContent value='password_update'>
+          <PasswordUpdate />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
@@ -125,13 +106,6 @@ export const ProfileForms = ({
   return <>{forms}</>;
 };
 
-type phone = {
-  countryCode: string;
-  dialCode: string;
-  format: string;
-  name: string;
-};
-
 const ProfileForm = ({
   id,
   value,
@@ -158,107 +132,65 @@ const ProfileForm = ({
   switch (value.validation) {
     case 'phone': {
       return (
-        <UIPhoneInput
-          labelSize='small'
-          defaultCountry={defaultCountry}
-          label={value.label}
-          placeholder={value.placeholder}
-          value={value.value}
-          required={value.required}
-          disabled={value.disabled}
-          error={value.error}
-          onChange={(value, data: phone, event, formattedValue) => {
-            onChange({ target: { value: formattedValue } }, id, data.format);
-          }}
-          helperText={`Please enter a valid ${capitalize(id)}`}
-        />
+        <div className='space-y-2'>
+          {value.label && <Label>{value.label}</Label>}
+          <ShadcnPhoneInput
+            country={defaultCountry}
+            placeholder={value.placeholder}
+            value={value.value}
+            required={value.required}
+            disabled={value.disabled}
+            onChange={(phone) => {
+              onChange({ target: { value: phone } }, id);
+            }}
+          />
+          {value.error && (
+            <p className='text-sm text-red-500'>{`Please enter a valid ${capitalize(id)}`}</p>
+          )}
+        </div>
       );
     }
     case 'password': {
       return (
-        <UITextField
-          labelBold='default'
-          labelSize='small'
-          fullWidth
-          type={showPassword ? 'text' : 'password'}
-          label={value.label}
-          placeholder={value.placeholder}
-          required={value.required}
-          value={value.value}
-          disabled={value.blocked}
-          error={value.error}
-          helperText={
-            value.helperText ?? `Please enter a valid ${capitalize(id)}`
-          }
-          onChange={(e) => onChange(e, id)}
-          // InputProps={{
-          //   endAdornment: (
-          //     <InputAdornment position='end'>
-          //       <IconButton
-          //         aria-label='toggle password visibility'
-          //         onClick={handleClickShowPassword}
-          //         onMouseDown={handleMouseDownPassword}
-          //         edge='end'
-          //         style={{ opacity: value.value ? 1 : 0.5 }}
-          //       >
-          //         {showPassword ? (
-          //           <GlobalIcon iconName='visibility' />
-          //         ) : (
-          //           <GlobalIcon iconName='visibility_off' />
-          //         )}
-          //       </IconButton>
-          //     </InputAdornment>
-          //   ),
-          //   sx: {
-          //     width: '360px',
-          //   },
-          // }}
-        />
+        <div className='space-y-2'>
+          <Label htmlFor={id}>{value.label}</Label>
+          <Input
+            id={id}
+            type='password'
+            placeholder={value.placeholder}
+            required={value.required}
+            value={value.value}
+            disabled={value.blocked}
+            onChange={(e) => onChange(e, id)}
+            className={value.error ? 'border-red-500' : ''}
+          />
+          {value.error && (
+            <p className='text-sm text-red-500'>
+              {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
+            </p>
+          )}
+        </div>
       );
     }
     default: {
-      if (value.options !== null) {
-        return (
-          <Autocomplete
-            disableClearable
-            freeSolo
-            fullWidth
-            options={value.options}
-            onChange={(event, value) => {
-              if (value) {
-                onChange({ target: { value: value } }, id);
-              }
-            }}
-            value={value.value}
-            getOptionLabel={(option) => option}
-            renderInput={(params) => (
-              <UITextField
-                labelBold='default'
-                {...params}
-                fullWidth
-                label={value.label}
-                labelSize='small'
-              />
-            )}
-          />
-        );
-      }
       return (
-        <UITextField
-          labelBold='default'
-          labelSize='small'
-          fullWidth
-          label={value.label}
-          placeholder={value.placeholder}
-          required={value.required}
-          value={value.value}
-          disabled={value.blocked}
-          error={value.error}
-          helperText={
-            value.helperText ?? `Please enter a valid ${capitalize(id)}`
-          }
-          onChange={(e) => onChange(e, id)}
-        />
+        <div className='space-y-2'>
+          <Label htmlFor={id}>{value.label}</Label>
+          <Input
+            id={id}
+            placeholder={value.placeholder}
+            required={value.required}
+            value={value.value}
+            disabled={value.blocked}
+            onChange={(e) => onChange(e, id)}
+            className={value.error ? 'border-red-500' : ''}
+          />
+          {value.error && (
+            <p className='text-sm text-red-500'>
+              {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
+            </p>
+          )}
+        </div>
       );
     }
   }

@@ -1,173 +1,85 @@
-/* eslint-disable no-unused-vars */
-import { Button, Popover, Stack } from '@mui/material';
-import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+'use client';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { Text } from '@/devlink/Text';
-import { TaskDate } from '@/devlink3/TaskDate';
-import { ShowCode } from '@/src/components/Common/ShowCode';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import * as React from 'react';
+import { DateRange } from 'react-day-picker';
 
-import DateRange from './DateRange';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 function SelectScheduleDate({
   scheduleDate,
-  isOptionList = true,
   onChange,
 }: {
   scheduleDate: { start_date: string; end_date: string };
-  isOptionList?: boolean;
-  onChange?: any;
+  // eslint-disable-next-line no-unused-vars
+  onChange?: (dates: [Date | undefined, Date | undefined]) => void;
 }) {
-  const [rangeActive, setRangeActive] = useState(true);
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: scheduleDate.start_date
+      ? new Date(scheduleDate.start_date)
+      : undefined,
+    to: scheduleDate.end_date ? new Date(scheduleDate.end_date) : undefined,
+  });
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const [selectedDate, setSelectedDate] = useState([]);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  useEffect(() => {
-    setSelectedDate([scheduleDate.start_date, scheduleDate.end_date]);
+  React.useEffect(() => {
+    setDate({
+      from: scheduleDate.start_date
+        ? new Date(scheduleDate.start_date)
+        : undefined,
+      to: scheduleDate.end_date ? new Date(scheduleDate.end_date) : undefined,
+    });
   }, [scheduleDate]);
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-  return (
-    <>
-      <Stack
-        sx={{
-          cursor: 'pointer',
-        }}
-        width={'100%'}
-        onClick={handleClick}
-      >
-        <ShowCode>
-          <ShowCode.When isTrue={!!scheduleDate.end_date}>
-            <Text
-              size={1}
-              color={'accent'}
-              content={
-                scheduleDate.start_date ? (
-                  <>{`${dayjs(scheduleDate.start_date).format('MMM DD, YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('MMM DD, YYYY') : ''}`}</>
-                ) : (
-                  <>Select Date</>
-                )
-              }
-            />
-          </ShowCode.When>
-          <ShowCode.Else>
-            {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('MMM DD, YYYY')}`}</>
-            ) : (
-              <>Select Date</>
-            )}
-          </ShowCode.Else>
-        </ShowCode>
-      </Stack>
 
-      <Popover
-        id={id}
-        open={open && isOptionList}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        sx={{
-          '& .MuiPopover-paper': {
-            border: 'none',
-          },
-        }}
-      >
-        <TaskDate
-          onClickInDateRange={{
-            onClick: () => {
-              setRangeActive(true);
-            },
-          }}
-          onClickSpecificDate={{
-            onClick: () => {
-              setRangeActive(false);
-            },
-          }}
-          isInDateRangeActive={rangeActive}
-          isSpecificDateActive={!rangeActive}
-          slotDate={
-            <>
-              <ShowCode>
-                <ShowCode.When isTrue={rangeActive}>
-                  <DateRange
-                    onChange={(e) => {
-                      setSelectedDate(e);
-                    }}
-                    value={
-                      dayjs(scheduleDate.end_date).toString() == 'Invalid Date'
-                        ? [
-                            dayjs(scheduleDate.start_date),
-                            dayjs(scheduleDate.start_date),
-                          ]
-                        : [
-                            dayjs(scheduleDate.start_date),
-                            dayjs(scheduleDate.end_date),
-                          ]
-                    }
-                  />
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                      disablePast
-                      value={dayjs(selectedDate[0])}
-                      onChange={(e) => {
-                        setSelectedDate([e, null]);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </ShowCode.Else>
-              </ShowCode>
-              <Stack
-                justifyContent={'end'}
-                direction={'row'}
-                spacing={'var(--space-2)'}
-              >
-                <ButtonGhost
-                  size={2}
-                  color={'neutral'}
-                  textButton='Cancel'
-                  onClickButton={{
-                    onClick: () => {
-                      setAnchorEl(null);
-                    },
-                  }}
-                />
-                <ButtonGhost
-                  size={2}
-                  textButton='OK'
-                  onClickButton={{
-                    onClick: () => {
-                      if (onChange) {
-                        onChange(selectedDate);
-                        setAnchorEl(null);
-                      }
-                    },
-                  }}
-                />
-              </Stack>
-            </>
-          }
-        />
+  const handleSelect = (newDate: DateRange | undefined) => {
+    setDate(newDate);
+    if (onChange) {
+      onChange([newDate?.from, newDate?.to]);
+    }
+  };
+
+  return (
+    <div className='grid gap-2'>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id='date'
+            variant='outline'
+            className='w-full justify-start text-left font-normal'
+          >
+            <CalendarIcon className='mr-2 h-4 w-4' />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, 'LLL dd, y')} -{' '}
+                  {format(date.to, 'LLL dd, y')}
+                </>
+              ) : (
+                format(date.from, 'LLL dd, y')
+              )
+            ) : (
+              <span>Select Date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-auto p-0' align='start'>
+          <Calendar
+            initialFocus
+            mode='range'
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={handleSelect}
+            numberOfMonths={2}
+          />
+        </PopoverContent>
       </Popover>
-    </>
+    </div>
   );
 }
 

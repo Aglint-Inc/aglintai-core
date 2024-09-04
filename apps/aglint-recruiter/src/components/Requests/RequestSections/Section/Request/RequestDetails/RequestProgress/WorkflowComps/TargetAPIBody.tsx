@@ -1,39 +1,35 @@
-import { type DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITypography from '@/src/components/Common/UITypography';
-import { type useWorkflow } from '@/src/context/Workflows/[id]';
-import { type WorkflowAction } from '@/src/types/workflow.types';
+
+import { useSelectedActionsDetails } from '../NewScheduleEvents/dialogCtx';
 
 export type WActionProps = {
-  action: ReturnType<typeof useWorkflow>['actions']['data'][number];
+  action: Omit<DatabaseTable['workflow_action'], 'payload'>;
 };
 
 export const TargetAPIBody = (props: WActionProps) => {
   switch (props.action.action_type) {
     case 'email':
-      return <EmailTemplate key={props.action.target_api} {...props} />;
+      return <EmailTemplate key={props.action.target_api} />;
     case 'slack':
-      return <SlackTemplate key={props.action.target_api} {...props} />;
+      return <SlackTemplate key={props.action.target_api} />;
     case 'end_point':
-      return <EndPointTemplate key={props.action.target_api} {...props} />;
+      return <EndPointTemplate key={props.action.target_api} />;
     case 'agent_instruction':
-      return (
-        <AgentInstructionTemplate key={props.action.target_api} {...props} />
-      );
+      return <AgentInstructionTemplate key={props.action.target_api} />;
   }
 };
 
-const EmailTemplate = ({ action: { payload, action_type } }: WActionProps) => {
-  if (action_type !== 'email') return <></>;
+const EmailTemplate = () => {
+  const email_subject = <EmailSubject />;
 
-  const email_subject = <EmailSubject name='subject' value={payload} />;
-
-  const email_body = <EmailBody name='body' value={payload} />;
-
+  const email_body = <EmailBody />;
   const forms = (
     <Stack spacing={'var(--space-5)'}>
       {email_subject}
@@ -43,24 +39,9 @@ const EmailTemplate = ({ action: { payload, action_type } }: WActionProps) => {
   return forms;
 };
 
-type EmailTemplateType = Pick<
-  DatabaseTable['company_email_template'],
-  'body' | 'subject'
->;
-
-type FormsType = {
-  name: keyof EmailTemplateType;
-  value: {
-    [key in keyof WorkflowAction['payload']]: WorkflowAction['payload'][key];
-  };
-  disabled?: boolean;
-};
-
-const EmailSubject: React.FC<FormsType> = ({
-  name,
-  value,
-  disabled = false,
-}) => {
+const EmailSubject = () => {
+  const { setEmailTemplate, emailTemplateTargetAPI, emailTemplate } =
+    useSelectedActionsDetails();
   return (
     <Stack>
       <UITypography type='small'>Email Subject</UITypography>
@@ -72,25 +53,34 @@ const EmailSubject: React.FC<FormsType> = ({
           borderRadius: 'var(--radius-2)',
         }}
       >
-        <TipTapAIEditor
-          singleLine={true}
-          padding={1}
-          toolbar={false}
-          disabled={disabled}
-          editor_type='email'
-          initialValue={value?.[name]}
-          handleChange={() => {
-            //
-          }}
-          placeholder=''
-        />
+        <Stack>
+          {emailTemplate.subject.length > 0 && (
+            <TipTapAIEditor
+              singleLine={true}
+              padding={1}
+              toolbar={false}
+              template_type={emailTemplateTargetAPI}
+              editor_type='email'
+              initialValue={emailTemplate.subject}
+              handleChange={(s) => {
+                setEmailTemplate((prev) => ({
+                  ...prev,
+                  subject: s,
+                }));
+              }}
+            />
+          )}
+        </Stack>
       </Stack>
     </Stack>
   );
 };
 EmailSubject.displayName = 'EmailSubject';
 
-const EmailBody: React.FC<FormsType> = ({ name, value, disabled = false }) => {
+const EmailBody = () => {
+  const { setEmailTemplate, emailTemplate, emailTemplateTargetAPI } =
+    useSelectedActionsDetails();
+
   return (
     <Stack>
       <UITypography type='small'>Email Body</UITypography>
@@ -102,25 +92,27 @@ const EmailBody: React.FC<FormsType> = ({ name, value, disabled = false }) => {
           borderRadius: 'var(--radius-2)',
         }}
       >
-        <TipTapAIEditor
-          toolbar={false}
-          disabled={disabled}
-          editor_type='email'
-          initialValue={value?.[name]}
-          placeholder=''
-          handleChange={() => {
-            //
-          }}
-        />
+        {emailTemplate.body.length > 0 && (
+          <TipTapAIEditor
+            toolbar={false}
+            editor_type='email'
+            template_type={emailTemplateTargetAPI}
+            initialValue={emailTemplate.body}
+            handleChange={(s) => {
+              setEmailTemplate((prev) => ({
+                ...prev,
+                boby: s,
+              }));
+            }}
+          />
+        )}
       </Stack>
     </Stack>
   );
 };
 EmailBody.displayName = 'EmailBody';
 
-const SlackTemplate = ({ action: { action_type } }: WActionProps) => {
-  if (action_type !== 'slack') return <></>;
-
+const SlackTemplate = () => {
   return (
     <GlobalBannerInline
       textContent={'A slack notification will be sent for this action.'}
@@ -129,9 +121,7 @@ const SlackTemplate = ({ action: { action_type } }: WActionProps) => {
   );
 };
 
-const EndPointTemplate = ({ action: { action_type } }: WActionProps) => {
-  if (action_type !== 'end_point') return <></>;
-
+const EndPointTemplate = () => {
   return (
     <GlobalBannerInline
       textContent={'Aglint system will handle this action'}
@@ -140,17 +130,26 @@ const EndPointTemplate = ({ action: { action_type } }: WActionProps) => {
   );
 };
 
-const AgentInstructionTemplate = ({ action }: WActionProps) => {
-  if (action.action_type !== 'agent_instruction') return <></>;
-  const email_body = <AgentInstructionBody {...action} />;
-
+const AgentInstructionTemplate = () => {
+  const { selectedActionsDetails, emailTemplateTargetAPI } =
+    useSelectedActionsDetails();
+  const email_body = <AgentInstructionBody />;
   const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
-  return forms;
+  return (
+    <>
+      {forms}
+      <ShowCode.When
+        isTrue={emailTemplateTargetAPI !== selectedActionsDetails.target_api}
+      >
+        <EmailTemplate />
+      </ShowCode.When>
+    </>
+  );
 };
 
-const AgentInstructionBody: React.FC<
-  WActionProps['action'] & { disabled?: boolean }
-> = ({ disabled = false }) => {
+const AgentInstructionBody = () => {
+  const { agentInstructions, setAgentInstructions } =
+    useSelectedActionsDetails();
   return (
     <Stack>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
@@ -164,10 +163,10 @@ const AgentInstructionBody: React.FC<
       >
         <TipTapAIEditor
           toolbar={false}
-          disabled={disabled}
           editor_type='regular'
-          handleChange={() => {
-            //
+          initialValue={agentInstructions}
+          handleChange={(s) => {
+            setAgentInstructions(s);
           }}
           placeholder='Provide the instructions to guide the agent through this action.'
         />

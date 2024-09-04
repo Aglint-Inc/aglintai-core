@@ -1,10 +1,11 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { DateRange as DateRangeType } from 'react-day-picker';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { DatePickerBody } from '@/devlink3/DatePickerBody';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
-import DateRange from '@/src/components/Common/DateRange';
+import { DateRangePicker } from '@/src/components/Common/DateRange';
 import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 
@@ -24,6 +25,13 @@ function SelectDateRange() {
   const totalTime = selectedSessions
     .map((session) => session.interview_session.session_duration)
     .reduce((acc, curr) => acc + curr, 0);
+
+  const handleDateRangeChange = (newDateRange: DateRangeType | undefined) => {
+    setDateRange({
+      start_date: newDateRange?.from?.toISOString() || null,
+      end_date: newDateRange?.to?.toISOString() || null,
+    });
+  };
 
   return (
     <>
@@ -78,15 +86,10 @@ function SelectDateRange() {
               borderRadius: 'var(--radius-2)',
             }}
           >
-            <DateRange
-              onChange={(val) => {
-                setDateRange({
-                  start_date: val[0]?.toISOString(),
-                  end_date: val[1]?.toISOString(),
-                });
-              }}
+            <DateRangePicker
+              onChange={handleDateRangeChange}
               value={[dayjs(dateRange.start_date), dayjs(dateRange.end_date)]}
-              calendars={2}
+              disablePast
             />
           </Stack>
         }

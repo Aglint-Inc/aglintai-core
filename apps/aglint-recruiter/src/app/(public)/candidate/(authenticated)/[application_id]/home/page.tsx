@@ -69,28 +69,16 @@ export default function Component({ params }) {
               {interviewPlan.length > 0 && (
                 <InterviewProgress interviews={interviewPlan} />
               )}
-              {upcoming.length > 0 && (
-                <UpcomingInterview upcomingData={upcoming} />
-              )}
-              {availability.length > 0 && (
-                <RequestedAvailability
-                  availabilityData={availability}
-                  job={job}
-                />
-              )}
+
+              <UpcomingInterview upcomingData={upcoming} />
+
+              <RequestedAvailability
+                availabilityData={availability}
+                job={job}
+              />
               {schedule.length > 0 && (
                 <SelfScheduling scheduleData={schedule} />
               )}
-              {/* <div className='flex flex-col space-y-2'>
-                <h4 className='text-md font-semibold'>Interview Progress</h4>
-                {interviews && interviews.map((interview, index) => (
-                  <InterviewProgressCard
-                    key={index}
-                    interview={interview}
-                    isLast={index === interviews.length - 1}
-                  />
-                ))}
-              </div> */}
             </div>
           </div>
         </main>

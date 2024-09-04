@@ -152,7 +152,18 @@ const Unparsable = () => {
               <Stack gap={2} alignItems={'center'}>
                 <ResumeUploadComp
                   value={file}
-                  handleChange={(e) => setFile(e)}
+                  handleChange={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.onchange = (e) => {
+                      const selectedFile = (e.target as HTMLInputElement)
+                        .files?.[0];
+                      if (selectedFile) {
+                        setFile(selectedFile);
+                      }
+                    };
+                    input.click();
+                  }}
                   label={false}
                 />
                 <Stack direction={'row'} gap={1}>
@@ -180,7 +191,18 @@ const Unparsable = () => {
               <Stack gap={2} alignItems={'center'}>
                 <ResumeUploadComp
                   value={file}
-                  handleChange={(e) => setFile(e)}
+                  handleChange={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.onchange = (e) => {
+                      const selectedFile = (e.target as HTMLInputElement)
+                        .files?.[0];
+                      if (selectedFile) {
+                        setFile(selectedFile);
+                      }
+                    };
+                    input.click();
+                  }}
                   label={false}
                 />
                 <Stack direction={'row'} gap={1}>
@@ -246,7 +268,18 @@ const Unavailable = () => {
               <Stack gap={2} alignItems={'center'}>
                 <ResumeUploadComp
                   value={file}
-                  handleChange={(e) => setFile(e)}
+                  handleChange={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.onchange = (e) => {
+                      const selectedFile = (e.target as HTMLInputElement)
+                        .files?.[0];
+                      if (selectedFile) {
+                        setFile(selectedFile);
+                      }
+                    };
+                    input.click();
+                  }}
                   label={false}
                 />
                 <Stack direction={'row'} gap={1}>
@@ -274,7 +307,18 @@ const Unavailable = () => {
               <Stack gap={2} alignItems={'center'}>
                 <ResumeUploadComp
                   value={file}
-                  handleChange={(e) => setFile(e)}
+                  handleChange={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.onchange = (e) => {
+                      const selectedFile = (e.target as HTMLInputElement)
+                        .files?.[0];
+                      if (selectedFile) {
+                        setFile(selectedFile);
+                      }
+                    };
+                    input.click();
+                  }}
                   label={false}
                 />
                 <Stack direction={'row'} gap={1}>
