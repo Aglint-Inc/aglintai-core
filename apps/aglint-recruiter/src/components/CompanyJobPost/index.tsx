@@ -13,10 +13,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type CompanyPostAPI } from '@/src/pages/api/jobpost/company';
-import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type CompanyPostAPI } from '@/pages/api/jobpost/company';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Footer from '../Common/Footer';
 

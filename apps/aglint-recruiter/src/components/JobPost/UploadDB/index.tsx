@@ -3,26 +3,22 @@ import {
   type JobApplcationDB,
   type JobTypeDB,
 } from '@aglint/shared-types';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { Loader2, Trash } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
-
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
-import { errorMessages } from '@/src/utils/errorMessages';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { GlobalIcon } from '@devlink2/GlobalIcon';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type PublicJobAPI } from '@/pages/api/jobpost/read';
+import { errorMessages } from '@/utils/errorMessages';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 const initialError = () => {
   return {
@@ -229,73 +225,100 @@ function UploadDB({
       }}
     >
       <Stack direction={'row'} spacing={2} justifyContent={'space-between'}>
-        <Typography variant='h4' className='font-semibold'>Apply for this job.</Typography>
+        <Typography variant='h4' className='font-semibold'>
+          Apply for this job.
+        </Typography>
         <Typography variant='caption' className='text-sm' color={'#000'}>
-          <span style={{ color: '#FF0000' }} className='text-sm'>*</span> Required
+          <span style={{ color: '#FF0000' }} className='text-sm'>
+            *
+          </span>{' '}
+          Required
         </Typography>
       </Stack>
       <Grid container spacing={3} className='mt-2'>
         <Grid item xs={12} sm={6}>
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name <span className="text-red-500">*</span></Label>
+          <div className='space-y-2'>
+            <Label htmlFor='firstName'>
+              First Name <span className='text-red-500'>*</span>
+            </Label>
             <Input
-              id="firstName"
-              placeholder="First Name"
+              id='firstName'
+              placeholder='First Name'
               value={profile?.firstName || ''}
-              onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-              className={error.firstName.error ? "border-red-500" : ""}
+              onChange={(e) =>
+                setProfile({ ...profile, firstName: e.target.value })
+              }
+              className={error.firstName.error ? 'border-red-500' : ''}
             />
-            {error.firstName.error && <p className="text-sm text-red-500">{error.firstName.msg}</p>}
+            {error.firstName.error && (
+              <p className='text-sm text-red-500'>{error.firstName.msg}</p>
+            )}
           </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
+          <div className='space-y-2'>
+            <Label htmlFor='lastName'>Last Name</Label>
             <Input
-              id="lastName"
-              placeholder="Last Name"
+              id='lastName'
+              placeholder='Last Name'
               value={profile?.lastName || ''}
-              onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-              className={error.lastName.error ? "border-red-500" : ""}
+              onChange={(e) =>
+                setProfile({ ...profile, lastName: e.target.value })
+              }
+              className={error.lastName.error ? 'border-red-500' : ''}
             />
-            {error.lastName.error && <p className="text-sm text-red-500">{error.lastName.msg}</p>}
+            {error.lastName.error && (
+              <p className='text-sm text-red-500'>{error.lastName.msg}</p>
+            )}
           </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
+          <div className='space-y-2'>
+            <Label htmlFor='email'>
+              Email <span className='text-red-500'>*</span>
+            </Label>
             <Input
-              id="email"
-              placeholder="Email"
+              id='email'
+              placeholder='Email'
               value={profile?.email || ''}
-              onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-              className={error.email.error ? "border-red-500" : ""}
+              onChange={(e) =>
+                setProfile({ ...profile, email: e.target.value })
+              }
+              className={error.email.error ? 'border-red-500' : ''}
             />
-            {error.email.error && <p className="text-sm text-red-500">{error.email.msg}</p>}
+            {error.email.error && (
+              <p className='text-sm text-red-500'>{error.email.msg}</p>
+            )}
           </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <div className="space-y-2">
-            <Label htmlFor="phone">Phone</Label>
+          <div className='space-y-2'>
+            <Label htmlFor='phone'>Phone</Label>
             <Input
-              id="phone"
-              placeholder="Phone"
+              id='phone'
+              placeholder='Phone'
               value={profile?.phoneNumber || ''}
-              onChange={(e) => setProfile({ ...profile, phoneNumber: e.target.value })}
+              onChange={(e) =>
+                setProfile({ ...profile, phoneNumber: e.target.value })
+              }
             />
           </div>
         </Grid>
         <Grid item xs={12}>
-          <div className="space-y-2">
-            <Label htmlFor="linkedin">LinkedIn URL</Label>
+          <div className='space-y-2'>
+            <Label htmlFor='linkedin'>LinkedIn URL</Label>
             <Input
-              id="linkedin"
-              placeholder="https://www.linkedin.com/in/your-id"
+              id='linkedin'
+              placeholder='https://www.linkedin.com/in/your-id'
               value={profile?.linkedin || ''}
-              onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })}
-              className={error.linkedinUrl.error ? "border-red-500" : ""}
+              onChange={(e) =>
+                setProfile({ ...profile, linkedin: e.target.value })
+              }
+              className={error.linkedinUrl.error ? 'border-red-500' : ''}
             />
-            {error.linkedinUrl.error && <p className="text-sm text-red-500">{error.linkedinUrl.msg}</p>}
+            {error.linkedinUrl.error && (
+              <p className='text-sm text-red-500'>{error.linkedinUrl.msg}</p>
+            )}
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -346,7 +369,11 @@ function UploadDB({
                 justifyContent={'start'}
                 pt={0.5}
               >
-                <Typography variant='caption' className='text-sm'color={'error.main'}>
+                <Typography
+                  variant='caption'
+                  className='text-sm'
+                  color={'error.main'}
+                >
                   {error.file.msg}
                 </Typography>
               </Stack>
@@ -356,19 +383,12 @@ function UploadDB({
         <Grid item xs={12}>
           <Stack direction={'row'} spacing={1} alignItems={'center'}>
             <Checkbox
-              id="terms"
+              id='terms'
               checked={checked}
               onCheckedChange={() => setChecked(!checked)}
             />
-            <Stack
-              direction={'row'}
-              spacing={'4px'}
-              sx={{ flexWrap: 'wrap' }}
-            >
-              <Typography
-                variant='caption'
-                sx={{ cursor: 'default' }}
-              >
+            <Stack direction={'row'} spacing={'4px'} sx={{ flexWrap: 'wrap' }}>
+              <Typography variant='caption' sx={{ cursor: 'default' }}>
                 By applying, you are agreeing to the
               </Typography>
               <Typography
@@ -399,7 +419,7 @@ function UploadDB({
             }}
           >
             {isDisabled ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
             ) : null}
             Apply Now
           </Button>

@@ -3,13 +3,7 @@ import {
   type DatabaseTable,
   type DatabaseTableUpdate,
 } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalIcon } from '@devlink/GlobalIcon';
-import { NewTabPill } from '@devlink3/NewTabPill';
-import { ReasonList } from '@devlink3/ReasonList';
-import { ScheduleReason } from '@devlink3/ScheduleReason';
-import { ScheduleReasonSection } from '@devlink3/ScheduleReasonSection';
+
 import {
   capitalize,
 } from '@mui/material';
@@ -26,18 +20,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { NewTabPill } from '@/devlink3/NewTabPill';
-import { ScheduleReason } from '@/devlink3/ScheduleReason';
-import { ScheduleReasonSection } from '@/devlink3/ScheduleReasonSection';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+} from "@components/ui/alert-dialog"
+import { Button } from "@components/ui/button"
+import { Card, CardContent } from "@components/ui/card"
+import { Input } from "@components/ui/input"
+import { ButtonSoft } from '@devlink2/ButtonSoft';
+import { NewTabPill } from '@devlink3/NewTabPill';
+import { ScheduleReason } from '@devlink3/ScheduleReason';
+import { ScheduleReasonSection } from '@devlink3/ScheduleReasonSection';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   candidate: {
