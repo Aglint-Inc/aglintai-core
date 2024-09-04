@@ -3,7 +3,6 @@ import { getFullName } from '@aglint/shared-utils';
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { GlobalBadge } from '@devlink/GlobalBadge';
@@ -69,39 +68,37 @@ function InterviewerUserDetail({
           )}
           {interview_meeting?.status === 'confirmed' && (
             <>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Stack
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <InterviewerAcceptDeclineIcon type={accepted_status} />
-                    </Stack>
-                  </TooltipTrigger>
-                  {cancelReason?.reason && (
-                    <TooltipContent>
-                      <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Stack
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <InterviewerAcceptDeclineIcon type={accepted_status} />
+                  </Stack>
+                </TooltipTrigger>
+                {cancelReason?.reason && (
+                  <TooltipContent>
+                    <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
+                      <Text
+                        size={1}
+                        content={`Reason : ${cancelReason?.reason}`}
+                        color={'warning'}
+                        weight={'regular'}
+                      />
+                      {cancelReason?.other_details?.note && (
                         <Text
                           size={1}
-                          content={`Reason : ${cancelReason?.reason}`}
-                          color={'warning'}
+                          content={`Notes : ${cancelReason?.other_details?.note}`}
                           weight={'regular'}
+                          color={'neutral'}
                         />
-                        {cancelReason?.other_details?.note && (
-                          <Text
-                            size={1}
-                            content={`Notes : ${cancelReason?.other_details?.note}`}
-                            weight={'regular'}
-                            color={'neutral'}
-                          />
-                        )}
-                      </Stack>
-                    </TooltipContent>
-                  )}
-                </Tooltip>
-              </TooltipProvider>
+                      )}
+                    </Stack>
+                  </TooltipContent>
+                )}
+              </Tooltip>
             </>
           )}
 

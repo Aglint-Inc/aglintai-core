@@ -2,7 +2,6 @@
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { AddSocialLink } from '@devlink/AddSocialLink';
@@ -329,96 +328,94 @@ const SocialComp = ({
         })}
         {customSocials?.map((socialName) => {
           return (
-            <TooltipProvider key={socialName}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Stack
-                    position={'relative'}
-                    direction={'row'}
-                    alignItems={'center'}
-                    gap={1}
-                  >
-                    <Box
-                      style={{
-                        border: `1px solid var(--neutral-6)`,
-                        borderRadius: 'var(--radius-2)',
-                        display: 'flex',
-                        height: '36px',
-                        width: '36px',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Image
-                        src={`https://logo.clearbit.com/${socialName
-                          .toLowerCase()
-                          .replaceAll(' ', '')}.com `}
-                        height={16}
-                        width={16}
-                        alt=''
-                        style={{ filter: 'grayscale(100%)' }}
-                      />
-                    </Box>
-
-                    <UITextField
-                      labelSize='medium'
-                      fullWidth
-                      value={recruiter?.socials.custom[socialName]}
-                      placeholder={`https://www.${socialName}.com/company-id`}
-                      onBlur={() => {
-                        handleChange(
-                          {
-                            ...recruiterLocal,
-                          },
-                          socialName,
-                          true,
-                        );
-                      }}
-                      onChange={(e) => {
-                        handleChange(
-                          {
-                            ...recruiterLocal,
-                            socials: {
-                              ...recruiterLocal.socials,
-                              custom: {
-                                ...(recruiterLocal.socials.custom as any),
-                                [socialName]: e.target.value,
-                              } as any,
-                            },
-                          },
-                          socialName,
-                          true,
-                        );
-                      }}
-                      error={error.custom[socialName].error}
-                      helperText={error.custom[socialName].msg}
-                    />
-                  </Stack>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <Stack
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      const newCustomSocials = recruiter.socials.custom;
-                      delete newCustomSocials[socialName];
-                      handleChange({
-                        ...recruiterLocal,
-                        socials: {
-                          ...recruiterLocal.socials,
-                          custom: newCustomSocials,
-                        },
-                      });
+            <Tooltip key={socialName}>
+              <TooltipTrigger asChild>
+                <Stack
+                  position={'relative'}
+                  direction={'row'}
+                  alignItems={'center'}
+                  gap={1}
+                >
+                  <Box
+                    style={{
+                      border: `1px solid var(--neutral-6)`,
+                      borderRadius: 'var(--radius-2)',
+                      display: 'flex',
+                      height: '36px',
+                      width: '36px',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
-                    <IconButtonSoft
-                      iconName='delete'
-                      color={'error'}
-                      iconColor={'error'}
+                    <Image
+                      src={`https://logo.clearbit.com/${socialName
+                        .toLowerCase()
+                        .replaceAll(' ', '')}.com `}
+                      height={16}
+                      width={16}
+                      alt=''
+                      style={{ filter: 'grayscale(100%)' }}
                     />
-                  </Stack>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  </Box>
+
+                  <UITextField
+                    labelSize='medium'
+                    fullWidth
+                    value={recruiter?.socials.custom[socialName]}
+                    placeholder={`https://www.${socialName}.com/company-id`}
+                    onBlur={() => {
+                      handleChange(
+                        {
+                          ...recruiterLocal,
+                        },
+                        socialName,
+                        true,
+                      );
+                    }}
+                    onChange={(e) => {
+                      handleChange(
+                        {
+                          ...recruiterLocal,
+                          socials: {
+                            ...recruiterLocal.socials,
+                            custom: {
+                              ...(recruiterLocal.socials.custom as any),
+                              [socialName]: e.target.value,
+                            } as any,
+                          },
+                        },
+                        socialName,
+                        true,
+                      );
+                    }}
+                    error={error.custom[socialName].error}
+                    helperText={error.custom[socialName].msg}
+                  />
+                </Stack>
+              </TooltipTrigger>
+              <TooltipContent>
+                <Stack
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const newCustomSocials = recruiter.socials.custom;
+                    delete newCustomSocials[socialName];
+                    handleChange({
+                      ...recruiterLocal,
+                      socials: {
+                        ...recruiterLocal.socials,
+                        custom: newCustomSocials,
+                      },
+                    });
+                  }}
+                >
+                  <IconButtonSoft
+                    iconName='delete'
+                    color={'error'}
+                    iconColor={'error'}
+                  />
+                </Stack>
+              </TooltipContent>
+            </Tooltip>
           );
         })}
         {!disabled && <AddSocialLinkButton setError={setError} />}
