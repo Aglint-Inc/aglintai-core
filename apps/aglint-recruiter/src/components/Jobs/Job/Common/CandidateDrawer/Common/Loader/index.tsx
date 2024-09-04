@@ -1,4 +1,4 @@
-import { memo, type PropsWithChildren } from 'react';
+import { type PropsWithChildren, memo } from 'react';
 
 export const Loader = memo(
   ({ children, count }: PropsWithChildren<{ count: number }>) => {

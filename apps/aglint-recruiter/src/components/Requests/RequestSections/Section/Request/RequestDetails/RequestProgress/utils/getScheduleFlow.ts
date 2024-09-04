@@ -1,4 +1,7 @@
-import { type RequestProgressMapType, type TriggerActionMapType } from '../types';
+import {
+  type RequestProgressMapType,
+  type TriggerActionMapType,
+} from '../types';
 type ScheduleFlow = 'availability' | 'selfSchedule';
 export const getSchedulFlow = ({
   eventTargetMap,

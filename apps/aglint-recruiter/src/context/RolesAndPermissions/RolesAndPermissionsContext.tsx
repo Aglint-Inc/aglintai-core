@@ -2,7 +2,7 @@
 'use client';
 
 import { type DatabaseTable } from '@aglint/shared-types';
-import { createContext, type ReactNode, useContext } from 'react';
+import { type ReactNode, createContext, useContext } from 'react';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 

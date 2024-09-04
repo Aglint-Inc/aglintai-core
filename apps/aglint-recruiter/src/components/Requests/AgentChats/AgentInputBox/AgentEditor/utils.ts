@@ -1,7 +1,5 @@
 import type React from 'react';
 
-
-
 /* eslint-disable no-unused-vars */
 
 export type MentionInputProps = {

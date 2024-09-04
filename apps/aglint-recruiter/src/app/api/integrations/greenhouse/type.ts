@@ -9,7 +9,7 @@ export type GreenhouseAPI = {
   };
   POST: {
     request: DatabaseTable['integrations']['greenhouse_metadata'];
-    
+
     response: DatabaseTable['integrations']['greenhouse_metadata'];
   };
 };

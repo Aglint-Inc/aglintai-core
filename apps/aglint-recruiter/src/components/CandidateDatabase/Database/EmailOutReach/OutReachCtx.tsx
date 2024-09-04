@@ -8,7 +8,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { resolveAiCmd } from '@/utils/prompts/candidateDb/email';
 import { supabase } from '@/utils/supabase/client';
 
-import { outReachTemplates, type TemplateType } from './seedTemplates';
+import { type TemplateType, outReachTemplates } from './seedTemplates';
 import { templateToEmailBody } from './utils';
 
 export interface OutReachCtxType {

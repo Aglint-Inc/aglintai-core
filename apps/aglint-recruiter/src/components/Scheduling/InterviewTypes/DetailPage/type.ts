@@ -7,7 +7,13 @@ export type PauseType =
 
 export type TabsModuleMembers = {
   name: string;
-  queryParams: 'qualified' | 'schedules' | 'instructions' | 'training' |'aglintaitoken' | 'aglintaiinstruction';
+  queryParams:
+    | 'qualified'
+    | 'schedules'
+    | 'instructions'
+    | 'training'
+    | 'aglintaitoken'
+    | 'aglintaiinstruction';
 };
 
 export type ConnectedJob = {

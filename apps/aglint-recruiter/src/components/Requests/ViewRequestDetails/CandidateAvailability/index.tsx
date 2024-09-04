@@ -3,8 +3,8 @@ import {
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import {
-  createRequestProgressLogger,
   type ProgressLoggerType,
+  createRequestProgressLogger,
   ScheduleUtils,
 } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
@@ -44,6 +44,7 @@ import {
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
 } from './utils';
+
 function CandidateAvailability({
   selectedRequest,
 }: {

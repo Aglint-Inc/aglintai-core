@@ -1,4 +1,4 @@
-import { createContext, type PropsWithChildren, useContext } from 'react';
+import { type PropsWithChildren, createContext, useContext } from 'react';
 
 import { Body } from '@/components/Jobs/Job/Common/CandidateDrawer/Body';
 import { Details } from '@/components/Jobs/Job/Common/CandidateDrawer/Details';

@@ -1,8 +1,8 @@
 import { type StateCreator } from 'zustand';
 
 import {
-  createPublishButtonSlice,
   type PublishButtonSlice,
+  createPublishButtonSlice,
 } from './publishButtonStore';
 
 type Slices = PublishButtonSlice;

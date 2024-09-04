@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material';
 import {
-  Chart as ChartJs,
   type ChartData,
   type ChartOptions,
+  Chart as ChartJs,
   LinearScale,
 } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';

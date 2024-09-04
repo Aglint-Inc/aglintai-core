@@ -1,8 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
-
-
 /* eslint-disable no-unused-vars */
 type TitleAttrType = {
   '{candidate}'?: string | undefined;
