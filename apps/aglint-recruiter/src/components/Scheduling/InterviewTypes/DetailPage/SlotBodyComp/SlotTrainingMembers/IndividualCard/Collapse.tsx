@@ -9,7 +9,7 @@ import { Text } from '@/devlink/Text';
 import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';

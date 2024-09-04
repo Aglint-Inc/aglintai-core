@@ -19,7 +19,7 @@ import { RequestReschedule } from '@/devlink2/RequestReschedule';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 
 const CancelRescheduleDialog = ({
   title,

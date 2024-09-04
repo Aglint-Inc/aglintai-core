@@ -5,7 +5,7 @@ import dayjs from '@utils/dayjs';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { type TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
+import { type TimezoneObj } from '@/src/components/CompanyDetailComp/Scheduling';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { type ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
 import { type BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';

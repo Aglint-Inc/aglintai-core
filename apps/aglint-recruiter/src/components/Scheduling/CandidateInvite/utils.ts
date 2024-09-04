@@ -1,10 +1,13 @@
-import { type APICreateCandidateRequest, type DatabaseTable } from '@aglint/shared-types';
+import {
+  type APICreateCandidateRequest,
+  type DatabaseTable,
+} from '@aglint/shared-types';
 import dayjs from '@utils/dayjs';
 import axios from 'axios';
 
 import timeZones from '@/src/utils/timeZone';
 
-import { type TimezoneObj } from '../../CompanyDetailComp/SettingsSchedule';
+import { type TimezoneObj } from '../../CompanyDetailComp/Scheduling';
 
 export const getDurationText = (duration: number) => {
   const hours = Math.trunc(duration / 60);

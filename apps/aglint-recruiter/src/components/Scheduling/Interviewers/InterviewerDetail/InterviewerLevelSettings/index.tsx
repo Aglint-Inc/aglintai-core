@@ -38,9 +38,9 @@ import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { cn } from '@/lib/utils';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
 import UITextField from '@/src/components/Common/UITextField';
-import { LoadMax } from '@/src/components/CompanyDetailComp/SettingsSchedule';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
-import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { LoadMax } from '@/src/components/CompanyDetailComp/Holidays';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
+import SelectTime from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 

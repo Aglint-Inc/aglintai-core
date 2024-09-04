@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import dayjs from '@/src/utils/dayjs';
 
-import { type TimezoneObj, TimezoneSelector } from '.';
+import { type TimezoneObj, TimezoneSelector } from '../Scheduling';
 
 let schedulingSettingObj = {};
 

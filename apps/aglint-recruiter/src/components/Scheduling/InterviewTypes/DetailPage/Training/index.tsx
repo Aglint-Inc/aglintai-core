@@ -18,7 +18,7 @@ import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';

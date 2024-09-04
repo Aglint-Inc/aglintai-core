@@ -11,7 +11,7 @@ import { Checkbox } from '@/devlink/Checkbox';
 import { DcPopup } from '@/devlink/DcPopup';
 import { Text } from '@/devlink/Text';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { usePauseHandler } from '../../queries/hooks';

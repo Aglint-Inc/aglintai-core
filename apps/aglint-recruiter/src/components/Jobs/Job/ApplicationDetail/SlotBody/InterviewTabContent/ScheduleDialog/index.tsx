@@ -13,7 +13,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
 import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
-import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

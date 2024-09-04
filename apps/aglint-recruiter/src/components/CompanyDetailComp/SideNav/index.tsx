@@ -1,34 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from '@/components/ui/navigation-menu';
+import { SublinkTab } from '@/devlink2/SublinkTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { emailTempKeys } from './SchedulingEmailTemplates/utils';
+import { emailTempKeys } from '../Templates/utils';
 import { settingsItems, settingSubNavItem } from './utils';
 
-const SettingsSubNavItem: React.FC = () => {
+function SettingsSubNabItem() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const emailTemplates = useQuery(
     emailTemplateQueries.emailTemplates(recruiter.id),
   );
-  const [firstTemplate, setFirstTemplate] = useState<string | null>(null);
+  const [firstTemplate, setFirstTemplate] = useState(null);
   const { ifAllowed } = useRolesAndPermissions();
 
   useEffect(() => {
     if (emailTemplates.isFetched) {
       if (router.query.email) {
-        setFirstTemplate(router.query.email as string);
+        setFirstTemplate(router.query.email);
       } else {
         setFirstTemplate(
           [...emailTemplates.data]
@@ -38,20 +33,17 @@ const SettingsSubNavItem: React.FC = () => {
         );
       }
     }
-  }, [router, emailTemplates.isFetched, emailTemplates.data]);
-
+  }, [router]);
   return (
-    <NavigationMenu orientation='vertical' className='max-w-[200px]'>
-      <NavigationMenuList className='flex-col items-start space-y-1'>
-        {settingsItems.map((item, i) => {
-          const navItem = (
-            <NavigationMenuItem key={i}>
-              <Button
-                variant={
-                  router.query.tab === item.value ? 'secondary' : 'ghost'
-                }
-                className='w-full justify-start'
-                onClick={(e: React.MouseEvent) => {
+    <>
+      {settingsItems.map((item, i) => {
+        return item?.permission ? (
+          ifAllowed(
+            <SublinkTab
+              text={item.label}
+              isActtive={router.query.tab === item.value}
+              onClickTab={{
+                onClick: (e: any) => {
                   e.stopPropagation();
                   if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
                     router.push(
@@ -60,20 +52,33 @@ const SettingsSubNavItem: React.FC = () => {
                   } else {
                     router.push(`${ROUTES['/company']()}?tab=${item.value}`);
                   }
-                }}
-              >
-                {item.label}
-              </Button>
-            </NavigationMenuItem>
-          );
-
-          return item?.permission
-            ? ifAllowed(navItem, [item.permission])
-            : navItem;
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
+                },
+              }}
+            />,
+            [item?.permission],
+          )
+        ) : (
+          <SublinkTab
+            key={i}
+            text={item.label}
+            isActtive={router.query.tab === item.value}
+            onClickTab={{
+              onClick: (e: any) => {
+                e.stopPropagation();
+                if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
+                  router.push(
+                    `${ROUTES['/company']()}?tab=${item.value}&email=${firstTemplate}`,
+                  );
+                } else {
+                  router.push(`${ROUTES['/company']()}?tab=${item.value}`);
+                }
+              },
+            }}
+          />
+        );
+      })}
+    </>
   );
-};
+}
 
-export default SettingsSubNavItem;
+export default SettingsSubNabItem;

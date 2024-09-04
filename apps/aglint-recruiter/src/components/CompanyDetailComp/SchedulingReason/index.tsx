@@ -1,5 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseTable, type DatabaseTableUpdate } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type DatabaseTableUpdate,
+} from '@aglint/shared-types';
 import {
   Box,
   capitalize,
@@ -34,7 +37,7 @@ const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   },
 };
 
-const SchedulingRegions = () => {
+const SchedulingReasons = () => {
   const { recruiter, setRecruiter: updateRecruiter } = useAuthDetails();
   const [tab, setTab] =
     useState<keyof DatabaseTable['recruiter']['scheduling_reason']>(
@@ -124,7 +127,7 @@ const SchedulingRegions = () => {
     </>
   );
 };
-export default SchedulingRegions;
+export default SchedulingReasons;
 
 const ScheduleReasonSectionCard = <
   T extends keyof DatabaseTable['recruiter']['scheduling_reason'],
@@ -151,10 +154,10 @@ const ScheduleReasonSectionCard = <
     <ScheduleReasonSection
       slotAddButton={
         <ButtonSoft
-        highContrast={false}
-        iconName={'add'}
-        isLeftIcon={true}
-        size={2}
+          highContrast={false}
+          iconName={'add'}
+          isLeftIcon={true}
+          size={2}
           textButton='Add'
           onClickButton={{
             onClick: () => {

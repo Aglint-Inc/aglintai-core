@@ -14,7 +14,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
 import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
-import { ClockIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { ClockIcon } from '@/src/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import toast from '@/src/utils/toast';
 
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
