@@ -42,7 +42,7 @@ const RecentRescheduleCancel = () => {
           const tempAD = analyticsData.find(
             (item) => item.interview_session.id == curr.session_id,
           );
-          const detail_id = tempAD?.interview_schedule.application_id;
+          const detail_id = tempAD?.interview_meeting.application_id;
           const meet_id = tempAD?.interview_meeting.id;
           const temp_user = userDetails?.[type];
           const user = temp_user?.[detail_id];
@@ -108,7 +108,7 @@ const RecentRescheduleCancel = () => {
       };
       const detail_id = analyticsData.find(
         (itemX) => itemX.interview_session.id == item.session_id,
-      )?.interview_schedule.application_id;
+      )?.interview_meeting.application_id;
       const user = temp_user?.[detail_id];
       return (
         user && {

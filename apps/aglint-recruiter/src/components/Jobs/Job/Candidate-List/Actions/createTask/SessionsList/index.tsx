@@ -12,10 +12,6 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import {
-  type ApiRequestInterviewSessionTask,
-  type ApiResponseInterviewSessionTask,
-} from '@/src/pages/api/scheduling/fetch_interview_session_task';
 
 type OnChangeProps = {
   sessions: meetingCardType[];
@@ -47,16 +43,15 @@ function SessionList({
     setAnchorEl(null);
   };
 
-  const [sessionList, setSessionList] =
-    useState<ApiResponseInterviewSessionTask['data']>(null);
+  const [sessionList, setSessionList] = useState(null);
   async function getSessionList() {
     const {
       data: { data },
     } = await axios.post('/api/scheduling/fetch_interview_session_task', {
       application_id: application_id,
       job_id: job_id,
-    } as ApiRequestInterviewSessionTask);
-    const sessions = data as ApiResponseInterviewSessionTask['data'];
+    });
+    const sessions = data;
     setSessionList(sessions);
   }
   useEffect(() => {
