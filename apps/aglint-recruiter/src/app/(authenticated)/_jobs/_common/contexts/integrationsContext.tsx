@@ -1,3 +1,11 @@
+/**
+ *
+ * React Context + Zustand Store for performant and non-re-rendering store
+ *
+ * @link https://tkdodo.eu/blog/zustand-and-react-context
+ *
+ */
+
 import { type PropsWithChildren, createContext, useState } from 'react';
 import { createStore } from 'zustand';
 
