@@ -1,4 +1,10 @@
 import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -8,12 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@components/ui/sheet';
 import { BasicInfo } from '@devlink/BasicInfo';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -36,7 +36,7 @@ const employeeSizes = [
   '10000+',
 ];
 
-const EditBasicInfoSheet = ({ editDrawer, setEditDrawer }) => {
+const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
   const [logo, setLogo] = useState<string>();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isError, setError] = useState(false);
@@ -58,7 +58,7 @@ const EditBasicInfoSheet = ({ editDrawer, setEditDrawer }) => {
   };
 
   const handleClose = () => {
-    setEditDrawer(false);
+    setEditDialog(false);
     //reset a form
     setTimeout(() => {
       setLogo(recruiter?.logo);
@@ -85,7 +85,7 @@ const EditBasicInfoSheet = ({ editDrawer, setEditDrawer }) => {
           ...recruiterLocal,
           name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
         });
-        setEditDrawer(false);
+        setEditDialog(false);
       }
     } catch (e) {
       toast.error(e.message);
@@ -95,11 +95,11 @@ const EditBasicInfoSheet = ({ editDrawer, setEditDrawer }) => {
   };
 
   return (
-    <Sheet open={editDrawer} onOpenChange={setEditDrawer}>
-      <SheetContent side='right'>
-        <SheetHeader>
-          <SheetTitle>Edit Basic Info</SheetTitle>
-        </SheetHeader>
+    <Dialog open={editDialog} onOpenChange={setEditDialog}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit Basic Info</DialogTitle>
+        </DialogHeader>
         <div className='mt-6 flex justify-end space-x-2'>
           <Button variant='outline' onClick={handleClose}>
             Cancel
@@ -235,9 +235,9 @@ const EditBasicInfoSheet = ({ editDrawer, setEditDrawer }) => {
           }
           textLogoUpdate={'Update Logo'}
         />
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default EditBasicInfoSheet;
+export default EditBasicInfoDialog;

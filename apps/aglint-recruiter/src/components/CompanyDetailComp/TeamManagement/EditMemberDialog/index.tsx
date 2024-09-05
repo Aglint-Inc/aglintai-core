@@ -1,6 +1,12 @@
 import { type employmentTypeEnum } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -10,12 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@components/ui/sheet';
 import { useEffect, useRef, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -210,11 +210,11 @@ const EditMember = ({
   };
 
   return (
-    <Sheet open={open} onOpenChange={onClose}>
-      <SheetContent className='sm:max-w-[600px]'>
-        <SheetHeader>
-          <SheetTitle>Update Details</SheetTitle>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className='sm:max-w-[600px]'>
+        <DialogHeader>
+          <DialogTitle>Update Details</DialogTitle>
+        </DialogHeader>
         {form && (
           <div className='space-y-4 mt-4'>
             <div className='flex items-center space-x-4'>
@@ -446,8 +446,8 @@ const EditMember = ({
             </div>
           </div>
         )}
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };
 

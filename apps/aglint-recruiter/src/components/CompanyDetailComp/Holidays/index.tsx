@@ -2,41 +2,32 @@ import { holidayType, schedulingSettingType } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { CompanyDayOff } from '@devlink2/CompanyDayOff';
 import { DayoffList } from '@devlink2/DayoffList';
 import { TextWithBg } from '@devlink2/TextWithBg';
 import { DayOffHelper } from '@devlink3/DayOffHelper';
-import { cn } from '@lib/utils';
-import {
-  Autocomplete,
-  Dialog,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, TextField, Typography } from '@mui/material';
 import { format } from 'date-fns';
-import { capitalize, cloneDeep } from 'lodash';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { cloneDeep } from 'lodash';
+import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
-
-import { ShowCode } from '../../Common/ShowCode';
-import UITextField from '../../Common/UITextField';
 
 export const LoadMax = {
   dailyHours: 8,
@@ -112,28 +103,14 @@ function Holidays() {
     <>
       <CompanyDayOff
         slotLearnButton={
-          <>
-            <ButtonGhost
-              size={1}
-              textButton='Learn How'
-              onClickButton={{
-                onClick: () => {
-                  openCompany();
-                },
-              }}
-            />
-          </>
+          <Button variant='ghost' size='sm' onClick={openCompany}>
+            Learn How
+          </Button>
         }
         slotAddButton={
-          <ButtonSolid
-            textButton='Add Day Off'
-            size={1}
-            iconName='add'
-            isLeftIcon
-            onClickButton={{
-              onClick: openAddCompany,
-            }}
-          />
+          <Button variant='default' size='sm' onClick={openAddCompany}>
+            <PlusIcon className='mr-2 h-4 w-4' /> Add Day Off
+          </Button>
         }
         slotDayoffList={
           <>
@@ -165,62 +142,42 @@ function Holidays() {
               );
             })}
             <Dialog open={open} onClose={handleClose}>
-              <DcPopup
-                popupName={'Add Holiday'}
-                onClickClosePopup={{ onClick: handleClose }}
-                slotBody={
-                  <Stack gap={1}>
-                    {/* <Typography variant='body1'>Day off</Typography> */}
-                    <Stack direction={'row'}>
-                      <Typography>Day off</Typography>
-                      <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
-                        *
-                      </Typography>
-                    </Stack>
-                    <Stack>
-                      <UITextField
-                        placeholder='Enter the name of the holiday'
-                        fullWidth
-                        ref={eventRef}
-                      />
-                    </Stack>
-                    {/* <Typography variant='body1'>Date</Typography> */}
-                    <Stack direction={'row'}>
-                      <Typography>Date</Typography>
-                      <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>
-                        *
-                      </Typography>
-                    </Stack>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add Holiday</DialogTitle>
+                </DialogHeader>
+                <div className='space-y-4'>
+                  <div>
+                    <Label htmlFor='event'>
+                      Day off<span className='text-red-500'>*</span>
+                    </Label>
+                    <Input
+                      id='event'
+                      placeholder='Enter the name of the holiday'
+                      ref={eventRef}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor='date'>
+                      Date<span className='text-red-500'>*</span>
+                    </Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
-                          variant={'outline'}
-                          className={cn(
-                            'w-[280px] justify-start text-left font-normal',
-                            !dateRef.current?.value && 'text-muted-foreground',
-                          )}
+                          variant='outline'
+                          className='w-full justify-start text-left font-normal'
                         >
                           <CalendarIcon className='mr-2 h-4 w-4' />
-                          {dateRef.current?.value ? (
-                            format(new Date(dateRef.current.value), 'PPP')
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
+                          {selectedDate || <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className='w-auto p-0'>
                         <Calendar
                           mode='single'
                           selected={
-                            dateRef.current?.value
-                              ? new Date(dateRef.current.value)
-                              : undefined
+                            selectedDate ? new Date(selectedDate) : undefined
                           }
-                          onSelect={(date) => {
-                            if (date) {
-                              getDate(date);
-                            }
-                          }}
+                          onSelect={(date) => date && getDate(date)}
                           disabled={(date) =>
                             daysOff.some(
                               (day) =>
@@ -228,169 +185,123 @@ function Holidays() {
                                 date.toDateString(),
                             )
                           }
-                          initialFocus
                         />
                       </PopoverContent>
                     </Popover>
-
-                    <Typography variant='body1'>Location</Typography>
-                    <Stack
-                      fontSize={'12px'}
-                      direction={'row'}
-                      spacing={'var(--space-2)'}
+                  </div>
+                  <div>
+                    <Label>Location</Label>
+                    <RadioGroup
+                      value={specificLocationOn}
+                      onValueChange={(value) =>
+                        setSpecificLocationOn(value as specificLocationType)
+                      }
+                      className='flex space-x-4'
                     >
-                      <FormControl>
-                        <RadioGroup
-                          row
-                          aria-labelledby='demo-row-radio-buttons-group-label'
-                          name='row-radio-buttons-group'
-                        >
-                          {['all_locations', 'specific_locations'].map(
-                            (ele, i) => {
-                              return (
-                                <FormControlLabel
-                                  checked={specificLocationOn === ele}
-                                  key={i}
-                                  onChange={(e: any) => {
-                                    setSpecificLocationOn(e.target.value);
-                                  }}
-                                  sx={{
-                                    marginLeft: '0px',
-                                    '& .MuiRadio-root': {
-                                      marginRight: 'var(--space-1)',
-                                    },
-                                  }}
-                                  value={ele}
-                                  control={<Radio />}
-                                  label={capitalize(ele.replaceAll('_', ' '))}
-                                />
-                              );
-                            },
-                          )}
-                        </RadioGroup>
-                      </FormControl>
-                    </Stack>
-
-                    <ShowCode>
-                      <ShowCode.When
-                        isTrue={specificLocationOn === 'specific_locations'}
-                      >
-                        <Typography variant='body1'>Pick locations</Typography>
-
-                        <Autocomplete
-                          multiple
-                          fullWidth
-                          onChange={(_, value) => {
-                            setSelectedLocations(value);
-                          }}
-                          options={recruiter?.office_locations.map(
-                            (
-                              item: ReturnType<
-                                typeof useAuthDetails
-                              >['recruiter']['office_locations'][number],
-                            ) => {
-                              return `${item.city}, ${item.region}, ${item.country}`;
-                            },
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              placeholder='Select Locations'
-                              {...params}
-                            />
-                          )}
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem
+                          value='all_locations'
+                          id='all_locations'
                         />
-                      </ShowCode.When>
-                    </ShowCode>
-                  </Stack>
-                }
-                slotButtons={
-                  <>
-                    <ButtonSoft
-                      textButton='Cancel'
-                      size={2}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: handleClose,
-                      }}
-                    />
-                    <ButtonSolid
-                      size={2}
-                      textButton={'Add'}
-                      onClickButton={{
-                        onClick: () => {
-                          if (!eventRef.current.value) {
-                            toast.message('Please enter event name.');
-                            return;
-                          }
-                          if (!selectedDate) {
-                            toast.message('Please select a date.');
-                            return;
-                          }
-                          if (
-                            specificLocationOn === 'specific_locations' &&
-                            selectedLocations.length === 0
-                          ) {
-                            toast.message('Please select a locations.');
-                            return;
-                          }
-                          setDaysOff(
-                            (pre) =>
-                              [
-                                ...pre,
-                                {
-                                  date: selectedDate,
-                                  event_name: eventRef.current.value,
-                                  locations:
-                                    specificLocationOn === 'specific_locations'
-                                      ? selectedLocations
-                                      : recruiter?.office_locations.map(
-                                          (
-                                            item: ReturnType<
-                                              typeof useAuthDetails
-                                            >['recruiter']['office_locations'][number],
-                                          ) =>
-                                            `${item.city}, ${item.region}, ${item.country}`,
-                                        ),
-                                },
-                              ] as holidayType[],
-                          );
-                          handleClose();
-                          toast.success(
-                            `Holiday added on ${dayjs(selectedDate).format(
-                              'DD-MMM-YYYY',
-                            )} ${
-                              eventRef.current.value ? 'for' : ''
-                            } ${eventRef.current.value}`,
-                          );
-                        },
-                      }}
-                    />
-                  </>
-                }
-              />
+                        <Label htmlFor='all_locations'>All locations</Label>
+                      </div>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem
+                          value='specific_locations'
+                          id='specific_locations'
+                        />
+                        <Label htmlFor='specific_locations'>
+                          Specific locations
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                  {specificLocationOn === 'specific_locations' && (
+                    <div>
+                      <Label>Pick locations</Label>
+                      <Autocomplete
+                        multiple
+                        fullWidth
+                        onChange={(_, value) => setSelectedLocations(value)}
+                        options={recruiter?.office_locations.map(
+                          (item) =>
+                            `${item.city}, ${item.region}, ${item.country}`,
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            placeholder='Select Locations'
+                            {...params}
+                          />
+                        )}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className='mt-4 flex justify-end space-x-2'>
+                  <Button variant='outline' onClick={handleClose}>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      if (!eventRef.current.value) {
+                        toast.message('Please enter event name.');
+                        return;
+                      }
+                      if (!selectedDate) {
+                        toast.message('Please select a date.');
+                        return;
+                      }
+                      if (
+                        specificLocationOn === 'specific_locations' &&
+                        selectedLocations.length === 0
+                      ) {
+                        toast.message('Please select a locations.');
+                        return;
+                      }
+                      setDaysOff(
+                        (pre) =>
+                          [
+                            ...pre,
+                            {
+                              date: selectedDate,
+                              event_name: eventRef.current.value,
+                              locations:
+                                specificLocationOn === 'specific_locations'
+                                  ? selectedLocations
+                                  : recruiter?.office_locations.map(
+                                      (item) =>
+                                        `${item.city}, ${item.region}, ${item.country}`,
+                                    ),
+                            },
+                          ] as holidayType[],
+                      );
+                      handleClose();
+                      toast.success(
+                        `Holiday added on ${dayjs(selectedDate).format(
+                          'DD-MMM-YYYY',
+                        )} ${
+                          eventRef.current.value ? 'for' : ''
+                        } ${eventRef.current.value}`,
+                      );
+                    }}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </DialogContent>
             </Dialog>
           </>
         }
       />
       <Dialog open={openDialog} onClose={closeDialog}>
-        <DayOffHelper
-          onClickClose={{
-            onClick: () => {
-              closeDialog();
-            },
-          }}
-          slotButton={
-            <ButtonSolid
-              textButton='Got It'
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  closeDialog();
-                },
-              }}
-            />
-          }
-        />
+        <DialogContent>
+          <DayOffHelper
+            onClickClose={{
+              onClick: closeDialog,
+            }}
+            slotButton={<Button onClick={closeDialog}>Got It</Button>}
+          />
+        </DialogContent>
       </Dialog>
     </>
   );

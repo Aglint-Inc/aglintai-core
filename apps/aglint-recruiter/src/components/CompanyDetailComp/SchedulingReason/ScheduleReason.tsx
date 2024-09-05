@@ -45,25 +45,19 @@ export function ScheduleReason({
   sections,
 }: ScheduleReasonProps) {
   return (
-    <Card className='w-full'>
-      <CardContent className='p-6'>
-        {isMainHeadingVisible && (
-          <CardHeader className='px-0 pt-0'>
-            <CardTitle className='text-2xl font-bold'>
-              {textMainHeading}
-            </CardTitle>
-            <CardDescription className='text-sm text-gray-500'>
-              {textMainHelperText}
-            </CardDescription>
-          </CardHeader>
-        )}
-        <div className='space-y-6'>
-          {sections.map((section, index) => (
-            <ReasonSection key={index} {...section} />
-          ))}
+    <div className='w-full p-6'>
+      {isMainHeadingVisible && (
+        <div className='mb-6'>
+          <h2 className='text-lg font-bold mb-2'>{textMainHeading}</h2>
+          <p className='text-sm text-gray-500'>{textMainHelperText}</p>
         </div>
-      </CardContent>
-    </Card>
+      )}
+      <div className='space-y-6'>
+        {sections.map((section, index) => (
+          <ReasonSection key={index} {...section} />
+        ))}
+      </div>
+    </div>
   );
 }
 
