@@ -82,17 +82,17 @@ const LinkIcon = ({
   const hoverClasses = 'hover:bg-gray-200';
 
   const iconMap = {
-    Requests: <LayoutList className='w-6 h-6' strokeWidth={2} />,
-    Jobs: <BriefcaseBusiness className='w-6 h-6' strokeWidth={2} />,
-    Interviews: <Calendar className='w-6 h-6' strokeWidth={2} />,
-    'Interview Types': <LibraryBig className='w-6 h-6' strokeWidth={2} />,
-    Candidates: <Users className='w-6 h-6' strokeWidth={2} />,
-    Interviewers: <Users className='w-6 h-6' strokeWidth={2} />,
-    'Sourcing Hub': <Search className='w-6 h-6' strokeWidth={2} />,
-    Integrations: <LayoutGrid className='w-6 h-6' strokeWidth={2} />,
-    'Company Settings': <Settings className='w-6 h-6' strokeWidth={2} />,
-    Workflows: <Workflow className='w-6 h-6' strokeWidth={2} />,
-    Tasks: <ListTodo className='w-6 h-6' strokeWidth={2} />,
+    Requests: <LayoutList className='w-6 h-6' strokeWidth={1.5} />,
+    Jobs: <BriefcaseBusiness className='w-6 h-6' strokeWidth={1.5} />,
+    Interviews: <Calendar className='w-6 h-6' strokeWidth={1.5} />,
+    'Interview Types': <LibraryBig className='w-6 h-6' strokeWidth={1.5} />,
+    Candidates: <Users className='w-6 h-6' strokeWidth={1.5} />,
+    Interviewers: <Users className='w-6 h-6' strokeWidth={1.5} />,
+    'Sourcing Hub': <Search className='w-6 h-6' strokeWidth={1.5} />,
+    Integrations: <LayoutGrid className='w-6 h-6' strokeWidth={1.5} />,
+    'Company Settings': <Settings className='w-6 h-6' strokeWidth={1.5} />,
+    Workflows: <Workflow className='w-6 h-6' strokeWidth={1.5} />,
+    Tasks: <ListTodo className='w-6 h-6' strokeWidth={1.5} />,
   };
 
   return (
