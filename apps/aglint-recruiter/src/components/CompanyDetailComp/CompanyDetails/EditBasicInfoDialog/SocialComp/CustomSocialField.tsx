@@ -1,18 +1,12 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@components/ui/tooltip';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import React from 'react';
-
-import UITextField from '@/components/Common/UITextField';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
+import { Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface CustomSocialFieldProps {
   socialName: string;
   value: string;
   error: { error: boolean; msg: string };
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
   onDelete: () => void;
   setError: React.Dispatch<React.SetStateAction<any>>;
@@ -25,29 +19,35 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
   onChange,
   onDelete,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <UITextField
-          labelSize='medium'
-          fullWidth
+    <div 
+      className="relative flex items-center w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex-grow space-y-2">
+        <Input
           value={value}
           placeholder={`${socialName}`}
           onBlur={() => onChange(value)}
           onChange={(e) => onChange(e.target.value)}
-          error={error?.error}
-          helperText={error?.msg}
+          className={`${error?.error ? 'border-red-500' : ''} ${isHovered ? 'pr-10' : ''}`}
         />
-      </TooltipTrigger>
-      <TooltipContent>
-        <IconButtonSoft
-          iconName='delete'
-          color='error'
-          iconColor='error'
-          onClickButton={onDelete}
-        />
-      </TooltipContent>
-    </Tooltip>
+        {error?.error && <p className="text-sm text-red-500">{error.msg}</p>}
+      </div>
+      {isHovered && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onDelete}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8"
+        >
+          <Trash2 className="h-3 w-3" />
+        </Button>
+      )}
+    </div>
   );
 };
 
