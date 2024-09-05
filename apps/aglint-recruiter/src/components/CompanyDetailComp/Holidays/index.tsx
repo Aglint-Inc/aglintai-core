@@ -20,7 +20,6 @@ import { DayoffList } from '@devlink2/DayoffList';
 import { TextWithBg } from '@devlink2/TextWithBg';
 import { DayOffHelper } from '@devlink3/DayOffHelper';
 import { Autocomplete, TextField, Typography } from '@mui/material';
-import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
@@ -41,7 +40,6 @@ type specificLocationType = 'all_locations' | 'specific_locations';
 function Holidays() {
   const { recruiter } = useAuthDetails();
   const eventRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -141,7 +139,7 @@ function Holidays() {
                 />
               );
             })}
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open}>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Add Holiday</DialogTitle>
@@ -293,7 +291,7 @@ function Holidays() {
           </>
         }
       />
-      <Dialog open={openDialog} onClose={closeDialog}>
+      <Dialog open={openDialog}>
         <DialogContent>
           <DayOffHelper
             onClickClose={{

@@ -173,7 +173,11 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
             {specificLocationOn === 'specific_locations' && (
               <div>
                 <Label>Pick locations</Label>
-                <Select onValueChange={(value) => setSelectedLocations(value)}>
+                <Select
+                  onValueChange={(value) =>
+                    setSelectedLocations((prev) => [...prev, value])
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Select Locations' />
                   </SelectTrigger>
