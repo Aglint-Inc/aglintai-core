@@ -1,8 +1,9 @@
+import { Checkbox } from '@components/ui/checkbox';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Checkbox, Popover, Stack, Typography } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
