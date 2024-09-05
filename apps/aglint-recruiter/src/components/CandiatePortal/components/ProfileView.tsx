@@ -14,7 +14,7 @@ export default function ProfileView() {
       <CardHeader className='flex flex-row items-start justify-between'>
         <div className='flex flex-col gap-4'>
           <div className='flex items-center gap-2'>
-            <Avatar>
+            <Avatar className='w-40 h-40 rounded-md'>
               <AvatarImage src={data.avatar || ''} />
               <AvatarFallback>{data.first_name.slice(0, 2)}</AvatarFallback>
             </Avatar>
