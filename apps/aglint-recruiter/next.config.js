@@ -55,14 +55,38 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['uploads-ssl.webflow.com', 'resend.com'],
-    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'uploads-ssl.webflow.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'resend.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+      },
+      {
+        protocol: 'https',
+        hostname: 'aglintai-seed-data.vercel.app',
       },
     ],
+  },
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+      loaders: {
+        // ... any custom loaders you want to use with Turbopack
+      },
+    },
   },
 };
 
