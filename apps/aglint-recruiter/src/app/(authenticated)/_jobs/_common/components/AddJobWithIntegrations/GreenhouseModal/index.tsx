@@ -7,9 +7,12 @@ import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { useIntegration } from '@/context/IntegrationProvider/IntegrationProvider';
-import { STATE_GREENHOUSE_DIALOG } from '@/context/IntegrationProvider/utils';
+import {
+  useIntegrationActions,
+  useIntegrations,
+} from '@/jobs/hooks/integrations';
 import { useJobs } from '@/jobs/hooks/useJobs';
+import { STATE_GREENHOUSE_DIALOG } from '@/jobs/utils/initialState';
 import { useAllIntegrations } from '@/queries/intergrations';
 import toast from '@/utils/toast';
 
@@ -18,7 +21,8 @@ import { type JobGreenhouse } from './types';
 import { fetchAllJobs, getGreenhouseStatusColor } from './utils';
 
 export function GreenhouseModal() {
-  const { setIntegration, integration, handleClose } = useIntegration();
+  const { setIntegration, handleClose } = useIntegrationActions();
+  const integration = useIntegrations();
   const { jobs } = useJobs();
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [saving, setSaving] = useState(false);
@@ -57,10 +61,9 @@ export function GreenhouseModal() {
   const importGreenhouse = async () => {
     try {
       setSaving(true);
-      setIntegration((prev) => ({
-        ...prev,
+      setIntegration({
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
-      }));
+      });
 
       // const public_job_id = await axios.call(
       //   'POST',
@@ -73,8 +76,7 @@ export function GreenhouseModal() {
       // if (public_job_id) {
       //   await handleJobsRefresh();
       //   //closing modal once done
-      //   setIntegration((prev) => ({
-      //     ...prev,
+      //   setIntegration(({
       //     greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       //   }));
       //   router.push(ROUTES['/jobs/[id]']({ id: String(public_job_id) }));

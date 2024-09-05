@@ -13,7 +13,7 @@ import WorkflowsProvider from './Workflows';
 import { ThemeProvider } from '@components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
 import { TooltipProvider } from '@components/ui/tooltip';
-import { JobsProvider } from '@/jobs/context';
+import { JobsProvider } from '@/jobs/contexts/jobsContext';
 
 export const PrivateProviders = ({
   children,

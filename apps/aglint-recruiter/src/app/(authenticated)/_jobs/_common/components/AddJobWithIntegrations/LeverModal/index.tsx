@@ -18,9 +18,12 @@ import { useEffect, useRef, useState } from 'react';
 import axios from '@/client/axios';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useIntegration } from '@/context/IntegrationProvider/IntegrationProvider';
-import { STATE_LEVER_DIALOG } from '@/context/IntegrationProvider/utils';
+import {
+  useIntegrationActions,
+  useIntegrations,
+} from '@/jobs/hooks/integrations';
 import { useJobs } from '@/jobs/hooks/useJobs';
+import { STATE_LEVER_DIALOG } from '@/jobs/utils/initialState';
 import { type ApiLeverCreateJob } from '@/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
@@ -32,7 +35,8 @@ import { fetchAllJobs, getLeverStatusColor } from './utils';
 
 export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
-  const { setIntegration, integration, handleClose } = useIntegration();
+  const { setIntegration, handleClose } = useIntegrationActions();
+  const integration = useIntegrations();
   const router = useRouter();
   const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
@@ -72,10 +76,9 @@ export default function LeverModalComp() {
 
   const importLever = async () => {
     try {
-      setIntegration((prev) => ({
-        ...prev,
+      setIntegration({
         lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING },
-      }));
+      });
 
       const response = await axios.call<ApiLeverCreateJob>(
         'POST',
@@ -91,10 +94,9 @@ export default function LeverModalComp() {
       }
       await handleGenerateJd(response.public_job_id);
       await handleJobsRefresh();
-      setIntegration((prev) => ({
-        ...prev,
+      setIntegration({
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
-      }));
+      });
       router.push(ROUTES['/jobs/[id]']({ id: response.public_job_id }));
     } catch (error) {
       toast.error(
@@ -117,10 +119,9 @@ export default function LeverModalComp() {
         isInitial: true,
       });
       if (response.status === 200 && response.data.data) {
-        setIntegration((prev) => ({
-          ...prev,
+        setIntegration({
           lever: { open: true, step: STATE_LEVER_DIALOG.FETCHING },
-        }));
+        });
         const responseRec = await axios.post('/api/lever/saveApiKey', {
           recruiterId: recruiter.id,
           apiKey: apiRef.current.value,
@@ -132,25 +133,22 @@ export default function LeverModalComp() {
           setInitialFetch(false);
           posthog.capture('Lever Data Fetched');
           setTimeout(() => {
-            setIntegration((prev) => ({
-              ...prev,
+            setIntegration({
               lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
-            }));
+            });
           }, 1000);
         }
       } else {
         setLoading(false);
-        setIntegration((prev) => ({
-          ...prev,
+        setIntegration({
           lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
-        }));
+        });
       }
     } catch (error) {
       setLoading(false);
-      setIntegration((prev) => ({
-        ...prev,
+      setIntegration({
         lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
-      }));
+      });
     }
   };
 

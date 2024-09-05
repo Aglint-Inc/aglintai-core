@@ -20,9 +20,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useIntegration } from '@/context/IntegrationProvider/IntegrationProvider';
-import { STATE_ASHBY_DIALOG } from '@/context/IntegrationProvider/utils';
+import {
+  useIntegrationActions,
+  useIntegrations,
+} from '@/jobs/hooks/integrations';
 import { useJobs } from '@/jobs/hooks/useJobs';
+import { STATE_ASHBY_DIALOG } from '@/jobs/utils/initialState';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -34,7 +37,8 @@ import { createJobObject, fetchAllJobs } from './utils';
 
 export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
-  const { setIntegration, integration, handleClose } = useIntegration();
+  const { setIntegration, handleClose } = useIntegrationActions();
+  const integration = useIntegrations();
   const router = useRouter();
   const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
@@ -80,10 +84,9 @@ export function AshbyModalComp() {
 
   const importAshby = async () => {
     try {
-      setIntegration((prev) => ({
-        ...prev,
+      setIntegration({
         ashby: { open: true, step: STATE_ASHBY_DIALOG.IMPORTING },
-      }));
+      });
       //converting ashby jobs to db jobs
       const refJobsObj = selectedAshbyPostings.map((post) => {
         return {
@@ -109,10 +112,9 @@ export function AshbyModalComp() {
         });
         //closing modal once done
         router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
-        setIntegration((prev) => ({
-          ...prev,
+        setIntegration({
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
-        }));
+        });
       }
     } catch (error) {
       toast.error(
@@ -137,10 +139,9 @@ export function AshbyModalComp() {
       });
 
       if (response.status === 200 && response.data?.results?.length > 0) {
-        setIntegration((prev) => ({
-          ...prev,
+        setIntegration({
           ashby: { open: true, step: STATE_ASHBY_DIALOG.FETCHING },
-        }));
+        });
         const responseRec = await axios.post('/api/ashby/saveApiKey', {
           recruiterId: recruiter.id,
           apiKey: apiRef.current.value,
@@ -152,28 +153,25 @@ export function AshbyModalComp() {
           setInitialFetch(false);
           posthog.capture('Asbhy Data Fetched');
           setTimeout(() => {
-            setIntegration((prev) => ({
-              ...prev,
+            setIntegration({
               ashby: {
                 open: true,
                 step: STATE_ASHBY_DIALOG.LISTJOBS,
               },
-            }));
+            });
           }, 1000);
         }
       } else {
         setLoading(false);
-        setIntegration((prev) => ({
-          ...prev,
+        setIntegration({
           ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
-        }));
+        });
       }
     } catch (error) {
       setLoading(false);
-      setIntegration((prev) => ({
-        ...prev,
+      setIntegration({
         ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
-      }));
+      });
     }
   };
 
