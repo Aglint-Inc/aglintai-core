@@ -61,14 +61,8 @@ const PERMISSIONS: Permissions = {
   '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
   //  For candidateDB module
-  '/candidates': ['authorized'],
-  '/candidates/history': ['authorized'],
-  '/candidates/aglintdb': ['authorized'],
-  '/candidates/search': ['authorized'],
   '/interviewers': ['authorized'],
   '/api/ai/create-embeddings': ['authorized'],
-  '/api/candidatedb/query': ['authorized'],
-  '/api/candidatedb/get-company': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
