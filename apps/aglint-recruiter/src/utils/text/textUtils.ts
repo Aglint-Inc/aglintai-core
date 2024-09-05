@@ -24,11 +24,11 @@ export function capitalizeSentence(
 ) {
   // Split the sentence into words
 
-  let words = sentence.split(' ');
+  const words = sentence.split(' ');
   // Capitalize the first letter of each word, ignoring specified words
 
   for (let i = 0; i < words.length; i++) {
-    let word = words[i];
+    const word = words[i];
 
     // Check if the word should be ignored
     if (!ignoreWords.includes(word.toLowerCase())) {

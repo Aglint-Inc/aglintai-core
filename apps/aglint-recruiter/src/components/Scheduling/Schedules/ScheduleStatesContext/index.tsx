@@ -95,7 +95,7 @@ function ScheduleStatesProvider({ children }) {
     value: string[],
   ) => {
     setFilterState((prevState) => {
-      let states = {
+      const states = {
         ...prevState,
         [key]: value,
       };

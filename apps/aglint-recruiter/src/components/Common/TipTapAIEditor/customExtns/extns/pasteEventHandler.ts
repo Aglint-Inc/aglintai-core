@@ -36,7 +36,7 @@ export const EventHandler = Extension.create({
 function convertTextToProseMirrorJSON(text) {
   const lines = text.split('\n');
   let isInBulletList = false;
-  let json = { type: 'doc', content: [] };
+  const json = { type: 'doc', content: [] };
   let currentListItem = null;
 
   lines.forEach((line) => {

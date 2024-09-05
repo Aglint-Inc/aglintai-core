@@ -77,7 +77,7 @@ function DialogSchedule() {
     requestSessionIds.includes(session.interview_session.id),
   );
 
-  let optionsInterviewers: Interviewer[] = members?.map((member) => {
+  const optionsInterviewers: Interviewer[] = members?.map((member) => {
     return {
       name: getFullName(member.first_name, member.last_name),
       value: member.user_id,

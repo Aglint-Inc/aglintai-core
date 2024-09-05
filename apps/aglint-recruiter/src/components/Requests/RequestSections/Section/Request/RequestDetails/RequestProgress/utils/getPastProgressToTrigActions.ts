@@ -12,7 +12,7 @@ export const getPastProgressToTrigActions = (
     (p1, p2) =>
       dayjsLocal(p1.created_at).unix() - dayjsLocal(p2.created_at).unix(),
   );
-  let pastProg: RequestLogsActionType[] = [];
+  const pastProg: RequestLogsActionType[] = [];
   let pIdx = -1;
   let currIdx = 0;
   while (currIdx < sorted_progress.length) {

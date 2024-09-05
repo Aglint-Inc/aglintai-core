@@ -110,7 +110,7 @@ const FeedbackWindow = ({
       }[];
     } = {};
 
-    for (let item of tempData) {
+    for (const item of tempData) {
       const temp = tempRelation[item.session_id] || [];
       temp.push({
         feedback: item.feedback,
@@ -239,7 +239,7 @@ const AdminFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<Boolean>;
+  }) => Promise<boolean>;
 
   candidate: {
     email: string;
@@ -412,7 +412,7 @@ const InterviewerFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<Boolean>;
+  }) => Promise<boolean>;
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
     index: number;

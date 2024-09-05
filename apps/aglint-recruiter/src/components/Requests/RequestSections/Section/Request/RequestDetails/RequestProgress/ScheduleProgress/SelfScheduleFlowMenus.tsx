@@ -22,9 +22,9 @@ const SelfScheduleFlowMenus = ({
     useRequestProgressProvider();
   const { request_progress } = useRequest();
 
-  let { progres: scheduleFlowProg, reqProgresMap } = useMemo(() => {
-    let reqProgresMap: RequestProgressMapType = {};
-    let progres: DatabaseTable['request_progress'][] = [];
+  const { progres: scheduleFlowProg, reqProgresMap } = useMemo(() => {
+    const reqProgresMap: RequestProgressMapType = {};
+    const progres: DatabaseTable['request_progress'][] = [];
 
     if (request_progress.data.length === 0) {
       return {
@@ -33,7 +33,7 @@ const SelfScheduleFlowMenus = ({
       };
     }
 
-    for (let prog of request_progress.data) {
+    for (const prog of request_progress.data) {
       if (prog.event_type === 'CAND_CONFIRM_SLOT') {
         break;
       }
@@ -70,7 +70,7 @@ const SelfScheduleFlowMenus = ({
       <ShowCode.When isTrue={!isManualSchedule}>
         {(reqTriggerActionsMap['onRequestSchedule'] ?? [])
           .map((eA) => {
-            let actionEvent = apiTargetToEvents[eA.target_api];
+            const actionEvent = apiTargetToEvents[eA.target_api];
             return (
               <EventNode
                 key={actionEvent}

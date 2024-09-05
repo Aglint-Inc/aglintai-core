@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import dayjs from 'dayjs';
 
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { schema_find_availability_payload } from '@aglint/shared-utils';

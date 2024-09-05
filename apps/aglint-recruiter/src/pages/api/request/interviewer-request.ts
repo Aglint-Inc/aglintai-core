@@ -45,7 +45,7 @@ export default async function handler(
       supabaseAdmin,
     );
 
-    let details: DatabaseFunctions['create_session_request']['Args'] = {
+    const details: DatabaseFunctions['create_session_request']['Args'] = {
       application: meeting_details.application_id,
       request: {
         assignee_id: organizer_id,

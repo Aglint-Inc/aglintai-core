@@ -82,7 +82,7 @@ const InterviewScheduled = () => {
           .eq('request_id', currentRequest.id),
       );
 
-      for (let reln of sesn_reln) {
+      for (const reln of sesn_reln) {
         await axios.post(
           `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/candidateBook_slack_interviewerForConfirmation`,
           {

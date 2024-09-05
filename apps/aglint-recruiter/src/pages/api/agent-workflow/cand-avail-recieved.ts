@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select('*,recruiter_user!request_assignee_id_fkey(*)')
         .eq('id', request_id),
     );
-    let request_assignee_tz =
+    const request_assignee_tz =
       request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
     const [avail_record] = supabaseWrap(
       await supabaseAdmin
@@ -58,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           avail_record.request_session_relation.map((s) => s.session_id),
         ),
     );
-    let session_ids = meeting_details.map((m) => m.session_id);
+    const session_ids = meeting_details.map((m) => m.session_id);
     const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
     const cand_schedule = new CandidatesSchedulingV2({

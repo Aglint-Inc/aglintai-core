@@ -222,7 +222,7 @@ const CandidateSearchProvider = ({ children }) => {
         source: DatabaseTable['applications']['source'];
       }[] = [];
       for (const candJobApp of candsjobApps) {
-        let newCandApps: typeof newJobApps = job_ids.map((j) => ({
+        const newCandApps: typeof newJobApps = job_ids.map((j) => ({
           candidate_id: candJobApp.candidate_id,
           job_id: j.job_id,
           candidate_file_id: candJobApp.candidate_file_id,

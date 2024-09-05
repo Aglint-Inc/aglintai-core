@@ -87,7 +87,7 @@ function SlotBodyComp({
     }
   }
 
-  let sections = tabsModuleMembers.map((item) => item.queryParams);
+  const sections = tabsModuleMembers.map((item) => item.queryParams);
   const tabCount: number = sections.length - 1;
   const currentIndex: number = sections.indexOf(currentTab);
 
@@ -439,7 +439,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
     queryFn: getConnectedJobs,
   });
 
-  let filteredConnectedJobs = connectedJobs?.length
+  const filteredConnectedJobs = connectedJobs?.length
     ? connectedJobs.filter((job) => job?.id)
     : [];
   if (isLoading) {

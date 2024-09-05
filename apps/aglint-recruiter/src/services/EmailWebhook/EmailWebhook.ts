@@ -14,7 +14,7 @@ export class EmailWebHook {
   }
 
   static parseMailHeaders(raw_headers: string) {
-    let record = {};
+    const record = {};
     raw_headers.split('\n').forEach((field) => {
       const [key, val] = field.split(':');
       if (val) {

@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
-  let { application_id, candidate_id, resume } =
+  const { application_id, candidate_id, resume } =
     req.body as saveResumeAPI['request'];
   if (application_id || resume) {
     if (

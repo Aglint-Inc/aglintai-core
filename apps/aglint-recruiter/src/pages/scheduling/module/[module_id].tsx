@@ -70,7 +70,7 @@ function ModuleMembersComp() {
 
   const { data: members, isPending: loading } = useAllInterviewersDetails();
 
-  let { data: progress } = useProgressModuleUsers({
+  const { data: progress } = useProgressModuleUsers({
     trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
   });
 
@@ -508,7 +508,7 @@ function SlotQualifiedMembers({
 
 const isTrainingComplete = (pro: ProgressUser) => {
   let isComplete = false;
-  for (let item of pro.progress
+  for (const item of pro.progress
     .map((item) => {
       return item;
     })

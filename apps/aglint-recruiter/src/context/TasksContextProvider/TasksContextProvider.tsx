@@ -364,7 +364,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const handelAddTask: TasksAgentContextType['handelAddTask'] = async (
     task,
   ) => {
-    let sessions: (typeof task)['sessions'] = [...task.sessions];
+    const sessions: (typeof task)['sessions'] = [...task.sessions];
     delete task.sessions;
     return updateTask({ type: 'new', task }, sessions).then(
       async (taskData) => {

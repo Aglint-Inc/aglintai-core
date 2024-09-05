@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import dayjs from 'dayjs';
 
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import {
@@ -23,7 +23,7 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { filter_json_id, recruiter_user_id } = req.body as InitAgentBodyParams;
+  const { filter_json_id, recruiter_user_id } = req.body as InitAgentBodyParams;
   const candLogger = getCandidateLogger('', '', 'email_agent');
   try {
     if (!filter_json_id || !recruiter_user_id) {
@@ -126,7 +126,7 @@ const fetchCandDetails = async ({ filter_json_id }) => {
     throw new Error('Empty sessions');
   }
 
-  let cand_details = {
+  const cand_details = {
     application_id: rec.application_id,
     job_id: job.id,
     candidate_name: getFullName(

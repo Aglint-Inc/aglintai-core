@@ -36,7 +36,7 @@ export const server_check_permissions = async ({
     const rec_id = tokenData.app_metadata.role_permissions.recruiter_id;
     let is_allowed = permissions.includes('authorized');
 
-    for (let permission of permissions) {
+    for (const permission of permissions) {
       if (userPermissions.includes(permission)) {
         is_allowed = true;
         break;
@@ -56,7 +56,7 @@ export const server_check_permissions = async ({
 };
 
 function getToken(base: string, func: Function) {
-  let tryNext = true;
+  const tryNext = true;
   let count = 0;
   let jsonData: {
     access_token: string;

@@ -35,7 +35,7 @@ function RequestProgress() {
   }, []);
 
   const reqTriggerActionsMap = useMemo(() => {
-    let mp: TriggerActionMapType = {};
+    const mp: TriggerActionMapType = {};
     request_workflow.data.forEach((trigger_act) => {
       mp[trigger_act.trigger] = [...trigger_act.workflow_action];
     });
@@ -43,7 +43,7 @@ function RequestProgress() {
   }, [request_workflow.data]);
 
   const reqProgressMap: RequestProgressMapType = useMemo(() => {
-    let mp: RequestProgressMapType = {};
+    const mp: RequestProgressMapType = {};
     request_progress.data.forEach((row) => {
       if (!mp[row.event_type]) {
         mp[row.event_type] = [];
@@ -54,7 +54,7 @@ function RequestProgress() {
   }, [request_progress.data]);
 
   const companyEmailTemplatesMp = useMemo(() => {
-    let mp: Partial<
+    const mp: Partial<
       Record<
         DatabaseEnums['email_slack_types'],
         DatabaseTable['company_email_template']
@@ -182,7 +182,7 @@ const getInitialActionDetails = ({
         companyEmailTemplatesMp['selfScheduleReminder_email_applicant'];
     }
 
-    let wAction: DatabaseTable['workflow_action'] = {
+    const wAction: DatabaseTable['workflow_action'] = {
       action_type: ACTION_TRIGGER_MAP[editTrigger][0].value.action_type as any,
       created_at: '',
       id: '',

@@ -21,7 +21,7 @@ export const findCandSelectedSlots = async ({
   request_assignee_tz: string;
   cand_schedule: CandidatesSchedulingV2;
 }) => {
-  let ai_response: CustomAgentInstructionPayload['agent']['ai_response'] = {
+  const ai_response: CustomAgentInstructionPayload['agent']['ai_response'] = {
     preferredInterviewer: [],
     excludeInterviewTimes: [],
     scheduleWithinNumDays: 3,
@@ -63,7 +63,7 @@ export const findCandSelectedSlots = async ({
 
   const preferred_times: TimeDurationDayjsType[] =
     ai_response.prefferredInterviewTimes.map((t) => {
-      let curr_day = dayjsLocal().tz(request_assignee_tz).startOf('day');
+      const curr_day = dayjsLocal().tz(request_assignee_tz).startOf('day');
       return {
         startTime: curr_day
           .set('hour', Number(t.startTime.split(':')[0]))
@@ -76,10 +76,10 @@ export const findCandSelectedSlots = async ({
 
   // given specified prefferred times
   filtered_plans = filtered_plans.filter((plan) => {
-    let plan_start_time = dayjsLocal(plan.sessions[0].start_time).tz(
+    const plan_start_time = dayjsLocal(plan.sessions[0].start_time).tz(
       request_assignee_tz,
     );
-    let plan_end_time = dayjsLocal(
+    const plan_end_time = dayjsLocal(
       plan.sessions[plan.sessions.length - 1].end_time,
     ).tz(request_assignee_tz);
     const is_plan_matches_preff_time = preferred_times.some((pref) => {

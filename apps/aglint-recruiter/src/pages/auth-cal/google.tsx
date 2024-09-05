@@ -61,12 +61,14 @@ const Google = () => {
               expiry_date: tokens.expiry_date,
             },
           }));
-        } catch (err) {
-          toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'Something went wrong. Please try again.',
-          });
+        } catch (error) {
+          if (error instanceof Error) {
+            toast({
+              variant: 'destructive',
+              title: 'Error',
+              description: 'Something went wrong. Please try again.',
+            });
+          }
         } finally {
           const path = localStorage.getItem('gmail-redirect-path');
           if (path) {

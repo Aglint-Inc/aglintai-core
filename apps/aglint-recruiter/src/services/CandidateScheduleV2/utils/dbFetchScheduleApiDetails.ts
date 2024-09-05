@@ -59,7 +59,7 @@ export const dbFetchScheduleApiDetails = async (
     is_fetch_meeting_data ? schedule_dates : undefined,
   );
 
-  let interviewers: SessionInterviewerType[] = inter_data
+  const interviewers: SessionInterviewerType[] = inter_data
     .filter(Boolean)
     .reduce((tot, curr) => {
       return [...tot, ...curr];
@@ -73,7 +73,7 @@ export const dbFetchScheduleApiDetails = async (
 
   const db_ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
-      let session: InterviewSessionApiType = {
+      const session: InterviewSessionApiType = {
         duration: s.session_duration,
         schedule_type: s.schedule_type,
         session_type: s.session_type,
@@ -184,8 +184,8 @@ export const fetchAndVerifyDb = async (
   if (db_resp.interview_sessions.length === 0) {
     throw new CApiError('CLIENT', 'Interview Plan not set or invalid sessions');
   }
-  let all_ints = db_resp.inter_data.filter((i) => Boolean(i)).flat();
-  for (let int_sess of db_resp.interview_sessions) {
+  const all_ints = db_resp.inter_data.filter((i) => Boolean(i)).flat();
+  for (const int_sess of db_resp.interview_sessions) {
     if (!all_ints.find((int) => int.session_id === int_sess.id)) {
       throw new CApiError(
         'CLIENT',
@@ -197,9 +197,9 @@ export const fetchAndVerifyDb = async (
 };
 
 const getUniqueInts = (ints: SessionInterviewerType[]) => {
-  let mp = new Map();
+  const mp = new Map();
 
-  for (let int of ints) {
+  for (const int of ints) {
     if (!mp.get(int.user_id)) mp.set(int.user_id, int);
   }
 
@@ -256,7 +256,7 @@ const getInterviewersMeetings = (
 ) => {
   const ints_schd_meetings: UserMeetingDetails = {};
   const ints_map = new Map<string, SessionInterviewerType>();
-  for (let int of unique_inters) {
+  for (const int of unique_inters) {
     ints_map.set(int.user_id, int);
     if (!ints_schd_meetings[int.user_id]) {
       ints_schd_meetings[int.user_id] = {};

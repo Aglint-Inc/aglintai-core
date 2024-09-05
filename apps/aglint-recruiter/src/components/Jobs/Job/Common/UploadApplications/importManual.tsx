@@ -65,7 +65,7 @@ const ImportManual = () => {
   } => {
     return Object.entries(applicant).reduce(
       (acc, [key, curr]) => {
-        let value = curr.value;
+        const value = curr.value;
         let error = false;
 
         if (

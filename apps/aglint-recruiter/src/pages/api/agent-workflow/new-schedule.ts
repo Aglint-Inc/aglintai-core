@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = v.parse(candidate_new_schedule_schema, req.body);
     const eventAction = apiTargetToEvents[target_api];
 
-    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: req.body.request_id,
       supabaseAdmin,
       event_run_id: req.body.event_run_id,
@@ -44,9 +44,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select('*,recruiter_user!request_assignee_id_fkey(*)')
         .eq('id', request_id),
     );
-    let request_assigner_tz =
+    const request_assigner_tz =
       request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-    let date_range = {
+    const date_range = {
       start_date_str: dayjsLocal().format('DD/MM/YYYY'),
       end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
     };

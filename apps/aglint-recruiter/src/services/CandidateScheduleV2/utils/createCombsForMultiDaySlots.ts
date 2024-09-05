@@ -20,7 +20,7 @@ export const createCombsForMultiDaySlots = (
       return final_combs;
     }
 
-    let current_round = curr_int_day_combs[curr_round_idx];
+    const current_round = curr_int_day_combs[curr_round_idx];
 
     // if for any rounds plans are empty
     if (current_round.plans.length === 0) {
@@ -40,8 +40,8 @@ export const createCombsForMultiDaySlots = (
       ];
 
       let is_break = false;
-      for (let final_slot of final_combs.plans) {
-        for (let nextdaySlot of next_day_combs) {
+      for (const final_slot of final_combs.plans) {
+        for (const nextdaySlot of next_day_combs) {
           if (
             final_slot.no_slot_reasons.length > 0 ||
             nextdaySlot.no_slot_reasons.length > 0

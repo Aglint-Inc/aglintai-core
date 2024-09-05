@@ -121,6 +121,6 @@ const filter_slots = (
   slot_time: string,
   tz: string,
 ) => {
-  let slot_time_user_time = userTzDayjs(slot_time).tz(tz).format();
+  const slot_time_user_time = userTzDayjs(slot_time).tz(tz).format();
   return slot_time_user_time === sess_comb.start_time;
 };

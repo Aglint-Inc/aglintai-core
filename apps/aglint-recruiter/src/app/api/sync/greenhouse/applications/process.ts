@@ -121,7 +121,7 @@ export async function syncJobApplications(
     .filter(Boolean);
 
   const chunks = chunkArray(dbApplications, 100);
-  for (let applications of chunks) {
+  for (const applications of chunks) {
     const userToUpdate = await checkUpdate(
       supabaseAdmin,
       post.job_id,

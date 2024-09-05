@@ -99,7 +99,7 @@ export class CandidatesSchedulingV2 {
       db_details,
     );
     const intervs_map: IntervsWorkHrsEventMapType = new Map();
-    for (let inter of inter_details) {
+    for (const inter of inter_details) {
       const details: IntervsWorkHrsEventType = {
         email: inter.email,
         freeTimes: inter.freeTimes,
@@ -174,11 +174,11 @@ export class CandidatesSchedulingV2 {
     cand_selected_slots: DatabaseTable['candidate_request_availability']['slots'],
   ) => {
     const session_rounds = this.getSessionRounds();
-    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+    const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
       session_rounds,
       this.api_options.make_training_optional,
     );
-    let all_combs: CandReqSlotsType[] = [];
+    const all_combs: CandReqSlotsType[] = [];
     for (
       let curr_round_idx = 0;
       curr_round_idx < session_rounds.length;
@@ -186,7 +186,7 @@ export class CandidatesSchedulingV2 {
     ) {
       const current_round_int_combs = ints_combs_for_each_round[curr_round_idx];
       const current_round_combs: DateRangePlansType['interview_rounds'] = [];
-      for (let curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
+      for (const curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
         const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
           this.db_details.req_user_tz,
         );
@@ -255,7 +255,7 @@ export class CandidatesSchedulingV2 {
   public candavailabilityWithSuggestion() {
     const session_rounds = this.getSessionRounds();
     const first_round_sessions = session_rounds[0];
-    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+    const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
       session_rounds,
       this.api_options.make_training_optional,
     );
@@ -336,7 +336,7 @@ export class CandidatesSchedulingV2 {
   private getSessionRounds() {
     let session_rounds: InterviewSessionApiRespType[][] = [[]];
     let curr_round = 0;
-    for (let sess of this.db_details.ses_with_ints) {
+    for (const sess of this.db_details.ses_with_ints) {
       session_rounds[curr_round].push({ ...sess });
       if (sess.break_duration >= SINGLE_DAY_TIME) {
         session_rounds.push([]);
@@ -369,7 +369,7 @@ export class CandidatesSchedulingV2 {
         all_schedule_combs = [...all_schedule_combs, ...combs];
         return;
       }
-      for (let module_comb of interviewrs_sesn_comb[Number(session_idx)]) {
+      for (const module_comb of interviewrs_sesn_comb[Number(session_idx)]) {
         current_comb.push(module_comb);
         exploreSessionCombs(current_comb, session_idx + 1);
         current_comb.pop();
@@ -409,8 +409,8 @@ export class CandidatesSchedulingV2 {
   };
 
   private findMultiDaySlots = () => {
-    let session_rounds = this.getSessionRounds();
-    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+    const session_rounds = this.getSessionRounds();
+    const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
       session_rounds,
       this.api_options.make_training_optional,
     );
@@ -463,15 +463,15 @@ export class CandidatesSchedulingV2 {
     };
 
     const findCurrentDayPlan = () => {
-      let current_day = this.db_details.schedule_dates.user_start_date_js;
+      const current_day = this.db_details.schedule_dates.user_start_date_js;
       const plan_combs = findMultiDaySlotsUtil([], current_day, 0);
 
       return plan_combs;
     };
 
     const findAllDayPlans = () => {
-      let dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
-      let dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
+      const dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+      const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
       let all_combs: SessionsCombType[][][] = [];
@@ -486,8 +486,8 @@ export class CandidatesSchedulingV2 {
       return all_combs;
     };
     const findAvailabilitySlots = () => {
-      let dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
-      let dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
+      const dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+      const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
       const all_combs: DateRangePlansType[] = [];
@@ -534,7 +534,7 @@ export class CandidatesSchedulingV2 {
     curr_day_js: Dayjs,
     plan_comb: InterviewSessionApiRespType[],
   ) => {
-    let curr_day_str = curr_day_js.startOf('day').format();
+    const curr_day_str = curr_day_js.startOf('day').format();
 
     const cacheCurrPlanCalc = () => {
       const indef_paused_inters: {
@@ -910,7 +910,7 @@ export class CandidatesSchedulingV2 {
 
         let is_slot_holiday = false;
         attendee_details.holiday[curr_day_str].forEach((t) => {
-          let flag = isTimeChunksOverLapps(
+          const flag = isTimeChunksOverLapps(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
               startTime: userTzDayjs(upd_sess_slot.start_time).tz(
@@ -939,7 +939,7 @@ export class CandidatesSchedulingV2 {
           return null;
         }
 
-        let is_slot_out_of_work_hrs = !attendee_details.work_hours[
+        const is_slot_out_of_work_hrs = !attendee_details.work_hours[
           curr_day_str
         ].some((t) => {
           return isTimeChunksEnclosed(
@@ -995,7 +995,7 @@ export class CandidatesSchedulingV2 {
             );
           });
         //conflicting events
-        for (let conf_event of conflicting_events) {
+        for (const conf_event of conflicting_events) {
           const ev_type = conf_event.cal_type;
           if (
             ev_type === 'soft' &&
@@ -1046,7 +1046,7 @@ export class CandidatesSchedulingV2 {
       }
       const unique_conflicts = new Set<ConflictReason['conflict_type']>();
       upd_sess_slot.ints_conflicts.forEach((int) => {
-        for (let intr of int.conflict_reasons) {
+        for (const intr of int.conflict_reasons) {
           unique_conflicts.add(intr.conflict_type);
         }
       });
@@ -1078,7 +1078,7 @@ export class CandidatesSchedulingV2 {
         conflict_types: [],
       };
 
-      let slot_with_conflicts = verifyForConflicts(session_slot, session_idx);
+      const slot_with_conflicts = verifyForConflicts(session_slot, session_idx);
       if (!slot_with_conflicts) {
         return [];
       } else {
@@ -1190,8 +1190,8 @@ export class CandidatesSchedulingV2 {
         });
       }
 
-      for (let v of Object.values(ints_reasons)) {
-        let p1_conflict = v.find((c) => c.type == 'calender_diconnected');
+      for (const v of Object.values(ints_reasons)) {
+        const p1_conflict = v.find((c) => c.type == 'calender_diconnected');
         const p2_conflict = v.find(
           (c) => c.type == 'day_off' || c.type === 'holiday',
         );

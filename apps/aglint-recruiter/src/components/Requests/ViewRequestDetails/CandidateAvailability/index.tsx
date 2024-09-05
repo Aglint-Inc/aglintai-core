@@ -167,7 +167,7 @@ function CandidateAvailability({
 
     // send request availability email to candidate
     try {
-      let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
         request_id: selectedRequest.id,
         supabaseAdmin: supabase,
         event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',

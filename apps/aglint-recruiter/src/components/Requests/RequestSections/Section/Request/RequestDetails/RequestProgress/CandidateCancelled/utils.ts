@@ -25,7 +25,7 @@ export function getWorkflowText({
 
 export function useEventTargetMap(workflowData) {
   return useMemo(() => {
-    let mp: any = {};
+    const mp: any = {};
     workflowData.forEach((eA) => {
       mp[eA.trigger] = eA.workflow_action.map((wA) => wA.target_api);
     });
@@ -35,7 +35,7 @@ export function useEventTargetMap(workflowData) {
 
 export function useReqProgressMap(progressData) {
   return useMemo(() => {
-    let mp: RequestProgressMapType = {};
+    const mp: RequestProgressMapType = {};
     progressData.forEach((row) => {
       if (!mp[row.event_type]) {
         mp[row.event_type] = [];

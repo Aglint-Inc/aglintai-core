@@ -163,7 +163,7 @@ function UploadDB({
   const submitHandler = async () => {
     if (checked && validate()) {
       setIsDisabled(true);
-      let fileId = uuidv4();
+      const fileId = uuidv4();
       let uploadUrl = null;
       const { data } = await supabase.storage
         .from('resume-job-post')

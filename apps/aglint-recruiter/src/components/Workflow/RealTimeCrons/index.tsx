@@ -120,7 +120,7 @@ const RealTimeCrons: React.FC = () => {
           const existingEntryIdx = cronEntries.findIndex(
             (c) => c.id === updatedEntry.id,
           );
-          let newCronEnrtries = [...cronEntries];
+          const newCronEnrtries = [...cronEntries];
           if (existingEntryIdx !== -1) {
             newCronEnrtries[existingEntryIdx] = {
               completed_at: updatedEntry.completed_at,
@@ -167,7 +167,7 @@ const RealTimeCrons: React.FC = () => {
     );
   };
 
-  let filteredEntries = cronEntries.filter(
+  const filteredEntries = cronEntries.filter(
     (entry) => !statusFilter || (statusFilter && entry.status === statusFilter),
   );
 

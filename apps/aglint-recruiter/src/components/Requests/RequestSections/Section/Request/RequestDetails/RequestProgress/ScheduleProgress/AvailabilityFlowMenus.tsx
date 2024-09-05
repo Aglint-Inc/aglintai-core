@@ -22,9 +22,9 @@ const AvailabilityFlowMenus = ({
     useRequestProgressProvider();
   const { request_progress } = useRequest();
 
-  let { progres: availFlowProg, currEventMap } = useMemo(() => {
-    let currEventMap: RequestProgressMapType = {};
-    let progres: DatabaseTable['request_progress'][] = [];
+  const { progres: availFlowProg, currEventMap } = useMemo(() => {
+    const currEventMap: RequestProgressMapType = {};
+    const progres: DatabaseTable['request_progress'][] = [];
 
     if (request_progress.data.length === 0) {
       return {
@@ -33,7 +33,7 @@ const AvailabilityFlowMenus = ({
       };
     }
 
-    for (let prog of request_progress.data) {
+    for (const prog of request_progress.data) {
       if (prog.event_type === 'CAND_AVAIL_REC') {
         break;
       }

@@ -87,7 +87,7 @@ export const UserDetail = () => {
   const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     return Object.entries(profile).reduce(
       (acc, [key, curr]) => {
-        let value = curr.value?.trim() || null;
+        const value = curr.value?.trim() || null;
         let error = false;
         if (curr.required || value?.length) {
           switch (curr.validation) {

@@ -60,7 +60,7 @@ function CalendarComp({
   const calendarRef = useRef(null);
 
   useEffect(() => {
-    let event: event[] = allSchedules.map((sch) => ({
+    const event: event[] = allSchedules.map((sch) => ({
       title: sch.session_name,
       start: sch.start_time,
       end: sch.end_time,

@@ -34,7 +34,7 @@ const EventNode = ({
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
   if (eventProg) {
-    let headingEvent: DatabaseTable['request_progress'] = eventProg.find(
+    const headingEvent: DatabaseTable['request_progress'] = eventProg.find(
       (prg) => prg.is_progress_step === false,
     );
     tense = progressStatusToTense(headingEvent.status);
@@ -113,8 +113,8 @@ const EventNode = ({
                       !prg.log &&
                       progressActionMap[`${prg.event_type}_${prg.status}`]
                     ) {
-                      let key = `${prg.event_type}_${prg.status}`;
-                      let Comp = progressActionMap[key];
+                      const key = `${prg.event_type}_${prg.status}`;
+                      const Comp = progressActionMap[key];
                       return <>{<Comp {...prg} />}</>;
                     }
                     return (

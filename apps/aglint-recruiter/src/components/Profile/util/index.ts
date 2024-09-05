@@ -40,7 +40,7 @@ export const validateGMail = (value: string) => {
 };
 export const validatePhone = (value: string) => {
   function countRept(string, regex) {
-    var numbers = string?.match(regex);
+    const numbers = string?.match(regex);
     return numbers ? numbers.length : 0;
   }
   return !(

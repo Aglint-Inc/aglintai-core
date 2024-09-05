@@ -17,7 +17,7 @@ export const confirmSlotFromCandidateAvailability = async ({
   reqProgressLogger: ProgressLoggerType;
 }) => {
   if (avail_plans.every((plan) => plan.no_slot_reasons.length > 0)) {
-    let no_slot_reasons = avail_plans
+    const no_slot_reasons = avail_plans
       .map((plan) => plan.no_slot_reasons.map((reason) => reason.reason))
       .flat();
 

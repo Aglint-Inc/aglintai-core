@@ -21,11 +21,11 @@ const ImportResume = () => {
 
   const InputChange = (files) => {
     // --For Multiple File Input
-    let images = [];
-    let uploadedFileNames = selectedfile.map((file) => file.name);
+    const images = [];
+    const uploadedFileNames = selectedfile.map((file) => file.name);
 
     for (let i = 0; i < files.length; i++) {
-      let file = files[i];
+      const file = files[i];
 
       if (file.type.includes('csv')) {
         toast.error(

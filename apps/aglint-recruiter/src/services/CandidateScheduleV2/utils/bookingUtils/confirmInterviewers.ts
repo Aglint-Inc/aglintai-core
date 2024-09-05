@@ -15,7 +15,7 @@ export const confirmInterviewers = async (
   is_debreif = false,
 ) => {
   let inters: ConfirmInt[] = [];
-  for (let booked_meeting of booked_meeting_details) {
+  for (const booked_meeting of booked_meeting_details) {
     booked_meeting.meeting_organizer;
     inters = [...inters, ...booked_meeting.all_confirmed_interviewers];
   }

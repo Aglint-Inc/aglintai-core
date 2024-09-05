@@ -731,7 +731,7 @@ function FilterOptionsList({
       <div className='max-h-[300px] overflow-auto'>
         {filtered.length > 0 ? (
           filtered.map((optionList) => {
-            let filteredOp = optionList.options;
+            const filteredOp = optionList.options;
             return (
               <>
                 {optionList.header && (
