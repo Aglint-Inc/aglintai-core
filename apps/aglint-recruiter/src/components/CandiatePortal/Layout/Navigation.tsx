@@ -5,19 +5,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import {
+  useCandidatePortal,
+  useCandidatePortalNavbar,
+} from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
-import { useNavbar } from '../hook';
 import NavProfile from './NavProfile';
+
+type tabs = 'home' | 'interviews' | 'messages';
 
 export default function Navigation() {
   const pathname = usePathname();
 
-  const application_id = pathname.split('/').filter((a) => a)[1];
-  const currentTab = pathname.split('/').filter((a) => a)[2];
-  const { data, isLoading } = useNavbar({ application_id });
+  const currentTab = pathname.split('/').filter((a) => a)[2] as tabs;
+  const { data, isPending } = useCandidatePortalNavbar();
+  const { application_id } = useCandidatePortal();
 
-  if (isLoading) return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
+  if (isPending)
+    return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
 
   const { company } = data;
   return (

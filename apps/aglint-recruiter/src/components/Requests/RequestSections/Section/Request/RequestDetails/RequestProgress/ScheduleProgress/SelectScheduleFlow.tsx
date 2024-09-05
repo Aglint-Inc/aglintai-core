@@ -1,17 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 
-import * as RequestProgress from '@devlink2/RequestProgress';
+import { RequestProgress } from '@devlink2/RequestProgress';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 
-import { useNewScheduleRequestPr } from '.';
+import { useRequestProgressProvider } from '../progressCtx';
 import AvailabilityFlowMenus from './AvailabilityFlowMenus';
 import ChooseScheduleMode from './ChooseScheduleMode';
 import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
 
-const SelectScheduleFlow = () => {
-  const { reqTriggerActionsMap, scheduleFlow, reqProgressMap } =
-    useNewScheduleRequestPr();
+const SelectScheduleFlow = ({ scheduleFlow }: { scheduleFlow: any }) => {
+  const { reqTriggerActionsMap, reqProgressMap } = useRequestProgressProvider();
 
   let isManualSchedule = true;
   if (
@@ -27,7 +26,7 @@ const SelectScheduleFlow = () => {
 
   return (
     <>
-      <RequestProgress.RequestProgress
+      <RequestProgress
         circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
         textRequestProgress={'Scheduling Request Recieved'}
         slotProgress={

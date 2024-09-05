@@ -6,9 +6,9 @@ import React, { useMemo } from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useRequest } from '@/context/RequestContext';
 
+import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
-import { useNewScheduleRequestPr } from '.';
 import EventNode from './EventNode';
 
 const AvailabilityFlowMenus = ({
@@ -19,7 +19,7 @@ const AvailabilityFlowMenus = ({
   isSelectScheduleFlowComplete: boolean;
 }) => {
   const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
-    useNewScheduleRequestPr();
+    useRequestProgressProvider();
   const { request_progress } = useRequest();
 
   let { progres: availFlowProg, currEventMap } = useMemo(() => {

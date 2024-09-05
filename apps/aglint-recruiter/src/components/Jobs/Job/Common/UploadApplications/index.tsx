@@ -1,32 +1,42 @@
-import { ImportCandidates } from '@devlink/ImportCandidates';
-import { Dialog } from '@mui/material';
-
-import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { PlusCircle } from 'lucide-react';
+import React from 'react';
 
 import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';
 import { ImportResume } from './importResume';
 
-const UploadApplications = () => {
-  const { importPopup, setImportPopup } = useApplicationsStore(
-    ({ importPopup, setImportPopup }) => ({ importPopup, setImportPopup }),
-  );
+const UploadApplications = ({ children }: { children?: React.ReactNode }) => {
   return (
-    <Dialog
-      open={importPopup}
-      onClose={() => setImportPopup(false)}
-      maxWidth='md'
-    >
-      <ImportCandidates
-        isImportDescVisible={false}
-        isListingCountVisible={true}
-        slotAddManually={<ImportManual />}
-        slotImportCsv={<ImportCsv />}
-        onClickClose={{
-          onClick: () => setImportPopup(false),
-        }}
-        slotImportResume={<ImportResume />}
-      />
+    <Dialog>
+      <DialogTrigger asChild>
+        {children || (
+          <Button variant='outline' className='w-auto'>
+            <PlusCircle className='mr-2 h-4 w-4' />
+            Add candidates abc
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent className='sm:max-w-[425px]'>
+        <Tabs defaultValue='manual' className='w-full'>
+          <TabsList className='grid w-full grid-cols-3'>
+            <TabsTrigger value='manual'>Manual</TabsTrigger>
+            <TabsTrigger value='csv'>CSV</TabsTrigger>
+            <TabsTrigger value='resume'>Resume</TabsTrigger>
+          </TabsList>
+          <TabsContent value='manual'>
+            <ImportManual />
+          </TabsContent>
+          <TabsContent value='csv'>
+            <ImportCsv />
+          </TabsContent>
+          <TabsContent value='resume'>
+            <ImportResume />
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
     </Dialog>
   );
 };

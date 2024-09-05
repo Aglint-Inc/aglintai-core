@@ -1,3 +1,5 @@
+import { candidatePortalRouter } from './routers/candidatePortal';
+import { exampleSchema } from './routers/example';
 import { schedulingRouter } from './routers/scheduling';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
@@ -8,7 +10,12 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  */
 export const appRouter = createTRPCRouter({
   scheduling: schedulingRouter,
+  candidatePortal: candidatePortalRouter,
 });
+
+export const appRouterSchema = {
+  example: exampleSchema,
+};
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

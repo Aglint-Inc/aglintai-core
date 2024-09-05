@@ -4,14 +4,11 @@ import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import { Parser } from 'html-to-react';
 import { Clock, Mail } from 'lucide-react';
 
-// import Image from 'next/image';
-import { apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
+import { useCandidatePortalMessages } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 
-const MessageCard = ({
-  message,
-}: {
-  message: apiResponsePortalMessage[number];
-}) => {
+const MessageCard = ({ index }: { index: number }) => {
+  const message = useCandidatePortalMessages()['data'][index];
+
   const htmlParser = Parser();
   return (
     <Card className='mx-auto rounded-lg overflow-hidden border shadow-none mb-4'>
@@ -21,14 +18,10 @@ const MessageCard = ({
             <div className='flex items-center gap-2'>
               <Mail className='w-4 h-4' />
               <div className='text-sm'>From</div>
-              {/* <Image
-              className='block w-10 h-10 rounded-full'
-              width={50}
-              height={50}
-              src={message?.company_logo || ''}
-              alt={message?.company_name || ''}
-            /> */}
-            <div className='text-sm font-semibold'>{message?.company_name}</div>
+
+              <div className='text-sm font-semibold'>
+                {message?.company_name}
+              </div>
             </div>
             <div className='flex items-center gap-2 text-sm ml-auto text-center sm:text-right'>
               <Clock className='w-4 h-4' />

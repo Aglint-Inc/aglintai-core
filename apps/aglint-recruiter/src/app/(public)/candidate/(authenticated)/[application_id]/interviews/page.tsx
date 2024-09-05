@@ -5,16 +5,16 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Calendar, Linkedin } from 'lucide-react';
 
-import { type apiPortalInterviewsResponse } from '@/app/api/candidate_portal/get_interviews/route';
 import EmptyState from '@/components/CandiatePortal/components/EmptyState';
 import InterviewsSkeleton from '@/components/CandiatePortal/components/InterviewSkeleton';
-import { usePortalInterviews } from '@/components/CandiatePortal/hook';
 import dayjs from '@/utils/dayjs';
-export default function InterviewsPage({ params }) {
-  const application_id = params.application_id;
-  const { isLoading, data } = usePortalInterviews({ application_id });
+import { capitalizeAll } from '@/utils/text/textUtils';
 
-  if (isLoading) {
+import { useCandidatePortalInterviews } from '../_common/hooks';
+export default function InterviewsPage() {
+  const { isPending, data } = useCandidatePortalInterviews();
+
+  if (isPending) {
     return <InterviewsSkeleton />;
   }
 
@@ -51,9 +51,6 @@ export default function InterviewsPage({ params }) {
           )}
         </div>
       </main>
-      {/* <aside className='lg:w-[30%] space-y-6'>
-      
-      </aside> */}
     </div>
   );
 }
@@ -61,7 +58,7 @@ export default function InterviewsPage({ params }) {
 function InterviewCard({
   interview,
 }: {
-  interview: apiPortalInterviewsResponse[number];
+  interview: ReturnType<typeof useCandidatePortalInterviews>['data'][number];
 }) {
   return (
     <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
@@ -69,6 +66,9 @@ function InterviewCard({
         <div className='flex justify-between items-center mb-4'>
           <div className='flex items-center'>
             <div className='bg-primary/10 text-primary rounded-md p-2 mr-3 text-center w-16 h-16 flex flex-col justify-center'>
+              <span className='text-xs'>
+                {dayjs(interview.start_time).format('dddd')}
+              </span>
               <span className='text-lg font-semibold'>
                 {dayjs(interview.start_time).format('DD')}
               </span>
@@ -81,7 +81,9 @@ function InterviewCard({
                 {dayjs(interview.start_time).format('hh:mm A  - ')}
                 {dayjs(interview.end_time).format('hh:mm A ')}
               </p>
-              <p className='text-xs text-gray-500'>{interview.schedule_type}</p>
+              <p className='text-xs text-gray-500'>
+                {capitalizeAll(interview.schedule_type)}
+              </p>
             </div>
           </div>
         </div>

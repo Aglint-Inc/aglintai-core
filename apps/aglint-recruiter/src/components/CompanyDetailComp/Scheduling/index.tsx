@@ -1,13 +1,4 @@
-import {
-  Alert,
-  Autocomplete,
-  Chip,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Alert, Autocomplete, Chip, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -18,6 +9,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
+import { Input } from '@components/ui/input';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
 import { InterviewLoad } from '@devlink2/InterviewLoad';
@@ -35,7 +28,6 @@ import toast from '@/utils/toast';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import UITextField from '../../Common/UITextField';
 import { LoadMax } from '../Holidays';
-import MuiNumberfield from '../OldSettingsSchedule/Components/MuiNumberfield';
 import DebriefDefaults from './DebriefDefaults';
 
 let schedulingSettingObj = {};
@@ -47,7 +39,7 @@ type interviewLoadType = {
   max: number;
 };
 
-function SchedulingSettings({ updateSettings, isOverflow = true }) {
+function SchedulingSettings({ updateSettings }) {
   const { recruiter } = useAuthDetails();
 
   const [workingHours, setWorkingHours] = useState([]);
@@ -220,379 +212,323 @@ function SchedulingSettings({ updateSettings, isOverflow = true }) {
   }, []);
 
   return (
-    <Stack overflow={isOverflow ? 'auto' : 'visible'}>
-      <>
-        <Stack
-          display={'flex'}
-          flexDirection={'row'}
-          width={'100%'}
-          justifyContent={'space-between'}
-          alignItems={'start'}
-          overflow={'hidden'}
-        >
-          <Stack
-            width={'100%'}
-            overflow={'auto'}
-            height={'calc(100vh - 48px)'}
-            padding={2}
-            spacing={2}
-            gap={'16px'}
-          >
-            <InterviewLoad
-              borderStyle={'false'}
-              slotDailyLimit={
-                <Stack spacing={3} gap={2} flexDirection={'row'}>
-                  <MuiNumberfield
-                    isMarginTop={false}
-                    handleSelect={(value) => handleDailyValue(+value)}
-                    value={dailyLmit.value}
-                    max={dailyLmit.max}
-                    width='70px'
-                  />
-                  <RadioGroup
-                    sx={{ marginTop: '0px !important' }}
-                    row
-                    aria-labelledby='demo-row-radio-buttons-group-label'
-                    name='row-radio-buttons-group'
-                  >
-                    {['Interviews', 'Hours'].map((ele, i) => {
-                      return (
-                        <FormControlLabel
-                          checked={dailyLmit.type === ele}
-                          key={i}
-                          onChange={(e: any) => {
-                            handleType(e.target.value);
-                          }}
-                          sx={{
-                            marginLeft: '0px',
-                            '& .MuiRadio-root': {
-                              marginRight: 'var(--space-1)',
-                            },
-                          }}
-                          value={ele}
-                          control={<Radio />}
-                          label={capitalize(ele.replaceAll('_', ' '))}
-                        />
-                      );
-                    })}
-                  </RadioGroup>
-                </Stack>
-              }
-              slotWeeklyLimit={
-                <Stack spacing={3} gap={2} flexDirection={'row'}>
-                  <MuiNumberfield
-                    handleSelect={(value) => handleWeeklyValue(+value)}
-                    value={weeklyLmit.value}
-                    max={weeklyLmit.max}
-                    width='70px'
-                    isMarginTop={false}
-                  />
-                  <RadioGroup
-                    sx={{ marginTop: '0px !important' }}
-                    row
-                    aria-labelledby='demo-row-radio-buttons-group-label'
-                    name='row-radio-buttons-group'
-                  >
-                    {['Interviews', 'Hours'].map((ele, i) => {
-                      return (
-                        <FormControlLabel
-                          checked={weeklyLmit.type === ele}
-                          key={i}
-                          onChange={(e: any) => {
-                            handleType(e.target.value);
-                          }}
-                          sx={{
-                            marginLeft: '0px',
-                            '& .MuiRadio-root': {
-                              marginRight: 'var(--space-1)',
-                            },
-                          }}
-                          value={ele}
-                          control={<Radio />}
-                          label={capitalize(ele.replaceAll('_', ' '))}
-                        />
-                      );
-                    })}
-                  </RadioGroup>
-                </Stack>
-              }
-            />
-            <DebriefDefaults
-              value={debriefDefaults}
-              setValue={setDebriefDefaults}
-            />
-            <Keywords
-              borderStyle={'false'}
-              size={'large'}
-              slotKeywordsCard={
-                <>
-                  <KeywordCard
-                    textTitle={'Free'}
-                    textWarning={
-                      'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
-                    }
-                    slotInput={
-                      <FilterInput
-                        handleAdd={(s) => {
-                          const keyword = String(s).split(',');
-                          keyword.map((item) => {
-                            if (freeKeyWords.includes(item)) {
+    <div className='flex flex-col h-full overflow-auto'>
+      <div className='flex flex-row w-full justify-between items-start overflow-hidden'>
+        <div className='w-full overflow-auto h-[calc(100vh-48px)] p-2 space-y-4'>
+          <InterviewLoad
+            borderStyle={'false'}
+            slotDailyLimit={
+              <div className='flex flex-row items-center gap-4'>
+                <Input
+                  type='number'
+                  value={dailyLmit.value}
+                  onChange={(e) => handleDailyValue(+e.target.value)}
+                  max={dailyLmit.max}
+                  className='w-[70px]'
+                />
+                <Tabs
+                  defaultValue={dailyLmit.type}
+                  onValueChange={(value) =>
+                    handleType(value as 'Hours' | 'Interviews')
+                  }
+                >
+                  <TabsList>
+                    {['Interviews', 'Hours'].map((ele) => (
+                      <TabsTrigger key={ele} value={ele}>
+                        {capitalize(ele.replaceAll('_', ' '))}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
+            }
+            slotWeeklyLimit={
+              <div className='flex flex-row items-center gap-4'>
+                <Input
+                  type='number'
+                  value={weeklyLmit.value}
+                  onChange={(e) => handleWeeklyValue(+e.target.value)}
+                  max={weeklyLmit.max}
+                  className='w-[70px]'
+                />
+                <Tabs
+                  defaultValue={weeklyLmit.type}
+                  onValueChange={(value) =>
+                    handleType(value as 'Hours' | 'Interviews')
+                  }
+                >
+                  <TabsList>
+                    {['Interviews', 'Hours'].map((ele) => (
+                      <TabsTrigger key={ele} value={ele}>
+                        {capitalize(ele.replaceAll('_', ' '))}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
+            }
+          />
+          <DebriefDefaults
+            value={debriefDefaults}
+            setValue={setDebriefDefaults}
+          />
+          <Keywords
+            borderStyle={'false'}
+            size={'large'}
+            slotKeywordsCard={
+              <>
+                <KeywordCard
+                  textTitle={'Free'}
+                  textWarning={
+                    'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
+                  }
+                  slotInput={
+                    <FilterInput
+                      handleAdd={(s) => {
+                        const keyword = String(s).split(',');
+                        keyword.map((item) => {
+                          if (freeKeyWords.includes(item)) {
+                            toast.warning(`"${item}" keyword exists.`);
+                            return null;
+                          } else {
+                            setFreeKeywords((pre) => [item, ...pre]);
+                          }
+                        });
+                      }}
+                      path='freeKeywords'
+                      type='string'
+                    />
+                  }
+                  slotSuggestPill={
+                    freeKeyWords.length === 0 ? (
+                      <Alert severity='info' icon={false}>
+                        <Typography>No free keywords added.</Typography>
+                      </Alert>
+                    ) : (
+                      freeKeyWords.map((item) => {
+                        return (
+                          <>
+                            <Chip
+                              clickable
+                              onDelete={() => {
+                                setFreeKeywords((pre) => {
+                                  return pre.filter((ele) => ele !== item);
+                                });
+                              }}
+                              deleteIcon={
+                                <div>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </div>
+                              }
+                              label={item}
+                            />
+                          </>
+                        );
+                      })
+                    )
+                  }
+                />
+                <KeywordCard
+                  textTitle={'Soft Conflicts'}
+                  textWarning={
+                    'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
+                  }
+                  slotInput={
+                    <FilterInput
+                      handleAdd={(s) => {
+                        const keyword = String(s).split(',');
+                        keyword.map((item) => {
+                          if (freeKeyWords.includes(item)) {
+                            toast.warning(`"${item}" keyword exists.`);
+                            return null;
+                          } else {
+                            setSoftConflictsKeyWords((pre) => [item, ...pre]);
+                          }
+                        });
+                      }}
+                      path='softConflictsKeywords'
+                      type='string'
+                    />
+                  }
+                  slotSuggestPill={
+                    softConflictsKeyWords.length === 0 ? (
+                      <Alert severity='info' icon={false}>
+                        <Typography>No soft conflict keyword added.</Typography>
+                      </Alert>
+                    ) : (
+                      softConflictsKeyWords.map((item) => {
+                        return (
+                          <>
+                            <Chip
+                              clickable
+                              onDelete={() => {
+                                setSoftConflictsKeyWords((pre) => {
+                                  return pre.filter((ele) => ele !== item);
+                                });
+                              }}
+                              deleteIcon={
+                                <div>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </div>
+                              }
+                              label={item}
+                            />
+                          </>
+                        );
+                      })
+                    )
+                  }
+                />
+                <KeywordCard
+                  textTitle={'Out of Office'}
+                  textWarning={
+                    'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
+                  }
+                  slotInput={
+                    <FilterInput
+                      handleAdd={(s) => {
+                        const keyword = String(s).split(',');
+                        keyword.map((itemX) => {
+                          const item = itemX.trim();
+                          if (item?.length) {
+                            if (outOfOffice.includes(item)) {
                               toast.warning(`"${item}" keyword exists.`);
                               return null;
                             } else {
-                              setFreeKeywords((pre) => [item, ...pre]);
+                              setOutOfOffice((pre) => [item, ...pre]);
                             }
-                          });
-                        }}
-                        path='freeKeywords'
-                        type='string'
-                      />
-                    }
-                    slotSuggestPill={
-                      freeKeyWords.length === 0 ? (
-                        <Alert severity='info' icon={false}>
-                          <Typography>No free keywords added.</Typography>
-                        </Alert>
-                      ) : (
-                        freeKeyWords.map((item) => {
-                          return (
-                            <>
-                              <Chip
-                                clickable
-                                onDelete={() => {
-                                  setFreeKeywords((pre) => {
-                                    return pre.filter((ele) => ele !== item);
-                                  });
-                                }}
-                                deleteIcon={
-                                  <Stack>
-                                    <GlobalIcon iconName='close' size='4' />
-                                  </Stack>
-                                }
-                                label={item}
-                              />
-                            </>
-                          );
-                        })
-                      )
-                    }
-                  />
-                  <KeywordCard
-                    textTitle={'Soft Conflicts'}
-                    textWarning={
-                      'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
-                    }
-                    slotInput={
-                      <FilterInput
-                        handleAdd={(s) => {
-                          const keyword = String(s).split(',');
-                          keyword.map((item) => {
-                            if (freeKeyWords.includes(item)) {
+                          }
+                        });
+                      }}
+                      path='outOfOfficeKeywords'
+                      type='string'
+                    />
+                  }
+                  slotSuggestPill={
+                    outOfOffice.length === 0 ? (
+                      <Alert severity='info' icon={false}>
+                        <Typography>
+                          No out of office keywords added.
+                        </Typography>
+                      </Alert>
+                    ) : (
+                      outOfOffice.map((item) => {
+                        return (
+                          <>
+                            <Chip
+                              clickable
+                              onDelete={() => {
+                                setOutOfOffice((pre) => {
+                                  return pre.filter((ele) => ele !== item);
+                                });
+                              }}
+                              deleteIcon={
+                                <div>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </div>
+                              }
+                              label={item}
+                            />
+                          </>
+                        );
+                      })
+                    )
+                  }
+                />
+                <KeywordCard
+                  textTitle={'Recruiting Blocks'}
+                  textWarning={
+                    'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
+                  }
+                  slotInput={
+                    <FilterInput
+                      handleAdd={(s) => {
+                        const keyword = String(s).split(',');
+                        keyword.map((itemX) => {
+                          const item = itemX.trim();
+                          if (item?.length) {
+                            if (recruitingBlocks.includes(item)) {
                               toast.warning(`"${item}" keyword exists.`);
                               return null;
                             } else {
-                              setSoftConflictsKeyWords((pre) => [item, ...pre]);
+                              setRecruitingBlocks((pre) => [item, ...pre]);
                             }
-                          });
-                        }}
-                        path='softConflictsKeywords'
-                        type='string'
-                      />
-                    }
-                    slotSuggestPill={
-                      softConflictsKeyWords.length === 0 ? (
-                        <Alert severity='info' icon={false}>
-                          <Typography>
-                            No soft conflict keyword added.
-                          </Typography>
-                        </Alert>
-                      ) : (
-                        softConflictsKeyWords.map((item) => {
-                          return (
-                            <>
-                              <Chip
-                                clickable
-                                onDelete={() => {
-                                  setSoftConflictsKeyWords((pre) => {
-                                    return pre.filter((ele) => ele !== item);
-                                  });
-                                }}
-                                deleteIcon={
-                                  <Stack>
-                                    <GlobalIcon iconName='close' size='4' />
-                                  </Stack>
-                                }
-                                label={item}
-                              />
-                            </>
-                          );
-                        })
-                      )
-                    }
-                  />
-                  <KeywordCard
-                    textTitle={'Out of Office'}
-                    textWarning={
-                      'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
-                    }
-                    slotInput={
-                      <FilterInput
-                        handleAdd={(s) => {
-                          const keyword = String(s).split(',');
-                          keyword.map((itemX) => {
-                            const item = itemX.trim();
-                            if (item?.length) {
-                              if (outOfOffice.includes(item)) {
-                                toast.warning(`"${item}" keyword exists.`);
-                                return null;
-                              } else {
-                                setOutOfOffice((pre) => [item, ...pre]);
+                          }
+                        });
+                      }}
+                      path='recruitingBlocksKeywords'
+                      type='string'
+                    />
+                  }
+                  slotSuggestPill={
+                    recruitingBlocks.length === 0 ? (
+                      <Alert severity='info' variant='outlined' icon={false}>
+                        <Typography>No recruiting blocks added.</Typography>
+                      </Alert>
+                    ) : (
+                      recruitingBlocks.map((item) => {
+                        return (
+                          <>
+                            <Chip
+                              clickable
+                              onDelete={() => {
+                                setRecruitingBlocks((pre) => {
+                                  return pre.filter((ele) => ele !== item);
+                                });
+                              }}
+                              deleteIcon={
+                                <div>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </div>
                               }
-                            }
-                          });
-                        }}
-                        path='outOfOfficeKeywords'
-                        type='string'
-                      />
-                    }
-                    slotSuggestPill={
-                      outOfOffice.length === 0 ? (
-                        <Alert severity='info' icon={false}>
-                          <Typography>
-                            No out of office keywords added.
-                          </Typography>
-                        </Alert>
-                      ) : (
-                        outOfOffice.map((item) => {
-                          return (
-                            <>
-                              <Chip
-                                clickable
-                                onDelete={() => {
-                                  setOutOfOffice((pre) => {
-                                    return pre.filter((ele) => ele !== item);
-                                  });
-                                }}
-                                deleteIcon={
-                                  <Stack>
-                                    <GlobalIcon iconName='close' size='4' />
-                                  </Stack>
-                                }
-                                label={item}
-                              />
-                            </>
-                          );
-                        })
-                      )
-                    }
-                  />
-                  <KeywordCard
-                    textTitle={'Recruiting Blocks'}
-                    textWarning={
-                      'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
-                    }
-                    slotInput={
-                      <FilterInput
-                        handleAdd={(s) => {
-                          const keyword = String(s).split(',');
-                          keyword.map((itemX) => {
-                            const item = itemX.trim();
-                            if (item?.length) {
-                              if (recruitingBlocks.includes(item)) {
-                                toast.warning(`"${item}" keyword exists.`);
-                                return null;
-                              } else {
-                                setRecruitingBlocks((pre) => [item, ...pre]);
-                              }
-                            }
-                          });
-                        }}
-                        path='recruitingBlocksKeywords'
-                        type='string'
-                      />
-                    }
-                    slotSuggestPill={
-                      recruitingBlocks.length === 0 ? (
-                        <Alert severity='info' variant='outlined' icon={false}>
-                          <Typography>No recruiting blocks added.</Typography>
-                        </Alert>
-                      ) : (
-                        recruitingBlocks.map((item) => {
-                          return (
-                            <>
-                              <Chip
-                                clickable
-                                onDelete={() => {
-                                  setRecruitingBlocks((pre) => {
-                                    return pre.filter((ele) => ele !== item);
-                                  });
-                                }}
-                                deleteIcon={
-                                  <Stack>
-                                    <GlobalIcon iconName='close' size='4' />
-                                  </Stack>
-                                }
-                                label={item}
-                              />
-                            </>
-                          );
-                        })
-                      )
-                    }
-                  />
-                </>
-              }
+                              label={item}
+                            />
+                          </>
+                        );
+                      })
+                    )
+                  }
+                />
+              </>
+            }
+          />
+        </div>
+        <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
+          <div className='flex flex-col gap-4'>
+            {isTipVisible && (
+              <div>
+                <GlobalInfo
+                  color={'purple'}
+                  iconName='lightbulb'
+                  textTitle={'Pro Tip'}
+                  textDescription={
+                    'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+                  }
+                  showCloseButton
+                  onClickClose={{
+                    onClick: () => {
+                      handleCloseInfo();
+                    },
+                  }}
+                />
+              </div>
+            )}
+            <HelperDropdown
+              textName='Interview Load Tips'
+              slotBody={<InterviewLoadHelper />}
             />
-          </Stack>
-          <Stack
-            bgcolor={'white'}
-            width={'400px'}
-            minWidth={'400px'}
-            padding={'var(--space-4)'}
-            borderLeft={'1px solid var(--neutral-6)'}
-            height={'calc(100vh - 48px)'}
-            flexDirection={'column'}
-            gap={'var(--space-4)'}
-            sx={{
-              overflowY: 'auto',
-            }}
-          >
-            <Stack flexDirection={'column'} gap={'var(--space-4)'}>
-              {isTipVisible && (
-                <Stack>
-                  <GlobalInfo
-                    color={'purple'}
-                    iconName='lightbulb'
-                    textTitle={'Pro Tip'}
-                    textDescription={
-                      'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-                    }
-                    showCloseButton
-                    onClickClose={{
-                      onClick: () => {
-                        handleCloseInfo();
-                      },
-                    }}
-                  />
-                </Stack>
-              )}
-              <HelperDropdown
-                textName='Interview Load Tips'
-                slotBody={<InterviewLoadHelper />}
-              />
-              <HelperDropdown
-                textName='Debrief Tips'
-                slotBody={<DebreifHelperText />}
-              />
-              <HelperDropdown
-                textName='Keyword Tips'
-                slotBody={<KeywordsHelper />}
-              />
-            </Stack>
-          </Stack>
-        </Stack>
-      </>
-    </Stack>
+            <HelperDropdown
+              textName='Debrief Tips'
+              slotBody={<DebreifHelperText />}
+            />
+            <HelperDropdown
+              textName='Keyword Tips'
+              slotBody={<KeywordsHelper />}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

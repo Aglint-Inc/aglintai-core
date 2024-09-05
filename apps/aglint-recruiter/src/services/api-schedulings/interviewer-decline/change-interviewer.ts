@@ -15,6 +15,7 @@ type FuncParams = {
 };
 export const changeInterviewer = async (payload: FuncParams) => {
   // list interviewers
+
   const [cancel_rec] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_cancel')
@@ -26,6 +27,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
     declined_int_sesn_reln_id: cancel_rec.session_relation_id,
     user_tz: 'Asia/Colombo',
   };
+
   const { data } = await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find-replacement-ints`,
     api_payload1,
@@ -38,6 +40,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
       'No alternative interviewers are found in the interview plan.',
     );
   }
+
   if (alternate_slots.every((r) => r.conflicts.length > 0)) {
     // await payload.reqProgressLogger({
     //   event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
@@ -56,6 +59,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/update-meeting-interviewers`,
     api_payload2,
   );
+
   await payload.reqProgressLogger({
     is_progress_step: true,
     status: 'completed',

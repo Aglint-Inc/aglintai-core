@@ -59,10 +59,12 @@ export const sendMailFun = async <
     fetched_temp.subject = payload.subject;
     fetched_temp.body = payload.body;
   }
+
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
     fetched_temp,
   );
+
   const { emails } = await getEmails();
   const emailIdx = emails.findIndex((e) => e === api_target);
   if (emailIdx === -1)
@@ -87,7 +89,7 @@ export const sendMailFun = async <
   if (application_id) {
     await sendMessageToCandidatePortal({
       application_id,
-      body: html,
+      body: filled_comp_template.body,
       subject: filled_comp_template.subject,
     });
   }

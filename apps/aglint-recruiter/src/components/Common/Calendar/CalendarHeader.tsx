@@ -1,7 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { TaskSwitchButton } from '@devlink3/TaskSwitchButton';
 import { Grid, Stack, Typography } from '@mui/material';
 
 function CalendarHeader({
@@ -37,23 +37,12 @@ function CalendarHeader({
         justifyContent='space-between'
       >
         <Grid item xs={4}>
-          <TaskSwitchButton
-            isIconVisible={false}
-            isJobCandActive={mode === 'calendar'}
-            isListActive={mode === 'list'}
-            onClickJobCand={{
-              onClick: () => {
-                if (mode !== 'calendar') handleMode('calendar');
-              },
-            }}
-            onClickList={{
-              onClick: () => {
-                if (mode !== 'list') handleMode('list');
-              },
-            }}
-            textFirst={'Calendar'}
-            textSecond={'List'}
-          />
+          <Tabs defaultValue={mode} onValueChange={handleMode}>
+            <TabsList>
+              <TabsTrigger value='calendar'>Calendar</TabsTrigger>
+              <TabsTrigger value='list'>List</TabsTrigger>
+            </TabsList>
+          </Tabs>
         </Grid>
         <Grid item xs={4} container justifyContent='center'>
           <Stack

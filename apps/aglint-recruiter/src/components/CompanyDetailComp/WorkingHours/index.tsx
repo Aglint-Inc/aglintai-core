@@ -1,403 +1,221 @@
 import { schedulingSettingType } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { RcCheckbox } from '@devlink2/RcCheckbox';
-import { TimeRangeInput } from '@devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@devlink2/WorkingHourDay';
-import { WorkingHours } from '@devlink2/WorkingHours';
-import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { WorkingDaysList } from '@devlink3/WorkingDaysList';
-import { WorkingHourDetails } from '@devlink3/WorkingHourDetails';
-import { WorkingHoursHelper } from '@devlink3/WorkingHoursHelper';
-import { Drawer, Stack, Typography } from '@mui/material';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
+import { Label } from '@components/ui/label';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table';
 import { capitalize, cloneDeep } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { Calendar, Clock, Coffee, Edit, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-import ToggleBtn from '@/components/Common/UIToggle';
+import TimePicker from '@/components/Common/TimePicker';
+import TimezonePicker from '@/components/Common/TimezonePicker';
 import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import dayjs from '@/utils/dayjs';
-import timeZones from '@/utils/timeZone';
 
-import SelectTime from '../OldSettingsSchedule/Components/SelectTime';
-import { TimezoneSelector } from '../Scheduling';
+import DayWithTime from './DayWithTime';
 
-let schedulingSettingObj = {};
-
-export default function WorkingHour({ updateSettings, initialData }) {
-  const [helperWorking, setHelperWorking] = useState(420);
+export default function WorkingHour({
+  updateSettings,
+  initialData,
+}: {
+  updateSettings: any;
+  initialData: schedulingSettingType;
+}) {
   const [workingHours, setWorkingHours] = useState([]);
-  const [isTimeZone, setIsTimeZone] = useState(true);
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
     start_time: string;
     end_time: string;
   } | null>({ start_time: '', end_time: '' });
-
-  const selectStartTime = (value: any, i: number) => {
-    setWorkingHours((pre) => {
-      const data = pre;
-      data[Number(i)].timeRange.startTime = `${dayjs(value).format('HH:mm')}`;
-      return [...data];
-    });
-  };
-
-  const selectEndTime = (value: any, i: number) => {
-    setWorkingHours((pre) => {
-      const data = pre;
-      data[Number(i)].timeRange.endTime = `${dayjs(value).format('HH:mm')}`;
-      return [...data];
-    });
-  };
-  const toggleHelperWorking = () => {
-    // Toggle between 0px and 420px
-    setHelperWorking(helperWorking === 10 ? 420 : 10);
-  };
-  function initialLoad() {
-    if (initialData) {
-      const schedulingSettingData = cloneDeep(
-        initialData,
-      ) as schedulingSettingType;
-
-      setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
-      setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
-      setSelectedHourBreak({
-        start_time: schedulingSettingData.break_hour?.start_time,
-        end_time: schedulingSettingData.break_hour?.end_time,
-      });
-      const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
-      setWorkingHours(workingHoursCopy);
-    }
-  }
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     initialLoad();
   }, []);
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isHover, setIsHover] = useState(false);
+  function initialLoad() {
+    if (initialData) {
+      const schedulingSettingData = cloneDeep(
+        initialData,
+      ) as schedulingSettingType;
+      setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
+      setSelectedHourBreak({
+        start_time: schedulingSettingData.break_hour?.start_time,
+        end_time: schedulingSettingData.break_hour?.end_time,
+      });
+      setWorkingHours(cloneDeep(schedulingSettingData.workingHours));
+    }
+  }
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (updatedData) => {
     setIsUpdating(true);
     try {
-      schedulingSettingObj = {
+      const schedulingSettingObj = {
         ...initialData,
-        timeZone: selectedTimeZone,
-        workingHours: workingHours,
-
-        isAutomaticTimezone: isTimeZone,
-        break_hour: {
-          start_time: selectedHourBreak.start_time,
-          end_time: selectedHourBreak.end_time,
-        },
+        ...updatedData,
       } as schedulingSettingType;
-
       await updateSettings(schedulingSettingObj);
-      setIsDrawerOpen(false);
     } catch (e) {
-      //
+      // Handle error
     } finally {
       setIsUpdating(false);
     }
   };
 
   return (
-    <Stack
-      display={'flex'}
-      flexDirection={'row'}
-      width={'100%'}
-      justifyContent={'space-between'}
-      alignItems={'start'}
-      sx={{ overflowX: 'hidden' }}
-    >
-      <Stack
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        width={'700px'}
-        overflow={'auto'}
-        spacing={2}
-        borderRadius={'8px'}
-        bgcolor={'white'}
-        margin={2}
-        position={'relative'}
-      >
-        {isHover && (
-          <Stack position={'absolute'} top={'16px'} right={'16px'}>
-            <ButtonSoft
-              textButton='Edit'
-              color={'neutral'}
-              size={2}
-              onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-            />
-          </Stack>
-        )}
-        <TimeZone timeZone={initialData?.timeZone?.label} />
-        <WorkingHourView workingHours={initialData.workingHours} />
-        <Debreif breaktime={initialData.break_hour} />
-        <Drawer
-          anchor={'right'}
-          open={isDrawerOpen}
-          onClose={() => setIsDrawerOpen(false)}
-        >
-          <SideDrawerLarge
-            onClickCancel={{
-              onClick: () => {
-                setIsDrawerOpen(false);
-              },
-            }}
-            isHeaderIconVisible={false}
-            textDrawertitle='Update Working Hours'
-            drawerSize={'medium'}
-            slotButtons={
-              <>
-                <ButtonSoft
-                  size={2}
-                  textButton='Cancel'
-                  color={'neutral'}
-                  onClickButton={{ onClick: () => setIsDrawerOpen(false) }}
-                />
-                <ButtonSolid
-                  size={2}
-                  textButton='Update'
-                  isLoading={isUpdating}
-                  isDisabled={isUpdating}
-                  onClickButton={{ onClick: handleUpdate }}
-                />
-              </>
-            }
-            slotSideDrawerbody={
-              <WorkingHours
-                slotTimeZoneInput={
-                  <TimezoneSelector
-                    disabled={isTimeZone}
-                    value={selectedTimeZone}
-                    setValue={setSelectedTimeZone}
-                  />
-                }
-                // slotTimeZoneToggle={}
-                slotWorkingHourDay={
-                  <Stack direction={'column'} paddingBottom={'50px'}>
-                    {!!workingHours.length &&
-                      workingHours.map((day, i) => {
-                        return (
-                          <>
-                            <WorkingHourDay
-                              slotRcCheckbox={
-                                <RcCheckbox
-                                  onclickCheck={{
-                                    onClick: () => {
-                                      setWorkingHours((pre) => {
-                                        const data = pre;
-                                        data[Number(i)].isWorkDay =
-                                          !data[Number(i)].isWorkDay;
-
-                                        return [...data];
-                                      });
-                                    },
-                                  }}
-                                  isChecked={day.isWorkDay}
-                                  text={capitalize(day.day)}
-                                />
-                              }
-                              slotTimeRageInput={
-                                <TimeRangeInput
-                                  slotStartTimeInput={
-                                    <SelectTime
-                                      disable={!day.isWorkDay}
-                                      value={dayjs()
-                                        .set(
-                                          'hour',
-                                          parseInt(
-                                            day.timeRange.startTime.split(
-                                              ':',
-                                            )[0],
-                                          ),
-                                        )
-                                        .set(
-                                          'minute',
-                                          parseInt(
-                                            day.timeRange.startTime.split(
-                                              ':',
-                                            )[1],
-                                          ),
-                                        )}
-                                      onSelect={selectStartTime}
-                                      i={i}
-                                    />
-                                  }
-                                  slotEndTimeInput={
-                                    <SelectTime
-                                      disable={!day.isWorkDay}
-                                      value={dayjs()
-                                        .set(
-                                          'hour',
-                                          parseInt(
-                                            day.timeRange.endTime.split(':')[0],
-                                          ),
-                                        )
-                                        .set(
-                                          'minute',
-                                          parseInt(
-                                            day.timeRange.endTime.split(':')[1],
-                                          ),
-                                        )}
-                                      onSelect={selectEndTime}
-                                      i={i}
-                                    />
-                                  }
-                                />
-                              }
-                            />
-                          </>
-                        );
-                      })}
-
-                    <Stack
-                      direction={'column'}
-                      spacing={2}
-                      marginTop={'var(--space-5)'}
-                    >
-                      <Stack direction={'column'}>
-                        <Typography variant='body1medium'>
-                          Default Break Times
-                        </Typography>
-                        <Typography variant='body1'>
-                          Define standard break times for the company.
-                        </Typography>
-                      </Stack>
-                      <Stack spacing={1} direction={'column'}>
-                        <Stack
-                          direction={'row'}
-                          alignItems={'center'}
-                          spacing={1}
-                        >
-                          <Typography width={120} fontSize={'14px'}>
-                            Break Start Time
-                          </Typography>
-
-                          {selectedHourBreak?.start_time &&
-                            workingHours[1]?.timeRange?.startTime && (
-                              <SelectTime
-                                disableIgnoringDatePartForTimeValidation={true}
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      selectedHourBreak?.start_time?.split(
-                                        ':',
-                                      )[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      selectedHourBreak?.start_time?.split(
-                                        ':',
-                                      )[1],
-                                    ),
-                                  )}
-                                onSelect={(e) => {
-                                  setSelectedHourBreak((pre) => {
-                                    pre.start_time = `${dayjs(e).format('HH:mm')}`;
-                                    return { ...pre };
-                                  });
-                                }}
-                                key={0}
-                              />
-                            )}
-                        </Stack>
-                        <Stack
-                          spacing={1}
-                          direction={'row'}
-                          alignItems={'center'}
-                        >
-                          <Typography width={120} fontSize={'14px'}>
-                            Break End Time
-                          </Typography>
-
-                          {workingHours[1]?.timeRange?.endTime &&
-                            selectedHourBreak?.end_time && (
-                              <SelectTime
-                                disableIgnoringDatePartForTimeValidation={true}
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      selectedHourBreak?.end_time?.split(
-                                        ':',
-                                      )[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      selectedHourBreak?.end_time?.split(
-                                        ':',
-                                      )[1],
-                                    ),
-                                  )}
-                                onSelect={(e) => {
-                                  setSelectedHourBreak((pre) => {
-                                    pre.end_time = `${dayjs(e).format('HH:mm')}`;
-                                    return { ...pre };
-                                  });
-                                }}
-                                key={0}
-                              />
-                            )}
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                }
-                slotTimeZoneToggle={
-                  <ToggleBtn
-                    handleChange={(e: any) => {
-                      setIsTimeZone(e);
-                      if (e) {
-                        setSelectedTimeZone(
-                          timeZones.filter((item) =>
-                            item.label.includes(dayjs.tz.guess()),
-                          )[0],
-                        );
-                      }
-                    }}
-                    isChecked={isTimeZone}
-                  />
-                }
-              />
-            }
-          />
-        </Drawer>
-      </Stack>
-      <WorkingHoursHelper
-        styleWidth={{ style: { width: helperWorking } }}
-        onClickArrow={{
-          style: {
-            transform: `rotate(${helperWorking === 420 ? '0deg' : '180deg'})`,
-          },
-          onClick: () => {
-            toggleHelperWorking();
-          },
-        }}
+    <div className='container mx-auto p-6 space-y-6'>
+      <TimeZoneCard
+        timeZone={initialData?.timeZone?.label}
+        selectedTimeZone={selectedTimeZone}
+        setSelectedTimeZone={setSelectedTimeZone}
+        handleUpdate={handleUpdate}
+        isUpdating={isUpdating}
       />
-    </Stack>
+      <WorkingHoursCard
+        workingHours={workingHours}
+        setWorkingHours={setWorkingHours}
+        handleUpdate={handleUpdate}
+        isUpdating={isUpdating}
+      />
+      <BreakTimeCard
+        breaktime={selectedHourBreak}
+        setSelectedHourBreak={setSelectedHourBreak}
+        handleUpdate={handleUpdate}
+        isUpdating={isUpdating}
+      />
+    </div>
   );
 }
 
-const WorkingHourView = ({ workingHours }) => {
-  return (
-    <Stack>
-      <WorkingHourDetails
-        slotEdit={<Stack pl={2} height={'20px'}></Stack>}
-        slotDays={workingHours
-          .filter((day) => day.isWorkDay)
-          .map((day, i) => (
-            <WorkingDaysList
-              key={i}
-              textDay={<Typography>{capitalize(day.day)}</Typography>}
-              textTime={
-                <Typography>
+const TimeZoneCard = ({
+  timeZone,
+  selectedTimeZone,
+  setSelectedTimeZone,
+  handleUpdate,
+  isUpdating,
+}) => (
+  <Card>
+    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+      <CardTitle className='text-2xl font-bold'>Time Zone</CardTitle>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant='outline' size='icon'>
+            <Edit className='h-4 w-4' />
+            <span className='sr-only'>Edit Time Zone</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <div className='flex flex-col gap-4'>
+            <Label>Time Zone</Label>
+            <TimezonePicker
+              value={selectedTimeZone?.tzCode}
+              onChange={(value) => setSelectedTimeZone(value)}
+            />
+            <Button
+              onClick={() => handleUpdate({ timeZone: selectedTimeZone })}
+              disabled={isUpdating}
+            >
+              {isUpdating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              Update
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </CardHeader>
+    <CardContent>
+      <div className='flex items-center space-x-4'>
+        <Clock className='h-6 w-6 text-muted-foreground' />
+        <div>
+          <p className='text-sm font-medium'>Current Time Zone</p>
+          <p className='text-2xl font-bold'>{timeZone}</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const WorkingHoursCard = ({
+  workingHours,
+  setWorkingHours,
+  handleUpdate,
+  isUpdating,
+}) => (
+  <Card>
+    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+      <CardTitle className='text-2xl font-bold'>Working Hours</CardTitle>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant='outline' size='icon'>
+            <Edit className='h-4 w-4' />
+            <span className='sr-only'>Edit Working Hours</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <div className='flex flex-col gap-4'>
+            {workingHours.map((day, i) => (
+              <DayWithTime
+                key={i}
+                day={day}
+                i={i}
+                startTime={day.timeRange.startTime}
+                endTime={day.timeRange.endTime}
+                selectStartTime={(value, i) => {
+                  setWorkingHours((pre) => {
+                    const data = [...pre];
+                    data[i].timeRange.startTime = dayjs(value).format('HH:mm');
+                    return data;
+                  });
+                }}
+                selectEndTime={(value, i) => {
+                  setWorkingHours((pre) => {
+                    const data = [...pre];
+                    data[i].timeRange.endTime = dayjs(value).format('HH:mm');
+                    return data;
+                  });
+                }}
+                setWorkingHours={setWorkingHours}
+              />
+            ))}
+            <Button
+              onClick={() => handleUpdate({ workingHours })}
+              disabled={isUpdating}
+            >
+              {isUpdating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              Update
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </CardHeader>
+    <CardContent>
+      <div className='flex items-center space-x-4 mb-4'>
+        <Calendar className='h-6 w-6 text-muted-foreground' />
+        <p className='text-sm font-medium'>Weekly Schedule</p>
+      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Day</TableHead>
+            <TableHead>Hours</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {workingHours
+            .filter((day) => day.isWorkDay)
+            .map((day, i) => (
+              <TableRow key={i}>
+                <TableCell className='font-medium'>
+                  {capitalize(day.day)}
+                </TableCell>
+                <TableCell>
                   {dayjs()
                     .set(
                       'hour',
@@ -419,66 +237,112 @@ const WorkingHourView = ({ workingHours }) => {
                       parseInt(day?.timeRange.endTime?.split(':')[1]),
                     )
                     .format('hh:mm A')}
-                </Typography>
-              }
-            />
-          ))}
-      />
-    </Stack>
-  );
-};
-const TimeZone = ({ timeZone }) => {
-  return (
-    <Stack bgcolor={'white'} width={'600px'} marginTop={'0px !important'}>
-      <Stack
-        fontWeight={500}
-        alignItems={'center'}
-        height={'10px'}
-        paddingBlock={2}
-        direction={'row'}
-      >
-        Time Zone
-        {/* {isEditHover && (
-          // <Stack pl={2}>
-          //   <ButtonGhost
-          //     textButton='Edit'
-          //     size={1}
-          //     onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-          //   />
-          // </Stack>
-        )} */}
-      </Stack>
-      <Typography>{timeZone}</Typography>
-    </Stack>
-  );
-};
-const Debreif = ({ breaktime }) => {
-  return (
-    <Stack bgcolor={'white'} width={'600px'}>
-      <Stack
-        fontWeight={500}
-        alignItems={'center'}
-        height={'10px'}
-        paddingBlock={2}
-        direction={'row'}
-      >
-        Default Break Times{' '}
-      </Stack>
-      <Typography pb={'4px'}>
-        <span style={{ fontWeight: '500' }}>Break Start Time</span>
-        <span style={{ marginLeft: '20px' }}>
-          {dayjs()
-            .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
-            .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
-            .format('hh:mm A')}
-        </span>{' '}
-        -{' '}
-        {dayjs()
-          .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
-          .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
-          .format('hh:mm A')}
-      </Typography>
-      <Typography></Typography>
-    </Stack>
-  );
-};
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </CardContent>
+  </Card>
+);
+
+const BreakTimeCard = ({
+  breaktime,
+  setSelectedHourBreak,
+  handleUpdate,
+  isUpdating,
+}) => (
+  <Card>
+    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+      <CardTitle className='text-2xl font-bold'>Break Time</CardTitle>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant='outline' size='icon'>
+            <Edit className='h-4 w-4' />
+            <span className='sr-only'>Edit Break Time</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-center space-x-2'>
+              <p>Break Start Time</p>
+              <TimePicker
+                onChange={(value) => {
+                  setSelectedHourBreak((pre) => ({
+                    ...pre,
+                    start_time: dayjs(value).format('HH:mm'),
+                  }));
+                }}
+                value={
+                  new Date(
+                    dayjs()
+                      .set(
+                        'hour',
+                        parseInt(breaktime?.start_time?.split(':')[0] || '0'),
+                      )
+                      .set(
+                        'minute',
+                        parseInt(breaktime?.start_time?.split(':')[1] || '0'),
+                      )
+                      .toISOString(),
+                  )
+                }
+              />
+            </div>
+            <div className='flex items-center space-x-2'>
+              <p>Break End Time</p>
+              <TimePicker
+                onChange={(value) => {
+                  setSelectedHourBreak((pre) => ({
+                    ...pre,
+                    end_time: dayjs(value).format('HH:mm'),
+                  }));
+                }}
+                value={
+                  new Date(
+                    dayjs()
+                      .set(
+                        'hour',
+                        parseInt(breaktime?.end_time?.split(':')[0] || '0'),
+                      )
+                      .set(
+                        'minute',
+                        parseInt(breaktime?.end_time?.split(':')[1] || '0'),
+                      )
+                      .toISOString(),
+                  )
+                }
+              />
+            </div>
+            <Button
+              onClick={() => handleUpdate({ break_hour: breaktime })}
+              disabled={isUpdating}
+            >
+              {isUpdating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              Update
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </CardHeader>
+    <CardContent>
+      <div className='flex items-center space-x-4'>
+        <Coffee className='h-6 w-6 text-muted-foreground' />
+        <div>
+          <p className='text-sm font-medium'>Default Break Times</p>
+          <p className='text-2xl font-bold'>
+            {dayjs()
+              .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
+              .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
+              .format('hh:mm A')}
+            {' - '}
+            {dayjs()
+              .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
+              .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
+              .format('hh:mm A')}
+          </p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);

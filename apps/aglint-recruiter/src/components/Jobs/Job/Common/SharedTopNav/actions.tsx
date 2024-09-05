@@ -17,7 +17,6 @@ import {
   Calendar,
   FileText,
   MoreHorizontal,
-  PlusCircle,
   RefreshCw,
   UserPlus,
   Workflow,
@@ -26,8 +25,8 @@ import {
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
+import PublishButton from '@/components/Common/PublishButton';
 import UITextField from '@/components/Common/UITextField';
-import { useApplicationsStore } from '@/context/ApplicationsContext/store';
 import { useJob } from '@/context/JobContext';
 import { useJobs } from '@/context/JobsContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -111,32 +110,20 @@ const Score = () => {
 
 const Add = () => {
   const { job, manageJob } = useJob();
-  const { setImportPopup } = useApplicationsStore(({ setImportPopup }) => ({
-    setImportPopup,
-  }));
   if (job?.status === 'closed' || !manageJob) return null;
-  return (
-    <>
-      <Button
-        variant='outline'
-        onClick={() => setImportPopup(true)}
-        className='w-auto'
-      >
-        <PlusCircle className='mr-2 h-4 w-4' />
-        Add candidates
-      </Button>
-      <UploadApplications />
-    </>
-  );
+  return <UploadApplications></UploadApplications>;
 };
 
 const Publish = () => {
   const { handlePublish, canPublish, manageJob, job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return (
-    <Button onClick={async () => await handlePublish()} disabled={!canPublish}>
-      Publish
-    </Button>
+    <PublishButton
+      onClick={async () => {
+        await handlePublish();
+      }}
+      disabled={!canPublish}
+    />
   );
 };
 
