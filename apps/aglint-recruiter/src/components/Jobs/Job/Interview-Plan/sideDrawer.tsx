@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { InterviewPlanEmpty } from '@devlink2/InterviewPlanEmpty';
@@ -7,7 +8,6 @@ import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
 import { type CompanyMember } from '@/queries/company-members';

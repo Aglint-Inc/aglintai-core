@@ -66,7 +66,7 @@ export default function CandidateForm({
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='px-4 flex flex-col gap-2'>
               <div className='flex flex-col space-y-4 rounded-lg'>
-              {/* <ImageUploadManual
+                {/* <ImageUploadManual
                   image={form.avatar}
                   imageFile={imageFile}
                   size={100}
@@ -108,8 +108,7 @@ export default function CandidateForm({
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
-                      value:
-                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                       message: 'Enter a valid email address',
                     },
                   })}
@@ -145,10 +144,11 @@ export default function CandidateForm({
                   id='linkedin'
                   {...register('linkedin', {
                     required: 'LinkedIn URL is required',
-              
+
                     pattern: {
                       // eslint-disable-next-line security/detect-unsafe-regex
-                      value: /^(https?:\/\/)?(www\.)?linkedin\.com\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/,
+                      value:
+                        /^(https?:\/\/)?(www\.)?linkedin\.com\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/,
                       message: 'Enter a valid LinkedIn URL',
                     },
                   })}

@@ -17,7 +17,7 @@ export default function Component({ params }) {
   const { isLoading, data, error } = usePortalHomePage({ application_id });
 
   if (isLoading) {
-    return <HomeSkeleton/>;
+    return <HomeSkeleton />;
   }
 
   if (error) throw new Error(error.message);
@@ -66,7 +66,6 @@ export default function Component({ params }) {
 
             <RequestedAvailability availabilityData={availability} job={job} />
             <SelfScheduling scheduleData={schedule} />
-
           </div>
         </div>
       </main>

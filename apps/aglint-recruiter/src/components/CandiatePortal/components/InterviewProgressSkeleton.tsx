@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import React from 'react';
@@ -8,7 +7,7 @@ const InterviewProgressSkeleton = () => {
     <div className='w-full max-w-3xl mx-auto flex flex-col gap-4 pb-2'>
       {/* Title Skeleton */}
       <Skeleton className='h-6 w-32' />
-      
+
       {/* Static 3 Card Skeletons */}
       <div className='flex flex-col gap-4'>
         <InterviewProgressCardSkeleton />

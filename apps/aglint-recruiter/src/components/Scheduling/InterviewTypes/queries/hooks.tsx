@@ -1,9 +1,9 @@
 import { type DatabaseTable, type PauseJson } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import axios from '@/client/axios';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiResponseInterviewModuleById } from '@/pages/api/scheduling/fetch_interview_module_by_id';
 

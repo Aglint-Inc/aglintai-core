@@ -1,4 +1,5 @@
 import { type DatabaseTableUpdate } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,7 +26,6 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
-import { useToast } from '@/components/hooks/use-toast';
 import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,

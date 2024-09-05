@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import { Checkbox } from '@devlink/Checkbox';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
@@ -8,7 +9,6 @@ import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import SearchField from '@/components/Common/SearchField/SearchField';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import { supabase } from '@/utils/supabase/client';

@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Text } from '@devlink/Text';
@@ -9,7 +10,6 @@ import { Collapse, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
-import { useToast } from '@/components/hooks/use-toast';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';

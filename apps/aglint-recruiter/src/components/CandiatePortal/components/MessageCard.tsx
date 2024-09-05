@@ -31,12 +31,12 @@ const MessageCard = ({ index }: { index: number }) => {
               </p>
             </div>
             <div className='flex items-center gap-2 text-sm ml-auto text-center sm:text-right'>
-            <CheckCheck className='w-4 h-4 text-green-700' />
-              <p className='text-sm text-green-700'>
-                Completed
-              </p>
+              <CheckCheck className='w-4 h-4 text-green-700' />
+              <p className='text-sm text-green-700'>Completed</p>
             </div>
-            <Badge className=' px-2 py-0.5 text-xs rounded-md bg-red-500'>New</Badge>
+            <Badge className=' px-2 py-0.5 text-xs rounded-md bg-red-500'>
+              New
+            </Badge>
           </div>
         </div>
       </CardHeader>

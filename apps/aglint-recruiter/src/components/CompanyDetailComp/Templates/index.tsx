@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
 import { Checkbox } from '@devlink/Checkbox';
 import { EditEmail } from '@devlink/EditEmail';
 import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
@@ -19,7 +20,6 @@ import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPr
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/components/Common/Loader';
 import SearchField from '@/components/Common/SearchField/SearchField';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';

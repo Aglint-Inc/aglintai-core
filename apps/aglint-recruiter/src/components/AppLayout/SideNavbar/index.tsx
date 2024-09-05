@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import {
   Tooltip,
   TooltipContent,
@@ -18,7 +19,6 @@ import {
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 

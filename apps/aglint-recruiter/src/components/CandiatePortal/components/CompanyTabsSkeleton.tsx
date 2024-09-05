@@ -14,7 +14,8 @@ const CompanyTabsSkeleton = () => {
       {/* About Tab Content Skeleton */}
       <Card className='mb-8 p-0 border-0 shadow-none'>
         <CardContent className='p-0 border-0 shadow-none'>
-          <Skeleton className='h-6 w-32 mb-4' /> {/* About Us Heading Skeleton */}
+          <Skeleton className='h-6 w-32 mb-4' />{' '}
+          {/* About Us Heading Skeleton */}
           <Skeleton className='h-4 w-full mb-2' />
           <Skeleton className='h-4 w-full mb-2' />
           <Skeleton className='h-4 w-full mb-2' />
@@ -43,7 +44,6 @@ const CompanyTabsSkeleton = () => {
           <Skeleton className='h-48 w-full' />
         </CardContent>
       </Card>
-
     </div>
   );
 };

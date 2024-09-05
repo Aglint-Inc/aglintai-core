@@ -53,7 +53,11 @@ export default function Navigation() {
             <Link href={`/candidate/${application_id}/home`}>
               <Button
                 variant='ghost'
-                className={currentTab === 'home' ? 'text-primary' : 'text-muted-foreground'}
+                className={
+                  currentTab === 'home'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }
               >
                 Home
               </Button>
@@ -61,7 +65,11 @@ export default function Navigation() {
             <Link href={`/candidate/${application_id}/interviews`}>
               <Button
                 variant='ghost'
-                className={currentTab === 'interviews' ? 'text-primary' : 'text-muted-foreground'}
+                className={
+                  currentTab === 'interviews'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }
               >
                 Interviews
               </Button>
@@ -69,10 +77,14 @@ export default function Navigation() {
             <Link href={`/candidate/${application_id}/messages`}>
               <Button
                 variant='ghost'
-                className={currentTab === 'messages' ? 'text-primary' : 'text-muted-foreground'}
+                className={
+                  currentTab === 'messages'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }
               >
                 Messages
-                <Badge className='ml-2 px-2 py-0.5 text-xs bg-red-500' >1</Badge>
+                <Badge className='ml-2 px-2 py-0.5 text-xs bg-red-500'>1</Badge>
               </Button>
             </Link>
           </nav>
@@ -84,10 +96,10 @@ export default function Navigation() {
               candidate={data?.candidate}
             /> */}
             <Link href={`/candidate/${application_id}/profile`}>
-            <NavProfile
-              application_id={application_id}
-              candidate={data?.candidate}
-            />
+              <NavProfile
+                application_id={application_id}
+                candidate={data?.candidate}
+              />
             </Link>
           </div>
         </div>
