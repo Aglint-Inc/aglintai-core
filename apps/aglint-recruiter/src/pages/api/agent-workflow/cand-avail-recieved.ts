@@ -99,6 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           application_id,
           plans: cand_picked_slots,
           reqProgressLogger,
+          mail_payload: payload?.email,
         },
         reqProgressLogger,
       );
