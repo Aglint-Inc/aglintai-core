@@ -59,7 +59,9 @@ const CandidateAvailReceive = () => {
     });
     if (
       request_progress.data.find(
-        (prg) => prg.event_type === 'CAND_CONFIRM_SLOT',
+        (prg) =>
+          prg.event_type === 'CAND_CONFIRM_SLOT' ||
+          prg.event_type === 'SCHEDULE_INTERVIEW_SLOT',
       )
     ) {
       isScheduled = true;

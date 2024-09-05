@@ -1,5 +1,4 @@
 import {
-  type APIOptions,
   type CustomAgentInstructionPayload,
   type DatabaseTable,
   type PlanCombinationRespType,
@@ -12,30 +11,17 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 
 export const findCandSelectedSlots = async ({
-  api_options,
-  company_id,
-  end_date_str,
-  req_user_tz,
-  session_ids,
-  start_date_str,
   cand_avail,
   reqProgressLogger,
-  ai_response,
-  request_assigner_tz,
+  request_assignee_tz,
+  cand_schedule,
 }: {
-  api_options: APIOptions;
-  session_ids: string[];
-  end_date_str: string;
-  start_date_str: string;
-  company_id: string;
-  req_user_tz: string;
   cand_avail: DatabaseTable['candidate_request_availability']['slots'];
   reqProgressLogger: ProgressLoggerType;
-  ai_response: CustomAgentInstructionPayload['agent']['ai_response'];
-  request_assigner_tz: string;
+  request_assignee_tz: string;
+  cand_schedule: CandidatesSchedulingV2;
 }) => {
-  //TODO: from db
-  ai_response = {
+  let ai_response: CustomAgentInstructionPayload['agent']['ai_response'] = {
     preferredInterviewer: [],
     excludeInterviewTimes: [],
     scheduleWithinNumDays: 3,
@@ -50,15 +36,6 @@ export const findCandSelectedSlots = async ({
     balanceWorkloadAmongInterviewers: true,
     scheduleOutsideOfficeHoursForTimezoneDifferences: true,
   };
-  const cand_schedule = new CandidatesSchedulingV2(api_options);
-
-  await cand_schedule.fetchDetails({
-    session_ids,
-    start_date_str,
-    end_date_str,
-    company_id,
-    req_user_tz,
-  });
   const cand_picked_slots = cand_schedule.getCandidateSelectedSlots(cand_avail);
   const flatted_plans = cand_picked_slots
     .map((c) => c.selected_dates.flatMap((d) => d.plans))
@@ -86,7 +63,7 @@ export const findCandSelectedSlots = async ({
 
   const preferred_times: TimeDurationDayjsType[] =
     ai_response.prefferredInterviewTimes.map((t) => {
-      let curr_day = dayjsLocal().tz(request_assigner_tz).startOf('day');
+      let curr_day = dayjsLocal().tz(request_assignee_tz).startOf('day');
       return {
         startTime: curr_day
           .set('hour', Number(t.startTime.split(':')[0]))
@@ -100,11 +77,11 @@ export const findCandSelectedSlots = async ({
   // given specified prefferred times
   filtered_plans = filtered_plans.filter((plan) => {
     let plan_start_time = dayjsLocal(plan.sessions[0].start_time).tz(
-      request_assigner_tz,
+      request_assignee_tz,
     );
     let plan_end_time = dayjsLocal(
       plan.sessions[plan.sessions.length - 1].end_time,
-    ).tz(request_assigner_tz);
+    ).tz(request_assignee_tz);
     const is_plan_matches_preff_time = preferred_times.some((pref) => {
       pref.startTime = pref.startTime.set('date', plan_start_time.get('date'));
       pref.endTime = pref.endTime.set('date', plan_end_time.get('date'));

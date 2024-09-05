@@ -36,7 +36,9 @@ const InterviewScheduled = () => {
   const { recruiter } = useAuthDetails();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
   const [rsvpSending, setRsvpSending] = React.useState(false);
-  const event_status = reqProgressMap['CAND_CONFIRM_SLOT']?.[0];
+  const event_status =
+    reqProgressMap['CAND_CONFIRM_SLOT']?.[0] ??
+    reqProgressMap['SCHEDULE_INTERVIEW_SLOT']?.[0];
 
   let tense: TenseType = 'future';
   if (event_status) {
