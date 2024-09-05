@@ -1,15 +1,15 @@
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
-import Image from 'next/image';
-import { DragEvent, useRef, useState } from 'react';
+import { ChangeEvent, DragEvent, useRef } from 'react';
+
+import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 
 export function ConfigureCoverImage() {
   const { data, removeCover, updateCover } = usePortalSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFile = Array.from(event.target.files)[0];
       if (newFile.size < 5 * 1000000)
@@ -37,8 +37,6 @@ export function ConfigureCoverImage() {
     }
   };
 
-  const handleRemoveFile = (index: number) => {};
-
   return (
     <div>
       <div className='w-full max-w-2xl space-y-4'>
@@ -53,12 +51,13 @@ export function ConfigureCoverImage() {
           {/* if there is no image show this button */}
           {data?.banner_image ? (
             <div className='flex flex-col items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden'>
+              {/* eslint-disable-next-line @next/next/no-img-element*/}
               <img
                 width={600}
                 height={400}
                 className='object-cover'
                 src={data.banner_image}
-                alt='Cover Image'
+                alt='cover'
               />
             </div>
           ) : (

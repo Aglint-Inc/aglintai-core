@@ -9,7 +9,6 @@ import {
   DialogTrigger,
 } from '@components/ui/dialog';
 import { ImagePlus } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
@@ -40,15 +39,17 @@ export function ConfigureSliderImages() {
               key={index}
               className='bg-gray-300 rounded-md flex items-center justify-center w-[150px] h-[150px] relative'
             >
+              {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
               <div
                 onClick={() => deleteImages(image)}
                 className='absolute top-0 right-0 z-3'
               >
                 X
               </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={image}
-                alt='dkfj'
+                alt='slider'
                 height={150}
                 width={150}
                 style={{

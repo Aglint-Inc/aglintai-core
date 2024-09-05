@@ -163,10 +163,7 @@ export const usePortalSettings = () => {
       });
       setSelectedImages([]);
     } catch (error) {
-      // delete images
-      // if (newImages?.length)
-      //   newImages.map(async (img) => await deleteImages(img));
-      console.error('Error uploading images: ', error.message);
+      // console.error('Error uploading images: ', error.message);
       //chandruAddToast
       return null;
     }
@@ -181,7 +178,6 @@ export const usePortalSettings = () => {
         .from('company-images')
         .remove(path);
 
-      console.log(path, imageUrl, data, error);
       if (data.length === 0 || error) {
         throw new Error(`Image deleting failed : ${error?.message}`);
       }
@@ -194,26 +190,26 @@ export const usePortalSettings = () => {
       });
     } catch (error) {
       //chandruAddToast
-      console.error('Error uploading images: ', error?.message);
+      // console.error('Error uploading images: ', error?.message);
     }
   };
 
   const updateGreetings = async (message: string) => {
     try {
       await updatePortalSetting({ ...query.data, greetings: message });
-      console.log('greeting successfully updated');
+      //chandruAddToast
     } catch (e) {
       //chandruAddToast
-      console.log('greeting update failed:', e.message);
+      // console.log('greeting update failed:', e.message);
     }
   };
   const updateAbout = async (about: string) => {
     try {
       await updatePortalSetting({ ...query.data, about: about });
-      console.log('about successfully updated');
+      //chandruAddToasts
     } catch (e) {
       //chandruAddToasts
-      console.log('about update failed:', e.message);
+      // console.log('about update failed:', e.message);
     }
   };
 
@@ -241,7 +237,8 @@ export const usePortalSettings = () => {
         banner_image: img || query.data?.banner_image,
       });
     } catch (error) {
-      console.error('Error uploading cover: ', error.message);
+      // console.error('Error uploading cover: ', error.message);
+      //ChandurAddToast
       return null;
     }
   };
@@ -264,7 +261,8 @@ export const usePortalSettings = () => {
         banner_image: null,
       });
     } catch (error) {
-      console.error('Error uploading images: ', error?.message);
+      // console.error('Error uploading images: ', error?.message);
+      //chandruAddToast
     }
   };
 

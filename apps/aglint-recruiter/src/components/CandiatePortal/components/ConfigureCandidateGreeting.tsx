@@ -1,4 +1,3 @@
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -12,6 +11,8 @@ import {
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Textarea } from '@components/ui/textarea';
 import { useState } from 'react';
+
+import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 
 export default function ConfigureCandidateGreeting() {
   const { data, setIsDialogOpen, isDialogOpen, updateGreetings } =

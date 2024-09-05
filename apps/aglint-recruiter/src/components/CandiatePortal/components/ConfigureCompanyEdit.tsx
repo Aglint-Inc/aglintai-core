@@ -1,5 +1,3 @@
-import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -11,9 +9,11 @@ import {
   DialogTrigger,
 } from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { Textarea } from '@components/ui/textarea';
 import { Parser } from 'html-to-react';
 import { useState } from 'react';
+
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 
 export default function ConfigureCompanyEdit() {
   const { data, isDialogOpen, setIsDialogOpen, updateAbout } =
