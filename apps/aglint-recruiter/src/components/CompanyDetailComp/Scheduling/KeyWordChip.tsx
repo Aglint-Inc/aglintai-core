@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 import React from 'react';
 
-function DepartmentNameChip({
+function KeyWordChip({
   name,
   index,
   id,
@@ -30,4 +30,4 @@ function DepartmentNameChip({
   );
 }
 
-export default DepartmentNameChip;
+export default KeyWordChip;
