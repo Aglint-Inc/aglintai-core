@@ -17,25 +17,27 @@ type Props = InputProps & {
   ref: React.ForwardedRef<HTMLInputElement>;
 };
 
-const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
-  ({
-    disabled,
-    error,
-    helperText,
-    type = 'text',
-    secondaryText,
-    label,
-    labelSize = 'small',
-    labelBold = 'default',
-    defaultLabelColor = null,
-    required,
-    fullWidth,
-    id,
+const UITextField = forwardRef<HTMLInputElement, Props>(
+  (
+    {
+      disabled,
+      error,
+      helperText,
+      type = 'text',
+      secondaryText,
+      label,
+      labelSize = 'small',
+      labelBold = 'default',
+      defaultLabelColor = null,
+      required,
+      fullWidth,
+      id,
+      fieldSize,
+      className,
+      ...props
+    },
     ref,
-    fieldSize,
-    className,
-    ...props
-  }) => {
+  ) => {
     const labelClasses = cn(
       'text-neutral-900',
       labelBold === 'default' ? 'font-semibold' : 'font-normal',

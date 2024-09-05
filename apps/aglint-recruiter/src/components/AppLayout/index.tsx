@@ -47,7 +47,7 @@ export default function AppLayout({ children, appRouter = false }) {
     <div className='flex h-screen'>
       <nav className='flex flex-col justify-between w-16 border-r bg-white'>
         <div className='flex flex-col items-center py-3 flex-grow'>
-          <Button variant='ghost' size='icon' asChild className='rounded-full'>
+          <Button variant='ghost' asChild className='rounded-full'>
             <Link href='#'>
               {/*eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -63,12 +63,7 @@ export default function AppLayout({ children, appRouter = false }) {
         <div className='flex flex-col items-center pb-3 space-y-3'>
           <Tooltip>
             <TooltipTrigger>
-              <Button
-                variant='ghost'
-                size='icon'
-                className='rounded-full'
-                asChild
-              >
+              <Button variant='ghost' className='rounded-full' asChild>
                 <Link
                   href={
                     ROUTES['/user/profile/[user_id]']({
@@ -103,7 +98,7 @@ export default function AppLayout({ children, appRouter = false }) {
           </TooltipProvider> */}
           <Tooltip>
             <TooltipTrigger>
-              <Button variant='outline' size='icon' onClick={handleSignOut}>
+              <Button variant='outline' onClick={handleSignOut}>
                 <LogOut className='w-5 h-5' strokeWidth={1.5} />
               </Button>
             </TooltipTrigger>

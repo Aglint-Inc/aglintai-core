@@ -3,8 +3,8 @@ import { Popover } from '@mui/material';
 import { isNumber } from 'lodash';
 import { useState } from 'react';
 
-import UITextField from '../../Common/UITextField';
-import { dialogFormContent } from '../utils';
+import UITextField from '../../../Common/UITextField';
+import { dialogFormContent } from './utils';
 
 const FilterInput = ({
   type = 'string',

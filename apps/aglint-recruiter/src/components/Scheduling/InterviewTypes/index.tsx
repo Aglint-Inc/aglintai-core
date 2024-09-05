@@ -1,23 +1,21 @@
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonGhost } from '@devlink/ButtonGhost';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { EmptyState } from '@devlink2/EmptyState';
 import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
 import { PageLayout } from '@devlink2/PageLayout';
 import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
+import { Plus, RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
@@ -73,29 +71,21 @@ export function InterviewTypes() {
       <PageLayout
         slotTopbarRight={
           checkPermissions(['interview_types']) && (
-            <Stack direction={'row'} alignItems={'center'} spacing={2}>
-              <ButtonSoft
-                isRightIcon={false}
-                isLeftIcon={true}
-                iconName={'add'}
-                size={1}
-                textButton={'Interview Type'}
-                onClickButton={{
-                  onClick: () => {
-                    setIsCreateDialogOpen(true);
-                  },
-                }}
-              />
-            </Stack>
+            <UIButton
+              variant='default'
+              size='sm'
+              onClick={() => {
+                setIsCreateDialogOpen(true);
+              }}
+              leftIcon={<Plus />}
+            >
+              Interview Type
+            </UIButton>
           )
         }
         slotTopbarLeft={
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href='/scheduling'>Scheduling</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>Interview Types</BreadcrumbPage>
               </BreadcrumbItem>
@@ -125,16 +115,14 @@ export function InterviewTypes() {
                       <FilterDepartment />
                       <FilterCreatedBy />
                       {(departments.length > 0 || createdBy.length > 0) && (
-                        <ButtonGhost
-                          textButton='Reset All'
-                          iconName='refresh'
-                          size={2}
-                          onClickButton={{
-                            onClick: filterReset,
-                          }}
-                          isLeftIcon
-                          color={'neutral'}
-                        />
+                        <UIButton
+                          variant='ghost'
+                          size='sm'
+                          onClick={filterReset}
+                          leftIcon={<RefreshCcw />}
+                        >
+                          Reset All
+                        </UIButton>
                       )}
                     </div>
                     <Tabs
@@ -231,17 +219,16 @@ export function InterviewTypes() {
                                       })}
                                     </AvatarGroup>
                                   ) : (
-                                    <ButtonGhost
-                                      textButton='Add members'
-                                      size={1}
-                                      iconName='add'
-                                      isLeftIcon
-                                      onClickButton={{
-                                        onClick: () => {
-                                          setInitalOpen('qualified');
-                                        },
+                                    <UIButton
+                                      variant='ghost'
+                                      size='sm'
+                                      leftIcon={<Plus />}
+                                      onClick={() => {
+                                        setInitalOpen('qualified');
                                       }}
-                                    />
+                                    >
+                                      Add Member
+                                    </UIButton>
                                   )}
                                 </>
                               }

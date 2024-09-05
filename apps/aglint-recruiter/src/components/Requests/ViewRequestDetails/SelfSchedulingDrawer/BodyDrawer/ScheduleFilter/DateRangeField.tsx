@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import {
   Popover,
@@ -7,7 +8,6 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { Checkbox } from '@devlink/Checkbox';
 import { RolesPill } from '@devlink/RolesPill';
 import { TimeRangeSelector } from '@devlink3/TimeRangeSelector';
 import { Stack, Typography } from '@mui/material';

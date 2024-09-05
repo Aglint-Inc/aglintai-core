@@ -27,7 +27,6 @@ function CompanySlider({ slides }: { slides: string[] }) {
       />
       <Button
         variant='outline'
-        size='icon'
         className='absolute top-1/2 left-4 transform -translate-y-1/2'
         onClick={prevSlide}
       >
@@ -35,7 +34,6 @@ function CompanySlider({ slides }: { slides: string[] }) {
       </Button>
       <Button
         variant='outline'
-        size='icon'
         className='absolute top-1/2 right-4 transform -translate-y-1/2'
         onClick={nextSlide}
       >

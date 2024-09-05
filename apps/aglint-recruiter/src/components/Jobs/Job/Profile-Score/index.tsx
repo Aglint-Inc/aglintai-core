@@ -8,10 +8,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
 import { ScoreCard } from '@devlink/ScoreCard';
 import { ScoreCardEdit } from '@devlink/ScoreCardEdit';
 import { ScorePercentage } from '@devlink/ScorePercentage';
@@ -588,8 +588,8 @@ const Pill: FC<{
         <ScoreCardEdit
           slotCheckBox={
             <Checkbox
-              isChecked={check}
-              onClickCheck={{ onClick: () => setCheck((prev) => !prev) }}
+              checked={check}
+              onClick={() => setCheck((prev) => !prev)}
             />
           }
           slotTextEdit={
@@ -691,8 +691,8 @@ const AddOption: FC<{
         <ScoreCardEdit
           slotCheckBox={
             <Checkbox
-              isChecked={check}
-              onClickCheck={{ onClick: () => setCheck((prev) => !prev) }}
+              checked={check}
+              onClick={() => setCheck((prev) => !prev)}
             />
           }
           slotTextEdit={

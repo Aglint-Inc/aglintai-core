@@ -3,12 +3,11 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { isArray } from 'lodash';
 
-import { supabase } from '@/utils/supabase/client';
-
 import {
   type CandidateSearchRes,
   type CandidateSearchState,
-} from '../../context/CandidateSearchProvider/CandidateSearchProvider';
+} from '@/context/CandidateSearchProvider/CandidateSearchProvider';
+import { supabase } from '@/utils/supabase/client';
 
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],

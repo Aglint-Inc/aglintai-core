@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-vars */
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { PanelMemberPill } from '@devlink2/PanelMemberPill';
-import { MenuItem, Stack, TextField, Typography } from '@mui/material';
-import React, { useRef } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { AlertCircle, Check } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getFullName } from '@/utils/jsonResume';
@@ -44,178 +50,134 @@ function MembersAutoComplete({
   emptyListText = 'No members found',
   isPillsVisible = true,
 }: MembersAutoCompleteProps) {
-  const textFieldRef = useRef(null);
-
-  const handlePlaceholderClick = () => {
-    if (textFieldRef.current) {
-      textFieldRef.current.focus();
-      // Trigger a mouse down event to open the select dropdown
-      const event = new MouseEvent('mousedown', {
-        bubbles: true,
-      });
-      textFieldRef.current.dispatchEvent(event);
-    }
-  };
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
-    <Stack width={'100%'}>
+    <div className='flex flex-col w-full gap-2'>
       {isPillsVisible && (
-        <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
+        <div className='flex flex-row gap-2 flex-wrap'>
           {selectedUsers.map((user) => {
             return (
-              <Stack key={user.user_id} marginBottom={'var(--space-2)'}>
-                <PanelMemberPill
-                  key={user.user_id}
-                  propsBgColor={{
-                    style: {
-                      background: pillColor ? pillColor : 'var(--neutral-3)',
-                      textTransform: 'capitalize',
-                    },
-                  }}
-                  onClickClose={{
-                    onClick: () => {
-                      setSelectedUsers(
-                        selectedUsers.filter(
-                          (us) => us.user_id !== user.user_id,
-                        ),
-                      );
-                    },
-                  }}
-                  slotImage={
-                    <MuiAvatar
-                      src={user.profile_image}
-                      level={getFullName(user?.first_name, user?.last_name)}
-                      variant='rounded'
-                      height='20px'
-                      width='20px'
-                      fontSize='12px'
-                    />
-                  }
-                  textMemberName={getFullName(
-                    user?.first_name,
-                    user?.last_name,
-                  )}
-                />
-              </Stack>
+              <PanelMemberPill
+                key={user.user_id}
+                propsBgColor={{
+                  style: {
+                    background: pillColor ? pillColor : 'var(--neutral-3)',
+                    textTransform: 'capitalize',
+                  },
+                }}
+                onClickClose={{
+                  onClick: () => {
+                    setSelectedUsers(
+                      selectedUsers.filter((us) => us.user_id !== user.user_id),
+                    );
+                  },
+                }}
+                slotImage={
+                  <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    variant='rounded'
+                    height='20px'
+                    width='20px'
+                    fontSize='12px'
+                  />
+                }
+                textMemberName={getFullName(user?.first_name, user?.last_name)}
+              />
             );
           })}
-        </Stack>
+        </div>
       )}
 
-      <TextField
-        ref={textFieldRef}
-        fullWidth={true}
-        helperText={helperText}
-        error={error}
-        id={'list'}
-        placeholder='Choose from the list'
-        disabled={disabled}
-        select
-        sx={{
-          width: '100%',
-          maxWidth: maxWidth,
-          '& .MuiSelect-select span::before': {
-            content: `"${placeholder}"`,
-            color: 'var(--neutral-11)',
-          },
-          '& .MuiList-root-MuiMenu-list': {
-            padding: '0px !important',
-          },
-        }}
-        value={[]}
-        SelectProps={{
-          multiple: true,
-          MenuProps: {
-            PaperProps: {
-              sx: {
-                paddingTop: 0,
-                paddingBottom: 0,
-                mt: 1,
-                '& .MuiList-root': {
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                },
-                maxHeight: '40vh',
-              },
-              onMouseDown: (event) => {
-                event.stopPropagation();
-              },
-            },
-          },
-        }}
-      >
-        {renderUsers.length === 0 && (
-          <Stack p={'4px 16px'}>{emptyListText}</Stack>
-        )}
-        {renderUsers.map((option, ind) => {
-          return (
-            <MenuItem key={ind} sx={{ p: 0 }}>
-              <Stack
-                key={option.user_id}
-                direction='row'
-                alignItems='center'
-                spacing={2}
-                sx={{
-                  width: '100%',
-                  p: '6px 8px',
-                  borderTop: ind === 0 ? 'none' : '1px solid var(--neutral-6)',
-                  backgroundColor: selectedUsers.find(
-                    (user) => user.user_id === option.user_id,
-                  )
-                    ? 'var(--neutral-3)'
-                    : 'transparent',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  error && setError(false);
-                  if (
-                    !selectedUsers.find(
-                      (user) => user.user_id === option.user_id,
-                    )
-                  ) {
-                    setSelectedUsers([...selectedUsers, option]);
-                  } else {
-                    setSelectedUsers(
-                      selectedUsers.filter(
-                        (user) => user.user_id !== option.user_id,
-                      ),
-                    );
-                  }
-                }}
-              >
-                <MuiAvatar
-                  src={option.profile_image}
-                  level={getFullName(option.first_name, option.last_name)}
-                  variant='circular'
-                  height='24px'
-                  width='24px'
-                  fontSize='12px'
-                />
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  width={'100%'}
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <PopoverTrigger onClick={() => setIsPopoverOpen(true)}>
+          <button className='border px-4 py-2 rounded w-full text-left'>
+            {placeholder}
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          className='z-[2000] p-0 w-full min-w-full'
+          style={{
+            width: maxWidth,
+            maxHeight: '30vh',
+            overflowY: 'auto',
+          }}
+        >
+          {renderUsers.length === 0 ? (
+            <div className='px-2 py-1 italic text-gray-500 cursor-default'>
+              {emptyListText}
+            </div>
+          ) : (
+            renderUsers.map((option, ind) => {
+              return (
+                <div
+                  key={ind}
+                  className={`flex items-center justify-between p-2 border-b cursor-pointer`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (
+                      !selectedUsers.find(
+                        (user) => user.user_id === option.user_id,
+                      )
+                    ) {
+                      setSelectedUsers([...selectedUsers, option]);
+                    } else {
+                      setSelectedUsers(
+                        selectedUsers.filter(
+                          (user) => user.user_id !== option.user_id,
+                        ),
+                      );
+                    }
+                  }}
                 >
-                  <Typography
-                    variant='body1'
-                    className='one-line-clamp'
-                    sx={{ textTransform: 'capitalize' }}
+                  <div className='flex w-6'>
+                    {selectedUsers.find(
+                      (user) => user.user_id === option.user_id,
+                    ) && <Check size={16} />}
+                  </div>
+
+                  <MuiAvatar
+                    src={option.profile_image}
+                    level={getFullName(option.first_name, option.last_name)}
+                    variant='circular'
+                    height='24px'
+                    width='24px'
+                    fontSize='12px'
+                  />
+                  <Stack
+                    direction={'row'}
+                    justifyContent={'space-between'}
+                    width={'100%'}
+                    className='pl-2'
                   >
-                    {getFullName(option.first_name, option.last_name)}
-                  </Typography>
-                  <Typography
-                    variant='caption'
-                    sx={{ textTransform: 'capitalize' }}
-                  >
-                    {option.position || ''}
-                  </Typography>
-                </Stack>
-              </Stack>
-            </MenuItem>
-          );
-        })}
-      </TextField>
-    </Stack>
+                    <Typography
+                      variant='body1'
+                      className='one-line-clamp'
+                      sx={{ textTransform: 'capitalize' }}
+                    >
+                      {getFullName(option.first_name, option.last_name)}
+                    </Typography>
+                    <Typography
+                      variant='caption'
+                      sx={{ textTransform: 'capitalize' }}
+                    >
+                      {option.position || ''}
+                    </Typography>
+                  </Stack>
+                </div>
+              );
+            })
+          )}
+        </PopoverContent>
+      </Popover>
+      {error && helperText && (
+        <div className='flex flex-row items-center mt-1'>
+          <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+          <p className='text-sm text-red-700'>{helperText}</p>
+        </div>
+      )}
+    </div>
   );
 }
 

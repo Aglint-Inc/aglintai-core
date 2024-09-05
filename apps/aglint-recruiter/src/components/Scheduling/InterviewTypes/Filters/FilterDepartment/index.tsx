@@ -1,4 +1,4 @@
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
@@ -56,11 +56,9 @@ function FilterDepartment() {
         marginTop={'0px !important'}
       >
         <Checkbox
-          isChecked={!!departments.find((id) => id === item.id)}
-          onClickCheck={{
-            onClick: () => {
-              handleFilterClick(item);
-            },
+          checked={!!departments.find((id) => id === item.id)}
+          onClick={() => {
+            handleFilterClick(item);
           }}
         />
         <Typography

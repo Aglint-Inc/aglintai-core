@@ -1,4 +1,4 @@
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
@@ -87,22 +87,17 @@ function FilterDropDown({
                     padding={'var(--space-2) var(--space-3)'}
                   >
                     <Checkbox
-                      isChecked={selectedItems.includes(item)}
-                      onClickCheck={{
-                        onClick: () => {
-                          if (selectedItems.includes(item)) {
-                            setSelectedItems((ele: ItemType[]) =>
-                              ele.filter(
-                                (innerEle: ItemType) => innerEle !== item,
-                              ),
-                            );
-                          } else {
-                            setSelectedItems((ele: ItemType[]) => [
-                              ...ele,
-                              item,
-                            ]);
-                          }
-                        },
+                      checked={selectedItems.includes(item)}
+                      onClick={() => {
+                        if (selectedItems.includes(item)) {
+                          setSelectedItems((ele: ItemType[]) =>
+                            ele.filter(
+                              (innerEle: ItemType) => innerEle !== item,
+                            ),
+                          );
+                        } else {
+                          setSelectedItems((ele: ItemType[]) => [...ele, item]);
+                        }
                       }}
                     />
                     <Typography
