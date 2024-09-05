@@ -2,12 +2,13 @@
 
 import React from 'react';
 
-import HomeSkeleton from '@/components/CandiatePortal/Home/HomeSkeleton';
+import CandidatePoratlSettingsSkeleton from '@/components/CandiatePortal/components/CandidatePoratlSettingsSkeleton';
+
 
 function page() {
   return (
     <>
-    <HomeSkeleton/>
+   <CandidatePoratlSettingsSkeleton/>
     </>
   );
 }
