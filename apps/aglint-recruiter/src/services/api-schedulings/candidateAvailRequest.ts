@@ -15,6 +15,7 @@ export const candidateAvailRequest = async ({
   request_id,
   start_date_str,
   reqProgressLogger,
+  mail_payload,
 }: {
   req_body: any;
   organizer_id: string;
@@ -23,6 +24,7 @@ export const candidateAvailRequest = async ({
   end_date_str;
   request_id: string;
   reqProgressLogger: ProgressLoggerType;
+  mail_payload: any;
 }) => {
   const {
     application_id,
@@ -73,6 +75,7 @@ export const candidateAvailRequest = async ({
     {
       organizer_user_id: organizer_id,
       avail_req_id: avail_req.id,
+      payload: mail_payload,
     };
   await axios.post(
     `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/sendAvailabilityRequest_email_applicant`,
