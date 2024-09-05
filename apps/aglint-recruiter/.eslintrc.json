@@ -24,6 +24,8 @@
     "plugin:security/recommended"
   ],
   "ignorePatterns": [
+    "node_modules",
+    ".next",
     "devlink_queries",
     "devlink*",
     "src/components/Icons",

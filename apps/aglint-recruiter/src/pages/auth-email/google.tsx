@@ -80,15 +80,16 @@ const Google = () => {
 
   return (
     <>
-      <Stack
+    {/* fix here */}
+      {/* <Stack
         direction={'row'}
         alignItems={'center'}
         width={'100vw'}
         justifyContent={'center'}
         height={'100vh'}
-      >
+      > */}
         <LoaderSvg />
-      </Stack>
+      {/* </Stack> */}
     </>
   );
 };
