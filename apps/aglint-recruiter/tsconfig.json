@@ -18,6 +18,9 @@
     "baseUrl": ".",
     "paths": {
       "@/api/*": ["./src/app/api/*"],
+      "@/candidate/authenticated/*": [
+        "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"
+      ],
       "@/jobs/*": ["./src/app/(authenticated)/_jobs/_common/*"],
       "@/jobs/create/*": ["./src/app/(authenticated)/_jobs/create/_common/*"],
       "@/apiUtils/*": ["./src/apiUtils/*"],
