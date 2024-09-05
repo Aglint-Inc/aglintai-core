@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import UITextField from '@/components/Common/UITextField';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useToast } from '@/components/hooks/use-toast';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
@@ -331,12 +331,9 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                       textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
                       textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
                       slotTextArea={
-                        <UITextField
-                          multiline
-                          minRows={6}
-                          maxRows={10}
-                          height={150}
+                        <UITextArea
                           value={value}
+                          rows={8}
                           onChange={(e) => setValue(e.target.value)}
                         />
                       }

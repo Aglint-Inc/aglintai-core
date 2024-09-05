@@ -2,10 +2,15 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { RolesPill } from '@devlink/RolesPill';
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Dialog,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
@@ -221,7 +226,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                 );
               }}
               renderInput={(params) => (
-                <UITextField
+                <TextField
                   {...params}
                   placeholder='Type or Choose from the list and press enter'
                   type='search'

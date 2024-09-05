@@ -7,7 +7,7 @@ import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { get } from 'lodash';
 import React, { useState } from 'react';
 
-import UISelect from '@/components/Common/Uiselect';
+import UISelect from '@/components/Common/UiSelect';
 import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
@@ -111,7 +111,7 @@ const WorkflowActionDialog = () => {
         <>
           <UISelect
             label='Do this'
-            onChange={(value) => {
+            onValueChange={(value) => {
               handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
