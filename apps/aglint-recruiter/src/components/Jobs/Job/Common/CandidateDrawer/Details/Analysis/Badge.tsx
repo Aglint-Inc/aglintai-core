@@ -1,6 +1,6 @@
 import { useApplication } from '@/context/ApplicationContext';
 
-import ResumeScore from '../../../../Candidate-List/Common/ResumeScoreNew';
+import ResumeScore from '../../../../../../../app/(authenticated)/_jobs/[job]/_common/components/Common/ResumeScoreNew';
 
 export const Badge = () => {
   const {

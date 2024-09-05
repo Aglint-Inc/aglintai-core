@@ -20,12 +20,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import {
-  useIntegrationActions,
-  useIntegrations,
-} from '@/jobs/hooks/integrations';
-import { useJobs } from '@/jobs/hooks/jobs';
-import { STATE_ASHBY_DIALOG } from '@/jobs/utils/initialState';
+import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
+import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';

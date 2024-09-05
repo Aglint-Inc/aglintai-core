@@ -15,11 +15,12 @@ import {
 import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobs } from '@/jobs/hooks/jobs';
+import { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import ROUTES from '@/utils/routing/routes';
 
 import { WarningSvg } from '../../../../../../components/Jobs/Job/Interview-Plan/sessionForms';
-import { type Form, type JobMetaFormProps, useJobForms } from './form';
+import { type JobMetaFormProps, useJobForms } from './form';
 
 const JobCreateComponent = () => {
   const { status } = useCompanyMembers();

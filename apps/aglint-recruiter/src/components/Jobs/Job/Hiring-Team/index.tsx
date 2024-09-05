@@ -20,7 +20,6 @@ import {
 } from 'react';
 
 import { useJob } from '@/context/JobContext';
-import { validateString } from '@/context/JobContext/utils';
 import {
   type JobHiringTeamForm,
   type JobMetaFormProps,

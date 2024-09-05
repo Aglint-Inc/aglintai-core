@@ -3,7 +3,7 @@ import { Card } from '@components/ui/card';
 import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import { useJob } from '@/context/JobContext';
 
 type Candidate = {

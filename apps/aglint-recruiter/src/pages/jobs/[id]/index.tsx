@@ -1,7 +1,7 @@
 import Seo from '@/components/Common/Seo';
-import ApplicationsDashboard from '@/components/Jobs/Job/Candidate-List';
 import { ApplicationsProvider } from '@/context/ApplicationsContext';
 import { JobProvider } from '@/context/JobContext';
+import ApplicationsDashboard from '@/jobcomponents';
 
 const JobCandidateListPage = () => {
   return (

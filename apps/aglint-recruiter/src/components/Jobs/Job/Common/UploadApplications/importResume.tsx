@@ -8,7 +8,7 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import { useJob } from '@/context/JobContext';
 import toast from '@/utils/toast';
 

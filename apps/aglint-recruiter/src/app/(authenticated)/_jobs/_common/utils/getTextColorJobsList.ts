@@ -1,6 +1,6 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 
-import { statusColor } from './statusColor';
+import { statusColor } from '@/jobs/constants/';
 
 export const getTextColorJobsList = (
   status: DatabaseTable['public_jobs']['status'],

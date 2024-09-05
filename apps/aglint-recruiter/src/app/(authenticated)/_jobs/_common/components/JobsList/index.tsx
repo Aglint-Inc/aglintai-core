@@ -6,13 +6,11 @@ import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
-import { useApplicationsParams } from '@/context/ApplicationsContext/hooks';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
 import { getBgColorJobsList } from '@/jobs/utils/getBgColorJobsList';
 import { getTextColorJobsList } from '@/jobs/utils/getTextColorJobsList';
 import { type Job } from '@/queries/jobs/types';
-import { type Application } from '@/types/applications.types';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
@@ -28,17 +26,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
   const { handleJobPin } = useJobs();
-  const { getParams } = useApplicationsParams();
   const router = useRouter();
-  const { push } = useRouter();
   if (jobs?.length == 0) {
     return <JobEmptyState />;
   }
-
-  const handlClick = (id: string, section: Application['status']) => {
-    const params = getParams({ section });
-    push(`/jobs/${id}${params ? `?${params}` : ''}`);
-  };
 
   return (
     <>
@@ -50,22 +41,6 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               onClickPin={{
                 onClick: () =>
                   handleJobPin({ id: job.id, is_pinned: !job.is_pinned }),
-              }}
-              onClickNew={{ onClick: () => handlClick(job.id, 'new') }}
-              onClickAssessment={{
-                onClick: () => handlClick(job.id, 'assessment'),
-              }}
-              onClickDisqualified={{
-                onClick: () => handlClick(job.id, 'disqualified'),
-              }}
-              onClickInterview={{
-                onClick: () => handlClick(job.id, 'interview'),
-              }}
-              onClickQualified={{
-                onClick: () => handlClick(job.id, 'qualified'),
-              }}
-              onClickScreening={{
-                onClick: () => handlClick(job.id, 'screening'),
               }}
               isAssessmentPillVisible={isAssessmentEnabled && job.assessment}
               isScreeningPillsVisible={

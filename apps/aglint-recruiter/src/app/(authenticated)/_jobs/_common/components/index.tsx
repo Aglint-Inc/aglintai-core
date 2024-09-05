@@ -14,24 +14,12 @@ import { useState } from 'react';
 import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
-
-export const initalFilterValue = {
-  status: [],
-  location: [],
-  type: [],
-  hiringManager: [],
-  recruiter: [],
-  source: [],
-  department: [],
-  workplace: [],
-  coOrdinator: [],
-};
 
 const DashboardComp = () => {
   const router = useRouter();

@@ -7,7 +7,17 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Job } from '@/queries/jobs/types';
 import { useAllMembers } from '@/queries/members';
 
-import { initalFilterValue } from '..';
+const initalFilterValue = {
+  status: [],
+  location: [],
+  type: [],
+  hiringManager: [],
+  recruiter: [],
+  source: [],
+  department: [],
+  workplace: [],
+  coOrdinator: [],
+};
 
 const ORDER = {
   published: 0,

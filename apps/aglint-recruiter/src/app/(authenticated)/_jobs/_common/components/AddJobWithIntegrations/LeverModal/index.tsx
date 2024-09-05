@@ -18,12 +18,8 @@ import { useEffect, useRef, useState } from 'react';
 import axios from '@/client/axios';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import {
-  useIntegrationActions,
-  useIntegrations,
-} from '@/jobs/hooks/integrations';
-import { useJobs } from '@/jobs/hooks/jobs';
-import { STATE_LEVER_DIALOG } from '@/jobs/utils/initialState';
+import { STATE_LEVER_DIALOG } from '@/jobs/constants';
+import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
 import { type ApiLeverCreateJob } from '@/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';

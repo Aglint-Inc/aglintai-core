@@ -7,12 +7,8 @@ import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import {
-  useIntegrationActions,
-  useIntegrations,
-} from '@/jobs/hooks/integrations';
-import { useJobs } from '@/jobs/hooks/jobs';
-import { STATE_GREENHOUSE_DIALOG } from '@/jobs/utils/initialState';
+import { STATE_GREENHOUSE_DIALOG } from '@/jobs/constants';
+import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
 import toast from '@/utils/toast';
 

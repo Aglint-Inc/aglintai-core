@@ -18,30 +18,11 @@ import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/context/JobDashboard';
+import { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
-import { type JobCreate } from '@/queries/jobs/types';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
-
-export type JobHiringTeamForm = Pick<
-  Required<Form>,
-  'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
->;
-
-export type JobDetailsForm = Required<Omit<Form, keyof JobHiringTeamForm>>;
-
-export type Form = Partial<{
-  [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
-    value: JobCreate[id];
-    required: boolean;
-    placeholder?: string;
-    error: {
-      value: boolean;
-      helper: string;
-    };
-  };
-}>;
 
 export const useJobForms = (
   fields: JobMetaFormProps['fields'],

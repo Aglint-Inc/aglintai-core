@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import UIPhoneInput from '@/components/Common/UIPhoneInput';
-import { useApplicationsStore } from '@/context/ApplicationsContext/store';
+import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJob } from '@/context/JobContext';
 

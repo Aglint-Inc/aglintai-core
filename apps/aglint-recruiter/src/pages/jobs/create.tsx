@@ -1,16 +1,10 @@
-import Seo from '@/components/Common/Seo';
-import JobCreate from '@/jobs/create/components';
+import Layout from 'src/app/(authenticated)/_jobs/create/layout';
+import Page from 'src/app/(authenticated)/_jobs/create/page';
 
-const CreateJobPage = () => {
-  return (
-    <>
-      <Seo
-        title={`Create Job - Job | Aglint AI `}
-        description='AI for People Products'
-      />
-      <JobCreate />
-    </>
-  );
+const JobCreate = () => {
+  return <Page />;
 };
 
-export default CreateJobPage;
+JobCreate.privateProvider = (page) => <Layout>{page}</Layout>;
+
+export default JobCreate;
