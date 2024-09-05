@@ -1,4 +1,4 @@
-import { Autocomplete, Stack, Typography } from '@mui/material';
+import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -20,7 +20,6 @@ import { KeywordsHelper } from '@devlink3/KeywordsHelper';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import timeZone from '@/utils/timeZone';
 
-import UITextField from '../../Common/UITextField';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
 import InterviewLimitInput from './InterviewLoad';
@@ -368,9 +367,8 @@ export const TimezoneSelector = ({
         }}
         renderInput={(params) => {
           return (
-            <UITextField
+            <TextField
               {...params}
-              labelSize='medium'
               // fullWidth
               label=''
               placeholder='Ex. America/Los_Angeles (GMT-08:00)'

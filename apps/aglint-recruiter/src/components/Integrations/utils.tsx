@@ -3,7 +3,7 @@ import {
   type RecruiterType,
 } from '@aglint/shared-types';
 
-// import { useToast } from '@/components/hooks/use-toast';
+// import { useToast } from '@components/hooks/use-toast';
 import { supabase } from '@/utils/supabase/client';
 
 export async function updateRecruiter(id: string, obj: RecruiterType) {

@@ -1,5 +1,6 @@
 'use client';
 
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
@@ -9,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { supabase } from '@/utils/supabase/client';
 
 interface LoginFormInputs {

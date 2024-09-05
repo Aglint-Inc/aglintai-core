@@ -13,6 +13,7 @@ export const candidateSelfSchedule = async ({
   application_id,
   start_date_str,
   reqProgressLogger,
+  mail_payload,
 }: {
   cloned_sessn_ids: string[];
   organizer_id: string;
@@ -22,6 +23,7 @@ export const candidateSelfSchedule = async ({
   end_date_str: string;
   request_id: string;
   reqProgressLogger: ProgressLoggerType;
+  mail_payload: any;
 }) => {
   const filterdNoSlots = plans.filter(
     (plan) => plan.no_slot_reasons.length === 0,
@@ -48,6 +50,7 @@ export const candidateSelfSchedule = async ({
     payload: {
       filter_json_id: filter_json.id,
       organizer_id,
+      payload: mail_payload,
     },
   });
 

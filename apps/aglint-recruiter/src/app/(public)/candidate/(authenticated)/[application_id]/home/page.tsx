@@ -2,7 +2,6 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
-import CandidatePortalLoader from '@/components/CandiatePortal/components/CandidatePortalLoader';
 import CompanyImage from '@/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/components/CandiatePortal/components/GreetingCandidate';
@@ -10,7 +9,7 @@ import InterviewProgress from '@/components/CandiatePortal/components/InterviewP
 import RequestedAvailability from '@/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
 import UpcomingInterview from '@/components/CandiatePortal/components/UpcomingInterview';
-import UpcomingInterviewSkeleton from '@/components/CandiatePortal/components/UpcomingInterviewSkeleton';
+import HomeSkeleton from '@/components/CandiatePortal/Home/HomeSkeleton';
 import { usePortalHomePage } from '@/components/CandiatePortal/hook';
 
 export default function Component({ params }) {
@@ -18,7 +17,7 @@ export default function Component({ params }) {
   const { isLoading, data, error } = usePortalHomePage({ application_id });
 
   if (isLoading) {
-    return <CandidatePortalLoader loadingText='Loading your details..' />;
+    return <HomeSkeleton />;
   }
 
   if (error) throw new Error(error.message);
@@ -67,8 +66,6 @@ export default function Component({ params }) {
 
             <RequestedAvailability availabilityData={availability} job={job} />
             <SelfScheduling scheduleData={schedule} />
-
-            <UpcomingInterviewSkeleton />
           </div>
         </div>
       </main>

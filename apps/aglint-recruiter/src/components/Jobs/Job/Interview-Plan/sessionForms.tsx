@@ -20,6 +20,7 @@ import React, {
 import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import { validateString } from '@/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
@@ -262,10 +263,9 @@ const SessionForms = ({
       schedule_type.value === 'in_person_meeting' ? (
         <Stack gap={1}>
           <Typography>Address</Typography>
-          <UITextField
+          <UITextArea
             name={'location'}
-            multiline
-            minRows={5}
+            rows={5}
             value={location.value}
             error={location.error}
             helperText={location.helper}

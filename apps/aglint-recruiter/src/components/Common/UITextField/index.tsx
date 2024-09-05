@@ -1,80 +1,41 @@
-import { Input } from '@components/ui/input';
+import { Input, InputProps } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
 import { AlertCircle } from 'lucide-react';
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef } from 'react';
 
-import { errorMessages } from '@/utils/errorMessages';
-
-type Props = {
-  value?: string | number;
-  type?: React.HTMLInputTypeAttribute;
-  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+type Props = InputProps & {
   error?: boolean;
   label?: string;
+  fieldSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
   labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
   helperText?: string;
-  disabled?: boolean;
-  required?: boolean;
-  multiline?: boolean;
-  minRows?: number;
-  maxRows?: number;
-  placeholder?: string;
-  fullWidth?: boolean;
-  name?: string;
-  onSelect?: () => void;
-  onFocus?: () => void;
-  onBlur?: React.FocusEventHandler<HTMLTextAreaElement> &
-    React.FocusEventHandler<HTMLInputElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement> &
-    React.KeyboardEventHandler<HTMLInputElement>;
-  defaultValue?: string | number;
-  height?: number;
-  width?: string;
-  select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
   defaultLabelColor?: string;
-  id?: string;
-  autoFocus?: boolean;
+  fullWidth?: boolean;
+  ref: React.ForwardedRef<HTMLInputElement>;
 };
 
-// eslint-disable-next-line react/display-name
 const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
-  (
-    {
-      disabled,
-      error,
-      helperText,
-      label,
-      labelSize = 'small',
-      onChange,
-      onFocus,
-      onSelect,
-      type = 'text',
-      placeholder = '',
-      required,
-      value,
-      fullWidth = false,
-      name = null,
-      multiline = false,
-      minRows = 4,
-      onKeyDown,
-      onBlur,
-      defaultValue,
-      width,
-      height,
-      secondaryText,
-      labelBold = 'default',
-      id,
-      defaultLabelColor = null,
-      ...props
-    },
+  ({
+    disabled,
+    error,
+    helperText,
+    type = 'text',
+    secondaryText,
+    label,
+    labelSize = 'small',
+    labelBold = 'default',
+    defaultLabelColor = null,
+    required,
+    fullWidth,
+    id,
     ref,
-  ) => {
-    const [contentExceeded, setContentExceeded] = useState(false);
-
+    fieldSize,
+    className,
+    ...props
+  }) => {
     const labelClasses = cn(
       'text-neutral-900',
       labelBold === 'default' ? 'font-semibold' : 'font-normal',
@@ -91,15 +52,25 @@ const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
     );
 
     const inputClasses = cn(
-      'w-full',
+      'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
       fullWidth && 'w-full',
-      error && 'border-error-500',
-      disabled && 'bg-neutral-100 text-neutral-500',
-      height && `h-[${height}px]`,
-      width && `w-[${width}]`,
+      error ? 'border-red-500 focus-visible:ring-0' : 'border-neutral-300',
+      disabled && 'bg-neutral-100 text-neutral-500 cursor-not-allowed',
+      fieldSize === 'small'
+        ? 'h-6'
+        : fieldSize === 'medium'
+          ? 'h-8'
+          : fieldSize === 'large'
+            ? 'h-10'
+            : fieldSize === 'xLarge'
+              ? 'h-12'
+              : fieldSize === 'xxLarge'
+                ? 'h-14'
+                : fieldSize === 'xxxLarge'
+                  ? 'h-16'
+                  : 'h-10',
+      className,
     );
-
-    const InputComponent = multiline ? Textarea : Input;
 
     return (
       <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
@@ -108,49 +79,34 @@ const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
             <Label htmlFor={id} className={labelClasses}>
               {label}
             </Label>
-            {required && <span className='text-error-500 ml-1'>*</span>}
+            {required && <span className='text-red-500 ml-1'>*</span>}{' '}
+            {/* Corrected color class */}
           </div>
         )}
         {secondaryText && (
           <p className='text-sm text-neutral-600'>{secondaryText}</p>
         )}
-        <InputComponent
-          {...props}
-          id={id}
-          name={name}
-          value={value}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={(e) => {
-            onBlur?.(e);
-            setContentExceeded(false);
-          }}
-          onKeyDown={onKeyDown}
-          onSelect={onSelect}
-          disabled={disabled}
-          required={required}
-          placeholder={placeholder}
-          ref={ref as any}
-          rows={multiline ? minRows : undefined}
-          type={type}
-          className={inputClasses}
-          defaultValue={defaultValue}
-        />
-        {(error || contentExceeded) && helperText && (
-          <div className='flex flex-row items-center mt-1'>
-            <AlertCircle className='w-4 h-4 text-error-500 mr-1' />
-            <p className='text-sm text-error-700'>
-              {error
-                ? helperText
-                : contentExceeded
-                  ? errorMessages.maxCharExceeded
-                  : ''}
-            </p>
-          </div>
-        )}
+        <div>
+          <Input
+            {...props}
+            ref={ref}
+            className={inputClasses}
+            disabled={disabled}
+            required={required}
+            type={type}
+          />
+          {error && helperText && (
+            <div className='flex flex-row items-center mt-1'>
+              <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+              <p className='text-sm text-red-700'>{helperText}</p>
+            </div>
+          )}
+        </div>
       </div>
     );
   },
 );
+
+UITextField.displayName = 'UITextField';
 
 export default UITextField;

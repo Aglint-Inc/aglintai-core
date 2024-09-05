@@ -1,18 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
-import {
-  Box,
-  Checkbox,
-  Skeleton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import {
   type Dispatch,
   type SetStateAction,

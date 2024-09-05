@@ -8,6 +8,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import CompanyInfoComp from './CompanyDetails';
 import Holidays from './Holidays';
 import { useCompanyDetailComp } from './hook';
+import PortalSettings from './PortalSettings';
 import RolesAndPermissionsComponent from './Roles';
 import SchedulingSettings from './Scheduling';
 import SchedulingReasons from './SchedulingReason';
@@ -64,7 +65,10 @@ const CompanyDetailComp = () => {
               <Holidays />
             ) : tab === settingSubNavItem.SCHEDULING ? (
               <SchedulingSettings updateSettings={updateSettings} />
+            ) : tab === settingSubNavItem.PORTAL_SETTINGS ? (
+              <PortalSettings />
             ) : null}
+
             {(tab === settingSubNavItem.EMAILTEMPLATE ||
               tab == settingSubNavItem.SLACKTEMPLATE ||
               tab == settingSubNavItem.AGENTTEMPLATE ||

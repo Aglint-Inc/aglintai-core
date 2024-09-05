@@ -14,7 +14,7 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UISelect from '@/components/Common/Uiselect';
+import UISelect from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
 import { useWorkflow } from '@/context/Workflows/[id]';
 import { type WorkflowAction } from '@/types/workflow.types';
@@ -142,7 +142,7 @@ const ActionForm = ({ action }: ActionProps) => {
       value={currentOption.target_api}
       disabled={!manageWorkflow}
       menuOptions={options}
-      onChange={(value) => {
+      onValueChange={(value) => {
         const { action_type, target_api, payload } = options.find(
           ({ target_api }) => value === target_api,
         );

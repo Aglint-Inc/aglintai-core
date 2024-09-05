@@ -1,4 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
@@ -10,7 +12,7 @@ import { ModuleSetting } from '@devlink2/ModuleSetting';
 import { TrainingSetting } from '@devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@devlink2/TrainingSettingItem';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { Checkbox, Dialog, Drawer, Stack, Typography } from '@mui/material';
+import { Dialog, Drawer, Stack, Typography } from '@mui/material';
 import _ from 'lodash';
 import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -18,7 +20,6 @@ import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
-import { useToast } from '@/components/hooks/use-toast';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';

@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
+import { UITextArea } from '@/components/Common/UITextArea';
 import UITypography from '@/components/Common/UITypography';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useAllDepartments } from '@/queries/departments';
@@ -105,7 +105,7 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
                   );
                 }}
                 renderInput={(params) => (
-                  <UITextField
+                  <TextField
                     {...params}
                     placeholder='Select Department'
                     fullWidth
@@ -113,11 +113,8 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
                 )}
               />
             </Stack>
-            <UITextField
-              height={32}
+            <UITextArea
               label='Objective'
-              minRows={1}
-              multiline
               placeholder='Add a brief description of the interview'
               fullWidth
               value={localModule?.description}
