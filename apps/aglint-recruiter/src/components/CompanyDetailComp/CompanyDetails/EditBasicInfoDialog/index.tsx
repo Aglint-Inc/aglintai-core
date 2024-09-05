@@ -1,24 +1,21 @@
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
-import { BasicInfo } from '@devlink/BasicInfo';
-import { useEffect, useState } from 'react';
+import { DialogClose } from '@radix-ui/react-dialog';
+import { AlertCircle, Upload } from 'lucide-react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import ImageUpload from '@/components/Common/ImageUpload';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { supabase } from '@/utils/supabase/client';
@@ -36,7 +33,13 @@ const employeeSizes = [
   '10000+',
 ];
 
-const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
+const EditBasicInfoDialog = ({
+  editDialog,
+  setEditDialog,
+}: {
+  editDialog: boolean;
+  setEditDialog: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [logo, setLogo] = useState<string>();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isError, setError] = useState(false);
@@ -66,6 +69,7 @@ const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
     }, 800);
   };
   const handleUpdate = async () => {
+    delete recruiterLocal.recruiter_preferences;
     try {
       setIsLoading(true);
       const { error } = await supabase
@@ -96,60 +100,69 @@ const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
 
   return (
     <Dialog open={editDialog} onOpenChange={setEditDialog}>
-      <DialogContent>
+      <DialogContent className='w-full max-w-4xl h-[90vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Edit Basic Info</DialogTitle>
         </DialogHeader>
-        <div className='mt-6 flex justify-end space-x-2'>
-          <Button variant='outline' onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleUpdate} disabled={IsLoading}>
-            {IsLoading ? 'Updating...' : 'Update'}
-          </Button>
-        </div>
-        <BasicInfo
-          isWarningVisible={isError}
-          slotWarning={
-            <p className='text-sm text-destructive'>
-              The file you uploaded exceeds the maximum allowed size. Please
-              ensure that the file size is less than 5 MB
-            </p>
-          }
-          isChangeLogoVisible={!isFormDisabled}
-          slotCompanyLogo={
-            <>
-              <ImageUpload
-                image={logo}
-                disabled={isFormDisabled}
-                setImage={(newLogo) => {
-                  setLogo(newLogo);
-                  if (recruiterLocal) {
-                    handleChange({
-                      ...recruiterLocal,
-                      logo: newLogo,
-                    });
-                  }
-                }}
-                size={48}
-                table='company-logo'
-                error={(e) => {
-                  if (e) {
-                    setError(true);
-                  } else {
-                    setError(false);
-                  }
-                }}
-              />
-            </>
-          }
-          onClickChangeLogo={{
-            onClick: () => {
-              document.getElementById('image-upload').click();
-            },
-          }}
-          slotBasicForm={
-            <div className='space-y-4 w-full max-w-sm'>
+        <DialogTitle>
+          {' '}
+          <div className='space-y-6'>
+            {isError && (
+              <Alert variant='destructive'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  The file you uploaded exceeds the maximum allowed size. Please
+                  ensure that the file size is less than 5 MB
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className='flex items-center space-x-4 '>
+              <div className='border border-gray-200 p-4 rounded-md'>
+                <ImageUpload
+                  image={logo}
+                  disabled={isFormDisabled}
+                  setImage={(newLogo) => {
+                    setLogo(newLogo);
+                    if (recruiterLocal) {
+                      handleChange({
+                        ...recruiterLocal,
+                        logo: newLogo,
+                      });
+                    }
+                  }}
+                  size={48}
+                  table='company-logo'
+                  error={(e) => {
+                    setError(!!e);
+                  }}
+                />
+              </div>
+              {!isFormDisabled && (
+                <>
+                  <div className='flex flex-col items-start'>
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={() => {
+                        document.getElementById('image-upload').click();
+                      }}
+                      className='flex items-center gap-2 p-0 hover:bg-transparent hover:text-gray-600 h-auto'
+                    >
+                      <Upload className='h-4 w-4' />
+                      Update Logo
+                    </Button>
+                    <p className='text-xs text-muted-foreground mt-1 max-w-[350px]'>
+                      The file shouldn&apos;t exceed the maximum allowed size.
+                      Please ensure that the file size is less than 5 MB
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className='space-y-4 w-full'>
               <div className='space-y-2'>
                 <Label htmlFor='company-name'>Company Name</Label>
                 <Input
@@ -189,27 +202,19 @@ const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='employee-size'>Employee Size</Label>
-                <Select
-                  value={recruiterLocal.employee_size}
+                <UISelectDropDown
+                  menuOptions={employeeSizes.map((size) => ({
+                    name: size,
+                    value: size,
+                  }))}
+                  value={recruiterLocal?.employee_size}
                   onValueChange={(value) => {
                     handleChange({
                       ...recruiterLocal,
                       employee_size: value,
                     });
                   }}
-                  disabled={isFormDisabled}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select employee size' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {employeeSizes.map((size) => (
-                      <SelectItem key={size} value={size}>
-                        {size}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='company-website'>Company Website</Label>
@@ -232,9 +237,19 @@ const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
                 recruiterLocal={recruiterLocal}
               />
             </div>
-          }
-          textLogoUpdate={'Update Logo'}
-        />
+          </div>
+        </DialogTitle>
+
+        <DialogFooter>
+          <Button variant='outline' onClick={handleClose}>
+            Cancel
+          </Button>
+          <DialogClose>
+            <Button onClick={handleUpdate} disabled={IsLoading}>
+              {IsLoading ? 'Updating...' : 'Update'}
+            </Button>
+          </DialogClose>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

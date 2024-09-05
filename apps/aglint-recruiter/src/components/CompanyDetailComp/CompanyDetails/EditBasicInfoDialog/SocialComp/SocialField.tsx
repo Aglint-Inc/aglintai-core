@@ -1,4 +1,13 @@
 import { Input } from '@components/ui/input';
+import {
+  Facebook,
+  Github,
+  Globe,
+  Instagram,
+  Linkedin,
+  Twitter,
+  Youtube,
+} from 'lucide-react';
 import React from 'react';
 
 import { socialPlaceholder } from './utils';
@@ -19,12 +28,31 @@ const SocialField: React.FC<SocialFieldProps> = ({
   error,
   onChange,
 }) => {
+  const getSocialIcon = (name: string) => {
+    switch (name.toLowerCase()) {
+      case 'facebook':
+        return <Facebook />;
+      case 'twitter':
+        return <Twitter />;
+      case 'linkedin':
+        return <Linkedin />;
+      case 'instagram':
+        return <Instagram />;
+      case 'github':
+        return <Github />;
+      case 'youtube':
+        return <Youtube />;
+      default:
+        return <Globe />;
+    }
+  };
+
   return (
     <div className='flex items-start justify-start gap-4'>
-      <div className='w-96'>
+      <div className='w-full'>
         <div className='flex'>
           <span className='inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm'>
-            {`${socialName}.com/`}
+            {getSocialIcon(socialName) || <Globe />}
           </span>
           <Input
             type='text'

@@ -40,7 +40,6 @@ const SearchField = ({ val, handleSearch }: SearchFieldProps) => {
         {value ? (
           <Button
             variant='ghost'
-            size='icon'
             onClick={() => setValue('')}
             className='h-8 w-8'
           >

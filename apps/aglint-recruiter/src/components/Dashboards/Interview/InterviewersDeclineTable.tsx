@@ -84,7 +84,7 @@ export default function InterviewersDeclineTable() {
               <TabsTrigger value='declines'>Declines</TabsTrigger>
             </TabsList>
           </Tabs>
-          <Button variant='outline' size='icon'>
+          <Button variant='outline'>
             <DownloadIcon className='h-4 w-4' />
           </Button>
         </div>

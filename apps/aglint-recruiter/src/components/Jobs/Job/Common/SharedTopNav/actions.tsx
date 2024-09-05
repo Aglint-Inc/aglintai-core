@@ -230,7 +230,7 @@ const Dropdown = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='outline' size='icon' className='h-8 w-8 rounded-md'>
+          <Button variant='outline' className='h-8 w-8 rounded-md'>
             <MoreHorizontal className='h-4 w-4' />
             <span className='sr-only'>Open menu</span>
           </Button>
