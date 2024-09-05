@@ -101,7 +101,7 @@ export const usePortalSettings = () => {
     return (
       await supabase
         .from('recruiter_preferences')
-        .select('banner_image,company_images,greetings')
+        .select('banner_image,company_images,greetings,about')
         .eq('recruiter_id', recruiter_id)
         .single()
         .throwOnError()
@@ -196,11 +196,29 @@ export const usePortalSettings = () => {
     }
   };
 
+  const updateGreetings = async (message: string) => {
+    try {
+      await updatePortalSetting({ ...query.data, greetings: message });
+      console.log('greeting successfully updated');
+    } catch (e) {
+      console.log('greeting update failed:', e.message);
+    }
+  };
+  const updateAbout = async (about: string) => {
+    try {
+      await updatePortalSetting({ ...query.data, about: about });
+      console.log('about successfully updated');
+    } catch (e) {
+      console.log('about update failed:', e.message);
+    }
+  };
   return {
     ...query,
     updatePortalSetting,
     updateImages,
     deleteImages,
+    updateAbout,
+    updateGreetings,
     setIsDialogOpen,
     isDialogOpen,
   };

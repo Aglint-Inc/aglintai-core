@@ -3245,6 +3245,7 @@ export type Database = {
       }
       recruiter_preferences: {
         Row: {
+          about: string | null
           banner_image: string | null
           company_images: string[] | null
           greenhouse: boolean
@@ -3253,6 +3254,7 @@ export type Database = {
           scoring: boolean
         }
         Insert: {
+          about?: string | null
           banner_image?: string | null
           company_images?: string[] | null
           greenhouse?: boolean
@@ -3261,6 +3263,7 @@ export type Database = {
           scoring?: boolean
         }
         Update: {
+          about?: string | null
           banner_image?: string | null
           company_images?: string[] | null
           greenhouse?: boolean
