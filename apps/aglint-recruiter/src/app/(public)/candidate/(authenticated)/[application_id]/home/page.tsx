@@ -14,15 +14,13 @@ import { usePortalHomePage } from '@/components/CandiatePortal/hook';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
-  const { isLoading, data } = usePortalHomePage({ application_id });
+  const { isLoading, data, error } = usePortalHomePage({ application_id });
 
   if (isLoading) {
     return <CandidatePortalLoader loadingText='Loading your details..' />;
   }
 
-  // if (!data) return <ReorderableInterviewPlan />;
-
-  if (!data) return <>No data</>;
+  if (error) throw new Error(error.message);
 
   const {
     availability,

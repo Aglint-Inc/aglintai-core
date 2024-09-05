@@ -12,6 +12,13 @@ export const useCandidatePortal = () => {
 };
 
 // interview ------------------------------------
+export const useCandidatePortalNavbar = () => {
+  const { application_id } = useCandidatePortal();
+  return api.candidatePortal.get_navbar.useQuery({
+    application_id,
+  });
+};
+// interview ------------------------------------
 export const useCandidatePortalInterviews = () => {
   const { application_id } = useCandidatePortal();
   return api.candidatePortal.get_interviews.useQuery({
