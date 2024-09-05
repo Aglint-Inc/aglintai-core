@@ -1,6 +1,4 @@
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { Text } from '@devlink/Text';
-import { Stack } from '@mui/material';
+import { Button } from '@components/ui/button';
 import { useEffect, useState } from 'react';
 
 import SearchField from '../SearchField/SearchField';
@@ -64,26 +62,23 @@ export default function FilterHeader({
   return (
     <ShowCode>
       <ShowCode.When isTrue={layoutMode === 'left-align'}>
-        <Stack
-          direction={'row'}
-          justifyContent={'end'}
-          alignItems={'center'}
-          width={'100%'}
-        >
-          <Stack justifyContent={'end'} direction={'row'} spacing={1}>
+        <div className='flex justify-end items-center w-full'>
+          <div className='flex justify-end flex-row space-x-1'>
             {Boolean(sort) && <SortComponent {...sort} />}
-            <Stack direction={'row'} gap={2} alignItems={'center'}>
-              <Stack direction={'row'} gap={1}>
+            <div className='flex flex-row gap-2 items-center'>
+              <div className='flex flex-row gap-1'>
                 {isResetAll && isFiltersActive && (
-                  <ButtonGhost
-                    isDisabled={!isFiltersActive}
-                    textButton='Reset All'
-                    size={2}
-                    iconName='refresh'
-                    color={'neutral'}
-                    isLeftIcon
-                    onClickButton={{ onClick: handelResetAll }}
-                  />
+                  <Button
+                    variant='ghost'
+                    disabled={!isFiltersActive}
+                    size='sm'
+                    onClick={handelResetAll}
+                  >
+                    <span className='mr-2'>
+                      <i className='icon-refresh' />
+                    </span>
+                    Reset All
+                  </Button>
                 )}
                 <FiltersComponent
                   filters={filters}
@@ -93,8 +88,8 @@ export default function FilterHeader({
                 {Boolean(dateRangeSelector) && (
                   <DateRangeSelector {...dateRangeSelector} />
                 )}
-              </Stack>
-            </Stack>
+              </div>
+            </div>
             {Boolean(search) && (
               <SearchField
                 value={debouncedSearch}
@@ -103,17 +98,12 @@ export default function FilterHeader({
                 placeholder={search.placeholder}
               />
             )}
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </ShowCode.When>
       <ShowCode.When isTrue={layoutMode === 'right-align'}>
-        <Stack
-          direction={'row'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-          width={'100%'}
-        >
-          <Stack direction={'row'} spacing={2}>
+        <div className='flex flex-row justify-between items-center w-full'>
+          <div className='flex flex-row space-x-2'>
             {Boolean(search) && (
               <SearchField
                 value={debouncedSearch}
@@ -122,14 +112,10 @@ export default function FilterHeader({
                 placeholder={search.placeholder}
               />
             )}
-            <Stack
-              direction={'row'}
-              justifyContent={'space-between'}
-              flexGrow={1}
-            >
-              <Stack direction={'row'} gap={2} alignItems={'center'}>
-                <Text size={2} color={'neutral'} content={'Filters'} />
-                <Stack direction={'row'} gap={2}>
+            <div className='flex flex-row justify-between flex-grow'>
+              <div className='flex flex-row gap-2 items-center'>
+                <span className='text-sm text-neutral-500'>Filters</span>
+                <div className='flex flex-row gap-2'>
                   <FiltersComponent
                     filters={filters}
                     showFilters={showFiltersByDefault}
@@ -139,22 +125,24 @@ export default function FilterHeader({
                     <DateRangeSelector {...dateRangeSelector} />
                   )}
                   {isResetAll && isFiltersActive && (
-                    <ButtonGhost
-                      isDisabled={!isFiltersActive}
-                      textButton='Reset All'
-                      size={1}
-                      iconName='refresh'
-                      color={'neutral'}
-                      isLeftIcon
-                      onClickButton={{ onClick: handelResetAll }}
-                    />
+                    <Button
+                      variant='ghost'
+                      disabled={!isFiltersActive}
+                      size='sm'
+                      onClick={handelResetAll}
+                    >
+                      <span className='mr-2'>
+                        <i className='icon-refresh' />
+                      </span>
+                      Reset All
+                    </Button>
                   )}
-                </Stack>
-              </Stack>
-            </Stack>
-          </Stack>
+                </div>
+              </div>
+            </div>
+          </div>
           {Boolean(sort) && <SortComponent {...sort} />}
-        </Stack>
+        </div>
       </ShowCode.When>
     </ShowCode>
   );

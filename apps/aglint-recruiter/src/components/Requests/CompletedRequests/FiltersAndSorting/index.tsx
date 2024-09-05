@@ -185,7 +185,7 @@ function FilterAndSorting() {
             });
           },
           value: date,
-          iconname: '',
+          // iconname: '',
         },
         typeFilter,
         assigneeFilter,
