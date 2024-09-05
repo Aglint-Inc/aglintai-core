@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Text } from '@devlink//Text';
-import { Box } from '@mui/material';
+import { Button } from '@components/ui/button';
 import React, { useEffect, useRef, useState } from 'react';
 
 const ScrollingText = () => {
@@ -31,7 +30,7 @@ const ScrollingText = () => {
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
-      }, 10000); // Change text every 2 seconds
+      }, 10000); // Change text every 10 seconds
     } else {
       clearInterval(intervalRef.current);
     }
@@ -46,21 +45,13 @@ const ScrollingText = () => {
   };
 
   return (
-    <Box onClick={handleClick}>
-      <Text
-        size={1}
-        content={textArray[currentIndex]}
-        styleProps={{
-          style: {
-            display: '-webkit-box',
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          },
-        }}
-      ></Text>
-    </Box>
+    <Button
+      onClick={handleClick}
+      className='cursor-pointer text-left w-full'
+      aria-label='Cycle through tips'
+    >
+      <p className='text-sm truncate'>{textArray[currentIndex]}</p>
+    </Button>
   );
 };
 

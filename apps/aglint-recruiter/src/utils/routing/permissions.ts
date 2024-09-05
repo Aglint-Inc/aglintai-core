@@ -58,6 +58,8 @@ const PERMISSIONS: Permissions = {
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/company': ['company_settings_module'],
+  '/user/profile/[user_id]': ['authorized'],
+
   //  For candidateDB module
   '/interviewers': ['authorized'],
   '/api/ai/create-embeddings': ['authorized'],

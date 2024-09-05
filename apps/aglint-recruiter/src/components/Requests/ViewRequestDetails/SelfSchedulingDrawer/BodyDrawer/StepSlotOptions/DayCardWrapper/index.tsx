@@ -1,11 +1,12 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Text } from '@devlink/Text';
 import { DateOption } from '@devlink3/DateOption';
 import { EmptySlotReason } from '@devlink3/EmptySlotReason';
 import { ScheduleOption } from '@devlink3/ScheduleOption';
-import { Checkbox, Collapse, Radio, Stack } from '@mui/material';
+import { Checkbox, Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
@@ -224,12 +225,16 @@ function DayCardWrapper({
                                   />
                                 )}
                                 {isRadioNeeded && (
-                                  <Radio
-                                    checked={selectedCombIds.includes(
-                                      slot.plan_comb_id,
-                                    )}
-                                    onClick={() => {
-                                      onClickSelect(slot.plan_comb_id);
+                                  <RadioGroup
+                                    defaultValue={
+                                      selectedCombIds.includes(
+                                        slot.plan_comb_id,
+                                      )
+                                        ? slot.plan_comb_id
+                                        : undefined
+                                    }
+                                    onValueChange={(value) => {
+                                      onClickSelect(value);
                                       setCalendarDate(
                                         dayjs(dates[0]).toISOString(),
                                       );
@@ -248,7 +253,12 @@ function DayCardWrapper({
                                         }
                                       }, 1000);
                                     }}
-                                  />
+                                  >
+                                    <RadioGroupItem
+                                      value={slot.plan_comb_id}
+                                      id={`radio-${slot.plan_comb_id}`}
+                                    />
+                                  </RadioGroup>
                                 )}
                               </>
                             }
