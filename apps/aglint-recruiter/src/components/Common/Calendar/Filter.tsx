@@ -1,4 +1,4 @@
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import { Stack, Typography } from '@mui/material';
 
 function CalendarFilter({ setFilter, filter }) {
@@ -18,15 +18,13 @@ function CalendarFilter({ setFilter, filter }) {
         gap={1}
       >
         <Checkbox
-          isChecked={!!filter?.find((fil) => fil === 'confirmed')}
-          onClickCheck={{
-            onClick: () => {
-              if (filter?.find((fil) => fil === 'confirmed')) {
-                setFilter((pre) => pre.filter((p) => p !== 'confirmed'));
-              } else {
-                setFilter((pre) => [...pre, 'confirmed']);
-              }
-            },
+          checked={!!filter?.find((fil) => fil === 'confirmed')}
+          onClick={() => {
+            if (filter?.find((fil) => fil === 'confirmed')) {
+              setFilter((pre) => pre.filter((p) => p !== 'confirmed'));
+            } else {
+              setFilter((pre) => [...pre, 'confirmed']);
+            }
           }}
         />
         Confirmed
@@ -38,15 +36,13 @@ function CalendarFilter({ setFilter, filter }) {
         gap={1}
       >
         <Checkbox
-          isChecked={!!filter?.find((fil) => fil === 'completed')}
-          onClickCheck={{
-            onClick: () => {
-              if (filter?.find((fil) => fil === 'completed')) {
-                setFilter((pre) => pre.filter((p) => p !== 'completed'));
-              } else {
-                setFilter((pre) => [...pre, 'completed']);
-              }
-            },
+          checked={!!filter?.find((fil) => fil === 'completed')}
+          onClick={() => {
+            if (filter?.find((fil) => fil === 'completed')) {
+              setFilter((pre) => pre.filter((p) => p !== 'completed'));
+            } else {
+              setFilter((pre) => [...pre, 'completed']);
+            }
           }}
         />
         Completed
@@ -58,15 +54,13 @@ function CalendarFilter({ setFilter, filter }) {
         gap={1}
       >
         <Checkbox
-          isChecked={!!filter?.find((fil) => fil === 'cancelled')}
-          onClickCheck={{
-            onClick: () => {
-              if (filter?.find((fil) => fil === 'cancelled')) {
-                setFilter((pre) => pre.filter((p) => p !== 'cancelled'));
-              } else {
-                setFilter((pre) => [...pre, 'cancelled']);
-              }
-            },
+          checked={!!filter?.find((fil) => fil === 'cancelled')}
+          onClick={() => {
+            if (filter?.find((fil) => fil === 'cancelled')) {
+              setFilter((pre) => pre.filter((p) => p !== 'cancelled'));
+            } else {
+              setFilter((pre) => [...pre, 'cancelled']);
+            }
           }}
         />
         Cancelled

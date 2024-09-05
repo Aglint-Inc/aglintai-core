@@ -1,15 +1,14 @@
-'use client'
+'use client';
 
 import React from 'react';
 
-import CandidatePortalSettings from '@/components/CandiatePortal/components/CandidatePortalSettings';
+import HomeSkeleton from '@/components/CandiatePortal/Home/HomeSkeleton';
 
 function page() {
   return (
-    <div className='flex flex-col gap-4'>
-     <CandidatePortalSettings/>
-      
-    </div>
+    <>
+      <HomeSkeleton />
+    </>
   );
 }
 

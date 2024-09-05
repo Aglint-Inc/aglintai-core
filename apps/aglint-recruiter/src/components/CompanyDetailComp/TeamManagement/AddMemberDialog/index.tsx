@@ -3,6 +3,7 @@ import {
   type RecruiterUserType,
   type schedulingSettingType,
 } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { InviteTeamCard } from '@devlink/InviteTeamCard';
@@ -15,7 +16,6 @@ import { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import { useToast } from '@/components/hooks/use-toast';
 import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';

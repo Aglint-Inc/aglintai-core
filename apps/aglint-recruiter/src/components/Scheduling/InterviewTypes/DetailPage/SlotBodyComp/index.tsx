@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
@@ -18,7 +19,6 @@ import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import { UITextArea } from '@/components/Common/UITextArea';
-import { useToast } from '@/components/hooks/use-toast';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useAllDepartments } from '@/queries/departments';

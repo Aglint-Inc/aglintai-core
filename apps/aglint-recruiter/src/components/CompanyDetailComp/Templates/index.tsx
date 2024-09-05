@@ -1,7 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Checkbox } from '@devlink/Checkbox';
+import { useToast } from '@components/hooks/use-toast';
+import { Checkbox } from '@components/ui/checkbox';
 import { EditEmail } from '@devlink/EditEmail';
 import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
@@ -19,7 +20,6 @@ import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPr
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/components/Common/Loader';
 import SearchField from '@/components/Common/SearchField/SearchField';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
@@ -275,9 +275,15 @@ function SchedulerEmailTemps({ setSaving }) {
         >
           <Checkbox
             key={`${'scheduleType'}-checkbox`}
-            isChecked={filter.includes(opt)}
-            onClickCheck={{
-              onClick: () => {},
+            checked={filter.includes(opt)}
+            onClick={() => {
+              setFilter((pre) => {
+                if (filter.includes(opt)) {
+                  return pre.filter((p) => p !== opt);
+                } else {
+                  return [...pre, opt];
+                }
+              });
             }}
           />
           <Typography

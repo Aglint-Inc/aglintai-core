@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -15,7 +16,6 @@ import React, { type FC, memo } from 'react';
 import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UITextField from '@/components/Common/UITextField';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/context/JobDashboard';
 import { useCompanyMembers } from '@/queries/company-members';

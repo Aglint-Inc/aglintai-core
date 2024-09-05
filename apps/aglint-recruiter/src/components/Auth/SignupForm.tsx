@@ -4,6 +4,7 @@ import {
   type RecruiterType,
   type RecruiterUserType,
 } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
@@ -16,7 +17,6 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { type ApiBodyParamsSignup } from '@/pages/api/signup';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';

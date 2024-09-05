@@ -1,4 +1,5 @@
 'use client';
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
@@ -7,7 +8,6 @@ import { Eye, EyeOff } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';

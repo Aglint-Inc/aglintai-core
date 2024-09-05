@@ -3,8 +3,8 @@ import {
   type JobApplcationDB,
   type JobTypeDB,
 } from '@aglint/shared-types';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -377,11 +377,9 @@ function UploadDB({
         <Grid item xs={12}>
           <Stack direction={'row'} spacing={1} alignItems={'center'}>
             <Checkbox
-              isChecked={checked}
-              onClickCheck={{
-                onClick: () => {
-                  setChecked(!checked);
-                },
+              checked={checked}
+              onClick={() => {
+                setChecked(!checked);
               }}
             />
 
