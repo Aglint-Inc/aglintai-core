@@ -1,8 +1,44 @@
+import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
+import { DragEvent, useRef, useState } from 'react';
 
 export function ConfigureCoverImage() {
+  const { data, removeCover, updateCover } = usePortalSettings();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef2 = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const newFile = Array.from(event.target.files)[0];
+      if (newFile.size < 5 * 1000000)
+        //chandruAddToast
+        updateCover(newFile, data?.banner_image);
+    }
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleDragLeave = (event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (event.dataTransfer.files) {
+      const newFile = Array.from(event.dataTransfer.files)[0];
+
+      if (newFile.size < 5 * 1000000)
+        //chandruAddToast
+        updateCover(newFile, data?.banner_image);
+    }
+  };
+
+  const handleRemoveFile = (index: number) => {};
+
   return (
     <div>
       <div className='w-full max-w-2xl space-y-4'>
@@ -15,32 +51,65 @@ export function ConfigureCoverImage() {
         </div>
         <div className='flex flex-col gap-2 '>
           {/* if there is no image show this button */}
-          <Button
-            className='flex flex-col items-center gap-4 w-96 h-48 '
-            variant='outline'
-          >
-            <ImagePlus className='w-10 h-10 ' />
-            Add Cover Image
-          </Button>
-          <div className='flex flex-col items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden'>
-            {/* if image is there , Cover image here */}
-            <Image
-              width={600}
-              height={400}
-              className='object-cover'
-              src='https://placehold.co/600x400'
-              alt='Cover Image'
-            />
-          </div>
+          {data?.banner_image ? (
+            <div className='flex flex-col items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden'>
+              <img
+                width={600}
+                height={400}
+                className='object-cover'
+                src={data.banner_image}
+                alt='Cover Image'
+              />
+            </div>
+          ) : (
+            <Button
+              className='flex flex-col items-center gap-4 w-96 h-48 '
+              variant='outline'
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <input
+                type='file'
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                multiple
+                accept='image/*'
+                className='hidden'
+              />
+              <ImagePlus className='w-10 h-10 ' />
+              Add Cover Image
+            </Button>
+          )}
           {/* Button to edit and remove the image only if there is an image */}
-          <div className='flex flex-row gap-2 '>
-            <Button variant='outline' className='mt-4'>
-              Edit Cover Image
-            </Button>
-            <Button variant='outline' className='mt-4'>
-              Remove
-            </Button>
-          </div>
+          {data?.banner_image && (
+            <div className='flex flex-row gap-2 '>
+              <Button
+                variant='outline'
+                className='mt-4'
+                onClick={() => fileInputRef2.current?.click()}
+              >
+                <input
+                  type='file'
+                  ref={fileInputRef2}
+                  onChange={handleFileChange}
+                  multiple
+                  accept='image/*'
+                  className='hidden'
+                />
+                Edit Cover Image
+              </Button>
+
+              <Button
+                variant='outline'
+                className='mt-4'
+                onClick={() => removeCover(data.banner_image)}
+              >
+                Remove
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

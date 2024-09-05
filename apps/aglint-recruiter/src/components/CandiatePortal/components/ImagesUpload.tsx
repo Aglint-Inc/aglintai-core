@@ -1,7 +1,13 @@
 import { Card, CardContent } from '@components/ui/card';
 import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  DragEvent,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react';
 
 export default function ImagesUpload({
   selectedImages,
@@ -19,22 +25,22 @@ export default function ImagesUpload({
 
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
       if (newFiles.length !== files.length)
-        console.log('please select image less then 5MB');
-      setSelectedImages((prevFiles) => [...prevFiles, ...files]);
+        //chandruAddToast
+        setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
   };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: React.DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (event: React.DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(false);
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(false);
     if (event.dataTransfer.files) {
@@ -42,9 +48,9 @@ export default function ImagesUpload({
 
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
       if (newFiles.length !== files.length)
-        console.log('please select image less then 5MB');
+        //chandruAddToast
 
-      setSelectedImages((prevFiles) => [...prevFiles, ...files]);
+        setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
   };
 

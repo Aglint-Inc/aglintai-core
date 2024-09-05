@@ -13,7 +13,7 @@ function CandidatePortalSettings() {
   const { isPending } = usePortalSettings();
   if (isPending) return <>Loading</>;
   return (
-    <div className='flex flex-col gap-10'>
+    <div className='p-4 flex flex-col gap-10'>
       <ConfigureSliderImages />
       <ConfigureCoverImage />
       <ConfigureCandidateGreeting />

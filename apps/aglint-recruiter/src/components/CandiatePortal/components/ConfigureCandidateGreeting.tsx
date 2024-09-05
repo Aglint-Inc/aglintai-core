@@ -17,7 +17,6 @@ export default function ConfigureCandidateGreeting() {
   const { data, setIsDialogOpen, isDialogOpen, updateGreetings } =
     usePortalSettings();
   const [text, setText] = useState<string>(data.greetings || '');
-  console.log(data);
 
   const handleTextChange = (event) => {
     setText(event.target.value);

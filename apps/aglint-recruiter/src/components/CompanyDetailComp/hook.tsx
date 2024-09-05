@@ -139,7 +139,7 @@ export const usePortalSettings = () => {
     const newImages = [];
     try {
       for (let image of images) {
-        const fileName = removeSpaces(`${name}-${Date.now()}`);
+        const fileName = removeSpaces(`${name}-image-${Date.now()}`);
 
         const { data, error } = await supabase.storage
           .from('company-images')
@@ -167,6 +167,7 @@ export const usePortalSettings = () => {
       // if (newImages?.length)
       //   newImages.map(async (img) => await deleteImages(img));
       console.error('Error uploading images: ', error.message);
+      //chandruAddToast
       return null;
     }
   };
@@ -192,6 +193,7 @@ export const usePortalSettings = () => {
         ),
       });
     } catch (error) {
+      //chandruAddToast
       console.error('Error uploading images: ', error?.message);
     }
   };
@@ -201,6 +203,7 @@ export const usePortalSettings = () => {
       await updatePortalSetting({ ...query.data, greetings: message });
       console.log('greeting successfully updated');
     } catch (e) {
+      //chandruAddToast
       console.log('greeting update failed:', e.message);
     }
   };
@@ -209,11 +212,66 @@ export const usePortalSettings = () => {
       await updatePortalSetting({ ...query.data, about: about });
       console.log('about successfully updated');
     } catch (e) {
+      //chandruAddToasts
       console.log('about update failed:', e.message);
     }
   };
+
+  const updateCover = async (image: File, oldCover: string) => {
+    try {
+      const fileName = removeSpaces(`${name}-cover-${Date.now()}`);
+
+      await removeCover(oldCover);
+
+      const { data, error } = await supabase.storage
+        .from('company-images')
+        .upload(fileName, image);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      let img = '';
+      if (data?.path) {
+        img = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-images/${data?.path}?t=${new Date().toISOString()}`;
+      }
+
+      await updatePortalSetting({
+        ...query.data,
+        banner_image: img || query.data?.banner_image,
+      });
+    } catch (error) {
+      console.error('Error uploading cover: ', error.message);
+      return null;
+    }
+  };
+
+  const removeCover = async (imageUrl: string) => {
+    try {
+      const path = extractPath(imageUrl);
+      if (path.length === 0) throw new Error('wrong image');
+
+      const { data, error } = await supabase.storage
+        .from('company-images')
+        .remove(path);
+
+      if (data.length === 0 || error) {
+        throw new Error(`cover remove failed : ${error?.message}`);
+      }
+
+      await updatePortalSetting({
+        ...query.data,
+        banner_image: null,
+      });
+    } catch (error) {
+      console.error('Error uploading images: ', error?.message);
+    }
+  };
+
   return {
     ...query,
+    updateCover,
+    removeCover,
     updatePortalSetting,
     updateImages,
     deleteImages,
