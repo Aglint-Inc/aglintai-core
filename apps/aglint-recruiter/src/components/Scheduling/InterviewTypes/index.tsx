@@ -6,7 +6,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { GlobalBadge } from '@devlink/GlobalBadge';
@@ -19,6 +18,7 @@ import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
@@ -114,13 +114,13 @@ export function InterviewTypes() {
                 slotFilter={
                   <div className='flex flex-row gap-4 justify-between items-center w-full h-8'>
                     <div className='flex flex-row gap-4 justify-center items-center h-full'>
-                      <Input
+                      <UITextField
                         value={textSearch}
                         placeholder='Search by name.'
                         onChange={(e) => {
                           setTextSearch(e.target.value);
                         }}
-                        style={{ height: '32px' }}
+                        fieldSize={'medium'}
                       />
                       <FilterDepartment />
                       <FilterCreatedBy />

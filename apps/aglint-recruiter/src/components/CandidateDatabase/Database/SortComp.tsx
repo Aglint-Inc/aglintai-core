@@ -5,7 +5,7 @@ import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import UISelect from '../../Common/Uiselect';
+import UISelect from '../../Common/UiSelect';
 const sortdisplay = [
   { name: 'Name', value: 'first_name' },
   { name: 'Location', value: 'location' },
@@ -76,7 +76,7 @@ const SortComp = () => {
               defaultValue={'first_name'}
               menuOptions={sortdisplay}
               value={sortType}
-              onChange={(value) => {
+              onValueChange={(value) => {
                 if (value === '') return;
                 setSortType(value as any);
               }}

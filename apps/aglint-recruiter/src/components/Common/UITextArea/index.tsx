@@ -1,10 +1,10 @@
-import { Input, InputProps } from '@components/ui/input';
 import { Label } from '@components/ui/label';
+import { Textarea, TextareaProps } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
 import { AlertCircle } from 'lucide-react';
-import React, { forwardRef } from 'react';
+import * as React from 'react';
 
-type Props = InputProps & {
+interface UITextFieldProps extends TextareaProps {
   error?: boolean;
   label?: string;
   fieldSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
@@ -14,28 +14,26 @@ type Props = InputProps & {
   labelBold?: 'default' | 'normal';
   defaultLabelColor?: string;
   fullWidth?: boolean;
-  ref: React.ForwardedRef<HTMLInputElement>;
-};
+}
 
-const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
-  ({
-    disabled,
-    error,
-    helperText,
-    type = 'text',
-    secondaryText,
-    label,
-    labelSize = 'small',
-    labelBold = 'default',
-    defaultLabelColor = null,
-    required,
-    fullWidth,
-    id,
+const UITextArea = React.forwardRef<HTMLTextAreaElement, UITextFieldProps>(
+  (
+    {
+      className,
+      id,
+      fullWidth,
+      label,
+      labelSize = 'small',
+      labelBold = 'default',
+      defaultLabelColor = null,
+      disabled,
+      required,
+      error,
+      helperText,
+      ...props
+    },
     ref,
-    fieldSize,
-    className,
-    ...props
-  }) => {
+  ) => {
     const labelClasses = cn(
       'text-neutral-900',
       labelBold === 'default' ? 'font-semibold' : 'font-normal',
@@ -52,23 +50,10 @@ const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
     );
 
     const inputClasses = cn(
-      'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
+      'w-full border rounded px-3 py-2',
       fullWidth && 'w-full',
       error ? 'border-red-500 focus-visible:ring-0' : 'border-neutral-300',
-      disabled && 'bg-neutral-100 text-neutral-500 cursor-not-allowed',
-      fieldSize === 'small'
-        ? 'h-6'
-        : fieldSize === 'medium'
-          ? 'h-8'
-          : fieldSize === 'large'
-            ? 'h-10'
-            : fieldSize === 'xLarge'
-              ? 'h-12'
-              : fieldSize === 'xxLarge'
-                ? 'h-14'
-                : fieldSize === 'xxxLarge'
-                  ? 'h-16'
-                  : 'h-10',
+      disabled && 'bg-neutral-100 text-neutral-500',
       className,
     );
 
@@ -79,21 +64,15 @@ const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
             <Label htmlFor={id} className={labelClasses}>
               {label}
             </Label>
-            {required && <span className='text-red-500 ml-1'>*</span>}{' '}
-            {/* Corrected color class */}
+            {required && <span className='text-error-500 ml-1'>*</span>}
           </div>
         )}
-        {secondaryText && (
-          <p className='text-sm text-neutral-600'>{secondaryText}</p>
-        )}
         <div>
-          <Input
+          <Textarea
             {...props}
             ref={ref}
-            className={inputClasses}
             disabled={disabled}
-            required={required}
-            type={type}
+            className={inputClasses}
           />
           {error && helperText && (
             <div className='flex flex-row items-center mt-1'>
@@ -107,6 +86,6 @@ const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
   },
 );
 
-UITextField.displayName = 'UITextField';
+UITextArea.displayName = 'Textarea';
 
-export default UITextField;
+export { UITextArea };

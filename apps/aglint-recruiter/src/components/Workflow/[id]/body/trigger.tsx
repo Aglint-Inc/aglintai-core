@@ -2,7 +2,7 @@ import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { memo } from 'react';
 
-import UISelect from '@/components/Common/Uiselect';
+import UISelect from '@/components/Common/UiSelect';
 import { useWorkflow } from '@/context/Workflows/[id]';
 import { type Workflow } from '@/types/workflow.types';
 
@@ -52,7 +52,7 @@ const TriggerForm = () => {
       disabled={!manageWorkflow}
       value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
-      onChange={(value) => {
+      onValueChange={(value) => {
         const { phase, trigger } = JSON.parse(value) as typeof payload;
         handleUpdateWorkflow({
           phase,
@@ -74,12 +74,14 @@ const DurationForm = () => {
     <UISelect
       label='Interval between the trigger and action'
       disabled={!manageWorkflow}
-      value={interval}
+      value={String(interval)}
       menuOptions={DURATION_OPTIONS.map(({ name, value }) => ({
         name,
         value: value + '', // value should be in string type
       }))}
-      onChange={(value) => handleUpdateWorkflow({ interval: Number(value) })}
+      onValueChange={(value) =>
+        handleUpdateWorkflow({ interval: Number(value) })
+      }
     />
   );
 };

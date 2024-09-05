@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import UISelect from '../../Common/Uiselect';
+import UISelect from '../../Common/UiSelect';
 import UITextField from '../../Common/UITextField';
 
 type FilterType = {
@@ -272,7 +272,7 @@ const FilterField = ({
               name: a.label,
               value: a.type,
             }))}
-            onChange={(value) => {
+            onValueChange={(value) => {
               if (value === '') return;
               const updFilter: FilterType = { ...filter };
               updFilter.type = value as any;
@@ -285,7 +285,6 @@ const FilterField = ({
           <UISelect
             defaultValue={'equal'}
             menuOptions={[{ name: 'Equals', value: 'equals' }]}
-            onChange={() => {}}
             value={'equals'}
           />
         </Grid>

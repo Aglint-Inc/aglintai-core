@@ -8,18 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import UISelect from '@/components/Common/UiSelect';
+import { UITextArea } from '@/components/Common/UITextArea';
+import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import ROUTES from '@/utils/routing/routes';
@@ -100,82 +95,56 @@ function CreateModuleDialog() {
             objective, and indicate if training is required.
           </p>
           <div className='space-y-4 w-full'>
-            {/* Name Input */}
-            <div className='space-y-2'>
-              <Label htmlFor='name'>Name</Label>
-              <Input
-                id='name'
-                placeholder='Ex: Initial Screening'
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                onFocus={() => {
-                  setNameError(false);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    createModuleHandler();
-                  }
-                }}
-                className={nameError ? 'border-red-500' : ''}
-              />
-              {nameError && (
-                <p className='text-xs text-red-500'>Name cannot be empty.</p>
-              )}
-            </div>
+            <UITextField
+              id='name'
+              placeholder='Ex: Initial Screening'
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              onFocus={() => {
+                setNameError(false);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  createModuleHandler();
+                }
+              }}
+              error={nameError}
+              helperText='Name cannot be empty.'
+            />
 
-            {/* Department Select */}
-            <div className='space-y-2'>
-              <Label htmlFor='department'>Department</Label>
-              <Select
-                value={selDepartment?.id.toString() || ''}
-                onValueChange={(value) => {
-                  const department = departments.find(
-                    (d) => d.id.toString() === value,
-                  );
-                  setSelDepartment(department || null);
-                }}
-              >
-                <SelectTrigger
-                  id='department'
-                  className={`w-full ${departmentError ? 'border-red-500' : ''}`}
-                >
-                  <SelectValue placeholder='Select Department' />
-                </SelectTrigger>
-                <SelectContent>
-                  {departments.map((department) => (
-                    <SelectItem
-                      key={department.id}
-                      value={department.id.toString()}
-                    >
-                      {capitalize(department.name)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {departmentError && (
-                <p className='text-xs text-red-500'>Department is required</p>
-              )}
-            </div>
+            <UISelect
+              label='Department'
+              value={selDepartment?.id.toString() || ''}
+              onValueChange={(value) => {
+                const department = departments.find(
+                  (d) => d.id.toString() === value,
+                );
+                setSelDepartment(department || null);
+              }}
+              menuOptions={departments.map((department) => ({
+                name: capitalize(department.name),
+                value: department.id.toString(),
+              }))}
+              error={departmentError}
+              helperText='Department cannot be empty.'
+            />
 
-            {/* Objective Input */}
-            <div className='space-y-2'>
-              <Label htmlFor='objective'>Objective</Label>
-              <Input
-                id='objective'
-                placeholder='Add a brief description of the interview'
-                value={objective}
-                onChange={(e) => {
-                  setObjective(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    createModuleHandler();
-                  }
-                }}
-              />
-            </div>
+            <UITextArea
+              id='objective'
+              label='Objective'
+              placeholder='Add a brief description of the interview'
+              value={objective}
+              onChange={(e) => {
+                setObjective(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  createModuleHandler();
+                }
+              }}
+            />
 
             {/* Checkbox */}
             <div className='flex items-center space-x-2'>

@@ -1,4 +1,11 @@
-import { Alert, Autocomplete, Chip, Stack, Typography } from '@mui/material';
+import {
+  Alert,
+  Autocomplete,
+  Chip,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -26,7 +33,6 @@ import timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
-import UITextField from '../../Common/UITextField';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
 
@@ -575,9 +581,8 @@ export const TimezoneSelector = ({
         }}
         renderInput={(params) => {
           return (
-            <UITextField
+            <TextField
               {...params}
-              labelSize='medium'
               // fullWidth
               label=''
               placeholder='Ex. America/Los_Angeles (GMT-08:00)'
