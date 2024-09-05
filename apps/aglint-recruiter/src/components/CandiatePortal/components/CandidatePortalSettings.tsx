@@ -7,12 +7,15 @@ import ConfigureCompanyEdit from '@/components/CandiatePortal/components/Configu
 import { ConfigureSliderImages } from '@/components/CandiatePortal/components/ConfigureSliderImages';
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 
+import { ConfigureCoverImage } from './ConfigureCoverImage';
+
 function CandidatePortalSettings() {
   const { isPending } = usePortalSettings();
   if (isPending) return <>Loading</>;
   return (
-    <div className='flex flex-col gap-10 p-4'>
+    <div className='flex flex-col gap-10'>
       <ConfigureSliderImages />
+      <ConfigureCoverImage />
       <ConfigureCandidateGreeting />
       <ConfigureCompanyEdit />
     </div>
