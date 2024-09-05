@@ -104,138 +104,142 @@ const EditBasicInfoDialog = ({
         <DialogHeader>
           <DialogTitle>Edit Basic Info</DialogTitle>
         </DialogHeader>
-        <div className='space-y-6'>
-          {isError && (
-            <Alert variant='destructive'>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                The file you uploaded exceeds the maximum allowed size. Please
-                ensure that the file size is less than 5 MB
-              </AlertDescription>
-            </Alert>
-          )}
-
-          <div className='flex items-center space-x-4 '>
-            <div className='border border-gray-200 p-4 rounded-md'>
-              <ImageUpload
-                image={logo}
-                disabled={isFormDisabled}
-                setImage={(newLogo) => {
-                  setLogo(newLogo);
-                  if (recruiterLocal) {
-                    handleChange({
-                      ...recruiterLocal,
-                      logo: newLogo,
-                    });
-                  }
-                }}
-                size={48}
-                table='company-logo'
-                error={(e) => {
-                  setError(!!e);
-                }}
-              />
-            </div>
-            {!isFormDisabled && (
-              <>
-                <div className='flex flex-col items-start'>
-                  <Button
-                    variant='ghost'
-                    size='sm'
-                    onClick={() => {
-                      document.getElementById('image-upload').click();
-                    }}
-                    className='flex items-center gap-2 p-0 hover:bg-transparent hover:text-gray-600 h-auto'
-                  >
-                    <Upload className='h-4 w-4' />
-                    Update Logo
-                  </Button>
-                  <p className='text-xs text-muted-foreground mt-1 max-w-[350px]'>
-                    The file shouldn&apos;t exceed the maximum allowed size.
-                    Please ensure that the file size is less than 5 MB
-                  </p>
-                </div>
-              </>
+        <DialogTitle>
+          {' '}
+          <div className='space-y-6'>
+            {isError && (
+              <Alert variant='destructive'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  The file you uploaded exceeds the maximum allowed size. Please
+                  ensure that the file size is less than 5 MB
+                </AlertDescription>
+              </Alert>
             )}
-          </div>
 
-          <div className='space-y-4 w-full'>
-            <div className='space-y-2'>
-              <Label htmlFor='company-name'>Company Name</Label>
-              <Input
-                id='company-name'
-                placeholder='Ex. Acme Inc.'
-                value={recruiterLocal?.name}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiterLocal,
-                    name: e.target.value,
-                  });
-                  setNameError(!e.target.value);
-                }}
-                disabled={isFormDisabled}
-                required
-              />
-              {nameError && (
-                <p className='text-sm text-destructive'>
-                  Company name can&#39;t be empty
-                </p>
+            <div className='flex items-center space-x-4 '>
+              <div className='border border-gray-200 p-4 rounded-md'>
+                <ImageUpload
+                  image={logo}
+                  disabled={isFormDisabled}
+                  setImage={(newLogo) => {
+                    setLogo(newLogo);
+                    if (recruiterLocal) {
+                      handleChange({
+                        ...recruiterLocal,
+                        logo: newLogo,
+                      });
+                    }
+                  }}
+                  size={48}
+                  table='company-logo'
+                  error={(e) => {
+                    setError(!!e);
+                  }}
+                />
+              </div>
+              {!isFormDisabled && (
+                <>
+                  <div className='flex flex-col items-start'>
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={() => {
+                        document.getElementById('image-upload').click();
+                      }}
+                      className='flex items-center gap-2 p-0 hover:bg-transparent hover:text-gray-600 h-auto'
+                    >
+                      <Upload className='h-4 w-4' />
+                      Update Logo
+                    </Button>
+                    <p className='text-xs text-muted-foreground mt-1 max-w-[350px]'>
+                      The file shouldn&apos;t exceed the maximum allowed size.
+                      Please ensure that the file size is less than 5 MB
+                    </p>
+                  </div>
+                </>
               )}
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='industry'>Industry</Label>
-              <Input
-                id='industry'
-                placeholder='Ex. Healthcare'
-                value={recruiterLocal?.industry}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiterLocal,
-                    industry: e.target.value,
-                  });
-                }}
+
+            <div className='space-y-4 w-full'>
+              <div className='space-y-2'>
+                <Label htmlFor='company-name'>Company Name</Label>
+                <Input
+                  id='company-name'
+                  placeholder='Ex. Acme Inc.'
+                  value={recruiterLocal?.name}
+                  onChange={(e) => {
+                    handleChange({
+                      ...recruiterLocal,
+                      name: e.target.value,
+                    });
+                    setNameError(!e.target.value);
+                  }}
+                  disabled={isFormDisabled}
+                  required
+                />
+                {nameError && (
+                  <p className='text-sm text-destructive'>
+                    Company name can&#39;t be empty
+                  </p>
+                )}
+              </div>
+              <div className='space-y-2'>
+                <Label htmlFor='industry'>Industry</Label>
+                <Input
+                  id='industry'
+                  placeholder='Ex. Healthcare'
+                  value={recruiterLocal?.industry}
+                  onChange={(e) => {
+                    handleChange({
+                      ...recruiterLocal,
+                      industry: e.target.value,
+                    });
+                  }}
+                  disabled={isFormDisabled}
+                />
+              </div>
+              <div className='space-y-2'>
+                <Label htmlFor='employee-size'>Employee Size</Label>
+                <UISelectDropDown
+                  menuOptions={employeeSizes.map((size) => ({
+                    name: size,
+                    value: size,
+                  }))}
+                  value={recruiterLocal?.employee_size}
+                  onValueChange={(value) => {
+                    handleChange({
+                      ...recruiterLocal,
+                      employee_size: value,
+                    });
+                  }}
+                />
+              </div>
+              <div className='space-y-2'>
+                <Label htmlFor='company-website'>Company Website</Label>
+                <Input
+                  id='company-website'
+                  placeholder='https://companydomain.com'
+                  value={recruiterLocal?.company_website}
+                  onChange={(e) => {
+                    handleChange({
+                      ...recruiterLocal,
+                      company_website: e.target.value,
+                    });
+                  }}
+                  disabled={isFormDisabled}
+                />
+              </div>
+              <SocialComp
                 disabled={isFormDisabled}
+                handleChange={handleChange}
+                recruiterLocal={recruiterLocal}
               />
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='employee-size'>Employee Size</Label>
-              <UISelectDropDown
-                menuOptions={employeeSizes.map((size) => ({
-                  name: size,
-                  value: size,
-                }))}
-                value={recruiterLocal?.employee_size}
-                onValueChange={(value) => {
-                  handleChange({
-                    ...recruiterLocal,
-                    employee_size: value,
-                  });
-                }}
-              />
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='company-website'>Company Website</Label>
-              <Input
-                id='company-website'
-                placeholder='https://companydomain.com'
-                value={recruiterLocal?.company_website}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiterLocal,
-                    company_website: e.target.value,
-                  });
-                }}
-                disabled={isFormDisabled}
-              />
-            </div>
-            <SocialComp
-              disabled={isFormDisabled}
-              handleChange={handleChange}
-              recruiterLocal={recruiterLocal}
-            />
           </div>
-        </div>
+        </DialogTitle>
+
         <DialogFooter>
           <Button variant='outline' onClick={handleClose}>
             Cancel
