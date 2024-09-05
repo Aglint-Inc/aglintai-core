@@ -4,13 +4,12 @@ import { Card } from '@components/ui/card';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { CompanyInfo } from '@devlink/CompanyInfo';
 import { CompanyInfoDetails } from '@devlink/CompanyInfoDetails';
-import { RolesPill } from '@devlink/RolesPill';
 import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { DeletePopup } from '@devlink3/DeletePopup';
 import { PencilIcon, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
@@ -22,20 +21,17 @@ import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 import MuiPopup from '../../Common/MuiPopup';
-import { debouncedSave } from '../utils';
 import AddAndEditLocation from './AddAndEditLocation';
 import Departments from './Departments';
-import AddDepartmentsDialog from './Departments/ManageDepartmentsDialog/addDepartmentsDialog';
 import DeleteDepartmentsDialog from './Departments/ManageDepartmentsDialog/deleteDepartmentDialog';
 import EditBasicInfoDialog from './EditBasicInfoDialog';
 
 const CompanyInfoComp = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
   const { data: locations, refetch: refetchLocations } =
     useAllOfficeLocations();
-  const { data: departments, refetch: refetchDepartments } =
-    useAllDepartments();
+  const { refetch: refetchDepartments } = useAllDepartments();
   const [dialog, setDialog] = useState(initialDialog());
 
   const [deleteDialog, setDeleteDialog] = useState<{
@@ -48,21 +44,6 @@ const CompanyInfoComp = () => {
     id: null,
   });
   const [editDrawer, setEditDrawer] = useState(false);
-  const initialCompanyName = useRef(recruiter?.name);
-
-  const handleChange = async (
-    recruit: typeof recruiter,
-    isEmptyName?: boolean,
-  ) => {
-    debouncedSave(
-      {
-        ...recruit,
-        ...(isEmptyName ? { name: String(initialCompanyName.current) } : {}),
-      },
-      recruiter.id,
-    );
-    setRecruiter(recruit);
-  };
 
   const handleClose = () => {
     setDialog(initialDialog());
@@ -77,11 +58,6 @@ const CompanyInfoComp = () => {
 
   return (
     <div className='w-full'>
-      <AddDepartmentsDialog
-        handleClose={handleClose}
-        open={dialog.departments}
-        handleChange={handleChange}
-      />
       <AddAndEditLocation
         key={Math.random()}
         handleClose={handleClose}
@@ -298,49 +274,18 @@ const CompanyInfoComp = () => {
                 })}
               </>
             }
-            slotRolesPills={<Departments />}
-            slotDepartmentPills={departments?.map((dep) => {
-              return (
-                <RolesPill
-                  key={dep.id}
-                  textRoles={dep.name}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      setDeleteDialog({
-                        ...deleteDialog,
-                        open: true,
-                        id: dep.id,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotTechStackPills={<></>}
-            onClickAddLocation={{
-              onClick: () => {
-                setDialog({ ...dialog, location: { open: true, edit: -1 } });
-              },
-            }}
-            onClickAddAvailableRoles={{
-              onClick: () => {
-                setDialog({ ...dialog, roles: true });
-              },
-            }}
-            onClickAddDepartments={{
-              onClick: () => {
-                setDialog((prev) => ({
-                  ...prev,
-                  departments: true,
-                }));
-              },
-            }}
-            onClickAddTechStacks={{
-              onClick: () => {
-                setDialog({ ...dialog, stacks: true });
-              },
-            }}
+            slotRolesPills={<></>}
             isAvailableRolesVisible={true}
+            slotDepartmentPills={
+              <>
+                <Departments />
+              </>
+            }
+            slotTechStackPills={<></>}
+            onClickAddLocation={<></>}
+            onClickAddAvailableRoles={<></>}
+            onClickAddDepartments={<></>}
+            onClickAddTechStacks={<></>}
             isSpecialistVisible={true}
           />
         </div>
