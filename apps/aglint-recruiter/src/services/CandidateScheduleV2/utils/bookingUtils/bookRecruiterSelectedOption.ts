@@ -9,9 +9,11 @@ import {
   type APIConfirmRecruiterSelectedOption,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
 import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
@@ -64,6 +66,12 @@ export const bookRecruiterSelectedOption = async (
   axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
     payload,
+  );
+  await supabaseWrap(
+    await supabaseAdmin
+      .from('candidate_request_availability')
+      .update({ booking_confirmed: true })
+      .eq('id', req_body.availability_req_id),
   );
   return booked_meeting_details;
 };

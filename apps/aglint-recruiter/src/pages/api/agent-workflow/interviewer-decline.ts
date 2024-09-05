@@ -12,12 +12,14 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
+
   let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: req.body.request_id,
     supabaseAdmin: supabaseAdmin,
     event_run_id: req.body.event_run_id,
     event_type: apiTargetToEvents[target_api],
   });
+
   const {
     request_id,
     session_ids,
