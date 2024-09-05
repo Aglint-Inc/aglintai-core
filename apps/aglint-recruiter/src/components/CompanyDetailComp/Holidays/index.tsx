@@ -27,6 +27,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
+import UISelect from '@/components/Common/Uiselect';
 
 export const LoadMax = {
   dailyHours: 8,
@@ -210,29 +211,37 @@ function Holidays() {
                       </div>
                     </RadioGroup>
                   </div>
-                  {specificLocationOn === 'specific_locations' && (
+                  {recruiter && specificLocationOn === 'specific_locations' && (
                     <div>
                       <Label>Pick locations</Label>
-                      <Autocomplete
-                        multiple
-                        fullWidth
-                        onChange={(_, value) => setSelectedLocations(value)}
-                        options={recruiter?.office_locations.map(
-                          (item) =>
-                            `${item.city}, ${item.region}, ${item.country}`,
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            placeholder='Select Locations'
-                            {...params}
-                          />
-                        )}
+                      <UISelect
+                        menuOptions={
+                          recruiter
+                            ? recruiter?.office_locations.map((item) => {
+                                return {
+                                  name: `${item.city}, ${item.region}, ${item.country}`,
+                                  value: `${item.city}, ${item.region}, ${item.country}`,
+                                };
+                              })
+                            : []
+                        }
+                        value={selectedLocations[0]}
+                        onChange={(value) =>
+                          setSelectedLocations(value ? [value] : [])
+                        }
+                        placeholder='Select a Location'
+                        label='Locations'
                       />
                     </div>
                   )}
                 </div>
                 <div className='mt-4 flex justify-end space-x-2'>
-                  <Button variant='outline' onClick={() => setDaysOffOpen}>
+                  <Button
+                    variant='outline'
+                    onClick={() => {
+                      setDaysOffOpen(false);
+                    }}
+                  >
                     Cancel
                   </Button>
                   <Button
