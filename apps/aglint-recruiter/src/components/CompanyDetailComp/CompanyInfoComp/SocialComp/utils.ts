@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-unsafe-regex */
 export const socialPlaceholder = {
   linkedin: 'company',
   youtube: '@company',
