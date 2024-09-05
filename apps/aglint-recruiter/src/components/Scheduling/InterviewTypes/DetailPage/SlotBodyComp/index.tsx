@@ -459,7 +459,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               isLinkOffVisible={false}
               role={capitalizeAll(job.job_title)}
               textLocation={'---'}
-              textRoleCategory={job.departments.name || '---'}
+              textRoleCategory={job.departments?.name || '---'}
               slotBadges={
                 job.status && (
                   <GlobalBadge

@@ -6,6 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { GlobalBadge } from '@devlink/GlobalBadge';
@@ -25,7 +26,6 @@ import ROUTES from '@/utils/routing/routes';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import SearchField from '../../Common/SearchField/SearchField';
 import CreateModuleDialog from './CreateModuleDialog';
 import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
@@ -112,20 +112,15 @@ export function InterviewTypes() {
               <CreateModuleDialog />
               <InterviewModuleTable
                 slotFilter={
-                  <Stack
-                    direction={'row'}
-                    width={'100%'}
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                  >
-                    <Stack direction={'row'} gap={2}>
-                      <SearchField
+                  <div className='flex flex-row gap-4 justify-between items-center w-full h-8'>
+                    <div className='flex flex-row gap-4 justify-center items-center h-full'>
+                      <Input
                         value={textSearch}
-                        onClear={() => setTextSearch('')}
                         placeholder='Search by name.'
                         onChange={(e) => {
                           setTextSearch(e.target.value);
                         }}
+                        style={{ height: '32px' }}
                       />
                       <FilterDepartment />
                       <FilterCreatedBy />
@@ -141,19 +136,38 @@ export function InterviewTypes() {
                           color={'neutral'}
                         />
                       )}
-                    </Stack>{' '}
+                    </div>
                     <Tabs
                       defaultValue={showArchive ? 'archived' : 'active'}
                       onValueChange={(value) =>
                         setShowArchive(value === 'archived')
                       }
                     >
-                      <TabsList>
-                        <TabsTrigger value='active'>Active</TabsTrigger>
-                        <TabsTrigger value='archived'>Archived</TabsTrigger>
+                      <TabsList
+                        className='flex gap-2'
+                        style={{ height: '32px' }}
+                      >
+                        <TabsTrigger
+                          value='active'
+                          style={{
+                            height: '24px',
+                            padding: '2px 8px',
+                          }}
+                        >
+                          Active
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value='archived'
+                          style={{
+                            height: '24px',
+                            padding: '2px 8px',
+                          }}
+                        >
+                          Archived
+                        </TabsTrigger>
                       </TabsList>
                     </Tabs>
-                  </Stack>
+                  </div>
                 }
                 slotInterviewModuleCard={
                   <Stack width={'100%'} height={'calc(100vh - 112px)'}>
