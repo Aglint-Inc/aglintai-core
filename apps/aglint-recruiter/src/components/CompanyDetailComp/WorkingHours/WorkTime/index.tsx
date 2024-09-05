@@ -59,7 +59,7 @@ const WorkTime: FC<WorkTimeProps> = ({
         <CardTitle className='text-2xl font-bold'>Working Hours</CardTitle>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
-            <Button variant='outline' size='icon'>
+            <Button variant='outline'>
               <Edit className='h-4 w-4' />
               <span className='sr-only'>Edit Working Hours</span>
             </Button>

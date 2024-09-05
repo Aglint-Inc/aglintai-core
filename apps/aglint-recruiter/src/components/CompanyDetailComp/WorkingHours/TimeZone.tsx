@@ -43,7 +43,7 @@ const TimeZone: FC<TimeZoneProps> = ({
         <CardTitle className='text-2xl font-bold'>Time Zone</CardTitle>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
-            <Button variant='outline' size='icon'>
+            <Button variant='outline'>
               <Edit className='h-4 w-4' />
               <span className='sr-only'>Edit Time Zone</span>
             </Button>

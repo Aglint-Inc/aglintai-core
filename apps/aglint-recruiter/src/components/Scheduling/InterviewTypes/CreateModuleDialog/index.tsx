@@ -12,7 +12,7 @@ import { Label } from '@components/ui/label';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import UISelect from '@/components/Common/UISelectDropDown';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -114,7 +114,7 @@ function CreateModuleDialog() {
               helperText='Name cannot be empty.'
             />
 
-            <UISelect
+            <UISelectDropDown
               label='Department'
               value={selDepartment?.id.toString() || ''}
               onValueChange={(value) => {

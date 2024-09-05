@@ -1,6 +1,16 @@
 'use client';
 
 import { supabaseWrap } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select';
+import { Textarea } from '@components/ui/textarea';
 import { useQuery } from '@tanstack/react-query';
 import {
   Edit,
@@ -15,16 +25,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import { Button } from '@components/ui/button';
-import { Input } from '@components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
-import { Textarea } from '@components/ui/textarea';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -97,8 +97,6 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   };
 
   const RenderStep = (step: Step[number], index: number) => {
-    const Icon = iconOptions[step.icon];
-
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
 

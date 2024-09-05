@@ -42,7 +42,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
         <CardTitle className='text-2xl font-bold'>Break Time</CardTitle>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
-            <Button variant='outline' size='icon'>
+            <Button variant='outline'>
               <Edit className='h-4 w-4' />
               <span className='sr-only'>Edit Break Time</span>
             </Button>
