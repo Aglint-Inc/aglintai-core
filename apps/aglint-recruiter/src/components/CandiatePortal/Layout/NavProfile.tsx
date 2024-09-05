@@ -11,7 +11,7 @@ import {
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 
-import { useCandidatePortalNavbar } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+import { useCandidatePortalNavbar } from '@/candidate/authenticated/hooks';
 
 export default function NavProfile({
   application_id,

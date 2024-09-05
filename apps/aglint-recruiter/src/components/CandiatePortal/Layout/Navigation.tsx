@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 import {
   useCandidatePortal,
   useCandidatePortalNavbar,
-} from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+} from '@/candidate/authenticated/hooks';
 
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';

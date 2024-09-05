@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import { Parser } from 'html-to-react';
 import { Clock, Mail } from 'lucide-react';
 
-import { useCandidatePortalMessages } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+import { useCandidatePortalMessages } from '@/candidate/authenticated/hooks';
 
 const MessageCard = ({ index }: { index: number }) => {
   const message = useCandidatePortalMessages()['data'][index];

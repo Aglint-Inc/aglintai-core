@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
 import { type schedule } from '@/api/candidate_portal/home_page/route';
-import dayjs from '@/utils/dayjs';
 
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 
@@ -26,7 +25,6 @@ function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
         )}
       </Card>
     </div>
-    
   );
 }
 
@@ -35,11 +33,11 @@ export default SelfScheduling;
 const SelfSchedulingEmpty = () => {
   return (
     <CardContent className='p-0 pl-4 pb-4'>
-    <CardHeader className='p-4 pl-0 text-md font-semibold'>
-      Self Scheduling Request
-    </CardHeader>
-    <p className='text-muted-foreground'>No Self Scheduling Requests</p>
-  </CardContent>
+      <CardHeader className='p-4 pl-0 text-md font-semibold'>
+        Self Scheduling Request
+      </CardHeader>
+      <p className='text-muted-foreground'>No Self Scheduling Requests</p>
+    </CardContent>
   );
 };
 const SelfSchedulingComp = ({ schedule }) => {
