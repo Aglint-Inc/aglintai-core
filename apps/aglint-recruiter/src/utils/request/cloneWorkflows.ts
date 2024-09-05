@@ -61,6 +61,7 @@ export const cloneWorkflows = async ({
         .from('workflow_action')
         .insert(req_w_actions)
         .select(),
+      false,
     );
   });
   await Promise.all(new_relations_promises);

@@ -2,6 +2,7 @@ import { RcCheckbox } from '@devlink2/RcCheckbox';
 
 import type { WorkflowStore } from '@/context/Workflows/store';
 
+import { UITextArea } from '../Common/UITextArea';
 import UITextField from '../Common/UITextField';
 
 export type Form = WorkflowStore['popup']['form'];
@@ -76,10 +77,9 @@ export const Forms = ({
           });
         }}
       />
-      <UITextField
+      <UITextArea
         label='Description'
-        multiline
-        minRows={5}
+        rows={5}
         value={description.value}
         helperText={description.helperText}
         error={description.error}

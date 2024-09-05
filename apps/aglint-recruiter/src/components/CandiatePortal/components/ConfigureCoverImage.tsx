@@ -74,7 +74,6 @@ export function ConfigureCoverImage() {
                 type='file'
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                multiple
                 accept='image/*'
                 className='hidden'
               />
@@ -94,7 +93,6 @@ export function ConfigureCoverImage() {
                   type='file'
                   ref={fileInputRef2}
                   onChange={handleFileChange}
-                  multiple
                   accept='image/*'
                   className='hidden'
                 />

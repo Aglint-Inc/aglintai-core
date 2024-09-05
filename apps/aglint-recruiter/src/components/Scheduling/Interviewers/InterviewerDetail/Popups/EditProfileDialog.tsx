@@ -2,11 +2,16 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { UserDetails } from '@devlink/UserDetails';
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Dialog,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import UITextField from '@/components/Common/UITextField';
 import { ProfileForms } from '@/components/Profile';
 import {
   type FormFields,
@@ -293,15 +298,7 @@ export const EditProfileDialog = ({
                   );
                 }}
                 renderInput={(params) => {
-                  return (
-                    <UITextField
-                      {...params}
-                      labelSize='medium'
-                      // fullWidth
-                      label={''}
-                      placeholder='Ex. Healthcare'
-                    />
-                  );
+                  return <TextField {...params} placeholder='Ex. Healthcare' />;
                 }}
               />
             </Stack>

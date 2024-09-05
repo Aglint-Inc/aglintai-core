@@ -67,9 +67,9 @@ export default function ImagesUpload({
             ? 'border-primary bg-primary/10'
             : 'border-muted-foreground/25 bg-muted'
         }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        // onDragOver={handleDragOver}
+        // onDragLeave={handleDragLeave}
+        // onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
         <input

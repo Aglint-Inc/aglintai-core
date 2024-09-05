@@ -1,7 +1,5 @@
-import { Autocomplete, Stack, Typography } from '@mui/material';
+import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
-
-import UITextField from '../UITextField';
 
 function AutoCompletePro<T>({
   value,
@@ -53,7 +51,7 @@ function AutoCompletePro<T>({
         getOptionLabel={getSelectLabel}
         renderOption={getOptionLabel}
         renderInput={(params) => (
-          <UITextField
+          <TextField
             {...params}
             error={Boolean(error)}
             helperText={error?.length ? error : null}
