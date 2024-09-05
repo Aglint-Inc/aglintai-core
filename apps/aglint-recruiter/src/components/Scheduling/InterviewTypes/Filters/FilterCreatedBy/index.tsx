@@ -103,6 +103,10 @@ function FilterCreatedBy() {
         onClickStatus={{
           id: 'cordinator' + 'click',
           onClick: handleClick,
+          style: {
+            whiteSpace: 'nowrap',
+            height: '100%',
+          },
         }}
         textLabel={'Created by'}
         slotRightIcon={
@@ -113,7 +117,6 @@ function FilterCreatedBy() {
           </Stack>
         }
       />
-
       <Popover
         id={id}
         open={open}

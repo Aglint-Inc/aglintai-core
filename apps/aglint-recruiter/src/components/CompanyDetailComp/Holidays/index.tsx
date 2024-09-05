@@ -20,10 +20,9 @@ import { DayoffList } from '@devlink2/DayoffList';
 import { TextWithBg } from '@devlink2/TextWithBg';
 import { DayOffHelper } from '@devlink3/DayOffHelper';
 import { Autocomplete, TextField, Typography } from '@mui/material';
-import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
@@ -41,7 +40,6 @@ type specificLocationType = 'all_locations' | 'specific_locations';
 function Holidays() {
   const { recruiter } = useAuthDetails();
   const eventRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -89,15 +87,7 @@ function Holidays() {
   };
 
   ///////////// DayOff Popup //////////////
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const openAddCompany = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-    setSelectedDate('');
-  };
-  const open = Boolean(anchorEl);
+  const [addDayOffOpen, setDaysOffOpen] = useState(false);
 
   return (
     <>
@@ -108,7 +98,11 @@ function Holidays() {
           </Button>
         }
         slotAddButton={
-          <Button variant='default' size='sm' onClick={openAddCompany}>
+          <Button
+            variant='default'
+            size='sm'
+            onClick={() => setDaysOffOpen(true)}
+          >
             <PlusIcon className='mr-2 h-4 w-4' /> Add Day Off
           </Button>
         }
@@ -141,15 +135,15 @@ function Holidays() {
                 />
               );
             })}
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={addDayOffOpen} onOpenChange={setDaysOffOpen}>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Add Holiday</DialogTitle>
                 </DialogHeader>
                 <div className='space-y-4'>
-                  <div>
+                  <div className='space-y-2'>
                     <Label htmlFor='event'>
-                      Day off<span className='text-red-500'>*</span>
+                      Day off <span className='text-red-500'>*</span>
                     </Label>
                     <Input
                       id='event'
@@ -157,9 +151,9 @@ function Holidays() {
                       ref={eventRef}
                     />
                   </div>
-                  <div>
+                  <div className='space-y-2'>
                     <Label htmlFor='date'>
-                      Date<span className='text-red-500'>*</span>
+                      Date <span className='text-red-500'>*</span>
                     </Label>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -189,7 +183,7 @@ function Holidays() {
                       </PopoverContent>
                     </Popover>
                   </div>
-                  <div>
+                  <div className='space-y-2'>
                     <Label>Location</Label>
                     <RadioGroup
                       value={specificLocationOn}
@@ -238,7 +232,7 @@ function Holidays() {
                   )}
                 </div>
                 <div className='mt-4 flex justify-end space-x-2'>
-                  <Button variant='outline' onClick={handleClose}>
+                  <Button variant='outline' onClick={() => setDaysOffOpen}>
                     Cancel
                   </Button>
                   <Button
@@ -275,7 +269,7 @@ function Holidays() {
                             },
                           ] as holidayType[],
                       );
-                      handleClose();
+                      setDaysOffOpen(false);
                       toast.success(
                         `Holiday added on ${dayjs(selectedDate).format(
                           'DD-MMM-YYYY',
@@ -293,7 +287,7 @@ function Holidays() {
           </>
         }
       />
-      <Dialog open={openDialog} onClose={closeDialog}>
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent>
           <DayOffHelper
             onClickClose={{
