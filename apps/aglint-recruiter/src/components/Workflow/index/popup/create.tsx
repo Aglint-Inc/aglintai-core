@@ -1,13 +1,22 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { Dialog, Stack, Typography } from '@mui/material';
+import { AlertDialogHeader } from '@components/ui/alert-dialog';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { Switch } from '@components/ui/switch';
+import { Textarea } from '@components/ui/textarea';
+import { Bolt } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
 import { useWorkflows } from '@/context/Workflows';
 import { useWorkflowStore } from '@/context/Workflows/store';
 
-import { type Form, Forms, validate } from '../../common';
+import { type Form, validate } from '../../common';
 
 const Create = () => {
   const {
@@ -51,46 +60,74 @@ const Create = () => {
 
   return (
     <>
-      <ButtonSolid
-        size={'1'}
-        iconName={'bolt'}
-        isLeftIcon={true}
-        textButton={'Create'}
-        onClickButton={{ onClick: () => setPopup({ open: true }) }}
-      />
-      <Dialog open={open} onClose={() => handleClose()}>
-        <DcPopup
-          popupName={'Create Workflow'}
-          slotBody={
-            <Stack>
-              <Typography mb={2}>
-                Enter the name for workflow. Next, you will be able to add steps
-                to the workflow.
-              </Typography>
-              <Stack spacing={2}>
-                <Forms form={form} setForm={setForm} />
-              </Stack>
-            </Stack>
-          }
-          onClickClosePopup={{ onClick: handleClose }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: handleClose,
-                }}
+      <Button size='sm' onClick={() => setPopup({ open: true })}>
+        <Bolt className='mr-2 h-4 w-4' />
+        Create
+      </Button>
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent>
+          <AlertDialogHeader>
+            <DialogTitle>Create Workflow</DialogTitle>
+          </AlertDialogHeader>
+          <div className='space-y-4'>
+            <Label className='mb-2'>
+              Enter the name for workflow. Next, you will be able to add steps
+              to the workflow.
+            </Label>
+            <div className='space-y-4'>
+              <Input
+                placeholder='Workflow Title'
+                value={form.title.value}
+                onChange={(e) =>
+                  setForm({
+                    title: {
+                      value: e.target.value,
+                      error: false,
+                      helperText: '',
+                      required: true,
+                      validation: (value) => value.trim().length > 0,
+                    },
+                  })
+                }
               />
-              <ButtonSolid
-                size={2}
-                textButton={'Create Workflow'}
-                onClickButton={{ onClick: handleSubmit }}
+              <Textarea
+                placeholder='Workflow Description'
+                value={form.description.value}
+                onChange={(e) =>
+                  setForm({
+                    description: {
+                      value: e.target.value,
+                      error: false,
+                      helperText: '',
+                      required: true,
+                      validation: (value) => value.trim().length > 0,
+                    },
+                  })
+                }
               />
-            </>
-          }
-        />
+              <Switch
+                checked={form.auto_connect.value}
+                onCheckedChange={(checked) =>
+                  setForm({
+                    auto_connect: {
+                      value: checked,
+                      error: false,
+                      helperText: '',
+                      required: true,
+                      validation: (value) => value,
+                    },
+                  })
+                }
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant='outline' onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit}>Create Workflow</Button>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </>
   );

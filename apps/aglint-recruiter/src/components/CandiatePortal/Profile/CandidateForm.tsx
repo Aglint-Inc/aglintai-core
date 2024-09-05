@@ -27,7 +27,7 @@ export default function CandidateForm({
 }) {
   const { data } = useCandidatePortalProfile();
   const [form, setForm] = useState(data);
-  const [isImageChanged, setIsImageChanged] = useState(false);
+  // const [isImageChanged, setIsImageChanged] = useState(false);
   const imageFile = useRef(null);
 
   const { mutate, isPending } = useCandidatePortalProfileUpdate();
@@ -88,9 +88,9 @@ export default function CandidateForm({
                   image={form.avatar}
                   imageFile={imageFile}
                   size={100}
-                  setChanges={() => {
-                    setIsImageChanged(true);
-                  }}
+                  // setChanges={() => {
+                  //   setIsImageChanged(true);
+                  // }}
                 />
               </div>
 

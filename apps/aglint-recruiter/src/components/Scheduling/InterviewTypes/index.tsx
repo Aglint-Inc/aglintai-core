@@ -6,6 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
@@ -13,7 +14,6 @@ import { EmptyState } from '@devlink2/EmptyState';
 import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
 import { PageLayout } from '@devlink2/PageLayout';
-import { TaskSwitchButton } from '@devlink3/TaskSwitchButton';
 import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -142,23 +142,17 @@ export function InterviewTypes() {
                         />
                       )}
                     </Stack>{' '}
-                    <TaskSwitchButton
-                      isIconVisible={false}
-                      isJobCandActive={!showArchive}
-                      isListActive={showArchive}
-                      onClickJobCand={{
-                        onClick: () => {
-                          setShowArchive(false);
-                        },
-                      }}
-                      onClickList={{
-                        onClick: () => {
-                          setShowArchive(true);
-                        },
-                      }}
-                      textFirst={'Active'}
-                      textSecond={'Archived'}
-                    />
+                    <Tabs
+                      defaultValue={showArchive ? 'archived' : 'active'}
+                      onValueChange={(value) =>
+                        setShowArchive(value === 'archived')
+                      }
+                    >
+                      <TabsList>
+                        <TabsTrigger value='active'>Active</TabsTrigger>
+                        <TabsTrigger value='archived'>Archived</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
                   </Stack>
                 }
                 slotInterviewModuleCard={

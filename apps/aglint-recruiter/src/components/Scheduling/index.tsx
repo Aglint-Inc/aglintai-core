@@ -1,6 +1,5 @@
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { PageLayout } from '@devlink2/PageLayout';
-import { GlobalSwitch } from '@devlink3/GlobalSwitch';
-import { GlobalSwitchPill } from '@devlink3/GlobalSwitchPill';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -57,44 +56,18 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {checkPermissions(['scheduling_actions']) && (
-              <GlobalSwitch
-                slotGlobalSwitchPill={
-                  <>
-                    <GlobalSwitchPill
-                      isActive={tab === 'interviews'}
-                      textPill={'Interviews'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `${ROUTES['/scheduling']()}?tab=interviews`,
-                          );
-                        },
-                      }}
-                    />
-                    <GlobalSwitchPill
-                      isActive={tab === 'my_interviews'}
-                      textPill={'My Interviews'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `${ROUTES['/scheduling']()}?tab=my_interviews`,
-                          );
-                        },
-                      }}
-                    />
-
-                    <GlobalSwitchPill
-                      isActive={tab === 'metrics' || !tab}
-                      textPill={'Metrics'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(`${ROUTES['/scheduling']()}?tab=metrics`);
-                        },
-                      }}
-                    />
-                  </>
+              <Tabs
+                value={tab}
+                onValueChange={(value) =>
+                  router.push(`${ROUTES['/scheduling']()}?tab=${value}`)
                 }
-              />
+              >
+                <TabsList>
+                  <TabsTrigger value='interviews'>Interviews</TabsTrigger>
+                  <TabsTrigger value='my_interviews'>My Interviews</TabsTrigger>
+                  <TabsTrigger value='metrics'>Metrics</TabsTrigger>
+                </TabsList>
+              </Tabs>
             )}
           </>
         }
