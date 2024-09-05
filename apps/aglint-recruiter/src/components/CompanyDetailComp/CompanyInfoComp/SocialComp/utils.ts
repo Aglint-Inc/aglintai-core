@@ -15,11 +15,20 @@ export const customOrder = {
 };
 
 export const socialValidators = {
-  facebook: (url: string) => /^(https?:\/\/)?(www\.)?facebook\.com\/(profile\.php\?id=\d+|[A-Za-z0-9_.-]+)\/?$/.test(url),
-  linkedin: (url: string) => /^(https?:\/\/)?(www\.)?linkedin\.com\/(in\/[A-Za-z0-9_-]+|company\/[A-Za-z0-9_-]+)\/?$/.test(url),
-  youtube: (url: string) => /^(https?:\/\/)?(www\.)?youtube\.com\/.*$/.test(url),
-  twitter: (url: string) => /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/.test(url),
-  instagram: (url: string) => /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.-]+\/?$/.test(url),
+  facebook: (url: string) =>
+    /^(https?:\/\/)?(www\.)?facebook\.com\/(profile\.php\?id=\d+|[A-Za-z0-9_.-]+)\/?$/.test(
+      url,
+    ),
+  linkedin: (url: string) =>
+    /^(https?:\/\/)?(www\.)?linkedin\.com\/(in\/[A-Za-z0-9_-]+|company\/[A-Za-z0-9_-]+)\/?$/.test(
+      url,
+    ),
+  youtube: (url: string) =>
+    /^(https?:\/\/)?(www\.)?youtube\.com\/.*$/.test(url),
+  twitter: (url: string) =>
+    /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/.test(url),
+  instagram: (url: string) =>
+    /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.-]+\/?$/.test(url),
   custom: (url: string) => validateUrl(url),
 };
 
@@ -31,7 +40,7 @@ export const validateUrl = (url: string) => {
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
       '(\\?[;&a-z\\d%_.~+=-]*)?' +
       '(\\#[-a-z\\d_]*)?$',
-    'i'
+    'i',
   );
   return url !== null && pattern.test(url);
 };
@@ -50,4 +59,3 @@ export const validation = (value: string, method: string) => {
       return false;
   }
 };
-

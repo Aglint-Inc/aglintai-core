@@ -105,6 +105,7 @@ export async function POST(req) {
       .from('candidate_request_availability')
       .select('id,slots,created_at')
       .eq('application_id', application_id)
+      .is('slots', null)
       .throwOnError();
     const avail = availability.filter((ava) => !ava.slots);
 

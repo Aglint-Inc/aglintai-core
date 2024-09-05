@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
 import { type apiPortalInterviewsResponse } from '@/app/api/candidate_portal/get_interviews/route';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 function UpcomingInterview({
   upcomingData,
@@ -49,7 +50,6 @@ const UpcomingCard = ({
       <p className='text-sm text-gray-600 mb-4'>
         {dayjsLocal(latestUpcoming.start_time).format('MMMM DD dddd')}
       </p>
-      ;
       {/* <p className='text-sm text-gray-600 mb-4'>{interviewData.date}</p> */}
       <div className='flex items-center justify-between'>
         <div>
@@ -59,12 +59,11 @@ const UpcomingCard = ({
           </div>
           {/* <div className='font-semibold'>{interviewData.time}</div> */}
           <div className='text-sm text-gray-600'>
-            {latestUpcoming.schedule_type}
+            {capitalizeAll(latestUpcoming.schedule_type)}
           </div>
           {/* <div className='text-sm text-gray-600'>{interviewData.type}</div> */}
         </div>
       </div>
-      ;
       {latestUpcoming.interviewers.map((interviewer, index) => (
         <div className='flex items-center gap-2 mt-4' key={index}>
           <Avatar className='w-10 h-10 rounded-md overflow-hidden'>
@@ -72,7 +71,10 @@ const UpcomingCard = ({
               src={interviewer.profile_image}
               alt={interviewer.first_name}
             />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>
+              {interviewer?.first_name[0]}
+              {interviewer?.last_name[0] || interviewer?.first_name[1]}
+            </AvatarFallback>
           </Avatar>
           <div>
             <div className='font-medium'>

@@ -3,14 +3,19 @@ import { TextWithIconSkeleton } from '@devlink2/TextWithIconSkeleton';
 import { Stack } from '@mui/material';
 import React, { useEffect, useMemo } from 'react';
 
+import MuiPopup from '@/components/Common/MuiPopup';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/components/CompanyDetailComp/Templates/utils';
+import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 
 import CandidateCancelled from './CandidateCancelled';
+import InterviewerDecline from './InterviewerDecline';
 import { RequestProgressContext } from './progressCtx';
 import ScheduleProgress from './ScheduleProgress';
+import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
+import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
 import { RequestProgressMapType, TriggerActionMapType } from './types';
 
 function RequestProgress() {
@@ -89,7 +94,9 @@ function RequestProgress() {
                 <ScheduleProgress />
               </ShowCode.When>
               <ShowCode.When isTrue={requestDetails.type === 'decline_request'}>
-                <>decline</>
+                <>
+                  <InterviewerDecline />
+                </>
               </ShowCode.When>
               <ShowCode.When
                 isTrue={requestDetails.type === 'reschedule_request'}
@@ -105,6 +112,28 @@ function RequestProgress() {
           </ShowCode.Else>
         </ShowCode>
       </Stack>
+
+      <MuiPopup
+        props={{
+          open: showEditDialog,
+          maxWidth: 'sm',
+          fullWidth: true,
+          onClose: () => {
+            setShowEditDialog(false);
+          },
+        }}
+      >
+        <SelectedActionsDetailsProvider
+          defaultSelectedActionsDetails={getInitialActionDetails({
+            companyEmailTemplatesMp,
+            editTrigger,
+            reqTriggerActionsMap,
+          })}
+          companyTemplatesMp={companyEmailTemplatesMp}
+        >
+          <WorkflowActionDialog />
+        </SelectedActionsDetailsProvider>
+      </MuiPopup>
     </RequestProgressContext.Provider>
   );
 }
@@ -120,3 +149,53 @@ export function RequestProgressSkeleton() {
     </Stack>
   );
 }
+
+const getInitialActionDetails = ({
+  companyEmailTemplatesMp,
+  editTrigger,
+  reqTriggerActionsMap,
+}: {
+  reqTriggerActionsMap: TriggerActionMapType;
+  companyEmailTemplatesMp: Partial<
+    Record<
+      DatabaseEnums['email_slack_types'],
+      DatabaseTable['company_email_template']
+    >
+  >;
+  editTrigger: DatabaseTable['workflow']['trigger'];
+}) => {
+  if (
+    reqTriggerActionsMap[editTrigger] &&
+    reqTriggerActionsMap[editTrigger].length > 0
+  ) {
+    return reqTriggerActionsMap[editTrigger][0];
+  } else {
+    let template: DatabaseTable['company_email_template'];
+    if (editTrigger === 'onRequestSchedule') {
+      template =
+        companyEmailTemplatesMp['sendSelfScheduleRequest_email_applicant'];
+    } else if (editTrigger === 'sendAvailReqReminder') {
+      template =
+        companyEmailTemplatesMp['sendAvailReqReminder_email_applicant'];
+    } else if (editTrigger === 'selfScheduleReminder') {
+      template =
+        companyEmailTemplatesMp['selfScheduleReminder_email_applicant'];
+    }
+
+    let wAction: DatabaseTable['workflow_action'] = {
+      action_type: ACTION_TRIGGER_MAP[editTrigger][0].value.action_type as any,
+      created_at: '',
+      id: '',
+      order: 0,
+      target_api: ACTION_TRIGGER_MAP[editTrigger][0].value.target_api as any,
+      workflow_id: '',
+      payload: {
+        email: {
+          body: template?.body ?? '',
+          subject: template?.subject ?? '',
+        },
+      },
+    };
+    return wAction;
+  }
+};

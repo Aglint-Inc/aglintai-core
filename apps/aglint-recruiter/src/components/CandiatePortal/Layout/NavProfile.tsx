@@ -11,14 +11,14 @@ import {
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 
-import { apiResponsePortalNavBar } from '@/app/api/candidate_portal/get_navbar/route';
+import { useCandidatePortalNavbar } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 
 export default function NavProfile({
   application_id,
   candidate,
 }: {
   application_id: string;
-  candidate: apiResponsePortalNavBar['candidate'];
+  candidate: ReturnType<typeof useCandidatePortalNavbar>['data']['candidate'];
 }) {
   return (
     <DropdownMenu>

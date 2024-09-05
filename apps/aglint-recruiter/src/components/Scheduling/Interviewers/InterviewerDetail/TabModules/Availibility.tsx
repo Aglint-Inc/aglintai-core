@@ -10,7 +10,6 @@ import { WorkingHourDay } from '@devlink2/WorkingHourDay';
 import { InterviewLoadCard } from '@devlink3/InterviewLoadCard';
 import { InterviewLoadDetails } from '@devlink3/InterviewLoadDetails';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { WorkingDaysList } from '@devlink3/WorkingDaysList';
 import { WorkingHourDetails } from '@devlink3/WorkingHourDetails';
 import {
   Autocomplete,
@@ -278,15 +277,16 @@ function Availibility({
         }
       />
       <WorkingHourDetails
-        slotDays={schedulingSettingData.workingHours
-          .filter((day) => day.isWorkDay)
-          .map((day, i) => (
-            <WorkingDaysList
-              key={i}
-              textDay={capitalize(day.day)}
-              textTime={
-                <Typography>
-                  <span>
+        slotDays={
+          <>
+            {schedulingSettingData.workingHours
+              .filter((day) => day.isWorkDay)
+              .map((day, i: number) => (
+                <li key={i} className='py-4'>
+                  <h3 className='text-lg font-medium text-gray-900'>
+                    {capitalize(day.day)}
+                  </h3>
+                  <p className='mt-1 text-sm text-gray-500'>
                     {dayjsLocal()
                       .set(
                         'hour',
@@ -307,20 +307,13 @@ function Availibility({
                           'minute',
                           parseInt(day.timeRange.endTime.split(':')[1]),
                         )
-                        .format('hh:mm A')}
-                  </span>{' '}
-                  {getShortTimeZone(schedulingSettingData.timeZone.tzCode)}
-                </Typography>
-              }
-            />
-          ))}
-        // slotEdit={
-        //   <ButtonGhost
-        //     textButton='Edit'
-        //     size={1}
-        //     onClickButton={{ onClick: () => setEditDrawer(true) }}
-        //   />
-        // }
+                        .format('hh:mm A')}{' '}
+                    {getShortTimeZone(schedulingSettingData.timeZone.tzCode)}
+                  </p>
+                </li>
+              ))}
+          </>
+        }
       />
       <InterviewerLevelSettings
         initialData={interviewerDetails?.scheduling_settings}
