@@ -1,5 +1,5 @@
 import { useToast } from '@components/hooks/use-toast';
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
@@ -168,7 +168,7 @@ function FilterCreatedBy() {
                         handleFilterClick(item.user_id);
                       }}
                     >
-                      <Checkbox isChecked={createdBy.includes(item.user_id)} />
+                      <Checkbox checked={createdBy.includes(item.user_id)} />
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
