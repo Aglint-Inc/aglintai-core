@@ -22,7 +22,7 @@ import {
   useIntegrationActions,
   useIntegrations,
 } from '@/jobs/hooks/integrations';
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import { STATE_LEVER_DIALOG } from '@/jobs/utils/initialState';
 import { type ApiLeverCreateJob } from '@/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/queries/intergrations';

@@ -6,7 +6,7 @@
  *
  */
 
-import { type PropsWithChildren, createContext, useState } from 'react';
+import { type PropsWithChildren, createContext, memo, useState } from 'react';
 import { createStore } from 'zustand';
 
 const STATE_LEVER_DIALOG = {
@@ -74,11 +74,12 @@ const useIntegrationContext = () => {
 export const IntegrationContext =
   createContext<ReturnType<typeof useIntegrationContext>>(undefined);
 
-export const IntegrationProvider = ({ children }: PropsWithChildren) => {
+export const IntegrationProvider = memo(({ children }: PropsWithChildren) => {
   const value = useIntegrationContext();
   return (
     <IntegrationContext.Provider value={value}>
       {children}
     </IntegrationContext.Provider>
   );
-};
+});
+IntegrationProvider.displayName = 'IntegrationProvider';

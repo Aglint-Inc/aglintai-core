@@ -14,7 +14,7 @@ import { useState } from 'react';
 import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import ROUTES from '@/utils/routing/routes';
 
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';

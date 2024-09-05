@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import React from 'react';
 import { createContext, useContext, useEffect, useMemo, useRef } from 'react';
 
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import { jobQueries, useInvalidateJobQueries, useJobSync } from '@/queries/job';
 import {
   useUploadApplication,

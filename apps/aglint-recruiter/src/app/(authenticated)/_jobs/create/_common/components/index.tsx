@@ -14,7 +14,7 @@ import {
 
 import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import { useCompanyMembers } from '@/queries/company-members';
 import ROUTES from '@/utils/routing/routes';
 

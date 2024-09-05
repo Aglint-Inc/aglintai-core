@@ -29,7 +29,7 @@ import PublishButton from '@/components/Common/PublishButton';
 import UITextField from '@/components/Common/UITextField';
 import { useJob } from '@/context/JobContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import ROUTES from '@/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';

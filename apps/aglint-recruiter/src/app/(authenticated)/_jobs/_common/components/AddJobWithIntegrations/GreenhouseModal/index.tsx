@@ -11,7 +11,7 @@ import {
   useIntegrationActions,
   useIntegrations,
 } from '@/jobs/hooks/integrations';
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import { STATE_GREENHOUSE_DIALOG } from '@/jobs/utils/initialState';
 import { useAllIntegrations } from '@/queries/intergrations';
 import toast from '@/utils/toast';

@@ -7,7 +7,7 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
 import { useApplicationsParams } from '@/context/ApplicationsContext/hooks';
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
 import { getBgColorJobsList } from '@/jobs/utils/getBgColorJobsList';
 import { getTextColorJobsList } from '@/jobs/utils/getTextColorJobsList';

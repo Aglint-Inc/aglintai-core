@@ -7,7 +7,7 @@ import { Avatar, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobs } from '@/jobs/hooks/jobs';
 import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
