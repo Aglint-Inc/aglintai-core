@@ -103,7 +103,7 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       {/* <DialogTrigger asChild>{<Button>asdda</Button>}</DialogTrigger> */}
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>
             {edit === -1 ? 'Add Location' : 'Edit Location'}
@@ -114,8 +114,8 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
           </DialogDescription>
         </DialogHeader>
         <div className='grid gap-4 py-4'>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='address1' className='text-right'>
+          <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+            <Label htmlFor='address1' className='text-left'>
               Address 1
             </Label>
             <Input
@@ -123,11 +123,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               ref={address1Ref}
               placeholder='123 Example St'
               defaultValue={initialValue?.line1}
-              className='col-span-3'
             />
           </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='address2' className='text-right'>
+          <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+            <Label htmlFor='address2' className='text-left'>
               Address 2
             </Label>
             <Input
@@ -135,11 +134,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               ref={address2Ref}
               placeholder='Suite 456 (Optional)'
               defaultValue={initialValue?.line2}
-              className='col-span-3'
             />
           </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='city' className='text-right'>
+          <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+            <Label htmlFor='city' className='text-left'>
               City
             </Label>
             <Input
@@ -149,11 +147,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               placeholder='San Francisco'
               required
               defaultValue={initialValue?.city}
-              className='col-span-3'
             />
           </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='region' className='text-right'>
+          <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+            <Label htmlFor='region' className='text-left'>
               Region
             </Label>
             <Input
@@ -163,11 +160,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               placeholder='CA'
               required
               defaultValue={initialValue?.region}
-              className='col-span-3'
             />
           </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='country' className='text-right'>
+          <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+            <Label htmlFor='country' className='text-left'>
               Country
             </Label>
             <Input
@@ -177,11 +173,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               name='country'
               placeholder='Please enter country name'
               defaultValue={initialValue?.country}
-              className='col-span-3'
             />
           </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='zipcode' className='text-right'>
+          <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+            <Label htmlFor='zipcode' className='text-left'>
               Zip Code
             </Label>
             <Input
@@ -189,11 +184,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               ref={zipRef}
               placeholder='Please enter the zip code or postal code'
               defaultValue={initialValue?.zipcode}
-              className='col-span-3'
             />
           </div>
           {isCheckboxVisiable && (
-            <div className='flex items-center space-x-2'>
+            <div className='flex items-center space-x-2 col-span-2 justify-end'>
               <Checkbox
                 id='isHeadquarter'
                 checked={isHeadQ}
