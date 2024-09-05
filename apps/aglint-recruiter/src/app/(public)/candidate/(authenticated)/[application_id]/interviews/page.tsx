@@ -5,16 +5,15 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Calendar, Linkedin } from 'lucide-react';
 
-import { type apiPortalInterviewsResponse } from '@/app/api/candidate_portal/get_interviews/route';
 import EmptyState from '@/components/CandiatePortal/components/EmptyState';
 import InterviewsSkeleton from '@/components/CandiatePortal/components/InterviewSkeleton';
-import { usePortalInterviews } from '@/components/CandiatePortal/hook';
 import dayjs from '@/utils/dayjs';
-export default function InterviewsPage({ params }) {
-  const application_id = params.application_id;
-  const { isLoading, data } = usePortalInterviews({ application_id });
 
-  if (isLoading) {
+import { useCandidatePortalInterviews } from '../_common/hooks';
+export default function InterviewsPage() {
+  const { isPending, data } = useCandidatePortalInterviews();
+
+  if (isPending) {
     return <InterviewsSkeleton />;
   }
 
@@ -51,9 +50,6 @@ export default function InterviewsPage({ params }) {
           )}
         </div>
       </main>
-      {/* <aside className='lg:w-[30%] space-y-6'>
-      
-      </aside> */}
     </div>
   );
 }
@@ -61,7 +57,7 @@ export default function InterviewsPage({ params }) {
 function InterviewCard({
   interview,
 }: {
-  interview: apiPortalInterviewsResponse[number];
+  interview: ReturnType<typeof useCandidatePortalInterviews>['data'][number];
 }) {
   return (
     <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>

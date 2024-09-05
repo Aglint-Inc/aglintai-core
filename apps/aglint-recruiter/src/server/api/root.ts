@@ -1,3 +1,4 @@
+import { candidatePortalRouter } from './routers/candidatePortal';
 import { schedulingRouter } from './routers/scheduling';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  */
 export const appRouter = createTRPCRouter({
   scheduling: schedulingRouter,
+  candidatePortal: candidatePortalRouter,
 });
 
 // export type definition of API

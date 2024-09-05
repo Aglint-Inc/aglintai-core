@@ -2,13 +2,10 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import Image from 'next/image';
 
-import { apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
+import { useCandidatePortalMessages } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 
-const MessageCard = ({
-  message,
-}: {
-  message: apiResponsePortalMessage[number];
-}) => {
+const MessageCard = ({ index }: { index: number }) => {
+  const message = useCandidatePortalMessages()['data'][index];
   return (
     <Card className='mx-auto rounded-lg overflow-hidden border  mb-4'>
       <CardHeader className='flex items-center px-6 py-4'>
