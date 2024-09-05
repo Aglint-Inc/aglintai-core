@@ -145,8 +145,10 @@ export default function CandidateForm({
                   id='linkedin'
                   {...register('linkedin', {
                     required: 'LinkedIn URL is required',
+              
                     pattern: {
-                      value: /^(https?:\/\/)?(www\.)?linkedin\.com\/.+/,
+                      // eslint-disable-next-line security/detect-unsafe-regex
+                      value: /^(https?:\/\/)?(www\.)?linkedin\.com\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/,
                       message: 'Enter a valid LinkedIn URL',
                     },
                   })}
