@@ -1,4 +1,4 @@
-import { Alert, AlertCircle,AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
+import { AlertCircle, Upload } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -25,7 +26,6 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
-import { Upload } from 'lucide-react';
 
 const employeeSizes = [
   '1-10',
@@ -104,14 +104,14 @@ const EditBasicInfoDialog = ({
 
   return (
     <Dialog open={editDialog} onOpenChange={setEditDialog}>
-      <DialogContent className="w-full max-w-2xl h-[80vh] overflow-y-auto">
+      <DialogContent className='w-full max-w-2xl h-[80vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Edit Basic Info</DialogTitle>
         </DialogHeader>
-        <div className="space-y-6">
+        <div className='space-y-6'>
           {isError && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
+            <Alert variant='destructive'>
+              <AlertCircle className='h-4 w-4' />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>
                 The file you uploaded exceeds the maximum allowed size. Please
@@ -119,9 +119,9 @@ const EditBasicInfoDialog = ({
               </AlertDescription>
             </Alert>
           )}
-          
-          <div className="flex items-center space-x-4 ">
-            <div className="border border-gray-200 p-4 rounded-md">
+
+          <div className='flex items-center space-x-4 '>
+            <div className='border border-gray-200 p-4 rounded-md'>
               <ImageUpload
                 image={logo}
                 disabled={isFormDisabled}
@@ -143,21 +143,21 @@ const EditBasicInfoDialog = ({
             </div>
             {!isFormDisabled && (
               <>
-                <div className="flex flex-col items-start">
+                <div className='flex flex-col items-start'>
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant='ghost'
+                    size='sm'
                     onClick={() => {
                       document.getElementById('image-upload').click();
                     }}
-                    className="flex items-center gap-2 p-0 hover:bg-transparent hover:text-gray-600 h-auto"
+                    className='flex items-center gap-2 p-0 hover:bg-transparent hover:text-gray-600 h-auto'
                   >
-                    <Upload className="h-4 w-4" />
+                    <Upload className='h-4 w-4' />
                     Update Logo
                   </Button>
-                  <p className="text-xs text-muted-foreground mt-1 max-w-[350px]">
-                    The file shouldn&apos;t exceed the maximum allowed size. Please
-                    ensure that the file size is less than 5 MB
+                  <p className='text-xs text-muted-foreground mt-1 max-w-[350px]'>
+                    The file shouldn&apos;t exceed the maximum allowed size.
+                    Please ensure that the file size is less than 5 MB
                   </p>
                 </div>
               </>

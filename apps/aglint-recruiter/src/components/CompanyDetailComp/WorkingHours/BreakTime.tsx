@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import {
@@ -6,12 +7,24 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Coffee, Edit, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 import TimePicker from '@/components/Common/TimePicker';
 import dayjs from '@/utils/dayjs';
 
-const BreakTimeCard = ({
+interface BreakTime {
+  start_time: string;
+  end_time: string;
+}
+
+interface BreakTimeCardProps {
+  breaktime: BreakTime;
+  setSelectedHourBreak: Dispatch<SetStateAction<BreakTime>>;
+  handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;
+  isUpdating: boolean;
+}
+
+const BreakTimeCard: FC<BreakTimeCardProps> = ({
   breaktime,
   setSelectedHourBreak,
   handleUpdate,

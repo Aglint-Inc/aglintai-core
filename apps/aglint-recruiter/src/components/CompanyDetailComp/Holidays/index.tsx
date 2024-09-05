@@ -28,7 +28,6 @@ import UISelect from '@/components/Common/Uiselect';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
-import UISelect from '@/components/Common/Uiselect';
 
 export const LoadMax = {
   dailyHours: 8,
