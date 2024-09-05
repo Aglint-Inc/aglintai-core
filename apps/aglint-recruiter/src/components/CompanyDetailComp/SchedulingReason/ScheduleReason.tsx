@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
+import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface ReasonSectionProps {
@@ -74,11 +75,13 @@ function ReasonSection({
   const [editingReason, setEditingReason] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
+  const [isAddingNew, setIsAddingNew] = useState(false);
 
   const handleAdd = () => {
     if (newReason.trim()) {
       onAdd(newReason.trim());
       setNewReason('');
+      setIsAddingNew(false);
     }
   };
 
@@ -108,47 +111,52 @@ function ReasonSection({
   };
 
   return (
-    <Card className='w-full'>
-      <CardHeader>
-        <CardTitle className='text-xl font-semibold'>{title}</CardTitle>
+    <Card className='w-full border-none shadow-none p-0'>
+      <CardHeader className='p-0'>
+        <CardTitle className='text-lg font-semibold'>{title}</CardTitle>
         <CardDescription className='text-sm text-gray-500'>
           {description}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className='px-0 pt-3'>
         <ul className='space-y-2'>
           {reasons.map((reason, reasonIndex) => (
             <li
               key={reasonIndex}
-              className='flex items-center justify-between p-2 bg-gray-50 rounded'
+              className={`flex items-center justify-between py-2 px-3 rounded-md ${
+                editingIndex === reasonIndex ? 'bg-gray-100' : 'border border-gray-200'
+              } group`}
             >
               {editingIndex === reasonIndex ? (
                 <Input
                   value={editingReason}
                   onChange={(e) => setEditingReason(e.target.value)}
-                  className='flex-grow mr-2'
+                  className='flex-grow mr-2 h-8.5'
                 />
               ) : (
                 <span>{reason}</span>
               )}
-              <div>
+              <div className='opacity-0 group-hover:opacity-100 transition-opacity'>
                 {editingIndex === reasonIndex ? (
                   <>
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={handleUpdate}
-                      className='mr-2'
-                    >
-                      Update
-                    </Button>
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={() => setEditingIndex(null)}
-                    >
-                      Cancel
-                    </Button>
+                    <div className='flex items-center flex-row'> 
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={handleUpdate}
+                        className='mr-1 hover:bg-green-50'
+                      >
+                        <Check className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => setEditingIndex(null)}
+                        className='hover:bg-red-50'
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
                   </>
                 ) : (
                   <>
@@ -156,34 +164,59 @@ function ReasonSection({
                       variant='ghost'
                       size='sm'
                       onClick={() => handleEdit(reasonIndex)}
-                      className='mr-2'
+                      className='mr-1'
                     >
-                      Edit
+                      <Pencil className="h-3 w-3 font-semibold" />
                     </Button>
                     <Button
                       variant='ghost'
                       size='sm'
                       onClick={() => handleDelete(reasonIndex)}
+                      className='text-red-500 hover:text-red-600'
                     >
-                      Delete
+                      <Trash2 className="h-3 w-3" />
                     </Button>
                   </>
                 )}
               </div>
             </li>
           ))}
+          {isAddingNew && (
+            <li className='flex items-center justify-between py-2 px-3 rounded-md bg-gray-100'>
+              <Input
+                value={newReason}
+                onChange={(e) => setNewReason(e.target.value)}
+                placeholder='Enter new reason'
+                className='flex-grow mr-2 h-8.5'
+              />
+              <div className='flex items-center flex-row'>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={handleAdd}
+                  className='mr-1 hover:bg-green-50'
+                >
+                  <Check className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => setIsAddingNew(false)}
+                  className='hover:bg-red-50'
+                >
+                  <X className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </li>
+          )}
         </ul>
-        <div className='flex items-center mt-4'>
-          <Input
-            value={newReason}
-            onChange={(e) => setNewReason(e.target.value)}
-            placeholder='Enter new reason'
-            className='flex-grow mr-2'
-          />
-          <Button variant='outline' size='sm' onClick={handleAdd}>
-            Add
-          </Button>
-        </div>
+        {!isAddingNew && (
+          <div className='mt-4'>
+            <Button variant='outline' size='sm' onClick={() => setIsAddingNew(true)}>
+              <Plus className="h-4 w-4 mr-2" /> Add
+            </Button>
+          </div>
+        )}
       </CardContent>
 
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>

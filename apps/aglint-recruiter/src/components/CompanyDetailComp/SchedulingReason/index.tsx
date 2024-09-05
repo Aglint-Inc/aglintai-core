@@ -103,8 +103,9 @@ const SchedulingReasons = () => {
   };
 
   return (
+    <div className="pt-4 w-2/3">
     <Tabs value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
-      <TabsList>
+      <TabsList className="ml-4">
         {(
           Object.keys(
             reason,
@@ -120,13 +121,15 @@ const SchedulingReasons = () => {
           reason,
         ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
       ).map((tabKey) => (
-        <TabsContent key={tabKey} value={tabKey}>
+        <TabsContent key={tabKey} value={tabKey} className="mt-0">
           <ScheduleReason
             isMainHeadingVisible={true}
             textMainHeading={
-              tabKey === 'candidate'
-                ? 'Set Rescheduling & Cancellation Reasons'
-                : 'Set Decline Rescheduling & Cancellation Reasons'
+              <span className="font-semibold">
+                {tabKey === 'candidate'
+                  ? 'Set Rescheduling & Cancellation Reasons'
+                  : 'Set Decline Rescheduling & Cancellation Reasons'}
+              </span>
             }
             textMainHelperText={
               tabKey === 'candidate'
@@ -138,6 +141,7 @@ const SchedulingReasons = () => {
         </TabsContent>
       ))}
     </Tabs>
+    </div>
   );
 };
 
