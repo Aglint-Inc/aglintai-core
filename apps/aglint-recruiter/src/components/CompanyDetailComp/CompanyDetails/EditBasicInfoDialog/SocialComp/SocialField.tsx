@@ -1,7 +1,14 @@
 import { Input } from '@components/ui/input';
-import { Globe } from 'lucide-react';
+import {
+  Facebook,
+  Github,
+  Globe,
+  Instagram,
+  Linkedin,
+  Twitter,
+  Youtube,
+} from 'lucide-react';
 import React from 'react';
-import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 
 import { socialPlaceholder } from './utils';
 
@@ -23,13 +30,20 @@ const SocialField: React.FC<SocialFieldProps> = ({
 }) => {
   const getSocialIcon = (name: string) => {
     switch (name.toLowerCase()) {
-      case 'facebook': return <FaFacebook />;
-      case 'twitter': return <FaTwitter />;
-      case 'linkedin': return <FaLinkedin />;
-      case 'instagram': return <FaInstagram />;
-      case 'github': return <FaGithub />;
-      case 'youtube': return <FaYoutube />;
-      default: return <Globe />;
+      case 'facebook':
+        return <Facebook />;
+      case 'twitter':
+        return <Twitter />;
+      case 'linkedin':
+        return <Linkedin />;
+      case 'instagram':
+        return <Instagram />;
+      case 'github':
+        return <Github />;
+      case 'youtube':
+        return <Youtube />;
+      default:
+        return <Globe />;
     }
   };
 
