@@ -12,11 +12,14 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import React, { useEffect, useRef, useState } from 'react';
 
+import TimezonePicker from '@/components/Common/TimezonePicker';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
+import timeZone from '@/utils/timeZone';
 
 import { handleValidate } from './until';
+type TimeZoneType = (typeof timeZone)[number];
 
 type initialValueType = {
   line1: string;
@@ -36,7 +39,7 @@ interface LocationProps {
   edit: number;
 }
 
-const AddLocationDialog: React.FC<LocationProps> = ({
+const AddAndEditLocation: React.FC<LocationProps> = ({
   handleClose,
   open,
   edit,
@@ -50,7 +53,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const countryRef = useRef<HTMLInputElement>(null);
   const zipRef = useRef<HTMLInputElement>(null);
 
-  const [timeValue, setTimeZoneValue] = useState(null);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<TimeZoneType>(null);
   const [loading, setLoading] = useState(false);
 
   const initialValue = office_locations.find((item) => item.id === edit);
@@ -79,7 +82,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           line1: address1Ref.current.value,
           line2: address2Ref.current.value,
           region: regionRef.current.value,
-          timezone: timeValue,
+          timezone: selectedTimeZone.tzCode,
           zipcode: zipRef.current.value,
           recruiter_id: recruiter.id,
           name: '',
@@ -90,19 +93,22 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     }
     setLoading(false);
   };
-
   useEffect(() => {
     if (recruiter) {
       setHeadQ(initialValue?.is_headquarter);
-      setTimeZoneValue(initialValue?.timezone);
+      const initialTimeZone = timeZone.find(
+        (item) => item.tzCode === initialValue?.timezone,
+      );
+      setSelectedTimeZone(initialTimeZone);
     }
   }, [recruiter]);
 
   const isCheckboxVisiable =
     hasHeadquarter && initialValue?.is_headquarter ? true : !hasHeadquarter;
   return (
-    <Dialog open={open}>
-      <DialogContent className='sm:max-w-[425px]'>
+    <Dialog open={open} onOpenChange={handleClose}>
+      {/* <DialogTrigger asChild>{<Button>asdda</Button>}</DialogTrigger> */}
+      <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>
             {edit === -1 ? 'Add Location' : 'Edit Location'}
@@ -112,87 +118,92 @@ const AddLocationDialog: React.FC<LocationProps> = ({
             {edit === -1 ? 'Add' : 'Save'} when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className='grid gap-4 py-4'>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='address1' className='text-right'>
-              Address 1
-            </Label>
-            <Input
-              id='address1'
-              ref={address1Ref}
-              placeholder='123 Example St'
-              defaultValue={initialValue?.line1}
-              className='col-span-3'
-            />
-          </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='address2' className='text-right'>
-              Address 2
-            </Label>
-            <Input
-              id='address2'
-              ref={address2Ref}
-              placeholder='Suite 456 (Optional)'
-              defaultValue={initialValue?.line2}
-              className='col-span-3'
-            />
-          </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='city' className='text-right'>
-              City
-            </Label>
-            <Input
-              id='city'
-              ref={cityRef}
-              name='city'
-              placeholder='San Francisco'
-              required
-              defaultValue={initialValue?.city}
-              className='col-span-3'
-            />
-          </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='region' className='text-right'>
-              Region
-            </Label>
-            <Input
-              id='region'
-              ref={regionRef}
-              name='region'
-              placeholder='CA'
-              required
-              defaultValue={initialValue?.region}
-              className='col-span-3'
-            />
-          </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='country' className='text-right'>
-              Country
-            </Label>
-            <Input
-              id='country'
-              ref={countryRef}
-              required={true}
-              name='country'
-              placeholder='Please enter country name'
-              defaultValue={initialValue?.country}
-              className='col-span-3'
-            />
-          </div>
-          <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='zipcode' className='text-right'>
-              Zip Code
-            </Label>
-            <Input
-              id='zipcode'
-              ref={zipRef}
-              placeholder='Please enter the zip code or postal code'
-              defaultValue={initialValue?.zipcode}
-              className='col-span-3'
-            />
+        <div className='space-y-4'>
+          <div className='grid gap-4 py-4'>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='address1' className='text-left'>
+                Address 1
+              </Label>
+              <Input
+                id='address1'
+                ref={address1Ref}
+                placeholder='123 Example St'
+                defaultValue={initialValue?.line1}
+              />
+            </div>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='address2' className='text-left'>
+                Address 2
+              </Label>
+              <Input
+                id='address2'
+                ref={address2Ref}
+                placeholder='Suite 456 (Optional)'
+                defaultValue={initialValue?.line2}
+              />
+            </div>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='city' className='text-left'>
+                City
+              </Label>
+              <Input
+                id='city'
+                ref={cityRef}
+                name='city'
+                placeholder='San Francisco'
+                required
+                defaultValue={initialValue?.city}
+              />
+            </div>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='region' className='text-left'>
+                Region
+              </Label>
+              <Input
+                id='region'
+                ref={regionRef}
+                name='region'
+                placeholder='CA'
+                required
+                defaultValue={initialValue?.region}
+              />
+            </div>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='country' className='text-left'>
+                Country
+              </Label>
+              <Input
+                id='country'
+                ref={countryRef}
+                required={true}
+                name='country'
+                placeholder='Please enter country name'
+                defaultValue={initialValue?.country}
+              />
+            </div>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='zipcode' className='text-left'>
+                Zip Code
+              </Label>
+              <Input
+                id='zipcode'
+                ref={zipRef}
+                placeholder='Please enter the zip code or postal code'
+                defaultValue={initialValue?.zipcode}
+              />
+            </div>
+            <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
+              <Label htmlFor='zipcode' className='text-left'>
+                Time Zone
+              </Label>
+              <TimezonePicker
+                value={selectedTimeZone?.tzCode}
+                onChange={(value) => setSelectedTimeZone(value)}
+              />
+            </div>
           </div>
           {isCheckboxVisiable && (
-            <div className='flex items-center space-x-2'>
+            <div className='flex items-center space-x-2 col-span-2 justify-end'>
               <Checkbox
                 id='isHeadquarter'
                 checked={isHeadQ}
@@ -220,4 +231,4 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   );
 };
 
-export default AddLocationDialog;
+export default AddAndEditLocation;

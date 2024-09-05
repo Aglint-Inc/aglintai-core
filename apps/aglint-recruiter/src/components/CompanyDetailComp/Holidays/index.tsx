@@ -19,11 +19,12 @@ import { CompanyDayOff } from '@devlink2/CompanyDayOff';
 import { DayoffList } from '@devlink2/DayoffList';
 import { TextWithBg } from '@devlink2/TextWithBg';
 import { DayOffHelper } from '@devlink3/DayOffHelper';
-import { Autocomplete, TextField, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
@@ -210,29 +211,35 @@ function Holidays() {
                       </div>
                     </RadioGroup>
                   </div>
-                  {specificLocationOn === 'specific_locations' && (
+                  {recruiter && specificLocationOn === 'specific_locations' && (
                     <div>
                       <Label>Pick locations</Label>
-                      <Autocomplete
-                        multiple
-                        fullWidth
-                        onChange={(_, value) => setSelectedLocations(value)}
-                        options={recruiter?.office_locations.map(
-                          (item) =>
-                            `${item.city}, ${item.region}, ${item.country}`,
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            placeholder='Select Locations'
-                            {...params}
-                          />
-                        )}
+                      <UISelectDropDown
+                        menuOptions={
+                          recruiter
+                            ? recruiter?.office_locations.map((item) => {
+                                return {
+                                  name: `${item.city}, ${item.region}, ${item.country}`,
+                                  value: `${item.city}, ${item.region}, ${item.country}`,
+                                };
+                              })
+                            : []
+                        }
+                        value={selectedLocations[0]}
+                        onValueChange={(value) => setSelectedLocations([value])}
+                        placeholder='Select a Location'
+                        label='Locations'
                       />
                     </div>
                   )}
                 </div>
                 <div className='mt-4 flex justify-end space-x-2'>
-                  <Button variant='outline' onClick={() => setDaysOffOpen}>
+                  <Button
+                    variant='outline'
+                    onClick={() => {
+                      setDaysOffOpen(false);
+                    }}
+                  >
                     Cancel
                   </Button>
                   <Button
