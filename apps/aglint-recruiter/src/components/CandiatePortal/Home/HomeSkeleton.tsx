@@ -1,6 +1,5 @@
 'use client';
 
-
 import { Skeleton } from '@components/ui/skeleton';
 
 import InterviewProgressSkeleton from '@/components/CandiatePortal/components/InterviewProgressSkeleton';
