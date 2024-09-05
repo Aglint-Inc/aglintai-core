@@ -18,9 +18,8 @@ export default function MessagesPage() {
         <MessageCardSkeleton />
       </div>
     );
-  if (data.length === 0)
-    if (data === undefined || data?.length === 0)
-      return <EmptyState icon={Mail} text='No Past interviews' />;
+  if (data === undefined || data?.length === 0)
+    return <EmptyState icon={Mail} text='No Past interviews' />;
 
   return (
     <div className='flex flex-col max-w-screen-sm mt-8 mx-auto'>
