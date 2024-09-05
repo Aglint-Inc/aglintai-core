@@ -11,8 +11,9 @@ import {
 } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
-import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import NavProfile from './NavProfile';
+// import { ThemeSwitcher } from '../components/ThemeSwitcher';
+// import NavProfile from './NavProfile';
 
 type tabs = 'home' | 'interviews' | 'messages';
 
@@ -75,11 +76,17 @@ export default function Navigation() {
           </nav>
 
           <div className='flex items-center space-x-2'>
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher />
+            <NavProfile
+              application_id={application_id}
+              candidate={data?.candidate}
+            /> */}
+            <Link href={`/candidate/${application_id}/profile`}>
             <NavProfile
               application_id={application_id}
               candidate={data?.candidate}
             />
+            </Link>
           </div>
         </div>
       </header>
