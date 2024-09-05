@@ -10,91 +10,66 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import axios from 'axios';
 import { useRef, useState } from 'react';
 
-import { type candidatePortalProfileType } from '@/app/api/candidate_portal/get_profile/route';
-import { supabase } from '@/utils/supabase/client';
+import {
+  useCandidatePortalProfile,
+  useCandidatePortalProfileUpdate,
+} from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 import timeZone from '@/utils/timeZone';
-import toast from '@/utils/toast';
 
-import { useNavbar } from '../hook';
 import ImageUploadManual from './ImageUpload';
 
 export default function CandidateForm({
-  formData,
-  application_id,
-  refetchProfile,
   closeDialog,
 }: {
-  formData: candidatePortalProfileType;
-  application_id: string;
-  refetchProfile: any;
   closeDialog: () => void;
 }) {
-  const [form, setForm] = useState<candidatePortalProfileType>(formData);
-  const [loading, setLoading] = useState(false);
-  const [isImageChanged, setIsImageChanged] = useState(false);
+  const { data } = useCandidatePortalProfile();
+  const [form, setForm] = useState(data);
+  // const [isImageChanged, setIsImageChanged] = useState(false);
   const imageFile = useRef(null);
 
-  const { refetch: refetchNav } = useNavbar({ application_id });
+  const { mutate, isPending } = useCandidatePortalProfileUpdate();
 
-  const handleUpdateProfile = async () => {
-    try {
-      setLoading(true);
-
-      let profile_image = form.avatar;
-      if (isImageChanged) {
-        const { error, data } = await supabase.storage
-          .from('candidate-files')
-          .upload(`profile/${form.id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
-
-        if (error) {
-          throw new Error(error.message);
-        }
-        if (data?.path && imageFile?.current?.size) {
-          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
-        } else {
-          profile_image = null;
-        }
-        setIsImageChanged(false);
-      }
-
-      const payload = {
-        application_id,
-        details: {
-          first_name: form.first_name,
-          last_name: form.last_name,
-          email: form.email,
-          timezone: form.timezone,
-          phone: form.phone,
-          linkedin: form.linkedin,
-          avatar: profile_image,
-        },
-      };
-
-      const { status } = await axios.post(
-        '/api/candidate_portal/update_profile',
-        payload,
-      );
-
-      if (status !== 200) {
-        throw new Error('Profile update failed');
-      }
-      await refetchNav();
-      await refetchProfile();
-      toast.success('Profile update success');
+  const handleUpdate = async () => {
+    if (!isPending) {
+      mutate({
+        id: form.id,
+        first_name: form.first_name,
+        last_name: form.last_name,
+        email: form.email,
+        timezone: form.timezone,
+        phone: form.phone,
+        linkedin: form.linkedin,
+        avatar: form.avatar,
+      });
       closeDialog();
-    } catch (e) {
-      toast.error(e.message);
-      //
-    } finally {
-      setLoading(false);
     }
   };
+
+  // const handleUpdateProfile = async () => {
+  //   let profile_image = form.avatar;
+  //   if (isImageChanged) {
+  //     const { error, data } = await supabase.storage
+  //       .from('candidate-files')
+  //       .upload(`profile/${form.id}`, imageFile.current, {
+  //         cacheControl: '3600',
+  //         upsert: true,
+  //       });
+
+  //     if (error) {
+  //       throw new Error(error.message);
+  //     }
+  //     if (data?.path && imageFile?.current?.size) {
+  //       profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
+  //     } else {
+  //       profile_image = null;
+  //     }
+  //     setIsImageChanged(false);
+  //   }
+  //   closeDialog();
+  // };
 
   return (
     <div className='flex justify-center items-center '>
@@ -113,9 +88,9 @@ export default function CandidateForm({
                   image={form.avatar}
                   imageFile={imageFile}
                   size={100}
-                  setChanges={() => {
-                    setIsImageChanged(true);
-                  }}
+                  // setChanges={() => {
+                  //   setIsImageChanged(true);
+                  // }}
                 />
               </div>
 
@@ -206,12 +181,10 @@ export default function CandidateForm({
               <Button
                 type='submit'
                 className='w-full'
-                disabled={loading}
-                onClick={() => {
-                  handleUpdateProfile();
-                }}
+                disabled={isPending}
+                onClick={() => handleUpdate()}
               >
-                {loading ? 'Updating...' : 'Update Profile'}
+                {isPending ? 'Updating...' : 'Update Profile'}
               </Button>
             </div>
           </form>
