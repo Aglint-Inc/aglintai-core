@@ -25,11 +25,10 @@ export function ConfigureSliderImages() {
   return (
     <div>
       <div className='w-full max-w-2xl space-y-4'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-lg font-semibold'>Company About</h1>
+        <div className='flex flex-col'>
+          <h1 className='text-md font-semibold'>Company Images</h1>
           <p className='text-sm text-muted-foreground'>
-            This section content will be displayed on the candidate portal as
-            the about section.
+            These images will be displayed on the candidate portal as the slider.
           </p>
         </div>
         <div className='grid grid-cols-4 gap-4 auto-rows-auto'>
@@ -65,12 +64,12 @@ export function ConfigureSliderImages() {
           >
             <DialogTrigger asChild>
               <Button
-                className='flex flex-col items-center gap-4 justify-center w-full h-full'
+                className='flex flex-col items-center gap-2 justify-center w-[150px] h-[150px]'
                 variant='outline'
                 onClick={() => setIsDialogOpen('images')}
               >
-                <ImagePlus className='w-10 h-10 ' />
-                Add Slider Images
+                <ImagePlus strokeWidth={1.5}  className='w-10 h-10 ' />
+                <span className='text-sm font-normal'>Add Images</span>
               </Button>
             </DialogTrigger>
             <DialogContent className='sm:max-w-[500px]'>

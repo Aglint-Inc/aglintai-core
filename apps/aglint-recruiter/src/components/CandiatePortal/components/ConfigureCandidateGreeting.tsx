@@ -26,19 +26,20 @@ export default function ConfigureCandidateGreeting() {
   return (
     <>
       <div className='w-full max-w-2xl space-y-4'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-lg font-semibold'>Candidate Greeting</h1>
+        <div className='flex flex-col'>
+          <h1 className='text-md font-semibold'>Candidate Greeting</h1>
           <p className='text-sm text-muted-foreground'>
-            This is a description that provides more details about the content
-            you&apos;re about to create.
+            This section content will be displayed on the candidate portal as the greeting message to the candidate.
           </p>
         </div>
-        {data?.greetings.length > 0 && (
+        {data?.greetings?.length && (
           <ScrollArea className='max-h-40 w-full rounded-md border bg-gray-100'>
             <div className='w-full p-4 space-y-4  '>{data?.greetings}</div>
           </ScrollArea>
         )}
-        <Dialog open={isDialogOpen === 'greetings'}>
+        <Dialog open={isDialogOpen === 'greetings'}
+        onOpenChange={(open) => setIsDialogOpen(open ? 'greetings' : null)} 
+        >
           <DialogTrigger asChild>
             <Button
               className='mt-4'
