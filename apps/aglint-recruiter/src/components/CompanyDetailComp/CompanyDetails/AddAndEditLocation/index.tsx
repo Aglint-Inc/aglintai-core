@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
@@ -36,7 +36,7 @@ interface LocationProps {
   edit: number;
 }
 
-const AddLocationDialog: React.FC<LocationProps> = ({
+const AddAndEditLocation: React.FC<LocationProps> = ({
   handleClose,
   open,
   edit,
@@ -101,7 +101,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const isCheckboxVisiable =
     hasHeadquarter && initialValue?.is_headquarter ? true : !hasHeadquarter;
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={handleClose}>
+      {/* <DialogTrigger asChild>{<Button>asdda</Button>}</DialogTrigger> */}
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>
@@ -220,4 +221,4 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   );
 };
 
-export default AddLocationDialog;
+export default AddAndEditLocation;

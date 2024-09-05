@@ -5,7 +5,7 @@ import LoaderGrey from '@public/lottie/LoaderGrey';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
-import CompanyInfoComp from './CompanyInfoComp';
+import CompanyInfoComp from './CompanyDetails';
 import Holidays from './Holidays';
 import { useCompanyDetailComp } from './hook';
 import RolesAndPermissionsComponent from './Roles';

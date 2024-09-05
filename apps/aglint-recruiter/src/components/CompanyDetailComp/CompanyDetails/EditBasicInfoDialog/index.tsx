@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { BasicInfo } from '@devlink/BasicInfo';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import ImageUpload from '@/components/Common/ImageUpload';
@@ -36,7 +36,13 @@ const employeeSizes = [
   '10000+',
 ];
 
-const EditBasicInfoDialog = ({ editDialog, setEditDialog }) => {
+const EditBasicInfoDialog = ({
+  editDialog,
+  setEditDialog,
+}: {
+  editDialog: boolean;
+  setEditDialog: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [logo, setLogo] = useState<string>();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isError, setError] = useState(false);
