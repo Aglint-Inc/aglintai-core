@@ -106,7 +106,7 @@ const TimeZoneCard = ({
       <CardTitle className='text-2xl font-bold'>Time Zone</CardTitle>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline' size='icon'>
+          <Button variant='outline'>
             <Edit className='h-4 w-4' />
             <span className='sr-only'>Edit Time Zone</span>
           </Button>
@@ -152,7 +152,7 @@ const WorkingHoursCard = ({
       <CardTitle className='text-2xl font-bold'>Working Hours</CardTitle>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline' size='icon'>
+          <Button variant='outline'>
             <Edit className='h-4 w-4' />
             <span className='sr-only'>Edit Working Hours</span>
           </Button>
@@ -256,7 +256,7 @@ const BreakTimeCard = ({
       <CardTitle className='text-2xl font-bold'>Break Time</CardTitle>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline' size='icon'>
+          <Button variant='outline'>
             <Edit className='h-4 w-4' />
             <span className='sr-only'>Edit Break Time</span>
           </Button>

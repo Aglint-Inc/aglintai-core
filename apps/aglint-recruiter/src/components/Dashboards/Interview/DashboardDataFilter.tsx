@@ -159,7 +159,6 @@ export default function Component() {
       {value && (
         <Button
           variant='ghost'
-          size='icon'
           className='flex-shrink-0 h-9 w-9'
           onClick={() => clearFilter(placeholder.toLowerCase())}
         >
@@ -211,7 +210,11 @@ export default function Component() {
 
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant='outline' size='sm' className='min-w-[120px] h-9'>
+              <Button
+                variant='outline'
+                size='sm'
+                className='min-w-[120px] h-9'
+              >
                 <CalendarIcon className='mr-2 h-4 w-4' />
                 {dateRange
                   ? `${format(dateRange.from, 'PP')} - ${format(dateRange.to, 'PP')}`

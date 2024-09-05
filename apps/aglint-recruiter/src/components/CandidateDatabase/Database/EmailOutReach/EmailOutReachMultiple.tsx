@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 import EmailTemplateEditor from '@/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import MuiPopup from '@/components/Common/MuiPopup';
-import UISelect from '@/components/Common/UiSelect';
+import UISelect from '@/components/Common/UISelecter';
 import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

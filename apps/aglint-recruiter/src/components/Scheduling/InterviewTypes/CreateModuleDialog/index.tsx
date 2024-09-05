@@ -12,7 +12,7 @@ import { Label } from '@components/ui/label';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import UISelect from '@/components/Common/UiSelect';
+import UISelect from '@/components/Common/UISelecter';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

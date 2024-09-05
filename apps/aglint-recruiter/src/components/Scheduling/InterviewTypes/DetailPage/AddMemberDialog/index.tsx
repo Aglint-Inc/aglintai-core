@@ -1,9 +1,9 @@
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { Dialog, Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import UIDialog from '@/components/Common/UIDialog';
 import { useToast } from '@/components/hooks/use-toast';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
@@ -79,73 +79,61 @@ function AddMemberDialog({
   }, []);
 
   return (
-    <Dialog
+    <UIDialog
+      title={
+        trainingStatus === 'qualified' ? 'Add Interviewers' : 'Add Trainee.'
+      }
       open={isAddMemberDialogOpen}
       onClose={() => {
         setIsAddMemberDialogOpen(false);
         setSelectedUsers([]);
       }}
-    >
-      <DcPopup
-        popupName={
-          trainingStatus === 'qualified' ? 'Add Interviewers' : 'Add Trainee.'
-        }
-        onClickClosePopup={{
-          onClick: () => {
-            setIsAddMemberDialogOpen(false);
-            setSelectedUsers([]);
-          },
-        }}
-        slotBody={
-          <Stack>
-            <Typography marginBottom={1}>
-              Choose members from your team.
-            </Typography>
-            <MembersAutoComplete
-              maxWidth={'100%'}
-              pillColor='var(--neutral-4)'
-              disabled={loading}
-              renderUsers={allMembers}
-              selectedUsers={selectedUsers}
-              setSelectedUsers={(users) => {
-                const updateUsers = users.map((user) => ({
-                  ...user,
-                  role: null,
-                })); // role is not used in the code
-                setSelectedUsers(updateUsers);
-              }}
-            />
-          </Stack>
-        }
-        slotButtons={
-          <>
-            <ButtonSoft
-              size={2}
-              textButton='Cancel'
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  setIsAddMemberDialogOpen(false);
-                  setSelectedUsers([]);
-                },
-              }}
-            />
+      slotButtons={
+        <>
+          <ButtonSoft
+            size={2}
+            textButton='Cancel'
+            color={'neutral'}
+            onClickButton={{
+              onClick: () => {
+                setIsAddMemberDialogOpen(false);
+                setSelectedUsers([]);
+              },
+            }}
+          />
 
-            <ButtonSolid
-              size={2}
-              textButton='Add'
-              isDisabled={selectedUsers.length === 0}
-              isLoading={loading}
-              onClickButton={{
-                onClick: () => {
-                  if (!loading) onClickAddMember();
-                },
-              }}
-            />
-          </>
-        }
-      />
-    </Dialog>
+          <ButtonSolid
+            size={2}
+            textButton='Add'
+            isDisabled={selectedUsers.length === 0}
+            isLoading={loading}
+            onClickButton={{
+              onClick: () => {
+                if (!loading) onClickAddMember();
+              },
+            }}
+          />
+        </>
+      }
+    >
+      <div className='flex flex-col w-full'>
+        <Typography marginBottom={1}>Choose members from your team.</Typography>
+        <MembersAutoComplete
+          maxWidth={'460px'}
+          pillColor='var(--neutral-4)'
+          disabled={loading}
+          renderUsers={allMembers}
+          selectedUsers={selectedUsers}
+          setSelectedUsers={(users) => {
+            const updateUsers = users.map((user) => ({
+              ...user,
+              role: null,
+            })); // role is not used in the code
+            setSelectedUsers(updateUsers);
+          }}
+        />
+      </div>
+    </UIDialog>
   );
 }
 

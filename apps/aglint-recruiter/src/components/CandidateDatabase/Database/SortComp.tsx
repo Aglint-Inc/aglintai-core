@@ -5,7 +5,7 @@ import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import UISelect from '../../Common/UiSelect';
+import UISelect from '../../Common/UISelecter';
 const sortdisplay = [
   { name: 'Name', value: 'first_name' },
   { name: 'Location', value: 'location' },

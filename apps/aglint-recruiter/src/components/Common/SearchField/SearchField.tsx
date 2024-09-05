@@ -38,7 +38,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
         {value ? (
           <Button
             variant='ghost'
-            size='icon'
             onClick={onClear}
             className='h-8 w-8 hover:bg-neutral-200'
           >

@@ -14,7 +14,7 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UISelect from '@/components/Common/UiSelect';
+import UISelect from '@/components/Common/UISelecter';
 import UITypography from '@/components/Common/UITypography';
 import { useWorkflow } from '@/context/Workflows/[id]';
 import { type WorkflowAction } from '@/types/workflow.types';

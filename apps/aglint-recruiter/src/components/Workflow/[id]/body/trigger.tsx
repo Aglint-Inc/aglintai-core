@@ -2,7 +2,7 @@ import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { memo } from 'react';
 
-import UISelect from '@/components/Common/UiSelect';
+import UISelect from '@/components/Common/UISelecter';
 import { useWorkflow } from '@/context/Workflows/[id]';
 import { type Workflow } from '@/types/workflow.types';
 

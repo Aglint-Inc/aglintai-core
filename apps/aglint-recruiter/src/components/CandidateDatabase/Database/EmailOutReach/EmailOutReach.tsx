@@ -14,7 +14,7 @@ import React from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UISelect from '@/components/Common/UiSelect';
+import UISelect from '@/components/Common/UISelecter';
 import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
 import { getTimeDifference } from '@/utils/jsonResume';
