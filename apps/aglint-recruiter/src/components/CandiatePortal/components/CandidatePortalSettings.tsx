@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 
@@ -8,10 +8,10 @@ import { ConfigureSliderImages } from '@/components/CandiatePortal/components/Co
 
 function CandidatePortalSettings() {
   return (
-    <div className='flex flex-col gap-10'>
-        <ConfigureSliderImages/>
-        <ConfigureCandidateGreeting/>
-        <ConfigureCompanyEdit/>  
+    <div className='flex flex-col gap-10 p-4'>
+      <ConfigureSliderImages />
+      <ConfigureCandidateGreeting />
+      <ConfigureCompanyEdit />
     </div>
   );
 }

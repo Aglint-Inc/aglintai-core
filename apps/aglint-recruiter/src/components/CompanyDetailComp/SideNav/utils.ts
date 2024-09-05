@@ -15,6 +15,7 @@ export const settingSubNavItem = {
   EMAILTEMPLATE: 'emailTemplate',
   SLACKTEMPLATE: 'slackTemplate',
   AGENTTEMPLATE: 'agentTemplate',
+  PORTAL_SETTINGS: 'portalSetttings',
 };
 
 export const settingsItems: {
@@ -40,5 +41,9 @@ export const settingsItems: {
   {
     label: 'Reasons',
     value: settingSubNavItem['SCHEDULING_REASONS'],
+  },
+  {
+    label: 'Portal Setttings',
+    value: settingSubNavItem['PORTAL_SETTINGS'],
   },
 ];

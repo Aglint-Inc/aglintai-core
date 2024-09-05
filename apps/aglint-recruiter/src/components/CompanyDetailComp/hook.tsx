@@ -1,6 +1,7 @@
 import { schedulingSettingType } from '@aglint/shared-types';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
@@ -83,5 +84,98 @@ export const useCompanyDetailComp = () => {
     show,
     tab,
     setIsSaving,
+  };
+};
+
+export const usePortalSettings = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState<
+    'greetings' | 'about' | 'images' | null
+  >(null);
+
+  const queryClient = useQueryClient();
+  const {
+    recruiter: { name },
+    recruiter_id,
+  } = useAuthDetails();
+  const fetchPortalSettings = async () => {
+    return (
+      await supabase
+        .from('recruiter_preferences')
+        .select('banner_image,company_images,greetings')
+        .eq('recruiter_id', recruiter_id)
+        .single()
+        .throwOnError()
+    ).data;
+  };
+
+  const query = useQuery({
+    queryKey: ['portalSettings'],
+    queryFn: () => fetchPortalSettings(),
+    enabled: !!recruiter_id,
+  });
+
+  const updatePortalSetting = async (
+    arg: Awaited<ReturnType<typeof fetchPortalSettings>>,
+  ) => {
+    try {
+      const { error } = await supabase
+        .from('recruiter_preferences')
+        .update(arg)
+        .eq('recruiter_id', recruiter_id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: ['portalSettings'],
+      });
+      setIsDialogOpen(null);
+    } catch {
+      //
+    }
+  };
+
+  const updateImages = async (
+    images: File[],
+    setSelectedImages: Dispatch<SetStateAction<File[]>>,
+  ) => {
+    try {
+      const newImages = [];
+      for (let image of images) {
+        const fileName = `${name}-${recruiter_id}-${Date.now()}`;
+
+        const { data, error } = await supabase.storage
+          .from('company-images')
+          .upload(fileName, image);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        let img = '';
+        if (data?.path) {
+          img = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-images/${data?.path}?t=${new Date().toISOString()}`;
+          newImages.push(img);
+        }
+      }
+
+      await updatePortalSetting({
+        ...query.data,
+        company_images: [...query.data.company_images, ...newImages],
+      });
+      setSelectedImages([]);
+    } catch (error) {
+      console.error('Error uploading images: ', error.message);
+      return null;
+    }
+  };
+
+  return {
+    ...query,
+    updatePortalSetting,
+    updateImages,
+    setIsDialogOpen,
+    isDialogOpen,
   };
 };
