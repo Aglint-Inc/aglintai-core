@@ -10,6 +10,7 @@ import InterviewProgress from '@/components/CandiatePortal/components/InterviewP
 import RequestedAvailability from '@/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
 import UpcomingInterview from '@/components/CandiatePortal/components/UpcomingInterview';
+import UpcomingInterviewSkeleton from '@/components/CandiatePortal/components/UpcomingInterviewSkeleton';
 import { usePortalHomePage } from '@/components/CandiatePortal/hook';
 
 export default function Component({ params }) {
@@ -66,6 +67,8 @@ export default function Component({ params }) {
 
             <RequestedAvailability availabilityData={availability} job={job} />
             <SelfScheduling scheduleData={schedule} />
+
+            <UpcomingInterviewSkeleton />
           </div>
         </div>
       </main>
