@@ -21,7 +21,7 @@ import {
   useState,
 } from 'react';
 
-import { useJobs } from '@/context/JobsContext';
+import { useJobs } from '@/jobs/hooks/useJobs';
 import {
   type initUser,
   type initUserUIGroupedByDate,

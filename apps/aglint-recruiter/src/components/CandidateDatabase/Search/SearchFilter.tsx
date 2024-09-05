@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { useJobs } from '@/context/JobsContext';
+import { useJobs } from '@/jobs/hooks/useJobs';
 import { similarJobs } from '@/utils/prompts/candidateDb/similarJobs';
 import { similarSkills } from '@/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/utils/supabase/client';

@@ -3,7 +3,8 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
-import { schedule } from '@/app/api/candidate_portal/home_page/route';
+import { type schedule } from '@/api/candidate_portal/home_page/route';
+import dayjs from '@/utils/dayjs';
 
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 

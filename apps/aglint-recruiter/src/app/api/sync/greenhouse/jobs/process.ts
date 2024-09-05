@@ -1,6 +1,6 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 
-import { POSTED_BY } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
+import { POSTED_BY } from '@/jobs/components/AddJobWithIntegrations/utils';
 import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { syncJobApplications } from '../applications/process';

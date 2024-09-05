@@ -6,14 +6,14 @@ import {
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { processEmailsInBatches } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
-import { type LeverApplication } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/applications';
-import { type LeverJob } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/job';
+import { processEmailsInBatches } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/utils';
+import { type LeverApplication } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/applications';
+import { type LeverJob } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/job';
 import {
   extractLinkedInURL,
   POSTED_BY,
   splitFullName,
-} from '@/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
+} from '@/jobs/components/AddJobWithIntegrations/utils';
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 

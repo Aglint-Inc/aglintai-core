@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type GreenhouseApplication } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
+import { type GreenhouseApplication } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/types';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import type { saveResumeAPI } from './saveResume';

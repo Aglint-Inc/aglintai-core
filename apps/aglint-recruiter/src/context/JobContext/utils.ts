@@ -3,7 +3,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import {
   type JobDetailsForm,
   type JobHiringTeamForm,
-} from '@/components/Jobs/Create/form';
+} from '@/jobs/create/components/form';
 import { type Job } from '@/queries/jobs/types';
 import { capitalizeAll } from '@/utils/text/textUtils';
 

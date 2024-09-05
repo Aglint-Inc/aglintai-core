@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { Application } from '@/context/ApplicationContext';
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 import { useApplications } from '@/context/ApplicationsContext';
-import { getActiveSection } from '@/context/JobsContext/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { getActiveSection } from '@/jobs/utils/getActiveSection';
 
 const Drawer = () => {
   const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();

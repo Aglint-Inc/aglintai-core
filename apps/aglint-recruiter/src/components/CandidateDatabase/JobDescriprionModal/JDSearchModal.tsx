@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/context/JobsContext';
+import { useJobs } from '@/jobs/hooks/useJobs';
 import { searchJdToJson } from '@/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/utils/supabase/client';
 

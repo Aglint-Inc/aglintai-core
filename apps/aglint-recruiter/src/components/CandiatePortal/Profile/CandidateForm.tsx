@@ -15,7 +15,7 @@ import { useRef, useState } from 'react';
 import {
   useCandidatePortalProfile,
   useCandidatePortalProfileUpdate,
-} from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+} from '@/candidate/authenticated/hooks';
 import timeZone from '@/utils/timeZone';
 
 import ImageUploadManual from './ImageUpload';

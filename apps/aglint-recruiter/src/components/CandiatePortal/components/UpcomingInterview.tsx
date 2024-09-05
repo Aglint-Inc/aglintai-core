@@ -4,7 +4,7 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
-import { type apiPortalInterviewsResponse } from '@/app/api/candidate_portal/get_interviews/route';
+import { type apiPortalInterviewsResponse } from '@/api/candidate_portal/get_interviews/route';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 function UpcomingInterview({

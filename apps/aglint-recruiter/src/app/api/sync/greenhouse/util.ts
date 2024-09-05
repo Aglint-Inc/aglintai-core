@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { type JobGreenhouse } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
+import { type JobGreenhouse } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/types';
 import { decrypt } from '@/pages/api/decryptApiKey';
 import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 

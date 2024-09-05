@@ -21,16 +21,16 @@ import {
 
 import { useJob } from '@/context/JobContext';
 import { validateString } from '@/context/JobContext/utils';
+import {
+  type JobHiringTeamForm,
+  type JobMetaFormProps,
+  useJobForms,
+} from '@/jobs/create/components/form';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
-import {
-  type JobHiringTeamForm,
-  type JobMetaFormProps,
-  useJobForms,
-} from '../../Create/form';
 import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';
 

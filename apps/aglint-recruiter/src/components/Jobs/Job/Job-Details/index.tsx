@@ -20,17 +20,17 @@ import {
   useState,
 } from 'react';
 
-import {
-  type Form,
-  type JobDetailsForm,
-  type JobMetaFormProps,
-  useJobForms,
-} from '@/components/Jobs/Create/form';
 import { useJob } from '@/context/JobContext';
 import {
   validateDescription,
   validateString,
 } from '@/context/JobContext/utils';
+import {
+  type Form,
+  type JobDetailsForm,
+  type JobMetaFormProps,
+  useJobForms,
+} from '@/jobs/create/components/form';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
