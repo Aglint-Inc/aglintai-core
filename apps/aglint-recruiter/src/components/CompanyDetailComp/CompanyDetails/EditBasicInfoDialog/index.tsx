@@ -9,18 +9,13 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
+import { DialogClose } from '@radix-ui/react-dialog';
 import { AlertCircle, Upload } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import ImageUpload from '@/components/Common/ImageUpload';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { supabase } from '@/utils/supabase/client';
@@ -74,6 +69,7 @@ const EditBasicInfoDialog = ({
     }, 800);
   };
   const handleUpdate = async () => {
+    delete recruiterLocal.recruiter_preferences;
     try {
       setIsLoading(true);
       const { error } = await supabase
@@ -104,7 +100,7 @@ const EditBasicInfoDialog = ({
 
   return (
     <Dialog open={editDialog} onOpenChange={setEditDialog}>
-      <DialogContent className='w-full max-w-2xl h-[80vh] overflow-y-auto'>
+      <DialogContent className='w-full max-w-4xl h-[90vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Edit Basic Info</DialogTitle>
         </DialogHeader>
@@ -204,27 +200,19 @@ const EditBasicInfoDialog = ({
             </div>
             <div className='space-y-2'>
               <Label htmlFor='employee-size'>Employee Size</Label>
-              <Select
-                value={recruiterLocal.employee_size}
+              <UISelectDropDown
+                menuOptions={employeeSizes.map((size) => ({
+                  name: size,
+                  value: size,
+                }))}
+                value={recruiterLocal?.employee_size}
                 onValueChange={(value) => {
                   handleChange({
                     ...recruiterLocal,
                     employee_size: value,
                   });
                 }}
-                disabled={isFormDisabled}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder='Select employee size' />
-                </SelectTrigger>
-                <SelectContent>
-                  {employeeSizes.map((size) => (
-                    <SelectItem key={size} value={size}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             </div>
             <div className='space-y-2'>
               <Label htmlFor='company-website'>Company Website</Label>
@@ -252,9 +240,11 @@ const EditBasicInfoDialog = ({
           <Button variant='outline' onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate} disabled={IsLoading}>
-            {IsLoading ? 'Updating...' : 'Update'}
-          </Button>
+          <DialogClose>
+            <Button onClick={handleUpdate} disabled={IsLoading}>
+              {IsLoading ? 'Updating...' : 'Update'}
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
