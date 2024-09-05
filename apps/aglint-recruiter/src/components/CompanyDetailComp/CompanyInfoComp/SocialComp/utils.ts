@@ -16,23 +16,18 @@ export const customOrder = {
 
 export const socialValidators = {
   facebook: (url: string) =>
-    // eslint-disable-next-line security/detect-unsafe-regex
     /^(https?:\/\/)?(www\.)?facebook\.com\/(profile\.php\?id=\d+|[A-Za-z0-9_.-]+)\/?$/.test(
       url,
     ),
   linkedin: (url: string) =>
-    // eslint-disable-next-line security/detect-unsafe-regex
     /^(https?:\/\/)?(www\.)?linkedin\.com\/(in\/[A-Za-z0-9_-]+|company\/[A-Za-z0-9_-]+)\/?$/.test(
       url,
     ),
   youtube: (url: string) =>
-    // eslint-disable-next-line security/detect-unsafe-regex
     /^(https?:\/\/)?(www\.)?youtube\.com\/.*$/.test(url),
   twitter: (url: string) =>
-    // eslint-disable-next-line security/detect-unsafe-regex
     /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/.test(url),
   instagram: (url: string) =>
-    // eslint-disable-next-line security/detect-unsafe-regex
     /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.-]+\/?$/.test(url),
   custom: (url: string) => validateUrl(url),
 };
