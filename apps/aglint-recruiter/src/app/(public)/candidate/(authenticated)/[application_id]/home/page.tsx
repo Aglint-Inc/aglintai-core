@@ -17,7 +17,7 @@ export default function Component({ params }) {
   const { isLoading, data, error } = usePortalHomePage({ application_id });
 
   if (isLoading) {
-    return <HomeSkeleton/>;
+    return <HomeSkeleton />;
   }
 
   if (error) throw new Error(error.message);
@@ -38,7 +38,10 @@ export default function Component({ params }) {
         <div className='grid grid-cols-3 gap-8'>
           <div className='col-span-2'>
             <div className=' rounded-lg overflow-hidden shadow'>
-              <CompanyImage imageSrc={candidate.avatar} coverSrc={job.banner} />
+              <CompanyImage
+                imageSrc={candidate.avatar}
+                coverSrc={company.banner_image}
+              />
 
               <div className='p-8 pt-20 pb-0'>
                 <h1 className='text-2xl font-semibold mb-1 mt-2'>
@@ -47,26 +50,42 @@ export default function Component({ params }) {
                 <p className='text-sm'>
                   for {job.name} at {company.name}
                 </p>
-                <GreetingCandidate sentence={job.greetings} />
+                <GreetingCandidate sentence={company.greetings} />
               </div>
               <CompanyTabs
-                companyImages={job.images}
-                aboutContent={company.company_overview}
+                companyImages={company.company_images}
+                aboutContent={company.about}
                 job={job}
               />
             </div>
           </div>
 
           <div className='flex flex-col gap-4'>
-            {interviewPlan.length > 0 && (
+            {interviewPlan.length > 0 ? (
               <InterviewProgress interviews={interviewPlan} />
+            ) : (
+              <></>
             )}
 
-            <UpcomingInterview upcomingData={upcoming} />
+            {upcoming?.length > 0 ? (
+              <UpcomingInterview upcomingData={upcoming} />
+            ) : (
+              <></>
+            )}
 
-            <RequestedAvailability availabilityData={availability} job={job} />
-            <SelfScheduling scheduleData={schedule} />
-
+            {availability?.length ? (
+              <RequestedAvailability
+                availabilityData={availability}
+                job={job}
+              />
+            ) : (
+              <></>
+            )}
+            {schedule?.length > 0 ? (
+              <SelfScheduling scheduleData={schedule} />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </main>

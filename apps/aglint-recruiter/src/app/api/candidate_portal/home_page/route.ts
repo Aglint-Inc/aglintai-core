@@ -17,10 +17,7 @@ export type apiHomepageResponse = {
   };
   job: {
     name: string;
-    banner: string;
-    greetings: string;
     description: string;
-    images: string | string[];
   };
   interviewPlan: {
     name: string;
@@ -37,7 +34,10 @@ export type apiHomepageResponse = {
     logo: string;
     socials: SocialsType;
     phone: string;
-    company_overview: string;
+    about: string;
+    banner_image: string;
+    company_images: string[];
+    greetings: string;
   };
   upcoming: apiPortalInterviewsResponse;
 };
@@ -55,6 +55,7 @@ export type schedule = {
 }[];
 
 type sessions = Awaited<ReturnType<typeof getScheudleSessionDetails>>;
+
 export async function POST(req) {
   try {
     const { application_id } = await req.json();
@@ -70,7 +71,7 @@ export async function POST(req) {
 
     const { data: recruiter } = await supabaseAdmin
       .from('recruiter_preferences')
-      .select('banner_image,company_images,greetings')
+      .select('banner_image,company_images,greetings,about')
       .eq('recruiter_id', application.candidates.recruiter.id)
       .single()
       .throwOnError();
@@ -78,9 +79,6 @@ export async function POST(req) {
     const jobData = {
       name: application.public_jobs.job_title,
       description: application.public_jobs.description,
-      banner: recruiter?.banner_image || '',
-      images: recruiter?.company_images || [],
-      greetings: recruiter?.greetings || '',
     };
 
     const candidateData = {
@@ -99,7 +97,10 @@ export async function POST(req) {
       logo: application.candidates.recruiter.logo,
       socials: application.candidates.recruiter.socials,
       phone: application.candidates.recruiter.phone_number,
-      company_overview: application.candidates.recruiter.company_overview,
+      about: recruiter?.about || '',
+      banner_image: recruiter?.banner_image || '',
+      company_images: recruiter?.company_images || [],
+      greetings: recruiter?.greetings || '',
     };
     //availability  ----------------------------------------------------------------
     const { data: availability } = await supabaseAdmin

@@ -10,13 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
+import axios from 'axios';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
+  useCandidatePortal,
+  useCandidatePortalNavbar,
   useCandidatePortalProfile,
-  useCandidatePortalProfileUpdate,
 } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
+
+import ImageUploadManual from './ImageUpload';
 
 // import ImageUploadManual from './ImageUpload';
 
@@ -25,8 +31,27 @@ export default function CandidateForm({
 }: {
   closeDialog: () => void;
 }) {
-  const { data } = useCandidatePortalProfile();
-  const { mutate, isPending } = useCandidatePortalProfileUpdate();
+  // const { data } = useCandidatePortalProfile();
+  // const { mutate, isPending } = useCandidatePortalProfileUpdate();
+
+  // const onSubmit = async (form: any) => {
+  //   if (!isPending) {
+  //     mutate({
+  //       id: data?.id,
+  //       ...form,
+  //     });
+  //     closeDialog();
+  //   }
+  // };
+
+  const { application_id } = useCandidatePortal();
+  const { data, refetch: profileRefetch } = useCandidatePortalProfile();
+  const { refetch: navRefetch } = useCandidatePortalNavbar();
+
+  // const [form, setForm] = useState(data);
+  const [loading, setLoading] = useState(false);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+  const imageFile = useRef(null);
 
   const {
     register,
@@ -44,16 +69,58 @@ export default function CandidateForm({
     },
   });
 
-  const onSubmit = async (form: any) => {
-    if (!isPending) {
-      mutate({
-        id: data?.id,
-        ...form,
-      });
+  const handleUpdateProfile = async (form) => {
+    try {
+      setLoading(true);
+
+      let profile_image = form.avatar;
+      if (isImageChanged) {
+        const { data } = await supabase.storage
+          .from('candidate-files')
+          .upload(`profile/${form.id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+
+        if (data?.path && imageFile?.current?.size) {
+          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
+        } else {
+          profile_image = null;
+        }
+        setIsImageChanged(false);
+      }
+
+      const payload = {
+        application_id,
+        details: {
+          first_name: form.first_name,
+          last_name: form.last_name,
+          email: form.email,
+          timezone: form.timezone,
+          phone: form.phone,
+          linkedin: form.linkedin,
+          avatar: profile_image,
+        },
+      };
+
+      const { status } = await axios.post(
+        '/api/candidate_portal/update_profile',
+        payload,
+      );
+
+      if (status !== 200) {
+        throw new Error('Profile update failed');
+      }
+      await navRefetch();
+      await profileRefetch();
       closeDialog();
+    } catch (e) {
+      console.error(e.message);
+      //
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
     <div className='flex justify-center items-center'>
       <Card className='w-full max-w-2xl border-none bg-white p-0'>
@@ -63,14 +130,15 @@ export default function CandidateForm({
           </CardTitle>
         </CardHeader>
         <CardContent className='p-0'>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(handleUpdateProfile)}>
             <div className='px-4 flex flex-col gap-2'>
               <div className='flex flex-col space-y-4 rounded-lg'>
-              {/* <ImageUploadManual
-                  image={form.avatar}
+                <ImageUploadManual
+                  image={data?.avatar}
                   imageFile={imageFile}
                   size={100}
-                />              */}
+                  setChanges={() => setIsImageChanged(true)}
+                />
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='first_name'>First Name</Label>
@@ -108,8 +176,7 @@ export default function CandidateForm({
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
-                      value:
-                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                       message: 'Enter a valid email address',
                     },
                   })}
@@ -128,7 +195,7 @@ export default function CandidateForm({
                   {...register('phone', {
                     required: 'Phone number is required',
                     pattern: {
-                      value: /^[0-9]+$/,
+                      value: /^\+?[1-9]\d{1,14}$/,
                       message: 'Enter a valid phone number',
                     },
                   })}
@@ -145,10 +212,11 @@ export default function CandidateForm({
                   id='linkedin'
                   {...register('linkedin', {
                     required: 'LinkedIn URL is required',
-              
+
                     pattern: {
                       // eslint-disable-next-line security/detect-unsafe-regex
-                      value: /^(https?:\/\/)?(www\.)?linkedin\.com\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/,
+                      value:
+                        /^(https?:\/\/)?(www\.)?linkedin\.com\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/,
                       message: 'Enter a valid LinkedIn URL',
                     },
                   })}
@@ -184,8 +252,8 @@ export default function CandidateForm({
               </div>
             </div>
             <div className='p-4 m-0 mt-0'>
-              <Button type='submit' className='w-full' disabled={isPending}>
-                {isPending ? 'Updating...' : 'Update Profile'}
+              <Button type='submit' className='w-full' disabled={loading}>
+                {loading ? 'Updating...' : 'Update Profile'}
               </Button>
             </div>
           </form>
