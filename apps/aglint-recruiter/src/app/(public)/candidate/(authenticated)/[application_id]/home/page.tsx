@@ -39,7 +39,7 @@ export default function Component({ params }) {
           <div className='col-span-2'>
             <div className=' rounded-lg overflow-hidden shadow'>
               <CompanyImage
-                imageSrc={candidate.avatar}
+                candidate={candidate}
                 coverSrc={company.banner_image}
               />
 
@@ -61,12 +61,6 @@ export default function Component({ params }) {
           </div>
 
           <div className='flex flex-col gap-4'>
-            {interviewPlan.length > 0 ? (
-              <InterviewProgress interviews={interviewPlan} />
-            ) : (
-              <></>
-            )}
-
             {upcoming?.length > 0 ? (
               <UpcomingInterview upcomingData={upcoming} />
             ) : (
@@ -83,6 +77,12 @@ export default function Component({ params }) {
             )}
             {schedule?.length > 0 ? (
               <SelfScheduling scheduleData={schedule} />
+            ) : (
+              <></>
+            )}
+
+            {interviewPlan.length > 0 ? (
+              <InterviewProgress interviews={interviewPlan} />
             ) : (
               <></>
             )}

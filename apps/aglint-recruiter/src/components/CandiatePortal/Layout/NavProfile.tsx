@@ -27,8 +27,8 @@ export default function NavProfile({
         src={candidate?.avatar}
         alt='@shadcn'
       />
-      <AvatarFallback className='bg-primary rounded-mds text-primary-foreground'>
-        {candidate.first_name.slice(0, 2)}
+      <AvatarFallback className='rounded-md '>
+        {candidate.first_name.charAt(0) + candidate.last_name.charAt(0)}
       </AvatarFallback>
     </Avatar>
 
