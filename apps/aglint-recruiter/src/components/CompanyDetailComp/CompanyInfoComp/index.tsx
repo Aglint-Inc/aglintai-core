@@ -1,10 +1,13 @@
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { CompanyInfo } from '@devlink/CompanyInfo';
 import { CompanyInfoDetails } from '@devlink/CompanyInfoDetails';
-import { CompanyLocation } from '@devlink/CompanyLocation';
 import { RolesPill } from '@devlink/RolesPill';
 import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { DeletePopup } from '@devlink3/DeletePopup';
+import { PencilIcon, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -240,32 +243,54 @@ const CompanyInfoComp = () => {
 
                   return (
                     <div key={loc.id} className='p-[var(--space-1)]'>
-                      <CompanyLocation
-                        isHeadQuaterVisible={isHeadQuaterVisible}
-                        isEditDeleteVisible={!isFormDisabled}
-                        onClickEdit={{
-                          onClick: () => {
-                            setDialog({
-                              ...dialog,
-                              location: { open: true, edit: loc.id },
-                            });
-                          },
-                        }}
-                        textFullAddress={address || '-'}
-                        textLocationHeader={location}
-                        textTimeZone={timeZone}
-                        onClickDelete={{
-                          onClick: () => {
-                            setDialog({
-                              ...dialog,
-                              deletelocation: {
-                                open: true,
-                                edit: loc.id,
-                              },
-                            });
-                          },
-                        }}
-                      />
+
+                      {/* Card change to shadcn */}
+                      
+                      <Card className="p-4 h-full">
+                        <div className="flex items-center justify-between">
+                        <h4 className="text-base font-semibold">{location}</h4>
+                        {isHeadQuaterVisible && (
+                              <Badge variant="outline">Headquarters</Badge>
+                            )}
+                        </div>
+                        <div>
+                          <p>{address || '-'}</p>
+                          <p>{timeZone}</p>
+                        </div>
+                       
+                        {!isFormDisabled && (
+                          <div className="flex justify-end space-x-2 mt-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setDialog({
+                                  ...dialog,
+                                  location: { open: true, edit: loc.id },
+                                });
+                              }}
+                            >
+                              <PencilIcon className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="bg-red-400 hover:bg-red-500"
+                              onClick={() => {
+                                setDialog({
+                                  ...dialog,
+                                  deletelocation: {
+                                    open: true,
+                                    edit: loc.id,
+                                  },
+                                });
+                              }}
+                            >
+                              <Trash2 className="h-3 w-3 text-white" />
+                            </Button>
+                          </div>
+                        )}
+                      </Card>
                     </div>
                   );
                 })}
