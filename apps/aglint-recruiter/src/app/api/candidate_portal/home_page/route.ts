@@ -62,24 +62,25 @@ export async function POST(req) {
     const { data: application } = await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(name,email,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
+        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,email,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
       )
       .eq('id', application_id)
       .single()
       .throwOnError();
 
-    const { data: job } = await supabaseAdmin
-      .from('candidate_portal_job')
-      .select('banner,images,greetings')
-      .eq('application_id', application_id)
+    const { data: recruiter } = await supabaseAdmin
+      .from('recruiter_preferences')
+      .select('banner_image,company_images,greetings')
+      .eq('recruiter_id', application.candidates.recruiter.id)
+      .single()
       .throwOnError();
 
     const jobData = {
       name: application.public_jobs.job_title,
       description: application.public_jobs.description,
-      banner: job?.length ? job[0]?.banner : '',
-      images: job?.length ? job[0]?.images : '',
-      greetings: job?.length ? job[0]?.greetings : '',
+      banner: recruiter?.banner_image || '',
+      images: recruiter?.company_images || [],
+      greetings: recruiter?.greetings || '',
     };
 
     const candidateData = {
