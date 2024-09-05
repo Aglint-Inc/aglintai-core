@@ -8,8 +8,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import UISelect from '../../Common/UiSelect';
-import UITextField from '../../Common/UITextField';
+import UISelect from '../../../Common/UISelectDropDown';
+import UITextField from '../../../Common/UITextField';
 
 type FilterType = {
   id: string;

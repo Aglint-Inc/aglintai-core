@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
@@ -18,7 +19,6 @@ import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
-import { useToast } from '@/components/hooks/use-toast';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';

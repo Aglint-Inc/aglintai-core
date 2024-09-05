@@ -1,10 +1,10 @@
 import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
+import { useToast } from '@components/hooks/use-toast';
 import { DeletePopup } from '@devlink3/DeletePopup';
 import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';

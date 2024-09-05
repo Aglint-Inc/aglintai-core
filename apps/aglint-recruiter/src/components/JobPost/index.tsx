@@ -4,6 +4,7 @@ import {
   type JobApplcationDB,
   type JobTypeDB,
 } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import { CompanyListingLinks } from '@devlink/CompanyListingLinks';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { InterviewCompleted } from '@devlink/InterviewCompleted';
@@ -27,7 +28,6 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/pages/api/jobpost/read';
 import ROUTES from '@/utils/routing/routes';

@@ -22,15 +22,15 @@ export default function NavProfile({
 }) {
   return (
     <Avatar className='w-10 h-10 cursor-pointer rounded-md'>
-          <AvatarImage
-            className='object-cover rounded-md'
-            src={candidate?.avatar}
-            alt='@shadcn'
-          />
-          <AvatarFallback className='bg-primary rounded-mds text-primary-foreground'>
-            {candidate.first_name.slice(0, 2)}
-          </AvatarFallback>
-        </Avatar>
+      <AvatarImage
+        className='object-cover rounded-md'
+        src={candidate?.avatar}
+        alt='@shadcn'
+      />
+      <AvatarFallback className='bg-primary rounded-mds text-primary-foreground'>
+        {candidate.first_name.slice(0, 2)}
+      </AvatarFallback>
+    </Avatar>
 
     // <DropdownMenu>
     //   <DropdownMenuTrigger asChild>

@@ -98,6 +98,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           request_id,
           reqProgressLogger,
           application_id,
+          mail_payload: req.body.payload?.email,
         },
         reqProgressLogger,
       );
@@ -114,6 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           organizer_id: organizer_id,
           request_id: request_id,
           reqProgressLogger,
+          mail_payload: req.body.payload?.email,
         },
         reqProgressLogger,
       );

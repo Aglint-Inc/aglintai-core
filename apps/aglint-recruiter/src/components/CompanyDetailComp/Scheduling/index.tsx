@@ -32,7 +32,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
-import FilterInput from '../../CandidateDatabase/Search/FilterInput';
+import FilterInput from '../../Scheduling/Common/MovedFromCD/FilterInput';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
 

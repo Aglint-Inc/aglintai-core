@@ -1,11 +1,11 @@
 import { supabaseWrap } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
 import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import {
   AuthProvider,
   useAuthDetails,

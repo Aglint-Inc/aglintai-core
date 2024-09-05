@@ -36,10 +36,10 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import FilterInput from '@/components/CandidateDatabase/Search/FilterInput';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
+import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput';
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 

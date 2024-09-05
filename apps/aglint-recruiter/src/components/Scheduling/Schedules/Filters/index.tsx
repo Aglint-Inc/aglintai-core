@@ -87,7 +87,7 @@ function Filters() {
               updateFilterState('status', val);
             },
             value: filterState.status,
-            iconname: 'filter_tilt_shift',
+            // iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -106,7 +106,7 @@ function Filters() {
               updateFilterState('interviewers', val);
             },
             value: filterState.interviewers,
-            iconname: 'person',
+            // iconname: 'person',
           },
           {
             type: 'filter',
@@ -116,7 +116,7 @@ function Filters() {
               updateFilterState('schedule_types', val);
             },
             value: filterState.schedule_types,
-            iconname: 'filter_tilt_shift',
+            // iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -140,7 +140,7 @@ function Filters() {
             },
 
             value: filterState.session_types,
-            iconname: 'filter_tilt_shift',
+            // iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -153,7 +153,7 @@ function Filters() {
             },
 
             value: filterState.jobs,
-            iconname: 'filter_tilt_shift',
+            // iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -164,7 +164,7 @@ function Filters() {
               updateFilterState('date', val);
             },
             value: filterState.date,
-            iconname: 'filter_tilt_shift',
+            // iconname: 'filter_tilt_shift',
           },
         ]}
       />
