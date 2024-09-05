@@ -6,7 +6,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { ButtonGhost } from '@devlink/ButtonGhost';
 import { useRouter } from 'next/router';
 
 import { useJob } from '@/context/JobContext';
@@ -35,32 +34,32 @@ export const SharedBreadCrumbs = () => {
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
-      <Preview />
+      {/* <Preview /> */}
     </Breadcrumb>
   );
 };
 
-const Preview = () => {
-  const { job } = useJob();
-  const handlePreview = () => {
-    window.open(
-      `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job?.id}`,
-      '_blank',
-    );
-  };
-  if (job?.status === 'closed' || job?.posted_by !== 'Aglint') return <></>;
-  return (
-    <ButtonGhost
-      size={'2'}
-      iconColor={'var(--info-11)'}
-      iconSize={'4'}
-      isRightIcon={true}
-      isLeftIcon={false}
-      textButton={'Preview'}
-      iconName={'open_in_new'}
-      onClickButton={{
-        onClick: handlePreview,
-      }}
-    />
-  );
-};
+// const Preview = () => {
+//   const { job } = useJob();
+//   const handlePreview = () => {
+//     window.open(
+//       `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job?.id}`,
+//       '_blank',
+//     );
+//   };
+//   if (job?.status === 'closed' || job?.posted_by !== 'Aglint') return <></>;
+//   return (
+//     <ButtonGhost
+//       size={'2'}
+//       iconColor={'var(--info-11)'}
+//       iconSize={'4'}
+//       isRightIcon={true}
+//       isLeftIcon={false}
+//       textButton={'Preview'}
+//       iconName={'open_in_new'}
+//       onClickButton={{
+//         onClick: handlePreview,
+//       }}
+//     />
+//   );
+// };
