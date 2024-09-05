@@ -7,31 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       aglint_candidates: {
@@ -1427,6 +1402,7 @@ export type Database = {
           end_time: string | null
           id: string
           instructions: string | null
+          interview_schedule_id: string
           job_id: string
           meeting_flow: Database["public"]["Enums"]["meeting_flow"]
           meeting_json: Json | null
@@ -1446,6 +1422,7 @@ export type Database = {
           end_time?: string | null
           id?: string
           instructions?: string | null
+          interview_schedule_id: string
           job_id: string
           meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
@@ -1465,6 +1442,7 @@ export type Database = {
           end_time?: string | null
           id?: string
           instructions?: string | null
+          interview_schedule_id?: string
           job_id?: string
           meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
@@ -1544,6 +1522,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
+            columns: ["interview_schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
         ]
@@ -1961,6 +1946,123 @@ export type Database = {
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_schedule: {
+        Row: {
+          application_id: string
+          calender_event_api_status: Json | null
+          coordinator_id: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_completed: boolean
+          is_get_more_option: boolean
+          recruiter_id: string
+          schedule_name: string | null
+        }
+        Insert: {
+          application_id: string
+          calender_event_api_status?: Json | null
+          coordinator_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_completed?: boolean
+          is_get_more_option?: boolean
+          recruiter_id: string
+          schedule_name?: string | null
+        }
+        Update: {
+          application_id?: string
+          calender_event_api_status?: Json | null
+          coordinator_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_completed?: boolean
+          is_get_more_option?: boolean
+          recruiter_id?: string
+          schedule_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]
@@ -3165,7 +3267,7 @@ export type Database = {
           m_v_statement: string | null
           name: string | null
           phone_number: string | null
-          primary_admin: string
+          primary_admin: string | null
           primary_contact: Json | null
           recruiter_type: string | null
           scheduling_reason: Json | null
@@ -3188,7 +3290,7 @@ export type Database = {
           m_v_statement?: string | null
           name?: string | null
           phone_number?: string | null
-          primary_admin: string
+          primary_admin?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
           scheduling_reason?: Json | null
@@ -3211,7 +3313,7 @@ export type Database = {
           m_v_statement?: string | null
           name?: string | null
           phone_number?: string | null
-          primary_admin?: string
+          primary_admin?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
           scheduling_reason?: Json | null
@@ -3245,29 +3347,17 @@ export type Database = {
       }
       recruiter_preferences: {
         Row: {
-          about: string | null
-          banner_image: string | null
-          company_images: string[] | null
           greenhouse: boolean
-          greetings: string | null
           recruiter_id: string
           scoring: boolean
         }
         Insert: {
-          about?: string | null
-          banner_image?: string | null
-          company_images?: string[] | null
           greenhouse?: boolean
-          greetings?: string | null
           recruiter_id: string
           scoring?: boolean
         }
         Update: {
-          about?: string | null
-          banner_image?: string | null
-          company_images?: string[] | null
           greenhouse?: boolean
-          greetings?: string | null
           recruiter_id?: string
           scoring?: boolean
         }
@@ -3387,11 +3477,11 @@ export type Database = {
           calendar_sync_token: string | null
           created_at: string
           department_id: number | null
-          email: string
+          email: string | null
           email_auth: Json | null
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
-          first_name: string
+          first_name: string | null
           is_calendar_connected: boolean
           joined_at: string | null
           last_name: string | null
@@ -3411,11 +3501,11 @@ export type Database = {
           calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
-          email: string
+          email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
-          first_name: string
+          first_name?: string | null
           is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
@@ -3435,11 +3525,11 @@ export type Database = {
           calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
-          email?: string
+          email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
-          first_name?: string
+          first_name?: string | null
           is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
@@ -3482,7 +3572,7 @@ export type Database = {
         Row: {
           application_id: string | null
           assignee_id: string | null
-          assigner_id: string | null
+          assigner_id: string
           completed_at: string | null
           created_at: string
           id: string
@@ -3498,7 +3588,7 @@ export type Database = {
         Insert: {
           application_id?: string | null
           assignee_id?: string | null
-          assigner_id?: string | null
+          assigner_id?: string
           completed_at?: string | null
           created_at?: string
           id?: string
@@ -3514,7 +3604,7 @@ export type Database = {
         Update: {
           application_id?: string | null
           assignee_id?: string | null
-          assigner_id?: string | null
+          assigner_id?: string
           completed_at?: string | null
           created_at?: string
           id?: string
@@ -4382,6 +4472,18 @@ export type Database = {
           },
         ]
       }
+      temp_interviewers: {
+        Row: {
+          user_id: string | null
+        }
+        Insert: {
+          user_id?: string | null
+        }
+        Update: {
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       template_question_relation: {
         Row: {
           created_at: string
@@ -4565,7 +4667,7 @@ export type Database = {
           created_at: string
           id: string
           order: number
-          payload: Json
+          payload: Json | null
           target_api: Database["public"]["Enums"]["email_slack_types"]
           workflow_id: string
         }
@@ -4574,7 +4676,7 @@ export type Database = {
           created_at?: string
           id?: string
           order: number
-          payload?: Json
+          payload?: Json | null
           target_api: Database["public"]["Enums"]["email_slack_types"]
           workflow_id?: string
         }
@@ -4583,7 +4685,7 @@ export type Database = {
           created_at?: string
           id?: string
           order?: number
-          payload?: Json
+          payload?: Json | null
           target_api?: Database["public"]["Enums"]["email_slack_types"]
           workflow_id?: string
         }
@@ -4993,6 +5095,27 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_data_view: {
+        Row: {
+          applications: Json | null
+          candidates: Json | null
+          interview_session_meetings: Json | null
+          last_log_time: string | null
+          public_jobs: Json | null
+          recruiter_id: string | null
+          schedule: Json | null
+          search_query: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_jobs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]
@@ -6449,6 +6572,24 @@ export type Database = {
         }
         Returns: undefined
       }
+      interviewers_leaderboard_by_v: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          user_id: string
+          total_hours: number
+          interviews: number
+          accepted: number
+          rejected: number
+          feedback: number
+        }[]
+      }
       interviewing_state_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -7152,321 +7293,6 @@ export type Database = {
         age: number | null
         city: string | null
       }
-    }
-  }
-  storage: {
-    Tables: {
-      buckets: {
-        Row: {
-          allowed_mime_types: string[] | null
-          avif_autodetection: boolean | null
-          created_at: string | null
-          file_size_limit: number | null
-          id: string
-          name: string
-          owner: string | null
-          owner_id: string | null
-          public: boolean | null
-          updated_at: string | null
-        }
-        Insert: {
-          allowed_mime_types?: string[] | null
-          avif_autodetection?: boolean | null
-          created_at?: string | null
-          file_size_limit?: number | null
-          id: string
-          name: string
-          owner?: string | null
-          owner_id?: string | null
-          public?: boolean | null
-          updated_at?: string | null
-        }
-        Update: {
-          allowed_mime_types?: string[] | null
-          avif_autodetection?: boolean | null
-          created_at?: string | null
-          file_size_limit?: number | null
-          id?: string
-          name?: string
-          owner?: string | null
-          owner_id?: string | null
-          public?: boolean | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      migrations: {
-        Row: {
-          executed_at: string | null
-          hash: string
-          id: number
-          name: string
-        }
-        Insert: {
-          executed_at?: string | null
-          hash: string
-          id: number
-          name: string
-        }
-        Update: {
-          executed_at?: string | null
-          hash?: string
-          id?: number
-          name?: string
-        }
-        Relationships: []
-      }
-      objects: {
-        Row: {
-          bucket_id: string | null
-          created_at: string | null
-          id: string
-          last_accessed_at: string | null
-          metadata: Json | null
-          name: string | null
-          owner: string | null
-          owner_id: string | null
-          path_tokens: string[] | null
-          updated_at: string | null
-          user_metadata: Json | null
-          version: string | null
-        }
-        Insert: {
-          bucket_id?: string | null
-          created_at?: string | null
-          id?: string
-          last_accessed_at?: string | null
-          metadata?: Json | null
-          name?: string | null
-          owner?: string | null
-          owner_id?: string | null
-          path_tokens?: string[] | null
-          updated_at?: string | null
-          user_metadata?: Json | null
-          version?: string | null
-        }
-        Update: {
-          bucket_id?: string | null
-          created_at?: string | null
-          id?: string
-          last_accessed_at?: string | null
-          metadata?: Json | null
-          name?: string | null
-          owner?: string | null
-          owner_id?: string | null
-          path_tokens?: string[] | null
-          updated_at?: string | null
-          user_metadata?: Json | null
-          version?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "objects_bucketId_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      s3_multipart_uploads: {
-        Row: {
-          bucket_id: string
-          created_at: string
-          id: string
-          in_progress_size: number
-          key: string
-          owner_id: string | null
-          upload_signature: string
-          user_metadata: Json | null
-          version: string
-        }
-        Insert: {
-          bucket_id: string
-          created_at?: string
-          id: string
-          in_progress_size?: number
-          key: string
-          owner_id?: string | null
-          upload_signature: string
-          user_metadata?: Json | null
-          version: string
-        }
-        Update: {
-          bucket_id?: string
-          created_at?: string
-          id?: string
-          in_progress_size?: number
-          key?: string
-          owner_id?: string | null
-          upload_signature?: string
-          user_metadata?: Json | null
-          version?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      s3_multipart_uploads_parts: {
-        Row: {
-          bucket_id: string
-          created_at: string
-          etag: string
-          id: string
-          key: string
-          owner_id: string | null
-          part_number: number
-          size: number
-          upload_id: string
-          version: string
-        }
-        Insert: {
-          bucket_id: string
-          created_at?: string
-          etag: string
-          id?: string
-          key: string
-          owner_id?: string | null
-          part_number: number
-          size?: number
-          upload_id: string
-          version: string
-        }
-        Update: {
-          bucket_id?: string
-          created_at?: string
-          etag?: string
-          id?: string
-          key?: string
-          owner_id?: string | null
-          part_number?: number
-          size?: number
-          upload_id?: string
-          version?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
-            columns: ["upload_id"]
-            isOneToOne: false
-            referencedRelation: "s3_multipart_uploads"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      can_insert_object: {
-        Args: {
-          bucketid: string
-          name: string
-          owner: string
-          metadata: Json
-        }
-        Returns: undefined
-      }
-      extension: {
-        Args: {
-          name: string
-        }
-        Returns: string
-      }
-      filename: {
-        Args: {
-          name: string
-        }
-        Returns: string
-      }
-      foldername: {
-        Args: {
-          name: string
-        }
-        Returns: string[]
-      }
-      get_size_by_bucket: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          size: number
-          bucket_id: string
-        }[]
-      }
-      list_multipart_uploads_with_delimiter: {
-        Args: {
-          bucket_id: string
-          prefix_param: string
-          delimiter_param: string
-          max_keys?: number
-          next_key_token?: string
-          next_upload_token?: string
-        }
-        Returns: {
-          key: string
-          id: string
-          created_at: string
-        }[]
-      }
-      list_objects_with_delimiter: {
-        Args: {
-          bucket_id: string
-          prefix_param: string
-          delimiter_param: string
-          max_keys?: number
-          start_after?: string
-          next_token?: string
-        }
-        Returns: {
-          name: string
-          id: string
-          metadata: Json
-          updated_at: string
-        }[]
-      }
-      operation: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      search: {
-        Args: {
-          prefix: string
-          bucketname: string
-          limits?: number
-          levels?: number
-          offsets?: number
-          search?: string
-          sortcolumn?: string
-          sortorder?: string
-        }
-        Returns: {
-          name: string
-          id: string
-          updated_at: string
-          created_at: string
-          last_accessed_at: string
-          metadata: Json
-        }[]
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
     }
   }
 }

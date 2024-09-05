@@ -36,7 +36,7 @@ export const candidatePortalRouter = createTRPCRouter({
       const { application_id } = input;
 
       const interviews = (
-        await ctx.db
+        await ctx.adminDb
           .from('meeting_details')
           .select(
             'start_time,end_time,session_name,session_duration,schedule_type,meeting_link,status,session_id',
@@ -49,7 +49,7 @@ export const candidatePortalRouter = createTRPCRouter({
         return await Promise.all(
           interviews.map(async (interview) => {
             const interviewers = (
-              await ctx.db
+              await ctx.adminDb
                 .from('meeting_interviewers')
                 .select('first_name,last_name,profile_image,position')
                 .eq('session_id', interview.session_id)
@@ -70,7 +70,7 @@ export const candidatePortalRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { application_id } = input;
       const company = (
-        await ctx.db
+        await ctx.adminDb
           .from('applications')
           .select('candidates(recruiter(name,logo))')
           .eq('id', application_id)
@@ -79,7 +79,7 @@ export const candidatePortalRouter = createTRPCRouter({
       ).data;
 
       const messages = (
-        await ctx.db
+        await ctx.adminDb
           .from('candidate_portal_message')
           .select('id,message,created_at,message,is_readed,title')
           .eq('application_id', application_id)
@@ -98,7 +98,7 @@ export const candidatePortalRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { application_id } = input;
       const company = (
-        await ctx.db
+        await ctx.adminDb
           .from('applications')
           .select(
             'candidates(avatar,first_name,last_name,recruiter(name,logo))',
@@ -122,7 +122,7 @@ export const candidatePortalRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { application_id } = input;
       const data = (
-        await ctx.db
+        await ctx.adminDb
           .from('applications')
           .select(
             'candidate_files(file_url),candidates(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
@@ -141,7 +141,7 @@ export const candidatePortalRouter = createTRPCRouter({
     .input(updateProfileSchema)
     .mutation(
       async ({ ctx, input: { id, ...payload } }) =>
-        await ctx.db
+        await ctx.adminDb
           .from('candidates')
           .update(payload)
           .eq('id', id)

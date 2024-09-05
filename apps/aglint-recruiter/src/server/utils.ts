@@ -18,7 +18,7 @@ type NestedPermissions<T> = T extends
   | MutationProcedure<any>
   ? Permissions
   : {
-      [K in keyof T]?: Permissions | NestedPermissions<T[K]>;
+      [K in keyof T]: Permissions | NestedPermissions<T[K]>;
     };
 
 const getPermissions = (

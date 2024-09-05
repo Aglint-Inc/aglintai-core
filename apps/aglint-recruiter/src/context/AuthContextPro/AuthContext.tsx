@@ -1,5 +1,4 @@
 import { type AuthChangeEvent, type Session } from '@supabase/supabase-js';
-import { useRouter } from 'next/navigation';
 import {
   type ReactNode,
   createContext,
@@ -8,6 +7,7 @@ import {
   useState,
 } from 'react';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
@@ -22,7 +22,7 @@ const AuthContext = createContext<AuthContextInterface>({
 });
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const [user, setUser] = useState<Session['user'] | null>(null);
 
   useEffect(() => {

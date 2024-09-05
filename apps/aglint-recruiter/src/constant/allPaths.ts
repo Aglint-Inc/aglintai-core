@@ -2,6 +2,7 @@ export const PATHS = [
 '/404',
 '/500',
 '/_error',
+'/analytics',
 '/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
 '/api/agent-workflow/interviewer-decline',

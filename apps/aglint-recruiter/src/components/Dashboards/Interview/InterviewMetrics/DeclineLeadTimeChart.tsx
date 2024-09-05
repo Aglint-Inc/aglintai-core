@@ -6,19 +6,13 @@ import {
   ResponsiveContainer,
   Scatter,
   ScatterChart,
+  Tooltip,
   // Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 
-const data = [
-  { date: '18 Feb', days: 2.8 },
-  { date: '19 Feb', days: 4.1 },
-  { date: '20 Feb', days: 3.7 },
-  { date: '21 Feb', days: 3.9 },
-  { date: '22 Feb', days: 4.2 },
-  { date: '23 Feb', days: 6.5 },
-];
+import { useDeclineCount } from '@/hooks/analytics/interview/interview.hook';
 
 // const CustomTooltip = ({ active, payload }) => {
 //   if (active && payload && payload.length) {
@@ -32,8 +26,8 @@ const data = [
 // };
 
 export default function DeclineLeadTimeChart() {
-  const averageLeadTime = 4.5;
-
+  const data = useDeclineCount();
+  const averageLeadTime = data.average || 0;
   return (
     <Card className='w-full max-w-2xl mx-auto'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -69,11 +63,14 @@ export default function DeclineLeadTimeChart() {
               <XAxis dataKey='date' />
               <YAxis
                 type='number'
-                domain={[0, 7]}
-                ticks={[0, 2, 3, 4, 5, 6, 7]}
+                dataKey='cancelled'
+                // domain={[0, 7]}
+                // ticks={[0, 2, 3, 4, 5, 6, 7]}
               />
-              {/* <Tooltip content={<CustomTooltip />} /> */}
-              <Scatter data={data} fill='#22c55e' />
+              {/* <XAxis type='number' dataKey='x' name='stature' unit='cm' />
+              <YAxis type='number' dataKey='y' name='weight' unit='kg' /> */}
+              <Tooltip />
+              <Scatter data={data.scatterData} fill='#22c55e' />
             </ScatterChart>
           </ResponsiveContainer>
         </div>
