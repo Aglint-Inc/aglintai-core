@@ -13,9 +13,9 @@ const UploadApplications = ({ children }: { children?: React.ReactNode }) => {
     <Dialog>
       <DialogTrigger asChild>
         {children || (
-          <Button variant='outline' className='w-auto'>
+          <Button size='sm' variant='outline' className='w-auto'>
             <PlusCircle className='mr-2 h-4 w-4' />
-            Add candidates abc
+            Add candidates
           </Button>
         )}
       </DialogTrigger>
