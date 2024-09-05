@@ -62,6 +62,7 @@ const notifyInts = async ({
       .from('meeting_interviewers')
       .select()
       .eq('session_id', session_id)
+      .eq('is_confirmed', true)
   );
 
   const [application] = supabaseWrap(
