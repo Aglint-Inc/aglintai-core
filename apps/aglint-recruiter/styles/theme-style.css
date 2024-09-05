@@ -1771,3 +1771,10 @@ body [data-bg-color="neutral"]{
 .rpv-core__page-layer::after {
   box-shadow: none !important;
 }
+
+[class*="ButtonFilter"] {
+  *[font-size="1"] {
+    font-size: .875rem;
+    line-height: 1.25rem;
+  }
+}
