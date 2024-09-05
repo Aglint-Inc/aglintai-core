@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Label } from '@components/ui/label';
 import {
   Select,
   SelectContent,
@@ -6,6 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
+import { TextareaProps } from '@components/ui/textarea';
+import { cn } from '@lib/utils';
+import { SelectProps } from '@radix-ui/react-select';
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
 
@@ -14,73 +18,115 @@ type MenuOption = {
   value: any;
 };
 
-type Props = {
+type Props = SelectProps & {
   label?: string;
   menuOptions: MenuOption[];
-  value: any;
   disabled?: boolean;
-  onChange: (value: string) => void;
-  defaultValue?: any;
   required?: boolean;
   startIcon?: React.ReactNode;
   error?: boolean;
   helperText?: string;
   placeholder?: string;
+  labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
+  labelBold?: 'default' | 'normal';
+  fieldSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
+  defaultLabelColor?: string;
+  id?: string;
+  fullWidth?: boolean;
+  className?: string;
 };
 
 const UISelect = ({
   menuOptions = [],
-  value,
-  onChange,
   disabled,
-  label,
   required,
-  defaultValue,
   startIcon,
   error,
   helperText,
   placeholder = 'Choose from the list',
+  fullWidth,
+  label,
+  labelSize = 'small',
+  labelBold = 'default',
+  defaultLabelColor = null,
+  id,
+  className,
+  fieldSize,
+  ...props
 }: Props) => {
+  const labelClasses = cn(
+    'text-neutral-900',
+    labelBold === 'default' ? 'font-semibold' : 'font-normal',
+    {
+      'text-sm': labelSize === 'small',
+      'text-base': labelSize === 'medium',
+      'text-lg': labelSize === 'large',
+      'text-xl': labelSize === 'xLarge',
+      'text-2xl': labelSize === 'xxLarge',
+      'text-3xl': labelSize === 'xxxLarge',
+    },
+    disabled && 'text-neutral-500',
+    defaultLabelColor,
+  );
+
+  const inputClasses = cn(
+    'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
+    fullWidth && 'w-full',
+    error ? 'border-red-500 focus:ring-0' : 'border-neutral-300',
+    disabled && 'bg-neutral-100 text-neutral-500 cursor-not-allowed',
+    fieldSize === 'small'
+      ? 'h-6'
+      : fieldSize === 'medium'
+        ? 'h-8'
+        : fieldSize === 'large'
+          ? 'h-10'
+          : fieldSize === 'xLarge'
+            ? 'h-12'
+            : fieldSize === 'xxLarge'
+              ? 'h-14'
+              : fieldSize === 'xxxLarge'
+                ? 'h-16'
+                : 'h-10',
+    className,
+  );
+
   return (
-    <div className='flex flex-col gap-1'>
+    <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
       {label && (
-        <div className='flex flex-row'>
-          <span className='text-sm font-medium'>{label}</span>
-          {required && <span className='text-red-500'>&nbsp;*</span>}
+        <div className='flex flex-row items-center'>
+          <Label htmlFor={id} className={labelClasses}>
+            {label}
+          </Label>
+          {required && <span className='text-error-500 ml-1'>*</span>}
         </div>
       )}
-      <Select
-        disabled={disabled}
-        value={value?.toString()}
-        onValueChange={onChange}
-        defaultValue={defaultValue}
-      >
-        <SelectTrigger
-          className={`w-full h-9 ${error ? 'border-red-500' : ''}`}
-        >
-          {startIcon && <span className='mr-2'>{startIcon}</span>}
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent className='z-[2000]'>
-          {menuOptions.length === 0 ? (
-            <div className='px-2 py-1 italic text-gray-500 cursor-default'>
-              No options available
-            </div>
-          ) : (
-            menuOptions.map((menu, idx) => (
-              <SelectItem key={idx} value={menu.value}>
-                {menu.name}
-              </SelectItem>
-            ))
-          )}
-        </SelectContent>
-      </Select>
-      {error && helperText && (
-        <div className='flex flex-row items-center justify-start gap-1'>
-          <AlertCircle className='w-3 h-3 text-red-500' />
-          <span className='text-xs text-red-500'>{helperText}</span>
-        </div>
-      )}
+      <div>
+        <Select {...props} disabled={disabled} required={required}>
+          <SelectTrigger className={inputClasses}>
+            {startIcon && <span className='mr-2'>{startIcon}</span>}
+            <SelectValue placeholder={placeholder} id={id} />
+          </SelectTrigger>
+          <SelectContent className='z-[2000]'>
+            {menuOptions.length === 0 ? (
+              <div className='px-2 py-1 italic text-gray-500 cursor-default'>
+                No options available
+              </div>
+            ) : (
+              menuOptions.map((menu, idx) => (
+                <SelectItem key={idx} value={menu.value}>
+                  {menu.name}
+                </SelectItem>
+              ))
+            )}
+          </SelectContent>
+        </Select>
+        {error && helperText && (
+          <div className='flex flex-row items-center mt-1'>
+            <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+            <p className='text-sm text-red-700'>{helperText}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

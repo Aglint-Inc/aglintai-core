@@ -27,6 +27,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
@@ -34,10 +35,8 @@ import { capitalize, cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import * as React from 'react';
 
 import FilterInput from '@/components/CandidateDatabase/Search/FilterInput';
-import UITextField from '@/components/Common/UITextField';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -367,10 +366,8 @@ function InterviewerLevelSettings({
                 }}
                 renderInput={(params) => {
                   return (
-                    <UITextField
+                    <TextField
                       {...params}
-                      labelSize='medium'
-                      // fullWidth
                       label=''
                       placeholder='Ex. Healthcare'
                     />

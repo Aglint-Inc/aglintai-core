@@ -18,12 +18,12 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -404,7 +404,7 @@ function Availibility({
                       }}
                       renderInput={(params) => {
                         return (
-                          <UITextField
+                          <TextField
                             {...params}
                             label=''
                             placeholder='Ex. Healthcare'

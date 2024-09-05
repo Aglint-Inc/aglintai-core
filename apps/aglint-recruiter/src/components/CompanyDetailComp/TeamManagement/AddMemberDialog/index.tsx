@@ -9,7 +9,7 @@ import { InviteTeamCard } from '@devlink/InviteTeamCard';
 import { TeamInvite } from '@devlink/TeamInvite';
 import { TeamInvitesBlock } from '@devlink/TeamInvitesBlock';
 import { TeamPendingInvites } from '@devlink/TeamPendingInvites';
-import { Autocomplete, Drawer, Stack } from '@mui/material';
+import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -395,7 +395,7 @@ const AddMember = ({
                       }
                       getOptionLabel={(option) => capitalizeFirstLetter(option)}
                       renderInput={(params) => (
-                        <UITextField
+                        <TextField
                           {...params}
                           error={formError.employment}
                           onFocus={() => {
@@ -442,7 +442,7 @@ const AddMember = ({
                         </li>
                       )}
                       renderInput={(params) => (
-                        <UITextField
+                        <TextField
                           {...params}
                           error={formError.location}
                           required
@@ -477,7 +477,7 @@ const AddMember = ({
                         <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                       )}
                       renderInput={(params) => (
-                        <UITextField
+                        <TextField
                           {...params}
                           error={formError.department}
                           onFocus={() => {
@@ -518,7 +518,7 @@ const AddMember = ({
                           <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                         )}
                         renderInput={(params) => (
-                          <UITextField
+                          <TextField
                             {...params}
                             name='Role'
                             placeholder='Choose Role'
@@ -552,7 +552,7 @@ const AddMember = ({
                           return memberListObj[String(option)];
                         }}
                         renderInput={(params) => (
-                          <UITextField
+                          <TextField
                             {...params}
                             name='manager'
                             placeholder='Select Manager'

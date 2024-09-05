@@ -14,7 +14,7 @@ import React from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UISelect from '@/components/Common/Uiselect';
+import UISelect from '@/components/Common/UiSelect';
 import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
 import { getTimeDifference } from '@/utils/jsonResume';
@@ -294,9 +294,9 @@ const EmailOutReach = ({
                 name: e.name,
                 value: e.id,
               }))}
-              value={selectedTemplate}
-              defaultValue={0}
-              onChange={(value) => {
+              value={String(selectedTemplate)}
+              defaultValue={String(0)}
+              onValueChange={(value) => {
                 genEmailFromTempJson(
                   emailTemplates[Number(value)].templateJson,
                 );
