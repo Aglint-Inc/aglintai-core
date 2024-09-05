@@ -87,7 +87,6 @@ function ImageUploadManual({
             >
               <Button
                 variant='ghost'
-                size='icon'
                 className={`transition-opacity duration-500 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
               >
                 <Upload className='w-6 h-6' />
@@ -104,13 +103,12 @@ function ImageUploadManual({
                     name='file'
                     types={['PNG', 'JPEG', 'JPG']}
                   >
-                    <Button variant='ghost' size='icon' className='text-white'>
+                    <Button variant='ghost' className='text-white'>
                       <RotateCw className='w-4 h-4' />
                     </Button>
                   </FileUploader>
                   <Button
                     variant='ghost'
-                    size='icon'
                     className='text-white'
                     onClick={(e) => {
                       e.stopPropagation();

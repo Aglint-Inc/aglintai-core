@@ -23,12 +23,12 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div 
-      className="relative flex items-center w-full"
+    <div
+      className='relative flex items-center w-full'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex-grow space-y-2">
+      <div className='flex-grow space-y-2'>
         <Input
           value={value}
           placeholder={`${socialName}`}
@@ -36,16 +36,15 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
           onChange={(e) => onChange(e.target.value)}
           className={`${error?.error ? 'border-red-500' : ''} ${isHovered ? 'pr-10' : ''}`}
         />
-        {error?.error && <p className="text-sm text-red-500">{error.msg}</p>}
+        {error?.error && <p className='text-sm text-red-500'>{error.msg}</p>}
       </div>
       {isHovered && (
         <Button
-          variant="ghost"
-          size="icon"
+          variant='ghost'
           onClick={onDelete}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8"
+          className='absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8'
         >
-          <Trash2 className="h-3 w-3" />
+          <Trash2 className='h-3 w-3' />
         </Button>
       )}
     </div>
