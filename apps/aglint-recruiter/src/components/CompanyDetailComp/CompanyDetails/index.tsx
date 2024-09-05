@@ -5,53 +5,47 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { CompanyInfo } from '@devlink/CompanyInfo';
 import { CompanyInfoDetails } from '@devlink/CompanyInfoDetails';
 import { TextWithIcon } from '@devlink2/TextWithIcon';
-import { DeletePopup } from '@devlink3/DeletePopup';
 import { PencilIcon, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import {
-  manageDepartments,
-  manageOfficeLocation,
-} from '@/context/AuthContext/utils';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
-import MuiPopup from '../../Common/MuiPopup';
-import AddAndEditLocation from './AddAndEditLocation';
 import Departments from './Departments';
-import DeleteDepartmentsDialog from './Departments/ManageDepartmentsDialog/deleteDepartmentDialog';
 import EditBasicInfoDialog from './EditBasicInfoDialog';
+import AddAndEditLocation from './Locations/AddAndEditLocation';
+import DeleteLocation from './Locations/DeleteLocation';
+export type DialogState = {
+  deletelocation: { open: boolean; edit: number };
+  location: { open: boolean; edit: number };
+  roles: boolean;
+  departments: boolean;
+  stacks: boolean;
+};
+
+export const initialDialog = (): DialogState => {
+  return {
+    deletelocation: { open: false, edit: -1 },
+    location: { open: false, edit: -1 },
+    roles: false,
+    departments: false,
+    stacks: false,
+  };
+};
 
 const CompanyInfoComp = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const { recruiter } = useAuthDetails();
-  const { data: locations, refetch: refetchLocations } =
-    useAllOfficeLocations();
-  const { refetch: refetchDepartments } = useAllDepartments();
+  const { data: locations } = useAllOfficeLocations();
   const [dialog, setDialog] = useState(initialDialog());
 
-  const [deleteDialog, setDeleteDialog] = useState<{
-    type: 'departments';
-    open: boolean;
-    id: string | number | null;
-  }>({
-    type: 'departments',
-    open: false,
-    id: null,
-  });
   const [editDrawer, setEditDrawer] = useState(false);
 
   const handleClose = () => {
     setDialog(initialDialog());
-  };
-
-  const handleDeleteLocation = async (id: number) => {
-    await manageOfficeLocation({ type: 'delete', data: id });
-    refetchLocations();
   };
 
   const isFormDisabled = !checkPermissions(['manage_company']);
@@ -64,64 +58,14 @@ const CompanyInfoComp = () => {
         open={dialog.location.open}
         edit={dialog.location.edit}
       />
-      {deleteDialog.open && deleteDialog.type === 'departments' && (
-        <DeleteDepartmentsDialog
-          handleDelete={() =>
-            deleteDialog.id &&
-            manageDepartments({
-              type: 'delete',
-              data: [deleteDialog.id as number],
-            }).then(() => {
-              setDeleteDialog({ ...deleteDialog, open: false });
-              refetchDepartments();
-            })
-          }
-          handleClose={() => setDeleteDialog({ ...deleteDialog, open: false })}
-          open={deleteDialog.open}
-          id={deleteDialog.id as number}
-        />
-      )}
+      <DeleteLocation dialog={dialog} setDialog={setDialog} />
+
       <>
         <EditBasicInfoDialog
           editDialog={editDrawer}
           setEditDialog={setEditDrawer}
         />
-        <MuiPopup
-          props={{
-            open: dialog.deletelocation.open,
-            onClose: () => {
-              setDialog({
-                ...dialog,
-                deletelocation: { open: false, edit: -1 },
-              });
-            },
-          }}
-        >
-          <DeletePopup
-            textDescription={
-              'Are you sure you want to delete this office location? This action is permanent.'
-            }
-            textTitle={'Delete Office Location'}
-            isIcon={false}
-            onClickCancel={{
-              onClick: () => {
-                setDialog({
-                  ...dialog,
-                  deletelocation: { open: false, edit: -1 },
-                });
-              },
-            }}
-            onClickDelete={{
-              onClick: () => {
-                handleDeleteLocation(dialog.deletelocation.edit);
-                setDialog({
-                  ...dialog,
-                  deletelocation: { open: false, edit: -1 },
-                });
-              },
-            }}
-          />
-        </MuiPopup>
+
         <div className='w-full h-[calc(100vh-48px)] bg-white overflow-auto'>
           <CompanyInfo
             isEditable={!isFormDisabled}
@@ -295,13 +239,3 @@ const CompanyInfoComp = () => {
 };
 
 export default CompanyInfoComp;
-
-const initialDialog = () => {
-  return {
-    deletelocation: { open: false, edit: -1 },
-    location: { open: false, edit: -1 },
-    roles: false,
-    departments: false,
-    stacks: false,
-  };
-};
