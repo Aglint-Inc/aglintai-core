@@ -5,6 +5,7 @@ import { getFullName } from '@aglint/shared-utils';
 import CompanyImage from '@/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/components/CandiatePortal/components/GreetingCandidate';
+import IncompleteProfile from '@/components/CandiatePortal/components/IncompleteProfile';
 import InterviewProgress from '@/components/CandiatePortal/components/InterviewProgress';
 import RequestedAvailability from '@/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
@@ -61,6 +62,7 @@ export default function Component({ params }) {
           </div>
 
           <div className='flex flex-col gap-4'>
+            <IncompleteProfile />
             {upcoming?.length > 0 ? (
               <UpcomingInterview upcomingData={upcoming} />
             ) : (
