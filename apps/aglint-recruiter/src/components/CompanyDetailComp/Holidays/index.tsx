@@ -24,7 +24,7 @@ import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import UISelect from '@/components/Common/Uiselect';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
@@ -214,7 +214,7 @@ function Holidays() {
                   {recruiter && specificLocationOn === 'specific_locations' && (
                     <div>
                       <Label>Pick locations</Label>
-                      <UISelect
+                      <UISelectDropDown
                         menuOptions={
                           recruiter
                             ? recruiter?.office_locations.map((item) => {
@@ -226,9 +226,7 @@ function Holidays() {
                             : []
                         }
                         value={selectedLocations[0]}
-                        onChange={(value) =>
-                          setSelectedLocations(value ? [value] : [])
-                        }
+                        onValueChange={(value) => setSelectedLocations([value])}
                         placeholder='Select a Location'
                         label='Locations'
                       />
