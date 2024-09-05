@@ -85,6 +85,10 @@ function FilterDepartment() {
         onClickStatus={{
           id: 'department' + 'click',
           onClick: handleClick,
+          style: {
+            whiteSpace: 'nowrap',
+            height: '100%',
+          },
         }}
         textLabel={'Department'}
         slotRightIcon={

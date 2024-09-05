@@ -51,6 +51,7 @@ const BreadcrumbLink = React.forwardRef<
     <Comp
       ref={ref}
       className={cn('transition-colors hover:text-foreground', className)}
+      style={{ cursor: 'pointer' }}
       {...props}
     />
   );
@@ -76,15 +77,15 @@ const BreadcrumbSeparator = ({
   children,
   className,
   ...props
-}: React.ComponentProps<'li'>) => (
-  <li
+}: React.ComponentProps<'div'>) => (
+  <div
     role='presentation'
     aria-hidden='true'
     className={cn('[&>svg]:size-3.5', className)}
     {...props}
   >
     {children ?? <ChevronRight />}
-  </li>
+  </div>
 );
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator';
 
