@@ -9,7 +9,6 @@ export async function POST(req: Request) {
   const body = await req.json();
   const supabaseAdmin = getSupabaseServer();
   try {
-    console.log(body);
     const req_body = v.parse(sendSelfScheduleRequest_email_applicant, body);
 
     if (!req_body.filter_json_id && !req_body.application_id) {

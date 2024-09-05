@@ -36,7 +36,7 @@ type Props = SelectProps & {
   className?: string;
 };
 
-const UISelect = ({
+const UISelectDropDown = ({
   menuOptions = [],
   disabled,
   required,
@@ -131,4 +131,4 @@ const UISelect = ({
   );
 };
 
-export default UISelect;
+export default UISelectDropDown;
