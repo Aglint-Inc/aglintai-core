@@ -5,11 +5,13 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
+import { Label } from '@components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { RolesPill } from '@devlink/RolesPill';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
@@ -23,9 +25,6 @@ import {
   Alert,
   Autocomplete,
   Chip,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -388,30 +387,24 @@ function InterviewerLevelSettings({
                   max={dailyLmit.max}
                 />
                 <RadioGroup
-                  row
-                  aria-labelledby='demo-row-radio-buttons-group-label'
-                  name='row-radio-buttons-group'
+                  defaultValue={dailyLmit.type}
+                  onChange={(e) =>
+                    handleType(
+                      (e.target as HTMLInputElement).value as
+                        | 'Interviews'
+                        | 'Hours',
+                    )
+                  }
+                  className='flex flex-row'
                 >
-                  {['Interviews', 'Hours'].map((ele, i) => {
-                    return (
-                      <FormControlLabel
-                        checked={dailyLmit.type === ele}
-                        key={i}
-                        onChange={(e: any) => {
-                          handleType(e.target.value);
-                        }}
-                        sx={{
-                          marginLeft: '0px',
-                          '& .MuiRadio-root': {
-                            marginRight: 'var(--space-1)',
-                          },
-                        }}
-                        value={ele}
-                        control={<Radio />}
-                        label={capitalize(ele.replaceAll('_', ' '))}
-                      />
-                    );
-                  })}
+                  {['Interviews', 'Hours'].map((ele) => (
+                    <div key={ele} className='flex items-center space-x-2'>
+                      <RadioGroupItem value={ele} id={`radio-${ele}`} />
+                      <Label htmlFor={`radio-${ele}`}>
+                        {capitalize(ele.replaceAll('_', ' '))}
+                      </Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </Stack>
             </>
@@ -425,30 +418,24 @@ function InterviewerLevelSettings({
                   max={weeklyLmit.max}
                 />
                 <RadioGroup
-                  row
-                  aria-labelledby='demo-row-radio-buttons-group-label'
-                  name='row-radio-buttons-group'
+                  defaultValue={weeklyLmit.type}
+                  onChange={(e) =>
+                    handleType(
+                      (e.target as HTMLInputElement).value as
+                        | 'Interviews'
+                        | 'Hours',
+                    )
+                  }
+                  className='flex flex-row'
                 >
-                  {['Interviews', 'Hours'].map((ele, i) => {
-                    return (
-                      <FormControlLabel
-                        checked={weeklyLmit.type === ele}
-                        key={i}
-                        onChange={(e: any) => {
-                          handleType(e.target.value);
-                        }}
-                        sx={{
-                          marginLeft: '0px',
-                          '& .MuiRadio-root': {
-                            marginRight: 'var(--space-1)',
-                          },
-                        }}
-                        value={ele}
-                        control={<Radio />}
-                        label={capitalize(ele.replaceAll('_', ' '))}
-                      />
-                    );
-                  })}
+                  {['Interviews', 'Hours'].map((ele) => (
+                    <div key={ele} className='flex items-center space-x-2'>
+                      <RadioGroupItem value={ele} id={`radio-weekly-${ele}`} />
+                      <Label htmlFor={`radio-weekly-${ele}`}>
+                        {capitalize(ele.replaceAll('_', ' '))}
+                      </Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </Stack>
             </>
