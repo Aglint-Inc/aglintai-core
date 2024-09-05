@@ -46,7 +46,7 @@ const triggerActions = async (request_data: DatabaseTable['request']) => {
           (request_data.type === 'schedule_request' &&
             j_l_a.workflow.trigger === 'onRequestSchedule') ||
           (request_data.type === 'reschedule_request' &&
-            j_l_a.workflow.trigger === 'onRequestReschedule') ||
+            j_l_a.workflow.trigger === 'onRequestSchedule') ||
           (request_data.type === 'cancel_schedule_request' &&
             j_l_a.workflow.trigger === 'onRequestCancel') ||
           (request_data.type === 'decline_request' &&
