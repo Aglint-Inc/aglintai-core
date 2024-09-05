@@ -7,6 +7,7 @@ interface CustomSocialFieldProps {
   socialName: string;
   value: string;
   error: { error: boolean; msg: string };
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
   onDelete: () => void;
   setError: React.Dispatch<React.SetStateAction<any>>;

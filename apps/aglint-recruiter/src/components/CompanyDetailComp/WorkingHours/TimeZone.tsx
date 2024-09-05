@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Label } from '@components/ui/label';
@@ -7,11 +8,23 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Clock, Edit, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
 
-const TimeZone = ({
+import { TimezoneObj } from '../Scheduling';
+
+interface TimeZoneProps {
+  timeZone: string;
+  selectedTimeZone: TimezoneObj | null;
+  setSelectedTimeZone: (value: TimezoneObj) => void;
+  handleUpdate: (data: {
+    timeZone: { tzCode: string } | null;
+  }) => Promise<void>;
+  isUpdating: boolean;
+}
+
+const TimeZone: FC<TimeZoneProps> = ({
   timeZone,
   selectedTimeZone,
   setSelectedTimeZone,

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
@@ -45,27 +46,23 @@ function LocationCard({
   timeZone,
   isHeadquarter,
   onEdit,
-  onDelete
+  onDelete,
 }: LocationCardProps) {
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
   const [isHovered, setIsHovered] = useState(false);
-  
+
   const location = [city, region, country].filter(Boolean).join(', ');
 
   return (
-    <Card 
+    <Card
       className='p-4 h-full relative'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {!isFormDisabled && isHovered && (
         <div className='absolute top-2 right-2 flex space-x-1'>
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={() => onEdit(id)}
-          >
+          <Button variant='ghost' size='sm' onClick={() => onEdit(id)}>
             <PencilIcon className='h-3 w-3' />
           </Button>
           <Button

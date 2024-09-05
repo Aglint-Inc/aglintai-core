@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Label } from '@components/ui/label';
@@ -16,20 +17,38 @@ import {
 } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar, Edit, Loader2 } from 'lucide-react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 import dayjs from '@/utils/dayjs';
 
 import DayWithTime from './DayWithTime';
-import { useState } from 'react';
-const WorkTime = ({
+
+// Define types for the component props
+interface TimeRange {
+  startTime: string;
+  endTime: string;
+}
+
+interface WorkingHour {
+  day: string;
+  isWorkDay: boolean;
+  timeRange: TimeRange;
+}
+
+interface WorkTimeProps {
+  workingHours: WorkingHour[];
+  setWorkingHours: Dispatch<SetStateAction<WorkingHour[]>>;
+  handleUpdate: (data: { workingHours: WorkingHour[] }) => Promise<void>;
+  isUpdating: boolean;
+}
+
+const WorkTime: FC<WorkTimeProps> = ({
   workingHours,
   setWorkingHours,
   handleUpdate,
   isUpdating,
 }) => {
-  console.log(workingHours);
   const [isOpen, setIsOpen] = useState(false);
-
   const handleUpdateAndClose = async () => {
     await handleUpdate({ workingHours });
     setIsOpen(false);

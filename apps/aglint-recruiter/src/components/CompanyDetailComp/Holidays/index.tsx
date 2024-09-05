@@ -19,15 +19,15 @@ import { CompanyDayOff } from '@devlink2/CompanyDayOff';
 import { DayoffList } from '@devlink2/DayoffList';
 import { TextWithBg } from '@devlink2/TextWithBg';
 import { DayOffHelper } from '@devlink3/DayOffHelper';
-import { Autocomplete, TextField, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+import UISelect from '@/components/Common/Uiselect';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
-import UISelect from '@/components/Common/Uiselect';
 
 export const LoadMax = {
   dailyHours: 8,
