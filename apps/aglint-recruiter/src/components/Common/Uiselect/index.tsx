@@ -11,7 +11,7 @@ import React from 'react';
 
 type MenuOption = {
   name: string;
-  value: any;
+  value: any | string;
 };
 
 type Props = {

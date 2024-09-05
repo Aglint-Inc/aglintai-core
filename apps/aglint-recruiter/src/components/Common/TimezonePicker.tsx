@@ -23,9 +23,11 @@ type TimeZoneType = (typeof timeZone)[number];
 export function TimezonePicker({
   onChange,
   value,
+  width = '280',
 }: {
   onChange: (value: TimeZoneType) => void;
   value: TimeZoneType['tzCode'];
+  width?: string;
 }) {
   const [open, setOpen] = useState(false);
   const selectedTimezone = useMemo(
@@ -33,7 +35,7 @@ export function TimezonePicker({
     () => timeZone.find((tz) => tz.tzCode === value),
     [value],
   );
-
+  const widthSize = `min-w-[${width}px] w-[${width}px]`;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -41,7 +43,7 @@ export function TimezonePicker({
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[280px] justify-between'
+          className={`w-full justify-between`}
         >
           {selectedTimezone
             ? // If the user has selected a timezone, show its label.
@@ -51,7 +53,7 @@ export function TimezonePicker({
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[280px] p-0'>
+      <PopoverContent className={`${widthSize} p-0`}>
         <Command>
           <CommandInput placeholder='Search timezone...' />
           <CommandList>
