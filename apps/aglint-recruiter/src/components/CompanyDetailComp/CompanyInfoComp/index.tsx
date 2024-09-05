@@ -106,8 +106,8 @@ const CompanyInfoComp = () => {
       )}
       <>
         <EditBasicInfoSheet
-          editDrawer={editDrawer}
-          setEditDrawer={setEditDrawer}
+          editDialog={editDrawer}
+          setEditDialog={setEditDrawer}
         />
         <MuiPopup
           props={{
@@ -243,26 +243,27 @@ const CompanyInfoComp = () => {
 
                   return (
                     <div key={loc.id} className='p-[var(--space-1)]'>
-
                       {/* Card change to shadcn */}
-                      
-                      <Card className="p-4 h-full">
-                        <div className="flex items-center justify-between">
-                        <h4 className="text-base font-semibold">{location}</h4>
-                        {isHeadQuaterVisible && (
-                              <Badge variant="outline">Headquarters</Badge>
-                            )}
+
+                      <Card className='p-4 h-full'>
+                        <div className='flex items-center justify-between'>
+                          <h4 className='text-base font-semibold'>
+                            {location}
+                          </h4>
+                          {isHeadQuaterVisible && (
+                            <Badge variant='outline'>Headquarters</Badge>
+                          )}
                         </div>
                         <div>
                           <p>{address || '-'}</p>
                           <p>{timeZone}</p>
                         </div>
-                       
+
                         {!isFormDisabled && (
-                          <div className="flex justify-end space-x-2 mt-2">
+                          <div className='flex justify-end space-x-2 mt-2'>
                             <Button
-                              variant="outline"
-                              size="sm"
+                              variant='outline'
+                              size='sm'
                               onClick={() => {
                                 setDialog({
                                   ...dialog,
@@ -270,12 +271,12 @@ const CompanyInfoComp = () => {
                                 });
                               }}
                             >
-                              <PencilIcon className="h-3 w-3" />
+                              <PencilIcon className='h-3 w-3' />
                             </Button>
                             <Button
-                              variant="outline"
-                              size="sm"
-                              className="bg-red-400 hover:bg-red-500"
+                              variant='outline'
+                              size='sm'
+                              className='bg-red-400 hover:bg-red-500'
                               onClick={() => {
                                 setDialog({
                                   ...dialog,
@@ -286,7 +287,7 @@ const CompanyInfoComp = () => {
                                 });
                               }}
                             >
-                              <Trash2 className="h-3 w-3 text-white" />
+                              <Trash2 className='h-3 w-3 text-white' />
                             </Button>
                           </div>
                         )}

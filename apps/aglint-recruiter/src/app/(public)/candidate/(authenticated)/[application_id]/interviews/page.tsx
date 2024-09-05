@@ -8,6 +8,7 @@ import { Calendar, Linkedin } from 'lucide-react';
 import EmptyState from '@/components/CandiatePortal/components/EmptyState';
 import InterviewsSkeleton from '@/components/CandiatePortal/components/InterviewSkeleton';
 import dayjs from '@/utils/dayjs';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useCandidatePortalInterviews } from '../_common/hooks';
 export default function InterviewsPage() {
@@ -65,6 +66,9 @@ function InterviewCard({
         <div className='flex justify-between items-center mb-4'>
           <div className='flex items-center'>
             <div className='bg-primary/10 text-primary rounded-md p-2 mr-3 text-center w-16 h-16 flex flex-col justify-center'>
+              <span className='text-xs'>
+                {dayjs(interview.start_time).format('dddd')}
+              </span>
               <span className='text-lg font-semibold'>
                 {dayjs(interview.start_time).format('DD')}
               </span>
@@ -77,7 +81,9 @@ function InterviewCard({
                 {dayjs(interview.start_time).format('hh:mm A  - ')}
                 {dayjs(interview.end_time).format('hh:mm A ')}
               </p>
-              <p className='text-xs text-gray-500'>{interview.schedule_type}</p>
+              <p className='text-xs text-gray-500'>
+                {capitalizeAll(interview.schedule_type)}
+              </p>
             </div>
           </div>
         </div>
