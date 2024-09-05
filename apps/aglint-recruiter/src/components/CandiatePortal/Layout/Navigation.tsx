@@ -10,6 +10,7 @@ import {
   useCandidatePortalNavbar,
 } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 
+import CandidatePortalLoader from '../components/CandidatePortalLoader';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import NavProfile from './NavProfile';
 
@@ -22,12 +23,13 @@ export default function Navigation() {
   const { data, isPending } = useCandidatePortalNavbar();
   const { application_id } = useCandidatePortal();
 
-  if (isPending) return <>Loading</>;
+  if (isPending)
+    return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
 
   const { company } = data;
   return (
     <div className='sticky w-full px-5 top-3 z-50 flex items-center justify-center'>
-      <header className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border w-full max-w-screen-xl container mx-auto'>
+      <header className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border w-full max-w-screen-xl container mx-auto p-0'>
         <div className='container mx-auto px-4 py-2 flex items-center justify-between'>
           <div className='flex items-center justify-center'>
             {company?.logo ? (

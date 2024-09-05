@@ -2,7 +2,6 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import React from 'react';
 
 import { type apiPortalInterviewsResponse } from '@/api/candidate_portal/get_interviews/route';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -47,27 +46,34 @@ const UpcomingCard = ({
 }) => {
   return (
     <>
-      <p className='text-sm text-gray-600 mb-4'>
-        {dayjsLocal(latestUpcoming.start_time).format('MMMM DD dddd')}
-      </p>
-      {/* <p className='text-sm text-gray-600 mb-4'>{interviewData.date}</p> */}
-      <div className='flex items-center justify-between'>
-        <div>
+      <div className='flex items-center gap-3'>
+        <div className='flex flex-col items-center justify-center bg-gray-100 py-2 rounded-lg w-24'>
+          <span className='text-sm font-normal text-gray-500'>
+            {dayjsLocal(latestUpcoming.start_time).format('MMMM')}
+          </span>
+          <span className='text-2xl font-medium my-1'>
+            {dayjsLocal(latestUpcoming.start_time).format('DD')}
+          </span>
+          <span className='text-sm font-medium text-gray-500'>
+            {dayjsLocal(latestUpcoming.start_time).format('dddd')}
+          </span>
+        </div>
+        <div className='flex flex-col gap-1'>
           <div className='font-semibold'>
             {dayjsLocal(latestUpcoming.start_time).format('hh:mm A - ')}
             {dayjsLocal(latestUpcoming.end_time).format('hh:mm A')}
           </div>
-          {/* <div className='font-semibold'>{interviewData.time}</div> */}
+          <div className='text-md'>{latestUpcoming?.session_name}</div>
           <div className='text-sm text-gray-600'>
             {capitalizeAll(latestUpcoming.schedule_type)}
           </div>
-          {/* <div className='text-sm text-gray-600'>{interviewData.type}</div> */}
         </div>
       </div>
       {latestUpcoming.interviewers.map((interviewer, index) => (
         <div className='flex items-center gap-2 mt-4' key={index}>
           <Avatar className='w-10 h-10 rounded-md overflow-hidden'>
             <AvatarImage
+              className='w-10 h-10 rounded-md overflow-hidden'
               src={interviewer.profile_image}
               alt={interviewer.first_name}
             />

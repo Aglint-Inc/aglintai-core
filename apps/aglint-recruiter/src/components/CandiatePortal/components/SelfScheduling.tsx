@@ -26,6 +26,7 @@ function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
         )}
       </Card>
     </div>
+    
   );
 }
 
@@ -33,10 +34,12 @@ export default SelfScheduling;
 
 const SelfSchedulingEmpty = () => {
   return (
-    <CardContent>
-      <CardHeader>SelfScheduling Request</CardHeader>
-      <p>No SelfScheduling request found</p>
-    </CardContent>
+    <CardContent className='p-0 pl-4 pb-4'>
+    <CardHeader className='p-4 pl-0 text-md font-semibold'>
+      Self Scheduling Request
+    </CardHeader>
+    <p className='text-muted-foreground'>No Self Scheduling Requests</p>
+  </CardContent>
   );
 };
 const SelfSchedulingComp = ({ schedule }) => {
