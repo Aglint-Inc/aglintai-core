@@ -6,13 +6,13 @@ import { Checkbox } from '@components/ui/checkbox';
 import { EditEmail } from '@devlink/EditEmail';
 import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { LoaderSvg } from '@devlink/LoaderSvg';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Box, Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -337,13 +337,11 @@ function SchedulerEmailTemps({ setSaving }) {
                   }}
                   slotRightIcon={
                     <Stack>
-                      <GlobalIcon
-                        iconName={
-                          anchorElFilter
-                            ? 'keyboard_arrow_up'
-                            : 'keyboard_arrow_down'
-                        }
-                      />
+                      {anchorElFilter ? (
+                        <ChevronUp size={20} />
+                      ) : (
+                        <ChevronDown size={20} />
+                      )}
                     </Stack>
                   }
                 />

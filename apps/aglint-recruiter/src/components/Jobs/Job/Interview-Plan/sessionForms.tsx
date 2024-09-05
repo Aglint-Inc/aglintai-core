@@ -30,8 +30,9 @@ import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { sessionDurations } from '@/utils/scheduling/const';
 
-import { type CompanyMember, PausedBadge, RoleIcon } from '.';
+import { type CompanyMember } from '.';
 import { getBreakLabelV2 } from './utils';
+import { Briefcase, Pause } from 'lucide-react';
 
 export type SessionUser = CompanyMember & {
   moduleUserId: string;
@@ -653,7 +654,7 @@ const InterviewerPills = ({
         textMemberName={
           <Stack direction={'row'} alignItems={'center'} gap={1}>
             <>{name}</>
-            {interviewer.paused && <PausedBadge />}
+            {interviewer.paused && <Pause size={16} />}
           </Stack>
         }
         slotMemberAvatar={
@@ -717,8 +718,8 @@ const InterviewersField = ({
     name: getFullName(m.first_name, m.last_name),
     value: m.user_id,
     start_icon_url: m.profile_image,
-    badge: m.paused && <PausedBadge />,
-    meta: [{ title: m.position, icon: <RoleIcon /> }],
+    badge: m.paused && <Pause size={16} />,
+    meta: [{ title: m.position, icon: <Briefcase size={16} /> }],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
     e,

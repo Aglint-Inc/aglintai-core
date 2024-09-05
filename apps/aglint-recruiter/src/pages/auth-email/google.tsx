@@ -80,7 +80,7 @@ const Google = () => {
 
   return (
     <>
-    {/* fix here */}
+      {/* fix here */}
       {/* <Stack
         direction={'row'}
         alignItems={'center'}
@@ -88,7 +88,7 @@ const Google = () => {
         justifyContent={'center'}
         height={'100vh'}
       > */}
-        <LoaderSvg />
+      <LoaderSvg />
       {/* </Stack> */}
     </>
   );

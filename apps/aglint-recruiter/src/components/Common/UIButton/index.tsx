@@ -11,22 +11,14 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
     const LeftIconWithClass = leftIcon
       ? React.cloneElement(leftIcon as React.ReactElement, {
           className:
-            size === 'sm'
-              ? 'h-3 w-3'
-              : size === 'md'
-                ? 'h-4 w-4'
-                : 'h-5 w-5',
+            size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-4 w-4' : 'h-5 w-5',
         })
       : null;
 
     const RightIconWithClass = rightIcon
       ? React.cloneElement(rightIcon as React.ReactElement, {
           className:
-            size === 'sm'
-              ? 'h-3 w-3'
-              : size === 'md'
-                ? 'h-4 w-4'
-                : 'h-5 w-5',
+            size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-4 w-4' : 'h-5 w-5',
         })
       : null;
 
@@ -34,9 +26,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
       <Button {...props} ref={ref} size={size}>
         {LeftIconWithClass && (
           <span
-            className={
-              size === 'sm' ? 'mr-1' : size === 'md' ? 'mr-2' : 'mr-3'
-            }
+            className={size === 'sm' ? 'mr-1' : size === 'md' ? 'mr-2' : 'mr-3'}
           >
             {LeftIconWithClass}
           </span>
@@ -44,9 +34,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
         {children}
         {RightIconWithClass && (
           <span
-            className={
-              size === 'sm' ? 'ml-1' : size === 'md' ? 'ml-2' : 'ml-3'
-            }
+            className={size === 'sm' ? 'ml-1' : size === 'md' ? 'ml-2' : 'ml-3'}
           >
             {RightIconWithClass}
           </span>

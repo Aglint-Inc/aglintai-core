@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { ButtonGhost } from '@devlink/ButtonGhost';
-import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { Text } from '@devlink2/Text';
 import { Stack } from '@mui/material';
+import { Check } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -21,7 +21,7 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   return (
     <>
       <Stack direction={'row'} alignItems={'center'} gap={0}>
-        <GlobalIcon iconName='check' />
+        <Check size={20} />
         <Text
           size={1}
           color={'neutral'}

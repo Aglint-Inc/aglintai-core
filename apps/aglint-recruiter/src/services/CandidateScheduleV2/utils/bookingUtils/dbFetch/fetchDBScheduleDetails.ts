@@ -37,7 +37,9 @@ export const fetchDBScheduleDetails = async (
     .tz(parsed_body.cand_tz)
     .startOf('day')
     .format('DD/MM/YYYY');
-  const end_date_str = dayjsLocal(sorted_plan[sorted_plan.length - 1].start_time)
+  const end_date_str = dayjsLocal(
+    sorted_plan[sorted_plan.length - 1].start_time,
+  )
     .tz(parsed_body.cand_tz)
     .startOf('day')
     .format('DD/MM/YYYY');

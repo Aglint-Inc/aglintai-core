@@ -15,7 +15,6 @@ import { uniqueId } from 'lodash';
 import { Plus } from 'lucide-react';
 import React, { ReactNode, useState } from 'react';
 
-
 interface DepartmentsProps {
   btn: ReactNode;
   options: { name: string; id: string }[];

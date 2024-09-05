@@ -9,13 +9,12 @@ import {
 } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { ButtonSolid } from '@devlink2/ButtonSolid';
-import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { RequestCandidate } from '@devlink2/RequestCandidate';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -167,11 +166,13 @@ function CandidateAvailability({
 
     // send request availability email to candidate
     try {
-      const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
-        request_id: selectedRequest.id,
-        supabaseAdmin: supabase,
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-      });
+      const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
+        {
+          request_id: selectedRequest.id,
+          supabaseAdmin: supabase,
+          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+        },
+      );
       const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
           organizer_user_id: recruiterUser.user_id,
@@ -231,7 +232,7 @@ function CandidateAvailability({
       >
         <SideDrawerLarge
           isHeaderIconVisible={true}
-          slotHeaderIcon={<GlobalIcon iconName={'exit_to_app'} size={4} />}
+          slotHeaderIcon={<ArrowLeft size={20} />}
           textDrawertitle={
             reRequestAvailability
               ? 'Re-request Availability'

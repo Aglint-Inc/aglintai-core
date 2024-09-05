@@ -470,7 +470,8 @@ export class CandidatesSchedulingV2 {
     };
 
     const findAllDayPlans = () => {
-      const dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+      const dayjs_start_date =
+        this.db_details.schedule_dates.user_start_date_js;
       const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;
@@ -486,7 +487,8 @@ export class CandidatesSchedulingV2 {
       return all_combs;
     };
     const findAvailabilitySlots = () => {
-      const dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+      const dayjs_start_date =
+        this.db_details.schedule_dates.user_start_date_js;
       const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
       let curr_date = dayjs_start_date;

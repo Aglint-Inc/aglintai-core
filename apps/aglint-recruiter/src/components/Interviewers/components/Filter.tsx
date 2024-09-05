@@ -1,9 +1,9 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import React from 'react';
 
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -52,11 +52,7 @@ export const Filter = ({
           }
           slotRightIcon={
             <Stack>
-              <GlobalIcon
-                iconName={
-                  anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
-                }
-              />
+              {anchorEl ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
             </Stack>
           }
         />

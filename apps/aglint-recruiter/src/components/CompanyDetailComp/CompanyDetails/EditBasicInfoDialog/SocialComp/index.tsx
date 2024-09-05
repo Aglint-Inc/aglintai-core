@@ -44,9 +44,9 @@ const SocialComp = ({
   };
 
   return (
-    <div className="space-y-4 w-full">
-      <Label className="text-lg font-semibold">Social</Label>
-      <div className="space-y-6">
+    <div className='space-y-4 w-full'>
+      <Label className='text-lg font-semibold'>Social</Label>
+      <div className='space-y-6'>
         {socials.map((socialName) => (
           <SocialField
             key={socialName}

@@ -1,8 +1,8 @@
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Text } from '@devlink/Text';
 import { GeneralPopupLarge } from '@devlink3/GeneralPopupLarge';
 import { Dialog, Stack } from '@mui/material';
+import { Edit } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
 
@@ -103,7 +103,7 @@ function Instructions({
                 <ButtonSoft
                   color={'neutral'}
                   isLeftIcon={true}
-                  slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
+                  slotIcon={<Edit size={16} />}
                   size={1}
                   textButton={'Edit'}
                   onClickButton={{

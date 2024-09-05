@@ -2,10 +2,10 @@
 import './EditorStyle.css'; // We will define some styles here
 
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
 import { Kbd } from '@devlink3/Kbd';
 import { Stack } from '@mui/material';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
@@ -260,12 +260,8 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
           textHeader={`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
           slotKbd={
             <>
-              <Kbd
-                textShortcut={<GlobalIcon size={2} iconName='arrow_upward' />}
-              />
-              <Kbd
-                textShortcut={<GlobalIcon size={2} iconName='arrow_downward' />}
-              />
+              <Kbd textShortcut={<ArrowUp size={2} />} />
+              <Kbd textShortcut={<ArrowDown size={2} />} />
             </>
           }
           slotList={

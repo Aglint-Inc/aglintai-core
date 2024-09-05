@@ -1,7 +1,6 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { AddFilter } from '@devlink2/AddFilter';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
@@ -9,6 +8,7 @@ import { Skeleton } from '@devlink2/Skeleton';
 import { FilterItem } from '@devlink3/FilterItem';
 import { MultiFilterLayout } from '@devlink3/MultiFilterLayout';
 import { List, ListItemButton, Popover, Stack } from '@mui/material';
+import { ChevronDown, ChevronUp, User } from 'lucide-react';
 import React, { type ReactNode, memo } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -242,9 +242,7 @@ export function FilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
+            {anchorEl ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </Stack>
         }
       />
@@ -387,9 +385,7 @@ function MultiSectionFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
+            {anchorEl ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </Stack>
         }
       />
@@ -545,9 +541,7 @@ function NestedFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
+            {anchorEl ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </Stack>
         }
       />
@@ -779,7 +773,7 @@ function FilterOptionsList({
           })
         ) : (
           <div className='flex flex-col items-center justify-center h-[150px]'>
-            <GlobalIcon iconName='person' size={7} />
+            <User className='w-24 h-24 text-red-500 mb-4' />
             <p className='text-sm text-gray-500'>No {title} found</p>
           </div>
         )}

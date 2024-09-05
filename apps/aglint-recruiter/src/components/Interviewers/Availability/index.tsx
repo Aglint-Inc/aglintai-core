@@ -4,9 +4,9 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { CheckCircle, XCircle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -770,11 +770,11 @@ const StatusGlyph = ({ isConnected }) => (
     title={isConnected ? 'Calendar Connected' : 'Calendar Not Connected'}
   >
     <Stack>
-      <GlobalIcon
-        size={4}
-        color={isConnected ? 'success' : 'error'}
-        iconName={isConnected ? 'check_circle' : 'cancel'}
-      />
+      {isConnected ? (
+        <CheckCircle size={16} color='var(--success)' />
+      ) : (
+        <XCircle size={16} color='var(--error)' />
+      )}
     </Stack>
   </Tooltip>
 );

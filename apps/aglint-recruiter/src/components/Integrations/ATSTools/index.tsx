@@ -1,9 +1,8 @@
 import { useToast } from '@components/hooks/use-toast';
+import { Input } from '@components/ui/input';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { IntegrationCard } from '@devlink2/IntegrationCard';
-import { IconButton, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
@@ -27,7 +26,6 @@ function ATSTools({ integrations, refetch }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
-  const [hideApiKey, setHideApiKey] = useState(true);
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(null);
   // const { data: integrations, refetch } = useAllIntegrations();
@@ -374,26 +372,24 @@ function ATSTools({ integrations, refetch }) {
       </>
       <ATSPopUps // popup for Hr tools
         popUpBody={
-          <TextField
-            type={hideApiKey ? 'password' : 'text'}
-            fullWidth
-            inputRef={inputRef}
+          <Input
+            ref={inputRef}
             placeholder='Enter API Key'
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  onClick={() => {
-                    setHideApiKey((pre) => !pre);
-                  }}
-                >
-                  {hideApiKey ? (
-                    <GlobalIcon iconName='visibility' />
-                  ) : (
-                    <GlobalIcon iconName='visibility_off' />
-                  )}
-                </IconButton>
-              ),
-            }}
+            // InputProps={{
+            //   endAdornment: (
+            //     <Button
+            //       variant='ghost'
+            //       size='sm'
+            //       onClick={() => setHideApiKey((pre) => !pre)}
+            //     >
+            //       {hideApiKey ? (
+            //         <EyeIcon className='h-4 w-4' />
+            //       ) : (
+            //         <EyeOffIcon className='h-4 w-4' />
+            //       )}
+            //     </Button>
+            //   ),
+            // }}
           />
         }
         close={close}

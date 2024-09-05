@@ -16,13 +16,13 @@ import { useAllIntegrations } from '@/queries/intergrations';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
-import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
   fetchSchedulesCountByUserId,
   useAllSchedulesByUserId,
 } from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
+import { Calendar } from 'lucide-react';
 
 function MySchedule() {
   const { toast } = useToast();
@@ -155,7 +155,7 @@ function MySchedule() {
                             date != 'undefined' ? (
                               dayjsLocal(date).format('MMM')
                             ) : (
-                              <DateIcon />
+                              <Calendar size={20} />
                             )
                           }
                           slotMyScheduleSubCard={schedules.map(

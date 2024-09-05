@@ -1,11 +1,11 @@
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { RolesPopover } from '@devlink/RolesPopover';
 import { UserNameRoleCard } from '@devlink/UserNameRoleCard';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Avatar, Dialog, Stack } from '@mui/material';
+import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
@@ -139,7 +139,7 @@ function RoleEditMember({
                       width={'100%'}
                       sx={{ transform: 'rotate(180deg)' }}
                     >
-                      <GlobalIcon iconName={'arrow_warm_up'} size={5} />
+                      <ChevronDown size={20} />
                     </Stack>
                     <UserNameRoleCard
                       textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}

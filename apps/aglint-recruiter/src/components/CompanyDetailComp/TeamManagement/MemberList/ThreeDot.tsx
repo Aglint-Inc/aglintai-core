@@ -1,10 +1,10 @@
 import { useToast } from '@components/hooks/use-toast';
 import { FilterOption } from '@devlink/FilterOption';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { TeamOptionList } from '@devlink/TeamOptionList';
 import { Popover, Stack } from '@mui/material';
 import axios from 'axios';
+import { Mail } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
@@ -134,7 +134,7 @@ export const UserListThreeDot = ({ member }) => {
             <>
               {member.status === 'invited' && (
                 <FilterOption
-                  slotIcon={<GlobalIcon iconName={'mail'} size={4} />}
+                  slotIcon={<Mail size={16} color={'var(--neutral-2)'} />}
                   text={'Resend Invitation'}
                   color={{
                     style: {

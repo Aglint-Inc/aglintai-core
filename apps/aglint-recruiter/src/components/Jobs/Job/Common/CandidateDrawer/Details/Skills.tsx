@@ -1,20 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Skeleton } from '@devlink2/Skeleton';
 import { Stack } from '@mui/material';
+import { Lightbulb } from 'lucide-react';
 
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
-import { getIconName } from '../utils';
 import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Skills = () => {
   return (
     <CandidateDetail
-      slotIcon={<GlobalIcon size={5} iconName={getIconName('Skills')} />}
+      slotIcon={<Lightbulb size={16} />}
       slotBody={
         <Stack direction={'row'} width={'100%'} flexWrap={'wrap'} gap={1}>
           <Content />

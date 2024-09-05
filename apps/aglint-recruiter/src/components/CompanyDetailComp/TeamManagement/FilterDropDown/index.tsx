@@ -1,9 +1,9 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
+import { ChevronDown } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -49,8 +49,9 @@ function FilterDropDown({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            <ChevronDown
+              size={20}
+              className={`${anchorEl ? 'rotate-180' : ''}`}
             />
           </Stack>
         }

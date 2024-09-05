@@ -1,10 +1,10 @@
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCard } from '@devlink2/MemberListCard';
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
 import { Popover, Stack } from '@mui/material';
+import { PersonStanding } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -41,7 +41,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
               size={2}
               isRightIcon={false}
               isLeftIcon={true}
-              slotIcon={<GlobalIcon iconName='person_add' size={5} />}
+              slotIcon={<PersonStanding size={5} />}
               textButton={'Add Interviewer'}
               onClickButton={{
                 onClick: () => {
@@ -103,7 +103,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
             size={2}
             isRightIcon={false}
             isLeftIcon={true}
-            slotIcon={<GlobalIcon iconName='person_add' size={5} />}
+            slotIcon={<PersonStanding size={5} />}
             textButton={'Add Interviewer'}
             onClickButton={{
               onClick: () => {

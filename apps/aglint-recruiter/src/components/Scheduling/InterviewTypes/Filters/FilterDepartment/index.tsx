@@ -1,8 +1,8 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
+import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
 import { useAllDepartments } from '@/queries/departments';
@@ -91,8 +91,10 @@ function FilterDepartment() {
         textLabel={'Department'}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            <ChevronDown
+              size={16}
+              color={'var(--neutral-2)'}
+              className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             />
           </Stack>
         }

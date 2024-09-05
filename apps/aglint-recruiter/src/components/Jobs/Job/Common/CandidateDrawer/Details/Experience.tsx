@@ -2,21 +2,20 @@
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { ExperienceItem } from '@devlink/ExperienceItem';
 import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Skeleton } from '@devlink2/Skeleton';
 import { Avatar } from '@mui/material';
+import { Briefcase } from 'lucide-react';
 import Image from 'next/image';
 
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
-import { getIconName } from '../utils';
 import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Experience = () => {
   return (
     <CandidateDetail
-      slotIcon={<GlobalIcon size={5} iconName={getIconName('Experience')} />}
+      slotIcon={<Briefcase size={16} />}
       slotBody={<Content />}
       textTitle={'Experience'}
       slotBadge={<></>}

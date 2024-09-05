@@ -1,7 +1,7 @@
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { Stack } from '@mui/material';
+import { User } from 'lucide-react';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
@@ -53,7 +53,7 @@ function SlotTrainingMembers({
               size={2}
               isRightIcon={false}
               isLeftIcon={true}
-              slotIcon={<GlobalIcon iconName='person_add' size={5} />}
+              slotIcon={<User size={16} color={'var(--neutral-2)'} />}
               textButton={'Add Trainee'}
               onClickButton={{
                 onClick: () => {
@@ -89,7 +89,7 @@ function SlotTrainingMembers({
             size={2}
             isRightIcon={false}
             isLeftIcon={true}
-            slotIcon={<GlobalIcon iconName='person_add' size={5} />}
+            slotIcon={<User size={16} color={'var(--neutral-2)'} />}
             textButton={'Add Trainee'}
             onClickButton={{
               onClick: () => {

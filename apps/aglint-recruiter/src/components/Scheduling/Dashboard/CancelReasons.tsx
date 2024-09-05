@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { NoData } from '@devlink3/NoData';
 import { Reason } from '@devlink3/Reason';
 import { Popover, Stack, Typography } from '@mui/material';
+import { ChevronDown } from 'lucide-react';
 import React, { type ReactNode, useState } from 'react';
 
 import { useCancelRescheduleReasons } from '@/queries/scheduling-dashboard';
@@ -156,8 +156,10 @@ export const DropdownSelectButton = <T,>({
         textLabel={capitalizeFirstLetter(selectedItem)}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            <ChevronDown
+              size={16}
+              color={'var(--neutral-2)'}
+              className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             />
           </Stack>
         }

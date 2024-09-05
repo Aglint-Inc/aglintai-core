@@ -7,7 +7,6 @@ import {
 } from '@components/ui/tooltip';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssignedToList } from '@devlink2/AssignedToList';
-import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { RequestCardSkeleton } from '@devlink2/RequestCardSkeleton';
 import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { ConfirmationPopup } from '@devlink3/ConfirmationPopup';
@@ -19,6 +18,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
+import { MoreVertical } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
@@ -94,7 +94,7 @@ function MoreOptions({ request_id }: { request_id: string }) {
               setTooltipOpen(!tooltipOpen);
             }}
           >
-            <GlobalIcon iconName={'more_vert'} size={4} />
+            <MoreVertical size={20} />
           </Stack>
         </TooltipTrigger>
         <TooltipContent side='bottom' align='start'>

@@ -1,8 +1,8 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { ButtonGhost } from '@devlink/ButtonGhost';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Text } from '@devlink2/Text';
 import { Stack } from '@mui/material';
+import { Check } from 'lucide-react';
 import React, { useState } from 'react';
 
 const AvailabilityLinkSent = (
@@ -12,7 +12,7 @@ const AvailabilityLinkSent = (
   return (
     <>
       <Stack direction={'row'} alignItems={'center'} gap={0}>
-        <GlobalIcon iconName='check' />
+        <Check size={16} color={'var(--neutral-2)'} />
         <Text
           size={1}
           color={'neutral'}
