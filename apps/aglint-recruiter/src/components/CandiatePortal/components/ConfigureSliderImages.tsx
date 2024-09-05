@@ -17,7 +17,7 @@ import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 import ImagesUpload from './ImagesUpload';
 
 export function ConfigureSliderImages() {
-  const { data, updateImages, setIsDialogOpen, isDialogOpen } =
+  const { data, updateImages, deleteImages, setIsDialogOpen, isDialogOpen } =
     usePortalSettings();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const dialogClose = () => {
@@ -38,8 +38,14 @@ export function ConfigureSliderImages() {
           {data?.company_images?.map((image, index) => (
             <div
               key={index}
-              className='bg-gray-300 h-40 rounded-md flex items-center justify-center'
+              className='bg-gray-300 rounded-md flex items-center justify-center w-[150px] h-[150px] relative'
             >
+              <div
+                onClick={() => deleteImages(image)}
+                className='absolute top-0 right-0 z-3'
+              >
+                X
+              </div>
               <img
                 src={image}
                 alt='dkfj'
