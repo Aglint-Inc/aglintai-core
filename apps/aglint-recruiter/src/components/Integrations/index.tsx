@@ -6,6 +6,7 @@ import Scheduling from './SchedulingTools';
 import RequestNew from './RequestNewPopUp';
 import { useState } from 'react';
 import { Button } from '@components/ui/button';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 function Integrations() {
   const { data: allIntegrations, refetch } = useAllIntegrations();
@@ -40,7 +41,9 @@ function Integrations() {
             your preferred ATS.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ATSTools integrations={allIntegrations} refetch={refetch} />
+            <ErrorBoundary>
+              <ATSTools integrations={allIntegrations} refetch={refetch} />
+            </ErrorBoundary>
           </div>
         </section>
 
@@ -51,7 +54,9 @@ function Integrations() {
             interview scheduling.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <Scheduling allIntegrations={allIntegrations} />
+            <ErrorBoundary>
+              <Scheduling allIntegrations={allIntegrations} />
+            </ErrorBoundary>
           </div>
         </section>
 
@@ -64,7 +69,9 @@ function Integrations() {
             coordination.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <MessagingTools />
+            <ErrorBoundary>
+              <MessagingTools />
+            </ErrorBoundary>
           </div>
         </section>
       </div>
