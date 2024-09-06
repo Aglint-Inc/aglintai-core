@@ -1,16 +1,21 @@
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
+
 import { IntegrationThanks } from '@devlink2/IntegrationThanks';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 
-import { ShowCode } from '../../Common/ShowCode';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   const { recruiter } = useAuthDetails();
@@ -54,40 +59,29 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   }
 
   return (
-    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
-      <ShowCode.When isTrue={showThanks}>
-        <IntegrationThanks
-          slotButtonClose={
-            <ButtonSoft
-              onClickButton={{
-                onClick: () => {
+    <Dialog open={isOpen} onOpenChange={close}>
+      <DialogContent className='sm:max-w-[425px]'>
+        {showThanks ? (
+          <IntegrationThanks
+            slotButtonClose={
+              <Button
+                onClick={() => {
                   close();
                   setTimeout(() => {
                     setShowThanks(false);
                   }, 500);
-                },
-              }}
-              size={2}
-              textButton={'Close'}
-            />
-            // <ButtonPrimaryDefaultRegular
-            //   buttonText={'Close'}
-            //   buttonProps={{
-            //     onClick: () => {
-            //       close();
-            //       setTimeout(() => {
-            //         setShowThanks(false);
-            //       }, 500);
-            //     },
-            //   }}
-            // />
-          }
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={!showThanks}>
-        <DcPopup
-          popupName={'Request Integration'}
-          slotBody={
+                }}
+                size='sm'
+              >
+                Close
+              </Button>
+            }
+          />
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Request Integration</DialogTitle>
+            </DialogHeader>
             <Stack direction={'column'} spacing={'16px'}>
               <Stack direction={'column'} spacing={'var(--space-2)'}>
                 <Typography fontSize={'14px'} variant='body1'>
@@ -110,35 +104,21 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                 />
               </Stack>
             </Stack>
-          }
-          onClickClosePopup={{
-            onClick: () => {
-              close();
-              setShowThanks(false);
-            },
-          }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => {
-                    close();
-                    setShowThanks(false);
-                  },
+            <DialogFooter>
+              <Button
+                variant='outline'
+                onClick={() => {
+                  close();
+                  setShowThanks(false);
                 }}
-              />
-              <ButtonSolid
-                size={2}
-                textButton={'Request'}
-                onClickButton={{ onClick: requestTool }}
-              />
-            </>
-          }
-        />
-      </ShowCode.When>
+              >
+                Cancel
+              </Button>
+              <Button onClick={requestTool}>Request</Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
     </Dialog>
   );
 }

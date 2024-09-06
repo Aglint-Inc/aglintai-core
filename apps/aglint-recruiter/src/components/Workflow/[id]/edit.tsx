@@ -1,5 +1,3 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
@@ -8,6 +6,7 @@ import { useWorkflow } from '@/context/Workflows/[id]';
 import { useWorkflowStore } from '@/context/Workflows/store';
 
 import { type Form, Forms, validate } from '../common';
+import { Button } from '@components/ui/button';
 
 const Edit = () => {
   const {
@@ -75,19 +74,12 @@ const Edit = () => {
           }
           slotButtons={
             <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: handleClose,
-                }}
-              />
-              <ButtonSolid
-                size={2}
-                textButton={'Save'}
-                onClickButton={{ onClick: handleSubmit }}
-              />
+              <Button size={'sm'} color={'neutral'} onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button size={'sm'} onClick={handleSubmit}>
+                Save
+              </Button>
             </>
           }
         />

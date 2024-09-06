@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { ButtonSoft } from '@devlink/ButtonSoft';
+
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -38,6 +38,7 @@ import {
   type Types,
 } from './calendarTypes';
 import CalendarFilter from './Filter';
+import { Button } from '@components/ui/button';
 
 function CalendarComp({
   allSchedules,
@@ -237,22 +238,17 @@ const TooltipComp = ({ data }) => {
             data.applications.candidates.last_name,
           )}
         </Typography>
-        <ButtonSoft
+        <Button
           color={'neutral'}
-          size={1}
-          textButton='View Details'
-          iconName='north_east'
-          iconSize={2}
-          isRightIcon
-          onClickButton={{
-            onClick: () =>
-              router.push(
-                `/scheduling/view?meeting_id=${
-                  data.meeting_interviewers[0].meeting_id
-                }&tab=candidate_details`,
-              ),
-          }}
-        />
+          size={'sm'}
+          onClick={() =>
+            router.push(
+              `/scheduling/view?meeting_id=${data.meeting_interviewers[0].meeting_id}&tab=candidate_details`,
+            )
+          }
+        >
+          View Details
+        </Button>
       </Stack>
     </Stack>
   );

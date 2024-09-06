@@ -1,13 +1,12 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { Text } from '@devlink/Text';
 import { GeneralPopupLarge } from '@devlink3/GeneralPopupLarge';
 import { Dialog, Stack } from '@mui/material';
-import { Edit } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { Button } from '@components/ui/button';
 
 function Instructions({
   instruction,
@@ -100,18 +99,14 @@ function Instructions({
             <ShowCode.When isTrue={showEditButton}>
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Text content='Instructions' weight={'medium'} />
-                <ButtonSoft
-                  color={'neutral'}
-                  isLeftIcon={true}
-                  slotIcon={<Edit size={16} />}
-                  size={1}
-                  textButton={'Edit'}
-                  onClickButton={{
-                    onClick: () => {
-                      setEdit(true);
-                    },
+                <Button
+                  size={'sm'}
+                  onClick={() => {
+                    setEdit(true);
                   }}
-                />
+                >
+                  Edit
+                </Button>
               </Stack>
             </ShowCode.When>
           </ShowCode>

@@ -4,8 +4,6 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { InviteTeamCard } from '@devlink/InviteTeamCard';
 import { TeamInvite } from '@devlink/TeamInvite';
 import { TeamInvitesBlock } from '@devlink/TeamInvitesBlock';
@@ -27,6 +25,7 @@ import timeZone from '@/utils/timeZone';
 
 import { useRolesOptions } from '../hooks';
 import { inviteUserApi, reinviteUser } from '../utils';
+import { Button } from '@components/ui/button';
 
 const AddMember = ({
   open,
@@ -256,25 +255,25 @@ const AddMember = ({
             <TeamInvite
               isFixedButtonVisible
               slotPrimaryButton={
-                <ButtonSolid
-                  textButton='Done'
-                  size={2}
-                  isDisabled={!inviteData?.length}
-                  onClickButton={{
-                    onClick: () => {
-                      onClose(),
-                        setInviteData([]),
-                        setForm({
-                          ...form,
-                          first_name: null,
-                          last_name: null,
-                          email: null,
-                          department_id: null,
-                          position: null,
-                        });
-                    },
+                <Button
+                  variant='default'
+                  size='lg'
+                  disabled={!inviteData?.length}
+                  onClick={() => {
+                    onClose();
+                    setInviteData([]);
+                    setForm({
+                      ...form,
+                      first_name: null,
+                      last_name: null,
+                      email: null,
+                      department_id: null,
+                      position: null,
+                    });
                   }}
-                />
+                >
+                  Done
+                </Button>
               }
               textTitle={'Add Member'}
               isInviteSentVisible={false}
@@ -573,59 +572,45 @@ const AddMember = ({
                 </Stack>
               }
               slotButtons={
-                <Stack
-                  display={'flex'}
-                  flexDirection={'row'}
-                  gap={'8px'}
-                  width={'100%'}
-                >
-                  <Stack width={'100%'} marginTop={'16px'}>
-                    <ButtonSoft
-                      isLeftIcon={false}
-                      isRightIcon={false}
-                      size='2'
-                      color={'neutral'}
-                      textButton='Cancel'
-                      onClickButton={{
-                        onClick: () => {
-                          onClose(),
-                            setInviteData([]),
-                            setForm({
-                              ...form,
-                              first_name: null,
-                              last_name: null,
-                              email: null,
-                              department_id: null,
-                              position: null,
-                              employment: null,
-                              role: null,
-                              role_id: null,
-                              manager_id: null,
-                              location_id: null,
-                              linked_in: null,
-                            });
-                        },
-                      }}
-                    />
-                  </Stack>
-                  <Stack width={'100%'} marginTop={'16px'}>
-                    <ButtonSolid
-                      isLeftIcon={false}
-                      isRightIcon={false}
-                      size='2'
-                      isDisabled={isSubmittable}
-                      onClickButton={{
-                        onClick: () => {
-                          setIsDisable(true);
-                          if (checkValidation()) {
-                            inviteUser();
-                          }
-                        },
-                      }}
-                      textButton={'Invite'}
-                    />
-                  </Stack>
-                </Stack>
+                <div className='flex flex-row gap-2 w-full mt-4'>
+                  <Button
+                    variant='outline'
+                    className='w-full'
+                    onClick={() => {
+                      onClose();
+                      setInviteData([]);
+                      setForm({
+                        ...form,
+                        first_name: null,
+                        last_name: null,
+                        email: null,
+                        department_id: null,
+                        position: null,
+                        employment: null,
+                        role: null,
+                        role_id: null,
+                        manager_id: null,
+                        location_id: null,
+                        linked_in: null,
+                      });
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant='default'
+                    className='w-full'
+                    disabled={isSubmittable}
+                    onClick={() => {
+                      setIsDisable(true);
+                      if (checkValidation()) {
+                        inviteUser();
+                      }
+                    }}
+                  >
+                    Invite
+                  </Button>
+                </div>
               }
               onClickClose={{
                 onClick: () => {
@@ -662,34 +647,32 @@ const AddMember = ({
                   />
                 }
                 slotButton={
-                  <ButtonSoft
-                    textButton={'Resend'}
-                    isLeftIcon={false}
-                    isRightIcon={false}
-                    size='2'
-                    onClickButton={{
-                      onClick: () => {
-                        setResendDisable(member.user_id);
-                        reinviteUser(member.email, recruiterUser.user_id).then(
-                          ({ error, emailSend }) => {
-                            setResendDisable(null);
-                            if (!error && emailSend) {
-                              return toast({
-                                variant: 'default',
-                                title: 'Invite sent successfully.',
-                              });
-                            }
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() => {
+                      setResendDisable(member.user_id);
+                      reinviteUser(member.email, recruiterUser.user_id).then(
+                        ({ error, emailSend }) => {
+                          setResendDisable(null);
+                          if (!error && emailSend) {
                             return toast({
-                              variant: 'destructive',
-                              title: 'Failed to resend invite',
-                              description: error,
+                              variant: 'default',
+                              title: 'Invite sent successfully.',
                             });
-                          },
-                        );
-                      },
+                          }
+                          return toast({
+                            variant: 'destructive',
+                            title: 'Failed to resend invite',
+                            description: error,
+                          });
+                        },
+                      );
                     }}
-                    isDisabled={isResendDisable === member.user_id}
-                  ></ButtonSoft>
+                    disabled={isResendDisable === member.user_id}
+                  >
+                    Resend
+                  </Button>
                 }
               />
             ))}

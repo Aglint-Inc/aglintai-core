@@ -1,23 +1,18 @@
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { IntegrationCard } from '@devlink2/IntegrationCard';
-import { IntegrationUpload } from '@devlink2/IntegrationUpload';
-import { ToggleButton } from '@devlink2/ToggleButton';
-import { Stack, TextField, Typography } from '@mui/material';
+import { Input } from '@components/ui/input';
+import { Toggle } from '@components/ui/toggle';
 import axios from 'axios';
-import { capitalize } from 'lodash';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-
-import Loader from '../../Common/Loader';
-import { ShowCode } from '../../Common/ShowCode';
-import UITextField from '../../Common/UITextField';
+import { Loader2, Upload } from 'lucide-react';
+import { ShowCode } from '@/components/Common/ShowCode';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
-import { GooglLogo, updateIntegrations, ZoomLogo } from '../utils';
+import { updateIntegrations } from '../utils';
+import GoogleLogo from '@public/images/svg/google-logo.svg';
+import ZoomLogo from '@public/images/svg/zoom-logo.svg';
+import { IntegrationCard } from '../components/IntegrationCard';
 
 function Scheduling({ allIntegrations }) {
   const { recruiter } = useAuthDetails();
@@ -157,55 +152,43 @@ function Scheduling({ allIntegrations }) {
 
   const SchedulingTools = [
     {
-      name: String('google_workspace')
-        .split('_')
-        .join(' ') as schedulingToolsType,
+      name: 'Google Workspace',
       url: 'workspace.google.com',
       isConnected: allIntegrations?.service_json,
-      logo: <GooglLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={allIntegrations?.service_json ? 'Re-Upload' : 'Connect'}
-          secondaryText={
-            allIntegrations?.service_json ? 'Disconnect' : 'Learn How'
-          }
-          secondaryAction={() => {
-            setLoading(false);
-            if (allIntegrations?.service_json)
-              disConnectApi('google_workspace');
-            else readDocs('google_workspace');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (allIntegrations?.service_json) updateApi('google_workspace');
-            else connectApi('google_workspace');
-          }}
-        />
-      ),
+      logo: <GoogleLogo />,
+      primaryText: allIntegrations?.service_json ? 'Re-Upload' : 'Connect',
+      secondaryText: allIntegrations?.service_json ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (allIntegrations?.service_json) updateApi('google_workspace');
+        else connectApi('google_workspace');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (allIntegrations?.service_json) disConnectApi('google_workspace');
+        else readDocs('google_workspace');
+      },
+      learnHowLink: 'https://workspace.google.com',
     },
     {
-      name: String('zoom') as schedulingToolsType,
+      name: 'Zoom',
       url: 'zoom.com',
       logo: <ZoomLogo />,
       isConnected: allIntegrations?.zoom_auth,
-      buttons: (
-        <CardButtons
-          primaryText={allIntegrations?.zoom_auth ? 'Re-Connect' : 'Connect'}
-          secondaryText={
-            allIntegrations?.zoom_auth ? 'Disconnect' : 'Learn How'
-          }
-          secondaryAction={() => {
-            setLoading(false);
-            if (allIntegrations?.zoom_auth) disConnectApi('zoom');
-            else readDocs('zoom');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (allIntegrations?.zoom_auth) updateApi('zoom');
-            else connectApi('zoom');
-          }}
-        />
-      ),
+      primaryText: allIntegrations?.zoom_auth ? 'Re-Connect' : 'Connect',
+      secondaryText: allIntegrations?.zoom_auth ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (allIntegrations?.zoom_auth) updateApi('zoom');
+        else connectApi('zoom');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (allIntegrations?.zoom_auth) disConnectApi('zoom');
+        else readDocs('zoom');
+      },
+      learnHowLink:
+        'https://marketplace.zoom.us/develop/applications/6yi2AYxkRASH4rVcP-8c9Q/information?mode=dev',
     },
   ];
 
@@ -258,23 +241,21 @@ function Scheduling({ allIntegrations }) {
 
   return (
     <>
-      {SchedulingTools.map((item, i) => {
-        return (
-          <IntegrationCard
-            onClickCopyLink={{
-              onClick: () => {
-                window.open('https://' + item.url);
-              },
-            }}
-            isConnectedVisible={!!item.isConnected}
-            key={i}
-            textName={capitalize(item.name)}
-            textLink={item.url}
-            slotLogo={<>{item.logo}</>}
-            slotButton={item.buttons}
-          />
-        );
-      })}
+      {SchedulingTools.map((item, i) => (
+        <IntegrationCard
+          key={i}
+          slotLogo={item.logo}
+          textName={item.name}
+          textLink={item.url}
+          isConnected={item.isConnected}
+          primaryText={item.primaryText}
+          secondaryText={item.secondaryText}
+          primaryAction={item.primaryAction}
+          secondaryAction={item.secondaryAction}
+          learnHowLink={item.learnHowLink}
+          onClick={() => window.open('https://' + item.url)}
+        />
+      ))}
       <SchedulingPopUps
         close={close}
         isOpen={isOpen}
@@ -289,59 +270,42 @@ function Scheduling({ allIntegrations }) {
                 reason === 'update_google_workspace'
               }
             >
-              <Stack direction={'column'} spacing={'var(--space-1)'}>
-                <Typography mb={0.5} variant='body1'>
-                  Domain Name
-                </Typography>
-
-                <TextField
+              <div className='space-y-4'>
+                <p className='text-base font-normal'>Domain Name</p>
+                <Input
                   defaultValue={allIntegrations?.google_workspace_domain}
                   placeholder='Ex : https://aglinthq.com'
-                  fullWidth
-                  inputRef={domainRef}
+                  ref={domainRef}
                 />
                 <ShowCode>
                   <ShowCode.When isTrue={fileData}>
                     <>
-                      <Typography mb={0.5} variant='body1'>
-                        Service Key
-                      </Typography>
-                      <TextField fullWidth disabled value={fileData} />
+                      <p className='text-base font-normal'>Service Key</p>
+                      <Input disabled value={fileData} />
                     </>
                   </ShowCode.When>
                   <ShowCode.Else>
                     <ShowCode>
                       <ShowCode.When isTrue={uploading}>
-                        <Stack
-                          height={140}
-                          width={'100%'}
-                          direction={'row'}
-                          alignItems={'center'}
-                          justifyContent={'center'}
-                        >
-                          <Loader />
-                        </Stack>
+                        <div className='flex h-36 items-center justify-center'>
+                          <Loader2 className='h-8 w-8 animate-spin' />
+                        </div>
                       </ShowCode.When>
                       <ShowCode.Else>
-                        <Stack>
-                          <input id='uploadServiceJson' {...getInputProps()} />
-                          <div {...getRootProps()}>
-                            <IntegrationUpload
-                              onClickGetJson={{
-                                onClick: (e: {
-                                  stopPropagation: () => void;
-                                }) => {
-                                  e.stopPropagation();
-                                },
-                              }}
-                            />
+                        <div {...getRootProps()} className='cursor-pointer'>
+                          <input {...getInputProps()} />
+                          <div className='flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-6 rounded-lg'>
+                            <Upload className='h-12 w-12 text-gray-400' />
+                            <p className='mt-2 text-center text-gray-600 text-sm'>
+                              Drag & drop a file here, or click to select a file
+                            </p>
                           </div>
-                        </Stack>
+                        </div>
                       </ShowCode.Else>
                     </ShowCode>
                   </ShowCode.Else>
                 </ShowCode>
-              </Stack>
+              </div>
             </ShowCode.When>
             <ShowCode.When
               isTrue={
@@ -350,50 +314,30 @@ function Scheduling({ allIntegrations }) {
                 reason === 'update_zoom'
               }
             >
-              <Stack
-                justifyContent={'end'}
-                alignItems={'center'}
-                direction={'row'}
-                spacing={2}
-                width={'100%'}
-              >
-                <Typography variant='body1'>Show keys</Typography>
-                <ToggleButton
-                  onclickToggle={{
-                    onClick: () => {
-                      setHideApiKey((pre) => !pre);
-                    },
-                  }}
-                  isActive={!hideApiKey}
-                  isInactive={hideApiKey}
-                />
-              </Stack>
-              <Stack direction={'column'} spacing={1}>
-                <UITextField
+              <div className='space-y-4'>
+                <div className='flex items-center justify-end space-x-2'>
+                  <p className='text-base font-normal'>Show keys</p>
+                  <Toggle
+                    pressed={!hideApiKey}
+                    onPressedChange={() => setHideApiKey((prev) => !prev)}
+                  />
+                </div>
+                <Input
                   type={hideApiKey ? 'password' : 'text'}
-                  fullWidth
-                  required
-                  label='Account Id'
                   placeholder='Enter Account ID'
                   ref={accountIdRef}
                 />
-                <UITextField
+                <Input
                   type={hideApiKey ? 'password' : 'text'}
-                  fullWidth
-                  label='Client Id'
-                  required
                   placeholder='Enter Client Id'
                   ref={clientIdRef}
                 />
-                <UITextField
+                <Input
                   type={hideApiKey ? 'password' : 'text'}
-                  fullWidth
-                  label='Client Secret'
-                  required
                   placeholder='Enter Client Secret'
                   ref={clientSecretRef}
                 />
-              </Stack>
+              </div>
             </ShowCode.When>
           </ShowCode>
         }
@@ -404,53 +348,3 @@ function Scheduling({ allIntegrations }) {
 }
 
 export default Scheduling;
-
-function CardButtons({
-  primaryAction,
-  secondaryAction,
-  primaryText,
-  secondaryText,
-}: {
-  primaryAction: () => void;
-  secondaryAction: () => void;
-  primaryText: string;
-  secondaryText: string;
-}) {
-  return (
-    <>
-      <ButtonSoft
-        size='2'
-        isLeftIcon={false}
-        isRightIcon={false}
-        color={'neutral'}
-        onClickButton={{
-          onClick: secondaryAction,
-        }}
-        textButton={secondaryText}
-      />
-      {primaryText === 'Edit' ||
-      primaryText === 'Re-Connect' ||
-      primaryText === 'Re-Upload' ? (
-        <ButtonSoft
-          size='2'
-          isLeftIcon={false}
-          isRightIcon={false}
-          onClickButton={{
-            onClick: primaryAction,
-          }}
-          textButton={primaryText}
-        />
-      ) : (
-        <ButtonSolid
-          size='2'
-          isLeftIcon={false}
-          isRightIcon={false}
-          onClickButton={{
-            onClick: primaryAction,
-          }}
-          textButton={primaryText}
-        />
-      )}
-    </>
-  );
-}
