@@ -54,10 +54,7 @@ function RoleEditMember({
         onClickClosePopup={{ onClick: close }}
         slotButtons={
           <>
-            <Button
-              variant="outline"
-              onClick={close}
-            >
+            <Button variant='outline' onClick={close}>
               Cancel
             </Button>
             <Button
@@ -75,10 +72,12 @@ function RoleEditMember({
               }}
               disabled={!selectedMember}
             >
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              {isLoading ? (
+                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+              ) : null}
               Update
             </Button>
-            </>
+          </>
         }
         slotBody={
           <RolesPopover

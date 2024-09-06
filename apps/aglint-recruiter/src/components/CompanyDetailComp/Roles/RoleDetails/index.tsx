@@ -200,12 +200,8 @@ const RoleDropDown = ({
   };
   return (
     <>
-      <Button
-        size='sm'
-        variant='outline'
-        onClick={handleClick}
-      >
-        <Typography>{capitalizeFirstLetter(selectedItem)}</Typography>  
+      <Button size='sm' variant='outline' onClick={handleClick}>
+        <Typography>{capitalizeFirstLetter(selectedItem)}</Typography>
         <ChevronDown />
       </Button>
       <Popover

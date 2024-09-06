@@ -16,7 +16,7 @@ import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
 import LeverLogo from '@public/images/svg/lever-logo.svg';
 import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
-function  ATSTools({ integrations, refetch }) {
+function ATSTools({ integrations, refetch }) {
   const { toast } = useToast();
   const router = useRouter();
   const { recruiter } = useAuthDetails();

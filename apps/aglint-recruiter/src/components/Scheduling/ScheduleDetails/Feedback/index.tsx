@@ -33,6 +33,8 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
