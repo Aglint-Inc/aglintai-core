@@ -1,19 +1,15 @@
-import { DatabaseEnums } from '@aglint/shared-types';
 import { supabaseAdmin } from '../../supabase/supabaseAdmin';
-import { PortalMessageType, PortalPayload } from '../types/portalMessage';
+import type { PortalPayload } from '../types/portalMessage';
 
 export default async function sendMessageToCandidatePortal({
   portalMessage,
   body,
   subject,
-  type,
 }: {
   portalMessage: PortalPayload;
   body: string;
   subject: string;
-  type: DatabaseEnums['email_slack_types'];
 }) {
-  const mailType = getType(type);
   try {
     const { data, error } = await supabaseAdmin
       .from('applications')
@@ -32,7 +28,6 @@ export default async function sendMessageToCandidatePortal({
           message: body,
           is_readed: false,
           title: subject,
-          type: mailType,
         });
 
       if (portalError) {
@@ -43,20 +38,3 @@ export default async function sendMessageToCandidatePortal({
     // console.log('portal message sending failed ', error.message);
   }
 }
-
-const getType = (
-  mailType: DatabaseEnums['email_slack_types'],
-): PortalMessageType => {
-  if (
-    mailType === 'sendSelfScheduleRequest_email_applicant' ||
-    mailType === 'selfScheduleReminder_email_applicant'
-  )
-    return 'selfSchedule';
-  if (
-    mailType === 'sendAvailReqReminder_email_applicant' ||
-    mailType === 'sendAvailabilityRequest_email_applicant'
-  )
-    return 'availability';
-
-  return null;
-};

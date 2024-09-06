@@ -8,12 +8,12 @@ import { fillCompEmailTemplate } from '@aglint/shared-utils';
 import sendMail from '../../config/sendgrid';
 import type { ICSAttachment } from '../ceateIcsContent';
 import type { MailPayloadType } from '../../types/app.types';
+import type { PortalPayload } from '../types/portalMessage';
 import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
 import { fetchCompEmailTemp, fetchJobEmailTemp } from './fetchCompEmailTemp';
 import sendMessageToCandidatePortal from './sendMessageToCandidatePortal';
-import { PortalPayload } from '../types/portalMessage';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],
@@ -92,7 +92,6 @@ export const sendMailFun = async <
       portalMessage,
       body: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      type: api_target,
     });
   }
   return null;
