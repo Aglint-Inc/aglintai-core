@@ -2,9 +2,11 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
+import AllSet from '@/components/CandiatePortal/components/AllSet';
 import CompanyImage from '@/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/components/CandiatePortal/components/GreetingCandidate';
+import IncompleteProfile from '@/components/CandiatePortal/components/IncompleteProfile';
 import InterviewProgress from '@/components/CandiatePortal/components/InterviewProgress';
 import RequestedAvailability from '@/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/components/CandiatePortal/components/SelfScheduling';
@@ -26,9 +28,7 @@ export default function Component({ params }) {
 
   if (error) throw new Error(error.message);
 
-  const isPorfilePending = hasEmptyValue(profileData);
-
-  console.log(isPorfilePending);
+  const isPorfileComplete = hasEmptyValue(profileData);
 
   const {
     availability,
@@ -40,6 +40,11 @@ export default function Component({ params }) {
     upcoming,
   } = data;
 
+  const isAllSet =
+    isPorfileComplete &&
+    upcoming?.length === 0 &&
+    availability?.length === 0 &&
+    interviewPlan.length;
   return (
     <div className='flex flex-col min-h-screen'>
       <main className='flex-1 mx-auto px-4 py-8'>
@@ -47,7 +52,7 @@ export default function Component({ params }) {
           <div className='col-span-2'>
             <div className=' rounded-lg overflow-hidden shadow'>
               <CompanyImage
-                imageSrc={candidate.avatar}
+                candidate={candidate}
                 coverSrc={company.banner_image}
               />
 
@@ -69,12 +74,8 @@ export default function Component({ params }) {
           </div>
 
           <div className='flex flex-col gap-4'>
-            {interviewPlan.length > 0 ? (
-              <InterviewProgress interviews={interviewPlan} />
-            ) : (
-              <></>
-            )}
-
+            {isAllSet && <AllSet />}
+            {isPorfileComplete && <IncompleteProfile />}
             {upcoming?.length > 0 ? (
               <UpcomingInterview upcomingData={upcoming} />
             ) : (
@@ -91,6 +92,12 @@ export default function Component({ params }) {
             )}
             {schedule?.length > 0 ? (
               <SelfScheduling scheduleData={schedule} />
+            ) : (
+              <></>
+            )}
+
+            {interviewPlan.length > 0 ? (
+              <InterviewProgress interviews={interviewPlan} />
             ) : (
               <></>
             )}

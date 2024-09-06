@@ -16,7 +16,9 @@ export default function ProfileView() {
           <div className='flex items-center gap-2'>
             <Avatar className='w-40 h-40 rounded-md'>
               <AvatarImage src={data.avatar || ''} />
-              <AvatarFallback>{data.first_name.slice(0, 2)}</AvatarFallback>
+              <AvatarFallback className='text-6xl font-semibold rounded-md'>
+                {data.first_name.charAt(0) + data.last_name.charAt(0)}
+              </AvatarFallback>
             </Avatar>
           </div>
           <h2 className='text-xl font-semibold'>

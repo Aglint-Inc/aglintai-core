@@ -1,5 +1,6 @@
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
+import Image from 'next/image';
 import { ChangeEvent, DragEvent, useRef } from 'react';
 
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
@@ -52,13 +53,14 @@ export function ConfigureCoverImage() {
           {data?.banner_image ? (
             <div className='flex flex-col items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden'>
               {/* eslint-disable-next-line @next/next/no-img-element*/}
-              <img
+              {/* <img
                 width={600}
                 height={400}
                 className='object-cover'
                 src={data.banner_image}
                 alt='cover'
-              />
+              /> */}
+              <Image width={600} height={400} src={data.banner_image} alt='Company Cover' className='object-cover h-full'></Image>
             </div>
           ) : (
             <Button

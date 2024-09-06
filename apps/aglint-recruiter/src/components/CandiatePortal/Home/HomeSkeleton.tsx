@@ -29,11 +29,11 @@ export default function HomeSkeleton() {
             </div>
           </div>
           {/* rightside skeleton */}
-          <div className='flex flex-col gap-4'>
-            <InterviewProgressSkeleton />
+          <div className='flex flex-col gap-4'>  
             <UpcomingInterviewSkeleton />
             <AvailabilityCardSkeleton />
             <AvailabilityCardSkeleton />
+            <InterviewProgressSkeleton />
           </div>
         </div>
       </main>
