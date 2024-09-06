@@ -258,28 +258,24 @@ function SchedulingSettings({ updateSettings }) {
                   warningText='When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
                   keywords={freeKeyWords}
                   setKeywords={setFreeKeywords}
-                  emptyMessage='No free keywords added.'
                 />
                 <KeywordSection
                   title='Soft Conflicts'
                   warningText='When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
                   keywords={softConflictsKeyWords}
                   setKeywords={setSoftConflictsKeyWords}
-                  emptyMessage='No soft conflict keyword added.'
                 />
                 <KeywordSection
                   title='Out of Office'
                   warningText='When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
                   keywords={outOfOffice}
                   setKeywords={setOutOfOffice}
-                  emptyMessage='No out of office keywords added.'
                 />
                 <KeywordSection
                   title='Recruiting Blocks'
                   warningText='If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
                   keywords={recruitingBlocks}
                   setKeywords={setRecruitingBlocks}
-                  emptyMessage='No recruiting blocks added.'
                 />
               </>
             }
