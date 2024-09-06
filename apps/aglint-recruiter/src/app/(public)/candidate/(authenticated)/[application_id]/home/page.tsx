@@ -28,8 +28,6 @@ export default function Component({ params }) {
 
   if (error) throw new Error(error.message);
 
-  const isPorfileComplete = hasEmptyValue(profileData);
-
   const {
     availability,
     candidate,
@@ -40,11 +38,12 @@ export default function Component({ params }) {
     upcoming,
   } = data;
 
+  const isPorfileInComplete = hasEmptyValue(profileData);
   const isAllSet =
-    isPorfileComplete &&
+    !isPorfileInComplete &&
     upcoming?.length === 0 &&
-    availability?.length === 0 &&
-    interviewPlan?.length === 0;
+    availability?.length === 0;
+
   return (
     <div className='flex flex-col min-h-screen'>
       <main className='flex-1 mx-auto px-4 py-8'>
@@ -75,7 +74,7 @@ export default function Component({ params }) {
 
           <div className='flex flex-col gap-4'>
             {isAllSet && <AllSet />}
-            {isPorfileComplete && <IncompleteProfile />}
+            {isPorfileInComplete && <IncompleteProfile />}
             {upcoming?.length > 0 ? (
               <UpcomingInterview upcomingData={upcoming} />
             ) : (
@@ -111,8 +110,8 @@ export default function Component({ params }) {
 function hasEmptyValue(obj) {
   for (const key in obj) {
     if (obj[key] === null || obj[key] === '' || obj[key] === undefined) {
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 }
