@@ -4,17 +4,13 @@ import { sendSelfScheduleRequest_email_applicant } from '@aglint/shared-types/sr
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
-import {
-  PortalMessageType,
-  PortalPayload,
-} from '../../../utils/types/portalMessage';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
   const supabaseAdmin = getSupabaseServer();
   try {
     const req_body = v.parse(sendSelfScheduleRequest_email_applicant, body);
-    console.log(req_body);
 
     if (!req_body.filter_json_id && !req_body.application_id) {
       throw new Error('missing details');

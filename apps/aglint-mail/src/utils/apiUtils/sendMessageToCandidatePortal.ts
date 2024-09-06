@@ -25,8 +25,7 @@ export default async function sendMessageToCandidatePortal({
     if (!(data.length > 0)) throw new Error(': application not present');
 
     if (data.length > 0) {
-      console.log('inside if :', portalMessage);
-      const { error } = await supabaseAdmin
+      const { error: portalError } = await supabaseAdmin
         .from('candidate_portal_message')
         .insert({
           ...portalMessage,
@@ -36,12 +35,12 @@ export default async function sendMessageToCandidatePortal({
           type: mailType,
         });
 
-      if (error) {
-        throw new Error(error.message);
+      if (portalError) {
+        throw new Error(portalError.message);
       }
     }
   } catch (error) {
-    console.log('portal message sending failed ', error.message);
+    // console.log('portal message sending failed ', error.message);
   }
 }
 
