@@ -1,8 +1,7 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
-import { Stack } from '@mui/material';
 import { User } from 'lucide-react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
@@ -49,19 +48,16 @@ function SlotTrainingMembers({
         <EmptyGeneral
           textEmpt={'No interviewers added yet.'}
           slotButton={
-            <ButtonSoft
-              size={2}
-              isRightIcon={false}
-              isLeftIcon={true}
-              slotIcon={<User size={16} color={'var(--neutral-2)'} />}
-              textButton={'Add Trainee'}
-              onClickButton={{
-                onClick: () => {
-                  setIsAddMemberDialogOpen(true);
-                  setTrainingStatus('training');
-                },
+            <UIButton
+              variant='outline'
+              leftIcon={<User />}
+              onClick={() => {
+                setIsAddMemberDialogOpen(true);
+                setTrainingStatus('training');
               }}
-            />
+            >
+              Add Trainee
+            </UIButton>
           }
         />
       )}
@@ -84,21 +80,18 @@ function SlotTrainingMembers({
         );
       })}
       {filtererdUsers.length !== 0 && (
-        <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonSoft
-            size={2}
-            isRightIcon={false}
-            isLeftIcon={true}
-            slotIcon={<User size={16} color={'var(--neutral-2)'} />}
-            textButton={'Add Trainee'}
-            onClickButton={{
-              onClick: () => {
-                setIsAddMemberDialogOpen(true);
-                setTrainingStatus('training');
-              },
+        <div>
+          <UIButton
+            variant='outline'
+            leftIcon={<User />}
+            onClick={() => {
+              setIsAddMemberDialogOpen(true);
+              setTrainingStatus('training');
             }}
-          />
-        </Stack>
+          >
+            Add Trainee
+          </UIButton>
+        </div>
       )}
     </>
   );

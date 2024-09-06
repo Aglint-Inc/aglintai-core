@@ -1,8 +1,6 @@
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { ButtonGhost } from '@devlink2/ButtonGhost';
 import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
@@ -26,6 +24,8 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { UIButton } from '@/components/Common/UIButton';
+import { Edit, EllipsisVertical } from 'lucide-react';
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {
@@ -176,27 +176,22 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
               }
               slotEditButton={
                 <Stack direction={'row'} spacing={1}>
-                  <ButtonSoft
-                    color={'neutral'}
-                    size={2}
-                    textButton='Edit'
-                    iconName='edit'
-                    isLeftIcon
-                    iconSize={2}
-                    onClickButton={{
-                      onClick: () => {
-                        setIsSettingsDialogOpen(true);
-                      },
+                  <UIButton
+                    variant='secondary'
+                    leftIcon={<Edit />}
+                    size='sm'
+                    onClick={() => {
+                      setIsSettingsDialogOpen(true);
                     }}
+                  >
+                    Edit
+                  </UIButton>
+                  <UIButton
+                    variant='secondary'
+                    size='sm'
+                    onClick={handleClick}
+                    leftIcon={<EllipsisVertical />}
                   />
-                  <Stack onClick={handleClick}>
-                    <IconButtonGhost
-                      iconName='more_vert'
-                      size={2}
-                      iconSize={6}
-                      color={'neutral'}
-                    />
-                  </Stack>
                 </Stack>
               }
               slotNewTabPill={

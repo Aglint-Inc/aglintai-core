@@ -1,4 +1,3 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCard } from '@devlink2/MemberListCard';
@@ -12,6 +11,7 @@ import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 
+import { UIButton } from '@/components/Common/UIButton';
 import {
   setIsAddMemberDialogOpen,
   setIsDeleteMemberDialogOpen,
@@ -37,19 +37,16 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
         <EmptyGeneral
           textEmpt={'No interviewers added yet.'}
           slotButton={
-            <ButtonSoft
-              size={2}
-              isRightIcon={false}
-              isLeftIcon={true}
-              slotIcon={<PersonStanding size={5} />}
-              textButton={'Add Interviewer'}
-              onClickButton={{
-                onClick: () => {
-                  setIsAddMemberDialogOpen(true);
-                  setTrainingStatus('qualified');
-                },
+            <UIButton
+              variant='outline'
+              leftIcon={<PersonStanding />}
+              onClick={() => {
+                setIsAddMemberDialogOpen(true);
+                setTrainingStatus('qualified');
               }}
-            />
+            >
+              Add Interviewer
+            </UIButton>
           }
         />
       )}
@@ -98,21 +95,18 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
         );
       })}
       {filtererdUsers.length !== 0 && (
-        <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonSoft
-            size={2}
-            isRightIcon={false}
-            isLeftIcon={true}
-            slotIcon={<PersonStanding size={5} />}
-            textButton={'Add Interviewer'}
-            onClickButton={{
-              onClick: () => {
-                setIsAddMemberDialogOpen(true);
-                setTrainingStatus('qualified');
-              },
+        <div className='pt-2'>
+          <UIButton
+            variant='outline'
+            leftIcon={<PersonStanding />}
+            onClick={() => {
+              setIsAddMemberDialogOpen(true);
+              setTrainingStatus('qualified');
             }}
-          />
-        </Stack>
+          >
+            Add Interviewer
+          </UIButton>
+        </div>
       )}
     </>
   );

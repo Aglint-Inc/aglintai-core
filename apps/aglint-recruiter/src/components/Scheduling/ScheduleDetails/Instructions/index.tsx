@@ -1,13 +1,13 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { Text } from '@devlink/Text';
-import { GeneralPopupLarge } from '@devlink3/GeneralPopupLarge';
-import { Dialog, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { Edit } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
 
 function Instructions({
   instruction,
@@ -36,56 +36,53 @@ function Instructions({
 
   return (
     <>
-      <Dialog
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
+      <UIDialog
         onClose={closeModal}
         open={edit}
-        maxWidth={'md'}
-      >
-        <GeneralPopupLarge
-          isDescriptionVisibe={false}
-          textPopupTitle={'Edit Instructions'}
-          isIcon={false}
-          textDescription={
-            'Please provide detailed instructions on how to conduct the interview, including dos and don’ts, and a clear guideline.'
-          }
-          slotPopup={
-            <Stack
-              sx={{
-                border: '1px solid var(--neutral-6)',
-                // margin: '20px',
-                maxWidth: '800px',
-                minWidth: '800px',
-                // border: '1px solid',
-                // borderColor: 'var(--neutral-6)',
-                borderRadius: 'var(--radius-2)',
+        title={'Edit Instructions'}
+        size='xl'
+        slotButtons={
+          <>
+            <UIButton variant='secondary' onClick={closeModal}>
+              Cancel
+            </UIButton>
+            <UIButton
+              variant='default'
+              onClick={async () => {
+                await updateInstruction();
+                closeModal();
               }}
-              height={'500px'}
-              overflow={'auto'}
             >
-              <TipTapAIEditor
-                enablAI={false}
-                placeholder={'Instructions'}
-                handleChange={(html) => {
-                  setTextValue(html);
-                }}
-                initialValue={instruction}
-              />
-            </Stack>
-          }
-          textPopupButton={'Save'}
-          onClickAction={{
-            onClick: async () => {
-              await updateInstruction();
-              closeModal();
-            },
-          }}
-          onClickClose={{
-            onClick: closeModal,
-          }}
-        />
-      </Dialog>
+              Save
+            </UIButton>
+          </>
+        }
+      >
+        <div className='flex flex-col gap-2'>
+          <UITypography>
+            Please provide detailed instructions on how to conduct the
+            interview, including dos and don’ts, and a clear guideline.
+          </UITypography>
+
+          <div
+            className='
+            border border-neutral-600
+            max-w-[800px]
+            rounded-[var(--radius-2)]
+            h-[500px] overflow-auto
+          '
+          >
+            <TipTapAIEditor
+              enablAI={false}
+              placeholder={'Instructions'}
+              handleChange={(html) => {
+                setTextValue(html);
+              }}
+              initialValue={instruction}
+            />
+          </div>
+        </div>
+      </UIDialog>
       <Stack direction={'column'} p={'var(--space-5)'}>
         <Stack
           gap={2}
@@ -98,21 +95,17 @@ function Instructions({
         >
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>
-              <Stack direction={'row'} justifyContent={'space-between'}>
-                <Text content='Instructions' weight={'medium'} />
-                <ButtonSoft
-                  color={'neutral'}
-                  isLeftIcon={true}
-                  slotIcon={<Edit size={16} />}
-                  size={1}
-                  textButton={'Edit'}
-                  onClickButton={{
-                    onClick: () => {
-                      setEdit(true);
-                    },
-                  }}
-                />
-              </Stack>
+              <div className='flex items-center justify-between'>
+                <p className='text-base font-medium'>Instructions</p>
+                <UIButton
+                  variant='secondary'
+                  leftIcon={<Edit />}
+                  size='sm'
+                  onClick={setEdit.bind(null, true)}
+                >
+                  Edit
+                </UIButton>
+              </div>
             </ShowCode.When>
           </ShowCode>
           <div
