@@ -106,6 +106,7 @@ export const allowedPaths = new Set<t>([
   '/api/automation/update_user_to_active',
   '/api/automation/workflow_connect_to_jobs',
   '/api/emails/sendSelfScheduleRequest_email_applicant',
+  '/api/emails/sendAvailabilityRequest_email_applicant',
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',
   '/api/scheduling/application/openselfscheduling',

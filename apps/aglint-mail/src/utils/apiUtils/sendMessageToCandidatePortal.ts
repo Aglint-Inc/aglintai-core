@@ -1,36 +1,40 @@
 import { supabaseAdmin } from '../../supabase/supabaseAdmin';
+import type { PortalPayload } from '../types/portalMessage';
 
 export default async function sendMessageToCandidatePortal({
-  application_id,
+  portalMessage,
   body,
   subject,
 }: {
-  application_id: string;
+  portalMessage: PortalPayload;
   body: string;
   subject: string;
 }) {
   try {
-    const { data } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from('applications')
       .select()
       .eq('status', 'interview')
-      .eq('id', application_id);
+      .eq('id', portalMessage.application_id);
 
-    if (data) {
-      const { error } = await supabaseAdmin
+    if (error) throw new Error(error.message);
+    if (!(data.length > 0)) throw new Error(': application not present');
+
+    if (data.length > 0) {
+      const { error: portalError } = await supabaseAdmin
         .from('candidate_portal_message')
         .insert({
-          application_id,
+          ...portalMessage,
           message: body,
           is_readed: false,
           title: subject,
         });
 
-      if (error) {
-        throw new Error(error.message);
+      if (portalError) {
+        throw new Error(portalError.message);
       }
     }
   } catch (error) {
-    // console.log('message send to candidate portal failed', error.message);
+    // console.log('portal message sending failed ', error.message);
   }
 }

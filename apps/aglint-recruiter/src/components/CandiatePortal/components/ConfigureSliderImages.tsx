@@ -8,7 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@components/ui/dialog';
-import { ImagePlus } from 'lucide-react';
+import { ImagePlus, X } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
@@ -25,11 +26,11 @@ export function ConfigureSliderImages() {
   return (
     <div>
       <div className='w-full max-w-2xl space-y-4'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-lg font-semibold'>Company About</h1>
+        <div className='flex flex-col'>
+          <h1 className='text-md font-semibold'>Company Images</h1>
           <p className='text-sm text-muted-foreground'>
-            This section content will be displayed on the candidate portal as
-            the about section.
+            These images will be displayed on the candidate portal as the
+            slider.
           </p>
         </div>
         <div className='grid grid-cols-4 gap-4 auto-rows-auto'>
@@ -37,24 +38,23 @@ export function ConfigureSliderImages() {
           {data?.company_images?.map((image, index) => (
             <div
               key={index}
-              className='bg-gray-300 rounded-md flex items-center justify-center w-[150px] h-[150px] relative'
+              className='bg-gray-300 rounded-md flex items-center justify-center w-[150px] h-[150px] relative overflow-hidden group'
             >
-              {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
-              <div
+              {/* Show delete button on hover */}
+              <button
                 onClick={() => deleteImages(image)}
-                className='absolute top-0 right-0 z-3'
+                className='absolute top-2 right-2 z-20 w-5 h-5 rounded-sm bg-white border border-gray-300 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out'
+                aria-label='Delete image' // Added for accessibility
               >
-                X
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+                <X strokeWidth={1} className='w-3 h-3' />
+              </button>
+
+              <Image
                 src={image}
-                alt='slider'
-                height={150}
+                alt='company image'
                 width={150}
-                style={{
-                  objectFit: 'cover',
-                }}
+                height={150}
+                className='w-full h-full object-cover relative z-10'
               />
             </div>
           ))}
@@ -65,12 +65,12 @@ export function ConfigureSliderImages() {
           >
             <DialogTrigger asChild>
               <Button
-                className='flex flex-col items-center gap-4 justify-center w-full h-full'
+                className='flex flex-col items-center gap-2 justify-center w-[150px] h-[150px]'
                 variant='outline'
                 onClick={() => setIsDialogOpen('images')}
               >
-                <ImagePlus className='w-10 h-10 ' />
-                Add Slider Images
+                <ImagePlus strokeWidth={1.5} className='w-10 h-10 ' />
+                <span className='text-sm font-normal'>Add Images</span>
               </Button>
             </DialogTrigger>
             <DialogContent className='sm:max-w-[500px]'>

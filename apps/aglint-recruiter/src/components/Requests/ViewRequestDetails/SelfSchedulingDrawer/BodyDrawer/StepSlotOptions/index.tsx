@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequests } from '@/context/RequestsContext';
 
 import {
   setCalendarDate,
@@ -24,12 +23,6 @@ function StepSlotOptions() {
   const filteredSchedulingOptions = useSelfSchedulingFlowStore(
     (state) => state.filteredSchedulingOptions,
   );
-
-  const {
-    requests: {
-      data: { schedule_request },
-    },
-  } = useRequests();
 
   const { recruiterUser } = useAuthDetails();
 
@@ -49,7 +42,7 @@ function StepSlotOptions() {
 
   const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
     {
-      application_id: schedule_request[0].application_id,
+      is_preview: true,
       organizer_id: recruiterUser.user_id,
     };
 

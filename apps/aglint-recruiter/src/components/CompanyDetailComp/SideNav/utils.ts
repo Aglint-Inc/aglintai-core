@@ -43,7 +43,7 @@ export const settingsItems: {
     value: settingSubNavItem['SCHEDULING_REASONS'],
   },
   {
-    label: 'Portal Setttings',
+    label: 'Candidate Portal',
     value: settingSubNavItem['PORTAL_SETTINGS'],
   },
 ];

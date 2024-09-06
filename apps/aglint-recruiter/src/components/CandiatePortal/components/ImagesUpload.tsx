@@ -24,9 +24,9 @@ export default function ImagesUpload({
       const newFiles = Array.from(event.target.files);
 
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
-      if (newFiles.length !== files.length)
-        //chandruAddToast
-        setSelectedImages((prevFiles) => [...prevFiles, ...files]);
+      // if (newFiles.length !== files.length)
+      //chandruAddToast
+      setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
   };
 
@@ -47,10 +47,10 @@ export default function ImagesUpload({
       const newFiles = Array.from(event.dataTransfer.files);
 
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
-      if (newFiles.length !== files.length)
-        //chandruAddToast
+      // if (newFiles.length !== files.length)
+      //chandruAddToast
 
-        setSelectedImages((prevFiles) => [...prevFiles, ...files]);
+      setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
   };
 

@@ -1,6 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { BriefcaseBusinessIcon } from 'lucide-react';
 import React from 'react';
 
 import {
@@ -59,15 +60,20 @@ const AvailabilityCard = ({
 }) => {
   return (
     <>
-      <CardHeader>
-        <h2 className='font-semibold'>Availability Requested for {job.name}</h2>
+      <CardHeader className='p-0 pt-4 pl-4 pb-4'>
+        <h2 className='font-semibold'>Availability Requested</h2>
+        <div className='flex gap-2 items-center'>
+        <BriefcaseBusinessIcon className='w-4 h-4' strokeWidth={1.5} />
+          <div className='text-sm '>{job.name}</div>
+        </div>
+
         <p className='text-sm text-gray-600'>
           Requested on{' '}
           {dayjs(latestavailability.created_at).format('MMM DD YYYY, hh:mm A')}
         </p>
         {/* <p className='text-sm text-gray-600'>Requested on Aug 22, 05:00 PM</p> */}
       </CardHeader>
-      <CardContent>
+      <CardContent className='p-0 pl-4 pr-4 pb-4'>
         <Button
           className='w-full'
           variant='outline'

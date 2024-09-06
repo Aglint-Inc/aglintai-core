@@ -30,13 +30,17 @@ const MessageCard = ({ index }: { index: number }) => {
                 {dayjsLocal(message.created_at).fromNow()}
               </p>
             </div>
-            <div className='flex items-center gap-2 text-sm ml-auto text-center sm:text-right'>
-              <CheckCheck className='w-4 h-4 text-green-700' />
-              <p className='text-sm text-green-700'>Completed</p>
-            </div>
-            <Badge className=' px-2 py-0.5 text-xs rounded-md bg-red-500'>
-              New
-            </Badge>
+            {message.isSubmitted && (
+              <div className='flex items-center gap-2 text-sm ml-auto text-center sm:text-right'>
+                <CheckCheck className='w-4 h-4 text-green-700' />
+                <p className='text-sm text-green-700'>Completed</p>
+              </div>
+            )}
+            {message.isNew && (
+              <Badge className=' px-2 py-0.5 text-xs rounded-md bg-red-500'>
+                New
+              </Badge>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -46,11 +50,24 @@ const MessageCard = ({ index }: { index: number }) => {
           {htmlParser.parse(message.message)}
         </p>
       </CardContent>
-      <CardFooter className='w-full'>
-        <Button variant='outline' className='w-full'>
-          Submit Availability
-        </Button>
-      </CardFooter>
+      {!message?.isSubmitted && (
+        <CardFooter className='w-full'>
+          <Button
+            variant='outline'
+            className='w-full'
+            disabled={!message?.link}
+            onClick={() => {
+              if (message?.link) window.open(message.link, '_blank');
+            }}
+          >
+            {message?.availability_id
+              ? 'Submit Availability'
+              : message?.filter_id
+                ? 'Submit Schedule'
+                : ''}
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 };

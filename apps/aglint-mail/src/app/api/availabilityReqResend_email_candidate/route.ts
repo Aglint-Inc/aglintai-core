@@ -4,6 +4,7 @@ import * as v from 'valibot';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -21,6 +22,10 @@ export async function POST(req: Request) {
 
     const is_preview = Boolean(req_body.is_preview);
 
+    const portal: PortalPayload = {
+      application_id,
+      availability_id: req_body.avail_req_id,
+    };
     const resp = await sendMailFun({
       supabaseAdmin,
       comp_email_placeholder,
@@ -30,7 +35,7 @@ export async function POST(req: Request) {
       is_preview,
       api_target: 'availabilityReqResend_email_candidate',
       payload: req_body.payload,
-      application_id,
+      portalMessage: portal,
     });
 
     if (is_preview) {
