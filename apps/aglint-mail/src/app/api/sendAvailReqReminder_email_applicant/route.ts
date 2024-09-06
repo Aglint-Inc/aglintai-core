@@ -4,6 +4,7 @@ import { sendAvailReqReminderEmailApplicant } from '@aglint/shared-types/src/agl
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -16,6 +17,10 @@ export async function POST(req: Request) {
         status: 200,
       });
     }
+    const portal: PortalPayload = {
+      application_id: details.application_id,
+      availability_id: req_body.avail_req_id,
+    };
     await sendMailFun({
       supabaseAdmin,
       api_target: 'sendAvailReqReminder_email_applicant',
@@ -24,7 +29,7 @@ export async function POST(req: Request) {
       react_email_placeholders: details.react_email_placeholders,
       payload: req_body.payload,
       recipient_email: details.recipient_email,
-      application_id: details.application_id,
+      portalMessage: portal,
     });
     return NextResponse.json('success', {
       status: 200,

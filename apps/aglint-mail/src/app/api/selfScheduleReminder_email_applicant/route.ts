@@ -4,6 +4,7 @@ import { selfScheduleReminderEmailApplicantSchema } from '@aglint/shared-types/s
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -18,6 +19,11 @@ export async function POST(req: Request) {
         status: 200,
       });
     }
+
+    const portal: PortalPayload = {
+      application_id: details.application_id,
+      filter_id: req_body.filter_id,
+    };
     await sendMailFun({
       supabaseAdmin,
       api_target: 'selfScheduleReminder_email_applicant',
@@ -26,7 +32,7 @@ export async function POST(req: Request) {
       react_email_placeholders: details.react_email_placeholders,
       payload: req_body.payload,
       recipient_email: details.recipient_email,
-      application_id: details.application_id,
+      portalMessage: portal,
     });
     return NextResponse.json('success', {
       status: 200,

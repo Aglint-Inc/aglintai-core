@@ -1,29 +1,39 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import { supabaseAdmin } from '../../supabase/supabaseAdmin';
+import { PortalMessageType, PortalPayload } from '../types/portalMessage';
 
 export default async function sendMessageToCandidatePortal({
-  application_id,
+  portalMessage,
   body,
   subject,
+  type,
 }: {
-  application_id: string;
+  portalMessage: PortalPayload;
   body: string;
   subject: string;
+  type: DatabaseEnums['email_slack_types'];
 }) {
+  const mailType = getType(type);
   try {
-    const { data } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from('applications')
       .select()
       .eq('status', 'interview')
-      .eq('id', application_id);
+      .eq('id', portalMessage.application_id);
 
-    if (data) {
+    if (error) throw new Error(error.message);
+    if (!(data.length > 0)) throw new Error(': application not present');
+
+    if (data.length > 0) {
+      console.log('inside if :', portalMessage);
       const { error } = await supabaseAdmin
         .from('candidate_portal_message')
         .insert({
-          application_id,
+          ...portalMessage,
           message: body,
           is_readed: false,
           title: subject,
+          type: mailType,
         });
 
       if (error) {
@@ -31,6 +41,23 @@ export default async function sendMessageToCandidatePortal({
       }
     }
   } catch (error) {
-    // console.log('message send to candidate portal failed', error.message);
+    console.log('portal message sending failed ', error.message);
   }
 }
+
+const getType = (
+  mailType: DatabaseEnums['email_slack_types'],
+): PortalMessageType => {
+  if (
+    mailType === 'sendSelfScheduleRequest_email_applicant' ||
+    mailType === 'selfScheduleReminder_email_applicant'
+  )
+    return 'selfSchedule';
+  if (
+    mailType === 'sendAvailReqReminder_email_applicant' ||
+    mailType === 'sendAvailabilityRequest_email_applicant'
+  )
+    return 'availability';
+
+  return null;
+};

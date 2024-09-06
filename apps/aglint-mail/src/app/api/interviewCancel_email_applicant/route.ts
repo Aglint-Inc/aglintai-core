@@ -4,6 +4,7 @@ import { interviewCancelEmailApplicantSchema } from '@aglint/shared-types/src/ag
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -17,6 +18,10 @@ export async function POST(req: Request) {
       recipient_email,
     } = await fetchUtil(supabaseAdmin, parsed_body);
 
+    const portal: PortalPayload = {
+      application_id: parsed_body.application_id,
+    };
+
     await sendMailFun({
       supabaseAdmin,
       comp_email_placeholder,
@@ -25,6 +30,7 @@ export async function POST(req: Request) {
       recipient_email,
       api_target: 'interviewCancel_email_applicant',
       payload: req_body.payload,
+      portalMessage: portal,
     });
     return NextResponse.json('success', {
       status: 200,

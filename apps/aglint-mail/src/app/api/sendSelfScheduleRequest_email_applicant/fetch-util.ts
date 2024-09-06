@@ -52,6 +52,7 @@ export async function dbUtil(
   }
   const {
     applications: {
+      id: application_id,
       candidates: { email: cand_email, first_name, recruiter, last_name },
       public_jobs: { recruiter_id, job_title },
     },
@@ -82,6 +83,7 @@ export async function dbUtil(
 
   return {
     company_id: recruiter_id,
+    application_id: application_id,
     comp_email_placeholder,
     react_email_placeholders,
     recipient_email: cand_email,

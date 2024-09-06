@@ -131,6 +131,7 @@ export async function POST(req) {
       .from('interview_filter_json')
       .select('id,confirmed_on,session_ids,created_at')
       .eq('application_id', application_id)
+      .is('confirmed_on', null)
       .throwOnError();
 
     const filteredSchudles = filter_json.filter((fil) => !fil.confirmed_on);

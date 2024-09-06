@@ -81,16 +81,58 @@ export const candidatePortalRouter = createTRPCRouter({
       const messages = (
         await ctx.db
           .from('candidate_portal_message')
-          .select('id,message,created_at,message,is_readed,title')
+          .select(
+            'id,message,created_at,message,title,type,filter_id,availability_id',
+          )
           .eq('application_id', application_id)
           .throwOnError()
       ).data;
 
-      return messages.map((message) => ({
-        ...message,
-        company_name: company.candidates.recruiter.name,
-        company_logo: company.candidates.recruiter.logo,
-      }));
+      const enrichedMessages = await Promise.all(
+        messages.map(async (message) => {
+          let vistedDetails: VistedDetails = {};
+          if (message.type === 'availability' && message?.availability_id) {
+            const res = (
+              await ctx.db
+                .from('candidate_request_availability')
+                .select('slots,visited')
+                .eq('id', message.availability_id)
+                .single()
+                .throwOnError()
+            ).data;
+            vistedDetails = {
+              isNew: !res.visited,
+              isSubmitted: Boolean(res.slots),
+              link: `/scheduling/request-availability/${message.availability_id}`,
+            };
+          }
+          if (message.type === 'selfSchedule' && message?.filter_id) {
+            const res = (
+              await ctx.db
+                .from('interview_filter_json')
+                .select('viewed_on,confirmed_on')
+                .eq('id', message.filter_id)
+                .single()
+                .throwOnError()
+            ).data;
+            vistedDetails = {
+              isNew: !res.viewed_on,
+              isSubmitted: Boolean(res.confirmed_on),
+              link: `/scheduling/invite/${application_id}?filter_id=${message.filter_id}`,
+            };
+          }
+
+          return {
+            ...message,
+            ...vistedDetails,
+            company_name: company.candidates.recruiter.name,
+            company_logo: company.candidates.recruiter.logo,
+          };
+          //isNew & isSumitted for ava & self
+        }),
+      );
+
+      return enrichedMessages;
     }),
   // get navbar ----------------------------------------------------------------
   get_navbar: publicProcedure
@@ -148,3 +190,11 @@ export const candidatePortalRouter = createTRPCRouter({
           .throwOnError(),
     ),
 });
+
+type VistedDetails =
+  | {
+      isNew: boolean;
+      isSubmitted: boolean;
+      link: string;
+    }
+  | {};

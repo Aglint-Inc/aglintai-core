@@ -12,15 +12,23 @@ import UpcomingInterview from '@/components/CandiatePortal/components/UpcomingIn
 import HomeSkeleton from '@/components/CandiatePortal/Home/HomeSkeleton';
 import { usePortalHomePage } from '@/components/CandiatePortal/hook';
 
+import { useCandidatePortalProfile } from '../_common/hooks';
+
 export default function Component({ params }) {
   const application_id = params.application_id;
-  const { isLoading, data, error } = usePortalHomePage({ application_id });
+  const { isPending, data, error } = usePortalHomePage({ application_id });
+  const { data: profileData, isPending: porfilePending } =
+    useCandidatePortalProfile();
 
-  if (isLoading) {
+  if (isPending || porfilePending) {
     return <HomeSkeleton />;
   }
 
   if (error) throw new Error(error.message);
+
+  const isPorfilePending = hasEmptyValue(profileData);
+
+  console.log(isPorfilePending);
 
   const {
     availability,
@@ -91,4 +99,13 @@ export default function Component({ params }) {
       </main>
     </div>
   );
+}
+
+function hasEmptyValue(obj) {
+  for (const key in obj) {
+    if (obj[key] === null || obj[key] === '' || obj[key] === undefined) {
+      return true;
+    }
+  }
+  return false;
 }

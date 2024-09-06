@@ -4,12 +4,17 @@ import { sendSelfScheduleRequest_email_applicant } from '@aglint/shared-types/sr
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import {
+  PortalMessageType,
+  PortalPayload,
+} from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
   const supabaseAdmin = getSupabaseServer();
   try {
     const req_body = v.parse(sendSelfScheduleRequest_email_applicant, body);
+    console.log(req_body);
 
     if (!req_body.filter_json_id && !req_body.application_id) {
       throw new Error('missing details');
@@ -20,22 +25,26 @@ export async function POST(req: Request) {
       company_id,
       react_email_placeholders,
       recipient_email,
+      application_id,
     } = await dbUtil(supabaseAdmin, req_body);
 
-    const is_preview = Boolean(req_body.application_id);
-
+    const portal: PortalPayload = {
+      application_id: application_id,
+      filter_id: req_body.filter_json_id,
+    };
     const htmlSub = await sendMailFun({
       supabaseAdmin,
       api_target: 'sendSelfScheduleRequest_email_applicant',
       comp_email_placeholder,
       company_id,
-      application_id: req_body.application_id,
       react_email_placeholders,
       recipient_email,
       payload: req_body.payload,
-      is_preview,
+      is_preview: req_body?.is_preview,
+      portalMessage: portal,
     });
-    if (is_preview) {
+
+    if (req_body.is_preview) {
       const { html, subject } = htmlSub;
       return NextResponse.json(
         { html, subject },
@@ -59,9 +68,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//   "meta": {
-//       "filter_json_id":"1309e323-7fc1-46e3-a2e7-b0be582139fe"
-//   }
-// }

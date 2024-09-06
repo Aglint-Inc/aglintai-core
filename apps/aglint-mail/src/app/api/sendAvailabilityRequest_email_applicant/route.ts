@@ -4,10 +4,12 @@ import { sendAvailabilityRequestEmailApplicantSchema } from '@aglint/shared-type
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
 
+  console.log(body);
   const supabaseAdmin = getSupabaseServer();
 
   try {
@@ -24,6 +26,11 @@ export async function POST(req: Request) {
     } = await dbUtil(supabaseAdmin, req_body);
 
     const is_preview = req_body.preview_details;
+
+    const portal: PortalPayload = {
+      application_id: application_id,
+      availability_id: req_body.avail_req_id,
+    };
     const htmlSub = await sendMailFun({
       supabaseAdmin,
       api_target: 'sendAvailabilityRequest_email_applicant',
@@ -33,7 +40,7 @@ export async function POST(req: Request) {
       recipient_email,
       payload: req_body.payload,
       is_preview,
-      application_id,
+      portalMessage: portal,
     });
 
     if (is_preview) {
