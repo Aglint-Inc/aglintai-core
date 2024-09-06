@@ -13,6 +13,7 @@ import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
 import { fetchCompEmailTemp, fetchJobEmailTemp } from './fetchCompEmailTemp';
 import sendMessageToCandidatePortal from './sendMessageToCandidatePortal';
+import { PortalPayload } from '../types/portalMessage';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],
@@ -23,7 +24,7 @@ export const sendMailFun = async <
   attachments,
   is_preview,
   api_target,
-  application_id,
+  portalMessage = null,
   company_id,
   job_id,
   payload,
@@ -36,10 +37,10 @@ export const sendMailFun = async <
   is_preview?: boolean;
   attachments?: ICSAttachment[];
   job_id?: string;
-  application_id?: string;
   payload?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
   supabaseAdmin: SupabaseType;
+  portalMessage?: PortalPayload;
 }) => {
   let fetched_temp: Pick<
     DatabaseTable['company_email_template'],
@@ -86,11 +87,12 @@ export const sendMailFun = async <
     fromName: filled_comp_template.from_name,
     attachments,
   });
-  if (application_id) {
+  if (portalMessage) {
     await sendMessageToCandidatePortal({
-      application_id,
+      portalMessage,
       body: filled_comp_template.body,
       subject: filled_comp_template.subject,
+      type: api_target,
     });
   }
   return null;

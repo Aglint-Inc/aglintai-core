@@ -867,30 +867,36 @@ export type Database = {
       candidate_portal_message: {
         Row: {
           application_id: string | null
+          availability_id: string | null
           created_at: string
+          filter_id: string | null
           id: string
           is_readed: boolean | null
           message: string | null
-          sender_id: string | null
           title: string | null
+          type: string | null
         }
         Insert: {
           application_id?: string | null
+          availability_id?: string | null
           created_at?: string
+          filter_id?: string | null
           id?: string
           is_readed?: boolean | null
           message?: string | null
-          sender_id?: string | null
           title?: string | null
+          type?: string | null
         }
         Update: {
           application_id?: string | null
+          availability_id?: string | null
           created_at?: string
+          filter_id?: string | null
           id?: string
           is_readed?: boolean | null
           message?: string | null
-          sender_id?: string | null
           title?: string | null
+          type?: string | null
         }
         Relationships: [
           {
@@ -921,36 +927,17 @@ export type Database = {
             referencedRelation: "candidate_applications_view"
             referencedColumns: ["application_id"]
           },
-          {
-            foreignKeyName: "candidate_portal_message_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "all_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "candidate_portal_message_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "debreif_meeting_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "candidate_portal_message_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       candidate_request_availability: {
         Row: {
           application_id: string
           availability: Json | null
+          availability_id: string | null
           booking_confirmed: boolean
           created_at: string
           date_range: Json | null
+          filter_id: string | null
           id: string
           is_task_created: boolean | null
           number_of_days: number | null
@@ -965,9 +952,11 @@ export type Database = {
         Insert: {
           application_id: string
           availability?: Json | null
+          availability_id?: string | null
           booking_confirmed?: boolean
           created_at?: string
           date_range?: Json | null
+          filter_id?: string | null
           id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
@@ -982,9 +971,11 @@ export type Database = {
         Update: {
           application_id?: string
           availability?: Json | null
+          availability_id?: string | null
           booking_confirmed?: boolean
           created_at?: string
           date_range?: Json | null
+          filter_id?: string | null
           id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null

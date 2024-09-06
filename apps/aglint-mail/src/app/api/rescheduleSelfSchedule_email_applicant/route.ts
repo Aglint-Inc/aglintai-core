@@ -4,6 +4,7 @@ import { interviewRescheduleEmailApplicantSchema } from '@aglint/shared-types/sr
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -22,6 +23,9 @@ export async function POST(req: Request) {
       recipient_email,
     } = await fetchUtil(supabaseAdmin, parsed_body);
 
+    const portal: PortalPayload = {
+      application_id: parsed_body.application_id,
+    };
     await sendMailFun({
       supabaseAdmin,
       api_target: 'rescheduleSelfSchedule_email_applicant',
@@ -30,7 +34,7 @@ export async function POST(req: Request) {
       react_email_placeholders,
       payload: req_body.payload,
       recipient_email,
-      application_id: parsed_body.application_id,
+      portalMessage: portal,
     });
     return NextResponse.json('success', {
       status: 200,

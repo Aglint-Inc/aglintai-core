@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 
 import {
   useCandidatePortal,
+  useCandidatePortalMessages,
   useCandidatePortalNavbar,
 } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
 
@@ -23,10 +24,13 @@ export default function Navigation() {
 
   const currentTab = pathname.split('/').filter((a) => a)[2] as tabs;
   const { data, isPending } = useCandidatePortalNavbar();
+  const { data: messages, isPending: messagePending } =
+    useCandidatePortalMessages();
   const { application_id } = useCandidatePortal();
 
-  if (isPending)
+  if (isPending || messagePending)
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
+  const messageNewCount = messages?.filter((mes) => mes.isNew).length || 0;
 
   const { company } = data;
   return (
@@ -84,7 +88,11 @@ export default function Navigation() {
                 }
               >
                 Messages
-                <Badge className='ml-2 px-2 py-0.5 text-xs bg-red-500'>1</Badge>
+                {messageNewCount > 0 && (
+                  <Badge className='ml-2 px-2 py-0.5 text-xs bg-red-500'>
+                    {messageNewCount}
+                  </Badge>
+                )}
               </Button>
             </Link>
           </nav>

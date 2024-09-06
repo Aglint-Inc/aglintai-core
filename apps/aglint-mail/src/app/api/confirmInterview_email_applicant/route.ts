@@ -4,6 +4,7 @@ import { confirmInterviewEmailApplicantSchema } from '@aglint/shared-types/src/a
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -19,6 +20,11 @@ export async function POST(req: Request) {
     } = await fetchUtil(supabaseAdmin, parsed_body);
 
     const is_preview = Boolean(parsed_body.preview_details);
+
+    const portal: PortalPayload = {
+      application_id: parsed_body.application_id,
+    };
+
     const resp = await sendMailFun({
       supabaseAdmin,
       comp_email_placeholder,
@@ -29,7 +35,7 @@ export async function POST(req: Request) {
       is_preview,
       api_target: 'confirmInterview_email_applicant',
       payload: req_body.payload,
-      application_id: parsed_body.application_id,
+      portalMessage: portal,
     });
     if (is_preview) {
       return NextResponse.json(

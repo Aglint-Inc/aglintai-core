@@ -1,5 +1,6 @@
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
+import Image from 'next/image';
 import { ChangeEvent, DragEvent, useRef } from 'react';
 
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
@@ -13,8 +14,8 @@ export function ConfigureCoverImage() {
     if (event.target.files) {
       const newFile = Array.from(event.target.files)[0];
       if (newFile.size < 5 * 1000000)
-        //chandruAddToast
         updateCover(newFile, data?.banner_image);
+        //chandruAddToast
     }
   };
 
@@ -32,33 +33,34 @@ export function ConfigureCoverImage() {
       const newFile = Array.from(event.dataTransfer.files)[0];
 
       if (newFile.size < 5 * 1000000)
-        //chandruAddToast
         updateCover(newFile, data?.banner_image);
+        //chandruAddToast
     }
   };
 
   return (
     <div>
       <div className='w-full max-w-2xl space-y-4'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-lg font-semibold'>Cover Image</h1>
+        <div className='flex flex-col'>
+          <h1 className='text-md font-semibold'>Company Cover Image</h1>
           <p className='text-sm text-muted-foreground'>
             This image will be displayed on the candidate portal as the cover
             image.
           </p>
         </div>
-        <div className='flex flex-col gap-2 '>
+        <div className='flex flex-col '>
           {/* if there is no image show this button */}
           {data?.banner_image ? (
             <div className='flex flex-col items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden'>
               {/* eslint-disable-next-line @next/next/no-img-element*/}
-              <img
+              {/* <img
                 width={600}
                 height={400}
                 className='object-cover'
                 src={data.banner_image}
                 alt='cover'
-              />
+              /> */}
+              <Image width={600} height={400} src={data.banner_image} alt='Company Cover' className='object-cover h-full'></Image>
             </div>
           ) : (
             <Button
@@ -82,7 +84,7 @@ export function ConfigureCoverImage() {
           )}
           {/* Button to edit and remove the image only if there is an image */}
           {data?.banner_image && (
-            <div className='flex flex-row gap-2 '>
+            <div className='flex flex-row gap-2'>
               <Button
                 variant='outline'
                 className='mt-4'
