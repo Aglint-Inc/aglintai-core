@@ -46,6 +46,7 @@ const ScrollingText = () => {
 
   return (
     <Button
+      variant='ghost'
       onClick={handleClick}
       className='cursor-pointer text-left w-full'
       aria-label='Cycle through tips'

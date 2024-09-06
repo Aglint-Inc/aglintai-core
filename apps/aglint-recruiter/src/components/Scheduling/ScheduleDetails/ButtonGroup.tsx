@@ -1,9 +1,9 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import React, { type Dispatch } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { useScheduleDetails } from './hooks';
+import { ButtonSoft } from '@devlink/ButtonSoft';
 
 function ButtonGroup({
   setIsCancelOpen,

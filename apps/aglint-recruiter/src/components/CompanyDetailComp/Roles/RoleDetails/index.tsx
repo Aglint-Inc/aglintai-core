@@ -1,8 +1,8 @@
 import { Switch } from '@components/ui/switch';
-import { ButtonGhost } from '@devlink/ButtonGhost';
+
 import { Permissions } from '@devlink/Permissions';
 import { RolesAndPermissionsDetail } from '@devlink/RolesAndPermissionsDetail';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
+
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { ToggleWithText } from '@devlink3/ToggleWithText';
 import {
@@ -24,6 +24,8 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleEditMember from './RoleEditMember';
 import { RoleUserWidget } from './RoleUserWidget';
+import { Button } from '@components/ui/button';
+import { ArrowLeft, ChevronDown, CirclePlus } from 'lucide-react';
 
 function RoleDetails({
   role,
@@ -79,13 +81,13 @@ function RoleDetails({
       <RolesAndPermissionsDetail
         slotAddButton={ifAllowed(
           <Stack direction={'row'}>
-            <ButtonSoft
-              onClickButton={{ onClick: () => setEditUser(true) }}
-              textButton={'Add'}
-              size={1}
-              isLeftIcon={true}
-              iconName={'add'}
-            />
+            <Button
+              onClick={() => setEditUser(true)}
+              size='sm'
+              variant='outline'
+            >
+              <CirclePlus /> Add
+            </Button>
           </Stack>,
           ['manage_roles'],
         )}
@@ -95,15 +97,9 @@ function RoleDetails({
         slotText={`These users have the ${capitalizeFirstLetter(role.name)} Role`}
         textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
-          <ButtonGhost
-            size={2}
-            color={'neutral'}
-            isLeftIcon={true}
-            iconName={'arrow_back_ios'}
-            textButton={'Back'}
-            iconSize={3}
-            onClickButton={{ onClick: back }}
-          />
+          <Button size='sm' variant='outline' onClick={back}>
+            <ArrowLeft /> Back
+          </Button>
         }
         slotBanner={
           <>
@@ -204,15 +200,10 @@ const RoleDropDown = ({
   };
   return (
     <>
-      <ButtonGhost
-        size={2}
-        color={'neutral'}
-        isRightIcon={true}
-        iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-        textButton={capitalizeFirstLetter(selectedItem)}
-        iconSize={3}
-        onClickButton={{ onClick: handleClick }}
-      />
+      <Button size='sm' variant='outline' onClick={handleClick}>
+        <Typography>{capitalizeFirstLetter(selectedItem)}</Typography>
+        <ChevronDown />
+      </Button>
       <Popover
         id={id}
         open={open}

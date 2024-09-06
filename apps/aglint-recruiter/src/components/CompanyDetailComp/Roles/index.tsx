@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { ButtonSoft } from '@devlink/ButtonSoft';
+
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { RolesAndPermissions } from '@devlink/RolesAndPermissions';
 import { RolesRow } from '@devlink/RolesRow';
@@ -16,6 +16,8 @@ import {
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleDetails from './RoleDetails';
+import { CirclePlus } from 'lucide-react';
+import { Button } from '@components/ui/button';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -138,19 +140,15 @@ const RoleTable = ({
               }
               slotButtonAdd={
                 !count && (
-                  <ButtonSoft
-                    textButton='Add'
-                    size={1}
-                    iconName='Add'
-                    isLeftIcon
-                    onClickButton={{
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        // setQueryParams({ add: true, role: details.name });
-                        setRole(key, true);
-                      },
+                  <Button
+                    size='sm'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setRole(key, true);
                     }}
-                  />
+                  >
+                    <CirclePlus /> Add
+                  </Button>
                 )
               }
             />

@@ -1,5 +1,3 @@
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { TeamSync } from '@devlink/TeamSync';
 import { TeamUsersList } from '@devlink/TeamUsersList';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
@@ -24,7 +22,15 @@ import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
 import FilterDropDown from './FilterDropDown';
 import Member from './MemberList';
-import { Building, CircleDot, Locate, User } from 'lucide-react';
+import {
+  Building,
+  CircleDot,
+  CirclePlus,
+  Locate,
+  RefreshCcw,
+  User,
+} from 'lucide-react';
+import { Button } from '@components/ui/button';
 
 type ItemType = string;
 
@@ -175,17 +181,15 @@ const TeamManagement = () => {
             textContent='You currently have four pending invites awaiting your response.'
             color={'warning'}
             slotButton={
-              <ButtonSoft
-                onClickButton={{
-                  onClick: () => {
-                    setSelectedStatus(['invited']);
-                    // setOpenDrawer({ open: true, window: 'pendingMember' });
-                  },
+              <Button
+                onClick={() => {
+                  setSelectedStatus(['invited']);
+                  // setOpenDrawer({ open: true, window: 'pendingMember' });
                 }}
-                textButton='View pending invites'
-                color={'accent'}
-                size={2}
-              />
+                variant='default'
+              >
+                View pending invites
+              </Button>
             }
           />
         }
@@ -206,16 +210,10 @@ const TeamManagement = () => {
                 gap={'var(--space-2)'}
               >
                 {isResetAllVisible && (
-                  <ButtonGhost
-                    textButton='Reset All'
-                    color={'neutral'}
-                    size={2}
-                    iconName='refresh'
-                    isLeftIcon
-                    onClickButton={{
-                      onClick: resetAllFilter,
-                    }}
-                  />
+                  <Button variant='ghost' onClick={resetAllFilter} size='sm'>
+                    <RefreshCcw className='mr-2 h-4 w-4' />
+                    Reset All
+                  </Button>
                 )}
                 <FilterDropDown
                   icon={<CircleDot />}
@@ -304,18 +302,16 @@ const TeamManagement = () => {
                   <Typography>{`* ${last_sync}`}</Typography> */}
                 </Stack>
               ) : (
-                <ButtonGhost
-                  isRightIcon={false}
-                  isLeftIcon={true}
-                  size={'2'}
-                  textButton={'Invite Member'}
-                  iconName={'person_add'}
-                  onClickButton={{
-                    onClick: () => {
-                      setOpenDrawer({ open: true, window: 'addMember' });
-                    },
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => {
+                    setOpenDrawer({ open: true, window: 'addMember' });
                   }}
-                />
+                >
+                  <CirclePlus className='mr-2 h-4 w-4' />
+                  Invite Member
+                </Button>
               ))}
           </>
         }

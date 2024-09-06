@@ -245,7 +245,6 @@ export const PATHS = [
 '/jobs/create',
 '/login',
 '/portal',
-'/profile-pro',
 '/reports',
 '/requests',
 '/requests/[id]',

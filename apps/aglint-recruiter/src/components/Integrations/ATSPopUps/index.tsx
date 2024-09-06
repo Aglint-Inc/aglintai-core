@@ -1,16 +1,17 @@
-/* eslint-disable no-unused-vars */
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { IntegrationLoading } from '@devlink2/IntegrationLoading';
-import { DeletePopup } from '@devlink3/DeletePopup';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Button } from '@components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { DeletePopup } from '../components/DeletePopup';
 import { LearnHowAshby } from '@devlink3/LearnHowAshby';
 import { LearnHowGreenhouse } from '@devlink3/LearnHowGreenhouse';
 import { LearnHowLever } from '@devlink3/LearnHowLever';
-import { Dialog, Stack, Typography } from '@mui/material';
 import { type ReactNode } from 'react';
 
-import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { type PopUpReasonTypes } from '../types';
 
@@ -21,7 +22,6 @@ function ATSPopUps({
   action,
   reason,
   isLoading,
-  inputValue,
 }: {
   isOpen: boolean;
   close: () => void;
@@ -32,196 +32,123 @@ function ATSPopUps({
   inputValue: string;
 }) {
   return (
-    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
-      <ShowCode>
-        <ShowCode.When isTrue={isLoading}>
-          <IntegrationLoading
-            isText={
-              reason === 'connect_lever' ||
-              reason === 'connect_greenhouse' ||
-              reason === 'connect_ashby'
+    <Dialog open={isOpen} onOpenChange={close}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <ShowCode>
+          <ShowCode.When isTrue={isLoading}>
+            <div className='flex flex-col items-center justify-center space-y-2'>
+              <Loader2 className='w-8 h-8 animate-spin text-primary' />
+              <p className='text-sm'>
+                {reason && reason.startsWith('connect')
+                  ? 'Connecting'
+                  : 'Reconnecting'}{' '}
+                to {reason && reason.split('_')[1]}
+              </p>
+            </div>
+          </ShowCode.When>
+          <ShowCode.When
+            isTrue={
+              reason === 'disconnect_greenhouse' ||
+              reason === 'disconnect_ashby' ||
+              reason === 'disconnect_lever'
             }
-            textLoader={
-              <Typography fontSize={'16px'} variant='caption'>
-                <ShowCode.When isTrue={reason === 'connect_lever'}>
-                  {`Connecting to Lever`}
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'connect_greenhouse'}>
-                  {`Connecting to Greenhouse`}
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'connect_ashby'}>
-                  {`Connecting to Ashby`}
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_lever'}>
-                  {`Reconnecting to Lever`}
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_greenhouse'}>
-                  {`Reconnecting to Greenhouse`}
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_ashby'}>
-                  {`Reconnecting to Ashby`}
-                </ShowCode.When>
-              </Typography>
-            }
-            slotLoaderIcon={<Loader />}
-          />
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={
-            reason === 'disconnect_greenhouse' ||
-            reason === 'disconnect_ashby' ||
-            reason === 'disconnect_lever'
-          }
-        >
-          <DeletePopup
-            textTitle={
-              <>
-                <ShowCode.When isTrue={reason === 'disconnect_greenhouse'}>
-                  Disconnect Greenhouse
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'disconnect_lever'}>
-                  Disconnect Lever
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'disconnect_ashby'}>
-                  Disconnect Ashby
-                </ShowCode.When>
-              </>
-            }
-            textDescription={
-              <>
-                By clicking {'"Disconnect"'},{' '}
-                {reason === 'disconnect_greenhouse'
+          >
+            <DeletePopup
+              isOpen={isOpen}
+              onClose={close}
+              onDelete={action}
+              title={`Disconnect ${
+                reason === 'disconnect_greenhouse'
                   ? 'Greenhouse'
                   : reason === 'disconnect_ashby'
                     ? 'Ashby'
-                    : reason === 'disconnect_lever'
-                      ? 'Lever'
-                      : ''}{' '}
-                will be disconnected from Aglint and will no longer be
-                accessible in this application. You can reconnect again on the
-                Integrations page.
-              </>
+                    : 'Lever'
+              }`}
+              description={`By clicking "Disconnect", ${
+                reason === 'disconnect_greenhouse'
+                  ? 'Greenhouse'
+                  : reason === 'disconnect_ashby'
+                    ? 'Ashby'
+                    : 'Lever'
+              } will be disconnected from Aglint and will no longer be accessible in this application. You can reconnect again on the Integrations page.`}
+              deleteButtonText='Disconnect'
+            />
+          </ShowCode.When>
+          <ShowCode.When
+            isTrue={
+              reason === 'learn_how_greenhouse' ||
+              reason === 'learn_how_ashby' ||
+              reason === 'learn_how_lever'
             }
-            onClickCancel={{
-              onClick: close,
-            }}
-            onClickDelete={{
-              onClick: action,
-            }}
-            buttonText={'Disconnect'}
-            isIcon={false}
-          />
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={
-            reason === 'learn_how_greenhouse' ||
-            reason === 'learn_how_ashby' ||
-            reason === 'learn_how_lever'
-          }
-        >
-          <ShowCode>
-            <ShowCode.When isTrue={reason === 'learn_how_greenhouse'}>
-              <LearnHowGreenhouse
-                onClickClose={{
-                  onClick: close,
-                }}
-              />
-            </ShowCode.When>
-            <ShowCode.When isTrue={reason === 'learn_how_ashby'}>
-              <LearnHowAshby
-                onClickClose={{
-                  onClick: close,
-                }}
-              />
-            </ShowCode.When>
-            <ShowCode.When isTrue={reason === 'learn_how_lever'}>
-              <LearnHowLever
-                onClickClose={{
-                  onClick: close,
-                }}
-              />
-            </ShowCode.When>
-          </ShowCode>
-        </ShowCode.When>
-        <ShowCode.Else>
-          <DcPopup
-            popupName={
-              reason === 'connect_greenhouse'
-                ? 'Connect Greenhouse'
-                : reason === 'connect_lever'
-                  ? 'Connect Lever'
-                  : reason === 'connect_ashby'
-                    ? 'Connect Ashby'
-                    : reason === 'update_greenhouse'
-                      ? 'Greenhouse'
-                      : reason === 'update_lever'
-                        ? 'Lever'
-                        : reason === 'update_ashby' && 'Ashby'
-            }
-            slotBody={
-              <Stack direction={'column'} gap={1}>
-                <>
-                  <ShowCode.When
-                    isTrue={
-                      reason === 'connect_greenhouse' ||
-                      reason === 'update_greenhouse'
-                    }
-                  >
-                    Greenhouse API key
-                  </ShowCode.When>
-                  <ShowCode.When
-                    isTrue={
-                      reason === 'connect_lever' || reason === 'update_lever'
-                    }
-                  >
-                    Lever API key
-                  </ShowCode.When>
-                  <ShowCode.When
-                    isTrue={
-                      reason === 'connect_ashby' || reason === 'update_ashby'
-                    }
-                  >
-                    Ashby API key
-                  </ShowCode.When>
-                </>
-                <ShowCode>
-                  <ShowCode.Else>
-                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
-                      {popUpBody}
-                    </Stack>
-                  </ShowCode.Else>
-                </ShowCode>
-              </Stack>
-            }
-            onClickClosePopup={{ onClick: close }}
-            slotButtons={
-              <>
-                <ButtonSoft
-                  textButton={'Cancel'}
-                  color={'neutral'}
-                  size={2}
-                  onClickButton={{ onClick: close }}
+          >
+            <ShowCode>
+              <ShowCode.When isTrue={reason === 'learn_how_greenhouse'}>
+                <LearnHowGreenhouse
+                  onClickClose={{
+                    onClick: close,
+                  }}
                 />
-                <ButtonSolid
-                  textButton={
-                    reason === 'connect_greenhouse' ||
-                    reason === 'connect_ashby' ||
-                    reason === 'connect_lever'
-                      ? 'Connect'
-                      : reason === 'update_greenhouse' ||
-                          reason === 'update_ashby' ||
-                          reason === 'update_lever'
-                        ? 'Update'
-                        : ''
+              </ShowCode.When>
+              <ShowCode.When isTrue={reason === 'learn_how_ashby'}>
+                <LearnHowAshby
+                  onClickClose={{
+                    onClick: close,
+                  }}
+                />
+              </ShowCode.When>
+              <ShowCode.When isTrue={reason === 'learn_how_lever'}>
+                <LearnHowLever
+                  onClickClose={{
+                    onClick: close,
+                  }}
+                />
+              </ShowCode.When>
+            </ShowCode>
+          </ShowCode.When>
+          <ShowCode.Else>
+            <DialogHeader>
+              <DialogTitle>
+                {reason &&
+                typeof reason === 'string' &&
+                reason.includes('connect')
+                  ? `Connect ${reason.split('_')[1]}`
+                  : reason && typeof reason === 'string'
+                    ? reason.split('_')[1]
+                    : 'Unknown Action'}
+              </DialogTitle>
+            </DialogHeader>
+            <div className='flex flex-col space-y-2'>
+              {['greenhouse', 'lever', 'ashby'].map((ats) => (
+                <ShowCode.When
+                  key={ats}
+                  isTrue={
+                    reason && typeof reason === 'string' && reason.includes(ats)
                   }
-                  size={2}
-                  onClickButton={{ onClick: action }}
-                />
-              </>
-            }
-          />
-        </ShowCode.Else>
-      </ShowCode>
+                >
+                  {`${ats.charAt(0).toUpperCase() + ats.slice(1)} API key`}
+                </ShowCode.When>
+              ))}
+              <ShowCode.Else>
+                <div className='flex flex-row items-center space-x-2'>
+                  {popUpBody}
+                </div>
+              </ShowCode.Else>
+            </div>
+            <div className='flex flex-row justify-end space-x-2 mt-4'>
+              <Button variant='outline' onClick={close}>
+                Cancel
+              </Button>
+              <Button onClick={action}>
+                {reason &&
+                typeof reason === 'string' &&
+                reason.startsWith('connect')
+                  ? 'Connect'
+                  : 'Update'}
+              </Button>
+            </div>
+          </ShowCode.Else>
+        </ShowCode>
+      </DialogContent>
     </Dialog>
   );
 }
