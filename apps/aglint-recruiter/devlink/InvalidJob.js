@@ -57,7 +57,7 @@ export function InvalidJob({ as: _Component = _Builtin.Block, slotLottie }) {
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
+              src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
             />
           </_Builtin.Block>
           <_Builtin.Block

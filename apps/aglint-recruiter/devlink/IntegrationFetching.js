@@ -34,7 +34,7 @@ export function IntegrationFetching({
           width="auto"
           height="auto"
           alt=""
-          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653a4f0772ec5dfeaf85b44a_Frame%201717.svg"
+          src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/653a4f0772ec5dfeaf85b44a_Frame%201717.svg"
         />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "if-desc-wrap")} tag="div">

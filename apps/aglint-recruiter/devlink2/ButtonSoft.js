@@ -68,7 +68,10 @@ export function ButtonSoft({
           button-size-soft={size}
         >
           {isLeftIcon ? (
-            <_Builtin.Block tag="div">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "embed_flex")}
+              tag="div"
+            >
               {slotIcon ?? (
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "icon_placeholder")}
@@ -79,7 +82,10 @@ export function ButtonSoft({
           ) : null}
           <_Builtin.Block tag="div">{textButton}</_Builtin.Block>
           {isRightIcon ? (
-            <_Builtin.Block tag="div">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "embed_flex")}
+              tag="div"
+            >
               {slotIcon ?? (
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "icon_placeholder")}
@@ -104,7 +110,7 @@ export function ButtonSoft({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/665d54fd36db641586a0319a_kOnzy.gif"
+                src="https://cdn.prod.website-files.com/651419e73ebbb12148f96ccc/665d54fd36db641586a0319a_kOnzy.gif"
               />
             )}
           </_Builtin.Block>

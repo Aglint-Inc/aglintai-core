@@ -1,0 +1,10 @@
+.menu-option-lst-tab {
+  padding: var(--space-2);
+  border-radius: var(--radius-2);
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.menu-option-lst-tab:hover {
+  background-color: var(--neutral-3);
+}

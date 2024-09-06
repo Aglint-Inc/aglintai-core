@@ -1,6 +1,0 @@
-.all-interview-script-card {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}

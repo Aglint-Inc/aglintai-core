@@ -104,7 +104,7 @@ export function InterviewModuleCard({
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/666156eb941f1e26e4940fa7_Avatargroup.png"
+              src="https://cdn.prod.website-files.com/651419e73ebbb12148f96ccc/666156eb941f1e26e4940fa7_Avatargroup.png"
             />
           )}
         </_Builtin.Block>

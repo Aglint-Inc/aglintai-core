@@ -40,7 +40,7 @@ export function WidgetUserCardWithCompany({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5bc3e527ac5d0712d91bd_e0614a36e2465c41804df0714a305a06.png"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5bc3e527ac5d0712d91bd_e0614a36e2465c41804df0714a305a06.png"
           />
         )}
       </_Builtin.Block>
@@ -102,7 +102,7 @@ export function WidgetUserCardWithCompany({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65dde8919e47e6d5f73894b7_Rectangle%20349.png"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65dde8919e47e6d5f73894b7_Rectangle%20349.png"
               />
             )}
           </_Builtin.Block>

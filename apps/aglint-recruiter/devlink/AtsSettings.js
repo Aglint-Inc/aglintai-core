@@ -105,7 +105,7 @@ export function AtsSettings({
           <_Builtin.Block tag="div">{slotSyncItems}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "ats-sync-item-wrap-copy")}
+          className={_utils.cx(_styles, "ats-sync-item-wrappppers")}
           tag="div"
         >
           <_Builtin.Block

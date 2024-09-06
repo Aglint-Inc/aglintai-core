@@ -26,7 +26,7 @@ export function ChatBlockUser({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5a324f1d62490a27df0fd_716f2115474431e82106834a5708dd89.png"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5a324f1d62490a27df0fd_716f2115474431e82106834a5708dd89.png"
           />
         )}
       </_Builtin.Block>

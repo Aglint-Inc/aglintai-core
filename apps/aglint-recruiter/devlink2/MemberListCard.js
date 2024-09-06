@@ -70,7 +70,7 @@ export function MemberListCard({
                     width="auto"
                     height="auto"
                     alt=""
-                    src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/660575d2376f14b089565d8b_IMG_1491.jpg"
+                    src="https://cdn.prod.website-files.com/651419e73ebbb12148f96ccc/660575d2376f14b089565d8b_IMG_1491.jpg"
                   />
                 )}
               </_Builtin.Block>

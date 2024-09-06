@@ -15,6 +15,7 @@ export function InterviewerMetricList({
   countInterviews = "24",
   countDeclines = "24",
   onClickCard = {},
+  isDeclineVisible = true,
 }) {
   return (
     <_Component
@@ -76,18 +77,20 @@ export function InterviewerMetricList({
             {"Interviews"}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "metrics-table-count-wrap")}
-          tag="div"
-        >
-          <Text content={countDeclines} size="1" color="error" />
+        {isDeclineVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "metrics-unit")}
+            className={_utils.cx(_styles, "metrics-table-count-wrap")}
             tag="div"
           >
-            {"Declines"}
+            <Text content={countDeclines} size="1" color="error" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "metrics-unit")}
+              tag="div"
+            >
+              {"Declines"}
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
     </_Component>
   );

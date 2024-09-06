@@ -11,4 +11,5 @@ declare function InterviewerMetricList(props: {
   countInterviews?: React.ReactNode;
   countDeclines?: React.ReactNode;
   onClickCard?: Types.Devlink.RuntimeProps;
+  isDeclineVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

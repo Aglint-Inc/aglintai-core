@@ -42,7 +42,7 @@ export function UserWithRole({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f1bd974b59b176aea_sarah-johanson.jpeg"
+            src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6544ea9f1bd974b59b176aea_sarah-johanson.jpeg"
           />
         )}
       </_Builtin.Block>
