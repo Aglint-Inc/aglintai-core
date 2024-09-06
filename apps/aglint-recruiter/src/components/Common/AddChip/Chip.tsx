@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { X } from 'lucide-react';
 import React from 'react';
 
-function KeyWordChip({
+function Chip({
   name,
   index,
   id,
@@ -10,8 +11,13 @@ function KeyWordChip({
   name: string;
   index: number;
   id: number | string;
-  // eslint-disable-next-line no-unused-vars
-  handleRemoveKeyword: (id: number | string) => void;
+  handleRemoveKeyword: ({
+    id,
+    name,
+  }: {
+    id: number | string;
+    name: string;
+  }) => void;
 }) {
   return (
     <span
@@ -20,7 +26,7 @@ function KeyWordChip({
     >
       {name}
       <button
-        onClick={() => handleRemoveKeyword(id)}
+        onClick={() => handleRemoveKeyword({ id, name })}
         className='ml-2 text-gray-500 hover:text-gray-700 focus:outline-none'
         aria-label={`Remove ${name}`}
       >
@@ -30,4 +36,4 @@ function KeyWordChip({
   );
 }
 
-export default KeyWordChip;
+export default Chip;

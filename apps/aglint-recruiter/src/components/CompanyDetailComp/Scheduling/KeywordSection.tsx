@@ -1,20 +1,17 @@
 import { Button } from '@components/ui/button';
 import { KeywordCard } from '@devlink2/KeywordCard';
-import { Alert, Typography } from '@mui/material';
 import { Plus } from 'lucide-react';
 import React from 'react';
 
 import toast from '@/utils/toast';
+import AddChip from '@/components/Common/AddChip';
 
-import AddChip from './AddChip';
-import KeyWordChip from './KeyWordChip';
 
 interface KeywordSectionProps {
   title: string;
   warningText: string;
   keywords: string[];
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
-  emptyMessage: string;
 }
 
 const KeywordSection: React.FC<KeywordSectionProps> = ({
@@ -22,7 +19,6 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
   warningText,
   keywords,
   setKeywords,
-  emptyMessage,
 }) => {
   const handleAdd = ({ name }) => {
     const newKeywords = String(name).split(',');
@@ -38,7 +34,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
     });
   };
 
-  const handleDelete = (itemToDelete: string) => {
+  const handleDelete = (itemToDelete) => {
     setKeywords((prev) => prev.filter((item) => item !== itemToDelete));
   };
 
@@ -58,25 +54,12 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
               Add keyword
             </Button>
           }
+          handleRemoveKeyword={({ name }) => {
+            handleDelete(name);
+          }}
         />
       }
-      slotSuggestPill={
-        keywords.length === 0 ? (
-          <Alert severity='info' icon={false}>
-            <Typography>{emptyMessage}</Typography>
-          </Alert>
-        ) : (
-          keywords.map((item, index) => (
-            <KeyWordChip
-              key={item}
-              name={item}
-              index={index}
-              id={item}
-              handleRemoveKeyword={handleDelete}
-            />
-          ))
-        )
-      }
+      slotSuggestPill={<></>}
     />
   );
 };
