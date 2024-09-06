@@ -1,12 +1,11 @@
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import UIDialog from '@/components/Common/UIDialog';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
+import { UIButton } from '@/components/Common/UIButton';
 import MembersAutoComplete from '../../../Common/MembersTextField';
 import { useAddMemberHandler } from '../../queries/hooks';
 import {
@@ -81,7 +80,7 @@ function AddMemberDialog({
   return (
     <UIDialog
       title={
-        trainingStatus === 'qualified' ? 'Add Interviewers' : 'Add Trainee.'
+        trainingStatus === 'qualified' ? 'Add Interviewers' : 'Add Trainee'
       }
       open={isAddMemberDialogOpen}
       onClose={() => {
@@ -90,29 +89,26 @@ function AddMemberDialog({
       }}
       slotButtons={
         <>
-          <ButtonSoft
-            size={2}
-            textButton='Cancel'
-            color={'neutral'}
-            onClickButton={{
-              onClick: () => {
-                setIsAddMemberDialogOpen(false);
-                setSelectedUsers([]);
-              },
+          <UIButton
+            variant='secondary'
+            onClick={() => {
+              setIsAddMemberDialogOpen(false);
+              setSelectedUsers([]);
             }}
-          />
+          >
+            Cancel
+          </UIButton>
 
-          <ButtonSolid
-            size={2}
-            textButton='Add'
-            isDisabled={selectedUsers.length === 0}
+          <UIButton
+            variant='default'
             isLoading={loading}
-            onClickButton={{
-              onClick: () => {
-                if (!loading) onClickAddMember();
-              },
+            disabled={selectedUsers.length === 0}
+            onClick={() => {
+              if (!loading) onClickAddMember();
             }}
-          />
+          >
+            Add
+          </UIButton>
         </>
       }
     >
