@@ -927,6 +927,20 @@ export type Database = {
             referencedRelation: "candidate_applications_view"
             referencedColumns: ["application_id"]
           },
+          {
+            foreignKeyName: "candidate_portal_message_availability_id_fkey"
+            columns: ["availability_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_request_availability"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
+          },
         ]
       }
       candidate_request_availability: {
