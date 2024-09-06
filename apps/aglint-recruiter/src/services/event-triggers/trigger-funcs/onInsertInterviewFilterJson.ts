@@ -26,7 +26,7 @@ const eventTrigger = async ({
   new_data: DatabaseTable['interview_filter_json'];
 }) => {
   try {
-    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
       event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',

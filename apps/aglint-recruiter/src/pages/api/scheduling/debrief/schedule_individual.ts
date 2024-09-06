@@ -94,7 +94,6 @@ export default handler;
 
 const confirmSlot = async ({
   user_tz,
-  task_id,
   selectedDebrief,
   filter_id,
 }: {
@@ -107,7 +106,6 @@ const confirmSlot = async ({
     session_id: selectedDebrief.sessions[0].session_id,
     user_tz,
     selectedOption: selectedDebrief,
-    task_id,
     filter_id,
   };
 

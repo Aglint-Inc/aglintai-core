@@ -1,6 +1,6 @@
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
+import { Mail } from 'lucide-react';
 
 import BodyDrawer from './BodyDrawer';
 import ButtonMain from './ButtonGroup';
@@ -40,7 +40,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             }}
             slotHeaderIcon={
               <Stack display={'flex'} paddingTop={'3px'}>
-                <GlobalIcon iconName={'attach_email'} size={4} />
+                <Mail size={4} />
               </Stack>
             }
             textDrawertitle={'Self Scheduling Request'}

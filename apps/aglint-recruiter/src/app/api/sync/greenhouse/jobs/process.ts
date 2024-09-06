@@ -52,7 +52,7 @@ export async function mapSaveJobs(
   const jobs_count = job_ids.length;
   if (jobs_count) {
     const chunks = chunkArray(job_ids, 10);
-    for (let jobs of chunks) {
+    for (const jobs of chunks) {
       await Promise.all(
         jobs
           .map((job) => {

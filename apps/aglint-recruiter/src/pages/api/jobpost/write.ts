@@ -31,11 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .json({ error: 'invalid request method', success: false });
   }
 
-  let recruiter = req.body.recruiter;
-  let fileId = req.body.fileId;
-  let post = req.body.post;
-  let profile = req.body.profile;
-  let uploadUrl = req.body.uploadUrl;
+  const recruiter = req.body.recruiter;
+  const fileId = req.body.fileId;
+  const post = req.body.post;
+  const profile = req.body.profile;
+  const uploadUrl = req.body.uploadUrl;
 
   if (!profile) {
     return res.status(400).send('No profile provided');

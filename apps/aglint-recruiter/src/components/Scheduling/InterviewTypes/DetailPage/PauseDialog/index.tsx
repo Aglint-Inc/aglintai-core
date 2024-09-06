@@ -1,6 +1,6 @@
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
 import { DcPopup } from '@devlink/DcPopup';
 import { Text } from '@devlink/Text';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
@@ -11,7 +11,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
-import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import { supabase } from '@/utils/supabase/client';
 
 import { usePauseHandler } from '../../queries/hooks';
@@ -22,6 +21,7 @@ import {
   useModulesStore,
 } from '../../store';
 import { type PauseType } from '../type';
+import { Calendar } from 'lucide-react';
 
 function PauseDialog() {
   const isPauseDialogOpen = useModulesStore((state) => state.isPauseDialogOpen);
@@ -141,7 +141,7 @@ function PauseDialog() {
                 }}
                 sx={{ cursor: 'pointer' }}
               >
-                <Checkbox isChecked={selectedType === 'isManual'} />
+                <Checkbox checked={selectedType === 'isManual'} />
                 <Typography variant='body1' color={'var(--neutral-12)'}>
                   Indefinitely
                 </Typography>
@@ -163,7 +163,7 @@ function PauseDialog() {
                   });
                 }}
               >
-                <Checkbox isChecked={selectedType === 'twoWeek'} />
+                <Checkbox checked={selectedType === 'twoWeek'} />
                 <Typography variant='body1' color={'var(--neutral-12)'}>
                   2 Weeks
                 </Typography>
@@ -185,7 +185,7 @@ function PauseDialog() {
                   });
                 }}
               >
-                <Checkbox isChecked={selectedType === 'oneMonth'} />
+                <Checkbox checked={selectedType === 'oneMonth'} />
                 <Typography variant='body1' color={'var(--neutral-12)'}>
                   1 Month
                 </Typography>
@@ -207,7 +207,7 @@ function PauseDialog() {
                   });
                 }}
               >
-                <Checkbox isChecked={selectedType === 'threeMonth'} />
+                <Checkbox checked={selectedType === 'threeMonth'} />
                 <Typography variant='body1' color={'var(--neutral-12)'}>
                   3 Months
                 </Typography>
@@ -229,7 +229,7 @@ function PauseDialog() {
                   });
                 }}
               >
-                <Checkbox isChecked={selectedType === 'custom'} />
+                <Checkbox checked={selectedType === 'custom'} />
                 <Typography variant='body1' color={'var(--neutral-12)'}>
                   Custom date
                 </Typography>
@@ -257,7 +257,7 @@ function PauseDialog() {
                       }}
                       minDate={currentDate}
                       slots={{
-                        openPickerIcon: DateIcon,
+                        openPickerIcon: () => <Calendar size={20} />,
                       }}
                     />
                   </LocalizationProvider>
@@ -272,7 +272,7 @@ function PauseDialog() {
                         });
                       }}
                       slots={{
-                        openPickerIcon: DateIcon,
+                        openPickerIcon: () => <Calendar size={20} />,
                       }}
                     />
                   </LocalizationProvider>

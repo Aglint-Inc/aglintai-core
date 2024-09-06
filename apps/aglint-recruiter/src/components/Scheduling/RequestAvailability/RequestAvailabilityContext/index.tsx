@@ -345,7 +345,7 @@ export function getDatesBetween(startDate: string, endDate: string) {
   const start = new Date(startDate);
   const end = new Date(endDate);
   const dateArray = [];
-  let currentDate = start;
+  const currentDate = start;
 
   while (currentDate <= end) {
     dateArray.push(dayjs(currentDate).toString());

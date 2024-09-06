@@ -186,7 +186,7 @@ const AddMember = ({
         recruiter.id,
       );
 
-      let { created } = resData;
+      const { created } = resData;
       if (created) {
         refetchMembers();
         setInviteData((prev) => [

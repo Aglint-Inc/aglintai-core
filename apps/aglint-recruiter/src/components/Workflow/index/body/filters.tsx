@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { GlobalBadge } from '@devlink3/GlobalBadge';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
+import { Briefcase } from 'lucide-react';
 import { memo, useMemo } from 'react';
 
 import { useWorkflows } from '@/context/Workflows';
@@ -67,7 +67,7 @@ type FilterIconProps = {
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
-      return <GlobalIcon iconName='business_center' />;
+      return <Briefcase />;
     case 'tags':
       return <></>;
   }

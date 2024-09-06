@@ -2,20 +2,19 @@
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { EducationItem } from '@devlink/EducationItem';
 import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Skeleton } from '@devlink2/Skeleton';
+import { GraduationCap } from 'lucide-react';
 import Image from 'next/image';
 
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
-import { getIconName } from '../utils';
 import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Education = () => {
   return (
     <CandidateDetail
-      slotIcon={<GlobalIcon size={5} iconName={getIconName('Education')} />}
+      slotIcon={<GraduationCap size={16} />}
       slotBody={<Content />}
       textTitle={'Education'}
       slotBadge={<></>}

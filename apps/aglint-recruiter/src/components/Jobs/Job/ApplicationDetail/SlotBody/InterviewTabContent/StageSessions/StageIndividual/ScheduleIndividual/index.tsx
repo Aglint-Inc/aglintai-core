@@ -1,8 +1,9 @@
 'use strict';
 
+import { Checkbox } from '@components/ui/checkbox';
 import { StatusBadge } from '@devlink2/StatusBadge';
 import { GlobalScheduleCard } from '@devlink3/GlobalScheduleCard';
-import { Checkbox, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -85,7 +86,6 @@ function ScheduleIndividualCard({
       slotCheckbox={
         isCheckboxVisible && (
           <Checkbox
-            size='small'
             disabled={
               usersWithErrors.length === users.length ||
               (session?.interview_module

@@ -15,7 +15,7 @@ export const getRelevantCndidates = async (
   max_records: number,
   bookmarked_cands: string[] = [],
 ) => {
-  let embeddings = {
+  const embeddings = {
     skills: null,
     education: null,
     experience: null,
@@ -143,7 +143,7 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
       candidate_ids: candidates.map((c) => c.candidate_id),
     }),
   );
-  let mp = new Map();
+  const mp = new Map();
 
   candjobs.forEach((c) => {
     mp.set(c.candidate_id, { job_titles: c.job_titles, job_ids: c.job_ids });
@@ -160,7 +160,7 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
         const { city } = c.json_resume.basics.location as any;
         loc = [city].filter(Boolean).join(', ');
       }
-      let jsonRes: JsonResume = {
+      const jsonRes: JsonResume = {
         ...c.json_resume,
         basics: {
           ...c.json_resume.basics,

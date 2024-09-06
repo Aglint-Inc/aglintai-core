@@ -1,25 +1,18 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Label } from '@components/ui/label';
+import { RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { RequestReschedule } from '@devlink2/RequestReschedule';
-import {
-  Dialog,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Dialog, RadioGroup, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useState } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-
-import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
+import { Trash } from 'lucide-react';
 
 const CancelRescheduleDialog = ({
   title,
@@ -135,7 +128,7 @@ const CancelRescheduleDialog = ({
                   },
                 }}
                 slots={{
-                  openPickerIcon: DateIcon,
+                  openPickerIcon: () => <Trash size={20} />,
                 }}
               />
             </LocalizationProvider>
@@ -159,42 +152,33 @@ const CancelRescheduleDialog = ({
                   },
                 }}
                 slots={{
-                  openPickerIcon: DateIcon,
+                  openPickerIcon: () => <Trash size={20} />,
                 }}
               />
             </LocalizationProvider>
           </Stack>
         }
         slotRadioText={
-          <FormControl>
-            <RadioGroup
-              name='radio-buttons-group'
-              value={formData.reason}
-              onChange={(e) => {
-                setFormData((pre) => ({
-                  ...pre,
-                  reason: e.currentTarget.value,
-                }));
-              }}
-              sx={{ gap: '4px' }}
-            >
-              {options.map((item) => (
-                <FormControlLabel
-                  key={item}
-                  value={item}
-                  control={<Radio />}
-                  label={capitalizeFirstLetter(item)}
-                  sx={{
-                    ml: 0,
-                    '& .MuiRadio-root': {
-                      p: 0.5,
-                    },
-                    '& .MuiTypography-root': { fontSize: '14px' },
-                  }}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <RadioGroup
+            name='radio-buttons-group'
+            value={formData.reason}
+            onChange={(e) => {
+              setFormData((pre) => ({
+                ...pre,
+                reason: e.target.value,
+              }));
+            }}
+            className='space-y-1'
+          >
+            {options.map((item) => (
+              <div key={item} className='flex items-center space-x-2'>
+                <RadioGroupItem value={item} id={item} />
+                <Label htmlFor={item} className='text-sm'>
+                  {capitalizeFirstLetter(item)}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
         }
         slotPrimaryButton={
           <Stack>

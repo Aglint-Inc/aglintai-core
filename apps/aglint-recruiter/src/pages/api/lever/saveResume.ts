@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       return res.status(405).end();
     }
 
-    let payload = req.body as Payload;
+    const payload = req.body as Payload;
 
     if (payload.application_id) {
       // Supabase credentials
@@ -58,10 +58,10 @@ export default async function handler(req, res) {
         return res.status(400).json('API Key is missing');
       }
 
-      let url = `https://api.lever.co/v1/opportunities/${ats_app_id}/resumes`;
+      const url = `https://api.lever.co/v1/opportunities/${ats_app_id}/resumes`;
       let fileUrl;
-      let bucketName = 'resume-job-post';
-      let fileId = uuidv4();
+      const bucketName = 'resume-job-post';
+      const fileId = uuidv4();
 
       await supabase
         .from('applications')
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
                 );
               }
 
-              let extension = responseUrl.headers['content-type'];
+              const extension = responseUrl.headers['content-type'];
               // Upload the file to Supabase Storage
 
               const { data, error: uploadError } = await supabase.storage

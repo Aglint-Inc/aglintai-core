@@ -138,7 +138,7 @@ export const usePortalSettings = () => {
   ) => {
     const newImages = [];
     try {
-      for (let image of images) {
+      for (const image of images) {
         const fileName = removeSpaces(`${name}-image-${Date.now()}`);
 
         const { data, error } = await supabase.storage

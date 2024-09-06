@@ -1,5 +1,5 @@
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { capitalize, MenuItem, Stack, TextField } from '@mui/material';
+import { Archive } from 'lucide-react';
 import React from 'react';
 
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -49,9 +49,7 @@ function ModuleDropdown() {
           >
             <Stack direction={'row'} spacing={1} alignItems={'center'}>
               <Stack>{capitalize(module.name)}</Stack>
-              {module.is_archived && (
-                <GlobalIcon iconName={'archive'} size={4} />
-              )}
+              {module.is_archived && <Archive size={16} />}
             </Stack>
           </MenuItem>
         ))}

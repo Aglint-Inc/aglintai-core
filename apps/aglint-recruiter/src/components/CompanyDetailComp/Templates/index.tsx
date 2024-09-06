@@ -2,17 +2,17 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import { EditEmail } from '@devlink/EditEmail';
 import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { LoaderSvg } from '@devlink/LoaderSvg';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Box, Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -275,9 +275,15 @@ function SchedulerEmailTemps({ setSaving }) {
         >
           <Checkbox
             key={`${'scheduleType'}-checkbox`}
-            isChecked={filter.includes(opt)}
-            onClickCheck={{
-              onClick: () => {},
+            checked={filter.includes(opt)}
+            onClick={() => {
+              setFilter((pre) => {
+                if (filter.includes(opt)) {
+                  return pre.filter((p) => p !== opt);
+                } else {
+                  return [...pre, opt];
+                }
+              });
             }}
           />
           <Typography
@@ -331,13 +337,11 @@ function SchedulerEmailTemps({ setSaving }) {
                   }}
                   slotRightIcon={
                     <Stack>
-                      <GlobalIcon
-                        iconName={
-                          anchorElFilter
-                            ? 'keyboard_arrow_up'
-                            : 'keyboard_arrow_down'
-                        }
-                      />
+                      {anchorElFilter ? (
+                        <ChevronUp size={20} />
+                      ) : (
+                        <ChevronDown size={20} />
+                      )}
                     </Stack>
                   }
                 />

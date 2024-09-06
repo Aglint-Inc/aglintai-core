@@ -53,7 +53,7 @@ const ApplicationCard = memo(
         if (shift && checklist.length) {
           //
           const list = pages.flatMap((page) => page);
-          let indexes = [list.findIndex(({ id }) => id === application.id)];
+          const indexes = [list.findIndex(({ id }) => id === application.id)];
           for (let i = 0; i < list.length && indexes.length !== 2; i++)
             // eslint-disable-next-line security/detect-object-injection
             if (checklist.includes(list[i].id)) indexes.push(i);

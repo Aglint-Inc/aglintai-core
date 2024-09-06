@@ -159,7 +159,6 @@ export default function Component() {
       {value && (
         <Button
           variant='ghost'
-          size='icon'
           className='flex-shrink-0 h-9 w-9'
           onClick={() => clearFilter(placeholder.toLowerCase())}
         >

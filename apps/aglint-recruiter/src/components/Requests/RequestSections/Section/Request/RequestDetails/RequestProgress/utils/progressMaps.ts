@@ -37,5 +37,6 @@ export const groupedTriggerEventMap: Partial<
     'SELF_SCHEDULE_LINK',
     'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
     'SELF_SCHEDULE_LINK',
+    'SCHEDULE_INTERVIEW_SLOT',
   ],
 };

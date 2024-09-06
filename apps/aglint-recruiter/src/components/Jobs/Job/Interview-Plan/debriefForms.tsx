@@ -25,9 +25,9 @@ import { type Job } from '@/queries/jobs/types';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalize } from '@/utils/text/textUtils';
 
-import { RoleIcon } from '.';
 import { DropDown, WarningSvg } from './sessionForms';
 import { getBreakLabel } from './utils';
+import { User } from 'lucide-react';
 
 type DebriefFormProps = Pick<
   InterviewSessionType,
@@ -487,7 +487,7 @@ const InterviewersField = ({
     name: getFullName(m.first_name, m.last_name),
     value: m.user_id,
     start_icon_url: m.profile_image,
-    meta: [{ title: m.position, icon: <RoleIcon /> }],
+    meta: [{ title: m.position, icon: <User size={16} /> }],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
     e,

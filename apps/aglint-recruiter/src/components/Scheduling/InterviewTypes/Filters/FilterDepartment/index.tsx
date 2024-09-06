@@ -1,8 +1,8 @@
-import { Checkbox } from '@devlink/Checkbox';
-import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
+import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
 import { useAllDepartments } from '@/queries/departments';
@@ -56,11 +56,9 @@ function FilterDepartment() {
         marginTop={'0px !important'}
       >
         <Checkbox
-          isChecked={!!departments.find((id) => id === item.id)}
-          onClickCheck={{
-            onClick: () => {
-              handleFilterClick(item);
-            },
+          checked={!!departments.find((id) => id === item.id)}
+          onClick={() => {
+            handleFilterClick(item);
           }}
         />
         <Typography
@@ -93,8 +91,10 @@ function FilterDepartment() {
         textLabel={'Department'}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            <ChevronDown
+              size={16}
+              color={'var(--neutral-2)'}
+              className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             />
           </Stack>
         }

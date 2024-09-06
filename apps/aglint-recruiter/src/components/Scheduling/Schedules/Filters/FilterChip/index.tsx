@@ -1,4 +1,4 @@
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
@@ -132,14 +132,10 @@ function FilterChip({
                         marginTop={'0px !important'}
                       >
                         <Checkbox
-                          isChecked={selectedItem[filterType.name].includes(
+                          checked={selectedItem[filterType.name].includes(
                             item.id,
                           )}
-                          onClickCheck={{
-                            onClick: () => {
-                              onSelectItem(item);
-                            },
-                          }}
+                          onCheckedChange={() => onSelectItem(item)}
                         />
                         <Typography
                           sx={{

@@ -1,5 +1,5 @@
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { PiplelineTab } from '@devlink3/PiplelineTab';
+import { CheckCircle, CircleCheck, Network } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -45,18 +45,13 @@ function Progress() {
             key={stage.interview_plan.id}
             textStageName={`Stage ${index + 1} ${stage.interview_plan.name}`}
             slotIcon={
-              <GlobalIcon
-                iconName={
-                  isNotScheduled
-                    ? 'brightness_1'
-                    : isCompleted
-                      ? 'check_circle'
-                      : 'workspaces'
-                }
-                color={
-                  isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
-                }
-              />
+              isNotScheduled ? (
+                <CircleCheck className='text-neutral-500' />
+              ) : isCompleted ? (
+                <CheckCircle className='text-green-500' />
+              ) : (
+                <Network className='text-blue-500' />
+              )
             }
             onClickTab={{
               onClick: () => {

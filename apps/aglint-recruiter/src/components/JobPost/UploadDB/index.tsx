@@ -3,12 +3,11 @@ import {
   type JobApplcationDB,
   type JobTypeDB,
 } from '@aglint/shared-types';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
-import { GlobalIcon } from '@devlink/GlobalIcon';
-import { Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Input } from '@components/ui/input';
 import axios from 'axios';
-import { Trash } from 'lucide-react';
+import { CloudUpload, Loader2, Trash } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,8 +17,6 @@ import { type PublicJobAPI } from '@/pages/api/jobpost/read';
 import { errorMessages } from '@/utils/errorMessages';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
-
-import UITextField from '../../Common/UITextField';
 
 const initialError = () => {
   return {
@@ -163,7 +160,7 @@ function UploadDB({
   const submitHandler = async () => {
     if (checked && validate()) {
       setIsDisabled(true);
-      let fileId = uuidv4();
+      const fileId = uuidv4();
       let uploadUrl = null;
       const { data } = await supabase.storage
         .from('resume-job-post')
@@ -218,213 +215,129 @@ function UploadDB({
   }, [profile]);
 
   return (
-    <Stack
-      id='scrollTarget'
-      sx={{
-        background: 'var(--neutral-1)',
-        p: { xs: '10px', mm: '30px' },
-        borderRadius: 'var(--radius-4)',
-      }}
-    >
-      <Stack direction={'row'} spacing={2} justifyContent={'space-between'}>
-        <Typography variant='h4'>Apply for this job.</Typography>
-        <Typography variant='caption' color={'#000'}>
-          <span style={{ color: 'var(--error-11)' }}>*</span> Required
-        </Typography>
-      </Stack>
-      <Grid container spacing={3} pt={'var(--space-5)'}>
-        <Grid item xs={12} sm={6} md={6}>
-          <UITextField
+    <div className='bg-neutral-100 p-4 sm:p-8 rounded-lg'>
+      <div className='flex justify-between items-center mb-6'>
+        <h2 className='text-2xl font-bold'>Apply for this job.</h2>
+        <p className='text-sm'>
+          <span className='text-red-500'>*</span> Required
+        </p>
+      </div>
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+        <div>
+          <Input
             required
-            fullWidth
             placeholder='First Name'
-            label='First Name'
-            error={error.firstName.error}
-            helperText={error.firstName.error ? error.firstName.msg : null}
             value={profile?.firstName}
-            onChange={(e) => {
-              setProfile({ ...profile, firstName: e.target.value });
-            }}
+            onChange={(e) =>
+              setProfile({ ...profile, firstName: e.target.value })
+            }
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <UITextField
-            fullWidth
-            label='Last Name'
+        </div>
+        <div>
+          <Input
             placeholder='Last Name'
             value={profile?.lastName}
-            onChange={(e) => {
-              setProfile({ ...profile, lastName: e.target.value });
-            }}
-            error={error.lastName.error}
-            helperText={error.lastName.error ? error.lastName.msg : null}
+            onChange={(e) =>
+              setProfile({ ...profile, lastName: e.target.value })
+            }
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <UITextField
+        </div>
+        <div>
+          <Input
             required
-            fullWidth
-            label='Email'
             placeholder='Email'
             value={profile?.email}
-            onChange={(e) => {
-              setProfile({ ...profile, email: e.target.value });
-            }}
-            error={error.email.error}
-            helperText={error.email.error ? error.email.msg : null}
+            onChange={(e) => setProfile({ ...profile, email: e.target.value })}
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <UITextField
-            fullWidth
-            label='Phone'
+        </div>
+        <div>
+          <Input
             placeholder='Phone'
             value={profile?.phoneNumber}
-            onChange={(e) => {
-              setProfile({ ...profile, phoneNumber: e.target.value });
-            }}
+            onChange={(e) =>
+              setProfile({ ...profile, phoneNumber: e.target.value })
+            }
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <UITextField
-            value={profile.usn}
-            fullWidth
-            label='LinkedIn URL'
+        </div>
+        <div className='col-span-full'>
+          <Input
             placeholder='https://www.linkedin.com/in/your-id'
-            error={error.linkedinUrl.error}
-            helperText={error.linkedinUrl.error ? error.linkedinUrl.msg : null}
-            onChange={(e) => {
-              setProfile({ ...profile, linkedin: e.target.value });
-            }}
+            value={profile.linkedin}
+            onChange={(e) =>
+              setProfile({ ...profile, linkedin: e.target.value })
+            }
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Stack position={'relative'}>
-            {/* <Stack direction={'row'} justifyContent={'flex-end'} pb={'var(--space-2)'}>
-              <Typography variant='caption'>* Optional</Typography>
-            </Stack> */}
-
+        </div>
+        <div className='col-span-full'>
+          <div className='relative'>
             <FileUploader
               handleChange={uploadFile}
               name='file'
               types={fileTypes}
             >
-              <Stack
-                sx={{
-                  border: '1px dashed',
-                  borderColor: 'var(--neutral-6)',
-                  borderRadius: 1,
-                  py: '40px',
-                  px: '20px',
-                  cursor: 'pointer',
-                  background: 'var(--white)',
-                }}
-                direction='row'
-                spacing={2}
-                alignItems={'center'}
-                justifyContent={'center'}
-              >
-                {!file && (
-                  <GlobalIcon iconName='cloud_upload' />
-                  // <svg
-                  //   xmlns='http://www.w3.org/2000/svg'
-                  //   width='24'
-                  //   height='24'
-                  //   viewBox='0 0 24 24'
-                  //   fill='none'
-                  // >
-                  //   <path
-                  //     d='M1 14.5C1 12.1716 2.22429 10.1291 4.06426 8.9812C4.56469 5.044 7.92686 2 12 2C16.0731 2 19.4353 5.044 19.9357 8.9812C21.7757 10.1291 23 12.1716 23 14.5C23 17.9216 20.3562 20.7257 17 20.9811L7 21C3.64378 20.7257 1 17.9216 1 14.5ZM16.8483 18.9868C19.1817 18.8093 21 16.8561 21 14.5C21 12.927 20.1884 11.4962 18.8771 10.6781L18.0714 10.1754L17.9517 9.23338C17.5735 6.25803 15.0288 4 12 4C8.97116 4 6.42647 6.25803 6.0483 9.23338L5.92856 10.1754L5.12288 10.6781C3.81156 11.4962 3 12.927 3 14.5C3 16.8561 4.81833 18.8093 7.1517 18.9868L7.325 19H16.675L16.8483 18.9868ZM13 13V17H11V13H8L12 8L16 13H13Z'
-                  //     fill='#2F3941'
-                  //   />
-                  // </svg>
-                )}
-                <Typography variant='body1' sx={{ textAlgin: 'center' }}>
+              <div className='border border-dashed border-neutral-300 rounded-md p-8 cursor-pointer bg-white flex items-center justify-center'>
+                {!file && <CloudUpload className='w-6 h-6 mr-2' />}
+                <p className='text-center'>
                   {file
                     ? `Uploaded File: ${file?.name}`
                     : 'Please upload your resume in PDF or DOC format.'}
-                </Typography>
-              </Stack>
+                </p>
+              </div>
             </FileUploader>
             {file && (
-              <IconButton
-                sx={{ zIndex: 1000, position: 'absolute', right: 20, top: 34 }}
+              <Button
+                variant='ghost'
+                size='sm'
+                className='absolute right-2 top-2'
                 onClick={(e) => {
                   e.stopPropagation();
                   setFile(null);
                 }}
               >
-                <Trash />
-              </IconButton>
+                <Trash className='w-4 h-4' />
+              </Button>
             )}
             {error.file.error && (
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'start'}
-                px={1.5}
-                pt={0.5}
-              >
-                <Typography variant='caption' color={'error.main'}>
-                  {error.file.msg}
-                </Typography>
-              </Stack>
+              <p className='text-sm text-red-500 mt-1 ml-1'>{error.file.msg}</p>
             )}
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <Stack direction={'row'} spacing={1} alignItems={'center'}>
+          </div>
+        </div>
+        <div className='col-span-full'>
+          <div className='flex items-center space-x-2'>
             <Checkbox
-              isChecked={checked}
-              onClickCheck={{
-                onClick: () => {
-                  setChecked(!checked);
-                },
-              }}
+              checked={checked}
+              onCheckedChange={() => setChecked(!checked)}
             />
-
-            <Stack
-              direction={'row'}
-              spacing={'var(--space-1)'}
-              sx={{ flexWrap: 'wrap' }}
-            >
-              <Typography
-                variant='caption'
-                color={!checked && 'error.main'}
-                sx={{ cursor: 'default' }}
-              >
+            <div className='flex flex-wrap items-center space-x-1'>
+              <p className={`text-sm ${!checked ? 'text-red-500' : ''}`}>
                 By applying, you are agreeing to the
-              </Typography>
-              <Typography
-                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                variant='caption'
-                color={!checked && 'error.main'}
-                onClick={() => {
-                  window.open('https://www.aglinthq.com/terms', '_blank');
-                }}
+              </p>
+              <button
+                className={`text-sm underline ${!checked ? 'text-red-500' : ''}`}
+                onClick={() =>
+                  window.open('https://www.aglinthq.com/terms', '_blank')
+                }
               >
                 terms and conditions
-              </Typography>
-            </Stack>
-          </Stack>
-        </Grid>
-        <Grid item>
-          <ButtonSolid
-            textButton='Apply Now'
-            size={2}
-            isDisabled={isDisabled}
-            isLoading={isDisabled}
-            onClickButton={{
-              onClick: () => {
-                if (!isDisabled) submitHandler();
-              },
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className='col-span-full'>
+          <Button
+            disabled={isDisabled}
+            onClick={() => {
+              if (!isDisabled) submitHandler();
             }}
-          />
-        </Grid>
-      </Grid>
-    </Stack>
+          >
+            {isDisabled ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : null}
+            Apply Now
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
 

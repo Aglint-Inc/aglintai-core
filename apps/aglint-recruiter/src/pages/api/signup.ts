@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (errUser) throw new Error(errUser.message);
 
-    let rec_id = uuidv4();
+    const rec_id = uuidv4();
     const { data: rec } = await supabase
       .from('recruiter')
       .insert({

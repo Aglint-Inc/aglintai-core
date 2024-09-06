@@ -354,7 +354,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
       [[], []] satisfies (typeof jobs)[][],
     )
     .flatMap((jobs) => jobs);
-  let filterOptions = getFilterOptions(jobs);
+  const filterOptions = getFilterOptions(jobs);
 
   const safeOptions = useMemo(
     () =>

@@ -46,8 +46,8 @@ export function numberToText(num) {
     word += 'minus ';
     num = Math.abs(num);
   }
-  let thousandsPlace = Math.floor(num / 1000);
-  let hundredsPlace = num % 1000;
+  const thousandsPlace = Math.floor(num / 1000);
+  const hundredsPlace = num % 1000;
 
   if (thousandsPlace > 0) {
     word += convertHundreds(thousandsPlace) + ' ' + thousands[1] + ' ';
@@ -60,8 +60,8 @@ export function numberToText(num) {
 
 function convertHundreds(num) {
   let word = '';
-  let hundreds = Math.floor(num / 100);
-  let remainder = num % 100;
+  const hundreds = Math.floor(num / 100);
+  const remainder = num % 100;
 
   if (hundreds > 0) {
     word += ones[hundreds] + ' hundred ';
@@ -72,8 +72,8 @@ function convertHundreds(num) {
     } else if (remainder < 20) {
       word += teens[remainder - 10];
     } else {
-      let tensPlace = Math.floor(remainder / 10);
-      let onesPlace = remainder % 10;
+      const tensPlace = Math.floor(remainder / 10);
+      const onesPlace = remainder % 10;
       word += tens[tensPlace];
       if (onesPlace > 0) {
         word += '-' + ones[onesPlace];

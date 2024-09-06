@@ -3,17 +3,16 @@ import { getFullName } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Calendar, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
-import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
 import { useApplication } from '@/context/ApplicationContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -77,7 +76,7 @@ function DialogSchedule() {
     requestSessionIds.includes(session.interview_session.id),
   );
 
-  let optionsInterviewers: Interviewer[] = members?.map((member) => {
+  const optionsInterviewers: Interviewer[] = members?.map((member) => {
     return {
       name: getFullName(member.first_name, member.last_name),
       value: member.user_id,
@@ -274,7 +273,7 @@ export const RangePicker = ({
           }}
           minDate={dayjs()}
           slots={{
-            openPickerIcon: DateIcon,
+            openPickerIcon: () => <Calendar size={20} />,
           }}
           slotProps={{ textField: { fullWidth: true } }}
         />
@@ -291,7 +290,7 @@ export const RangePicker = ({
             });
           }}
           slots={{
-            openPickerIcon: DateIcon,
+            openPickerIcon: () => <Calendar size={20} />,
           }}
           slotProps={{
             textField: { fullWidth: true },
@@ -318,7 +317,7 @@ export const RequestOption = ({
         textButton={'Urgent Request'}
         color={requestType === 'urgent' ? 'accent' : 'neutral'}
         isLeftIcon={true}
-        slotIcon={<GlobalIcon iconName={'flag_2'} />}
+        slotIcon={<FileBadge2 />}
         onClickButton={{
           onClick: () => {
             setRequestType('urgent');

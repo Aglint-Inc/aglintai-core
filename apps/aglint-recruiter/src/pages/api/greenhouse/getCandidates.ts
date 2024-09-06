@@ -27,7 +27,7 @@ export async function getGreenhouseCandidates(
   key: string,
   data: { ats_job_id: number; page: number },
 ) {
-  let url = `https://harvest.greenhouse.io/v1/candidates?job_id=${data.ats_job_id}&per_page=500&page=${data.page}`;
+  const url = `https://harvest.greenhouse.io/v1/candidates?job_id=${data.ats_job_id}&per_page=500&page=${data.page}`;
   const res = await axios.get(url, {
     auth: {
       username: key,

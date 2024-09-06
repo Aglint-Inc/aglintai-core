@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { company_cred_hash_str, uniq_inters, interview_type_details } =
       await fetchDetails(company_id);
 
-    for (let inter of uniq_inters) {
+    for (const inter of uniq_inters) {
       const interviewer_info = interview_type_details.find(
         (i) => i.user_id === inter,
       )?.recruiter_user;
@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           occ_cnt: 0,
         },
       };
-      let recruiter_auth = {
+      const recruiter_auth = {
         user_id: interviewer_info.user_id,
         email: interviewer_info.email,
         schedule_auth: interviewer_info.schedule_auth,

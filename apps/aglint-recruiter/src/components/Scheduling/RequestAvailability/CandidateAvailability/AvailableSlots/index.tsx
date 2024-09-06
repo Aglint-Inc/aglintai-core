@@ -384,9 +384,9 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                           );
                         }, 0);
 
-                      let prevNumberOfDay = prevDayDurations / 1440;
+                      const prevNumberOfDay = prevDayDurations / 1440;
 
-                      let numberOfDay =
+                      const numberOfDay =
                         totalDayDurations / 1440 - prevNumberOfDay;
 
                       if (i >= dates.length - numberOfDay) {

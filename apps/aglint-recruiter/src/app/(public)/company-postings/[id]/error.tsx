@@ -1,35 +1,18 @@
 'use client';
-import { GlobalIcon } from '@devlink/GlobalIcon';
-import { Box, Typography } from '@mui/material';
-import { styled } from '@mui/system';
-import React from 'react';
 
-const Container = styled(Box)`
-  display: flex;
-  alignitems: center;
-  justifycontent: center;
-  flexdirection: column;
-  padding: ${({ theme }) => theme.spacing(4)};
-  borderradius: ${({ theme }) => theme.shape.borderRadius};
-  backgroundcolor: var(--neutral-2);
-  boxshadow: ${({ theme }) => theme.shadows[1]};
-  textalign: center;
-  maxwidth: 320px;
-  margin: auto;
-`;
+import { AlertCircle } from 'lucide-react';
+import React from 'react';
 
 const JobNotFound = () => {
   return (
-    <Container>
-      <GlobalIcon iconName='error' size={9} />
-      <Typography variant='h3' gutterBottom>
-        Job not found
-      </Typography>
-      <Typography variant='body1'>
+    <div className='flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-100 shadow-md text-center max-w-sm mx-auto'>
+      <AlertCircle className='w-24 h-24 text-red-500 mb-4' />
+      <h3 className='text-2xl font-semibold mb-2'>Job not found</h3>
+      <p className='text-gray-600'>
         Sorry, we couldn&apos;t find the job you&apos;re looking for. Please try
         searching again or contact support.
-      </Typography>
-    </Container>
+      </p>
+    </div>
   );
 };
 

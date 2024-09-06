@@ -40,8 +40,8 @@ const ResumePreviewer = ({
   const downloadFile = async () => {
     fetch(url).then((response) => {
       response.blob().then((blob) => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
         a.href = url;
         a.download = `${(name ?? '').replaceAll(' ', '_').toLowerCase()}_resume${getExtension(url)}`;
         a.click();

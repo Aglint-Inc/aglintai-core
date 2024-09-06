@@ -29,6 +29,7 @@ export default function LoginForm() {
   const { toast } = useToast();
 
   const onSubmit = async (data: LoginFormInputs) => {
+    event.preventDefault();
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.signInWithPassword({
@@ -55,7 +56,13 @@ export default function LoginForm() {
         }
       }
     } catch (err) {
-      //
+      if (err instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: err.message,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

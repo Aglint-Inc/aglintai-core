@@ -113,7 +113,7 @@ export async function POST(req) {
 
     let availabilityData = [] as availability;
     if (avail.length) {
-      let availabilityWithSession = await Promise.all(
+      const availabilityWithSession = await Promise.all(
         avail.map(async (ava) => {
           const sessions = await getAvailabilitySessionDetails(ava.id);
           return {

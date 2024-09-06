@@ -23,11 +23,8 @@ import { ShowCode } from '../../Common/ShowCode';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
 import FilterDropDown from './FilterDropDown';
-import DepartmentIcon from './Icons/DepartmentIcon';
-import LocationIcon from './Icons/LocationIcon';
-import StatusIcon from './Icons/StatusIcon';
-import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
+import { Building, CircleDot, Locate, User } from 'lucide-react';
 
 type ItemType = string;
 
@@ -221,14 +218,14 @@ const TeamManagement = () => {
                   />
                 )}
                 <FilterDropDown
-                  icon={<StatusIcon />}
+                  icon={<CircleDot />}
                   title={'Status'}
                   itemList={uniqueStatus}
                   selectedItems={selectedStatus}
                   setSelectedItems={setSelectedStatus}
                 />
                 <FilterDropDown
-                  icon={<UserRoleIcon />}
+                  icon={<User />}
                   title={'Role'}
                   itemList={uniqueRoles}
                   selectedItems={selectedRoles}
@@ -239,10 +236,10 @@ const TeamManagement = () => {
                   itemList={uniqueDepartments}
                   selectedItems={selectedDepartments}
                   setSelectedItems={setSelectedDepartments}
-                  icon={<DepartmentIcon />}
+                  icon={<Building />}
                 />
                 <FilterDropDown
-                  icon={<LocationIcon />}
+                  icon={<Locate />}
                   title={'Location'}
                   itemList={uniqueLocations}
                   selectedItems={selectedLocations}

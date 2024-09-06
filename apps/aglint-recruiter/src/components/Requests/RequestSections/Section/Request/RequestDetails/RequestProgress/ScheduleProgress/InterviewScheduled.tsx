@@ -36,7 +36,9 @@ const InterviewScheduled = () => {
   const { recruiter } = useAuthDetails();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
   const [rsvpSending, setRsvpSending] = React.useState(false);
-  const event_status = reqProgressMap['CAND_CONFIRM_SLOT']?.[0];
+  const event_status =
+    reqProgressMap['CAND_CONFIRM_SLOT']?.[0] ??
+    reqProgressMap['SCHEDULE_INTERVIEW_SLOT']?.[0];
 
   let tense: TenseType = 'future';
   if (event_status) {
@@ -80,7 +82,7 @@ const InterviewScheduled = () => {
           .eq('request_id', currentRequest.id),
       );
 
-      for (let reln of sesn_reln) {
+      for (const reln of sesn_reln) {
         await axios.post(
           `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/candidateBook_slack_interviewerForConfirmation`,
           {

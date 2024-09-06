@@ -34,9 +34,9 @@ import EventNode from './EventNode';
 const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress']['event_type'];
-  let { availRecivedProgEvents, isScheduled } = useMemo(() => {
+  const { availRecivedProgEvents, isScheduled } = useMemo(() => {
     let isScheduled = false;
-    let availRecivedProgEvents: DatabaseTable['request_progress'][][] = [];
+    const availRecivedProgEvents: DatabaseTable['request_progress'][][] = [];
     if (request_progress.data.length === 0) {
       return { availRecivedProgEvents, isScheduled };
     }
@@ -59,7 +59,9 @@ const CandidateAvailReceive = () => {
     });
     if (
       request_progress.data.find(
-        (prg) => prg.event_type === 'CAND_CONFIRM_SLOT',
+        (prg) =>
+          prg.event_type === 'CAND_CONFIRM_SLOT' ||
+          prg.event_type === 'SCHEDULE_INTERVIEW_SLOT',
       )
     ) {
       isScheduled = true;
@@ -111,7 +113,7 @@ const RequestEvents = ({
 
   const { reqTriggerActionsMap } = useRequestProgressProvider();
   const { reqProgresMp } = useMemo(() => {
-    let mp: RequestProgressMapType = {};
+    const mp: RequestProgressMapType = {};
 
     currProgress.forEach((row) => {
       if (!mp[row.event_type]) {

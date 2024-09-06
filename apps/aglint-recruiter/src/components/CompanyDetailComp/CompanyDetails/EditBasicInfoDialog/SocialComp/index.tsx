@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Label } from '@components/ui/label';
 import React, { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -44,9 +44,9 @@ const SocialComp = ({
   };
 
   return (
-    <Stack gap={'var(--space-2)'}>
-      <Typography color={'var(--neutral-12)'}>Social</Typography>
-      <Stack gap={'var(--space-4)'}>
+    <div className='space-y-4 w-full'>
+      <Label className='text-lg font-semibold'>Social</Label>
+      <div className='space-y-6'>
         {socials.map((socialName) => (
           <SocialField
             key={socialName}
@@ -108,8 +108,8 @@ const SocialComp = ({
           />
         ))}
         {!disabled && <AddSocialLinkButton />}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 

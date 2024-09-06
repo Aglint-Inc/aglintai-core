@@ -42,7 +42,7 @@ function SingleDayCard({
     timeZone: userTzDayjs.tz.guess(),
   });
 
-  let sesAllConflicts: PlanCombinationRespType['sessions'][number]['ints_conflicts'] =
+  const sesAllConflicts: PlanCombinationRespType['sessions'][number]['ints_conflicts'] =
     [];
 
   sessions.map((session) =>

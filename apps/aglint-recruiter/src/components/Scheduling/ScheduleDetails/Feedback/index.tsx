@@ -4,7 +4,6 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { CdFeedback } from '@devlink3/CdFeedback';
 import { FeedbackCard } from '@devlink3/FeedbackCard';
@@ -12,6 +11,7 @@ import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@devlink3/RoundedNumber';
 import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
+import { Star } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
@@ -110,7 +110,7 @@ const FeedbackWindow = ({
       }[];
     } = {};
 
-    for (let item of tempData) {
+    for (const item of tempData) {
       const temp = tempRelation[item.session_id] || [];
       temp.push({
         feedback: item.feedback,
@@ -239,7 +239,7 @@ const AdminFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<Boolean>;
+  }) => Promise<boolean>;
 
   candidate: {
     email: string;
@@ -412,7 +412,7 @@ const InterviewerFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<Boolean>;
+  }) => Promise<boolean>;
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
     index: number;
@@ -811,11 +811,7 @@ function FeedbackCardDetails({
                 <Stack direction={'column'} gap={'10px'}>
                   <Stack direction={'row'} gap={'10px'}>
                     <Typography fontSize={20}>
-                      <GlobalIcon
-                        size={'30'}
-                        color={'#000'}
-                        iconName={'kid_star'}
-                      />
+                      <Star size={'30'} />
                     </Typography>
                     <Typography>
                       Recommendation Level : {int.feedback?.recommendation}

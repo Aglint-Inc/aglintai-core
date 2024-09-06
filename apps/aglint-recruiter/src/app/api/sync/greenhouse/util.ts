@@ -128,7 +128,7 @@ export async function getGreenhouseCandidates(
     url = temp_url + `?created_after=${data.last_sync}`;
   }
   const data1 = await getGreenhouseCandidatesAPI(key, url);
-  let data2 = [] as typeof data1;
+  const data2 = [] as typeof data1;
   // if (data.last_sync) {
   //   url = temp_url + `?updated_after=${data.last_sync}`;
   //   data2 = await getGreenhouseCandidatesAPI(key, url);
@@ -164,7 +164,7 @@ async function getGreenhouseCandidatesAPI(key: string, url: string) {
 export function chunkArray<T extends unknown>(flatArray: T[], i: number) {
   if (i < 1) throw new Error('Chunk size must be greater than 0');
 
-  let result = [] as T[][];
+  const result = [] as T[][];
   for (let j = 0; j < flatArray.length; j += i) {
     result.push(flatArray.slice(j, j + i));
   }

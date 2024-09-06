@@ -9,7 +9,7 @@ type BodyParams = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { organizer_id, event_id } = req.body as BodyParams;
+  const { organizer_id, event_id } = req.body as BodyParams;
   if (!organizer_id || !event_id) return res.status(400).send('missing Fields');
   try {
     const google_cal = new GoogleCalender(null, null, organizer_id);

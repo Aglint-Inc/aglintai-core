@@ -4,8 +4,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { type Dayjs } from 'dayjs';
 import React from 'react';
 
-import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import UITextField from '../UITextField';
+import { Calendar } from 'lucide-react';
 
 export default function SpecializedDatePicker({
   label,
@@ -52,7 +52,7 @@ export default function SpecializedDatePicker({
               />
             );
           },
-          openPickerIcon: DateIcon,
+          openPickerIcon: () => <Calendar size={20} />,
         }}
       />
     </LocalizationProvider>

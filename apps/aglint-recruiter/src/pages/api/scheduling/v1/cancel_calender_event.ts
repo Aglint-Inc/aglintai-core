@@ -11,7 +11,7 @@ type BodyParams = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { calender_event } = req.body as BodyParams;
+  const { calender_event } = req.body as BodyParams;
   if (!calender_event) return res.status(400).send('missing Fields');
   try {
     const { comp_cred, recruiter } = await getRecruiterCredentials({

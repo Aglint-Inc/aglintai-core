@@ -136,4 +136,11 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'The interview slot will be scheduled.',
     error: 'An error occurred while scheduling the interview slot.',
   },
+  SCHEDULE_INTERVIEW_SLOT_FROM_CANDIDATE_AVAILABILITY: {
+    past: 'The interview slot has been scheduled from candidate availability.',
+    present: 'Scheduling the interview slot from candidate availability.',
+    future: 'The interview slot will be scheduled from candidate availability.',
+    error:
+      'An error occurred while scheduling the interview slot from candidate availability.',
+  },
 };

@@ -5,7 +5,6 @@ import { getShortTimeZone } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
@@ -13,6 +12,7 @@ import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewerDetail } from '@devlink3/InterviewerDetail';
 import { UpcomingInterviewList } from '@devlink3/UpcomingInterviewList';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
+import { Mail, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -207,7 +207,7 @@ Unavailable for interviews on Tuesdays.`);
                               setAnchorEl(null);
                             }}
                           >
-                            <GlobalIcon iconName='email' />
+                            <Mail size={16} />
                             <Typography
                               sx={{
                                 fontSize: '14px',
@@ -233,7 +233,7 @@ Unavailable for interviews on Tuesdays.`);
                               setAnchorEl(null);
                             }}
                           >
-                            <GlobalIcon iconName='sms' />
+                            <MessageSquare size={16} />
                             <Typography
                               sx={{
                                 fontSize: '14px',

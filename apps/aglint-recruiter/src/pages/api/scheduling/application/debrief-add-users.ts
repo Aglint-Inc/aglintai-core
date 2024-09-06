@@ -95,7 +95,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       allUserIds.push(filterJson.applications.public_jobs.sourcer);
     }
 
-    let eligibleUserIds = [...new Set(allUserIds)];
+    const eligibleUserIds = [...new Set(allUserIds)];
 
     const existingUserIds = intMeetSessions
       .find((meet) => meet.interview_session[0].id === debriefSessionId)
@@ -176,9 +176,9 @@ function findSessionRelations({
   sessions: Awaited<ReturnType<typeof fetchMeetingsSessions>>;
   debriefSessionId: string;
 }) {
-  let allPreviousMeetings: Awaited<ReturnType<typeof fetchMeetingsSessions>> =
+  const allPreviousMeetings: Awaited<ReturnType<typeof fetchMeetingsSessions>> =
     [];
-  let user_ids = [];
+  const user_ids = [];
   let previousDebriefIndex = -1;
   let selectedDebriefIndex = -1;
 
