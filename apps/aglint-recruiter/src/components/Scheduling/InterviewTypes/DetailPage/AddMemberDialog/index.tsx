@@ -116,8 +116,7 @@ function AddMemberDialog({
         <Typography marginBottom={1}>Choose members from your team.</Typography>
         <MembersAutoComplete
           maxWidth={'460px'}
-          pillColor='var(--neutral-4)'
-          disabled={loading}
+          pillColor='var(--neutral-3)'
           renderUsers={allMembers}
           selectedUsers={selectedUsers}
           setSelectedUsers={(users) => {

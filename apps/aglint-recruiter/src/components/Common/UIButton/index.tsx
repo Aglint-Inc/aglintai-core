@@ -57,7 +57,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
             {LeftIconWithClass && (
               <span
                 className={
-                  children
+                  !children
                     ? size === 'sm'
                       ? 'mr-1'
                       : size === 'md'
@@ -72,7 +72,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
             {RightIconWithClass && (
               <span
                 className={
-                  children
+                  !children
                     ? size === 'sm'
                       ? 'ml-1'
                       : size === 'md'

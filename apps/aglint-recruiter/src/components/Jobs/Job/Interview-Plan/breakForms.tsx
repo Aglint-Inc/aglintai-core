@@ -11,8 +11,8 @@ import { type UpdateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { breakDurations } from '@/utils/scheduling/const';
 
-import { DropDown } from './sessionForms';
 import { getBreakLabel } from './utils';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 
 type BreakFormProps = Pick<InterviewSessionType, 'break_duration'>;
 
@@ -146,21 +146,21 @@ const SessionDurationField = ({
     },
     [] as { name: string; value: number }[],
   );
-  const onChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = useCallback((e) => {
-    if ((e?.target?.value ?? null) && typeof e.target.value === 'number')
-      handleChange('break_duration', e.target.value);
-  }, []);
 
   return (
-    <DropDown
-      placeholder='Select break duration'
-      showIcons={false}
-      options={options}
-      value={value}
-      onChange={onChange}
-    />
+    <>
+      <UISelectDropDown
+        menuOptions={options.map((ele) => ({
+          name: ele.name,
+          value: ele.value,
+        }))}
+        placeholder='Select break duration'
+        value={value.toString()}
+        onValueChange={(value) => {
+          handleChange('break_duration', parseInt(value));
+        }}
+      />
+    </>
   );
 };
 
