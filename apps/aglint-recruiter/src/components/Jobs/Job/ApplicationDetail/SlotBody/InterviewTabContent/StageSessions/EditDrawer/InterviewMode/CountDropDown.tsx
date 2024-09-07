@@ -1,6 +1,4 @@
-import { MenuItem, TextField } from '@mui/material';
-import React from 'react';
-
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { setEditSession, useEditSessionDrawerStore } from '../store';
 
 function CountDropDown() {
@@ -11,35 +9,27 @@ function CountDropDown() {
     }),
   );
   return (
-    <TextField
-      size='small'
+    <UISelectDropDown
+      className='w-16'
+      fieldSize='small'
       name={'interviewer_cnt'}
-      type='number'
-      sx={{
-        width: '60px',
-        '& .MuiOutlinedInput-root': {
-          padding: '0px!important',
-        },
-      }}
-      value={editSession.interview_session.interviewer_cnt || 1}
-      onChange={(e) => {
+      value={editSession.interview_session.interviewer_cnt.toString() || '1'}
+      onValueChange={(value) => {
         setEditSession({
           interview_session: {
             ...editSession.interview_session,
-            interviewer_cnt: Number(e.target.value),
+            interviewer_cnt: Number(value),
           },
         });
       }}
-      select
-    >
-      {Array.from({ length: selectedInterviewers.length }, (_, i) => i + 1).map(
-        (num) => (
-          <MenuItem value={num} key={num}>
-            {num}
-          </MenuItem>
-        ),
-      )}
-    </TextField>
+      menuOptions={Array.from(
+        { length: selectedInterviewers.length },
+        (_, i) => i + 1,
+      ).map((num) => ({
+        name: num.toString(),
+        value: num.toString(),
+      }))}
+    />
   );
 }
 

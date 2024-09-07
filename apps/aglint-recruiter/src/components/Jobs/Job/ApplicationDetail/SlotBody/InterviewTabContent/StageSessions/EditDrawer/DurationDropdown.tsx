@@ -1,9 +1,8 @@
-import { MenuItem, TextField } from '@mui/material';
-import React from 'react';
 
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { sessionDurations } from '@/utils/scheduling/const';
 
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { setEditSession, useEditSessionDrawerStore } from './store';
 
 function SessionDuration() {
@@ -12,28 +11,24 @@ function SessionDuration() {
   }));
 
   return (
-    <TextField
-      fullWidth
-      select
-      value={editSession.interview_session.session_duration}
-    >
-      {sessionDurations?.map((dur) => (
-        <MenuItem
-          value={dur}
-          key={dur}
-          onClick={() =>
-            setEditSession({
-              interview_session: {
-                ...editSession.interview_session,
-                session_duration: dur,
-              },
-            })
-          }
-        >
-          {getBreakLabel(dur)}
-        </MenuItem>
-      ))}
-    </TextField>
+    <>
+      <UISelectDropDown
+        fullWidth
+        value={editSession.interview_session.session_duration.toString()}
+        menuOptions={sessionDurations.map((dur) => ({
+          name: getBreakLabel(dur),
+          value: dur.toString(),
+        }))}
+        onValueChange={(value) => {
+          setEditSession({
+            interview_session: {
+              ...editSession.interview_session,
+              session_duration: parseInt(value),
+            },
+          });
+        }}
+      />
+    </>
   );
 }
 

@@ -48,7 +48,7 @@ const getInterviewModules = async ({
       .filter((rel) => !rel.is_archived)
       .map(({ recruiter_user, id, training_status, pause_json }) => ({
         ...recruiter_user,
-        moduleUserId: id,
+        module_relation_id: id,
         training_status,
         paused: !!pause_json,
       }));
