@@ -1,11 +1,12 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { TextWithIcon } from '@devlink2/TextWithIcon';
+
 import { Stack } from '@mui/material';
 import React from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
+import { Label } from '@components/ui/label';
+import { Button } from '@components/ui/button';
 
 function CandidateDetails({
   candidateDetails,
@@ -57,34 +58,27 @@ function CandidateDetails({
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
       {items
         .filter(({ hide }) => !hide)
-        .map(({ icon, text, type, route }, i) => {
+        .map(({ text, type, route }, i) => {
           if (type === 'text') {
             return (
-              <TextWithIcon
+              <Label
                 key={i}
-                textContent={text}
-                iconSize={3}
-                fontSize={1}
-                color={'neutral'}
-                iconName={icon}
-              />
+                className='flex items-center text-sm text-neutral-500'
+              >
+                {text}
+              </Label>
             );
           } else
             return (
               <>
-                <ButtonSoft
+                <Button
                   key={i}
-                  size={1}
-                  color={'neutral'}
-                  textButton={text}
-                  isLeftIcon={true}
-                  iconName={icon}
-                  onClickButton={{
-                    onClick: () => {
-                      push(route);
-                    },
-                  }}
-                />
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => push(route)}
+                >
+                  {text}
+                </Button>
               </>
             );
         })}

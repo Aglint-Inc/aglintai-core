@@ -1,0 +1,12 @@
+.icon_general {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.icon-text-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

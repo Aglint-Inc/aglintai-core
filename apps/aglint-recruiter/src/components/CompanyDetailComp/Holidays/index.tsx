@@ -17,7 +17,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { CompanyDayOff } from '@devlink2/CompanyDayOff';
 import { DayoffList } from '@devlink2/DayoffList';
-import { TextWithBg } from '@devlink2/TextWithBg';
+
 import { DayOffHelper } from '@devlink3/DayOffHelper';
 import { Typography } from '@mui/material';
 import { cloneDeep } from 'lodash';
@@ -28,6 +28,7 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
+import { Badge } from '@components/ui/badge';
 
 export const LoadMax = {
   dailyHours: 8,
@@ -116,7 +117,11 @@ function Holidays() {
                   slotTextWithBg={
                     item?.locations ? (
                       item.locations.map((location, index) => {
-                        return <TextWithBg key={index} text={location} />;
+                        return (
+                          <Badge key={index} variant='secondary'>
+                            {location}
+                          </Badge>
+                        );
                       })
                     ) : (
                       <Typography

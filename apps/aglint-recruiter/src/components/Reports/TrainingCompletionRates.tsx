@@ -180,7 +180,6 @@ export default function Component() {
                     mode='single'
                     selected={startDate}
                     onSelect={setStartDate}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
@@ -203,7 +202,6 @@ export default function Component() {
                     mode='single'
                     selected={endDate}
                     onSelect={setEndDate}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>

@@ -2,7 +2,7 @@ import { type RecruiterUserType } from '@aglint/shared-types';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { TeamListItem } from '@devlink/TeamListItem';
 import { UserInfoTeam } from '@devlink/UserInfoTeam';
-import { TextWithIcon } from '@devlink2/TextWithIcon';
+
 import { Avatar, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -19,6 +19,8 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { UserListThreeDot } from './ThreeDot';
+import { Building2, Globe, Mail, MapPin, Smartphone } from 'lucide-react';
+import { Label } from '@components/ui/label';
 
 dayjs.extend(relativeTime);
 
@@ -91,36 +93,26 @@ const Member = ({
                 <UserInfoTeam
                   slotDetails={
                     <>
-                      <TextWithIcon
-                        textContent={member.department?.name || '--'}
-                        iconName='corporate_fare'
-                        iconSize={4}
-                        iconWeight={'medium'}
-                      />
-                      <TextWithIcon
-                        textContent={member.office_location?.city || '--'}
-                        iconName='location_on'
-                        iconSize={4}
-                        iconWeight={'medium'}
-                      />
-                      <TextWithIcon
-                        textContent={member.office_location?.timezone || '--'}
-                        iconName='public'
-                        iconSize={4}
-                        iconWeight={'medium'}
-                      />
-                      <TextWithIcon
-                        textContent={member.email || '--'}
-                        iconName='mail'
-                        iconSize={4}
-                        iconWeight={'medium'}
-                      />
-                      <TextWithIcon
-                        textContent={member.phone || '--'}
-                        iconName='smartphone'
-                        iconSize={4}
-                        iconWeight={'medium'}
-                      />
+                      <Label>
+                        <Building2 className='mr-2 h-4 w-4' />
+                        {member.department?.name || '--'}
+                      </Label>
+                      <Label>
+                        <MapPin className='mr-2 h-4 w-4' />
+                        {member.office_location?.city || '--'}
+                      </Label>
+                      <Label>
+                        <Globe className='mr-2 h-4 w-4' />
+                        {member.office_location?.timezone || '--'}
+                      </Label>
+                      <Label>
+                        <Mail className='mr-2 h-4 w-4' />
+                        {member.email || '--'}
+                      </Label>
+                      <Label>
+                        <Smartphone className='mr-2 h-4 w-4' />
+                        {member.phone || '--'}
+                      </Label>
                     </>
                   }
                   textDesgination={member.position}

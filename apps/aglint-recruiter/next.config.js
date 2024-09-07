@@ -2,7 +2,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   assetPrefix:
@@ -11,13 +10,20 @@ const nextConfig = {
       : '', //need for reverse proxy for job preview link
   eslint: {
     dirs: ['src'],
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
+  // typescript: {
+  //   // !! WARN !!
+  //   // Dangerously allow production builds to successfully complete even if
+  //   // your project has type errors.
+  //   // !! WARN !!
+  //   ignoreBuildErrors: true,
+  // },
 
   async rewrites() {
     return [
@@ -28,23 +34,24 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    const redirects = [
+    return [
       {
         source: '/',
         destination: '/login',
-        basePath: false,
+        basePath: undefined,
         permanent: false,
       },
+      ...(process.env.NODE_ENV === 'production'
+        ? [
+            {
+              source: '/signup',
+              destination: '/login',
+              basePath: undefined,
+              permanent: false,
+            },
+          ]
+        : []),
     ];
-    if (process.env.NODE_ENV === 'production') {
-      redirects.push({
-        source: '/signup',
-        destination: '/login',
-        basePath: false,
-        permanent: false,
-      });
-    }
-    return redirects;
   },
   images: {
     remotePatterns: [
@@ -65,9 +72,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'aglintai-seed-data.vercel.app',
       },
+      {
+        protocol: 'https',
+        hostname: 'ecfwsyxpcuzxlxrkhxjz.supabase.co',
+      },
     ],
   },
   experimental: {
+    instrumentationHook: false,
     turbo: {
       rules: {
         '*.svg': {

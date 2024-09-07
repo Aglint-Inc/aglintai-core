@@ -1,7 +1,8 @@
-import { NotesRequestDetail } from '@devlink2/NotesRequestDetail';
-import { RequestCardSkeleton } from '@devlink2/RequestCardSkeleton';
-import { Text } from '@devlink2/Text';
-import { Stack, TextField } from '@mui/material';
+import { Card } from '@components/ui/card';
+import { Skeleton } from '@components/ui/skeleton';
+import { Textarea } from '@components/ui/textarea';
+import { cn } from '@lib/utils';
+
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -47,114 +48,73 @@ function RequestNotes() {
   );
 
   return (
-    <Stack>
-      <NotesRequestDetail
-        slotInput={
-          <ShowCode>
-            <ShowCode.When isTrue={!isFetched}>
-              <RequestCardSkeleton />
-            </ShowCode.When>
-            <ShowCode.When isTrue={isFetched}>
-              <ShowCode>
-                <ShowCode.When isTrue={!!note || editorEnabled}>
-                  <Stack
-                    direction={'row'}
-                    gap={1}
-                    spacing={1}
-                    onClick={() => {
-                      setEditorEnabled(true);
-                      setTimeout(() => inputRef.current?.focus(), 300);
+    <div className='space-y-4'>
+      <Card
+        className={cn(
+          'p-4',
+          requestNotes?.[0]?.note && !editorEnabled
+            ? 'bg-yellow-50'
+            : 'bg-white',
+        )}
+      >
+        <ShowCode>
+          <ShowCode.When isTrue={!isFetched}>
+            <Skeleton className='w-full h-20' />
+          </ShowCode.When>
+          <ShowCode.When isTrue={isFetched}>
+            <ShowCode>
+              <ShowCode.When isTrue={!!note || editorEnabled}>
+                <div
+                  className='flex flex-row gap-1'
+                  onClick={() => {
+                    setEditorEnabled(true);
+                    setTimeout(() => inputRef.current?.focus(), 300);
+                  }}
+                >
+                  <Textarea
+                    value={note || ''}
+                    onChange={async (e) => {
+                      setNote(e.target.value);
+                      setSaving(true);
+                      debouncedUpsertRequestNotes(
+                        e.target.value,
+                        requestNotes?.[0]?.id,
+                      );
                     }}
-                  >
-                    <TextField
-                      value={note || ''}
-                      onChange={async (e) => {
-                        setNote(e.target.value);
-                        setSaving(true);
-                        debouncedUpsertRequestNotes(
-                          e.target.value,
-                          requestNotes?.[0]?.id,
-                        );
-                      }}
-                      placeholder='Add note'
-                      multiline // Enables textarea behavior
-                      minRows={1} // Minimum number of rows
-                      maxRows={2} // Maximum number of rows
-                      variant='outlined' // Uses the outlined variant
-                      fullWidth // Takes full width of the container
-                      sx={{
-                        '& .MuiOutlinedInput-root': {
-                          padding: 0, // Remove padding
-                          borderRadius: '0.2rem', // Custom border-radius
-                          backgroundColor: 'transparent', // Transparent background
-                          '& fieldset': {
-                            border: 'none', // Remove the default border
-                          },
-                          '&:hover fieldset': {
-                            borderColor: 'transparent', // Ensure no border color change on hover
-                          },
-                          '&.Mui-focused': {
-                            boxShadow: 'none', // Remove the box shadow on focus
-                            '& fieldset': {
-                              borderColor: 'transparent', // Ensure no border color change on focus
-                            },
-                          },
-                        },
-                        '& .MuiInputBase-input': {
-                          whiteSpace: 'pre-wrap',
-                          wordWrap: 'break-word',
-                          wordBreak: 'break-all',
-                          resize: 'none', // Disable resizing
-                          outline: 'none', // Disable outline
-                          padding: 0, // Remove padding
-                        },
-                      }}
-                      onBlur={() => {
-                        setEditorEnabled(false);
-                      }}
-                      inputRef={inputRef}
-                    />
-                  </Stack>
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <Stack
-                    width={'100%'}
-                    onClick={() => {
-                      setEditorEnabled(true);
-                      setTimeout(() => inputRef.current?.focus(), 300);
+                    placeholder='Add note'
+                    className='min-h-[40px] resize-none focus:ring-0 focus:border-transparent'
+                    onBlur={() => {
+                      setEditorEnabled(false);
                     }}
-                  >
-                    <Text size={2} color={'neutral'} content='Add note' />
-                  </Stack>
-                </ShowCode.Else>
-              </ShowCode>
-            </ShowCode.When>
-          </ShowCode>
-        }
-        styleInput={
-          requestNotes?.[0]?.note && !editorEnabled ? 'warning' : 'white'
-        }
-        slotText={
-          <Stack direction={'row'} alignItems={`center`} gap={1}>
-            <Text
-              color={'neutral'}
-              size={1}
-              content={
-                !requestNotes?.[0]?.note
-                  ? 'Notes will remain here until you clear it.'
-                  : 'Last edited on ' +
-                    dayjs(requestNotes?.[0]?.updated_at).format(
-                      'hh:mm A, MMM DD',
-                    )
-              }
-            />
-            {saving && (
-              <Text size={1} color={'neutral'} content={'Saving...'} />
-            )}
-          </Stack>
-        }
-      />
-    </Stack>
+                    ref={inputRef}
+                  />
+                </div>
+              </ShowCode.When>
+              <ShowCode.Else>
+                <div
+                  className='w-full cursor-pointer'
+                  onClick={() => {
+                    setEditorEnabled(true);
+                    setTimeout(() => inputRef.current?.focus(), 300);
+                  }}
+                >
+                  <p className='text-sm text-neutral-500'>Add note</p>
+                </div>
+              </ShowCode.Else>
+            </ShowCode>
+          </ShowCode.When>
+        </ShowCode>
+        <div className='flex flex-row items-center gap-1 mt-2'>
+          <p className='text-xs text-neutral-500'>
+            {!requestNotes?.[0]?.note
+              ? 'Notes will remain here until you clear it.'
+              : 'Last edited on ' +
+                dayjs(requestNotes?.[0]?.updated_at).format('hh:mm A, MMM DD')}
+          </p>
+          {saving && <p className='text-xs text-neutral-500'>Saving...</p>}
+        </div>
+      </Card>
+    </div>
   );
 }
 

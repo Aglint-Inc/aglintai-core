@@ -43,7 +43,6 @@ function DateSelect({
             setDate(newDate);
             getDate(newDate);
           }}
-          initialFocus
           disabled={(date) =>
             selectedDates
               .map((item) => item.date)

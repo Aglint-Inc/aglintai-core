@@ -7,7 +7,7 @@ import {
 } from '@components/ui/tooltip';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/ScheduleProgressPill';
-import { StatusBadge } from '@devlink2/StatusBadge';
+
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import {
@@ -24,6 +24,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
+import { StatusBadge } from '@devlink2/StatusBadge';
 
 type Enums = DB['public']['Enums'];
 

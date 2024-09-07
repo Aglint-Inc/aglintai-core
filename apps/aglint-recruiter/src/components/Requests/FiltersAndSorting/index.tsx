@@ -191,10 +191,10 @@ function FilterAndSorting() {
       layoutMode='left-align'
       filters={[
         ...safeFilters,
-        assigneeFilter,
+        // assigneeFilter,
         assignerFilter,
         jobFilter,
-        candidateFilter,
+        // candidateFilter,
       ]}
       search={{
         value: title,

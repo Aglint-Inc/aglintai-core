@@ -1,6 +1,6 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import {
   RequestOption,
 } from '../../../ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
 import SessionList from './SessionsList';
+import { Skeleton } from '@components/ui/skeleton';
 
 export type sessionType = {
   id: string;

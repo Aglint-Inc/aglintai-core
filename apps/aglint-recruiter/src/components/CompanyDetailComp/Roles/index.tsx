@@ -4,7 +4,7 @@ import { GlobalBadge } from '@devlink/GlobalBadge';
 import { RolesAndPermissions } from '@devlink/RolesAndPermissions';
 import { RolesRow } from '@devlink/RolesRow';
 import { RolesRowSkeleton } from '@devlink/RolesRowSkeleton';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { Avatar, Typography } from '@mui/material';
 
 import { rolesOrder } from '@/constant/role_and_permissions';
@@ -18,6 +18,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import RoleDetails from './RoleDetails';
 import { CirclePlus } from 'lucide-react';
 import { Button } from '@components/ui/button';
+import { Skeleton } from '@components/ui/skeleton';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -84,9 +85,18 @@ const RoleTable = ({
   const { members } = useAllMembers();
   return loading
     ? [
-        <RolesRowSkeleton key={'x'} slotSkeleton={<Skeleton />} />,
-        <RolesRowSkeleton key={'y'} slotSkeleton={<Skeleton />} />,
-        <RolesRowSkeleton key={'z'} slotSkeleton={<Skeleton />} />,
+        <RolesRowSkeleton
+          key={'x'}
+          slotSkeleton={<Skeleton className='h-4 w-full' />}
+        />,
+        <RolesRowSkeleton
+          key={'y'}
+          slotSkeleton={<Skeleton className='h-4 w-full' />}
+        />,
+        <RolesRowSkeleton
+          key={'z'}
+          slotSkeleton={<Skeleton className='h-4 w-full' />}
+        />,
       ]
     : Object.entries(roles || {})
         .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])

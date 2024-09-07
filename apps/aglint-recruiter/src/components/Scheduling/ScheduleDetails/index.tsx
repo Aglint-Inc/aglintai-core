@@ -1,7 +1,7 @@
 // import Feedback from './Feedback';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { PageLayout } from '@devlink2/PageLayout';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -19,6 +19,7 @@ import ButtonGroup from './ButtonGroup';
 import DetailsOverview from './DetailsOverview';
 import { useScheduleDetails } from './hooks';
 import Requests from './Requests';
+import { Skeleton } from '@components/ui/skeleton';
 
 function SchedulingViewComp() {
   const router = useRouter();
@@ -114,9 +115,9 @@ function SchedulingViewComp() {
       <PageLayout
         slotTopbarLeft={
           isLoading ? (
-            <Stack width={'150px'} height={'20px'}>
-              <Skeleton />
-            </Stack>
+            <div className='w-[150px] h-[20px]'>
+              <Skeleton className='w-full h-full' />
+            </div>
           ) : (
             <>{breadcrum}</>
           )

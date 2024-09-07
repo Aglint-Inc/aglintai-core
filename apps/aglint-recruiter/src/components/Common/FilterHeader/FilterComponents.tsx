@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { AddFilter } from '@devlink2/AddFilter';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { FilterItem } from '@devlink3/FilterItem';
 import { MultiFilterLayout } from '@devlink3/MultiFilterLayout';
 import { List, ListItemButton, Popover, Stack } from '@mui/material';
@@ -20,6 +20,7 @@ import {
   nestedOptionMapper,
   setValueInNestedObject,
 } from './utils';
+import { Skeleton } from '@components/ui/skeleton';
 
 /* eslint-disable no-unused-vars */
 

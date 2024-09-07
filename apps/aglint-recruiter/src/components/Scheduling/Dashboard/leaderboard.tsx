@@ -1,4 +1,3 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { LeaderBoard } from '@devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
@@ -14,6 +13,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';
+import { Skeleton } from '@components/ui/skeleton';
 
 const LIMIT = 5;
 
@@ -108,7 +108,10 @@ List.displayName = 'ListList';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * LIMIT) + 1)].map((_, i) => (
-    <LeaderBoardLoader key={i} slotSkeleton={<Skeleton />} />
+    <LeaderBoardLoader
+      key={i}
+      slotSkeleton={<Skeleton className='w-full h-full' />}
+    />
   ));
 });
 Loader.displayName = 'Loader';

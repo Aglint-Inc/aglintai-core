@@ -1,0 +1,14 @@
+.kbd {
+  display: flex;
+  height: 18px;
+  padding-right: 8px;
+  padding-left: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.gradient_css {
+  position: absolute;
+  z-index: -10;
+  pointer-events: none;
+}

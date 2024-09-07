@@ -1,7 +1,7 @@
 'use strict';
 
 import { Checkbox } from '@components/ui/checkbox';
-import { StatusBadge } from '@devlink2/StatusBadge';
+
 import { GlobalScheduleCard } from '@devlink3/GlobalScheduleCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
@@ -20,6 +20,7 @@ import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
 import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
+import { StatusBadge } from '@devlink2/StatusBadge';
 
 function ScheduleIndividualCard({
   session,

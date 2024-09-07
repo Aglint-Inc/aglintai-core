@@ -5,9 +5,9 @@ import 'regenerator-runtime/runtime';
 import { ThemeProvider } from '@components/theme-provider';
 import { Toaster } from '@components/ui/toaster';
 import React from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+// import { ErrorBoundary } from 'react-error-boundary';
 
-import ErrorPage from './error';
+// import ErrorPage from './error.tsx.abl';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,17 +27,17 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body>
-        <ErrorBoundary FallbackComponent={ErrorPage}>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main>{children}</main>
-            <Toaster />
-          </ThemeProvider>
-        </ErrorBoundary>
+        {/* <ErrorBoundary FallbackComponent={ErrorPage}> */}
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+          <Toaster />
+        </ThemeProvider>
+        {/* </ErrorBoundary> */}
       </body>
     </html>
   );

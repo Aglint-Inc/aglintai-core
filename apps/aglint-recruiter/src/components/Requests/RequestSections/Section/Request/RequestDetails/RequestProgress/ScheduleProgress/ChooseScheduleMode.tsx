@@ -1,9 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { NoWorkflow } from '@devlink2/NoWorkflow';
-import { Stack } from '@mui/material';
+import { Button } from '@components/ui/button';
 
 import { setCandidateAvailabilityDrawerOpen } from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useMeetingList } from '@/components/Requests/ViewRequestDetails/hooks';
@@ -15,6 +11,8 @@ import {
 } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { Loader2, PlusCircle } from 'lucide-react';
+import { Label } from '@components/ui/label';
 
 const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
@@ -27,62 +25,54 @@ const ChooseScheduleMode = () => {
   const { findAvailibility } = useSelfSchedulingDrawer({ refetch });
   return (
     <>
-      <Stack rowGap={2}>
-        <Stack width={'100%'} direction={'row'} justifyContent={'end'} gap={2}>
-          <NoWorkflow
-            textDesc={
-              'There are no workflows set. please select an action to proceed manually or add action from below.'
-            }
-            slotButton={
-              <>
-                <ButtonSolid
-                  size={1}
-                  color={'accent'}
-                  onClickButton={{
-                    onClick: () => {
-                      setCandidateAvailabilityDrawerOpen(true);
-                    },
-                  }}
-                  textButton={'Send Availability Link'}
-                />
-                <ButtonSoft
-                  size={1}
-                  color={'accent'}
-                  onClickButton={{
-                    onClick: async () => {
-                      if (fetchingPlan) return;
-                      await findAvailibility({
-                        filters: initialFilters,
-                        dateRange: {
-                          start_date: dayjsLocal().toISOString(),
-                          end_date: dayjsLocal().add(7, 'day').toISOString(),
-                        },
-                      });
-                      setIsSelfScheduleDrawerOpen(true);
-                    },
-                  }}
-                  isLoading={fetchingPlan}
-                  textButton={'Send SelfScheduling Link'}
-                />
-              </>
-            }
-          />
-        </Stack>
-        <Stack direction={'row'} justifyContent={'start'}>
-          <ButtonGhost
-            size={1}
-            isLeftIcon={true}
-            iconName={'add_circle'}
-            textButton={'Add Ai Actions'}
-            onClickButton={{
-              onClick: () => {
-                setEditTrigger('onRequestSchedule');
-                setShowEditDialog(true);
-              },
+      <div className='flex flex-col gap-4'>
+        <div className='flex justify-end gap-2'>
+          <Label>
+            There are no workflows set. please select an action to proceed
+            manually or add action from below.
+          </Label>
+          <Button
+            variant='default'
+            onClick={() => {
+              setCandidateAvailabilityDrawerOpen(true);
             }}
-          />
-        </Stack>
-      </Stack>
+          >
+            Send Availability Link
+          </Button>
+          <Button
+            variant='outline'
+            onClick={async () => {
+              if (fetchingPlan) return;
+              await findAvailibility({
+                filters: initialFilters,
+                dateRange: {
+                  start_date: dayjsLocal().toISOString(),
+                  end_date: dayjsLocal().add(7, 'day').toISOString(),
+                },
+              });
+              setIsSelfScheduleDrawerOpen(true);
+            }}
+            disabled={fetchingPlan}
+          >
+            {fetchingPlan ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : null}
+            Send SelfScheduling Link
+          </Button>
+        </div>
+        <div className='flex justify-start'>
+          <Button
+            variant='outline'
+            onClick={() => {
+              setEditTrigger('onRequestSchedule');
+              setShowEditDialog(true);
+            }}
+          >
+            <PlusCircle className='mr-2 h-4 w-4' />
+            Add Ai Actions
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

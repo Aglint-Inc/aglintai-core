@@ -1,4 +1,3 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { HistoryPill } from '@devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
@@ -16,6 +15,7 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
+import { Skeleton } from '@components/ui/skeleton';
 
 const LIMIT = 4;
 

@@ -1,122 +1,89 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+import { useState } from 'react';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@components/ui/tooltip';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { GlobalBadge } from '@devlink2/GlobalBadge';
-import { RequestCard } from '@devlink2/RequestCard';
-import { Collapse, Stack } from '@mui/material';
-import { type PropsWithChildren, useState } from 'react';
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@components/ui/collapsible';
+import { Button } from '@components/ui/button';
+import { Badge } from '@components/ui/badge';
+import { cn } from '@lib/utils';
 
-import { useRequest } from '@/context/RequestContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { getStatusColor } from '../../../utils';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
+import { Notebook } from 'lucide-react';
+import Link from 'next/link';
 
-export const Request = (
-  props: PropsWithChildren<RequestType> & { index: number },
-) => {
-  const { collapse, setCollapse } = useRequest();
-  const { push } = useRouterPro();
+type RequestProps = RequestType & { isExpanded?: boolean };
 
-  const [isHover, setIsHover] = useState(false);
+export const Request = ({
+  isExpanded = false,
+  index,
+  ...props
+}: RequestProps & { index: number }) => {
+  const [isOpen, setIsOpen] = useState(isExpanded);
+
   return (
-    <>
-      <div
-        style={{
-          padding: '12px',
-          backgroundColor: 'white',
-          borderRadius: '8px',
-          border: '1px solid var(--neutral-5)',
+    <div>
+      <Collapsible
+        open={isOpen}
+        onOpenChange={(open) => {
+          if (!isExpanded) {
+            setIsOpen(open);
+          }
         }}
       >
-        <Collapse in={collapse} collapsedSize={24}>
-          <Stack
-            gap={'16px'}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-          >
-            <RequestCard
-              isNewBadgeVisible={false}
-              slotBadgeNew={
-                <GlobalBadge
-                  size={1}
-                  textBadge={'New'}
-                  color={'purple'}
-                  variant={'solid'}
-                />
-              }
-              textTitle={props.title}
-              slotRightIcons={
-                <>
-                  <div
+        <Link href={`/requests/${props.id}`} passHref>
+          <div className='flex flex-col cursor-pointer border border-neutral-200 p-3 rounded-lg hover:bg-gray-50'>
+            <div className='flex justify-between items-center'>
+              <h3 className='text-normak font-semibold'>{props.title}</h3>
+              <div className='flex items-center space-x-2'>
+                <Badge
+                  variant='outline'
+                  className={cn(
+                    'capitalize',
+                    getStatusColor({ status: props.status }),
+                  )}
+                >
+                  {capitalizeFirstLetter(props.status)}
+                </Badge>
+                <MoreOptions request_id={props.id} />
+              </div>
+            </div>
+            <div className='flex justify-between items-center mt-2'>
+              {props?.request_note[0]?.note && (
+                <div className='text-sm text-gray-600'>
+                  <Notebook className='w-4 h-4 inline-block mr-1' />
+                  {props.request_note[0].note}
+                </div>
+              )}
+              {!isExpanded && (
+                <CollapsibleTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='sm'
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
+                      setIsOpen(!isOpen);
                     }}
                   >
-                    <Stack height={'24px'}>
-                      {isHover && (
-                        <Stack>
-                          <ButtonSoft
-                            textButton='View Details'
-                            color={'neutral'}
-                            size={1}
-                            onClickButton={{
-                              onClick: () => {
-                                push('/requests/' + props.id);
-                              },
-                            }}
-                          />
-                        </Stack>
-                      )}
-                    </Stack>
-                  </div>
-                  {props?.request_note[0]?.note && (
-                    <Tooltip delayDuration={500}>
-                      <TooltipTrigger asChild>
-                        <Stack>
-                          <GlobalBadge
-                            showIcon={true}
-                            textBadge={''}
-                            iconName={'note_stack'}
-                          />
-                        </Stack>
-                      </TooltipTrigger>
-                      <TooltipContent side='bottom' align='start'>
-                        <p>{props?.request_note[0].note}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                  <GlobalBadge
-                    size={1}
-                    textBadge={capitalizeFirstLetter(props.status)}
-                    color={getStatusColor({ status: props.status })}
-                  />
-                  <MoreOptions request_id={props.id} />
-                </>
-              }
-              onClickCard={{
-                onClick: () => {
-                  setCollapse((prev) => !prev);
-                },
-              }}
-            />
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <RequestDetails index={props.index} request={props} />
+                    {isOpen ? 'View Less' : 'View More'}
+                  </Button>
+                </CollapsibleTrigger>
+              )}
             </div>
-          </Stack>
-        </Collapse>
-      </div>
-    </>
+            <CollapsibleContent>
+              <div onClick={(e) => e.stopPropagation()}>
+                <RequestDetails request={props} index={index} />
+              </div>
+            </CollapsibleContent>
+          </div>
+        </Link>
+      </Collapsible>
+    </div>
   );
 };

@@ -1,0 +1,17 @@
+.schedule-req-wrap {
+  display: flex;
+  height: 400px;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--radius-4);
+}
+
+.schedule-req-sub-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}

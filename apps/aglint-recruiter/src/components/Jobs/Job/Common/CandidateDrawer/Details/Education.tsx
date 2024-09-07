@@ -2,7 +2,7 @@
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { EducationItem } from '@devlink/EducationItem';
 import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { GraduationCap } from 'lucide-react';
 import Image from 'next/image';
 
@@ -10,6 +10,7 @@ import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
 import { EmptyDetailState } from './Common/EmptyDetailState';
+import { Skeleton } from '@components/ui/skeleton';
 
 const Education = () => {
   return (

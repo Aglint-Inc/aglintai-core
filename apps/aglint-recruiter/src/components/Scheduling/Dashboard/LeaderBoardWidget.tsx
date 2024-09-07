@@ -1,4 +1,3 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { LeaderBoard } from '@devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
@@ -13,6 +12,7 @@ import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import SchedulingDropdown from './SchedulingDropdown';
+import { Skeleton } from '@components/ui/skeleton';
 
 const LeaderBoardWidget = () => {
   const [type, setType] = useState<LeaderBoardWidgetRowsProps['type']>('month');
@@ -33,7 +33,10 @@ const LeaderBoardWidgetRows = ({ type }: LeaderBoardWidgetRowsProps) => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
-      <LeaderBoardLoader key={i} slotSkeleton={<Skeleton />} />
+      <LeaderBoardLoader
+        key={i}
+        slotSkeleton={<Skeleton className='w-full h-full' />}
+      />
     ));
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))

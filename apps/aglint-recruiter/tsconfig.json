@@ -40,7 +40,8 @@
     "**/*.js",
     "src/components/Feedback/Session/index.jsx",
     "src/pages/api/getJobsPublic.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/app/error.tsx.abl"
   ],
   "exclude": ["node_modules", ".next"]
 }
