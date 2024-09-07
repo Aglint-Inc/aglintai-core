@@ -1,9 +1,7 @@
-import { capitalize, MenuItem, Stack, TextField } from '@mui/material';
-import { Archive } from 'lucide-react';
-import React from 'react';
 
 import { useInterviewModules } from '@/queries/interview-modules';
 
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   setEditSession,
   setSelectedInterviewers,
@@ -26,34 +24,25 @@ function ModuleDropdown() {
   );
   return (
     <>
-      <TextField
+      <UISelectDropDown
         fullWidth
-        select
         value={editSession.interview_session.module_id}
-      >
-        {filterArchivedModules?.map((module) => (
-          <MenuItem
-            value={module.id}
-            key={module.id}
-            onClick={() => {
-              setEditSession({
-                interview_session: {
-                  ...editSession.interview_session,
-                  module_id: module.id,
-                },
-              });
-              setSelectedInterviewers([]);
-              setTrainingInterviewers([]);
-              setTrainingToggle(false);
-            }}
-          >
-            <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Stack>{capitalize(module.name)}</Stack>
-              {module.is_archived && <Archive size={16} />}
-            </Stack>
-          </MenuItem>
-        ))}
-      </TextField>
+        menuOptions={filterArchivedModules.map((module) => ({
+          value: module.id,
+          name: module.name,
+        }))}
+        onValueChange={(value) => {
+          setEditSession({
+            interview_session: {
+              ...editSession.interview_session,
+              module_id: value,
+            },
+          });
+          setSelectedInterviewers([]);
+          setTrainingInterviewers([]);
+          setTrainingToggle(false);
+        }}
+      />
     </>
   );
 }

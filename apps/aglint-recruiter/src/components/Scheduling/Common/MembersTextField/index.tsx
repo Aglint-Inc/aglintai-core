@@ -22,22 +22,27 @@ export type MemberTypeAutoComplete = {
 };
 
 type MembersAutoCompleteProps = {
-  disabled: boolean;
-  renderUsers: MemberTypeAutoComplete[];
-  selectedUsers: MemberTypeAutoComplete[];
-  setSelectedUsers: (val: MemberTypeAutoComplete[]) => void;
-  pillColor?: string;
+  renderUsers: (MemberTypeAutoComplete & {
+    [key: string]: any;
+  })[];
+  selectedUsers: (MemberTypeAutoComplete & {
+    [key: string]: any;
+  })[];
+  setSelectedUsers: (
+    val: (MemberTypeAutoComplete & {
+      [key: string]: any;
+    })[],
+  ) => void;
+  pillColor?: 'transparent' | 'var(--neutral-3)';
   maxWidth?: string;
   error?: boolean;
   helperText?: string;
-  setError?: React.Dispatch<React.SetStateAction<boolean>>;
   placeholder?: string;
   emptyListText?: string;
-  isPillsVisible?: boolean;
+  onUserSelect?: (user: MemberTypeAutoComplete) => void;
 };
 
 function MembersAutoComplete({
-  disabled,
   renderUsers,
   selectedUsers,
   setSelectedUsers,
@@ -45,50 +50,47 @@ function MembersAutoComplete({
   maxWidth = '400px',
   error,
   helperText,
-  setError,
   placeholder = 'Choose from the list',
   emptyListText = 'No members found',
-  isPillsVisible = true,
+  onUserSelect,
 }: MembersAutoCompleteProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
     <div className='flex flex-col w-full gap-2'>
-      {isPillsVisible && (
-        <div className='flex flex-row gap-2 flex-wrap'>
-          {selectedUsers.map((user) => {
-            return (
-              <PanelMemberPill
-                key={user.user_id}
-                propsBgColor={{
-                  style: {
-                    background: pillColor ? pillColor : 'var(--neutral-3)',
-                    textTransform: 'capitalize',
-                  },
-                }}
-                onClickClose={{
-                  onClick: () => {
-                    setSelectedUsers(
-                      selectedUsers.filter((us) => us.user_id !== user.user_id),
-                    );
-                  },
-                }}
-                slotImage={
-                  <MuiAvatar
-                    src={user.profile_image}
-                    level={getFullName(user?.first_name, user?.last_name)}
-                    variant='rounded'
-                    height='20px'
-                    width='20px'
-                    fontSize='12px'
-                  />
-                }
-                textMemberName={getFullName(user?.first_name, user?.last_name)}
-              />
-            );
-          })}
-        </div>
-      )}
+      <div className='flex flex-row gap-2 flex-wrap'>
+        {selectedUsers.map((user) => {
+          return (
+            <PanelMemberPill
+              key={user.user_id}
+              propsBgColor={{
+                style: {
+                  background: pillColor ? pillColor : 'var(--neutral-3)',
+                  textTransform: 'capitalize',
+                },
+              }}
+              onClickClose={{
+                onClick: () => {
+                  setSelectedUsers(
+                    selectedUsers.filter((us) => us.user_id !== user.user_id),
+                  );
+                },
+              }}
+              slotImage={
+                <MuiAvatar
+                  src={user.profile_image}
+                  level={getFullName(user?.first_name, user?.last_name)}
+                  variant='rounded'
+                  height='20px'
+                  width='20px'
+                  fontSize='12px'
+                />
+              }
+              textMemberName={getFullName(user?.first_name, user?.last_name)}
+            />
+          );
+        })}
+      </div>
 
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger onClick={() => setIsPopoverOpen(true)}>
@@ -129,6 +131,7 @@ function MembersAutoComplete({
                         ),
                       );
                     }
+                    onUserSelect && onUserSelect(option);
                   }}
                 >
                   <div className='flex w-6'>

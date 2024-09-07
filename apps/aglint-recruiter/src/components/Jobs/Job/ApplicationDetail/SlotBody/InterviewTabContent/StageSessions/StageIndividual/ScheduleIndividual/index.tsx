@@ -59,7 +59,7 @@ function ScheduleIndividualCard({
       !(
         (!!allIntegrations?.service_json &&
           allIntegrations?.google_workspace_domain?.split('//')[1] ===
-            user.user_details.email.split('@')[1]) ||
+            user.user_details?.email?.split('@')[1]) ||
         !!(user.user_details.schedule_auth as any)?.access_token
       ),
   );

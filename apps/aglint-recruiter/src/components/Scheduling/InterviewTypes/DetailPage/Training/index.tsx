@@ -380,13 +380,12 @@ function ModuleSettingComp({
                 <>
                   <MembersAutoComplete
                     error={errorApproval || selectedUsers.length === 0}
-                    disabled={false}
                     renderUsers={dropDownMembers}
                     setSelectedUsers={setSelectedUsers}
                     selectedUsers={selectedUsers}
                     pillColor='var(--neutral-3)'
                     maxWidth='430px'
-                    setError={setErrorApproval}
+                    onUserSelect={() => setErrorApproval(false)}
                   />
                   {selectedUsers.length === 0 && (
                     <Typography
