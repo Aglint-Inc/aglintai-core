@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Clock, Edit, Loader2 } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
 
@@ -32,46 +32,78 @@ const TimeZone: FC<TimeZoneProps> = ({
   isUpdating,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
     await handleUpdate({ timeZone: selectedTimeZone });
     setIsOpen(false);
   };
+
+  const handleTogglePopover = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 300); // Delay of 300ms before closing the popover
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-2xl font-bold'>Time Zone</CardTitle>
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
-          <PopoverTrigger asChild>
-            <Button variant='outline'>
-              <Edit className='h-4 w-4' />
-              <span className='sr-only'>Edit Time Zone</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className='w-full' align='start' side='left'>
-            <div className='flex flex-col gap-4 w-[300px]'>
-              <Label>Time Zone</Label>
-              <TimezonePicker
-                value={selectedTimeZone?.tzCode}
-                onChange={(value) => setSelectedTimeZone(value)}
-                width={'300'}
-              />
-              <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
-                {isUpdating && (
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                )}
-                Update
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
+    <Card className='border-none shadow-none'>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 p-0'>
+        <CardTitle className='text-lg font-semibold'>Time Zone</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className='flex items-center space-x-4'>
-          <Clock className='h-6 w-6 text-muted-foreground' />
-          <div>
-            <p className='text-sm font-medium'>Current Time Zone</p>
-            <p className='text-2xl font-bold'>{timeZone}</p>
+      <CardContent className='p-0'>
+        <div 
+          className='relative border rounded-lg p-4 mt-2 group'
+          onMouseLeave={handleMouseLeave}
+        >
+          <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <PopoverTrigger asChild>
+              <Button 
+                variant='outline' 
+                size='sm' 
+                className='absolute top-2 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
+                onClick={handleTogglePopover}
+              >
+                <Edit className='h-3 w-3' />
+                <span className='sr-only'>Edit Time Zone</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className='w-full' align='start' side='left'>
+              <div className='flex flex-col gap-4 w-[300px]'>
+                <Label>Time Zone</Label>
+                <TimezonePicker
+                  value={selectedTimeZone?.tzCode}
+                  onChange={(value) => setSelectedTimeZone(value)}
+                  width={'300'}
+                />
+                <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
+                  {isUpdating && (
+                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  )}
+                  Update
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+          <div className='flex items-center space-x-2'>
+            <div>
+              <p className='text-sm font-medium'>Current Time Zone</p>
+              <div className='flex items-center space-x-2'>
+                <Clock className='h-4 w-4 text-muted-foreground' />
+                <p>{timeZone}</p>
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>

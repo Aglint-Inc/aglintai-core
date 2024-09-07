@@ -56,7 +56,7 @@ export default function WorkingHour({
     }
   };
   return (
-    <div className='container mx-auto p-6 space-y-6'>
+    <div className='w-2/3 p-6 space-y-6'>
       <TimeZone
         timeZone={initialData?.timeZone?.label}
         selectedTimeZone={selectedTimeZone}
