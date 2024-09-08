@@ -47,7 +47,7 @@ export function IntegrationCard({
             </div>
           )}
           <div>
-            <h3 className='text-lg font-semibold'>{textName}</h3>
+            <h3 className='text-md font-semibold'>{textName}</h3>
             <Link
               href='#'
               className='text-sm text-gray-500 hover:underline'
