@@ -41,9 +41,7 @@ function Integrations() {
             your preferred ATS.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ErrorBoundary>
-              <ATSTools integrations={allIntegrations} refetch={refetch} />
-            </ErrorBoundary>
+            <ATSTools integrations={allIntegrations} refetch={refetch} />
           </div>
         </section>
 

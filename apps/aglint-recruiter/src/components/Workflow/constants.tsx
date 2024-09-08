@@ -552,10 +552,10 @@ export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
 export function getWorkflowTagIcon(type: CustomActionType) {
   switch (type) {
     case 'slack':
-      return <Slack />;
+      return <Slack size={12} />;
     case 'email':
-      return <Mail />;
+      return <Mail size={12} />;
     default:
-      return <Lightbulb />;
+      return <Lightbulb size={12} />;
   }
 }

@@ -74,7 +74,7 @@ const Edit = () => {
           }
           slotButtons={
             <>
-              <Button size={'sm'} color={'neutral'} onClick={handleClose}>
+              <Button size={'sm'} variant='outline' onClick={handleClose}>
                 Cancel
               </Button>
               <Button size={'sm'} onClick={handleSubmit}>
