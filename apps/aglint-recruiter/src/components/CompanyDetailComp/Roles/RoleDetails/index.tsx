@@ -1,17 +1,7 @@
 import { Switch } from '@components/ui/switch';
 
-import { Permissions } from '@devlink/Permissions';
 import { RolesAndPermissionsDetail } from '@devlink/RolesAndPermissionsDetail';
 
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { ToggleWithText } from '@devlink3/ToggleWithText';
-import {
-  List,
-  ListItemButton,
-  Popover,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { type MouseEvent, useEffect, useState } from 'react';
 
 import { allPermissions, rolesOrder } from '@/constant/role_and_permissions';
@@ -25,7 +15,28 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import RoleEditMember from './RoleEditMember';
 import { RoleUserWidget } from './RoleUserWidget';
 import { Button } from '@components/ui/button';
-import { ArrowLeft, ChevronDown, CirclePlus } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown, CirclePlus, Info } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@components/ui/command';
+import { cn } from '@lib/utils';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 
 function RoleDetails({
   role,
@@ -80,15 +91,17 @@ function RoleDetails({
     <>
       <RolesAndPermissionsDetail
         slotAddButton={ifAllowed(
-          <Stack direction={'row'}>
+          <div className='flex flex-row'>
             <Button
               onClick={() => setEditUser(true)}
               size='sm'
               variant='outline'
+              className='flex items-center'
             >
-              <CirclePlus /> Add
+              <CirclePlus className='w-3 h-3 mr-1' />
+              Add
             </Button>
-          </Stack>,
+          </div>,
           ['manage_roles'],
         )}
         textRoleName={
@@ -98,19 +111,18 @@ function RoleDetails({
         textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <Button size='sm' variant='outline' onClick={back}>
-            <ArrowLeft /> Back
+            <ArrowLeft size={16} className='mr-1' /> Back
           </Button>
         }
         slotBanner={
           <>
             {role.name === 'admin' && (
-              <GlobalBannerInline
-                color={'info'}
-                textContent={
-                  'You cannot edit the primary admin role permissions.'
-                }
-                slotButton={<></>}
-              />
+              <Alert>
+                <Info size={16} />
+                <AlertDescription>
+                  You cannot edit the primary admin role permissions.
+                </AlertDescription>
+              </Alert>
             )}
           </>
         }
@@ -119,22 +131,36 @@ function RoleDetails({
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => {
                 return (
-                  <Permissions
-                    key={module}
-                    textDescription={description.replace(
-                      '[role_name]',
-                      capitalizeFirstLetter(role.name),
-                    )}
-                    textTitle={capitalizeFirstLetter(module)}
-                    slotToggleWithText={permissions?.map((permission) => {
-                      if (!permission) return null;
-                      return (
-                        <ToggleWithText
-                          isSubText={!!permission.description}
-                          textSub={permission.description}
-                          key={permission.id}
-                          textToggleLight={permission.title}
-                          slotToggle={
+                  <Card key={module}>
+                    <CardHeader>
+                      <CardTitle className='text-lg'>
+                        {capitalizeFirstLetter(module)}
+                      </CardTitle>
+                      <CardDescription>
+                        {description.replace(
+                          '[role_name]',
+                          capitalizeFirstLetter(role.name),
+                        )}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {permissions?.map((permission) => {
+                        if (!permission) return null;
+                        return (
+                          <div
+                            key={permission.id}
+                            className='flex items-center justify-between py-2'
+                          >
+                            <div className='flex flex-col'>
+                              <span className='text-sm font-medium'>
+                                {permission.title}
+                              </span>
+                              {permission.description && (
+                                <span className='text-xs text-gray-500'>
+                                  {permission.description}
+                                </span>
+                              )}
+                            </div>
                             <Switch
                               checked={permission.isActive}
                               disabled={editDisabled || !role.isEditable}
@@ -153,11 +179,11 @@ function RoleDetails({
                                 updateRoles(data);
                               }}
                             />
-                          }
-                        />
-                      );
-                    })}
-                  />
+                          </div>
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
                 );
               },
             )}
@@ -179,7 +205,7 @@ function RoleDetails({
 
 const RoleDropDown = ({
   options,
-  selectedItem,
+  selectedItem: initialSelectedItem,
 }: {
   options: {
     role: string;
@@ -188,6 +214,8 @@ const RoleDropDown = ({
   }[];
   selectedItem: string;
 }) => {
+  const [selectedItem, setSelectedItem] = useState(initialSelectedItem);
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const open = Boolean(anchorEl);
@@ -200,29 +228,50 @@ const RoleDropDown = ({
   };
   return (
     <>
-      <Button size='sm' variant='outline' onClick={handleClick}>
-        <Typography>{capitalizeFirstLetter(selectedItem)}</Typography>
-        <ChevronDown />
-      </Button>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{ vertical: -10, horizontal: 0 }}
-        sx={{
-          '& .MuiPopover-paper': {
-            borderRadius: 'var(--radius-2)',
-            borderColor: 'var(--neutral-6)',
-            minWidth: '176px',
-          },
-        }}
-      >
-        <List>{newFunction(options, handleClose)}</List>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant='outline'
+            size='sm'
+            className='w-[200px] justify-between'
+          >
+            {capitalizeFirstLetter(selectedItem)}
+            <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-[200px] p-0'>
+          <Command>
+            <CommandInput placeholder='Search role...' />
+            <CommandEmpty>No role found.</CommandEmpty>
+            <CommandGroup>
+              {options
+                .sort((a, b) => rolesOrder[a.role] - rolesOrder[b.role])
+                .map((item) => (
+                  <CommandItem
+                    key={item.role}
+                    onSelect={() => {
+                      item.switchRole();
+                      setSelectedItem(item.role);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        selectedItem === item.role
+                          ? 'opacity-100'
+                          : 'opacity-0',
+                      )}
+                    />
+                    {capitalizeFirstLetter(item.role)} ({item.count.permissions}
+                    )
+                    <span className='ml-auto text-sm text-muted-foreground'>
+                      Assigned to {item.count.users} Users
+                    </span>
+                  </CommandItem>
+                ))}
+            </CommandGroup>
+          </Command>
+        </PopoverContent>
       </Popover>
     </>
   );
@@ -243,31 +292,24 @@ function newFunction(
     .sort((a, b) => rolesOrder[a.role] - rolesOrder[b.role])
     .map((item) => {
       return (
-        <ListItemButton
+        <Button
           key={item.role}
+          variant='ghost'
+          className='w-full justify-start'
           onClick={() => {
             item.switchRole();
             handleClose();
           }}
         >
-          <Stack>
-            <Typography
-              sx={{
-                fontSize: '14px',
-                fontWeight: 600,
-              }}
-            >
+          <div className='flex flex-col items-start'>
+            <span className='text-sm font-semibold'>
               {`${capitalizeFirstLetter(item.role)} (${item.count.permissions})`}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: '14px',
-              }}
-            >
+            </span>
+            <span className='text-sm text-muted-foreground'>
               {`Assigned to ${item.count.users} Users`}
-            </Typography>
-          </Stack>
-        </ListItemButton>
+            </span>
+          </div>
+        </Button>
       );
     });
 }

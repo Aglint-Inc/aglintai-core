@@ -133,7 +133,7 @@ function RoleEditMember({
                       width={'100%'}
                       sx={{ transform: 'rotate(180deg)' }}
                     >
-                      <ChevronDown size={20} />
+                      <ChevronDown size={12} />
                     </Stack>
                     <UserNameRoleCard
                       textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
