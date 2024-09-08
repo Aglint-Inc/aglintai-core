@@ -1,5 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { InterviewerWorkload } from '@devlink3/InterviewerWorkload';
 import { InterviewWorkloadList } from '@devlink3/InterviewWorkloadList';
@@ -19,6 +18,8 @@ import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/
 import { Filter } from '../components/Filter';
 import { useAllInterviewer } from '../Hook';
 import LineGraph from './LineGraph';
+import { Button } from '@components/ui/button';
+import { RotateCcw } from 'lucide-react';
 
 function InterviewerLoad() {
   const { data: departments } = useAllDepartments();
@@ -163,21 +164,19 @@ function InterviewerLoad() {
               selectedItems={selectedInterviewTypes}
             />
             {isFilterApplied && (
-              <ButtonSoft
-                size={1}
-                color={'neutral'}
-                iconName={'refresh'}
-                isLeftIcon
-                textButton={'Reset All'}
-                onClickButton={{
-                  onClick: () => {
-                    setInterviewTypes([]);
-                    setLocations([]);
-                    setDepartments([]);
-                    setJobs([]);
-                  },
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => {
+                  setInterviewTypes([]);
+                  setLocations([]);
+                  setDepartments([]);
+                  setJobs([]);
                 }}
-              />
+              >
+                <RotateCcw className='mr-2 h-4 w-4' />
+                Reset All
+              </Button>
             )}
           </Stack>
         }

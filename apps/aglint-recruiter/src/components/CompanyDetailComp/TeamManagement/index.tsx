@@ -20,7 +20,7 @@ import {
   CircleDot,
   CirclePlus,
   Locate,
-  RefreshCcw,
+  RotateCcw,
   User,
 } from 'lucide-react';
 import { Button } from '@components/ui/button';
@@ -189,7 +189,7 @@ const TeamManagement = () => {
               <div className='flex flex-wrap gap-2'>
                 {isResetAllVisible && (
                   <Button variant='ghost' onClick={resetAllFilter} size='sm'>
-                    <RefreshCcw className='mr-2 h-4 w-4' />
+                    <RotateCcw className='mr-2 h-4 w-4' />
                     Reset All
                   </Button>
                 )}

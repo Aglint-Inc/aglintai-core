@@ -6,6 +6,7 @@ import { ShowCode } from '../ShowCode';
 import DateRangeSelector from './DateRangeSelector';
 import { type FilterTypes, FiltersComponent } from './FilterComponents';
 import SortComponent, { type sortComponentType } from './SortComponent';
+import { RefreshCw, RotateCcw } from 'lucide-react';
 
 export default function FilterHeader({
   search,
@@ -74,9 +75,7 @@ export default function FilterHeader({
                     size='sm'
                     onClick={handelResetAll}
                   >
-                    <span className='mr-2'>
-                      <i className='icon-refresh' />
-                    </span>
+                    <RefreshCw className='mr-2 h-4 w-4' />
                     Reset All
                   </Button>
                 )}
@@ -131,9 +130,7 @@ export default function FilterHeader({
                       size='sm'
                       onClick={handelResetAll}
                     >
-                      <span className='mr-2'>
-                        <i className='icon-refresh' />
-                      </span>
+                      <RotateCcw className='mr-2 h-4 w-4' />
                       Reset All
                     </Button>
                   )}

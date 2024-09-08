@@ -386,7 +386,7 @@ function MultiSectionFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            {anchorEl ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            {anchorEl ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Stack>
         }
       />
@@ -542,7 +542,7 @@ function NestedFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            {anchorEl ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            {anchorEl ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Stack>
         }
       />

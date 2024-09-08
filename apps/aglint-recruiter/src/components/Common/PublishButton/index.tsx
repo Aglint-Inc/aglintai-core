@@ -20,19 +20,15 @@ const PublishButton = ({
   };
 
   return (
-    <Button
-      onClick={handleClick}
-      disabled={disabled || isLoading}
-      className='w-[120px] h-[32px]'
-    >
+    <Button size='sm' onClick={handleClick} disabled={disabled || isLoading}>
       {isLoading ? (
         <>
-          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+          <Loader2 className='mr-2 h-3 w-3 animate-spin' />
           Publishing
         </>
       ) : (
         <>
-          <Rocket className='mr-2 h-4 w-4' />
+          <Rocket className='mr-2 h-3 w-3' />
           Publish
         </>
       )}
