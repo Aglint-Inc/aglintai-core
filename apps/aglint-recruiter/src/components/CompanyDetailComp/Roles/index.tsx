@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
+import { Skeleton } from '@components/ui/skeleton';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -93,15 +94,38 @@ const RoleTable = ({
   if (loading) {
     return (
       <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              <Skeleton className='h-6 w-24' />
+            </TableHead>
+            <TableHead>
+              <Skeleton className='h-6 w-32' />
+            </TableHead>
+            <TableHead>
+              <Skeleton className='h-6 w-16' />
+            </TableHead>
+            <TableHead>
+              <Skeleton className='h-6 w-20' />
+            </TableHead>
+          </TableRow>
+        </TableHeader>
         <TableBody>
-          {[...Array(3)].map((_, index) => (
-            <TableRow key={index}>
-              <TableCell
-                colSpan={4}
-                className='h-24 animate-pulse bg-gray-200'
-              />
-            </TableRow>
-          ))}
+          <TableRow>
+            <TableCell colSpan={4}>
+              <Skeleton className='h-12 w-full' />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={4}>
+              <Skeleton className='h-12 w-full' />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={4}>
+              <Skeleton className='h-12 w-full' />
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     );

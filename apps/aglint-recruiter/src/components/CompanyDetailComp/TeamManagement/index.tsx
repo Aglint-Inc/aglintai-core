@@ -35,6 +35,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Skeleton } from '@components/ui/skeleton';
 
 type ItemType = string;
 
@@ -180,13 +181,13 @@ const TeamManagement = () => {
           compliance with user permissions in the organization.
         </p>
 
-        <Alert>
+        {/* <Alert>
           <History className='h-4 w-4' />
           <AlertTitle>Pending Invites</AlertTitle>
           <AlertDescription>
             You currently have four pending invites awaiting your response.
           </AlertDescription>
-        </Alert>
+        </Alert> */}
 
         <div className='mt-6 space-y-4'>
           <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0'>
@@ -274,9 +275,35 @@ const TeamManagement = () => {
             <TableBody>
               {(!filteredMembers.length && isPending) || isInitialLoading ? (
                 <TableRow>
-                  <TableCell colSpan={6}>
-                    <div className='w-full h-full min-h-[300px] relative'>
-                      <DynamicLoader />
+                  <TableCell colSpan={1}>
+                    <div className='space-y-2'>
+                      {[...Array(4)].map((_, index) => (
+                        <div
+                          key={index}
+                          className='flex items-center space-x-4'
+                        >
+                          <Skeleton className='h-12 w-12 rounded-full' />
+                          <div className='space-y-2'>
+                            <Skeleton className='h-4 w-[250px]' />
+                            <Skeleton className='h-4 w-[200px]' />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell colSpan={5}>
+                    <div className='space-y-2'>
+                      {[...Array(4)].map((_, index) => (
+                        <div
+                          key={index}
+                          className='flex items-center space-x-4'
+                        >
+                          <div className='space-y-2'>
+                            <Skeleton className='h-4 w-[250px]' />
+                            <Skeleton className='h-4 w-[200px]' />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </TableCell>
                 </TableRow>
