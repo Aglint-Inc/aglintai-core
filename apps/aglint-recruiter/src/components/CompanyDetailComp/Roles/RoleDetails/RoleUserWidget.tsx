@@ -1,6 +1,5 @@
 import { type RecruiterUserType } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
-import { Avatar } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
@@ -36,23 +35,23 @@ export const RoleUserWidget = ({
 const UserCard = ({ member }) => {
   if (!member) return null;
   return (
-    <div className='flex items-center space-x-4 p-4 border rounded-lg'>
-      <Avatar className='h-12 w-12'>
-        <img
-          src={member.profile_image}
-          alt={member.first_name}
-          className='rounded-full'
-        />
-      </Avatar>
-      <div className='flex-grow'>
-        <Link href={`/user/profile/${member.user_id}`} className='font-medium'>
-          {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
-        </Link>
-        <p className='text-sm text-gray-500'>{member.position}</p>
+    <div className='flex flex-col space-x-4 p-2'>
+      <div className='flex flex-row'>
+        <div className='flex-grow'>
+          <Link
+            href={`/user/profile/${member.user_id}`}
+            className='font-medium'
+          >
+            {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
+          </Link>
+          <p className='text-sm text-gray-500'>{member.position}</p>
+        </div>
+        <div>
+          <Badge variant={member.is_suspended ? 'destructive' : 'default'}>
+            {member.is_suspended ? 'Suspended' : 'Active'}
+          </Badge>
+        </div>
       </div>
-      <Badge variant={member.is_suspended ? 'destructive' : 'default'}>
-        {member.is_suspended ? 'Suspended' : 'Active'}
-      </Badge>
     </div>
   );
 };

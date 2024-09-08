@@ -13,14 +13,12 @@ import { useAllMembers } from '@/queries/members';
 import dayjs from '@/utils/dayjs';
 
 import SearchField from '../../Common/SearchField/SearchField';
-import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import FilterDropDown from './FilterDropDown';
 import Member from './MemberList';
 import {
   Building,
   CircleDot,
   CirclePlus,
-  History,
   Locate,
   RefreshCcw,
   User,
@@ -34,20 +32,13 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Skeleton } from '@components/ui/skeleton';
 
 type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const {
-    data: members,
-    activeMembers,
-    isPending,
-    remote_sync,
-    refetchMembers, // Add this line
-  } = useTeamMembers();
+  const { data: members, isPending, remote_sync } = useTeamMembers();
 
   const timeStamp = remote_sync?.lastSync;
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
@@ -120,11 +111,6 @@ const TeamManagement = () => {
     members,
   ]);
 
-  const pendingList = members.filter(
-    (member) => member.status?.toLocaleLowerCase() === 'invited',
-  );
-  const inviteUser = pendingList.length;
-
   const [, startTransition] = useTransition();
 
   function handleTextChange(e) {
@@ -172,7 +158,7 @@ const TeamManagement = () => {
   }, [filteredMembers.length]);
   return (
     <>
-      <div className='container mx-auto px-4 py-8'>
+      <div className='w-[960px] mx-auto px-4 py-8'>
         <h1 className='text-lg font-semibold mb-4'>Manage User</h1>
         <p className='text-gray-600 mb-6'>
           Invite your hiring team members and manage their roles and profile
@@ -261,9 +247,9 @@ const TeamManagement = () => {
           </div>
         </div>
 
-        <div className='mt-6 overflow-x-auto border rounded-lg'>
+        <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
           <Table>
-            <TableHeader>
+            <TableHeader className='bg-gray-200'>
               <TableRow>
                 <TableHead>Member</TableHead>
                 <TableHead>Location</TableHead>

@@ -3,23 +3,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Globe, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
-import ROUTES from '@/utils/routing/routes';
-import { capitalizeAll } from '@/utils/text/textUtils';
-import { type RecruiterUserType } from '@aglint/shared-types';
-import { TableCell, TableRow } from '@components/ui/table';
 import { UserListThreeDot } from './ThreeDot';
+import { TableCell, TableRow } from '@components/ui/table';
+import { RecruiterUserType } from '@aglint/shared-types';
 
 dayjs.extend(relativeTime);
 
 const Member = ({ member }: { member: RecruiterUserType }) => {
-  const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
   const { recruiterUser } = useAuthDetails();
 

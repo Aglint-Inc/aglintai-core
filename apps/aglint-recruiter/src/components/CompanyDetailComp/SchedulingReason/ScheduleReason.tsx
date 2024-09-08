@@ -111,20 +111,22 @@ function ReasonSection({
   };
 
   return (
-    <Card className='w-full border-none shadow-none p-0'>
-      <CardHeader className='p-0'>
+    <Card>
+      <CardHeader>
         <CardTitle className='text-lg font-semibold'>{title}</CardTitle>
         <CardDescription className='text-sm text-gray-500'>
           {description}
         </CardDescription>
       </CardHeader>
-      <CardContent className='px-0 pt-3'>
+      <CardContent>
         <ul className='space-y-2'>
           {reasons.map((reason, reasonIndex) => (
             <li
               key={reasonIndex}
               className={`flex items-center justify-between py-2 px-3 rounded-md ${
-                editingIndex === reasonIndex ? 'bg-gray-100' : 'border border-gray-200'
+                editingIndex === reasonIndex
+                  ? 'bg-gray-100'
+                  : 'border border-gray-200'
               } group`}
             >
               {editingIndex === reasonIndex ? (
@@ -139,14 +141,14 @@ function ReasonSection({
               <div className='opacity-0 group-hover:opacity-100 transition-opacity'>
                 {editingIndex === reasonIndex ? (
                   <>
-                    <div className='flex items-center flex-row'> 
+                    <div className='flex items-center flex-row'>
                       <Button
                         variant='ghost'
                         size='sm'
                         onClick={handleUpdate}
                         className='mr-1 hover:bg-green-50'
                       >
-                        <Check className="h-3.5 w-3.5" />
+                        <Check className='h-3.5 w-3.5' />
                       </Button>
                       <Button
                         variant='ghost'
@@ -154,7 +156,7 @@ function ReasonSection({
                         onClick={() => setEditingIndex(null)}
                         className='hover:bg-red-50'
                       >
-                        <X className="h-3.5 w-3.5" />
+                        <X className='h-3.5 w-3.5' />
                       </Button>
                     </div>
                   </>
@@ -166,7 +168,7 @@ function ReasonSection({
                       onClick={() => handleEdit(reasonIndex)}
                       className='mr-1'
                     >
-                      <Pencil className="h-3 w-3 font-semibold" />
+                      <Pencil className='h-3 w-3 font-semibold' />
                     </Button>
                     <Button
                       variant='ghost'
@@ -174,7 +176,7 @@ function ReasonSection({
                       onClick={() => handleDelete(reasonIndex)}
                       className='text-red-500 hover:text-red-600'
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className='h-3 w-3' />
                     </Button>
                   </>
                 )}
@@ -196,7 +198,7 @@ function ReasonSection({
                   onClick={handleAdd}
                   className='mr-1 hover:bg-green-50'
                 >
-                  <Check className="h-3.5 w-3.5" />
+                  <Check className='h-3.5 w-3.5' />
                 </Button>
                 <Button
                   variant='ghost'
@@ -204,7 +206,7 @@ function ReasonSection({
                   onClick={() => setIsAddingNew(false)}
                   className='hover:bg-red-50'
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className='h-3.5 w-3.5' />
                 </Button>
               </div>
             </li>
@@ -212,8 +214,12 @@ function ReasonSection({
         </ul>
         {!isAddingNew && (
           <div className='mt-4'>
-            <Button variant='outline' size='sm' onClick={() => setIsAddingNew(true)}>
-              <Plus className="h-4 w-4 mr-2" /> Add
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => setIsAddingNew(true)}
+            >
+              <Plus className='h-4 w-4 mr-2' /> Add
             </Button>
           </div>
         )}

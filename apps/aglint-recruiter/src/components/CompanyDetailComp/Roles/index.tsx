@@ -1,8 +1,6 @@
-/* eslint-disable security/detect-object-injection */
+/* eslint-disable */
 
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { RolesAndPermissions } from '@devlink/RolesAndPermissions';
-import { Avatar, Typography } from '@mui/material';
 import { rolesOrder } from '@/constant/role_and_permissions';
 import { useAllMembers } from '@/queries/members';
 import {
@@ -22,6 +20,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Skeleton } from '@components/ui/skeleton';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -57,13 +56,13 @@ function RolesAndPermissionsComponent() {
           updateRoles={handelUpdateRole}
         />
       ) : (
-        <div className='container mx-auto px-4 py-8'>
+        <div className='w-[960px] mx-auto px-4 py-8'>
           <h1 className='text-lg font-semibold mb-4'>Roles & Permissions</h1>
           <p className='text-gray-600 mb-6'>
             Customize permissions for each role and control access by enabling
             or disabling the toggle next to each permission.
           </p>
-          <div className='mt-6 overflow-x-auto border rounded-lg'>
+          <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
             <RoleTable
               roles={data?.rolesAndPermissions || {}}
               loading={loading}
@@ -94,7 +93,7 @@ const RoleTable = ({
   if (loading) {
     return (
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-200'>
           <TableRow>
             <TableHead>
               <Skeleton className='h-6 w-24' />
@@ -134,7 +133,7 @@ const RoleTable = ({
   return (
     <Table>
       <TableHeader>
-        <TableRow>
+        <TableRow className='bg-gray-300'>
           <TableHead>Role</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Users</TableHead>
@@ -169,12 +168,15 @@ const RoleTable = ({
                           );
                           if (!user) return null;
                           return (
-                            <Avatar
-                              key={user_id}
-                              src={user.profile_image}
-                              alt={user.first_name}
-                              className='h-6 w-6 rounded'
-                            />
+                            <Avatar key={user_id} className='h-6 w-6'>
+                              <AvatarImage
+                                src={user.profile_image}
+                                alt={user.first_name}
+                              />
+                              <AvatarFallback>
+                                {user.first_name[0]}
+                              </AvatarFallback>
+                            </Avatar>
                           );
                         })}
                         {count > 3 && (
@@ -185,15 +187,16 @@ const RoleTable = ({
                         )}
                       </>
                     ) : (
-                      <Typography className='text-gray-500'>
+                      <p className='text-sm text-gray-500'>
                         {`No users with ${details.name}`}
-                      </Typography>
+                      </p>
                     )}
                   </div>
                 </TableCell>
                 <TableCell>
                   {!count && (
                     <Button
+                      variant='outline'
                       size='sm'
                       onClick={(e) => {
                         e.stopPropagation();

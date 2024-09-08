@@ -17,7 +17,14 @@ import {
 } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar, Edit, Loader2 } from 'lucide-react';
-import { Dispatch, FC, SetStateAction, useState, useRef, useEffect } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 
 import dayjs from '@/utils/dayjs';
 
@@ -75,94 +82,94 @@ const WorkTime: FC<WorkTimeProps> = ({
   }, []);
 
   return (
-    <Card className='border-none shadow-none'>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 p-0'>
+    <Card>
+      <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Working Hours</CardTitle>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant='outline'
+              size='sm'
+              className='absolute top-2 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
+              onClick={handleTogglePopover}
+            >
+              <Edit className='h-3 w-3' />
+              <span className='sr-only'>Edit Working Hours</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-full' side='left' align='start'>
+            <div className='flex flex-col gap-4'>
+              <Label>Edit Working Hours</Label>
+              {workingHours.map((day, i) => {
+                const startTime = dayjs()
+                  .set(
+                    'hour',
+                    parseInt(day.timeRange.startTime?.split(':')[0] || '0'),
+                  )
+                  .set(
+                    'minute',
+                    parseInt(day.timeRange.startTime?.split(':')[1] || '0'),
+                  )
+                  .toISOString();
+
+                const endTime = dayjs()
+                  .set(
+                    'hour',
+                    parseInt(day.timeRange.endTime?.split(':')[0] || '0'),
+                  )
+                  .set(
+                    'minute',
+                    parseInt(day.timeRange.endTime?.split(':')[1] || '0'),
+                  )
+                  .toISOString();
+
+                return (
+                  <DayWithTime
+                    key={i}
+                    day={day}
+                    i={i}
+                    startTime={startTime}
+                    endTime={endTime}
+                    selectStartTime={(value, i) => {
+                      setWorkingHours((pre) => {
+                        const data = [...pre];
+                        data[i].timeRange.startTime =
+                          dayjs(value).format('HH:mm');
+                        return data;
+                      });
+                    }}
+                    selectEndTime={(value, i) => {
+                      setWorkingHours((pre) => {
+                        const data = [...pre];
+                        data[i].timeRange.endTime =
+                          dayjs(value).format('HH:mm');
+                        return data;
+                      });
+                    }}
+                    setWorkingHours={setWorkingHours}
+                  />
+                );
+              })}
+              <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
+                {isUpdating && (
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                )}
+                Update
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </CardHeader>
-      <CardContent className='p-0'>
-        <div 
+      <CardContent>
+        <div
           className='relative  rounded-lg py-4 group'
           onMouseLeave={handleMouseLeave}
         >
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <PopoverTrigger asChild>
-              <Button 
-                variant='outline' 
-                size='sm' 
-                className='absolute top-2 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
-                onClick={handleTogglePopover}
-              >
-                <Edit className='h-3 w-3' />
-                <span className='sr-only'>Edit Working Hours</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className='w-full' side='left' align='start'>
-              <div className='flex flex-col gap-4'>
-                <Label>Edit Working Hours</Label>
-                {workingHours.map((day, i) => {
-                  const startTime = dayjs()
-                    .set(
-                      'hour',
-                      parseInt(day.timeRange.startTime?.split(':')[0] || '0'),
-                    )
-                    .set(
-                      'minute',
-                      parseInt(day.timeRange.startTime?.split(':')[1] || '0'),
-                    )
-                    .toISOString();
-
-                  const endTime = dayjs()
-                    .set(
-                      'hour',
-                      parseInt(day.timeRange.endTime?.split(':')[0] || '0'),
-                    )
-                    .set(
-                      'minute',
-                      parseInt(day.timeRange.endTime?.split(':')[1] || '0'),
-                    )
-                    .toISOString();
-
-                  return (
-                    <DayWithTime
-                      key={i}
-                      day={day}
-                      i={i}
-                      startTime={startTime}
-                      endTime={endTime}
-                      selectStartTime={(value, i) => {
-                        setWorkingHours((pre) => {
-                          const data = [...pre];
-                          data[i].timeRange.startTime =
-                            dayjs(value).format('HH:mm');
-                          return data;
-                        });
-                      }}
-                      selectEndTime={(value, i) => {
-                        setWorkingHours((pre) => {
-                          const data = [...pre];
-                          data[i].timeRange.endTime =
-                            dayjs(value).format('HH:mm');
-                          return data;
-                        });
-                      }}
-                      setWorkingHours={setWorkingHours}
-                    />
-                  );
-                })}
-                <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
-                  {isUpdating && (
-                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                  )}
-                  Update
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
           <div className='flex items-center space-x-2 mb-4'>
             <Calendar className='h-4 w-4 text-muted-foreground' />
             <p className='text-sm font-medium'>Weekly Schedule</p>
           </div>
-          <div className='border rounded-lg overflow-hidden'>
+          <div className='border rounded-lg'>
             <Table>
               <TableHeader className='bg-gray-100'>
                 <TableRow>

@@ -35,27 +35,37 @@ function VerticalNav() {
   };
 
   return (
-    <nav className='flex flex-col space-y-1'>
-      {settingsItems.map((item, i) => {
-        const NavButton = (
-          <Button
-            key={i}
-            variant='ghost'
-            className={cn(
-              'justify-start',
-              router.query.tab === item.value && 'bg-muted',
-            )}
-            onClick={() => handleNavClick(item.value)}
-          >
-            {item.label}
-          </Button>
-        );
+    <div className=' space-y-1 p-6'>
+      <div className='mb-4'>
+        <h2 className='text-mg font-semibold mb-2'>Settings</h2>
+        <p className='text-sm text-gray-600'>
+          All the settings for your admin.
+        </p>
+      </div>
+      <nav className='flex flex-col'>
+        {settingsItems.map((item, i) => {
+          const Icon = item.icon ? require('lucide-react')[item.icon] : null;
+          const NavButton = (
+            <Button
+              key={i}
+              variant='ghost'
+              className={cn(
+                'justify-start',
+                router.query.tab === item.value && 'bg-muted',
+              )}
+              onClick={() => handleNavClick(item.value)}
+            >
+              {Icon && <Icon className='mr-2 h-4 w-4' />}
+              {item.label}
+            </Button>
+          );
 
-        return item?.permission
-          ? ifAllowed(NavButton, [item.permission])
-          : NavButton;
-      })}
-    </nav>
+          return item?.permission
+            ? ifAllowed(NavButton, [item.permission])
+            : NavButton;
+        })}
+      </nav>
+    </div>
   );
 }
 

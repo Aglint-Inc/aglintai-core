@@ -78,36 +78,27 @@ export default function Departments() {
           id={deleteDialog.id as number}
         />
       )}
-      <div className='mx-auto'>
-        <h1 className='text-lg font-semibold mb-1'>Departments</h1>
-        <p className='text-md text-gray-600 mb-6'>
-          Catalog your departments to sort and filter data efficiently, aiding
-          in job posting and scheduling.
-        </p>
-        <div className='flex flex-wrap gap-2 mb-6 items-center'>
-          <AddChip
-            options={departments.map((item) => ({
-              name: item.name,
-              id: String(item.id),
-            }))}
-            suggestionsList={initialDepartments.map((item) => ({
-              name: item,
-              id: String(item),
-            }))}
-            handleAddDepartment={handleAddDepartment}
-            placeholder='Enter new value...'
-            btn={
-              <Button variant='outline' size='sm' className='rounded-full'>
-                <Plus className='h-4 w-4 mr-2' />
-                Add keyword
-              </Button>
-            }
-            handleRemoveKeyword={({ id }) => {
-              handleRemoveKeyword(id);
-            }}
-          />
-        </div>
-      </div>
+      <AddChip
+        options={departments.map((item) => ({
+          name: item.name,
+          id: String(item.id),
+        }))}
+        suggestionsList={initialDepartments.map((item) => ({
+          name: item,
+          id: String(item),
+        }))}
+        handleAddDepartment={handleAddDepartment}
+        placeholder='Enter new value...'
+        btn={
+          <Button variant='outline' size='sm' className='rounded-full'>
+            <Plus className='h-4 w-4 mr-2' />
+            Add keyword
+          </Button>
+        }
+        handleRemoveKeyword={({ id }) => {
+          handleRemoveKeyword(id);
+        }}
+      />
     </>
   );
 }
