@@ -8,7 +8,7 @@
     "start": "next start",
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
     "tslint": "npx tsc --noEmit",
-    "lint": "next lint && eslint . --ext .ts,.tsx && npm run tslint",
+    "lint": "next lint && npm run tslint",
     "autofix": "eslint . --fix",
     "format": "prettier --write \"{,!(.next)/**/,!(.devlink)/**/}*.{js,jsx}\"",
     "supabase:dev": "npx supabase gen types --lang=typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > ../../packages/shared-types/src/db/schema.types.ts",

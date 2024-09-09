@@ -45,7 +45,7 @@ import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { getStatusColor } from '../_common/utils/getStatusColor';
 import RequestProgress, {
   RequestProgressSkeleton,
-} from '../_common/components/RequestProgress';
+} from '../_common/Components/RequestProgress';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();

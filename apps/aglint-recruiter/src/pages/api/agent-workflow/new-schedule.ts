@@ -16,7 +16,7 @@ import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfS
 import { findPlanCombs } from '@/services/api-schedulings/findPlanCombs';
 import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
-import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
