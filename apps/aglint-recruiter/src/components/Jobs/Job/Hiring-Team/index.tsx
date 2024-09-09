@@ -19,6 +19,9 @@ import {
   useState,
 } from 'react';
 
+import Loader from '@/components/Common/Loader';
+import { JobNotFound } from '@/job/components/JobNotFound';
+import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { JobMetaFormProps, useJobForms } from '@/jobs/create/components/form';
 import { JobHiringTeamForm } from '@/jobs/types';
@@ -26,10 +29,6 @@ import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
-
-import Loader from '../../../Common/Loader';
-import JobNotFound from '../Common/JobNotFound';
-import { Settings } from '../Common/SharedTopNav/actions';
 
 const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();

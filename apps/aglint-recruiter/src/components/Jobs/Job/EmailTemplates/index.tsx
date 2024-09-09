@@ -24,14 +24,13 @@ import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPr
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-
-import { Settings } from '../Common/SharedTopNav/actions';
 
 const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicationRecieved_email_applicant',

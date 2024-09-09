@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
 import { Application, useApplication } from '@/context/ApplicationContext';
+import { Activity } from '@/job/components/CandidateDrawer/Activity';
+import { Resume } from '@/job/components/CandidateDrawer/Resume';
 
-import { Activity } from '../../Common/CandidateDrawer/Activity';
-import { Resume } from '../../Common/CandidateDrawer/Resume';
 import CandidateInfo from './CandidateInfo';
 import InterviewTabContent from './InterviewTabContent';
 import Requests from './Requests';

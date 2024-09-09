@@ -8,7 +8,11 @@ import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';
 import { ImportResume } from './importResume';
 
-const UploadApplications = ({ children }: { children?: React.ReactNode }) => {
+export const UploadApplications = ({
+  children,
+}: {
+  children?: React.ReactNode;
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -40,5 +44,3 @@ const UploadApplications = ({ children }: { children?: React.ReactNode }) => {
     </Dialog>
   );
 };
-
-export { UploadApplications };

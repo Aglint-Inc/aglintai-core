@@ -17,7 +17,7 @@ import { type Application } from '@/types/applications.types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import ResumeScore from '../../Common/ResumeScoreNew';
+import { ResumeScore } from '../../Common/ResumeScoreNew';
 
 const ApplicationCard = memo(
   ({ application }: { application: Application }) => {

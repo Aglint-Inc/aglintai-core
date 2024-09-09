@@ -51,7 +51,7 @@ const validatePhone = (value: string): boolean => {
   return digitCount === 10 || digitCount === 11;
 };
 
-const ImportManual = () => {
+export const ImportManual = () => {
   const [applicant, setApplicant] = useState(initialFormFields);
   const { setImportPopup } = useApplicationsActions();
   const { handleUploadApplication } = useJob();
@@ -298,5 +298,3 @@ export const ResumeUploadComp = ({
 const getHelper = (title: string) => {
   return `Please provide a valid ${title}`;
 };
-
-export { ImportManual };

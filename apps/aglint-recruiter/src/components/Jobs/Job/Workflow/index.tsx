@@ -15,12 +15,12 @@ import { useRouter } from 'next/router';
 import Loader from '@/components/Common/Loader';
 import { useJobDashboard } from '@/context/JobDashboard';
 import { useJobDashboardStore } from '@/context/JobDashboard/store';
+import { JobNotFound } from '@/job/components/JobNotFound';
+import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
-import JobNotFound from '../Common/JobNotFound';
-import { Settings } from '../Common/SharedTopNav/actions';
 import JobWorkflow from './list';
 
 const JobWorkflowDashboard = () => {

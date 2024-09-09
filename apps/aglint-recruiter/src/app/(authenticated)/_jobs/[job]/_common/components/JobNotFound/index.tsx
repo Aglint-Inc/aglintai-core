@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import ROUTES from '@/utils/routing/routes';
 
-const JobNotFound = () => {
+export const JobNotFound = () => {
   const { replace } = useRouter();
   return (
     <Page404
@@ -20,5 +20,3 @@ const JobNotFound = () => {
     />
   );
 };
-
-export default JobNotFound;

@@ -8,7 +8,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useApplications } from '@/job/hooks';
 
-import { Loader } from '../../../../../../../components/Jobs/Job/Common/CandidateDrawer/Common/Loader';
+import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';
 import List from './List';
 

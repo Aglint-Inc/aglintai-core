@@ -3,14 +3,14 @@ import { PageLayout } from '@devlink2/PageLayout';
 import { CircularProgress, Stack } from '@mui/material';
 
 import Loader from '@/components/Common/Loader';
-import JobNotFound from '@/components/Jobs/Job/Common/JobNotFound';
-import { SharedActions } from '@/components/Jobs/Job/Common/SharedTopNav/actions';
-import { SharedBreadCrumbs } from '@/components/Jobs/Job/Common/SharedTopNav/breadcrumbs';
 import { useApplicationsChecklist, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
 import Filters from './Filters';
+import { JobNotFound } from './JobNotFound';
+import { SharedActions } from './SharedTopNav/actions';
+import { SharedBreadCrumbs } from './SharedTopNav/breadcrumbs';
 import { Table } from './Table';
 import Tabs from './Tabs';
 

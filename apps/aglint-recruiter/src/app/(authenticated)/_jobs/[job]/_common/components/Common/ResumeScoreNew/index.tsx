@@ -6,7 +6,7 @@ import { type Application } from '@/types/applications.types';
 
 import { ScoreTag } from './ScoreTag';
 
-const ResumeScore = ({
+export const ResumeScore = ({
   resume_processing_state,
   resume_score,
 }: Pick<Application, 'resume_processing_state' | 'resume_score'>) => {
@@ -112,5 +112,3 @@ const Calculating = () => {
     </Stack>
   );
 };
-
-export default ResumeScore;

@@ -11,7 +11,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 import toast from '@/utils/toast';
 
-const ImportResume = () => {
+export const ImportResume = () => {
   const [selectedfile, setSelectedFile] = useState([]);
   const { handleUploadResume } = useJob();
   const { setImportPopup } = useApplicationsActions();
@@ -144,8 +144,6 @@ const ImportResume = () => {
     </>
   );
 };
-
-export { ImportResume };
 
 export const candidateDatabaseSampleJob = () => {
   return {

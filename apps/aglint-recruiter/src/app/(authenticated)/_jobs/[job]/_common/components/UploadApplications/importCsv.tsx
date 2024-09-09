@@ -14,7 +14,7 @@ type Candidate = {
   file_url: string;
 };
 
-const ImportCsv: React.FC = () => {
+export const ImportCsv: React.FC = () => {
   const { handleUploadCsv } = useJob();
   const { setImportPopup } = useApplicationsActions();
   const [candidates, setCandidates] = useState<Candidate[]>([]);
@@ -127,5 +127,3 @@ const CandidatesListTable: React.FC<{ candidates: Candidate[] }> = ({
     </tbody>
   </table>
 );
-
-export { ImportCsv };

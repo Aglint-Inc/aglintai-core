@@ -5,9 +5,9 @@ import { Stack } from '@mui/material';
 
 import Loader from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
+import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
 
-import { ActionEmptyState } from '../../../Common/CandidateDrawer/Common/ActionEmptyState';
 import Progress from '../Progress';
 import DialogSchedule from './ScheduleDialog';
 import StageSessions from './StageSessions';

@@ -1,8 +1,8 @@
 import { type PropsWithChildren, createContext, useContext } from 'react';
 
-import { Body } from '@/components/Jobs/Job/Common/CandidateDrawer/Body';
-import { Details } from '@/components/Jobs/Job/Common/CandidateDrawer/Details';
-import { Overview } from '@/components/Jobs/Job/Common/CandidateDrawer/Details/Insights/Overview';
+import { Overview } from '@/components/CandiatePortal/Home/Overview';
+import { Body } from '@/job/components/CandidateDrawer/Body';
+import { Details } from '@/job/components/CandidateDrawer/Details';
 
 import { useApplicationContext } from './hooks';
 

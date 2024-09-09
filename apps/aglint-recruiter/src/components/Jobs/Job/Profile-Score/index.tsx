@@ -47,14 +47,13 @@ import ScoreWheel, {
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useTour } from '@/context/TourContext';
+import { JobNotFound } from '@/job/components/JobNotFound';
+import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-
-import JobNotFound from '../Common/JobNotFound';
-import { Settings } from '../Common/SharedTopNav/actions';
 
 type Sections = 'experience' | 'education' | 'skills';
 

@@ -43,6 +43,8 @@ import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { JobNotFound } from '@/job/components/JobNotFound';
+import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
@@ -61,8 +63,6 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
-import JobNotFound from '../Common/JobNotFound';
-import { Settings } from '../Common/SharedTopNav/actions';
 import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';

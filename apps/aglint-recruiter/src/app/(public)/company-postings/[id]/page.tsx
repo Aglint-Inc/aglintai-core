@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Loader from '@/components/Common/Loader';
 import { SeoPro } from '@/components/Common/SeoPro';
 import CompanyJobPost from '@/components/CompanyJobPost';
-import JobNotFound from '@/components/Jobs/Job/Common/JobNotFound';
+import { JobNotFound } from '@/job/components/JobNotFound';
 import { type CompanyPostAPI } from '@/pages/api/jobpost/company';
 
 function JobPost({ params: { id } }: { params: { id: string } }) {

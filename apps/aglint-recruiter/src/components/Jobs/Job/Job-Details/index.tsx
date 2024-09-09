@@ -20,6 +20,8 @@ import {
   useState,
 } from 'react';
 
+import { JobNotFound } from '@/job/components/JobNotFound';
+import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { validateDescription } from '@/job/utils';
 import { JobMetaFormProps, useJobForms } from '@/jobs/create/components/form';
@@ -30,8 +32,6 @@ import { capitalizeSentence } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 
 import Loader from '../../../Common/Loader';
-import JobNotFound from '../Common/JobNotFound';
-import { Settings } from '../Common/SharedTopNav/actions';
 import { WarningSvg } from '../Interview-Plan/sessionForms';
 
 const JobDetailsDashboard = () => {
