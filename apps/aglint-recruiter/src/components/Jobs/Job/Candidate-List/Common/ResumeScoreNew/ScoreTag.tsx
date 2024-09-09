@@ -1,14 +1,16 @@
-import { Badge } from '@components/ui/badge';
-
+import { ResumeTag } from '@devlink2/ResumeTag';
 export const ScoreTag = ({ score }: { score: number }) => {
   const props = getResumeScore(score);
   return (
-    <Badge
-      variant='outline'
-      className={`bg-${props.bgColor}-100 text-${props.color}-800`}
-    >
-      {props.text} - {score}%
-    </Badge>
+    <ResumeTag
+      slotText={`${props.text} - ${score}%`}
+      props={{
+        style: {
+          backgroundColor: props.bgColor,
+          color: props.color,
+        },
+      }}
+    />
   );
 };
 
