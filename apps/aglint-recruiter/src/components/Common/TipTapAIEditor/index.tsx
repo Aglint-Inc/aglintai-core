@@ -196,7 +196,10 @@ const TipTapAIEditor = ({
               },
             }}
           >
-            <Stack p={singleLine ? '9px 6px 6px 12px' : padding}>
+            <Stack
+              p={singleLine ? '9px 6px 6px 12px ' : padding}
+              sx={{ border: '1px solid #D3D3D3', borderRadius: '4px' }}
+            >
               {loader.isLoading ? (
                 <Stack gap={1}>
                   {[...Array(loader.count)].map((_e, i) => (

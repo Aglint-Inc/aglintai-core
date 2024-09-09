@@ -92,15 +92,17 @@ const SelfScheduleFlowMenus = ({
             ))
         }
       >
-        <Button
-          size='sm'
-          onClick={() => {
-            setEditTrigger('selfScheduleReminder');
-            setShowEditDialog(true);
-          }}
-        >
-          Schedule Reminder
-        </Button>
+        <div>
+          <Button
+            size='sm'
+            onClick={() => {
+              setEditTrigger('selfScheduleReminder');
+              setShowEditDialog(true);
+            }}
+          >
+            Schedule Reminder
+          </Button>
+        </div>
       </ShowCode.When>
       <ShowCode.When
         isTrue={Boolean(

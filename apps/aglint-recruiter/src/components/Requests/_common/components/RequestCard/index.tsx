@@ -25,7 +25,7 @@ type RequestProps = RequestType & {
   mode?: 'expanded' | 'compact' | 'column-view';
 };
 
-export const RequestCard = ({ ...props }: RequestProps & { index: number }) => {
+export const RequestCard = ({ ...props }: RequestProps) => {
   const { recruiterUser } = useAuthDetails();
   const request = { ...props };
   const { mode = 'expanded' } = props;
