@@ -6,17 +6,18 @@ import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request, type RequestResponse } from '@/queries/requests/types';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { RequestProvider } from '@/context/RequestContext';
+import { getFullName } from '@aglint/shared-utils';
+import { Progress } from '@components/ui/progress';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { LayoutList, Columns } from 'lucide-react';
+import { Columns, LayoutList } from 'lucide-react';
 import { useState } from 'react';
-import Section from './Section';
-import Link from 'next/link';
-import FilterAndSorting from '../FiltersAndSorting';
-import { getFullName } from '@aglint/shared-utils';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequestCount } from '../Dashboard/hooks';
-import { Progress } from '@components/ui/progress';
+import FilterAndSorting from '../FiltersAndSorting';
+import { RequestCard } from './RequestCard';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function RequestSections() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -61,14 +62,25 @@ function RequestSections() {
                   <h2 className='text-md font-semibold mb-4'>
                     {sectionName.replace('_', ' ')}
                   </h2>
-                  <Section
-                    requests={requests ?? []}
-                    sectionName={sectionName}
-                    sectionIconName={sectionIconName}
-                    color={color}
-                    isLoadingRequests={isPlaceholderData}
-                    isKanban={true}
-                  />
+                  <>
+                    <div>{capitalizeFirstLetter(sectionName)}</div>
+                    <div>
+                      {requests.map((props, i) => (
+                        <RequestProvider
+                          key={props.id ?? i}
+                          request_id={props.id}
+                        >
+                          <RequestCard
+                            {...{
+                              ...props,
+                              index: i,
+                              isExpanded: false,
+                            }}
+                          />
+                        </RequestProvider>
+                      ))}
+                    </div>
+                  </>
                 </div>
               ))}
           </div>
@@ -81,49 +93,23 @@ function RequestSections() {
           {defaults.map(({ color, requests, sectionIconName, sectionName }) => {
             if (isFilterApplied && isFetched && (requests ?? []).length === 0)
               return null;
-
-            if (
-              sectionName === 'urgent_request' ||
-              sectionName === 'completed_request'
-            ) {
-              return (
-                <div key={sectionName} className='mb-4'>
-                  <div className='flex justify-between items-center mb-2'>
-                    <h2 className='text-md font-semibold'>
-                      {sectionName === 'urgent_request'
-                        ? 'Urgent Requests'
-                        : 'Recently Completed'}
-                    </h2>
-                    {sectionName === 'completed_request' && (
-                      <Link href='/completed-requests'>View All</Link>
-                    )}
-                  </div>
-                  <ScrollArea className='w-full whitespace-nowrap'>
-                    <div className='flex space-x-4 p-4'>
-                      <Section
-                        requests={requests ?? []}
-                        sectionName={sectionName}
-                        sectionIconName={sectionIconName}
-                        color={color}
-                        isLoadingRequests={isPlaceholderData}
-                        isHorizontal={true}
-                      />
-                    </div>
-                    <ScrollBar orientation='horizontal' />
-                  </ScrollArea>
-                </div>
-              );
-            }
-
             return (
-              <Section
-                key={sectionName}
-                requests={requests ?? []}
-                sectionName={sectionName}
-                sectionIconName={sectionIconName}
-                color={color}
-                isLoadingRequests={isPlaceholderData}
-              />
+              <>
+                <div>{capitalizeFirstLetter(sectionName)}</div>
+                <div>
+                  {requests.map((props, i) => (
+                    <RequestProvider key={props.id ?? i} request_id={props.id}>
+                      <RequestCard
+                        {...{
+                          ...props,
+                          index: i,
+                          isExpanded: false,
+                        }}
+                      />
+                    </RequestProvider>
+                  ))}
+                </div>
+              </>
             );
           })}
         </div>
