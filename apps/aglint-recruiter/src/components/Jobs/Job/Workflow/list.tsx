@@ -25,12 +25,14 @@ import {
   getFilteredWorkflows,
   useWorkflowFilterOptions,
 } from '@/components/Workflow/index/body/filters';
-import {
-  type JobDashboardStore,
-  useJobDashboardStore,
-} from '@/context/JobDashboard/store';
 import { useWorkflows } from '@/context/Workflows';
-import { useJob } from '@/job/hooks';
+import {
+  useJob,
+  useJobDashboardActions,
+  useJobDashboardFilters,
+  useJobDashboardPopup,
+  useJobDashboardSelections,
+} from '@/job/hooks';
 import {
   useJobWorkflowConnect,
   useJobWorkflowDisconnect,
@@ -168,25 +170,18 @@ const JobWorkflows = () => {
 const WorkflowBrowser = () => {
   const { workflows, handleConnect } = useJobWorkflows();
   const { data, status } = useWorkflowQuery();
-  const {
-    popup: { open },
-    filters,
-    resetWorkflow,
-    selections,
-    setSelections,
-  } = useJobDashboardStore(
-    ({ popup, filters, resetWorkflow, selections, setSelections }) => ({
-      popup,
-      filters,
-      resetWorkflow,
-      selections,
-      setSelections,
-    }),
-  );
+  const { open } = useJobDashboardPopup();
+  const selections = useJobDashboardSelections();
+  const filters = useJobDashboardFilters();
+  const { setSelections, resetFilters, resetPopup, resetSelections } =
+    useJobDashboardActions();
+
   const workflowIds = (workflows ?? []).map(({ id }) => id);
 
   const handleClose = useCallback(() => {
-    resetWorkflow();
+    resetFilters();
+    resetPopup();
+    resetSelections();
   }, []);
 
   if (status === 'error') return <>Error</>;
@@ -277,13 +272,8 @@ const WorkflowBrowser = () => {
 };
 
 const Filters = () => {
-  const {
-    filters: { search, ...filters },
-    setFilters,
-  } = useJobDashboardStore(({ filters, setFilters }) => ({
-    filters,
-    setFilters,
-  }));
+  const { search, ...filters } = useJobDashboardFilters();
+  const { setFilters } = useJobDashboardActions();
   const { jobOptions, tagOptions } = useWorkflowFilterOptions();
 
   const options = useMemo(
@@ -329,7 +319,7 @@ const Filters = () => {
 // };
 
 type FilterIconProps = {
-  filter: keyof Omit<JobDashboardStore['filters'], 'search'>;
+  filter: keyof Omit<ReturnType<typeof useJobDashboardFilters>, 'search'>;
 };
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
