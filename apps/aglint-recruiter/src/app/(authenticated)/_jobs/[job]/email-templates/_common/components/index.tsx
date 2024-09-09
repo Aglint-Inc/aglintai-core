@@ -36,7 +36,7 @@ const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicationRecieved_email_applicant',
   'applicantReject_email_applicant',
 ];
-const JobEmailTemplatesDashboard = () => {
+export const JobEmailTemplatesDashboard = () => {
   const [, setSaving] = useState<'saving' | 'saved'>('saved');
   const { isFetching } = useCurrJobTemps({ setSaving });
 
@@ -55,8 +55,6 @@ const JobEmailTemplatesDashboard = () => {
     </Stack>
   );
 };
-
-export default JobEmailTemplatesDashboard;
 
 const JobEmailTemplatesDashboardBreadCrumbs = () => {
   const { push } = useRouter();
