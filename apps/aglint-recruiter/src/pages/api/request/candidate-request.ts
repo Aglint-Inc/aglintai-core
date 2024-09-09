@@ -9,8 +9,6 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
-
-import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
@@ -20,18 +18,25 @@ export default async function handler(
   try {
     const parsed = v.parse(createCandidateRequestSchema, req.body);
 
-    const organizer_id = await getOrganizerId(
-      parsed.application_id,
-      supabaseAdmin,
-    );
-
     const [cand_application] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
         .select('*,candidates(*)')
         .eq('id', parsed.application_id),
     );
+    const [meeting_details] = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_details')
+        .select('*')
+        .eq('id', parsed.session_ids[0]),
+    );
 
+    const [schedule_request] = supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .select()
+        .eq('id', meeting_details.schedule_request_id),
+    );
     const candidate_name = getFullName(
       cand_application.candidates.first_name,
       cand_application.candidates.last_name,
@@ -40,8 +45,8 @@ export default async function handler(
     const details: DatabaseFunctions['create_session_request']['Args'] = {
       application: parsed.application_id,
       request: {
-        assignee_id: organizer_id,
-        assigner_id: organizer_id,
+        assignee_id: schedule_request.assignee_id,
+        assigner_id: schedule_request.assigner_id,
         priority: 'urgent',
         schedule_start_date: parsed.dates?.start,
         schedule_end_date: parsed.dates?.end,
