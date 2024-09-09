@@ -29,8 +29,12 @@ import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewT
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import RequestProgress, {
   RequestProgressSkeleton,
+<<<<<<< HEAD
 } from '../RequestSections/RequestCard/RequestDetails/RequestProgress';
 import { getStatusColor } from '../utils';
+=======
+} from '../_common/components/RequestCard/RequestDetails/RequestProgress';
+>>>>>>> 61e52bd32e5ee20035fb3ba752e549774b9c3d1d
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
@@ -44,6 +48,7 @@ import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { Label } from '@components/ui/label';
 import { Mail, MapPin, Smartphone } from 'lucide-react';
+import { getStatusColor } from '../_common/utils/getStatusColor';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -93,7 +98,7 @@ function ViewRequestDetails() {
             size={2}
             onClickButton={{
               onClick: () => {
-                replace('/requests?tab=requests');
+                replace('/requests');
               },
             }}
             textButton='Back to requests'

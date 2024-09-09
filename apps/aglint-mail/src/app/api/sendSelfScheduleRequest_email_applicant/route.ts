@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { sendSelfScheduleRequest_email_applicant } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
-import { dbUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
-import { PortalPayload } from '../../../utils/types/portalMessage';
+import type { PortalPayload } from '../../../utils/types/portalMessage';
+import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     } = await dbUtil(supabaseAdmin, req_body);
 
     const portal: PortalPayload = {
-      application_id: application_id,
+      application_id,
       filter_id: req_body.filter_json_id,
     };
     const htmlSub = await sendMailFun({
