@@ -52,7 +52,7 @@ export const Filter = ({
           }
           slotRightIcon={
             <Stack>
-              {anchorEl ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+              {anchorEl ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </Stack>
           }
         />

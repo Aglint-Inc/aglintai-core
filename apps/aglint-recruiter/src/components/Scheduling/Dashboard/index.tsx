@@ -20,37 +20,28 @@ const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
   if (!enabled) return <Loader />;
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
-        <Reasons />
-        <Leaderboard />
-      </div>
-
-      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
-        <DeclineRequests />
-        <InterviewTypes />
-      </div>
-
-      <div className='col-span-1 md:col-span-2 lg:col-span-3 flex flex-col md:flex-row justify-between gap-4'>
-        <TrainingProgress />
-        <Interviewes />
-      </div>
-
-      <div className='col-span-1 md:col-span-2 lg:col-span-3 space-y-4'>
+    <>
+      <div className='flex flex-col gap-4 p-6'>
         <Filters />
         <Tabs />
       </div>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-6'>
+        <div className='flex flex-col gap-4'>
+          <Reasons />
+          <Leaderboard />
+        </div>
 
-      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
-        <RecentDeclines />
-        <RecentReschedules />
-      </div>
+        <div className='flex flex-col gap-4'>
+          <DeclineRequests />
+          <InterviewTypes />
+        </div>
 
-      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
-        <CompletedInterviews />
-        <Interviewers />
+        <div className='flex flex-col gap-4'>
+          <TrainingProgress />
+          <Interviewes />
+        </div>
       </div>
-    </div>
+    </>
   );
 });
 SchedulingDashboard.displayName = 'SchedulingDashboard';

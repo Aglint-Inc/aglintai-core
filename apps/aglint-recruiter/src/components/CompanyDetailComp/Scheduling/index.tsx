@@ -1,4 +1,4 @@
-import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -403,9 +403,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body1' color={'var(--neutral-12)'}>
-                {option.label}
-              </Typography>
+              <p>{option.label}</p>
             </li>
           );
         }}

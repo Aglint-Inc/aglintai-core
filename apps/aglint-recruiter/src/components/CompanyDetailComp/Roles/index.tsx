@@ -133,7 +133,7 @@ const RoleTable = ({
   return (
     <Table>
       <TableHeader>
-        <TableRow className='bg-gray-300'>
+        <TableRow className='bg-gray-100'>
           <TableHead>Role</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Users</TableHead>

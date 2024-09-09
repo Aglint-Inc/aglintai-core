@@ -17,7 +17,6 @@ import {
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 
 import { DayOffHelper } from '@devlink3/DayOffHelper';
-import { Typography } from '@mui/material';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -166,9 +165,7 @@ function Holidays() {
                           </Badge>
                         ))
                       ) : (
-                        <Typography variant='caption' fontSize={'14px'}>
-                          All locations
-                        </Typography>
+                        <p>All locations</p>
                       )}
                     </TableCell>
                     <TableCell>
