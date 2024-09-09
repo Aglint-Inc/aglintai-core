@@ -2,8 +2,8 @@ import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { cloneDeep } from 'lodash';
-import { useEffect, useState } from 'react';
+import { cloneDeep, debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -98,10 +98,7 @@ function SchedulingSettings({ updateSettings }) {
       ...pre,
       type,
     }));
-    // setWeeklyLimit((pre) => ({
-    //   ...pre,
-    //   type,
-    // }));
+    handleDailyValue(dailyLmit.value);
   };
 
   const handleWeeklyType = (type: 'Hours' | 'Interviews') => {
@@ -109,6 +106,7 @@ function SchedulingSettings({ updateSettings }) {
       ...pre,
       type,
     }));
+    handleWeeklyValue(weeklyLmit.value);
   };
 
   ///////////// DayOff Popup //////////////
@@ -163,6 +161,13 @@ function SchedulingSettings({ updateSettings }) {
     }
   }
 
+  const debouncedUpsertRequestNotes = useCallback(
+    debounce(async (settings) => {
+      await updateSettings(settings);
+    }, 500),
+    [],
+  );
+
   useEffect(() => {
     if (workingHours.length) {
       schedulingSettingObj = {
@@ -188,7 +193,7 @@ function SchedulingSettings({ updateSettings }) {
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
-        updateSettings(schedulingSettingObj);
+        debouncedUpsertRequestNotes(schedulingSettingObj);
       }
 
       changeValue = 'updating';
