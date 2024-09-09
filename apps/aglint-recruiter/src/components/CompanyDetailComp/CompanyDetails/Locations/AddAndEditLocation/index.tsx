@@ -71,7 +71,7 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
 
     const { error } = handleValidate();
     if (!error) {
-      // @ts-ignore
+      // @ts-expect-error
       await manageOfficeLocation({
         type: edit === -1 ? 'insert' : 'update',
         data: {

@@ -30,7 +30,7 @@ const createApplicationsSlice: StateCreator<
   [],
   [],
   ApplicationsCustomSlice
-> = (set, get) => ({
+> = (_set, get) => ({
   resetAll: () => {
     get().resetImportPopup();
     get().resetChecklist();

@@ -111,7 +111,7 @@ const JobWorkflows = () => {
   if (status === 'pending')
     return (
       <>
-        {[...Array(3)].map((e, i) => (
+        {[...Array(3)].map((_e, i) => (
           <div key={i} className='bg-white'>
             <AssessmentListCardLoader border={'none'} />
           </div>

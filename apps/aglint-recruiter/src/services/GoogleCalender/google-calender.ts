@@ -121,25 +121,25 @@ export class GoogleCalender {
 
   public async createCalenderEvent(new_cal_event: NewCalenderEvent) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
-    //@ts-ignore
+    //@ts-expect-error
     const response = await calendar.events.insert({
       calendarId: 'primary',
       resource: new_cal_event,
       conferenceDataVersion: 1,
       sendNotifications: true,
     });
-    //@ts-ignore
+    //@ts-expect-error
     return response.data as CalendarEvent;
   }
   public async importEvent(event, attendeeEmail) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
-    //@ts-ignore
+    //@ts-expect-error
     const response = await calendar.events.import({
       calendarId: attendeeEmail, // Use the attendee's email as the calendar ID
       resource: event,
       sendNotifications: true,
     });
-    //@ts-ignore
+    //@ts-expect-error
     return response.data;
   }
   public async updateEventStatus(event_id: string, status: 'cancelled') {

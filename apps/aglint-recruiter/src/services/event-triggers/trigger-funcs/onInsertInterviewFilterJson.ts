@@ -99,6 +99,7 @@ const eventTrigger = async ({
   } catch (err) {
     console.error(
       'Failed to perform event trigger onInsertInterviewFilterJson',
+      err,
     );
     console.error(new_data);
   }

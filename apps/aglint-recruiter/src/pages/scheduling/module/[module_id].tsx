@@ -341,7 +341,7 @@ function SlotQualifiedMembers({
           meeting: (typeof progressDataUser)[number];
         }[] = [
           ...new Array(
-            // @ts-ignore
+            // @ts-expect-error
             editModule.settings?.noShadow || 0,
           ).fill({
             text: 'shadow',
@@ -349,7 +349,7 @@ function SlotQualifiedMembers({
             meeting: null,
           }),
           ...new Array(
-            // @ts-ignore
+            // @ts-expect-error
             editModule.settings?.noReverseShadow || 0,
           ).fill({
             text: 'reverse shadow',
@@ -360,7 +360,7 @@ function SlotQualifiedMembers({
 
         trainingStatusArray = trainingStatusArray.map((item) => {
           if (tempMeetingData[item.text]?.length) {
-            // @ts-ignore
+            // @ts-expect-error
             const temp = tempMeetingData[item.text].reverse().pop();
             return { ...item, state: Boolean(temp), meeting: temp };
           }
@@ -443,11 +443,11 @@ function SlotQualifiedMembers({
                           textDuration={
                             <>
                               {`${
-                                // @ts-ignore
+                                // @ts-expect-error
                                 (new Date(
                                   item.meeting?.interview_meeting?.end_time,
                                 ) -
-                                  // @ts-ignore
+                                  // @ts-expect-error
                                   new Date(
                                     item.meeting?.interview_meeting?.start_time,
                                   )) /
@@ -455,7 +455,7 @@ function SlotQualifiedMembers({
                               } Minutes`}
                             </>
                           }
-                          // @ts-ignore
+                          // @ts-expect-error
                           textPlatformName={getScheduleType(
                             item.meeting?.interview_session?.schedule_type,
                           )}

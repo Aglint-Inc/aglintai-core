@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import {
   type ProgressLoggerType,

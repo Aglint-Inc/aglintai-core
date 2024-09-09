@@ -54,7 +54,7 @@ export default function CandidatesByLocationChart() {
                 paddingAngle={5}
                 dataKey='value'
               >
-                {data.map((entry, index) => (
+                {data.map((_entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={`hsl(var(--chart-${(index % 10) + 1}))`}
@@ -65,7 +65,7 @@ export default function CandidatesByLocationChart() {
                 layout='vertical'
                 align='right'
                 verticalAlign='middle'
-                formatter={(value, entry, index) => (
+                formatter={(value, _entry, index) => (
                   <span className='text-sm font-medium'>
                     {/*eslint-disable-next-line security/detect-object-injection*/}
                     {value} - {data[index].value}%

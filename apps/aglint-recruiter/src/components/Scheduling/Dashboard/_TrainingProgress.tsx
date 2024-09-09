@@ -104,7 +104,7 @@ const HistoryPills = ({
   'module' | 'count'
 >) => {
   const shadowPills = [...new Array(module.settings.noShadow)].reduce(
-    (acc, curr, index) => {
+    (acc, _curr, index) => {
       const isActive = index < shadow;
       const isStart = index === 0;
       const isEnd =
