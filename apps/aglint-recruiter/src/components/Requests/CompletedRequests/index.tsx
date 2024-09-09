@@ -1,15 +1,15 @@
+import { RequestProvider } from '@/context/RequestContext';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { RequestsWrapper } from '@devlink2/RequestsWrapper';
 import { Stack } from '@mui/material';
-import { useCompletedRequests } from '../_common/hooks/useCompletedRequests';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
 import {
   setCompletedMode,
   useCompletedRequestsStore,
 } from '../_common/Context/store';
-import { RequestProvider } from '@/context/RequestContext';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { RequestCard } from '../_common/components/RequestCard';
-import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
+import { useCompletedRequests } from '../_common/hooks/useCompletedRequests';
 
 function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { completedFilters } = useCompletedRequestsStore();

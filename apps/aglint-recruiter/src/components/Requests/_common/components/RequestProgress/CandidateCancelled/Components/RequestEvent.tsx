@@ -2,10 +2,10 @@ import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
 import { CircularProgress } from '@mui/material';
 
-import { SlackIcon } from '../../../Components/SlackIcon';
 import { workflowCopy } from '../../utils/copy';
 import { type EventProgressItem } from '../types';
 import { getWorkflowText } from '../utils';
+import { SlackIcon } from '../../../RequestCard/Components/SlackIcon';
 
 function RequestEvent({
   eventType,

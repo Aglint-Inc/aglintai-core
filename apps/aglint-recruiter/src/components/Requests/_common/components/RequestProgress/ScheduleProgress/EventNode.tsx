@@ -8,7 +8,7 @@ import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
-import { deleteRequestWorkflowAction } from '../../utils';
+import { deleteRequestWorkflowAction } from '../utils';
 import { useRequestProgressProvider } from '../progressCtx';
 import { type ProgressTenseType, type RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';

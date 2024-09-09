@@ -13,13 +13,13 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
-import { createRequestWorkflowAction } from '../../utils';
 import { useRequestProgressProvider } from '../progressCtx';
 import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
 import {
   agentTargetApiEmailEndPoint,
   useSelectedActionsDetails,
 } from './dialogCtx';
+import { createRequestWorkflowAction } from '../utils';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();

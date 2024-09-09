@@ -7,12 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import MembersPopUps from './MembersPopUps';
 import { MoreHorizontal } from 'lucide-react';
+import MembersPopUps from './MembersPopUps';
 
 type actionType = Request['status'] | 'change_assignee';
 
-function MoreOptions({ request_id }: { request_id: string }) {
+function MenuOptions({ request_id }: { request_id: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
   const [openAssigneePopup, setOpenAssigneePopup] = useState(false);
 
@@ -76,4 +76,4 @@ function MoreOptions({ request_id }: { request_id: string }) {
   );
 }
 
-export default MoreOptions;
+export default MenuOptions;

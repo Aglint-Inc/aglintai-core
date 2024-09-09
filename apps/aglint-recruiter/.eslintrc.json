@@ -33,6 +33,7 @@
     "src/types/*",
     ".github",
     "components/ui"
+    
   ],
   "rules": {
     "no-unused-vars": "error",

@@ -17,10 +17,6 @@ import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import {
-  createRequestWorkflowAction,
-  deleteRequestWorkflowAction,
-} from '../../utils';
 import { useRequestProgressProvider } from '../progressCtx';
 import { workflowCopy } from '../utils/copy';
 import {
@@ -28,6 +24,10 @@ import {
   progressStatusToTense,
 } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
+import {
+  createRequestWorkflowAction,
+  deleteRequestWorkflowAction,
+} from '../utils';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {
