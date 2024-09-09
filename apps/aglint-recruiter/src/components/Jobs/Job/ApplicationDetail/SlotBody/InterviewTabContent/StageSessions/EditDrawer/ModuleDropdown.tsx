@@ -1,4 +1,3 @@
-
 import { useInterviewModules } from '@/queries/interview-modules';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
@@ -17,11 +16,12 @@ function ModuleDropdown() {
     editSession: state.editSession,
   }));
 
-  const filterArchivedModules = interviewModules?.data?.filter(
-    (module) =>
-      editSession?.interview_session.module_id === module.id ||
-      !module.is_archived,
-  );
+  const filterArchivedModules =
+    interviewModules?.data?.filter(
+      (module) =>
+        editSession?.interview_session.module_id === module.id ||
+        !module.is_archived,
+    ) || [];
   return (
     <>
       <UISelectDropDown
