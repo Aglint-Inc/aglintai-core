@@ -125,7 +125,7 @@ const HistoryPills = ({
   );
   const reverseShadowPills = [
     ...new Array(module.settings.noReverseShadow),
-  ].reduce((acc, curr, i) => {
+  ].reduce((acc, _curr, i) => {
     const index = i + (shadowPills || []).length;
     const isActive = index < reverse_shadow;
     const isStart = module.settings.noShadow + index === 0;

@@ -108,7 +108,7 @@ const TipTapAIEditor = ({
       attributes: {
         spellcheck: 'false',
       },
-      handleKeyDown(view, event) {
+      handleKeyDown(_view, event) {
         // if singleLine and dropdown open enter key will work otherwise enter not work.if multiline enterkey will work on all situation
         if (!singleLine || event.key !== 'Enter') {
           return false;

@@ -105,7 +105,6 @@ const seedWorkFlow = async (recruiter_id: string) => {
     );
     supabaseWrap(
       await supabaseAdmin.from('workflow_action').insert(
-        //@ts-expect-error  Fix this
         work_flow_act.actions.map((action) => {
           const temp = company_email_template.find(
             (temp) => temp.type === action.target_api,
