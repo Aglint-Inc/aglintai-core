@@ -6768,6 +6768,7 @@ export type Database = {
           name: string
           interview_module_relation_entries: Json
           interview_plan_id: string
+          session_order: number
         }
         Returns: undefined
       }
