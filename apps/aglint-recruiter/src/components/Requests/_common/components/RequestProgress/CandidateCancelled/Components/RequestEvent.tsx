@@ -1,11 +1,11 @@
 import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
-import { CircularProgress } from '@mui/material';
 
 import { workflowCopy } from '../../utils/copy';
 import { type EventProgressItem } from '../types';
 import { getWorkflowText } from '../utils';
 import { SlackIcon } from '../../../RequestCard/Components/SlackIcon';
+import { Loader2 } from 'lucide-react';
 
 function RequestEvent({
   eventType,
@@ -21,7 +21,7 @@ function RequestEvent({
       isAiTextVisible={false}
       slotLoader={
         requestProgress?.status === 'in_progress' ? (
-          <CircularProgress size={20} />
+          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
         ) : null
       }
       slotLeftIcon={

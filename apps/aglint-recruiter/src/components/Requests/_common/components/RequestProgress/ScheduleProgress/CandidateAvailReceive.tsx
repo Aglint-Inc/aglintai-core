@@ -4,7 +4,6 @@ import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonGhost } from '@devlink2/ButtonGhost';
 import { RequestProgress } from '@devlink2/RequestProgress';
-import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -79,7 +78,7 @@ const CandidateAvailReceive = () => {
   }
 
   return (
-    <Stack rowGap={2}>
+    <div className='gap-1'>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
         <WActionMenu />
       </ShowCode.When>
@@ -97,7 +96,7 @@ const CandidateAvailReceive = () => {
       >
         <WActionMenu />
       </ShowCode.When>
-    </Stack>
+    </div>
   );
 };
 
@@ -217,7 +216,7 @@ const RequestEvents = ({
                 lastEvent.event_type === 'CAND_AVAIL_REC'
               }
             >
-              <Stack direction={'row'} gap={1}>
+              <div className='gap-1'>
                 <ButtonSoft
                   size={1}
                   color={'accent'}
@@ -239,7 +238,7 @@ const RequestEvents = ({
                   }}
                   textButton='Re Request Availability'
                 />
-              </Stack>
+              </div>
             </ShowCode.When>
           </>
         }
@@ -258,7 +257,7 @@ const WActionMenu = () => {
         textRequestProgress={`Candidate submits Availability`}
         slotProgress={
           <>
-            <Stack direction={'row'} gap={1} justifyContent={'start'}>
+            <div>
               <ShowCode.When
                 isTrue={Boolean(
                   !reqTriggerActionsMap['onReceivingAvailReq'] ||
@@ -303,7 +302,7 @@ const WActionMenu = () => {
                     );
                   })}
               </ShowCode.When>
-            </Stack>
+            </div>
           </>
         }
       />

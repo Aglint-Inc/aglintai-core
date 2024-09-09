@@ -1,8 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
-import { Label } from '@components/ui/label';
 
-import { Stack } from '@mui/material';
 import { Check } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -12,9 +10,8 @@ const AvailabilityLinkSent = (
   const [isCopied, setIsCopied] = useState(false);
   return (
     <>
-      <Stack direction={'row'} alignItems={'center'} gap={0}>
-        <Check size={16} color={'var(--neutral-2)'} />
-        <Label className='flex items-center text-sm text-gray-500'>TBD</Label>
+      <div className='flex items-center gap-0'>
+        <Check size={16} className='text-neutral-2' />
         <Button>Candidate Availability Request link</Button>
         <Button
           onClick={() => {
@@ -31,7 +28,7 @@ const AvailabilityLinkSent = (
         >
           {isCopied ? 'Copied' : 'Copy'}
         </Button>
-      </Stack>
+      </div>
     </>
   );
 };
