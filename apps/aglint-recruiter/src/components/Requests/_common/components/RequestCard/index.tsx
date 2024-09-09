@@ -1,19 +1,22 @@
 import { Badge } from '@components/ui/badge';
 import { cn } from '@lib/utils';
-
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
-import { Notebook } from 'lucide-react';
+import {
+  Notebook,
+  Calendar,
+  Briefcase,
+  User,
+  Clock,
+  UserCircle,
+} from 'lucide-react';
 import Link from 'next/link';
 import { getStatusColor } from '../../utils/getStatusColor';
-
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import CandidateDetails from './Components/CandidateDetails';
-import SessionsCardAndActions from './Components/SessionsCardAndActions';
 import MenuOptions from './MenuOptions';
+import { Label } from '@components/ui/label';
 
 type RequestProps = RequestType & { isExpanded?: boolean };
 
@@ -23,97 +26,116 @@ export const RequestCard = ({
 }: RequestProps & { index: number }) => {
   const { recruiterUser } = useAuthDetails();
   const request = { ...props };
+
   return (
-    <>
-      <Link href={`/requests/${props.id}`} passHref>
-        <Card className='cursor-pointer'>
-          <CardHeader className='p-3'>
-            <div className='flex justify-between items-center'>
-              <CardTitle className='text-base'>{props.title}</CardTitle>
-              <div className='flex items-center space-x-2'>
-                <Badge
-                  variant='outline'
-                  className={cn(
-                    'capitalize',
-                    getStatusColor({ status: props.status }),
-                  )}
-                >
-                  {capitalizeFirstLetter(props.status)}
-                </Badge>
-                <MenuOptions request_id={props.id} />
-              </div>
+    <Link href={`/requests/${props.id}`} passHref>
+      <Card className='cursor-pointer hover:shadow-md transition-shadow duration-300'>
+        <CardHeader className='p-4'>
+          <div className='flex justify-between items-center'>
+            <CardTitle>
+              <Label className='text-lg font-semibold break-words whitespace-normal line-clamp-2'>
+                {props.title}
+              </Label>
+            </CardTitle>
+            <div className='flex items-center space-x-2'>
+              <Badge
+                variant='outline'
+                className={cn(
+                  'capitalize text-sm px-2 py-1',
+                  getStatusColor({ status: props.status }),
+                )}
+              >
+                {capitalizeFirstLetter(props.status)}
+              </Badge>
+              <MenuOptions request_id={props.id} />
             </div>
-          </CardHeader>
-          <CardContent className='p-3'>
-            <div onClick={(e) => e.stopPropagation()}>
-              <Card className='p-0 border-none shadow-none'>
-                <CardContent className='p-0'>
-                  <div className='flex flex-col md:flex-row justify-between gap-4'>
-                    <div className='flex-1'>
-                      <SessionsCardAndActions
-                        request={request}
-                        sessions={request.request_relation.map((relation) => ({
-                          id: relation.interview_session.id,
-                          name: relation.interview_session.name,
-                        }))}
-                        job_id={request.applications.public_jobs.id}
-                        application_id={request.application_id}
-                      />
-                      <CandidateDetails
-                        candidateDetails={{
-                          name: getFullName(
-                            request.applications.candidates.first_name,
-                            request.applications.candidates.last_name,
-                          ),
-                          application_id: request.application_id,
-                        }}
-                        jobDetails={{
-                          id: request.applications.public_jobs.id,
-                          job_title: request.applications.public_jobs.job_title,
-                        }}
-                        dateRange={{
-                          start_date: request.schedule_start_date,
-                          end_date: request.schedule_end_date,
-                        }}
-                      />
-                    </div>
-                    <div className='flex flex-col items-end gap-2'>
-                      <div className='flex items-center gap-2'>
-                        <p className='text-sm text-gray-500'>Created by:</p>
+          </div>
+        </CardHeader>
+        <CardContent className='p-4 tspace-y-4'>
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='space-y-3'>
+              <InfoItem
+                icon={<User className='w-4 h-4' />}
+                label='Candidate'
+                value={getFullName(
+                  request.applications.candidates.first_name,
+                  request.applications.candidates.last_name,
+                )}
+              />
+              <InfoItem
+                icon={<Briefcase className='w-4 h-4' />}
+                label='Job'
+                value={request.applications.public_jobs.job_title}
+              />
+            </div>
+            <div className='space-y-3'>
+              <InfoItem
+                icon={<Calendar className='w-4 h-4' />}
+                label='Schedule'
+                value={`${dayjsLocal(request.schedule_start_date).format('MMM D')} - ${dayjsLocal(request.schedule_end_date).format('MMM D, YYYY')}`}
+              />
+              <InfoItem
+                icon={<UserCircle className='w-4 h-4' />}
+                label='Created'
+                value={
+                  <>
+                    <p>
+                      {dayjsLocal(request.created_at).fromNow()}{' '}
+                      <span className='text-xs text-gray-500'>
+                        by{' '}
                         <Link
                           href={`/user/profile/${request.assigner_id}`}
                           target='_blank'
+                          className='hover:underline'
                         >
-                          <span className='cursor-pointer'>
-                            {getFullName(
-                              request.assigner.first_name,
-                              request.assigner.last_name,
-                            )}
-                            {request.assigner_id === recruiterUser.user_id
-                              ? ' (You)'
-                              : ''}
-                          </span>
+                          {getFullName(
+                            request.assigner.first_name,
+                            request.assigner.last_name,
+                          )}
+                          {request.assigner_id === recruiterUser.user_id
+                            ? ' (You)'
+                            : ''}
                         </Link>
-                      </div>
-                      <p className='text-sm text-gray-500'>
-                        {dayjsLocal(request.created_at).fromNow()}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              {props?.request_note[0]?.note && (
-                <div className='text-sm text-gray-600 flex items-center'>
-                  <Notebook className='w-4 h-4 mr-1 flex-shrink-0' />
-                  <span className='line-clamp-2 text-ellipsis'>
-                    {props.request_note[0].note}
-                  </span>
-                </div>
-              )}
+                      </span>
+                    </p>
+                  </>
+                }
+              />
             </div>
-          </CardContent>
-        </Card>
-      </Link>
-    </>
+          </div>
+
+          {props?.request_note[0]?.note && (
+            <div className='text-sm text-gray-600 flex items-start mt-2'>
+              <Notebook className='w-4 h-4 mr-2 mt-1 flex-shrink-0' />
+              <p className='break-words whitespace-normal line-clamp-2'>
+                {props.request_note[0].note}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
+
+const InfoItem = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+}) => (
+  <div className='flex items-start space-x-2'>
+    <div className='mt-1'>{icon}</div>
+    <div>
+      <p className='text-xs text-gray-500'>{label}</p>
+      {typeof value === 'string' ? (
+        <p className='text-sm font-medium'>{value}</p>
+      ) : (
+        value
+      )}
+    </div>
+  </div>
+);
