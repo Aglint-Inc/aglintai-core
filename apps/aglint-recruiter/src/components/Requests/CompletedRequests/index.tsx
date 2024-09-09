@@ -22,7 +22,6 @@ function CompletedRequests() {
 
   // Group completed requests by date
   const groupedRequests = groupRequestsByDate(completedRequests ?? []);
-  console.log(groupedRequests, completedRequests);
   return (
     <>
       <div className='px-4 py-8'>
