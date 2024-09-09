@@ -77,7 +77,6 @@ function ButtonGroupRight({
                           'qualified',
                       )
                       .map((user) => ({
-                        value: user.interview_module_relation?.id,
                         email: user.user_details.email,
                         user_id: user.interview_module_relation?.user_id,
                         first_name: user.user_details.first_name,
@@ -96,7 +95,6 @@ function ButtonGroupRight({
 
                   setTrainingInterviewers(
                     trainingInterviewers?.map((user) => ({
-                      value: user.interview_module_relation?.id,
                       email: user.user_details.email,
                       user_id: user.interview_module_relation?.user_id,
                       first_name: user.user_details.first_name,
@@ -104,7 +102,7 @@ function ButtonGroupRight({
                       position: user.user_details.position,
                       profile_image: user.user_details.profile_image,
                       module_relation_id: user.interview_module_relation?.id,
-                    })),
+                    })) || [],
                   );
 
                   if (trainingInterviewers?.length > 0) {
@@ -113,15 +111,13 @@ function ButtonGroupRight({
                 } else {
                   setDebriefMembers(
                     currentSession?.users?.map((user) => ({
-                      value: user.interview_module_relation?.id,
                       email: user.user_details.email,
                       user_id: user.interview_module_relation?.user_id,
                       first_name: user.user_details.first_name,
                       last_name: user.user_details.last_name,
                       position: user.user_details.position,
                       profile_image: user.user_details.profile_image,
-                      module_relation_id: user.interview_module_relation?.id,
-                    })),
+                    })) || [],
                   );
                 }
                 setIsEditOpen(true);
