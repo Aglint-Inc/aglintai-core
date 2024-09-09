@@ -10,6 +10,7 @@ import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 
+import { Skeleton } from '@components/ui/skeleton';
 import CandidateCancelled from './CandidateCancelled';
 import InterviewerDecline from './InterviewerDecline';
 import { RequestProgressContext } from './progressCtx';
@@ -17,7 +18,6 @@ import ScheduleProgress from './ScheduleProgress';
 import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
 import { RequestProgressMapType, TriggerActionMapType } from './types';
-import { Skeleton } from '@components/ui/skeleton';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();

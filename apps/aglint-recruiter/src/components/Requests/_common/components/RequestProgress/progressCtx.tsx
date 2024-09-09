@@ -3,7 +3,6 @@ import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { createContext, useContext } from 'react';
 
 import { RequestProgressMapType, TriggerActionMapType } from './types';
-import { getSchedulFlow } from './utils/getScheduleFlow';
 
 // Define the types for the context values
 export interface RequestProgressContextType {
