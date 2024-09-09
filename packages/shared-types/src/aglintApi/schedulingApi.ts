@@ -1,9 +1,5 @@
 import * as v from 'valibot';
-import { RecruiterUserType } from '../data.types';
-import {
-  PlanCombinationRespType,
-  SessionCombinationRespType,
-} from '../scheduleTypes';
+import { PlanCombinationRespType } from '../scheduleTypes';
 import {
   schema_candidate_direct_booking,
   schema_confirm_slot_no_conflict,
@@ -20,7 +16,6 @@ import {
   schema_find_alternative_slots,
   schema_find_availability_payload,
   schema_find_interview_slot,
-  schema_find_slots_date_range,
   schema_send_avail_req_link,
   schema_update_meeting_ints,
 } from '@aglint/shared-utils';
@@ -48,6 +43,7 @@ export type APICandScheduleMailThankYou = {
   filter_id?: string;
   booking_request_from?: 'phone_agent' | 'email_agent' | 'candidate';
 };
+type t = typeof schema_find_availability_payload;
 
 export type APIOptions = v.InferInput<typeof scheduling_options_schema>;
 

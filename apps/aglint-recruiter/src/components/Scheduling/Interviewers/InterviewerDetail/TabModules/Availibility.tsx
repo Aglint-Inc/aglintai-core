@@ -383,7 +383,7 @@ function Availibility({
                       disableClearable
                       options={timeZone}
                       value={selectedTimeZone}
-                      onChange={(event, value) => {
+                      onChange={(_event, value) => {
                         if (value) {
                           setSelectedTimeZone(value);
                         }

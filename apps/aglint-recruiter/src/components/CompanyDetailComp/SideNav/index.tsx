@@ -44,6 +44,7 @@ function VerticalNav() {
       </div>
       <nav className='flex flex-col'>
         {settingsItems.map((item, i) => {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           const Icon = item.icon ? require('lucide-react')[item.icon] : null;
           const NavButton = (
             <Button

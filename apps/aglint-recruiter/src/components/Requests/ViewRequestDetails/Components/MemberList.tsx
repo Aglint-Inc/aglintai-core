@@ -46,7 +46,7 @@ function MemberList({
   return (
     <>
       <div
-        //@ts-ignore
+        //@ts-expect-error
         onClick={handleClick}
         style={{
           paddingBottom: '5px',

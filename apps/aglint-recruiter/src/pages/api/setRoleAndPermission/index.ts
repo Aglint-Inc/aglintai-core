@@ -128,7 +128,7 @@ const getPermissions = async ({
     ids ? pre.id == ids : Boolean(pre.role_permissions_id),
   );
   if (temp_permissions.meta?.dependency_tree?.child.length)
-    // @ts-ignore
+    // @ts-expect-error
     temp_permissions.meta.dependency_tree.child =
       temp_permissions.meta.dependency_tree.child.map(
         (item) => permissions.find((per) => per.name === item)?.id,

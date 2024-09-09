@@ -8,8 +8,8 @@ import {
 } from '../_common/Context/store';
 import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { RequestCard } from '../_common/components/RequestCard';
 import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
+import { RequestCard } from '../_common/Components/RequestCard';
 
 function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { completedFilters } = useCompletedRequestsStore();

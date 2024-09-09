@@ -682,7 +682,7 @@ function FilterOptionsList({
           options: { id: string; label: string }[];
         }[]
       )
-        // @ts-ignore
+        // @ts-expect-error
         .map(({ header, path, options }) => {
           return {
             header,

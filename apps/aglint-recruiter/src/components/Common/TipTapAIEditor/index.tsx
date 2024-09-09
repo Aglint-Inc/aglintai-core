@@ -108,7 +108,7 @@ const TipTapAIEditor = ({
       attributes: {
         spellcheck: 'false',
       },
-      handleKeyDown(view, event) {
+      handleKeyDown(_view, event) {
         // if singleLine and dropdown open enter key will work otherwise enter not work.if multiline enterkey will work on all situation
         if (!singleLine || event.key !== 'Enter') {
           return false;
@@ -199,7 +199,7 @@ const TipTapAIEditor = ({
             <Stack p={singleLine ? '9px 6px 6px 12px' : padding}>
               {loader.isLoading ? (
                 <Stack gap={1}>
-                  {[...Array(loader.count)].map((e, i) => (
+                  {[...Array(loader.count)].map((_e, i) => (
                     <SkeletonParagraph key={i} />
                   ))}
                 </Stack>

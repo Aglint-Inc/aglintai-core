@@ -174,6 +174,7 @@ export const UserDetail = () => {
         setProfileForm(false);
         setProfileChange(false);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       toast.error('Unable to udpate profile. Please contact support');
     } finally {
@@ -187,8 +188,9 @@ export const UserDetail = () => {
         isLinkedInVisible={Boolean(recruiterUser.linked_in?.length)}
         onClickLinkedIn={{
           onClick: () => {
-            recruiterUser.linked_in?.length &&
+            if (recruiterUser.linked_in?.length) {
               window.open(recruiterUser.linked_in, '_ blank');
+            }
           },
         }}
         slotUserImage={

@@ -10,7 +10,7 @@ const oAuth2Client = new OAuth2Client(
   `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-email/google`,
 );
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',

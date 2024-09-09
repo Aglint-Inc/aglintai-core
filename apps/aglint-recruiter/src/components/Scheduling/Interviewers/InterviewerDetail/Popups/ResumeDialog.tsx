@@ -40,7 +40,7 @@ function ResumeDialog() {
       await refetch();
 
       setIsPauseDialogOpen(false);
-    } catch (e) {
+    } catch (_e) {
       //
     } finally {
       setIsSaving(false);

@@ -6,11 +6,7 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-<<<<<<< HEAD
-import { apiTargetToEvents } from '@/components/Requests/RequestSections/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
-=======
 import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
->>>>>>> 61e52bd32e5ee20035fb3ba752e549774b9c3d1d
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';

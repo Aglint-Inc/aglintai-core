@@ -42,7 +42,7 @@ export async function getGreenhouseDepartments(key: string) {
   //   },
   // });
   // if (res.status !== 200) {
-  //   // @ts-ignore
+  //   // @ts-expect-error
   //   throw new Error(res.data.message || 'Greenhouse Department API Failed!');
   // }
   // return res.data;

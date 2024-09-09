@@ -348,7 +348,7 @@ function InterviewerLevelSettings({
                 disableClearable
                 options={timeZones}
                 value={selectedTimeZone}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedTimeZone(value);
                   }

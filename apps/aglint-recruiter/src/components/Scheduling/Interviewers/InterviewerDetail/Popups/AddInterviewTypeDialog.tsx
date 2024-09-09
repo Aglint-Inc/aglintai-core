@@ -106,7 +106,7 @@ function AddInterviewTypeDialog() {
                 disabled={isLoading}
                 disableClearable
                 options={filteredModules}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedModule(value);
                   }

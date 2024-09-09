@@ -151,8 +151,8 @@ const Filters = () => {
       option: type,
       order: order,
     },
-    setOrder: (payload) => setFilters({ ...payload } as any),
-  } as typeof safeSort;
+    setOrder: (payload) => setFilters({ ...payload } as unknown),
+  };
 
   return (
     <FilterHeader

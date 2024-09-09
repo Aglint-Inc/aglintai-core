@@ -25,7 +25,7 @@ function MembersPopUps({
   openAssigneePopup = false,
   selectedRequest = null,
 }: {
-  setOpenAssigneePopup?: Function;
+  setOpenAssigneePopup?: any;
   openAssigneePopup?: boolean;
   selectedRequest?: Request;
 }) {

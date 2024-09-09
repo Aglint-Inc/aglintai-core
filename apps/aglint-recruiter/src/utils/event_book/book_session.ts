@@ -109,6 +109,7 @@ export const bookSession = async ({
         },
       ];
     } catch (err) {
+      console.error(err);
       calendar_event.conferenceData.createRequest = {
         requestId: uuidv4(),
       };
@@ -168,6 +169,7 @@ export const getUserCalAuth = async ({
       return jwtClient;
     }
   } catch (error) {
+    console.error('Error in getting user cal auth', error);
     return null;
   }
 };

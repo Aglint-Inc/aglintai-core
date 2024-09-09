@@ -29,8 +29,7 @@ import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewT
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import RequestProgress, {
   RequestProgressSkeleton,
-} from '../RequestSections/RequestCard/RequestDetails/RequestProgress';
-import { getStatusColor } from '../utils';
+} from '../_common/components/RequestCard/RequestDetails/RequestProgress';
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
