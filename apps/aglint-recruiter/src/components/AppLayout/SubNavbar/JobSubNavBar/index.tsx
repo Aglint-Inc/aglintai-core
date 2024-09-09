@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { AddJob } from '@/jobs/components';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 function JobSubNavbar() {

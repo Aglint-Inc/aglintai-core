@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { useMemo } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { getFullName } from '@/utils/jsonResume';
 import { supabase } from '@/utils/supabase/client';
 

@@ -1,15 +1,15 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 
-import { statusColor } from '@/jobs/constants/';
+import { STATUS_COLOR } from '@/jobs/constants/statusColor';
 
 export const getTextColorJobsList = (
   status: DatabaseTable['public_jobs']['status'],
 ) => {
   if (status === 'draft') {
-    return statusColor.draft.textColor;
+    return STATUS_COLOR.draft.textColor;
   } else if (status === 'published') {
-    return statusColor.published.textColor;
+    return STATUS_COLOR.published.textColor;
   } else if (status === 'closed') {
-    return statusColor.closed.textColor;
+    return STATUS_COLOR.closed.textColor;
   }
 };

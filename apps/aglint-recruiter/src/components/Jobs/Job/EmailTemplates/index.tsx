@@ -24,7 +24,7 @@ import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPr
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJob } from '@/context/JobContext';
+import { useJob } from '@/job/hooks';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';

@@ -19,15 +19,13 @@ import {
   useState,
 } from 'react';
 
-import { useJob } from '@/context/JobContext';
-import {
-  type JobHiringTeamForm,
-  type JobMetaFormProps,
-  useJobForms,
-} from '@/jobs/create/components/form';
+import { useJob } from '@/job/hooks';
+import { JobMetaFormProps, useJobForms } from '@/jobs/create/components/form';
+import { JobHiringTeamForm } from '@/jobs/types';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
+import { validateString } from '@/utils/validateString';
 
 import Loader from '../../../Common/Loader';
 import JobNotFound from '../Common/JobNotFound';

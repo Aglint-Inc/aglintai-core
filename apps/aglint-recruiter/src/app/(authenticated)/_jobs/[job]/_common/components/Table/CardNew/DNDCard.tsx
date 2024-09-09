@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
+import { useApplicationsStore } from '@/job/hooks';
 import { type Application } from '@/types/applications.types';
 
 import ApplicationCard from '.';
@@ -11,7 +11,7 @@ import ApplicationCard from '.';
 type Props = { application: Application };
 
 const DNDCard = (props: Props) => {
-  const count = useApplicationsStore(({ checklist }) => checklist.length);
+  const count = useApplicationsStore((state) => state.checklist.length);
   if (count === 0) return <ApplicationCard {...props} />;
   return <DraggableApplicationCard {...props} />;
 };

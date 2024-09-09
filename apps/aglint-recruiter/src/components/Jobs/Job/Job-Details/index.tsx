@@ -20,20 +20,14 @@ import {
   useState,
 } from 'react';
 
-import { useJob } from '@/context/JobContext';
-import {
-  validateDescription,
-  validateString,
-} from '@/context/JobContext/utils';
-import {
-  type Form,
-  type JobDetailsForm,
-  type JobMetaFormProps,
-  useJobForms,
-} from '@/jobs/create/components/form';
+import { useJob } from '@/job/hooks';
+import { validateDescription } from '@/job/utils';
+import { JobMetaFormProps, useJobForms } from '@/jobs/create/components/form';
+import { Form, JobDetailsForm } from '@/jobs/types';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
+import { validateString } from '@/utils/validateString';
 
 import Loader from '../../../Common/Loader';
 import JobNotFound from '../Common/JobNotFound';

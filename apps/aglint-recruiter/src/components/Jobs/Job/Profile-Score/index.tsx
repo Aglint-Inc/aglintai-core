@@ -45,9 +45,9 @@ import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
 import UITextField from '@/components/Common/UITextField';
-import { useJob } from '@/context/JobContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useTour } from '@/context/TourContext';
+import { useJob } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';

@@ -8,16 +8,13 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
-import { useJob } from '@/context/JobContext';
+import { useApplicationsActions, useJob } from '@/job/hooks';
 import toast from '@/utils/toast';
 
 const ImportResume = () => {
   const [selectedfile, setSelectedFile] = useState([]);
   const { handleUploadResume } = useJob();
-  const setImportPopup = useApplicationsStore(
-    ({ setImportPopup }) => setImportPopup,
-  );
+  const { setImportPopup } = useApplicationsActions();
 
   const InputChange = (files) => {
     // --For Multiple File Input

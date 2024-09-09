@@ -1,5 +1,6 @@
 import { useMutationState } from '@tanstack/react-query';
 
+import { useJob } from '@/job/hooks';
 import { useCompanyMembers } from '@/queries/company-members';
 import { useInterviewModules } from '@/queries/interview-modules';
 import {
@@ -19,8 +20,6 @@ import {
   useUpdateInterviewSession,
 } from '@/queries/interview-plans';
 import { interviewSessionMutationKeys } from '@/queries/interview-plans/keys';
-
-import { useJob } from '../JobContext';
 
 const useJobInterviewPlanActions = () => {
   const { job, interviewPlans, jobLoad, manageJob } = useJob();

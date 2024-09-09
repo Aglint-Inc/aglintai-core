@@ -5,12 +5,11 @@ import { type PropsWithChildren } from 'react';
 import { type XYCoord, DndProvider, useDragLayer } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { useApplications } from '@/context/ApplicationsContext';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import { useMousePosition } from '@/hooks/useMousePosition';
+import { useApplications, useApplicationsChecklist } from '@/job/hooks';
 
 const DNDProvider = (props: PropsWithChildren) => {
-  const count = useApplicationsStore(({ checklist }) => checklist.length);
+  const count = useApplicationsChecklist()?.length ?? 0;
   if (count === 0) return <>{props.children}</>;
   return <DNDLayer>{props.children}</DNDLayer>;
 };
@@ -79,7 +78,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
 };
 
 const DragCard = () => {
-  const count = useApplicationsStore(({ checklist }) => checklist.length);
+  const count = useApplicationsChecklist()?.length ?? 0;
   return (
     <Stack style={{ width: '180px' }}>
       <DragPill

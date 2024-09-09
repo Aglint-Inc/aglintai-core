@@ -10,14 +10,18 @@ import {
   PanelIcon,
 } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 
-import { sessionType } from '..';
+export type sessionType = {
+  id: string;
+  name: string;
+  type: 'debrief' | 'panel' | 'individual';
+};
 
 type OnChangeProps = {
   sessions: sessionType[];
   selected_session_id?: string;
   action?: 'add' | 'remove';
 };
-function SessionList({
+export function SessionList({
   selectedSession,
   setSelectedSession,
   isOptionList = true,
@@ -179,5 +183,3 @@ function SessionList({
     </>
   );
 }
-
-export default SessionList;

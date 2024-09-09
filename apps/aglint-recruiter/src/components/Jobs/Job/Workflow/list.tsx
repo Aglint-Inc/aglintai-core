@@ -25,12 +25,12 @@ import {
   getFilteredWorkflows,
   useWorkflowFilterOptions,
 } from '@/components/Workflow/index/body/filters';
-import { useJob } from '@/context/JobContext';
 import {
   type JobDashboardStore,
   useJobDashboardStore,
 } from '@/context/JobDashboard/store';
 import { useWorkflows } from '@/context/Workflows';
+import { useJob } from '@/job/hooks';
 import {
   useJobWorkflowConnect,
   useJobWorkflowDisconnect,

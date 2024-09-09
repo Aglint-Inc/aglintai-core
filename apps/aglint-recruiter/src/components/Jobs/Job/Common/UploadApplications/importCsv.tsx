@@ -3,8 +3,7 @@ import { Card } from '@components/ui/card';
 import React, { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
-import { useJob } from '@/context/JobContext';
+import { useApplicationsActions, useJob } from '@/job/hooks';
 
 type Candidate = {
   first_name: string;
@@ -17,9 +16,7 @@ type Candidate = {
 
 const ImportCsv: React.FC = () => {
   const { handleUploadCsv } = useJob();
-  const setImportPopup = useApplicationsStore(
-    ({ setImportPopup }) => setImportPopup,
-  );
+  const { setImportPopup } = useApplicationsActions();
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();

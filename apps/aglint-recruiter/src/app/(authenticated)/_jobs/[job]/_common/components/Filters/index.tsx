@@ -6,9 +6,8 @@ import {
   arrayToNestedObject,
   nestedObjectToArray,
 } from '@/components/Common/FilterHeader/utils';
-import { useApplications } from '@/context/ApplicationsContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useJob } from '@/job/hooks/job';
+import { useApplications, useJob } from '@/job/hooks';
 import { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { capitalize } from '@/utils/text/textUtils';
 

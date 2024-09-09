@@ -5,10 +5,13 @@ import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
 import StageProgress from '@/components/Scheduling/Common/StageProgress';
-import { useApplications } from '@/context/ApplicationsContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
+import {
+  useApplications,
+  useApplicationsActions,
+  useApplicationsChecklist,
+} from '@/job/hooks';
 import { formatTimeStamp } from '@/job/utils/formatTimeStamp';
 import { type Application } from '@/types/applications.types';
 import ROUTES from '@/utils/routing/routes';
@@ -29,12 +32,8 @@ const ApplicationCard = memo(
       applicationMutations,
     } = useApplications();
 
-    const { checklist, setChecklist } = useApplicationsStore(
-      ({ checklist, setChecklist }) => ({
-        checklist,
-        setChecklist,
-      }),
-    );
+    const checklist = useApplicationsChecklist();
+    const { setChecklist } = useApplicationsActions();
 
     const { isScoringEnabled } = useRolesAndPermissions();
 

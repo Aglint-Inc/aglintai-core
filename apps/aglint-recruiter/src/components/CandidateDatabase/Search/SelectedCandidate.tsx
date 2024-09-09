@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 
 import {
   type CandidateSearchRes,

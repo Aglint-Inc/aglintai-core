@@ -6,22 +6,15 @@ import dayjs from 'dayjs';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
-import { useApplications } from '@/context/ApplicationsContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJob } from '@/job/hooks/job';
+import { useApplications, useJob } from '@/job/hooks';
 import { useAllMembers } from '@/queries/members';
 
 import {
   RangePicker,
   RequestOption,
 } from '../../../../../../../../components/Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
-import SessionList from './SessionsList';
-
-export type sessionType = {
-  id: string;
-  name: string;
-  type: 'debrief' | 'panel' | 'individual';
-};
+import { type sessionType, SessionList } from './SessionsList';
 
 function CreateRequest({
   setRequest,

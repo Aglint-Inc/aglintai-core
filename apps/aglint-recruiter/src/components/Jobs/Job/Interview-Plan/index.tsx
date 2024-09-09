@@ -42,8 +42,8 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import { useJob } from '@/context/JobContext';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { useJob } from '@/job/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
 import {

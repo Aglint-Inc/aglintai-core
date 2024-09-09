@@ -7,9 +7,8 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import UIPhoneInput from '@/components/Common/UIPhoneInput';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJob } from '@/context/JobContext';
+import { useApplicationsActions, useJob } from '@/job/hooks';
 
 const fileTypes = ['PDF', 'DOCX', 'TXT'];
 
@@ -54,9 +53,7 @@ const validatePhone = (value: string): boolean => {
 
 const ImportManual = () => {
   const [applicant, setApplicant] = useState(initialFormFields);
-  const setImportPopup = useApplicationsStore(
-    ({ setImportPopup }) => setImportPopup,
-  );
+  const { setImportPopup } = useApplicationsActions();
   const { handleUploadApplication } = useJob();
 
   const handleValidate = (): {

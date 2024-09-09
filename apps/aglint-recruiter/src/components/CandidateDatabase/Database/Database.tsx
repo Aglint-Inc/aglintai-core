@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { getFullName } from '@/utils/jsonResume';
 
 import Loader from '../../Common/Loader';

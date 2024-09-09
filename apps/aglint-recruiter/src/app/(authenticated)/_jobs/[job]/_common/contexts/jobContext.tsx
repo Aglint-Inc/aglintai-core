@@ -3,6 +3,7 @@ import { isEqual } from 'lodash';
 import { useParams } from 'next/navigation';
 import {
   createContext,
+  memo,
   PropsWithChildren,
   useEffect,
   useMemo,
@@ -11,11 +12,12 @@ import {
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
-import { getDetailsValidity } from '@/job/utils/getDetailsValidity';
-import { getHiringTeamValidity } from '@/job/utils/getHiringTeamValidity';
-import { validateDescription } from '@/job/utils/validateDescription';
-import { validateJd } from '@/job/utils/validateJd';
+import {
+  getDetailsValidity,
+  getHiringTeamValidity,
+  validateDescription,
+  validateJd,
+} from '@/job/utils';
 import { useJobs } from '@/jobs/hooks';
 import { Job } from '@/jobs/types';
 import { jobQueries, useInvalidateJobQueries, useJobSync } from '@/queries/job';
@@ -293,13 +295,10 @@ const useJobContext = () => {
 
 export const JobContext = createContext<ReturnType<typeof useJobContext>>(null);
 
-export const JobProvider = (props: PropsWithChildren) => {
+export const JobProvider = memo((props: PropsWithChildren) => {
   const value = useJobContext();
-  const resetApplications = useApplicationsStore(({ resetAll }) => resetAll);
-  useEffect(() => {
-    return () => resetApplications();
-  }, []);
   return (
     <JobContext.Provider value={value}>{props.children}</JobContext.Provider>
   );
-};
+});
+JobProvider.displayName = 'JobProvider';

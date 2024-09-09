@@ -24,14 +24,11 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import {
-  type ApplicationsParams,
-  useApplicationsParams,
-} from '@/context/ApplicationsContext/hooks';
-import { useJob } from '@/context/JobContext';
 import { useJobDashboard } from '@/context/JobDashboard';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useApplicationsParams, useJob } from '@/job/hooks';
+import { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { useCompanyMembers } from '@/queries/company-members';
 import { type Job } from '@/queries/jobs/types';
 import { type Application } from '@/types/applications.types';

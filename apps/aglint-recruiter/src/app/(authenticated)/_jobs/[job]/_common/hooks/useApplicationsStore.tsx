@@ -7,7 +7,8 @@
  */
 
 import { createContextStoreSelector } from '@/hooks/createContextStoreSelector';
-import { ApplicationsContext } from '@/job/contexts';
+import { ApplicationsStoreContext } from '@/job/contexts';
 
-export const useApplicationsStore =
-  createContextStoreSelector(ApplicationsContext);
+export const useApplicationsStore = createContextStoreSelector(
+  ApplicationsStoreContext,
+);

@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import type { nestedObjectToArray } from '@/components/Common/FilterHeader/utils';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import ROUTES from '@/utils/routing/routes';
+
+import { useApplicationsActions } from './useApplicationsActions';
 
 type Application = DatabaseView['application_view'];
 
@@ -56,9 +57,7 @@ const locationDefaults: Locations = [];
 const stagesDefaults: Stages = [];
 
 export const useApplicationsParams = () => {
-  const { resetChecklist } = useApplicationsStore(({ resetChecklist }) => ({
-    resetChecklist,
-  }));
+  const { resetChecklist } = useApplicationsActions();
 
   const [locations, setLocations] = useState<Locations>(locationDefaults);
 

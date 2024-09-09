@@ -3,8 +3,7 @@ import { NewTabPill } from '@devlink3/NewTabPill';
 import { capitalize, Stack } from '@mui/material';
 import { type Ref, forwardRef, useEffect, useState } from 'react';
 
-import { useApplications } from '@/context/ApplicationsContext';
-import { useJob } from '@/context/JobContext';
+import { useApplications, useJob } from '@/job/hooks';
 import type { Application } from '@/types/applications.types';
 
 const Tab = forwardRef(

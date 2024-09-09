@@ -1,27 +1,21 @@
 import { JobDetails } from '@devlink2/JobDetails';
 import { PageLayout } from '@devlink2/PageLayout';
 import { CircularProgress, Stack } from '@mui/material';
-import { useEffect } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
-import { useJob } from '@/context/JobContext';
+import JobNotFound from '@/components/Jobs/Job/Common/JobNotFound';
+import { SharedActions } from '@/components/Jobs/Job/Common/SharedTopNav/actions';
+import { SharedBreadCrumbs } from '@/components/Jobs/Job/Common/SharedTopNav/breadcrumbs';
+import { useApplicationsChecklist, useJob } from '@/job/hooks';
 
-import JobNotFound from '../../../../../../components/Jobs/Job/Common/JobNotFound';
-import { SharedActions } from '../../../../../../components/Jobs/Job/Common/SharedTopNav/actions';
-import { SharedBreadCrumbs } from '../../../../../../components/Jobs/Job/Common/SharedTopNav/breadcrumbs';
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
 import Filters from './Filters';
 import { Table } from './Table';
 import Tabs from './Tabs';
 
-const ApplicationsDashboard = () => {
+export const ApplicationsDashboard = () => {
   const { job, jobLoad } = useJob();
-  const resetAll = useApplicationsStore(({ resetAll }) => resetAll);
-  useEffect(() => {
-    return () => resetAll();
-  }, []);
   return jobLoad ? (
     job ? (
       <ApplicationsComponent />
@@ -35,12 +29,8 @@ const ApplicationsDashboard = () => {
   );
 };
 
-export default ApplicationsDashboard;
-
 const ApplicationsComponent = () => {
-  const { checklist } = useApplicationsStore(({ checklist }) => ({
-    checklist,
-  }));
+  const checklist = useApplicationsChecklist();
   return (
     <DNDProvider>
       <PageLayout

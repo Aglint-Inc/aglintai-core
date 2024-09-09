@@ -9,7 +9,7 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { useApplications } from '@/context/ApplicationsContext';
+import { useApplications } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 

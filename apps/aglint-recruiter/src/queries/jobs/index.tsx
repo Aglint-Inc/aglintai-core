@@ -154,16 +154,6 @@ export const readJobs = async (recruiter_id: string, manageJob: boolean) => {
   return (await query.throwOnError()).data;
 };
 
-export const readJob = async (id: string) =>
-  (
-    await supabase
-      .from('job_view')
-      .select()
-      .eq('id', id)
-      .throwOnError()
-      .single()
-  ).data;
-
 const createJob = async (job: JobInsert) => {
   const { data: d1, error: e1 } = await supabase
     .from('public_jobs')

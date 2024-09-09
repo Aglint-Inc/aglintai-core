@@ -6,7 +6,7 @@ import { Avatar, Stack } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 

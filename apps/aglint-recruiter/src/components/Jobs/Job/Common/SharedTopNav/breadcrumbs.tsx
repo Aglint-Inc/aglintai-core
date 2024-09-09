@@ -9,7 +9,7 @@ import {
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { useRouter } from 'next/router';
 
-import { useJob } from '@/context/JobContext';
+import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 

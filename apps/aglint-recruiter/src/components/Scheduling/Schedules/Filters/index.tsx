@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { useAllMembers } from '@/queries/members';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';

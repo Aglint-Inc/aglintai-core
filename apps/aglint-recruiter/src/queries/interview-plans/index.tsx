@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useJob } from '@/context/JobContext';
+import { useJob } from '@/job/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { type ReactNode } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
-import type { ApplicationsParams } from '@/context/ApplicationsContext/hooks';
+import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { BADGE_CONSTANTS } from '@/queries/job-applications';
 
 import { Loader } from '../../Common/Loader';

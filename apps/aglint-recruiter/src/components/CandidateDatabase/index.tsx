@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { getTimeDifference } from '@/utils/jsonResume';
 import { searchJdToJson } from '@/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/utils/supabase/client';

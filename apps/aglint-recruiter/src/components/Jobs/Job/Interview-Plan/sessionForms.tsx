@@ -21,13 +21,13 @@ import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectD
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import { validateString } from '@/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
 import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { sessionDurations } from '@/utils/scheduling/const';
+import { validateString } from '@/utils/validateString';
 
 import { type CompanyMember, PausedBadge, RoleIcon } from '.';
 import { getBreakLabelV2 } from './utils';

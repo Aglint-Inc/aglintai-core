@@ -1,8 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { SelectActionBar } from '@devlink2/SelectActionBar';
 
-import { useApplications } from '@/context/ApplicationsContext';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
+import {
+  useApplications,
+  useApplicationsActions,
+  useApplicationsChecklist,
+} from '@/job/hooks';
 
 import { MoveCandidate } from './moveCandidate';
 
@@ -11,13 +14,8 @@ const Actions = () => {
     job: { flags },
     section,
   } = useApplications();
-  const { checklist, setChecklist, setActionPopup } = useApplicationsStore(
-    ({ checklist, setChecklist, setActionPopup }) => ({
-      checklist,
-      setChecklist,
-      setActionPopup,
-    }),
-  );
+  const checklist = useApplicationsChecklist();
+  const { setActionPopup, setChecklist } = useApplicationsActions();
   const count = checklist.length;
   return (
     <>

@@ -1,7 +1,7 @@
 import Seo from '@/components/Common/Seo';
 import JobNewInterviewPlanDashboard from '@/components/Jobs/Job/Interview-Plan';
-import { JobProvider } from '@/context/JobContext';
 import JobInterviewPlanProvider from '@/context/JobInterviewPlanContext';
+import { JobProvider } from '@/job/contexts';
 
 const InterviewPlanJobPage = () => {
   return (

@@ -1,13 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 
+import { useJob } from '@/job/hooks';
 import {
   useJobLocations,
   useJobSchedules,
   useJobSkills,
   useJobTenureAndExperience,
 } from '@/queries/job-dashboard';
-
-import { useJob } from '../JobContext';
 
 const useProviderJobDashboardActions = () => {
   const {

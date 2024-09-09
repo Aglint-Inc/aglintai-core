@@ -8,25 +8,25 @@ import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
 import { Checkbox, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { useApplications } from '@/context/ApplicationsContext';
-import { useApplicationsStore } from '@/job/hooks/applicationsStore';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import {
+  useApplications,
+  useApplicationsActionPopup,
+  useApplicationsActions,
+  useApplicationsChecklist,
+  useApplicationsStore,
+} from '@/job/hooks';
+import { formatSessions } from '@/job/utils';
 import { capitalize } from '@/utils/text/textUtils';
 
-import { formatSessions } from '../utils';
-import CreateRequest, { sessionType } from './CreateRequest';
+import CreateRequest from './CreateRequest';
+import { sessionType } from './CreateRequest/SessionsList';
 
 const MoveCandidate = () => {
   const { emailVisibilities } = useApplications();
-  const { actionPopup, checklist, setActionPopup, resetActionPopup } =
-    useApplicationsStore(
-      ({ actionPopup, checklist, setActionPopup, resetActionPopup }) => ({
-        actionPopup,
-        checklist,
-        setActionPopup,
-        resetActionPopup,
-      }),
-    );
+  const actionPopup = useApplicationsActionPopup();
+  const checklist = useApplicationsChecklist();
+  const { setActionPopup, resetActionPopup } = useApplicationsActions();
   const enabled = checklist.length !== 0;
   return (
     <>
@@ -75,9 +75,7 @@ const MoveAction = () => {
 
 const MoveCandidateNew = () => {
   const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
-    resetActionPopup,
-  }));
+  const { resetActionPopup } = useApplicationsActions();
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplications({
       status: 'new',
@@ -111,9 +109,7 @@ const MoveCandidateNew = () => {
 
 const MoveCandidateScreening = () => {
   const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
-    resetActionPopup,
-  }));
+  const { resetActionPopup } = useApplicationsActions();
   const [checked, setChecked] = useState(false);
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
@@ -145,9 +141,7 @@ const MoveCandidateScreening = () => {
 
 const MoveCandidateAssessment = () => {
   const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
-    resetActionPopup,
-  }));
+  const { resetActionPopup } = useApplicationsActions();
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplications({
       status: 'assessment',
@@ -171,12 +165,8 @@ const MoveCandidateInterview = () => {
     handleMoveApplicationToInterview,
     sectionApplication: { data },
   } = useApplications();
-  const { resetActionPopup, checklist } = useApplicationsStore(
-    ({ resetActionPopup, checklist }) => ({
-      checklist,
-      resetActionPopup,
-    }),
-  );
+  const checklist = useApplicationsChecklist();
+  const { resetActionPopup } = useApplicationsActions();
 
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
@@ -233,9 +223,7 @@ const MoveCandidateInterview = () => {
 
 const MoveCandidateQualified = () => {
   const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
-    resetActionPopup,
-  }));
+  const { resetActionPopup } = useApplicationsActions();
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplications({
       status: 'qualified',
@@ -255,9 +243,7 @@ const MoveCandidateQualified = () => {
 
 const MoveCandidateDisqualified = () => {
   const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
-    resetActionPopup,
-  }));
+  const { resetActionPopup } = useApplicationsActions();
   const [checked, setChecked] = useState(false);
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
@@ -303,13 +289,9 @@ const MoveCandidateDisqualified = () => {
 };
 
 function useMeta(onSubmit: () => void, buttonText: string = null) {
-  const { resetActionPopup, actionPopup, checklist } = useApplicationsStore(
-    ({ resetActionPopup, actionPopup, checklist }) => ({
-      resetActionPopup,
-      actionPopup,
-      checklist,
-    }),
-  );
+  const checklist = useApplicationsChecklist();
+  const actionPopup = useApplicationsActionPopup();
+  const { resetActionPopup } = useApplicationsActions();
   const buttons = (
     <>
       <ButtonSoft

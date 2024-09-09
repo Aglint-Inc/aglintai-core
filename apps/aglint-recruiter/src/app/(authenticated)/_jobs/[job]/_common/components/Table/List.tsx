@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React, { useEffect, useRef } from 'react';
 
-import { type useApplications } from '@/context/ApplicationsContext';
+import { type useApplications } from '@/job/hooks';
 
 import DNDCard from './CardNew/DNDCard';
 import { EmptyList } from './Common/EmptyList';

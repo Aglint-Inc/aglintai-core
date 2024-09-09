@@ -13,13 +13,13 @@ import {
 } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { WarningSvg } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobs } from '@/jobs/hooks/jobs';
+import { useJobs } from '@/jobs/hooks';
 import { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import ROUTES from '@/utils/routing/routes';
 
-import { WarningSvg } from '../../../../../../components/Jobs/Job/Interview-Plan/sessionForms';
 import { type JobMetaFormProps, useJobForms } from './form';
 
 const JobCreateComponent = () => {

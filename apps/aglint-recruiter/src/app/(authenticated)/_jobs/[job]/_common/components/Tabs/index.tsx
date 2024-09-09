@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useMemo } from 'react';
 
-import { useJob } from '@/context/JobContext';
+import { useJob } from '@/job/hooks';
 
 import DNDTab from './dndTab';
 

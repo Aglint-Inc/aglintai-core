@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 
 import { Application } from '@/context/ApplicationContext';
 import { useApplicationStore } from '@/context/ApplicationContext/store';
-import { useApplications } from '@/context/ApplicationsContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useApplications } from '@/job/hooks';
 import { getActiveSection } from '@/jobs/utils/getActiveSection';
 
 const Drawer = () => {
