@@ -340,18 +340,12 @@ function SlotQualifiedMembers({
           state: boolean;
           meeting: (typeof progressDataUser)[number];
         }[] = [
-          ...new Array(
-            // @ts-expect-error
-            editModule.settings?.noShadow || 0,
-          ).fill({
+          ...new Array(editModule.settings?.noShadow || 0).fill({
             text: 'shadow',
             state: false,
             meeting: null,
           }),
-          ...new Array(
-            // @ts-expect-error
-            editModule.settings?.noReverseShadow || 0,
-          ).fill({
+          ...new Array(editModule.settings?.noReverseShadow || 0).fill({
             text: 'reverse shadow',
             state: false,
             meeting: null,
@@ -360,7 +354,6 @@ function SlotQualifiedMembers({
 
         trainingStatusArray = trainingStatusArray.map((item) => {
           if (tempMeetingData[item.text]?.length) {
-            // @ts-expect-error
             const temp = tempMeetingData[item.text].reverse().pop();
             return { ...item, state: Boolean(temp), meeting: temp };
           }
@@ -455,7 +448,6 @@ function SlotQualifiedMembers({
                               } Minutes`}
                             </>
                           }
-                          // @ts-expect-error
                           textPlatformName={getScheduleType(
                             item.meeting?.interview_session?.schedule_type,
                           )}

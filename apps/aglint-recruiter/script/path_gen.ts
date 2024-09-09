@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-regexp */
 import * as fs from 'fs';
 import * as path from 'path';
 
