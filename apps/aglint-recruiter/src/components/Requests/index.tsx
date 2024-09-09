@@ -43,7 +43,7 @@ const Requests = () => {
   }, [localStorage.getItem('openChat')]);
 
   return (
-    <div className='relative min-h-screen flex bg-gray-50'>
+    <div className='min-h-screen flex bg-gray-50'>
       {/* Dock to Right Button */}
       <div className='fixed top-4 left-16 z-50'>
         <Button
@@ -69,10 +69,10 @@ const Requests = () => {
           className={`
             transition-all duration-300 ease-in-out
             ${openChat ? 'w-[450px]' : 'w-0'}
-            overflow-hidden h-screen
+            overflow-hidden h-screen sticky top-0 left-0
           `}
         >
-          <div className='h-full sticky top-0 z-998'>
+          <div className='h-full'>
             <AgentChats />
           </div>
         </div>
@@ -80,7 +80,7 @@ const Requests = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-1 p-4 z-999 ${
+        className={`flex-1 p-4 overflow-y-auto z-10 ${
           openChat
             ? 'w-[calc(100%-450px)]'
             : 'container w-full max-w-[1200px] mx-auto'

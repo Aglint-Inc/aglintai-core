@@ -338,46 +338,48 @@ function RequestList() {
     ) || 0;
 
   return (
-    <div className='space-y-2'>
-      <div className='mb-2 flex flex-row justify-between'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-md font-semibold'>
-            👋 Hey,{' '}
-            {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
-          </h1>
-          <p className='text-sm text-muted-foreground'>
-            {formatRequestCountText(
-              requestCount?.card.urgent_request ?? 0,
-              requestCount?.card.standard_request ?? 0,
-              'today',
-            )}
-          </p>
+    <>
+      <div className='sticky top-0 z-50 bg-white p-4'>
+        <div className='mb-2 flex flex-row justify-between'>
+          <div className='flex flex-col gap-1'>
+            <h1 className='text-md font-semibold'>
+              👋 Hey,{' '}
+              {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
+            </h1>
+            <p className='text-sm text-muted-foreground'>
+              {formatRequestCountText(
+                requestCount?.card.urgent_request ?? 0,
+                requestCount?.card.standard_request ?? 0,
+                'today',
+              )}
+            </p>
+          </div>
+          <div className='flex flex-col gap-1'>
+            <h3 className='text-sm text-muted-foreground font-semibold'>
+              {open_request} Open Requests ({completed_percentage}% complete)
+            </h3>
+            <Progress value={completed_percentage} className='w-full' />
+          </div>
         </div>
-        <div className='flex flex-col gap-1'>
-          <h3 className='text-sm text-muted-foreground font-semibold'>
-            {open_request} Open Requests ({completed_percentage}% complete)
-          </h3>
-          <Progress value={completed_percentage} className='w-full' />
+        <div className='flex justify-end'>
+          <RequestListFilter />
+          <Tabs
+            value={view}
+            onValueChange={(value) => setView(value as 'list' | 'kanban')}
+          >
+            <TabsList>
+              <TabsTrigger value='list'>
+                <LayoutList className='h-4 w-4 mr-2' />
+              </TabsTrigger>
+              <TabsTrigger value='kanban'>
+                <Columns className='h-4 w-4 mr-2' />
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
-      </div>
-      <div className='flex justify-end'>
-        <RequestListFilter />
-        <Tabs
-          value={view}
-          onValueChange={(value) => setView(value as 'list' | 'kanban')}
-        >
-          <TabsList>
-            <TabsTrigger value='list'>
-              <LayoutList className='h-4 w-4 mr-2' />
-            </TabsTrigger>
-            <TabsTrigger value='kanban'>
-              <Columns className='h-4 w-4 mr-2' />
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
       {renderContent()}
-    </div>
+    </>
   );
 }
 
