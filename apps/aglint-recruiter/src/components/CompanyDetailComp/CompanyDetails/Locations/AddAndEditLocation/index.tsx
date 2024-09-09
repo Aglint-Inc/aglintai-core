@@ -19,7 +19,6 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 import { geoCodeLocation, handleValidate } from './until';
 import { debounce } from 'lodash';
-import { timezone } from '@/utils/automation/utils/constants';
 import timeZone from '@/utils/timeZone';
 type TimeZoneType = (typeof timeZone)[number];
 
@@ -125,7 +124,6 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
 
   const debouncedUpsertRequestNotes = useCallback(
     debounce(async (city) => {
-      console.log(city);
       await getCountryAndRegion(city);
     }, 500),
     [],

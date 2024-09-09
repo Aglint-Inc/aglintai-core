@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import AddSocialLinkButton from './AddSocialLinkButton';
 import CustomSocialField from './CustomSocialField';
 import SocialField from './SocialField';
-import { customOrder, socialValidators } from './utils';
+import { customOrder } from './utils';
 
 const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
   const [error, setError] = useState({});
@@ -37,8 +37,6 @@ const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
     // }
   };
 
-  console.log(recruiterLocal);
-
   return (
     <div className=' w-full flex flex-col gap-2'>
       <Label className='text-sm font-semibold '>Social</Label>
@@ -51,7 +49,6 @@ const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
             disabled={disabled}
             error={error[socialName]}
             onChange={(value) => {
-              console.log(socialName, value);
               handleChangeSocial(
                 {
                   ...recruiterLocal,
@@ -72,7 +69,6 @@ const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
               setError((prev) => ({ ...prev, [socialName]: newError }))
             }
             onChange={(value) => {
-              console.log('hellow :', value);
               handleChangeSocial(
                 {
                   ...recruiterLocal,

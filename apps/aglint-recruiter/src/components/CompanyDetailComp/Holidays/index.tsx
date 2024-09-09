@@ -71,13 +71,6 @@ function Holidays() {
     // dateRef.current.value = String(new Date(e.$d));
   }
 
-  function removeDayOff(value: string) {
-    setDaysOff((pre) => {
-      const filtered = pre.filter((item) => item.date !== value);
-      return [...filtered];
-    });
-  }
-
   function initialLoad() {
     if (recruiter.scheduling_settings) {
       const schedulingSettingData = cloneDeep(

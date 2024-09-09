@@ -9,8 +9,6 @@ import {
 import { useState } from 'react';
 
 import { validation } from './utils';
-import toast from '@/utils/toast';
-import { isExists } from 'date-fns';
 
 const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
   const [open, setOpen] = useState(false);

@@ -2,7 +2,7 @@ import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import _, { cloneDeep, debounce } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 
 dayjs.extend(utc);
@@ -94,7 +94,6 @@ function SchedulingSettings({ updateSettings }) {
     }));
   };
   const handleDailyType = (type: 'Hours' | 'Interviews') => {
-    console.log('daily Type', type);
     setDailyLimit((pre) => ({
       ...pre,
       type,
@@ -103,7 +102,6 @@ function SchedulingSettings({ updateSettings }) {
   };
 
   const handleWeeklyType = (type: 'Hours' | 'Interviews') => {
-    console.log('weekly Type', type);
     setWeeklyLimit((pre) => ({
       ...pre,
       type,

@@ -176,7 +176,6 @@ const EditBreakTime = ({
       </div>
       <Button
         onClick={() => {
-          console.log(localBreakTime);
           if (isStartTimeLessThanEndTime(localBreakTime)) {
             handleUpdateAndClose(localBreakTime);
           }
