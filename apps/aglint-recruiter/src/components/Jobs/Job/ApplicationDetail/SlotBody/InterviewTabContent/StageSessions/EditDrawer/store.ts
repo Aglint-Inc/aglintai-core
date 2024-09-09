@@ -11,9 +11,7 @@ export interface EditSessionDrawer {
   trainingInterviewers: (MemberTypeAutoComplete & {
     module_relation_id: string;
   })[];
-  debriefMembers: (MemberTypeAutoComplete & {
-    module_relation_id: string;
-  })[];
+  debriefMembers: MemberTypeAutoComplete[];
   trainingToggle: boolean;
   saving: string | null;
   editSession: StageWithSessions[0]['sessions'][0];
@@ -74,11 +72,8 @@ export const setSaving = (saving: string | null) =>
 export const setTrainingToggle = (trainingToggle: boolean) =>
   useEditSessionDrawerStore.setState({ trainingToggle });
 
-export const setDebriefMembers = (
-  debriefMembers: (MemberTypeAutoComplete & {
-    module_relation_id: string;
-  })[],
-) => useEditSessionDrawerStore.setState({ debriefMembers });
+export const setDebriefMembers = (debriefMembers: MemberTypeAutoComplete[]) =>
+  useEditSessionDrawerStore.setState({ debriefMembers });
 
 export const setTrainingInterviewers = (
   trainingInterviewers: (MemberTypeAutoComplete & {

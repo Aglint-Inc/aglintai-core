@@ -1,5 +1,5 @@
 import { supabase } from '@/utils/supabase/client';
-export async function upsertRequestNotes({
+export async function updateRequestNotes({
   id,
   note,
   request_id,

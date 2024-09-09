@@ -7,10 +7,12 @@ import FilterHeader from '@/components/Common/FilterHeader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
+import {
+  setCompletedFilters,
+  useCompletedRequestsStore,
+} from '../Context/store';
 
-import { setCompletedFilters, useCompletedRequestsStore } from '../store';
-
-function FilterAndSorting() {
+function RequestHistoryFilter() {
   const [candidateAndJobs, setCandidateAndJobs] =
     useState<Awaited<ReturnType<typeof getCandidateList>>>(null);
   const { completedFilters } = useCompletedRequestsStore();
@@ -207,7 +209,7 @@ function FilterAndSorting() {
   );
 }
 
-export default FilterAndSorting;
+export default RequestHistoryFilter;
 
 const dateRange = [
   {
