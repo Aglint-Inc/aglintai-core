@@ -59,6 +59,15 @@ export default function Departments() {
       initialDepartments = JSON.parse(localStorage?.getItem('departments'));
     }
   }
+
+  const current_departments = departments.map((d) =>
+    d.name.replace(/\s+/g, '').toLowerCase(),
+  );
+
+  const suggestionsList = initialDepartments.filter(
+    (d) => !current_departments.includes(d.replace(/\s+/g, '').toLowerCase()),
+  );
+
   return (
     <>
       {deleteDialog.open && deleteDialog.type === 'departments' && (
@@ -83,7 +92,7 @@ export default function Departments() {
           name: item.name,
           id: String(item.id),
         }))}
-        suggestionsList={initialDepartments.map((item) => ({
+        suggestionsList={suggestionsList.map((item) => ({
           name: item,
           id: String(item),
         }))}

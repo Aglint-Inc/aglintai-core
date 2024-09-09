@@ -1,40 +1,40 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { Skeleton } from '@components/ui/skeleton';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@components/ui/accordion';
+import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
+import { Skeleton } from '@components/ui/skeleton';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@components/ui/badge';
 
 import { useRequests } from '@/context/RequestsContext';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { RequestProvider } from '@/context/RequestContext';
-import { getFullName } from '@aglint/shared-utils';
-import { Progress } from '@components/ui/progress';
-import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Columns, LayoutList } from 'lucide-react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { RequestsSectionDefaultData } from '../_common/constant';
-import { useRequestCount } from '../_common/hooks';
-import { RequestCard } from '../_common/components/RequestCard';
-import RequestListFilter from '../_common/components/RequestListFilter';
+import { getFullName } from '@aglint/shared-utils';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
-import Link from 'next/link';
+import { Progress } from '@components/ui/progress';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { cn } from '@lib/utils';
+import { Columns, LayoutList } from 'lucide-react';
+import Link from 'next/link';
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestListFilter from '../_common/components/RequestListFilter';
+import { RequestsSectionDefaultData } from '../_common/constant';
+import { useRequestCount } from '../_common/hooks';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -53,22 +53,6 @@ function RequestList() {
       requests: data?.[sectionName],
     }),
   );
-
-  const isFilterApplied =
-    filters.status.length > 0 ||
-    filters.type.length > 0 ||
-    !!filters.title ||
-    filters.jobs.length > 0 ||
-    filters.applications.length > 0 ||
-    filters.assigneeList.length > 0 ||
-    filters.assignerList.length > 0;
-
-  if (
-    isFilterApplied &&
-    isFetched &&
-    defaults.flatMap((d) => d.requests).length === 0
-  )
-    return <GlobalEmptyState iconName='task_alt' textDesc='No results found' />;
 
   const renderContent = () => {
     const urgentRequests = defaults.find(
@@ -337,6 +321,19 @@ function RequestList() {
         100,
     ) || 0;
 
+  const isFilterApplied =
+    filters.status.length > 0 ||
+    filters.type.length > 0 ||
+    !!filters.title ||
+    filters.jobs.length > 0 ||
+    filters.applications.length > 0 ||
+    filters.assigneeList.length > 0 ||
+    filters.assignerList.length > 0;
+  const isRequestListEmpty =
+    isFilterApplied &&
+    isFetched &&
+    defaults.flatMap((d) => d.requests).length === 0;
+
   return (
     <>
       <div className='sticky top-0 z-50 bg-white p-4'>
@@ -356,7 +353,8 @@ function RequestList() {
           </div>
           <div className='flex flex-col gap-1'>
             <h3 className='text-sm text-muted-foreground font-semibold'>
-              {open_request} Open Requests ({completed_percentage}% complete)
+              {open_request + 1} Open Requests ({completed_percentage}%
+              complete)
             </h3>
             <Progress value={completed_percentage} className='w-full' />
           </div>
@@ -378,7 +376,11 @@ function RequestList() {
           </Tabs>
         </div>
       </div>
-      {renderContent()}
+      {isRequestListEmpty ? (
+        <GlobalEmptyState textDesc='No requests found' iconName='check' />
+      ) : (
+        renderContent()
+      )}
     </>
   );
 }
