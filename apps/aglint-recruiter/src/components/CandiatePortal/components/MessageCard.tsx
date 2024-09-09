@@ -50,24 +50,25 @@ const MessageCard = ({ index }: { index: number }) => {
           {htmlParser.parse(message.message)}
         </p>
       </CardContent>
-      {!message?.isSubmitted && (
-        <CardFooter className='w-full'>
-          <Button
-            variant='outline'
-            className='w-full'
-            disabled={!message?.link}
-            onClick={() => {
-              if (message?.link) window.open(message.link, '_blank');
-            }}
-          >
-            {message?.availability_id
-              ? 'Submit Availability'
-              : message?.filter_id
-                ? 'Submit Schedule'
-                : ''}
-          </Button>
-        </CardFooter>
-      )}
+      {!message?.isSubmitted &&
+        (message?.availability_id || message?.filter_id) && (
+          <CardFooter className='w-full'>
+            <Button
+              variant='outline'
+              className='w-full'
+              disabled={!message?.link}
+              onClick={() => {
+                if (message?.link) window.open(message.link, '_blank');
+              }}
+            >
+              {message?.availability_id
+                ? 'Submit Availability'
+                : message?.filter_id
+                  ? 'Submit Schedule'
+                  : ''}
+            </Button>
+          </CardFooter>
+        )}
     </Card>
   );
 };
