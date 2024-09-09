@@ -10,6 +10,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import dayjs from '@/utils/dayjs';
 import { RequestCard } from '../_common/Components/RequestCard';
 
 function CompletedRequests() {
@@ -21,7 +22,7 @@ function CompletedRequests() {
 
   // Group completed requests by date
   const groupedRequests = groupRequestsByDate(completedRequests ?? []);
-
+  console.log(groupedRequests, completedRequests);
   return (
     <>
       <div className='px-4 py-8'>
@@ -48,9 +49,11 @@ function CompletedRequests() {
           <h2 className='text-2xl font-bold mb-6'>
             {capitalizeFirstLetter('all_completed_requests')}
           </h2>
-          {Object.entries(groupedRequests).map(([date, requests]) => (
+          {Object.entries(groupedRequests).map(([date, requests]: any) => (
             <div key={date} className='p-6'>
-              <h3 className='text-xl font-semibold mb-4'>{date}</h3>
+              <h3 className='text-xl font-semibold mb-4'>
+                {dayjs(date).fromNow()}
+              </h3>
               <div className='flex flex-col gap-4'>
                 {requests.map((props, i) => (
                   <RequestProvider key={props.id ?? i} request_id={props.id}>
@@ -68,7 +71,7 @@ function CompletedRequests() {
 
 function groupRequestsByDate(requests) {
   return requests.reduce((acc, request) => {
-    const date = new Date(request.createdAt).toLocaleDateString();
+    const date = new Date(request.completed_at).toISOString();
     if (!acc[date]) {
       acc[date] = [];
     }
