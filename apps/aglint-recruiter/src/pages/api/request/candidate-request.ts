@@ -28,7 +28,7 @@ export default async function handler(
       await supabaseAdmin
         .from('meeting_details')
         .select('*')
-        .eq('id', parsed.session_ids[0]),
+        .eq('session_id', parsed.session_ids[0]),
     );
 
     const [schedule_request] = supabaseWrap(
