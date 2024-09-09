@@ -6,14 +6,15 @@ import { Button } from '@components/ui/button';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import type { Request as RequestType } from '@/queries/requests/types';
-import SessionsCardAndActions from './Components/SessionsCardAndActions';
+
 import CandidateDetails from './Components/CandidateDetails';
+import SessionsCardAndActions from './Components/SessionsCardAndActions';
 import RequestProgress from './RequestProgress';
 
 function RequestDetails({ request }: { request: RequestType; index: number }) {
   const { handleAsyncUpdateRequest } = useRequests();
   const { recruiterUser } = useAuthDetails();
-  const showFooter = false;
+  var showFooter = false;
 
   return (
     <Card className='p-0 border-none shadow-none'>
