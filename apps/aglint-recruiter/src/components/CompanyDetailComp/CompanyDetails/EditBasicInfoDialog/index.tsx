@@ -69,8 +69,20 @@ const EditBasicInfoDialog = ({
       setRecruiterLocal(() => recruiter);
     }, 800);
   };
+  const isValidation = () => {
+    if (
+      recruiterLocal.name === '' ||
+      recruiterLocal.industry === '' ||
+      recruiterLocal.company_website === '' ||
+      recruiterLocal.employee_size === ''
+    )
+      return false;
+    return true;
+  };
   const handleUpdate = async () => {
     delete recruiterLocal.recruiter_preferences;
+
+    if (!isValidation()) return;
 
     try {
       setIsLoading(true);
@@ -270,11 +282,9 @@ const EditBasicInfoDialog = ({
           <Button variant='outline' onClick={handleClose}>
             Cancel
           </Button>
-          <DialogClose>
-            <Button onClick={handleUpdate} disabled={IsLoading || isSame}>
-              {IsLoading ? 'Updating...' : 'Update'}
-            </Button>
-          </DialogClose>
+          <Button onClick={handleUpdate} disabled={IsLoading || isSame}>
+            {IsLoading ? 'Updating...' : 'Update'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

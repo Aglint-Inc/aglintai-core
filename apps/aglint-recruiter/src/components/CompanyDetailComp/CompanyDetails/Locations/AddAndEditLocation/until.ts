@@ -37,7 +37,9 @@ export const handleValidate = () => {
 };
 
 export function debounce(func: Function, delay: number) {
-  let timeoutId: ReturnType<typeof setTimeout>;
+  console.log('object');
+  var timeoutId: ReturnType<typeof setTimeout>;
+  console.log(timeoutId);
   return (...args: any[]) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {

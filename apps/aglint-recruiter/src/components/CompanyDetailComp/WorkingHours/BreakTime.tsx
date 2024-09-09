@@ -42,8 +42,8 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
 
   const handleUpdateAndClose = async (newBreaktime) => {
     await handleUpdate({ break_hour: newBreaktime });
-    setSelectedHourBreak(newBreaktime);
     setIsOpen(false);
+    setSelectedHourBreak(newBreaktime);
   };
 
   const handleTogglePopover = () => {

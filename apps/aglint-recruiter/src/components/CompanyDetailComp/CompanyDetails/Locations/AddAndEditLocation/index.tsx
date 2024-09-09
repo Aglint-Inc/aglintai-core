@@ -10,15 +10,17 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
-import timeZone from '@/utils/timeZone';
 
-import { handleValidate } from './until';
+import { geoCodeLocation, handleValidate } from './until';
+import { debounce } from 'lodash';
+import { timezone } from '@/utils/automation/utils/constants';
+import timeZone from '@/utils/timeZone';
 type TimeZoneType = (typeof timeZone)[number];
 
 type initialValueType = {
@@ -105,6 +107,31 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
 
   const isCheckboxVisiable =
     hasHeadquarter && initialValue?.is_headquarter ? true : !hasHeadquarter;
+
+  const getCountryAndRegion = async (city: string) => {
+    const result = await geoCodeLocation(city);
+
+    if (result?.timeZoneId?.length) {
+      const tz = timeZone.find((t) => t.tzCode === result.timeZoneId);
+      setSelectedTimeZone(tz);
+    }
+    if (result?.add?.region) {
+      regionRef.current.value = result?.add?.region || regionRef.current.value;
+    }
+    if (result?.add?.country) {
+      countryRef.current.value =
+        result?.add?.country || countryRef.current.value;
+    }
+  };
+
+  const debouncedUpsertRequestNotes = useCallback(
+    debounce(async (city) => {
+      console.log(city);
+      await getCountryAndRegion(city);
+    }, 500),
+    [],
+  );
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       {/* <DialogTrigger asChild>{<Button>asdda</Button>}</DialogTrigger> */}
@@ -148,6 +175,9 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               </Label>
               <Input
                 id='city'
+                onChange={(e) => {
+                  debouncedUpsertRequestNotes(e.target.value);
+                }}
                 ref={cityRef}
                 name='city'
                 placeholder='San Francisco'
@@ -162,6 +192,9 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               <Input
                 id='region'
                 ref={regionRef}
+                // onChange={(e) =>
+                //   setAddress((pre) => ({ ...pre, region: e.target.value }))
+                // }
                 name='region'
                 placeholder='CA'
                 required
@@ -174,6 +207,9 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               </Label>
               <Input
                 id='country'
+                // onChange={(e) =>
+                //   setAddress((pre) => ({ ...pre, country: e.target.value }))
+                // }
                 ref={countryRef}
                 required={true}
                 name='country'
@@ -188,6 +224,9 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
               <Input
                 id='zipcode'
                 ref={zipRef}
+                // onChange={(e) =>
+                //   setAddress((pre) => ({ ...pre, zip_code: e.target.value }))
+                // }
                 placeholder='Please enter the zip code or postal code'
                 defaultValue={initialValue?.zipcode}
               />
