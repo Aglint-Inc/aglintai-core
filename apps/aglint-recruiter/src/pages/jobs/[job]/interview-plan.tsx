@@ -1,25 +1,11 @@
-import Seo from '@/components/Common/Seo';
-import JobNewInterviewPlanDashboard from '@/components/Jobs/Job/Interview-Plan';
-import JobInterviewPlanProvider from '@/context/JobInterviewPlanContext';
-import { JobProvider } from '@/job/contexts';
+import Layout from 'src/app/(authenticated)/_jobs/[job]/interview-plan/layout';
+
+import Page from '@/components/Jobs/Job/Interview-Plan';
 
 const InterviewPlanJobPage = () => {
-  return (
-    <>
-      <Seo
-        title={`Interview Plan - Job | Aglint AI`}
-        description='AI for People Products'
-      />
-      <JobNewInterviewPlanDashboard />
-    </>
-  );
+  return <Page />;
 };
-InterviewPlanJobPage.privateProvider = function privateProvider(page) {
-  return (
-    <JobProvider>
-      <JobInterviewPlanProvider>{page}</JobInterviewPlanProvider>
-    </JobProvider>
-  );
-};
+
+InterviewPlanJobPage.privateProvider = (page) => <Layout>{page}</Layout>;
 
 export default InterviewPlanJobPage;

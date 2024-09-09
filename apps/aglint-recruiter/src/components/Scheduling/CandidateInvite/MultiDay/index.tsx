@@ -19,9 +19,9 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';

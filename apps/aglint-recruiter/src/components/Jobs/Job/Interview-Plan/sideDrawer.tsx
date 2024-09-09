@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
+import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
 
 import { type DrawerType } from '.';

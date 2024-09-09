@@ -9,10 +9,10 @@ import { useState } from 'react';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { type StageWithSessions } from '@/queries/application';
 import { useAllIntegrations } from '@/queries/intergrations';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import BadgesRight from './BadgesRight';

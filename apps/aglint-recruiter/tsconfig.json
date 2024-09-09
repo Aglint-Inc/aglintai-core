@@ -24,6 +24,9 @@
       "@/jobs/*": ["./src/app/(authenticated)/_jobs/_common/*"],
       "@/jobs/create/*": ["./src/app/(authenticated)/_jobs/create/_common/*"],
       "@/job/*": ["./src/app/(authenticated)/_jobs/[job]/_common/*"],
+      "@/job/interview-plan/*": [
+        "./src/app/(authenticated)/_jobs/[job]/interview-plan/_common/*"
+      ],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],

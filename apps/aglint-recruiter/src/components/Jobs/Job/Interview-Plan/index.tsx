@@ -42,10 +42,10 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import { useJobInterviewPlan } from '@/context/JobInterviewPlanContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
+import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
 import {
@@ -53,6 +53,7 @@ import {
   type InterviewSessionType,
 } from '@/queries/interview-plans/types';
 import { jobQueries } from '@/queries/job';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
@@ -67,7 +68,6 @@ import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
-import { getBreakLabel } from './utils';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 

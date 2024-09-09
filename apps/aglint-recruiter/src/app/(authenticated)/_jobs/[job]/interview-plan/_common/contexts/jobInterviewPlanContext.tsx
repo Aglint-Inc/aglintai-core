@@ -1,4 +1,5 @@
 import { useMutationState } from '@tanstack/react-query';
+import { createContext, PropsWithChildren } from 'react';
 
 import { useJob } from '@/job/hooks';
 import { useCompanyMembers } from '@/queries/company-members';
@@ -21,7 +22,7 @@ import {
 } from '@/queries/interview-plans';
 import { interviewSessionMutationKeys } from '@/queries/interview-plans/keys';
 
-const useJobInterviewPlanActions = () => {
+const useJobInterviewPlanContext = () => {
   const { job, interviewPlans, jobLoad, manageJob } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
@@ -132,4 +133,14 @@ const useJobInterviewPlanActions = () => {
   return value;
 };
 
-export default useJobInterviewPlanActions;
+export const JobInterviewPlanContext =
+  createContext<ReturnType<typeof useJobInterviewPlanContext>>(undefined);
+
+export const JobInterviewPlanProvider = ({ children }: PropsWithChildren) => {
+  const value = useJobInterviewPlanContext();
+  return (
+    <JobInterviewPlanContext.Provider value={value}>
+      {children}
+    </JobInterviewPlanContext.Provider>
+  );
+};

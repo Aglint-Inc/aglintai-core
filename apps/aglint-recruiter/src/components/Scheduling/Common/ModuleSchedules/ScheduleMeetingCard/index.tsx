@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
 import {

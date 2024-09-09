@@ -1,7 +1,7 @@
 import { MenuItem, TextField } from '@mui/material';
 import React from 'react';
 
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { sessionDurations } from '@/utils/scheduling/const';
 
 import { setEditSession, useEditSessionDrawerStore } from './store';

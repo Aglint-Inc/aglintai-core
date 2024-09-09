@@ -10,10 +10,10 @@ import {
   DropDown,
   ScheduleTypeField,
 } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 import { sessionDurations } from '@/utils/scheduling/const';
 
