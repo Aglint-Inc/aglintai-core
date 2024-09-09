@@ -39,30 +39,16 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
   isUpdating,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleUpdateAndClose = async () => {
-    await handleUpdate({ break_hour: breaktime });
+  const handleUpdateAndClose = async (newBreaktime) => {
+    await handleUpdate({ break_hour: newBreaktime });
+    setSelectedHourBreak(newBreaktime);
     setIsOpen(false);
   };
 
   const handleTogglePopover = () => {
     setIsOpen(!isOpen);
   };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsOpen(false);
-    }, 300);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <Card>
@@ -81,64 +67,11 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
             </Button>
           </PopoverTrigger>
           <PopoverContent className='w-full' align='start' side='left'>
-            <div className='flex flex-col gap-4 w-[300px]'>
-              <div>
-                <Label>Break Start Time</Label>
-                <TimePicker
-                  onChange={(value) => {
-                    setSelectedHourBreak((pre) => ({
-                      ...pre,
-                      start_time: dayjs(value).format('HH:mm'),
-                    }));
-                  }}
-                  value={
-                    new Date(
-                      dayjs()
-                        .set(
-                          'hour',
-                          parseInt(breaktime?.start_time?.split(':')[0] || '0'),
-                        )
-                        .set(
-                          'minute',
-                          parseInt(breaktime?.start_time?.split(':')[1] || '0'),
-                        )
-                        .toISOString(),
-                    )
-                  }
-                />
-              </div>
-              <div>
-                <Label>Break End Time</Label>
-                <TimePicker
-                  onChange={(value) => {
-                    setSelectedHourBreak((pre) => ({
-                      ...pre,
-                      end_time: dayjs(value).format('HH:mm'),
-                    }));
-                  }}
-                  value={
-                    new Date(
-                      dayjs()
-                        .set(
-                          'hour',
-                          parseInt(breaktime?.end_time?.split(':')[0] || '0'),
-                        )
-                        .set(
-                          'minute',
-                          parseInt(breaktime?.end_time?.split(':')[1] || '0'),
-                        )
-                        .toISOString(),
-                    )
-                  }
-                />
-              </div>
-              <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
-                {isUpdating && (
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                )}
-                Update
-              </Button>
-            </div>
+            <EditBreakTime
+              breaktime={breaktime}
+              handleUpdateAndClose={handleUpdateAndClose}
+              isUpdating={isUpdating}
+            />
           </PopoverContent>
         </Popover>
       </CardHeader>
@@ -168,3 +101,104 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
 };
 
 export default BreakTimeCard;
+
+const EditBreakTime = ({
+  breaktime,
+  handleUpdateAndClose,
+  isUpdating,
+}: {
+  breaktime: BreakTime;
+  handleUpdateAndClose: (arg: BreakTime) => void;
+  isUpdating: boolean;
+}) => {
+  const [localBreakTime, setLocalBreakTime] = useState<BreakTime>(breaktime);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div className='flex flex-col gap-4 w-[300  px]'>
+      <div>
+        <Label>Break Start Time</Label>
+        <TimePicker
+          onChange={(value) => {
+            setLocalBreakTime((pre) => ({
+              ...pre,
+              start_time: dayjs(value).format('HH:mm'),
+            }));
+          }}
+          value={
+            new Date(
+              dayjs()
+                .set(
+                  'hour',
+                  parseInt(localBreakTime?.start_time?.split(':')[0] || '0'),
+                )
+                .set(
+                  'minute',
+                  parseInt(localBreakTime?.start_time?.split(':')[1] || '0'),
+                )
+                .toISOString(),
+            )
+          }
+        />
+      </div>
+      <div>
+        <Label>Break End Time</Label>
+        <TimePicker
+          onChange={(value) => {
+            setLocalBreakTime((pre) => ({
+              ...pre,
+              end_time: dayjs(value).format('HH:mm'),
+            }));
+          }}
+          value={
+            new Date(
+              dayjs()
+                .set(
+                  'hour',
+                  parseInt(localBreakTime?.end_time?.split(':')[0] || '0'),
+                )
+                .set(
+                  'minute',
+                  parseInt(localBreakTime?.end_time?.split(':')[1] || '0'),
+                )
+                .toISOString(),
+            )
+          }
+        />
+      </div>
+      <Button
+        onClick={() => {
+          console.log(localBreakTime);
+          if (isStartTimeLessThanEndTime(localBreakTime)) {
+            handleUpdateAndClose(localBreakTime);
+          }
+        }}
+        disabled={isUpdating}
+      >
+        {isUpdating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+        Update
+      </Button>
+    </div>
+  );
+};
+
+function isStartTimeLessThanEndTime(breakTime: BreakTime) {
+  const { start_time, end_time } = breakTime;
+  const start = dayjs()
+    .set('hour', parseInt(start_time.split(':')[0]))
+    .set('minute', parseInt(start_time.split(':')[1]));
+  const end = dayjs()
+    .set('hour', parseInt(end_time.split(':')[0]))
+    .set('minute', parseInt(end_time.split(':')[1]));
+
+  // Compare if start is before end
+  return start.isBefore(end);
+}
