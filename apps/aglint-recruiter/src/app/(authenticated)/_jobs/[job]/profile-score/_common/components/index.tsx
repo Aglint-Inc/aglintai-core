@@ -57,7 +57,7 @@ import toast from '@/utils/toast';
 
 type Sections = 'experience' | 'education' | 'skills';
 
-const JobProfileScoreDashboard = () => {
+export const JobProfileScoreDashboard = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
   const { jobLoad, job } = useJob();
 
@@ -789,5 +789,3 @@ const Tips = () => {
     </>
   );
 };
-
-export default JobProfileScoreDashboard;

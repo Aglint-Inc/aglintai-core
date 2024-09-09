@@ -33,6 +33,9 @@
       "@/job/job-details/*": [
         "./src/app/(authenticated)/_jobs/[job]/job-details/_common/*"
       ],
+      "@/job/profile-score/*": [
+        "./src/app/(authenticated)/_jobs/[job]/profile-score/_common/*"
+      ],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],
