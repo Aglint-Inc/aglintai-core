@@ -1,6 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -10,6 +8,7 @@ import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import { Button } from '@components/ui/button';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
@@ -93,18 +92,17 @@ const SelfScheduleFlowMenus = ({
             ))
         }
       >
-        <Stack direction={'row'}>
-          <ButtonSoft
-            size={1}
-            textButton={'Schedule Reminder'}
-            onClickButton={{
-              onClick: () => {
-                setEditTrigger('selfScheduleReminder');
-                setShowEditDialog(true);
-              },
+        <div>
+          <Button
+            size='sm'
+            onClick={() => {
+              setEditTrigger('selfScheduleReminder');
+              setShowEditDialog(true);
             }}
-          />
-        </Stack>
+          >
+            Schedule Reminder
+          </Button>
+        </div>
       </ShowCode.When>
       <ShowCode.When
         isTrue={Boolean(

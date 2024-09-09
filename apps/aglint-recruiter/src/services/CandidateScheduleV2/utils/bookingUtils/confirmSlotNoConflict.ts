@@ -52,7 +52,7 @@ export const confirmSlotNoConflict = async (
 
   await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, false);
-  await updateMeetingEventDetails(booked_meeting_details);
+  await updateMeetingEventDetails(booked_meeting_details, parsed_body.cand_tz);
   await updateConfirmTime(parsed_body.filter_id);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {

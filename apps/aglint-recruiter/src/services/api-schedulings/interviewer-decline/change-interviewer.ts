@@ -60,6 +60,12 @@ export const changeInterviewer = async (payload: FuncParams) => {
     api_payload2,
   );
 
+  await supabaseWrap(
+    await supabaseAdmin
+      .from('request')
+      .update({ status: 'completed' })
+      .eq('id', payload.request_id),
+  );
   await payload.reqProgressLogger({
     is_progress_step: true,
     status: 'completed',

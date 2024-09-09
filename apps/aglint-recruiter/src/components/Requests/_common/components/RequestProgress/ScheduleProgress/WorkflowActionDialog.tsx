@@ -2,7 +2,6 @@ import {
   type DatabaseEnums,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { get } from 'lodash';
 import React, { useState } from 'react';
@@ -20,6 +19,7 @@ import {
   useSelectedActionsDetails,
 } from './dialogCtx';
 import { createRequestWorkflowAction } from '../utils';
+import { Button } from '@components/ui/button';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
@@ -121,22 +121,22 @@ const WorkflowActionDialog = () => {
             }))}
           />
           <TargetAPIBody action={selectedActionsDetails} />
-          <ButtonSolid
-            textButton={isAddingAction ? 'Adding...' : 'Add Action'}
-            onClickButton={{
-              onClick: () => {
-                handleSaveScheduleAction({
-                  action_type: selectedActionsDetails.action_type as any,
-                  target_api: selectedActionsDetails.target_api as any,
-                  order: 0,
-                  workflow_id: selectedActionsDetails.workflow_id,
-                  payload: {
-                    email: emailTemplate,
-                  },
-                });
-              },
+          <Button
+            variant='default'
+            onClick={() => {
+              handleSaveScheduleAction({
+                action_type: selectedActionsDetails.action_type as any,
+                target_api: selectedActionsDetails.target_api as any,
+                order: 0,
+                workflow_id: selectedActionsDetails.workflow_id,
+                payload: {
+                  email: emailTemplate,
+                },
+              });
             }}
-          />
+          >
+            {isAddingAction ? 'Adding...' : 'Add Action'}
+          </Button>
         </>
       }
     />
