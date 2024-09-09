@@ -1,18 +1,18 @@
 import { RequestProvider } from '@/context/RequestContext';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
-import { useCompletedRequestsStore } from '../_common/Context/store';
-import { useCompletedRequests } from '../_common/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { Request } from '@/queries/requests/types';
+import dayjs from '@/utils/dayjs';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import dayjs from '@/utils/dayjs';
 import { RequestCard } from '../_common/Components/RequestCard';
-import { Request } from '@/queries/requests/types';
+import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
+import { useCompletedRequestsStore } from '../_common/Context/store';
+import { useCompletedRequests } from '../_common/hooks';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
