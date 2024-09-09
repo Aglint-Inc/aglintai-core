@@ -5,24 +5,16 @@ import { RequestsWrapper } from '@devlink2/RequestsWrapper';
 import { Stack } from '@mui/material';
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
-import {
-  setCompletedMode,
-  useCompletedRequestsStore,
-} from '../_common/Context/store';
-<<<<<<< HEAD
-import { useCompletedRequests } from '../_common/hooks/useCompletedRequests';
-=======
-import { RequestProvider } from '@/context/RequestContext';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
-import { RequestCard } from '../_common/Components/RequestCard';
->>>>>>> 29d7036c5711e9ba1a63bd406d7115ad181c6c96
+import { useCompletedRequestsStore } from '../_common/Context/store';
+import { useCompletedRequests } from '../_common/hooks';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { completedFilters } = useCompletedRequestsStore();
   const { data: completedRequests } = useCompletedRequests({
     completedFilters,
   });
+  const { replace } = useRouterPro();
   return (
     <RequestsWrapper
       slotFilter={
@@ -40,7 +32,7 @@ function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
             textButton='Back'
             onClickButton={{
               onClick: () => {
-                setCompletedMode(false);
+                replace('/requests');
               },
             }}
           />

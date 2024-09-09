@@ -30,14 +30,7 @@ import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/In
 
 import { Label } from '@components/ui/label';
 import { Mail, MapPin, Smartphone } from 'lucide-react';
-import RequestProgress, {
-  RequestProgressSkeleton,
-<<<<<<< HEAD
-} from '../_common/Components/RequestProgress';
-import { getStatusColor } from '../_common/utils/getStatusColor';
-=======
-} from '../_common/components/RequestCard/RequestDetails/RequestProgress';
->>>>>>> 29d7036c5711e9ba1a63bd406d7115ad181c6c96
+
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
@@ -49,6 +42,10 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
+import RequestProgress, {
+  RequestProgressSkeleton,
+} from '../_common/Components/RequestProgress';
+import { getStatusColor } from '../_common/utils/getStatusColor';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
