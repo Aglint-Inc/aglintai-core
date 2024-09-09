@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonGhost } from '@devlink2/ButtonGhost';
 import { RequestProgress } from '@devlink2/RequestProgress';
@@ -40,9 +40,14 @@ const CandidateAvailReceive = () => {
     if (request_progress.data.length === 0) {
       return { availRecivedProgEvents, isScheduled };
     }
-    const filteredProg = request_progress.data.filter((prg) =>
-      groupedTriggerEventMap['availReceived'].includes(prg.event_type),
-    );
+    const filteredProg = request_progress.data
+      .filter((prg) =>
+        groupedTriggerEventMap['availReceived'].includes(prg.event_type),
+      )
+      .sort(
+        (a, b) =>
+          dayjsLocal(a.created_at).unix() - dayjsLocal(b.created_at).unix(),
+      );
     let idx = -1;
     filteredProg.forEach((prg) => {
       if (
