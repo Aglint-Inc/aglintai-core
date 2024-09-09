@@ -21,6 +21,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
+import _ from 'lodash';
 
 const employeeSizes = [
   '1-10',
@@ -68,8 +69,10 @@ const EditBasicInfoDialog = ({
       setRecruiterLocal(() => recruiter);
     }, 800);
   };
+
   const handleUpdate = async () => {
     delete recruiterLocal.recruiter_preferences;
+
     try {
       setIsLoading(true);
       const { error } = await supabase
@@ -98,6 +101,29 @@ const EditBasicInfoDialog = ({
     }
   };
 
+  function compareObjects(obj1, obj2) {
+    const propertiesToCompare: (keyof typeof recruiter)[] = [
+      'name',
+      'industry',
+      'employee_size',
+      'company_website',
+      'socials',
+    ];
+
+    for (const property of propertiesToCompare) {
+      if (logo !== recruiter.logo) return false;
+      if (!_.isEqual(recruiter['socials'], recruiterLocal['socials']))
+        return false;
+      if (property === 'socials') continue;
+      if (obj1[property] !== obj2[property]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const isSame = compareObjects(recruiter, recruiterLocal);
+
   return (
     <Dialog open={editDialog} onOpenChange={setEditDialog}>
       <DialogContent>
@@ -105,7 +131,6 @@ const EditBasicInfoDialog = ({
           <DialogTitle>Edit Basic Info</DialogTitle>
         </DialogHeader>
         <DialogTitle>
-          {' '}
           <div className='space-y-6'>
             {isError && (
               <Alert variant='destructive'>
@@ -247,7 +272,7 @@ const EditBasicInfoDialog = ({
             Cancel
           </Button>
           <DialogClose>
-            <Button onClick={handleUpdate} disabled={IsLoading}>
+            <Button onClick={handleUpdate} disabled={IsLoading || isSame}>
               {IsLoading ? 'Updating...' : 'Update'}
             </Button>
           </DialogClose>
