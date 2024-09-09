@@ -95,8 +95,6 @@ const InterviewPlanPage = () => {
   const [drawers, setDrawers] = useState<DrawerType>(initialDrawer());
   const [drawerModal, setDrawerModal] = useState(false);
 
-  console.log(data, '🔥');
-
   const handleCreate = useCallback(
     (key: keyof DrawerType['create'], plan_id: string, order: number) => {
       setDrawerModal(true);
