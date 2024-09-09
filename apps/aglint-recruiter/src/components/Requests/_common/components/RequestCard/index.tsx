@@ -2,14 +2,7 @@ import { Badge } from '@components/ui/badge';
 import { cn } from '@lib/utils';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import {
-  Notebook,
-  Calendar,
-  Briefcase,
-  User,
-  Clock,
-  UserCircle,
-} from 'lucide-react';
+import { Notebook, Calendar, Briefcase, User, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 import { getStatusColor } from '../../utils/getStatusColor';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -20,10 +13,7 @@ import { Label } from '@components/ui/label';
 
 type RequestProps = RequestType & { isExpanded?: boolean };
 
-export const RequestCard = ({
-  index,
-  ...props
-}: RequestProps & { index: number }) => {
+export const RequestCard = ({ ...props }: RequestProps) => {
   const { recruiterUser } = useAuthDetails();
   const request = { ...props };
 

@@ -5,11 +5,6 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-
-<<<<<<< HEAD
-=======
-import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
->>>>>>> 29d7036c5711e9ba1a63bd406d7115ad181c6c96
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';

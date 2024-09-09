@@ -140,7 +140,6 @@ function RequestList() {
 
     const renderListSection = (sectionName: string, requests: any[]) => {
       const isExpanded = expandedSections.includes(sectionName);
-      const visibleRequests = isExpanded ? requests : requests.slice(0, 5);
 
       return (
         <Accordion
