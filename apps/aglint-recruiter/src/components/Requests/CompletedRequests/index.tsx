@@ -13,7 +13,7 @@ import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
 
 function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { completedFilters } = useCompletedRequestsStore();
-  const { data: completedRequests, status } = useCompletedRequests({
+  const { data: completedRequests } = useCompletedRequests({
     completedFilters,
   });
   return (

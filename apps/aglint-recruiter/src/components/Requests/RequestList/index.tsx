@@ -4,7 +4,6 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 
 import { useRequests } from '@/context/RequestsContext';
-import { type Request, type RequestResponse } from '@/queries/requests/types';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { RequestProvider } from '@/context/RequestContext';
@@ -60,7 +59,7 @@ function RequestList() {
           <div className='flex w-max space-x-4 p-4'>
             {defaults
               .filter((section) => section.sectionName !== 'urgent_request')
-              .map(({ color, requests, sectionIconName, sectionName }) => (
+              .map(({ requests, sectionName }) => (
                 <div key={sectionName} className='w-[400px] mr-4'>
                   <h2 className='text-md font-semibold mb-4'>
                     {sectionName.replace('_', ' ')}
@@ -93,7 +92,7 @@ function RequestList() {
     } else {
       return (
         <div className='space-y-4'>
-          {defaults.map(({ color, requests, sectionIconName, sectionName }) => {
+          {defaults.map(({ requests, sectionName }) => {
             if (isFilterApplied && isFetched && (requests ?? []).length === 0)
               return null;
             return (

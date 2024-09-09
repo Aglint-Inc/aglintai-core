@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import UITypography from '../UITypography';
 
 export function UITab({
   isPillActive = false,

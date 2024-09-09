@@ -1,5 +1,3 @@
-import { NewTabPill } from '@devlink3/NewTabPill';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -7,7 +5,6 @@ import { useApplication } from '@/context/ApplicationContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { UITab, UITabWrapper } from '@/components/Common/UITab';
-import { ArrowDownToDot } from 'lucide-react';
 
 export type TabsType =
   | 'interview'
