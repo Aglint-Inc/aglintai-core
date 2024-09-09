@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type AshbyApplication } from '@/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby/types';
+import { type AshbyApplication } from '@/jobs/components/AddJobWithIntegrations/Ashby/types';
 
 export const maxDuration = 300;
 

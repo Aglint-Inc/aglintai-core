@@ -10,7 +10,7 @@ import {
   useCandidatePortal,
   useCandidatePortalMessages,
   useCandidatePortalNavbar,
-} from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+} from '@/candidate/authenticated/hooks';
 
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
 import NavProfile from './NavProfile';

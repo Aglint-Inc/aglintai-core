@@ -21,7 +21,7 @@ import {
 import { type Ref, forwardRef, memo } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import { StatusBadge } from '@devlink2/StatusBadge';

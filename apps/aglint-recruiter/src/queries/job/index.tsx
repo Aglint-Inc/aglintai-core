@@ -12,14 +12,14 @@ import { useCallback } from 'react';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
 import { syncGreenhouseJob } from '@/utils/jobs.api';
+import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { GC_TIME, noPollingKey } from '..';
-import { readJob } from '../jobs';
 import { jobKey, jobsQueryKeys } from '../jobs/keys';
 import { type Job } from '../jobs/types';
 
-const jobQueries = {
+export const jobQueries = {
   job: ({
     id,
     enabled,
@@ -127,4 +127,12 @@ type Pollers = JobRequisite &
 
 export type JobRequisite = Pick<DatabaseTable['public_jobs'], 'id'>;
 
-export { jobQueries };
+export const readJob = async (id: string) =>
+  (
+    await supabase
+      .from('job_view')
+      .select()
+      .eq('id', id)
+      .throwOnError()
+      .single()
+  ).data;

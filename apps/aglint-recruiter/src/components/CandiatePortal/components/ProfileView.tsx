@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Globe, Linkedin, Mail, Phone } from 'lucide-react';
 
-import { useCandidatePortalProfile } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+import { useCandidatePortalProfile } from '@/candidate/authenticated/hooks';
 
 import { ProfileEdit } from './ProfileEdit';
 

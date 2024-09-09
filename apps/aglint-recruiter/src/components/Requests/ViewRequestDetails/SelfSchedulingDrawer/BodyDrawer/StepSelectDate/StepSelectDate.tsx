@@ -6,7 +6,7 @@ import { DateRange as DateRangeType } from 'react-day-picker';
 
 import { DateRangePicker } from '@/components/Common/DateRange';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { useMeetingList } from '../../../hooks';
 import InfoStepSelectState from '../../InfoStepSelectState';

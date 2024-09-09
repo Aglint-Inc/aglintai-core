@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { ResumePreviewer } from '@/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
+import { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
+import { useApplications } from '@/job/hooks';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
 import { applicationQuery, useUpdateApplication } from '@/queries/application';
 import { diffApplication } from '@/queries/job-applications';
@@ -12,7 +13,6 @@ import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
-import { useApplications } from '../ApplicationsContext';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 import { type ApplicationStore, useApplicationStore } from './store';
 import { updateRequestNotes } from '@/components/Requests/_common/functions/updateRequestNotes';
