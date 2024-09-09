@@ -48,7 +48,7 @@ const SocialField: React.FC<SocialFieldProps> = ({
   };
 
   return (
-    <div className='flex items-start justify-start gap-4'>
+    <div className='flex items-start justify-start  w-full'>
       <div className='w-full'>
         <div className='flex'>
           <span className='inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm'>
@@ -62,7 +62,9 @@ const SocialField: React.FC<SocialFieldProps> = ({
             disabled={disabled}
             placeholder={socialPlaceholder[socialName].split('.com/')[1]}
             onBlur={() => onChange(value)}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
             className='rounded-l-none'
           />
         </div>

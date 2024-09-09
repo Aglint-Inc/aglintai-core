@@ -8,17 +8,17 @@ import {
 } from '@components/ui/popover';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-
 import { validation } from './utils';
+import toast from '@/utils/toast';
+import { isExists } from 'date-fns';
 
-const AddSocialLinkButton = () => {
-  const { setRecruiter } = useAuthDetails();
+const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
   const [open, setOpen] = useState(false);
   const [social, setSocial] = useState({
     name: { value: '', error: false, type: 'string' },
     url: { value: '', error: false, type: 'url' },
   });
+  const [isExist, setIsExist] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
   const handleValidate = () => {
@@ -37,27 +37,25 @@ const AddSocialLinkButton = () => {
   const handleSubmit = () => {
     setLoading(true);
     const { newSocial, error } = handleValidate();
+    const newName = newSocial.name.value.trim().toLowerCase();
+    const newValue = newSocial.url.value;
+
+    const isExits = Object.keys(customSocials).includes(newName);
+
+    if (isExits) {
+      setIsExist(true);
+      setLoading(false);
+      return;
+    }
+
     if (!error) {
-      setRecruiter((recruiter) => {
-        const newRecruiter = {
-          ...recruiter,
-          socials: {
-            ...recruiter.socials,
-            custom: {
-              ...recruiter.socials.custom,
-              [newSocial.name.value.trim().toLowerCase()]: newSocial.url.value
-                .trim()
-                .toLowerCase(),
-            },
-          },
-        };
-        handleClose();
-        return newRecruiter;
-      });
+      AddCustomSocialHandle(newName, newValue);
+      handleClose();
     } else {
       setSocial(newSocial);
     }
     setLoading(false);
+    setIsExist(false);
   };
 
   const handleChange = (e, key: 'name' | 'url') => {
@@ -111,6 +109,11 @@ const AddSocialLinkButton = () => {
               {social.url.error && (
                 <p className='text-sm text-red-500'>
                   Please enter a valid social media URL
+                </p>
+              )}
+              {isExist && (
+                <p className='text-sm text-red-500'>
+                  This social already exist. please check
                 </p>
               )}
             </div>

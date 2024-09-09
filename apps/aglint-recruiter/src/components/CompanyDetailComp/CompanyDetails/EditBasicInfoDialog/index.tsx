@@ -69,7 +69,6 @@ const EditBasicInfoDialog = ({
       setRecruiterLocal(() => recruiter);
     }, 800);
   };
-
   const handleUpdate = async () => {
     delete recruiterLocal.recruiter_preferences;
 
