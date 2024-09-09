@@ -49,7 +49,7 @@ export default function InterviewerLeaderboardWidget() {
                 <SelectItem value='hours'>Hours</SelectItem>
                 <SelectItem value='interviews'>Interviews</SelectItem>
                 <SelectItem value='satisfactionRate'>
-                  Acceptence Rate
+                  Acceptance Rate
                 </SelectItem>
                 <SelectItem value='declineRate'>Decline Rate</SelectItem>
                 <SelectItem value='averageScore'>Avg. Score</SelectItem>
@@ -59,8 +59,9 @@ export default function InterviewerLeaderboardWidget() {
         </CardHeader>
         <CardContent>
           <div className='space-y-6'>
-            {!isFetching
-              ? sortedData.map((interviewer) => {
+            {!isFetching ? (
+              sortedData.length ? (
+                sortedData.map((interviewer) => {
                   const name =
                     `${interviewer.first_name || ''} ${interviewer.last_name || ''}`.trim();
                   const accept_per =
@@ -83,23 +84,28 @@ export default function InterviewerLeaderboardWidget() {
                     />
                   );
                 })
-              : [...new Array(3)].map((_, i) => (
-                  <InterviewerLeaderboardItem
-                    key={i}
-                    isLoading
-                    rank={0}
-                    name={''}
-                    profileImage={''}
-                    // eslint-disable-next-line jsx-a11y/aria-role
-                    role={''}
-                    topSkills={[]}
-                    totalHours={''}
-                    interviews={0}
-                    acceptenceRate={0}
-                    declineRate={0}
-                    averageScore={0}
-                  />
-                ))}
+              ) : (
+                <>Empty @Ravi</>
+              )
+            ) : (
+              [...new Array(3)].map((_, i) => (
+                <InterviewerLeaderboardItem
+                  key={i}
+                  isLoading
+                  rank={0}
+                  name={''}
+                  profileImage={''}
+                  // eslint-disable-next-line jsx-a11y/aria-role
+                  role={''}
+                  topSkills={[]}
+                  totalHours={''}
+                  interviews={0}
+                  acceptenceRate={0}
+                  declineRate={0}
+                  averageScore={0}
+                />
+              ))
+            )}
           </div>
         </CardContent>
       </Card>
