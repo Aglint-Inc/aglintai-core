@@ -120,8 +120,8 @@ export const useApplicationsParams = () => {
       .join('&');
     if (safeFilters['section']) resetChecklist();
     router.push(
-      `${ROUTES['/jobs/[id]']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
-      `${ROUTES['/jobs/[id]']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
+      `${ROUTES['/jobs/[job]']({ job: router.query.job as string })}${params ? `?${params}` : ''}`,
+      `${ROUTES['/jobs/[job]']({ job: router.query.job as string })}${params ? `?${params}` : ''}`,
     );
   };
 

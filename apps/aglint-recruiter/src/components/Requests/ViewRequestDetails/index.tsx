@@ -325,13 +325,12 @@ function ViewRequestDetails() {
                         onClickButton={{
                           onClick: () => {
                             window.open(
-                              ROUTES['/jobs/[id]/application/[application_id]'](
-                                {
-                                  id: jobDetails.id,
-                                  application_id:
-                                    selectedRequest.application_id,
-                                },
-                              ) + '?tab=interview',
+                              ROUTES[
+                                '/jobs/[job]/application/[application_id]'
+                              ]({
+                                job: jobDetails.id,
+                                application_id: selectedRequest.application_id,
+                              }) + '?tab=interview',
                               '_blank',
                             );
                           },

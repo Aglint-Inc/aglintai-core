@@ -95,6 +95,8 @@ const InterviewPlanPage = () => {
   const [drawers, setDrawers] = useState<DrawerType>(initialDrawer());
   const [drawerModal, setDrawerModal] = useState(false);
 
+  console.log(data, '🔥');
+
   const handleCreate = useCallback(
     (key: keyof DrawerType['create'], plan_id: string, order: number) => {
       setDrawerModal(true);
@@ -163,7 +165,7 @@ const InterviewPlanPage = () => {
               <TabsContent value='candidate'>
                 {/* job level interview plan */}
                 <ReorderableInterviewPlan
-                  jobId={data[0].job_id}
+                  jobId={data[0]?.job_id}
                   applicationId={null}
                 />
               </TabsContent>

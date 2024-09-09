@@ -477,7 +477,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               onClickJob={{
                 onClick: () =>
                   router.push(
-                    ROUTES['/jobs/[id]']({ id: job.id }) + '/interview-plan',
+                    ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
                   ),
               }}
             />

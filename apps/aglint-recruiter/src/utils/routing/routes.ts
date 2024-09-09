@@ -4,7 +4,7 @@ const pageRouteBuilder = (routes: string[]): string => {
 
 const agentJobs = {
   '/agent/jobs': () => pageRouteBuilder([agent['/agent'](), 'jobs']),
-  '/agent/jobs/[id]': ({ id }: { id: string }) =>
+  '/agent/jobs/[job]': ({ id }: { id: string }) =>
     pageRouteBuilder([agentJobs['agent/jobs'](), id]),
 } as const;
 const agent = {
@@ -106,40 +106,40 @@ const jobPostAssistant = {
   }) => pageRouteBuilder([ROUTES.app(), 'job-post-assistant', company_id]),
 } as const;
 const jobsById = {
-  '/jobs/[id]': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobs['/jobs'](), id]),
-  '/jobs/[id]/application/[application_id]': ({
-    id,
+  '/jobs/[job]': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobs['/jobs'](), job]),
+  '/jobs/[job]/application/[application_id]': ({
+    job,
     application_id,
   }: {
-    id: string;
+    job: string;
     application_id: string;
   }) =>
     pageRouteBuilder([
-      pageRouteBuilder([jobs['/jobs'](), id]),
+      pageRouteBuilder([jobs['/jobs'](), job]),
       'application',
       application_id,
     ]),
-  '/jobs/[id]/agent': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'agent']),
-  '/jobs/[id]/assessment': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'assessment']),
-  '/jobs/[id]/metrics': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'metrics']),
-  '/jobs/[id]/email-templates': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'email-templates']),
-  '/jobs/[id]/interview-plan': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'interview-plan']),
-  '/jobs/[id]/profile-score': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'profile-score']),
-  '/jobs/[id]/screening': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'screening']),
-  '/jobs/[id]/hiring-team': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'hiring-team']),
-  '/jobs/[id]/job-details': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'job-details']),
-  '/jobs/[id]/workflows': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'workflows']),
+  '/jobs/[job]/agent': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'agent']),
+  '/jobs/[job]/assessment': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'assessment']),
+  '/jobs/[job]/metrics': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'metrics']),
+  '/jobs/[job]/email-templates': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'email-templates']),
+  '/jobs/[job]/interview-plan': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'interview-plan']),
+  '/jobs/[job]/profile-score': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'profile-score']),
+  '/jobs/[job]/screening': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'screening']),
+  '/jobs/[job]/hiring-team': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'hiring-team']),
+  '/jobs/[job]/job-details': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'job-details']),
+  '/jobs/[job]/workflows': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'workflows']),
 } as const;
 const jobs = {
   '/jobs': () => pageRouteBuilder([ROUTES.app(), 'jobs']),

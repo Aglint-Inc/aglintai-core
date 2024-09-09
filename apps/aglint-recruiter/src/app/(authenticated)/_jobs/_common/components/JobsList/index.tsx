@@ -106,7 +106,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               textPostedDate={getTimestamp(job)}
               onClickCard={{
                 onClick: () => {
-                  router.push(ROUTES['/jobs/[id]']({ id: job.id }));
+                  router.push(ROUTES['/jobs/[job]']({ job: job.id }));
                 },
               }}
             />

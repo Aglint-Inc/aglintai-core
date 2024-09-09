@@ -103,9 +103,9 @@ const ApplicationCard = memo(
           onClickCandidate={{
             onClick: () => {
               router.push(
-                `${ROUTES['/jobs/[id]/application/[application_id]']({
+                `${ROUTES['/jobs/[job]/application/[application_id]']({
                   application_id: application.id,
-                  id: application.job_id,
+                  job: application.job_id,
                 })}${
                   application.status === 'interview'
                     ? `?tab=interview`

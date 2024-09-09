@@ -254,7 +254,8 @@ const Roles = () => {
   return (
     <JobRole
       onClickEdit={{
-        onClick: () => push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+        onClick: () =>
+          push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id })),
       }}
       slotRoleList={coordinators}
     />
@@ -424,7 +425,9 @@ const useBanners = () => {
                 size={1}
                 onClickButton={{
                   onClick: () =>
-                    push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+                    push(
+                      ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }),
+                    ),
                 }}
               />
               <ButtonSolid
@@ -446,7 +449,7 @@ const useBanners = () => {
           primary={{
             title: 'Ignore',
             onClick: () =>
-              push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+              push(ROUTES['/jobs/[job]/interview-plan']({ id: job?.id })),
           }}
           secondary={{
             title: 'View',
@@ -471,7 +474,9 @@ const useBanners = () => {
                 size={1}
                 onClickButton={{
                   onClick: () =>
-                    push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+                    push(
+                      ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }),
+                    ),
                 }}
               />
               <ButtonSolid
@@ -494,7 +499,7 @@ const useBanners = () => {
       //   primary={{
       //     title: 'Ignore',
       //     onClick: () =>
-      //       push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+      //       push(ROUTES['/jobs/[job]/interview-plan']({ id: job?.id })),
       //   }}
       //   secondary={{
       //     title: 'View',
@@ -520,7 +525,7 @@ const useBanners = () => {
                 color={'error'}
                 onClickButton={{
                   onClick: () =>
-                    push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+                    push(ROUTES['/jobs/[job]/job-details']({ job: job?.id })),
                 }}
               />
             </>
@@ -533,7 +538,7 @@ const useBanners = () => {
         //   primary={{
         //     title: 'View',
         //     onClick: () =>
-        //       push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+        //       push(ROUTES['/jobs/[job]/job-details']({ id: job?.id })),
         //   }}
         // />,
       );
@@ -551,7 +556,7 @@ const useBanners = () => {
               color={'error'}
               onClickButton={{
                 onClick: () =>
-                  push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+                  push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id })),
               }}
             />
           }
@@ -563,7 +568,7 @@ const useBanners = () => {
         //   primary={{
         //     title: 'Set Now',
         //     onClick: () =>
-        //       push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+        //       push(ROUTES['/jobs/[job]/hiring-team']({ id: job?.id })),
         //   }}
         // />,
       );
@@ -589,7 +594,7 @@ const useBanners = () => {
         primary={{
           title: 'View',
           onClick: () =>
-            push(ROUTES['/jobs/[id]/profile-score']({ id: job?.id })),
+            push(ROUTES['/jobs/[job]/profile-score']({ job: job?.id })),
         }}
       />,
     );
@@ -602,7 +607,7 @@ const useBanners = () => {
         primary={{
           title: 'View',
           onClick: () =>
-            push(ROUTES['/jobs/[id]/profile-score']({ id: job?.id })),
+            push(ROUTES['/jobs/[job]/profile-score']({ job: job?.id })),
         }}
         secondary={{
           title: 'Revert',
@@ -623,7 +628,7 @@ const useBanners = () => {
         primary={{
           title: 'View',
           onClick: () =>
-            push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+            push(ROUTES['/jobs/[job]/job-details']({ job: job?.id })),
         }}
         secondary={{
           title: 'Revert',
@@ -648,7 +653,7 @@ const useBanners = () => {
       //   primary={{
       //     title: 'View',
       //     onClick: () =>
-      //       push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+      //       push(ROUTES['/jobs/[job]/job-details']({ id: job?.id })),
       //   }}
       //   secondary={{
       //     title: 'Revert',

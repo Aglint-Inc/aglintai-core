@@ -184,7 +184,7 @@ const JobCreateForm = ({
       const { id } = await handleJobCreate({
         ...newJob,
       });
-      push(ROUTES['/jobs/[id]']({ id }));
+      push(ROUTES['/jobs/[job]']({ job: id }));
     } else {
       setFields(newFields);
     }

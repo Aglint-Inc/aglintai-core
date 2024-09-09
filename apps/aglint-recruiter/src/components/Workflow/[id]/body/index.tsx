@@ -123,7 +123,7 @@ const WorkflowJob = ({
             )
           }
           onClickJob={{
-            onClick: () => push(ROUTES['/jobs/[id]/workflows']({ id })),
+            onClick: () => push(ROUTES['/jobs/[job]/workflows']({ job: id })),
             ...devlinkProps,
           }}
           onClickLinkOff={{

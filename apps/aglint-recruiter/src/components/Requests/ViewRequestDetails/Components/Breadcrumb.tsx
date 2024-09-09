@@ -62,8 +62,8 @@ const RequestDetailsBreadcrumb: React.FC<BreadcrumbComponentProps> = ({
               className='text-sm text-accent-900 cursor-pointer'
               onClick={() => {
                 window.open(
-                  ROUTES['/jobs/[id]/application/[application_id]']({
-                    id: jobDetails.id,
+                  ROUTES['/jobs/[job]/application/[application_id]']({
+                    job: jobDetails.id,
                     application_id: selectedRequest.application_id,
                   }) + '?tab=interview',
                   '_blank',

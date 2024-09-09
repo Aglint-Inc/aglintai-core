@@ -75,7 +75,7 @@ export function GreenhouseModal() {
       //   setIntegration(({
       //     greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       //   }));
-      //   router.push(ROUTES['/jobs/[id]']({ id: String(public_job_id) }));
+      //   router.push(ROUTES['/jobs/[job]']({ id: String(public_job_id) }));
       // } else {
       //   toast.error(
       //     'Import failed. Please try again later or contact support for assistance.',

@@ -93,7 +93,7 @@ export default function LeverModalComp() {
       setIntegration({
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
       });
-      router.push(ROUTES['/jobs/[id]']({ id: response.public_job_id }));
+      router.push(ROUTES['/jobs/[job]']({ job: response.public_job_id }));
     } catch (error) {
       toast.error(
         'Import failed. Please try again later or contact support for assistance.',

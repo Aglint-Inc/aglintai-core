@@ -21,8 +21,8 @@ function BreadCrumb() {
       },
       {
         name: job?.job_title,
-        route: ROUTES['/jobs/[id]']({
-          id: job_id,
+        route: ROUTES['/jobs/[job]']({
+          job: job_id,
         }),
       },
       {

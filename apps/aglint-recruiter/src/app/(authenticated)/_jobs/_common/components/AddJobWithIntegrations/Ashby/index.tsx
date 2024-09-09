@@ -107,7 +107,7 @@ export function AshbyModalComp() {
           recruiter_id: recruiter.id,
         });
         //closing modal once done
-        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
+        router.push(ROUTES['/jobs/[job]']({ job: newJobs[0].id }));
         setIntegration({
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         });

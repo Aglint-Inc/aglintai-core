@@ -41,7 +41,7 @@ function ButtonGroup({
           onClickButton={{
             onClick: () => {
               router.push(
-                ROUTES['/jobs/[id]/application/[application_id]']({
+                ROUTES['/jobs/[job]/application/[application_id]']({
                   id: schedule?.job.id,
                   application_id: schedule?.application_id,
                 }) + `?tab=interview`,

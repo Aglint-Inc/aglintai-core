@@ -131,18 +131,18 @@ const Switcher = () => {
   const { handlePush, currentPath } = useSettings();
   return (
     <Tabs
-      defaultValue={currentPath === '/jobs/[id]' ? 'applications' : 'metrics'}
+      defaultValue={currentPath === '/jobs/[job]' ? 'applications' : 'metrics'}
     >
       <TabsList>
         <TabsTrigger
           value='applications'
-          onClick={() => handlePush('/jobs/[id]')}
+          onClick={() => handlePush('/jobs/[job]')}
         >
           Applications
         </TabsTrigger>
         <TabsTrigger
           value='metrics'
-          onClick={() => handlePush('/jobs/[id]/metrics')}
+          onClick={() => handlePush('/jobs/[job]/metrics')}
         >
           Metrics
         </TabsTrigger>
@@ -192,7 +192,7 @@ const useSettingsActions = () => {
   ) => {
     setAnchorEl(null);
     //@ts-expect-error
-    push(ROUTES[type]({ id: job?.id }));
+    push(ROUTES[type]({ job: job?.id }));
   };
 
   return {
@@ -305,16 +305,16 @@ const Modules = () => {
     );
   return (
     <>
-      {currentPath !== '/jobs/[id]/job-details' && <JobDetailsModule />}
-      {currentPath !== '/jobs/[id]/profile-score' && isScoringEnabled && (
+      {currentPath !== '/jobs/[job]/job-details' && <JobDetailsModule />}
+      {currentPath !== '/jobs/[job]/profile-score' && isScoringEnabled && (
         <ProfileScoreModule />
       )}
-      {currentPath !== '/jobs/[id]/hiring-team' && <HiringTeamModule />}
-      {currentPath !== '/jobs/[id]/interview-plan' && isSchedulingEnabled && (
+      {currentPath !== '/jobs/[job]/hiring-team' && <HiringTeamModule />}
+      {currentPath !== '/jobs/[job]/interview-plan' && isSchedulingEnabled && (
         <InterviewModule />
       )}
 
-      {currentPath !== '/jobs/[id]/workflows' && <WorkflowModule />}
+      {currentPath !== '/jobs/[job]/workflows' && <WorkflowModule />}
     </>
   );
 };
@@ -322,7 +322,7 @@ const Modules = () => {
 const WorkflowModule = () => {
   const { handlePush } = useSettings();
   return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/workflows')}>
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/workflows')}>
       <Workflow className='mr-2 h-4 w-4' />
       <span>Workflows</span>
     </DropdownMenuItem>
@@ -332,7 +332,7 @@ const WorkflowModule = () => {
 const HiringTeamModule = () => {
   const { handlePush } = useSettings();
   return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/hiring-team')}>
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/hiring-team')}>
       <UserPlus className='mr-2 h-4 w-4' />
       <span>Hiring Team</span>
     </DropdownMenuItem>
@@ -342,7 +342,7 @@ const HiringTeamModule = () => {
 const ProfileScoreModule = () => {
   const { handlePush } = useSettings();
   return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/profile-score')}>
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/profile-score')}>
       <BarChart className='mr-2 h-4 w-4' />
       <span>Profile Score</span>
     </DropdownMenuItem>
@@ -352,7 +352,7 @@ const ProfileScoreModule = () => {
 const JobDetailsModule = () => {
   const { handlePush } = useSettings();
   return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/job-details')}>
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/job-details')}>
       <FileText className='mr-2 h-4 w-4' />
       <span>Job Details</span>
     </DropdownMenuItem>
@@ -362,7 +362,7 @@ const JobDetailsModule = () => {
 const InterviewModule = () => {
   const { handlePush } = useSettings();
   return (
-    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/interview-plan')}>
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/interview-plan')}>
       <Calendar className='mr-2 h-4 w-4' />
       <span>Interview Plan</span>
     </DropdownMenuItem>

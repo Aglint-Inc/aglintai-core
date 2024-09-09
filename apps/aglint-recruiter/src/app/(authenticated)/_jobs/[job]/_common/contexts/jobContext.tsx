@@ -32,9 +32,9 @@ import toast from '@/utils/toast';
 const useJobContext = () => {
   const params = useParams();
   const queryClient = useQueryClient();
-  if (!params.id)
+  if (!params.job)
     throw Error(
-      'Invalid pathname, context must be wrapped to a page with [id]',
+      'Invalid pathname, context must be wrapped to a page with [job]',
     );
 
   const { recruiter_id, recruiter } = useAuthDetails();
@@ -54,7 +54,7 @@ const useJobContext = () => {
     [recruiter_id, jobsLoad],
   );
 
-  const job_id = useMemo(() => params.id as string, [params.id]);
+  const job_id = useMemo(() => params.job as string, [params.job]);
 
   const job = useMemo(
     () =>

@@ -39,7 +39,7 @@ export const jobDashboardQueryKeys = {
 export const useJobId = () => {
   const router = useRouter();
   const job_id = (
-    (router?.pathname ?? null).startsWith('/jobs/[id]')
+    (router?.pathname ?? null).startsWith('/jobs/[job]')
       ? (router?.query?.id ?? null)
       : null
   ) as string;
