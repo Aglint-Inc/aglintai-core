@@ -31,10 +31,10 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 
-import Loader from '../../../Common/Loader';
-import { WarningSvg } from '../Interview-Plan/sessionForms';
+import Loader from '../../../../../../../components/Common/Loader';
+import { WarningSvg } from '../../../../../../../components/Jobs/Job/Interview-Plan/sessionForms';
 
-const JobDetailsDashboard = () => {
+export const JobDetailsDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
@@ -306,5 +306,3 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
     />
   );
 };
-
-export default JobDetailsDashboard;

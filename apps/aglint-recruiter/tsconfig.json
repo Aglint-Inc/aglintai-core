@@ -30,6 +30,9 @@
       "@/job/metrics/*": [
         "./src/app/(authenticated)/_jobs/[job]/metrics/_common/*"
       ],
+      "@/job/job-details/*": [
+        "./src/app/(authenticated)/_jobs/[job]/job-details/_common/*"
+      ],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],
