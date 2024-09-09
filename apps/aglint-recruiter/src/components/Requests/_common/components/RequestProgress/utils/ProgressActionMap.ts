@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
 import AvailabilityLinkSent from '../Actions/AvailabilityLinkSent';
-import CandAvailRecieved from '../Actions/CandAvailRecieved';
 import FirstFollowUp from '../Actions/FirstFollowUp';
 import SelfScheduleLinkSent from '../Actions/SelfScheduleLinkSent';
 
@@ -11,7 +10,6 @@ export const progressActionMap: Partial<
     any
   >
 > = {
-  CAND_AVAIL_REC_completed: CandAvailRecieved,
   SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE_completed: FirstFollowUp,
   SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK_completed: FirstFollowUp,
   SELF_SCHEDULE_LINK_completed: SelfScheduleLinkSent,

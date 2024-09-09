@@ -1,6 +1,5 @@
 import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 
-import { Stack } from '@mui/material';
 import React, { useEffect, useMemo } from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
@@ -79,7 +78,7 @@ function RequestProgress() {
         showEditDialog,
       }}
     >
-      <Stack gap={1}>
+      <div className='row-gap-1'>
         <ShowCode>
           <ShowCode.When isTrue={request_progress.status === 'pending'}>
             <RequestProgressSkeleton />
@@ -112,7 +111,7 @@ function RequestProgress() {
             </ShowCode>
           </ShowCode.Else>
         </ShowCode>
-      </Stack>
+      </div>
 
       <MuiPopup
         props={{
@@ -143,11 +142,11 @@ export default RequestProgress;
 
 export function RequestProgressSkeleton() {
   return (
-    <Stack gap={1}>
+    <div className='row-gap-1'>
       <Skeleton />
       <Skeleton />
       <Skeleton />
-    </Stack>
+    </div>
   );
 }
 

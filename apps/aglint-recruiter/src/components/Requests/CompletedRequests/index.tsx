@@ -9,8 +9,8 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { RequestCard } from '../_common/components/RequestCard';
-import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
 import { useCompletedRequestsStore } from '../_common/Context/store';
 import { useCompletedRequests } from '../_common/hooks';
 

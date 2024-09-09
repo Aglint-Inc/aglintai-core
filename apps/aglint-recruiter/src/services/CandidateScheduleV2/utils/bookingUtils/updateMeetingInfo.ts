@@ -8,6 +8,7 @@ import { type BookedMeetingDetails } from './types';
 
 export const updateMeetingEventDetails = async (
   booked_meeting_details: BookedMeetingDetails,
+  candidate_tz: string,
 ) => {
   const updateMeetingEvent = async ({
     cal_event,
@@ -37,6 +38,7 @@ export const updateMeetingEventDetails = async (
           meeting_link: meeting_link,
           status: 'confirmed',
           confirmed_date: dayjs().toISOString(),
+          confirmed_candidate_tz: candidate_tz,
         })
         .eq('id', meeting_id)
         .select(),

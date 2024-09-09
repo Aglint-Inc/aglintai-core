@@ -1,6 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { Stack } from '@mui/material';
 import React from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -31,10 +30,10 @@ const EmailTemplate = () => {
 
   const email_body = <EmailBody />;
   const forms = (
-    <Stack spacing={'var(--space-5)'}>
+    <div className='gap-2'>
       {email_subject}
       {email_body}
-    </Stack>
+    </div>
   );
   return forms;
 };
@@ -47,17 +46,10 @@ const EmailSubject = () => {
     tiptapLoadStatus,
   } = useSelectedActionsDetails();
   return (
-    <Stack>
+    <div>
       <UITypography type='small'>Email Subject</UITypography>
-      <Stack
-        sx={{
-          mt: '8px',
-          border: '1px solid',
-          borderColor: 'var(--neutral-6)',
-          borderRadius: 'var(--radius-2)',
-        }}
-      >
-        <Stack>
+      <div>
+        <div>
           {!tiptapLoadStatus.email && (
             <TipTapAIEditor
               singleLine={true}
@@ -74,9 +66,9 @@ const EmailSubject = () => {
               }}
             />
           )}
-        </Stack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };
 EmailSubject.displayName = 'EmailSubject';
@@ -90,16 +82,9 @@ const EmailBody = () => {
   } = useSelectedActionsDetails();
 
   return (
-    <Stack>
+    <div>
       <UITypography type='small'>Email Body</UITypography>
-      <Stack
-        sx={{
-          mt: '8px',
-          border: '1px solid',
-          borderColor: 'var(--neutral-6)',
-          borderRadius: 'var(--radius-2)',
-        }}
-      >
+      <div>
         {!tiptapLoadStatus.email && (
           <TipTapAIEditor
             toolbar={false}
@@ -114,8 +99,8 @@ const EmailBody = () => {
             }}
           />
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 EmailBody.displayName = 'EmailBody';
@@ -142,7 +127,7 @@ const AgentInstructionTemplate = () => {
   const { selectedActionsDetails, emailTemplateTargetAPI } =
     useSelectedActionsDetails();
   const email_body = <AgentInstructionBody />;
-  const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
+  const forms = <div>{email_body}</div>;
   return (
     <>
       {forms}
@@ -159,16 +144,9 @@ const AgentInstructionBody = () => {
   const { agentInstructions, setAgentInstructions, tiptapLoadStatus } =
     useSelectedActionsDetails();
   return (
-    <Stack>
+    <div>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
-      <Stack
-        sx={{
-          mt: '8px',
-          border: '1px solid',
-          borderColor: 'var(--neutral-6)',
-          borderRadius: 'var(--radius-2)',
-        }}
-      >
+      <div>
         {tiptapLoadStatus.agent === false && (
           <TipTapAIEditor
             toolbar={false}
@@ -180,8 +158,8 @@ const AgentInstructionBody = () => {
             placeholder='Provide the instructions to guide the agent through this action.'
           />
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 AgentInstructionBody.displayName = 'AgentInstructionBody';

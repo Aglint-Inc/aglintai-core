@@ -31,8 +31,8 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { cn } from '@lib/utils';
 import { Columns, LayoutList } from 'lucide-react';
 import Link from 'next/link';
-import { RequestCard } from '../_common/components/RequestCard';
-import RequestListFilter from '../_common/components/RequestListFilter';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestListFilter from '../_common/Components/RequestListFilter';
 import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 
@@ -122,6 +122,7 @@ function RequestList() {
 
     const renderListSection = (sectionName: string, requests: any[]) => {
       const isExpanded = expandedSections.includes(sectionName);
+      // const _visibleRequests = isExpanded ? requests : requests.slice(0, 5);
 
       return (
         <Accordion
