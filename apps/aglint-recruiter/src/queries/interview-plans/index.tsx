@@ -275,7 +275,7 @@ export const useReorderInterviewSessions = () => {
       );
       return { oldInterviewPlan };
     },
-    onError: (error, variables, context) => {
+    onError: (_error, _variables, context) => {
       toast.error('Unable to reorder sessions');
       queryClient.setQueryData<InterviewPlansType>(
         queryKey,

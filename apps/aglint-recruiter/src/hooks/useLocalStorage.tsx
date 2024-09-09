@@ -1,16 +1,22 @@
 /* eslint-disable security/detect-object-injection */
+import {
+  ScheduleFilerType,
+  initialFilterState,
+} from '@/components/Scheduling/Schedules/ScheduleStatesContext/constant';
 import { useState /*useSyncExternalStore*/ } from 'react';
 
-import { initialFilterState } from '../components/Scheduling/Schedules/ScheduleStatesContext';
-
-const initialLocalState = {
+const initialLocalState: {
+  scheduleFilterIds: ScheduleFilerType;
+} = {
   scheduleFilterIds: initialFilterState,
 };
 
 type LocalStorage = typeof initialLocalState;
 
 export const useLocalStorage = <T extends keyof LocalStorage>(key: T) => {
-  const item = JSON.parse(localStorage.getItem(key)) as LocalStorage[T];
+  // const item = JSON.parse(localStorage.getItem(key)) as LocalStorage[T];
+  // JSON.parse(localStorage.getItem(key)) as LocalStorage[T];
+  const item = null;
   const [state, setState] = useState<LocalStorage[T]>(
     item ?? initialLocalState[key],
   );

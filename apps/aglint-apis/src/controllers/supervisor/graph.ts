@@ -54,7 +54,7 @@ export const agentChain = async ({
           user_id,
         })
     )
-    // @ts-ignore
+    // @ts-expect-error
     .addNode('supervisor', await createSchedulingSupervisorAgent());
 
   // Define the control flow

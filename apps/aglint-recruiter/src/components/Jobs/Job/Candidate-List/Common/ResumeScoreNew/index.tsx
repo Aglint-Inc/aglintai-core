@@ -1,10 +1,10 @@
+import { ResumeTag } from '@devlink2/ResumeTag';
 import { Stack, Tooltip } from '@mui/material';
 import { CalculatingResumeScore } from '@public/lottie/CalculatingResumeScore';
 
 import { type Application } from '@/types/applications.types';
 
 import { ScoreTag } from './ScoreTag';
-import { Badge } from '@components/ui/badge';
 
 const ResumeScore = ({
   resume_processing_state,
@@ -15,9 +15,7 @@ const ResumeScore = ({
       return (
         <Tooltip title='No resume available.' placement='right' arrow={true}>
           <Stack>
-            <Badge variant='outline' className='bg-red-100 text-red-800'>
-              <ErrorIcon />
-            </Badge>
+            <ResumeTag slotText={<ErrorIcon />} />
           </Stack>
         </Tooltip>
       );
@@ -25,9 +23,7 @@ const ResumeScore = ({
       return (
         <Tooltip title='Fetching resume' placement='right' arrow={true}>
           <Stack>
-            <Badge variant='outline' className='bg-yellow-100 text-yellow-800'>
-              <Calculating />
-            </Badge>
+            <ResumeTag slotText={<Calculating />} />
           </Stack>
         </Tooltip>
       );
@@ -35,9 +31,7 @@ const ResumeScore = ({
       return (
         <Tooltip title='Ongoing scoring' placement='right' arrow={true}>
           <Stack>
-            <Badge variant='outline' className='bg-yellow-100 text-yellow-800'>
-              <Calculating />
-            </Badge>
+            <ResumeTag slotText={<Calculating />} />
           </Stack>
         </Tooltip>
       );
@@ -49,9 +43,7 @@ const ResumeScore = ({
           arrow={true}
         >
           <Stack>
-            <Badge variant='outline' className='bg-yellow-100 text-yellow-800'>
-              <WarningIcon />
-            </Badge>
+            <ResumeTag slotText={<WarningIcon />} />
           </Stack>
         </Tooltip>
       );

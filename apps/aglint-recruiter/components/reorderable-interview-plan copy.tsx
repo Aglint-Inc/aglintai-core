@@ -55,8 +55,8 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   const { isLoading, data, refetch } = useInterviewPlanProgress({
     job_id: jobId,
   });
-  const [isUpdating, setIsUpdating] = useState<Object>({});
-  const [isAdding, setIsAdding] = useState<Object>(false);
+  const [isUpdating, setIsUpdating] = useState<Record<any, any>>({});
+  const [isAdding, setIsAdding] = useState(false);
   const [steps, setSteps] = useState<Step>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [newStep, setNewStep] = useState<Step[number]>({

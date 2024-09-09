@@ -11,9 +11,8 @@ import { type ChatType } from '../hooks/fetch';
 
 function HiringTeam({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
-  const job = meta.findLast(
-    (m) => m.function_name === 'fetch_hiring_team',
-  )?.payload;
+  const job = meta.findLast((m) => m.function_name === 'fetch_hiring_team')
+    ?.payload as any;
 
   const hiringTeam = [
     {

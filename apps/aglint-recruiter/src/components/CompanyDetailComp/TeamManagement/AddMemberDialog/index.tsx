@@ -419,7 +419,7 @@ const AddMember = ({
                         locations.find((loc) => form.location_id === loc.id) ||
                         null
                       }
-                      onChange={(event, newValue) => {
+                      onChange={(_event, newValue) => {
                         setForm({
                           ...form,
                           location_id: newValue.id,
@@ -427,7 +427,6 @@ const AddMember = ({
                       }}
                       getOptionLabel={(item) =>
                         capitalizeFirstLetter(
-                          // @ts-ignore
                           `${item.city}, ${item.region}, ${item.country}`,
                         )
                       }
@@ -435,7 +434,6 @@ const AddMember = ({
                       renderOption={(props, item) => (
                         <li {...props}>
                           {capitalizeFirstLetter(
-                            // @ts-ignore
                             `${item.city}, ${item.region}, ${item.country}`,
                           )}
                         </li>
@@ -464,7 +462,7 @@ const AddMember = ({
                           (dep) => form.department_id === dep.id,
                         ) || null
                       }
-                      onChange={(event: any, newValue) => {
+                      onChange={(_event: any, newValue) => {
                         setForm({
                           ...form,
                           department_id: newValue.id,
@@ -504,7 +502,7 @@ const AddMember = ({
                         getOptionLabel={(option) =>
                           capitalizeFirstLetter(option.name)
                         }
-                        onChange={(event: any, newValue) => {
+                        onChange={(_event: any, newValue) => {
                           setForm({
                             ...form,
                             role: newValue && newValue.name,
@@ -539,7 +537,7 @@ const AddMember = ({
                       <Autocomplete
                         fullWidth
                         value={form.manager_id}
-                        onChange={(event: any, newValue: string | null) => {
+                        onChange={(_event: any, newValue: string | null) => {
                           setForm({
                             ...form,
                             manager_id: newValue,
@@ -614,16 +612,16 @@ const AddMember = ({
               }
               onClickClose={{
                 onClick: () => {
-                  onClose(),
-                    setInviteData([]),
-                    setForm({
-                      ...form,
-                      first_name: null,
-                      last_name: null,
-                      email: null,
-                      department_id: null,
-                      position: null,
-                    });
+                  onClose();
+                  setInviteData([]);
+                  setForm({
+                    ...form,
+                    first_name: null,
+                    last_name: null,
+                    email: null,
+                    department_id: null,
+                    position: null,
+                  });
                 },
               }}
             />

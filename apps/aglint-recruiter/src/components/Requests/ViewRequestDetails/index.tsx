@@ -27,10 +27,10 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import Loader from '../../Common/Loader';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
-import RequestProgress, {
-  RequestProgressSkeleton,
-} from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
-import { getStatusColor } from '../utils';
+
+import { Label } from '@components/ui/label';
+import { Mail, MapPin, Smartphone } from 'lucide-react';
+
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
@@ -42,8 +42,10 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { Label } from '@components/ui/label';
-import { Mail, MapPin, Smartphone } from 'lucide-react';
+import RequestProgress, {
+  RequestProgressSkeleton,
+} from '../_common/Components/RequestProgress';
+import { getStatusColor } from '../_common/utils/getStatusColor';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -93,7 +95,7 @@ function ViewRequestDetails() {
             size={2}
             onClickButton={{
               onClick: () => {
-                replace('/requests?tab=requests');
+                replace('/requests');
               },
             }}
             textButton='Back to requests'

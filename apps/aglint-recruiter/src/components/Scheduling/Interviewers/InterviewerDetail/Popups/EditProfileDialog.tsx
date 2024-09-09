@@ -280,7 +280,7 @@ export const EditProfileDialog = ({
                 fullWidth
                 options={timeZone}
                 value={selectedTimeZone}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedTimeZone(value);
                     setProfileChange(true);

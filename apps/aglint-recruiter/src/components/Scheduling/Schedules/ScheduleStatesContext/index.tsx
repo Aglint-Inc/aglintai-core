@@ -14,6 +14,7 @@ import {
   type SchedulesSupabase,
   schedulesSupabase,
 } from '../../schedules-query';
+import { ScheduleFilerType, initialFilterState } from './constant';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
@@ -26,24 +27,7 @@ export type interviewDateRangeType =
   | 'next_7_days'
   | 'next_30_days'
   | 'date_range';
-export type ScheduleFilerType = {
-  status: DatabaseEnums['interview_schedule_status'][];
-  interviewers: string[];
-  jobs: string[];
-  schedule_types: string[];
-  date: interviewDateRangeType[];
-  session_types: DatabaseEnums['session_type'][];
-  searchText: string;
-};
-export var initialFilterState: ScheduleFilerType = {
-  status: ['confirmed', 'completed'],
-  interviewers: [],
-  jobs: [],
-  schedule_types: [],
-  date: [],
-  session_types: [],
-  searchText: null,
-};
+
 interface ContextValue {
   filteredSchedules: SchedulesSupabase | null;
   setFilteredSchedule: (x: SchedulesSupabase | null) => void;

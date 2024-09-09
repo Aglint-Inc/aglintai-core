@@ -5,10 +5,9 @@ import {
   executeWorkflowAction,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-
-import { apiTargetToEvents } from '@/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
 import { changeInterviewer } from '@/services/api-schedulings/interviewer-decline/change-interviewer';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];

@@ -121,7 +121,7 @@ const sendToCandidate = async ({
 
   if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-  filter_id = filterJson[0].id;
+  // filter_id = filterJson[0].id;
 
   await addScheduleActivity({
     title: `Sent self scheduling link to ${getFullName(candidate.first_name, candidate.last_name)} for ${allSessions

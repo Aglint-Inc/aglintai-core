@@ -16,7 +16,7 @@ type WorkflowCustomSlice = {
 };
 
 const createWorkflowSlice: StateCreator<Slices, [], [], WorkflowCustomSlice> = (
-  set,
+  _set,
   get,
 ) => ({
   resetWorkflow: () => {

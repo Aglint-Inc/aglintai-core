@@ -121,7 +121,7 @@ function SessionList({
                             .includes(item.id) && 'var(--neutral-2)',
                       }}
                       onClick={() => {
-                        //   @ts-ignore
+                        //   @ts-expect-error
                         setSelectedSession((pre: any[]) => {
                           if (
                             pre

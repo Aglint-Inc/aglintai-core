@@ -1,5 +1,5 @@
 DROP TRIGGER IF EXISTS track_interview_meeting_changes on interview_meeting;
-drop function if exists public.create_interview_meeting_log;
+DROP FUNCTION IF EXISTS public.create_interview_meeting_log;
 
 CREATE OR REPLACE FUNCTION create_interview_meeting_log() 
 RETURNS TRIGGER 

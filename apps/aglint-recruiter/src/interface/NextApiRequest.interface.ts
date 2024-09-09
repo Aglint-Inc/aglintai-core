@@ -11,6 +11,7 @@ export interface NextApiRequest extends nextApiRequest {
   } & nextApiRequest['headers'];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface NextApiResponse extends nextApiResponse {}
 
 export interface ApiInterface {

@@ -10,8 +10,8 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
 import { updateIntegrations } from '../utils';
-import GoogleLogo from '@public/images/svg/google-logo.svg';
-import ZoomLogo from '@public/images/svg/zoom-logo.svg';
+// import GoogleLogo from '@public/images/svg/google-logo.svg';
+// import ZoomLogo from '@public/images/svg/zoom-logo.svg';
 import { IntegrationCard } from '../components/IntegrationCard';
 
 function Scheduling({ allIntegrations }) {
@@ -155,7 +155,8 @@ function Scheduling({ allIntegrations }) {
       name: 'Google Workspace',
       url: 'workspace.google.com',
       isConnected: allIntegrations?.service_json,
-      logo: <GoogleLogo />,
+      // logo: <GoogleLogo />,
+      logo: <></>,
       primaryText: allIntegrations?.service_json ? 'Re-Upload' : 'Connect',
       secondaryText: allIntegrations?.service_json ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -173,7 +174,8 @@ function Scheduling({ allIntegrations }) {
     {
       name: 'Zoom',
       url: 'zoom.com',
-      logo: <ZoomLogo />,
+      // logo: <ZoomLogo />,
+      logo: <></>,
       isConnected: allIntegrations?.zoom_auth,
       primaryText: allIntegrations?.zoom_auth ? 'Re-Connect' : 'Connect',
       secondaryText: allIntegrations?.zoom_auth ? 'Disconnect' : 'Learn How',

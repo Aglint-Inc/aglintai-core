@@ -203,7 +203,7 @@ const EditMember = ({
       onClose();
       await refetch();
     } catch (e) {
-      //
+      console.error(e);
     } finally {
       setIsUpdating(false);
     }

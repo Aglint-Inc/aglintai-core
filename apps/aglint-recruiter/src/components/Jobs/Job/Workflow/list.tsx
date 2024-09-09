@@ -14,8 +14,7 @@ import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
 import { WorkflowCard } from '@devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
-import { Briefcase } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { Briefcase, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -38,8 +37,9 @@ import {
 } from '@/queries/job-workflow';
 import { useWorkflowQuery } from '@/queries/workflow';
 import { type Workflow } from '@/types/workflow.types';
-import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 
 const useJobWorkflowActions = () => {
   const { job_id, devlinkProps } = useJob();
@@ -105,13 +105,12 @@ const JobWorkflowComp = () => {
 export default JobWorkflowComp;
 
 const JobWorkflows = () => {
-  const { devlinkProps, workflows, status, getLoadingState, handleDisconnect } =
+  const { workflows, status, getLoadingState, handleDisconnect } =
     useJobWorkflows();
-  const { push } = useRouter();
   if (status === 'pending')
     return (
       <>
-        {[...Array(3)].map((e, i) => (
+        {[...Array(3)].map((_e, i) => (
           <div key={i} className='bg-white'>
             <AssessmentListCardLoader border={'none'} />
           </div>
@@ -135,30 +134,35 @@ const JobWorkflows = () => {
       const loading = getLoadingState(workflow.id);
       return (
         <OptimisticWrapper key={workflow.id} loading={loading}>
-          <WorkflowCard
-            key={workflow.id}
-            showButtons={true}
-            isCheckboxVisible={false}
-            onClickDelete={{
-              onClick: () => handleDisconnect(workflow.id),
-              ...devlinkProps,
-            }}
-            isEditButton={false}
-            onClickEdit={{
-              onClick: () =>
-                push(ROUTES['/workflows/[id]']({ id: workflow.id })),
-            }}
-            textJobs={<></>}
-            textWorkflowName={
-              <div className='max-w-[420px]'>{workflow.title}</div>
-            }
-            textWorkflowTrigger={getTriggerOption(
-              workflow.trigger,
-              workflow.phase,
-            )}
-            slotBadge={<WorkflowTags tags={workflow.tags} />}
-            smallCard={'true'}
-          />
+          <div className='p-2 bg-gray-50'>
+            <Card key={workflow.id} className='group relative'>
+              <CardHeader className='p-3 pb-0 flex justify-between items-start'>
+                <CardTitle className='text-base w-full'>
+                  <div className='flex items-center max-w-[420px]'>
+                    {capitalizeSentence(workflow.title ?? '---')}
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='p-3 pt-1'>
+                <div className='flex flex-col gap-2'>
+                  <WorkflowTags tags={workflow.tags} />
+                  <p className='text-sm text-gray-600'>
+                    {getTriggerOption(workflow.trigger, workflow.phase)}
+                  </p>
+                </div>
+              </CardContent>
+              <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => handleDisconnect(workflow.id)}
+                  className='h-8 w-8 p-0'
+                >
+                  <X className='h-4 w-4' />
+                </Button>
+              </div>
+            </Card>
+          </div>
         </OptimisticWrapper>
       );
     });
@@ -258,7 +262,7 @@ const WorkflowBrowser = () => {
         <div className='mt-4'>
           <Filters />
         </div>
-        <ScrollArea className='h-[calc(100vh-300px)] mt-4'>
+        <ScrollArea className='h-[calc(100vh-300px)] mt-4 bg-gray-50'>
           {cards.length ? cards : <WorkflowEmpty />}
         </ScrollArea>
         <div className='mt-4 flex justify-end'>
