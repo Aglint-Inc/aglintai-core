@@ -28,6 +28,11 @@ import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestListFilter from '../_common/Components/RequestListFilter';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@components/ui/collapsible';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -141,7 +146,10 @@ function RequestList() {
             }
           }}
         >
-          <AccordionItem value={sectionName} className='border rounded-lg px-4'>
+          <AccordionItem
+            value={sectionName}
+            className='border rounded-lg px-4  bg-gray-50'
+          >
             <AccordionTrigger
               className='text-md font-semibold'
               disabled={requests.length === 0}
@@ -156,7 +164,7 @@ function RequestList() {
             <AccordionContent>
               {requests.length > 0 ? (
                 <div className='flex flex-col gap-4'>
-                  {visibleRequests.map((props, i) => (
+                  {requests.slice(0, 5).map((props, i) => (
                     <RequestProvider key={props.id ?? i} request_id={props.id}>
                       <RequestCard
                         {...{ ...props, index: i, isExpanded: false }}
@@ -164,33 +172,47 @@ function RequestList() {
                     </RequestProvider>
                   ))}
                   {requests.length > 5 && (
-                    <Button
-                      variant='outline'
-                      onClick={() => {
-                        if (isExpanded) {
-                          setExpandedSections(
-                            expandedSections.filter((s) => s !== sectionName),
-                          );
-                        } else {
-                          setExpandedSections([
-                            ...expandedSections,
-                            sectionName,
-                          ]);
-                        }
-                      }}
-                    >
-                      {isExpanded ? (
-                        <>
-                          <ChevronUp className='mr-2 h-4 w-4' />
-                          Show Less
-                        </>
-                      ) : (
-                        <>
-                          <ChevronDown className='mr-2 h-4 w-4' />
+                    <Collapsible>
+                      <CollapsibleTrigger asChild className='mb-4 w-full'>
+                        <Button variant='outline' className='w-full'>
+                          <ChevronDown className='h-4 w-4 mr-2' />
                           Show More ({requests.length - 5} more)
-                        </>
-                      )}
-                    </Button>
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <div className='flex flex-col gap-4'>
+                          {requests.slice(5).map((props, i) => (
+                            <RequestProvider
+                              key={props.id ?? i}
+                              request_id={props.id}
+                            >
+                              <RequestCard
+                                {...{
+                                  ...props,
+                                  index: i + 5,
+                                  isExpanded: false,
+                                }}
+                              />
+                            </RequestProvider>
+                          ))}
+                        </div>
+                        <Button
+                          variant='outline'
+                          className='w-full mt-4'
+                          onClick={() => {
+                            const trigger = document.querySelector(
+                              '[data-state="open"]',
+                            );
+                            if (trigger instanceof HTMLElement) {
+                              trigger.click();
+                            }
+                          }}
+                        >
+                          <ChevronUp className='h-4 w-4 mr-2' />
+                          Show Less
+                        </Button>
+                      </CollapsibleContent>
+                    </Collapsible>
                   )}
                 </div>
               ) : (
