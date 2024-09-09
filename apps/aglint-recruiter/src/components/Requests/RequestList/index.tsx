@@ -33,6 +33,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
+import Link from 'next/link';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -80,11 +81,24 @@ function RequestList() {
         sectionName !== 'urgent_request' && sectionName !== 'completed_request',
     );
 
-    const renderScrollableSection = (section) => (
+    const renderScrollableSection = (
+      section: (typeof RequestsSectionDefaultData)[number],
+    ) => (
       <div key={section.sectionName}>
         {isFetched ? (
-          <div className='text-md font-semibold mb-2'>
-            {capitalizeFirstLetter(section.sectionName)}
+          <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
+            <p>{capitalizeFirstLetter(section.sectionName)}</p>
+            {section.sectionName === 'completed_request' && (
+              <Button>
+                <Link
+                  href={{
+                    pathname: '/requests/history',
+                  }}
+                >
+                  View all
+                </Link>
+              </Button>
+            )}
           </div>
         ) : (
           <Skeleton className='h-6 w-40 mb-2' />

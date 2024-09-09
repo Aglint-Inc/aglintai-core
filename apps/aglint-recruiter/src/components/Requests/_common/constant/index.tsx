@@ -1,4 +1,4 @@
-import { type RequestResponse } from '@/queries/requests/types';
+import { Request, type RequestResponse } from '@/queries/requests/types';
 
 export const RequestsSectionDefaultData = [
   {
