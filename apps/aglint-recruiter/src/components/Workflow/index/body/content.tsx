@@ -1,6 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import OptimisticWrapper from '@components/loadingWapper';
 import { GlobalBadge } from '@devlink3/GlobalBadge';
-import { WorkflowCard } from '@devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
@@ -14,6 +14,16 @@ import { useWorkflowStore } from '../../../../context/Workflows/store';
 import { getTriggerOption, TAG_OPTIONS } from '../../constants';
 import { getFilteredWorkflows } from './filters';
 import { Skeleton } from '@components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Button } from '@components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
+import { MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
 
 const Content = memo(() => {
   const {
@@ -55,23 +65,66 @@ const Cards = (props: {
       const jobCount = (jobs ?? []).length;
       return (
         <OptimisticWrapper key={id} loading={loading}>
-          <WorkflowCard
-            key={id}
-            border={'visible'}
-            isCheckboxVisible={false}
-            textWorkflowName={capitalizeSentence(title ?? '---')}
-            slotBadge={<WorkflowTags tags={tags} />}
-            textWorkflowTrigger={getTriggerOption(trigger, phase)}
-            textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
-            onClickDelete={{
-              onClick: () =>
-                setDeletion({ open: true, workflow: { id, jobs } }),
-              ...devlinkProps,
-            }}
-            onClickEdit={{
-              onClick: () => push(ROUTES['/workflows/[id]']({ id })),
-            }}
-          />
+          <Card key={id} className='cursor-pointer'>
+            <Link
+              href={ROUTES['/workflows/[id]']({ id })}
+              legacyBehavior
+              passHref
+            >
+              <a className='block'>
+                <CardHeader className='p-3 pb-0 flex justify-between items-start'>
+                  <CardTitle className='text-base w-full font-semibold'>
+                    <div className='flex justify-between items-center'>
+                      {capitalizeSentence(title ?? '---')}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant='ghost'
+                            className='h-8 w-8 p-0'
+                            onClick={(e) => e.preventDefault()}
+                          >
+                            <span className='sr-only'>Open menu</span>
+                            <MoreHorizontal className='h-4 w-4' />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align='end'>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.preventDefault();
+                              push(ROUTES['/workflows/[id]']({ id }));
+                            }}
+                          >
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setDeletion({
+                                open: true,
+                                workflow: { id, jobs },
+                              });
+                            }}
+                            {...devlinkProps}
+                          >
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className='p-3 pt-1'>
+                  <div className='flex flex-row gap-2'>
+                    <WorkflowTags tags={tags} />
+                    <p className='text-sm text-gray-600'>
+                      {getTriggerOption(trigger, phase)}
+                    </p>
+                    <p className='text-sm text-gray-600'>{`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}</p>
+                  </div>
+                </CardContent>
+              </a>
+            </Link>
+          </Card>
         </OptimisticWrapper>
       );
     },
@@ -81,19 +134,23 @@ const Cards = (props: {
 };
 
 export const WorkflowTags = ({ tags }: Pick<Workflow, 'tags'>) => {
-  return (tags ?? []).map((tag) => {
-    // eslint-disable-next-line security/detect-object-injection
-    const option = TAG_OPTIONS[tag];
-    return (
-      <GlobalBadge
-        key={tag}
-        textBadge={option.name}
-        size={1}
-        showIcon={!!option.iconName || !!option.icon}
-        color={option.color}
-        iconName={option.iconName}
-        slotIcon={option.icon}
-      />
-    );
-  });
+  return (
+    <div className='flex flex-row gap-2'>
+      {(tags ?? []).map((tag) => {
+        // eslint-disable-next-line security/detect-object-injection
+        const option = TAG_OPTIONS[tag];
+        return (
+          <GlobalBadge
+            key={tag}
+            textBadge={option.name}
+            size={1}
+            showIcon={!!option.iconName || !!option.icon}
+            color={option.color}
+            iconName={option.iconName}
+            slotIcon={option.icon}
+          />
+        );
+      })}
+    </div>
+  );
 };

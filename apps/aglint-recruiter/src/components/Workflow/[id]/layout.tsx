@@ -232,7 +232,12 @@ const DeletePopup = () => {
         }
         slotButtons={
           <>
-            <Button color={'neutral'} size={'sm'} onClick={() => handleClose()}>
+            <Button
+              variant={'outline'}
+              color={'neutral'}
+              size={'sm'}
+              onClick={() => handleClose()}
+            >
               Cancel
             </Button>
             <Button
