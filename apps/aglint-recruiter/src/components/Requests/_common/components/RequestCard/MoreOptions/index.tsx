@@ -7,8 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import MembersPopUps from './MembersPopUps';
 import { MoreHorizontal } from 'lucide-react';
+import MembersPopUps from './MembersPopUps';
 
 type actionType = Request['status'] | 'change_assignee';
 

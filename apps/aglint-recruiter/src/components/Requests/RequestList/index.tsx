@@ -13,11 +13,11 @@ import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Columns, LayoutList } from 'lucide-react';
 import { useState } from 'react';
-import { RequestCard } from '../_common/components/RequestCard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
-import RequestListFilter from '../_common/components/RequestListFilter';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestListFilter from '../_common/Components/RequestListFilter';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -53,71 +53,67 @@ function RequestList() {
     return <GlobalEmptyState iconName='task_alt' textDesc='No results found' />;
 
   const renderContent = () => {
-    if (view === 'kanban') {
-      return (
+    const urgentRequests = defaults.find(
+      ({ sectionName }) => sectionName === 'urgent_request',
+    );
+    const completedRequests = defaults.find(
+      ({ sectionName }) => sectionName === 'completed_request',
+    );
+    const otherSections = defaults.filter(
+      ({ sectionName }) =>
+        sectionName !== 'urgent_request' && sectionName !== 'completed_request',
+    );
+
+    const renderScrollableSection = (section) => (
+      <div key={section.sectionName}>
+        <div>{capitalizeFirstLetter(section.sectionName)}</div>
         <ScrollArea className='w-full whitespace-nowrap rounded-md'>
-          <div className='flex w-max space-x-4 p-4'>
-            {defaults
-              .filter((section) => section.sectionName !== 'urgent_request')
-              .map(({ requests, sectionName }) => (
-                <div key={sectionName} className='w-[400px] mr-4'>
-                  <h2 className='text-md font-semibold mb-4'>
-                    {sectionName.replace('_', ' ')}
-                  </h2>
-                  <>
-                    <div>{capitalizeFirstLetter(sectionName)}</div>
-                    <div>
-                      {requests.map((props, i) => (
-                        <RequestProvider
-                          key={props.id ?? i}
-                          request_id={props.id}
-                        >
-                          <RequestCard
-                            {...{
-                              ...props,
-                              index: i,
-                              isExpanded: false,
-                            }}
-                          />
-                        </RequestProvider>
-                      ))}
-                    </div>
-                  </>
-                </div>
-              ))}
+          <div className='flex'>
+            {section.requests.map((props, i) => (
+              <div
+                key={props.id ?? i}
+                className='flex-shrink-0 max-w-[600px] mr-4'
+              >
+                <RequestProvider request_id={props.id}>
+                  <RequestCard {...{ ...props, index: i, isExpanded: false }} />
+                </RequestProvider>
+              </div>
+            ))}
           </div>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
-      );
-    } else {
-      return (
-        <div className='space-y-4'>
-          {defaults.map(({ requests, sectionName }) => {
-            if (isFilterApplied && isFetched && (requests ?? []).length === 0)
-              return null;
-            return (
-              <>
-                <div>{capitalizeFirstLetter(sectionName)}</div>
-                <div>
-                  {requests.map((props, i) => (
-                    <RequestProvider key={props.id ?? i} request_id={props.id}>
-                      <RequestCard
-                        {...{
-                          ...props,
-                          index: i,
-                          isExpanded: false,
-                        }}
-                      />
-                    </RequestProvider>
-                  ))}
-                </div>
-              </>
-            );
-          })}
+      </div>
+    );
+
+    return (
+      <div className='space-y-4'>
+        {urgentRequests && renderScrollableSection(urgentRequests)}
+
+        <div className={`${view === 'kanban' ? 'flex gap-4' : 'space-y-4'}`}>
+          {otherSections.map(({ requests, sectionName }) => (
+            <div
+              key={sectionName}
+              className={view === 'kanban' ? 'flex-1' : ''}
+            >
+              <div>{capitalizeFirstLetter(sectionName)}</div>
+              <div className={view === 'kanban' ? 'space-y-4' : ''}>
+                {requests.map((props, i) => (
+                  <RequestProvider key={props.id ?? i} request_id={props.id}>
+                    <RequestCard
+                      {...{ ...props, index: i, isExpanded: false }}
+                    />
+                  </RequestProvider>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      );
-    }
+
+        {completedRequests && renderScrollableSection(completedRequests)}
+      </div>
+    );
   };
+
   function formatRequestCountText(
     urgentCount: number,
     standardCount: number,
