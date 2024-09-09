@@ -49,7 +49,7 @@ function CompletedRequests() {
           <h2 className='text-2xl font-bold mb-6'>
             {capitalizeFirstLetter('all_completed_requests')}
           </h2>
-          {Object.entries(groupedRequests).map(([date, requests]) => (
+          {Object.entries(groupedRequests).map(([date, requests]: any) => (
             <div key={date} className='p-6'>
               <h3 className='text-xl font-semibold mb-4'>
                 {dayjs(date).fromNow()}
