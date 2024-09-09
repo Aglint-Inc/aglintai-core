@@ -7,7 +7,6 @@ import {
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
@@ -28,7 +27,12 @@ export default async function handler(
         .select()
         .eq('session_id', parsed.session_id),
     );
-    //
+    const [request_details] = supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .select()
+        .eq('id', meeting_details.schedule_request_id),
+    );
     const [application] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
@@ -41,16 +45,12 @@ export default async function handler(
         .select()
         .eq('session_relation_id', int_sesn_cancel.session_relation_id),
     );
-    const organizer_id = await getOrganizerId(
-      meeting_details.application_id,
-      supabaseAdmin,
-    );
 
     const details: DatabaseFunctions['create_session_request']['Args'] = {
       application: meeting_details.application_id,
       request: {
-        assignee_id: organizer_id,
-        assigner_id: organizer_id,
+        assignee_id: request_details.assignee_id,
+        assigner_id: request_details.assigner_id,
         priority: 'urgent',
         schedule_start_date:
           int_sesn_cancel.other_details?.dateRange?.start ||

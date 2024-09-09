@@ -17,10 +17,7 @@ import MenuOptions from './MenuOptions';
 
 type RequestProps = RequestType & { isExpanded?: boolean };
 
-export const RequestCard = ({
-  index,
-  ...props
-}: RequestProps & { index: number }) => {
+export const RequestCard = ({ ...props }: RequestProps & { index: number }) => {
   const { recruiterUser } = useAuthDetails();
   const request = { ...props };
   return (

@@ -26,13 +26,13 @@ import { Columns, LayoutList } from 'lucide-react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
-import { RequestCard } from '../_common/Components/RequestCard';
-import RequestListFilter from '../_common/Components/RequestListFilter';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestListFilter from '../_common/Components/RequestListFilter';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -125,7 +125,7 @@ function RequestList() {
 
     const renderListSection = (sectionName: string, requests: any[]) => {
       const isExpanded = expandedSections.includes(sectionName);
-      const visibleRequests = isExpanded ? requests : requests.slice(0, 5);
+      // const _visibleRequests = isExpanded ? requests : requests.slice(0, 5);
 
       return (
         <Accordion
