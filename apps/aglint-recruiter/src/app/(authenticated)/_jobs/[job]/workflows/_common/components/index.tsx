@@ -21,7 +21,7 @@ import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import JobWorkflow from './list';
 
-const JobWorkflowDashboard = () => {
+export const JobWorkflowDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
@@ -40,8 +40,6 @@ const JobWorkflowDashboard = () => {
     </Stack>
   );
 };
-
-export default JobWorkflowDashboard;
 
 const BreadCrumbs = () => {
   const { push } = useRouter();

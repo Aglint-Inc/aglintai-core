@@ -1,6 +1,5 @@
 import Layout from 'src/app/(authenticated)/_jobs/[job]/workflows/layout';
-
-import Page from '@/components/Jobs/Job/Workflow';
+import Page from 'src/app/(authenticated)/_jobs/[job]/workflows/page';
 
 const JobWorkflowsPage = () => {
   return <Page />;
