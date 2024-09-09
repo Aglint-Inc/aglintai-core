@@ -15,9 +15,9 @@ import { Doughnut } from 'react-chartjs-2';
 
 import Loader from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
+import { getOrderedGraphValues } from '@/job/metrics/utils';
 
 import { type DashboardGraphOptions } from '.';
-import { getOrderedGraphValues } from './utils';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 

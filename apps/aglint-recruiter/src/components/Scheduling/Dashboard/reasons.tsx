@@ -14,9 +14,9 @@ import { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
+import { getOrderedGraphValues } from '@/job/metrics/utils';
 
 import Loader from '../../Common/Loader';
-import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 import { Empty } from './common';
 
 export const Reasons = memo(() => {

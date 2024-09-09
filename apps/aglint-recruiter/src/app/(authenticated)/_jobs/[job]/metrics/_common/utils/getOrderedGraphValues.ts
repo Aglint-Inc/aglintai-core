@@ -1,29 +1,9 @@
-export const totalCount = (data: any) =>
-  data &&
-  Object.values(data).reduce((acc, count) => Number(acc) + Number(count), 0);
-
-export type scoreMatchesScore = {
-  score: number;
-  color: string;
-};
-
-export const grapDependencies = {
-  colors: [
-    '#B1E3FF',
-    '#A1E3CB',
-    '#A8C5DA',
-    '#949494',
-    '#BAEDBD',
-    '#95A4FC',
-    '#C4D2CD',
-  ],
-  defer: ['others', 'unknown'],
-};
+import { GRAPH_DEPENDENCIES } from '@/job/metrics/constants/graphDependencies';
 
 type GraphEntries = Record<string, number> | Record<string, string | number>[];
 export const getOrderedGraphValues = (data: GraphEntries) => {
   const safeData = mutateData(data);
-  const deferedValues = grapDependencies.defer.reduce((acc, curr) => {
+  const deferedValues = GRAPH_DEPENDENCIES.defer.reduce((acc, curr) => {
     if (safeData[curr]) {
       acc['others'] = acc['others']
         ? acc['others'] + safeData[curr]
@@ -39,18 +19,19 @@ export const getOrderedGraphValues = (data: GraphEntries) => {
         acc.push({
           name: curr[0],
           count: curr[1],
-          color: grapDependencies.colors[i % grapDependencies.colors.length],
+          color:
+            GRAPH_DEPENDENCIES.colors[i % GRAPH_DEPENDENCIES.colors.length],
         });
       return acc;
     }, []) as { name: string; count: number; color: string }[];
-  (result.length + 1) % grapDependencies.colors.length;
+  (result.length + 1) % GRAPH_DEPENDENCIES.colors.length;
   Object.entries(deferedValues).forEach(([key, value], i) => {
     const colorPosition =
-      (result.length + 1 + i) % grapDependencies.colors.length;
+      (result.length + 1 + i) % GRAPH_DEPENDENCIES.colors.length;
     result.push({
       name: key,
       count: value,
-      color: grapDependencies.colors[colorPosition],
+      color: GRAPH_DEPENDENCIES.colors[colorPosition],
     });
   });
   return result;

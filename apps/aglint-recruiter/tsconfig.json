@@ -27,6 +27,9 @@
       "@/job/interview-plan/*": [
         "./src/app/(authenticated)/_jobs/[job]/interview-plan/_common/*"
       ],
+      "@/job/metrics/*": [
+        "./src/app/(authenticated)/_jobs/[job]/metrics/_common/*"
+      ],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],

@@ -8,11 +8,11 @@ import { Reason } from '@devlink3/Reason';
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { type ReactNode, useState } from 'react';
 
+import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCancelRescheduleReasons } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { DoughnutChart } from '../../Jobs/Job/Dashboard/doughnut';
-import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 import { FilterDropDownDash } from './FilterDropDownDash';
 
 const CancelReasons = () => {
