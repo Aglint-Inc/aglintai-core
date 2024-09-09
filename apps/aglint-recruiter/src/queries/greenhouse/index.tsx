@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { type GreenhouseAPI } from '@/app/api/integrations/greenhouse/type';
+import { type GreenhouseAPI } from '@/api/integrations/greenhouse/type';
 import axios from '@/client/axios';
 
 export function useGreenhouseDetails() {

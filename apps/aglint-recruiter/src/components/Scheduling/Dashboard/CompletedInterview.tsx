@@ -4,10 +4,9 @@ import { Stack } from '@mui/material';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
+import type { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCompletedInterviewDetails } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
-import { type getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 
 const CompletedInterviewBarChart = () => {
   const {

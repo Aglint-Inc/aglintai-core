@@ -9,7 +9,7 @@ import { AtsSettings } from '@devlink/AtsSettings';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { type GreenHouseFullSyncAPI } from '@/app/api/sync/greenhouse/full_sync/type';
+import { type GreenHouseFullSyncAPI } from '@/api/sync/greenhouse/full_sync/type';
 import axios from '@/client/axios';
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
 import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';

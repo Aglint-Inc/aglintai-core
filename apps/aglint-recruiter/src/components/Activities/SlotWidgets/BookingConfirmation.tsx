@@ -4,7 +4,7 @@ import { ConfirmScheduleList } from '@devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@devlink3/ConfirmScheduleListCard';
 import { Stack } from '@mui/material';
 
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';

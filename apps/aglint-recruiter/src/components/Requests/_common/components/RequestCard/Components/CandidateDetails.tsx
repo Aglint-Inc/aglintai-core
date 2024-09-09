@@ -33,8 +33,8 @@ function CandidateDetails({
       text: candidateDetails.name,
       hide: !jobDetails.job_title,
       route:
-        ROUTES['/jobs/[id]/application/[application_id]']({
-          id: jobDetails.id,
+        ROUTES['/jobs/[job]/application/[application_id]']({
+          job: jobDetails.id,
           application_id: candidateDetails.application_id,
         }) + '?tab=interview',
     },
@@ -42,7 +42,8 @@ function CandidateDetails({
       icon: 'work',
       text: jobDetails.job_title,
       hide: !jobDetails.job_title,
-      route: ROUTES['/jobs/[id]']({ id: jobDetails.id }) + '?section=interview',
+      route:
+        ROUTES['/jobs/[job]']({ job: jobDetails.id }) + '?section=interview',
     },
     {
       icon: 'calendar_today',

@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
 import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
@@ -22,7 +23,6 @@ import Footer from '../../Common/Footer';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
 import Loader from '../../Common/Loader';
 import { TimezoneSelector } from '../../CompanyDetailComp/Scheduling';
-import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,

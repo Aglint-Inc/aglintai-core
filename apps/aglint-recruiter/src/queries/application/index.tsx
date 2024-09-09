@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 
 import axios from '@/client/axios';
-import { getActiveSection } from '@/context/JobsContext/hooks';
+import { getActiveSection } from '@/jobs/utils/getActiveSection';
 import { type ApiInterviewStages } from '@/pages/api/scheduling/application/fetchinterviewstages';
 import { supabase } from '@/utils/supabase/client';
 
