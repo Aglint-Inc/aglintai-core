@@ -23,6 +23,7 @@ type Props = {
   fontBold?: keyof typeof fontWeight;
   color?: string;
   textTransform?: string;
+  className?: string;
 };
 
 const UITypography = ({
@@ -32,6 +33,7 @@ const UITypography = ({
   type = 'medium',
   color = '',
   textTransform,
+  className,
 }: Props) => {
   const Element = variant as keyof JSX.IntrinsicElements;
 
@@ -42,6 +44,7 @@ const UITypography = ({
         fontBold && fontWeight[fontBold],
         color && `text-[${color}]`,
         textTransform && `${textTransform}`,
+        className,
       )}
     >
       {children}
