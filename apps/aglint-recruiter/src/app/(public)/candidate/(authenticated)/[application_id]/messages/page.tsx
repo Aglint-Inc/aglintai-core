@@ -8,9 +8,8 @@ import MessageCardSkeleton from '@/components/CandiatePortal/components/MessageC
 import { useCandidatePortalMessages } from '../_common/hooks';
 
 export default function MessagesPage() {
-  const { data, status } = useCandidatePortalMessages();
-  if (status === 'error') return <>Error</>;
-  if (status === 'pending')
+  const { data, isPending, status } = useCandidatePortalMessages();
+  if (isPending)
     return (
       <div className='max-w-screen-sm mt-8 mx-auto'>
         <MessageCardSkeleton />
@@ -18,6 +17,7 @@ export default function MessagesPage() {
         <MessageCardSkeleton />
       </div>
     );
+  if (status === 'error') return <>Error</>;
   if (data === undefined || data?.length === 0)
     return <EmptyState icon={Mail} text='No Past interviews' />;
 
