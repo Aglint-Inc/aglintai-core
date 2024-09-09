@@ -249,7 +249,7 @@ const TeamManagement = () => {
 
         <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
           <Table>
-            <TableHeader className='bg-gray-200'>
+            <TableHeader className='bg-gray-100'>
               <TableRow>
                 <TableHead>Member</TableHead>
                 <TableHead>Location</TableHead>
