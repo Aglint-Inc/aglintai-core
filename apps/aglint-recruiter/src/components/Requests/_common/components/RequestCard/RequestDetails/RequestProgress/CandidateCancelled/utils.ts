@@ -64,6 +64,7 @@ export async function handleClick(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
         meta,
       );
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return 'An error occurred during the cancellation process';
     }
@@ -91,6 +92,7 @@ export async function handleClick(
         .update({ status: 'completed' })
         .eq('id', data.id)
         .then(() => {});
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return 'An error occurred during the cancellation process';
     }

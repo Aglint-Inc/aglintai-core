@@ -53,7 +53,7 @@ export class EmailWebHook {
       }
       const thread_id = ref.split('.')[0];
       return thread_id;
-    } catch (err) {
+    } catch (_err) {
       return null;
     }
   }

@@ -44,7 +44,7 @@ const ImportResume = () => {
   };
 
   const DeleteSelectFile = (index) => {
-    const result = selectedfile.filter((data, i) => i !== index);
+    const result = selectedfile.filter((_data, i) => i !== index);
     setSelectedFile(result);
   };
 

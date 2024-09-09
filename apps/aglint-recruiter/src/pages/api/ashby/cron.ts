@@ -12,7 +12,7 @@ const supabase = createClient<DB>(
 
 const url1 = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/ashby/syncapplications`;
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { data, error } = await supabase
       .from('recruiter')

@@ -13,7 +13,7 @@ import RequestProgress from './RequestProgress';
 function RequestDetails({ request }: { request: RequestType; index: number }) {
   const { handleAsyncUpdateRequest } = useRequests();
   const { recruiterUser } = useAuthDetails();
-  var showFooter = false;
+  const showFooter = false;
 
   return (
     <Card className='p-0 border-none shadow-none'>

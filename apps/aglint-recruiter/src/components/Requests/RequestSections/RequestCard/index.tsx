@@ -11,15 +11,11 @@ import { cn } from '@lib/utils';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-<<<<<<<< HEAD:apps/aglint-recruiter/src/components/Requests/RequestSections/RequestCard/index.tsx
-import { getStatusColor } from '../../utils';
-========
->>>>>>>> 61e52bd32e5ee20035fb3ba752e549774b9c3d1d:apps/aglint-recruiter/src/components/Requests/_common/components/RequestCard/index.tsx
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
 import { Notebook } from 'lucide-react';
 import Link from 'next/link';
-import { getStatusColor } from '../../utils/getStatusColor';
+import { getStatusColor } from '../../_common/utils/getStatusColor';
 
 type RequestProps = RequestType & { isExpanded?: boolean };
 

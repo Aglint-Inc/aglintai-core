@@ -108,7 +108,7 @@ export async function getGreenhouseUsers(key: string, last_sync?: string) {
 }
 
 export async function getGreenhouseUpdatedUsers(
-  key: string,
+  _key: string,
   last_sync: string,
 ) {
   let user = 'https://harvest.greenhouse.io/v1/users';

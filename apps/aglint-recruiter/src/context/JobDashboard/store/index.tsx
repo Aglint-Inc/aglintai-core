@@ -20,7 +20,7 @@ const createJobDasboardSlice: StateCreator<
   [],
   [],
   JobDashboardCustomSlice
-> = (set, get) => ({
+> = (_set, get) => ({
   resetAll: () => {
     get().resetDashboard();
     get().resetWorkflow();

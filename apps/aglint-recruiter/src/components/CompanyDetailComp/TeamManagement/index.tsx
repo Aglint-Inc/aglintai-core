@@ -57,14 +57,16 @@ const TeamManagement = () => {
 
   const uniqueDepartments = [
     ...members.reduce((acc, curr) => {
-      curr.department?.name && acc.add(curr.department.name);
+      if (curr.department?.name) acc.add(curr.department.name);
       return acc;
     }, new Set<string>()),
   ];
 
   const uniqueLocations = [
     ...members.reduce((acc, curr) => {
-      curr.office_location?.city && acc.add(curr.office_location.city);
+      if (curr.office_location?.city) {
+        acc.add(curr.office_location.city);
+      }
       return acc;
     }, new Set<string>()),
   ];

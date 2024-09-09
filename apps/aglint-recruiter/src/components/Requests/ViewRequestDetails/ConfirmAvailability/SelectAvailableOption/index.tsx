@@ -84,7 +84,7 @@ function RequestAvailabilityBody({
       <Stack p={2} height={'80px'} direction={'row'}>
         {availableSlots &&
           [...availableSlots, [{}]]?.map(
-            (ele: PlanCombinationRespType[][], i) => {
+            (_ele: PlanCombinationRespType[][], i) => {
               const firstIndex = 0;
               const lastIndex = [...availableSlots, {}].length - 1;
 

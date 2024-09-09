@@ -26,7 +26,7 @@ export async function getGreenhouseOfficeLocations(key: string) {
   // });
   // if (res.status !== 200) {
   //   throw new Error(
-  //     // @ts-ignore
+  //     // @ts-expect-error
   //     res.data.message || 'Greenhouse Office Location API Failed!',
   //   );
   // }

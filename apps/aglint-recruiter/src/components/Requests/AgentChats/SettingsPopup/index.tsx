@@ -179,6 +179,6 @@ function SettingsPopup({
 
 export default SettingsPopup;
 
-var defaultValue = `
+const defaultValue = `
 <ul><li><p>When scheduling make sure you have candidate availability if there are no availability then request availability from candidate. Use the next 3 days unless otherwise mentioned. </p></li><li><p>Do not request availability from the candidate outside of work hours. </p></li><li><p>Show only slots where interviewers are available.</p></li></ul>
 `;

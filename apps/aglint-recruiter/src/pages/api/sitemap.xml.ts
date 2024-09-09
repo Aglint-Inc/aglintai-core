@@ -9,7 +9,7 @@ const supabase = createClient<DB>(
 );
 
 export default async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const jobs: JobType[] | null = await fetchJobIds();

@@ -25,7 +25,6 @@ export const fillCompEmailTemplate = <
     updated_template.from_name = replaceAll(
       updated_template.from_name,
       `{{${key}}}`,
-      // @ts-ignore
       dynamic_fields[String(key)]
     );
 
@@ -33,13 +32,11 @@ export const fillCompEmailTemplate = <
     updated_template.subject = replaceAll(
       updated_template.subject,
       `{{${key}}}`,
-      // @ts-ignore
       dynamic_fields[String(key)]
     );
     updated_template.body = replaceAll(
       updated_template.body,
       `{{${key}}}`,
-      // @ts-ignore
       dynamic_fields[String(key)]
     );
   }

@@ -60,7 +60,7 @@ const handler = async (
     res.status(200).send();
     return;
   }
-  const timeoutPromise = new Promise((resolve, reject) => {
+  const timeoutPromise = new Promise((_resolve, reject) => {
     setTimeout(() => {
       reject(new Error('Timed out'));
     }, 250000);

@@ -21,7 +21,7 @@ const createDashboardSlice: StateCreator<
   [],
   [],
   DashboardCustomSlice
-> = (set, get) => ({
+> = (_set, get) => ({
   resetDashboard: () => {
     get().resetPublishing();
   },

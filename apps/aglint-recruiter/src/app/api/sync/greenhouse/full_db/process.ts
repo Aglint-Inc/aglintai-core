@@ -53,7 +53,7 @@ export async function syncGreenhouseUsers(
     },
   );
   if (res.status !== 200) {
-    // @ts-ignore
+    // @ts-expect-error
     throw new Error(res.data.message || 'Greenhouse users sync api failed!');
   }
   return res.data;
@@ -73,7 +73,7 @@ export async function syncGreenhouseJobs(
     },
   );
   if (res.status !== 200) {
-    // @ts-ignore
+    // @ts-expect-error
     throw new Error(res.data.message || 'Greenhouse users sync api failed!');
   }
   return res.data;

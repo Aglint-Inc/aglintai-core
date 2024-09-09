@@ -109,7 +109,7 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
       );
       updated_int_details.all_events = fetched_events;
       updated_int_details.isCalenderConnected = true;
-    } catch (error) {
+    } catch (err) {
       updated_int_details.isCalenderConnected = false;
     }
 

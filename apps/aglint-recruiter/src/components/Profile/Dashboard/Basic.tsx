@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
@@ -187,8 +188,9 @@ export const UserDetail = () => {
         isLinkedInVisible={Boolean(recruiterUser.linked_in?.length)}
         onClickLinkedIn={{
           onClick: () => {
-            recruiterUser.linked_in?.length &&
+            if (recruiterUser.linked_in?.length) {
               window.open(recruiterUser.linked_in, '_ blank');
+            }
           },
         }}
         slotUserImage={
