@@ -93,7 +93,7 @@ const RoleTable = ({
   if (loading) {
     return (
       <Table>
-        <TableHeader className='bg-gray-200'>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead>
               <Skeleton className='h-6 w-24' />

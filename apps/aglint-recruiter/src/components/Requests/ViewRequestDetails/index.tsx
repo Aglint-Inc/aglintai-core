@@ -29,7 +29,7 @@ import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewT
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import RequestProgress, {
   RequestProgressSkeleton,
-} from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
+} from '../RequestSections/RequestCard/RequestDetails/RequestProgress';
 import { getStatusColor } from '../utils';
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';

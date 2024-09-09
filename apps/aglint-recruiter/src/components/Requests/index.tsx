@@ -6,13 +6,10 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { SafeObject } from '@/utils/safeObject';
 // import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import AgentChats from './AgentChats';
-import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
-import CompletedRequests from './CompletedRequests';
-import { useCompletedRequestsStore } from './CompletedRequests/store';
-import Dashboard from './Dashboard';
 import { Button } from '@components/ui/button';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import AgentChats from './AgentChats';
+import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
 import RequestSections from './RequestSections';
 
 const Requests = () => {
@@ -142,7 +139,6 @@ const Requests = () => {
     setOpenChat(localStorage.getItem('openChat') === 'true' ? true : false);
   }, [localStorage.getItem('openChat')]);
 
-  const { completedMode } = useCompletedRequestsStore();
   return (
     <div className='relative min-h-screen flex'>
       {/* Dock to Right Button */}
@@ -185,10 +181,6 @@ const Requests = () => {
       >
         {showEmptyPage && isNotApplied ? (
           <RequestAgentEmpty />
-        ) : completedMode ? (
-          <CompletedRequests />
-        ) : queryParams.tab === 'dashboard' ? (
-          <Dashboard />
         ) : (
           <RequestSections />
         )}
