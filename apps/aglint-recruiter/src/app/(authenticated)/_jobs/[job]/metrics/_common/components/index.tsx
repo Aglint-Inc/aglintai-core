@@ -31,6 +31,7 @@ import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
 import { useApplicationsParams, useJob, useJobDashboard } from '@/job/hooks';
 import { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import { distributeScoreWeights } from '@/job/utils';
 import { useCompanyMembers } from '@/queries/company-members';
 import { type Job } from '@/queries/jobs/types';
 import { type Application } from '@/types/applications.types';
@@ -39,13 +40,12 @@ import ROUTES from '@/utils/routing/routes';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 import { capitalize, capitalizeAll } from '@/utils/text/textUtils';
 
-import { distributeScoreWeights } from '../Profile-Score';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
-const JobDashboard = () => {
+export const JobDashboard = () => {
   const { job, jobLoad } = useJob();
   return jobLoad ? (
     job ? (
@@ -191,8 +191,6 @@ const Dashboard = () => {
     </>
   );
 };
-
-export default JobDashboard;
 
 const Roles = () => {
   const { push } = useRouter();

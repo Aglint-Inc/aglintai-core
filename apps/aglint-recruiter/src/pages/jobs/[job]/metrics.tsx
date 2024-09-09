@@ -1,6 +1,5 @@
 import Layout from 'src/app/(authenticated)/_jobs/[job]/metrics/layout';
-
-import Page from '@/components/Jobs/Job/Dashboard';
+import Page from 'src/app/(authenticated)/_jobs/[job]/metrics/page';
 
 const JobPage = () => {
   return <Page />;

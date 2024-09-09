@@ -12,7 +12,7 @@ import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCancelRescheduleReasons } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { DoughnutChart } from '../../Jobs/Job/Dashboard/doughnut';
+import { DoughnutChart } from '../../../app/(authenticated)/_jobs/[job]/metrics/_common/components/doughnut';
 import { FilterDropDownDash } from './FilterDropDownDash';
 
 const CancelReasons = () => {

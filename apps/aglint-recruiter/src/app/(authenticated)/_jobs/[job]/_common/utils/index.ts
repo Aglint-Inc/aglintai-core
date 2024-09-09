@@ -1,3 +1,4 @@
+export { distributeScoreWeights } from './distributeScoreWeights';
 export { formatSessions } from './formatSessions';
 export { formatTimeStamp } from './formatTimeStamp';
 export { getDetailsValidity } from './getDetailsValidity';
