@@ -12,7 +12,7 @@ import React, { type FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import Loader from '@/components/Common/Loader';
-import { useJobDashboard } from '@/context/JobDashboard';
+import { useJobDashboard } from '@/job/hooks';
 
 import { type DashboardGraphOptions } from '.';
 

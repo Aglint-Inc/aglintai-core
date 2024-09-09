@@ -13,10 +13,9 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
-import { useJobDashboard } from '@/context/JobDashboard';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
-import { useJob, useJobDashboardActions } from '@/job/hooks';
+import { useJob, useJobDashboard, useJobDashboardActions } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 

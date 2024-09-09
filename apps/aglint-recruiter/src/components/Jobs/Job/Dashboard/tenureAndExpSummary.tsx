@@ -3,7 +3,7 @@ import { NoData } from '@devlink3/NoData';
 import { type FC } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { useJobDashboard } from '@/context/JobDashboard';
+import { useJobDashboard } from '@/job/hooks';
 
 const TenureAndExpSummary = () => {
   const {

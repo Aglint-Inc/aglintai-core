@@ -17,7 +17,7 @@ import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UITextField from '@/components/Common/UITextField';
 import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobDashboard } from '@/context/JobDashboard';
+import { useJobDashboard } from '@/job/hooks';
 import { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';

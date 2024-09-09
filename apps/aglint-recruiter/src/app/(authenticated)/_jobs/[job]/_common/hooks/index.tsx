@@ -8,6 +8,7 @@ export { useApplicationsInitial } from './useApplicationsInitial';
 export { useApplicationsLocations } from './useApplicationsLocations';
 export { useApplicationsStore } from './useApplicationsStore';
 export { useJob } from './useJob';
+export { useJobDashboard } from './useJobDashboard';
 export { useJobDashboardActions } from './useJobDashboardActions';
 export { useJobDashboardFilters } from './useJobDashboardFilters';
 export { useJobDashboardInitial } from './useJobDashboardInitial';
