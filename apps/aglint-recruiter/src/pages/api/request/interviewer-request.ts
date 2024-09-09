@@ -28,6 +28,7 @@ export default async function handler(
         .select()
         .eq('session_id', parsed.session_id),
     );
+    //
     const [application] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
