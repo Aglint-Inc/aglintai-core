@@ -32,12 +32,3 @@ export type SectionRequests = {
   // eslint-disable-next-line no-unused-vars
   [id in keyof RequestResponse | 'standard_request']: number;
 };
-export const requestTypes: {
-  title: keyof RequestResponse;
-  iconName: string;
-}[] = [
-  { title: 'schedule_request', iconName: 'calendar_add_on' },
-  { title: 'reschedule_request', iconName: 'event_repeat' },
-  { title: 'cancel_schedule_request', iconName: 'event_busy' },
-  { title: 'decline_request', iconName: 'free_cancellation' },
-];

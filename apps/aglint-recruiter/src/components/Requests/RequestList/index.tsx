@@ -14,25 +14,28 @@ import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Columns, LayoutList } from 'lucide-react';
 import { useState } from 'react';
-import { useRequestCount } from '../Dashboard/hooks';
-import FilterAndSorting from '../FiltersAndSorting';
-import { RequestCard } from './RequestCard';
+import { RequestCard } from '../_common/components/RequestCard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { RequestsSectionDefaultData } from '../_common/constant';
+import { useRequestCount } from '../_common/hooks';
+import RequestListFilter from '../_common/components/RequestListFilter';
 
-function RequestSections() {
+function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
   const {
-    requests: { data, isPlaceholderData, isFetched },
+    requests: { data, isFetched },
     filters,
   } = useRequests();
   const { recruiterUser } = useAuthDetails();
   const { data: requestCount } = useRequestCount();
 
-  const defaults = sectionDefaultsData.map(({ sectionName, ...rest }) => ({
-    ...rest,
-    sectionName,
-    requests: data?.[sectionName],
-  }));
+  const defaults = RequestsSectionDefaultData.map(
+    ({ sectionName, ...rest }) => ({
+      ...rest,
+      sectionName,
+      requests: data?.[sectionName],
+    }),
+  );
 
   const isFilterApplied =
     filters.status.length > 0 ||
@@ -176,7 +179,7 @@ function RequestSections() {
         </div>
       </div>
       <div className='flex justify-end'>
-        <FilterAndSorting />
+        <RequestListFilter />
         <Tabs
           value={view}
           onValueChange={(value) => setView(value as 'list' | 'kanban')}
@@ -196,53 +199,4 @@ function RequestSections() {
   );
 }
 
-export default RequestSections;
-
-export const sectionDefaultsData = [
-  {
-    requests: [],
-    sectionName: 'urgent_request',
-    sectionIconName: 'flag_2',
-    color: 'warning',
-  },
-  {
-    requests: [],
-    sectionName: 'schedule_request',
-
-    sectionIconName: 'calendar_add_on',
-    color: 'neutral',
-  },
-  {
-    requests: [],
-    sectionName: 'reschedule_request',
-
-    sectionIconName: 'event_repeat',
-    color: 'neutral',
-  },
-  {
-    requests: [],
-    sectionName: 'cancel_schedule_request',
-
-    sectionIconName: 'event_busy',
-    color: 'neutral',
-  },
-  {
-    requests: [],
-    sectionName: 'decline_request',
-
-    sectionIconName: 'free_cancellation',
-    color: 'neutral',
-  },
-  {
-    requests: [],
-    sectionName: 'completed_request',
-
-    sectionIconName: 'check_circle',
-    color: 'success',
-  },
-] as readonly {
-  requests: Request[];
-  sectionName: keyof RequestResponse;
-  sectionIconName: string;
-  color: string;
-}[];
+export default RequestList;

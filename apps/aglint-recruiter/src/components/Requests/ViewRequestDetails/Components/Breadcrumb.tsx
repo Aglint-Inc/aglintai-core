@@ -42,7 +42,7 @@ const RequestDetailsBreadcrumb: React.FC<BreadcrumbComponentProps> = ({
           <BreadcrumbLink
             href='#'
             onClick={() => {
-              router.replace('/requests?tab=requests');
+              router.replace('/requests');
             }}
           >
             Requests

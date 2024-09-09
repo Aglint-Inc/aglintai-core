@@ -11,11 +11,11 @@ import { cn } from '@lib/utils';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { getStatusColor } from '../../utils';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
 import { Notebook } from 'lucide-react';
 import Link from 'next/link';
+import { getStatusColor } from '../../utils/getStatusColor';
 
 type RequestProps = RequestType & { isExpanded?: boolean };
 

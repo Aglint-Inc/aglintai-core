@@ -7,10 +7,9 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
+import FilterHeader from '@/components/Common/FilterHeader';
 
-import FilterHeader from '../../Common/FilterHeader';
-
-function FilterAndSorting() {
+function RequestListFilter() {
   const [candidateAndJobs, setCandidateAndJobs] =
     useState<Awaited<ReturnType<typeof getCandidateList>>>(null);
   const {
@@ -207,4 +206,4 @@ function FilterAndSorting() {
   );
 }
 
-export default FilterAndSorting;
+export default RequestListFilter;

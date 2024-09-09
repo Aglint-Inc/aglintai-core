@@ -1,12 +1,15 @@
 import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { RequestsWrapper } from '@devlink2/RequestsWrapper';
 import { Stack } from '@mui/material';
-
-import { sectionDefaultsData } from '../RequestSections';
-import Section from '../RequestSections/Section';
-import FilterAndSorting from './FiltersAndSorting';
-import { useCompletedRequests } from './hooks';
-import { setCompletedMode, useCompletedRequestsStore } from './store';
+import { useCompletedRequests } from '../_common/hooks/useCompletedRequests';
+import {
+  setCompletedMode,
+  useCompletedRequestsStore,
+} from '../_common/Context/store';
+import { RequestProvider } from '@/context/RequestContext';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
 
 function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { completedFilters } = useCompletedRequestsStore();
@@ -34,18 +37,28 @@ function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
               },
             }}
           />
-          {<FilterAndSorting />}
+          {<RequestHistoryFilter />}
         </Stack>
       }
       slotRequestSection={
-        <Section
-          requests={completedRequests ? [...completedRequests] : []}
-          sectionName={'all_completed_requests'}
-          sectionIconName={sectionDefaultsData[5].sectionIconName}
-          color={sectionDefaultsData[5].color}
-          isLoadingRequests={status === 'pending'}
-          showEmptyMessage={completedRequests?.length === 0}
-        />
+        <>
+          <>
+            <div>{capitalizeFirstLetter('all_completed_requests')}</div>
+            <div>
+              {(completedRequests ?? []).map((props, i) => (
+                <RequestProvider key={props.id ?? i} request_id={props.id}>
+                  <RequestCard
+                    {...{
+                      ...props,
+                      index: i,
+                      isExpanded: false,
+                    }}
+                  />
+                </RequestProvider>
+              ))}
+            </div>
+          </>
+        </>
       }
       slotNavigationPills={<></>}
     />
