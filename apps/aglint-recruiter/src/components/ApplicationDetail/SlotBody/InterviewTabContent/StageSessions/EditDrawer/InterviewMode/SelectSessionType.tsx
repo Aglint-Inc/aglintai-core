@@ -3,7 +3,7 @@ import { setEditSession, useEditSessionDrawerStore } from '../store';
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+} from '@/job/interview-plan/components/sessionForms';
 
 function SelectSessionType() {
   const { editSession } = useEditSessionDrawerStore((state) => ({

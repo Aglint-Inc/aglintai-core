@@ -26,8 +26,8 @@ import { Columns, LayoutList } from 'lucide-react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
-import { RequestCard } from '../_common/Components/RequestCard';
-import RequestListFilter from '../_common/Components/RequestListFilter';
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestListFilter from '../_common/components/RequestListFilter';
 import {
   Collapsible,
   CollapsibleContent,

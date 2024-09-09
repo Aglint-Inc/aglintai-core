@@ -18,7 +18,6 @@ import React, {
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import { WarningSvg } from '@/components/Common/warningSvg';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';

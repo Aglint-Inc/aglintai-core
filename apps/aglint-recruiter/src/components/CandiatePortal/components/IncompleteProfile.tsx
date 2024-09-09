@@ -5,7 +5,7 @@ import { TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { useCandidatePortal } from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+import { useCandidatePortal } from '@/candidate/authenticated/hooks';
 
 function IncompleteProfile() {
   const { application_id } = useCandidatePortal();
