@@ -6,9 +6,8 @@ import { Button } from '@components/ui/button';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import type { Request as RequestType } from '@/queries/requests/types';
-
-import CandidateDetails from './Components/CandidateDetails';
 import SessionsCardAndActions from './Components/SessionsCardAndActions';
+import CandidateDetails from './Components/CandidateDetails';
 import RequestProgress from './RequestProgress';
 
 function RequestDetails({ request }: { request: RequestType; index: number }) {
