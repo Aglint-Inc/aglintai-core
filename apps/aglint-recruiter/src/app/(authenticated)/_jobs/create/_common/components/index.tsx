@@ -13,7 +13,7 @@ import {
 } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { WarningSvg } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+import { WarningSvg } from '@/components/Common/warningSvg';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobs } from '@/jobs/hooks';
 import { Form } from '@/jobs/types';

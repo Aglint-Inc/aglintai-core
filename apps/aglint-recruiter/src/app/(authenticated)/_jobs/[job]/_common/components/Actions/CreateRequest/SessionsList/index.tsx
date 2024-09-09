@@ -8,7 +8,7 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+} from '@/job/interview-plan/components/sessionForms';
 
 export type sessionType = {
   id: string;

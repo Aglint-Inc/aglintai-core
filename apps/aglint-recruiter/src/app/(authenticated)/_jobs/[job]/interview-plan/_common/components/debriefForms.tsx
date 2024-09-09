@@ -15,6 +15,7 @@ import React, {
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
+import { WarningSvg } from '@/components/Common/warningSvg';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';
@@ -26,7 +27,7 @@ import { capitalize } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 
 import { RoleIcon } from '.';
-import { DropDown, WarningSvg } from './sessionForms';
+import { DropDown } from './sessionForms';
 
 type DebriefFormProps = Pick<
   InterviewSessionType,

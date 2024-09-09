@@ -71,7 +71,7 @@ import InterviewDrawers from './sideDrawer';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
-const JobNewInterviewPlanDashboard = () => {
+export const JobNewInterviewPlanDashboard = () => {
   const { initialLoad, job } = useJobInterviewPlan();
   return initialLoad ? (
     job ? (
@@ -85,8 +85,6 @@ const JobNewInterviewPlanDashboard = () => {
     </Stack>
   );
 };
-
-export default JobNewInterviewPlanDashboard;
 
 const InterviewPlanPage = () => {
   const {

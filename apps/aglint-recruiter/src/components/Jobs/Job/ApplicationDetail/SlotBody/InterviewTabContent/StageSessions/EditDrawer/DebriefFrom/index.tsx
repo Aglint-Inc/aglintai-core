@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   DropDown,
   ScheduleTypeField,
-} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+} from '@/job/interview-plan/components/sessionForms';
 import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';

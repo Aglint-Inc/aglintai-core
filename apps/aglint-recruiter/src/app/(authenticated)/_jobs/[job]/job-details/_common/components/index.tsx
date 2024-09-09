@@ -20,6 +20,8 @@ import {
   useState,
 } from 'react';
 
+import Loader from '@/components/Common/Loader';
+import { WarningSvg } from '@/components/Common/warningSvg';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -30,9 +32,6 @@ import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
-
-import Loader from '../../../../../../../components/Common/Loader';
-import { WarningSvg } from '../../../../../../../components/Jobs/Job/Interview-Plan/sessionForms';
 
 export const JobDetailsDashboard = () => {
   const { jobLoad, job } = useJob();

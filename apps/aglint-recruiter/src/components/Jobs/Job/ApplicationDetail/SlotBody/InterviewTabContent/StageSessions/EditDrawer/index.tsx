@@ -5,7 +5,7 @@ import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Drawer, Stack } from '@mui/material';
 
 import UITextField from '@/components/Common/UITextField';
-import { ScheduleTypeField } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 
 import DebriedForm from './DebriefFrom';
 import SessionDuration from './DurationDropdown';

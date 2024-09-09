@@ -6,7 +6,7 @@ import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
 import { useRouter } from 'next/router';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import { DropDown } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+import { DropDown } from '@/job/interview-plan/components/sessionForms';
 import { useInterviewModules } from '@/queries/interview-modules';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';

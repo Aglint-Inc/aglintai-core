@@ -18,12 +18,12 @@ import { useMemo, useState } from 'react';
 import Avatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+} from '@/job/interview-plan/components/sessionForms';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
 import { getFullName } from '@/utils/jsonResume';
 import toast from '@/utils/toast';
