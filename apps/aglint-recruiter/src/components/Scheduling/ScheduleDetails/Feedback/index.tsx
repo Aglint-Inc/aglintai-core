@@ -445,9 +445,7 @@ const InterviewerFeedback = ({
                             ).format('hh:mm')}`}</span>
                           </div>
 
-                          <Badge
-                            className='flex items-center space-x-1'
-                          >
+                          <Badge className='flex items-center space-x-1'>
                             <Circle size={12} />
                             <span>{session[0].session.status}</span>
                           </Badge>

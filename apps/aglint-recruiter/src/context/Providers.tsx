@@ -2,7 +2,6 @@
 import { DevlinkMainProvider } from '@/context/DevlinkContext';
 import { PostHogProvider } from 'posthog-js/react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
-import JobsProvider from '../context/JobsContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
 import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -14,6 +13,7 @@ import WorkflowsProvider from './Workflows';
 import { ThemeProvider } from '@components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
 import { TooltipProvider } from '@components/ui/tooltip';
+import { JobsProvider } from '@/jobs/contexts';
 
 export const PrivateProviders = ({
   children,

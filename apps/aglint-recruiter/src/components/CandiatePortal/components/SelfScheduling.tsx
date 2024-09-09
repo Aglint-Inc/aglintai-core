@@ -3,9 +3,8 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
-import { schedule } from '@/app/api/candidate_portal/home_page/route';
-
-import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
+import { type schedule } from '@/api/candidate_portal/home_page/route';
+import { formatSessions } from '@/job/utils';
 
 function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
   const latestschedule = scheduleData.sort((a, b) =>

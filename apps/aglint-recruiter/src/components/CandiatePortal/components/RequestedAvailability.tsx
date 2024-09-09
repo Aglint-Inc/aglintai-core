@@ -7,7 +7,7 @@ import React from 'react';
 import {
   type apiHomepageResponse,
   type availability,
-} from '@/app/api/candidate_portal/home_page/route';
+} from '@/api/candidate_portal/home_page/route';
 import dayjs from '@/utils/dayjs';
 
 function RequestedAvailability({
