@@ -113,7 +113,6 @@ export default function FilterHeader({
             )}
             <div className='flex flex-row justify-between flex-grow'>
               <div className='flex flex-row gap-2 items-center'>
-                <span className='text-sm text-neutral-500'>Filters</span>
                 <div className='flex flex-row gap-2'>
                   <FiltersComponent
                     filters={filters}
