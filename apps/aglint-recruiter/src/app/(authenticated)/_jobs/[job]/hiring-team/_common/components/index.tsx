@@ -30,7 +30,7 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 
-const JobHiringTeamDashboard = () => {
+export const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
@@ -265,5 +265,3 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
     />
   );
 };
-
-export default JobHiringTeamDashboard;

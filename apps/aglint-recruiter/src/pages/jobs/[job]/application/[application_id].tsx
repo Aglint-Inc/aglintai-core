@@ -1,4 +1,4 @@
-import ApplicationDetail from '@/components/Jobs/Job/ApplicationDetail';
+import ApplicationDetail from '@/components/ApplicationDetail';
 import { JobProvider } from '@/job/contexts';
 
 function ApplicationDetailPage() {

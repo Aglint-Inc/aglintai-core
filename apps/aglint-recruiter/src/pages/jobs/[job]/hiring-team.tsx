@@ -1,6 +1,5 @@
 import Layout from 'src/app/(authenticated)/_jobs/[job]/hiring-team/layout';
-
-import Page from '@/components/Jobs/Job/Hiring-Team';
+import Page from 'src/app/(authenticated)/_jobs/[job]/hiring-team/page';
 
 const JobHiringTeamPage = () => {
   return <Page />;

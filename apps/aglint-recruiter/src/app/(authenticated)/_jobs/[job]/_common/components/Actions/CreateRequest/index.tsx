@@ -5,15 +5,15 @@ import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
+import {
+  RangePicker,
+  RequestOption,
+} from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useApplications, useJob } from '@/job/hooks';
 import { useAllMembers } from '@/queries/members';
 
-import {
-  RangePicker,
-  RequestOption,
-} from '../../../../../../../../components/Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
 import { type sessionType, SessionList } from './SessionsList';
 
 function CreateRequest({

@@ -39,6 +39,9 @@
       "@/job/workflows/*": [
         "./src/app/(authenticated)/_jobs/[job]/workflows/_common/*"
       ],
+      "@/job/hiring-team/*": [
+        "./src/app/(authenticated)/_jobs/[job]/hiring-team/_common/*"
+      ],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],
