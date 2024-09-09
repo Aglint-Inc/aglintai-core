@@ -42,7 +42,8 @@ export default function Component({ params }) {
   const isAllSet =
     !isPorfileInComplete &&
     upcoming?.length === 0 &&
-    availability?.length === 0;
+    availability?.length === 0 &&
+    schedule?.length === 0;
 
   return (
     <div className='flex flex-col min-h-screen'>
