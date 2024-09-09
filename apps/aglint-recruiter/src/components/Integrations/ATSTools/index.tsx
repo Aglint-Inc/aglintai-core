@@ -12,9 +12,9 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import ATSPopUps from '../ATSPopUps';
 import { type ATSType, type PopUpReasonTypes } from '../types';
 import { updateIntegrations } from '../utils';
-import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
-import LeverLogo from '@public/images/svg/lever-logo.svg';
-import AshbyLogo from '@public/images/svg/ashby-logo.svg';
+// import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
+// import LeverLogo from '@public/images/svg/lever-logo.svg';
+// import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
 function ATSTools({ integrations, refetch }) {
   const { toast } = useToast();
@@ -280,7 +280,8 @@ function ATSTools({ integrations, refetch }) {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
       isConnected: integrations?.greenhouse_key,
-      logo: <GreenHouseLogo />,
+      logo: <></>,
+      // logo: <GreenHouseLogo />,
       primaryText: integrations?.greenhouse_key ? 'Settings' : 'Connect',
       secondaryText: integrations?.greenhouse_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -300,7 +301,8 @@ function ATSTools({ integrations, refetch }) {
       name: 'lever' as ATSType,
       url: 'lever.co',
       isConnected: integrations?.lever_key,
-      logo: <LeverLogo />,
+      logo: <></>,
+      // logo: <LeverLogo />,
       primaryText: integrations?.lever_key ? 'Settings' : 'Connect',
       secondaryText: integrations?.lever_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -319,7 +321,8 @@ function ATSTools({ integrations, refetch }) {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
       isConnected: integrations?.ashby_key,
-      logo: <AshbyLogo />,
+      logo: <></>,
+      // logo: <AshbyLogo />,
       primaryText: integrations?.ashby_key ? 'Settings' : 'Connect',
       secondaryText: integrations?.ashby_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {

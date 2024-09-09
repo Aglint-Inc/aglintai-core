@@ -54,6 +54,8 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
   '/requests/[id]': ['job_module'],
+  '/requests/history': ['job_module'],
+  '/requests/history/[id]': ['job_module'],
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],

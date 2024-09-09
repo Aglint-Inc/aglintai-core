@@ -1,75 +1,86 @@
 import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { RequestsWrapper } from '@devlink2/RequestsWrapper';
-import { Stack } from '@mui/material';
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
+import { useCompletedRequestsStore } from '../_common/Context/store';
+import { useCompletedRequests } from '../_common/hooks';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
-  setCompletedMode,
-  useCompletedRequestsStore,
-} from '../_common/Context/store';
-<<<<<<< HEAD
-import { useCompletedRequests } from '../_common/hooks/useCompletedRequests';
-=======
-import { RequestProvider } from '@/context/RequestContext';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
-import { RequestCard } from '../_common/Components/RequestCard';
->>>>>>> 29d7036c5711e9ba1a63bd406d7115ad181c6c96
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
 
-function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
+function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
   const { data: completedRequests } = useCompletedRequests({
     completedFilters,
   });
+  const { replace } = useRouterPro();
+
+  // Group completed requests by date
+  const groupedRequests = groupRequestsByDate(completedRequests ?? []);
+
   return (
-    <RequestsWrapper
-      slotFilter={
-        <Stack
-          direction={'row'}
-          justifyContent={'space-between'}
-          ml={!openChat ? '28px' : '0px'}
-          width={'100%'}
-        >
-          <ButtonSoft
-            size={1}
-            color={'neutral'}
-            isLeftIcon={true}
-            iconName={'arrow_back'}
-            textButton='Back'
-            onClickButton={{
-              onClick: () => {
-                setCompletedMode(false);
-              },
-            }}
-          />
-          {<RequestHistoryFilter />}
-        </Stack>
-      }
-      slotRequestSection={
-        <>
-          <>
-            <div>{capitalizeFirstLetter('all_completed_requests')}</div>
-            <div>
-              {(completedRequests ?? []).map((props, i) => (
-                <RequestProvider key={props.id ?? i} request_id={props.id}>
-                  <RequestCard
-                    {...{
-                      ...props,
-                      index: i,
-                      isExpanded: false,
-                    }}
-                  />
-                </RequestProvider>
-              ))}
+    <>
+      <div className='px-4 py-8'>
+        <div className='flex flex-row sticky top-0 justify-between items-center mb-8'>
+          <div className='w-[600px]'>
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href='/requests'
+                  onClick={() => replace('/requests')}
+                >
+                  Requests
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink>Completed Requests</BreadcrumbLink>
+              </BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+          <RequestHistoryFilter />
+        </div>
+        <div className='w-[960px] mx-auto'>
+          <h2 className='text-2xl font-bold mb-6'>
+            {capitalizeFirstLetter('all_completed_requests')}
+          </h2>
+          {Object.entries(groupedRequests).map(([date, requests], index) => (
+            <div key={date} className='p-6'>
+              <h3 className='text-xl font-semibold mb-4'>{date}</h3>
+              <div className='flex flex-col gap-4'>
+                {requests.map((props, i) => (
+                  <RequestProvider key={props.id ?? i} request_id={props.id}>
+                    <RequestCard
+                      {...{
+                        ...props,
+                        index: i,
+                        isExpanded: false,
+                      }}
+                    />
+                  </RequestProvider>
+                ))}
+              </div>
             </div>
-          </>
-        </>
-      }
-      slotNavigationPills={<></>}
-    />
+          ))}
+        </div>
+      </div>
+    </>
   );
+}
+
+function groupRequestsByDate(requests) {
+  return requests.reduce((acc, request) => {
+    const date = new Date(request.createdAt).toLocaleDateString();
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(request);
+    return acc;
+  }, {});
 }
 
 export default CompletedRequests;

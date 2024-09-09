@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 export interface CompletedRequests {
-  completedMode: boolean;
   completedFilters?: {
     assigneeList?: string[];
     assignerList?: string[];
@@ -14,7 +13,6 @@ export interface CompletedRequests {
 }
 
 const initialState: CompletedRequests = {
-  completedMode: false,
   completedFilters: {
     assigneeList: [],
     assignerList: [],
@@ -29,11 +27,6 @@ const initialState: CompletedRequests = {
 export const useCompletedRequestsStore = create<CompletedRequests>()(() => ({
   ...initialState,
 }));
-
-export const setCompletedMode = (completedMode: boolean) =>
-  useCompletedRequestsStore.setState({
-    completedMode,
-  });
 
 export const setCompletedFilters = (
   completedFilters: CompletedRequests['completedFilters'],
