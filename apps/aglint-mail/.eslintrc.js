@@ -7,6 +7,8 @@ module.exports = {
     '@vercel/style-guide/eslint/typescript',
     '@vercel/style-guide/eslint/react',
     '@vercel/style-guide/eslint/next',
+    "next/typescript" // typechecking with eslint
+
   ]
     .map(require.resolve)
     .concat(['eslint-config-prettier']),
@@ -52,6 +54,7 @@ module.exports = {
     'unicorn/filename-case': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
+    "@typescript-eslint/no-unused-expressions": "off",
     'camelcase': 'off',
   },
 };

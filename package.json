@@ -18,16 +18,11 @@
   },
   "devDependencies": {
     "prettier": "^3.3.2",
-    "turbo": "^2.0.6"
+    "turbo": "^2.0.14"
   },
   "packageManager": "npm@10.5.2",
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
-  "dependencies": {
-    "lucide-react": "^0.436.0",
-    "react-chartjs-2": "^5.2.0",
-    "recharts": "^2.12.7",
-    "tailwindcss-animate": "^1.0.7"
-  }
+  "dependencies": {}
 }

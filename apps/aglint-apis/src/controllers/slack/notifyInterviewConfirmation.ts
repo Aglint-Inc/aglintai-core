@@ -29,7 +29,6 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
     await executeWorkflowAction(
       notifyInts,
       {
-        logger: reqProgressLogger,
         payload: req.body,
       },
       reqProgressLogger
@@ -41,13 +40,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
   }
 }
 
-const notifyInts = async ({
-  logger,
-  payload,
-}: {
-  payload: any;
-  logger: ProgressLoggerType;
-}) => {
+const notifyInts = async ({payload}: {payload: any}) => {
   const {session_id, application_id} = payload;
 
   const [session_details] = supabaseWrap(
@@ -62,6 +55,7 @@ const notifyInts = async ({
       .from('meeting_interviewers')
       .select()
       .eq('session_id', session_id)
+      .eq('is_confirmed', true)
   );
 
   const [application] = supabaseWrap(
@@ -138,10 +132,4 @@ const notifyInts = async ({
       console.error(err.data);
     }
   }
-  await logger({
-    status: 'completed',
-    meta: {
-      session_id: session_id,
-    },
-  });
 };

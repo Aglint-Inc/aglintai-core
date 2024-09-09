@@ -71,7 +71,6 @@ const Filters = () => {
     name: 'Resume match',
     value: resume_match,
     type: 'filter',
-    iconname: '',
     icon: <></>,
     setValue: (newValue: typeof resume_match) =>
       setFilters({ ['resume_match']: newValue }),
@@ -83,7 +82,6 @@ const Filters = () => {
       name: 'Schedule Status',
       value: badges,
       type: 'filter',
-      iconname: '',
       icon: <></>,
       setValue: (newValue: typeof badges) =>
         setFilters({ ['badges']: newValue }),
@@ -152,8 +150,8 @@ const Filters = () => {
       option: type,
       order: order,
     },
-    setOrder: (payload) => setFilters({ ...payload } as any),
-  } as typeof safeSort;
+    setOrder: (payload) => setFilters({ ...payload } as unknown),
+  };
 
   return (
     <FilterHeader

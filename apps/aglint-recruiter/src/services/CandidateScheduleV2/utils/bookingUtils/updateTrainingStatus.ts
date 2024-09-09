@@ -25,7 +25,7 @@ export const updateTrainingStatus = async (
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/assign-interviewer-training-type`,
       payload,
     );
-  } catch (err) {
+  } catch (_err) {
     // console.log(err);
   }
 };

@@ -1,9 +1,9 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { ScheduleCountStats } from '@devlink3/ScheduleCountStats';
 import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
+import { Skeleton } from '@components/ui/skeleton';
 
 export const Tabs = memo(() => {
   const {
@@ -51,6 +51,6 @@ const TabSkeleton = () => (
       height: '36px',
     }}
   >
-    <Skeleton />
+    <Skeleton className='w-full h-full' />
   </Stack>
 );

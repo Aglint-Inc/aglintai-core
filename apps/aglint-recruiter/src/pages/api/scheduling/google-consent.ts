@@ -9,7 +9,7 @@ const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
   `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
 );
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',

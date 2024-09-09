@@ -8,12 +8,12 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useEffect } from 'react';
 
-import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
 import { useModuleRelations } from '../hooks';
 import { setIsPauseDialogOpen, useInterviewerDetailStore } from '../store';
+import { Calendar } from 'lucide-react';
 
 function PauseDialog() {
   const [selectedType, setSelectedType] = React.useState<
@@ -273,7 +273,7 @@ function PauseDialog() {
                         }}
                         minDate={currentDate}
                         slots={{
-                          openPickerIcon: DateIcon,
+                          openPickerIcon: () => <Calendar size={20} />,
                         }}
                       />
                     </LocalizationProvider>
@@ -288,7 +288,7 @@ function PauseDialog() {
                           });
                         }}
                         slots={{
-                          openPickerIcon: DateIcon,
+                          openPickerIcon: () => <Calendar size={20} />,
                         }}
                       />
                     </LocalizationProvider>

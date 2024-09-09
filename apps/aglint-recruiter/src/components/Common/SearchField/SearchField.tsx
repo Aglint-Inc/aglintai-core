@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/button';
-import { Input } from '@components/ui/input';
 import { Search, X } from 'lucide-react';
 import React, { ChangeEvent } from 'react';
+import UITextField from '../UITextField';
 
 interface SearchFieldProps {
   value: string;
@@ -25,7 +25,8 @@ const SearchField: React.FC<SearchFieldProps> = ({
 }) => {
   return (
     <div className={`relative ${isFullWidth ? 'w-full' : 'w-[250px]'}`}>
-      <Input
+      <UITextField
+        fieldSize={'medium'}
         type='text'
         className='pr-10'
         placeholder={placeholder}
@@ -38,7 +39,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
         {value ? (
           <Button
             variant='ghost'
-            size='icon'
             onClick={onClear}
             className='h-8 w-8 hover:bg-neutral-200'
           >

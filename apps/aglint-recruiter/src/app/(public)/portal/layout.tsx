@@ -54,11 +54,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         </nav>
         <Sheet>
           <SheetTrigger asChild>
-            <Button
-              variant='outline'
-              size='icon'
-              className='shrink-0 md:hidden'
-            >
+            <Button variant='outline' className='shrink-0 md:hidden'>
               <Menu className='h-5 w-5' />
               <span className='sr-only'>Toggle navigation menu</span>
             </Button>
@@ -115,7 +111,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           </form>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='secondary' size='icon' className='rounded-full'>
+              <Button variant='secondary' className='rounded-full'>
                 <CircleUser className='h-5 w-5' />
                 <span className='sr-only'>Toggle user menu</span>
               </Button>

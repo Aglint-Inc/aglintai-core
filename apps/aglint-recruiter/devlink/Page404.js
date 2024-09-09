@@ -37,7 +37,7 @@ export function Page404({
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6532453bd32f85fce0b1c183_Group.svg"
+              src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6532453bd32f85fce0b1c183_Group.svg"
             />
           </_Builtin.Block>
           <_Builtin.Block

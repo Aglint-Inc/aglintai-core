@@ -17,10 +17,7 @@ export type apiHomepageResponse = {
   };
   job: {
     name: string;
-    banner: string;
-    greetings: string;
     description: string;
-    images: string | string[];
   };
   interviewPlan: {
     name: string;
@@ -37,7 +34,10 @@ export type apiHomepageResponse = {
     logo: string;
     socials: SocialsType;
     phone: string;
-    company_overview: string;
+    about: string;
+    banner_image: string;
+    company_images: string[];
+    greetings: string;
   };
   upcoming: apiPortalInterviewsResponse;
 };
@@ -55,6 +55,7 @@ export type schedule = {
 }[];
 
 type sessions = Awaited<ReturnType<typeof getScheudleSessionDetails>>;
+
 export async function POST(req) {
   try {
     const { application_id } = await req.json();
@@ -62,24 +63,22 @@ export async function POST(req) {
     const { data: application } = await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(name,email,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
+        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,email,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
       )
       .eq('id', application_id)
       .single()
       .throwOnError();
 
-    const { data: job } = await supabaseAdmin
-      .from('candidate_portal_job')
-      .select('banner,images,greetings')
-      .eq('application_id', application_id)
+    const { data: recruiter } = await supabaseAdmin
+      .from('recruiter_preferences')
+      .select('banner_image,company_images,greetings,about')
+      .eq('recruiter_id', application.candidates.recruiter.id)
+      .single()
       .throwOnError();
 
     const jobData = {
       name: application.public_jobs.job_title,
       description: application.public_jobs.description,
-      banner: job?.length ? job[0]?.banner : '',
-      images: job?.length ? job[0]?.images : '',
-      greetings: job?.length ? job[0]?.greetings : '',
     };
 
     const candidateData = {
@@ -98,7 +97,10 @@ export async function POST(req) {
       logo: application.candidates.recruiter.logo,
       socials: application.candidates.recruiter.socials,
       phone: application.candidates.recruiter.phone_number,
-      company_overview: application.candidates.recruiter.company_overview,
+      about: recruiter?.about || '',
+      banner_image: recruiter?.banner_image || '',
+      company_images: recruiter?.company_images || [],
+      greetings: recruiter?.greetings || '',
     };
     //availability  ----------------------------------------------------------------
     const { data: availability } = await supabaseAdmin
@@ -111,7 +113,7 @@ export async function POST(req) {
 
     let availabilityData = [] as availability;
     if (avail.length) {
-      let availabilityWithSession = await Promise.all(
+      const availabilityWithSession = await Promise.all(
         avail.map(async (ava) => {
           const sessions = await getAvailabilitySessionDetails(ava.id);
           return {
@@ -129,6 +131,7 @@ export async function POST(req) {
       .from('interview_filter_json')
       .select('id,confirmed_on,session_ids,created_at')
       .eq('application_id', application_id)
+      .is('confirmed_on', null)
       .throwOnError();
 
     const filteredSchudles = filter_json.filter((fil) => !fil.confirmed_on);

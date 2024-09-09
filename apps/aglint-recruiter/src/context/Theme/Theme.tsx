@@ -56,7 +56,7 @@ function Theme({ children }) {
         contrastText: radixColors.whiteA.whiteA12,
       },
       success: {
-        main: radixColors.jade.jade9,
+        main: radixColors.green.green8,
         contrastText: radixColors.whiteA.whiteA12,
       },
 

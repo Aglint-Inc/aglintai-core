@@ -119,7 +119,7 @@ export function AshbyApiKey({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65968273faf591680f660d92_Screen%20Shot%202023-05-17%20at%204.43.30%20PM.png"
+            src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/65968273faf591680f660d92_Screen%20Shot%202023-05-17%20at%204.43.30%20PM.png"
           />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "width-581")} tag="div">
@@ -141,7 +141,7 @@ export function AshbyApiKey({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6596832d98a65d88d35badde_Ashby_Step_2.png"
+            src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6596832d98a65d88d35badde_Ashby_Step_2.png"
           />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "width-581")} tag="div">

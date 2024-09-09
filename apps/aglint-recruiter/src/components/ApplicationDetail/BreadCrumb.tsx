@@ -29,7 +29,7 @@ function BreadCrumb() {
         name: detail?.name || '',
       },
     ]);
-  }, [detail?.name]);
+  }, [detail?.name, job]);
 
   return <>{breadcrum}</>;
 }

@@ -1,8 +1,9 @@
 'use strict';
 
-import { StatusBadge } from '@devlink2/StatusBadge';
+import { Checkbox } from '@components/ui/checkbox';
+
 import { GlobalScheduleCard } from '@devlink3/GlobalScheduleCard';
-import { Checkbox, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -19,6 +20,7 @@ import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
 import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
+import { StatusBadge } from '@devlink2/StatusBadge';
 
 function ScheduleIndividualCard({
   session,
@@ -58,7 +60,7 @@ function ScheduleIndividualCard({
       !(
         (!!allIntegrations?.service_json &&
           allIntegrations?.google_workspace_domain?.split('//')[1] ===
-            user.user_details.email.split('@')[1]) ||
+            user.user_details?.email?.split('@')[1]) ||
         !!(user.user_details.schedule_auth as any)?.access_token
       ),
   );
@@ -85,7 +87,6 @@ function ScheduleIndividualCard({
       slotCheckbox={
         isCheckboxVisible && (
           <Checkbox
-            size='small'
             disabled={
               usersWithErrors.length === users.length ||
               (session?.interview_module

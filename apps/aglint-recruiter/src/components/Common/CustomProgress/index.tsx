@@ -13,7 +13,7 @@ function CustomProgress({
   rotation = 135,
 }) {
   const circumference = 2 * 3.14 * size;
-  let filled = progress < 1 ? progress : progress / 100;
+  const filled = progress < 1 ? progress : progress / 100;
   // filled = filled * 0.75;
   strokeWidth = strokeWidth ? strokeWidth : (size * 2) / 10;
   fillColor = fillColor ? fillColor : 'var(--accent-9)';

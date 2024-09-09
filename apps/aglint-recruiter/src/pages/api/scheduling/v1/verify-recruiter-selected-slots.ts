@@ -22,7 +22,7 @@ import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { api_options, candidate_tz } =
+  const { api_options, candidate_tz } =
     req.body as APIVerifyRecruiterSelectedSlots;
   try {
     const {
@@ -98,7 +98,7 @@ const fetch_details_from_db = async (
   let filered_selected_options: PlanCombinationRespType[] = [];
   if (!is_link_from_email_agent) {
     filered_selected_options = filter_json_data.selected_options.map((plan) => {
-      let updated_plan = { ...plan };
+      const updated_plan = { ...plan };
       updated_plan.sessions = updated_plan.sessions.filter((s) =>
         filter_json_data.session_ids.includes(s.session_id),
       );
@@ -136,7 +136,7 @@ const convertOptionsToDateRangeSlots = (
   verified_options: PlanCombinationRespType[],
   candidate_tz: string,
 ) => {
-  let all_day_plans: SessionsCombType[][][] = [];
+  const all_day_plans: SessionsCombType[][][] = [];
   const sesn_round_cnt = ScheduleUtils.getSessionRounds(
     verified_options[0].sessions.map((s) => ({
       break_duration: s.break_duration,
@@ -148,7 +148,7 @@ const convertOptionsToDateRangeSlots = (
     [int_start_date: string]: PlanCombinationRespType[][];
   } = {};
 
-  for (let slot_option of verified_options) {
+  for (const slot_option of verified_options) {
     const int_start_date = userTzDayjs(slot_option.sessions[0].start_time)
       .tz(candidate_tz)
       .startOf('day')
@@ -182,7 +182,7 @@ const convertOptionsToDateRangeSlots = (
     }
   }
 
-  for (let curr_int_day_slots of Object.values(slot_map)) {
+  for (const curr_int_day_slots of Object.values(slot_map)) {
     const curr_day_plan: DateRangePlansType['interview_rounds'] =
       curr_int_day_slots.map((curr_round_plans) => {
         return {

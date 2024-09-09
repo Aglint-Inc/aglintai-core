@@ -1,10 +1,10 @@
 import { AnalysisSkeleton } from '@devlink/AnalysisSkeleton';
-import { Skeleton } from '@devlink2/Skeleton';
 
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../../Common/Loader';
 import { AnalysisItem } from './Common/AnalysisItem';
+import { Skeleton } from '@components/ui/skeleton';
 
 export const Experience = () => {
   const {
@@ -13,7 +13,7 @@ export const Experience = () => {
   if (status === 'pending')
     return (
       <Loader count={1}>
-        <AnalysisSkeleton slotSkeleton={<Skeleton />} />
+        <AnalysisSkeleton slotSkeleton={<Skeleton className='h-10 w-full' />} />
       </Loader>
     );
   return <AnalysisItem type='experience' />;

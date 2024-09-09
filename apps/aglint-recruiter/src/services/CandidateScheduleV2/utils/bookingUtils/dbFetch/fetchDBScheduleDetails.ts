@@ -33,17 +33,19 @@ export const fetchDBScheduleDetails = async (
     (p1, p2) =>
       dayjsLocal(p1.start_time).unix() - dayjsLocal(p2.start_time).unix(),
   );
-  let start_date_str = dayjsLocal(sorted_plan[0].start_time)
+  const start_date_str = dayjsLocal(sorted_plan[0].start_time)
     .tz(parsed_body.cand_tz)
     .startOf('day')
     .format('DD/MM/YYYY');
-  let end_date_str = dayjsLocal(sorted_plan[sorted_plan.length - 1].start_time)
+  const end_date_str = dayjsLocal(
+    sorted_plan[sorted_plan.length - 1].start_time,
+  )
     .tz(parsed_body.cand_tz)
     .startOf('day')
     .format('DD/MM/YYYY');
   const filered_selected_options: PlanCombinationRespType[] =
     filter_json_data.selected_options?.map((plan) => {
-      let updated_plan = { ...plan };
+      const updated_plan = { ...plan };
       updated_plan.sessions = updated_plan.sessions.filter((s) =>
         filter_json_data.session_ids.includes(s.session_id),
       );

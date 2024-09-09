@@ -89,13 +89,13 @@ export function filterSchedulingOptionsArray({
   if (schedulingOptions.length === 0) {
     return [];
   }
-  let day_filtered_slots: { date: string; count: number }[] = [];
-  for (let curr_day_slots of schedulingOptions) {
+  const day_filtered_slots: { date: string; count: number }[] = [];
+  for (const curr_day_slots of schedulingOptions) {
     const [curr_round_slots] = curr_day_slots.interview_rounds;
 
     if (curr_round_slots.plans[0].no_slot_reasons.length === 0) {
       const curr_day_str = curr_round_slots.curr_date;
-      let filtered_slots = curr_round_slots.plans.filter((option) => {
+      const filtered_slots = curr_round_slots.plans.filter((option) => {
         if (option.sessions.every((s) => !s.is_conflict)) return true;
 
         const slot_conflicts: SessionCombinationRespType['conflict_types'] =

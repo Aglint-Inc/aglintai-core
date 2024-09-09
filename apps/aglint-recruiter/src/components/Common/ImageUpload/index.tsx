@@ -1,7 +1,7 @@
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Avatar, Stack } from '@mui/material';
+import { Building, User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -103,17 +103,9 @@ function ImageUpload({
               variant='square'
             >
               {router.route.includes(ROUTES['/profile']()) ? (
-                <GlobalIcon
-                  iconName='UserSolo'
-                  size={6}
-                  color='var(--neutral-11)'
-                />
+                <User size={6} />
               ) : (
-                <GlobalIcon
-                  iconName='CompanyOutlinedBig'
-                  size={6}
-                  color='var(--neutral-11)'
-                />
+                <Building size={6} />
               )}
             </Avatar>
             {/* {image && (

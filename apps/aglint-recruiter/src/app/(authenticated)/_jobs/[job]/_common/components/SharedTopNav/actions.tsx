@@ -76,7 +76,12 @@ const Sync = () => {
       </div>
 
       <OptimisticWrapper loading={load}>
-        <Button variant='outline' onClick={handleSync} className='w-auto'>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={handleSync}
+          className='w-auto'
+        >
           <RefreshCw className='w-3 h-5 mr-3' strokeWidth={1.5} />
           Sync job
         </Button>
@@ -230,7 +235,7 @@ const Dropdown = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='outline' size='icon' className='h-8 w-8 rounded-md'>
+          <Button variant='outline' size='sm'>
             <MoreHorizontal className='h-4 w-4' />
             <span className='sr-only'>Open menu</span>
           </Button>

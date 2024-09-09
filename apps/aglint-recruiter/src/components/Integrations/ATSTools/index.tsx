@@ -1,24 +1,20 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalIcon } from '@devlink/GlobalIcon';
-import { IntegrationCard } from '@devlink2/IntegrationCard';
-import { IconButton, TextField } from '@mui/material';
+import { useToast } from '@components/hooks/use-toast';
+import { Input } from '@components/ui/input';
+
+import { IntegrationCard } from '../components/IntegrationCard';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import ATSPopUps from '../ATSPopUps';
 import { type ATSType, type PopUpReasonTypes } from '../types';
-import {
-  AshbyLogo,
-  GreenHouseLogo,
-  LeverLogo,
-  updateIntegrations,
-} from '../utils';
+import { updateIntegrations } from '../utils';
+// import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
+// import LeverLogo from '@public/images/svg/lever-logo.svg';
+// import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
 function ATSTools({ integrations, refetch }) {
   const { toast } = useToast();
@@ -27,7 +23,6 @@ function ATSTools({ integrations, refetch }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
-  const [hideApiKey, setHideApiKey] = useState(true);
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(null);
   // const { data: integrations, refetch } = useAllIntegrations();
@@ -285,70 +280,62 @@ function ATSTools({ integrations, refetch }) {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
       isConnected: integrations?.greenhouse_key,
-      logo: <GreenHouseLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={integrations?.greenhouse_key ? 'Settings' : 'Connect'}
-          secondaryText={
-            integrations?.greenhouse_key ? 'Disconnect' : 'Learn How'
-          }
-          secondaryAction={() => {
-            setLoading(false);
-            if (integrations.greenhouse_key) disConnectApi('greenhouse');
-            else readDocs('greenhouse');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (integrations.greenhouse_key)
-              router.push('/integrations/greenhouse');
-            else connectApi('greenhouse');
-          }}
-        />
-      ),
+      logo: <></>,
+      // logo: <GreenHouseLogo />,
+      primaryText: integrations?.greenhouse_key ? 'Settings' : 'Connect',
+      secondaryText: integrations?.greenhouse_key ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (integrations.greenhouse_key)
+          router.push('/integrations/greenhouse');
+        else connectApi('greenhouse');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (integrations.greenhouse_key) disConnectApi('greenhouse');
+        else readDocs('greenhouse');
+      },
+      learnHowLink: 'https://developers.greenhouse.io/harvest.html',
     },
     {
       name: 'lever' as ATSType,
       url: 'lever.co',
       isConnected: integrations?.lever_key,
-      logo: <LeverLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={integrations?.lever_key ? 'Settings' : 'Connect'}
-          secondaryText={integrations?.lever_key ? 'Disconnect' : 'Learn How'}
-          secondaryAction={() => {
-            setLoading(false);
-            if (integrations.lever_key) disConnectApi('lever');
-            else readDocs('lever');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (integrations.lever_key) updateApi('lever');
-            else connectApi('lever');
-          }}
-        />
-      ),
+      logo: <></>,
+      // logo: <LeverLogo />,
+      primaryText: integrations?.lever_key ? 'Settings' : 'Connect',
+      secondaryText: integrations?.lever_key ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (integrations.lever_key) updateApi('lever');
+        else connectApi('lever');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (integrations.lever_key) disConnectApi('lever');
+        else readDocs('lever');
+      },
+      learnHowLink: 'https://hire.lever.co/developer/documentation',
     },
     {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
       isConnected: integrations?.ashby_key,
-      logo: <AshbyLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={integrations?.ashby_key ? 'Settings' : 'Connect'}
-          secondaryText={integrations?.ashby_key ? 'Disconnect' : 'Learn How'}
-          secondaryAction={() => {
-            setLoading(false);
-            if (integrations.ashby_key) disConnectApi('ashby');
-            else readDocs('ashby');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (integrations.ashby_key) updateApi('ashby');
-            else connectApi('ashby');
-          }}
-        />
-      ),
+      logo: <></>,
+      // logo: <AshbyLogo />,
+      primaryText: integrations?.ashby_key ? 'Settings' : 'Connect',
+      secondaryText: integrations?.ashby_key ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (integrations.ashby_key) updateApi('ashby');
+        else connectApi('ashby');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (integrations.ashby_key) disConnectApi('ashby');
+        else readDocs('ashby');
+      },
+      learnHowLink: 'https://developers.ashbyhq.com/',
     },
   ];
   return (
@@ -357,45 +344,23 @@ function ATSTools({ integrations, refetch }) {
         {atsTools.map((item, i) => {
           return (
             <IntegrationCard
-              onClickCopyLink={{
-                onClick: () => {
-                  window.open('https://' + item.url);
-                },
-              }}
-              isConnectedVisible={!!item.isConnected}
               key={i}
+              slotLogo={item.logo}
               textName={capitalize(item.name)}
               textLink={item.url}
-              slotLogo={<>{item.logo}</>}
-              slotButton={item.buttons}
+              isConnected={item.isConnected}
+              primaryText={item.primaryText}
+              secondaryText={item.secondaryText}
+              primaryAction={item.primaryAction}
+              secondaryAction={item.secondaryAction}
+              learnHowLink={item.learnHowLink}
+              onClick={() => window.open('https://' + item.url)}
             />
           );
         })}
       </>
       <ATSPopUps // popup for Hr tools
-        popUpBody={
-          <TextField
-            type={hideApiKey ? 'password' : 'text'}
-            fullWidth
-            inputRef={inputRef}
-            placeholder='Enter API Key'
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  onClick={() => {
-                    setHideApiKey((pre) => !pre);
-                  }}
-                >
-                  {hideApiKey ? (
-                    <GlobalIcon iconName='visibility' />
-                  ) : (
-                    <GlobalIcon iconName='visibility_off' />
-                  )}
-                </IconButton>
-              ),
-            }}
-          />
-        }
+        popUpBody={<Input ref={inputRef} placeholder='Enter API Key' />}
         close={close}
         isOpen={isOpen}
         action={action}
@@ -408,51 +373,3 @@ function ATSTools({ integrations, refetch }) {
 }
 
 export default ATSTools;
-
-function CardButtons({
-  primaryAction,
-  secondaryAction,
-  primaryText,
-  secondaryText,
-}: {
-  primaryAction: () => void;
-  secondaryAction: () => void;
-  primaryText: string;
-  secondaryText: string;
-}) {
-  return (
-    <>
-      <ButtonSoft
-        size='2'
-        isLeftIcon={false}
-        isRightIcon={false}
-        color={'neutral'}
-        onClickButton={{
-          onClick: secondaryAction,
-        }}
-        textButton={secondaryText}
-      />
-      {primaryText !== 'Connect' ? (
-        <ButtonSoft
-          size='2'
-          isLeftIcon={false}
-          isRightIcon={false}
-          onClickButton={{
-            onClick: primaryAction,
-          }}
-          textButton={primaryText}
-        />
-      ) : (
-        <ButtonSolid
-          size='2'
-          isLeftIcon={false}
-          isRightIcon={false}
-          onClickButton={{
-            onClick: primaryAction,
-          }}
-          textButton={primaryText}
-        />
-      )}
-    </>
-  );
-}

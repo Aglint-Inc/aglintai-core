@@ -1,6 +1,6 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ import { useApplications, useJob } from '@/job/hooks';
 import { useAllMembers } from '@/queries/members';
 
 import { type sessionType, SessionList } from './SessionsList';
-
+import { Skeleton } from '@components/ui/skeleton';
 function CreateRequest({
   setRequest,
   priority,

@@ -11,8 +11,9 @@ export type RolesAndPermissionsContextType = {
   checkPermissions?: (x: DatabaseTable['permissions']['name'][]) => boolean;
   devlinkProps?: (
     x: DatabaseTable['permissions']['name'][],
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   ) => { onClick: null; style: { display: 'none' } } | {};
-  ifAllowed: <T extends Function | ReactNode>(
+  ifAllowed: <T extends any | ReactNode>(
     func: T,
     permission: DatabaseTable['permissions']['name'][],
   ) => T;

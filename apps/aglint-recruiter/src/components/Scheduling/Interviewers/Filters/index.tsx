@@ -1,4 +1,3 @@
-import { ButtonGhost } from '@devlink/ButtonGhost';
 import { QualifiedIcons } from '@devlink2/QualifiedIcons';
 import { Stack } from '@mui/material';
 import React, { useEffect, useState, useTransition } from 'react';
@@ -7,6 +6,8 @@ import SearchField from '@/components/Common/SearchField/SearchField';
 import FilterDropDown from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
 import { useInterviewerList } from '..';
+import { Button } from '@components/ui/button';
+import { RotateCcw } from 'lucide-react';
 
 function Filters({ setFilteredInterviewer }) {
   const { data: interviewers, isLoading } = useInterviewerList();
@@ -134,16 +135,10 @@ function Filters({ setFilteredInterviewer }) {
         />
         {(selectedQualifiedModule.length > 0 ||
           selectedTrainingModule.length > 0) && (
-          <ButtonGhost
-            textButton='Reset All'
-            size={2}
-            color={'neutral'}
-            iconName='refresh'
-            isLeftIcon
-            onClickButton={{
-              onClick: resetFilter,
-            }}
-          />
+          <Button variant='ghost' size='sm' onClick={resetFilter}>
+            <RotateCcw className='mr-2 h-4 w-4' />
+            Reset All
+          </Button>
         )}
       </Stack>
     </div>

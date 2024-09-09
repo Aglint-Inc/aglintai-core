@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -12,10 +13,8 @@ import { cn } from '@lib/utils';
 import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
-import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UITextField from '@/components/Common/UITextField';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/job/hooks';
 import { Form } from '@/jobs/types';
@@ -23,6 +22,7 @@ import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 
 export const useJobForms = (
   fields: JobMetaFormProps['fields'],
@@ -348,22 +348,19 @@ export const JobCoordinator: FC<MetaForms & { label?: boolean }> = memo(
         value: '_',
         start_icon_url: (<UnassignedSvg />) as any,
       });
-    const handleChange: React.ChangeEventHandler<
-      HTMLInputElement | HTMLTextAreaElement
-    > = (e) => {
-      if (e.target.value === '_') onChange(name, null);
-      const coordinator = data.find((c) => c.user_id === e.target.value);
-      if (coordinator) onChange(name, coordinator.user_id);
-    };
+
     const safeValue = value.value ?? '_';
     return (
-      <AvatarSelectDropDown
-        onChange={handleChange}
+      <UISelectDropDown
+        onValueChange={(value) => {
+          if (value === '_') onChange(name, null);
+          const coordinator = data.find((c) => c.user_id === value);
+          if (coordinator) onChange(name, coordinator.user_id);
+        }}
         label={label && capitalizeAll(name)}
         menuOptions={options}
         required={value.required}
-        showMenuIcons
-        value={safeValue}
+        value={safeValue.toString()}
         error={value.error.value}
         helperText={value.error.helper}
       />

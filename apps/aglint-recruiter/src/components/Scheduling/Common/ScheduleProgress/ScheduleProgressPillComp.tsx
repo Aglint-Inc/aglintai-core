@@ -5,18 +5,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/ScheduleProgressPill';
-import { StatusBadge } from '@devlink2/StatusBadge';
+
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import {
+  Calendar,
+  CalendarClock,
+  CheckCircle,
+  FileText,
+  Hourglass,
+  XCircle,
+} from 'lucide-react';
 import { type Ref, forwardRef, memo } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
+import { StatusBadge } from '@devlink2/StatusBadge';
 
 type Enums = DB['public']['Enums'];
 
@@ -160,23 +168,23 @@ export const SessionIcon = ({
 SessionIcon.displayName = 'SessionIcon';
 
 const CompletedIcon = () => {
-  return <GlobalIcon iconName='event_available' weight={'medium'} />;
+  return <CheckCircle size={6} />;
 };
 
 const WaitingIcon = () => {
-  return <GlobalIcon iconName='calendar_clock' weight={'medium'} />;
+  return <CalendarClock size={6} />;
 };
 
 const ConfirmedIcon = () => {
-  return <GlobalIcon iconName='event_upcoming' weight={'medium'} />;
+  return <Calendar size={6} />;
 };
 
 const CancelledIcon = () => {
-  return <GlobalIcon iconName='event_busy' weight={'medium'} />;
+  return <XCircle size={6} />;
 };
 
 const NotScheduledIcon = () => {
-  return <GlobalIcon iconName='hourglass_empty' weight={'medium'} />;
+  return <Hourglass size={6} />;
 };
 
 const IndividualSessionIcon = () => {
@@ -214,7 +222,7 @@ const PanelSessionIcon = () => {
 };
 
 const DebriefSessionIcon = () => {
-  return <GlobalIcon iconName='text_snippet' />;
+  return <FileText size={6} />;
 };
 
 export const statusToColor = (status: ScheduleProgressPillProps['status']) => {

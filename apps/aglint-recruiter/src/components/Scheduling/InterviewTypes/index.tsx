@@ -1,23 +1,22 @@
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonGhost } from '@devlink/ButtonGhost';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { EmptyState } from '@devlink2/EmptyState';
 import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
 import { PageLayout } from '@devlink2/PageLayout';
 import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
+import { Plus, RotateCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
@@ -25,7 +24,6 @@ import ROUTES from '@/utils/routing/routes';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import SearchField from '../../Common/SearchField/SearchField';
 import CreateModuleDialog from './CreateModuleDialog';
 import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
@@ -73,29 +71,21 @@ export function InterviewTypes() {
       <PageLayout
         slotTopbarRight={
           checkPermissions(['interview_types']) && (
-            <Stack direction={'row'} alignItems={'center'} spacing={2}>
-              <ButtonSoft
-                isRightIcon={false}
-                isLeftIcon={true}
-                iconName={'add'}
-                size={1}
-                textButton={'Interview Type'}
-                onClickButton={{
-                  onClick: () => {
-                    setIsCreateDialogOpen(true);
-                  },
-                }}
-              />
-            </Stack>
+            <UIButton
+              variant='default'
+              size='sm'
+              onClick={() => {
+                setIsCreateDialogOpen(true);
+              }}
+              leftIcon={<Plus />}
+            >
+              Interview Type
+            </UIButton>
           )
         }
         slotTopbarLeft={
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href='/scheduling'>Scheduling</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>Interview Types</BreadcrumbPage>
               </BreadcrumbItem>
@@ -112,48 +102,60 @@ export function InterviewTypes() {
               <CreateModuleDialog />
               <InterviewModuleTable
                 slotFilter={
-                  <Stack
-                    direction={'row'}
-                    width={'100%'}
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                  >
-                    <Stack direction={'row'} gap={2}>
-                      <SearchField
+                  <div className='flex flex-row gap-4 justify-between items-center w-full h-8'>
+                    <div className='flex flex-row gap-4 justify-center items-center h-full'>
+                      <UITextField
                         value={textSearch}
-                        onClear={() => setTextSearch('')}
                         placeholder='Search by name.'
                         onChange={(e) => {
                           setTextSearch(e.target.value);
                         }}
+                        fieldSize={'medium'}
                       />
                       <FilterDepartment />
                       <FilterCreatedBy />
                       {(departments.length > 0 || createdBy.length > 0) && (
-                        <ButtonGhost
-                          textButton='Reset All'
-                          iconName='refresh'
-                          size={2}
-                          onClickButton={{
-                            onClick: filterReset,
-                          }}
-                          isLeftIcon
-                          color={'neutral'}
-                        />
+                        <UIButton
+                          variant='ghost'
+                          size='sm'
+                          onClick={filterReset}
+                          leftIcon={<RotateCcw />}
+                        >
+                          Reset All
+                        </UIButton>
                       )}
-                    </Stack>{' '}
+                    </div>
                     <Tabs
                       defaultValue={showArchive ? 'archived' : 'active'}
                       onValueChange={(value) =>
                         setShowArchive(value === 'archived')
                       }
                     >
-                      <TabsList>
-                        <TabsTrigger value='active'>Active</TabsTrigger>
-                        <TabsTrigger value='archived'>Archived</TabsTrigger>
+                      <TabsList
+                        className='flex gap-2'
+                        style={{ height: '32px' }}
+                      >
+                        <TabsTrigger
+                          value='active'
+                          style={{
+                            height: '24px',
+                            padding: '2px 8px',
+                          }}
+                        >
+                          Active
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value='archived'
+                          style={{
+                            height: '24px',
+                            padding: '2px 8px',
+                          }}
+                        >
+                          Archived
+                        </TabsTrigger>
                       </TabsList>
                     </Tabs>
-                  </Stack>
+                  </div>
                 }
                 slotInterviewModuleCard={
                   <Stack width={'100%'} height={'calc(100vh - 112px)'}>
@@ -217,17 +219,16 @@ export function InterviewTypes() {
                                       })}
                                     </AvatarGroup>
                                   ) : (
-                                    <ButtonGhost
-                                      textButton='Add members'
-                                      size={1}
-                                      iconName='add'
-                                      isLeftIcon
-                                      onClickButton={{
-                                        onClick: () => {
-                                          setInitalOpen('qualified');
-                                        },
+                                    <UIButton
+                                      variant='ghost'
+                                      size='sm'
+                                      leftIcon={<Plus />}
+                                      onClick={() => {
+                                        setInitalOpen('qualified');
                                       }}
-                                    />
+                                    >
+                                      Add Member
+                                    </UIButton>
                                   )}
                                 </>
                               }

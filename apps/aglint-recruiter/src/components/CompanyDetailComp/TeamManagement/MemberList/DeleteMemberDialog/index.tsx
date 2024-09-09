@@ -48,7 +48,7 @@ function DeleteMemberDialog({
   });
   function handelFormUpdate(val: Partial<(typeof form)['values']>) {
     const temp = structuredClone(form);
-    for (let item in val) {
+    for (const item in val) {
       if (val[item].length) {
         temp.values[item] = val[item];
         temp.error[item] = false;
@@ -180,7 +180,7 @@ function DeleteMemberDialog({
                     <Stack spacing={1}>
                       Reassign current Interview Types to:
                       <JobCoordinator
-                        // @ts-ignore
+                        // @ts-expect-error
                         name={isInterviewTypesRequire}
                         value={{
                           required: true,
@@ -250,7 +250,7 @@ function TaskAutoComplete({
       placeholder='Choose from the list'
       error={error}
       onChange={(val) => {
-        val && setVal(val.user_id);
+        if (val) setVal(val.user_id);
       }}
       getSelectLabel={(val) =>
         capitalizeFirstLetter(`${val.first_name} ${val.last_name || ''}`)

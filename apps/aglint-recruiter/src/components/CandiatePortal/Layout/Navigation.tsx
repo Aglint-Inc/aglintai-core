@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,12 +8,14 @@ import { usePathname } from 'next/navigation';
 
 import {
   useCandidatePortal,
+  useCandidatePortalMessages,
   useCandidatePortalNavbar,
 } from '@/candidate/authenticated/hooks';
 
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
-import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import NavProfile from './NavProfile';
+// import { ThemeSwitcher } from '../components/ThemeSwitcher';
+// import NavProfile from './NavProfile';
 
 type tabs = 'home' | 'interviews' | 'messages';
 
@@ -21,10 +24,13 @@ export default function Navigation() {
 
   const currentTab = pathname.split('/').filter((a) => a)[2] as tabs;
   const { data, isPending } = useCandidatePortalNavbar();
+  const { data: messages, isPending: messagePending } =
+    useCandidatePortalMessages();
   const { application_id } = useCandidatePortal();
 
-  if (isPending)
+  if (isPending || messagePending)
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
+  const messageNewCount = messages?.filter((mes) => mes.isNew).length || 0;
 
   const { company } = data;
   return (
@@ -51,7 +57,11 @@ export default function Navigation() {
             <Link href={`/candidate/${application_id}/home`}>
               <Button
                 variant='ghost'
-                className={currentTab === 'home' ? 'text-primary' : ''}
+                className={
+                  currentTab === 'home'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }
               >
                 Home
               </Button>
@@ -59,7 +69,11 @@ export default function Navigation() {
             <Link href={`/candidate/${application_id}/interviews`}>
               <Button
                 variant='ghost'
-                className={currentTab === 'interviews' ? 'text-primary' : ''}
+                className={
+                  currentTab === 'interviews'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }
               >
                 Interviews
               </Button>
@@ -67,19 +81,34 @@ export default function Navigation() {
             <Link href={`/candidate/${application_id}/messages`}>
               <Button
                 variant='ghost'
-                className={currentTab === 'messages' ? 'text-primary' : ''}
+                className={
+                  currentTab === 'messages'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }
               >
                 Messages
+                {messageNewCount > 0 && (
+                  <Badge className='ml-2 px-2 py-0.5 text-xs bg-red-500'>
+                    {messageNewCount}
+                  </Badge>
+                )}
               </Button>
             </Link>
           </nav>
 
           <div className='flex items-center space-x-2'>
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher />
             <NavProfile
               application_id={application_id}
               candidate={data?.candidate}
-            />
+            /> */}
+            <Link href={`/candidate/${application_id}/profile`}>
+              <NavProfile
+                application_id={application_id}
+                candidate={data?.candidate}
+              />
+            </Link>
           </div>
         </div>
       </header>

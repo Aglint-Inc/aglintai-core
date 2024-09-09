@@ -39,7 +39,7 @@ const addToQueue = async (
     const act_promises = company_actions
       .filter((c_a) => trig_actions.find((a) => a === c_a.target_api))
       .map(async (act) => {
-        let base_time = dayjsLocal().toISOString();
+        const base_time = dayjsLocal().toISOString();
 
         supabaseWrap(
           await supabaseAdmin.rpc('create_new_workflow_action_log', {

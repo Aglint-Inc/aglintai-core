@@ -19,7 +19,7 @@ export const server_check_permissions = async ({
 }) => {
   try {
     if (!permissions?.length) throw new Error('Permission not provided.');
-    // @ts-ignore
+    // @ts-expect-error
     const jsonDetail = getToken(supabase.storageKey, getVal);
 
     const user_id = jsonDetail.user.id;
@@ -36,7 +36,7 @@ export const server_check_permissions = async ({
     const rec_id = tokenData.app_metadata.role_permissions.recruiter_id;
     let is_allowed = permissions.includes('authorized');
 
-    for (let permission of permissions) {
+    for (const permission of permissions) {
       if (userPermissions.includes(permission)) {
         is_allowed = true;
         break;
@@ -55,8 +55,8 @@ export const server_check_permissions = async ({
   }
 };
 
-function getToken(base: string, func: Function) {
-  let tryNext = true;
+function getToken(base: string, func: any) {
+  const tryNext = true;
   let count = 0;
   let jsonData: {
     access_token: string;

@@ -1,4 +1,3 @@
-import { getFullName } from '@aglint/shared-utils';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Stack } from '@mui/material';
@@ -78,12 +77,13 @@ function ButtonGroupRight({
                           'qualified',
                       )
                       .map((user) => ({
-                        name: getFullName(
-                          user.user_details.first_name,
-                          user.user_details.last_name,
-                        ),
-                        value: user.interview_module_relation?.id,
-                        start_icon_url: user.user_details.profile_image,
+                        email: user.user_details.email,
+                        user_id: user.interview_module_relation?.user_id,
+                        first_name: user.user_details.first_name,
+                        last_name: user.user_details.last_name,
+                        position: user.user_details.position,
+                        profile_image: user.user_details.profile_image,
+                        module_relation_id: user.interview_module_relation?.id,
                       })) || [],
                   );
 
@@ -95,13 +95,14 @@ function ButtonGroupRight({
 
                   setTrainingInterviewers(
                     trainingInterviewers?.map((user) => ({
-                      name: getFullName(
-                        user.user_details.first_name,
-                        user.user_details.last_name,
-                      ),
-                      value: user.interview_module_relation.id,
-                      start_icon_url: user.user_details.profile_image,
-                    })),
+                      email: user.user_details.email,
+                      user_id: user.interview_module_relation?.user_id,
+                      first_name: user.user_details.first_name,
+                      last_name: user.user_details.last_name,
+                      position: user.user_details.position,
+                      profile_image: user.user_details.profile_image,
+                      module_relation_id: user.interview_module_relation?.id,
+                    })) || [],
                   );
 
                   if (trainingInterviewers?.length > 0) {
@@ -110,13 +111,13 @@ function ButtonGroupRight({
                 } else {
                   setDebriefMembers(
                     currentSession?.users?.map((user) => ({
-                      name: getFullName(
-                        user.user_details.first_name,
-                        user.user_details.last_name,
-                      ),
-                      value: user.user_details.user_id,
-                      start_icon_url: user.user_details.profile_image,
-                    })),
+                      email: user.user_details.email,
+                      user_id: user.interview_module_relation?.user_id,
+                      first_name: user.user_details.first_name,
+                      last_name: user.user_details.last_name,
+                      position: user.user_details.position,
+                      profile_image: user.user_details.profile_image,
+                    })) || [],
                   );
                 }
                 setIsEditOpen(true);

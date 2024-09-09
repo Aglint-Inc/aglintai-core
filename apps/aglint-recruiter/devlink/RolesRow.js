@@ -76,7 +76,7 @@ export function RolesRow({
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544eaa04e499de1d6d51aa1_amanda-martinez.jpeg"
+                  src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6544eaa04e499de1d6d51aa1_amanda-martinez.jpeg"
                 />
               </_Builtin.Block>
               <_Builtin.Block
@@ -89,7 +89,7 @@ export function RolesRow({
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
+                  src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
                 />
               </_Builtin.Block>
               <_Builtin.Block
@@ -102,7 +102,7 @@ export function RolesRow({
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9fb3b211dc1973f5b1_john-williams.jpeg"
+                  src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6544ea9fb3b211dc1973f5b1_john-williams.jpeg"
                 />
               </_Builtin.Block>
               <GlobalBadge textBadge="+2 more" color="neutral" size="2" />

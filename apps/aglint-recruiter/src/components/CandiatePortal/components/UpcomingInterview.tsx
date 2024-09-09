@@ -1,5 +1,5 @@
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { dayjsLocal} from '@aglint/shared-utils';
+// import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 
@@ -69,7 +69,7 @@ const UpcomingCard = ({
           </div>
         </div>
       </div>
-      {latestUpcoming.interviewers.map((interviewer, index) => (
+      {/* {latestUpcoming.interviewers.map((interviewer, index) => (
         <div className='flex items-center gap-2 mt-4' key={index}>
           <Avatar className='w-10 h-10 rounded-md overflow-hidden'>
             <AvatarImage
@@ -89,7 +89,7 @@ const UpcomingCard = ({
             <div className='text-sm text-gray-600'>{interviewer.position}</div>
           </div>
         </div>
-      ))}
+      ))} */}
       <div className='flex w-full gap-2'>
         <Button
           className='w-full mt-4'

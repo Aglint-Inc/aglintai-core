@@ -1,11 +1,11 @@
 import { supabaseWrap } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
 import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import {
   AuthProvider,
   useAuthDetails,
@@ -61,12 +61,14 @@ const Google = () => {
               expiry_date: tokens.expiry_date,
             },
           }));
-        } catch (err) {
-          toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'Something went wrong. Please try again.',
-          });
+        } catch (error) {
+          if (error instanceof Error) {
+            toast({
+              variant: 'destructive',
+              title: 'Error',
+              description: 'Something went wrong. Please try again.',
+            });
+          }
         } finally {
           const path = localStorage.getItem('gmail-redirect-path');
           if (path) {

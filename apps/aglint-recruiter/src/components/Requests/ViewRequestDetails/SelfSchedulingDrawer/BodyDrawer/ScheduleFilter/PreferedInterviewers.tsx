@@ -46,7 +46,6 @@ function PreferedInterviewers() {
             preferredInterviewers: users,
           });
         }}
-        disabled={false}
       />
     </Stack>
   );

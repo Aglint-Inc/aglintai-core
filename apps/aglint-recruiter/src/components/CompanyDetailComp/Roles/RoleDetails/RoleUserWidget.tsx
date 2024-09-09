@@ -1,8 +1,6 @@
 import { type RecruiterUserType } from '@aglint/shared-types';
-import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { UserWithRole } from '@devlink/UserWithRole';
-import { Avatar, Stack } from '@mui/material';
+import { Alert, AlertDescription } from '@components/ui/alert';
+import { Badge } from '@components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
 
@@ -26,47 +24,34 @@ export const RoleUserWidget = ({
           <UserCard member={member} key={member.user_id} />
         ))
       ) : (
-        <GlobalEmptyState
-          styleEmpty={{
-            style: {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
-          iconName={'group'}
-          textDesc={'No users found with this role'}
-        />
+        <Alert variant='default' className='bg-neutral-100'>
+          <AlertDescription>No users found with this role</AlertDescription>
+        </Alert>
       )}
     </>
   );
 };
 
 const UserCard = ({ member }) => {
-  if (!member) return;
+  if (!member) return null;
   return (
-    <Stack>
-      <UserWithRole
-        textName={
-          <Link href={`/user/profile/${member.user_id}`}>
+    <div className='flex flex-col space-x-4 p-2'>
+      <div className='flex flex-row'>
+        <div className='flex-grow'>
+          <Link
+            href={`/user/profile/${member.user_id}`}
+            className='font-medium'
+          >
             {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
           </Link>
-        }
-        textRole={member.position}
-        slotBadge={
-          <GlobalBadge
-            color={member.is_suspended ? 'error' : 'success'}
-            textBadge={member.is_suspended ? 'Suspended' : 'Active'}
-          />
-        }
-        slotButton={<></>}
-        slotAvatar={
-          <Avatar
-            src={member.profile_image}
-            variant='rounded'
-            alt={member.first_name}
-            sx={{ height: '100%', width: '100%' }}
-          />
-        }
-      />
-    </Stack>
+          <p className='text-sm text-gray-500'>{member.position}</p>
+        </div>
+        <div>
+          <Badge variant={member.is_suspended ? 'destructive' : 'default'}>
+            {member.is_suspended ? 'Suspended' : 'Active'}
+          </Badge>
+        </div>
+      </div>
+    </div>
   );
 };

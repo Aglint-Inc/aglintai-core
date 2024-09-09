@@ -1,11 +1,16 @@
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Dialog,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
 import { supabase } from '@/utils/supabase/client';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
@@ -101,7 +106,7 @@ function AddInterviewTypeDialog() {
                 disabled={isLoading}
                 disableClearable
                 options={filteredModules}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedModule(value);
                   }
@@ -119,9 +124,8 @@ function AddInterviewTypeDialog() {
                 }}
                 renderInput={(params) => {
                   return (
-                    <UITextField
+                    <TextField
                       {...params}
-                      labelSize='medium'
                       placeholder='Ex. Initial Screening'
                     />
                   );

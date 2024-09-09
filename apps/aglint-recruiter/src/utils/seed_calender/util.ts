@@ -84,7 +84,7 @@ export const seedCalendersUtil = (
         .select()
         .eq('recruiter_id', company_id),
     );
-    let interviewers = supabaseWrap(
+    const interviewers = supabaseWrap(
       await supabaseAdmin
         .from('interview_module_relation')
         .select(
@@ -111,7 +111,7 @@ export const seedCalendersUtil = (
       userTzDayjs(cal_end_date).toISOString(),
     );
 
-    for (let evt of cal_events) {
+    for (const evt of cal_events) {
       await google_cal.updateEventStatus(evt.id, 'cancelled');
     }
     console.log(cal_events.length, 'deleted');

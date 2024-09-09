@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
-import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
@@ -16,6 +15,7 @@ import {
   transformDataSchedules,
 } from '../../schedules-query';
 import { fetchSchedulesCountByUserId } from '../InterviewerDetail/query';
+import { Calendar } from 'lucide-react';
 
 function Interviews({
   allSchedules,
@@ -107,7 +107,7 @@ function Interviews({
                       date != 'undefined' ? (
                         dayjsLocal(date).format('MMM')
                       ) : (
-                        <DateIcon />
+                        <Calendar size={20} />
                       )
                     }
                     slotMyScheduleSubCard={schedules.map(

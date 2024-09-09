@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ApplicantInfoBox } from "./ApplicantInfoBox";
-import { InterviewPlanApplication } from "./InterviewPlanApplication";
 import * as _utils from "./utils";
 import _styles from "./ApplicationDetail.module.css";
 
@@ -33,7 +32,7 @@ export function ApplicationDetail({
         className={_utils.cx(_styles, "applcant-detail-body-scroll")}
         tag="div"
       >
-        {slotTabBody ?? <InterviewPlanApplication />}
+        {slotTabBody}
       </_Builtin.Block>
     </_Component>
   );

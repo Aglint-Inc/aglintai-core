@@ -1,40 +1,73 @@
-import { LoaderSvg } from '@devlink/LoaderSvg';
-import { Integration } from '@devlink2/Integration';
-import { Stack } from '@mui/material';
-
 import { useAllIntegrations } from '@/queries/intergrations';
 
 import ATSTools from './ATSTools';
 import MessagingTools from './MessagingTools';
 import Scheduling from './SchedulingTools';
+import RequestNew from './RequestNewPopUp';
+import { useState } from 'react';
+import { Button } from '@components/ui/button';
 
 function Integrations() {
-  const { data: allIntegrations, refetch, isLoading } = useAllIntegrations();
+  const { data: allIntegrations, refetch } = useAllIntegrations();
+  const [isRequestNewOpen, setIsRequestNewOpen] = useState(false);
 
-  if (isLoading)
-    return (
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        width={'100%'}
-        height={'100vh'}
-        justifyContent={'center'}
-      >
-        <LoaderSvg />
-      </Stack>
-    );
-  else
-    return (
-      <>
-        <Integration
-          slotHrTools={
+  return (
+    <>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8'>
+        <header className='mb-8'>
+          <div className='flex justify-between items-center'>
+            <div>
+              <h1 className='text-lg font-semibold'>Integrations</h1>
+              <p className='text-gray-600 mb-4'>
+                Connect your favorite tools to streamline your recruitment
+                process.
+              </p>
+            </div>
+            <Button size='sm' onClick={() => setIsRequestNewOpen(true)}>
+              Request New
+            </Button>
+            <RequestNew
+              isOpen={isRequestNewOpen}
+              close={() => setIsRequestNewOpen(false)}
+            />
+          </div>
+        </header>
+
+        <section>
+          <h2 className='text-md font-semibold'>ATS</h2>
+          <p className='text-gray-600 mb-4'>
+            Easily manage job postings and candidate information by connecting
+            your preferred ATS.
+          </p>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
             <ATSTools integrations={allIntegrations} refetch={refetch} />
-          }
-          slotScheduling={<Scheduling allIntegrations={allIntegrations} />}
-          slotMessaging={<MessagingTools />}
-        />
-      </>
-    );
+          </div>
+        </section>
+
+        <section>
+          <h2 className='text-md font-semibold'>Scheduling Tools</h2>
+          <p className='text-gray-600 mb-4'>
+            Connect your calendar and video conferencing tools to simplify
+            interview scheduling.
+          </p>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <Scheduling allIntegrations={allIntegrations} />
+          </div>
+        </section>
+
+        <section>
+          <h2 className='text-md font-semibold'>Communication Platforms</h2>
+          <p className='text-gray-600 mb-4'>
+            Connect popular communication tools to enhance your team&apos;s
+            coordination.
+          </p>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <MessagingTools />
+          </div>
+        </section>
+      </div>
+    </>
+  );
 }
 
 export default Integrations;

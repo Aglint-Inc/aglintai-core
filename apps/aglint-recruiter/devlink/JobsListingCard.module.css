@@ -435,6 +435,7 @@
   border-radius: var(--radius-4);
 
   box-shadow: 0 0 0 1.5px #d5ae39;
+  pointer-events: none;
 }
 
 #w-node-_461ea21c-dff4-f2e0-3807-df801cb5bccb-e4f6dd07 {

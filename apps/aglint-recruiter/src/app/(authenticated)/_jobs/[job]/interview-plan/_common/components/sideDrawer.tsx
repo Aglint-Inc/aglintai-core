@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { InterviewPlanEmpty } from '@devlink2/InterviewPlanEmpty';
@@ -7,7 +8,6 @@ import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
@@ -207,14 +207,14 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       if (curr.interviewer_type === 'qualified')
         acc.interviewers.push({
           ...curr.interview_module_relation.recruiter_user,
-          moduleUserId: curr.interview_module_relation.id,
+          module_relation_id: curr.interview_module_relation.id,
           training_status: curr.interview_module_relation.training_status,
           paused: !!curr?.interview_module_relation?.pause_json,
         });
       else
         acc.trainees.push({
           ...curr.interview_module_relation.recruiter_user,
-          moduleUserId: curr.interview_module_relation.id,
+          module_relation_id: curr.interview_module_relation.id,
           training_status: curr.interview_module_relation.training_status,
           paused: !!curr?.interview_module_relation?.pause_json,
         });
@@ -248,9 +248,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       else {
         const {
           // eslint-disable-next-line no-unused-vars
-          session_order,
           // eslint-disable-next-line no-unused-vars
-          interview_plan_id: plan_id,
           ...rest
         } = getSessionPayload(fields, order + 1, interview_plan_id);
         handleEditSession({ ...rest, session_id: id });
@@ -403,9 +401,6 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       else {
         const {
           // eslint-disable-next-line no-unused-vars
-          session_order,
-          // eslint-disable-next-line no-unused-vars
-          interview_plan_id: plan_id,
           ...rest
         } = getDebriefSessionPayload(fields, order + 1, interview_plan_id);
         handleEditDebriefSession({ ...rest, session_id: id });

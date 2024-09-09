@@ -9,7 +9,7 @@ export default function handler(req, res) {
     if (!apiKey) {
       res.status(400).send('api key is needed');
     }
-    let url = `https://harvest.greenhouse.io/v1/job_posts?per_page=500&page=${page}&live=true&active=true`;
+    const url = `https://harvest.greenhouse.io/v1/job_posts?per_page=500&page=${page}&live=true&active=true`;
 
     let decryptedApiKey;
 

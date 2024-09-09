@@ -42,7 +42,7 @@ export const combineSlots = (
       return session_slot;
     };
 
-    let mp = new Map<string, SessionsCombType>();
+    const mp = new Map<string, SessionsCombType>();
     for (const plan_comb of all_plan_combs) {
       const slot_start_time = plan_comb.sessions[0].start_time;
       const slot = mp.get(slot_start_time);
@@ -94,7 +94,7 @@ export const getNextWorkingDay = (
 ) => {
   let nxt_day = curr_day.add(day_gap, 'day');
 
-  let flag = true;
+  const flag = true;
   while (flag) {
     // is curr day holiday
     if (

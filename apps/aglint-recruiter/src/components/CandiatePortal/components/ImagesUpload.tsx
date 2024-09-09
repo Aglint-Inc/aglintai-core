@@ -1,41 +1,61 @@
 import { Card, CardContent } from '@components/ui/card';
 import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  DragEvent,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react';
 
-export default function ImagesUpload() {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  // const [isDragging, setIsDragging] = useState(false);
+export default function ImagesUpload({
+  selectedImages,
+  setSelectedImages,
+}: {
+  setSelectedImages: Dispatch<SetStateAction<File[]>>;
+  selectedImages: File[];
+}) {
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files);
-      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+      const files = newFiles.filter((file) => file.size < 5 * 1000000);
+      // if (newFiles.length !== files.length)
+      //chandruAddToast
+      setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
   };
 
-  // const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  //   setIsDragging(true);
-  // };
+  const handleDragOver = (event: React.DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
 
-  // const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  //   setIsDragging(false);
-  // };
+  const handleDragLeave = (event: React.DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+  };
 
-  // const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  //   setIsDragging(false);
-  //   if (event.dataTransfer.files) {
-  //     const newFiles = Array.from(event.dataTransfer.files);
-  //     setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
-  //   }
-  // };
+  const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+    if (event.dataTransfer.files) {
+      const newFiles = Array.from(event.dataTransfer.files);
+
+      const files = newFiles.filter((file) => file.size < 5 * 1000000);
+      // if (newFiles.length !== files.length)
+      //chandruAddToast
+
+      setSelectedImages((prevFiles) => [...prevFiles, ...files]);
+    }
+  };
 
   const handleRemoveFile = (index: number) => {
-    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setSelectedImages((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
@@ -43,13 +63,13 @@ export default function ImagesUpload() {
       <button
         type='button'
         className={`border-2 w-full border-dashed rounded-lg p-8 text-center ${
-          // isDragging
-          //   ? 'border-primary bg-primary/10' :
-          'border-muted-foreground/25 bg-muted'
+          isDragging
+            ? 'border-primary bg-primary/10'
+            : 'border-muted-foreground/25 bg-muted'
         }`}
-        // onDragOver={handleDragOver}
-        // onDragLeave={handleDragLeave}
-        // onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
         <input
@@ -66,9 +86,9 @@ export default function ImagesUpload() {
         </p>
       </button>
 
-      {selectedFiles.length > 0 && (
+      {selectedImages.length > 0 && (
         <div className='flex flex-col gap-2 mt-4'>
-          {selectedFiles.map((file, index) => (
+          {selectedImages.map((file, index) => (
             <Card
               key={index}
               className='relative h-14 flex flex-row items-center shadow-none'

@@ -1,7 +1,8 @@
+import { RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
+import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
@@ -135,7 +136,11 @@ function CancelScheduleDialog({
                     alignItems={'center'}
                     spacing={1}
                   >
-                    <Radio checked={rea === reason} />
+                    <RadioGroupItem
+                      value={rea}
+                      checked={rea === reason}
+                      id={`radio-${rea}`}
+                    />
                     <Typography
                       variant='body1'
                       color={'var(--neutral-12)'}

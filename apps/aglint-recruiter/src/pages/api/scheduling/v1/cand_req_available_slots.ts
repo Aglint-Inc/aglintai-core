@@ -14,7 +14,7 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let parsed_body = v.parse(schema_candidate_req_availabale_slots, {
+    const parsed_body = v.parse(schema_candidate_req_availabale_slots, {
       ...req.body,
       options: req.body.options || {
         include_conflicting_slots: {},

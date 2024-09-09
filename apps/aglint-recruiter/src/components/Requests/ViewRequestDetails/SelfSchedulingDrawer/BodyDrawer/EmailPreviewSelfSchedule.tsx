@@ -12,21 +12,17 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import toast from '@/utils/toast';
 
-import { useMeetingList } from '../../hooks';
 import { setEmailData, useSelfSchedulingFlowStore } from '../store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
 
 function EmailPreviewSelfSchedule() {
   const [fetching, setFetching] = useState(false);
-  const { data } = useMeetingList();
-  const allSessions = data;
-  const application_id = allSessions[0]?.interview_meeting.application_id;
 
   const { recruiterUser } = useAuthDetails();
 
   const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
     {
-      application_id,
+      is_preview: true,
       organizer_id: recruiterUser.user_id,
     };
 

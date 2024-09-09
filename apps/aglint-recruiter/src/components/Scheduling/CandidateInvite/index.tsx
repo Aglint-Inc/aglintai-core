@@ -4,12 +4,12 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { Page404 } from '@devlink/Page404';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { Container, Dialog, Stack } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
+import { Coffee } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
@@ -343,7 +343,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textSessionDuration={duration}
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<BreakIcon />}
+      slotInterviewtypeIcon={<Coffee size={16} color={'var(--neutral-2)'} />}
       iconName={''}
     />
   );
@@ -355,8 +355,4 @@ const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
       <CompanyLogo companyName={companyName} companyLogo={logo} />
     </Stack>
   );
-};
-
-const BreakIcon = () => {
-  return <GlobalIcon iconName='emoji_food_beverage' />;
 };

@@ -54,21 +54,16 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
   '/requests/[id]': ['job_module'],
+  '/requests/history': ['job_module'],
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/company': ['company_settings_module'],
-  '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
+
   //  For candidateDB module
-  '/candidates': ['authorized'],
-  '/candidates/history': ['authorized'],
-  '/candidates/aglintdb': ['authorized'],
-  '/candidates/search': ['authorized'],
   '/interviewers': ['authorized'],
   '/api/ai/create-embeddings': ['authorized'],
-  '/api/candidatedb/query': ['authorized'],
-  '/api/candidatedb/get-company': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'

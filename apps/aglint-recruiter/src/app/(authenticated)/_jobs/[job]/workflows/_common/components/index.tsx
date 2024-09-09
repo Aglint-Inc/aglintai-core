@@ -7,8 +7,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { WorkflowJobs } from '@devlink/WorkflowJobs';
-import { ButtonSolid } from '@devlink2/ButtonSolid';
-import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -20,17 +18,27 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import JobWorkflow from './list';
+import { Button } from '@components/ui/button';
+import { Bolt } from 'lucide-react';
 
 export const JobWorkflowDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
     job && job?.status !== 'closed' ? (
-      <PageLayout
-        slotTopbarLeft={<BreadCrumbs />}
-        slotTopbarRight={<Actions />}
-        slotBody={<WorkflowJobs slotWorkflowCards={<JobWorkflow />} />}
-      />
+      <div className='flex flex-col min-h-screen'>
+        <header className='flex justify-between sticky top-0 items-center p-4 bg-white border-b'>
+          <div className='flex-1'>
+            <BreadCrumbs />
+          </div>
+          <div>
+            <Actions />
+          </div>
+        </header>
+        <main className='flex-grow'>
+          <WorkflowJobs slotWorkflowCards={<JobWorkflow />} />
+        </main>
+      </div>
     ) : (
       <JobNotFound />
     )
@@ -76,13 +84,10 @@ const Actions = () => {
   return (
     <>
       {manageJob && (
-        <ButtonSolid
-          textButton='Add'
-          size={2}
-          iconName='bolt'
-          isLeftIcon
-          onClickButton={{ onClick: () => setPopup({ open: true }) }}
-        />
+        <Button onClick={() => setPopup({ open: true })} size='sm'>
+          <Bolt className='mr-2 h-4 w-4' />
+          Add
+        </Button>
       )}
       <Settings />
     </>

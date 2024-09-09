@@ -15,7 +15,7 @@ const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
 
 const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
 
-let bucketName = 'resume-job-post';
+const bucketName = 'resume-job-post';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const json = req.body.ats_json;
@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const job_id = req.body.job_id;
   const apiKey = req.body.apikey;
   const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
-  let fileId = uuidv4();
+  const fileId = uuidv4();
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');
   console.log('ats_json_id', json.id);
   console.log('recruiter_id', recruiter_id);
@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     if (json) {
-      let application = json;
+      const application = json;
       if (!application?.candidate?.primaryEmailAddress?.value) {
         console.log('no email in ashby application');
         return res.status(200).json('no email in ashby application');
@@ -64,18 +64,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .json('email already exists in job application table');
       }
       //get candidate info from ashby
-      let candidate = await getCandidate(
+      const candidate = await getCandidate(
         application.candidate.id,
         base64decryptedApiKey,
       );
       if (candidate?.results?.fileHandles[0]?.handle) {
         //get resume info from ashby
-        let resume = await getResume(
+        const resume = await getResume(
           candidate?.results?.fileHandles[0]?.handle,
           base64decryptedApiKey,
         );
         if (resume?.results?.url) {
-          let cand = {
+          const cand = {
             first_name: splitFullName(candidate.results.name).firstName,
             last_name: splitFullName(candidate.results.name).lastName,
             email: application.candidate.primaryEmailAddress.value,
@@ -114,7 +114,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               fileId,
             );
           } else {
-            let candCreated = await createCandidate(cand, recruiter_id);
+            const candCreated = await createCandidate(cand, recruiter_id);
 
             if (candCreated) {
               const res = await uploadResume(fileId, resume.results.url);
@@ -247,7 +247,7 @@ const uploadResume = async (fileId: string, url: string) => {
     throw new Error(`Failed to fetch file from URL: ${responseUrl.statusText}`);
   }
 
-  let extension = responseUrl.headers['content-type'];
+  const extension = responseUrl.headers['content-type'];
   let type;
 
   if (extension === 'application/pdf') {

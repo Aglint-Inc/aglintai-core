@@ -1,7 +1,7 @@
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { CalendarClock } from 'lucide-react';
 
 import {
   type SchedulesSupabase,
@@ -28,11 +28,7 @@ function ScheduleMeetingList({
               date != 'undefined' ? (
                 dayjs(date).format('MMM')
               ) : (
-                <GlobalIcon
-                  iconName='calendar_clock'
-                  size={5}
-                  weight={'regular'}
-                />
+                <CalendarClock size={5} />
               )
             }
             slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {

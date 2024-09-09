@@ -34,8 +34,8 @@ export const findCommonTimeRangeUtil = (
     int_sorted_range[0].time_ranges;
 
   for (let i = 1; i < int_sorted_range.length; ++i) {
-    let current_time_ranges = [...int_sorted_range[Number(i)].time_ranges];
-    let new_intersection: TimeDurationDayjsType[] = [];
+    const current_time_ranges = [...int_sorted_range[Number(i)].time_ranges];
+    const new_intersection: TimeDurationDayjsType[] = [];
     let j = 0,
       k = 0;
     while (j < curr_intersection.length && k < current_time_ranges.length) {

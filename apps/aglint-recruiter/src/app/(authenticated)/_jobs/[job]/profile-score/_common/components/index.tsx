@@ -8,10 +8,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Checkbox } from '@devlink/Checkbox';
+import { Checkbox } from '@components/ui/checkbox';
+
 import { ScoreCard } from '@devlink/ScoreCard';
 import { ScoreCardEdit } from '@devlink/ScoreCardEdit';
 import { ScorePercentage } from '@devlink/ScorePercentage';
@@ -23,7 +21,7 @@ import { Text } from '@devlink/Text';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
 import { PageLayout } from '@devlink2/PageLayout';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { BannerAlert } from '@devlink3/BannerAlert';
 import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
@@ -54,6 +52,10 @@ import { distributeScoreWeights } from '@/job/utils';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
+
+import { Button } from '@components/ui/button';
+import { Delete, RefreshCcw } from 'lucide-react';
+import { Skeleton } from '@components/ui/skeleton';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -176,16 +178,9 @@ const ProfileScoreControls = () => {
     >
       <ScoreWeightage
         slotResetButton={
-          <ButtonSoft
-            color='neutral'
-            textButton='Reset'
-            isLeftIcon
-            iconName='refresh'
-            size={2}
-            onClickButton={{
-              onClick: () => handleReset(),
-            }}
-          />
+          <Button color='neutral' size={'sm'} onClick={() => handleReset()}>
+            <RefreshCcw /> Reset
+          </Button>
         }
         slotScoreWheel={
           <>
@@ -309,28 +304,9 @@ const Banners = () => {
         iconName='warning'
         color={'error'}
         slotButton={
-          <ButtonSolid
-            textButton='View'
-            size={1}
-            onClickButton={{
-              onClick: () => push(`/jobs/${job.id}/edit`),
-            }}
-          />
+          <Button onClick={() => push(`/jobs/${job.id}/edit`)}>View</Button>
         }
       />
-      // <BannerWarning
-      //   textBanner={'Job description is unavailable'}
-      //   slotButton={
-      //     <ButtonSolid
-      //       textButton='View'
-      //       size={2}
-      //       highContrast='true'
-      //       onClickButton={{
-      //         onClick: () => push(`/jobs/${job.id}/edit`),
-      //       }}
-      //     />
-      //   }
-      // />
     );
   if (status.jd_json_error)
     return (
@@ -349,49 +325,15 @@ const Banners = () => {
         textContent='Job description has changed. Regenerate to update scoring criteria.'
         slotButton={
           <>
-            <ButtonSoft
-              textButton='Ignore'
-              size={1}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {}, //handleWarningUpdate({ job_description: true }),
-              }}
-            />
-            <ButtonSolid
-              textButton='Regenerate'
-              size={1}
-              onClickButton={{
-                onClick: () => handleRegenerateJd(job),
-              }}
-            />
+            <Button size='sm' color='neutral'>
+              Ignore
+            </Button>
+            <Button size='sm' onClick={() => handleRegenerateJd(job)}>
+              Regenerate
+            </Button>
           </>
         }
       />
-      // <BannerWarning
-      //   textBanner={
-      //     'Job description has changed. Regenerate for updated scoring criterias.'
-      //   }
-      //   slotButton={
-      //     <>
-      //       <ButtonSoft
-      //         textButton='Ignore'
-      //         size={2}
-      //         highContrast='true'
-      //         onClickButton={{
-      //           onClick: () => {}, //handleWarningUpdate({ job_description: true }),
-      //         }}
-      //       />
-      //       <ButtonSolid
-      //         textButton='Regenerate'
-      //         size={2}
-      //         highContrast='true'
-      //         onClickButton={{
-      //           onClick: () => handleRegenerateJd(job),
-      //         }}
-      //       />
-      //     </>
-      //   }
-      // />
     );
   return <></>;
 };
@@ -409,7 +351,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
         ? 'educations'
         : 'skills';
   const handleDelete = (index: number) => {
-    const newSection = jd_json[section].filter((e, i) => i !== index);
+    const newSection = jd_json[section].filter((_e, i) => i !== index);
     handleJobUpdate({
       draft: { ...draft, jd_json: { ...jd_json, [section]: newSection } },
     });
@@ -554,8 +496,8 @@ const Pill: FC<{
         <ScoreCardEdit
           slotCheckBox={
             <Checkbox
-              isChecked={check}
-              onClickCheck={{ onClick: () => setCheck((prev) => !prev) }}
+              checked={check}
+              onClick={() => setCheck((prev) => !prev)}
             />
           }
           slotTextEdit={
@@ -577,26 +519,15 @@ const Pill: FC<{
           isDeleteVisible={true}
           isCancelVisible={false}
           slotButton={
-            <ButtonGhost
-              textButton='Delete'
-              size={2}
-              color={'error'}
-              onClickButton={{ onClick: () => onDelete() }}
-              isLeftIcon
-              iconName='delete'
-            />
+            <Button variant='ghost' color='error' onClick={() => onDelete()}>
+              <Delete />
+              Delete
+            </Button>
           }
           slotButtonUpdate={
-            <ButtonSolid
-              size={'2'}
-              isLeftIcon={false}
-              isRightIcon={false}
-              isDisabled={!value}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-              textButton='Update'
-            />
+            <Button size={'sm'} disabled={!value} onClick={() => onSubmit()}>
+              Update
+            </Button>
           }
         />
       </Popover>
@@ -630,15 +561,9 @@ const AddOption: FC<{
   };
   return (
     <Stack ref={ref}>
-      <ButtonSoft
-        textButton={`Add ${capitalize(type)}`}
-        iconName='Add'
-        isLeftIcon
-        size={1}
-        onClickButton={{
-          onClick: () => setOpen(true),
-        }}
-      />
+      <Button size={'sm'} onClick={() => setOpen(true)}>
+        Add {capitalize(type)}
+      </Button>
       <Popover
         open={open}
         onClose={() => handleClose()}
@@ -657,8 +582,8 @@ const AddOption: FC<{
         <ScoreCardEdit
           slotCheckBox={
             <Checkbox
-              isChecked={check}
-              onClickCheck={{ onClick: () => setCheck((prev) => !prev) }}
+              checked={check}
+              onClick={() => setCheck((prev) => !prev)}
             />
           }
           slotTextEdit={
@@ -680,24 +605,14 @@ const AddOption: FC<{
           isDeleteVisible={false}
           isCancelVisible={true}
           slotButton={
-            <ButtonSoft
-              textButton='Cancel'
-              color={'neutral'}
-              size={2}
-              onClickButton={{ onClick: () => handleClose() }}
-            />
+            <Button color={'neutral'} size={'sm'} onClick={() => handleClose()}>
+              Cancel
+            </Button>
           }
           slotButtonUpdate={
-            <ButtonSolid
-              size={'2'}
-              isLeftIcon={false}
-              isRightIcon={false}
-              isDisabled={!value}
-              onClickButton={{
-                onClick: () => onSubmit(),
-              }}
-              textButton='Submit'
-            />
+            <Button size={'sm'} disabled={!value} onClick={() => onSubmit()}>
+              Update
+            </Button>
           }
         />
       </Popover>

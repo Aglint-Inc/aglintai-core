@@ -103,12 +103,6 @@ div#__next {
   overflow: hidden;
 }
 
-#job-application-stack {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 [class*='skeleton-item'] {
   width: 100%;
   height: 100%;
@@ -161,90 +155,6 @@ input[type='number'] {
   font-family: var(--text);
 }
 
-@-webkit-keyframes rotating /* Safari and Chrome */ {
-  from {
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@keyframes rotating {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-.rotating {
-  -webkit-animation: rotating 2s linear infinite;
-  -moz-animation: rotating 2s linear infinite;
-  -ms-animation: rotating 2s linear infinite;
-  -o-animation: rotating 2s linear infinite;
-  animation: rotating 2s linear infinite;
-}
 
-textarea::placeholder {
-  color: var(--neutral-9);
-}
 
-.JobApplicationAddManuallyPhoneInput {
-  & .form-control {
-    &::-webkit-input-placeholder {
-      color: #87929d;
-      font-size: 15px;
-    }
-    &:-moz-placeholder {
-      color: #87929d;
-    }
-    &:-ms-input-placeholder {
-      color: #87929d;
-    }
-  }
-  & .placeholder-icon {
-    display: none;
-  }
-  & .placeholder > p {
-    font-size: 12px !important;
-  }
-  & .invalid-number {
-    border-color: #d8dcde !important;
-  }
-}
 
-.reverse-slider-job-applications .MuiSlider-valueLabelOpen {
-  transform: translateY(120%) !important;
-}
-
-.slot-body-global {
-  height: calc(100vh - 60px);
-}
-
-[class*='DummyChatOne_link'] {
-  color: #337fbd;
-  cursor: pointer;
-}
-
-[data-layout='jobs'] {
-  height: calc(100vh - 100px) !important;
-}
-
-.progress_date_section {
-  color: #337fbd;
-  padding: 3px;
-  border-radius: 5px;
-  text-transform: capitalize;
-}

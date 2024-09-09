@@ -1,4 +1,4 @@
-import { toast as shadcnToast } from '@/components/hooks/use-toast';
+import { toast as shadcnToast } from '@components/hooks/use-toast';
 
 const toast = {
   error: (message: string) =>

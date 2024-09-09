@@ -4,13 +4,13 @@ import { ButtonSolid } from '@devlink/ButtonSolid';
 import { ButtonSurface } from '@devlink/ButtonSurface';
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@devlink/SessionAndTime';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { Dialog, Stack, Typography } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
+import { Coffee, Plus } from 'lucide-react';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -269,7 +269,7 @@ const ScheduleCard = (props: ScheduleCardProps) => {
               />
             ) : (
               <ButtonSurface
-                slotIcon={<GlobalIcon iconName='add' size={'sm'} />}
+                slotIcon={<Plus size={'sm'} />}
                 isLeftIcon={true}
                 isRightIcon={false}
                 size={1}
@@ -394,14 +394,10 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textSessionDuration={duration}
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<BreakIcon />}
+      slotInterviewtypeIcon={<Coffee size={'sm'} />}
       iconName={''}
     />
   );
-};
-
-const BreakIcon = () => {
-  return <GlobalIcon iconName='emoji_food_beverage' />;
 };
 
 type SessionCardProps = {

@@ -1,14 +1,14 @@
-import { Checkbox } from '@devlink/Checkbox';
-import { GlobalIcon } from '@devlink/GlobalIcon';
+import { useToast } from '@components/hooks/use-toast';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { LinearProgress, Popover, Stack, Typography } from '@mui/material';
 import { capitalize, debounce } from 'lodash';
+import { ChevronDown, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import SearchField from '@/components/Common/SearchField/SearchField';
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import { supabase } from '@/utils/supabase/client';
@@ -103,17 +103,22 @@ function FilterCreatedBy() {
         onClickStatus={{
           id: 'cordinator' + 'click',
           onClick: handleClick,
+          style: {
+            whiteSpace: 'nowrap',
+            height: '100%',
+          },
         }}
         textLabel={'Created by'}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            <ChevronDown
+              size={16}
+              color={'var(--neutral-2)'}
+              className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             />
           </Stack>
         }
       />
-
       <Popover
         id={id}
         open={open}
@@ -165,7 +170,7 @@ function FilterCreatedBy() {
                         handleFilterClick(item.user_id);
                       }}
                     >
-                      <Checkbox isChecked={createdBy.includes(item.user_id)} />
+                      <Checkbox checked={createdBy.includes(item.user_id)} />
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
@@ -185,7 +190,7 @@ function FilterCreatedBy() {
                     justifyContent={'center'}
                     height={'100%'}
                   >
-                    <GlobalIcon iconName='person' size={7} />
+                    <User size={16} color={'var(--neutral-2)'} />
                     No user found
                   </Stack>
                 )}

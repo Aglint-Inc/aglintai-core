@@ -1,9 +1,9 @@
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
@@ -63,46 +63,22 @@ function ModuleMembersComp() {
             gap={'var(--space-2)'}
           >
             {editModule?.is_archived && (
-              // <Stack maxWidth={'866px'}>
-              //   <GlobalBannerInline
-              //     color={'warning'}
-              //     slotButton={
-              //       <>
-              //         <ButtonSolid
-              //           textButton='Unarchive'
-              //           size={1}
-              //           onClickButton={{
-              //             onClick: unArcheive,
-              //           }}
-              //         />
-              //       </>
-              //     }
-              //     // isDescriptionVisible={false}
-
-              //     textContent={
-              //       'This interview type is archived. Click "Unarchive" to reactivate.'
-              //     }
-              //   />
-              // </Stack>
-              <ButtonSoft
-                textButton='Unarchive'
-                color={'neutral'}
-                onClickButton={{
-                  onClick: unArcheive,
-                }}
-                size={1}
-              />
+              <UIButton variant='secondary' onClick={unArcheive} size='sm'>
+                Unarchive
+              </UIButton>
             )}
             <TopRightButtons editModule={editModule} refetch={refetch} />
           </Stack>
         }
         slotBody={
-          <SlotBodyComp
-            editModule={editModule}
-            fetchingModule={fetchingModule}
-            isFetching={isFetching}
-            refetch={refetch}
-          />
+          <>
+            <SlotBodyComp
+              editModule={editModule}
+              fetchingModule={fetchingModule}
+              isFetching={isFetching}
+              refetch={refetch}
+            />
+          </>
         }
       />
     </>

@@ -12,11 +12,14 @@ import Progress from '../Progress';
 import DialogSchedule from './ScheduleDialog';
 import StageSessions from './StageSessions';
 import SideDrawerEdit from './StageSessions/EditDrawer';
+import { UIButton } from '@/components/Common/UIButton';
+import { ExternalLink } from 'lucide-react';
 
 function InterviewTabContent() {
   const {
     interview: { data: stages, isLoading: isLoadingSession, refetch },
     details: { isLoading: isLoadingDetail },
+    application_id,
   } = useApplication();
 
   useInterviewModules(); //needed to fetch interview modules which is used in edit interview plan
@@ -38,7 +41,7 @@ function InterviewTabContent() {
   return (
     <>
       <SideDrawerEdit refetch={refetch} />
-      <Tabs defaultValue='candidate'>
+      <Tabs defaultValue='internal'>
         <TabsList>
           <TabsTrigger value='internal'>Internal</TabsTrigger>
           <TabsTrigger value='candidate'>Candidate</TabsTrigger>
@@ -50,6 +53,16 @@ function InterviewTabContent() {
           />
         </TabsContent>
         <TabsContent value='candidate'>
+          <UIButton
+            variant='secondary'
+            onClick={() => {
+              window.open(`/candidate/${application_id}/home`, '_blank');
+            }}
+            size='sm'
+            rightIcon={<ExternalLink />}
+          >
+            Portal
+          </UIButton>
           <ReorderableInterviewPlan
             applicationId={stages[0].interview_plan.application_id}
             jobId={null}

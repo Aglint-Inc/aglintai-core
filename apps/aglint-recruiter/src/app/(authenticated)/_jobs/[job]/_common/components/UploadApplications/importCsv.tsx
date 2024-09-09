@@ -1,8 +1,8 @@
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import React, { useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 
 type Candidate = {

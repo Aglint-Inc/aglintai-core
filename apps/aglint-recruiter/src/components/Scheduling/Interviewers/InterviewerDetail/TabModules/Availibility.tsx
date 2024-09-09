@@ -1,9 +1,11 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Label } from '@components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Text } from '@devlink/Text';
-import { RcCheckbox } from '@devlink2/RcCheckbox';
+
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -14,16 +16,13 @@ import { WorkingHourDetails } from '@devlink3/WorkingHourDetails';
 import {
   Autocomplete,
   Drawer,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -33,6 +32,7 @@ import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
+import { Checkbox } from '@components/ui/checkbox';
 
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -383,7 +383,7 @@ function Availibility({
                       disableClearable
                       options={timeZone}
                       value={selectedTimeZone}
-                      onChange={(event, value) => {
+                      onChange={(_event, value) => {
                         if (value) {
                           setSelectedTimeZone(value);
                         }
@@ -404,7 +404,7 @@ function Availibility({
                       }}
                       renderInput={(params) => {
                         return (
-                          <UITextField
+                          <TextField
                             {...params}
                             label=''
                             placeholder='Ex. Healthcare'
@@ -427,32 +427,23 @@ function Availibility({
                         max={dailyLmit.max}
                       />
                       <RadioGroup
-                        row
-                        aria-labelledby='demo-row-radio-buttons-group-label'
-                        name='row-radio-buttons-group'
+                        defaultValue={dailyLmit.type}
+                        onValueChange={(value) =>
+                          handleType(value as 'Interviews' | 'Hours')
+                        }
+                        className='flex flex-row'
                       >
-                        {['Interviews', 'Hours'].map((ele, i) => {
-                          return (
-                            <FormControlLabel
-                              checked={dailyLmit.type === ele}
-                              key={i}
-                              onChange={(e: any) => {
-                                handleType(e.target.value);
-                                // handleType(e.target.value, 'daily', 'type');
-                              }}
-                              sx={{
-                                marginLeft: '0px',
-
-                                '& .MuiRadio-root': {
-                                  marginRight: 'var(--space-1)',
-                                },
-                              }}
-                              value={ele}
-                              control={<Radio />}
-                              label={capitalize(ele.replaceAll('_', ' '))}
-                            />
-                          );
-                        })}
+                        {['Interviews', 'Hours'].map((ele) => (
+                          <div
+                            key={ele}
+                            className='flex items-center space-x-2'
+                          >
+                            <RadioGroupItem value={ele} id={`radio-${ele}`} />
+                            <Label htmlFor={`radio-${ele}`}>
+                              {capitalize(ele.replaceAll('_', ' '))}
+                            </Label>
+                          </div>
+                        ))}
                       </RadioGroup>
                     </Stack>
                   </>
@@ -468,28 +459,24 @@ function Availibility({
                         max={weeklyLmit.max}
                       />
                       <RadioGroup
-                        row
-                        aria-labelledby='demo-row-radio-buttons-group-label'
+                        defaultValue={weeklyLmit.type}
+                        onValueChange={(value) =>
+                          handleType(value as 'Interviews' | 'Hours')
+                        }
+                        className='flex flex-row'
                         name='row-radio-buttons-group'
                       >
                         {['Interviews', 'Hours'].map((ele, i) => {
                           return (
-                            <FormControlLabel
-                              checked={weeklyLmit.type === ele}
+                            <div
                               key={i}
-                              onChange={(e: any) => {
-                                handleType(e.target.value);
-                              }}
-                              sx={{
-                                marginLeft: '0px',
-                                '& .MuiRadio-root': {
-                                  marginRight: 'var(--space-1)',
-                                },
-                              }}
-                              value={ele}
-                              control={<Radio />}
-                              label={capitalize(ele.replaceAll('_', ' '))}
-                            />
+                              className='flex items-center space-x-2'
+                            >
+                              <RadioGroupItem value={ele} id={`radio-${ele}`} />
+                              <Label htmlFor={`radio-${ele}`}>
+                                {capitalize(ele.replaceAll('_', ' '))}
+                              </Label>
+                            </div>
                           );
                         })}
                       </RadioGroup>
@@ -504,21 +491,22 @@ function Availibility({
                           <>
                             <WorkingHourDay
                               slotRcCheckbox={
-                                <RcCheckbox
-                                  onclickCheck={{
-                                    onClick: () => {
+                                <div className='flex items-center space-x-2'>
+                                  <Checkbox
+                                    id={`checkbox-${day.day}`}
+                                    checked={day.isWorkDay}
+                                    onCheckedChange={() => {
                                       setWorkingHours((pre) => {
-                                        const data = pre;
-                                        data[Number(i)].isWorkDay =
-                                          !data[Number(i)].isWorkDay;
-
-                                        return [...data];
+                                        const data = [...pre];
+                                        data[i].isWorkDay = !data[i].isWorkDay;
+                                        return data;
                                       });
-                                    },
-                                  }}
-                                  isChecked={day.isWorkDay}
-                                  text={capitalize(day.day)}
-                                />
+                                    }}
+                                  />
+                                  <Label htmlFor={`checkbox-${day.day}`}>
+                                    {capitalize(day.day)}
+                                  </Label>
+                                </div>
                               }
                               slotTimeRageInput={
                                 <TimeRangeInput

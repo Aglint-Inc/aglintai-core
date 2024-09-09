@@ -89,7 +89,7 @@ export const QueryProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const argsToKeys = (obj: Object) => {
+export const argsToKeys = (obj: object) => {
   return Object.entries(obj).map(([key, value]) => ({ [key]: value }));
 };
 

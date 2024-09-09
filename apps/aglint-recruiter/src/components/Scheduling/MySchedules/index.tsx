@@ -1,5 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { useToast } from '@components/hooks/use-toast';
 import { LoaderSvg } from '@devlink/LoaderSvg';
 import { MyScheduleLanding } from '@devlink/MyScheduleLanding';
 import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
@@ -10,19 +11,18 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/queries/intergrations';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
-import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
   fetchSchedulesCountByUserId,
   useAllSchedulesByUserId,
 } from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
+import { Calendar } from 'lucide-react';
 
 function MySchedule() {
   const { toast } = useToast();
@@ -155,7 +155,7 @@ function MySchedule() {
                             date != 'undefined' ? (
                               dayjsLocal(date).format('MMM')
                             ) : (
-                              <DateIcon />
+                              <Calendar size={20} />
                             )
                           }
                           slotMyScheduleSubCard={schedules.map(

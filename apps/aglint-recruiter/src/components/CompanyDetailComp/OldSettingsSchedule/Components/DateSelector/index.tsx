@@ -5,7 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { cn } from '@lib/utils';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
@@ -44,7 +43,6 @@ function DateSelect({
             setDate(newDate);
             getDate(newDate);
           }}
-          initialFocus
           disabled={(date) =>
             selectedDates
               .map((item) => item.date)
@@ -59,7 +57,3 @@ function DateSelect({
 }
 
 export default DateSelect;
-
-export function DateIcon() {
-  return <GlobalIcon iconName='calendar_today' size={5} weight={'regular'} />;
-}

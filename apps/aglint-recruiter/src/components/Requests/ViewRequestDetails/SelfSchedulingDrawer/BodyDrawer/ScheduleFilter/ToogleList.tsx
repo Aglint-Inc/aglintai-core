@@ -43,7 +43,7 @@ function ToogleList() {
       }),
     [schedulingOptions],
   );
-  let availabilityCards: {
+  const availabilityCards: {
     heading: string;
     title: string;
     number: number;

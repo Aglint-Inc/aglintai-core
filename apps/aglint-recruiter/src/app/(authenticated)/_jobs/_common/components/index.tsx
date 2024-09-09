@@ -92,7 +92,7 @@ export function AddJob() {
       <Sync />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='outline'>
+          <Button size='sm' variant='outline'>
             <MoreHorizontal className='h-4 w-4' />
             <span className='sr-only'>Open menu</span>
           </Button>
@@ -126,7 +126,12 @@ const Sync = () => {
 
   return (
     <OptimisticWrapper loading={load}>
-      <Button variant='secondary' onClick={handleSync} className='w-auto'>
+      <Button
+        size='sm'
+        variant='secondary'
+        onClick={handleSync}
+        className='w-auto'
+      >
         <RefreshCw className='w-4 h-4 mr-2' strokeWidth={1.5} />
         Sync
       </Button>

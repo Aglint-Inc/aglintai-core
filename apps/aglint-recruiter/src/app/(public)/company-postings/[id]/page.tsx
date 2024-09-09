@@ -10,7 +10,7 @@ import { JobNotFound } from '@/job/components/JobNotFound';
 import { type CompanyPostAPI } from '@/pages/api/jobpost/company';
 
 function JobPost({ params: { id } }: { params: { id: string } }) {
-  let jobId = id;
+  const jobId = id;
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(true);
   const [recruiter, setRecruiter] = useState<CompanyPostAPI['recruiter']>();

@@ -1,4 +1,3 @@
-import { StatusBadge } from '@devlink2/StatusBadge';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { MembersList } from '@devlink3/MembersList';
 import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
@@ -20,6 +19,7 @@ import {
 import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
+import { StatusBadge } from '@devlink2/StatusBadge';
 
 function ScheduleMeetingCard({
   meetingDetails,
@@ -28,7 +28,7 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
-  let interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
+  const interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
 
   return (
     <>

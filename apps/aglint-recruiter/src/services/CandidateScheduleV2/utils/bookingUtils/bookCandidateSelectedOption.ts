@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import {

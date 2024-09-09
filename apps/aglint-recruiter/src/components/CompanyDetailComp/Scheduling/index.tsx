@@ -1,34 +1,29 @@
-import { Alert, Autocomplete, Chip, Stack, Typography } from '@mui/material';
+import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { capitalize, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
-import { Input } from '@components/ui/input';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { GlobalIcon } from '@devlink/GlobalIcon';
-import { GlobalInfo } from '@devlink2/GlobalInfo';
-import { InterviewLoad } from '@devlink2/InterviewLoad';
-import { KeywordCard } from '@devlink2/KeywordCard';
-import { Keywords } from '@devlink2/Keywords';
-import { DebreifHelperText } from '@devlink3/DebreifHelperText';
-import { HelperDropdown } from '@devlink3/HelperDropdown';
-import { InterviewLoadHelper } from '@devlink3/InterviewLoadHelper';
-import { KeywordsHelper } from '@devlink3/KeywordsHelper';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import timeZone from '@/utils/timeZone';
-import toast from '@/utils/toast';
 
-import FilterInput from '../../CandidateDatabase/Search/FilterInput';
-import UITextField from '../../Common/UITextField';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
+import InterviewLimitInput from './InterviewLoad';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import KeywordSection from './KeywordSection';
 
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -58,20 +53,15 @@ function SchedulingSettings({ updateSettings }) {
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
 
   const [dailyLmit, setDailyLimit] = useState<interviewLoadType>({
-    type: 'Hours',
+    type: null,
     value: 20,
     max: LoadMax.dailyHours,
   });
   const [weeklyLmit, setWeeklyLimit] = useState<interviewLoadType>({
-    type: 'Hours',
+    type: null,
     value: 10,
     max: LoadMax.weeklyHours,
   });
-
-  const [isTipVisible, setIsTipVisible] = useState(true);
-  const handleCloseInfo = () => {
-    setIsTipVisible(false);
-  };
 
   const handleDailyValue = (value: number) => {
     setDailyLimit((pre) => ({
@@ -103,11 +93,22 @@ function SchedulingSettings({ updateSettings }) {
             : value,
     }));
   };
-  const handleType = (type: 'Hours' | 'Interviews') => {
-    setWeeklyLimit((pre) => ({ ...pre, type }));
-    setDailyLimit((pre) => ({ ...pre, type }));
-    handleWeeklyValue(weeklyLmit.value);
-    handleDailyValue(dailyLmit.value);
+  const handleDailyType = (type: 'Hours' | 'Interviews') => {
+    setDailyLimit((pre) => ({
+      ...pre,
+      type,
+    }));
+    // setWeeklyLimit((pre) => ({
+    //   ...pre,
+    //   type,
+    // }));
+  };
+
+  const handleWeeklyType = (type: 'Hours' | 'Interviews') => {
+    setWeeklyLimit((pre) => ({
+      ...pre,
+      type,
+    }));
   };
 
   ///////////// DayOff Popup //////////////
@@ -209,291 +210,125 @@ function SchedulingSettings({ updateSettings }) {
     return () => {
       changeValue = null;
     };
-  }, []);
+  }, [recruiter?.scheduling_settings]);
 
   return (
-    <div className='flex flex-col h-full overflow-auto'>
-      <div className='flex flex-row w-full justify-between items-start overflow-hidden'>
-        <div className='w-full overflow-auto h-[calc(100vh-48px)] p-2 space-y-4'>
-          <InterviewLoad
-            borderStyle={'false'}
-            slotDailyLimit={
-              <div className='flex flex-row items-center gap-4'>
-                <Input
-                  type='number'
-                  value={dailyLmit.value}
-                  onChange={(e) => handleDailyValue(+e.target.value)}
-                  max={dailyLmit.max}
-                  className='w-[70px]'
-                />
-                <Tabs
-                  defaultValue={dailyLmit.type}
-                  onValueChange={(value) =>
-                    handleType(value as 'Hours' | 'Interviews')
-                  }
-                >
-                  <TabsList>
-                    {['Interviews', 'Hours'].map((ele) => (
-                      <TabsTrigger key={ele} value={ele}>
-                        {capitalize(ele.replaceAll('_', ' '))}
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
-                </Tabs>
-              </div>
-            }
-            slotWeeklyLimit={
-              <div className='flex flex-row items-center gap-4'>
-                <Input
-                  type='number'
-                  value={weeklyLmit.value}
-                  onChange={(e) => handleWeeklyValue(+e.target.value)}
-                  max={weeklyLmit.max}
-                  className='w-[70px]'
-                />
-                <Tabs
-                  defaultValue={weeklyLmit.type}
-                  onValueChange={(value) =>
-                    handleType(value as 'Hours' | 'Interviews')
-                  }
-                >
-                  <TabsList>
-                    {['Interviews', 'Hours'].map((ele) => (
-                      <TabsTrigger key={ele} value={ele}>
-                        {capitalize(ele.replaceAll('_', ' '))}
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
-                </Tabs>
-              </div>
-            }
-          />
+    <div className='flex flex-col w-[660px] mx-auto space-y-4'>
+      {dailyLmit.type && weeklyLmit.type && (
+        <Card>
+          <CardHeader>
+            <CardTitle className='text-md font-semibold'>
+              Interview Load
+            </CardTitle>
+            <CardDescription>
+              Setup maximum interviews per day and week.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className='space-y-2'>
+              <InterviewLimitInput
+                value={dailyLmit.value}
+                max={dailyLmit.max}
+                type={dailyLmit.type}
+                onValueChange={handleDailyValue}
+                onTypeChange={handleDailyType}
+              />
+              <InterviewLimitInput
+                value={weeklyLmit.value}
+                max={weeklyLmit.max}
+                type={weeklyLmit.type}
+                onValueChange={handleWeeklyValue}
+                onTypeChange={handleWeeklyType}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>
+            Debrief Defaults
+          </CardTitle>
+          <CardDescription>
+            Setup a default company wide setting for scheduling debrief
+            sessions.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <DebriefDefaults
             value={debriefDefaults}
             setValue={setDebriefDefaults}
           />
-          <Keywords
-            borderStyle={'false'}
-            size={'large'}
-            slotKeywordsCard={
-              <>
-                <KeywordCard
-                  textTitle={'Free'}
-                  textWarning={
-                    'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
-                  }
-                  slotInput={
-                    <FilterInput
-                      handleAdd={(s) => {
-                        const keyword = String(s).split(',');
-                        keyword.map((item) => {
-                          if (freeKeyWords.includes(item)) {
-                            toast.warning(`"${item}" keyword exists.`);
-                            return null;
-                          } else {
-                            setFreeKeywords((pre) => [item, ...pre]);
-                          }
-                        });
-                      }}
-                      path='freeKeywords'
-                      type='string'
-                    />
-                  }
-                  slotSuggestPill={
-                    freeKeyWords.length === 0 ? (
-                      <Alert severity='info' icon={false}>
-                        <Typography>No free keywords added.</Typography>
-                      </Alert>
-                    ) : (
-                      freeKeyWords.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setFreeKeywords((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <div>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </div>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })
-                    )
-                  }
-                />
-                <KeywordCard
-                  textTitle={'Soft Conflicts'}
-                  textWarning={
-                    'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
-                  }
-                  slotInput={
-                    <FilterInput
-                      handleAdd={(s) => {
-                        const keyword = String(s).split(',');
-                        keyword.map((item) => {
-                          if (freeKeyWords.includes(item)) {
-                            toast.warning(`"${item}" keyword exists.`);
-                            return null;
-                          } else {
-                            setSoftConflictsKeyWords((pre) => [item, ...pre]);
-                          }
-                        });
-                      }}
-                      path='softConflictsKeywords'
-                      type='string'
-                    />
-                  }
-                  slotSuggestPill={
-                    softConflictsKeyWords.length === 0 ? (
-                      <Alert severity='info' icon={false}>
-                        <Typography>No soft conflict keyword added.</Typography>
-                      </Alert>
-                    ) : (
-                      softConflictsKeyWords.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setSoftConflictsKeyWords((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <div>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </div>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })
-                    )
-                  }
-                />
-                <KeywordCard
-                  textTitle={'Out of Office'}
-                  textWarning={
-                    'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
-                  }
-                  slotInput={
-                    <FilterInput
-                      handleAdd={(s) => {
-                        const keyword = String(s).split(',');
-                        keyword.map((itemX) => {
-                          const item = itemX.trim();
-                          if (item?.length) {
-                            if (outOfOffice.includes(item)) {
-                              toast.warning(`"${item}" keyword exists.`);
-                              return null;
-                            } else {
-                              setOutOfOffice((pre) => [item, ...pre]);
-                            }
-                          }
-                        });
-                      }}
-                      path='outOfOfficeKeywords'
-                      type='string'
-                    />
-                  }
-                  slotSuggestPill={
-                    outOfOffice.length === 0 ? (
-                      <Alert severity='info' icon={false}>
-                        <Typography>
-                          No out of office keywords added.
-                        </Typography>
-                      </Alert>
-                    ) : (
-                      outOfOffice.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setOutOfOffice((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <div>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </div>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })
-                    )
-                  }
-                />
-                <KeywordCard
-                  textTitle={'Recruiting Blocks'}
-                  textWarning={
-                    'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
-                  }
-                  slotInput={
-                    <FilterInput
-                      handleAdd={(s) => {
-                        const keyword = String(s).split(',');
-                        keyword.map((itemX) => {
-                          const item = itemX.trim();
-                          if (item?.length) {
-                            if (recruitingBlocks.includes(item)) {
-                              toast.warning(`"${item}" keyword exists.`);
-                              return null;
-                            } else {
-                              setRecruitingBlocks((pre) => [item, ...pre]);
-                            }
-                          }
-                        });
-                      }}
-                      path='recruitingBlocksKeywords'
-                      type='string'
-                    />
-                  }
-                  slotSuggestPill={
-                    recruitingBlocks.length === 0 ? (
-                      <Alert severity='info' variant='outlined' icon={false}>
-                        <Typography>No recruiting blocks added.</Typography>
-                      </Alert>
-                    ) : (
-                      recruitingBlocks.map((item) => {
-                        return (
-                          <>
-                            <Chip
-                              clickable
-                              onDelete={() => {
-                                setRecruitingBlocks((pre) => {
-                                  return pre.filter((ele) => ele !== item);
-                                });
-                              }}
-                              deleteIcon={
-                                <div>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </div>
-                              }
-                              label={item}
-                            />
-                          </>
-                        );
-                      })
-                    )
-                  }
-                />
-              </>
-            }
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>Free</CardTitle>
+          <CardDescription>
+            When these keywords appear in a calendar event title, overlapping
+            interviews will not be considered scheduling conflicts.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection
+            keywords={freeKeyWords}
+            setKeywords={setFreeKeywords}
           />
-        </div>
-        <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>
+            Soft Conflicts
+          </CardTitle>
+          <CardDescription>
+            When these keywords are found in a calendar event title, overlapping
+            interviews will be marked as soft conflicts and will require your
+            confirmation to schedule.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection
+            keywords={softConflictsKeyWords}
+            setKeywords={setSoftConflictsKeyWords}
+          />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>Out of Office</CardTitle>
+          <CardDescription>
+            When any of these specified keywords appear in a calendar event
+            title, the day will be considered an Out of Office day, and
+            interviews will not be scheduled.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection keywords={outOfOffice} setKeywords={setOutOfOffice} />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>
+            Recruiting Blocks
+          </CardTitle>
+          <CardDescription>
+            If these keywords are found in a calendar event title, these blocks
+            will be given first preference for scheduling interviews.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection
+            keywords={recruitingBlocks}
+            setKeywords={setRecruitingBlocks}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+{
+  /* <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
           <div className='flex flex-col gap-4'>
             {isTipVisible && (
               <div>
@@ -526,12 +361,8 @@ function SchedulingSettings({ updateSettings }) {
               slotBody={<KeywordsHelper />}
             />
           </div>
-        </div>
-      </div>
-    </div>
-  );
+        </div> */
 }
-
 export default SchedulingSettings;
 
 type TZ = (typeof timeZone)[number];
@@ -557,7 +388,7 @@ export const TimezoneSelector = ({
         disableClearable
         options={timeZone}
         value={value}
-        onChange={(event, value) => {
+        onChange={(_event, value) => {
           if (value) {
             setValue(value);
           }
@@ -575,9 +406,8 @@ export const TimezoneSelector = ({
         }}
         renderInput={(params) => {
           return (
-            <UITextField
+            <TextField
               {...params}
-              labelSize='medium'
               // fullWidth
               label=''
               placeholder='Ex. America/Los_Angeles (GMT-08:00)'

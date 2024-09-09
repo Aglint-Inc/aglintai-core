@@ -5,12 +5,13 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-
-import { apiTargetToEvents } from '@/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
+import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
@@ -38,9 +39,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select('*,recruiter_user!request_assignee_id_fkey(*)')
         .eq('id', request_id),
     );
-    let request_assigner_tz =
+    const request_assignee_tz =
       request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-    const ai_response = payload.ai_response;
     const [avail_record] = supabaseWrap(
       await supabaseAdmin
         .from('candidate_request_availability')
@@ -57,34 +57,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           avail_record.request_session_relation.map((s) => s.session_id),
         ),
     );
-    let session_ids = meeting_details.map((m) => m.session_id);
+    const session_ids = meeting_details.map((m) => m.session_id);
     const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
+
+    const cand_schedule = new CandidatesSchedulingV2({
+      include_conflicting_slots: {
+        show_soft_conflicts: true,
+        out_of_working_hrs: true,
+      },
+      return_empty_slots_err: true,
+    });
+
+    await cand_schedule.fetchDetails({
+      session_ids,
+      start_date_str: avail_record.date_range[0],
+      end_date_str: avail_record.date_range[1],
+      company_id: recruiter_id,
+      req_user_tz: request_assignee_tz,
+    });
 
     const cand_picked_slots = await executeWorkflowAction(
       findCandSelectedSlots,
       {
-        api_options: {
-          include_conflicting_slots: {
-            show_soft_conflicts: true,
-            out_of_working_hrs: true,
-          },
-          return_empty_slots_err: true,
-        },
         cand_avail: avail_record.slots,
-        company_id: recruiter_id,
-        start_date_str: avail_record.date_range[0],
-        end_date_str: avail_record.date_range[1],
-        req_user_tz: request_assigner_tz,
-        session_ids,
         reqProgressLogger,
-        ai_response,
-        request_assigner_tz,
+        cand_schedule,
+        request_assignee_tz: request_assignee_tz,
       },
       reqProgressLogger,
     );
 
     if (target_api === 'onReceivingAvailReq_agent_confirmSlot') {
-      //
+      await executeWorkflowAction(
+        confirmSlotFromCandidateAvailability,
+        {
+          avail_plans: cand_picked_slots,
+          cand_avail_rec: avail_record,
+          cand_schedule: cand_schedule,
+          reqProgressLogger,
+        },
+        reqProgressLogger,
+      );
     } else if (
       target_api === 'onReceivingAvailReq_agent_sendSelfScheduleRequest'
     ) {
@@ -99,6 +112,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           application_id,
           plans: cand_picked_slots,
           reqProgressLogger,
+          mail_payload: payload?.email,
         },
         reqProgressLogger,
       );

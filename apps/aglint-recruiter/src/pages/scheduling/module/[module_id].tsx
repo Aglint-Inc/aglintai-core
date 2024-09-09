@@ -1,4 +1,5 @@
 import { type DatabaseTableUpdate } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,7 +12,7 @@ import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCard } from '@devlink2/MemberListCard';
 import { PageLayout } from '@devlink2/PageLayout';
 import { ShadowSession } from '@devlink2/ShadowSession';
-import { StatusBadge } from '@devlink2/StatusBadge';
+
 import { DarkPill } from '@devlink3/DarkPill';
 import { HistoryPill } from '@devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@devlink3/HistoryTrainingCard';
@@ -25,7 +26,6 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
-import { useToast } from '@/components/hooks/use-toast';
 import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
@@ -40,6 +40,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 import { supabase } from '@/utils/supabase/client';
+import { StatusBadge } from '@devlink2/StatusBadge';
 
 const ModuleMembers = () => {
   return (
@@ -70,7 +71,7 @@ function ModuleMembersComp() {
 
   const { data: members, isPending: loading } = useAllInterviewersDetails();
 
-  let { data: progress } = useProgressModuleUsers({
+  const { data: progress } = useProgressModuleUsers({
     trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
   });
 
@@ -339,18 +340,12 @@ function SlotQualifiedMembers({
           state: boolean;
           meeting: (typeof progressDataUser)[number];
         }[] = [
-          ...new Array(
-            // @ts-ignore
-            editModule.settings?.noShadow || 0,
-          ).fill({
+          ...new Array(editModule.settings?.noShadow || 0).fill({
             text: 'shadow',
             state: false,
             meeting: null,
           }),
-          ...new Array(
-            // @ts-ignore
-            editModule.settings?.noReverseShadow || 0,
-          ).fill({
+          ...new Array(editModule.settings?.noReverseShadow || 0).fill({
             text: 'reverse shadow',
             state: false,
             meeting: null,
@@ -359,7 +354,6 @@ function SlotQualifiedMembers({
 
         trainingStatusArray = trainingStatusArray.map((item) => {
           if (tempMeetingData[item.text]?.length) {
-            // @ts-ignore
             const temp = tempMeetingData[item.text].reverse().pop();
             return { ...item, state: Boolean(temp), meeting: temp };
           }
@@ -442,11 +436,11 @@ function SlotQualifiedMembers({
                           textDuration={
                             <>
                               {`${
-                                // @ts-ignore
+                                // @ts-expect-error
                                 (new Date(
                                   item.meeting?.interview_meeting?.end_time,
                                 ) -
-                                  // @ts-ignore
+                                  // @ts-expect-error
                                   new Date(
                                     item.meeting?.interview_meeting?.start_time,
                                   )) /
@@ -454,7 +448,6 @@ function SlotQualifiedMembers({
                               } Minutes`}
                             </>
                           }
-                          // @ts-ignore
                           textPlatformName={getScheduleType(
                             item.meeting?.interview_session?.schedule_type,
                           )}
@@ -508,7 +501,7 @@ function SlotQualifiedMembers({
 
 const isTrainingComplete = (pro: ProgressUser) => {
   let isComplete = false;
-  for (let item of pro.progress
+  for (const item of pro.progress
     .map((item) => {
       return item;
     })

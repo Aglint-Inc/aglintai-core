@@ -5,7 +5,6 @@ import { getShortTimeZone } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
@@ -13,13 +12,14 @@ import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewerDetail } from '@devlink3/InterviewerDetail';
 import { UpcomingInterviewList } from '@devlink3/UpcomingInterviewList';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
+import { Mail, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UITextField from '@/components/Common/UITextField';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useTeamMembers } from '@/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
 import { UserListThreeDot } from '@/components/CompanyDetailComp/TeamManagement/MemberList/ThreeDot';
@@ -207,7 +207,7 @@ Unavailable for interviews on Tuesdays.`);
                               setAnchorEl(null);
                             }}
                           >
-                            <GlobalIcon iconName='email' />
+                            <Mail size={16} />
                             <Typography
                               sx={{
                                 fontSize: '14px',
@@ -233,7 +233,7 @@ Unavailable for interviews on Tuesdays.`);
                               setAnchorEl(null);
                             }}
                           >
-                            <GlobalIcon iconName='sms' />
+                            <MessageSquare size={16} />
                             <Typography
                               sx={{
                                 fontSize: '14px',
@@ -402,11 +402,8 @@ Unavailable for interviews on Tuesdays.`);
                     textHowTo='Set availability and preferences to optimize the interview scheduling process.'
                     textExample='Prefer to take interviews on Tuesday and Friday afternoons. Unavailable for interviews on Sundays.'
                     slotTextArea={
-                      <UITextField
-                        multiline
-                        minRows={6}
-                        maxRows={10}
-                        height={150}
+                      <UITextArea
+                        rows={6}
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
                       />

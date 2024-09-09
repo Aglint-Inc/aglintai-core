@@ -82,7 +82,7 @@ export function LearnHowAshby({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65fa80f45e7949c3cf5d387b_image%2014.png"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65fa80f45e7949c3cf5d387b_image%2014.png"
               />
             </_Builtin.Block>
           </_Builtin.Figure>

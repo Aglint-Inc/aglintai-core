@@ -4,7 +4,6 @@ import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import { TeamSync } from "./TeamSync";
-import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./TeamUsersList.module.css";
 
@@ -69,72 +68,6 @@ export function TeamUsersList({
           className={_utils.cx(_styles, "team-table-wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "team-table-header")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "table-header")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                <GlobalIcon iconName="person" size="4" />
-              </_Builtin.Block>
-              <Text content="User" />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "table-header")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                <GlobalIcon iconName="badge" size="4" />
-              </_Builtin.Block>
-              <Text content="Role" />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "table-header")}
-              id={_utils.cx(
-                _styles,
-                "w-node-_5da55308-9bad-28f7-b285-9c4a01bb6d99-01bb6d7a"
-              )}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                <GlobalIcon iconName="corporate_fare" size="4" />
-              </_Builtin.Block>
-              <Text content="Department" />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "table-header")}
-              id={_utils.cx(
-                _styles,
-                "w-node-d87be396-79ed-efb9-84aa-e68a22a48a7a-01bb6d7a"
-              )}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                <GlobalIcon iconName="pin_drop" size="4" />
-              </_Builtin.Block>
-              <Text content="Location" />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "table-header")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                <GlobalIcon iconName="schedule" size="4" />
-              </_Builtin.Block>
-              <Text content="Last Active" />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "table-header", "center")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                <GlobalIcon iconName="settings" size="4" />
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "slot-team-list")}
             tag="div"

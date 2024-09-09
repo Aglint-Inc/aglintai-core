@@ -2,7 +2,6 @@ import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Text } from '@devlink/Text';
 import { AvailabilityReq } from '@devlink2/AvailabilityReq';
 import { MultiDaySelect } from '@devlink2/MultiDaySelect';
@@ -11,6 +10,7 @@ import { Stack } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Calendar, CheckCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import Footer from '@/components/Common/Footer';
@@ -318,11 +318,7 @@ function CandidateAvailability() {
           slotTtitle={
             isSubmitted ? (
               <>
-                <GlobalIcon
-                  size={6}
-                  weight={'light'}
-                  iconName={'check_circle'}
-                />
+                <CheckCircle size={6} />
                 <Text
                   size={4}
                   weight={'medium'}
@@ -331,7 +327,7 @@ function CandidateAvailability() {
               </>
             ) : (
               <>
-                <GlobalIcon size={6} weight={'light'} iconName={'event'} />
+                <Calendar size={6} />
                 <Text
                   size={4}
                   weight={'medium'}

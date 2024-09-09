@@ -1,20 +1,14 @@
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Checkbox } from '@components/ui/checkbox';
+import { Label } from '@components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { AddFilter } from '@devlink2/AddFilter';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { FilterItem } from '@devlink3/FilterItem';
 import { MultiFilterLayout } from '@devlink3/MultiFilterLayout';
-import {
-  Checkbox,
-  List,
-  ListItemButton,
-  Popover,
-  Radio,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { List, ListItemButton, Popover, Stack } from '@mui/material';
+import { ChevronDown, ChevronUp, User } from 'lucide-react';
 import React, { type ReactNode, memo } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -26,6 +20,7 @@ import {
   nestedOptionMapper,
   setValueInNestedObject,
 } from './utils';
+import { Skeleton } from '@components/ui/skeleton';
 
 /* eslint-disable no-unused-vars */
 
@@ -64,7 +59,6 @@ export type FilterComponentType = {
   options: dynamicOptionsTypes;
   value: string[];
   filterSearch?: boolean;
-  iconname: string;
   searchPlaceholder?: string;
   // eslint-disable-next-line no-unused-vars
   setValue: (value: string[]) => void;
@@ -159,7 +153,6 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
           setValue={(values) => {
             filter.setValue(values);
           }}
-          iconname={filter.iconname}
           icon={filter.icon}
           multiSelect={filter.multiSelect}
           loading={filter.loading}
@@ -218,7 +211,6 @@ export function FilterComponent({
   options: itemList,
   setValue: setSelectedItems,
   value: selectedItems,
-  iconname = '',
   filterSearch = false,
   searchPlaceholder = '',
   multiSelect = true,
@@ -251,9 +243,7 @@ export function FilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
+            {anchorEl ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </Stack>
         }
       />
@@ -307,7 +297,10 @@ export function FilterComponent({
                 nested={false}
               />
             ) : (
-              <GlobalEmptyState textDesc={`No ${title}`} iconName={iconname} />
+              <div className='flex flex-col items-center justify-center p-4 text-center'>
+                <div className='text-4xl mb-2'>🔍</div>
+                <p className='text-sm text-gray-500'>No {title} found</p>
+              </div>
             )
           }
           onClickReset={{
@@ -323,13 +316,13 @@ export function FilterComponent({
 
 const Loader = memo(() => {
   return (
-    <Stack direction={'column'} gap={2} p={2} minWidth={'176px'}>
-      {[...new Array(5)].map((_, i) => (
-        <Stack key={i} width={'200px'} height={'20px'} position={'relative'}>
+    <div className='space-y-2 p-2 min-w-[176px]'>
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className='w-[200px] h-[20px]'>
           <Skeleton />
-        </Stack>
+        </div>
       ))}
-    </Stack>
+    </div>
   );
 });
 Loader.displayName = 'Loader';
@@ -393,9 +386,7 @@ function MultiSectionFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
+            {anchorEl ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Stack>
         }
       />
@@ -551,9 +542,7 @@ function NestedFilterComponent({
         textLabel={title}
         slotRightIcon={
           <Stack>
-            <GlobalIcon
-              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
+            {anchorEl ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Stack>
         }
       />
@@ -693,7 +682,7 @@ function FilterOptionsList({
           options: { id: string; label: string }[];
         }[]
       )
-        // @ts-ignore
+        // @ts-expect-error
         .map(({ header, path, options }) => {
           return {
             header,
@@ -724,7 +713,7 @@ function FilterOptionsList({
       : [];
 
   return (
-    <Stack maxHeight={'280px'}>
+    <div className='max-h-[280px] flex flex-col'>
       {Boolean(searchFilter) && (
         <UITextField
           height={26}
@@ -734,31 +723,22 @@ function FilterOptionsList({
         />
       )}
 
-      <Stack maxHeight={'300px'} overflow={'auto'}>
+      <div className='max-h-[300px] overflow-auto'>
         {filtered.length > 0 ? (
           filtered.map((optionList) => {
-            let filteredOp = optionList.options;
+            const filteredOp = optionList.options;
             return (
               <>
                 {optionList.header && (
-                  <Typography paddingLeft={'4px'}>
+                  <p className='text-sm font-medium pl-1'>
                     {optionList.header}
-                  </Typography>
+                  </p>
                 )}
                 {filteredOp.map((option) => {
                   return (
-                    <Stack
+                    <button
                       key={option.id}
-                      direction={'row'}
-                      padding={'8px 12px'}
-                      sx={{
-                        alignItems: 'center',
-                        borderRadius: '4px',
-                        ':hover': {
-                          bgcolor: 'var(--neutral-2)',
-                        },
-                      }}
-                      spacing={1}
+                      className='flex flex-row items-center p-3 rounded hover:bg-neutral-100 space-x-2 w-full text-left'
                       onClick={() => {
                         setSelectedItems(option.id, optionList.path || []);
                       }}
@@ -767,45 +747,39 @@ function FilterOptionsList({
                         <Checkbox
                           checked={
                             nested
-                              ? // @ts-ignore
-                                option.status === 'active'
+                              ? (option as { status?: string }).status ===
+                                'active'
+                                ? true
+                                : (option as { status?: string }).status ===
+                                    'partial'
+                                  ? 'indeterminate'
+                                  : false
                               : selectedItems.includes(option.id)
-                          }
-                          indeterminate={
-                            // @ts-ignore
-                            nested && option.status === 'partial'
                           }
                         />
                       ) : (
-                        <Radio checked={selectedItems.includes(option.id)} />
+                        <RadioGroup>
+                          <RadioGroupItem
+                            value={option.id}
+                            checked={selectedItems.includes(option.id)}
+                          />
+                        </RadioGroup>
                       )}
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 400,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {option.label}
-                      </Typography>
-                    </Stack>
+                      <Label className='text-sm'>{option.label}</Label>
+                    </button>
                   );
                 })}
               </>
             );
           })
         ) : (
-          <Stack
-            alignItems={'center'}
-            justifyContent={'center'}
-            height={'150px'}
-          >
-            <GlobalIcon iconName='person' size={7} />
-            No {title} found
-          </Stack>
+          <div className='flex flex-col items-center justify-center h-[150px]'>
+            <User className='w-24 h-24 text-red-500 mb-4' />
+            <p className='text-sm text-gray-500'>No {title} found</p>
+          </div>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }
 

@@ -4,8 +4,6 @@ import { Switch } from '@components/ui/switch';
 import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
-import { InterviewModePill } from '@devlink2/InterviewModePill';
-import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -17,9 +15,8 @@ import React, {
   useMemo,
 } from 'react';
 
-import AvatarSelectDropDown from '@/components/Common/AvatarSelect/AvatarSelectDropDown';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import { WarningSvg } from '@/components/Common/warningSvg';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
@@ -31,10 +28,15 @@ import ROUTES from '@/utils/routing/routes';
 import { sessionDurations } from '@/utils/scheduling/const';
 import { validateString } from '@/utils/validateString';
 
-import { type CompanyMember, PausedBadge, RoleIcon } from '.';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
+import MembersAutoComplete, {
+  MemberTypeAutoComplete,
+} from '@/components/Scheduling/Common/MembersTextField';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { type CompanyMember } from '.';
 
 export type SessionUser = CompanyMember & {
-  moduleUserId: string;
+  module_relation_id: string;
   training_status: DB['public']['Enums']['status_training'];
 };
 
@@ -135,15 +137,6 @@ type HandleModeChange = (
 type HandleTrainingChange = (
   // eslint-disable-next-line no-unused-vars
   value: SessionFormProps['training'],
-) => void;
-
-type HandleMemberRemove = <
-  T extends keyof Pick<CustomSessionFormProps, 'interviewers' | 'trainees'>,
->(
-  // eslint-disable-next-line no-unused-vars
-  type: T,
-  // eslint-disable-next-line no-unused-vars
-  value: SessionFormProps[T],
 ) => void;
 
 type HandleMemberAdd = <
@@ -263,10 +256,9 @@ const SessionForms = ({
       schedule_type.value === 'in_person_meeting' ? (
         <Stack gap={1}>
           <Typography>Address</Typography>
-          <UITextField
+          <UITextArea
             name={'location'}
-            multiline
-            minRows={5}
+            rows={5}
             value={location.value}
             error={location.error}
             helperText={location.helper}
@@ -346,13 +338,7 @@ const Interview = ({
     ({ training_status }) => training_status === 'qualified',
   );
 
-  const moduleMemberRecommendations =
-    currentModuleMembers.filter(
-      ({ user_id }) =>
-        ![...interviewers.value, ...trainees.value]
-          .map(({ user_id }) => user_id)
-          .includes(user_id),
-    ) ?? [];
+  const moduleMemberRecommendations = currentModuleMembers ?? [];
 
   const {
     qualified: qualifiedModuleMemberRecommendations,
@@ -435,27 +421,7 @@ const Interview = ({
     },
     [session_type.value],
   );
-  const handleMemberRemove: HandleMemberRemove = useCallback((type, value) => {
-    setFields((prev) => {
-      const newFields: SessionFormFields = {
-        ...prev,
-        [type]: { ...prev[type], error: false, value },
-        interviewer_cnt: {
-          ...prev.interviewer_cnt,
-          error: false,
-          value:
-            type === 'interviewers' &&
-            prev.interviewer_cnt.value &&
-            value.length < prev.interviewer_cnt.value
-              ? value.length === 0
-                ? null
-                : value.length
-              : prev.interviewer_cnt.value,
-        },
-      };
-      return newFields;
-    });
-  }, []);
+
   const handleCountChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = useCallback(
@@ -474,9 +440,12 @@ const Interview = ({
   const countField = useMemo(
     () => (
       <UITextField
+        fieldSize='small'
         name={'interviewer_cnt'}
         type='number'
-        width='60px'
+        style={{
+          width: '60px',
+        }}
         value={interviewer_cnt?.value ?? ''}
         error={interviewer_cnt.error}
         helperText={interviewer_cnt.helper}
@@ -550,20 +519,8 @@ const Interview = ({
         </Stack>
       }
       isTrainingVisible={showTraining}
-      slotInterviewersAvatarSelectionPill={
-        <InterviewerPills
-          value={interviewers.value}
-          type='interviewers'
-          handleMemberRemove={handleMemberRemove}
-        />
-      }
-      slotTraineeAvatarSelectionPill={
-        <InterviewerPills
-          value={trainees.value}
-          type='trainees'
-          handleMemberRemove={handleMemberRemove}
-        />
-      }
+      slotInterviewersAvatarSelectionPill={<></>}
+      slotTraineeAvatarSelectionPill={<></>}
       isTraineesDropVisible={showTrainingMembers}
       slotTraineesDropdown={
         showTrainingMembers && (
@@ -620,53 +577,19 @@ export const ScheduleTypeField = ({
     if (schedule) handleTypeChange(schedule.value);
   };
   return (
-    <DropDown
-      onChange={onChange}
-      options={options}
+    <UISelectDropDown
+      onValueChange={(value) => {
+        const schedule = options.find((m) => m.value === value);
+        if (schedule) handleTypeChange(schedule.value);
+      }}
+      menuOptions={options.map((ele) => ({
+        name: ele.name,
+        value: ele.value,
+      }))}
       value={value}
-      placeholder='Select schedule type'
+      placeholder='Select Schedule Type'
     />
   );
-};
-
-const InterviewerPills = ({
-  value,
-  type,
-  handleMemberRemove,
-}: {
-  value: SessionFormProps['interviewers'];
-  type: Parameters<HandleMemberRemove>['0'];
-  handleMemberRemove: HandleMemberRemove;
-}) => {
-  const onChange = (id: string) => {
-    handleMemberRemove(
-      type,
-      value.filter((interviewer) => interviewer.user_id !== id),
-    );
-  };
-  return value.map((interviewer) => {
-    const name = getFullName(interviewer.first_name, interviewer.last_name);
-    return (
-      <SelectedMemberPill
-        key={interviewer.user_id}
-        isCloseButton={true}
-        onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
-        textMemberName={
-          <Stack direction={'row'} alignItems={'center'} gap={1}>
-            <>{name}</>
-            {interviewer.paused && <PausedBadge />}
-          </Stack>
-        }
-        slotMemberAvatar={
-          <MuiAvatar
-            src={interviewer.profile_image}
-            level={name}
-            variant='rounded-small'
-          />
-        }
-      />
-    );
-  });
 };
 
 export const SessionDurationField = ({
@@ -683,20 +606,19 @@ export const SessionDurationField = ({
     },
     [] as { name: string; value: number }[],
   );
-  const onChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = useCallback((e) => {
-    if ((e?.target?.value ?? null) && typeof e.target.value === 'number')
-      handleChange('session_duration', e.target.value);
-  }, []);
 
   return (
-    <DropDown
+    <UISelectDropDown
       placeholder='Select session duration'
-      showIcons={false}
-      options={options}
-      value={value}
-      onChange={onChange}
+      menuOptions={options.map((ele) => ({
+        name: ele.name,
+        value: ele.value.toString(),
+      }))}
+      value={value.toString()}
+      onValueChange={(value) => {
+        if ((value ?? null) && typeof value === 'number')
+          handleChange('session_duration', value);
+      }}
     />
   );
 };
@@ -714,42 +636,41 @@ const InterviewersField = ({
   handleMemberAdd: HandleMemberAdd;
   error?: boolean;
 }) => {
-  const options = moduleMemberRecommendations.map((m) => ({
-    name: getFullName(m.first_name, m.last_name),
-    value: m.user_id,
-    start_icon_url: m.profile_image,
-    badge: m.paused && <PausedBadge />,
-    meta: [{ title: m.position, icon: <RoleIcon /> }],
-  }));
-  const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    e,
-  ) => {
-    const interview_member = moduleMemberRecommendations.find(
-      (m) => m.user_id === e.target.value,
-    );
-    const newInterviewMembers = [...value, interview_member];
-    if (interview_member) handleMemberAdd(type, newInterviewMembers);
-  };
+  const options: MemberTypeAutoComplete[] = moduleMemberRecommendations.map(
+    (m) => ({
+      name: getFullName(m.first_name, m.last_name),
+      email: m.email,
+      first_name: m.first_name,
+      last_name: m.last_name,
+      position: m.position,
+      profile_image: m.profile_image,
+      user_id: m.user_id,
+    }),
+  );
 
   return (
-    <Stack gap={'2px'}>
-      <DropDown
-        placeholder='Select Interviewers'
-        onChange={onChange}
-        options={options}
-        value=''
-      />
-      {(error || value.length === 0) && (
-        <Stack
-          alignItems={'center'}
-          direction={'row'}
-          color={'var(--error-a11)'}
-        >
-          <WarningSvg />
-          {'Interviewers cannot be empty'}
-        </Stack>
-      )}
-    </Stack>
+    <MembersAutoComplete
+      maxWidth='468px'
+      pillColor='var(--neutral-3)'
+      renderUsers={options}
+      selectedUsers={value.map((m) => ({
+        user_id: m.user_id,
+        first_name: m.first_name,
+        last_name: m.last_name,
+        email: m.email,
+        profile_image: m.profile_image,
+        position: m.position,
+      }))}
+      setSelectedUsers={(users) => {
+        const user_ids = users.map((user) => user.user_id);
+        const selUsers = moduleMemberRecommendations.filter((m) =>
+          user_ids.includes(m.user_id),
+        );
+        handleMemberAdd(type, selUsers);
+      }}
+      error={error || value.length === 0}
+      helperText='Interviewers cannot be empty'
+    />
   );
 };
 
@@ -775,33 +696,22 @@ const InterviewModulesField = ({
       }),
     ),
   }));
-  const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    e,
-  ) => {
-    const interview_module = data.find((m) => m.id === e.target.value);
-    if (interview_module) handleModuleChange(interview_module);
-  };
 
   return (
-    <Stack gap={'2px'}>
-      <DropDown
-        placeholder='Select interview type'
-        onChange={onChange}
-        options={options}
-        value={value?.id}
-        showIcons={false}
-      />
-      {error && !value?.id && (
-        <Stack
-          alignItems={'center'}
-          direction={'row'}
-          color={'var(--error-a11)'}
-        >
-          <WarningSvg />
-          {'Interview Type cannot be empty'}
-        </Stack>
-      )}
-    </Stack>
+    <UISelectDropDown
+      placeholder='Select interview type'
+      onValueChange={(value) => {
+        const interview_module = data.find((m) => m.id === value);
+        if (interview_module) handleModuleChange(interview_module);
+      }}
+      value={value?.id}
+      menuOptions={options.map((ele) => ({
+        name: ele.name,
+        value: ele.value,
+      }))}
+      error={error && !value?.id}
+      helperText='Interview Type cannot be empty'
+    />
   );
 };
 
@@ -814,30 +724,30 @@ const InterviewModePills = ({
 }: InterviewModePillsProps) => {
   return (
     <>
-      <InterviewModePill
-        isActive={session_type === 'panel'}
-        textModeName={'Panel'}
-        slotModeIcon={
-          <Stack style={{ transform: 'translateY(1px)' }}>
-            <PanelIcon />
-          </Stack>
-        }
-        onClickPill={{
-          onClick: () => handleModeChange('panel'),
-        }}
-      />
-      <InterviewModePill
-        isActive={session_type === 'individual'}
-        textModeName={'Individual'}
-        slotModeIcon={
-          <Stack style={{ transform: 'translateY(1px)' }}>
-            <IndividualIcon />
-          </Stack>
-        }
-        onClickPill={{
-          onClick: () => handleModeChange('individual'),
-        }}
-      />
+      <Tabs value={session_type === 'individual' ? 'individual' : 'panel'}>
+        <TabsList>
+          <TabsTrigger
+            value='individual'
+            onClick={() => {
+              handleModeChange('individual');
+            }}
+          >
+            <div className='flex flex-row gap-1 justify-center'>
+              <IndividualIcon /> Individual
+            </div>
+          </TabsTrigger>
+          <TabsTrigger
+            value='panel'
+            onClick={() => {
+              handleModeChange('panel');
+            }}
+          >
+            <div className='flex flex-row gap-1 justify-center'>
+              <PanelIcon /> Panel
+            </div>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
     </>
   );
 };
@@ -873,63 +783,6 @@ export const IndividualIcon = ({ size = 24 }: { size?: number }) => (
     ></path>
   </svg>
 );
-
-type MemberSelectionDropDownProps = {
-  placeholder: string;
-  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  options: {
-    name: string;
-    value: string | number;
-    start_icon_url?:
-      | string
-      | {
-          name: string;
-          url: string;
-        }[];
-    icon?: React.JSX.Element;
-  }[];
-  value: string | number;
-  showIcons?: boolean;
-  error?: boolean;
-  helperText?: string;
-};
-
-export const DropDown = ({
-  placeholder,
-  onChange,
-  options,
-  value,
-  showIcons = true,
-  error = false,
-  helperText = '',
-}: MemberSelectionDropDownProps) => {
-  return (
-    <Stack
-      position={'relative'}
-      alignItems={'flex-start'}
-      justifyContent={'center'}
-    >
-      {!value && (
-        <Stack
-          position={'absolute'}
-          zIndex={1}
-          style={{ color: 'var(--neutral-11)', pointerEvents: 'none', top: 8 }}
-          ml={2}
-        >
-          {placeholder}
-        </Stack>
-      )}
-      <AvatarSelectDropDown
-        onChange={onChange}
-        menuOptions={options}
-        showMenuIcons={showIcons}
-        value={value}
-        error={error}
-        helperText={helperText}
-      />
-    </Stack>
-  );
-};
 
 export const validateSessionFields = (fields: SessionFormFields) => {
   const safeFields = Object.entries(fields).reduce(
@@ -1037,14 +890,14 @@ export const getSessionPayload = (
     {} as { [key in keyof SessionFormFields]: SessionFormFields[key]['value'] },
   );
   const safeInterviewers: CreateInterviewSession['interview_module_relation_entries'] =
-    interviewers.map(({ moduleUserId }) => ({
-      id: moduleUserId,
+    interviewers.map(({ module_relation_id }) => ({
+      id: module_relation_id,
       interviewer_type: 'qualified',
       training_type: 'qualified',
     }));
   const safeTrainees: CreateInterviewSession['interview_module_relation_entries'] =
-    trainees.map(({ moduleUserId }) => ({
-      id: moduleUserId,
+    trainees.map(({ module_relation_id }) => ({
+      id: module_relation_id,
       interviewer_type: 'training',
       training_type: null,
     }));

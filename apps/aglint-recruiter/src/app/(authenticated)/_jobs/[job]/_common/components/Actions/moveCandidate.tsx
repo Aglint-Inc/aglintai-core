@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTableInsert } from '@aglint/shared-types';
+import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
-import { Checkbox, Dialog, Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

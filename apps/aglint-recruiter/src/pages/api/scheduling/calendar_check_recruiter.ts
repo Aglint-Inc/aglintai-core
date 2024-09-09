@@ -6,7 +6,7 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 const userCalendarCheck = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/check_calendar_status`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { recruiter_id } = req.body;
+  const { recruiter_id } = req.body;
 
   if (!recruiter_id) {
     // eslint-disable-next-line no-console

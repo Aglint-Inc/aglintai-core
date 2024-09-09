@@ -58,7 +58,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'status',
-            iconname: '',
+            // iconname: '',
             options: filterOptions.status,
             setValue: (val) => {
               setFilterValues({
@@ -71,7 +71,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'department',
-            iconname: 'apartment',
+            // iconname: 'apartment',
             options: filterOptions.department,
             setValue: (val) => {
               setFilterValues({
@@ -84,7 +84,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'Job type',
-            iconname: 'work',
+            // iconname: 'work',
             options: filterOptions.type,
             setValue: (val) => {
               setFilterValues({
@@ -97,7 +97,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'hiring manager',
-            iconname: 'person',
+            // iconname: 'person',
             options: filterOptions.hiringManager,
             setValue: (val) => {
               setFilterValues({
@@ -110,7 +110,7 @@ function FilterJobDashboard({
           {
             type: 'filter',
             name: 'recruiter',
-            iconname: 'person',
+            // iconname: 'person',
             options: filterOptions.recruiter,
             setValue: (val) => {
               setFilterValues({
@@ -364,7 +364,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
       [[], []] satisfies (typeof jobs)[][],
     )
     .flatMap((jobs) => jobs);
-  let filterOptions = getFilterOptions(jobs);
+  const filterOptions = getFilterOptions(jobs);
 
   const safeOptions = useMemo(
     () =>

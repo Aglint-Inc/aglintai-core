@@ -1,19 +1,16 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Text } from '@devlink/Text';
-import { GlobalIcon } from '@devlink2/GlobalIcon';
 import { RequestSetting } from '@devlink2/RequestSetting';
 import { Checkbox, MenuItem, Stack } from '@mui/material';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Clock } from 'lucide-react';
 import React, { useState } from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
 import SelectionComp from '@/components/Common/SelectionComp';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import ToggleBtn from '@/components/Common/UIToggle';
-function ClockIcon() {
-  return <GlobalIcon iconName='schedule' />;
-}
 
 function SettingsPopup({
   open,
@@ -159,7 +156,7 @@ function SettingsPopup({
                     }}
                     format='hh:mm A'
                     slots={{
-                      openPickerIcon: ClockIcon,
+                      openPickerIcon: () => <Clock size={20} />,
                     }}
                     sx={{
                       width: '100%',
@@ -182,6 +179,6 @@ function SettingsPopup({
 
 export default SettingsPopup;
 
-var defaultValue = `
+const defaultValue = `
 <ul><li><p>When scheduling make sure you have candidate availability if there are no availability then request availability from candidate. Use the next 3 days unless otherwise mentioned. </p></li><li><p>Do not request availability from the candidate outside of work hours. </p></li><li><p>Show only slots where interviewers are available.</p></li></ul>
 `;

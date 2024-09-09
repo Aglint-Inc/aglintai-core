@@ -2,24 +2,20 @@ import { Switch } from '@components/ui/switch';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
-import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
 import { useRouter } from 'next/router';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
-import { DropDown } from '@/job/interview-plan/components/sessionForms';
 import { useInterviewModules } from '@/queries/interview-modules';
-import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 
+import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 import {
-  setEditSession,
+  EditSessionDrawer,
   setErrorValidation,
   setSelectedInterviewers,
   setTrainingInterviewers,
   setTrainingToggle,
   useEditSessionDrawerStore,
 } from '../store';
-import { type Interviewer } from '../types';
 import CountDropDown from './CountDropDown';
 import SelectSessionType from './SelectSessionType';
 
@@ -41,8 +37,8 @@ function InterviewModeComp() {
 
   const interviewModules = useInterviewModules();
 
-  let optionsInterviewers: Interviewer[] = [];
-  let optionTrainees: Interviewer[] = [];
+  let optionsInterviewers: EditSessionDrawer['selectedInterviewers'] = [];
+  let optionTrainees: EditSessionDrawer['trainingInterviewers'] = [];
 
   const filterArchivedModules = interviewModules?.data?.filter(
     (module) =>
@@ -54,85 +50,37 @@ function InterviewModeComp() {
     (module) => module.id === editSession?.interview_session.module_id,
   );
 
-  const selectedQuaInterviewerIds = selectedInterviewers.map(
-    (interviewer) => interviewer.value,
-  );
-
   if (moduleCurrent) {
     optionsInterviewers =
       moduleCurrent?.members
-        .filter(
-          (user) =>
-            user.training_status == 'qualified' &&
-            selectedQuaInterviewerIds.indexOf(user.moduleUserId) === -1,
-        )
+        .filter((user) => user.training_status == 'qualified')
         ?.map((member) => ({
-          name: getFullName(member.first_name, member.last_name),
-          value: member.moduleUserId,
-          start_icon_url: member.profile_image,
+          email: member.email,
+          user_id: member.user_id,
+          profile_image: member.profile_image,
+          position: member.position,
+          first_name: member.first_name,
+          last_name: member.last_name,
+          module_relation_id: member.module_relation_id,
         })) || [];
 
     optionTrainees =
       moduleCurrent?.members
         .filter((user) => user.training_status == 'training')
         ?.map((member) => ({
-          name: member.first_name + ' ' + member.last_name,
-          value: member.moduleUserId,
-          start_icon_url: member.profile_image,
+          email: member.email,
+          user_id: member.user_id,
+          profile_image: member.profile_image,
+          position: member.position,
+          first_name: member.first_name,
+          last_name: member.last_name,
+          module_relation_id: member.module_relation_id,
         })) || [];
   }
 
   const isTraineesDropVisible =
     moduleCurrent?.members?.filter((user) => user.training_status == 'training')
       .length > 0;
-
-  const onChangeQualified = (user_id: string) => {
-    errorValidation.find(
-      (err) => err.field === 'qualified_interviewers',
-    ).error = false;
-
-    setErrorValidation([...errorValidation]);
-
-    const selectedUser = moduleCurrent?.members?.find(
-      (member) => member.moduleUserId === user_id,
-    );
-
-    if (
-      !selectedInterviewers.find(
-        (interviewer) => interviewer.value === selectedUser.moduleUserId,
-      )
-    ) {
-      setSelectedInterviewers([
-        ...selectedInterviewers,
-        {
-          name: getFullName(selectedUser.first_name, selectedUser.last_name),
-          value: selectedUser.moduleUserId,
-          start_icon_url: selectedUser.profile_image,
-        },
-      ]);
-    }
-  };
-
-  const onChangeTrainiess = (user_id: string) => {
-    const selectedUser = moduleCurrent?.members?.find(
-      (member) => member.moduleUserId === user_id,
-    );
-
-    if (
-      !trainingInterviewers.find(
-        (interviewer) => interviewer.value === selectedUser.moduleUserId,
-      )
-    ) {
-      setTrainingInterviewers([
-        ...trainingInterviewers,
-        {
-          name: getFullName(selectedUser.first_name, selectedUser.last_name),
-          value: selectedUser.moduleUserId,
-          start_icon_url: selectedUser.profile_image,
-        },
-      ]);
-    }
-  };
 
   return (
     <InterviewMode
@@ -184,11 +132,13 @@ function InterviewModeComp() {
           />
         ) : (
           <>
-            <DropDown
+            <MembersAutoComplete
+              maxWidth='466px'
               placeholder='Select Interviewers'
-              onChange={(e) => onChangeQualified(e.target.value)}
-              options={optionsInterviewers}
-              value=''
+              renderUsers={optionsInterviewers}
+              selectedUsers={selectedInterviewers}
+              setSelectedUsers={setSelectedInterviewers}
+              pillColor='var(--neutral-3)'
               error={
                 errorValidation.find(
                   (err) => err.field === 'qualified_interviewers',
@@ -199,86 +149,35 @@ function InterviewModeComp() {
                   (err) => err.field === 'qualified_interviewers',
                 ).message
               }
+              onUserSelect={() => {
+                setErrorValidation(
+                  errorValidation.map((err) =>
+                    err.field === 'qualified_interviewers'
+                      ? { ...err, error: false }
+                      : err,
+                  ),
+                );
+              }}
             />
           </>
         )
       }
       isTrainingVisible={optionTrainees.length > 0}
-      slotInterviewersAvatarSelectionPill={
-        <>
-          {selectedInterviewers?.map((interviewer) => {
-            return (
-              <SelectedMemberPill
-                isCloseButton={true}
-                key={interviewer.value}
-                onClickRemove={{
-                  onClick: () => {
-                    setSelectedInterviewers(
-                      selectedInterviewers.filter(
-                        (selected) => selected.value !== interviewer.value,
-                      ),
-                    );
-                    setEditSession({
-                      interview_session: {
-                        ...editSession.interview_session,
-                        interviewer_cnt: selectedInterviewers.length - 1,
-                      },
-                    });
-                  },
-                }}
-                textMemberName={interviewer.name}
-                slotMemberAvatar={
-                  <MuiAvatar
-                    src={interviewer.start_icon_url}
-                    level={getFullName(interviewer.name, '')}
-                    variant='rounded-small'
-                  />
-                }
-              />
-            );
-          })}
-        </>
-      }
-      slotTraineeAvatarSelectionPill={
-        <>
-          {trainingInterviewers?.map((interviewer) => {
-            return (
-              <SelectedMemberPill
-                key={interviewer.value}
-                isCloseButton={true}
-                onClickRemove={{
-                  onClick: () => {
-                    setTrainingInterviewers(
-                      trainingInterviewers.filter(
-                        (selected) => selected.value !== interviewer.value,
-                      ),
-                    );
-                  },
-                }}
-                textMemberName={interviewer.name}
-                slotMemberAvatar={
-                  <MuiAvatar
-                    src={interviewer.start_icon_url}
-                    level={getFullName(interviewer.name, '')}
-                    variant='rounded-small'
-                  />
-                }
-              />
-            );
-          })}
-        </>
-      }
+      slotInterviewersAvatarSelectionPill={<></>}
+      slotTraineeAvatarSelectionPill={<></>}
       isTraineesDropVisible={
         isTraineesDropVisible &&
         trainingToggle &&
         optionTrainees?.length > trainingInterviewers?.length
       }
       slotTraineesDropdown={
-        <DropDown
-          placeholder='Select Interviewers'
-          onChange={(e) => onChangeTrainiess(e.target.value)}
-          options={optionTrainees}
-          value=''
+        <MembersAutoComplete
+          maxWidth='466px'
+          placeholder='Select Training Interviewers'
+          renderUsers={optionTrainees}
+          selectedUsers={trainingInterviewers}
+          setSelectedUsers={setTrainingInterviewers}
+          pillColor='var(--neutral-3)'
           error={
             errorValidation.find((err) => err.field === 'training_interviewers')
               .error
@@ -287,6 +186,15 @@ function InterviewModeComp() {
             errorValidation.find((err) => err.field === 'training_interviewers')
               .message
           }
+          onUserSelect={() => {
+            setErrorValidation(
+              errorValidation.map((err) =>
+                err.field === 'training_interviewers'
+                  ? { ...err, error: false }
+                  : err,
+              ),
+            );
+          }}
         />
       }
     />

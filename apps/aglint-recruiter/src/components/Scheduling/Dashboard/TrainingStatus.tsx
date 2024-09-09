@@ -1,4 +1,3 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
 import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
@@ -8,6 +7,7 @@ import { useRouter } from 'next/router';
 
 import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';
+import { Skeleton } from '@components/ui/skeleton';
 
 const LIMIT = 6;
 
@@ -34,7 +34,12 @@ const TrainingStatusComponent = () => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-      (_, i) => <InterviewStatsLoader key={i} slotSkeleton={<Skeleton />} />,
+      (_, i) => (
+        <InterviewStatsLoader
+          key={i}
+          slotSkeleton={<Skeleton className='w-full h-full' />}
+        />
+      ),
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))

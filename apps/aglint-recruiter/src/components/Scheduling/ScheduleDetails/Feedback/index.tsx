@@ -1,29 +1,22 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalIcon } from '@devlink/GlobalIcon';
-import { TextWithIcon } from '@devlink2/TextWithIcon';
-import { CdFeedback } from '@devlink3/CdFeedback';
+
 import { FeedbackCard } from '@devlink3/FeedbackCard';
 import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@devlink3/RoundedNumber';
 import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
+import { Calendar, Circle, Clock, Star, User, Users } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import Avatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import {
-  IndividualIcon,
-  PanelIcon,
-} from '@/job/interview-plan/components/sessionForms';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
 import { getFullName } from '@/utils/jsonResume';
 import toast from '@/utils/toast';
@@ -34,6 +27,10 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Badge } from '@components/ui/badge';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
@@ -110,7 +107,7 @@ const FeedbackWindow = ({
       }[];
     } = {};
 
-    for (let item of tempData) {
+    for (const item of tempData) {
       const temp = tempRelation[item.session_id] || [];
       temp.push({
         feedback: item.feedback,
@@ -239,7 +236,7 @@ const AdminFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<Boolean>;
+  }) => Promise<boolean>;
 
   candidate: {
     email: string;
@@ -299,73 +296,56 @@ const AdminFeedback = ({
                 if (!session.length) return null;
                 return (
                   <>
-                    <CdFeedback
-                      slotHeader={
-                        <>
+                    <Card className='p-4'>
+                      <CardHeader className='space-y-2'>
+                        <div className='flex items-center space-x-2'>
                           {session[0].session.session_type === 'panel' ? (
-                            <TextWithIcon
-                              iconName={<PanelIcon size={18} />}
-                              iconSize={4}
-                              textContent={session[0].session.title}
-                            />
+                            <Users size={18} className='text-gray-500' />
                           ) : (
-                            <TextWithIcon
-                              iconName={<IndividualIcon size={18} />}
-                              iconSize={4}
-                              textContent={session[0].session.title}
-                            />
+                            <User size={18} className='text-gray-500' />
                           )}
-                          <TextWithIcon
-                            iconName={'calendar_today'}
-                            iconSize={4}
-                            textContent={dayjsLocal(
-                              session[0].session.time.start,
-                            ).format('ddd, MMMM DD, YYYY')}
-                          />
-                          <TextWithIcon
-                            iconName={'schedule'}
-                            iconSize={4}
-                            textContent={`${dayjsLocal(
-                              session[0].session.time.start,
-                            ).format('hh:mm')} - ${dayjsLocal(
-                              session[0].session.time.end,
-                            ).format('hh:mm')}`}
-                            fontColor={'neutral'}
-                            fontSize={1}
-                          />
-
-                          <GlobalBadge
-                            color={'success'}
-                            textBadge={session[0].session.status}
-                            showIcon={true}
-                            iconName={'circle'}
-                          />
-                        </>
-                      }
-                      slotBody={
-                        <>
-                          {session.map((int, index) => {
-                            const isFeedBackEnabled =
-                              int.session.status === 'completed';
-                            return (
-                              <>
-                                <FeedbackCardDetails
-                                  index={index}
-                                  int={int}
-                                  user_id={user_id}
-                                  isFeedBackEnabled={isFeedBackEnabled}
-                                  isAdmin={isAdmin}
-                                  setSelectedInterviewer={
-                                    setSelectedInterviewer
-                                  }
-                                  handelFeedbackRequest={handelFeedbackRequest}
-                                />
-                              </>
-                            );
-                          })}
-                        </>
-                      }
-                    />
+                          <span className='text-lg font-medium'>
+                            {session[0].session.title}
+                          </span>
+                        </div>
+                        <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                          <Calendar className='h-4 w-4' />
+                          <span>
+                            {dayjsLocal(session[0].session.time.start).format(
+                              'ddd, MMMM DD, YYYY',
+                            )}
+                          </span>
+                        </div>
+                        <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                          <Clock className='h-4 w-4' />
+                          <span>
+                            {`${dayjsLocal(session[0].session.time.start).format('hh:mm')} - ${dayjsLocal(session[0].session.time.end).format('hh:mm')}`}
+                          </span>
+                        </div>
+                        <Badge className='flex items-center space-x-1'>
+                          <Circle className='h-2 w-2 fill-current' />
+                          <span>{session[0].session.status}</span>
+                        </Badge>
+                      </CardHeader>
+                      <CardContent>
+                        {session.map((int, index) => {
+                          const isFeedBackEnabled =
+                            int.session.status === 'completed';
+                          return (
+                            <FeedbackCardDetails
+                              key={index}
+                              index={index}
+                              int={int}
+                              user_id={user_id}
+                              isFeedBackEnabled={isFeedBackEnabled}
+                              isAdmin={isAdmin}
+                              setSelectedInterviewer={setSelectedInterviewer}
+                              handelFeedbackRequest={handelFeedbackRequest}
+                            />
+                          );
+                        })}
+                      </CardContent>
+                    </Card>
                   </>
                 );
               })
@@ -412,7 +392,7 @@ const InterviewerFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<Boolean>;
+  }) => Promise<boolean>;
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
     index: number;
@@ -434,68 +414,59 @@ const InterviewerFeedback = ({
                   const session = sessions[key] || [];
                   if (!session.length) return null;
                   return (
-                    <CdFeedback
-                      key={key}
-                      slotHeader={
-                        <>
+                    <Card key={key}>
+                      <CardHeader>
+                        <div className='space-y-2'>
                           {session[0].session.session_type === 'panel' ? (
-                            <TextWithIcon
-                              iconName={<PanelIcon size={18} />}
-                              iconSize={4}
-                              textContent={session[0].session.title}
-                            />
+                            <div className='flex items-center space-x-2'>
+                              <Users size={18} />
+                              <span>{session[0].session.title}</span>
+                            </div>
                           ) : (
-                            <TextWithIcon
-                              iconName={<IndividualIcon size={18} />}
-                              iconSize={4}
-                              textContent={session[0].session.title}
-                            />
+                            <div className='flex items-center space-x-2'>
+                              <User size={18} />
+                              <span>{session[0].session.title}</span>
+                            </div>
                           )}
-                          <TextWithIcon
-                            iconName={'calendar_today'}
-                            iconSize={4}
-                            textContent={dayjsLocal(
-                              session[0].session.time.start,
-                            ).format('ddd, MMMM DD, YYYY')}
-                          />
-                          <TextWithIcon
-                            iconName={'schedule'}
-                            iconSize={4}
-                            textContent={`${dayjsLocal(
+                          <div className='flex items-center space-x-2'>
+                            <Calendar size={16} />
+                            <span>
+                              {dayjsLocal(session[0].session.time.start).format(
+                                'ddd, MMMM DD, YYYY',
+                              )}
+                            </span>
+                          </div>
+                          <div className='flex items-center space-x-2 text-neutral-500 text-sm'>
+                            <Clock size={16} />
+                            <span>{`${dayjsLocal(
                               session[0].session.time.start,
                             ).format('hh:mm')} - ${dayjsLocal(
                               session[0].session.time.end,
-                            ).format('hh:mm')}`}
-                            fontColor={'neutral'}
-                            fontSize={1}
-                          />
+                            ).format('hh:mm')}`}</span>
+                          </div>
 
-                          <GlobalBadge
-                            color={'success'}
-                            textBadge={session[0].session.status}
-                            showIcon={true}
-                            iconName={'circle'}
-                          />
-                        </>
-                      }
-                      slotBody={
-                        <>
-                          {session.map((int, index) => {
-                            const isFeedBackEnabled =
-                              int.session.status === 'completed';
-                            return (
-                              <FeedbackCardDetails
-                                key={index}
-                                isFeedBackEnabled={isFeedBackEnabled}
-                                index={index}
-                                setSelectedInterviewer={setSelectedInterviewer}
-                                int={int}
-                              />
-                            );
-                          })}
-                        </>
-                      }
-                    />
+                          <Badge className='flex items-center space-x-1'>
+                            <Circle size={12} />
+                            <span>{session[0].session.status}</span>
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        {session.map((int, index) => {
+                          const isFeedBackEnabled =
+                            int.session.status === 'completed';
+                          return (
+                            <FeedbackCardDetails
+                              key={index}
+                              isFeedBackEnabled={isFeedBackEnabled}
+                              index={index}
+                              setSelectedInterviewer={setSelectedInterviewer}
+                              int={int}
+                            />
+                          );
+                        })}
+                      </CardContent>
+                    </Card>
                   );
                 })
                 .filter((item) => Boolean(item))
@@ -811,11 +782,7 @@ function FeedbackCardDetails({
                 <Stack direction={'column'} gap={'10px'}>
                   <Stack direction={'row'} gap={'10px'}>
                     <Typography fontSize={20}>
-                      <GlobalIcon
-                        size={'30'}
-                        color={'#000'}
-                        iconName={'kid_star'}
-                      />
+                      <Star size={'30'} />
                     </Typography>
                     <Typography>
                       Recommendation Level : {int.feedback?.recommendation}

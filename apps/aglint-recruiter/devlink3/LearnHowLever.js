@@ -81,7 +81,7 @@ export function LearnHowLever({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65fa8282e60eaa06dd0f0c68_Frame%201716.png"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65fa8282e60eaa06dd0f0c68_Frame%201716.png"
               />
             </_Builtin.Block>
           </_Builtin.Figure>

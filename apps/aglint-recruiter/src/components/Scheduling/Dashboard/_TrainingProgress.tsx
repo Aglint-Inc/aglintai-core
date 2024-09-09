@@ -1,4 +1,3 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { HistoryPill as HistoryPillDev } from '@devlink3/HistoryPill';
 import { NoData } from '@devlink3/NoData';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
@@ -13,6 +12,7 @@ import { useInterviewTrainingProgress } from '@/queries/scheduling-dashboard';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
+import { Skeleton } from '@components/ui/skeleton';
 
 const LIMIT = 4;
 
@@ -43,7 +43,12 @@ const TrainingProgressComponent = () => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-      (_, i) => <TrainingProgressLoader key={i} slotSkeleton={<Skeleton />} />,
+      (_, i) => (
+        <TrainingProgressLoader
+          key={i}
+          slotSkeleton={<Skeleton className='w-full h-full' />}
+        />
+      ),
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
@@ -99,7 +104,7 @@ const HistoryPills = ({
   'module' | 'count'
 >) => {
   const shadowPills = [...new Array(module.settings.noShadow)].reduce(
-    (acc, curr, index) => {
+    (acc, _curr, index) => {
       const isActive = index < shadow;
       const isStart = index === 0;
       const isEnd =
@@ -120,7 +125,7 @@ const HistoryPills = ({
   );
   const reverseShadowPills = [
     ...new Array(module.settings.noReverseShadow),
-  ].reduce((acc, curr, i) => {
+  ].reduce((acc, _curr, i) => {
     const index = i + (shadowPills || []).length;
     const isActive = index < reverse_shadow;
     const isStart = module.settings.noShadow + index === 0;

@@ -11,7 +11,7 @@ type BodyParams = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { training_ints } = req.body as BodyParams;
+  const { training_ints } = req.body as BodyParams;
   try {
     if (!training_ints) res.status(400).send('missing field');
     const module_relations = supabaseWrap(

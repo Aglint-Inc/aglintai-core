@@ -43,16 +43,16 @@ export const calcEachIntsAPIDetails = (
     start_date: Dayjs,
     end_date: Dayjs,
   ) => {
-    let free_times: InterDayFreeTime = {};
-    let work_hrs: InterDayWorkHr = {};
-    let holidays: InterDayHolidayOff = {};
-    let day_offs: InterDayHolidayOff = {};
+    const free_times: InterDayFreeTime = {};
+    const work_hrs: InterDayWorkHr = {};
+    const holidays: InterDayHolidayOff = {};
+    const day_offs: InterDayHolidayOff = {};
     let current_date = start_date.startOf('day');
     const upd_inter = { ...interviewer };
     while (!current_date.isAfter(end_date, 'day')) {
       const { curr_day_holidays, curr_day_offs, work_time_duration } =
         findWorkTimeForTheDay(interviewer, current_date);
-      let curr_day_free_times = findFreeTimeForTheDay(
+      const curr_day_free_times = findFreeTimeForTheDay(
         upd_inter,
         work_time_duration,
         current_date,
@@ -87,7 +87,7 @@ export const calcEachIntsAPIDetails = (
     const work_day = int_schedule_setting.workingHours.find(
       (day) => current_day.format('dddd').toLowerCase() === day.day,
     );
-    let work_hour = {
+    const work_hour = {
       startTime: ScheduleUtils.setTimeInDay(
         current_day.format(),
         work_day.timeRange.startTime,
@@ -99,14 +99,14 @@ export const calcEachIntsAPIDetails = (
         int_schedule_setting.timeZone.tzCode,
       ).format(),
     };
-    let holiday: TimeDurationType = {
+    const holiday: TimeDurationType = {
       startTime: current_day
         .startOf('day')
         .tz(api_details.req_user_tz)
         .format(),
       endTime: current_day.endOf('day').tz(api_details.req_user_tz).format(),
     };
-    let day_off: TimeDurationType = {
+    const day_off: TimeDurationType = {
       ...holiday,
     };
 
@@ -151,14 +151,14 @@ export const calcEachIntsAPIDetails = (
     if (work_time_duration.length == 0) {
       return [];
     }
-    let current_day_blocked_times = getInterviewerBlockedTimes(
+    const current_day_blocked_times = getInterviewerBlockedTimes(
       api_details.comp_schedule_setting,
       interviewer.cal_date_events[current_day.startOf('day').format()] ?? [], // when for particular day there are no events
       api_details.req_user_tz,
       api_options,
     );
 
-    let nearest_curr_time = ScheduleUtils.getNearestCurrTime(
+    const nearest_curr_time = ScheduleUtils.getNearestCurrTime(
       interviewer.int_schedule_setting.timeZone.tzCode,
     );
 
@@ -210,14 +210,14 @@ export const calcEachIntsAPIDetails = (
         .format('dddd'),
     };
 
-    let day1_details = getCurrDayWorkingHours(
+    const day1_details = getCurrDayWorkingHours(
       day1_interviewer_time.startTime,
       interviewer,
     );
 
-    let work_time_duration: TimeDurationType[] = [];
-    let curr_day_holidays: TimeDurationType[] = [];
-    let curr_day_offs: TimeDurationType[] = [];
+    const work_time_duration: TimeDurationType[] = [];
+    const curr_day_holidays: TimeDurationType[] = [];
+    const curr_day_offs: TimeDurationType[] = [];
     if (day1_details.work_hour) {
       const curr_day_work_hrs = getWorkHourFromIntAvil(
         {
@@ -262,7 +262,7 @@ export const calcEachIntsAPIDetails = (
 
     // if candidate and interviewr are in same time zone
     if (day1_interviewer_time.day !== day2_interviewer_time.day) {
-      let day2_work_hours = getCurrDayWorkingHours(
+      const day2_work_hours = getCurrDayWorkingHours(
         day2_interviewer_time.startTime,
         interviewer,
       );
@@ -351,7 +351,7 @@ export const calcEachIntsAPIDetails = (
         endTime: curr_blocked_times[0].endTime,
       };
 
-      let free_time_chunks: TimeDurationDayjsType[] = [];
+      const free_time_chunks: TimeDurationDayjsType[] = [];
 
       if (
         prev_blocked_chunk.startTime.isAfter(workhr_chunk.startTime, 'minutes')
@@ -361,7 +361,7 @@ export const calcEachIntsAPIDetails = (
           endTime: prev_blocked_chunk.startTime,
         });
       }
-      for (let curr_blocked_chunk of curr_blocked_times.slice(1)) {
+      for (const curr_blocked_chunk of curr_blocked_times.slice(1)) {
         if (!isTimeChunksOverLapps(prev_blocked_chunk, curr_blocked_chunk)) {
           free_time_chunks.push({
             startTime: prev_blocked_chunk.endTime,
@@ -409,7 +409,7 @@ export const calcEachIntsAPIDetails = (
 
     let free_times_dayjs: TimeDurationDayjsType[] = [];
 
-    for (let workhr_chunk of work_hr_chunks) {
+    for (const workhr_chunk of work_hr_chunks) {
       const curr_free_chunks = getFreeTimeChunkForWorkHrChunk(workhr_chunk);
       free_times_dayjs = [...free_times_dayjs, ...curr_free_chunks];
     }

@@ -2,11 +2,16 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { UserDetails } from '@devlink/UserDetails';
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Dialog,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import UITextField from '@/components/Common/UITextField';
 import { ProfileForms } from '@/components/Profile';
 import {
   type FormFields,
@@ -91,7 +96,7 @@ export const EditProfileDialog = ({
   const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     return Object.entries(profile).reduce(
       (acc, [key, curr]) => {
-        let value = curr.value?.trim() || null;
+        const value = curr.value?.trim() || null;
         let error = false;
         if (curr.required || value?.length) {
           switch (curr.validation) {
@@ -275,7 +280,7 @@ export const EditProfileDialog = ({
                 fullWidth
                 options={timeZone}
                 value={selectedTimeZone}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedTimeZone(value);
                     setProfileChange(true);
@@ -293,15 +298,7 @@ export const EditProfileDialog = ({
                   );
                 }}
                 renderInput={(params) => {
-                  return (
-                    <UITextField
-                      {...params}
-                      labelSize='medium'
-                      // fullWidth
-                      label={''}
-                      placeholder='Ex. Healthcare'
-                    />
-                  );
+                  return <TextField {...params} placeholder='Ex. Healthcare' />;
                 }}
               />
             </Stack>

@@ -4,6 +4,7 @@ import { interviewStartEmailApplicantSchema } from '@aglint/shared-types/src/agl
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbFetch } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { PortalPayload } from '../../../utils/types/portalMessage';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -16,6 +17,10 @@ export async function POST(req: Request) {
       react_email_placeholders,
       recipient_email,
     } = await dbFetch(supabaseAdmin, req_body);
+
+    const portal: PortalPayload = {
+      application_id: req_body.application_id,
+    };
     await sendMailFun({
       supabaseAdmin,
       comp_email_placeholder,
@@ -24,7 +29,7 @@ export async function POST(req: Request) {
       recipient_email,
       api_target: 'interviewStart_email_applicant',
       payload: req_body.payload,
-      application_id: req_body.application_id,
+      portalMessage: portal,
     });
     return NextResponse.json('success', {
       status: 200,

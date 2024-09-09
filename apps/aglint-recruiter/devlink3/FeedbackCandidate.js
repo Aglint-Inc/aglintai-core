@@ -64,7 +64,7 @@ export function FeedbackCandidate({
                     width="auto"
                     height="auto"
                     alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/66267cfefea65ac8b79a3522_%F0%9F%98%8D.png"
+                    src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/66267cfefea65ac8b79a3522_%F0%9F%98%8D.png"
                   />
                   <_Builtin.Block
                     className={_utils.cx(_styles, "relative-1")}
@@ -95,7 +95,7 @@ export function FeedbackCandidate({
                     width="auto"
                     height="auto"
                     alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/66267d72180f0ecc268cad15_%F0%9F%98%81.png"
+                    src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/66267d72180f0ecc268cad15_%F0%9F%98%81.png"
                   />
                   <_Builtin.Block
                     className={_utils.cx(_styles, "relative-1")}
@@ -126,7 +126,7 @@ export function FeedbackCandidate({
                     width="auto"
                     height="auto"
                     alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/66267d720dfd98d02399ea92_%F0%9F%99%82.png"
+                    src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/66267d720dfd98d02399ea92_%F0%9F%99%82.png"
                   />
                   <_Builtin.Block
                     className={_utils.cx(_styles, "relative-1")}
@@ -157,7 +157,7 @@ export function FeedbackCandidate({
                     width="auto"
                     height="auto"
                     alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/66267d72948f8fb0fc11f425_%E2%98%B9%EF%B8%8F.png"
+                    src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/66267d72948f8fb0fc11f425_%E2%98%B9%EF%B8%8F.png"
                   />
                   <_Builtin.Block
                     className={_utils.cx(_styles, "relative-1")}

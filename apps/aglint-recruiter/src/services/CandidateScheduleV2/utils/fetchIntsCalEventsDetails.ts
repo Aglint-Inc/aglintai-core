@@ -31,7 +31,7 @@ export const fetchIntsCalEventsDetails = async (
 
   const ints_cal_details: InterDetailsType[] = db_details.all_inters.map(
     (i) => {
-      let inter_details: InterDetailsType = {
+      const inter_details: InterDetailsType = {
         all_events: [...ints_events_map[i.user_id].all_events],
         email: i.email,
         full_name: getFullName(i.first_name, i.last_name),
@@ -109,7 +109,7 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
       );
       updated_int_details.all_events = fetched_events;
       updated_int_details.isCalenderConnected = true;
-    } catch (error) {
+    } catch (err) {
       updated_int_details.isCalenderConnected = false;
     }
 

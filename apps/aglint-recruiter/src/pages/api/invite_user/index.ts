@@ -30,9 +30,9 @@ export default async function handler(
         getVal: (name) => req.cookies[String(name)],
       });
       // if (role === 'admin') {
-      let user_id: string = null;
+      const user_id: string = null;
       try {
-        for (let user of users) {
+        for (const user of users) {
           const recUser = await registerMember(
             supabaseAdmin,
             user,

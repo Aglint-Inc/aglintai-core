@@ -67,8 +67,8 @@ const getMatches = (
   return Object.entries(application_match ?? {}).reduce(
     (acc, [key, value]) => {
       acc[key] = {
-        count: getPlural(value, 'candidate'),
-        percentage: `${value ? ((value / total) * 100).toFixed(1) : 0}%`,
+        count: Number(value),
+        percentage: `${value ? ((Number(value) / total) * 100).toFixed(1) : 0}%`,
       };
       return acc;
     },
@@ -92,7 +92,7 @@ const Dashboard = () => {
 
   const { getParams } = useApplicationsParams();
 
-  const score_matches = getMatches(job.application_match, total);
+  const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   const handleFilter = (
     resume_match: ApplicationsParams['filters']['resume_match'][number],
@@ -265,7 +265,10 @@ const Pipeline = () => {
   const { push } = useRouter();
   const newSections = Object.entries(job?.section_count ?? {}).reduce(
     (acc, [key, value]) => {
-      acc[key] = { count: value, label: getPlural(value, 'candidate') };
+      acc[key] = {
+        count: Number(value),
+        label: getPlural(Number(value), 'candidate'),
+      };
       return acc;
     },
     {} as {

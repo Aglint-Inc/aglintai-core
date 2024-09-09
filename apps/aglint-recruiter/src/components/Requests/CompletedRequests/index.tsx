@@ -1,55 +1,89 @@
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { RequestsWrapper } from '@devlink2/RequestsWrapper';
-import { Stack } from '@mui/material';
+import { RequestProvider } from '@/context/RequestContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { Request } from '@/queries/requests/types';
+import dayjs from '@/utils/dayjs';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
+import { useCompletedRequestsStore } from '../_common/Context/store';
+import { useCompletedRequests } from '../_common/hooks';
 
-import { sectionDefaultsData } from '../RequestSections';
-import Section from '../RequestSections/Section';
-import FilterAndSorting from './FiltersAndSorting';
-import { useCompletedRequests } from './hooks';
-import { setCompletedMode, useCompletedRequestsStore } from './store';
-
-function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
+function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
-  const { data: completedRequests, status } = useCompletedRequests({
+  const { data: completedRequests } = useCompletedRequests({
     completedFilters,
   });
+  const { replace } = useRouterPro();
+
+  // Group completed requests by date
+  const groupedRequests = groupRequestsByDate(completedRequests ?? []);
   return (
-    <RequestsWrapper
-      slotFilter={
-        <Stack
-          direction={'row'}
-          justifyContent={'space-between'}
-          ml={!openChat ? '28px' : '0px'}
-          width={'100%'}
-        >
-          <ButtonSoft
-            size={1}
-            color={'neutral'}
-            isLeftIcon={true}
-            iconName={'arrow_back'}
-            textButton='Back'
-            onClickButton={{
-              onClick: () => {
-                setCompletedMode(false);
-              },
-            }}
-          />
-          {<FilterAndSorting />}
-        </Stack>
-      }
-      slotRequestSection={
-        <Section
-          requests={completedRequests ? [...completedRequests] : []}
-          sectionName={'all_completed_requests'}
-          sectionIconName={sectionDefaultsData[5].sectionIconName}
-          color={sectionDefaultsData[5].color}
-          isLoadingRequests={status === 'pending'}
-          showEmptyMessage={completedRequests?.length === 0}
-        />
-      }
-      slotNavigationPills={<></>}
-    />
+    <>
+      <div className='px-4 py-8'>
+        <div className='flex flex-row sticky top-0 justify-between items-center mb-8'>
+          <div className='w-[600px]'>
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href='/requests'
+                  onClick={() => replace('/requests')}
+                >
+                  Requests
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink>Completed Requests</BreadcrumbLink>
+              </BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+          <RequestHistoryFilter />
+        </div>
+        <div className='w-[960px] mx-auto'>
+          <h2 className='text-2xl font-bold mb-6'>
+            {capitalizeFirstLetter('all_completed_requests')}
+          </h2>
+          {Object.entries(groupedRequests).map(([date, requests]) => (
+            <div key={date} className='p-6'>
+              <h3 className='text-xl font-semibold mb-4'>
+                {dayjs(date).fromNow()}
+              </h3>
+              <div className='flex flex-col gap-4'>
+                {requests.map((request, i) => (
+                  <RequestProvider
+                    key={request.id ?? i}
+                    request_id={request.id}
+                  >
+                    <RequestCard {...request} />
+                  </RequestProvider>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
+}
+
+export interface GroupedRequests {
+  [date: string]: Request[];
+}
+function groupRequestsByDate(requests: Request[]): GroupedRequests {
+  return requests.reduce((acc, request) => {
+    const date = new Date(request.completed_at).toISOString();
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(request);
+    return acc;
+  }, {} as GroupedRequests);
 }
 
 export default CompletedRequests;

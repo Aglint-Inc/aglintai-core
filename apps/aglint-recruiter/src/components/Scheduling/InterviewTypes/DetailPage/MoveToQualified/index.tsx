@@ -1,13 +1,11 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { Dialog } from '@mui/material';
+import { useToast } from '@components/hooks/use-toast';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { setIsMovedToQualifiedDialogOpen, useModulesStore } from '../../store';
 
 function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
@@ -42,41 +40,28 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
   };
 
   return (
-    <Dialog
+    <UIDialog
       open={isMovedToQualifiedDialogOpen}
       onClose={() => {
         setIsMovedToQualifiedDialogOpen(false);
       }}
+      title={'Move to Qualified'}
+      slotButtons={
+        <>
+          <UIButton
+            variant='secondary'
+            onClick={() => {
+              setIsMovedToQualifiedDialogOpen(false);
+            }}
+          ></UIButton>
+          <UIButton variant='default' onClick={moveToQualified}>
+            Move
+          </UIButton>
+        </>
+      }
     >
-      <DcPopup
-        popupName={'Move to Qualified'}
-        slotBody={`Are you sure you want to move ${members.find((user) => user.user_id == selUser.user_id)?.first_name} to qualified?`}
-        onClickClosePopup={{
-          onClick: () => {
-            setIsMovedToQualifiedDialogOpen(false);
-          },
-        }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  setIsMovedToQualifiedDialogOpen(false);
-                },
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Move'}
-              onClickButton={{ onClick: moveToQualified }}
-            />
-          </>
-        }
-      />
-    </Dialog>
+      {`Are you sure you want to move ${members.find((user) => user.user_id == selUser.user_id)?.first_name} to qualified?`}
+    </UIDialog>
   );
 }
 

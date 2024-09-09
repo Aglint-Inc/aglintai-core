@@ -1,7 +1,6 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
+import { useToast } from '@components/hooks/use-toast';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { ButtonGhost } from '@devlink2/ButtonGhost';
 import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
@@ -17,8 +16,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import UITextField from '@/components/Common/UITextField';
-import { useToast } from '@/components/hooks/use-toast';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useAllDepartments } from '@/queries/departments';
@@ -26,6 +24,8 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { UIButton } from '@/components/Common/UIButton';
+import { Edit, EllipsisVertical } from 'lucide-react';
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {
@@ -87,7 +87,7 @@ function SlotBodyComp({
     }
   }
 
-  let sections = tabsModuleMembers.map((item) => item.queryParams);
+  const sections = tabsModuleMembers.map((item) => item.queryParams);
   const tabCount: number = sections.length - 1;
   const currentIndex: number = sections.indexOf(currentTab);
 
@@ -176,27 +176,22 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
               }
               slotEditButton={
                 <Stack direction={'row'} spacing={1}>
-                  <ButtonSoft
-                    color={'neutral'}
-                    size={2}
-                    textButton='Edit'
-                    iconName='edit'
-                    isLeftIcon
-                    iconSize={2}
-                    onClickButton={{
-                      onClick: () => {
-                        setIsSettingsDialogOpen(true);
-                      },
+                  <UIButton
+                    variant='secondary'
+                    leftIcon={<Edit />}
+                    size='sm'
+                    onClick={() => {
+                      setIsSettingsDialogOpen(true);
                     }}
+                  >
+                    Edit
+                  </UIButton>
+                  <UIButton
+                    variant='secondary'
+                    size='sm'
+                    onClick={handleClick}
+                    leftIcon={<EllipsisVertical />}
                   />
-                  <Stack onClick={handleClick}>
-                    <IconButtonGhost
-                      iconName='more_vert'
-                      size={2}
-                      iconSize={6}
-                      color={'neutral'}
-                    />
-                  </Stack>
                 </Stack>
               }
               slotNewTabPill={
@@ -331,12 +326,9 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                       textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
                       textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
                       slotTextArea={
-                        <UITextField
-                          multiline
-                          minRows={6}
-                          maxRows={10}
-                          height={150}
+                        <UITextArea
                           value={value}
+                          rows={8}
                           onChange={(e) => setValue(e.target.value)}
                         />
                       }
@@ -442,7 +434,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
     queryFn: getConnectedJobs,
   });
 
-  let filteredConnectedJobs = connectedJobs?.length
+  const filteredConnectedJobs = connectedJobs?.length
     ? connectedJobs.filter((job) => job?.id)
     : [];
   if (isLoading) {
@@ -459,7 +451,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               isLinkOffVisible={false}
               role={capitalizeAll(job.job_title)}
               textLocation={'---'}
-              textRoleCategory={job.departments.name || '---'}
+              textRoleCategory={job.departments?.name || '---'}
               slotBadges={
                 job.status && (
                   <GlobalBadge

@@ -1,12 +1,6 @@
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { TeamSync } from '@devlink/TeamSync';
-import { TeamUsersList } from '@devlink/TeamUsersList';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@devlink3/TeamEmpty';
-import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
 import { type GreenHouseUserSyncAPI } from '@/api/sync/greenhouse/user/type';
@@ -19,37 +13,35 @@ import { useAllMembers } from '@/queries/members';
 import dayjs from '@/utils/dayjs';
 
 import SearchField from '../../Common/SearchField/SearchField';
-import { ShowCode } from '../../Common/ShowCode';
-import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
-import AddMember from './AddMemberDialog';
 import FilterDropDown from './FilterDropDown';
-import DepartmentIcon from './Icons/DepartmentIcon';
-import LocationIcon from './Icons/LocationIcon';
-import StatusIcon from './Icons/StatusIcon';
-import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
+import {
+  Building,
+  CircleDot,
+  CirclePlus,
+  Locate,
+  RotateCcw,
+  User,
+} from 'lucide-react';
+import { Button } from '@components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table';
+import { Skeleton } from '@components/ui/skeleton';
 
 type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const {
-    data: members,
-    activeMembers,
-    isPending,
-    remote_sync,
-  } = useTeamMembers();
+  const { data: members, isPending, remote_sync } = useTeamMembers();
 
   const timeStamp = remote_sync?.lastSync;
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
-
-  const [openDrawer, setOpenDrawer] = useState<{
-    open: boolean;
-    window: 'addMember' | 'pendingMember';
-  }>({
-    open: false,
-    window: 'addMember',
-  });
 
   // filter members
   const [searchText, setSearchText] = useState('');
@@ -65,14 +57,16 @@ const TeamManagement = () => {
 
   const uniqueDepartments = [
     ...members.reduce((acc, curr) => {
-      curr.department?.name && acc.add(curr.department.name);
+      if (curr.department?.name) acc.add(curr.department.name);
       return acc;
     }, new Set<string>()),
   ];
 
   const uniqueLocations = [
     ...members.reduce((acc, curr) => {
-      curr.office_location?.city && acc.add(curr.office_location.city);
+      if (curr.office_location?.city) {
+        acc.add(curr.office_location.city);
+      }
       return acc;
     }, new Set<string>()),
   ];
@@ -118,11 +112,6 @@ const TeamManagement = () => {
     selectedRoles,
     members,
   ]);
-
-  const pendingList = members.filter(
-    (member) => member.status?.toLocaleLowerCase() === 'invited',
-  );
-  const inviteUser = pendingList.length;
 
   const [, startTransition] = useTransition();
 
@@ -170,179 +159,158 @@ const TeamManagement = () => {
     if (filteredMembers.length) setIsInitialLoading(false);
   }, [filteredMembers.length]);
   return (
-    <Stack bgcolor={'white'}>
-      <TeamUsersList
-        slotBanner={
-          <GlobalBannerInline
-            iconName='history'
-            textContent='You currently have four pending invites awaiting your response.'
-            color={'warning'}
-            slotButton={
-              <ButtonSoft
-                onClickButton={{
-                  onClick: () => {
-                    setSelectedStatus(['invited']);
-                    // setOpenDrawer({ open: true, window: 'pendingMember' });
-                  },
-                }}
-                textButton='View pending invites'
-                color={'accent'}
-                size={2}
-              />
-            }
-          />
-        }
-        slotSearchAndFilter={
-          <>
-            <Stack flexDirection={'row'} alignItems={'center'}>
-              <Stack marginRight={2}>
+    <>
+      <div className='w-[960px] mx-auto px-4 py-8'>
+        <h1 className='text-lg font-semibold mb-4'>Manage User</h1>
+        <p className='text-gray-600 mb-6'>
+          Invite your hiring team members and manage their roles and profile
+          details in one place. Assign roles such as interviewer, hiring
+          manager, or recruiter to ensure an organized team structure and
+          compliance with user permissions in the organization.
+        </p>
+
+        {/* <Alert>
+          <History className='h-4 w-4' />
+          <AlertTitle>Pending Invites</AlertTitle>
+          <AlertDescription>
+            You currently have four pending invites awaiting your response.
+          </AlertDescription>
+        </Alert> */}
+
+        <div className='mt-6 space-y-4'>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0'>
+            <div className='flex flex-row gap-2'>
+              <div className='w-full sm:w-auto'>
                 <SearchField
                   value={searchText}
                   onChange={handleTextChange}
                   onClear={handleTextClear}
                   placeholder='Search users'
                 />
-              </Stack>
-              <Stack
-                display={'flex'}
-                flexDirection={'row'}
-                gap={'var(--space-2)'}
-              >
+              </div>
+              <div className='flex flex-wrap gap-2'>
                 {isResetAllVisible && (
-                  <ButtonGhost
-                    textButton='Reset All'
-                    color={'neutral'}
-                    size={2}
-                    iconName='refresh'
-                    isLeftIcon
-                    onClickButton={{
-                      onClick: resetAllFilter,
-                    }}
-                  />
+                  <Button variant='ghost' onClick={resetAllFilter} size='sm'>
+                    <RotateCcw className='mr-2 h-4 w-4' />
+                    Reset All
+                  </Button>
                 )}
                 <FilterDropDown
-                  icon={<StatusIcon />}
-                  title={'Status'}
+                  icon={<CircleDot size={12} />}
                   itemList={uniqueStatus}
                   selectedItems={selectedStatus}
                   setSelectedItems={setSelectedStatus}
+                  title={'Status'}
                 />
                 <FilterDropDown
-                  icon={<UserRoleIcon />}
-                  title={'Role'}
+                  icon={<User size={12} />}
                   itemList={uniqueRoles}
                   selectedItems={selectedRoles}
                   setSelectedItems={setSelectedRoles}
+                  title={'Role'}
                 />
                 <FilterDropDown
-                  title={'Department'}
+                  icon={<Building size={12} />}
                   itemList={uniqueDepartments}
                   selectedItems={selectedDepartments}
                   setSelectedItems={setSelectedDepartments}
-                  icon={<DepartmentIcon />}
+                  title={'Department'}
                 />
                 <FilterDropDown
-                  icon={<LocationIcon />}
-                  title={'Location'}
+                  icon={<Locate size={12} />}
                   itemList={uniqueLocations}
                   selectedItems={selectedLocations}
                   setSelectedItems={setSelectedLocations}
+                  title={'Location'}
                 />
-              </Stack>
-            </Stack>
-          </>
-        }
-        slotTeamList={
-          <>
-            <ShowCode>
-              <ShowCode.When
-                isTrue={
-                  (!filteredMembers.length && isPending) || isInitialLoading
-                }
-              >
-                <Stack
-                  width={'100%'}
-                  height={'100%'}
-                  minHeight={'300px'}
-                  position={'relative'}
-                >
-                  <DynamicLoader />
-                </Stack>
-              </ShowCode.When>
-              <ShowCode.When isTrue={filteredMembers.length === 0}>
-                <TeamEmpty />
-              </ShowCode.When>
-            </ShowCode>
-            <ShowCode.When isTrue={filteredMembers.length > 0}>
-              {filteredMembers?.map((member) => (
-                <Member
-                  key={member.user_id}
-                  member={member}
-                  // removeMember={}
-                  // canSuspend={member.role !== 'admin'}
-                />
-              ))}
-            </ShowCode.When>
-          </>
-        }
-        slotFilterRight={
-          <>
+              </div>
+            </div>
             {canManage &&
               (remote_sync.isEnabled ? (
-                <Stack>
+                <div className='flex flex-col space-y-2'>
                   <TeamSync
                     textSync={last_sync}
                     onClickSync={{ onClick: remote_sync.sync }}
                   />
-                  {/* <ButtonGhost
-                    isRightIcon={false}
-                    isLeftIcon={true}
-                    size={'2'}
-                    textButton={'Sync Now'}
-                    iconName={'send'}
-                    onClickButton={{
-                      onClick: remote_sync.sync,
-                    }}
-                  />
-                  <Typography>{`* ${last_sync}`}</Typography> */}
-                </Stack>
+                </div>
               ) : (
-                <ButtonGhost
-                  isRightIcon={false}
-                  isLeftIcon={true}
-                  size={'2'}
-                  textButton={'Invite Member'}
-                  iconName={'person_add'}
-                  onClickButton={{
-                    onClick: () => {
-                      setOpenDrawer({ open: true, window: 'addMember' });
-                    },
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => {
+                    // TBD Create a common dialoge for add and edit and use the same for add.
                   }}
-                />
+                  className='flex items-center'
+                >
+                  <CirclePlus className='mr-2 h-4 w-4' />
+                  Invite Member
+                </Button>
               ))}
-          </>
-        }
-        slotInviteBtn={<></>}
-        pendInvitesVisibility={Boolean(inviteUser)}
-        textPending={`You currently have ${converter.toWords(
-          pendingList?.length,
-        )} pending invites awaiting your response.`}
-      />
+          </div>
+        </div>
 
-      <AddMember
-        open={openDrawer.open}
-        menu={openDrawer.window}
-        memberList={activeMembers.map((mem) => ({
-          id: mem.user_id,
-          name: getFullName(mem.first_name, mem.last_name),
-        }))}
-        pendingList={pendingList}
-        onClose={() => {
-          setOpenDrawer({ open: false, window: null });
-        }}
-      />
-      {/* )} */}
-    </Stack>
+        <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
+          <Table>
+            <TableHeader className='bg-gray-100'>
+              <TableRow>
+                <TableHead>Member</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>last Active</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {(!filteredMembers.length && isPending) || isInitialLoading ? (
+                <TableRow>
+                  <TableCell colSpan={1}>
+                    <div className='space-y-2'>
+                      {[...Array(4)].map((_, index) => (
+                        <div
+                          key={index}
+                          className='flex items-center space-x-4'
+                        >
+                          <Skeleton className='h-12 w-12 rounded-full' />
+                          <div className='space-y-2'>
+                            <Skeleton className='h-4 w-[250px]' />
+                            <Skeleton className='h-4 w-[200px]' />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell colSpan={5}>
+                    <div className='space-y-2'>
+                      {[...Array(4)].map((_, index) => (
+                        <div
+                          key={index}
+                          className='flex items-center space-x-4'
+                        >
+                          <div className='space-y-2'>
+                            <Skeleton className='h-4 w-[250px]' />
+                            <Skeleton className='h-4 w-[200px]' />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : filteredMembers.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <TeamEmpty />
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredMembers?.map((member) => (
+                  <Member key={member.user_id} member={member} />
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -401,6 +369,7 @@ export const useTeamMembers = () => {
       isEnabled: Boolean(syncData?.key),
       sync: sync_users,
     },
+    refetchMembers, // Add this line
   };
 };
 

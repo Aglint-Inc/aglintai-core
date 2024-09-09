@@ -5,16 +5,18 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
+import { Label } from '@components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { RolesPill } from '@devlink/RolesPill';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
-import { RcCheckbox } from '@devlink2/RcCheckbox';
+
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -23,10 +25,8 @@ import {
   Alert,
   Autocomplete,
   Chip,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
@@ -34,17 +34,16 @@ import { capitalize, cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import * as React from 'react';
 
-import FilterInput from '@/components/CandidateDatabase/Search/FilterInput';
-import UITextField from '@/components/Common/UITextField';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
+import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput';
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 import { useImrQuery } from '../hooks';
+import { Checkbox } from '@components/ui/checkbox';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
   value: number;
@@ -349,7 +348,7 @@ function InterviewerLevelSettings({
                 disableClearable
                 options={timeZones}
                 value={selectedTimeZone}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedTimeZone(value);
                   }
@@ -367,10 +366,8 @@ function InterviewerLevelSettings({
                 }}
                 renderInput={(params) => {
                   return (
-                    <UITextField
+                    <TextField
                       {...params}
-                      labelSize='medium'
-                      // fullWidth
                       label=''
                       placeholder='Ex. Healthcare'
                     />
@@ -391,30 +388,24 @@ function InterviewerLevelSettings({
                   max={dailyLmit.max}
                 />
                 <RadioGroup
-                  row
-                  aria-labelledby='demo-row-radio-buttons-group-label'
-                  name='row-radio-buttons-group'
+                  defaultValue={dailyLmit.type}
+                  onChange={(e) =>
+                    handleType(
+                      (e.target as HTMLInputElement).value as
+                        | 'Interviews'
+                        | 'Hours',
+                    )
+                  }
+                  className='flex flex-row'
                 >
-                  {['Interviews', 'Hours'].map((ele, i) => {
-                    return (
-                      <FormControlLabel
-                        checked={dailyLmit.type === ele}
-                        key={i}
-                        onChange={(e: any) => {
-                          handleType(e.target.value);
-                        }}
-                        sx={{
-                          marginLeft: '0px',
-                          '& .MuiRadio-root': {
-                            marginRight: 'var(--space-1)',
-                          },
-                        }}
-                        value={ele}
-                        control={<Radio />}
-                        label={capitalize(ele.replaceAll('_', ' '))}
-                      />
-                    );
-                  })}
+                  {['Interviews', 'Hours'].map((ele) => (
+                    <div key={ele} className='flex items-center space-x-2'>
+                      <RadioGroupItem value={ele} id={`radio-${ele}`} />
+                      <Label htmlFor={`radio-${ele}`}>
+                        {capitalize(ele.replaceAll('_', ' '))}
+                      </Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </Stack>
             </>
@@ -428,30 +419,24 @@ function InterviewerLevelSettings({
                   max={weeklyLmit.max}
                 />
                 <RadioGroup
-                  row
-                  aria-labelledby='demo-row-radio-buttons-group-label'
-                  name='row-radio-buttons-group'
+                  defaultValue={weeklyLmit.type}
+                  onChange={(e) =>
+                    handleType(
+                      (e.target as HTMLInputElement).value as
+                        | 'Interviews'
+                        | 'Hours',
+                    )
+                  }
+                  className='flex flex-row'
                 >
-                  {['Interviews', 'Hours'].map((ele, i) => {
-                    return (
-                      <FormControlLabel
-                        checked={weeklyLmit.type === ele}
-                        key={i}
-                        onChange={(e: any) => {
-                          handleType(e.target.value);
-                        }}
-                        sx={{
-                          marginLeft: '0px',
-                          '& .MuiRadio-root': {
-                            marginRight: 'var(--space-1)',
-                          },
-                        }}
-                        value={ele}
-                        control={<Radio />}
-                        label={capitalize(ele.replaceAll('_', ' '))}
-                      />
-                    );
-                  })}
+                  {['Interviews', 'Hours'].map((ele) => (
+                    <div key={ele} className='flex items-center space-x-2'>
+                      <RadioGroupItem value={ele} id={`radio-weekly-${ele}`} />
+                      <Label htmlFor={`radio-weekly-${ele}`}>
+                        {capitalize(ele.replaceAll('_', ' '))}
+                      </Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </Stack>
             </>
@@ -464,21 +449,22 @@ function InterviewerLevelSettings({
                     <>
                       <WorkingHourDay
                         slotRcCheckbox={
-                          <RcCheckbox
-                            onclickCheck={{
-                              onClick: () => {
+                          <div className='flex items-center space-x-2'>
+                            <Checkbox
+                              id={`checkbox-${day.day}`}
+                              checked={day.isWorkDay}
+                              onCheckedChange={() => {
                                 setWorkingHours((pre) => {
-                                  const data = pre;
-                                  data[Number(i)].isWorkDay =
-                                    !data[Number(i)].isWorkDay;
-
-                                  return [...data];
+                                  const data = [...pre];
+                                  data[i].isWorkDay = !data[i].isWorkDay;
+                                  return data;
                                 });
-                              },
-                            }}
-                            isChecked={day.isWorkDay}
-                            text={capitalize(day.day)}
-                          />
+                              }}
+                            />
+                            <Label htmlFor={`checkbox-${day.day}`}>
+                              {capitalize(day.day)}
+                            </Label>
+                          </div>
                         }
                         slotTimeRageInput={
                           <TimeRangeInput
@@ -569,7 +555,6 @@ function InterviewerLevelSettings({
                     mode='multiple'
                     selected={daysOff.map((date) => new Date(date.date))}
                     onSelect={(dates) => getDate(dates)}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>

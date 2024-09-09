@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
@@ -6,7 +7,6 @@ import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Dialog, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { supabase } from '@/utils/supabase/client';
 
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';

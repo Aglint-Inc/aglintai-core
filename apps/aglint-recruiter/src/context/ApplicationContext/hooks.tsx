@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { upsertRequestNotes } from '@/components/Requests/ViewRequestDetails/RequestNotes/utils';
 import { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
 import { useApplications } from '@/job/hooks';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
@@ -16,6 +15,7 @@ import toast from '@/utils/toast';
 
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 import { type ApplicationStore, useApplicationStore } from './store';
+import { updateRequestNotes } from '@/components/Requests/_common/functions/updateRequestNotes';
 
 export const useApplicationContext = (
   props: Parameters<(typeof applicationQuery)['application']>[0] &
@@ -170,7 +170,7 @@ export const useApplicationContext = (
       const request_id = res.data;
 
       if (note && (res.status === 201 || res.status === 200)) {
-        await upsertRequestNotes({
+        await updateRequestNotes({
           id: uuidv4(),
           request_id,
           note,
