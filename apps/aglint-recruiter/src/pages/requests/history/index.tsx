@@ -1,6 +1,5 @@
 import Seo from '@/components/Common/Seo';
 import CompletedRequests from '@/components/Requests/CompletedRequests';
-import Requests from '@/components/Requests/index';
 import { RequestsProvider } from '@/context/RequestsContext';
 
 const RequestsHistoryPage = () => {
