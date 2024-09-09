@@ -1,9 +1,19 @@
 import { type PropsWithChildren } from 'react';
 
-import { JobProvider } from '@/job/contexts';
+import {
+  JobDashboardProvider,
+  JobDashboardStoreProvider,
+  JobProvider,
+} from '@/job/contexts';
 
 const Layout = ({ children }: PropsWithChildren) => {
-  return <JobProvider>{children}</JobProvider>;
+  return (
+    <JobProvider>
+      <JobDashboardStoreProvider>
+        <JobDashboardProvider>{children}</JobDashboardProvider>
+      </JobDashboardStoreProvider>
+    </JobProvider>
+  );
 };
 
 export default Layout;

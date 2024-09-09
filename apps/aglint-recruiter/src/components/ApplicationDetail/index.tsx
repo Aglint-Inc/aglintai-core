@@ -9,7 +9,7 @@ import SlotBody from './SlotBody';
 function ApplicationDetailComp() {
   const router = useRouter();
   const application_id = router.query.application_id as string;
-  const job_id = router.query.id as string;
+  const job_id = router.query.job as string;
 
   return (
     <>

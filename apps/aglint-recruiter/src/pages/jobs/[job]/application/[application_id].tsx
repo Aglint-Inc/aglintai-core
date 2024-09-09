@@ -1,5 +1,9 @@
 import ApplicationDetail from '@/components/ApplicationDetail';
-import { JobProvider } from '@/job/contexts';
+import {
+  ApplicationsProvider,
+  ApplicationsStoreProvider,
+  JobProvider,
+} from '@/job/contexts';
 
 function ApplicationDetailPage() {
   return (
@@ -10,7 +14,11 @@ function ApplicationDetailPage() {
 }
 
 ApplicationDetailPage.privateProvider = (page) => (
-  <JobProvider>{page}</JobProvider>
+  <JobProvider>
+    <ApplicationsStoreProvider>
+      <ApplicationsProvider>{page}</ApplicationsProvider>
+    </ApplicationsStoreProvider>
+  </JobProvider>
 );
 
 export default ApplicationDetailPage;
