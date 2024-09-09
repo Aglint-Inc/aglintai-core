@@ -34,6 +34,7 @@ import {
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
 import Link from 'next/link';
+import { cn } from '@lib/utils';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -162,17 +163,30 @@ function RequestList() {
         >
           <AccordionItem
             value={sectionName}
-            className='border rounded-lg px-4  bg-gray-50'
+            className={cn(
+              'border rounded-lg px-4 bg-gray-50',
+              isExpanded && 'bg-gray-200',
+            )}
           >
             <AccordionTrigger
-              className='text-md font-semibold'
+              className={cn(
+                'text-md font-semibold',
+                requests.length === 0 && 'cursor-default',
+              )}
               disabled={requests.length === 0}
             >
-              <div className='flex items-center'>
-                {capitalizeFirstLetter(sectionName)}
-                <Badge variant='secondary' className='ml-2'>
-                  {requests.length}
-                </Badge>
+              <div className='flex items-center justify-between w-full'>
+                <div className='flex items-center'>
+                  {capitalizeFirstLetter(sectionName)}
+                  <Badge variant='secondary' className='ml-2'>
+                    {requests.length}
+                  </Badge>
+                </div>
+                {requests.length === 0 && (
+                  <Badge variant='outline' className='ml-2'>
+                    No {sectionName.replace('_', ' ')} requests found
+                  </Badge>
+                )}
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -187,12 +201,6 @@ function RequestList() {
                   ))}
                   {requests.length > 5 && (
                     <Collapsible>
-                      <CollapsibleTrigger asChild className='mb-4 w-full'>
-                        <Button variant='outline' className='w-full'>
-                          <ChevronDown className='h-4 w-4 mr-2' />
-                          Show More ({requests.length - 5} more)
-                        </Button>
-                      </CollapsibleTrigger>
                       <CollapsibleContent>
                         <div className='flex flex-col gap-4'>
                           {requests.slice(5).map((props, i) => (
@@ -210,22 +218,22 @@ function RequestList() {
                             </RequestProvider>
                           ))}
                         </div>
-                        <Button
-                          variant='outline'
-                          className='w-full mt-4'
-                          onClick={() => {
-                            const trigger = document.querySelector(
-                              '[data-state="open"]',
-                            );
-                            if (trigger instanceof HTMLElement) {
-                              trigger.click();
-                            }
-                          }}
-                        >
-                          <ChevronUp className='h-4 w-4 mr-2' />
-                          Show Less
-                        </Button>
                       </CollapsibleContent>
+                      <CollapsibleTrigger asChild className='mt-4 w-full'>
+                        <Button variant='outline' className='w-full'>
+                          {isExpanded ? (
+                            <>
+                              <ChevronUp className='h-4 w-4 mr-2' />
+                              Show Less
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className='h-4 w-4 mr-2' />
+                              Show More ({requests.length - 5} more)
+                            </>
+                          )}
+                        </Button>
+                      </CollapsibleTrigger>
                     </Collapsible>
                   )}
                 </div>

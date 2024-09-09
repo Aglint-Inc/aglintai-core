@@ -11,6 +11,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { cn } from "@/lib/utils";
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
