@@ -32,6 +32,7 @@ import {
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
 import Link from 'next/link';
+import { cn } from '@lib/utils';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -111,9 +112,7 @@ function RequestList() {
                     className='flex-shrink-0 max-w-[600px] mr-4'
                   >
                     <RequestProvider request_id={props.id}>
-                      <RequestCard
-                        {...{ ...props, index: i, isExpanded: false }}
-                      />
+                      <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
                   </div>
                 ))
@@ -160,17 +159,30 @@ function RequestList() {
         >
           <AccordionItem
             value={sectionName}
-            className='border rounded-lg px-4  bg-gray-50'
+            className={cn(
+              'border rounded-lg px-4 bg-gray-50',
+              isExpanded && 'bg-gray-200',
+            )}
           >
             <AccordionTrigger
-              className='text-md font-semibold'
+              className={cn(
+                'text-md font-semibold',
+                requests.length === 0 && 'cursor-default',
+              )}
               disabled={requests.length === 0}
             >
-              <div className='flex items-center'>
-                {capitalizeFirstLetter(sectionName)}
-                <Badge variant='secondary' className='ml-2'>
-                  {requests.length}
-                </Badge>
+              <div className='flex items-center justify-between w-full'>
+                <div className='flex items-center'>
+                  {capitalizeFirstLetter(sectionName)}
+                  <Badge variant='secondary' className='ml-2'>
+                    {requests.length}
+                  </Badge>
+                </div>
+                {requests.length === 0 && (
+                  <Badge variant='outline' className='ml-2'>
+                    No {sectionName.replace('_', ' ')} requests found
+                  </Badge>
+                )}
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -178,19 +190,11 @@ function RequestList() {
                 <div className='flex flex-col gap-4'>
                   {requests.slice(0, 5).map((props, i) => (
                     <RequestProvider key={props.id ?? i} request_id={props.id}>
-                      <RequestCard
-                        {...{ ...props, index: i, isExpanded: false }}
-                      />
+                      <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
                   ))}
                   {requests.length > 5 && (
                     <Collapsible>
-                      <CollapsibleTrigger asChild className='mb-4 w-full'>
-                        <Button variant='outline' className='w-full'>
-                          <ChevronDown className='h-4 w-4 mr-2' />
-                          Show More ({requests.length - 5} more)
-                        </Button>
-                      </CollapsibleTrigger>
                       <CollapsibleContent>
                         <div className='flex flex-col gap-4'>
                           {requests.slice(5).map((props, i) => (
@@ -201,29 +205,28 @@ function RequestList() {
                               <RequestCard
                                 {...{
                                   ...props,
-                                  index: i + 5,
                                   isExpanded: false,
                                 }}
                               />
                             </RequestProvider>
                           ))}
                         </div>
-                        <Button
-                          variant='outline'
-                          className='w-full mt-4'
-                          onClick={() => {
-                            const trigger = document.querySelector(
-                              '[data-state="open"]',
-                            );
-                            if (trigger instanceof HTMLElement) {
-                              trigger.click();
-                            }
-                          }}
-                        >
-                          <ChevronUp className='h-4 w-4 mr-2' />
-                          Show Less
-                        </Button>
                       </CollapsibleContent>
+                      <CollapsibleTrigger asChild className='mt-4 w-full'>
+                        <Button variant='outline' className='w-full'>
+                          {isExpanded ? (
+                            <>
+                              <ChevronUp className='h-4 w-4 mr-2' />
+                              Show Less
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className='h-4 w-4 mr-2' />
+                              Show More ({requests.length - 5} more)
+                            </>
+                          )}
+                        </Button>
+                      </CollapsibleTrigger>
                     </Collapsible>
                   )}
                 </div>
@@ -268,9 +271,7 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard
-                              {...{ ...props, index: i, isExpanded: false }}
-                            />
+                            <RequestCard {...{ ...props, isExpanded: false }} />
                           </RequestProvider>
                         ))}
                       </div>
@@ -336,46 +337,48 @@ function RequestList() {
     ) || 0;
 
   return (
-    <div className='space-y-2'>
-      <div className='mb-2 flex flex-row justify-between'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-md font-semibold'>
-            👋 Hey,{' '}
-            {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
-          </h1>
-          <p className='text-sm text-muted-foreground'>
-            {formatRequestCountText(
-              requestCount?.card.urgent_request ?? 0,
-              requestCount?.card.standard_request ?? 0,
-              'today',
-            )}
-          </p>
+    <>
+      <div className='sticky top-0 z-50 bg-white p-4'>
+        <div className='mb-2 flex flex-row justify-between'>
+          <div className='flex flex-col gap-1'>
+            <h1 className='text-md font-semibold'>
+              👋 Hey,{' '}
+              {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
+            </h1>
+            <p className='text-sm text-muted-foreground'>
+              {formatRequestCountText(
+                requestCount?.card.urgent_request ?? 0,
+                requestCount?.card.standard_request ?? 0,
+                'today',
+              )}
+            </p>
+          </div>
+          <div className='flex flex-col gap-1'>
+            <h3 className='text-sm text-muted-foreground font-semibold'>
+              {open_request} Open Requests ({completed_percentage}% complete)
+            </h3>
+            <Progress value={completed_percentage} className='w-full' />
+          </div>
         </div>
-        <div className='flex flex-col gap-1'>
-          <h3 className='text-sm text-muted-foreground font-semibold'>
-            {open_request} Open Requests ({completed_percentage}% complete)
-          </h3>
-          <Progress value={completed_percentage} className='w-full' />
+        <div className='flex justify-end'>
+          <RequestListFilter />
+          <Tabs
+            value={view}
+            onValueChange={(value) => setView(value as 'list' | 'kanban')}
+          >
+            <TabsList>
+              <TabsTrigger value='list'>
+                <LayoutList className='h-4 w-4 mr-2' />
+              </TabsTrigger>
+              <TabsTrigger value='kanban'>
+                <Columns className='h-4 w-4 mr-2' />
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
-      </div>
-      <div className='flex justify-end'>
-        <RequestListFilter />
-        <Tabs
-          value={view}
-          onValueChange={(value) => setView(value as 'list' | 'kanban')}
-        >
-          <TabsList>
-            <TabsTrigger value='list'>
-              <LayoutList className='h-4 w-4 mr-2' />
-            </TabsTrigger>
-            <TabsTrigger value='kanban'>
-              <Columns className='h-4 w-4 mr-2' />
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
       {renderContent()}
-    </div>
+    </>
   );
 }
 

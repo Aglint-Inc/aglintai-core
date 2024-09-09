@@ -1,29 +1,34 @@
-import { Badge } from '@components/ui/badge';
-import { cn } from '@lib/utils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { Badge } from '@components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Label } from '@components/ui/label';
+import { cn } from '@lib/utils';
 import {
-  Notebook,
-  Calendar,
+  Book,
   Briefcase,
+  Calendar,
+  Notebook,
   User,
-  Clock,
   UserCircle,
+  Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import { getStatusColor } from '../../utils/getStatusColor';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import SessionsCards from './Components/SessionsCards';
 import MenuOptions from './MenuOptions';
-import { Label } from '@components/ui/label';
 
-type RequestProps = RequestType & { isExpanded?: boolean };
+type RequestProps = RequestType & {
+  isExpanded?: boolean;
+  mode?: 'expanded' | 'compact' | 'column-view';
+};
 
 export const RequestCard = ({ ...props }: RequestProps & { index: number }) => {
   const { recruiterUser } = useAuthDetails();
   const request = { ...props };
-
+  const { mode = 'expanded' } = props;
   return (
     <Link href={`/requests/${props.id}`} passHref>
       <Card className='cursor-pointer hover:shadow-md transition-shadow duration-300'>
@@ -48,68 +53,93 @@ export const RequestCard = ({ ...props }: RequestProps & { index: number }) => {
             </div>
           </div>
         </CardHeader>
-        <CardContent className='p-4 tspace-y-4'>
-          <div className='grid grid-cols-2 gap-4'>
-            <div className='space-y-3'>
-              <InfoItem
-                icon={<User className='w-4 h-4' />}
-                label='Candidate'
-                value={getFullName(
-                  request.applications.candidates.first_name,
-                  request.applications.candidates.last_name,
-                )}
-              />
-              <InfoItem
-                icon={<Briefcase className='w-4 h-4' />}
-                label='Job'
-                value={request.applications.public_jobs.job_title}
-              />
-            </div>
-            <div className='space-y-3'>
-              <InfoItem
-                icon={<Calendar className='w-4 h-4' />}
-                label='Schedule'
-                value={`${dayjsLocal(request.schedule_start_date).format('MMM D')} - ${dayjsLocal(request.schedule_end_date).format('MMM D, YYYY')}`}
-              />
-              <InfoItem
-                icon={<UserCircle className='w-4 h-4' />}
-                label='Created'
-                value={
-                  <>
-                    <p>
-                      {dayjsLocal(request.created_at).fromNow()}{' '}
-                      <span className='text-xs text-gray-500'>
-                        by{' '}
-                        <Link
-                          href={`/user/profile/${request.assigner_id}`}
-                          target='_blank'
-                          className='hover:underline'
-                        >
-                          {getFullName(
-                            request.assigner.first_name,
-                            request.assigner.last_name,
-                          )}
-                          {request.assigner_id === recruiterUser.user_id
-                            ? ' (You)'
-                            : ''}
-                        </Link>
-                      </span>
-                    </p>
-                  </>
-                }
-              />
-            </div>
-          </div>
+        {(mode === 'expanded' || mode === 'column-view') && (
+          <CardContent className='p-4 tspace-y-4'>
+            <div
+              className={`grid ${mode === 'column-view' ? 'grid-cols-1' : 'grid-cols-2'} gap-4`}
+            >
+              <div className='space-y-3'>
+                <InfoItem
+                  icon={<User className='w-4 h-4' />}
+                  label='Candidate'
+                  value={getFullName(
+                    request.applications.candidates.first_name,
+                    request.applications.candidates.last_name,
+                  )}
+                />
+                <InfoItem
+                  icon={<Briefcase className='w-4 h-4' />}
+                  label='Job'
+                  value={request.applications.public_jobs.job_title}
+                />
+              </div>
 
-          {props?.request_note[0]?.note && (
-            <div className='text-sm text-gray-600 flex items-start mt-2'>
-              <Notebook className='w-4 h-4 mr-2 mt-1 flex-shrink-0' />
-              <p className='break-words whitespace-normal line-clamp-2'>
-                {props.request_note[0].note}
-              </p>
+              <div className='space-y-3'>
+                <InfoItem
+                  icon={<Calendar className='w-4 h-4' />}
+                  label='Schedule'
+                  value={`${dayjsLocal(request.schedule_start_date).format('MMM D')} - ${dayjsLocal(request.schedule_end_date).format('MMM D, YYYY')}`}
+                />
+                <InfoItem
+                  icon={<UserCircle className='w-4 h-4' />}
+                  label='Created'
+                  value={
+                    <>
+                      <p>
+                        {dayjsLocal(request.created_at).fromNow()}{' '}
+                        <span className='text-xs text-gray-500'>
+                          by{' '}
+                          <Link
+                            href={`/user/profile/${request.assigner_id}`}
+                            target='_blank'
+                            className='hover:underline'
+                          >
+                            {getFullName(
+                              request.assigner.first_name,
+                              request.assigner.last_name,
+                            )}
+                            {request.assigner_id === recruiterUser.user_id
+                              ? ' (You)'
+                              : ''}
+                          </Link>
+                        </span>
+                      </p>
+                    </>
+                  }
+                />
+              </div>
+              <div className='space-y-3'>
+                <InfoItem
+                  icon={<Users className='w-4 h-4' />}
+                  label='Sessions'
+                  value={
+                    <SessionsCards // this component we have to migrate to Shadcn
+                      application_id={request.application_id}
+                      job_id={request.applications.job_id}
+                      sessions={request.request_relation.map(
+                        (ele) => ele.interview_session,
+                      )}
+                    />
+                  }
+                />
+                <InfoItem
+                  icon={<Book className='w-4 h-4' />}
+                  label='Request Type'
+                  value={capitalizeFirstLetter(request.type)}
+                />
+              </div>
             </div>
-          )}
-        </CardContent>
+
+            {props?.request_note[0]?.note && (
+              <div className='text-sm text-gray-600 flex items-start mt-2'>
+                <Notebook className='w-4 h-4 mr-2 mt-1 flex-shrink-0' />
+                <p className='break-words whitespace-normal line-clamp-2'>
+                  {props.request_note[0].note}
+                </p>
+              </div>
+            )}
+          </CardContent>
+        )}
       </Card>
     </Link>
   );

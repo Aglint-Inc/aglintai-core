@@ -248,7 +248,6 @@ export const PATHS = [
 '/requests',
 '/requests/[id]',
 '/requests/history',
-'/requests/history/[id]',
 '/reset-password',
 '/scheduling',
 '/scheduling/dashboard',

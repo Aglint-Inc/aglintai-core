@@ -98,5 +98,8 @@ export const getCompletedRequests = async ({
       );
     }
   }
+  query.order('completed_at', {
+    ascending: false,
+  });
   return (await query).data ?? [];
 };
