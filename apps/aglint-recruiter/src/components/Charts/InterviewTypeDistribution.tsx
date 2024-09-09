@@ -75,7 +75,7 @@ export default function InterviewTypeDistribution() {
               dataKey='value'
               innerRadius={90}
             >
-              {data.map((entry, index) => (
+              {data.map((_entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={`hsl(var(--chart-${index + 1}))`}

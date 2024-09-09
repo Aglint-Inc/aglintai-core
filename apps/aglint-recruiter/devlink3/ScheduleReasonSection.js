@@ -34,7 +34,10 @@ export function ScheduleReasonSection({
         >
           {slotReasonList ?? <ReasonList />}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "srs-btn-wrap")}
+          tag="div"
+        >
           {slotAddButton ?? (
             <ButtonGhost onClickButton={onClickAdd} size="2" textButton="Add" />
           )}

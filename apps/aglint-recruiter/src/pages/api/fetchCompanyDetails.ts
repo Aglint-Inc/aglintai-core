@@ -29,8 +29,8 @@ const supabaseAdmin = createClient<DB>(
 );
 export default async function handler(req, res) {
   try {
-    let dbFormatterUrl = addHttps(getUrlHost(addHttps(req.body.domain_name)));
-    let [result] = supabaseWrap(
+    const dbFormatterUrl = addHttps(getUrlHost(addHttps(req.body.domain_name)));
+    const [result] = supabaseWrap(
       await supabaseAdmin
         .from('company_search_cache')
         .select()

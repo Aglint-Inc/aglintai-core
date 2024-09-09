@@ -34,7 +34,7 @@ export const planCombineSlots = (
       return session_slot;
     };
 
-    let mp = new Map<string, SessionsCombType>();
+    const mp = new Map<string, SessionsCombType>();
     for (const plan_comb of all_plan_combs) {
       const slot_start_time = plan_comb.sessions[0].start_time;
       const slot = mp.get(slot_start_time);

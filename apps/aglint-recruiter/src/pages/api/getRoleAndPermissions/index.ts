@@ -159,7 +159,7 @@ const getRoleAndPermissionsWithUserCount = async (
   recruiter_id: string,
   user_id: string,
 ) => {
-  let rolesAndPermissionsDetails = await getRoleAndPermissions(
+  const rolesAndPermissionsDetails = await getRoleAndPermissions(
     recruiter_id,
     user_id,
   );

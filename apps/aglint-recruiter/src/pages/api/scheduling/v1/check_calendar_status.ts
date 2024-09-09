@@ -9,7 +9,7 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 import { decrypt } from '../../decryptApiKey';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { user_id } = req.body;
+  const { user_id } = req.body;
 
   if (!user_id) {
     console.log('missing fields');

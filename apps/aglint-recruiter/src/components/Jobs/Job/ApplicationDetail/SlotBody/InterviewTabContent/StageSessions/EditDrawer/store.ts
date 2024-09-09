@@ -2,12 +2,16 @@ import { create } from 'zustand';
 
 import { type StageWithSessions } from '@/queries/application';
 
-import { type Interviewer } from './types';
+import { MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
 
 export interface EditSessionDrawer {
-  selectedInterviewers: Interviewer[];
-  trainingInterviewers: Interviewer[];
-  debriefMembers: Interviewer[];
+  selectedInterviewers: (MemberTypeAutoComplete & {
+    module_relation_id: string;
+  })[];
+  trainingInterviewers: (MemberTypeAutoComplete & {
+    module_relation_id: string;
+  })[];
+  debriefMembers: MemberTypeAutoComplete[];
   trainingToggle: boolean;
   saving: string | null;
   editSession: StageWithSessions[0]['sessions'][0];
@@ -68,14 +72,20 @@ export const setSaving = (saving: string | null) =>
 export const setTrainingToggle = (trainingToggle: boolean) =>
   useEditSessionDrawerStore.setState({ trainingToggle });
 
-export const setDebriefMembers = (debriefMembers: Interviewer[]) =>
+export const setDebriefMembers = (debriefMembers: MemberTypeAutoComplete[]) =>
   useEditSessionDrawerStore.setState({ debriefMembers });
 
-export const setTrainingInterviewers = (trainingInterviewers: Interviewer[]) =>
-  useEditSessionDrawerStore.setState({ trainingInterviewers });
+export const setTrainingInterviewers = (
+  trainingInterviewers: (MemberTypeAutoComplete & {
+    module_relation_id: string;
+  })[],
+) => useEditSessionDrawerStore.setState({ trainingInterviewers });
 
-export const setSelectedInterviewers = (selectedInterviewers: Interviewer[]) =>
-  useEditSessionDrawerStore.setState({ selectedInterviewers });
+export const setSelectedInterviewers = (
+  selectedInterviewers: (MemberTypeAutoComplete & {
+    module_relation_id: string;
+  })[],
+) => useEditSessionDrawerStore.setState({ selectedInterviewers });
 
 export const setEditSession = (
   editSession: Partial<EditSessionDrawer['editSession']> | null,

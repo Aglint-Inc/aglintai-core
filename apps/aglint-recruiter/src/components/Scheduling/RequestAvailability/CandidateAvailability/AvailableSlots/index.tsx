@@ -51,7 +51,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     selectedDate: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][number];
     day: number;
   }) => {
-    //@ts-ignore
+    //@ts-expect-error
     setSelectedDateSlots((prevState) => {
       // Check if the day exists in the state
       const dayIndex = prevState.findIndex((slot) => slot.round === day);
@@ -82,7 +82,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
         return [...prevState, { round: day, dates: [selectedDate] }];
       }
     });
-    //@ts-ignore
+    //@ts-expect-error
     setSelectedSlots((prevState) => {
       const dayIndex = prevState.findIndex((slot) => slot.round === day);
 
@@ -181,7 +181,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     }
     if (!singleDay) {
       setDaySlots(
-        //@ts-ignore
+        //@ts-expect-error
         (pre: DatabaseTable['candidate_request_availability']['slots']) => {
           const updatedSlots = [...pre];
           const existingSlotIndex = updatedSlots.findIndex(
@@ -384,9 +384,9 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                           );
                         }, 0);
 
-                      let prevNumberOfDay = prevDayDurations / 1440;
+                      const prevNumberOfDay = prevDayDurations / 1440;
 
-                      let numberOfDay =
+                      const numberOfDay =
                         totalDayDurations / 1440 - prevNumberOfDay;
 
                       if (i >= dates.length - numberOfDay) {

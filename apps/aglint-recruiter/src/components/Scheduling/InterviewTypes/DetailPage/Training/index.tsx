@@ -1,9 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Text } from '@devlink/Text';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
@@ -11,10 +9,9 @@ import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@devlink2/ModuleSetting';
 import { TrainingSetting } from '@devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@devlink2/TrainingSettingItem';
-import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { Dialog, Drawer, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import _ from 'lodash';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Settings } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -24,6 +21,10 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UIDrawer from '@/components/Common/UIDrawer';
+import UITypography from '@/components/Common/UITypography';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';
@@ -211,23 +212,21 @@ function ModuleSettingComp({
           textDescription=''
           color={'warning'}
           slotButtons={
-            <ButtonSolid
-              textButton='Enable'
+            <UIButton
+              variant='default'
+              size='sm'
               isLoading={isBannerLoading}
-              isDisabled={isBannerLoading}
-              size={1}
-              onClickButton={{
-                onClick: () => enableDiabaleTraining({ type: 'enable' }),
-              }}
-            />
+              disabled={isBannerLoading}
+              onClick={enableDiabaleTraining.bind(null, { type: 'enable' })}
+            >
+              Enable
+            </UIButton>
           }
         />
       )}
       {editModule?.settings?.require_training && (
-        <Stack>
-          <Stack marginBottom={'16px'}>
-            <Text content='Trainee' weight={'medium'} />
-          </Stack>
+        <div className='flex flex-col gap-2'>
+          <Text content='Trainee' weight={'medium'} />
 
           <TrainingSetting
             isApprovalVisible={editModule?.settings?.reqruire_approval}
@@ -242,15 +241,16 @@ function ModuleSettingComp({
             textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
             slotButton={
               checkPermissions(['interview_types']) ? (
-                <ButtonSoft
-                  textButton='Settings'
-                  iconName='settings'
-                  isDisabled={!editModule?.settings?.require_training}
-                  isLeftIcon
-                  size={1}
-                  onClickButton={{ onClick: () => setOpen(true) }}
-                  color={'neutral'}
-                />
+                <UIButton
+                  variant='secondary'
+                  leftIcon={<Settings />}
+                  size='sm'
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
+                  Settings
+                </UIButton>
               ) : (
                 <></>
               )
@@ -273,16 +273,55 @@ function ModuleSettingComp({
               </Link>
             ))}
           />
-        </Stack>
+        </div>
       )}
       {editModule?.settings?.require_training && (
-        <Stack spacing={'var(--space-4)'}>
+        <div className='flex flex-col gap-4'>
           <SlotTrainingMembers editModule={editModule} refetch={refetch} />
-        </Stack>
+        </div>
       )}
-      <Drawer
-        anchor={'right'}
+      <UIDrawer
+        size='sm'
+        title='Training members update'
         open={open}
+        slotBottom={
+          <>
+            <UIButton
+              fullWidth
+              variant='outline'
+              color='neutral'
+              size='md'
+              onClick={() => setOpen(false)}
+            >
+              Close
+            </UIButton>
+            <UIButton
+              fullWidth
+              variant='default'
+              size='md'
+              disabled={
+                isSaving ||
+                (localModule?.settings.reqruire_approval &&
+                  selectedUsers.length === 0) ||
+                _.isEqual(
+                  {
+                    ...localModule?.settings,
+                    approve_users: selectedUsers.map((user) => user.user_id),
+                  },
+                  editModule?.settings,
+                )
+              }
+              isLoading={isSaving}
+              onClick={() => {
+                if (!isSaving) {
+                  updateModule();
+                }
+              }}
+            >
+              Update
+            </UIButton>
+          </>
+        }
         onClose={() => {
           if (
             !_.isEqual(
@@ -313,306 +352,249 @@ function ModuleSettingComp({
           setOpen(false);
         }}
       >
-        <SideDrawerLarge
-          drawerSize={'small'}
-          textDrawertitle='Training members update'
-          onClickCancel={{
-            onClick: () => setOpen(false),
-          }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                color={'neutral'}
-                textButton='Close'
-                size={2}
-                onClickButton={{ onClick: () => setOpen(false) }}
-              />
-              <ButtonSolid
-                textButton='Update'
-                size={2}
-                isDisabled={
-                  isSaving ||
-                  (localModule?.settings.reqruire_approval &&
-                    selectedUsers.length === 0) ||
-                  _.isEqual(
-                    {
-                      ...localModule?.settings,
-                      approve_users: selectedUsers.map((user) => user.user_id),
-                    },
-                    editModule?.settings,
-                  )
-                }
-                isLoading={isSaving}
-                onClickButton={{
-                  onClick: () => {
-                    if (!isSaving) {
-                      updateModule();
-                    }
-                  },
-                }}
-              />
-            </>
-          }
-          slotSideDrawerbody={
-            <>
-              {localModule && (
-                <ModuleSetting
-                  onClickClose={{
-                    onClick: () => setIsModuleSettingsDialogOpen(false),
+        <>
+          {localModule && (
+            <ModuleSetting
+              onClickClose={{
+                onClick: () => setIsModuleSettingsDialogOpen(false),
+              }}
+              isDisable={!localModule?.settings?.require_training}
+              isRequireTrainingVisible={true}
+              isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
+              slotCheckbox={
+                <Checkbox
+                  checked={localModule?.settings?.reqruire_approval}
+                  onChange={() => {
+                    setEditLocalModule((prev) => ({
+                      ...prev,
+                      settings: {
+                        ...prev.settings,
+                        reqruire_approval: !prev.settings.reqruire_approval,
+                      },
+                    }));
                   }}
-                  isDisable={!localModule?.settings?.require_training}
-                  isRequireTrainingVisible={true}
-                  isApprovalDoneVisible={
-                    localModule?.settings?.reqruire_approval
-                  }
-                  slotCheckbox={
-                    <Checkbox
-                      checked={localModule?.settings?.reqruire_approval}
-                      onChange={() => {
+                />
+              }
+              slotButtonPrimary={<></>}
+              slotApprovalDoneInput={
+                <>
+                  <MembersAutoComplete
+                    error={errorApproval || selectedUsers.length === 0}
+                    renderUsers={dropDownMembers}
+                    setSelectedUsers={setSelectedUsers}
+                    selectedUsers={selectedUsers}
+                    pillColor='var(--neutral-3)'
+                    maxWidth='430px'
+                    onUserSelect={() => setErrorApproval(false)}
+                  />
+                  {selectedUsers.length === 0 && (
+                    <Typography
+                      color={'var(--error-9)'}
+                      mb={'var(--space-2)'}
+                      pt={'2px'}
+                    >
+                      <AlertCircle className='h-3 w-3 text-[var(--error-9)]' />
+                      Please select users to approve or uncheck require approval
+                    </Typography>
+                  )}
+                </>
+              }
+              slotInputNoOfReverse={
+                <Stack direction={'row'} gap={1} alignItems={'center'}>
+                  <IconButtonSoft
+                    isDisabled={localModule.settings.noReverseShadow === 1}
+                    color={'neutral'}
+                    iconName='remove'
+                    size={1}
+                    onClickButton={{
+                      onClick: () => {
                         setEditLocalModule((prev) => ({
                           ...prev,
                           settings: {
                             ...prev.settings,
-                            reqruire_approval: !prev.settings.reqruire_approval,
+                            noReverseShadow: Number(
+                              localModule.settings.noReverseShadow - 1,
+                            ),
                           },
                         }));
-                      }}
-                    />
-                  }
-                  slotButtonPrimary={<></>}
-                  slotApprovalDoneInput={
-                    <>
-                      <MembersAutoComplete
-                        error={errorApproval || selectedUsers.length === 0}
-                        disabled={false}
-                        renderUsers={dropDownMembers}
-                        setSelectedUsers={setSelectedUsers}
-                        selectedUsers={selectedUsers}
-                        pillColor='var(--neutral-3)'
-                        maxWidth='430px'
-                        setError={setErrorApproval}
-                      />
-                      {selectedUsers.length === 0 && (
-                        <Typography
-                          color={'var(--error-9)'}
-                          mb={'var(--space-2)'}
-                          pt={'2px'}
-                        >
-                          <AlertCircle className='h-3 w-3 text-[var(--error-9)]' />
-                          Please select users to approve or uncheck require
-                          approval
-                        </Typography>
-                      )}
-                    </>
-                  }
-                  slotInputNoOfReverse={
-                    <Stack direction={'row'} gap={1} alignItems={'center'}>
-                      <IconButtonSoft
-                        isDisabled={localModule.settings.noReverseShadow === 1}
-                        color={'neutral'}
-                        iconName='remove'
-                        size={1}
-                        onClickButton={{
-                          onClick: () => {
-                            setEditLocalModule((prev) => ({
-                              ...prev,
-                              settings: {
-                                ...prev.settings,
-                                noReverseShadow: Number(
-                                  localModule.settings.noReverseShadow - 1,
-                                ),
-                              },
-                            }));
-                          },
-                        }}
-                      />
-                      <MuiNumberfield
-                        width='80px'
-                        isMarginTop={false}
-                        value={localModule.settings.noReverseShadow}
-                        isDebounceEnable={false}
-                        handleSelect={(value) =>
-                          setEditLocalModule((prev) => ({
-                            ...prev,
-                            settings: {
-                              ...prev.settings,
-                              noReverseShadow:
-                                value === 0
-                                  ? editModule.settings.noReverseShadow
-                                  : value,
-                            },
-                          }))
-                        }
-                      />
-                      <IconButtonSoft
-                        iconName='Add'
-                        size={1}
-                        color={'neutral'}
-                        onClickButton={{
-                          onClick: () => {
-                            setEditLocalModule((prev) => ({
-                              ...prev,
-                              settings: {
-                                ...prev.settings,
-                                noReverseShadow: Number(
-                                  localModule.settings.noReverseShadow + 1,
-                                ),
-                              },
-                            }));
-                          },
-                        }}
-                      />
-                    </Stack>
-                  }
-                  slotInputNoOfShadow={
-                    <Stack direction={'row'} gap={1} alignItems={'center'}>
-                      <IconButtonSoft
-                        isDisabled={localModule.settings.noShadow === 1}
-                        color={'neutral'}
-                        iconName='remove'
-                        size={1}
-                        onClickButton={{
-                          onClick: () => {
-                            setEditLocalModule((prev) => ({
-                              ...prev,
-                              settings: {
-                                ...prev.settings,
-                                noShadow: Number(
-                                  localModule.settings.noShadow - 1,
-                                ),
-                              },
-                            }));
-                          },
-                        }}
-                      />
-                      <MuiNumberfield
-                        width='80px'
-                        isMarginTop={false}
-                        value={localModule.settings.noShadow}
-                        isDebounceEnable={false}
-                        handleSelect={(value) =>
-                          setEditLocalModule((prev) => ({
-                            ...prev,
-                            settings: {
-                              ...prev.settings,
-                              noShadow:
-                                value === 0
-                                  ? editModule.settings.noShadow
-                                  : value,
-                            },
-                          }))
-                        }
-                      />
-                      <IconButtonSoft
-                        iconName='Add'
-                        size={1}
-                        color={'neutral'}
-                        onClickButton={{
-                          onClick: () => {
-                            setEditLocalModule((prev) => ({
-                              ...prev,
-                              settings: {
-                                ...prev.settings,
-                                noShadow: Number(
-                                  localModule.settings.noShadow + 1,
-                                ),
-                              },
-                            }));
-                          },
-                        }}
-                      />
-                    </Stack>
-                  }
-                />
-              )}
-              {editModule?.settings?.require_training && (
-                <Stack marginInline={2}>
-                  <GlobalBannerShort
-                    color={'error'}
-                    textTitle='Disable Training'
-                    textDescription='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
-                    slotButtons={
-                      <>
-                        <ButtonSolid
-                          textButton='Disable'
-                          color={'error'}
-                          onClickButton={{
-                            onClick: () => {
-                              if (
-                                localModule.relations.filter(
-                                  (relation) =>
-                                    relation.training_status === 'training' &&
-                                    !relation.is_archived,
-                                ).length > 0
-                              ) {
-                                // toast.warning(
-                                //   'Cannot disable training while members are still in training.',
-                                // );
-                                disableError();
-                              } else {
-                                setDisableOpen(true);
-                              }
-                            },
-                          }}
-                        />
-                      </>
+                      },
+                    }}
+                  />
+                  <MuiNumberfield
+                    width='80px'
+                    isMarginTop={false}
+                    value={localModule.settings.noReverseShadow}
+                    isDebounceEnable={false}
+                    handleSelect={(value) =>
+                      setEditLocalModule((prev) => ({
+                        ...prev,
+                        settings: {
+                          ...prev.settings,
+                          noReverseShadow:
+                            value === 0
+                              ? editModule.settings.noReverseShadow
+                              : value,
+                        },
+                      }))
                     }
                   />
-
-                  {isDisableError && (
-                    <Typography mt={1} color={'error'}>
-                      <AlertCircle size={12} color='var(--error-9)' />
-                      Cannot disable training while members are still in
-                      training.
-                    </Typography>
-                  )}
+                  <IconButtonSoft
+                    iconName='Add'
+                    size={1}
+                    color={'neutral'}
+                    onClickButton={{
+                      onClick: () => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noReverseShadow: Number(
+                              localModule.settings.noReverseShadow + 1,
+                            ),
+                          },
+                        }));
+                      },
+                    }}
+                  />
                 </Stack>
-              )}
-            </>
-          }
-        />
-      </Drawer>
-      <Dialog open={disableOpen} onClose={() => setDisableOpen(false)}>
-        <DcPopup
-          popupName={'Disable Training'}
-          slotBody={
-            <>
-              <Typography>
-                Are you sure you want to disable training?
-              </Typography>
-              <Stack>
-                <ul>
-                  <li>Stop tracking trainee progress</li>
-                  <li>Remove access to trainee interviewer features</li>
-                </ul>
-              </Stack>
-            </>
-          }
-          onClickClosePopup={{ onClick: () => setDisableOpen(false) }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{ onClick: () => setDisableOpen(false) }}
-              />
-              <ButtonSolid
-                size={2}
-                isLoading={isBannerLoading}
-                isDisabled={isBannerLoading}
+              }
+              slotInputNoOfShadow={
+                <Stack direction={'row'} gap={1} alignItems={'center'}>
+                  <IconButtonSoft
+                    isDisabled={localModule.settings.noShadow === 1}
+                    color={'neutral'}
+                    iconName='remove'
+                    size={1}
+                    onClickButton={{
+                      onClick: () => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noShadow: Number(localModule.settings.noShadow - 1),
+                          },
+                        }));
+                      },
+                    }}
+                  />
+                  <MuiNumberfield
+                    width='80px'
+                    isMarginTop={false}
+                    value={localModule.settings.noShadow}
+                    isDebounceEnable={false}
+                    handleSelect={(value) =>
+                      setEditLocalModule((prev) => ({
+                        ...prev,
+                        settings: {
+                          ...prev.settings,
+                          noShadow:
+                            value === 0 ? editModule.settings.noShadow : value,
+                        },
+                      }))
+                    }
+                  />
+                  <IconButtonSoft
+                    iconName='Add'
+                    size={1}
+                    color={'neutral'}
+                    onClickButton={{
+                      onClick: () => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noShadow: Number(localModule.settings.noShadow + 1),
+                          },
+                        }));
+                      },
+                    }}
+                  />
+                </Stack>
+              }
+            />
+          )}
+          {editModule?.settings?.require_training && (
+            <Stack marginInline={2}>
+              <GlobalBannerShort
                 color={'error'}
-                textButton='Disable Training'
-                onClickButton={{
-                  onClick: () => {
-                    enableDiabaleTraining({ type: 'disable' });
-                  },
-                }}
+                textTitle='Disable Training'
+                textDescription='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
+                slotButtons={
+                  <>
+                    <ButtonSolid
+                      textButton='Disable'
+                      color={'error'}
+                      onClickButton={{
+                        onClick: () => {
+                          if (
+                            localModule.relations.filter(
+                              (relation) =>
+                                relation.training_status === 'training' &&
+                                !relation.is_archived,
+                            ).length > 0
+                          ) {
+                            // toast.warning(
+                            //   'Cannot disable training while members are still in training.',
+                            // );
+                            disableError();
+                          } else {
+                            setDisableOpen(true);
+                          }
+                        },
+                      }}
+                    />
+                  </>
+                }
               />
-            </>
-          }
-        />
-      </Dialog>
+
+              {isDisableError && (
+                <Typography mt={1} color={'error'}>
+                  <AlertCircle size={12} color='var(--error-9)' />
+                  Cannot disable training while members are still in training.
+                </Typography>
+              )}
+            </Stack>
+          )}
+        </>
+      </UIDrawer>
+      <UIDialog
+        title='Disable Training'
+        open={disableOpen}
+        onClose={() => setDisableOpen(false)}
+        slotButtons={
+          <>
+            <UIButton
+              variant='outline'
+              size='sm'
+              onClick={() => setDisableOpen(false)}
+            >
+              Cancel
+            </UIButton>
+
+            <UIButton
+              variant='destructive'
+              size='sm'
+              isLoading={isBannerLoading}
+              disabled={isBannerLoading}
+              onClick={() => enableDiabaleTraining({ type: 'disable' })}
+            >
+              Disable Training
+            </UIButton>
+          </>
+        }
+      >
+        <>
+          <UITypography>
+            Are you sure you want to disable training?
+          </UITypography>
+          <div>
+            <ol>
+              <li>Stop tracking trainee progress</li>
+              <li>Remove access to trainee interviewer features</li>
+            </ol>
+          </div>
+        </>
+      </UIDialog>
     </Stack>
   );
 }

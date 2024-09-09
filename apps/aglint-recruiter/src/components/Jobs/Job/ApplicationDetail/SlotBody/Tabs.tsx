@@ -1,11 +1,10 @@
-import { NewTabPill } from '@devlink3/NewTabPill';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
+import { UITab, UITabWrapper } from '@/components/Common/UITab';
 
 export type TabsType =
   | 'interview'
@@ -117,25 +116,18 @@ function Tabs() {
   }, [left, right]);
 
   return (
-    <Stack
-      direction={'row'}
-      width={'100%'}
-      borderBottom={'1px solid'}
-      borderColor={'var(--neutral-6)'}
-    >
+    <UITabWrapper>
       {allTabs
         .filter((tab) => tab.isVisible)
         .map((tabItem, index) => (
-          <NewTabPill
-            key={index}
-            isPillActive={tab === tabItem.tab}
-            onClickPill={{
-              onClick: tabItem.onClick,
-            }}
+          <UITab
             textLabel={tabItem.textLabel}
+            onClickPill={tabItem.onClick}
+            isPillActive={tabItem.tab === tab}
+            key={index}
           />
         ))}
-    </Stack>
+    </UITabWrapper>
   );
 }
 

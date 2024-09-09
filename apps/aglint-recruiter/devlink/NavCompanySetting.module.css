@@ -169,9 +169,9 @@
 
   border-radius: 8px;
 
-  background-color: var(--accent-4);
+  background-color: var(--neutral-3);
 
-  color: var(--accent-11);
+  color: var(--neutral-12);
 }
 
 .navlink_tooltip {
@@ -195,7 +195,7 @@
   grid-template-columns: max-content;
   grid-template-rows: auto;
 
-  border: 1px solid var(--neutral-3);
+  border: 1px solid var(--neutral-6);
   border-radius: 6px;
 
   background-color: var(--neutral-2);
@@ -206,4 +206,9 @@
 
 .no_wrap {
   word-break: keep-all;
+}
+
+.no_wrap.nav-link-tool {
+  position: relative;
+  z-index: 1;
 }

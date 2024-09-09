@@ -6,11 +6,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+
 import { ConnectedJobsList } from '@devlink/ConnectedJobsList';
 import { DcPopup } from '@devlink/DcPopup';
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { PageLayout } from '@devlink2/PageLayout';
 import { MoreMenu } from '@devlink3/MoreMenu';
@@ -28,6 +26,8 @@ import { capitalizeAll, capitalizeSentence } from '@/utils/text/textUtils';
 
 import UITextField from '../../Common/UITextField';
 import { WithPermission } from '../../withPermission';
+import { Button } from '@components/ui/button';
+import { MoreHorizontal, Zap } from 'lucide-react';
 
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
@@ -89,23 +89,19 @@ const Edit = () => {
       {workflow ? (
         <>
           <Stack flexDirection={'row'} alignItems={'center'} gap={'8px'}>
-            <ButtonSoft
-              size={'1'}
-              iconName={'bolt'}
-              isLeftIcon={true}
-              textButton={'Edit Workflow'}
-              onClickButton={{ onClick: () => setPopup({ open: true }) }}
-            />
-            <IconButtonGhost
-              color={'neutral'}
-              iconSize={6}
-              iconName='more_vert'
-              onClickButton={{
-                onClick: (event) => {
-                  setAnchorEl(event.currentTarget);
-                },
+            <Button size={'sm'} onClick={() => setPopup({ open: true })}>
+              <Zap size={12} className='mr-2' />
+              Edit Workflow
+            </Button>
+            <Button
+              size={'sm'}
+              variant='outline'
+              onClick={(event) => {
+                setAnchorEl(event.currentTarget);
               }}
-            />
+            >
+              <MoreHorizontal />
+            </Button>
           </Stack>
 
           <Popover
@@ -236,27 +232,28 @@ const DeletePopup = () => {
         }
         slotButtons={
           <>
-            <ButtonSoft
+            <Button
+              variant={'outline'}
               color={'neutral'}
-              size={2}
-              onClickButton={{ onClick: () => handleClose() }}
-              textButton={'Cancel'}
-            />
-            <ButtonSolid
+              size={'sm'}
+              onClick={() => handleClose()}
+            >
+              Cancel
+            </Button>
+            <Button
               color={'error'}
-              size={2}
-              isDisabled={!enabled}
-              onClickButton={{
-                onClick: () => {
-                  if (enabled) {
-                    push(ROUTES['/workflows']());
-                    handleDeleteWorkflow({ id: deletion.workflow?.id });
-                    handleClose();
-                  }
-                },
+              size={'sm'}
+              disabled={!enabled}
+              onClick={() => {
+                if (enabled) {
+                  push(ROUTES['/workflows']());
+                  handleDeleteWorkflow({ id: deletion.workflow?.id });
+                  handleClose();
+                }
               }}
-              textButton={'Delete'}
-            />
+            >
+              Delete
+            </Button>
           </>
         }
       />

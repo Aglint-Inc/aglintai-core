@@ -26,7 +26,7 @@ export async function getGreenhouseOfficeLocations(key: string) {
   // });
   // if (res.status !== 200) {
   //   throw new Error(
-  //     // @ts-ignore
+  //     // @ts-expect-error
   //     res.data.message || 'Greenhouse Office Location API Failed!',
   //   );
   // }
@@ -97,7 +97,7 @@ export async function saveOfficeLocations(
   recruiter_id: string,
 ) {
   const temp_OfficeLocation: DatabaseTableInsert['office_locations'][] = [];
-  for (let office_location of office_locations) {
+  for (const office_location of office_locations) {
     const geoLocation = await searchExactLocation(
       office_locations[0].location.name,
       { timeZone: true },

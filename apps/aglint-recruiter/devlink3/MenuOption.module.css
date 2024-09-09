@@ -1,0 +1,6 @@
+.menu-option-list {
+  width: 200px;
+  padding: var(--space-1);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
+}

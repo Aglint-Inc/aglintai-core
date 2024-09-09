@@ -1,27 +1,23 @@
-import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import {
-  DropDown,
-  ScheduleTypeField,
-} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
+import { ScheduleTypeField } from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
-import { getFullName } from '@/utils/jsonResume';
 import { sessionDurations } from '@/utils/scheduling/const';
 
+import MembersAutoComplete, {
+  MemberTypeAutoComplete,
+} from '@/components/Scheduling/Common/MembersTextField';
 import {
   setDebriefMembers,
   setEditSession,
-  setErrorValidation,
-  useEditSessionDrawerStore,
+  useEditSessionDrawerStore
 } from '../store';
 
 function DebriedForm() {
@@ -34,37 +30,14 @@ function DebriedForm() {
       errorValidation: state.errorValidation,
     }));
 
-  const optionMembers = members.map((member) => ({
-    name: getFullName(member.first_name, member.last_name),
-    value: member.user_id,
-    start_icon_url: member.profile_image,
+  const optionMembers: MemberTypeAutoComplete[] = members.map((member) => ({
+    email: member.email,
+    user_id: member.module_relation_id,
+    profile_image: member.profile_image,
+    position: member.position,
+    first_name: member.first_name,
+    last_name: member.last_name,
   }));
-
-  const onChange = (e) => {
-    errorValidation.find(
-      (err) => err.field === 'qualified_interviewers',
-    ).error = false;
-
-    setErrorValidation([...errorValidation]);
-
-    const selectedUser = members?.find(
-      (member) => member.user_id === e.target.value,
-    );
-    if (
-      !debriefMembers.find(
-        (interviewer) => interviewer.value === e.target.value,
-      )
-    ) {
-      setDebriefMembers([
-        ...debriefMembers,
-        {
-          name: getFullName(selectedUser.first_name, selectedUser.last_name),
-          value: selectedUser.user_id,
-          start_icon_url: selectedUser.profile_image,
-        },
-      ]);
-    }
-  };
 
   useEffect(() => {
     fetchAllMembers();
@@ -86,10 +59,10 @@ function DebriedForm() {
     }
   };
 
-  const selectedUserIds = debriefMembers.map((member) => member.value);
+  const selectedUserIds = debriefMembers.map((member) => member.user_id);
 
   const filterDebriefMembers = optionMembers?.filter(
-    (member) => !selectedUserIds.includes(member.value),
+    (member) => !selectedUserIds.includes(member.user_id),
   );
 
   return (
@@ -135,35 +108,7 @@ function DebriedForm() {
             ))}
           </TextField>
         }
-        slotMemberAvatarSelectionPill={
-          <>
-            {debriefMembers?.map((member) => {
-              return (
-                <SelectedMemberPill
-                  isCloseButton={true}
-                  key={member.value}
-                  onClickRemove={{
-                    onClick: () => {
-                      setDebriefMembers(
-                        debriefMembers.filter(
-                          (selected) => selected.value !== member.value,
-                        ),
-                      );
-                    },
-                  }}
-                  textMemberName={member.name}
-                  slotMemberAvatar={
-                    <MuiAvatar
-                      src={member.start_icon_url}
-                      level={getFullName(member.name, '')}
-                      variant='rounded-small'
-                    />
-                  }
-                />
-              );
-            })}
-          </>
-        }
+        slotMemberAvatarSelectionPill={<></>}
         slotScheduleTypeDropdown={
           <ScheduleTypeField
             value={editSession.interview_session.schedule_type}
@@ -178,11 +123,12 @@ function DebriedForm() {
           />
         }
         slotMembersDropdown={
-          <DropDown
-            placeholder='Select Members'
-            onChange={(e) => onChange(e)}
-            options={filterDebriefMembers}
-            value={''}
+          <MembersAutoComplete
+            placeholder='Select Interviewers'
+            renderUsers={filterDebriefMembers}
+            selectedUsers={debriefMembers}
+            setSelectedUsers={setDebriefMembers}
+            pillColor='var(--neutral-3)'
             error={
               errorValidation.find(
                 (err) => err.field === 'qualified_interviewers',

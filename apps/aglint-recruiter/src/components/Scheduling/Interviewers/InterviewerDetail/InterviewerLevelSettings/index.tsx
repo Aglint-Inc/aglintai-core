@@ -16,7 +16,7 @@ import { RolesPill } from '@devlink/RolesPill';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
-import { RcCheckbox } from '@devlink2/RcCheckbox';
+
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -43,6 +43,7 @@ import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 import { useImrQuery } from '../hooks';
+import { Checkbox } from '@components/ui/checkbox';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
   value: number;
@@ -347,7 +348,7 @@ function InterviewerLevelSettings({
                 disableClearable
                 options={timeZones}
                 value={selectedTimeZone}
-                onChange={(event, value) => {
+                onChange={(_event, value) => {
                   if (value) {
                     setSelectedTimeZone(value);
                   }
@@ -448,21 +449,22 @@ function InterviewerLevelSettings({
                     <>
                       <WorkingHourDay
                         slotRcCheckbox={
-                          <RcCheckbox
-                            onclickCheck={{
-                              onClick: () => {
+                          <div className='flex items-center space-x-2'>
+                            <Checkbox
+                              id={`checkbox-${day.day}`}
+                              checked={day.isWorkDay}
+                              onCheckedChange={() => {
                                 setWorkingHours((pre) => {
-                                  const data = pre;
-                                  data[Number(i)].isWorkDay =
-                                    !data[Number(i)].isWorkDay;
-
-                                  return [...data];
+                                  const data = [...pre];
+                                  data[i].isWorkDay = !data[i].isWorkDay;
+                                  return data;
                                 });
-                              },
-                            }}
-                            isChecked={day.isWorkDay}
-                            text={capitalize(day.day)}
-                          />
+                              }}
+                            />
+                            <Label htmlFor={`checkbox-${day.day}`}>
+                              {capitalize(day.day)}
+                            </Label>
+                          </div>
                         }
                         slotTimeRageInput={
                           <TimeRangeInput
@@ -553,7 +555,6 @@ function InterviewerLevelSettings({
                     mode='multiple'
                     selected={daysOff.map((date) => new Date(date.date))}
                     onSelect={(dates) => getDate(dates)}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>

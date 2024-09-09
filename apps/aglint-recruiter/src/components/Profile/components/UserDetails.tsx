@@ -87,7 +87,7 @@ export const UserDetail = () => {
   const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     return Object.entries(profile).reduce(
       (acc, [key, curr]) => {
-        let value = curr.value?.trim() || null;
+        const value = curr.value?.trim() || null;
         let error = false;
         if (curr.required || value?.length) {
           switch (curr.validation) {
@@ -174,6 +174,7 @@ export const UserDetail = () => {
         setProfileForm(false);
         setProfileChange(false);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       toast.error('Unable to udpate profile. Please contact support');
     } finally {
@@ -187,8 +188,9 @@ export const UserDetail = () => {
         isLinkedInVisible={Boolean(recruiterUser.linked_in?.length)}
         onClickLinkedIn={{
           onClick: () => {
-            recruiterUser.linked_in?.length &&
+            if (recruiterUser.linked_in?.length) {
               window.open(recruiterUser.linked_in, '_ blank');
+            }
           },
         }}
         slotUserImage={

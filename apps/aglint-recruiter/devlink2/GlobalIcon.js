@@ -20,7 +20,12 @@ export function GlobalIcon({
       icon-weight={weight}
       icon-color={color}
     >
-      <_Builtin.Block tag="div">{iconName}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "icon-text-wrap")}
+        tag="div"
+      >
+        {iconName}
+      </_Builtin.Block>
     </_Component>
   );
 }

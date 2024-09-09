@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import {
   type ProgressLoggerType,
@@ -131,7 +132,7 @@ const updateRequestProgress = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
   try {
-    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
       event_type: 'CAND_AVAIL_REC',
@@ -157,7 +158,7 @@ const reRequestingAvailability = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
   try {
-    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
       event_type: 'CANDIDATE_AVAILABILITY_RE_REQUESTED',

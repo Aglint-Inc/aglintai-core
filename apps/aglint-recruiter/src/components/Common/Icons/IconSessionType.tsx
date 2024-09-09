@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { Box } from '@mui/material';
+import { FileText, Group, PersonStanding } from 'lucide-react';
 
 function IconSessionType({
   type,
@@ -18,12 +18,12 @@ function IconSessionType({
             alignItems: 'center',
           }}
         >
-          <GlobalIcon iconName='text_snippet' size={size} />
+          <FileText size={size} color={'var(--neutral-2)'} />
         </Box>
       ) : type === 'individual' ? (
-        <GlobalIcon iconName='person' size={size} />
+        <PersonStanding size={size} color={'var(--neutral-2)'} />
       ) : (
-        <GlobalIcon iconName='group' size={size} />
+        <Group size={size} color={'var(--neutral-2)'} />
       )}
     </>
   );

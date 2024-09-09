@@ -1,18 +1,20 @@
+import { RequestProvider } from '@/context/RequestContext';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { RequestsWrapper } from '@devlink2/RequestsWrapper';
 import { Stack } from '@mui/material';
-
-import { sectionDefaultsData } from '../RequestSections';
-import Section from '../RequestSections/Section';
-import FilterAndSorting from './FiltersAndSorting';
-import { useCompletedRequests } from './hooks';
-import { setCompletedMode, useCompletedRequestsStore } from './store';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
+import { useCompletedRequestsStore } from '../_common/Context/store';
+import { useCompletedRequests } from '../_common/hooks';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { completedFilters } = useCompletedRequestsStore();
-  const { data: completedRequests, status } = useCompletedRequests({
+  const { data: completedRequests } = useCompletedRequests({
     completedFilters,
   });
+  const { replace } = useRouterPro();
   return (
     <RequestsWrapper
       slotFilter={
@@ -30,22 +32,32 @@ function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
             textButton='Back'
             onClickButton={{
               onClick: () => {
-                setCompletedMode(false);
+                replace('/requests');
               },
             }}
           />
-          {<FilterAndSorting />}
+          {<RequestHistoryFilter />}
         </Stack>
       }
       slotRequestSection={
-        <Section
-          requests={completedRequests ? [...completedRequests] : []}
-          sectionName={'all_completed_requests'}
-          sectionIconName={sectionDefaultsData[5].sectionIconName}
-          color={sectionDefaultsData[5].color}
-          isLoadingRequests={status === 'pending'}
-          showEmptyMessage={completedRequests?.length === 0}
-        />
+        <>
+          <>
+            <div>{capitalizeFirstLetter('all_completed_requests')}</div>
+            <div>
+              {(completedRequests ?? []).map((props, i) => (
+                <RequestProvider key={props.id ?? i} request_id={props.id}>
+                  <RequestCard
+                    {...{
+                      ...props,
+                      index: i,
+                      isExpanded: false,
+                    }}
+                  />
+                </RequestProvider>
+              ))}
+            </div>
+          </>
+        </>
       }
       slotNavigationPills={<></>}
     />

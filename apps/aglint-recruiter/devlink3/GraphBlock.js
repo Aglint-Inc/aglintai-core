@@ -10,7 +10,7 @@ export function GraphBlock({
   as: _Component = _Builtin.Block,
   slotDarkPillLocation,
   slotLocationGraph,
-  dummyImage = "https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg",
+  dummyImage = "https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg",
   textGraphTitle = "Candidates By",
 }) {
   return (

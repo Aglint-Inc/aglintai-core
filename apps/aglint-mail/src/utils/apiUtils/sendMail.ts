@@ -8,6 +8,7 @@ import { fillCompEmailTemplate } from '@aglint/shared-utils';
 import sendMail from '../../config/sendgrid';
 import type { ICSAttachment } from '../ceateIcsContent';
 import type { MailPayloadType } from '../../types/app.types';
+import type { PortalPayload } from '../types/portalMessage';
 import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
@@ -23,7 +24,7 @@ export const sendMailFun = async <
   attachments,
   is_preview,
   api_target,
-  application_id,
+  portalMessage = null,
   company_id,
   job_id,
   payload,
@@ -36,10 +37,10 @@ export const sendMailFun = async <
   is_preview?: boolean;
   attachments?: ICSAttachment[];
   job_id?: string;
-  application_id?: string;
   payload?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
   supabaseAdmin: SupabaseType;
+  portalMessage?: PortalPayload;
 }) => {
   let fetched_temp: Pick<
     DatabaseTable['company_email_template'],
@@ -86,9 +87,9 @@ export const sendMailFun = async <
     fromName: filled_comp_template.from_name,
     attachments,
   });
-  if (application_id) {
+  if (portalMessage) {
     await sendMessageToCandidatePortal({
-      application_id,
+      portalMessage,
       body: filled_comp_template.body,
       subject: filled_comp_template.subject,
     });

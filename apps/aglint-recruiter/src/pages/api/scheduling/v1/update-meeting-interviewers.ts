@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = await fetch_details(req.body);
 
     const updated_session_attendees = session_ints_auth.map((int) => {
-      let updated_int = {
+      const updated_int = {
         ...int,
       };
       if (

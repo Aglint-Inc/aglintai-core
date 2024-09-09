@@ -6,7 +6,7 @@ export default function handler(req, res) {
   try {
     const apiKey = req.body.apiKey;
     const apiKeyWithColon = req.body.apiKey + ':';
-    let base64String = btoa(apiKeyWithColon);
+    const base64String = btoa(apiKeyWithColon);
 
     if (!apiKey) {
       res.status(400).send('api key is incorrect');
@@ -34,7 +34,7 @@ export default function handler(req, res) {
     axios
       .request(options)
       .then(async function (response) {
-        let results = response.data.results;
+        const results = response.data.results;
         //location
         const locations = await fetchLocations(
           !req.body.isInitial ? base64decryptedApiKey : base64String,
@@ -46,11 +46,11 @@ export default function handler(req, res) {
           !req.body.isInitial ? base64decryptedApiKey : base64String,
         );
 
-        let alteredResults = results.map((result) => {
-          let description = descriptions.find(
+        const alteredResults = results.map((result) => {
+          const description = descriptions.find(
             (description) => description.id === result.id,
           );
-          let addr = (result.location = locations.find(
+          const addr = (result.location = locations.find(
             (location) => location.id === result.locationIds.primaryLocationId,
           )).address.postalAddress;
           return {
@@ -93,7 +93,7 @@ const fetchLocations = async (key) => {
 };
 
 const fetchDescriptions = async (jobIds, key) => {
-  let descriptions = [];
+  const descriptions = [];
   await Promise.all(
     jobIds.map(async (id) => {
       const options = {

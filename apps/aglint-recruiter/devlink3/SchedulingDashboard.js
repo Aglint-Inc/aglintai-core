@@ -5,25 +5,26 @@ import { ScheduleCountStats } from "./ScheduleCountStats";
 import { Reason } from "./Reason";
 import { LeaderBoard } from "./LeaderBoard";
 import { CardWithNumber } from "./CardWithNumber";
+import { CandidateSatisfactionRate } from "./CandidateSatisfactionRate";
 import { TrainingProgress } from "./TrainingProgress";
-import { NewInterviewDetail } from "./NewInterviewDetail";
-import { InterviewModuleStats } from "./InterviewModuleStats";
-import { CompletedInterviews } from "./CompletedInterviews";
-import { InterviewersDash } from "./InterviewersDash";
 import { RecentReschedule } from "./RecentReschedule";
 import { RecentDeclines } from "./RecentDeclines";
+import { SchedulingQuickLink } from "./SchedulingQuickLink";
 import * as _utils from "./utils";
 import _styles from "./SchedulingDashboard.module.css";
 
 export function SchedulingDashboard({
   as: _Component = _Builtin.Block,
   slotFirstGrid,
-  slotGridInterviewDetail,
-  slotTrainingProgress,
   slotScheduleCount,
   slotsCradsWithNumber,
   slotRecentReschedule,
   slotCompletedInterview,
+  slotTimeToSchedule,
+  slotCandidateSatisfactionRate,
+  slotDeclineRequest,
+  slotFilters,
+  slotQuickLinks,
 }) {
   return (
     <_Component
@@ -34,6 +35,7 @@ export function SchedulingDashboard({
         className={_utils.cx(_styles, "scheduling-dashboard")}
         tag="div"
       >
+        <_Builtin.Block tag="div">{slotFilters}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "scheduling_stats")}
           tag="div"
@@ -71,44 +73,34 @@ export function SchedulingDashboard({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "sd_row_2")} tag="div">
-          {slotTrainingProgress ?? <TrainingProgress />}
-        </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "sd_row_9")}
-          id={_utils.cx(
-            _styles,
-            "w-node-_39a54981-40f7-c272-1ba4-739d34937bae-aa8c5b1c"
-          )}
+          className={_utils.cx(_styles, "sd-row-three")}
           tag="div"
         >
-          {slotGridInterviewDetail ?? (
-            <>
-              <NewInterviewDetail
-                id={_utils.cx(
-                  _styles,
-                  "w-node-fe29ed78-1e58-1d63-6be3-7cfde257adce-aa8c5b1c"
-                )}
-              />
-              <InterviewModuleStats
-                id={_utils.cx(
-                  _styles,
-                  "w-node-cc4f4f89-4ccc-de5a-20c4-b973179142a8-aa8c5b1c"
-                )}
-              />
-            </>
-          )}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "sd-row-three-item")}
+            tag="div"
+          >
+            {slotTimeToSchedule ?? (
+              <>
+                <CardWithNumber />
+                <CardWithNumber />
+              </>
+            )}
+          </_Builtin.Block>
+          <_Builtin.Block
+            id={_utils.cx(
+              _styles,
+              "w-node-ad80a1dd-ecdc-7fcc-7da6-d9a0fcf718db-aa8c5b1c"
+            )}
+            tag="div"
+          >
+            {slotCandidateSatisfactionRate ?? <CandidateSatisfactionRate />}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotDeclineRequest}</_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "sd_row_5")} tag="div">
-          {slotCompletedInterview ?? (
-            <>
-              <CompletedInterviews />
-              <InterviewersDash
-                isTraineeActive={true}
-                isQualifiedActive={false}
-              />
-            </>
-          )}
+        <_Builtin.Block className={_utils.cx(_styles, "sd_row_2")} tag="div">
+          {slotCompletedInterview ?? <TrainingProgress />}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "sd_row_4")} tag="div">
           {slotRecentReschedule ?? (
@@ -129,6 +121,14 @@ export function SchedulingDashboard({
           )}
         </_Builtin.Block>
         <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bcol-span%3D%222%22%5D%20%7B%0A%20%20%20%20grid-row-start%3A%20span%201%3B%0A%20%20%20%20grid-row-end%3A%20span%201%3B%0A%20%20%20%20grid-column-start%3A%20span%202%3B%0A%20%20%20%20grid-column-end%3A%20span%202%3B%0A%20%20%7D%0A%0A%20%20%5Bcol-span%3D%223%22%5D%7B%0A%20%20%20%20grid-row-start%3A%20span%201%3B%0A%20%20%20%20grid-row-end%3A%20span%201%3B%0A%20%20%20%20grid-column-start%3A%20span%203%3B%0A%20%20%20%20grid-column-end%3A%20span%203%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
+      </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "sd-right-wrap")} tag="div">
+        {slotQuickLinks ?? (
+          <>
+            <SchedulingQuickLink />
+            <_Builtin.Block tag="div" />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

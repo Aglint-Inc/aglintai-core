@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Text } from '@devlink/Text';
-import { RcCheckbox } from '@devlink2/RcCheckbox';
+
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -32,6 +32,7 @@ import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
+import { Checkbox } from '@components/ui/checkbox';
 
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -382,7 +383,7 @@ function Availibility({
                       disableClearable
                       options={timeZone}
                       value={selectedTimeZone}
-                      onChange={(event, value) => {
+                      onChange={(_event, value) => {
                         if (value) {
                           setSelectedTimeZone(value);
                         }
@@ -490,21 +491,22 @@ function Availibility({
                           <>
                             <WorkingHourDay
                               slotRcCheckbox={
-                                <RcCheckbox
-                                  onclickCheck={{
-                                    onClick: () => {
+                                <div className='flex items-center space-x-2'>
+                                  <Checkbox
+                                    id={`checkbox-${day.day}`}
+                                    checked={day.isWorkDay}
+                                    onCheckedChange={() => {
                                       setWorkingHours((pre) => {
-                                        const data = pre;
-                                        data[Number(i)].isWorkDay =
-                                          !data[Number(i)].isWorkDay;
-
-                                        return [...data];
+                                        const data = [...pre];
+                                        data[i].isWorkDay = !data[i].isWorkDay;
+                                        return data;
                                       });
-                                    },
-                                  }}
-                                  isChecked={day.isWorkDay}
-                                  text={capitalize(day.day)}
-                                />
+                                    }}
+                                  />
+                                  <Label htmlFor={`checkbox-${day.day}`}>
+                                    {capitalize(day.day)}
+                                  </Label>
+                                </div>
                               }
                               slotTimeRageInput={
                                 <TimeRangeInput

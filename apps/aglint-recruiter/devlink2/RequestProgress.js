@@ -69,7 +69,7 @@ export function RequestProgress({
           >
             {slotProgress ?? (
               <>
-                <ScheduleProgress />
+                <ScheduleProgress status="" />
                 <ScheduleProgress />
               </>
             )}

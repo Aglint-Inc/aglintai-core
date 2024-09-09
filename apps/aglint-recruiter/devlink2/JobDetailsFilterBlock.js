@@ -66,7 +66,7 @@ export function JobDetailsFilterBlock({
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6567204527a53d15e5e6a940_expanded-icon.svg"
+                  src="https://cdn.prod.website-files.com/651419e73ebbb12148f96ccc/6567204527a53d15e5e6a940_expanded-icon.svg"
                 />
               </_Builtin.Block>
               <_Builtin.Block tag="div">{"Expanded"}</_Builtin.Block>

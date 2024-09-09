@@ -25,7 +25,7 @@ export const tokenMeter = async ({
         company_name: company_name,
       },
     );
-  } catch (error) {
-    //
+  } catch (err) {
+    console.error(err);
   }
 };

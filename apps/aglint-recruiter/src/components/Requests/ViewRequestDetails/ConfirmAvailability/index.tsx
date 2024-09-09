@@ -74,7 +74,6 @@ function ConfirmAvailability() {
     if (selectedIndex === availableSlots.slots.length) {
       setLoading(true);
 
-      const task_id = null;
       const allSessions: SessionCombinationRespType[] = selectedDateSlots
         .map((ele) => ele.selected_dates)
         .flat()
@@ -91,7 +90,6 @@ function ConfirmAvailability() {
           no_slot_reasons: [],
         },
         user_tz: userTzDayjs.tz.guess(),
-        task_id,
       };
 
       try {

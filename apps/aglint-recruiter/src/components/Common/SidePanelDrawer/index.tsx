@@ -15,7 +15,7 @@ function SidePanelDrawer({
   children?: ReactNode;
   dir?: 'top' | 'right' | 'bottom' | 'left';
   onClose?: () => void;
-  zIndex?: Number;
+  zIndex?: number;
 }) {
   return (
     <Drawer

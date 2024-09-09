@@ -14,6 +14,7 @@ export const useCandidatePortal = () => {
 // interview ------------------------------------
 export const useCandidatePortalNavbar = () => {
   const { application_id } = useCandidatePortal();
+
   return api.candidatePortal.get_navbar.useQuery({
     application_id,
   });

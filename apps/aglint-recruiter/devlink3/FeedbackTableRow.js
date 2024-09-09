@@ -43,7 +43,7 @@ export function FeedbackTableRow({
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9fcc50326d2974c84_user3.png"
+              src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e9fcc50326d2974c84_user3.png"
             />
           )}
         </_Builtin.Block>

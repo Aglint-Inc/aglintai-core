@@ -35,7 +35,7 @@ export function LeaderBoardCard({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
               />
             )}
           </_Builtin.Block>

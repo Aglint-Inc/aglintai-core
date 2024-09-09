@@ -11,13 +11,17 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { apiTargetToEvents } from '@/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
+<<<<<<< HEAD
+=======
+import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
+>>>>>>> 29d7036c5711e9ba1a63bd406d7115ad181c6c96
 import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
 import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { findPlanCombs } from '@/services/api-schedulings/findPlanCombs';
 import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
@@ -30,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = v.parse(candidate_new_schedule_schema, req.body);
     const eventAction = apiTargetToEvents[target_api];
 
-    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: req.body.request_id,
       supabaseAdmin,
       event_run_id: req.body.event_run_id,
@@ -44,9 +48,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select('*,recruiter_user!request_assignee_id_fkey(*)')
         .eq('id', request_id),
     );
-    let request_assigner_tz =
+    const request_assigner_tz =
       request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-    let date_range = {
+    const date_range = {
       start_date_str: dayjsLocal().format('DD/MM/YYYY'),
       end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
     };

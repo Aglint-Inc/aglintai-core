@@ -1,28 +1,18 @@
 import { Button } from '@components/ui/button';
-import { KeywordCard } from '@devlink2/KeywordCard';
-import { Alert, Typography } from '@mui/material';
-import { Plus } from 'lucide-react';
 import React from 'react';
 
 import toast from '@/utils/toast';
-
-import AddChip from './AddChip';
-import KeyWordChip from './KeyWordChip';
+import AddChip from '@/components/Common/AddChip';
+import { Plus } from 'lucide-react';
 
 interface KeywordSectionProps {
-  title: string;
-  warningText: string;
   keywords: string[];
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
-  emptyMessage: string;
 }
 
 const KeywordSection: React.FC<KeywordSectionProps> = ({
-  title,
-  warningText,
   keywords,
   setKeywords,
-  emptyMessage,
 }) => {
   const handleAdd = ({ name }) => {
     const newKeywords = String(name).split(',');
@@ -38,45 +28,25 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
     });
   };
 
-  const handleDelete = (itemToDelete: string) => {
+  const handleDelete = (itemToDelete) => {
     setKeywords((prev) => prev.filter((item) => item !== itemToDelete));
   };
 
   return (
-    <KeywordCard
-      textTitle={title}
-      textWarning={warningText}
-      slotInput={
-        <AddChip
-          options={keywords.map((item) => ({ name: item, id: item }))}
-          suggestionsList={[]}
-          handleAddDepartment={handleAdd}
-          placeholder='Enter new value...'
-          btn={
-            <Button variant='outline' size='sm' className='rounded-full'>
-              <Plus className='h-4 w-4 mr-2' />
-              Add keyword
-            </Button>
-          }
-        />
+    <AddChip
+      options={keywords.map((item) => ({ name: item, id: item }))}
+      suggestionsList={[]}
+      handleAddDepartment={handleAdd}
+      placeholder='Enter new value...'
+      btn={
+        <Button variant='outline' size='sm' className='rounded-full'>
+          <Plus className='h-4 w-4 mr-2' />
+          Add keyword
+        </Button>
       }
-      slotSuggestPill={
-        keywords.length === 0 ? (
-          <Alert severity='info' icon={false}>
-            <Typography>{emptyMessage}</Typography>
-          </Alert>
-        ) : (
-          keywords.map((item, index) => (
-            <KeyWordChip
-              key={item}
-              name={item}
-              index={index}
-              id={item}
-              handleRemoveKeyword={handleDelete}
-            />
-          ))
-        )
-      }
+      handleRemoveKeyword={({ name }) => {
+        handleDelete(name);
+      }}
     />
   );
 };

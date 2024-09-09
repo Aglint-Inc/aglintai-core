@@ -12,8 +12,7 @@ import { useEffect, useState } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-
-import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
+import { Trash } from 'lucide-react';
 
 const CancelRescheduleDialog = ({
   title,
@@ -129,7 +128,7 @@ const CancelRescheduleDialog = ({
                   },
                 }}
                 slots={{
-                  openPickerIcon: DateIcon,
+                  openPickerIcon: () => <Trash size={20} />,
                 }}
               />
             </LocalizationProvider>
@@ -153,7 +152,7 @@ const CancelRescheduleDialog = ({
                   },
                 }}
                 slots={{
-                  openPickerIcon: DateIcon,
+                  openPickerIcon: () => <Trash size={20} />,
                 }}
               />
             </LocalizationProvider>

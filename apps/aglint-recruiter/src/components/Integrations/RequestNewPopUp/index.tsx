@@ -1,16 +1,23 @@
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { IntegrationThanks } from '@devlink2/IntegrationThanks';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 
-import { ShowCode } from '../../Common/ShowCode';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { ThumbsUp } from 'lucide-react';
+import { Label } from '@components/ui/label';
+import { Textarea } from '@components/ui/textarea';
+import { Input } from '@components/ui/input';
 
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   const { recruiter } = useAuthDetails();
@@ -54,91 +61,69 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   }
 
   return (
-    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
-      <ShowCode.When isTrue={showThanks}>
-        <IntegrationThanks
-          slotButtonClose={
-            <ButtonSoft
-              onClickButton={{
-                onClick: () => {
-                  close();
-                  setTimeout(() => {
-                    setShowThanks(false);
-                  }, 500);
-                },
+    <Dialog open={isOpen} onOpenChange={close}>
+      <DialogContent className='sm:max-w-[425px]'>
+        {showThanks ? (
+          <div className='flex flex-col items-center justify-center p-6 text-center'>
+            <div className='text-green-500 mb-4'>
+              <ThumbsUp size={48} />
+            </div>
+            <h2 className='text-2xl font-bold mb-2'>Thank You!</h2>
+            <p className='text-gray-600 mb-6'>
+              Thank you for your time. We will review your request and get back
+              to you.
+            </p>
+            <Button
+              onClick={() => {
+                close();
+                setTimeout(() => {
+                  setShowThanks(false);
+                }, 500);
               }}
-              size={2}
-              textButton={'Close'}
-            />
-            // <ButtonPrimaryDefaultRegular
-            //   buttonText={'Close'}
-            //   buttonProps={{
-            //     onClick: () => {
-            //       close();
-            //       setTimeout(() => {
-            //         setShowThanks(false);
-            //       }, 500);
-            //     },
-            //   }}
-            // />
-          }
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={!showThanks}>
-        <DcPopup
-          popupName={'Request Integration'}
-          slotBody={
-            <Stack direction={'column'} spacing={'16px'}>
-              <Stack direction={'column'} spacing={'var(--space-2)'}>
-                <Typography fontSize={'14px'} variant='body1'>
-                  Integration Name
-                </Typography>
-                <TextField
-                  inputRef={nameRef}
+              size='sm'
+              className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded'
+            >
+              Close
+            </Button>
+          </div>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Request Integration</DialogTitle>
+            </DialogHeader>
+            <div className='flex flex-col space-y-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='integration-name'>Integration Name</Label>
+                <Input
+                  id='integration-name'
+                  ref={nameRef}
                   placeholder='Enter the name of the integration'
                 />
-              </Stack>
-              <Stack direction={'column'} spacing={'var(--space-2)'}>
-                <Typography fontSize={'14px'} variant='body1'>
-                  Description
-                </Typography>
-                <TextField
-                  multiline
-                  minRows={5}
+              </div>
+              <div className='space-y-2'>
+                <Label htmlFor='integration-description'>Description</Label>
+                <Textarea
+                  id='integration-description'
                   placeholder='Add a brief description (Optional)'
-                  inputRef={descriptionRef}
+                  className='resize-none'
                 />
-              </Stack>
-            </Stack>
-          }
-          onClickClosePopup={{
-            onClick: () => {
-              close();
-              setShowThanks(false);
-            },
-          }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => {
-                    close();
-                    setShowThanks(false);
-                  },
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant='outline'
+                onClick={() => {
+                  close();
+                  setShowThanks(false);
                 }}
-              />
-              <ButtonSolid
-                size={2}
-                textButton={'Request'}
-                onClickButton={{ onClick: requestTool }}
-              />
-            </>
-          }
-        />
-      </ShowCode.When>
+              >
+                Cancel
+              </Button>
+              <Button onClick={requestTool}>Request</Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
     </Dialog>
   );
 }

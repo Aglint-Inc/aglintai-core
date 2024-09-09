@@ -1,6 +1,6 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { ButtonSurface } from '@devlink/ButtonSurface';
+
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { RescheduleCard } from '@devlink3/RescheduleCard';
 import { Stack } from '@mui/material';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import ROUTES from '@/utils/routing/routes';
 
 import BookingConfirmation from './BookingConfirmation';
+import { Button } from '@components/ui/button';
 
 function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
   const router = useRouter();
@@ -57,18 +58,17 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
     const meeting_id = act.metadata.meeting_id;
     return (
       <Stack direction={'row'}>
-        <ButtonSurface
-          size={1}
-          textButton={'View details'}
-          onClickButton={{
-            onClick: () => {
-              router.push(
-                ROUTES['/scheduling/view']() +
-                  `?meeting_id=${meeting_id}&tab=candidate_details`,
-              );
-            },
+        <Button
+          size={'sm'}
+          onClick={() => {
+            router.push(
+              ROUTES['/scheduling/view']() +
+                `?meeting_id=${meeting_id}&tab=candidate_details`,
+            );
           }}
-        />
+        >
+          View details
+        </Button>
       </Stack>
     );
   } else {

@@ -17,7 +17,7 @@ function JobPost({
   params: { id: string };
   searchParams: { preview: boolean };
 }) {
-  let jobId = id;
+  const jobId = id;
   const [post, setPost] = useState<PublicJobAPI['post']>();
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ function JobPost({
   const [jobs, setJobs] = useState<PublicJobAPI['jobs']>([]);
 
   useEffect(() => {
-    let query = isValidUUID(jobId) ? `id.eq.${jobId}` : `slug.eq.${jobId}`;
+    const query = isValidUUID(jobId) ? `id.eq.${jobId}` : `slug.eq.${jobId}`;
 
     (async () => {
       const response = await axios.post<PublicJobAPI>(
@@ -60,7 +60,7 @@ function JobPost({
     validThrough = originalDate?.toISOString();
   }
 
-  let description = post?.description;
+  const description = post?.description;
 
   const jsonLd = {
     '@context': 'https://schema.org',

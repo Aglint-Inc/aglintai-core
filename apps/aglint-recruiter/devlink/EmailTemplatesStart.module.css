@@ -19,7 +19,6 @@
   overflow: hidden;
   justify-content: flex-start;
   border-radius: var(--radius-4);
-  background-color: var(--white);
 }
 
 .email-template-left-wrap {

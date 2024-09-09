@@ -1,9 +1,9 @@
-import { InterviewModePill } from '@devlink2/InterviewModePill';
-import React from 'react';
-
-import IconSessionType from '@/components/Common/Icons/IconSessionType';
-
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { setEditSession, useEditSessionDrawerStore } from '../store';
+import {
+  IndividualIcon,
+  PanelIcon,
+} from '@/components/Jobs/Job/Interview-Plan/sessionForms';
 
 function SelectSessionType() {
   const { editSession } = useEditSessionDrawerStore((state) => ({
@@ -12,37 +12,46 @@ function SelectSessionType() {
 
   return (
     <>
-      <InterviewModePill
-        isActive={editSession.interview_session.session_type === 'panel'}
-        textModeName={'Panel'}
-        slotModeIcon={<IconSessionType type='panel' />}
-        onClickPill={{
-          onClick: () => {
-            setEditSession({
-              interview_session: {
-                ...editSession.interview_session,
-                session_type: 'panel',
-              },
-            });
-          },
-        }}
-      />
-      <InterviewModePill
-        isActive={editSession.interview_session.session_type === 'individual'}
-        textModeName={'Individual'}
-        slotModeIcon={<IconSessionType type='individual' />}
-        onClickPill={{
-          onClick: () => {
-            setEditSession({
-              interview_session: {
-                ...editSession.interview_session,
-                session_type: 'individual',
-                interviewer_cnt: 1,
-              },
-            });
-          },
-        }}
-      />
+      <Tabs
+        value={
+          editSession.interview_session.session_type === 'individual'
+            ? 'individual'
+            : 'panel'
+        }
+      >
+        <TabsList>
+          <TabsTrigger
+            value='individual'
+            onClick={() => {
+              setEditSession({
+                interview_session: {
+                  ...editSession.interview_session,
+                  session_type: 'individual',
+                },
+              });
+            }}
+          >
+            <div className='flex flex-row gap-1 justify-center'>
+              <IndividualIcon /> Individual
+            </div>
+          </TabsTrigger>
+          <TabsTrigger
+            value='panel'
+            onClick={() => {
+              setEditSession({
+                interview_session: {
+                  ...editSession.interview_session,
+                  session_type: 'panel',
+                },
+              });
+            }}
+          >
+            <div className='flex flex-row gap-1 justify-center'>
+              <PanelIcon /> Panel
+            </div>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
     </>
   );
 }

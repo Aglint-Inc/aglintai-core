@@ -43,7 +43,9 @@ export class Toast {
         text: 'Undo',
         callback(toast) {
           toast.destroy();
-          onUndo && onUndo();
+          if (onUndo) {
+            onUndo();
+          }
         },
       },
     });

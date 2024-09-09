@@ -55,7 +55,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -161,7 +161,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
                     width="auto"
                     height="auto"
                     alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
+                    src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
                   />
                 </_Builtin.Block>
               </_Builtin.Block>
@@ -189,7 +189,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b97945c04b6a6bf31da6_r.png"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5b97945c04b6a6bf31da6_r.png"
                 />
               </_Builtin.Block>
               <_Builtin.Block
@@ -216,7 +216,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b9987c71f33757c13b16_4member.png"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5b9987c71f33757c13b16_4member.png"
                 />
               </_Builtin.Block>
               <_Builtin.Block
@@ -243,7 +243,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b9be011212b8859e1c13_3member.png"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5b9be011212b8859e1c13_3member.png"
                 />
               </_Builtin.Block>
             </_Builtin.Block>
@@ -258,7 +258,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -335,7 +335,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -418,7 +418,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -619,7 +619,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -714,7 +714,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -784,7 +784,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b78419a212306b3b75e1_0c81a41ce9f2a97569e452e11b2e2e1f.png"
+              src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5b78419a212306b3b75e1_0c81a41ce9f2a97569e452e11b2e2e1f.png"
             />
           </_Builtin.Block>
           <_Builtin.Block tag="div">
@@ -816,7 +816,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b7a977d6963e90278a83_be70d16d697e187131884dce35888e36.png"
+              src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5b7a977d6963e90278a83_be70d16d697e187131884dce35888e36.png"
             />
           </_Builtin.Block>
           <_Builtin.Block tag="div">
@@ -878,7 +878,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -957,7 +957,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -1159,7 +1159,7 @@ export function DummyChatOne({ as: _Component = _Builtin.Block }) {
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
               />
             </_Builtin.Block>
           </_Builtin.Block>

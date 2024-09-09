@@ -11,8 +11,8 @@ const supabase = createClient<DB>(
 );
 
 export default async function handler(req, res) {
-  let apiKey = req.body.apiKey;
-  let recruiterId = req.body.recruiterId;
+  const apiKey = req.body.apiKey;
+  const recruiterId = req.body.recruiterId;
 
   if (!apiKey) {
     res.status(400).send('apiKey or recruiterId is missing');

@@ -71,12 +71,14 @@ function ModuleMembersComp() {
           </Stack>
         }
         slotBody={
-          <SlotBodyComp
-            editModule={editModule}
-            fetchingModule={fetchingModule}
-            isFetching={isFetching}
-            refetch={refetch}
-          />
+          <>
+            <SlotBodyComp
+              editModule={editModule}
+              fetchingModule={fetchingModule}
+              isFetching={isFetching}
+              refetch={refetch}
+            />
+          </>
         }
       />
     </>

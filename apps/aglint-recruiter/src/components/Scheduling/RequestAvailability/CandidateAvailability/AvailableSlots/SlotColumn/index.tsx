@@ -27,7 +27,7 @@ function SlotColumn({
     curr_day: string;
     slot: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][number]['slots'][number];
   }) => {
-    //@ts-ignore
+    //@ts-expect-error
 
     setSelectedSlots((prevState) => {
       // Check if the day exists in the state

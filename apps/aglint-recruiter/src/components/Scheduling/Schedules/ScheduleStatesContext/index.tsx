@@ -35,7 +35,7 @@ export type ScheduleFilerType = {
   session_types: DatabaseEnums['session_type'][];
   searchText: string;
 };
-export var initialFilterState: ScheduleFilerType = {
+export const initialFilterState: ScheduleFilerType = {
   status: ['confirmed', 'completed'],
   interviewers: [],
   jobs: [],
@@ -95,7 +95,7 @@ function ScheduleStatesProvider({ children }) {
     value: string[],
   ) => {
     setFilterState((prevState) => {
-      let states = {
+      const states = {
         ...prevState,
         [key]: value,
       };

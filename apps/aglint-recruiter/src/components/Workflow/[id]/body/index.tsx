@@ -1,6 +1,5 @@
 import OptimisticWrapper from '@components/loadingWapper';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+
 import { DcPopup } from '@devlink/DcPopup';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
@@ -28,6 +27,7 @@ import Edit from '../edit';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
+import { Button } from '@components/ui/button';
 
 const Body = () => {
   const { workflow } = useWorkflow();
@@ -146,20 +146,21 @@ const WorkflowJob = ({
           }
           slotButtons={
             <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
+              <Button
+                size={'sm'}
                 color={'neutral'}
-                onClickButton={{ onClick: () => setOpen(false) }}
-              />
-              <ButtonSolid
-                textButton='Unlink'
-                size={2}
-                onClickButton={{
-                  onClick: async () =>
-                    await mutateAsync({ job_id: id, workflow_id }),
-                }}
-              />
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size={'sm'}
+                onClick={async () =>
+                  await mutateAsync({ job_id: id, workflow_id })
+                }
+              >
+                Unlink
+              </Button>
             </>
           }
         />

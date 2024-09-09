@@ -1,17 +1,16 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { RolesPopover } from '@devlink/RolesPopover';
 import { UserNameRoleCard } from '@devlink/UserNameRoleCard';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Avatar, Dialog, Stack } from '@mui/material';
+import { ChevronDown, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
 import { updateMember } from '@/context/AuthContext/utils';
 import { useAllMembers } from '@/queries/members';
 import { useRoleAndPermissionsHook } from '@/queries/RolesSettings';
+import { Button } from '@components/ui/button';
 
 function RoleEditMember({
   role,
@@ -55,34 +54,29 @@ function RoleEditMember({
         onClickClosePopup={{ onClick: close }}
         slotButtons={
           <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: close,
+            <Button variant='outline' onClick={close}>
+              Cancel
+            </Button>
+            <Button
+              onClick={async () => {
+                setIsLoading(true);
+                await updateMember({
+                  data: {
+                    user_id: selectedMember.user_id,
+                    role_id: role.id,
+                  },
+                });
+                refetch();
+                setIsLoading(false);
+                close();
               }}
-            />
-            <ButtonSolid
-              textButton='Update'
-              size={2}
-              isLoading={isLoading}
-              isDisabled={!selectedMember}
-              onClickButton={{
-                onClick: async () => {
-                  setIsLoading(true);
-                  await updateMember({
-                    data: {
-                      user_id: selectedMember.user_id,
-                      role_id: role.id,
-                    },
-                  });
-                  refetch();
-                  setIsLoading(false);
-                  close();
-                },
-              }}
-            />
+              disabled={!selectedMember}
+            >
+              {isLoading ? (
+                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+              ) : null}
+              Update
+            </Button>
           </>
         }
         slotBody={
@@ -139,7 +133,7 @@ function RoleEditMember({
                       width={'100%'}
                       sx={{ transform: 'rotate(180deg)' }}
                     >
-                      <GlobalIcon iconName={'arrow_warm_up'} size={5} />
+                      <ChevronDown size={12} />
                     </Stack>
                     <UserNameRoleCard
                       textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}

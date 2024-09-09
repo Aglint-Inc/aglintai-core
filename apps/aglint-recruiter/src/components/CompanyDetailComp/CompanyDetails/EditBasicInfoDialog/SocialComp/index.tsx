@@ -44,70 +44,92 @@ const SocialComp = ({
   };
 
   return (
-    <div className="space-y-4 w-full">
-      <Label className="text-lg font-semibold">Social</Label>
-      <div className="space-y-6">
-        {socials.map((socialName) => (
-          <SocialField
-            key={socialName}
-            socialName={socialName}
-            value={recruiterLocal?.socials[socialName]}
-            disabled={disabled}
-            error={error[socialName]}
-            onChange={(value) =>
-              handleChange(
-                {
-                  ...recruiterLocal,
-                  socials: { ...recruiterLocal.socials, [socialName]: value },
-                },
-                socialName,
-              )
-            }
-          />
-        ))}
-        {customSocials.map((socialName) => (
-          <CustomSocialField
-            key={socialName}
-            socialName={socialName}
-            value={recruiter?.socials.custom[socialName]}
-            error={error[socialName]}
-            setError={(newError) =>
-              setError((prev) => ({ ...prev, [socialName]: newError }))
-            }
-            onChange={(value) =>
-              handleChange(
-                {
-                  ...recruiterLocal,
-                  socials: {
-                    ...recruiterLocal.socials,
-                    custom: {
-                      ...recruiterLocal.socials.custom,
-                      [socialName]: value,
+    <div className='space-y-4 w-full'>
+      <Label className='text-sm font-semibold'>Social</Label>
+      <div className='grid grid-cols-2 gap-6'>
+        <div className='space-y-6'>
+          {socials.slice(0, Math.ceil(socials.length / 2)).map((socialName) => (
+            <SocialField
+              key={socialName}
+              socialName={socialName}
+              value={recruiterLocal?.socials[socialName]}
+              disabled={disabled}
+              error={error[socialName]}
+              onChange={(value) =>
+                handleChange(
+                  {
+                    ...recruiterLocal,
+                    socials: { ...recruiterLocal.socials, [socialName]: value },
+                  },
+                  socialName,
+                )
+              }
+            />
+          ))}
+        </div>
+        <div className='space-y-6'>
+          {socials.slice(Math.ceil(socials.length / 2)).map((socialName) => (
+            <SocialField
+              key={socialName}
+              socialName={socialName}
+              value={recruiterLocal?.socials[socialName]}
+              disabled={disabled}
+              error={error[socialName]}
+              onChange={(value) =>
+                handleChange(
+                  {
+                    ...recruiterLocal,
+                    socials: { ...recruiterLocal.socials, [socialName]: value },
+                  },
+                  socialName,
+                )
+              }
+            />
+          ))}
+          {customSocials.map((socialName) => (
+            <CustomSocialField
+              key={socialName}
+              socialName={socialName}
+              value={recruiter?.socials.custom[socialName]}
+              error={error[socialName]}
+              setError={(newError) =>
+                setError((prev) => ({ ...prev, [socialName]: newError }))
+              }
+              onChange={(value) =>
+                handleChange(
+                  {
+                    ...recruiterLocal,
+                    socials: {
+                      ...recruiterLocal.socials,
+                      custom: {
+                        ...recruiterLocal.socials.custom,
+                        [socialName]: value,
+                      },
                     },
                   },
-                },
-                socialName,
-                true,
-              )
-            }
-            onDelete={() => {
-              const newCustomSocials = { ...recruiter.socials.custom };
-              delete newCustomSocials[socialName];
-              handleChange(
-                {
-                  ...recruiterLocal,
-                  socials: {
-                    ...recruiterLocal.socials,
-                    custom: newCustomSocials,
+                  socialName,
+                  true,
+                )
+              }
+              onDelete={() => {
+                const newCustomSocials = { ...recruiter.socials.custom };
+                delete newCustomSocials[socialName];
+                handleChange(
+                  {
+                    ...recruiterLocal,
+                    socials: {
+                      ...recruiterLocal.socials,
+                      custom: newCustomSocials,
+                    },
                   },
-                },
-                socialName,
-                true,
-              );
-            }}
-          />
-        ))}
-        {!disabled && <AddSocialLinkButton />}
+                  socialName,
+                  true,
+                );
+              }}
+            />
+          ))}
+          {!disabled && <AddSocialLinkButton />}
+        </div>
       </div>
     </div>
   );

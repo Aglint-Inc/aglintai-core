@@ -83,16 +83,16 @@ function IndividualCard({
 
   const pills: PillsTraining[] = [
     ...shadowProgress.map(() => {
-      return { sessionType: 'shadow' as 'shadow', completed: true };
+      return { sessionType: 'shadow' as const, completed: true };
     }),
     ...mutatedShadowProgress.map(() => {
-      return { sessionType: 'shadow' as 'shadow', completed: false };
+      return { sessionType: 'shadow' as const, completed: false };
     }),
     ...reverseShadowProgress.map(() => {
-      return { sessionType: 'rshadow' as 'rshadow', completed: true };
+      return { sessionType: 'rshadow' as const, completed: true };
     }),
     ...mutatedReverseShadowProgress.map(() => {
-      return { sessionType: 'rshadow' as 'rshadow', completed: false };
+      return { sessionType: 'rshadow' as const, completed: false };
     }),
   ];
 

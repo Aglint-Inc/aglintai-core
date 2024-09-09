@@ -102,7 +102,7 @@ export const useAvailabilty = () => {
     queryKey: ['get_fetchAvailabiltyWithCal'],
     queryFn: (param) => fetchAvailabiltyWithCal(param, recruiter_id),
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
+    getNextPageParam: (_lastPage, allPages) => {
       return allPages.length + 1 <= 20 ? allPages.length + 1 : undefined;
     },
   });

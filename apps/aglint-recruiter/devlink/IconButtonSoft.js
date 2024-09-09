@@ -63,7 +63,7 @@ export function IconButtonSoft({
             height="auto"
             loading="lazy"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/665d7ff94b360c4b8af3b8f8_kOnzy.gif"
+            src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/665d7ff94b360c4b8af3b8f8_kOnzy.gif"
           />
         </_Builtin.Block>
       ) : null}

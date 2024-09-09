@@ -15,7 +15,7 @@ export function convertTimeZoneToAbbreviation(sourceTimeZone) {
     timeZone: sourceTimeZone,
     timeZoneName: 'short',
   });
-  let timeZoneAbbreviation = formatter
+  const timeZoneAbbreviation = formatter
     .formatToParts(date)
     .find((part) => part.type === 'timeZoneName').value;
 

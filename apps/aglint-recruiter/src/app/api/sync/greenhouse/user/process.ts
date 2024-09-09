@@ -44,7 +44,7 @@ export async function filterMapUser(
   const filtered_user = users.filter(
     (user) => !curr_email.includes(user.primary_email_address),
   );
-  for (let user of filtered_user) {
+  for (const user of filtered_user) {
     temp_user.push(
       await registerMember(
         supabaseAdmin,
@@ -108,7 +108,7 @@ export async function getGreenhouseUsers(key: string, last_sync?: string) {
 }
 
 export async function getGreenhouseUpdatedUsers(
-  key: string,
+  _key: string,
   last_sync: string,
 ) {
   let user = 'https://harvest.greenhouse.io/v1/users';

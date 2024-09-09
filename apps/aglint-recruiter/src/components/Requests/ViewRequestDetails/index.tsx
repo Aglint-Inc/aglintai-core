@@ -11,8 +11,7 @@ import { PageLayout } from '@devlink2/PageLayout';
 import { RequestDetail } from '@devlink2/RequestDetail';
 import { RequestDetailRight } from '@devlink2/RequestDetailRight';
 import { SkeletonScheduleCard } from '@devlink2/SkeletonScheduleCard';
-import { Text } from '@devlink2/Text';
-import { TextWithIcon } from '@devlink2/TextWithIcon';
+
 import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -28,10 +27,10 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import Loader from '../../Common/Loader';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
-import RequestProgress, {
-  RequestProgressSkeleton,
-} from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
-import { getStatusColor } from '../utils';
+
+import { Label } from '@components/ui/label';
+import { Mail, MapPin, Smartphone } from 'lucide-react';
+
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
@@ -43,6 +42,10 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
+import RequestProgress, {
+  RequestProgressSkeleton,
+} from '../_common/Components/RequestProgress';
+import { getStatusColor } from '../_common/utils/getStatusColor';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -92,7 +95,7 @@ function ViewRequestDetails() {
             size={2}
             onClickButton={{
               onClick: () => {
-                replace('/requests?tab=requests');
+                replace('/requests');
               },
             }}
             textButton='Back to requests'
@@ -229,17 +232,15 @@ function ViewRequestDetails() {
                 }
                 slotRequestTypeEdit={<></>}
                 textDueDate={
-                  <Text
-                    content={
-                      dayjsLocal(selectedRequest?.schedule_start_date).format(
-                        'DD MMM, YYYY',
-                      ) +
+                  <Label>
+                    {dayjsLocal(selectedRequest?.schedule_start_date).format(
+                      'DD MMM, YYYY',
+                    ) +
                       ' - ' +
                       dayjsLocal(selectedRequest?.schedule_end_date).format(
                         'DD MMM, YYYY',
-                      )
-                    }
-                  />
+                      )}
+                  </Label>
                 }
                 slotInterviewDate={
                   selectedRequest?.status === 'to_do' &&
@@ -292,31 +293,24 @@ function ViewRequestDetails() {
                     )}
                     slotDetails={
                       <>
-                        <TextWithIcon
-                          textContent={
-                            !candidateDetails?.city &&
-                            !candidateDetails?.state &&
-                            !candidateDetails?.country
-                              ? '--'
-                              : `${candidateDetails?.city} ${candidateDetails?.state}, ${candidateDetails?.country}`
-                          }
-                          iconName='location_on'
-                          iconSize={4}
-                          iconWeight={'medium'}
-                        />
+                        <Label>
+                          <MapPin className='mr-2 h-4 w-4' />
+                          {!candidateDetails?.city &&
+                          !candidateDetails?.state &&
+                          !candidateDetails?.country
+                            ? '--'
+                            : `${candidateDetails?.city} ${candidateDetails?.state}, ${candidateDetails?.country}`}
+                        </Label>
 
-                        <TextWithIcon
-                          textContent={candidateDetails?.email || '--'}
-                          iconName='mail'
-                          iconSize={4}
-                          iconWeight={'medium'}
-                        />
-                        <TextWithIcon
-                          textContent={candidateDetails?.phone || '--'}
-                          iconName='smartphone'
-                          iconSize={4}
-                          iconWeight={'medium'}
-                        />
+                        <Label>
+                          <Mail className='mr-2 h-4 w-4' />
+                          {candidateDetails?.email || '--'}
+                        </Label>
+
+                        <Label>
+                          <Smartphone className='mr-2 h-4 w-4' />
+                          {candidateDetails?.phone || '--'}
+                        </Label>
                       </>
                     }
                     isButtonVisible={true}

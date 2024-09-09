@@ -81,16 +81,48 @@ export const candidatePortalRouter = createTRPCRouter({
       const messages = (
         await ctx.adminDb
           .from('candidate_portal_message')
-          .select('id,message,created_at,message,is_readed,title')
+          .select(
+            'id,message,created_at,message,title,availability_id,filter_id,interview_filter_json(id,viewed_on,confirmed_on),candidate_request_availability(id,slots,visited)',
+          )
           .eq('application_id', application_id)
           .throwOnError()
       ).data;
 
-      return messages.map((message) => ({
-        ...message,
-        company_name: company.candidates.recruiter.name,
-        company_logo: company.candidates.recruiter.logo,
-      }));
+      const enrichedMessages = messages.map((message) => {
+        const {
+          candidate_request_availability,
+          interview_filter_json,
+          ...rest
+        } = message;
+
+        const messageWithCompany = {
+          ...rest,
+          company_name: company.candidates.recruiter.name,
+          company_logo: company.candidates.recruiter.logo,
+        };
+        if (message.availability_id)
+          return {
+            ...messageWithCompany,
+            isNew: !candidate_request_availability.visited,
+            isSubmitted: Boolean(candidate_request_availability.slots),
+            link: `/scheduling/request-availability/${message.availability_id}`,
+          };
+        if (message.filter_id)
+          return {
+            ...messageWithCompany,
+            isNew: !interview_filter_json.viewed_on,
+            isSubmitted: Boolean(interview_filter_json.confirmed_on),
+            link: `/scheduling/invite/${application_id}?filter_id=${message.filter_id}`,
+          };
+        return {
+          ...messageWithCompany,
+          isNew: null,
+          isSubmitted: null,
+          link: null,
+        };
+      });
+
+      return enrichedMessages;
     }),
   // get navbar ----------------------------------------------------------------
   get_navbar: publicProcedure

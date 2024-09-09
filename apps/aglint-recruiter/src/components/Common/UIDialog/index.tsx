@@ -17,6 +17,7 @@ function UIDialog({
   onClickSecondary = () => {},
   children,
   open,
+  size = 'md',
 }: {
   slotButtons?: React.ReactNode;
   title?: string;
@@ -25,10 +26,20 @@ function UIDialog({
   onClickSecondary?: () => void;
   children?: React.ReactNode;
   open: boolean;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }) {
+  const sizeClasses = {
+    sm: 'max-w-sm',
+    md: 'max-w-lg',
+    lg: 'max-w-xl',
+    xl: 'max-w-3xl',
+  };
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className={`${sizeClasses[size]} w-full`}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

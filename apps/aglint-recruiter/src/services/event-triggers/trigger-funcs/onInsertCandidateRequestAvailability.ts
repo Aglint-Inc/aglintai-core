@@ -26,7 +26,7 @@ export const trigger = async ({
   new_data: DatabaseTable['candidate_request_availability'];
 }) => {
   try {
-    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
       event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
@@ -58,7 +58,7 @@ export const trigger = async ({
     const promises = [...request_workflows]
       .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
       .map(async (j_l_a) => {
-        let run_id = supabaseWrap(
+        const run_id = supabaseWrap(
           await supabaseAdmin.rpc('create_new_workflow_action_log', {
             triggered_table: 'candidate_request_availability',
             base_time: dayjsLocal().toISOString(),

@@ -105,20 +105,23 @@ const Create = () => {
                   })
                 }
               />
-              <Switch
-                checked={form.auto_connect.value}
-                onCheckedChange={(checked) =>
-                  setForm({
-                    auto_connect: {
-                      value: checked,
-                      error: false,
-                      helperText: '',
-                      required: true,
-                      validation: (value) => value,
-                    },
-                  })
-                }
-              />
+              <div className='flex items-center space-x-2'>
+                <Switch
+                  checked={form.auto_connect.value}
+                  onCheckedChange={(checked) =>
+                    setForm({
+                      auto_connect: {
+                        value: checked,
+                        error: false,
+                        helperText: '',
+                        required: true,
+                        validation: (value) => value,
+                      },
+                    })
+                  }
+                />
+                <Label>Auto connect to all new jobs</Label>
+              </div>
             </div>
           </div>
           <DialogFooter>

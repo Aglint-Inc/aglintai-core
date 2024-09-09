@@ -1,15 +1,16 @@
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Close } from '@devlink/Close';
 import { Filter } from '@devlink/Filter';
 import { FilterButton } from '@devlink/FilterButton';
-import { Grid, Popover, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import UISelect from '../../../Common/UISelectDropDown';
 import UITextField from '../../../Common/UITextField';
+import { Button } from '@components/ui/button';
+import { Popover } from '@components/ui/popover';
+import { X } from 'lucide-react';
 
 type FilterType = {
   id: string;
@@ -132,20 +133,8 @@ const FilterComp = () => {
       />
       <Popover
         open={Boolean(anchorlEl)}
-        anchorEl={anchorlEl}
-        onClose={() => {
-          setAnchorEl(null);
-        }}
-        keepMounted={false}
-        sx={{
-          '& .MuiPaper-root': {
-            overflow: 'hidden',
-          },
-          top: 35,
-        }}
-        transformOrigin={{
-          horizontal: 'left',
-          vertical: 'top',
+        onOpenChange={(open) => {
+          if (!open) setAnchorEl(null);
         }}
       >
         <Filter
@@ -182,7 +171,7 @@ const FilterComp = () => {
           }
           slotFilter={
             <>
-              <Stack gap={0.5}>
+              <div className='flex flex-col space-y-2'>
                 {filters.map((filt, index) => {
                   return (
                     <FilterField
@@ -204,7 +193,7 @@ const FilterComp = () => {
                     />
                   );
                 })}
-              </Stack>
+              </div>
             </>
           }
           // onClickAddFilter={{
@@ -265,8 +254,8 @@ const FilterField = ({
 }) => {
   return (
     <>
-      <Grid container gap={0.2}>
-        <Grid item xs={3.5}>
+      <div className='flex flex-wrap gap-0.5'>
+        <div className='w-[35%]'>
           <UISelect
             menuOptions={allFilters.map((a) => ({
               name: a.label,
@@ -280,15 +269,15 @@ const FilterField = ({
             }}
             value={filter.type}
           />
-        </Grid>
-        <Grid item xs={3.2}>
+        </div>
+        <div className='w-[32%]'>
           <UISelect
             defaultValue={'equal'}
             menuOptions={[{ name: 'Equals', value: 'equals' }]}
             value={'equals'}
           />
-        </Grid>
-        <Grid item xs={4}>
+        </div>
+        <div className='w-[40%]'>
           <UITextField
             onChange={(e) => {
               const updFilter: FilterType = { ...filter };
@@ -299,18 +288,19 @@ const FilterField = ({
             defaultValue={''}
             placeholder=''
           />
-        </Grid>
+        </div>
 
-        <Grid item xs={1}>
-          <Close
-            onClickClose={{
-              onClick: () => {
-                onCancel();
-              },
+        <div className='w-[10%]'>
+          <Button
+            onClick={() => {
+              onCancel();
             }}
-          />
-        </Grid>
-      </Grid>
+            className='p-1 hover:bg-gray-100 rounded-full'
+          >
+            <X className='w-4 h-4' />
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

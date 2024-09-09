@@ -1,11 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { CandidateDetail } from '@devlink/CandidateDetail';
-import { GlobalIcon } from '@devlink/GlobalIcon';
+import { Brain } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 
-import { getIconName } from '../../utils';
 import { EmptyDetailState } from '../Common/EmptyDetailState';
 import { Badge } from './Badge';
 import { Education } from './Education';
@@ -54,7 +53,7 @@ export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
           ))
         )
       }
-      slotIcon={<GlobalIcon size={5} iconName={getIconName('Analysis')} />}
+      slotIcon={<Brain size={16} />}
       textTitle={'Analysis'}
     />
   );

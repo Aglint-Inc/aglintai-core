@@ -40,7 +40,7 @@ export function WidgetPanelCard({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
           />
         )}
       </_Builtin.Block>

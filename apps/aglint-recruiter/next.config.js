@@ -2,7 +2,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   assetPrefix:
@@ -18,6 +17,13 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  // typescript: {
+  //   // !! WARN !!
+  //   // Dangerously allow production builds to successfully complete even if
+  //   // your project has type errors.
+  //   // !! WARN !!
+  //   ignoreBuildErrors: true,
+  // },
 
   async rewrites() {
     return [
@@ -28,41 +34,63 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    const redirects = [
+    return [
       {
         source: '/',
         destination: '/login',
-        basePath: false,
+        basePath: undefined,
         permanent: false,
       },
+      ...(process.env.NODE_ENV === 'production'
+        ? [
+            {
+              source: '/signup',
+              destination: '/login',
+              basePath: undefined,
+              permanent: false,
+            },
+          ]
+        : []),
     ];
-    if (process.env.NODE_ENV === 'production') {
-      redirects.push({
-        source: '/signup',
-        destination: '/login',
-        basePath: false,
-        permanent: false,
-      });
-    }
-    return redirects;
-  },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
-
-    return config;
   },
   images: {
-    domains: ['uploads-ssl.webflow.com', 'resend.com'],
-    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'uploads-ssl.webflow.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'resend.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+      },
+      {
+        protocol: 'https',
+        hostname: 'aglintai-seed-data.vercel.app',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ecfwsyxpcuzxlxrkhxjz.supabase.co',
       },
     ],
+  },
+  experimental: {
+    instrumentationHook: false,
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+      loaders: {
+        // ... any custom loaders you want to use with Turbopack
+      },
+    },
   },
 };
 

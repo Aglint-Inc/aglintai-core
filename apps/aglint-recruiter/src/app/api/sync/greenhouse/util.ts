@@ -82,7 +82,7 @@ export async function getGreenhouseJobs(key: string, last_sync?: string) {
     },
   });
   if (res.status !== 200) {
-    // @ts-ignore
+    // @ts-expect-error
     throw new Error(res.data?.message || 'Greenhouse API Failed!');
   }
   return res.data;
@@ -105,7 +105,7 @@ export async function getGreenhouseJobPlan(key: string, job_id: number) {
   // if (res.status === 200) {
   //   return res.data;
   // }
-  // // @ts-ignore
+  // // @ts-expect-error
   // throw new Error(res.data?.message || 'Greenhouse API Failed!');
   const data = JobStageData;
   return data
@@ -128,7 +128,7 @@ export async function getGreenhouseCandidates(
     url = temp_url + `?created_after=${data.last_sync}`;
   }
   const data1 = await getGreenhouseCandidatesAPI(key, url);
-  let data2 = [] as typeof data1;
+  const data2 = [] as typeof data1;
   // if (data.last_sync) {
   //   url = temp_url + `?updated_after=${data.last_sync}`;
   //   data2 = await getGreenhouseCandidatesAPI(key, url);
@@ -144,7 +144,7 @@ async function getGreenhouseCandidatesAPI(key: string, url: string) {
     },
   });
   if (res.status !== 200) {
-    // @ts-ignore
+    // @ts-expect-error
     throw new Error(res.data?.message || 'Greenhouse Candidate API Failed!');
   }
 
@@ -161,10 +161,11 @@ async function getGreenhouseCandidatesAPI(key: string, url: string) {
  * @example
  * chunkArray([1, 2, 3, 4, 5], 2) // returns [[1, 2], [3, 4], [5]]
  */
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
 export function chunkArray<T extends unknown>(flatArray: T[], i: number) {
   if (i < 1) throw new Error('Chunk size must be greater than 0');
 
-  let result = [] as T[][];
+  const result = [] as T[][];
   for (let j = 0; j < flatArray.length; j += i) {
     result.push(flatArray.slice(j, j + i));
   }

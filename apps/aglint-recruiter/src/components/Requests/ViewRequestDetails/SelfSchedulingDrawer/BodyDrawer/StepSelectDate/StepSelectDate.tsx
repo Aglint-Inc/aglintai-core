@@ -1,4 +1,3 @@
-import { TextWithIcon } from '@devlink2/TextWithIcon';
 import { DatePickerBody } from '@devlink3/DatePickerBody';
 import { ScheduleSelectPill } from '@devlink3/ScheduleSelectPill';
 import { Stack } from '@mui/material';
@@ -13,6 +12,8 @@ import { useMeetingList } from '../../../hooks';
 import InfoStepSelectState from '../../InfoStepSelectState';
 import { setDateRange, useSelfSchedulingFlowStore } from '../../store';
 import ErrorsFindAvailibility from './ErrorsFindAvailibility';
+import { Label } from '@components/ui/label';
+import { CheckCircle, Clock } from 'lucide-react';
 
 function SelectDateRange() {
   const { dateRange, noOptions } = useSelfSchedulingFlowStore((state) => ({
@@ -47,16 +48,14 @@ function SelectDateRange() {
         }
         slotTextWithIcon={
           <>
-            <TextWithIcon
-              iconSize={3}
-              iconName={'check_circle'}
-              textContent={`${selectedSessions.length} Schedule selected`}
-            />
-            <TextWithIcon
-              iconSize={3}
-              iconName={'schedule'}
-              textContent={getBreakLabel(totalTime)}
-            />
+            <Label>
+              <CheckCircle className='w-3 h-3 mr-2' />
+              {`${selectedSessions.length} Schedule selected`}
+            </Label>
+            <Label>
+              <Clock className='w-3 h-3 mr-2' />
+              {getBreakLabel(totalTime)}
+            </Label>
           </>
         }
         slotScheduleSelectPill={

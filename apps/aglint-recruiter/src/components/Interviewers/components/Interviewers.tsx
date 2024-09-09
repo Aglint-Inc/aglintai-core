@@ -1,5 +1,5 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
@@ -12,6 +12,7 @@ import {
   type useMatricsInterviewersType,
   useMatricsInterviewers,
 } from '../Hook';
+import { Skeleton } from '@components/ui/skeleton';
 
 const LIMIT = 4;
 

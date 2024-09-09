@@ -37,7 +37,7 @@ export default async function handler(
       cand_application.candidates.last_name,
     );
 
-    let details: DatabaseFunctions['create_session_request']['Args'] = {
+    const details: DatabaseFunctions['create_session_request']['Args'] = {
       application: parsed.application_id,
       request: {
         assignee_id: organizer_id,

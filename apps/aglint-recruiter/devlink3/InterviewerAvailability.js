@@ -76,7 +76,7 @@ export function InterviewerAvailability({
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
             tag="div"
           >
-            <Text weight="regular" size="1" content="Interviewer" />
+            <Text weight="medium" size="1" content="Interviewer" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
@@ -86,7 +86,7 @@ export function InterviewerAvailability({
             )}
             tag="div"
           >
-            <Text content={textDay1} weight="regular" size="1" />
+            <Text content={textDay1} weight="medium" size="1" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
@@ -96,7 +96,7 @@ export function InterviewerAvailability({
             )}
             tag="div"
           >
-            <Text content={textDay2} weight="regular" size="1" />
+            <Text content={textDay2} weight="medium" size="1" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
@@ -106,7 +106,7 @@ export function InterviewerAvailability({
             )}
             tag="div"
           >
-            <Text content={textDay3} weight="regular" size="1" />
+            <Text content={textDay3} weight="medium" size="1" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
@@ -116,7 +116,7 @@ export function InterviewerAvailability({
             )}
             tag="div"
           >
-            <Text content={textDay4} weight="regular" size="1" />
+            <Text content={textDay4} weight="medium" size="1" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
@@ -126,7 +126,7 @@ export function InterviewerAvailability({
             )}
             tag="div"
           >
-            <Text content={textDay5} weight="regular" size="1" />
+            <Text content={textDay5} weight="medium" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

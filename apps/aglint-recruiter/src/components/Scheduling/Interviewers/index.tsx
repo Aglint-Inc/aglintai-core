@@ -7,14 +7,13 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { GlobalIcon } from '@devlink/GlobalIcon';
 import { AllInterviewers } from '@devlink2/AllInterviewers';
-import { AllInterviewersCard } from '@devlink2/AllInterviewersCard';
 import { EmptyState } from '@devlink2/EmptyState';
 import { PageLayout } from '@devlink2/PageLayout';
-import { TextWithBg } from '@devlink2/TextWithBg';
+
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -24,11 +23,13 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
 import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import Filters from './Filters';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Badge } from '@components/ui/badge';
 
 const InterviewTab = () => {
   const { recruiter } = useAuthDetails();
@@ -99,9 +100,9 @@ const InterviewTab = () => {
                             )
                             .map((member) => {
                               return (
-                                <Stack
+                                <Card
                                   key={member.user_id}
-                                  style={{ cursor: 'pointer' }}
+                                  className='cursor-pointer hover:shadow-md transition-shadow'
                                   onClick={() => {
                                     router.push(
                                       ROUTES['/user/profile/[user_id]']({
@@ -110,114 +111,120 @@ const InterviewTab = () => {
                                     );
                                   }}
                                 >
-                                  <AllInterviewersCard
-                                    textCompletedInterviews={
-                                      member.completed_meeting_count
-                                    }
-                                    textUpcomingInterviews={
-                                      member.upcoming_meeting_count
-                                    }
-                                    slotProfileImage={
-                                      <MuiAvatar
-                                        src={member.profile_image}
-                                        level={getFullName(
-                                          member.first_name,
-                                          member.last_name,
-                                        )}
-                                        variant='rounded-medium'
-                                      />
-                                    }
-                                    isCalenderNotConnected={
-                                      !member.is_calendar_connected
-                                    }
-                                    isConnectedCalenderVisible={
-                                      member.is_calendar_connected
-                                    }
-                                    slotInterviewModules={
-                                      <>
-                                        <ShowCode>
-                                          <ShowCode.When
-                                            isTrue={Boolean(
+                                  <CardHeader>
+                                    <div className='flex items-center space-x-4'>
+                                      <Avatar>
+                                        <AvatarImage
+                                          src={member.profile_image}
+                                          alt={getFullName(
+                                            member.first_name,
+                                            member.last_name,
+                                          )}
+                                        />
+                                        <AvatarFallback>
+                                          {(() => {
+                                            const getInitials = (
+                                              firstName: string,
+                                              lastName: string,
+                                            ) => {
+                                              return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+                                            };
+                                            return getInitials(
+                                              member.first_name,
+                                              member.last_name,
+                                            );
+                                          })()}
+                                        </AvatarFallback>
+                                      </Avatar>
+                                      <div>
+                                        <h3 className='font-semibold'>{`${member.first_name} ${
+                                          member.last_name || ''
+                                        }`}</h3>
+                                        <p className='text-sm text-gray-500'>
+                                          {member?.position}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </CardHeader>
+                                  <CardContent>
+                                    <div className='space-y-4'>
+                                      <div className='flex justify-between'>
+                                        <span>Completed Interviews</span>
+                                        <span>
+                                          {member.completed_meeting_count}
+                                        </span>
+                                      </div>
+                                      <div className='flex justify-between'>
+                                        <span>Upcoming Interviews</span>
+                                        <span>
+                                          {member.upcoming_meeting_count}
+                                        </span>
+                                      </div>
+                                      {!member.is_calendar_connected && (
+                                        <Badge
+                                          variant='outline'
+                                          className='bg-yellow-100 text-yellow-800'
+                                        >
+                                          Calendar Not Connected
+                                        </Badge>
+                                      )}
+                                      <div>
+                                        <h4 className='font-semibold mb-2'>
+                                          Interview Modules
+                                        </h4>
+                                        <div className='flex flex-wrap gap-2'>
+                                          {member.qualified_module_names
+                                            .filter(Boolean)
+                                            .slice(0, 2)
+                                            .map((item) => (
+                                              <Badge
+                                                key={item}
+                                                variant='secondary'
+                                              >
+                                                {item}
+                                              </Badge>
+                                            ))}
+                                          {member.qualified_module_names.filter(
+                                            Boolean,
+                                          ).length > 2 && (
+                                            <Badge variant='secondary'>{`+${
                                               member.qualified_module_names.filter(
-                                                (ele) => ele,
-                                              ).length,
-                                            )}
-                                          >
-                                            <>
-                                              {member.qualified_module_names
-                                                .filter((ele) => ele)
-                                                ?.slice(0, 2)
-                                                .map((item) => {
-                                                  if (item)
-                                                    return (
-                                                      <TextWithBg
-                                                        key={item}
-                                                        text={item}
-                                                      />
-                                                    );
-                                                  else return '--';
-                                                })}
-                                              {member.qualified_module_names.filter(
-                                                (ele) => ele,
-                                              )?.length > 2 && (
-                                                <TextWithBg
-                                                  text={`+${
-                                                    member.qualified_module_names.filter(
-                                                      (ele) => ele,
-                                                    ).length - 2
-                                                  }`}
-                                                />
-                                              )}
-                                            </>
-                                          </ShowCode.When>
-                                          <ShowCode.Else>--</ShowCode.Else>
-                                        </ShowCode>
-                                      </>
-                                    }
-                                    slotModulesTraining={
-                                      <>
-                                        <ShowCode>
-                                          <ShowCode.When
-                                            isTrue={Boolean(
+                                                Boolean,
+                                              ).length - 2
+                                            }`}</Badge>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <h4 className='font-semibold mb-2'>
+                                          Modules in Training
+                                        </h4>
+                                        <div className='flex flex-wrap gap-2'>
+                                          {member.training_module_names
+                                            .filter(Boolean)
+                                            .slice(0, 2)
+                                            .map((item) => (
+                                              <Badge
+                                                key={item}
+                                                variant='secondary'
+                                              >
+                                                {item}
+                                              </Badge>
+                                            ))}
+                                          {member.training_module_names.filter(
+                                            Boolean,
+                                          ).length > 2 && (
+                                            <Badge variant='secondary'>{`+${
                                               member.training_module_names.filter(
-                                                (ele) => ele,
-                                              ).length,
-                                            )}
-                                          >
-                                            {member.training_module_names
-                                              .filter((ele) => ele)
-                                              ?.slice(0, 2)
-                                              .map((item) => {
-                                                if (item)
-                                                  return (
-                                                    <TextWithBg
-                                                      key={item}
-                                                      text={item}
-                                                    />
-                                                  );
-                                              })}
-                                            {member.training_module_names.filter(
-                                              (ele) => ele,
-                                            )?.length > 2 && (
-                                              <TextWithBg
-                                                text={`+${
-                                                  member.training_module_names.filter(
-                                                    (ele) => ele,
-                                                  ).length - 2
-                                                }`}
-                                              />
-                                            )}
-                                          </ShowCode.When>
-                                          <ShowCode.Else>--</ShowCode.Else>
-                                        </ShowCode>
-                                      </>
-                                    }
-                                    textName={`${member.first_name} ${
-                                      member.last_name || ''
-                                    }`}
-                                    textRole={member?.position}
-                                  />
-                                </Stack>
+                                                Boolean,
+                                              ).length - 2
+                                            }`}</Badge>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
                               );
                             })
                         : ''
@@ -242,13 +249,7 @@ const InterviewTab = () => {
               ) : (
                 <EmptyState
                   textDescription={'No interviewers found'}
-                  slotIcons={
-                    <GlobalIcon
-                      iconName='person_search'
-                      color={'var(--neutral-2)'}
-                      size={9}
-                    />
-                  }
+                  slotIcons={<Search size={9} />}
                 />
               )}
             </Stack>

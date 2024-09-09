@@ -1,4 +1,3 @@
-import { Skeleton } from '@devlink2/Skeleton';
 import { ActivitiesCard } from '@devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@devlink3/SkeletonActivitiesCard';
 import dayjs from 'dayjs';
@@ -10,6 +9,7 @@ import { useApplication } from '@/context/ApplicationContext';
 
 import { EmptyState } from './Common/EmptyState';
 import { Loader } from './Common/Loader';
+import { Skeleton } from '@components/ui/skeleton';
 
 export const Activity = () => {
   const { push } = useRouter();
@@ -20,7 +20,9 @@ export const Activity = () => {
   if (status === 'pending')
     return (
       <Loader count={10}>
-        <SkeletonActivitiesCard slotSkeleton={<Skeleton />} />
+        <SkeletonActivitiesCard
+          slotSkeleton={<Skeleton className='h-10 w-full' />}
+        />
       </Loader>
     );
   if (status === 'error') return <>Something went wrong</>;

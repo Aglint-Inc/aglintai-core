@@ -1,19 +1,18 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { Text } from '@devlink/Text';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { Dialog, Stack, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
-import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import { supabase } from '@/utils/supabase/client';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
+import { Calendar } from 'lucide-react';
+import { optionsPause } from '../../const';
 import { usePauseHandler } from '../../queries/hooks';
 import {
   setIsPauseDialogOpen,
@@ -37,9 +36,6 @@ function PauseDialog() {
   const [isSaving, setIsSaving] = useState(false);
 
   const currentDate = useMemo(() => dayjs(), []);
-  const twoWeeks = useMemo(() => currentDate.add(2, 'week'), [currentDate]);
-  const oneMonth = useMemo(() => currentDate.add(1, 'month'), [currentDate]);
-  const threeMonth = useMemo(() => currentDate.add(3, 'month'), [currentDate]);
 
   const resetState = () => {
     setIsPauseDialogOpen(false);
@@ -81,241 +77,135 @@ function PauseDialog() {
     }
   };
 
+
+
   return (
-    <Dialog
-      maxWidth={'xl'}
+    <UIDialog
       open={isPauseDialogOpen}
       onClose={() => {
         resetState();
       }}
-    >
-      <DcPopup
-        onClickClosePopup={{
-          onClick: resetState,
-        }}
-        popupName={'Pause from scheduling'}
-        slotBody={
-          <Stack spacing={1}>
-            <GlobalBannerShort
-              color={'warning'}
-              iconName={'warning'}
-              textTitle={'Pausing the interviewer'}
-              textDescription={
-                'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
+      title='Pause from scheduling'
+      slotButtons={
+        <>
+          <UIButton variant='secondary' onClick={resetState}>
+            Cancel
+          </UIButton>
+          <UIButton
+            isLoading={isSaving}
+            variant='default'
+            onClick={async () => {
+              if (isSaving) return;
+              else {
+                setIsSaving(true);
+                await pauseHandler({
+                  module_id: selUser.module_id,
+                  user_id: selUser?.user_id || '',
+                  selectedType,
+                  pause_json: pause_json,
+                });
+                setIsSaving(false);
+                resetState();
               }
-              slotButtons={<></>}
-            />
-            {connectedJobs.length > 0 && (
-              <GlobalBannerShort
-                color={'warning'}
-                iconName={'warning'}
-                textTitle={`Here is a list of job's interview plan that will be impacted:`}
-                textDescription=''
-                slotButtons={
-                  <Stack display={'flex'} flexDirection={'column'}>
-                    <Text
-                      size={1}
-                      color={'neutral'}
-                      content={connectedJobs
-                        .flatMap((job) => job.job_title)
-                        .join(', ')}
-                    />
-                  </Stack>
-                }
-              />
-            )}
-            <Stack spacing={1}>
-              <Typography variant='body1' color={'#2F3941'}>
-                Pause For
-              </Typography>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                onClick={() => {
-                  setSelectedType('isManual');
-                  setPauseJson({
-                    ...pause_json,
-                    isManual: true,
-                  });
-                }}
-                sx={{ cursor: 'pointer' }}
-              >
-                <Checkbox checked={selectedType === 'isManual'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Indefinitely
-                </Typography>
-                <Typography variant='body1'>
-                  Until you manually resume
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setSelectedType('twoWeek');
-                  setPauseJson({
-                    isManual: false,
-                    start_date: new Date().toISOString(),
-                    end_date: twoWeeks.toDate().toISOString(),
-                  });
-                }}
-              >
-                <Checkbox checked={selectedType === 'twoWeek'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  2 Weeks
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {twoWeeks.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setSelectedType('oneMonth');
-                  setPauseJson({
-                    isManual: false,
-                    start_date: new Date().toISOString(),
-                    end_date: oneMonth.toDate().toISOString(),
-                  });
-                }}
-              >
-                <Checkbox checked={selectedType === 'oneMonth'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  1 Month
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {oneMonth.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setSelectedType('threeMonth');
-                  setPauseJson({
-                    isManual: false,
-                    start_date: new Date().toISOString(),
-                    end_date: threeMonth.toDate().toISOString(),
-                  });
-                }}
-              >
-                <Checkbox checked={selectedType === 'threeMonth'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  3 Months
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {threeMonth.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setSelectedType('custom');
-                  setPauseJson({
-                    isManual: false,
-                    start_date: new Date().toISOString(),
-                    end_date: '',
-                  });
-                }}
-              >
-                <Checkbox checked={selectedType === 'custom'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Custom date
-                </Typography>
-              </Stack>
-              {selectedType === 'custom' && (
-                <Stack direction={'row'} width={'100%'} spacing={1}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={dayjs(pause_json?.start_date)}
-                      onChange={(newValue) => {
-                        if (
-                          dayjs(newValue).toISOString() < pause_json?.end_date
-                        ) {
-                          setPauseJson({
-                            ...pause_json,
-                            start_date: dayjs(newValue).toISOString(),
-                          });
-                        } else {
-                          setPauseJson({
-                            ...pause_json,
-                            start_date: dayjs(newValue).toISOString(),
-                            end_date: null,
-                          });
-                        }
-                      }}
-                      minDate={currentDate}
-                      slots={{
-                        openPickerIcon: DateIcon,
-                      }}
-                    />
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={dayjs(pause_json?.end_date)}
-                      minDate={dayjs(pause_json?.start_date)}
-                      onChange={(newValue) => {
-                        setPauseJson({
-                          ...pause_json,
-                          end_date: newValue.toISOString(),
-                        });
-                      }}
-                      slots={{
-                        openPickerIcon: DateIcon,
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Stack>
+            }}
+          >
+            Pause
+          </UIButton>
+        </>
+      }
+    >
+      <div className='flex flex-col gap-2'>
+        <GlobalBannerShort
+          color={'warning'}
+          iconName={'warning'}
+          textTitle={'Pausing the interviewer'}
+          textDescription={
+            'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
+          }
+          slotButtons={<></>}
+        />
+        {connectedJobs.length > 0 && (
+          <GlobalBannerShort
+            color={'warning'}
+            iconName={'warning'}
+            textTitle={`Here is a list of job's interview plan that will be impacted:`}
+            textDescription=''
+            slotButtons={
+              <div className='flex flex-col'>
+                <UITypography type='small'>
+                  {connectedJobs.flatMap((job) => job.job_title).join(', ')}
+                </UITypography>
+              </div>
+            }
+          />
+        )}
+        <div className='space-y-1'>
+          <UITypography type='small' color='#2F3941'>
+            Pause For
+          </UITypography>
+          {optionsPause.map((option) => (
+            <div
+              key={option.type}
+              className='flex items-center space-x-1 cursor-pointer'
+              onClick={() => {
+                setSelectedType(option.type);
+                setPauseJson(option.pauseJson);
+              }}
+            >
+              <Checkbox checked={selectedType === option.type} />
+              <UITypography type='small' color='var(--neutral-12)'>
+                {option.label}
+              </UITypography>
+              {option.description && (
+                <UITypography type='small'>{option.description}</UITypography>
               )}
-            </Stack>
-          </Stack>
-        }
-        slotButtons={
-          <>
-            <ButtonSoft
-              size={2}
-              color={'neutral'}
-              textButton={'Cancel'}
-              onClickButton={{
-                onClick: resetState,
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              color={'accent'}
-              textButton={'Pause'}
-              isLoading={isSaving}
-              onClickButton={{
-                onClick: async () => {
-                  if (isSaving) return;
-                  else {
-                    setIsSaving(true);
-                    await pauseHandler({
-                      module_id: selUser.module_id,
-                      user_id: selUser?.user_id || '',
-                      selectedType,
-                      pause_json: pause_json,
+            </div>
+          ))}
+          {selectedType === 'custom' && (
+            <div className='flex space-x-1 w-full'>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={dayjs(pause_json?.start_date)}
+                  onChange={(newValue) => {
+                    if (dayjs(newValue).toISOString() < pause_json?.end_date) {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                      });
+                    } else {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                        end_date: null,
+                      });
+                    }
+                  }}
+                  minDate={currentDate}
+                  slots={{
+                    openPickerIcon: () => <Calendar size={20} />,
+                  }}
+                />
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={dayjs(pause_json?.end_date)}
+                  minDate={dayjs(pause_json?.start_date)}
+                  onChange={(newValue) => {
+                    setPauseJson({
+                      ...pause_json,
+                      end_date: newValue.toISOString(),
                     });
-                    resetState();
-                  }
-                },
-              }}
-            />
-          </>
-        }
-      />
-    </Dialog>
+                  }}
+                  slots={{
+                    openPickerIcon: () => <Calendar size={20} />,
+                  }}
+                />
+              </LocalizationProvider>
+            </div>
+          )}
+        </div>
+      </div>
+    </UIDialog>
   );
 }
 
