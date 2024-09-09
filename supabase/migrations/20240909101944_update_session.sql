@@ -2,7 +2,7 @@ drop function if exists "public"."update_interview_session"(session_id uuid, mod
 
 set check_function_bodies = off;
 
-CREATE OR REPLACE FUNCTION public.update_interview_session(session_id uuid, module_id uuid, session_duration integer, break_duration integer, interviewer_cnt integer, session_type session_type, location text, schedule_type interview_schedule_type, name text, interview_module_relation_entries jsonb, interview_plan_id uuid)
+CREATE OR REPLACE FUNCTION public.update_interview_session(session_id uuid, module_id uuid, session_duration integer, break_duration integer, interviewer_cnt integer, session_type session_type, location text, schedule_type interview_schedule_type, name text, interview_module_relation_entries jsonb, interview_plan_id uuid,session_order integer)
  RETURNS void
  LANGUAGE plpgsql
  SECURITY DEFINER
