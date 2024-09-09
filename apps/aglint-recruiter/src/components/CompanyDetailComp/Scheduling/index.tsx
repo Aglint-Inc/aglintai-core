@@ -388,7 +388,7 @@ export const TimezoneSelector = ({
         disableClearable
         options={timeZone}
         value={value}
-        onChange={(event, value) => {
+        onChange={(_event, value) => {
           if (value) {
             setValue(value);
           }

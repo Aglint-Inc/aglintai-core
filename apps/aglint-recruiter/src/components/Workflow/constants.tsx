@@ -9,7 +9,7 @@ import { type ReactNode } from 'react';
 import type { Workflow } from '@/types/workflow.types';
 import { SafeObject } from '@/utils/safeObject';
 
-export const DURATION_OPTIONS: { name: string; value: number }[] = [
+export const DURATION_OPTIONS: readonly { name: string; value: number }[] = [
   {
     name: 'No delay',
     value: 0,
@@ -32,7 +32,7 @@ export const DURATION_OPTIONS: { name: string; value: number }[] = [
   },
 ] as const;
 
-export const TRIGGER_PAYLOAD: {
+export const TRIGGER_PAYLOAD: readonly {
   trigger: Workflow['trigger'];
   phase: Workflow['phase'][];
 }[] = [

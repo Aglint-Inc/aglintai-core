@@ -13,10 +13,9 @@ import { type ChatType } from '../hooks/fetch';
 
 function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
-  const selPayload =
-    meta?.findLast(
-      (ele) => ele.function_name === 'fetch_candidate_declined_interviews',
-    )?.payload || [];
+  const selPayload = (meta?.findLast(
+    (ele) => ele.function_name === 'fetch_candidate_declined_interviews',
+  )?.payload ?? []) as any;
 
   const uiSchedules: ScheduleListProps[] = selPayload?.map((session) => {
     return {

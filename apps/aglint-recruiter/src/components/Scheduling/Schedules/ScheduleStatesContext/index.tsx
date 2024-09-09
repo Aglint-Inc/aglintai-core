@@ -35,7 +35,7 @@ export type ScheduleFilerType = {
   session_types: DatabaseEnums['session_type'][];
   searchText: string;
 };
-export var initialFilterState: ScheduleFilerType = {
+export const initialFilterState: ScheduleFilerType = {
   status: ['confirmed', 'completed'],
   interviewers: [],
   jobs: [],

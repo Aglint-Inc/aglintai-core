@@ -248,9 +248,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       else {
         const {
           // eslint-disable-next-line no-unused-vars
-          session_order,
           // eslint-disable-next-line no-unused-vars
-          interview_plan_id: plan_id,
           ...rest
         } = getSessionPayload(fields, order + 1, interview_plan_id);
         handleEditSession({ ...rest, session_id: id });
@@ -403,9 +401,6 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       else {
         const {
           // eslint-disable-next-line no-unused-vars
-          session_order,
-          // eslint-disable-next-line no-unused-vars
-          interview_plan_id: plan_id,
           ...rest
         } = getDebriefSessionPayload(fields, order + 1, interview_plan_id);
         handleEditDebriefSession({ ...rest, session_id: id });

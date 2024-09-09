@@ -97,7 +97,7 @@ const useInterviewFeedback = (interview_id: string) => {
     mutationFn: (
       feedback: Parameters<typeof saveInterviewFeedback>[0]['feedback'],
     ) => saveInterviewFeedback({ id: interview_id, feedback }),
-    onSuccess(data, feedback) {
+    onSuccess(_data, feedback) {
       queryClient.setQueryData(
         [`interview_feedback_${interview_id}`],
         (prevData: Awaited<ReturnType<typeof getInterviewDetails>>) => {

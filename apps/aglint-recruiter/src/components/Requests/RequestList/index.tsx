@@ -2,6 +2,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { Skeleton } from '@components/ui/skeleton';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion';
+import { Button } from '@components/ui/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { Badge } from '@components/ui/badge';
 
 import { useRequests } from '@/context/RequestsContext';
 
@@ -12,7 +23,6 @@ import { Progress } from '@components/ui/progress';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Columns, LayoutList } from 'lucide-react';
-import { useState } from 'react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
@@ -21,6 +31,7 @@ import RequestListFilter from '../_common/Components/RequestListFilter';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const {
     requests: { data, isFetched },
     filters,
@@ -66,28 +77,138 @@ function RequestList() {
 
     const renderScrollableSection = (section) => (
       <div key={section.sectionName}>
-        <div>{capitalizeFirstLetter(section.sectionName)}</div>
+        {isFetched ? (
+          <div className='text-md font-semibold mb-2'>
+            {capitalizeFirstLetter(section.sectionName)}
+          </div>
+        ) : (
+          <Skeleton className='h-6 w-40 mb-2' />
+        )}
         <ScrollArea className='w-full whitespace-nowrap rounded-md'>
           <div className='flex'>
-            {section.requests.map((props, i) => (
-              <div
-                key={props.id ?? i}
-                className='flex-shrink-0 max-w-[600px] mr-4'
-              >
-                <RequestProvider request_id={props.id}>
-                  <RequestCard {...{ ...props, index: i, isExpanded: false }} />
-                </RequestProvider>
-              </div>
-            ))}
+            {isFetched ? (
+              section.requests.length > 0 ? (
+                section.requests.map((props, i) => (
+                  <div
+                    key={props.id ?? i}
+                    className='flex-shrink-0 max-w-[600px] mr-4'
+                  >
+                    <RequestProvider request_id={props.id}>
+                      <RequestCard
+                        {...{ ...props, index: i, isExpanded: false }}
+                      />
+                    </RequestProvider>
+                  </div>
+                ))
+              ) : (
+                <div className='w-full text-center text-muted-foreground'>
+                  No requests in this section
+                </div>
+              )
+            ) : (
+              <>
+                <Skeleton className='h-[200px] w-[300px] mr-4' />
+                <Skeleton className='h-[200px] w-[300px] mr-4' />
+                <Skeleton className='h-[200px] w-[300px] mr-4' />
+              </>
+            )}
           </div>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
       </div>
     );
 
+    const renderListSection = (sectionName: string, requests: any[]) => {
+      const isExpanded = expandedSections.includes(sectionName);
+      const visibleRequests = isExpanded ? requests : requests.slice(0, 5);
+
+      return (
+        <Accordion
+          type='single'
+          collapsible
+          className='w-full'
+          value={
+            requests.length > 0 ? (isExpanded ? sectionName : '') : undefined
+          }
+          onValueChange={(value) => {
+            if (requests.length === 0) return;
+            if (value === sectionName) {
+              setExpandedSections([...expandedSections, sectionName]);
+            } else {
+              setExpandedSections(
+                expandedSections.filter((s) => s !== sectionName),
+              );
+            }
+          }}
+        >
+          <AccordionItem value={sectionName} className='border rounded-lg px-4'>
+            <AccordionTrigger
+              className='text-md font-semibold'
+              disabled={requests.length === 0}
+            >
+              <div className='flex items-center'>
+                {capitalizeFirstLetter(sectionName)}
+                <Badge variant='secondary' className='ml-2'>
+                  {requests.length}
+                </Badge>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              {requests.length > 0 ? (
+                <div className='flex flex-col gap-4'>
+                  {visibleRequests.map((props, i) => (
+                    <RequestProvider key={props.id ?? i} request_id={props.id}>
+                      <RequestCard
+                        {...{ ...props, index: i, isExpanded: false }}
+                      />
+                    </RequestProvider>
+                  ))}
+                  {requests.length > 5 && (
+                    <Button
+                      variant='outline'
+                      onClick={() => {
+                        if (isExpanded) {
+                          setExpandedSections(
+                            expandedSections.filter((s) => s !== sectionName),
+                          );
+                        } else {
+                          setExpandedSections([
+                            ...expandedSections,
+                            sectionName,
+                          ]);
+                        }
+                      }}
+                    >
+                      {isExpanded ? (
+                        <>
+                          <ChevronUp className='mr-2 h-4 w-4' />
+                          Show Less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className='mr-2 h-4 w-4' />
+                          Show More ({requests.length - 5} more)
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className='text-center text-muted-foreground p-4 border rounded-md'>
+                  No requests in this section
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      );
+    };
+
     return (
       <div className='space-y-4'>
-        {urgentRequests && renderScrollableSection(urgentRequests)}
+        {urgentRequests &&
+          urgentRequests.requests.length > 0 &&
+          renderScrollableSection(urgentRequests)}
 
         <div className={`${view === 'kanban' ? 'flex gap-4' : 'space-y-4'}`}>
           {otherSections.map(({ requests, sectionName }) => (
@@ -95,21 +216,51 @@ function RequestList() {
               key={sectionName}
               className={view === 'kanban' ? 'flex-1' : ''}
             >
-              <div>{capitalizeFirstLetter(sectionName)}</div>
-              <div className={view === 'kanban' ? 'space-y-4' : ''}>
-                {requests.map((props, i) => (
-                  <RequestProvider key={props.id ?? i} request_id={props.id}>
-                    <RequestCard
-                      {...{ ...props, index: i, isExpanded: false }}
-                    />
-                  </RequestProvider>
-                ))}
-              </div>
+              {isFetched ? (
+                view === 'list' ? (
+                  renderListSection(sectionName, requests)
+                ) : (
+                  <>
+                    <div className='text-md font-semibold mb-2'>
+                      {capitalizeFirstLetter(sectionName)}
+                      <Badge variant='secondary' className='ml-2'>
+                        {requests.length}
+                      </Badge>
+                    </div>
+                    {requests.length > 0 ? (
+                      <div className='flex flex-col gap-4'>
+                        {requests.map((props, i) => (
+                          <RequestProvider
+                            key={props.id ?? i}
+                            request_id={props.id}
+                          >
+                            <RequestCard
+                              {...{ ...props, index: i, isExpanded: false }}
+                            />
+                          </RequestProvider>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className='text-center text-muted-foreground p-4 border rounded-md'>
+                        No requests in this section
+                      </div>
+                    )}
+                  </>
+                )
+              ) : (
+                <>
+                  <Skeleton className='h-6 w-40 mb-2' />
+                  <Skeleton className='h-[200px] w-full mb-4' />
+                  <Skeleton className='h-[200px] w-full mb-4' />
+                </>
+              )}
             </div>
           ))}
         </div>
 
-        {completedRequests && renderScrollableSection(completedRequests)}
+        {completedRequests &&
+          completedRequests.requests.length > 0 &&
+          renderScrollableSection(completedRequests)}
       </div>
     );
   };

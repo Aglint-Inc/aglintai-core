@@ -29,7 +29,7 @@ const createApplicationSlice: StateCreator<
   [],
   [],
   ApplicationCustomSlice
-> = (set, get) => ({
+> = (_set, get) => ({
   resetAll: () => {
     get().resetDrawer();
     get().resetPreview();

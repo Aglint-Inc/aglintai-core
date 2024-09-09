@@ -384,7 +384,7 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
         ? 'educations'
         : 'skills';
   const handleDelete = (index: number) => {
-    const newSection = jd_json[section].filter((e, i) => i !== index);
+    const newSection = jd_json[section].filter((_e, i) => i !== index);
     handleJobUpdate({
       draft: { ...draft, jd_json: { ...jd_json, [section]: newSection } },
     });

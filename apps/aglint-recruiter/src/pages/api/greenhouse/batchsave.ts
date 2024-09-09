@@ -14,7 +14,7 @@ if (!baseUrl) {
 }
 const url = `${baseUrl}/api/greenhouse/saveResume`;
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
     const applications = (
       await supabaseAdmin

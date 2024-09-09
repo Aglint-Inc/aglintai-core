@@ -315,7 +315,8 @@ export function useCurrJobTemps({ setSaving }) {
       setSaving('saving');
       await mutateAsync(updated_val);
       setSaving('saved');
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
       toast.error('Something went wrong!');
     }
   }
