@@ -43,7 +43,7 @@ const Requests = () => {
   }, [localStorage.getItem('openChat')]);
 
   return (
-    <div className='relative min-h-screen flex'>
+    <div className='relative min-h-screen flex bg-gray-50'>
       {/* Dock to Right Button */}
       <div className='fixed top-4 left-16 z-50'>
         <Button
@@ -56,9 +56,9 @@ const Requests = () => {
           }}
         >
           {openChat ? (
-            <PanelLeftClose className='h-6 w-6' />
+            <PanelLeftClose className='h-6 w-6 text-gray-500' />
           ) : (
-            <PanelLeftOpen className='h-6 w-6' />
+            <PanelLeftOpen className='h-6 w-6 text-gray-500' />
           )}
         </Button>
       </div>
