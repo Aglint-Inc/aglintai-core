@@ -1,15 +1,24 @@
-import { Badge } from '@components/ui/badge';
-import { cn } from '@lib/utils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { Notebook, Calendar, Briefcase, User, UserCircle } from 'lucide-react';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { Badge } from '@components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Label } from '@components/ui/label';
+import { cn } from '@lib/utils';
+import {
+  Book,
+  Briefcase,
+  Calendar,
+  Notebook,
+  User,
+  UserCircle,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
 import { getStatusColor } from '../../utils/getStatusColor';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import SessionsCards from './Components/SessionsCards';
 import MenuOptions from './MenuOptions';
-import { Label } from '@components/ui/label';
 
 type RequestProps = RequestType & {
   isExpanded?: boolean;
@@ -64,6 +73,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                   value={request.applications.public_jobs.job_title}
                 />
               </div>
+
               <div className='space-y-3'>
                 <InfoItem
                   icon={<Calendar className='w-4 h-4' />}
@@ -96,6 +106,26 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                       </p>
                     </>
                   }
+                />
+              </div>
+              <div className='space-y-3'>
+                <InfoItem
+                  icon={<Users className='w-4 h-4' />}
+                  label='Sessions'
+                  value={
+                    <SessionsCards // this component we have to migrate to Shadcn
+                      application_id={request.application_id}
+                      job_id={request.applications.job_id}
+                      sessions={request.request_relation.map(
+                        (ele) => ele.interview_session,
+                      )}
+                    />
+                  }
+                />
+                <InfoItem
+                  icon={<Book className='w-4 h-4' />}
+                  label='Request Type'
+                  value={capitalizeFirstLetter(request.type)}
                 />
               </div>
             </div>

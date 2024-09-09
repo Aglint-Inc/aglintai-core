@@ -6,7 +6,7 @@ import { Button } from '@components/ui/button';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import type { Request as RequestType } from '@/queries/requests/types';
-import SessionsCardAndActions from '../Components/SessionsCardAndActions';
+import SessionsCardAndActions from '../Components/SessionsCards';
 import CandidateDetails from '../Components/CandidateDetails';
 import RequestProgress from '../../RequestProgress';
 

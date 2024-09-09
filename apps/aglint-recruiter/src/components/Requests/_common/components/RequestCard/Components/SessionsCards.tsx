@@ -1,18 +1,13 @@
 import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { GlobalBadge } from '@devlink2/GlobalBadge';
 import { Stack } from '@mui/material';
-import { type PropsWithChildren } from 'react';
 
-import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-function SessionsCardAndActions({
-  request,
+function SessionsCards({
   sessions,
   job_id,
   application_id,
 }: {
-  request: PropsWithChildren<RequestType>;
   sessions: {
     id: string;
     name: string;
@@ -45,14 +40,9 @@ function SessionsCardAndActions({
             );
           })}
         </Stack>
-        <GlobalBadge
-          color={'accent'}
-          variant={'soft'}
-          textBadge={capitalizeFirstLetter(request.type)}
-        />
       </Stack>
     </>
   );
 }
 
-export default SessionsCardAndActions;
+export default SessionsCards;
