@@ -10,8 +10,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import dayjs from '@/utils/dayjs';
 
-import { useRequestNotes } from './hooks';
-import { upsertRequestNotes } from './utils';
+import { useRequestNotes } from '../../_common/hooks';
+import { updateRequestNotes } from '../../_common/functions/updateRequestNotes';
 
 function RequestNotes() {
   const { query } = useRouter();
@@ -35,7 +35,7 @@ function RequestNotes() {
 
   const debouncedUpsertRequestNotes = useCallback(
     debounce(async (noteValue, request_id) => {
-      await upsertRequestNotes({
+      await updateRequestNotes({
         id: request_id as string,
         note: noteValue,
         request_id: query?.id as string,

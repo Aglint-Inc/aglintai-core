@@ -6,7 +6,7 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiTargetToEvents } from '@/components/Requests/RequestSections/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
 import { changeInterviewer } from '@/services/api-schedulings/interviewer-decline/change-interviewer';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
