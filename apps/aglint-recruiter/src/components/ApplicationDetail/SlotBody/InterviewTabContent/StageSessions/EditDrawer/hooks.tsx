@@ -90,6 +90,8 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           session_id: editSession.interview_session.id,
           session_type: editSession.interview_session.session_type,
           interview_module_relation_entries: interview_module_relation_entries,
+          interview_plan_id: editSession.interview_session.interview_plan_id,
+          session_order: editSession.interview_session.session_order,
         };
 
         await editInterviewSession(editInterviewSessionParams);
