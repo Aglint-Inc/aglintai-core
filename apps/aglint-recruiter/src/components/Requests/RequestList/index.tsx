@@ -114,9 +114,7 @@ function RequestList() {
                     className='flex-shrink-0 max-w-[600px] mr-4'
                   >
                     <RequestProvider request_id={props.id}>
-                      <RequestCard
-                        {...{ ...props, index: i, isExpanded: false }}
-                      />
+                      <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
                   </div>
                 ))
@@ -193,9 +191,7 @@ function RequestList() {
                 <div className='flex flex-col gap-4'>
                   {requests.slice(0, 5).map((props, i) => (
                     <RequestProvider key={props.id ?? i} request_id={props.id}>
-                      <RequestCard
-                        {...{ ...props, index: i, isExpanded: false }}
-                      />
+                      <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
                   ))}
                   {requests.length > 5 && (
@@ -210,7 +206,6 @@ function RequestList() {
                               <RequestCard
                                 {...{
                                   ...props,
-                                  index: i + 5,
                                   isExpanded: false,
                                 }}
                               />
@@ -277,9 +272,7 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard
-                              {...{ ...props, index: i, isExpanded: false }}
-                            />
+                            <RequestCard {...{ ...props, isExpanded: false }} />
                           </RequestProvider>
                         ))}
                       </div>
