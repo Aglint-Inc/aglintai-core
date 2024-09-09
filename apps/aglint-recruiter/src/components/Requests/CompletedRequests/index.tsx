@@ -12,6 +12,7 @@ import {
 } from '@components/ui/breadcrumb';
 import dayjs from '@/utils/dayjs';
 import { RequestCard } from '../_common/Components/RequestCard';
+import { Request } from '@/queries/requests/types';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
@@ -48,15 +49,18 @@ function CompletedRequests() {
           <h2 className='text-2xl font-bold mb-6'>
             {capitalizeFirstLetter('all_completed_requests')}
           </h2>
-          {Object.entries(groupedRequests).map(([date, requests]: any) => (
+          {Object.entries(groupedRequests).map(([date, requests]) => (
             <div key={date} className='p-6'>
               <h3 className='text-xl font-semibold mb-4'>
                 {dayjs(date).fromNow()}
               </h3>
               <div className='flex flex-col gap-4'>
-                {requests.map((props, i) => (
-                  <RequestProvider key={props.id ?? i} request_id={props.id}>
-                    <RequestCard {...props} />
+                {requests.map((request, i) => (
+                  <RequestProvider
+                    key={request.id ?? i}
+                    request_id={request.id}
+                  >
+                    <RequestCard {...request} />
                   </RequestProvider>
                 ))}
               </div>
@@ -68,7 +72,10 @@ function CompletedRequests() {
   );
 }
 
-function groupRequestsByDate(requests) {
+export interface GroupedRequests {
+  [date: string]: Request[];
+}
+function groupRequestsByDate(requests: Request[]): GroupedRequests {
   return requests.reduce((acc, request) => {
     const date = new Date(request.completed_at).toISOString();
     if (!acc[date]) {
@@ -76,7 +83,7 @@ function groupRequestsByDate(requests) {
     }
     acc[date].push(request);
     return acc;
-  }, {});
+  }, {} as GroupedRequests);
 }
 
 export default CompletedRequests;
