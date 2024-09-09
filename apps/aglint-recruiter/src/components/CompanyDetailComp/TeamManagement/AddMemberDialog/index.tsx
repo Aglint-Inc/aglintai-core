@@ -22,8 +22,8 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import timeZone from '@/utils/timeZone';
-
 import { useRolesOptions } from '../hooks';
+
 import { inviteUserApi, reinviteUser } from '../utils';
 import { Button } from '@components/ui/button';
 

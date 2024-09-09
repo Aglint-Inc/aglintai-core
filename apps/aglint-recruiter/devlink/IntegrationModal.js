@@ -30,7 +30,7 @@ export function IntegrationModal({
               width="auto"
               height="auto"
               alt=""
-              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653a4250bbd9309fc9bb0b62_lever_rgb_logo_standard%201.svg"
+              src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/653a4250bbd9309fc9bb0b62_lever_rgb_logo_standard%201.svg"
             />
           )}
         </_Builtin.Block>

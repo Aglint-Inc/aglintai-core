@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import { WorkflowItem } from "./WorkflowItem";
 import { WorkflowConnector } from "./WorkflowConnector";
 import { WorkflowAdd } from "./WorkflowAdd";
+import { WorkflowAddAction } from "./WorkflowAddAction";
 import { Text } from "./Text";
 import { WorkflowConnectedCard } from "./WorkflowConnectedCard";
 import * as _utils from "./utils";
@@ -29,6 +30,7 @@ export function WorkflowDetail({
               <WorkflowItem />
               <WorkflowConnector />
               <WorkflowAdd />
+              <WorkflowAddAction />
             </>
           )}
         </_Builtin.Block>

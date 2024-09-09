@@ -55,7 +55,7 @@ export function EmailPreviewOnScheduling({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/668532b98e9b4ae1b293a8bc_email%20template.svg"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/668532b98e9b4ae1b293a8bc_email%20template.svg"
               />
             )}
           </_Builtin.Block>

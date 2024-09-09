@@ -1,4 +1,4 @@
-import { Skeleton } from '@devlink2/Skeleton';
+import { Skeleton } from '@components/ui/skeleton';
 import { Stack } from '@mui/material';
 import React from 'react';
 

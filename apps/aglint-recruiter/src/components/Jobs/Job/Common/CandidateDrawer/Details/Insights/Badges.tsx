@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Badge as BadgeDev } from '@devlink/Badge';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
@@ -10,6 +10,7 @@ import type { ApplicationsParams } from '@/context/ApplicationsContext/hooks';
 import { BADGE_CONSTANTS } from '@/queries/job-applications';
 
 import { Loader } from '../../Common/Loader';
+import { Skeleton } from '@components/ui/skeleton';
 
 export const Badges = () => {
   return (
@@ -27,7 +28,7 @@ const Content = () => {
     return (
       <Loader count={10}>
         <Stack style={{ position: 'relative', width: '70px', height: '20px' }}>
-          <Skeleton />
+          <Skeleton className='h-10 w-full' />
         </Stack>
       </Loader>
     );

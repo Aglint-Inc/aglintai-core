@@ -29,7 +29,7 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
-  height: calc(100vh - 85px);
+  height: calc(100vh - 90px);
 }
 
 .schedule_reasons_subwrap {

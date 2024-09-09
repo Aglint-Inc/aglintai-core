@@ -21,7 +21,7 @@ import { Text } from '@devlink/Text';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
 import { PageLayout } from '@devlink2/PageLayout';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { BannerAlert } from '@devlink3/BannerAlert';
 import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
@@ -55,6 +55,7 @@ import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';
 import { Button } from '@components/ui/button';
 import { Delete, RefreshCcw } from 'lucide-react';
+import { Skeleton } from '@components/ui/skeleton';
 
 type Sections = 'experience' | 'education' | 'skills';
 

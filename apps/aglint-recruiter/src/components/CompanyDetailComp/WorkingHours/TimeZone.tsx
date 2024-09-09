@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Clock, Edit, Loader2 } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
 
@@ -32,19 +32,44 @@ const TimeZone: FC<TimeZoneProps> = ({
   isUpdating,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
     await handleUpdate({ timeZone: selectedTimeZone });
     setIsOpen(false);
   };
+
+  const handleTogglePopover = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 300); // Delay of 300ms before closing the popover
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-2xl font-bold'>Time Zone</CardTitle>
+      <CardHeader className='relative'>
+        <CardTitle className='text-lg font-semibold'>Time Zone</CardTitle>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
-            <Button variant='outline'>
-              <Edit className='h-4 w-4' />
+            <Button
+              variant='outline'
+              size='sm'
+              className='absolute top-4 right-4'
+              onClick={handleTogglePopover}
+            >
+              <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
           </PopoverTrigger>
@@ -67,11 +92,13 @@ const TimeZone: FC<TimeZoneProps> = ({
         </Popover>
       </CardHeader>
       <CardContent>
-        <div className='flex items-center space-x-4'>
-          <Clock className='h-6 w-6 text-muted-foreground' />
+        <div className='flex items-center space-x-2'>
           <div>
             <p className='text-sm font-medium'>Current Time Zone</p>
-            <p className='text-2xl font-bold'>{timeZone}</p>
+            <div className='flex items-center space-x-2'>
+              <Clock className='h-4 w-4 text-muted-foreground' />
+              <p>{timeZone}</p>
+            </div>
           </div>
         </div>
       </CardContent>

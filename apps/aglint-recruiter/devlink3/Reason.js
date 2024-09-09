@@ -40,11 +40,12 @@ export function Reason({
       <_Builtin.Block className={_utils.cx(_styles, "lot_graph")} tag="div">
         {slotReasonGraph ?? (
           <_Builtin.Image
+            className={_utils.cx(_styles, "image")}
             loading="lazy"
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/6660397895ca29e654ada47b_Frame.png"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/6660397895ca29e654ada47b_Frame.png"
           />
         )}
       </_Builtin.Block>

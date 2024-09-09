@@ -15,7 +15,7 @@ export function DummyChatThree({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -96,7 +96,7 @@ export function DummyChatThree({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block
@@ -229,7 +229,7 @@ export function DummyChatThree({ as: _Component = _Builtin.Block }) {
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e872437c967c6b7370_user.png"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e872437c967c6b7370_user.png"
                 />
                 <_Builtin.Block tag="div">{"Michael Harris"}</_Builtin.Block>
                 <_Builtin.HtmlEmbed
@@ -264,7 +264,7 @@ export function DummyChatThree({ as: _Component = _Builtin.Block }) {
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9fcc50326d2974c84_user3.png"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e9fcc50326d2974c84_user3.png"
                 />
                 <_Builtin.Block tag="div">{"Lisa Clark"}</_Builtin.Block>
                 <_Builtin.HtmlEmbed
@@ -299,7 +299,7 @@ export function DummyChatThree({ as: _Component = _Builtin.Block }) {
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
                 />
                 <_Builtin.Block tag="div">{"Kevin Lewis"}</_Builtin.Block>
                 <_Builtin.HtmlEmbed
@@ -327,7 +327,7 @@ export function DummyChatThree({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
           />
         </_Builtin.Block>
         <_Builtin.Block

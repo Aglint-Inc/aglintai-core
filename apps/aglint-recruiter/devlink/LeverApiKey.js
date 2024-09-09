@@ -117,7 +117,7 @@ export function LeverApiKey({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653a4455cb69ad97c5d24492_Frame%201716.svg"
+            src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/653a4455cb69ad97c5d24492_Frame%201716.svg"
           />
         </_Builtin.Block>
         <_Builtin.Block tag="div">

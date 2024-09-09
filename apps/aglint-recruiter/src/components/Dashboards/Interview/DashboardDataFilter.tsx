@@ -239,7 +239,6 @@ export default function Component() {
                     mode='range'
                     selected={dateRange}
                     // onSelect={setDateRange}
-                    initialFocus
                   />
                 )}
               </div>

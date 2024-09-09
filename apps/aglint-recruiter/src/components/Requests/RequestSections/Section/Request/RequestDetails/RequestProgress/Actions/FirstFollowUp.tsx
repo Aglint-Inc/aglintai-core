@@ -1,14 +1,13 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { TextWithIcon } from '@devlink2/TextWithIcon';
-import { Stack } from '@mui/material';
+
 import axios from 'axios';
 import { useState } from 'react';
 
-import { ShowCode } from '@/components/Common/ShowCode';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
+import { Button } from '@components/ui/button';
+import { CheckIcon } from 'lucide-react';
 
 const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
   const [isLoading, setLoading] = useState(false);
@@ -49,35 +48,27 @@ const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
     copy = `Follow Up Sent at ${dayjsLocal(scheduledDate).format(DAYJS_FORMATS.DATE_TIME_FORMAT)}`;
   }
   return (
-    <Stack gap={1}>
-      <TextWithIcon
-        iconName={'check'}
-        textContent={copy}
-        fontSize={1}
-        color={'grey'}
-      />
-      <ShowCode.When isTrue={!isTimePast}>
-        <Stack
-          width={'100%'}
-          direction={'row'}
-          justifyContent={'start'}
-          gap={1}
-        >
-          <ButtonSoft size={1} color={'accent'} textButton={'Edit Email'} />
-
-          <ButtonSoft
-            size={1}
-            color={'accent'}
-            onClickButton={{
-              onClick: () => {
-                handleSubmit();
-              },
-            }}
-            textButton={isLoading ? <>loading...</> : <>Send now</>}
-          />
-        </Stack>
-      </ShowCode.When>
-    </Stack>
+    <div className='flex flex-col gap-4'>
+      <div className='flex items-center text-gray-500'>
+        <CheckIcon className='w-4 h-4 mr-2' />
+        <span className='text-sm'>{copy}</span>
+      </div>
+      {!isTimePast && (
+        <div className='flex gap-2'>
+          <Button variant='outline' size='sm'>
+            Edit Email
+          </Button>
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading...' : 'Send now'}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 

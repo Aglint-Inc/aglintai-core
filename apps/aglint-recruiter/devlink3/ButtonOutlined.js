@@ -100,7 +100,7 @@ export function ButtonOutlined({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/665d6d6ac63854bb312ed8b2_kOnzy.gif"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/665d6d6ac63854bb312ed8b2_kOnzy.gif"
               />
             )}
           </_Builtin.Block>

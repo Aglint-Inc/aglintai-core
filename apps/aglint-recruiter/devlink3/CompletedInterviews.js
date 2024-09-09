@@ -61,7 +61,7 @@ export function CompletedInterviews({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/666047b45fd85df292036c8c_Chart.png"
+            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/666047b45fd85df292036c8c_Chart.png"
           />
         )}
       </_Builtin.Block>

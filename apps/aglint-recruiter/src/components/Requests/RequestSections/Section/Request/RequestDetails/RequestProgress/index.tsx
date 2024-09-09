@@ -1,5 +1,5 @@
 import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { TextWithIconSkeleton } from '@devlink2/TextWithIconSkeleton';
+
 import { Stack } from '@mui/material';
 import React, { useEffect, useMemo } from 'react';
 
@@ -17,6 +17,7 @@ import ScheduleProgress from './ScheduleProgress';
 import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
 import { RequestProgressMapType, TriggerActionMapType } from './types';
+import { Skeleton } from '@components/ui/skeleton';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();
@@ -143,9 +144,9 @@ export default RequestProgress;
 export function RequestProgressSkeleton() {
   return (
     <Stack gap={1}>
-      <TextWithIconSkeleton />
-      <TextWithIconSkeleton />
-      <TextWithIconSkeleton />
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
     </Stack>
   );
 }

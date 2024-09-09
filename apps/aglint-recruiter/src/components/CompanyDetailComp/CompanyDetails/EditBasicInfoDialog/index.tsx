@@ -100,7 +100,7 @@ const EditBasicInfoDialog = ({
 
   return (
     <Dialog open={editDialog} onOpenChange={setEditDialog}>
-      <DialogContent className='w-full max-w-4xl h-[90vh] overflow-y-auto'>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Basic Info</DialogTitle>
         </DialogHeader>
@@ -162,7 +162,7 @@ const EditBasicInfoDialog = ({
               )}
             </div>
 
-            <div className='space-y-4 w-full'>
+            <div className='grid grid-cols-2 gap-4 w-full'>
               <div className='space-y-2'>
                 <Label htmlFor='company-name'>Company Name</Label>
                 <Input
@@ -231,11 +231,13 @@ const EditBasicInfoDialog = ({
                   disabled={isFormDisabled}
                 />
               </div>
-              <SocialComp
-                disabled={isFormDisabled}
-                handleChange={handleChange}
-                recruiterLocal={recruiterLocal}
-              />
+              <div className='col-span-2'>
+                <SocialComp
+                  disabled={isFormDisabled}
+                  handleChange={handleChange}
+                  recruiterLocal={recruiterLocal}
+                />
+              </div>
             </div>
           </div>
         </DialogTitle>

@@ -48,7 +48,7 @@ export function MemberDetail({
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+                  src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
                 />
               )}
             </_Builtin.Block>

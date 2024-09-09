@@ -1,5 +1,5 @@
 import { EmptyState } from '@devlink2/EmptyState';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { Activities } from '@devlink3/Activities';
 import { ActivitiesCard } from '@devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@devlink3/SkeletonActivitiesCard';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { type useAllActivities } from '@/queries/activities';
 
 import SlotContent from './SlotWidgets';
+import { Skeleton } from '@components/ui/skeleton';
 
 function RightPanel({
   allActivities,

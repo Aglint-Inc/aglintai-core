@@ -6,7 +6,6 @@ import Scheduling from './SchedulingTools';
 import RequestNew from './RequestNewPopUp';
 import { useState } from 'react';
 import { Button } from '@components/ui/button';
-import ErrorBoundary from '@/components/ErrorBoundary';
 
 function Integrations() {
   const { data: allIntegrations, refetch } = useAllIntegrations();
@@ -18,13 +17,13 @@ function Integrations() {
         <header className='mb-8'>
           <div className='flex justify-between items-center'>
             <div>
-              <h1 className='text-3xl font-bold mb-2'>Integrations</h1>
+              <h1 className='text-lg font-semibold'>Integrations</h1>
               <p className='text-gray-600 mb-4'>
                 Connect your favorite tools to streamline your recruitment
                 process.
               </p>
             </div>
-            <Button onClick={() => setIsRequestNewOpen(true)}>
+            <Button size='sm' onClick={() => setIsRequestNewOpen(true)}>
               Request New
             </Button>
             <RequestNew
@@ -35,43 +34,35 @@ function Integrations() {
         </header>
 
         <section>
-          <h2 className='text-xl font-semibold mb-4'>ATS</h2>
+          <h2 className='text-md font-semibold'>ATS</h2>
           <p className='text-gray-600 mb-4'>
             Easily manage job postings and candidate information by connecting
             your preferred ATS.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ErrorBoundary>
-              <ATSTools integrations={allIntegrations} refetch={refetch} />
-            </ErrorBoundary>
+            <ATSTools integrations={allIntegrations} refetch={refetch} />
           </div>
         </section>
 
         <section>
-          <h2 className='text-xl font-semibold mb-4'>Scheduling Tools</h2>
+          <h2 className='text-md font-semibold'>Scheduling Tools</h2>
           <p className='text-gray-600 mb-4'>
             Connect your calendar and video conferencing tools to simplify
             interview scheduling.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ErrorBoundary>
-              <Scheduling allIntegrations={allIntegrations} />
-            </ErrorBoundary>
+            <Scheduling allIntegrations={allIntegrations} />
           </div>
         </section>
 
         <section>
-          <h2 className='text-xl font-semibold mb-4'>
-            Communication Platforms
-          </h2>
+          <h2 className='text-md font-semibold'>Communication Platforms</h2>
           <p className='text-gray-600 mb-4'>
             Connect popular communication tools to enhance your team&apos;s
             coordination.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ErrorBoundary>
-              <MessagingTools />
-            </ErrorBoundary>
+            <MessagingTools />
           </div>
         </section>
       </div>

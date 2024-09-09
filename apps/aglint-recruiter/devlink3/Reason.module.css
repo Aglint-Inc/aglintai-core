@@ -1,6 +1,6 @@
 .reason-outer-wrap {
   display: flex;
-  padding: 0px;
+  height: 355px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 16px;
@@ -20,6 +20,10 @@
 
 .lot_graph {
   padding: var(--space-4);
+}
+
+.image {
+  width: 300px;
 }
 
 #w-node-c05658ea-f227-231f-ec49-03a32c86500a-2c86500a {

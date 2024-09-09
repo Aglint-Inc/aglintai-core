@@ -1,5 +1,3 @@
-import { SchedulingDashboard as SchedulingDashboardDev } from '@devlink3/SchedulingDashboard';
-import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
@@ -22,45 +20,37 @@ const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
   if (!enabled) return <Loader />;
   return (
-    <SchedulingDashboardDev
-      slotFirstGrid={
-        <>
-          <Reasons />
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
+        <Reasons />
+        <Leaderboard />
+      </div>
 
-          <Leaderboard />
-        </>
-      }
-      slotGridInterviewDetail={
-        <>
-          <DeclineRequests />
-          <InterviewTypes />
-        </>
-      }
-      slotTrainingProgress={
-        <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
-          <TrainingProgress />
-          <Interviewes />
-        </Stack>
-      }
-      slotScheduleCount={
-        <Stack gap={2}>
-          <Filters />
-          <Tabs />
-        </Stack>
-      }
-      slotRecentReschedule={
-        <>
-          <RecentDeclines />
-          <RecentReschedules />
-        </>
-      }
-      slotCompletedInterview={
-        <>
-          <CompletedInterviews />
-          <Interviewers />
-        </>
-      }
-    />
+      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
+        <DeclineRequests />
+        <InterviewTypes />
+      </div>
+
+      <div className='col-span-1 md:col-span-2 lg:col-span-3 flex flex-col md:flex-row justify-between gap-4'>
+        <TrainingProgress />
+        <Interviewes />
+      </div>
+
+      <div className='col-span-1 md:col-span-2 lg:col-span-3 space-y-4'>
+        <Filters />
+        <Tabs />
+      </div>
+
+      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
+        <RecentDeclines />
+        <RecentReschedules />
+      </div>
+
+      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
+        <CompletedInterviews />
+        <Interviewers />
+      </div>
+    </div>
   );
 });
 SchedulingDashboard.displayName = 'SchedulingDashboard';

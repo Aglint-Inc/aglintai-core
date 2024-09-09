@@ -1,22 +1,16 @@
 import { Button } from '@components/ui/button';
-import { KeywordCard } from '@devlink2/KeywordCard';
-import { Plus } from 'lucide-react';
 import React from 'react';
 
 import toast from '@/utils/toast';
 import AddChip from '@/components/Common/AddChip';
-
+import { Plus } from 'lucide-react';
 
 interface KeywordSectionProps {
-  title: string;
-  warningText: string;
   keywords: string[];
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const KeywordSection: React.FC<KeywordSectionProps> = ({
-  title,
-  warningText,
   keywords,
   setKeywords,
 }) => {
@@ -39,27 +33,20 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
   };
 
   return (
-    <KeywordCard
-      textTitle={title}
-      textWarning={warningText}
-      slotInput={
-        <AddChip
-          options={keywords.map((item) => ({ name: item, id: item }))}
-          suggestionsList={[]}
-          handleAddDepartment={handleAdd}
-          placeholder='Enter new value...'
-          btn={
-            <Button variant='outline' size='sm' className='rounded-full'>
-              <Plus className='h-4 w-4 mr-2' />
-              Add keyword
-            </Button>
-          }
-          handleRemoveKeyword={({ name }) => {
-            handleDelete(name);
-          }}
-        />
+    <AddChip
+      options={keywords.map((item) => ({ name: item, id: item }))}
+      suggestionsList={[]}
+      handleAddDepartment={handleAdd}
+      placeholder='Enter new value...'
+      btn={
+        <Button variant='outline' size='sm' className='rounded-full'>
+          <Plus className='h-4 w-4 mr-2' />
+          Add keyword
+        </Button>
       }
-      slotSuggestPill={<></>}
+      handleRemoveKeyword={({ name }) => {
+        handleDelete(name);
+      }}
     />
   );
 };

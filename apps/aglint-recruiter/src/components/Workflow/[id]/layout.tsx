@@ -27,7 +27,7 @@ import { capitalizeAll, capitalizeSentence } from '@/utils/text/textUtils';
 import UITextField from '../../Common/UITextField';
 import { WithPermission } from '../../withPermission';
 import { Button } from '@components/ui/button';
-import { MoreVertical, Zap } from 'lucide-react';
+import { MoreHorizontal, Zap } from 'lucide-react';
 
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
@@ -90,17 +90,17 @@ const Edit = () => {
         <>
           <Stack flexDirection={'row'} alignItems={'center'} gap={'8px'}>
             <Button size={'sm'} onClick={() => setPopup({ open: true })}>
-              <Zap />
+              <Zap size={12} className='mr-2' />
               Edit Workflow
             </Button>
             <Button
               size={'sm'}
-              color={'neutral'}
+              variant='outline'
               onClick={(event) => {
                 setAnchorEl(event.currentTarget);
               }}
             >
-              <MoreVertical />
+              <MoreHorizontal />
             </Button>
           </Stack>
 

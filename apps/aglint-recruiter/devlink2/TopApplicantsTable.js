@@ -53,7 +53,7 @@ export function TopApplicantsTable({
                   width="auto"
                   height="auto"
                   alt=""
-                  src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
+                  src="https://cdn.prod.website-files.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
                 />
               ) : null}
             </_Builtin.Block>

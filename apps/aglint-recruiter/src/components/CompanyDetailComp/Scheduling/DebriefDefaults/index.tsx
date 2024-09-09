@@ -2,7 +2,6 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
 import { Attendee } from '@devlink2/Attendee';
-import { DebriefDefaults as DebriefDefaultsDev } from '@devlink3/DebriefDefaults';
 import { Stack } from '@mui/material';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
@@ -16,11 +15,7 @@ type DebriefDefaultsProps = {
 };
 
 const DebriefDefaults = ({ value, setValue }: DebriefDefaultsProps) => {
-  return (
-    <DebriefDefaultsDev
-      slotSidedrawerBodyDebrief={<Toggles setValue={setValue} value={value} />}
-    />
-  );
+  return <Toggles setValue={setValue} value={value} />;
 };
 
 const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {

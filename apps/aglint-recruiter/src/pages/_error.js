@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorBoundary from '../components/ErrorBoundary';
+// import ErrorBoundary from '../components/ErrorBoundary';
 
 class CustomError extends React.Component {
   static getInitialProps({ res, err }) {
@@ -23,9 +23,9 @@ class CustomError extends React.Component {
 }
 
 const ErrorPageWithBoundary = (props) => (
-  <ErrorBoundary>
-    <CustomError {...props} />
-  </ErrorBoundary>
+  // <ErrorBoundary>
+  <CustomError {...props} />
+  // </ErrorBoundary>
 );
 
 export default ErrorPageWithBoundary;

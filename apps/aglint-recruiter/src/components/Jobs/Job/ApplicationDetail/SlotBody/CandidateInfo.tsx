@@ -1,4 +1,3 @@
-import { Button } from '@components/ui/button';
 import { ApplicantInfoBox } from '@devlink2/ApplicantInfoBox';
 import { User } from 'lucide-react';
 
@@ -7,7 +6,6 @@ import { useApplication } from '@/context/ApplicationContext';
 function CandidateInfo() {
   const {
     details: { data: resume, isLoading },
-    application_id,
   } = useApplication();
   const {
     meta: { data: applicationDetail },
@@ -38,15 +36,6 @@ function CandidateInfo() {
             textPhone={applicationDetail.phone || '--'}
             textTimeZone={applicationDetail.timezone || '--'}
           />
-          <Button
-            onClick={() => {
-              window.open(`/candidate/${application_id}/home`, '_blank');
-            }}
-            size='sm'
-            className='bg-slate-100 text-slate-800 hover:bg-slate-200'
-          >
-            Portal
-          </Button>
         </>
       )}
     </>

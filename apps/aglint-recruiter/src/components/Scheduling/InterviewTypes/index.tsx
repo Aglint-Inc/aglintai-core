@@ -11,7 +11,7 @@ import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
 import { PageLayout } from '@devlink2/PageLayout';
 import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
-import { Plus, RefreshCcw } from 'lucide-react';
+import { Plus, RotateCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -119,7 +119,7 @@ export function InterviewTypes() {
                           variant='ghost'
                           size='sm'
                           onClick={filterReset}
-                          leftIcon={<RefreshCcw />}
+                          leftIcon={<RotateCcw />}
                         >
                           Reset All
                         </UIButton>

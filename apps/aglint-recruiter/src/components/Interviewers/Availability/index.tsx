@@ -2,11 +2,10 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, RotateCcw, XCircle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -48,6 +47,7 @@ import {
   splitHourAndMin,
   timeToPx,
 } from './utils';
+import { Button } from '@components/ui/button';
 
 const TimeLineCalendar = () => {
   const {
@@ -232,20 +232,18 @@ const TimeLineCalendar = () => {
             />
 
             {isFilterApplied && (
-              <ButtonSoft
-                size={1}
-                color={'neutral'}
-                iconName={'refresh'}
-                isLeftIcon
-                textButton={'Reset All'}
-                onClickButton={{
-                  onClick: () => {
-                    setLocations([]);
-                    setDepartments([]);
-                    setJobs([]);
-                  },
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => {
+                  setLocations([]);
+                  setDepartments([]);
+                  setJobs([]);
                 }}
-              />
+              >
+                <RotateCcw className='mr-2 h-4 w-4' />
+                Reset All
+              </Button>
             )}
           </Stack>
           {/* Legent */}

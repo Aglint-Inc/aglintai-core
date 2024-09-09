@@ -61,6 +61,11 @@
   width: auto;
 }
 
+.text_bloxk.change_on_hover.auto_width-copy {
+  width: auto;
+  padding-left: 6px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -161,4 +166,18 @@
   display: flex;
   width: 34px;
   flex-direction: row;
+}
+
+.arrow_right.absoulgte {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: -20px;
+  bottom: 0%;
+
+  width: auto;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  background-color: var(--white);
 }

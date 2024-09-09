@@ -1,13 +1,21 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Label } from '@components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Coffee, Edit, Loader2 } from 'lucide-react';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 
 import TimePicker from '@/components/Common/TimePicker';
 import dayjs from '@/utils/dayjs';
@@ -31,26 +39,51 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
   isUpdating,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
     await handleUpdate({ break_hour: breaktime });
     setIsOpen(false);
   };
+
+  const handleTogglePopover = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 300);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-2xl font-bold'>Break Time</CardTitle>
+      <CardHeader className='relative'>
+        <CardTitle className='text-lg font-semibold'>Break Time</CardTitle>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
-            <Button variant='outline'>
-              <Edit className='h-4 w-4' />
+            <Button
+              variant='outline'
+              size='sm'
+              className='absolute top-2 right-2'
+              onClick={handleTogglePopover}
+            >
+              <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Break Time</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className='w-full' side='left' align='start'>
-            <div className='flex flex-col gap-4'>
-              <div className='flex items-center space-x-2'>
-                <p>Break Start Time</p>
+          <PopoverContent className='w-full' align='start' side='left'>
+            <div className='flex flex-col gap-4 w-[300px]'>
+              <div>
+                <Label>Break Start Time</Label>
                 <TimePicker
                   onChange={(value) => {
                     setSelectedHourBreak((pre) => ({
@@ -74,8 +107,8 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
                   }
                 />
               </div>
-              <div className='flex items-center space-x-2'>
-                <p>Break End Time</p>
+              <div>
+                <Label>Break End Time</Label>
                 <TimePicker
                   onChange={(value) => {
                     setSelectedHourBreak((pre) => ({
@@ -110,21 +143,23 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
         </Popover>
       </CardHeader>
       <CardContent>
-        <div className='flex items-center space-x-4'>
-          <Coffee className='h-6 w-6 text-muted-foreground' />
+        <div className='flex items-center space-x-2'>
           <div>
             <p className='text-sm font-medium'>Default Break Times</p>
-            <p className='text-2xl font-bold'>
-              {dayjs()
-                .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
-                .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
-                .format('hh:mm A')}
-              {' - '}
-              {dayjs()
-                .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
-                .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
-                .format('hh:mm A')}
-            </p>
+            <div className='flex items-center space-x-2'>
+              <Coffee className='h-4 w-4 text-muted-foreground' />
+              <p>
+                {dayjs()
+                  .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
+                  .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
+                  .format('hh:mm A')}
+                {' - '}
+                {dayjs()
+                  .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
+                  .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
+                  .format('hh:mm A')}
+              </p>
+            </div>
           </div>
         </div>
       </CardContent>

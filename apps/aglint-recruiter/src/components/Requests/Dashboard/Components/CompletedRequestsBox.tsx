@@ -1,8 +1,8 @@
 import { ReqCompleted } from '@devlink2/ReqCompleted';
-import { Text } from '@devlink2/Text';
 
 import { useRequests } from '@/context/RequestsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { Label } from '@components/ui/label';
 
 function CompletedRequestsBox({
   completedRequest,
@@ -22,14 +22,13 @@ function CompletedRequestsBox({
         },
       }}
       textTitle={
-        <Text
-          color={completedRequest ? 'success' : 'neutral'}
-          content={
-            status === 'success' && !completedRequest
-              ? `Looks like there is no completed requests 😴`
-              : `Today ${completedRequest} Requests completed🎉`
-          }
-        />
+        <Label
+          className={`${completedRequest ? 'text-green-500' : 'text-gray-500'}`}
+        >
+          {status === 'success' && !completedRequest
+            ? `Looks like there is no completed requests 😴`
+            : `Today ${completedRequest} Requests completed🎉`}
+        </Label>
       }
     />
   );

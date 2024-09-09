@@ -324,7 +324,7 @@ export function JobDashboard({
                             width="auto"
                             height="auto"
                             alt=""
-                            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+                            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
                           />
                           <_Builtin.Block tag="div">
                             {"Alejandro Garnecho"}
@@ -411,7 +411,7 @@ export function JobDashboard({
                             width="auto"
                             height="auto"
                             alt=""
-                            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+                            src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
                           />
                           <_Builtin.Block tag="div">
                             {"Timoty Ricks"}
@@ -436,7 +436,7 @@ export function JobDashboard({
           tag="div"
         >
           {slotSkillGraphBlock ?? (
-            <GraphBlock dummyImage="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65e80bbf1bd6c485187c4a79_Chart.svg" />
+            <GraphBlock dummyImage="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65e80bbf1bd6c485187c4a79_Chart.svg" />
           )}
         </_Builtin.Block>
         <_Builtin.Block
@@ -449,7 +449,7 @@ export function JobDashboard({
           >
             {slotExperienceGraph ?? (
               <GraphBlock
-                dummyImage="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg"
+                dummyImage="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg"
                 textGraphTitle="Experience Metrics"
               />
             )}

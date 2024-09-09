@@ -80,7 +80,6 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
           mode='single'
           selected={selectedDateTime}
           onSelect={handleDateSelect}
-          initialFocus
         />
         <div className='p-3 border-t border-border'>
           <Select

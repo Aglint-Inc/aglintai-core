@@ -9,13 +9,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
-import { GlobalInfo } from '@devlink2/GlobalInfo';
-import { InterviewLoad } from '@devlink2/InterviewLoad';
-import { Keywords } from '@devlink2/Keywords';
-import { DebreifHelperText } from '@devlink3/DebreifHelperText';
-import { HelperDropdown } from '@devlink3/HelperDropdown';
-import { InterviewLoadHelper } from '@devlink3/InterviewLoadHelper';
-import { KeywordsHelper } from '@devlink3/KeywordsHelper';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import timeZone from '@/utils/timeZone';
@@ -23,6 +16,13 @@ import timeZone from '@/utils/timeZone';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
 import InterviewLimitInput from './InterviewLoad';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 import KeywordSection from './KeywordSection';
 
 let schedulingSettingObj = {};
@@ -62,11 +62,6 @@ function SchedulingSettings({ updateSettings }) {
     value: 10,
     max: LoadMax.weeklyHours,
   });
-
-  const [isTipVisible, setIsTipVisible] = useState(true);
-  const handleCloseInfo = () => {
-    setIsTipVisible(false);
-  };
 
   const handleDailyValue = (value: number) => {
     setDailyLimit((pre) => ({
@@ -218,70 +213,122 @@ function SchedulingSettings({ updateSettings }) {
   }, [recruiter?.scheduling_settings]);
 
   return (
-    <div className='flex flex-col h-full overflow-auto'>
-      <div className='flex flex-row w-full justify-between items-start overflow-hidden'>
-        <div className='w-full overflow-auto h-[calc(100vh-48px)] p-2 space-y-4'>
-          {dailyLmit.type && weeklyLmit.type && (
-            <InterviewLoad
-              borderStyle={'false'}
-              slotDailyLimit={
-                <InterviewLimitInput
-                  value={dailyLmit.value}
-                  max={dailyLmit.max}
-                  type={dailyLmit.type}
-                  onValueChange={handleDailyValue}
-                  onTypeChange={handleDailyType}
-                />
-              }
-              slotWeeklyLimit={
-                <InterviewLimitInput
-                  value={weeklyLmit.value}
-                  max={weeklyLmit.max}
-                  type={weeklyLmit.type}
-                  onValueChange={handleWeeklyValue}
-                  onTypeChange={handleWeeklyType}
-                />
-              }
-            />
-          )}
+    <div className='flex flex-col w-[660px] mx-auto space-y-4'>
+      {dailyLmit.type && weeklyLmit.type && (
+        <Card>
+          <CardHeader>
+            <CardTitle className='text-md font-semibold'>
+              Interview Load
+            </CardTitle>
+            <CardDescription>
+              Setup maximum interviews per day and week.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className='space-y-2'>
+              <InterviewLimitInput
+                value={dailyLmit.value}
+                max={dailyLmit.max}
+                type={dailyLmit.type}
+                onValueChange={handleDailyValue}
+                onTypeChange={handleDailyType}
+              />
+              <InterviewLimitInput
+                value={weeklyLmit.value}
+                max={weeklyLmit.max}
+                type={weeklyLmit.type}
+                onValueChange={handleWeeklyValue}
+                onTypeChange={handleWeeklyType}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>
+            Debrief Defaults
+          </CardTitle>
+          <CardDescription>
+            Setup a default company wide setting for scheduling debrief
+            sessions.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <DebriefDefaults
             value={debriefDefaults}
             setValue={setDebriefDefaults}
           />
-          <Keywords
-            borderStyle={'false'}
-            size={'large'}
-            slotKeywordsCard={
-              <>
-                <KeywordSection
-                  title='Free'
-                  warningText='When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
-                  keywords={freeKeyWords}
-                  setKeywords={setFreeKeywords}
-                />
-                <KeywordSection
-                  title='Soft Conflicts'
-                  warningText='When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
-                  keywords={softConflictsKeyWords}
-                  setKeywords={setSoftConflictsKeyWords}
-                />
-                <KeywordSection
-                  title='Out of Office'
-                  warningText='When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
-                  keywords={outOfOffice}
-                  setKeywords={setOutOfOffice}
-                />
-                <KeywordSection
-                  title='Recruiting Blocks'
-                  warningText='If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
-                  keywords={recruitingBlocks}
-                  setKeywords={setRecruitingBlocks}
-                />
-              </>
-            }
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>Free</CardTitle>
+          <CardDescription>
+            When these keywords appear in a calendar event title, overlapping
+            interviews will not be considered scheduling conflicts.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection
+            keywords={freeKeyWords}
+            setKeywords={setFreeKeywords}
           />
-        </div>
-        <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>
+            Soft Conflicts
+          </CardTitle>
+          <CardDescription>
+            When these keywords are found in a calendar event title, overlapping
+            interviews will be marked as soft conflicts and will require your
+            confirmation to schedule.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection
+            keywords={softConflictsKeyWords}
+            setKeywords={setSoftConflictsKeyWords}
+          />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>Out of Office</CardTitle>
+          <CardDescription>
+            When any of these specified keywords appear in a calendar event
+            title, the day will be considered an Out of Office day, and
+            interviews will not be scheduled.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection keywords={outOfOffice} setKeywords={setOutOfOffice} />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-md font-semibold'>
+            Recruiting Blocks
+          </CardTitle>
+          <CardDescription>
+            If these keywords are found in a calendar event title, these blocks
+            will be given first preference for scheduling interviews.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <KeywordSection
+            keywords={recruitingBlocks}
+            setKeywords={setRecruitingBlocks}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+{
+  /* <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
           <div className='flex flex-col gap-4'>
             {isTipVisible && (
               <div>
@@ -314,12 +361,8 @@ function SchedulingSettings({ updateSettings }) {
               slotBody={<KeywordsHelper />}
             />
           </div>
-        </div>
-      </div>
-    </div>
-  );
+        </div> */
 }
-
 export default SchedulingSettings;
 
 type TZ = (typeof timeZone)[number];

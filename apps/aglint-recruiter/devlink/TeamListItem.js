@@ -40,7 +40,7 @@ export function TeamListItem({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
+                src="https://cdn.prod.website-files.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
               />
             )}
           </_Builtin.Block>

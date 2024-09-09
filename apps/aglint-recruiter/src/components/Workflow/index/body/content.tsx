@@ -1,9 +1,7 @@
 import OptimisticWrapper from '@components/loadingWapper';
-import { LoaderSvg } from '@devlink/LoaderSvg';
 import { GlobalBadge } from '@devlink3/GlobalBadge';
 import { WorkflowCard } from '@devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
@@ -15,25 +13,28 @@ import { capitalizeSentence } from '@/utils/text/textUtils';
 import { useWorkflowStore } from '../../../../context/Workflows/store';
 import { getTriggerOption, TAG_OPTIONS } from '../../constants';
 import { getFilteredWorkflows } from './filters';
+import { Skeleton } from '@components/ui/skeleton';
 
 const Content = memo(() => {
   const {
     workflows: { data, status },
   } = useWorkflows();
   if (status === 'error') return <>Error</>;
-  if (status == 'pending')
-    return (
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        width={'100%'}
-        height={'100vh'}
-        justifyContent={'center'}
-      >
-        <LoaderSvg />
-      </Stack>
-    );
-  return <Cards data={data} />;
+  return status === 'pending' ? (
+    <div className='flex flex-row gap-4'>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div key={index} className='animate-pulse space-y-2'>
+          <Skeleton className='h-4 w-3/4' />
+          <Skeleton className='h-4 w-1/2' />
+          <Skeleton className='h-4 w-2/3' />
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div className='flex flex-col gap-4'>
+      <Cards data={data} />
+    </div>
+  );
 });
 Content.displayName = 'Content';
 

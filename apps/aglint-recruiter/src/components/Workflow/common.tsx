@@ -1,9 +1,8 @@
-import { RcCheckbox } from '@devlink2/RcCheckbox';
-
 import type { WorkflowStore } from '@/context/Workflows/store';
 
 import { UITextArea } from '../Common/UITextArea';
 import UITextField from '../Common/UITextField';
+import { Checkbox } from '@components/ui/checkbox';
 
 export type Form = WorkflowStore['popup']['form'];
 
@@ -98,19 +97,26 @@ export const Forms = ({
           });
         }}
       />
-      <RcCheckbox
-        isChecked={auto_connect.value}
-        text={'Auto connect to all new jobs'}
-        onclickCheck={{
-          onClick: () =>
+      <div className='flex items-center space-x-2'>
+        <Checkbox
+          id='auto-connect'
+          checked={auto_connect.value}
+          onCheckedChange={(checked) =>
             setForm({
               auto_connect: {
                 ...auto_connect,
-                value: !auto_connect.value,
+                value: checked === true,
               },
-            }),
-        }}
-      />
+            })
+          }
+        />
+        <label
+          htmlFor='auto-connect'
+          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+        >
+          Auto connect to all new jobs
+        </label>
+      </div>
     </>
   );
 };

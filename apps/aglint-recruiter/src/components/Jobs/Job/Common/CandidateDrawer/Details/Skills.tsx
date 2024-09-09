@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { Skeleton } from '@devlink2/Skeleton';
+
 import { Stack } from '@mui/material';
 import { Lightbulb } from 'lucide-react';
 
@@ -9,6 +9,7 @@ import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
 import { EmptyDetailState } from './Common/EmptyDetailState';
+import { Skeleton } from '@components/ui/skeleton';
 
 const Skills = () => {
   return (
@@ -35,7 +36,7 @@ const Content = () => {
     return (
       <Loader count={10}>
         <Stack style={{ position: 'relative', width: '60px', height: '22px' }}>
-          <Skeleton />
+          <Skeleton className='h-10 w-full' />
         </Stack>
       </Loader>
     );

@@ -2,24 +2,13 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
-import { Checkbox } from '@components/ui/checkbox';
-import { EditEmail } from '@devlink/EditEmail';
-import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
-import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
-import { LoaderSvg } from '@devlink/LoaderSvg';
-import { ButtonFilter } from '@devlink2/ButtonFilter';
-import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Box, Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
-import Loader from '@/components/Common/Loader';
-import SearchField from '@/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
@@ -33,6 +22,18 @@ import {
   tempFilterOptions,
   template_tabs,
 } from './utils';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
+import { Skeleton } from '@components/ui/skeleton';
+import Link from 'next/link';
 
 function SchedulerEmailTemps({ setSaving }) {
   const { recruiter_id } = useAuthDetails();
@@ -228,20 +229,6 @@ function SchedulerEmailTemps({ setSaving }) {
     }
   }, [isEditorLoad]);
 
-  //dropdown filter logic
-  const [anchorElFilter, setAnchorElFilter] =
-    React.useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorElFilter(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorElFilter(null);
-  };
-
-  const open = Boolean(anchorElFilter);
-
   const filterOptions = Object.keys(tempFilterOptions[temp_tab]);
 
   const filteredEnum = Object.keys(tempFilterOptions[temp_tab])
@@ -250,287 +237,222 @@ function SchedulerEmailTemps({ setSaving }) {
       return arr.concat(tempFilterOptions[temp_tab][key]);
     }, []);
 
-  const Options = () => {
-    return filterOptions.map((opt, i) => {
-      return (
-        <Stack
-          direction={'row'}
-          sx={{
-            alignItems: 'center',
-
-            ': hover': { background: 'var(--neutral-2)' },
-          }}
-          spacing={1}
-          padding={'var(--space-2) var(--space-3)'}
-          key={i}
-          onClick={() => {
-            setFilter((pre) => {
-              if (filter.includes(opt)) {
-                return pre.filter((p) => p !== opt);
-              } else {
-                return [...pre, opt];
-              }
-            });
-          }}
-        >
-          <Checkbox
-            key={`${'scheduleType'}-checkbox`}
-            checked={filter.includes(opt)}
-            onClick={() => {
-              setFilter((pre) => {
-                if (filter.includes(opt)) {
-                  return pre.filter((p) => p !== opt);
-                } else {
-                  return [...pre, opt];
-                }
-              });
-            }}
-          />
-          <Typography
-            key={`${opt}-label`}
-            sx={{
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            {capitalizeAll(opt)}
-          </Typography>
-        </Stack>
-      );
-    });
-  };
-
   return (
-    <Stack>
-      <Box>
-        {isEditorLoad && (
-          <Stack height={'calc(100vh - 48px)'}>
-            <Loader />
-          </Stack>
-        )}
-        {!isEditorLoad && templates.length > 0 && (
-          <EmailTemplatesStart
-            showTabs={false}
-            // currentModule={'job'}
-            slotSearchFilter={
-              <Stack direction={'row'} width={'312px'} spacing={1}>
-                <SearchField
-                  placeholder={'Search Templates.'}
-                  onChange={(e) => {
-                    setSearchQry(e.target.value);
-                  }}
-                  onClear={() => {
-                    setSearchQry('');
-                  }}
+    <div className='flex flex-col h-screen'>
+      <div className='p-4'>
+        {isEditorLoad ? (
+          <div className='flex items-center justify-center h-[calc(100vh-48px)]'>
+            <div className='space-y-2'>
+              <Skeleton className='h-4 w-[250px]' />
+              <Skeleton className='h-4 w-[200px]' />
+              <Skeleton className='h-4 w-[150px]' />
+            </div>
+          </div>
+        ) : (
+          templates.length > 0 && (
+            <div className='space-y-4'>
+              {/* Search and Filter */}
+              <div className='flex space-x-2'>
+                <Input
+                  className='w-64'
+                  placeholder='Search Templates'
                   value={searchQry}
-                  isFullWidth={true}
-                  onBlur={() => setIsFocus(false)}
+                  onChange={(e) => setSearchQry(e.target.value)}
                   onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
                 />
-                <ButtonFilter
-                  textLabel='Type'
-                  isActive={!anchorElFilter}
-                  isDotVisible={filter.length > 0}
-                  onClickStatus={{
-                    onClick: handleClick,
-                  }}
-                  slotRightIcon={
-                    <Stack>
-                      {anchorElFilter ? (
-                        <ChevronUp size={20} />
-                      ) : (
-                        <ChevronDown size={20} />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant='outline' className='flex items-center'>
+                      Type
+                      {filter.length > 0 && (
+                        <span className='ml-2 h-2 w-2 rounded-full bg-blue-500' />
                       )}
-                    </Stack>
-                  }
-                />
-                <Popover
-                  open={open}
-                  anchorEl={anchorElFilter}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  transformOrigin={{ vertical: -10, horizontal: 0 }}
-                  sx={{
-                    '& .MuiPopover-paper': {
-                      borderRadius: 'var(--radius-4)',
-                      borderColor: 'var(--neutral-6)',
-                      minWidth: '176px',
-                    },
-                  }}
-                >
-                  <FilterDropdown
-                    isRemoveVisible={false}
-                    slotOption={<Options />}
-                    onClickReset={{
-                      onClick: () => {
-                        setFilter([]);
-                      },
-                    }}
-                  />
-                </Popover>
-              </Stack>
-            }
-            slotEmailTemplateCards={
-              <>
-                {templates
-                  .filter((emailPath) => {
-                    const flag = filterEmailByTemplateTab(
-                      temp_tab as any,
-                      emailPath.type,
-                    );
-                    if (searchQry.length > 0) {
-                      return (
-                        flag &&
-                        emailTemplateCopy[emailPath.type].heading
-                          .toLocaleLowerCase()
-                          .includes(searchQry.toLocaleLowerCase())
+                      {/* {anchorElFilter ? (
+                        <ChevronUpIcon size={12} />
+                      ) : (
+                        <ChevronDownIcon size={12} />
+                      )} */}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {filterOptions.map((opt, i) => (
+                      <DropdownMenuCheckboxItem
+                        key={i}
+                        checked={filter.includes(opt)}
+                        onCheckedChange={() => {
+                          setFilter((pre) =>
+                            filter.includes(opt)
+                              ? pre.filter((p) => p !== opt)
+                              : [...pre, opt],
+                          );
+                        }}
+                      >
+                        {capitalizeAll(opt)}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={() => setFilter([])}>
+                      Reset
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              {/* Main content */}
+              <div className='flex space-x-4'>
+                {/* Email Template List */}
+                <div className='w-1/3 pr-6'>
+                  {templates
+                    .filter((emailPath) => {
+                      const flag = filterEmailByTemplateTab(
+                        temp_tab as any,
+                        emailPath.type,
                       );
-                    }
-                    return flag;
-                  })
-                  .filter((email) =>
-                    filteredEnum.length > 0
-                      ? filteredEnum.includes(email.type)
-                      : true,
-                  )
-                  .sort((a, b) => {
-                    if (
-                      emailTemplateCopy[a.type].heading >
-                      emailTemplateCopy[b.type].heading
-                    ) {
-                      return 1;
-                    }
-                    if (
-                      emailTemplateCopy[b.type].heading >
-                      emailTemplateCopy[a.type].heading
-                    ) {
-                      return -1;
-                    }
-                    return 0;
-                  })
-                  .map((emailPath) => (
-                    <EmailTemplateCards
-                      key={emailPath.id}
-                      isActive={emailPath.type === temp_email}
-                      textDescription={
-                        emailTemplateCopy[emailPath.type].description
+                      if (searchQry.length > 0) {
+                        return (
+                          flag &&
+                          emailTemplateCopy[emailPath.type].heading
+                            .toLowerCase()
+                            .includes(searchQry.toLowerCase())
+                        );
                       }
-                      textTitle={emailTemplateCopy[emailPath.type]?.heading}
-                      onClickApplicationRecieved={{
-                        onClick: () => {
-                          if (temp_email !== emailPath.type) {
-                            setTipTapLoder(true);
-                            setEmailRoute(emailPath.type);
-                            setTimeout(() => {
-                              setTipTapLoder(false);
-                            }, 500);
+                      return flag;
+                    })
+                    .filter((email) =>
+                      filteredEnum.length > 0
+                        ? filteredEnum.includes(email.type)
+                        : true,
+                    )
+                    .sort((a, b) =>
+                      emailTemplateCopy[a.type].heading.localeCompare(
+                        emailTemplateCopy[b.type].heading,
+                      ),
+                    )
+                    .map((emailPath) => (
+                      <Link
+                        key={emailPath.id}
+                        href={{
+                          pathname: router.pathname,
+                          query: { ...router.query, email: emailPath.type },
+                        }}
+                        passHref
+                      >
+                        <Button
+                          variant={
+                            emailPath.type === temp_email
+                              ? 'default'
+                              : 'outline'
                           }
-                        },
-                      }}
-                      slotBadge={<></>}
-                    />
-                  ))}
-              </>
-            }
-            slotEmailDetails={
-              <>
-                {isEditorLoad && (
-                  <>
-                    <Stack
-                      direction='row'
-                      alignItems='center'
-                      justifyContent='center'
-                      bgcolor='var(--neutral-2)'
-                      sx={{ width: '100%', height: 'calc(100vh - 96px)' }}
-                    >
-                      <LoaderSvg />
-                    </Stack>
-                  </>
-                )}
-                {!isEditorLoad && (
-                  <>
-                    <EditEmail
-                      currentModule={'scheduler'}
-                      slotSaveButton={<></>}
-                      onClickPreview={{
-                        onClick: (e) => {
-                          preview();
-                          setAnchorEl(e.currentTarget);
-                        },
-                      }}
-                      isPreviewVisible={router.query.tab === 'emailTemplate'}
-                      textTipsMessage={undefined}
-                      editEmailDescription={
-                        emailTemplateCopy[temp_email].description
-                      }
-                      isSaveChangesButtonVisible={false}
-                      textEmailName={emailTemplateCopy[temp_email].heading}
-                      slotForm={
-                        tiptapLoader ? (
-                          <Stack
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                            sx={{
-                              height: 'calc(100vh - 220px)',
-                              width: '100%',
-                            }}
-                          >
-                            <LoaderSvg />
-                          </Stack>
-                        ) : (
-                          <EmailTemplateEditForm
-                            onBlur={() => setIsFocus(false)}
-                            onFocus={() => setIsFocus(true)}
-                            senderNameChange={(e) => {
-                              handleUpdateEmailTemp({
-                                ...selectedTemplate,
-                                from_name: e.target.value,
-                              });
-                            }}
-                            emailBodyChange={(str) => {
-                              handleUpdateEmailTemp({
-                                ...selectedTemplate,
-                                body: str,
-                              });
-                            }}
-                            emailSubjectChange={(str) => {
-                              handleUpdateEmailTemp({
-                                ...selectedTemplate,
-                                subject: str,
-                              });
-                            }}
-                            selectedTemplate={{ ...selectedTemplate }}
-                            showSender={
-                              router.query.template_tab !== 'slack' &&
-                              router.query.template_tab !== 'calender'
+                          className='h-16 w-full my-1 justify-start text-left'
+                          onClick={() => {
+                            if (temp_email !== emailPath.type) {
+                              setTipTapLoder(true);
+                              setTimeout(() => {
+                                setTipTapLoder(false);
+                              }, 500);
                             }
-                            showSubject={
-                              router.query.template_tab !== 'slack' &&
-                              router.query.template_tab !== 'calender'
-                            }
-                          />
-                        )
-                      }
-                    />
-                    <EmailPreviewPopover
-                      anchorEl={anchorEl}
-                      setAnchorEl={setAnchorEl}
-                      setHtml={setHtml}
-                      isHtml={isHtml}
-                      Loading={popOverLoading}
-                    />
-                  </>
-                )}
-              </>
-            }
-          />
+                          }}
+                        >
+                          <div className='w-full'>
+                            <div className='font-semibold'>
+                              {emailTemplateCopy[emailPath.type]?.heading}
+                            </div>
+                            <div className='text-sm text-gray-500 line-clamp-2'>
+                              {emailTemplateCopy[emailPath.type].description}
+                            </div>
+                          </div>
+                        </Button>
+                      </Link>
+                    ))}
+                </div>
+
+                {/* Email Template Details */}
+                <div className='w-2/3'>
+                  {isEditorLoad ? (
+                    <div className='flex items-center justify-center h-[calc(100vh-200px)] bg-neutral-100'>
+                      <div className='space-y-2'>
+                        <Skeleton className='h-4 w-[250px]' />
+                        <Skeleton className='h-4 w-[200px]' />
+                        <Skeleton className='h-4 w-[150px]' />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='space-y-4'>
+                      <div className='flex justify-between items-center'>
+                        <h2 className='text-md font-bold'>
+                          {emailTemplateCopy[temp_email].heading}
+                        </h2>
+                        <Button
+                          size='sm'
+                          onClick={(e) => {
+                            preview();
+                            setAnchorEl(e.currentTarget);
+                          }}
+                        >
+                          Preview
+                        </Button>
+                      </div>
+                      <p className='text-gray-600'>
+                        {emailTemplateCopy[temp_email].description}
+                      </p>
+                      {tiptapLoader ? (
+                        <div className='flex items-center justify-center h-[calc(100vh-300px)]'>
+                          <div className='space-y-2'>
+                            <Skeleton className='h-4 w-[250px]' />
+                            <Skeleton className='h-4 w-[200px]' />
+                            <Skeleton className='h-4 w-[150px]' />
+                          </div>
+                        </div>
+                      ) : (
+                        <EmailTemplateEditForm
+                          onBlur={() => setIsFocus(false)}
+                          onFocus={() => setIsFocus(true)}
+                          senderNameChange={(e) => {
+                            handleUpdateEmailTemp({
+                              ...selectedTemplate,
+                              from_name: e.target.value,
+                            });
+                          }}
+                          emailBodyChange={(str) => {
+                            handleUpdateEmailTemp({
+                              ...selectedTemplate,
+                              body: str,
+                            });
+                          }}
+                          emailSubjectChange={(str) => {
+                            handleUpdateEmailTemp({
+                              ...selectedTemplate,
+                              subject: str,
+                            });
+                          }}
+                          selectedTemplate={{ ...selectedTemplate }}
+                          showSender={
+                            router.query.template_tab !== 'slack' &&
+                            router.query.template_tab !== 'calender'
+                          }
+                          showSubject={
+                            router.query.template_tab !== 'slack' &&
+                            router.query.template_tab !== 'calender'
+                          }
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )
         )}
-      </Box>
-    </Stack>
+      </div>
+      <EmailPreviewPopover
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        setHtml={setHtml}
+        isHtml={isHtml}
+        Loading={popOverLoading}
+      />
+    </div>
   );
 }
 

@@ -1,9 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
-import { TextWithIcon } from '@devlink2/TextWithIcon';
-import { Stack } from '@mui/material';
+
 import React from 'react';
 
 import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
@@ -16,6 +14,9 @@ import { type ProgressTenseType, type RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
+import { Label } from '@components/ui/label';
+import { Button } from '@components/ui/button';
+import { RefreshCw, Trash } from 'lucide-react';
 
 const EventNode = ({
   eventType,
@@ -52,7 +53,8 @@ const EventNode = ({
   };
   return (
     <>
-      <Stack
+      <div
+        className='relative'
         onMouseEnter={() => {
           if (tense === 'future') {
             setOnHover(true);
@@ -68,36 +70,31 @@ const EventNode = ({
           }
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
-            <Stack
-              direction={'row'}
-              columnGap={1}
-              sx={{
-                opacity: onHover ? 1 : 0,
-                cursor: onHover ? 'pointer' : 'none',
-              }}
+            <div
+              className={`flex flex-row gap-1 ${
+                onHover
+                  ? 'opacity-100 cursor-pointer'
+                  : 'opacity-0 cursor-default'
+              }`}
             >
-              <IconButtonSoft
-                iconName={'sync'}
-                size={1}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => {
-                    setEditTrigger(currEventTrigger);
-                    setShowEditDialog(true);
-                  },
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => {
+                  setEditTrigger(currEventTrigger);
+                  setShowEditDialog(true);
                 }}
-              />
-              <IconButtonSoft
-                iconName={'delete'}
-                size={1}
-                color={'error'}
-                onClickButton={{
-                  onClick: () => {
-                    handleDeleteScheduleAction();
-                  },
-                }}
-              />
-            </Stack>
+              >
+                <RefreshCw className='h-4 w-4' />
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={handleDeleteScheduleAction}
+              >
+                <Trash className='h-4 w-4 text-destructive' />
+              </Button>
+            </div>
           }
           slotLoader={
             tense === 'present' ? (
@@ -107,7 +104,7 @@ const EventNode = ({
           slotAiText={
             <>
               {eventSubProgress.length > 0 && (
-                <Stack ml={1} rowGap={0.8}>
+                <div className='ml-4 space-y-2'>
                   {eventSubProgress.map((prg) => {
                     if (
                       !prg.log &&
@@ -115,25 +112,23 @@ const EventNode = ({
                     ) {
                       const key = `${prg.event_type}_${prg.status}`;
                       const Comp = progressActionMap[key];
-                      return <>{<Comp {...prg} />}</>;
+                      return <Comp key={prg.id} {...prg} />;
                     }
                     return (
-                      <>
-                        <TextWithIcon
-                          iconName='check'
-                          textContent={prg.log}
-                          fontSize={1}
-                          color={'grey'}
-                        />
-                      </>
+                      <Label
+                        key={prg.id}
+                        className='flex items-center text-sm text-gray-500'
+                      >
+                        {prg.log}
+                      </Label>
                     );
                   })}
-                </Stack>
+                </div>
               )}
             </>
           }
         />
-      </Stack>
+      </div>
     </>
   );
 };

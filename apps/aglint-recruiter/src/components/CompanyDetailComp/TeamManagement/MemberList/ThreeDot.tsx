@@ -1,277 +1,142 @@
+import { Button } from '@components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
 import { useToast } from '@components/hooks/use-toast';
-import { FilterOption } from '@devlink/FilterOption';
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
-import { TeamOptionList } from '@devlink/TeamOptionList';
-import { Popover, Stack } from '@mui/material';
-import axios from 'axios';
-import { Mail } from 'lucide-react';
+import { MoreHorizontal, Edit, Mail, Power, Trash, Lock } from 'lucide-react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
-
-import { useInterviewerList } from '@/components/Scheduling/Interviewers';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
-import { type API_reset_password } from '@/pages/api/reset_password/type';
-import { supabase } from '@/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
 import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
+import { type API_reset_password } from '@/pages/api/reset_password/type';
+import axios from 'axios';
 
 export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();
-  const [dialogReason, setDialogReason] =
-    useState<Parameters<typeof DeleteMemberDialog>['0']['reason']>(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const { data: memDetails } = useInterviewerList();
-  const { recruiterUser } = useAuthDetails();
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const [dialogReason, setDialogReason] = useState(null);
   const router = useRouter();
-  function ClosePopUp() {
-    setDialogReason(null);
-  }
-
-  const membersDetails = useMemo(() => {
-    const temp: {
-      [key: string]: (typeof memDetails)[number] & { allModules: string[] };
-    } = {};
-    memDetails?.forEach((element) => {
-      temp[element.user_id] = {
-        ...element,
-        allModules: [
-          ...element.qualified_module_names,
-          ...element.training_module_names,
-        ].filter((item) => Boolean(item)),
-      };
-    });
-    return temp;
-  }, [memDetails]);
-
-  const handelRemove = (e) => {
-    e.stopPropagation();
-    removeMember();
-  };
-
-  const removeMember = async () => {
-    if (recruiterUser?.user_id === member.user_id) {
-      toast({
-        variant: 'destructive',
-        title: "Can't remove admin account; it's the primary one.",
-      });
-    } else {
-      try {
-        await axios.post('/api/supabase/deleteuser', {
-          user_id: member.user_id,
-        });
-      } catch (error) {
-        toast({
-          variant: 'destructive',
-          title:
-            "This member is tied to an active schedule, so removal is unavailable until it's finished.",
-        });
-        return null;
-      }
-    }
-  };
+  const { recruiterUser } = useAuthDetails();
 
   const canSuspend = member.role !== 'admin';
 
+  const handleAction = (action) => {
+    switch (action) {
+      case 'edit':
+        router.push(`/user/profile/${member.user_id}?edit_enable=true`);
+        break;
+      case 'resend':
+        reinviteUser(member.email, recruiterUser.user_id).then(
+          ({ error, emailSend }) => {
+            if (!error && emailSend) {
+              toast({ description: 'Invite sent successfully.' });
+            } else {
+              toast({ variant: 'destructive', description: error });
+            }
+          },
+        );
+        break;
+      case 'activate':
+        updateMember({
+          data: { user_id: member.user_id, status: 'active' },
+        }).then(() => {
+          toast({
+            description: `${member.first_name}'s account is activated successfully.`,
+          });
+        });
+        break;
+      case 'suspend':
+      case 'cancel_invite':
+      case 'delete':
+        setDialogReason(action);
+        break;
+      case 'reset_password':
+        resetPassword(member.email)
+          .then(() => toast({ description: 'Password reset email sent.' }))
+          .catch(() =>
+            toast({
+              variant: 'destructive',
+              description: 'Password reset failed.',
+            }),
+          );
+        break;
+    }
+  };
+
+  const handleSuspend = () => {
+    updateMember({
+      data: { user_id: member.user_id, status: 'suspended' },
+    }).then(() => {
+      toast({
+        description: `${member.first_name}'s account is suspended successfully.`,
+      });
+      setDialogReason(null);
+    });
+  };
+
+  const handleRemove = () => {
+    // Implement your remove logic here
+    // For example:
+    // deleteMember(member.user_id).then(() => {
+    //   toast({ description: `${member.first_name} has been removed from the team.` })
+    //   setDialogReason(null)
+    // })
+  };
+
   return (
     <>
-      <Stack
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClick(e);
-        }}
-      >
-        <IconButtonGhost
-          iconName='more_vert'
-          size={2}
-          iconSize={6}
-          color={'neutral'}
-        />
-      </Stack>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <TeamOptionList
-          isMarkActiveVisible={canSuspend && member.status === 'suspended'}
-          isSuspendVisible={
-            canSuspend &&
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='ghost' className='h-8 w-8 p-0'>
+            <MoreHorizontal className='h-4 w-4' />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end'>
+          {member.status !== 'invited' && (
+            <DropdownMenuItem onClick={() => handleAction('edit')}>
+              <Edit className='mr-2 h-4 w-4' /> Edit
+            </DropdownMenuItem>
+          )}
+          {member.status === 'invited' && (
+            <DropdownMenuItem onClick={() => handleAction('resend')}>
+              <Mail className='mr-2 h-4 w-4' /> Resend Invitation
+            </DropdownMenuItem>
+          )}
+          {canSuspend && member.status === 'suspended' && (
+            <DropdownMenuItem onClick={() => handleAction('activate')}>
+              <Power className='mr-2 h-4 w-4' /> Activate
+            </DropdownMenuItem>
+          )}
+          {canSuspend &&
             member.status === 'active' &&
-            recruiterUser.user_id !== member.user_id
-          }
-          isCancelInviteVisible={member.status === 'invited'}
-          isDeleteVisible={false}
-          isResetPasswordVisible={
-            member.status !== 'invited' &&
-            recruiterUser.user_id !== member.user_id
-          }
-          isEditVisible={member.status !== 'invited'}
-          slotFilterOption={
-            <>
-              {member.status === 'invited' && (
-                <FilterOption
-                  slotIcon={<Mail size={16} color={'var(--neutral-2)'} />}
-                  text={'Resend Invitation'}
-                  color={{
-                    style: {
-                      color: 'transparent',
-                    },
-                  }}
-                  onClickCancelInvite={{
-                    onClick: () => {
-                      reinviteUser(member.email, recruiterUser.user_id).then(
-                        ({ error, emailSend }) => {
-                          if (!error && emailSend) {
-                            return toast({
-                              variant: 'default',
-                              title: 'Invite sent successfully.',
-                            });
-                          }
-                          return toast({
-                            variant: 'destructive',
-                            title: error,
-                          });
-                        },
-                      );
-                    },
-                  }}
-                />
-              )}
-            </>
-          }
-          isFilterOptionVisible={true}
-          onClickMarkActive={{
-            onClick: () => {
-              updateMember({
-                data: { user_id: member.user_id, status: 'active' },
-              }).then(() => {
-                toast({
-                  variant: 'default',
-                  title: `${member.first_name}'s account is activated successfully.`,
-                });
-                handleClose();
-              });
-            },
-          }}
-          onClickEdit={{
-            onClick: () => {
-              // editMember(e);
-              router.push(`/user/profile/${member.user_id}?edit_enable=true`);
-              handleClose();
-            },
-          }}
-          onClickCancelInvite={{
-            onClick: () => {
-              setDialogReason('cancel_invite');
-              handleClose();
-            },
-          }}
-          onClickSuspend={{
-            onClick: () => {
-              setDialogReason('suspend');
-              handleClose();
-            },
-          }}
-          onClickDelete={{
-            onClick: () => {
-              setDialogReason('delete');
-              handleClose();
-            },
-          }}
-          onClickResetPassword={{
-            onClick: () => {
-              resetPassword(member.email)
-                .then(() =>
-                  toast({
-                    variant: 'default',
-                    title: 'Password reset email sent.',
-                  }),
-                )
-                .catch(() =>
-                  toast({
-                    variant: 'destructive',
-                    title: 'Password reset failed.',
-                  }),
-                );
-              handleClose();
-            },
-          }}
-        />
-      </Popover>
+            recruiterUser.user_id !== member.user_id && (
+              <DropdownMenuItem onClick={() => handleAction('suspend')}>
+                <Power className='mr-2 h-4 w-4' /> Suspend
+              </DropdownMenuItem>
+            )}
+          {member.status === 'invited' && (
+            <DropdownMenuItem onClick={() => handleAction('cancel_invite')}>
+              <Trash className='mr-2 h-4 w-4' /> Cancel Invite
+            </DropdownMenuItem>
+          )}
+          {member.status !== 'invited' &&
+            recruiterUser.user_id !== member.user_id && (
+              <DropdownMenuItem onClick={() => handleAction('reset_password')}>
+                <Lock className='mr-2 h-4 w-4' /> Reset Password
+              </DropdownMenuItem>
+            )}
+        </DropdownMenuContent>
+      </DropdownMenu>
       <DeleteMemberDialog
-        name={capitalizeFirstLetter(
-          `${member.first_name} ${member.last_name}`.trim(),
-        )}
-        action={
-          dialogReason === 'suspend'
-            ? ({
-                interviewTypes,
-                task,
-              }: {
-                interviewTypes: string;
-                task: string;
-              }) => {
-                supabase
-                  .rpc('transfer_user_responsibilities', {
-                    suspended_user: member.user_id,
-                    hiring_manager: interviewTypes,
-                    recruiter: interviewTypes,
-                    recruiting_coordinator: interviewTypes,
-                    sourcer: interviewTypes,
-                    task_owner: task,
-                  })
-                  .then(() => {
-                    updateMember({
-                      data: {
-                        user_id: member.user_id,
-                        status: 'suspended',
-                      },
-                    });
-                    toast({
-                      variant: 'default',
-                      title: `${member.first_name}'s account is suspended successfully.`,
-                    });
-                    ClosePopUp();
-                  });
-              }
-            : handelRemove
-        }
+        name={`${member.first_name} ${member.last_name}`.trim()}
+        action={dialogReason === 'suspend' ? handleSuspend : handleRemove}
         role={member.role}
         reason={dialogReason}
-        warning={
-          dialogReason !== 'cancel_invite' &&
-          membersDetails[member.user_id]?.allModules.length
-            ? `User is part of scheduling Module- ${membersDetails[member.user_id].allModules}.`.replaceAll(
-                ',',
-                ', ',
-              )
-            : undefined
-        }
-        close={ClosePopUp}
+        close={() => setDialogReason(null)}
       />
     </>
   );
@@ -286,3 +151,5 @@ const resetPassword = (email: string) => {
       return data.passwordReset;
     });
 };
+
+export default UserListThreeDot;

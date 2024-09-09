@@ -5,7 +5,6 @@ import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import { Stack, Typography } from '@mui/material';
 import React, {
-  type ChangeEventHandler,
   type Dispatch,
   type SetStateAction,
   useCallback,
@@ -25,9 +24,11 @@ import { type Job } from '@/queries/jobs/types';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalize } from '@/utils/text/textUtils';
 
-import { DropDown, WarningSvg } from './sessionForms';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
+import MembersAutoComplete, {
+  MemberTypeAutoComplete,
+} from '@/components/Scheduling/Common/MembersTextField';
 import { getBreakLabel } from './utils';
-import { User } from 'lucide-react';
 
 type DebriefFormProps = Pick<
   InterviewSessionType,
@@ -137,7 +138,6 @@ const DebriefForms = ({
     (data ?? []).filter(
       ({ user_id }) =>
         ![
-          ...(members?.value ?? []),
           ...Object.values(getAttendeesList(job)).map((user_id) => ({
             user_id,
           })),
@@ -227,9 +227,7 @@ const DebriefForms = ({
     <SidedrawerBodyDebrief
       slotSessionNameInput={nameField}
       slotDurationDropdown={sessionDurationField}
-      slotMemberAvatarSelectionPill={
-        <InterviewerPills value={members.value} handleChange={handleChange} />
-      }
+      slotMemberAvatarSelectionPill={<></>}
       slotScheduleTypeDropdown={
         <Stack gap={2}>
           <ScheduleTypeField
@@ -390,54 +388,21 @@ const ScheduleTypeField = ({
     value: DebriefFormProps['schedule_type'];
     icon: React.JSX.Element;
   }[];
-  // eslint-disable-next-line no-unused-vars
-  const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    e,
-  ) => {
-    const schedule = options.find((m) => m.value === e.target.value);
-    if (schedule) handleTypeChange(schedule.value);
-  };
+
   return (
-    <DropDown
-      onChange={onChange}
-      options={options}
+    <UISelectDropDown
+      onValueChange={(value) => {
+        const schedule = options.find((m) => m.value === value);
+        if (schedule) handleTypeChange(schedule.value);
+      }}
+      menuOptions={options.map((ele) => ({
+        name: ele.name,
+        value: ele.value,
+      }))}
       value={value}
-      placeholder='Select schedule type'
+      placeholder='Select Schedule Type'
     />
   );
-};
-
-const InterviewerPills = ({
-  value,
-  handleChange,
-}: {
-  value: DebriefFormProps['members'];
-  handleChange: HandleChange;
-}) => {
-  const onChange = (id: string) => {
-    handleChange(
-      'members',
-      value.filter((interviewer) => interviewer.user_id !== id),
-    );
-  };
-  return value.map((interviewer) => {
-    const name = getFullName(interviewer.first_name, interviewer.last_name);
-    return (
-      <SelectedMemberPill
-        key={interviewer.user_id}
-        isCloseButton={true}
-        onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
-        textMemberName={name}
-        slotMemberAvatar={
-          <MuiAvatar
-            src={interviewer.profile_image}
-            level={name}
-            variant='rounded-small'
-          />
-        }
-      />
-    );
-  });
 };
 
 const SessionDurationField = ({
@@ -454,20 +419,19 @@ const SessionDurationField = ({
     },
     [] as { name: string; value: number }[],
   );
-  const onChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = useCallback((e) => {
-    if ((e?.target?.value ?? null) && typeof e.target.value === 'number')
-      handleChange('session_duration', e.target.value);
-  }, []);
 
   return (
-    <DropDown
+    <UISelectDropDown
       placeholder='Select session duration'
-      showIcons={false}
-      options={options}
-      value={value}
-      onChange={onChange}
+      menuOptions={options.map((ele) => ({
+        name: ele.name,
+        value: ele.value.toString(),
+      }))}
+      value={value.toString()}
+      onValueChange={(value) => {
+        if ((value ?? null) && typeof value === 'number')
+          handleChange('session_duration', value);
+      }}
     />
   );
 };
@@ -483,40 +447,39 @@ const InterviewersField = ({
   handleChange: HandleChange;
   error?: boolean;
 }) => {
-  const options = memberRecommendations.map((m) => ({
+  const options: MemberTypeAutoComplete[] = memberRecommendations.map((m) => ({
     name: getFullName(m.first_name, m.last_name),
-    value: m.user_id,
-    start_icon_url: m.profile_image,
-    meta: [{ title: m.position, icon: <User size={16} /> }],
+    email: m.email,
+    first_name: m.first_name,
+    last_name: m.last_name,
+    position: m.position,
+    profile_image: m.profile_image,
+    user_id: m.user_id,
   }));
-  const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    e,
-  ) => {
-    const member = memberRecommendations.find(
-      (m) => m.user_id === e.target.value,
-    );
-    if (member) handleChange('members', [...value, member]);
-  };
 
   return (
-    <Stack>
-      <DropDown
-        placeholder='Select Interviewers'
-        onChange={onChange}
-        options={options}
-        value=''
-      />
-      {error && (
-        <Stack
-          alignItems={'center'}
-          direction={'row'}
-          color={'var(--error-a11)'}
-        >
-          <WarningSvg />
-          {'Members cannot be empty'}
-        </Stack>
-      )}
-    </Stack>
+    <MembersAutoComplete
+      maxWidth='468px'
+      pillColor='var(--neutral-3)'
+      renderUsers={options}
+      selectedUsers={value.map((m) => ({
+        user_id: m.user_id,
+        first_name: m.first_name,
+        last_name: m.last_name,
+        email: m.email,
+        profile_image: m.profile_image,
+        position: m.position,
+      }))}
+      setSelectedUsers={(users) => {
+        const user_ids = users.map((user) => user.user_id);
+        const selUsers = memberRecommendations.filter((m) =>
+          user_ids.includes(m.user_id),
+        );
+        handleChange('members', selUsers);
+      }}
+      error={error}
+      helperText='Members cannot be empty'
+    />
   );
 };
 

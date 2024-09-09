@@ -3,6 +3,7 @@ import { Label } from '@components/ui/label';
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -19,7 +20,7 @@ type MenuOption = {
 
 type Props = SelectProps & {
   label?: string;
-  menuOptions: MenuOption[];
+  menuOptions?: MenuOption[];
   disabled?: boolean;
   required?: boolean;
   startIcon?: React.ReactNode;
@@ -33,6 +34,7 @@ type Props = SelectProps & {
   id?: string;
   fullWidth?: boolean;
   className?: string;
+  children?: React.ReactNode;
 };
 
 const UISelectDropDown = ({
@@ -51,6 +53,7 @@ const UISelectDropDown = ({
   id,
   className,
   fieldSize,
+  children,
   ...props
 }: Props) => {
   const labelClasses = cn(
@@ -106,17 +109,21 @@ const UISelectDropDown = ({
             <SelectValue placeholder={placeholder} id={id} />
           </SelectTrigger>
           <SelectContent className='z-[2000]'>
-            {menuOptions.length === 0 ? (
-              <div className='px-2 py-1 italic text-gray-500 cursor-default'>
-                No options available
-              </div>
-            ) : (
-              menuOptions.map((menu, idx) => (
-                <SelectItem key={idx} value={menu.value}>
-                  {menu.name}
-                </SelectItem>
-              ))
-            )}
+            <SelectGroup>
+              {children ? (
+                children
+              ) : menuOptions.length === 0 ? (
+                <div className='px-2 py-1 italic text-gray-500 cursor-default'>
+                  No options available
+                </div>
+              ) : (
+                menuOptions.map((menu, idx) => (
+                  <SelectItem key={idx} value={menu.value}>
+                    {menu.name}
+                  </SelectItem>
+                ))
+              )}
+            </SelectGroup>
           </SelectContent>
         </Select>
         {error && helperText && (
