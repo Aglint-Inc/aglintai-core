@@ -1,21 +1,11 @@
-import Seo from '@/components/Common/Seo';
-import JobDetailsDashboard from '@/components/Jobs/Job/Job-Details';
-import { JobProvider } from '@/job/contexts';
+import Layout from 'src/app/(authenticated)/_jobs/[job]/job-details/layout';
+
+import Page from '@/components/Jobs/Job/Job-Details';
 
 const JobDetailsPage = () => {
-  return (
-    <>
-      <Seo
-        title={`Jobs Details - Job | Aglint AI`}
-        description='AI for People Products'
-      />
-      <JobDetailsDashboard />
-    </>
-  );
+  return <Page />;
 };
 
-JobDetailsPage.privateProvider = (page) => {
-  return <JobProvider>{page}</JobProvider>;
-};
+JobDetailsPage.privateProvider = (page) => <Layout>{page}</Layout>;
 
 export default JobDetailsPage;

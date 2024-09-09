@@ -1,21 +1,11 @@
-import Seo from '@/components/Common/Seo';
-import JobEmailTemplatesDashboard from '@/components/Jobs/Job/EmailTemplates';
-import { JobProvider } from '@/job/contexts';
+import Layout from 'src/app/(authenticated)/_jobs/[job]/email-templates/layout';
+
+import Page from '@/components/Jobs/Job/Hiring-Team';
 
 const JobEmailTemplatesPage = () => {
-  return (
-    <>
-      <Seo
-        title='Email Templates - Job | Aglint AI'
-        description='AI for People Products'
-      />
-      <JobEmailTemplatesDashboard />
-    </>
-  );
+  return <Page />;
 };
 
-JobEmailTemplatesPage.privateProvider = function privateProvider(page) {
-  return <JobProvider>{page}</JobProvider>;
-};
+JobEmailTemplatesPage.privateProvider = (page) => <Layout>{page}</Layout>;
 
 export default JobEmailTemplatesPage;

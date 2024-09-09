@@ -1,21 +1,11 @@
-import Seo from '@/components/Common/Seo';
-import JobHiringTeamDashboard from '@/components/Jobs/Job/Hiring-Team';
-import { JobProvider } from '@/job/contexts';
+import Layout from 'src/app/(authenticated)/_jobs/[job]/hiring-team/layout';
+
+import Page from '@/components/Jobs/Job/Hiring-Team';
 
 const JobHiringTeamPage = () => {
-  return (
-    <>
-      <Seo
-        title={`Hiring Team - Job | Aglint AI`}
-        description='AI for People Products'
-      />
-      <JobHiringTeamDashboard />
-    </>
-  );
+  return <Page />;
 };
 
-JobHiringTeamPage.privateProvider = (page) => {
-  return <JobProvider>{page}</JobProvider>;
-};
+JobHiringTeamPage.privateProvider = (page) => <Layout>{page}</Layout>;
 
 export default JobHiringTeamPage;
