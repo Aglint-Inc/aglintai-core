@@ -1,11 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
-import { responseCreatedCompletedType, SectionRequests } from '../types';
 
 export const useAllScheduleList = () => {
   const {
@@ -38,9 +36,6 @@ export async function getRequestsList({
 
   return data;
 }
-
-
-
 
 export function dateStringFormat(date) {
   const today = dayjs();

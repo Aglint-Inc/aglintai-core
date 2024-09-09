@@ -31,7 +31,10 @@ const ChooseScheduleMode = () => {
             There are no workflows set. please select an action to proceed
             manually or add action from below.
           </Label>
+        </div>
+        <div className='flex flex-row gap-1'>
           <Button
+            size='sm'
             variant='default'
             onClick={() => {
               setCandidateAvailabilityDrawerOpen(true);
@@ -40,6 +43,7 @@ const ChooseScheduleMode = () => {
             Send Availability Link
           </Button>
           <Button
+            size='sm'
             variant='outline'
             onClick={async () => {
               if (fetchingPlan) return;
@@ -62,6 +66,7 @@ const ChooseScheduleMode = () => {
         </div>
         <div className='flex justify-start'>
           <Button
+            size='sm'
             variant='outline'
             onClick={() => {
               setEditTrigger('onRequestSchedule');
