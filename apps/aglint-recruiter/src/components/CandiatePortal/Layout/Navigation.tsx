@@ -4,7 +4,7 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import {
   useCandidatePortal,
@@ -14,6 +14,8 @@ import {
 
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
 import NavProfile from './NavProfile';
+import { supabase } from '@/utils/supabase/client';
+import { useState } from 'react';
 // import { ThemeSwitcher } from '../components/ThemeSwitcher';
 // import NavProfile from './NavProfile';
 
@@ -27,6 +29,9 @@ export default function Navigation() {
   const { data: messages, isPending: messagePending } =
     useCandidatePortalMessages();
   const { application_id } = useCandidatePortal();
+  const [signingOUt, setSigningOut] = useState(false);
+
+  const router = useRouter();
 
   if (isPending || messagePending)
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
@@ -103,6 +108,17 @@ export default function Navigation() {
               application_id={application_id}
               candidate={data?.candidate}
             /> */}
+            <Button
+              size='sm'
+              onClick={async () => {
+                setSigningOut(true);
+                await supabase.auth.signOut();
+                router.push(`/candidate/${application_id}/login`);
+                setSigningOut(false);
+              }}
+            >
+              {signingOUt ? 'Loading...' : 'Logout'}
+            </Button>
             <Link href={`/candidate/${application_id}/profile`}>
               <NavProfile
                 application_id={application_id}

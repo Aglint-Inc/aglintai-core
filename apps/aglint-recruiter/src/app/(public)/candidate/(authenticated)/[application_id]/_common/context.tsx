@@ -1,6 +1,11 @@
 'use client';
-import { useParams } from 'next/navigation';
-import { type PropsWithChildren, createContext } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import {
+  type PropsWithChildren,
+  createContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
@@ -18,14 +23,37 @@ export const CandidatePortalContext =
 export const CandidatePortalProvider = async ({
   children,
 }: PropsWithChildren) => {
+  const [isLoading, setIsLoading] = useState(true);
   const value = useCandidatePortalContext();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const router = useRouter();
 
-  console.log(user);
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          router.push(
+            `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate/${value.application_id}/login`,
+          );
+        }
+      } catch {
+        //
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getSession();
+  }, []);
+
+  if (isLoading) return <>Loading...</>;
+
+  const finalValue = { ...value };
   return (
-    <CandidatePortalContext.Provider value={value}>
+    <CandidatePortalContext.Provider value={finalValue}>
       {children}
     </CandidatePortalContext.Provider>
   );
