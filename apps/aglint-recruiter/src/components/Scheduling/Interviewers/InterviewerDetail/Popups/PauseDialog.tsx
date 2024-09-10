@@ -107,11 +107,11 @@ function PauseDialog() {
         title='Pause Scheduling for this Module'
         slotButtons={
           <>
-            <UIButton size='md' onClick={close}>
+            <UIButton size='sm' variant='secondary' onClick={close}>
               Cancel
             </UIButton>
             <UIButton
-              size='md'
+              size='sm'
               isLoading={isSaving}
               onClick={() => {
                 if (isSaving) return;

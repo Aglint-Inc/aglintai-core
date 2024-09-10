@@ -108,11 +108,11 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
         onClose={close}
         slotButtons={
           <>
-            <UIButton size='md' onClick={close}>
+            <UIButton size='sm' variant='secondary' onClick={close}>
               Cancel
             </UIButton>
             <UIButton
-              size='md'
+              size='sm'
               disabled={isOngoingSchedules || isFetching || isSaving}
               isLoading={isSaving}
               onClick={async () => {

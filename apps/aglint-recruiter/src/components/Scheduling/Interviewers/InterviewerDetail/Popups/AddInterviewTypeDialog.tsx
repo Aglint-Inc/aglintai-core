@@ -88,7 +88,7 @@ function AddInterviewTypeDialog() {
         }
         slotButtons={
           <>
-            <UIButton size='sm' onClick={close}>
+            <UIButton size='sm' variant='secondary' onClick={close}>
               Cancel
             </UIButton>
             <UIButton

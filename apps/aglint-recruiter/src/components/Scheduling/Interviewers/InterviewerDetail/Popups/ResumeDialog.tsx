@@ -56,7 +56,8 @@ function ResumeDialog() {
         slotButtons={
           <>
             <UIButton
-              size='md'
+              size='sm'
+              variant='secondary'
               onClick={() => {
                 if (!isSaving) setIsResumeDialogOpen(false);
               }}
@@ -64,7 +65,7 @@ function ResumeDialog() {
               Cancel
             </UIButton>
             <UIButton
-              size='md'
+              size='sm'
               isLoading={isSaving}
               onClick={async () => {
                 if (!isSaving) {

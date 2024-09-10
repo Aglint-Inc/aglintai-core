@@ -55,10 +55,10 @@ function CalendarHeader({
             <UIButton
               variant='outline'
               size='sm'
+              icon={<ChevronLeft />}
               onClick={() => calendarApi.prev()}
-            >
-              <ChevronLeft className='h-4 w-4' />
-            </UIButton>
+            />
+
             <Typography fontWeight={500}>
               {currentViewType === 'listWeek' ||
               currentViewType === 'timeGridWeek'
@@ -71,10 +71,9 @@ function CalendarHeader({
             <UIButton
               variant='outline'
               size='sm'
+              icon={<ChevronRight />}
               onClick={() => calendarApi.next()}
-            >
-              <ChevronRight className='h-4 w-4' />
-            </UIButton>
+            />
           </Stack>
         </Grid>
         <Grid item xs={4} container justifyContent={'end'}>
