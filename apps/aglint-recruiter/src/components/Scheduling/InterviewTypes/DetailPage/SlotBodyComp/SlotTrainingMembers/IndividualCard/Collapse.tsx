@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { ButtonGhost } from '@devlink/ButtonGhost';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Text } from '@devlink/Text';
 import { TrainingDetailList } from '@devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@devlink2/TrainingProgressDetail';
@@ -16,6 +15,8 @@ import { getFullName } from '@/utils/jsonResume';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
 import { supabase } from '@/utils/supabase/client';
 
+import { UIButton } from '@/components/Common/UIButton';
+import { Minus, Plus } from 'lucide-react';
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
 
 function CollapseTrainingProgress({
@@ -284,7 +285,7 @@ function CollapseTrainingProgress({
         >
           <Stack direction={'row'} gap={1} alignItems={'center'}>
             Shadow
-            <IconButtonSoft
+            {/* <IconButtonSoft
               isDisabled={
                 shadowProgress.length // shadow complete
                   ? mutatedShadowProgress.length === 0
@@ -302,7 +303,25 @@ function CollapseTrainingProgress({
                   });
                 },
               }}
-            />
+            /> */}
+            <UIButton
+              size='sm'
+              variant='secondary'
+              disabled={
+                shadowProgress.length // shadow complete
+                  ? mutatedShadowProgress.length === 0
+                  : mutatedShadowProgress.length === 1
+              }
+              onClick={async () => {
+                await alterCount({
+                  type: 'shadow',
+                  count: shadow_to_complete - 1,
+                  module_relation_id: module_realtion_id,
+                });
+              }}
+            >
+              <Minus className='w-4 h-4' />
+            </UIButton>
             <MuiNumberfield
               isMarginTop={false}
               width='80px'
@@ -316,43 +335,41 @@ function CollapseTrainingProgress({
                 })
               }
             />
-            <IconButtonSoft
-              iconName='Add'
-              size={1}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  if (isSaving) return;
-                  alterCount({
-                    type: 'shadow',
-                    count: shadow_to_complete + 1,
-                    module_relation_id: module_realtion_id,
-                  });
-                },
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => {
+                if (isSaving) return;
+                alterCount({
+                  type: 'shadow',
+                  count: shadow_to_complete + 1,
+                  module_relation_id: module_realtion_id,
+                });
               }}
-            />
+            >
+              <Plus className='w-4 h-4' />
+            </UIButton>
           </Stack>
           <Stack direction={'row'} gap={1} alignItems={'center'}>
             Reverse Shadow
-            <IconButtonSoft
-              iconName='remove'
-              isDisabled={
+            <UIButton
+              size='sm'
+              variant='secondary'
+              disabled={
                 reverseShadowProgress.length
                   ? mutatedReverseShadowProgress.length === 0
                   : mutatedReverseShadowProgress.length === 1
               }
-              color={'neutral'}
-              size={1}
-              onClickButton={{
-                onClick: async () => {
-                  await alterCount({
-                    type: 'reverse_shadow',
-                    count: reverse_shadow_to_complete - 1,
-                    module_relation_id: module_realtion_id,
-                  });
-                },
+              onClick={async () => {
+                await alterCount({
+                  type: 'reverse_shadow',
+                  count: reverse_shadow_to_complete - 1,
+                  module_relation_id: module_realtion_id,
+                });
               }}
-            />
+            >
+              <Minus className='w-4 h-4' />
+            </UIButton>
             <MuiNumberfield
               isMarginTop={false}
               width='80px'
@@ -369,21 +386,20 @@ function CollapseTrainingProgress({
                 })
               }
             />
-            <IconButtonSoft
-              iconName='Add'
-              size={1}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  if (isSaving) return;
-                  alterCount({
-                    type: 'reverse_shadow',
-                    count: reverse_shadow_to_complete + 1,
-                    module_relation_id: module_realtion_id,
-                  });
-                },
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => {
+                if (isSaving) return;
+                alterCount({
+                  type: 'reverse_shadow',
+                  count: reverse_shadow_to_complete + 1,
+                  module_relation_id: module_realtion_id,
+                });
               }}
-            />
+            >
+              <Plus className='w-4 h-4' />
+            </UIButton>
           </Stack>
         </Stack>
       </Collapse>

@@ -1,15 +1,14 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
 import { Text } from '@devlink/Text';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
-import { Dialog, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { deleteRelationByUserDbDelete } from '../../../InterviewTypes/queries/utils';
 import {
   setisRemoveModuleDialogOpen,
@@ -102,106 +101,97 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
   };
 
   return (
-    <Dialog open={isRemoveModuleDialogOpen} onClose={close}>
-      <DcPopup
-        onClickClosePopup={{
-          onClick: close,
-        }}
-        slotBody={
-          <>
-            <Text
-              color={'neutral'}
-              size={2}
-              content={
-                'By clicking remove the member will be permanently removed from this interview type'
-              }
-            />
-            {isFetching ? (
-              <Stack>
-                <SkeletonParagraph />
-              </Stack>
-            ) : (
-              <Stack spacing={'var(--space-2)'}>
-                {isOngoingSchedules ? (
-                  <GlobalBannerShort
-                    color={'error'}
-                    iconName={'warning'}
-                    textTitle={'User cannot be removed'}
-                    textDescription={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
-                    slotButtons={<></>}
-                  />
-                ) : (
-                  <>
-                    {connectedJobs.length > 0 ? (
-                      <GlobalBannerShort
-                        color={'warning'}
-                        iconName={'error'}
-                        textTitle={`Here is a list of job's interview plan that will be impacted:`}
-                        textDescription=''
-                        slotButtons={
-                          <Stack
-                            display={'flex'}
-                            flexDirection={'column'}
-                            spacing={'var(--space-2)'}
-                          >
-                            <Text
-                              size={1}
-                              color={'neutral'}
-                              content={connectedJobs
-                                .flatMap((job) => job.job_title)
-                                .join(', ')}
-                            />
-                            <Text
-                              size={1}
-                              color={'neutral'}
-                              content={`If user exist in previous scheduled interviews, the user will be removed from those schedules.`}
-                            />
-                          </Stack>
-                        }
-                      />
-                    ) : (
-                      <GlobalBannerShort
-                        color={'warning'}
-                        iconName={'error'}
-                        textTitle={`Note :`}
-                        textDescription='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
-                        slotButtons={<></>}
-                      />
-                    )}
-                  </>
-                )}
-              </Stack>
-            )}
-          </>
-        }
-        popupName={'Remove Member'}
+    <>
+      <UIDialog
+        open={isRemoveModuleDialogOpen}
+        title='Remove Member'
+        onClose={close}
         slotButtons={
           <>
-            <ButtonSoft
-              size={2}
-              color={'neutral'}
-              textButton={'Cancel'}
-              onClickButton={{
-                onClick: close,
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              color={'error'}
-              textButton={'Remove'}
-              isDisabled={isOngoingSchedules || isFetching || isSaving}
+            <UIButton size='md' onClick={close}>
+              Cancel
+            </UIButton>
+            <UIButton
+              size='md'
+              disabled={isOngoingSchedules || isFetching || isSaving}
               isLoading={isSaving}
-              onClickButton={{
-                onClick: async () => {
-                  if (isSaving) return;
-                  onClickRemove(selRelation);
-                },
+              onClick={async () => {
+                if (isSaving) return;
+                onClickRemove(selRelation);
               }}
-            />
+            >
+              Remove
+            </UIButton>
           </>
         }
-      />
-    </Dialog>
+      >
+        <>
+          <Text
+            color={'neutral'}
+            size={2}
+            content={
+              'By clicking remove the member will be permanently removed from this interview type'
+            }
+          />
+          {isFetching ? (
+            <Stack>
+              <SkeletonParagraph />
+            </Stack>
+          ) : (
+            <Stack spacing={'var(--space-2)'}>
+              {isOngoingSchedules ? (
+                <GlobalBannerShort
+                  color={'error'}
+                  iconName={'warning'}
+                  textTitle={'User cannot be removed'}
+                  textDescription={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
+                  slotButtons={<></>}
+                />
+              ) : (
+                <>
+                  {connectedJobs.length > 0 ? (
+                    <GlobalBannerShort
+                      color={'warning'}
+                      iconName={'error'}
+                      textTitle={`Here is a list of job's interview plan that will be impacted:`}
+                      textDescription=''
+                      slotButtons={
+                        <Stack
+                          display={'flex'}
+                          flexDirection={'column'}
+                          spacing={'var(--space-2)'}
+                        >
+                          <Text
+                            size={1}
+                            color={'neutral'}
+                            content={connectedJobs
+                              .flatMap((job) => job.job_title)
+                              .join(', ')}
+                          />
+                          <Text
+                            size={1}
+                            color={'neutral'}
+                            content={`If user exist in previous scheduled interviews, the user will be removed from those schedules.`}
+                          />
+                        </Stack>
+                      }
+                    />
+                  ) : (
+                    <GlobalBannerShort
+                      color={'warning'}
+                      iconName={'error'}
+                      textTitle={`Note :`}
+                      textDescription='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
+                      slotButtons={<></>}
+                    />
+                  )}
+                </>
+              )}
+            </Stack>
+          )}
+        </>
+      </UIDialog>
+    </>
   );
 }
 

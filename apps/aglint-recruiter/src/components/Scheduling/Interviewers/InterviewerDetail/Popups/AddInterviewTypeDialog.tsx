@@ -1,18 +1,12 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import {
-  Autocomplete,
-  Dialog,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
 import {
@@ -84,76 +78,74 @@ function AddInterviewTypeDialog() {
 
   return (
     <>
-      <Dialog
+      <UIDialog
         open={isAddInterviewTypeDialogOpen}
-        onClose={() => {
-          setIsAddInterviewTypeDialogOpen(false);
-        }}
+        onClose={close}
+        title={
+          addInterviewType === 'qualified'
+            ? 'Add to Qualified'
+            : 'Add to Training'
+        }
+        slotButtons={
+          <>
+            <UIButton size='sm' onClick={close}>
+              Cancel
+            </UIButton>
+            <UIButton
+              size='sm'
+              onClick={addModule}
+              disabled={!selectedModule?.id}
+            >
+              Add
+            </UIButton>
+          </>
+        }
       >
-        <DcPopup
-          popupName={
-            addInterviewType === 'qualified'
-              ? 'Add to Qualified'
-              : 'Add to Training'
-          }
-          slotBody={
-            <Stack>
-              <Typography mb={1}>
-                Pick an interview type from the list to add.
-              </Typography>
-              <Autocomplete
-                fullWidth
-                disabled={isLoading}
-                disableClearable
-                options={filteredModules}
-                onChange={(_event, value) => {
-                  if (value) {
-                    setSelectedModule(value);
-                  }
-                }}
-                autoComplete={false}
-                getOptionLabel={(option) => option.name}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props}>
-                      <Typography variant='body1' color={'var(--neutral-12)'}>
-                        {option.name}
-                      </Typography>
-                    </li>
-                  );
-                }}
-                renderInput={(params) => {
-                  return (
-                    <TextField
-                      {...params}
-                      placeholder='Ex. Initial Screening'
-                    />
-                  );
-                }}
-              />
-            </Stack>
-          }
-          onClickClosePopup={{ onClick: close }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: close,
-                }}
-              />
-              <ButtonSolid
-                size={2}
-                textButton={'Add'}
-                isDisabled={!selectedModule?.id}
-                onClickButton={{ onClick: addModule }}
-              />
-            </>
-          }
-        />
-      </Dialog>
+        <Stack>
+          <Typography mb={1}>
+            Pick an interview type from the list to add.
+          </Typography>
+          <UISelectDropDown
+            disabled={isLoading}
+            menuOptions={filteredModules?.map((module) => ({
+              name: module.name,
+              value: module.id,
+            }))}
+            onValueChange={(id: string) => {
+              // eslint-disable-next-line @next/next/no-assign-module-variable
+              const module = filteredModules.find((mod) => mod.id === id);
+              setSelectedModule(module);
+            }}
+          />
+          {/* <Autocomplete
+            fullWidth
+            disabled={isLoading}
+            disableClearable
+            options={filteredModules}
+            onChange={(_event, value) => {
+              if (value) {
+                setSelectedModule(value);
+              }
+            }}
+            autoComplete={false}
+            getOptionLabel={(option) => option.name}
+            renderOption={(props, option) => {
+              return (
+                <li {...props}>
+                  <Typography variant='body1' color={'var(--neutral-12)'}>
+                    {option.name}
+                  </Typography>
+                </li>
+              );
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField {...params} placeholder='Ex. Initial Screening' />
+              );
+            }}
+          /> */}
+        </Stack>
+      </UIDialog>
     </>
   );
 }
