@@ -14,16 +14,30 @@ import toast from '@/utils/toast';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
+import UITypography from '@/components/Common/UITypography';
+import { useRequests } from '@/context/RequestsContext';
+import { useRouter } from 'next/router';
+import { UIButton } from '@/components/Common/UIButton';
+import { RefreshCcw } from 'lucide-react';
 
 function EmailPreviewSelfSchedule() {
   const [fetching, setFetching] = useState(false);
-
+  const router = useRouter();
   const { recruiterUser } = useAuthDetails();
+
+  const {
+    requests: { data: requestList },
+  } = useRequests();
+
+  const selectedRequest = Object.values(requestList)
+    .flat()
+    .find((request) => request?.id === router.query?.id);
 
   const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
     {
       is_preview: true,
       organizer_id: recruiterUser.user_id,
+      application_id: selectedRequest.application_id,
     };
 
   const { emailData, filteredSchedulingOptions, selectedCombIds } =
@@ -61,10 +75,12 @@ function EmailPreviewSelfSchedule() {
   };
 
   return (
-    <EmailPreviewOnScheduling
-      showSelectedSchedules={true}
-      textSlotCount={`You have selected ${selectedCombIds.length} slots across ${numberOfDays} days.`}
-      slotSelectedScheduleOptions={selectedSlots.map((item, index) => {
+    <div className='flex flex-col gap-2 p-4 h-[calc(100vh-96px)] overflow-scroll'>
+      <UITypography>
+        You have selected {selectedCombIds.length} slots across {numberOfDays}
+        days.
+      </UITypography>
+      {selectedSlots.map((item, index) => {
         return (
           <DayCardWrapper
             key={item.date_range.join(', ')}
@@ -83,82 +99,55 @@ function EmailPreviewSelfSchedule() {
           />
         );
       })}
-      textEmailPreview={
-        <Stack spacing={1} direction={'column'}>
-          <Typography>
-            This email will be sent to the candidate. To edit the content, go to
-            the template section, make edits, then click refresh.
-            <br />
-            {`Click "Request Availability" to send.`}
-          </Typography>
+      <Stack spacing={1} direction={'column'}>
+        <Typography>
+          This email will be sent to the candidate. To edit the content, go to
+          the template section, make edits, then click refresh.
+        </Typography>
+      </Stack>
+      {fetching ? (
+        <Stack height={'80vh'} width={'538px'}>
+          <Loader />
         </Stack>
-      }
-      slotEmailPreview={
-        <ShowCode>
-          <ShowCode.When isTrue={fetching}>
-            <Stack height={'80vh'} width={'538px'}>
-              <Loader />
-            </Stack>
-          </ShowCode.When>
-          <ShowCode.Else>
-            <Stack
-              display={'flex'}
-              gap={'32px'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-              width={'100%'}
-              padding={'0px 20px'}
-            >
-              <Stack>
-                <GlobalBannerInline
-                  textContent='This is a preview only. All actions in this email are disabled.'
-                  iconName='info'
-                  slotButton={<></>}
-                  color={'warning'}
-                />
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                justifyItems={'start'}
-                minWidth={'152px'}
+      ) : (
+        <>
+          <div className='flex flex-row justify-between items-center w-full gap-4'>
+            <GlobalBannerInline
+              textContent='This is a preview only. All actions in this email are disabled.'
+              iconName='info'
+              slotButton={<></>}
+              color={'warning'}
+            />
+            <div className='flex flex-row space-x-2 items-start'>
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={() => {
+                  window.open(
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
+                  );
+                }}
               >
-                <ButtonSoft
-                  size={1}
-                  textButton={'Edit Email Template'}
-                  color={'accent'}
-                  onClickButton={{
-                    onClick: () => {
-                      window.open(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
-                      );
-                    },
-                  }}
-                />
-                <IconButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  iconName={'refresh'}
-                  onClickButton={{
-                    onClick: getEmail,
-                  }}
-                />
-              </Stack>
-            </Stack>
-            <Stack sx={{ py: 'var(--space-4)' }}>
-              <iframe
-                width={'510px'}
-                height={'750px'}
-                color='white'
-                srcDoc={emailData?.html}
-                title='Previw Email'
-              />
-            </Stack>
-          </ShowCode.Else>
-        </ShowCode>
-      }
-    />
+                Edit Email Template
+              </UIButton>
+              <UIButton variant='secondary' size='sm' onClick={getEmail}>
+                <RefreshCcw size={14} />
+              </UIButton>
+            </div>
+          </div>
+
+          <Stack sx={{ py: 'var(--space-4)' }}>
+            <iframe
+              width={'510px'}
+              height={'750px'}
+              color='white'
+              srcDoc={emailData?.html}
+              title='Previw Email'
+            />
+          </Stack>
+        </>
+      )}
+    </div>
   );
 }
 
