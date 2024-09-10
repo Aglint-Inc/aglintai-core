@@ -1,7 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { Loader2, PlusCircle } from 'lucide-react';
+import { Loader2, WandSparkles } from 'lucide-react';
 
 import { setCandidateAvailabilityDrawerOpen } from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useMeetingList } from '@/components/Requests/ViewRequestDetails/hooks';
@@ -73,8 +73,8 @@ const ChooseScheduleMode = () => {
               setShowEditDialog(true);
             }}
           >
-            <PlusCircle className='mr-2 h-4 w-4' />
-            Add Ai Actions
+            <WandSparkles className='mr-2 h-4 w-4' />
+            Add Automation
           </Button>
         </div>
       </div>

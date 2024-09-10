@@ -1,5 +1,4 @@
-import { RequestProgress } from '@devlink2/RequestProgress';
-
+import { RequestProgressTracker } from '../../RequestProgressTracker';
 import { type EventProgressItem, type ProgressDataItem } from '../types';
 import RequestEvent from './RequestEvent';
 
@@ -16,12 +15,10 @@ function RequestProgressWrapper({
   EventProgress: EventProgress;
 }) {
   return progressData.map((progress, index) => (
-    <RequestProgress
+    <RequestProgressTracker
       key={index}
       isDividerVisible={progress.isDividerVisible}
-      indicator={progress.indicator}
       circleIndicator={progress.circleIndicator}
-      slotIndicator={progress.slotIndicator}
       textRequestProgress={progress.textRequestProgress}
       slotProgress={
         <>
