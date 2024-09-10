@@ -349,7 +349,7 @@ const Interview = ({
     },
     { qualified: [], training: [] } as {
       // eslint-disable-next-line no-unused-vars
-      [key in SessionUser['training_status']]: SessionUser[];
+      [_key in SessionUser['training_status']]: SessionUser[];
     },
   );
 
@@ -569,9 +569,9 @@ export const ScheduleTypeField = ({
     icon: React.JSX.Element;
   }[];
   // eslint-disable-next-line no-unused-vars
-  const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    e,
-  ) => {
+  const _onChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
     const schedule = options.find((m) => m.value === e.target.value);
     if (schedule) handleTypeChange(schedule.value);
   };

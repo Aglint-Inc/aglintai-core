@@ -25,10 +25,11 @@ export default function EmptyJobDashboard({
           onClick: handleClickAddJob,
         }}
         isSelectTitleVisible={true}
-        onClickRequestIntegration={{
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          onClick: () => {},
-        }}
+        onClickRequestIntegration={
+          {
+            // onClick: () => {},
+          }
+        }
         onClickGreenHouse={{
           onClick: () => {
             router.push(ROUTES['/integrations']());

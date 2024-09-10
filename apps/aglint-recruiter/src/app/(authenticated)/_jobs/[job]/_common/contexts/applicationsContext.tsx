@@ -146,7 +146,7 @@ const useApplicationsContext = () => {
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
-        {} as { [id in keyof typeof EMAIL_VISIBILITIES]: boolean },
+        {} as { [_id in keyof typeof EMAIL_VISIBILITIES]: boolean },
       ),
     [EMAIL_VISIBILITIES, job?.flags, section],
   );
@@ -159,7 +159,7 @@ const useApplicationsContext = () => {
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
-        {} as { [id in keyof typeof CASCADE_VISIBILITIES]: boolean },
+        {} as { [_id in keyof typeof CASCADE_VISIBILITIES]: boolean },
       ),
     [CASCADE_VISIBILITIES, job?.flags, section],
   );

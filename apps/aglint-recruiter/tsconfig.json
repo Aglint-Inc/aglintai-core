@@ -42,6 +42,10 @@
       "@/job/hiring-team/*": [
         "./src/app/(authenticated)/_jobs/[job]/hiring-team/_common/*"
       ],
+      "@/workflows/*": ["./src/app/(authenticated)/_workflows/_common/*"],
+      "@/workflow/*": [
+        "./src/app/(authenticated)/_workflows/[workflow]/_common/*"
+      ],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],

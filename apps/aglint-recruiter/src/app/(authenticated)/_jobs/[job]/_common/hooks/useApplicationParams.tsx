@@ -100,7 +100,7 @@ export const useApplicationsParams = () => {
   const setFilters = (newFilters: Partial<typeof safeFilters>) => {
     const { locations, stages, ...rest } = newFilters;
     // eslint-disable-next-line no-unused-vars
-    const { search, ...safeFilters } = filters;
+    const { search: _search, ...safeFilters } = filters;
     if (locations) setLocations(locations);
     if (stages) setStages(stages);
     const params = Object.entries({ ...(safeFilters ?? {}), ...(rest ?? {}) })

@@ -9,6 +9,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { X as CloseIcon } from 'lucide-react'; // Import Lucide Close Icon
 import React from 'react';
 import { UIButton } from '../UIButton';
+import UITypography from '../UITypography';
 
 function UIDrawer({
   children,
@@ -17,6 +18,7 @@ function UIDrawer({
   slotBottom,
   title,
   size = 'half',
+  calendar,
 }: {
   children?: React.ReactNode;
   open: boolean;
@@ -24,6 +26,7 @@ function UIDrawer({
   slotBottom?: React.ReactNode;
   title: string;
   size?: 'sm' | 'md' | 'lg' | 'full' | 'half';
+  calendar?: React.ReactNode;
 }) {
   // Determine width based on size variant
   const widthClass = {
@@ -37,28 +40,35 @@ function UIDrawer({
   return (
     <Drawer open={open} onClose={onClose} direction='right'>
       <DrawerContent
-        className={`h-screen top-0 right-0 left-auto mt-0 ${widthClass} rounded-none`}
+        className={`h-screen top-0 right-0 left-auto mt-0 ${widthClass} rounded-none `}
       >
-        <UIButton
-          onClick={onClose}
-          className='absolute top-2 right-2 p-2 text-gray-600 hover:text-gray-800 h-8 w-8'
-          variant='ghost'
-        >
-          <CloseIcon size={16} />
-        </UIButton>
-        <DrawerHeader className='border-b border-gray-200 h-12'>
-          <div className='flex flex-row items-center h-full'>
-            <DrawerTitle className='text-sm '>{title}</DrawerTitle>
+        <div className='flex flex-row w-full'>
+          {calendar}
+          <div className='border-l border-gray-200 w-full'>
+            <UIButton
+              onClick={onClose}
+              className='absolute top-2 right-2 p-2 text-gray-600 hover:text-gray-800 h-8 w-8'
+              variant='ghost'
+            >
+              <CloseIcon size={16} />
+            </UIButton>
+            <DrawerHeader className='border-b border-gray-200 items-center p-3'>
+              <div className='flex flex-row items-center'>
+                <UITypography className='text-sm' fontBold='normal'>
+                  {title}
+                </UITypography>
+              </div>
+            </DrawerHeader>
+            <ScrollArea>{children}</ScrollArea>
+            {slotBottom && (
+              <DrawerFooter className='border-t border-gray-200 h-12'>
+                <div className='flex flex-row items-center justify-center gap-4 h-full'>
+                  {slotBottom}
+                </div>
+              </DrawerFooter>
+            )}
           </div>
-        </DrawerHeader>
-        <ScrollArea>{children}</ScrollArea>
-        {slotBottom && (
-          <DrawerFooter className='border-t border-gray-200 h-12'>
-            <div className='flex flex-row items-center justify-center gap-4 h-full'>
-              {slotBottom}
-            </div>
-          </DrawerFooter>
-        )}
+        </div>
       </DrawerContent>
     </Drawer>
   );

@@ -8,7 +8,7 @@ import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Calendar, FileBadge2 } from 'lucide-react';
+import { CalendarIcon, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -25,6 +25,16 @@ import {
   useApplicationDetailStore,
 } from '../../../store';
 import { type Interviewer } from '../StageSessions/EditDrawer/types';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { Calendar } from '@components/ui/calendar';
+import { cn } from '@lib/utils';
+import { addDays, format } from 'date-fns';
+import { Button } from '@components/ui/button';
+import { DateRange } from 'react-day-picker';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
@@ -257,47 +267,59 @@ export const RangePicker = ({
   setDateRange,
 }: {
   dateRange: { start: string; end: string };
-  // eslint-disable-next-line no-unused-vars
   setDateRange: (x: { start: string; end: string }) => void;
 }) => {
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(dateRange.start),
+    to: new Date(dateRange.start),
+  });
+
+  useEffect(() => {
+    setDateRange({
+      start: dayjs(date?.from).toISOString(),
+      end: dayjs(date?.to).toISOString(),
+    });
+  }, [date]);
+
   return (
-    <Stack spacing={2} direction={'row'} width={'100%'}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          value={dayjs(dateRange.start)}
-          onChange={(newValue) => {
-            setDateRange({
-              start: dayjs(newValue).toISOString(),
-              end: dateRange.end,
-            });
-          }}
-          minDate={dayjs()}
-          slots={{
-            openPickerIcon: () => <Calendar size={20} />,
-          }}
-          slotProps={{ textField: { fullWidth: true } }}
-        />
-      </LocalizationProvider>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          value={dayjs(dateRange.end)}
-          minDate={dayjs(dateRange.start)}
-          maxDate={dayjs(dateRange.start).add(1, 'month')}
-          onChange={(newValue) => {
-            setDateRange({
-              start: dateRange.start,
-              end: dayjs(newValue).toISOString(),
-            });
-          }}
-          slots={{
-            openPickerIcon: () => <Calendar size={20} />,
-          }}
-          slotProps={{
-            textField: { fullWidth: true },
-          }}
-        />
-      </LocalizationProvider>
-    </Stack>
+    <div className={cn('grid gap-2')}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id='date'
+            variant={'outline'}
+            className={cn(
+              'w-[300px] justify-start text-left font-normal',
+              !date && 'text-muted-foreground',
+            )}
+          >
+            <CalendarIcon className='mr-2 h-4 w-4' />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, 'LLL dd, y')} -{' '}
+                  {format(date.to, 'LLL dd, y')}
+                </>
+              ) : (
+                format(date.from, 'LLL dd, y')
+              )
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-auto p-0' align='start'>
+          <Calendar
+            initialFocus
+            mode='range'
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 };
 

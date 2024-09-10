@@ -14,7 +14,7 @@ function RenderResourceContent(resourceInfo) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <div className='flex gap-4 p-4'>
+        <div className='flex gap-2 p-2'>
           <MuiAvatar
             src={data.profile_pic}
             level={data.name}
@@ -24,8 +24,8 @@ function RenderResourceContent(resourceInfo) {
             fontSize='12px'
           />
           <div className='flex flex-col'>
-            <p className='text-sm text-neutral-12'>{data.name}</p>
-            <p className='text-sm'>{data.position}</p>
+            <p className='text-xs'>{data.name}</p>
+            <p className='text-xs text-neutral-400'>{data.position}</p>
           </div>
         </div>
       </TooltipTrigger>
