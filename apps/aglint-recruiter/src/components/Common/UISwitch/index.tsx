@@ -7,7 +7,7 @@ import { cn } from '@lib/utils';
 type UISwitchProps = React.ComponentPropsWithoutRef<
   typeof SwitchPrimitives.Root
 > & {
-  size?: 'sm' | 'md' | 'lg'; // Define size variants
+  size?: 'sm' | 'md';
 };
 
 const sizeClasses = {
