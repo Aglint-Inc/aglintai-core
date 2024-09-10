@@ -17,6 +17,7 @@ import {
   hideEmail,
   sendMagicLink,
 } from '@/candidate/authenticated/uilts';
+import { UIButton } from '@/components/Common/UIButton';
 import { supabase } from '@/utils/supabase/client';
 
 const Page = () => {
@@ -105,9 +106,14 @@ const Send = ({ email, isSending, handleSendLink }) => {
       </CardContent>
       {email && (
         <CardFooter>
-          <Button className='w-full' onClick={handleSendLink}>
-            {isSending ? 'Sending...' : 'Send Login Link'}
-          </Button>
+          <UIButton
+            className='w-full'
+            onClick={handleSendLink}
+            isLoading={isSending}
+            disabled={isSending}
+          >
+            Send Login Link
+          </UIButton>
         </CardFooter>
       )}
     </Card>
