@@ -34,6 +34,7 @@ export type BreadcrumContextType = {
 /* eslint-disable no-unused-vars */
 const contextInitialState: BreadcrumContextType = {
   breadcrum: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setBreadcrum: () => {},
 };
 /* eslint-enable no-unused-vars */

@@ -1,10 +1,10 @@
-import { NewTabPill } from '@devlink3/NewTabPill';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { useKeyPress } from '@/hooks/useKeyPress';
 
 import { type TabInterviewerDetail } from '.';
+import UITab, { UITabWrapper } from '@/components/Common/UITab';
 
 function Tabs() {
   const router = useRouter();
@@ -74,23 +74,23 @@ function Tabs() {
 
   return (
     <>
-      {tabs.map((item, i) => [
-        <NewTabPill
-          key={i}
-          textLabel={item.name}
-          isPillActive={tab === item.queryParam}
-          onClickPill={{
-            onClick: () => {
+      <UITabWrapper>
+        {tabs.map((item, index) => (
+          <UITab
+            key={index}
+            textLabel={item.name}
+            isPillActive={tab === item.queryParam}
+            onClickPill={() => {
               const currentQuery = { ...router.query };
               currentQuery.tab = item.queryParam;
               router.replace({
                 pathname: router.pathname,
                 query: currentQuery,
               });
-            },
-          }}
-        />,
-      ])}
+            }}
+          />
+        ))}
+      </UITabWrapper>
     </>
   );
 }

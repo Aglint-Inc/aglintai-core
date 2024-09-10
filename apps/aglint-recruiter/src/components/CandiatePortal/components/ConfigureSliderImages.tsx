@@ -17,8 +17,15 @@ import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 import ImagesUpload from './ImagesUpload';
 
 export function ConfigureSliderImages() {
-  const { data, updateImages, deleteImages, setIsDialogOpen, isDialogOpen } =
-    usePortalSettings();
+  const {
+    data,
+    updateImages,
+    deleteImages,
+    setIsDialogOpen,
+    isDialogOpen,
+    isImageRemoving,
+    isImageUploading,
+  } = usePortalSettings();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const dialogClose = () => {
     setIsDialogOpen(null);
@@ -56,6 +63,11 @@ export function ConfigureSliderImages() {
                 height={150}
                 className='w-full h-full object-cover relative z-10'
               />
+              {isImageRemoving === image && (
+                <div className='w-[150px] h-[150px] absolute top-0 left-0 bg-white z-[21] flex items-center justify-center'>
+                  Removing ...
+                </div>
+              )}
             </div>
           ))}
 
@@ -97,11 +109,12 @@ export function ConfigureSliderImages() {
                 <Button
                   type='submit'
                   className='w-full'
+                  disabled={isImageUploading}
                   onClick={() => {
                     updateImages(selectedImages, setSelectedImages);
                   }}
                 >
-                  Save changes
+                  {isImageUploading ? 'Uploading...' : 'Save Changes'}
                 </Button>
               </DialogFooter>
             </DialogContent>

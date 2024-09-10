@@ -144,6 +144,7 @@ export const EditProfileDialog = ({
         if (error) return;
         let profile_image = recruiterUser.profile_image;
         setLoading(true);
+
         if (isImageChanged) {
           const { data } = await supabase.storage
             .from('recruiter-user')

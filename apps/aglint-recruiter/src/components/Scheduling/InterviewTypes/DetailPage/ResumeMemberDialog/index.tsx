@@ -27,6 +27,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
         <>
           <UIButton
             variant='secondary'
+            size='sm'
             onClick={() => setIsResumeDialogOpen(false)}
           >
             Cancel
@@ -34,6 +35,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
           <UIButton
             isLoading={isSaving}
             variant='default'
+            size='sm'
             onClick={async () => {
               if (isSaving) return;
               else {

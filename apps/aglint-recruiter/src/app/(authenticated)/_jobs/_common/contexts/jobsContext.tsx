@@ -72,7 +72,7 @@ const useJobContext = () => {
   const initialLoad = !!(jobs.status !== 'pending' && recruiter?.id);
 
   const handleGenerateJd = useCallback(
-    async (job_id: string, regenerate: boolean = false) => {
+    async (job_id: string, regenerate = false) => {
       return await handleJobApi('profileScore', { job_id, regenerate });
     },
     [],

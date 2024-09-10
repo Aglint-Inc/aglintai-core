@@ -49,6 +49,7 @@ type specificLocationType = 'all_locations' | 'specific_locations';
 function Holidays() {
   const { recruiter } = useAuthDetails();
   const { isSaving, updateSettings } = useCompanyDetailComp();
+  const [isRemoving, setIsRemoving] = useState<string>(null);
   const eventRef = useRef<HTMLInputElement>(null);
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
@@ -93,7 +94,7 @@ function Holidays() {
   const [addDayOffOpen, setDaysOffOpen] = useState(false);
 
   const handleAddDayOff = async (newDayoff: holidayType) => {
-    updateSettings({
+    await updateSettings({
       ...recruiter.scheduling_settings,
       totalDaysOff: [...daysOff, newDayoff],
     });
@@ -101,13 +102,15 @@ function Holidays() {
     setDaysOffOpen(false);
   };
   const handleDeleteDayOff = async (date: string) => {
+    setIsRemoving(date);
     const afterDeleteDayOff = daysOff.filter((dayoff) => dayoff.date !== date);
-    updateSettings({
+    await updateSettings({
       ...recruiter.scheduling_settings,
       totalDaysOff: afterDeleteDayOff,
     });
     setDaysOff(afterDeleteDayOff);
     setDaysOffOpen(false);
+    setIsRemoving(null);
   };
 
   return (
@@ -172,9 +175,10 @@ function Holidays() {
                       <Button
                         variant='ghost'
                         size='sm'
+                        style={{ minWidth: '100px' }}
                         onClick={() => handleDeleteDayOff(item.date)}
                       >
-                        Delete
+                        {isRemoving === item.date ? 'Deleting...' : 'Delete'}
                       </Button>
                     </TableCell>
                   </TableRow>

@@ -1,4 +1,3 @@
-import { ButtonSurface } from '@devlink/ButtonSurface';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { useRouter } from 'next/router';
@@ -7,6 +6,7 @@ import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/components/Common/Loader';
 import { type ApiResponseGetMember } from '@/pages/api/get_member';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { type SchedulesSupabase } from '../../../schedules-query';
 import { useModuleRelations } from '../hooks';
@@ -59,55 +59,40 @@ function Overview({
       <InterviewerDetailOverview
         slotButtonSchedule={
           upcomingScheduleList?.length ? (
-            <ButtonSurface
-              textButton='View all'
-              size={1}
-              onClickButton={{
-                onClick: () => {
-                  router.push(
-                    `/user/profile/${user_id}?profile=true&tab=allschedules`,
-                  );
-                },
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => {
+                router.push(
+                  `/user/profile/${user_id}?profile=true&tab=allschedules`,
+                );
               }}
-            />
+            >
+              View all
+            </UIButton>
           ) : (
             <></>
           )
         }
         slotButtonTraining={
           trainingModulesList?.length ? (
-            <ButtonSurface
-              textButton='View all'
-              size={1}
-              onClickButton={{
-                onClick: () => {
-                  router.push(
-                    `/user/profile/${user_id}?profile=true&tab=qualified`,
-                  );
-                },
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => {
+                router.push(
+                  `/user/profile/${user_id}?profile=true&tab=qualified`,
+                );
               }}
-            />
+            >
+              View all
+            </UIButton>
           ) : (
             <></>
           )
         }
         isUpcomingVisible={false}
         slotUpcomingSchedule={<></>}
-        // slotUpcomingSchedule={
-        //   upcomingScheduleList.length > 0 ? (
-        //     upcomingScheduleList.map((meetingDetails, i) => {
-        //       return (
-        //         <ScheduleMeetingCard key={i} meetingDetails={meetingDetails} />
-        //       );
-        //     })
-        //   ) : (
-        //     <GlobalEmptyState
-        //       textDesc='No upcoming interviews found.'
-        //       size={6}
-        //       iconName='event'
-        //     />
-        //   )
-        // }
         slotTrainingModules={
           !isLoading ? (
             <>

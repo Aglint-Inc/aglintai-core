@@ -16,6 +16,7 @@ function ScheduleFilter() {
   }));
 
   const { filterSlots } = useSelfSchedulingDrawer({
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     refetch: () => {},
   });
 

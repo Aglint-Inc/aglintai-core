@@ -201,6 +201,7 @@ function ConfirmAvailability() {
                                   ],
                                   plans: item.selected_dates[0].plans,
                                 }}
+                                // eslint-disable-next-line @typescript-eslint/no-empty-function
                                 onClickSelect={() => {}}
                                 isDayCollapseNeeded={false}
                                 isSlotCollapseNeeded={false}
@@ -208,6 +209,7 @@ function ConfirmAvailability() {
                                 isRadioNeeded={false}
                                 isSlotCheckboxNeeded={false}
                                 index={index}
+                                // eslint-disable-next-line @typescript-eslint/no-empty-function
                                 setSelectedCombIds={() => {}}
                               />
                             );
