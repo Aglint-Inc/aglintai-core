@@ -41,8 +41,7 @@ export const useInviteSlots = (params: InviteSlotsParams) => {
 export const useConfirmSlots = () => {
   const queryClient = useQueryClient();
   // eslint-disable-next-line no-unused-vars
-  const { enabled, ...params } = useInviteParams();
-  // meta.data.filter_json.selected_options
+  const { enabled: _, ...params } = useInviteParams();
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
     mutationFn: async ({

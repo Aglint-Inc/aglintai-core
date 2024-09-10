@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import {
   createContext,
   memo,
-  PropsWithChildren,
+  type PropsWithChildren,
   useEffect,
   useMemo,
   useRef,
@@ -19,7 +19,7 @@ import {
   validateJd,
 } from '@/job/utils';
 import { useJobs } from '@/jobs/hooks';
-import { Job } from '@/jobs/types';
+import type { Job } from '@/jobs/types';
 import { jobQueries, useInvalidateJobQueries, useJobSync } from '@/queries/job';
 import {
   useUploadApplication,

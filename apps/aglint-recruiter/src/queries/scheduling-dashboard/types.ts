@@ -17,7 +17,7 @@ export type SchedulingDashboardTypes = {
     {
       training_status_count: {
         // eslint-disable-next-line no-unused-vars
-        [id in Enums['status_training']]: number;
+        [_id in Enums['status_training']]: number;
       };
     }
   >;
@@ -48,9 +48,9 @@ export type CustomType<
   T,
   U extends T extends any[]
     ? // eslint-disable-next-line no-unused-vars
-      Partial<{ [id in keyof T[number]]: any }>
+      Partial<{ [_id in keyof T[number]]: any }>
     : // eslint-disable-next-line no-unused-vars
-      Partial<{ [id in keyof T]: any }>,
+      Partial<{ [_id in keyof T]: any }>,
 > = T extends any[] ? (Omit<T[number], keyof U> & U)[] : Omit<T, keyof U> & U;
 
 type TrainingTypes = Exclude<Enums['interviewer_type'], 'qualified'>;
@@ -68,5 +68,5 @@ type InterviewTrainingProgressType = ({
   module: Pick<InterviewModulesType[number], 'name' | 'settings' | 'id'>;
 } & {
   // eslint-disable-next-line no-unused-vars
-  count: { [key in TrainingTypes]: number };
+  count: { [_key in TrainingTypes]: number };
 })[];

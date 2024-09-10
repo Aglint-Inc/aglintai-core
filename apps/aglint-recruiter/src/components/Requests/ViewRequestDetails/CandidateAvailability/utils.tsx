@@ -5,7 +5,7 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 
-import { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 

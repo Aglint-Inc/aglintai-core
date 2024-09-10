@@ -1,4 +1,4 @@
-import { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import type { holidayType, schedulingSettingType } from '@aglint/shared-types';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';

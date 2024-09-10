@@ -146,7 +146,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     }
   };
 
-  const handleAddMention = ({ id, display }: MentionType, trigger: string) => {
+  const handleAddMention = (_props: MentionType, trigger: string) => {
     switch (trigger) {
       case '%':
         setTimeout(() => {
@@ -419,7 +419,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
 
 export default AgentEditor;
 
-const Suggestion = ({ entry, highlightedDisplay, focused, index, search }) => {
+const Suggestion = ({
+  entry,
+  highlightedDisplay,
+  focused,
+  index,
+  search: _search,
+}) => {
   if (entry.display === 'No results') {
     return null;
   }

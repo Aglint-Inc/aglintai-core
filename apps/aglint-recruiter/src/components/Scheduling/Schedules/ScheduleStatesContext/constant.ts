@@ -1,6 +1,6 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import type { DatabaseEnums } from '@aglint/shared-types';
 
-import { InterviewDateRangeType } from './types';
+import type { InterviewDateRangeType } from './types';
 
 export type ScheduleFilerType = {
   status: DatabaseEnums['interview_schedule_status'][];

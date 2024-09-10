@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { createContext, type ReactNode, useContext } from 'react';
 
@@ -22,7 +21,7 @@ const useWorld = () => {
   return { handleWorld };
 };
 
-const A = () => {
+const _A = () => {
   const { data } = useHello();
   return (
     <>
@@ -51,18 +50,17 @@ const useFooBarContext = () => {
   return { foo, handleBar };
 };
 
-const FooBarContext = createContext<ReturnType<typeof useFooBarContext>>(
-  undefined,
-);
+const FooBarContext =
+  createContext<ReturnType<typeof useFooBarContext>>(undefined);
 
-const FooBarProvider = ({ children }: { children: ReactNode }) => {
+const _FooBarProvider = ({ children }: { children: ReactNode }) => {
   const value = useFooBarContext();
   return (
     <FooBarContext.Provider value={value}>{children}</FooBarContext.Provider>
   );
 };
 
-const useFooBar = () => {
+const _useFooBar = () => {
   const value = useContext(FooBarContext);
   if (!value) throw new Error('useFooBar must be used within a FooBarProvider');
   return value;

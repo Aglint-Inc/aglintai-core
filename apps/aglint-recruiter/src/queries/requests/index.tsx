@@ -537,7 +537,7 @@ export const getRequests = (response: Request[]) => {
           decline_request: [],
           completed_request: [],
           // eslint-disable-next-line no-unused-vars
-        } as { [id in Sections]: typeof response },
+        } as { [_id in Sections]: typeof response },
       ),
     ) as [Sections, typeof response][]
   ).reduce(
@@ -556,7 +556,7 @@ export const getRequests = (response: Request[]) => {
       return acc;
     },
     // eslint-disable-next-line no-unused-vars
-    {} as { [id in Sections]: typeof response },
+    {} as { [_id in Sections]: typeof response },
   );
 };
 
@@ -573,7 +573,7 @@ const requestSort = (request: Request[]) => {
       },
       { to_do: [], in_progress: [], rest: [] } as {
         // eslint-disable-next-line no-unused-vars
-        [id in SortRequest]: typeof request;
+        [_id in SortRequest]: typeof request;
       },
     ),
   )

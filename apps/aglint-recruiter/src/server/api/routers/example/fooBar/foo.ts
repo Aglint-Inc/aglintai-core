@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { privateProcedure, PublicProcedure } from '@/server/api/trpc';
+import { privateProcedure, type PublicProcedure } from '@/server/api/trpc';
 
 export const fooSchema = z.object({ fooId: z.string().uuid() });
 

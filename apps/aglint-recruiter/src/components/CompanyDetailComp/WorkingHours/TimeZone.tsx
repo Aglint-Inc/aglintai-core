@@ -8,11 +8,11 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Clock, Edit, Loader2 } from 'lucide-react';
-import { FC, useEffect, useRef, useState } from 'react';
+import { type FC, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
 
-import { TimezoneObj } from '../Scheduling';
+import type { TimezoneObj } from '../Scheduling';
 
 interface TimeZoneProps {
   timeZone: string;
@@ -43,7 +43,7 @@ const TimeZone: FC<TimeZoneProps> = ({
     setIsOpen(!isOpen);
   };
 
-  const handleMouseLeave = () => {
+  const _handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 300); // Delay of 300ms before closing the popover

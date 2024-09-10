@@ -1,5 +1,5 @@
-import { ScoreWheelParams } from '@/components/Common/ScoreWheel';
-import { Job } from '@/jobs/types';
+import type { ScoreWheelParams } from '@/components/Common/ScoreWheel';
+import type { Job } from '@/jobs/types';
 
 export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
   const disabled = {

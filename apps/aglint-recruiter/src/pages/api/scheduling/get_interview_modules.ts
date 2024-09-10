@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const { recruiter_id } = req.query as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof Parameters<getInterviewModulesType>[0]]: string;
+      [_id in keyof Parameters<getInterviewModulesType>[0]]: string;
     };
     if (recruiter_id) {
       const resInterviewModules = await getInterviewModules({ recruiter_id });

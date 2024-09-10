@@ -15,7 +15,7 @@ import { RequestProgressContext } from './progressCtx';
 import ScheduleProgress from './ScheduleProgress';
 import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
-import { RequestProgressMapType, TriggerActionMapType } from './types';
+import type { RequestProgressMapType, TriggerActionMapType } from './types';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();

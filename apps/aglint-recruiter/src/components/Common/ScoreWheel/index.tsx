@@ -1,5 +1,4 @@
-/* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';

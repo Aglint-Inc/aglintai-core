@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import UITextField from '@/components/Common/UITextField';
 import MembersAutoComplete, {
-  MemberTypeAutoComplete,
+  type MemberTypeAutoComplete,
 } from '@/components/Scheduling/Common/MembersTextField';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

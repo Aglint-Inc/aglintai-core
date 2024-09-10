@@ -1,5 +1,5 @@
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { BodyParamsCandidateInvite } from '@/pages/api/scheduling/invite';
+import type { BodyParamsCandidateInvite } from '@/pages/api/scheduling/invite';
 import dayjs from '@/utils/dayjs';
 
 export const useInviteParams = (): BodyParamsCandidateInvite & {

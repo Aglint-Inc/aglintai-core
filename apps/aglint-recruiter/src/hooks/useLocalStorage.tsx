@@ -3,7 +3,7 @@ import { useState /*useSyncExternalStore*/ } from 'react';
 
 import {
   initialFilterState,
-  ScheduleFilerType,
+  type ScheduleFilerType,
 } from '@/components/Scheduling/Schedules/ScheduleStatesContext/constant';
 
 const initialLocalState: {

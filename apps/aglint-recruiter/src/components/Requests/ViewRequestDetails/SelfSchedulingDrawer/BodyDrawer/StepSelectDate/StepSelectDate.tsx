@@ -4,7 +4,7 @@ import { ScheduleSelectPill } from '@devlink3/ScheduleSelectPill';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { CheckCircle, Clock } from 'lucide-react';
-import { DateRange as DateRangeType } from 'react-day-picker';
+import type { DateRange as DateRangeType } from 'react-day-picker';
 
 import { DateRangePicker } from '@/components/Common/DateRange';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';

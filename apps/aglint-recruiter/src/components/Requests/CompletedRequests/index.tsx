@@ -21,7 +21,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { RequestProvider } from '@/context/RequestContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { Request } from '@/queries/requests/types';
+import type { Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
