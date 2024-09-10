@@ -14,7 +14,7 @@ import {
 } from '@components/ui/popover';
 import { uniqueId } from 'lodash';
 import { Plus } from 'lucide-react';
-import React, { ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import Chip from './Chip';
 

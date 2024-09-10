@@ -4,7 +4,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
 import {
@@ -119,5 +119,3 @@ const useInviteActions = () => {
 };
 
 export default useInviteActions;
-
-

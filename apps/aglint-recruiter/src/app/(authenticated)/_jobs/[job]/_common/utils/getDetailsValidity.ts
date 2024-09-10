@@ -1,4 +1,4 @@
-import { Job, JobDetailsForm } from '@/jobs/types';
+import type { Job, JobDetailsForm } from '@/jobs/types';
 import { capitalizeAll } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 

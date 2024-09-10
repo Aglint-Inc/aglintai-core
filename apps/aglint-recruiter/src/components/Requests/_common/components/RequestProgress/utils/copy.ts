@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 
 type WorkflowCopyType = {
   // eslint-disable-next-line no-unused-vars
-  [key in DatabaseTable['request_progress']['event_type']]: {
+  [_key in DatabaseTable['request_progress']['event_type']]: {
     past: string;
     present: string;
     future: string;

@@ -1,4 +1,4 @@
-import { Request } from '@/queries/requests/types';
+import type { Request } from '@/queries/requests/types';
 
 export function getStatusColor({ status }: { status: Request['status'] }) {
   return status === 'to_do'

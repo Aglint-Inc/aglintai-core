@@ -60,7 +60,7 @@ const AllTabs = memo(() => {
 
   const counts: {
     // eslint-disable-next-line no-unused-vars
-    [id in ApplicationStore['tab']]: number | null;
+    [_id in ApplicationStore['tab']]: number | null;
   } = useMemo(
     () => ({
       Resume: null,

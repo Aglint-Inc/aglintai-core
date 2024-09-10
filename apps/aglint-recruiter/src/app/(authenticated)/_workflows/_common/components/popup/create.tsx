@@ -18,7 +18,7 @@ import {
   useWorkflowsActions,
   useWorkflowsPopup,
 } from '@/workflows/hooks';
-import { Form } from '@/workflows/types';
+import type { Form } from '@/workflows/types';
 import { validate } from '@/workflows/utils';
 
 const Create = () => {

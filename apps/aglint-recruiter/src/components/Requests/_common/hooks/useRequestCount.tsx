@@ -5,7 +5,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
-import { responseCreatedCompletedType, SectionRequests } from '../types';
+import type { responseCreatedCompletedType, SectionRequests } from '../types';
 
 export const useRequestCount = () => {
   const {

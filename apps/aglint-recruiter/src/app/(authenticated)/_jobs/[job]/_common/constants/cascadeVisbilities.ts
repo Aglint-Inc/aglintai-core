@@ -1,4 +1,4 @@
-import { Application } from '@/types/applications.types';
+import type { Application } from '@/types/applications.types';
 
 export const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars

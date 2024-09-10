@@ -1,8 +1,8 @@
-import { schedulingSettingType } from '@aglint/shared-types';
+import type { schedulingSettingType } from '@aglint/shared-types';
 import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 
 import BreakTimeCard from './BreakTime';
 import TimeZone from './TimeZone';

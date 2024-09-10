@@ -1,4 +1,4 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { Skeleton } from '@components/ui/skeleton';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { Stack, TextField } from '@mui/material';

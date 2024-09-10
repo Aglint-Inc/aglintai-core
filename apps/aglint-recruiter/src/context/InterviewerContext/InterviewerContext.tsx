@@ -18,10 +18,8 @@ interface InterviewerContextInterface {
 }
 
 const initialInterviewerContext: InterviewerContextInterface = {
-  // eslint-disable-next-line no-unused-vars
-  handelRemoveMemberFormPanel: (x) => Promise.resolve(),
-  // eslint-disable-next-line no-unused-vars
-  handelUpdateSchedule: (x) => Promise.resolve(),
+  handelRemoveMemberFormPanel: (_x) => Promise.resolve(),
+  handelUpdateSchedule: (_x) => Promise.resolve(),
 };
 
 const InterviewerContext = createContext<InterviewerContextInterface>(

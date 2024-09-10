@@ -1,4 +1,4 @@
-import { type DB, SupabaseType } from '@aglint/shared-types';
+import type { DB, SupabaseType } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 

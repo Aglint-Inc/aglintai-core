@@ -9,10 +9,10 @@ import {
 } from '@components/ui/popover';
 import { cn } from '@lib/utils';
 import { format } from 'date-fns';
-import dayjs from 'dayjs';
+import type dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 
 interface DateRangePickerProps {
   // eslint-disable-next-line no-unused-vars

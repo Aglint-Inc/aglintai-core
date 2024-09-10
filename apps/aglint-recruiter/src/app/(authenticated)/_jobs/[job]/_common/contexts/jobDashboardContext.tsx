@@ -1,4 +1,4 @@
-import { createContext, memo, PropsWithChildren } from 'react';
+import { createContext, memo, type PropsWithChildren } from 'react';
 
 import { useJob } from '@/job/hooks/useJob';
 import {

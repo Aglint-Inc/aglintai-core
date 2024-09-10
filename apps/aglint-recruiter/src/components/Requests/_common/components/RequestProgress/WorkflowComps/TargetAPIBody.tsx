@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import React from 'react';
 

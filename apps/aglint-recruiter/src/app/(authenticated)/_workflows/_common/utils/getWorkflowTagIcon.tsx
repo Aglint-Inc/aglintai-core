@@ -1,4 +1,4 @@
-import { CustomActionType } from '@aglint/shared-types';
+import type { CustomActionType } from '@aglint/shared-types';
 import { Lightbulb, Mail, Slack } from 'lucide-react';
 
 export function getWorkflowTagIcon(type: CustomActionType) {

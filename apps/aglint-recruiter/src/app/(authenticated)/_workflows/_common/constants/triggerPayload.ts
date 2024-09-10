@@ -1,4 +1,4 @@
-import { DatabaseView } from '@aglint/shared-types';
+import type { DatabaseView } from '@aglint/shared-types';
 
 export const TRIGGER_PAYLOAD: readonly {
   trigger: DatabaseView['workflow_view']['trigger'];

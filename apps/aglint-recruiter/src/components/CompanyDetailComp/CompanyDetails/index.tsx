@@ -21,7 +21,7 @@ import Departments from './Departments';
 import EditBasicInfoDialog from './EditBasicInfoDialog';
 import AddAndEditLocation from './Locations/AddAndEditLocation';
 import DeleteLocation from './Locations/DeleteLocation';
-import { DialogState } from './types';
+import type { DialogState } from './types';
 
 export const initialDialog = (): DialogState => {
   return {

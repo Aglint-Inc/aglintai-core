@@ -18,7 +18,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';

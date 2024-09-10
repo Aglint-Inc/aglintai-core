@@ -1,7 +1,7 @@
 import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 
-import { GetAuthParams } from '../event_book/types';
+import type { GetAuthParams } from '../event_book/types';
 
 export const getUserCalAuth = async ({
   company_cred,

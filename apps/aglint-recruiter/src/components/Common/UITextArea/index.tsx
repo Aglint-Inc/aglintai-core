@@ -1,5 +1,5 @@
 import { Label } from '@components/ui/label';
-import { Textarea, TextareaProps } from '@components/ui/textarea';
+import { Textarea, type TextareaProps } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
 import { AlertCircle } from 'lucide-react';
 import * as React from 'react';

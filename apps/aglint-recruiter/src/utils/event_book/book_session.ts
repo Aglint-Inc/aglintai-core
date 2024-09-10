@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
 import { getCalEventDescription } from './getCalEventDescription';
-import {
+import type {
   CalEventAttendeesAuthDetails,
-  CalEventOrganizerAuthDetails
+  CalEventOrganizerAuthDetails,
 } from './types';
 
 export const bookSession = async ({
@@ -126,5 +126,3 @@ export const bookSession = async ({
     meeting_id: session.meeting_id,
   };
 };
-
-

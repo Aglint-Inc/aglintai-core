@@ -1,7 +1,10 @@
-import { DatabaseTable, PlanCombinationRespType } from '@aglint/shared-types';
-import { CApiError, ProgressLoggerType } from '@aglint/shared-utils';
+import type {
+  DatabaseTable,
+  PlanCombinationRespType,
+} from '@aglint/shared-types';
+import { CApiError, type ProgressLoggerType } from '@aglint/shared-utils';
 
-import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import type { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookRecruiterSelectedOption } from '../CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
 import { fetchCandAvailForBooking } from '../CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
