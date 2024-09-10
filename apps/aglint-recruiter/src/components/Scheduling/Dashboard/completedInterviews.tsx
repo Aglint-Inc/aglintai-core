@@ -1,6 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { CompletedInterviews as CompletedInterviewsDev } from '@devlink3/CompletedInterviews';
-import Stack from '@mui/material/Stack';
 import {
   BarElement,
   CategoryScale,
@@ -16,8 +15,7 @@ import {
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 
-import Loader from '../../Common/Loader';
-import { Empty } from './common';
+import { Loader2 } from 'lucide-react';
 
 export const CompletedInterviews = memo(() => {
   const { completedInterviewType, setCompletedInterviewType } =
@@ -49,24 +47,24 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack height={'350px'}>
-        <Loader />
-      </Stack>
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
     );
 
   if (status === 'error') return <>Error</>;
 
   if (data.length === 0)
     return (
-      <Stack>
-        <Empty />
-      </Stack>
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
     );
 
   return (
-    <Stack height={'350px'}>
+    <div className='h-[350px]'>
       <BarChart data={data} completedInterviewType={completedInterviewType} />
-    </Stack>
+    </div>
   );
 });
 Container.displayName = 'Container';

@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import OptimisticWrapper from '@components/loadingWapper';
 import { GlobalBadge } from '@devlink3/GlobalBadge';
-import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
@@ -22,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
+import { Inbox, MoreHorizontal, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 const Content = memo(() => {
@@ -129,7 +128,22 @@ const Cards = (props: {
       );
     },
   );
-  if (cards.length === 0) return <WorkflowEmpty />;
+  if (cards.length === 0)
+    return (
+      <div className='flex flex-col items-center justify-center h-full p-8 text-center'>
+        <div className='rounded-full bg-muted p-3 mb-4'>
+          <Inbox className='h-6 w-6 text-muted-foreground' />
+        </div>
+        <h3 className='text-lg font-semibold'>No workflows</h3>
+        <p className='text-sm text-muted-foreground mt-2 mb-4'>
+          You haven&apos;t created any workflows yet. Start by creating a new
+          one.
+        </p>
+        <Button>
+          <Plus className='mr-2 h-4 w-4' /> Create Workflow
+        </Button>
+      </div>
+    );
   return <>{cards}</>;
 };
 

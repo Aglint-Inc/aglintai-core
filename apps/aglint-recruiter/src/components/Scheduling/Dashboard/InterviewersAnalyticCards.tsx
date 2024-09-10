@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
-import { NoData } from '@devlink3/NoData';
 import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -15,6 +14,7 @@ import {
 } from '@/pages/api/get_users_by_ids';
 import { schedulingDashboardQueryKeys } from '@/queries/scheduling-dashboard/keys';
 import { supabase } from '@/utils/supabase/client';
+import { BarChart2 } from 'lucide-react';
 
 const InterviewersAnalyticCards = () => {
   const [type, setType] =
@@ -97,7 +97,12 @@ const InterviewersAnalyticCards = () => {
             </Stack>
           ))
         ) : (
-          <NoData />
+          <div className='h-[296px]'>
+            <div className='flex flex-col items-center justify-center h-full'>
+              <BarChart2 className='w-12 h-12 text-gray-400' />
+              <p className='mt-2 text-sm text-gray-500'>No data available</p>
+            </div>
+          </div>
         )
       }
     />

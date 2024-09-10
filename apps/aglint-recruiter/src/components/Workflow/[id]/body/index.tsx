@@ -1,12 +1,9 @@
 import OptimisticWrapper from '@components/loadingWapper';
 
-import { DcPopup } from '@devlink/DcPopup';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { Page404 } from '@devlink/Page404';
 import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { WorkflowDetail } from '@devlink3/WorkflowDetail';
-import { Dialog, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -28,6 +25,14 @@ import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
 import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Briefcase } from 'lucide-react';
 
 const Body = () => {
   const { workflow } = useWorkflow();
@@ -61,12 +66,10 @@ const ConnectedJobs = () => {
   const count = workflow?.jobs?.length ?? 0;
   if (count === 0)
     return (
-      <GlobalEmptyState
-        iconName={'work'}
-        size={4}
-        slotButton={<></>}
-        textDesc={'No jobs connected'}
-      />
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        <Briefcase className="w-16 h-16 text-gray-400 mb-4" />
+        <p className="text-lg text-gray-600">No jobs connected</p>
+      </div>
     );
   return (workflow?.jobs ?? []).map((job) => (
     <WorkflowJob
@@ -135,35 +138,30 @@ const WorkflowJob = ({
           // }}
         />
       </OptimisticWrapper>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DcPopup
-          onClickClosePopup={{ onClick: () => setOpen(false) }}
-          popupName='Unlink confirmation'
-          slotBody={
-            <Typography>
-              Are you sure to unlink this job from this workflow ?
-            </Typography>
-          }
-          slotButtons={
-            <>
-              <Button
-                size={'sm'}
-                color={'neutral'}
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                size={'sm'}
-                onClick={async () =>
-                  await mutateAsync({ job_id: id, workflow_id })
-                }
-              >
-                Unlink
-              </Button>
-            </>
-          }
-        />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Unlink confirmation</DialogTitle>
+          </DialogHeader>
+          <div className='py-4'>
+            <p className='text-sm text-gray-500'>
+              Are you sure to unlink this job from this workflow?
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant='outline' size='sm' onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              size='sm'
+              onClick={async () =>
+                await mutateAsync({ job_id: id, workflow_id })
+              }
+            >
+              Unlink
+            </Button>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </>
   );

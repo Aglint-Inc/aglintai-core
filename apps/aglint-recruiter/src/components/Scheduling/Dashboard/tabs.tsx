@@ -1,5 +1,4 @@
 import { ScheduleCountStats } from '@devlink3/ScheduleCountStats';
-import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
@@ -44,7 +43,7 @@ export const Tabs = memo(() => {
 Tabs.displayName = 'Tabs';
 
 const TabSkeleton = () => (
-  <Stack
+  <div
     style={{
       position: 'relative',
       width: '30px',
@@ -52,5 +51,5 @@ const TabSkeleton = () => (
     }}
   >
     <Skeleton className='w-full h-full' />
-  </Stack>
+  </div>
 );

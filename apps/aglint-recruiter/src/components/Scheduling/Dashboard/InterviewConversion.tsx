@@ -1,5 +1,4 @@
 import { InterviewRatio } from '@devlink3/InterviewRatio';
-import { NoData } from '@devlink3/NoData';
 import { Stack, useMediaQuery } from '@mui/material';
 import {
   BarElement,
@@ -14,9 +13,9 @@ import { Line } from 'react-chartjs-2';
 
 import { useInterviewConversion } from '@/queries/scheduling-dashboard';
 
-import Loader from '../../Common/Loader';
 import SchedulingDropdown from './SchedulingDropdown';
 import { interviewConversionTimeFormat } from './utils';
+import { BarChart2, Loader2 } from 'lucide-react';
 
 const InterviewConversion = () => {
   const [type, setType] =
@@ -45,10 +44,22 @@ type InterviewConversionGraphProps = {
 const InterviewConversionGraph = ({ type }: InterviewConversionGraphProps) => {
   const { data, status } = useInterviewConversion(type);
 
-  if (status === 'pending') return <Loader />;
+  if (status === 'pending')
+    return (
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
+    );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <NoData />;
+    return (
+      <div className='h-[296px]'>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <BarChart2 className='w-12 h-12 text-gray-400' />
+          <p className='mt-2 text-sm text-gray-500'>No data available</p>
+        </div>
+      </div>
+    );
 
   const interviewConversion = interviewConversionTimeFormat(type, data);
   return (

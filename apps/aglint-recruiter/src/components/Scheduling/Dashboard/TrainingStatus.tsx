@@ -1,13 +1,13 @@
 import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
 import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
-import { NoData } from '@devlink3/NoData';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';
 import { Skeleton } from '@components/ui/skeleton';
+import { BarChart2 } from 'lucide-react';
 
 const LIMIT = 6;
 
@@ -43,7 +43,14 @@ const TrainingStatusComponent = () => {
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <NoData />;
+    return (
+      <div className='h-[296px]'>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <BarChart2 className='w-12 h-12 text-gray-400' />
+          <p className='mt-2 text-sm text-gray-500'>No data available</p>
+        </div>
+      </div>
+    );
 
   const rows = data
     .slice(0, LIMIT)
