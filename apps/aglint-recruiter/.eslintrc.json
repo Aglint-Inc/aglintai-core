@@ -53,17 +53,17 @@
     "@typescript-eslint/no-require-imports": "off",
     "no-unused-vars": ["error", { "args": "all", "argsIgnorePattern": "^_" }], //ignore unused variables starting with _
     "@typescript-eslint/no-unused-vars": "off",
-    "import/no-cycle": "warn",
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "varsIgnorePattern": "^_",
-        "args": "after-used",
-        "argsIgnorePattern": "^_"
-      }
-    ]
+    // "import/no-cycle": "warn",
+    "unused-imports/no-unused-imports": "error"
+    // "unused-imports/no-unused-vars": [
+    //   "warn",
+    //   {
+    //     "vars": "all",
+    //     "varsIgnorePattern": "^_",
+    //     "args": "after-used",
+    //     "argsIgnorePattern": "^_"
+    //   }
+    // ]
     // "@typescript-eslint/consistent-type-imports": [
     //   "warn",
     //   {

@@ -4,9 +4,10 @@ import { ToggleWithText } from '@devlink3/ToggleWithText';
 import { Grid, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import { UISwitch } from '@/components/Common/UISwitch';
+
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
 import { filterSchedulingOptionsArray } from './utils';
-import { UISwitch } from '@/components/Common/UISwitch';
 
 type AvailabilityType =
   | 'no_conflicts'

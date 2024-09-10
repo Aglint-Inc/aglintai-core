@@ -53,12 +53,10 @@ export const useCompanyDetailComp = () => {
       )
       .single();
     if (!error) {
-      setRecruiter(
-        {
-          ...updatedRecruiter,
-          socials: updatedRecruiter?.socials,
-        }!,
-      );
+      setRecruiter({
+        ...updatedRecruiter,
+        socials: updatedRecruiter?.socials,
+      });
     }
     setIsSaving('saved');
   }

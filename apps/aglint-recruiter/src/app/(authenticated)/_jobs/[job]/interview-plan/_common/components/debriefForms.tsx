@@ -13,8 +13,12 @@ import React, {
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
+import MembersAutoComplete, {
+  MemberTypeAutoComplete,
+} from '@/components/Scheduling/Common/MembersTextField';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';
@@ -24,11 +28,6 @@ import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalize } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
-
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import MembersAutoComplete, {
-  MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
 
 type DebriefFormProps = Pick<
   InterviewSessionType,

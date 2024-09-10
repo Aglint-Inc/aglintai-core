@@ -1,3 +1,5 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Badge } from '@components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,11 +8,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AllInterviewers } from '@devlink2/AllInterviewers';
 import { EmptyState } from '@devlink2/EmptyState';
 import { PageLayout } from '@devlink2/PageLayout';
-
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
@@ -27,9 +29,6 @@ import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import Filters from './Filters';
-import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Badge } from '@components/ui/badge';
 
 const InterviewTab = () => {
   const { recruiter } = useAuthDetails();

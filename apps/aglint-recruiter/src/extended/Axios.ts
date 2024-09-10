@@ -1,8 +1,8 @@
 import axios, {
+  AxiosError,
   type AxiosRequestConfig,
   type AxiosResponse,
   type AxiosStatic,
-  AxiosError,
 } from 'axios';
 
 import { type API_PATHS } from '../constant/apiPaths';

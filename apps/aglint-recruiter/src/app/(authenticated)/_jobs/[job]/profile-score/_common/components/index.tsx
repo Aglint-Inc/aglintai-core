@@ -8,8 +8,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-
+import { Skeleton } from '@components/ui/skeleton';
 import { ScoreCard } from '@devlink/ScoreCard';
 import { ScoreCardEdit } from '@devlink/ScoreCardEdit';
 import { ScorePercentage } from '@devlink/ScorePercentage';
@@ -21,11 +22,11 @@ import { Text } from '@devlink/Text';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
 import { PageLayout } from '@devlink2/PageLayout';
-
 import { BannerAlert } from '@devlink3/BannerAlert';
 import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
 import { Popover, Stack } from '@mui/material';
+import { Delete, RefreshCcw } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
@@ -44,6 +45,7 @@ import ScoreWheel, {
 } from '@/components/Common/ScoreWheel';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useTour } from '@/context/TourContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -51,11 +53,6 @@ import { distributeScoreWeights } from '@/job/utils';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-
-import { Button } from '@components/ui/button';
-import { Delete, RefreshCcw } from 'lucide-react';
-import { Skeleton } from '@components/ui/skeleton';
-import { useTour } from '@/context/TourContext';
 
 type Sections = 'experience' | 'education' | 'skills';
 

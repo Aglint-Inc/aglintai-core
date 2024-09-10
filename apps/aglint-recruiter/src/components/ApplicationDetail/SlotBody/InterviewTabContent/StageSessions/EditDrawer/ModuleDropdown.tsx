@@ -1,6 +1,6 @@
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useInterviewModules } from '@/queries/interview-modules';
 
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   setEditSession,
   setSelectedInterviewers,

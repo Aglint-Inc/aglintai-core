@@ -1,5 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
+import { Label } from '@components/ui/label';
+import { Loader2, PlusCircle } from 'lucide-react';
 
 import { setCandidateAvailabilityDrawerOpen } from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useMeetingList } from '@/components/Requests/ViewRequestDetails/hooks';
@@ -11,8 +13,6 @@ import {
 } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 
 import { useRequestProgressProvider } from '../progressCtx';
-import { Loader2, PlusCircle } from 'lucide-react';
-import { Label } from '@components/ui/label';
 
 const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();

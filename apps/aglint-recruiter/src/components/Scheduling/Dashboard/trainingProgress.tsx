@@ -1,9 +1,11 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { HistoryPill } from '@devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { memo, useMemo } from 'react';
 
@@ -15,8 +17,6 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
-import { Skeleton } from '@components/ui/skeleton';
-import { Loader2 } from 'lucide-react';
 
 const LIMIT = 4;
 

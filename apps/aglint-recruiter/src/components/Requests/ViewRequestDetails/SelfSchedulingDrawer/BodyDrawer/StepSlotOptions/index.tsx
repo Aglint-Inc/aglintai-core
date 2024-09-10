@@ -1,13 +1,13 @@
 import { type EmailTemplateAPi } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-
 import UITypography from '@/components/Common/UITypography';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
-import { useRouter } from 'next/router';
+
 import {
   setCalendarDate,
   setEmailData,

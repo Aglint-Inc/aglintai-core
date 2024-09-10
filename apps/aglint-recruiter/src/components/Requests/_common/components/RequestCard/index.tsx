@@ -1,24 +1,25 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import type { Request as RequestType } from '@/queries/requests/types';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
-import { cn } from '@lib/utils';
-import { Bot, Calendar, UserCircle, User, StickyNote } from 'lucide-react';
-import Link from 'next/link';
-import { getStatusColor } from '../../utils/getStatusColor';
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@components/ui/button';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { cn } from '@lib/utils';
+import { Bot, Calendar, StickyNote, User, UserCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import type { Request as RequestType } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
+import { getStatusColor } from '../../utils/getStatusColor';
 import MenuOptions from './MenuOptions';
 
 type RequestProps = RequestType & {

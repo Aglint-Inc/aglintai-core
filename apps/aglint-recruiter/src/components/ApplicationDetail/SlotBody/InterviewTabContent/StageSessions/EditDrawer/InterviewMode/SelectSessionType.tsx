@@ -1,9 +1,11 @@
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { setEditSession, useEditSessionDrawerStore } from '../store';
+
 import {
   IndividualIcon,
   PanelIcon,
 } from '@/job/interview-plan/components/sessionForms';
+
+import { setEditSession, useEditSessionDrawerStore } from '../store';
 
 function SelectSessionType() {
   const { editSession } = useEditSessionDrawerStore((state) => ({

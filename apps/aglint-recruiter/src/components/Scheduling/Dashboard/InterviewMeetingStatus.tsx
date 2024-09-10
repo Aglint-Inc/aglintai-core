@@ -8,13 +8,13 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { BarChart2, Loader2 } from 'lucide-react';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { useInterviewMeetingStatus } from '@/queries/scheduling-dashboard';
 
 import { interviewMeetingTimeFormat } from './utils';
-import { BarChart2, Loader2 } from 'lucide-react';
 
 type MeetingStatusObjType = ReturnType<
   typeof useInterviewMeetingStatus

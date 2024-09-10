@@ -6,8 +6,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Button } from '@components/ui/button';
 import { WorkflowJobs } from '@devlink/WorkflowJobs';
 import { Stack } from '@mui/material';
+import { Bolt } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
@@ -18,8 +20,6 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import JobWorkflow from './list';
-import { Button } from '@components/ui/button';
-import { Bolt } from 'lucide-react';
 
 export const JobWorkflowDashboard = () => {
   const { jobLoad, job } = useJob();

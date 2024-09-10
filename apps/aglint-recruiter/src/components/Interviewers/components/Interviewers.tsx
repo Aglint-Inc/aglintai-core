@@ -1,5 +1,5 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-
 import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
@@ -9,10 +9,9 @@ import { memo, useState } from 'react';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
-  type useMatricsInterviewersType,
   useMatricsInterviewers,
+  type useMatricsInterviewersType,
 } from '../Hook';
-import { Skeleton } from '@components/ui/skeleton';
 
 const LIMIT = 4;
 

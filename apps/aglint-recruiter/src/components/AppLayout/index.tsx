@@ -6,10 +6,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import defaultCompanyLogo from '@public/images/default-company-logo.svg';
+import defaultProfileImage from '@public/images/default-user-profile.svg';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogOut } from 'lucide-react';
-import defaultProfileImage from '@public/images/default-user-profile.svg';
-import defaultCompanyLogo from '@public/images/default-company-logo.svg';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -21,8 +23,6 @@ import ROUTES from '@/utils/routing/routes';
 // import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
-import Image from 'next/image';
-import Link from 'next/link';
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();

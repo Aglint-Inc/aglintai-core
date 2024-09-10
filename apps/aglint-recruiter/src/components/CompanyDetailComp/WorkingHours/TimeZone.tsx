@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Clock, Edit, Loader2 } from 'lucide-react';
-import { FC, useState, useRef, useEffect } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
 

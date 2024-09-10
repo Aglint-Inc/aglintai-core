@@ -1,7 +1,9 @@
+import { Label } from '@components/ui/label';
 import { DatePickerBody } from '@devlink3/DatePickerBody';
 import { ScheduleSelectPill } from '@devlink3/ScheduleSelectPill';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { CheckCircle, Clock } from 'lucide-react';
 import { DateRange as DateRangeType } from 'react-day-picker';
 
 import { DateRangePicker } from '@/components/Common/DateRange';
@@ -12,8 +14,6 @@ import { useMeetingList } from '../../../hooks';
 import InfoStepSelectState from '../../InfoStepSelectState';
 import { setDateRange, useSelfSchedulingFlowStore } from '../../store';
 import ErrorsFindAvailibility from './ErrorsFindAvailibility';
-import { Label } from '@components/ui/label';
-import { CheckCircle, Clock } from 'lucide-react';
 
 function SelectDateRange() {
   const { dateRange, noOptions } = useSelfSchedulingFlowStore((state) => ({

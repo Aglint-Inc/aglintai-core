@@ -3,16 +3,16 @@ import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Checkbox, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Calendar } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
 import { useModuleRelations } from '../hooks';
 import { setIsPauseDialogOpen, useInterviewerDetailStore } from '../store';
-import { Calendar } from 'lucide-react';
-import UIDialog from '@/components/Common/UIDialog';
-import { UIButton } from '@/components/Common/UIButton';
 
 function PauseDialog() {
   const [selectedType, setSelectedType] = React.useState<

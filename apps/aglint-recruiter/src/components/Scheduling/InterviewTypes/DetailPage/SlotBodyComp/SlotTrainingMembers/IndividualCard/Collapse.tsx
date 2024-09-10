@@ -6,8 +6,10 @@ import { TrainingDetailList } from '@devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@devlink2/TrainingStatus';
 import { Collapse, Stack, Typography } from '@mui/material';
+import { Minus, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -15,8 +17,6 @@ import { getFullName } from '@/utils/jsonResume';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
 import { supabase } from '@/utils/supabase/client';
 
-import { UIButton } from '@/components/Common/UIButton';
-import { Minus, Plus } from 'lucide-react';
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
 
 function CollapseTrainingProgress({

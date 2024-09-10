@@ -1,8 +1,8 @@
+import { TabsList, TabsTrigger } from '@components/ui/tabs';
+import { Tabs } from '@radix-ui/react-tabs';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { Tabs } from '@radix-ui/react-tabs';
-import { TabsList, TabsTrigger } from '@components/ui/tabs';
 
 export function FilterDropDownDash<T>({
   itemList,

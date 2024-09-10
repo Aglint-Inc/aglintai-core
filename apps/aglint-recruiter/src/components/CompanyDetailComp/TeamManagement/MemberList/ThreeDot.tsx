@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
@@ -5,16 +6,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { useToast } from '@components/hooks/use-toast';
-import { MoreHorizontal, Edit, Mail, Power, Trash, Lock } from 'lucide-react';
-import { useState } from 'react';
+import axios from 'axios';
+import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
+import { type API_reset_password } from '@/pages/api/reset_password/type';
+
 import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
-import { type API_reset_password } from '@/pages/api/reset_password/type';
-import axios from 'axios';
 
 export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();

@@ -7,12 +7,11 @@ import React, {
   useMemo,
 } from 'react';
 
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { type UpdateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { breakDurations } from '@/utils/scheduling/const';
-
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
 
 type BreakFormProps = Pick<InterviewSessionType, 'break_duration'>;
 

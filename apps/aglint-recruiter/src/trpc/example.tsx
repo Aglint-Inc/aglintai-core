@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import { type ReactNode, createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
@@ -52,7 +52,7 @@ const useFooBarContext = () => {
 };
 
 const FooBarContext = createContext<ReturnType<typeof useFooBarContext>>(
-  undefined!,
+  undefined,
 );
 
 const FooBarProvider = ({ children }: { children: ReactNode }) => {

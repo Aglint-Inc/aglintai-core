@@ -1,12 +1,12 @@
 import { Button } from '@components/ui/button';
+import { RefreshCw, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import SearchField from '../SearchField/SearchField';
 import { ShowCode } from '../ShowCode';
 import DateRangeSelector from './DateRangeSelector';
-import { type FilterTypes, FiltersComponent } from './FilterComponents';
+import { FiltersComponent, type FilterTypes } from './FilterComponents';
 import SortComponent, { type sortComponentType } from './SortComponent';
-import { RefreshCw, RotateCcw } from 'lucide-react';
 
 export default function FilterHeader({
   search,

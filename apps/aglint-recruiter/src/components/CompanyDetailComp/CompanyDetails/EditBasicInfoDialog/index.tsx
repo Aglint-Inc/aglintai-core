@@ -9,10 +9,12 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
+import _ from 'lodash';
 import { AlertCircle, Upload } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
+import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 // import ImageUpload from '@/components/Common/ImageUpload';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -20,8 +22,6 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
-import _ from 'lodash';
-import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 
 const employeeSizes = [
   '1-10',

@@ -11,7 +11,7 @@ import {
   type SchedulesSupabase,
   schedulesSupabase,
 } from '../../schedules-query';
-import { ScheduleFilerType, initialFilterState } from './constant';
+import { initialFilterState, ScheduleFilerType } from './constant';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';

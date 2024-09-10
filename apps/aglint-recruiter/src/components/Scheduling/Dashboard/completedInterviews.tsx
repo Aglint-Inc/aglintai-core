@@ -7,6 +7,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { Loader2 } from 'lucide-react';
 import { memo, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 
@@ -14,8 +15,6 @@ import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
-
-import { Loader2 } from 'lucide-react';
 
 export const CompletedInterviews = memo(() => {
   const { completedInterviewType, setCompletedInterviewType } =

@@ -1,7 +1,9 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { LeaderBoard } from '@devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
 import { Avatar, Stack } from '@mui/material';
+import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -11,8 +13,6 @@ import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import SchedulingDropdown from './SchedulingDropdown';
-import { Skeleton } from '@components/ui/skeleton';
-import { BarChart2 } from 'lucide-react';
 
 const LeaderBoardWidget = () => {
   const [type, setType] = useState<LeaderBoardWidgetRowsProps['type']>('month');

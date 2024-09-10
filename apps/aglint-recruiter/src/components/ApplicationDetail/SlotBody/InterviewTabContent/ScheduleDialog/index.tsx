@@ -1,16 +1,24 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
+import { Calendar } from '@components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
+import { cn } from '@lib/utils';
 import { Dialog, Stack, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { format } from 'date-fns';
 import { CalendarIcon, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
@@ -25,16 +33,6 @@ import {
   useApplicationDetailStore,
 } from '../../../store';
 import { type Interviewer } from '../StageSessions/EditDrawer/types';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@components/ui/popover';
-import { Calendar } from '@components/ui/calendar';
-import { cn } from '@lib/utils';
-import { addDays, format } from 'date-fns';
-import { Button } from '@components/ui/button';
-import { DateRange } from 'react-day-picker';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
@@ -267,7 +265,7 @@ export const RangePicker = ({
   setDateRange,
 }: {
   dateRange: { start: string; end: string };
-  setDateRange: (x: { start: string; end: string }) => void;
+  setDateRange: (_x: { start: string; end: string }) => void;
 }) => {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(dateRange.start),

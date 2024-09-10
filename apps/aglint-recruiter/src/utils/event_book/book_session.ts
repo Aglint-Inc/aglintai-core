@@ -1,18 +1,17 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import {
   type CompServiceKeyCred,
   type NewCalenderEvent,
   type RecruiterUserType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { OAuth2Client } from 'google-auth-library';
+import { google } from 'googleapis';
+import { v4 as uuidv4 } from 'uuid';
 
 // eslint-disable-next-line import/no-cycle
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
 import { getCalEventDescription } from './getCalEventDescription';
-import { google } from 'googleapis';
-import { OAuth2Client } from 'google-auth-library';
 export type GetAuthParams = {
   company_cred: CompServiceKeyCred;
   recruiter: CalEventAttendeesAuthDetails;

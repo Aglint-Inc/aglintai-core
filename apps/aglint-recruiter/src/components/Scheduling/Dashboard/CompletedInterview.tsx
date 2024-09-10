@@ -1,12 +1,12 @@
 import { CompletedInterviews } from '@devlink3/CompletedInterviews';
 import { Stack } from '@mui/material';
+import { BarChart2 } from 'lucide-react';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import type { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCompletedInterviewDetails } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { BarChart2 } from 'lucide-react';
 
 const CompletedInterviewBarChart = () => {
   const {

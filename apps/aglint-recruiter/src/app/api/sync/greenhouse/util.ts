@@ -10,7 +10,7 @@ import {
   type GreenhouseJobStagesAPI,
 } from './types';
 
-const decryptKey = process.env.ENCRYPTION_KEY!;
+const decryptKey = process.env.ENCRYPTION_KEY;
 if (!decryptKey) {
   throw new Error('ENCRYPTION_KEY is not defined');
 }
