@@ -7,10 +7,17 @@ import {
   type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
+import { Card, CardContent } from '@components/ui/card';
+import { Label } from '@components/ui/label';
+import { SelectItem } from '@components/ui/select';
 import { Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
+import { UIButton } from '@/components/Common/UIButton';
+import { UIDatePicker } from '@/components/Common/UIDatePicker';
+import UIDrawer from '@/components/Common/UIDrawer';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   requestDaysListOptions,
   slotsListOptions,
@@ -23,11 +30,6 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { UIButton } from '@/components/Common/UIButton';
-import { UIDatePicker } from '@/components/Common/UIDatePicker';
-import UIDrawer from '@/components/Common/UIDrawer';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { SelectItem } from '@components/ui/select';
 import { useMeetingList } from '../hooks';
 import EmailTemplate from './Components/EmailTemplate';
 import { useCandidateAvailability } from './hooks';
@@ -41,8 +43,6 @@ import {
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
 } from './utils';
-import { Card, CardContent } from '@components/ui/card';
-import { Label } from '@components/ui/label';
 
 function CandidateAvailability({
   selectedRequest,

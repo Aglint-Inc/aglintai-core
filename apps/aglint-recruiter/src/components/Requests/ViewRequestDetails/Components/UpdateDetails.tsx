@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { Label } from '@components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Label } from '@components/ui/label';
+import React, { useState } from 'react';
+
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 interface StatusListProps {
   updateButton: React.ReactNode;
   handleChange: ({ label, value }: { label: string; value: string }) => void;
