@@ -257,7 +257,10 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard {...{ ...props, isExpanded: false }} />
+                            <RequestCard
+                              mode='column-view'
+                              {...{ ...props, isExpanded: false }}
+                            />
                           </RequestProvider>
                         ))}
                       </div>

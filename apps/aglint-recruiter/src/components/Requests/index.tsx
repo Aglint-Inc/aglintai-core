@@ -81,9 +81,7 @@ const Requests = () => {
       {/* Main Content */}
       <div
         className={`flex-1 p-4 overflow-y-auto z-10 ${
-          openChat
-            ? 'w-[calc(100%-450px)]'
-            : 'container w-full max-w-[1200px] mx-auto'
+          openChat ? 'w-[calc(100%-450px)]' : 'w-full px-20 mx-auto'
         }`}
       >
         {showEmptyPage && isNotApplied ? (
