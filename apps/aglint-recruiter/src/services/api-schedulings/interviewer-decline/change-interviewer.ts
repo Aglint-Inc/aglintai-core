@@ -11,7 +11,7 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 type FuncParams = {
   request_id: string;
   session_id: string;
-  reqProgressLogger: ProgressLoggerType;
+  reqProgress: ProgressLoggerType;
 };
 export const changeInterviewer = async (payload: FuncParams) => {
   // list interviewers
@@ -36,7 +36,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
   const alternate_slots: APIRespFindReplaceMentInts = data;
   if (alternate_slots.length === 0) {
     throw new CApiError(
-      'SERVER_ERROR',
+      'CLIENT',
       'No alternative interviewers are found in the interview plan.',
     );
   }
@@ -66,12 +66,12 @@ export const changeInterviewer = async (payload: FuncParams) => {
       .update({ status: 'completed' })
       .eq('id', payload.request_id),
   );
-  await payload.reqProgressLogger({
+  await payload.reqProgress({
     is_progress_step: true,
     status: 'completed',
     log: `Replaced ${getFullName(alternate_slots[0].replacement_int.first_name, alternate_slots[0].replacement_int.last_name)} for the interview`,
   });
-  await payload.reqProgressLogger({
+  await payload.reqProgress({
     is_progress_step: false,
     status: 'completed',
   });
