@@ -6,12 +6,13 @@ import { Text } from '@devlink/Text';
 import { DateOption } from '@devlink3/DateOption';
 import { EmptySlotReason } from '@devlink3/EmptySlotReason';
 import { ScheduleOption } from '@devlink3/ScheduleOption';
-import { Checkbox, Collapse, Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
+import { Checkbox } from '@components/ui/checkbox';
 
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
@@ -151,10 +152,11 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
-            indeterminate={
+            checked={
               noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
+                ? 'indeterminate'
+                : isSelected
             }
-            checked={isSelected}
             onClick={() => {
               setSelectedCombIds(
                 isSelected

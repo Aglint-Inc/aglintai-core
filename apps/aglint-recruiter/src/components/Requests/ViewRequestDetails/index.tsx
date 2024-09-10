@@ -130,9 +130,7 @@ function ViewRequestDetails() {
                   </Stack>
                 ) : (
                   <>
-                    {selectedRequest.status === 'to_do' && (
-                      <SelfSchedulingDrawer refetch={refetch} />
-                    )}
+                    <SelfSchedulingDrawer refetch={refetch} />
                     {sessionsCards.map((session) => {
                       return (
                         <ScheduleIndividualCard
