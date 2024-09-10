@@ -18,7 +18,6 @@ export const PATHS = [
 '/_jobs/[job]/_common/components/CandidateDrawer/Details/Insights',
 '/_jobs/[job]/_common/components/Common/ResumePreviewer',
 '/_jobs/[job]/_common/components/Common/ResumeScoreNew',
-'/_jobs/[job]/_common/components/Drawer',
 '/_jobs/[job]/_common/components/Filters',
 '/_jobs/[job]/_common/components/JobNotFound',
 '/_jobs/[job]/_common/components/Table',
