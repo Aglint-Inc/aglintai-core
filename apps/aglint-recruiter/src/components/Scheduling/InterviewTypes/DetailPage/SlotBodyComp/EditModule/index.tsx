@@ -1,15 +1,15 @@
 import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
+import UITextField from '@/components/Common/UITextField';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useAllDepartments } from '@/queries/departments';
 import { supabase } from '@/utils/supabase/client';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import UITextField from '@/components/Common/UITextField';
 import { useModuleAndUsers } from '../../../queries/hooks';
 import { setIsSettingsDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';

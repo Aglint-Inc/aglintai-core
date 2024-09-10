@@ -1,8 +1,8 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { ScheduleCountStats } from '@devlink3/ScheduleCountStats';
 import { memo } from 'react';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
-import { Skeleton } from '@components/ui/skeleton';
 
 export const Tabs = memo(() => {
   const {

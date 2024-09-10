@@ -5,7 +5,7 @@
  * @link https://tkdodo.eu/blog/zustand-and-react-context
  *
  */
-import { type PropsWithChildren, createContext, memo, useState } from 'react';
+import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 import { INITIAL_STATE } from '@/jobs/constants';

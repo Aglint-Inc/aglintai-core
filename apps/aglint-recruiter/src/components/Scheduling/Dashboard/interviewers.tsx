@@ -1,7 +1,9 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
+import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
 import {
@@ -9,9 +11,6 @@ import {
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 import { capitalizeAll } from '@/utils/text/textUtils';
-
-import { Skeleton } from '@components/ui/skeleton';
-import { BarChart2, Loader2 } from 'lucide-react';
 
 const LIMIT = 4;
 

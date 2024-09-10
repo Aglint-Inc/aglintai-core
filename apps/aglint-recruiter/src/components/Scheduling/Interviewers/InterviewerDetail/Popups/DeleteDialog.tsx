@@ -4,11 +4,11 @@ import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { deleteRelationByUserDbDelete } from '../../../InterviewTypes/queries/utils';
 import {
   setisRemoveModuleDialogOpen,

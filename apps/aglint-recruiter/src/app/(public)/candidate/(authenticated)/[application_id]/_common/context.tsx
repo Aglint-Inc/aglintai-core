@@ -1,9 +1,8 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { type PropsWithChildren, createContext } from 'react';
+import { createContext, type PropsWithChildren } from 'react';
 
 import { api } from '@/trpc/client';
-import { supabase } from '@/utils/supabase/client';
 
 const useCandidatePortalContext = () => {
   const params = useParams();
@@ -19,11 +18,7 @@ export const CandidatePortalProvider = async ({
   children,
 }: PropsWithChildren) => {
   const value = useCandidatePortalContext();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  console.log(user);
   return (
     <CandidatePortalContext.Provider value={value}>
       {children}

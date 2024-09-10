@@ -4,10 +4,10 @@ import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
-import { supabase } from '@/utils/supabase/client';
-
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { supabase } from '@/utils/supabase/client';
+
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';
 

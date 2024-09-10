@@ -18,12 +18,12 @@ import {
 import { capitalize } from 'lodash';
 import { Calendar, Edit, Loader2 } from 'lucide-react';
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useState,
-  useRef,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
   useEffect,
+  useRef,
+  useState,
 } from 'react';
 
 import dayjs from '@/utils/dayjs';

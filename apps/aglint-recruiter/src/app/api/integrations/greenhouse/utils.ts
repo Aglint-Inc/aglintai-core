@@ -3,7 +3,7 @@ import { type SupabaseClient } from '@supabase/supabase-js';
 
 import { decrypt } from '@/pages/api/decryptApiKey';
 
-const decryptKey = process.env.ENCRYPTION_KEY!;
+const decryptKey = process.env.ENCRYPTION_KEY;
 if (!decryptKey) {
   throw new Error('ENCRYPTION_KEY is not defined');
 }

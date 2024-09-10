@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { z } from 'zod';
 
-import { PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 
 export const worldSchema = z.object({ worldId: z.string().uuid() });
 

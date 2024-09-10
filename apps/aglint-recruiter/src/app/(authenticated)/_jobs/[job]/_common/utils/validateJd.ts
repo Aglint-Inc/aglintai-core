@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 
 export const validateJd = (
   jd_json: DatabaseTable['public_jobs']['jd_json'],

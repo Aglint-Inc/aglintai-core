@@ -5,6 +5,7 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
+import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -15,7 +16,6 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
-
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -33,6 +33,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import Chip from '@/components/Common/AddChip/Chip';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -40,8 +41,6 @@ import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput'
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
-import Chip from '@/components/Common/AddChip/Chip';
-import { Checkbox } from '@components/ui/checkbox';
 import { useImrQuery } from '../hooks';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';

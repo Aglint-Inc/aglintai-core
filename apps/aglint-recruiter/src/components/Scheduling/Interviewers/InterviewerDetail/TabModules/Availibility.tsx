@@ -1,9 +1,9 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { Text } from '@devlink/Text';
-
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -14,6 +14,8 @@ import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDrawer from '@/components/Common/UIDrawer';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -21,9 +23,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
 import timeZone from '@/utils/timeZone';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDrawer from '@/components/Common/UIDrawer';
-import { Checkbox } from '@components/ui/checkbox';
 import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
 

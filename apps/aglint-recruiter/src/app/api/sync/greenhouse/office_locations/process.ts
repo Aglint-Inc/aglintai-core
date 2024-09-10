@@ -17,7 +17,7 @@ export async function syncOfficeLocations(
 }
 
 // eslint-disable-next-line no-unused-vars
-export async function getGreenhouseOfficeLocations(key: string) {
+export async function getGreenhouseOfficeLocations(_key: string) {
   // const res = await axios.get<GreenhouseOfficesAPI>('', {
   //   auth: {
   //     username: key,

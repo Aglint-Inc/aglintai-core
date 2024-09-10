@@ -47,7 +47,7 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
       return acc;
     },
     // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof DebriefDefaultsProps['value']]: React.JSX.Element },
+    {} as { [_id in keyof DebriefDefaultsProps['value']]: React.JSX.Element },
   );
   return (
     <div className='flex flex-col gap-2'>

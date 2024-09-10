@@ -14,15 +14,15 @@ import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/job/hooks';
-import { Form } from '@/jobs/types';
+import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
 
 export const useJobForms = (
   fields: JobMetaFormProps['fields'],
@@ -90,7 +90,7 @@ export const useJobForms = (
       return acc;
     },
     // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof typeof fields]: React.JSX.Element },
+    {} as { [_id in keyof typeof fields]: React.JSX.Element },
   );
 };
 
@@ -316,7 +316,7 @@ const roles = {
   sourcer: () => [...new Set<Roles>([...roles.recruiter()])],
 } as const as {
   // eslint-disable-next-line no-unused-vars
-  [id in Roles]: () => Roles[];
+  [_id in Roles]: () => Roles[];
 };
 
 const nameToRole = (name: MetaForms['name']): Roles => {

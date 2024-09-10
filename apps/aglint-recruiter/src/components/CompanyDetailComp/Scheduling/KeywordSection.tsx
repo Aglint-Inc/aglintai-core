@@ -1,9 +1,9 @@
 import { Button } from '@components/ui/button';
+import { Plus } from 'lucide-react';
 import React from 'react';
 
-import toast from '@/utils/toast';
 import AddChip from '@/components/Common/AddChip';
-import { Plus } from 'lucide-react';
+import toast from '@/utils/toast';
 
 interface KeywordSectionProps {
   keywords: string[];

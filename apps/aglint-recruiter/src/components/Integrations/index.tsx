@@ -1,11 +1,12 @@
+import { Button } from '@components/ui/button';
+import { useState } from 'react';
+
 import { useAllIntegrations } from '@/queries/intergrations';
 
 import ATSTools from './ATSTools';
 import MessagingTools from './MessagingTools';
-import Scheduling from './SchedulingTools';
 import RequestNew from './RequestNewPopUp';
-import { useState } from 'react';
-import { Button } from '@components/ui/button';
+import Scheduling from './SchedulingTools';
 
 function Integrations() {
   const { data: allIntegrations, refetch } = useAllIntegrations();

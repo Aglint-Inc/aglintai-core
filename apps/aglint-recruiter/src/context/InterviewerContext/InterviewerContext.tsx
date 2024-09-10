@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { type ReactNode, createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
 
@@ -18,10 +18,8 @@ interface InterviewerContextInterface {
 }
 
 const initialInterviewerContext: InterviewerContextInterface = {
-  // eslint-disable-next-line no-unused-vars
-  handelRemoveMemberFormPanel: (x) => Promise.resolve(),
-  // eslint-disable-next-line no-unused-vars
-  handelUpdateSchedule: (x) => Promise.resolve(),
+  handelRemoveMemberFormPanel: (_x) => Promise.resolve(),
+  handelUpdateSchedule: (_x) => Promise.resolve(),
 };
 
 const InterviewerContext = createContext<InterviewerContextInterface>(

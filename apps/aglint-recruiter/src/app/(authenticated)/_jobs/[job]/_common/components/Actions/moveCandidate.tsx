@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
@@ -21,7 +21,7 @@ import { formatSessions } from '@/job/utils';
 import { capitalize } from '@/utils/text/textUtils';
 
 import CreateRequest from './CreateRequest';
-import { sessionType } from './CreateRequest/SessionsList';
+import type { sessionType } from './CreateRequest/SessionsList';
 
 const MoveCandidate = () => {
   const { emailVisibilities } = useApplications();

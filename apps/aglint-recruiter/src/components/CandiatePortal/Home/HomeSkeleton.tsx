@@ -29,7 +29,7 @@ export default function HomeSkeleton() {
             </div>
           </div>
           {/* rightside skeleton */}
-          <div className='flex flex-col gap-4'>  
+          <div className='flex flex-col gap-4'>
             <UpcomingInterviewSkeleton />
             <AvailabilityCardSkeleton />
             <AvailabilityCardSkeleton />

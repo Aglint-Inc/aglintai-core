@@ -4,13 +4,13 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';
 import { deleteModuleById } from '../../../utils';

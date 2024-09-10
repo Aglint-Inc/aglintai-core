@@ -8,6 +8,7 @@ import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import { Stack } from '@mui/material';
 import axios from 'axios';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +23,6 @@ import {
   useAllSchedulesByUserId,
 } from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
-import { Calendar } from 'lucide-react';
 
 function MySchedule() {
   const { toast } = useToast();

@@ -13,8 +13,7 @@ export const server_check_permissions = async ({
   getVal,
   permissions,
 }: {
-  // eslint-disable-next-line no-unused-vars
-  getVal: (name: string) => string;
+  getVal: (_name: string) => string;
   permissions: DatabaseTable['permissions']['name'][];
 }) => {
   try {
@@ -27,7 +26,7 @@ export const server_check_permissions = async ({
 
     const { payload } = await jwtVerify(
       token,
-      new TextEncoder().encode(process.env.SUPABASE_SECRET_KEY!),
+      new TextEncoder().encode(process.env.SUPABASE_SECRET_KEY),
     );
 
     const tokenData = payload as unknown as EventSessionType;

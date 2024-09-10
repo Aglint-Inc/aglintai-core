@@ -2,8 +2,10 @@ import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { InterviewStage } from '@devlink3/InterviewStage';
 import { Stack } from '@mui/material';
+import { ExternalLink } from 'lucide-react';
 
 import Loader from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
 import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -12,8 +14,6 @@ import Progress from '../Progress';
 import DialogSchedule from './ScheduleDialog';
 import StageSessions from './StageSessions';
 import SideDrawerEdit from './StageSessions/EditDrawer';
-import { UIButton } from '@/components/Common/UIButton';
-import { ExternalLink } from 'lucide-react';
 
 function InterviewTabContent() {
   const {

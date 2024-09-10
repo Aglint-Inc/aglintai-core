@@ -1,20 +1,30 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-
+import { Badge } from '@components/ui/badge';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { ButtonSolid } from '@devlink/ButtonSolid';
 import { FeedbackCard } from '@devlink3/FeedbackCard';
 import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@devlink3/RoundedNumber';
 import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
-import { Calendar, Circle, Clock, Loader2, Star, User, Users } from 'lucide-react';
+import {
+  Calendar,
+  Circle,
+  Clock,
+  Loader2,
+  Star,
+  User,
+  Users,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import Avatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
@@ -26,10 +36,6 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Badge } from '@components/ui/badge';
-import { Card, CardContent, CardHeader } from '@components/ui/card';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
@@ -181,8 +187,8 @@ const FeedbackWindow = ({
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <Stack position={'relative'} height={'calc(100vh - 172px)'}>
-            <div className="flex items-center justify-center">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className='flex items-center justify-center'>
+              <Loader2 className='w-8 h-8 animate-spin text-primary' />
             </div>
           </Stack>
         </ShowCode.When>

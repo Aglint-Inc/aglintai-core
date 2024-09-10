@@ -1,12 +1,12 @@
+// import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { Button } from '@components/ui/button';
 import { RequestAgentEmpty } from '@devlink2/RequestAgentEmpty';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
-// import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { Button } from '@components/ui/button';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
 import RequestList from './RequestList';

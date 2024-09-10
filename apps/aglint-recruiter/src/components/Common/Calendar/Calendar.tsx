@@ -3,12 +3,12 @@ import '@styles/fullcalendar-theme.css';
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Button } from '@components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -38,7 +38,6 @@ import {
   type Types,
 } from './calendarTypes';
 import CalendarFilter from './Filter';
-import { Button } from '@components/ui/button';
 
 function CalendarComp({
   allSchedules,

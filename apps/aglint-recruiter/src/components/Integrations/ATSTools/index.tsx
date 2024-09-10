@@ -1,7 +1,5 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
-
-import { IntegrationCard } from '../components/IntegrationCard';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
@@ -10,6 +8,7 @@ import { useRef, useState } from 'react';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import ATSPopUps from '../ATSPopUps';
+import { IntegrationCard } from '../components/IntegrationCard';
 import { type ATSType, type PopUpReasonTypes } from '../types';
 import { updateIntegrations } from '../utils';
 // import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';

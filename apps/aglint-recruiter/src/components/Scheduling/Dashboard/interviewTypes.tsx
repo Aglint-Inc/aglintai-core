@@ -1,7 +1,9 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
 import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
@@ -13,8 +15,6 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
-import { Skeleton } from '@components/ui/skeleton';
-import { Loader2 } from 'lucide-react';
 
 const LIMIT = 6;
 

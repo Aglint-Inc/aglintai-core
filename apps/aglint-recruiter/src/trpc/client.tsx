@@ -8,7 +8,6 @@ import {
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { createTRPCReact } from '@trpc/react-query';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
-import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
 

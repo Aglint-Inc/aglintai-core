@@ -3,11 +3,11 @@ import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { fetchAllActivities } from '../../fetch_activities';
+import type { fetchAllActivities } from '../../fetch_activities';
 
 const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!,
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
 );
 export type ApiResponseActivities =
   | {

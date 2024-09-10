@@ -8,10 +8,10 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIButton } from '@/components/Common/UIButton';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 
-import { UIButton } from '@/components/Common/UIButton';
 import {
   setIsAddMemberDialogOpen,
   setIsDeleteMemberDialogOpen,

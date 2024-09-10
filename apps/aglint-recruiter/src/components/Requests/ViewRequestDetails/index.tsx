@@ -1,9 +1,3 @@
-import { useRequest } from '@/context/RequestContext';
-import { useRequests } from '@/context/RequestsContext';
-import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
-import { Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
@@ -16,18 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
-
-import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
-import {
-  setDebriefMembers,
-  setEditSession,
-  setIsEditOpen,
-  setSelectedInterviewers,
-  setTrainingInterviewers,
-  setTrainingToggle,
-} from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer/store';
-import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
-import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { Skeleton } from '@components/ui/skeleton';
 import {
   Bot,
@@ -41,6 +23,25 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+
+import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
+import {
+  setDebriefMembers,
+  setEditSession,
+  setIsEditOpen,
+  setSelectedInterviewers,
+  setTrainingInterviewers,
+  setTrainingToggle,
+} from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer/store';
+import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
+import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
+import { useRequest } from '@/context/RequestContext';
+import { useRequests } from '@/context/RequestsContext';
+import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
+import { type Request } from '@/queries/requests/types';
+import dayjs from '@/utils/dayjs';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
 import ResendRequests from './Components/ResendRequests';

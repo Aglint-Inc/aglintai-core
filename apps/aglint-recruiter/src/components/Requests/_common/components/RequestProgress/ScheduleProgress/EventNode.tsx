@@ -1,22 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
+import { Label } from '@components/ui/label';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
-
+import { RefreshCw, Trash } from 'lucide-react';
 import React from 'react';
 
 import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
-import { deleteRequestWorkflowAction } from '../utils';
 import { useRequestProgressProvider } from '../progressCtx';
 import { type ProgressTenseType, type RequestProgressMapType } from '../types';
+import { deleteRequestWorkflowAction } from '../utils';
 import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
-import { Label } from '@components/ui/label';
-import { Button } from '@components/ui/button';
-import { RefreshCw, Trash } from 'lucide-react';
 
 const EventNode = ({
   eventType,

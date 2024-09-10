@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import UITextField from '@/components/Common/UITextField';
+import MembersAutoComplete, {
+  type MemberTypeAutoComplete,
+} from '@/components/Scheduling/Common/MembersTextField';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
@@ -11,9 +14,6 @@ import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUse
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { sessionDurations } from '@/utils/scheduling/const';
 
-import MembersAutoComplete, {
-  MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
 import {
   setDebriefMembers,
   setEditSession,

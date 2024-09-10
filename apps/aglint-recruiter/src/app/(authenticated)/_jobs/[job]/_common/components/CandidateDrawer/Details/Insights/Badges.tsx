@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { Skeleton } from '@components/ui/skeleton';
 import { Badge as BadgeDev } from '@devlink/Badge';
-
 import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
@@ -10,7 +10,6 @@ import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { BADGE_CONSTANTS } from '@/queries/job-applications';
 
 import { Loader } from '../../Common/Loader';
-import { Skeleton } from '@components/ui/skeleton';
 
 export const Badges = () => {
   return (
@@ -135,7 +134,7 @@ const Knowledgable = () => (
 
 export const BADGE_ICONS: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsParams['filters']['badges'][number]]: ReactNode;
+  [_id in ApplicationsParams['filters']['badges'][number]]: ReactNode;
 } = {
   careerGrowth: <Ambitious />,
   jobStability: <Reliable />,

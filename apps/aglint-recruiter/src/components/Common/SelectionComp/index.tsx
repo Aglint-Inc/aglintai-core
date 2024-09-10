@@ -1,10 +1,9 @@
-import { type SelectChangeEvent, Select, Stack } from '@mui/material';
+import { Select, type SelectChangeEvent, Stack } from '@mui/material';
 import { type FC, type ReactNode } from 'react';
 
 const SelectionComp: FC<{
   value: any;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (event: SelectChangeEvent<any>) => void;
+  onChange: (_event: SelectChangeEvent<any>) => void;
   children: ReactNode;
   height?: number;
 }> = ({ value, onChange, children, height = 40 }) => {

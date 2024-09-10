@@ -1,4 +1,5 @@
-import { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import type { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import {
@@ -15,7 +16,15 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-
+import { Skeleton } from '@components/ui/skeleton';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table';
 import { DayOffHelper } from '@devlink3/DayOffHelper';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
@@ -25,16 +34,7 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
-import { Badge } from '@components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
-import { Skeleton } from '@components/ui/skeleton';
+
 import { useCompanyDetailComp } from '../hook';
 
 export const LoadMax = {

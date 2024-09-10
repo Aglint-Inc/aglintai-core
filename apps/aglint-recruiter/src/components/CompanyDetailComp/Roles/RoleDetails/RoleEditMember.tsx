@@ -1,22 +1,22 @@
-import { AlertCircle, ChevronDown, Loader2 } from 'lucide-react';
-import { useState } from 'react';
-
-import { updateMember } from '@/context/AuthContext/utils';
-import { useAllMembers } from '@/queries/members';
-import { useRoleAndPermissionsHook } from '@/queries/RolesSettings';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
 } from '@components/ui/dialog';
-import { DialogTitle } from '@radix-ui/react-dialog';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import { Card } from '@components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { AlertCircle, ChevronDown, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+
+import { updateMember } from '@/context/AuthContext/utils';
+import { useAllMembers } from '@/queries/members';
+import { useRoleAndPermissionsHook } from '@/queries/RolesSettings';
 
 function RoleEditMember({
   role,

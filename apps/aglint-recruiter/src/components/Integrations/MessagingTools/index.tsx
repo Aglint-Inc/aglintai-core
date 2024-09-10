@@ -1,4 +1,5 @@
 import { capitalize } from 'lodash';
+
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type MessagingToolsType } from '../types';
 // import SlackLogo from '@public/images/svg/slack-logo.svg';

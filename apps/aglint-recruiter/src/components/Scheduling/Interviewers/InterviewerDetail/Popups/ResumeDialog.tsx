@@ -1,11 +1,11 @@
 import { Text } from '@devlink/Text';
 import React from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { useModuleRelations } from '../hooks';
 import {
   setIsPauseDialogOpen,

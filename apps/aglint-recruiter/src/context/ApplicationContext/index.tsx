@@ -1,8 +1,4 @@
-import { type PropsWithChildren, createContext, useContext } from 'react';
-
-import { Overview } from '@/components/CandiatePortal/Home/Overview';
-import { Body } from '@/job/components/CandidateDrawer/Body';
-import { Details } from '@/job/components/CandidateDrawer/Details';
+import { createContext, type PropsWithChildren, useContext } from 'react';
 
 import { useApplicationContext } from './hooks';
 
@@ -28,8 +24,5 @@ const Application = ({
     </ApplicationContext.Provider>
   );
 };
-Application.Body = Body;
-Application.Details = Details;
-Application.Overview = Overview;
 
 export { Application };

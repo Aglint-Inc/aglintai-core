@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { cn } from '@lib/utils';
-import { SelectProps } from '@radix-ui/react-select';
+import type { SelectProps } from '@radix-ui/react-select';
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
 

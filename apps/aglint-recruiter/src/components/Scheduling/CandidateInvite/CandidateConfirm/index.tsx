@@ -2,6 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Button } from '@components/ui/button';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@devlink2/InterviewConfirmedCard';
@@ -12,7 +13,7 @@ import axios from '@/client/axios';
 import CompanyLogo from '@/components/Common/CompanyLogo';
 import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';
 import { getBreakLabel } from '@/utils/getBreakLabel';
@@ -23,7 +24,6 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import CancelRescheduleDialog from '../CancelScheduleDialog';
 import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { createRequest, dayJS, getCalenderEventUrl } from '../utils';
-import { Button } from '@components/ui/button';
 
 export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &

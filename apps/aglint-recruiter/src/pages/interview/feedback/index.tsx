@@ -4,6 +4,7 @@ import { FeedbackCandidate } from '@devlink3/FeedbackCandidate';
 import { Avatar, TextField } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
@@ -11,7 +12,6 @@ import Seo from '@/components/Common/Seo';
 
 import { type API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
 import { type API_save_interview_feedback } from '../../api/save_interview_feedback/types';
-import { Loader2 } from 'lucide-react';
 
 const InterviewFeedbackPage = () => {
   const [form, setForm] = React.useState({ rating: 2, feedback: '' });

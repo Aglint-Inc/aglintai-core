@@ -1,24 +1,11 @@
-import { Input } from '@components/ui/input';
-import { Label } from '@components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-// import { Permissions } from '@/types/permissions'; // Add this import
-import { capitalize } from '@/utils/text/textUtils';
 
-import { ShadcnPhoneInput } from '../Common/UIPhoneInput/PhoneInput';
 import { PasswordUpdate } from './components/PasswordUpdate';
 import { UserDetail } from './components/UserDetails';
-import {
-  type EmailFormFields,
-  type FormFields,
-  type FormValues,
-  type PasswordFormFields,
-  type PreferenceFormFields,
-} from './util';
 
 const navTabs: Array<{
   label: string;
@@ -68,131 +55,4 @@ const ProfileDashboard = () => {
   );
 };
 
-export const ProfileForms = ({
-  profile,
-  setProfile,
-  setChanges = null,
-}: {
-  profile:
-    | FormFields
-    | PreferenceFormFields
-    | EmailFormFields
-    | PasswordFormFields;
-  setProfile:
-    | React.Dispatch<React.SetStateAction<FormFields>>
-    | React.Dispatch<React.SetStateAction<PreferenceFormFields>>
-    | React.Dispatch<React.SetStateAction<EmailFormFields>>
-    | React.Dispatch<React.SetStateAction<PasswordFormFields>>;
-  setChanges?: () => void;
-}) => {
-  const handleChange = (e, key: string) => {
-    setProfile((prev) => {
-      return {
-        ...prev,
-        [key]: {
-          ...prev[String(key)],
-          value: e.target.value,
-          error: false,
-        },
-      };
-    });
-    if (setChanges) setChanges();
-  };
-  const forms = Object.entries(profile).map(([key, val]) => {
-    return (
-      <ProfileForm key={key} id={key} value={val} onChange={handleChange} />
-    );
-  });
-  return <>{forms}</>;
-};
-
-const ProfileForm = ({
-  id,
-  value,
-  onChange,
-}: {
-  id: string;
-  value: FormValues;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (e: any, key: string, phoneFormat?: any) => void;
-}) => {
-  const { userCountry } = useAuthDetails();
-  const defaultCountry =
-    value.validation === 'phone' && !value.value ? userCountry : '+1';
-  // eslint-disable-next-line no-unused-vars
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  // const handleMouseDownPassword = (event) => {
-  //   event.preventDefault();
-  // };
-  // const handleClickShowPassword = () => {
-  //   if (value.value) setShowPassword(!showPassword);
-  // };
-
-  switch (value.validation) {
-    case 'phone': {
-      return (
-        <div className='space-y-2'>
-          {value.label && <Label>{value.label}</Label>}
-          <ShadcnPhoneInput
-            country={defaultCountry}
-            placeholder={value.placeholder}
-            value={value.value}
-            required={value.required}
-            disabled={value.disabled}
-            onChange={(phone) => {
-              onChange({ target: { value: phone } }, id);
-            }}
-          />
-          {value.error && (
-            <p className='text-sm text-red-500'>{`Please enter a valid ${capitalize(id)}`}</p>
-          )}
-        </div>
-      );
-    }
-    case 'password': {
-      return (
-        <div className='space-y-2'>
-          <Label htmlFor={id}>{value.label}</Label>
-          <Input
-            id={id}
-            type='password'
-            placeholder={value.placeholder}
-            required={value.required}
-            value={value.value}
-            disabled={value.blocked}
-            onChange={(e) => onChange(e, id)}
-            className={value.error ? 'border-red-500' : ''}
-          />
-          {value.error && (
-            <p className='text-sm text-red-500'>
-              {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
-            </p>
-          )}
-        </div>
-      );
-    }
-    default: {
-      return (
-        <div className='space-y-2'>
-          <Label htmlFor={id}>{value.label}</Label>
-          <Input
-            id={id}
-            placeholder={value.placeholder}
-            required={value.required}
-            value={value.value}
-            disabled={value.blocked}
-            onChange={(e) => onChange(e, id)}
-            className={value.error ? 'border-red-500' : ''}
-          />
-          {value.error && (
-            <p className='text-sm text-red-500'>
-              {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
-            </p>
-          )}
-        </div>
-      );
-    }
-  }
-};
 export default ProfileDashboard;

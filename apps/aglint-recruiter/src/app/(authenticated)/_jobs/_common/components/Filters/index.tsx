@@ -25,7 +25,7 @@ const ORDER = {
   closed: 2,
 } satisfies {
   // eslint-disable-next-line no-unused-vars
-  [id in Job['status']]: 0 | 1 | 2;
+  [_id in Job['status']]: 0 | 1 | 2;
 };
 
 function FilterJobDashboard({

@@ -16,7 +16,5 @@ const Insights = (props: PropsWithChildren) => {
     </Stack>
   );
 };
-Insights.Badges = Badges;
-Insights.Overview = Overview;
 
 export { Insights };

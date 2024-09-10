@@ -1,24 +1,20 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
+import { RefreshCcw } from 'lucide-react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { ShowCode } from '@/components/Common/ShowCode';
+import { UIButton } from '@/components/Common/UIButton';
+import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRequests } from '@/context/RequestsContext';
 import toast from '@/utils/toast';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
-import UITypography from '@/components/Common/UITypography';
-import { useRequests } from '@/context/RequestsContext';
-import { useRouter } from 'next/router';
-import { UIButton } from '@/components/Common/UIButton';
-import { RefreshCcw } from 'lucide-react';
 
 function EmailPreviewSelfSchedule() {
   const [fetching, setFetching] = useState(false);

@@ -1,5 +1,5 @@
 import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-
+import { Skeleton } from '@components/ui/skeleton';
 import React, { useEffect, useMemo } from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
@@ -7,16 +7,15 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/components/CompanyDetailComp/Templates/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
-import { Skeleton } from '@components/ui/skeleton';
 import CandidateCancelled from './CandidateCancelled';
 import InterviewerDecline from './InterviewerDecline';
 import { RequestProgressContext } from './progressCtx';
 import ScheduleProgress from './ScheduleProgress';
 import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
-import { RequestProgressMapType, TriggerActionMapType } from './types';
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+import type { RequestProgressMapType, TriggerActionMapType } from './types';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();
