@@ -6,11 +6,11 @@ import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/Role
 import AppLayout from '../components/AppLayout';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { type PropsWithChildren, Suspense } from 'react';
-import WorkflowsProvider from './Workflows';
 import { ThemeProvider } from '@components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
 import { TooltipProvider } from '@components/ui/tooltip';
 import { JobsProvider } from '@/jobs/contexts';
+import { WorkflowsProvider } from '@/workflows/contexts';
 
 export const PrivateProviders = ({
   children,
