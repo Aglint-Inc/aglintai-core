@@ -1,5 +1,4 @@
 import { type EmailTemplateAPi } from '@aglint/shared-types';
-import { EmailTemplateHolder } from '@devlink2/EmailTemplateHolder';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -10,6 +9,9 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import toast from '@/utils/toast';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { Button } from '@components/ui/button';
+import { Info } from 'lucide-react';
 
 function EmailTemplate({ application_id }: { application_id?: string }) {
   const { recruiterUser } = useAuthDetails();
@@ -71,16 +73,12 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
   return (
     <>
       <EmailTemplateHolder
-        onClickEditTemplate={{
-          onClick: () => {
-            window.open(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/company?tab=emailTemplate&email=sendAvailabilityRequest_email_applicant`,
-            );
-          },
+        onClickEditTemplate={() => {
+          window.open(
+            `${process.env.NEXT_PUBLIC_HOST_NAME}/company?tab=emailTemplate&email=sendAvailabilityRequest_email_applicant`,
+          );
         }}
-        onClickReload={{
-          onClick: getEmail,
-        }}
+        onClickReload={getEmail}
         slotEmail={
           <ShowCode>
             <ShowCode.When isTrue={fetching}>
@@ -107,3 +105,37 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
 }
 
 export default EmailTemplate;
+
+interface EmailTemplateHolderProps {
+  onClickReload: () => void;
+  onClickEditTemplate: () => void;
+  slotEmail: React.ReactNode;
+  textHeader?: string;
+}
+
+export function EmailTemplateHolder({
+  onClickReload,
+  onClickEditTemplate,
+  slotEmail,
+  textHeader = 'This is a preview only. All Actions in this email are disabled.',
+}: EmailTemplateHolderProps) {
+  return (
+    <Card className='w-full'>
+      <CardHeader className='flex p-2 flex-row items-center justify-between space-y-0 pb-2'>
+        <div className='flex items-center text-sm text-muted-foreground'>
+          <Info className='mr-2 h-4 w-4' />
+          {textHeader}
+        </div>
+        <div className='flex space-x-2'>
+          <Button variant='ghost' size='sm' onClick={onClickReload}>
+            Reload
+          </Button>
+          <Button variant='ghost' size='sm' onClick={onClickEditTemplate}>
+            Edit template
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className='p-0 bg-neutral-50'>{slotEmail}</CardContent>
+    </Card>
+  );
+}

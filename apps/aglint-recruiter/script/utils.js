@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteJsFilesInDir = void 0;
-exports.writeToFile = writeToFile;
+exports.deleteJsFilesInDir = exports.writeToFile = void 0;
 var fs_1 = require("fs");
 var path_1 = require("path");
 function writeToFile(path, data) {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     (0, fs_1.writeFileSync)(path, data, 'utf-8');
 }
+exports.writeToFile = writeToFile;
 var deleteJsFilesInDir = function (dir) {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     (0, fs_1.readdir)(dir, function (err, files) {
