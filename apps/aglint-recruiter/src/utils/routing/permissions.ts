@@ -54,7 +54,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
   '/requests/[id]': ['job_module'],
-  '/requests/history':['job_module'],
+  '/requests/history': ['job_module'],
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
@@ -158,6 +158,7 @@ const PERMISSIONS: Permissions = {
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
   '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],
+  '/api/ai/self-schedule-request': ['job_module'],
 };
 
 export default PERMISSIONS;
