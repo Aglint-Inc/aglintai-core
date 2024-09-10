@@ -3,7 +3,9 @@ import { createContext, useContext, useState } from 'react';
 const DragCtx = createContext({
   iscategDragging: false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setIsCategDragging: (_p) => {},
+  setIsCategDragging: (_p) => {
+    //
+  },
 });
 
 export const useDragCtx = () => {

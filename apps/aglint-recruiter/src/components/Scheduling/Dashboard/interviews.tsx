@@ -7,6 +7,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
@@ -16,8 +17,6 @@ import {
 } from '@/context/SchedulingAnalytics';
 import { SafeObject } from '@/utils/safeObject';
 import { capitalizeAll } from '@/utils/text/textUtils';
-import { Loader2 } from 'lucide-react';
-
 
 export const Interviewes = memo(() => (
   <NewInterviewDetail

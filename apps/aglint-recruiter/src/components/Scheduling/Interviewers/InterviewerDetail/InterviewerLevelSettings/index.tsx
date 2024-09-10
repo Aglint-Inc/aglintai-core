@@ -5,6 +5,7 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
+import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -12,11 +13,9 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { RolesPill } from '@devlink/RolesPill';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
-
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -24,7 +23,6 @@ import { cn } from '@lib/utils';
 import {
   Alert,
   Autocomplete,
-  Chip,
   Stack,
   TextField,
   Typography,
@@ -35,6 +33,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import Chip from '@/components/Common/AddChip/Chip';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -43,7 +42,6 @@ import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 import { useImrQuery } from '../hooks';
-import { Checkbox } from '@components/ui/checkbox';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
   value: number;
@@ -597,24 +595,16 @@ function InterviewerLevelSettings({
                     <>
                       {freeKeyWords.map((item) => {
                         if (companyKeywords.free.includes(item)) {
+                          return <Chip key={item} name={item} disable={true} />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              sx={{ opacity: 0.7 }}
-                              label={item}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setFreeKeywords((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setFreeKeywords((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );
@@ -655,24 +645,16 @@ function InterviewerLevelSettings({
                     <>
                       {softConflictsKeyWords.map((item) => {
                         if (companyKeywords.SoftConflicts.includes(item)) {
+                          return <Chip key={item} name={item} disable />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              label={item}
-                              sx={{ opacity: 0.7 }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setSoftConflictsKeyWords((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setSoftConflictsKeyWords((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );
@@ -716,24 +698,16 @@ function InterviewerLevelSettings({
                     <>
                       {outOfOffice.map((item) => {
                         if (companyKeywords.outOfOffice.includes(item)) {
+                          return <Chip key={item} name={item} disable />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              label={item}
-                              sx={{ opacity: 0.7 }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setOutOfOffice((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setOutOfOffice((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );
@@ -777,24 +751,16 @@ function InterviewerLevelSettings({
                     <>
                       {recruitingBlocks.map((item) => {
                         if (companyKeywords.recruitingBlocks.includes(item)) {
+                          return <Chip key={item} name={item} disable />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              label={item}
-                              sx={{ opacity: 0.7 }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setRecruitingBlocks((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setRecruitingBlocks((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );

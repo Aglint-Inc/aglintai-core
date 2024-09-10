@@ -2,24 +2,24 @@ import {
   type DatabaseEnums,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { get } from 'lodash';
 import React, { useState } from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { createRequestWorkflowAction } from '../utils';
 import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
 import {
   agentTargetApiEmailEndPoint,
   useSelectedActionsDetails,
 } from './dialogCtx';
-import { createRequestWorkflowAction } from '../utils';
-import { Button } from '@components/ui/button';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();

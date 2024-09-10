@@ -1,6 +1,4 @@
-import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { Drawer, Stack } from '@mui/material';
-import { Mail } from 'lucide-react';
+import UIDrawer from '@/components/Common/UIDrawer';
 
 import BodyDrawer from './BodyDrawer';
 import ButtonMain from './ButtonGroup';
@@ -9,12 +7,17 @@ import { useSelfSchedulingDrawer } from './hooks';
 import { useSelfSchedulingFlowStore } from './store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
-  const { isSelfScheduleDrawerOpen, stepScheduling, fetchingPlan } =
-    useSelfSchedulingFlowStore((state) => ({
-      isSelfScheduleDrawerOpen: state.isSelfScheduleDrawerOpen,
-      stepScheduling: state.stepScheduling,
-      fetchingPlan: state.fetchingPlan,
-    }));
+  const {
+    isSelfScheduleDrawerOpen,
+    stepScheduling,
+    fetchingPlan,
+    isSendingToCandidate,
+  } = useSelfSchedulingFlowStore((state) => ({
+    isSelfScheduleDrawerOpen: state.isSelfScheduleDrawerOpen,
+    stepScheduling: state.stepScheduling,
+    fetchingPlan: state.fetchingPlan,
+    isSendingToCandidate: state.isSendingToCandidate,
+  }));
 
   const { resetStateSelfScheduling } = useSelfSchedulingDrawer({
     refetch,
@@ -22,34 +25,25 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
 
   return (
     <>
-      <Drawer
-        anchor={'right'}
+      <UIDrawer
+        size='full'
         open={isSelfScheduleDrawerOpen}
         onClose={() => {
+          if (fetchingPlan || isSendingToCandidate) return;
           resetStateSelfScheduling();
         }}
+        title={'Self Scheduling Request'}
+        slotBottom={
+          !fetchingPlan && stepScheduling !== 'success_screen' ? (
+            <ButtonMain refetch={refetch} />
+          ) : (
+            <></>
+          )
+        }
+        calendar={<Calendar />}
       >
-        <Stack direction={'row'}>
-          <Calendar />
-          <SideDrawerLarge
-            drawerSize={'medium'}
-            onClickCancel={{
-              onClick: () => {
-                resetStateSelfScheduling();
-              },
-            }}
-            slotHeaderIcon={
-              <Stack display={'flex'} paddingTop={'3px'}>
-                <Mail size={4} />
-              </Stack>
-            }
-            textDrawertitle={'Self Scheduling Request'}
-            slotButtons={<ButtonMain refetch={refetch} />}
-            slotSideDrawerbody={<BodyDrawer />}
-            isBottomBar={!fetchingPlan && stepScheduling !== 'success_screen'}
-          />
-        </Stack>
-      </Drawer>
+        <BodyDrawer />
+      </UIDrawer>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
-
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { type ApiCancelScheduledInterview } from '@aglint/shared-types';

@@ -1,9 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  ScheduleFilerType,
-  initialFilterState,
-} from '@/components/Scheduling/Schedules/ScheduleStatesContext/constant';
 import { useState /*useSyncExternalStore*/ } from 'react';
+
+import {
+  initialFilterState,
+  ScheduleFilerType,
+} from '@/components/Scheduling/Schedules/ScheduleStatesContext/constant';
 
 const initialLocalState: {
   scheduleFilterIds: ScheduleFilerType;

@@ -8,6 +8,7 @@ import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
+
 import { getStatusColor } from '../../_common/utils/getStatusColor';
 
 function StatusList({ selectedFilter }: { selectedFilter: string }) {

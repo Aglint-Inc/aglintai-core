@@ -9,6 +9,7 @@ export default async function handler(req, res) {
 export function decrypt(encryptedData, encryptionKey) {
   const iv = Buffer.from(encryptedData.slice(0, 32), 'hex');
   const encryptedText = encryptedData.slice(32);
+  //@ts-ignore
   const decipher = crypto.createDecipheriv(
     'aes-256-cbc',
     Buffer.from(encryptionKey, 'hex'),

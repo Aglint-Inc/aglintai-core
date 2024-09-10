@@ -2,10 +2,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { type Dayjs } from 'dayjs';
+import { Calendar } from 'lucide-react';
 import React from 'react';
 
 import UITextField from '../UITextField';
-import { Calendar } from 'lucide-react';
 
 export default function SpecializedDatePicker({
   label,

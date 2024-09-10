@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
@@ -16,8 +17,12 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
+import MembersAutoComplete, {
+  MemberTypeAutoComplete,
+} from '@/components/Scheduling/Common/MembersTextField';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
@@ -27,11 +32,6 @@ import ROUTES from '@/utils/routing/routes';
 import { sessionDurations } from '@/utils/scheduling/const';
 import { validateString } from '@/utils/validateString';
 
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import MembersAutoComplete, {
-  MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { type CompanyMember } from '.';
 
 export type SessionUser = CompanyMember & {
@@ -349,7 +349,7 @@ const Interview = ({
     },
     { qualified: [], training: [] } as {
       // eslint-disable-next-line no-unused-vars
-      [key in SessionUser['training_status']]: SessionUser[];
+      [_key in SessionUser['training_status']]: SessionUser[];
     },
   );
 
@@ -569,9 +569,9 @@ export const ScheduleTypeField = ({
     icon: React.JSX.Element;
   }[];
   // eslint-disable-next-line no-unused-vars
-  const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    e,
-  ) => {
+  const _onChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
     const schedule = options.find((m) => m.value === e.target.value);
     if (schedule) handleTypeChange(schedule.value);
   };

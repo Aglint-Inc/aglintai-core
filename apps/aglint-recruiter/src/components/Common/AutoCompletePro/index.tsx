@@ -11,6 +11,7 @@ function AutoCompletePro<T>({
   getSelectLabel = (x) => x as string,
   getOptionLabel = (props, option) => <li {...props}>{String(option)}</li>,
   error,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onFocus = () => {},
 }: {
   value: T;

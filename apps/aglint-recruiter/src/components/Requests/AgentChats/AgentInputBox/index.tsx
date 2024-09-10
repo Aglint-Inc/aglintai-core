@@ -13,7 +13,7 @@ import { useAgentIEditor } from '../AgentEditorContext';
 import { useUserChat } from '../ChatMessageList/hooks/fetch';
 import AgentEditor from './AgentEditor';
 import CreateSchedulePopUp from './CreateSchedulePopUp';
-import { type selectedItemsType, scheduleTypes } from './utils';
+import { scheduleTypes, type selectedItemsType } from './utils';
 
 function AgentInputBox() {
   const { recruiter_id } = useAuthDetails();

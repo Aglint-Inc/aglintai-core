@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { type DatabaseTable } from '@aglint/shared-types';
-
+import { Button } from '@components/ui/button';
 import { Check } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { useRequests } from '@/context/RequestsContext';
-import { Button } from '@components/ui/button';
 
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   const { query } = useRouter();

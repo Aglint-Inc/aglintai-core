@@ -5,6 +5,7 @@ import { RecentReschedule } from '@devlink3/RecentReschedule';
 import { RecentRescheduleList } from '@devlink3/RecentRescheduleList';
 import { Avatar, Skeleton } from '@mui/material';
 import dayjs from 'dayjs';
+import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -15,7 +16,6 @@ import {
 } from '@/queries/scheduling-dashboard';
 
 import { FilterDropDownDash } from './FilterDropDownDash';
-import { BarChart2 } from 'lucide-react';
 
 const RecentRescheduleCancel = () => {
   const { data: analyticsData } = useScheduleSessionsAnalytics();

@@ -1,4 +1,5 @@
 import { DatabaseEnums } from '@aglint/shared-types';
+
 import { interviewDateRangeType } from '.';
 
 export type ScheduleFilerType = {

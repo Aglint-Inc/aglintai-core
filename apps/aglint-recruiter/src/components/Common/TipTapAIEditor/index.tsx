@@ -85,7 +85,9 @@ const TipTapAIEditor = ({
           : getEmailTemplateExtnsNoHeading({ placeholder, template_type }),
     editable: !disabled,
     content: initialValue || '',
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onBlur() {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onFocus() {},
     onSelectionUpdate({ editor }) {
       const { view, state } = editor;

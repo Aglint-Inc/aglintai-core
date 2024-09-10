@@ -1,16 +1,16 @@
 'use client';
 
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Plus } from 'lucide-react';
 import * as React from 'react';
 
+import AddChip from '@/components/Common/AddChip';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useToast } from '@components/hooks/use-toast';
 import DeleteDepartmentsDialog from './ManageDepartmentsDialog/deleteDepartmentDialog';
-import AddChip from '@/components/Common/AddChip';
 
 export default function Departments() {
   const { data: departments, refetch: refetchDepartments } =

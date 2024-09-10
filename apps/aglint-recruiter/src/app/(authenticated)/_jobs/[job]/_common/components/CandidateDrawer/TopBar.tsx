@@ -18,7 +18,6 @@ const Info = () => {
     <CandidateName
       isLinedin={false}
       isResume={!!data?.file_url}
-      onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => setPreview(true) }}
       textName={capitalizeAll(data?.name ?? '---')}
     />

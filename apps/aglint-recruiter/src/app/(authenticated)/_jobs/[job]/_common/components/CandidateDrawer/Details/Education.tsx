@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
+import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { EducationItem } from '@devlink/EducationItem';
 import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
-
 import { GraduationCap } from 'lucide-react';
 import Image from 'next/image';
 
@@ -10,7 +10,6 @@ import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
 import { EmptyDetailState } from './Common/EmptyDetailState';
-import { Skeleton } from '@components/ui/skeleton';
 
 const Education = () => {
   return (
@@ -87,7 +86,7 @@ const timeRange = (startDate: string, endDate: string) => {
 
 const timeFormat = (
   obj: { year: number; month: number },
-  isEndDate: boolean = false,
+  isEndDate = false,
 ) => {
   if (obj) {
     if (obj.month) {

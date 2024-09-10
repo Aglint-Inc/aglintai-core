@@ -1,13 +1,13 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { useEffect, useState } from 'react';
-
-import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
-import { Skeleton } from '@components/ui/skeleton';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
+
 import { useDeleteRelationHandler } from '../../queries/hooks';
 import {
   setIsDeleteMemberDialogOpen,

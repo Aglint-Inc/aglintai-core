@@ -1,16 +1,15 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+import { UIButton } from '@/components/Common/UIButton';
 
 import { useSelfSchedulingDrawer } from '../hooks';
 import { setStepScheduling, useSelfSchedulingFlowStore } from '../store';
 
 function ButtonMain({ refetch }: { refetch: () => void }) {
-  const { stepScheduling, isSendingToCandidate } = useSelfSchedulingFlowStore(
-    (state) => ({
+  const { stepScheduling, isSendingToCandidate, fetchingPlan } =
+    useSelfSchedulingFlowStore((state) => ({
       stepScheduling: state.stepScheduling,
       isSendingToCandidate: state.isSendingToCandidate,
-    }),
-  );
+      fetchingPlan: state.fetchingPlan,
+    }));
 
   const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
     refetch,
@@ -25,31 +24,34 @@ function ButtonMain({ refetch }: { refetch: () => void }) {
   };
   return (
     <>
-      <ButtonSoft
-        size={2}
-        color={'neutral'}
-        textButton={stepScheduling === 'slot_options' ? 'Close' : 'Back'}
-        onClickButton={{
-          onClick: () => {
-            if (stepScheduling === 'slot_options') {
-              resetStateSelfScheduling();
-            } else if (stepScheduling === 'self_scheduling_email_preview') {
-              setStepScheduling('slot_options');
-            }
-          },
+      <UIButton
+        fullWidth
+        size={'md'}
+        variant='secondary'
+        onClick={() => {
+          if (isSendingToCandidate || fetchingPlan) return;
+          if (stepScheduling === 'slot_options') {
+            resetStateSelfScheduling();
+          } else if (stepScheduling === 'self_scheduling_email_preview') {
+            setStepScheduling('slot_options');
+          }
         }}
-      />
+      >
+        {stepScheduling === 'slot_options' ? 'Close' : 'Back'}
+      </UIButton>
 
-      <ButtonSolid
+      <UIButton
+        fullWidth
+        variant='default'
         isLoading={isSendingToCandidate}
-        size={2}
-        textButton={primaryButtonText()}
-        onClickButton={{
-          onClick: async () => {
-            await onClickPrimary();
-          },
+        size={'md'}
+        onClick={async () => {
+          if (isSendingToCandidate) return;
+          await onClickPrimary();
         }}
-      />
+      >
+        {primaryButtonText()}
+      </UIButton>
     </>
   );
 }

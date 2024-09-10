@@ -8,13 +8,13 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { BarChart2, Loader2 } from 'lucide-react';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { useInterviewMeetingStatus } from '@/queries/scheduling-dashboard';
 
 import { interviewMeetingTimeFormat } from './utils';
-import { BarChart2, Loader2 } from 'lucide-react';
 
 type MeetingStatusObjType = ReturnType<
   typeof useInterviewMeetingStatus
@@ -68,7 +68,7 @@ const InterviewMeetingStatusComponent = ({
   const safeData = interviewMeetingTimeFormat(type, data).reduce(
     (acc, curr) => {
       Object.entries(curr).forEach(([key, value]) => {
-        if (!acc?.[key] ?? null) acc[key] = [];
+        if (!acc?.[key]) acc[key] = [];
         acc[key].push(value);
       });
       return acc;

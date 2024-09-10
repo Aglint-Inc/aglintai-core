@@ -51,7 +51,7 @@ export function generateMetadata(params: Props): Metadata {
       siteName: meta.siteName,
       images: [
         {
-          url: meta.image!,
+          url: meta.image,
           width: 1200,
           height: 630,
           alt: 'Aglint Inc',
@@ -64,13 +64,13 @@ export function generateMetadata(params: Props): Metadata {
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
-      images: [meta.image!],
+      images: [meta.image],
     },
     robots: meta.robots,
     icons: {
       icon: meta.icon,
     },
-    metadataBase: new URL(meta.url!),
+    metadataBase: new URL(meta.url),
   };
 }
 

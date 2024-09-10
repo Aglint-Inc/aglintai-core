@@ -1,8 +1,10 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { HistoryPill as HistoryPillDev } from '@devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import { Avatar } from '@mui/material';
+import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,8 +13,6 @@ import { useInterviewTrainingProgress } from '@/queries/scheduling-dashboard';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
-import { Skeleton } from '@components/ui/skeleton';
-import { BarChart2 } from 'lucide-react';
 
 const LIMIT = 4;
 

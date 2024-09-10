@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { RequestProgress } from '@devlink2/RequestProgress';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
@@ -9,24 +10,23 @@ import React from 'react';
 
 import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import {
+  createRequestWorkflowAction,
+  deleteRequestWorkflowAction,
+} from '../utils';
 import { workflowCopy } from '../utils/copy';
 import {
   getProgressCompStatus,
   progressStatusToTense,
 } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
-import {
-  createRequestWorkflowAction,
-  deleteRequestWorkflowAction,
-} from '../utils';
-import { Button } from '@components/ui/button';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {

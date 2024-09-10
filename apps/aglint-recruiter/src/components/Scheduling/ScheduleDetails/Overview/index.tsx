@@ -1,5 +1,6 @@
+import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-
+import { StatusBadge } from '@devlink2/StatusBadge';
 import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { NewScheduleDetail } from '@devlink3/NewScheduleDetail';
 import { UserNameCard } from '@devlink3/UserNameCard';
@@ -19,8 +20,6 @@ import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { StatusBadge } from '@devlink2/StatusBadge';
 
 function Overview() {
   const { checkPermissions } = useRolesAndPermissions();

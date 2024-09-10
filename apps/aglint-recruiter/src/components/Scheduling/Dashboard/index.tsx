@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
@@ -14,7 +15,6 @@ import { RecentDeclines } from './recentDeclines';
 import { RecentReschedules } from './recentReschedules';
 import { Tabs } from './tabs';
 import { TrainingProgress } from './trainingProgress';
-import { Loader2 } from 'lucide-react';
 
 const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();

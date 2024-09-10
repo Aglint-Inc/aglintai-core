@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { updateRequestNotes } from '@/components/Requests/_common/functions/updateRequestNotes';
 import { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
 import { useApplications } from '@/job/hooks';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
@@ -15,7 +16,6 @@ import toast from '@/utils/toast';
 
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 import { type ApplicationStore, useApplicationStore } from './store';
-import { updateRequestNotes } from '@/components/Requests/_common/functions/updateRequestNotes';
 
 export const useApplicationContext = (
   props: Parameters<(typeof applicationQuery)['application']>[0] &

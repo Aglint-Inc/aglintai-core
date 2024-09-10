@@ -1,8 +1,8 @@
 import { type SessionCombinationRespType } from '@aglint/shared-types';
 
 import {
-  type CalEventAttendeesAuthDetails,
   bookSession,
+  type CalEventAttendeesAuthDetails,
 } from '@/utils/event_book/book_session';
 import { fetchMeetingsInfo } from '@/utils/event_book/fetchMeetingsInfo';
 import { getFullName } from '@/utils/jsonResume';

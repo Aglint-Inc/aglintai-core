@@ -1,3 +1,5 @@
+import { CheckCircle, Loader2 } from 'lucide-react';
+
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import CompanyInfoComp from './CompanyDetails';
@@ -12,7 +14,6 @@ import { settingSubNavItem } from './SideNav/utils';
 import TeamManagement from './TeamManagement';
 import SchedulerEmailTemps from './Templates';
 import WorkingHour from './WorkingHours';
-import { CheckCircle, Loader2 } from 'lucide-react';
 
 const CompanyDetailComp = () => {
   const { recruiter } = useAuthDetails();

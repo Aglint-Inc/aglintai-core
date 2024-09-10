@@ -25,7 +25,6 @@ export default async function handler(
     }
 
     const isAllowed = await server_checkUserRolePermissions({
-      getVal: (name) => req.cookies[String(name)],
       roles: ['admin'],
     });
     if (isAllowed) {
@@ -61,6 +60,7 @@ const getResponse = (data: { passwordReset?: boolean; error?: string }) => {
 
 import { type DatabaseEnums, type DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 /**
  * Checks if a user has certain roles based on their authentication.
@@ -97,28 +97,29 @@ import { createServerClient } from '@supabase/ssr';
  * - Handle any errors thrown by the function or returned from the asynchronous operations.
  */
 export const server_checkUserRolePermissions = async ({
-  getVal,
   roles,
 }: {
-  // eslint-disable-next-line no-unused-vars
-  getVal: (name: string) => string;
   roles: DatabaseEnums['user_roles'][];
 }) => {
+  const cookieStore = cookies();
   try {
     const supabase = createServerClient<DB>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       {
         cookies: {
-          get(name: string) {
-            return getVal(name);
+          getAll() {
+            return cookieStore.getAll();
           },
-          //   set(name: string, value: string, options: { [key: string]: any }) {
-          //     res.setHeader('Set-Cookie', `${name}=${value}; ${options}`);
-          //   },
-          //   remove(name: string) {
-          //     res.setHeader('Set-Cookie', `${name}=; Max-Age=0`);
-          //   },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options),
+              );
+            } catch {
+              //
+            }
+          },
         },
       },
     );
@@ -176,20 +177,27 @@ export const server_checkUserRolePermissions = async ({
  * - The function retrieves the user's role and ID from the database based on authentication status.
  * - Handle any errors thrown by the function or returned from the asynchronous operations.
  */
-export const server_getUserRoleAndId = async ({
-  getVal,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  getVal: (name: string) => string;
-}) => {
+export const server_getUserRoleAndId = async () => {
+  const cookieStore = cookies();
   try {
     const supabase = createServerClient<DB>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       {
         cookies: {
-          get(name: string) {
-            return getVal(name);
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options),
+              );
+            } catch {
+              // The `setAll` method was called from a Server Component.
+              // This can be ignored if you have middleware refreshing
+              // user sessions.
+            }
           },
         },
       },
