@@ -285,28 +285,10 @@ function CollapseTrainingProgress({
         >
           <Stack direction={'row'} gap={1} alignItems={'center'}>
             Shadow
-            {/* <IconButtonSoft
-              isDisabled={
-                shadowProgress.length // shadow complete
-                  ? mutatedShadowProgress.length === 0
-                  : mutatedShadowProgress.length === 1
-              }
-              color={'neutral'}
-              iconName='remove'
-              size={1}
-              onClickButton={{
-                onClick: async () => {
-                  await alterCount({
-                    type: 'shadow',
-                    count: shadow_to_complete - 1,
-                    module_relation_id: module_realtion_id,
-                  });
-                },
-              }}
-            /> */}
             <UIButton
               size='sm'
               variant='secondary'
+              icon={<Minus />}
               disabled={
                 shadowProgress.length // shadow complete
                   ? mutatedShadowProgress.length === 0
@@ -319,9 +301,7 @@ function CollapseTrainingProgress({
                   module_relation_id: module_realtion_id,
                 });
               }}
-            >
-              <Minus className='w-4 h-4' />
-            </UIButton>
+            />
             <MuiNumberfield
               isMarginTop={false}
               width='80px'
@@ -337,6 +317,7 @@ function CollapseTrainingProgress({
             />
             <UIButton
               size='sm'
+              icon={<Plus />}
               variant='secondary'
               onClick={() => {
                 if (isSaving) return;
@@ -346,14 +327,13 @@ function CollapseTrainingProgress({
                   module_relation_id: module_realtion_id,
                 });
               }}
-            >
-              <Plus className='w-4 h-4' />
-            </UIButton>
+            />
           </Stack>
           <Stack direction={'row'} gap={1} alignItems={'center'}>
             Reverse Shadow
             <UIButton
               size='sm'
+              icon={<Minus />}
               variant='secondary'
               disabled={
                 reverseShadowProgress.length
@@ -367,9 +347,7 @@ function CollapseTrainingProgress({
                   module_relation_id: module_realtion_id,
                 });
               }}
-            >
-              <Minus className='w-4 h-4' />
-            </UIButton>
+            />
             <MuiNumberfield
               isMarginTop={false}
               width='80px'
@@ -389,6 +367,7 @@ function CollapseTrainingProgress({
             <UIButton
               size='sm'
               variant='secondary'
+              icon={<Plus />}
               onClick={() => {
                 if (isSaving) return;
                 alterCount({
@@ -397,9 +376,7 @@ function CollapseTrainingProgress({
                   module_relation_id: module_realtion_id,
                 });
               }}
-            >
-              <Plus className='w-4 h-4' />
-            </UIButton>
+            />
           </Stack>
         </Stack>
       </Collapse>

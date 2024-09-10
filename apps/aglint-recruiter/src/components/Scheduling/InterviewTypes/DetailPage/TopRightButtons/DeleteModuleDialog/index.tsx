@@ -15,6 +15,8 @@ import toast from '@/utils/toast';
 import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';
 import { deleteModuleById } from '../../../utils';
+import UIDialog from '@/components/Common/UIDialog';
+import { UIButton } from '@/components/Common/UIButton';
 
 function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   const router = useRouter();
@@ -93,80 +95,76 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   }, [loading]);
 
   return (
-    <Dialog open={isDeleteModuleDialogOpen} onClose={onClose}>
-      <DcPopup
-        popupName={`Delete Interview Type ${moduleName}`}
-        onClickClosePopup={{ onClick: onClose }}
+    <>
+      <UIDialog
+        open={isDeleteModuleDialogOpen}
+        title={`Delete Interview Type ${moduleName}`}
+        onClose={onClose}
         slotButtons={
           <>
-            <ButtonSoft
-              size={2}
-              textButton='Cancel'
-              color={'neutral'}
-              onClickButton={{ onClick: onClose }}
-            />
-            <ButtonSolid
-              size={2}
-              color={'error'}
-              textButton='Delete'
+            <UIButton variant='secondary' size='sm' onClick={onClose}>
+              Cancel
+            </UIButton>
+
+            <UIButton
+              size='sm'
               isLoading={loading}
-              isDisabled={
+              disabled={
                 isFetching || isSessionExist || moduleName !== value.trim()
               }
-              onClickButton={{
-                onClick: () => {
-                  if (editModule.id) deleteModule();
-                },
+              onClick={() => {
+                if (editModule.id) deleteModule();
               }}
-            />
+            >
+              Delete
+            </UIButton>
           </>
         }
-        slotBody={
-          <Stack spacing={'var(--space-2)'}>
-            {isSessionExist ? (
-              <GlobalBannerShort
-                color={'error'}
-                iconName='warning'
-                textTitle='Cannot delete interview type'
-                textDescription={`Interview type is used in job's interview plan or scheduled interviews.`}
-                slotButtons={<></>}
+      >
+        <Stack spacing={'var(--space-2)'}>
+          {isSessionExist ? (
+            <GlobalBannerShort
+              color={'error'}
+              iconName='warning'
+              textTitle='Cannot delete interview type'
+              textDescription={`Interview type is used in job's interview plan or scheduled interviews.`}
+              slotButtons={<></>}
+            />
+          ) : (
+            <>
+              <Text
+                size={2}
+                color={'neutral'}
+                content={`By clicking delete the Interview Type will be permanently deleted.`}
               />
-            ) : (
-              <>
+              <Stack direction={'row'} spacing={'3px'} flexWrap={'wrap'}>
                 <Text
                   size={2}
                   color={'neutral'}
-                  content={`By clicking delete the Interview Type will be permanently deleted.`}
+                  content={`Confirm by typing the job title`}
                 />
-                <Stack direction={'row'} spacing={'3px'} flexWrap={'wrap'}>
-                  <Text
-                    size={2}
-                    color={'neutral'}
-                    content={`Confirm by typing the job title`}
-                  />
-                  <Text size={2} color={'error'} content={moduleName} />
-                  <Text size={2} color={'neutral'} content={`below.`} />
-                </Stack>
+                <Text size={2} color={'error'} content={moduleName} />
+                <Text size={2} color={'neutral'} content={`below.`} />
+              </Stack>
 
-                <UITextField
-                  disabled={loading}
-                  placeholder={moduleName}
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      if (value === moduleName) {
-                        if (editModule.id) deleteModule();
-                      }
+              <UITextField
+                disabled={loading}
+                placeholder={moduleName}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    if (value === moduleName) {
+                      if (editModule.id) deleteModule();
                     }
-                  }}
-                />
-              </>
-            )}
-          </Stack>
-        }
-      />
-    </Dialog>
+                  }
+                }}
+              />
+            </>
+          )}
+        </Stack>
+      </UIDialog>
+    </>
   );
 }
 

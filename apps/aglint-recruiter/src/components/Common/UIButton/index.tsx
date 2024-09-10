@@ -8,6 +8,7 @@ interface ExtendedButtonProps extends ButtonProps {
   rightIcon?: React.ReactNode;
   isLoading?: boolean;
   fullWidth?: boolean;
+  icon?: React.ReactNode;
 }
 
 const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
@@ -20,6 +21,7 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
       isLoading,
       fullWidth,
       className,
+      icon = false,
       ...props
     },
     ref,
@@ -38,7 +40,20 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
         })
       : null;
 
-    const inputClasses = cn(fullWidth && 'w-full', className);
+    const IconWithClass = icon
+      ? React.cloneElement(icon as React.ReactElement, {
+          className:
+            size === 'sm' ? 'h-4 w-4' : size === 'md' ? 'h-6 w-6' : 'h-8 w-8',
+        })
+      : null;
+
+    const inputClasses = icon
+      ? size === 'sm'
+        ? 'h-7 w-7 p-0'
+        : size === 'md'
+          ? 'h-9 w-9 p-0'
+          : 'h-11 w-11 p-0'
+      : cn(fullWidth && 'w-full', className);
 
     return (
       <Button
@@ -50,31 +65,41 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
         }}
         className={inputClasses}
       >
-        {isLoading ? (
-          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+        {icon ? (
+          isLoading ? (
+            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+          ) : (
+            IconWithClass
+          )
         ) : (
           <>
-            {LeftIconWithClass && (
-              <span
-                className={
-                  size === 'sm' ? 'mr-1' : size === 'md' ? 'mr-1' : 'mr-2'
-                }
-              >
-                {LeftIconWithClass}
-              </span>
+            {isLoading ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : (
+              <>
+                {LeftIconWithClass && (
+                  <span
+                    className={
+                      size === 'sm' ? 'mr-1' : size === 'md' ? 'mr-1' : 'mr-2'
+                    }
+                  >
+                    {LeftIconWithClass}
+                  </span>
+                )}
+                {RightIconWithClass && (
+                  <span
+                    className={
+                      size === 'sm' ? 'ml-1' : size === 'md' ? 'ml-1' : 'ml-2'
+                    }
+                  >
+                    {RightIconWithClass}
+                  </span>
+                )}
+              </>
             )}
-            {RightIconWithClass && (
-              <span
-                className={
-                  size === 'sm' ? 'ml-1' : size === 'md' ? 'ml-1' : 'ml-2'
-                }
-              >
-                {RightIconWithClass}
-              </span>
-            )}
+            {children}
           </>
         )}
-        {children}
       </Button>
     );
   },
