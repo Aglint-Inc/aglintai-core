@@ -1,10 +1,10 @@
 import { Card, CardContent } from '@components/ui/card';
 import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
-import React, {
-  Dispatch,
-  DragEvent,
-  SetStateAction,
+import {
+  type Dispatch,
+  type DragEvent,
+  type SetStateAction,
   useRef,
   useState,
 } from 'react';

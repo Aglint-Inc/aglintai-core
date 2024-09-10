@@ -31,7 +31,6 @@ function SchedulingViewComp() {
   const job = schedule?.job;
 
   const viewScheduleTabs = [
-    { name: 'Candidate Details', tab: 'candidate_details', hide: false },
     { name: 'Job Details', tab: 'job_details', hide: false },
     { name: 'Instructions', tab: 'instructions', hide: false },
     {

@@ -1,4 +1,4 @@
-import { DatabaseView } from '@aglint/shared-types';
+import type { DatabaseView } from '@aglint/shared-types';
 
 export function getTriggerOption(
   trigger: DatabaseView['workflow_view']['trigger'],

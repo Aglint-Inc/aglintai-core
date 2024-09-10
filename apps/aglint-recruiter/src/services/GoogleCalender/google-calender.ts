@@ -8,9 +8,10 @@ import { google } from 'googleapis';
 import {
   type CalEventAttendeesAuthDetails,
   type GetAuthParams,
-  getSuperAdminAuth,
-  getUserCalAuth,
-} from '../../utils/event_book/book_session';
+} from '@/utils/event_book/types';
+import { getSuperAdminAuth } from '@/utils/scheduling/getSuperAdminAuth';
+import { getUserCalAuth } from '@/utils/scheduling/getUserCalAuth';
+
 import { decrypt_string } from '../../utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '../../utils/supabase/supabaseAdmin';
 

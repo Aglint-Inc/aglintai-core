@@ -10,7 +10,7 @@ import { useEffect, useMemo } from 'react';
 
 import { Forms } from '@/workflows/components/forms';
 import { useWorkflowsActions, useWorkflowsPopup } from '@/workflows/hooks';
-import { Form } from '@/workflows/types';
+import type { Form } from '@/workflows/types';
 import { validate } from '@/workflows/utils';
 
 import { useWorkflow } from '../hooks';

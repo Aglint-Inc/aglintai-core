@@ -9,9 +9,9 @@ import {
 } from '@components/ui/popover';
 import { Coffee, Edit, Loader2 } from 'lucide-react';
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
   useEffect,
   useRef,
   useState,

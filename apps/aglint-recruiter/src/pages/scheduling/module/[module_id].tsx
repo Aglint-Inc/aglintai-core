@@ -158,7 +158,6 @@ function ModuleMembersComp() {
                         <TrainingDetails
                           id={recruiterUser.user_id}
                           members={members}
-                          module={module}
                           progress={
                             progress?.filter(
                               (item) =>
@@ -203,13 +202,10 @@ function ModuleMembersComp() {
 
 const TrainingDetails = ({
   id,
-  // eslint-disable-next-line no-unused-vars
-  module,
   members,
   progress,
 }: {
   id: string;
-  module: any;
   members: any[];
   progress: any;
 }) => {

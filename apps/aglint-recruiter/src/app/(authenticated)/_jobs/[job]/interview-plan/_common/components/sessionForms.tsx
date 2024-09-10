@@ -21,7 +21,7 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import MembersAutoComplete, {
-  MemberTypeAutoComplete,
+  type MemberTypeAutoComplete,
 } from '@/components/Scheduling/Common/MembersTextField';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CreateInterviewSession } from '@/queries/interview-plans';

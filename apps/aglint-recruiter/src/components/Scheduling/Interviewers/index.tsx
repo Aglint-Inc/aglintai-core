@@ -79,7 +79,11 @@ const InterviewTab = () => {
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <Stack position={'relative'}>
-              <Filters setFilteredInterviewer={setFilteredInterviewer} />
+              <Filters
+                setFilteredInterviewer={setFilteredInterviewer}
+                interviewers={interviewers}
+                isLoading={isLoading}
+              />
               {filteredInterviewer?.length > 0 ? (
                 <>
                   <AllInterviewers

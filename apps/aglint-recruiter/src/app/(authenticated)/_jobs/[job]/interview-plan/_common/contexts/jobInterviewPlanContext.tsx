@@ -1,5 +1,5 @@
 import { useMutationState } from '@tanstack/react-query';
-import { createContext, PropsWithChildren } from 'react';
+import { createContext, type PropsWithChildren } from 'react';
 
 import { useJob } from '@/job/hooks';
 import { useCompanyMembers } from '@/queries/company-members';

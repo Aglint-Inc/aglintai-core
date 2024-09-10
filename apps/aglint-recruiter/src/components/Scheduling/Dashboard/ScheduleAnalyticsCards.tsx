@@ -14,10 +14,10 @@ type sessionStatusType = DatabaseTable['interview_meeting']['status'];
 type processDataType = {
   grouping_unit_a: {
     /* eslint-disable no-unused-vars */
-    [key in sessionStatusType]: scheduleType[];
+    [_key in sessionStatusType]: scheduleType[];
   };
   grouping_unit_b: {
-    [key in sessionStatusType]: scheduleType[];
+    [_key in sessionStatusType]: scheduleType[];
   };
   /* eslint-enable no-unused-vars */
 };

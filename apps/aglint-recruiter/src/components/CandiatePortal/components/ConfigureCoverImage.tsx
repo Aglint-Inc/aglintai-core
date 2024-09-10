@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
-import { ChangeEvent, DragEvent, useRef } from 'react';
+import { type ChangeEvent, type DragEvent, useRef } from 'react';
 
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 

@@ -11,7 +11,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
-import { ApiResponseFindAvailability } from '../v1/find_availability';
+import type { ApiResponseFindAvailability } from '../v1/find_availability';
 
 export type ApiBodyParamScheduleIndividual = {
   session_id: string;

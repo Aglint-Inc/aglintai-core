@@ -15,7 +15,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
 import ImageUploadManual from '../../Common/ImageUpload/ImageUploadManual';
-import { ProfileForms } from '..';
+import { ProfileForms } from '../ProfileForms';
 import {
   type FormFields,
   type FormValues,
@@ -297,7 +297,6 @@ export const UserDetail = () => {
             />
           }
           slotUserForm={
-            // <></>
             <>
               <ProfileForms
                 profile={profile}

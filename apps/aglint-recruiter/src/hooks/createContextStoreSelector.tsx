@@ -27,13 +27,13 @@ export type CreateContextStore<T extends Record<string, any>> =
   keyof T extends infer U
     ? U extends string
       ? // eslint-disable-next-line no-unused-vars
-        { [id in U]: T[U] } & {
+        { [_id in U]: T[U] } & {
           // eslint-disable-next-line no-unused-vars
-          initial: { [id in U]: T[U] };
+          initial: { [_id in U]: T[U] };
           // eslint-disable-next-line no-unused-vars
-          actions: { [id in `set${Capitalize<U>}`]: (x: T[U]) => void } & {
+          actions: { [_id in `set${Capitalize<U>}`]: (x: T[U]) => void } & {
             // eslint-disable-next-line no-unused-vars
-            [id in `reset${Capitalize<U>}`]: () => void;
+            [_id in `reset${Capitalize<U>}`]: () => void;
           };
         }
       : never

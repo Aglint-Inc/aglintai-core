@@ -1,7 +1,7 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import React, {
+import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useContext,
   useMemo,
   useState,

@@ -1,4 +1,4 @@
-import { Trigger_API_Action_Mapper } from '@aglint/shared-types';
+import type { Trigger_API_Action_Mapper } from '@aglint/shared-types';
 
 export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   sendAvailReqReminder: [

@@ -1,5 +1,5 @@
-import { DatabaseView } from '@aglint/shared-types';
-import { ReactNode } from 'react';
+import type { DatabaseView } from '@aglint/shared-types';
+import type { ReactNode } from 'react';
 
 import { SafeObject } from '@/utils/safeObject';
 import { getWorkflowTagIcon } from '@/workflows/utils/getWorkflowTagIcon';

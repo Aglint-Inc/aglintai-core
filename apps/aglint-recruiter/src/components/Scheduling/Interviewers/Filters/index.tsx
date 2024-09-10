@@ -7,11 +7,7 @@ import React, { useEffect, useState, useTransition } from 'react';
 import SearchField from '@/components/Common/SearchField/SearchField';
 import FilterDropDown from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
-import { useInterviewerList } from '..';
-
-function Filters({ setFilteredInterviewer }) {
-  const { data: interviewers, isLoading } = useInterviewerList();
-
+function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
   const [searchText, setSearchText] = useState('');
   const [, startTransition] = useTransition();
 

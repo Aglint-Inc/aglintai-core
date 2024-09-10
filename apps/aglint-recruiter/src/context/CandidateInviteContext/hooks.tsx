@@ -4,10 +4,9 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
-import { type BodyParamsCandidateInvite } from '@/pages/api/scheduling/invite';
 import {
   useConfirmSlots,
   useInviteMeta,
@@ -120,22 +119,3 @@ const useInviteActions = () => {
 };
 
 export default useInviteActions;
-
-export const useInviteParams = (): BodyParamsCandidateInvite & {
-  enabled: boolean;
-} => {
-  const { queryParams: query, params } = useRouterPro<{
-    id: string;
-    filter_id: string;
-  }>();
-
-  const application_id = params?.id ?? null;
-  const filter_id = query?.filter_id ?? null;
-  const user_tz = dayjs?.tz?.guess() ?? null;
-  return {
-    application_id,
-    filter_id,
-    user_tz,
-    enabled: !!(application_id && filter_id && user_tz),
-  };
-};

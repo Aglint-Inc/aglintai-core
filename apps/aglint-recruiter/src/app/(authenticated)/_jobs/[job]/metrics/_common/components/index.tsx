@@ -30,7 +30,7 @@ import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
 import { useApplicationsParams, useJob, useJobDashboard } from '@/job/hooks';
-import { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { distributeScoreWeights } from '@/job/utils';
 import { useCompanyMembers } from '@/queries/company-members';
 import { type Job } from '@/queries/jobs/types';

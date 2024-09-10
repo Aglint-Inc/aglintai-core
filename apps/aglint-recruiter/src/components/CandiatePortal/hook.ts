@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { apiHomepageResponse } from '@/api/candidate_portal/home_page/route';
+import type { apiHomepageResponse } from '@/api/candidate_portal/home_page/route';
 
 // home page ----------------------------------------------------
 export const usePortalHomePage = ({

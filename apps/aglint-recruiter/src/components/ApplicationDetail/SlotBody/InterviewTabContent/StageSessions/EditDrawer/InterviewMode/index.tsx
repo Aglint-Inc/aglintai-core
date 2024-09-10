@@ -9,7 +9,7 @@ import { useInterviewModules } from '@/queries/interview-modules';
 import ROUTES from '@/utils/routing/routes';
 
 import {
-  EditSessionDrawer,
+  type EditSessionDrawer,
   setErrorValidation,
   setSelectedInterviewers,
   setTrainingInterviewers,

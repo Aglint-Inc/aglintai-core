@@ -1,4 +1,4 @@
-import { RecruiterUserType } from '@aglint/shared-types';
+import type { RecruiterUserType } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';

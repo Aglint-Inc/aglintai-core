@@ -11,7 +11,13 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import _ from 'lodash';
 import { AlertCircle, Upload } from 'lucide-react';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';

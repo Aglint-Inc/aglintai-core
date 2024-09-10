@@ -1,4 +1,4 @@
-import { CustomAgentInstructionPayload } from '@aglint/shared-types';
+import type { CustomAgentInstructionPayload } from '@aglint/shared-types';
 
 export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['agent']['ai_response'] =
   {

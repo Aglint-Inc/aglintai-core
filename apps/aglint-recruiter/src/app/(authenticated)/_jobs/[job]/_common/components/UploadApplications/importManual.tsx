@@ -3,7 +3,7 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { CheckCircle2, FileIcon, UploadCloud } from 'lucide-react';
 import React from 'react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import UIPhoneInput from '@/components/Common/UIPhoneInput';
