@@ -12,7 +12,7 @@ import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewerDetail } from '@devlink3/InterviewerDetail';
 import { UpcomingInterviewList } from '@devlink3/UpcomingInterviewList';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
-import { Mail, MessageSquare } from 'lucide-react';
+import { Loader2, Mail, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -31,7 +31,6 @@ import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import IconSessionType from '../../../../Common/Icons/IconSessionType';
-import DynamicLoader from '../../DynamicLoader';
 import { type TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
 import Overview from '../Overview';
@@ -113,7 +112,9 @@ Unavailable for interviews on Tuesdays.`);
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
-        <DynamicLoader />
+        <div className='flex justify-center items-center'>
+          <Loader2 className='w-6 h-6 animate-spin text-primary' />
+        </div>
       ) : (
         <>
           {recruiterUser.role === 'admin' ? (

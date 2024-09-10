@@ -37,6 +37,12 @@ export const ImportResume = () => {
     }
   };
 
+  function convertBytesToKB(bytes) {
+    if (Math.floor(bytes / (1024 * 1024))) {
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+    return (bytes / 1024).toFixed(2) + ' KB';
+  }
   const handleDeleteFile = (index) => {
     const result = selectedFiles.filter((_data, i) => i !== index);
     setSelectedFiles(result);

@@ -5,10 +5,9 @@ import React, { useState } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/components/Common/ShowCode';
-
-import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { type fetchModuleSchedules } from '../../InterviewTypes/queries/utils';
 import ScheduleMeetingList from './ScheduleMeetingList';
+import { Loader2 } from 'lucide-react';
 
 type tabs = 'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting';
 function ModuleSchedules({
@@ -22,7 +21,11 @@ function ModuleSchedules({
   const [changeText, setChangeText] = useState('');
 
   if (!isFetched) {
-    return <DynamicLoader />;
+    return (
+      <div className='flex justify-center items-center'>
+        <Loader2 className='w-6 h-6 animate-spin text-primary' />
+      </div>
+    );
   }
 
   const countCalculation = (tab: tabs) => {

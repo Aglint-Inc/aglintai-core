@@ -44,7 +44,6 @@ import ScoreWheel, {
 } from '@/components/Common/ScoreWheel';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useTour } from '@/context/TourContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -56,6 +55,7 @@ import toast from '@/utils/toast';
 import { Button } from '@components/ui/button';
 import { Delete, RefreshCcw } from 'lucide-react';
 import { Skeleton } from '@components/ui/skeleton';
+import { useTour } from '@/context/TourContext';
 
 type Sections = 'experience' | 'education' | 'skills';
 

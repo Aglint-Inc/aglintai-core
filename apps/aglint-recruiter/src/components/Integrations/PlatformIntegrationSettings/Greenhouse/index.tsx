@@ -12,8 +12,8 @@ import React from 'react';
 import { type GreenHouseFullSyncAPI } from '@/api/sync/greenhouse/full_sync/type';
 import axios from '@/client/axios';
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
-import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
+import { Loader2 } from 'lucide-react';
 
 function GreenhouseSettings() {
   const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
@@ -22,7 +22,9 @@ function GreenhouseSettings() {
   return (
     <div className='flex flex-col'>
       {isPending ? (
-        <DynamicLoader />
+        <div className='flex justify-center items-center'>
+          <Loader2 className='w-6 h-6 animate-spin text-primary' />
+        </div>
       ) : (
         <AtsSettings
           slotButton={<>actions</>}
