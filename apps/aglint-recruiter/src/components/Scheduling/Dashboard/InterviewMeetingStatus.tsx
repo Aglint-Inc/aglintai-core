@@ -68,7 +68,7 @@ const InterviewMeetingStatusComponent = ({
   const safeData = interviewMeetingTimeFormat(type, data).reduce(
     (acc, curr) => {
       Object.entries(curr).forEach(([key, value]) => {
-        if (!acc?.[key] ?? null) acc[key] = [];
+        if (!acc?.[key]) acc[key] = [];
         acc[key].push(value);
       });
       return acc;

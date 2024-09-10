@@ -30,12 +30,13 @@ function AddInterviewTypeDialog() {
     user_id: interviewer_id,
   });
 
-  const module_ids =
-    [
-      ...new Set(
-        data?.filter((rel) => !rel.is_archived).map((rel) => rel.module_id),
-      ),
-    ] || [];
+  const module_ids = [
+    ...new Set(
+      (data ?? [])
+        .filter((rel) => !rel.is_archived)
+        .map((rel) => rel.module_id),
+    ),
+  ];
 
   const { data: allModules } = useAllInterviewModules();
 

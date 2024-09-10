@@ -36,7 +36,7 @@ export interface ContextValue {
   userPermissions: {
     role: string;
     permissions: Partial<{
-      [key in DatabaseTable['permissions']['name']]: boolean;
+      [_key in DatabaseTable['permissions']['name']]: boolean;
     }>;
   };
   recruiter_id: string | null;

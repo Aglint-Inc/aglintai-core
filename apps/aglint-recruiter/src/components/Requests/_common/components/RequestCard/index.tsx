@@ -9,7 +9,6 @@ import { cn } from '@lib/utils';
 import { Bot, Calendar, UserCircle, User, StickyNote } from 'lucide-react';
 import Link from 'next/link';
 import { getStatusColor } from '../../utils/getStatusColor';
-import MenuOptions from './MenuOptions';
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@components/ui/button';
@@ -20,6 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import MenuOptions from './MenuOptions';
 
 type RequestProps = RequestType & {
   isExpanded?: boolean;

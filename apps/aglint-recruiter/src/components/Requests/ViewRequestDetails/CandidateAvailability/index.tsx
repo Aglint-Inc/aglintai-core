@@ -3,8 +3,8 @@ import {
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import {
-  type ProgressLoggerType,
   createRequestProgressLogger,
+  type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink2/ButtonSoft';
@@ -30,7 +30,6 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { RangePicker } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
 import { useMeetingList } from '../hooks';
 import EmailTemplate from './Components/EmailTemplate';
 import { useCandidateAvailability } from './hooks';
@@ -231,13 +230,6 @@ function CandidateAvailability({
         open={candidateAvailabilityDrawerOpen}
         onClose={closeDrawer}
       >
-        <RangePicker
-          dateRange={{
-            start: selectedDate.start_date.toISOString(),
-            end: selectedDate.end_date.toISOString(),
-          }}
-          setDateRange={(dateRange) => {}}
-        />
         <SideDrawerLarge
           isHeaderIconVisible={true}
           slotHeaderIcon={<ArrowLeft size={20} />}

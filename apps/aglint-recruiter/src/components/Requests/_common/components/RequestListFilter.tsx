@@ -14,9 +14,9 @@ function RequestListFilter() {
     useState<Awaited<ReturnType<typeof getCandidateList>>>(null);
   const {
     filters: {
-      created_at,
-      end_at,
-      is_new,
+      created_at: _c,
+      end_at: _e,
+      is_new: _i,
       title,
       jobs,
       applications,
@@ -114,7 +114,7 @@ function RequestListFilter() {
       : [],
   } as (typeof safeFilters)[number];
 
-  const candidateFilter = {
+  const _candidateFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search Candidates',
     active: applications.length,
@@ -161,7 +161,7 @@ function RequestListFilter() {
       : [],
   } as (typeof safeFilters)[number];
 
-  const assigneeFilter = {
+  const _assigneeFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search Assignees',
     active: assigneeList.length,
