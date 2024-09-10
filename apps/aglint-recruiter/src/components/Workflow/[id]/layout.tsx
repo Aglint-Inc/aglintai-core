@@ -7,13 +7,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 
-import { ConnectedJobsList } from '@devlink/ConnectedJobsList';
-import { DcPopup } from '@devlink/DcPopup';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { PageLayout } from '@devlink2/PageLayout';
-import { MoreMenu } from '@devlink3/MoreMenu';
-import { TextWithIcon } from '@devlink3/TextWithIcon';
-import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useState } from 'react';
@@ -24,10 +18,24 @@ import { useWorkflowStore } from '@/context/Workflows/store';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll, capitalizeSentence } from '@/utils/text/textUtils';
 
-import UITextField from '../../Common/UITextField';
 import { WithPermission } from '../../withPermission';
 import { Button } from '@components/ui/button';
 import { MoreHorizontal, Zap } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import UITextField from '@/components/Common/UITextField';
+import { Alert, AlertTitle } from '@components/ui/alert';
 
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
@@ -73,8 +81,6 @@ const Edit = () => {
     ({ setPopup, setDeletion }) => ({ setPopup, setDeletion }),
   );
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
   const handleDelete = () => {
     setDeletion({
       open: true,
@@ -82,64 +88,28 @@ const Edit = () => {
     });
   };
 
-  const open = Boolean(anchorEl);
-
   return (
     <WithPermission permission={['manage_workflow']}>
       {workflow ? (
         <>
-          <Stack flexDirection={'row'} alignItems={'center'} gap={'8px'}>
-            <Button size={'sm'} onClick={() => setPopup({ open: true })}>
+          <div className='flex flex-row items-center gap-2'>
+            <Button size='sm' onClick={() => setPopup({ open: true })}>
               <Zap size={12} className='mr-2' />
               Edit Workflow
             </Button>
-            <Button
-              size={'sm'}
-              variant='outline'
-              onClick={(event) => {
-                setAnchorEl(event.currentTarget);
-              }}
-            >
-              <MoreHorizontal />
-            </Button>
-          </Stack>
-
-          <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={() => setAnchorEl(null)}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            sx={{
-              '& .MuiPaper-root': {
-                border: 'none !important',
-                background: 'transparent',
-                overflow: 'visible !important',
-                boxShadow: 'none',
-                top: '45px !important',
-              },
-            }}
-          >
-            <Stack
-              bgcolor={'white'}
-              borderRadius={'var(--space-2)'}
-              onClick={() => setAnchorEl(null)}
-            >
-              <MoreMenu
-                isArchiveVisible={false}
-                isUnarchiveVisible={false}
-                onClickDelete={{
-                  onClick: handleDelete,
-                }}
-              />
-            </Stack>
-          </Popover>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size='sm' variant='outline'>
+                  <MoreHorizontal className='h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuItem onClick={handleDelete}>
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </>
       ) : (
         <></>
@@ -168,95 +138,68 @@ const DeletePopup = () => {
     setValue('');
   };
   return (
-    <Dialog open={deletion.open} onClose={handleClose}>
-      <DcPopup
-        onClickClosePopup={{ onClick: () => handleClose() }}
-        popupName={'Delete workflow'}
-        slotBody={
-          <>
-            <GlobalBannerShort
-              color={'error'}
-              slotButtons={<></>}
-              textTitle={
-                count === 0
-                  ? ' Are you sure you want to delete this workflow?'
-                  : 'By deleting this it will be unlinked from all connected jobs.'
+    <Dialog open={deletion.open} onOpenChange={() => handleClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete workflow</DialogTitle>
+        </DialogHeader>
+        <div className='space-y-4'>
+          <Alert variant='destructive'>
+            <AlertTitle>
+              {count === 0
+                ? 'Are you sure you want to delete this workflow?'
+                : 'By deleting this it will be unlinked from all connected jobs.'}
+            </AlertTitle>
+          </Alert>
+          {count ? (
+            <div className='space-y-4'>
+              <h3 className='text-lg font-semibold'>
+                Connected Jobs ({count})
+              </h3>
+              <ul className='space-y-2'>
+                {(deletion?.workflow?.jobs ?? []).map(({ job_title }) => (
+                  <li key={job_title} className='flex items-center space-x-2'>
+                    <Zap className='h-4 w-4 text-muted-foreground' />
+                    <span className='text-sm font-normal'>
+                      {capitalizeAll(job_title)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          <p className='text-base'>
+            Confirm by typing the workflow name{' '}
+            <span className='text-accent-11'>{workflow?.title ?? '---'}</span>{' '}
+            below.
+          </p>
+          <UITextField
+            value={value}
+            placeholder='Enter workflow name here'
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+          />
+        </div>
+        <DialogFooter>
+          <Button variant='outline' onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button
+            variant='destructive'
+            disabled={!enabled}
+            onClick={() => {
+              if (enabled) {
+                push(ROUTES['/workflows']());
+                handleDeleteWorkflow({ id: deletion.workflow?.id });
+                handleClose();
               }
-              textDescription=''
-
-              // textTitle={
-              //   count === 0
-              //     ? ' Are you sure you want to delete this workflow?'
-              //     : 'Are you sure you want to unlink and delete this workflow?'
-              // }
-              // textDescription={
-              //   count === 0
-              //     ? 'This workflow is not connected to any job'
-              //     : 'By deleting this it will be unlinked from all connected jobs'
-              // }
-            />
-            {count ? (
-              <ConnectedJobsList
-                textTitle={`Connected Jobs (${count})`}
-                slotTextWithIcon={
-                  <>
-                    {(deletion?.workflow?.jobs ?? []).map(({ job_title }) => (
-                      <TextWithIcon
-                        key={job_title}
-                        iconName={'work'}
-                        fontWeight={'regular'}
-                        textContent={capitalizeAll(job_title)}
-                      />
-                    ))}
-                  </>
-                }
-              />
-            ) : (
-              <></>
-            )}
-            <Typography>
-              Confirm by typing the workflow name &nbsp;
-              <span style={{ color: 'var(--accent-11)' }}>
-                {workflow?.title ?? '---'}
-              </span>
-              &nbsp; below.
-            </Typography>
-            <UITextField
-              value={value}
-              placeholder='Enter workflow name here'
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-            />
-          </>
-        }
-        slotButtons={
-          <>
-            <Button
-              variant={'outline'}
-              color={'neutral'}
-              size={'sm'}
-              onClick={() => handleClose()}
-            >
-              Cancel
-            </Button>
-            <Button
-              color={'error'}
-              size={'sm'}
-              disabled={!enabled}
-              onClick={() => {
-                if (enabled) {
-                  push(ROUTES['/workflows']());
-                  handleDeleteWorkflow({ id: deletion.workflow?.id });
-                  handleClose();
-                }
-              }}
-            >
-              Delete
-            </Button>
-          </>
-        }
-      />
+            }}
+          >
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };

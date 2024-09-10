@@ -10,8 +10,8 @@ import {
 } from '@/context/SchedulingAnalytics';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { Empty } from './common';
 import { Skeleton } from '@components/ui/skeleton';
+import { BarChart2, Loader2 } from 'lucide-react';
 
 const LIMIT = 4;
 
@@ -34,15 +34,23 @@ const Container = memo(() => {
     interviewers: { data, status },
   } = useSchedulingAnalytics();
 
-  if (status === 'pending') return <Loader />;
+  if (status === 'pending')
+    return (
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
+    );
 
   if (status === 'error') return <>Error</>;
 
   if (data.length === 0)
     return (
-      <Stack>
-        <Empty />
-      </Stack>
+      <div className='h-[296px]'>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <BarChart2 className='w-12 h-12 text-gray-400' />
+          <p className='mt-2 text-sm text-gray-500'>No data available</p>
+        </div>
+      </div>
     );
 
   return <List data={data} />;

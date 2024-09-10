@@ -1,5 +1,4 @@
 import { HistoryPill as HistoryPillDev } from '@devlink3/HistoryPill';
-import { NoData } from '@devlink3/NoData';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
@@ -13,6 +12,7 @@ import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 import { Skeleton } from '@components/ui/skeleton';
+import { BarChart2 } from 'lucide-react';
 
 const LIMIT = 4;
 
@@ -52,7 +52,14 @@ const TrainingProgressComponent = () => {
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <NoData />;
+    return (
+      <div className='h-[296px]'>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <BarChart2 className='w-12 h-12 text-gray-400' />
+          <p className='mt-2 text-sm text-gray-500'>No data available</p>
+        </div>
+      </div>
+    );
 
   const rows = data
     .slice(0, LIMIT)

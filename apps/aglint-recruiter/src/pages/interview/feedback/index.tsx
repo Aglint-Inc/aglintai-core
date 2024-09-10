@@ -8,10 +8,10 @@ import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import Seo from '@/components/Common/Seo';
-import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 
 import { type API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
 import { type API_save_interview_feedback } from '../../api/save_interview_feedback/types';
+import { Loader2 } from 'lucide-react';
 
 const InterviewFeedbackPage = () => {
   const [form, setForm] = React.useState({ rating: 2, feedback: '' });
@@ -21,7 +21,9 @@ const InterviewFeedbackPage = () => {
   return isLoadingDetails ? (
     <>
       <Seo title='Feedback - Interview | Aglint AI' />
-      <DynamicLoader />
+      <div className='flex justify-center items-center'>
+        <Loader2 className='w-6 h-6 animate-spin text-primary' />
+      </div>
     </>
   ) : (
     <>

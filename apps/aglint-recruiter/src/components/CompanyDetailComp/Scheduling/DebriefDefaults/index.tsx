@@ -2,7 +2,6 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
 import { Attendee } from '@devlink2/Attendee';
-import { Stack } from '@mui/material';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -51,13 +50,13 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
     {} as { [id in keyof DebriefDefaultsProps['value']]: React.JSX.Element },
   );
   return (
-    <Stack gap={2}>
+    <div className='flex flex-col gap-2'>
       {hiring_manager}
       {recruiter}
       {recruiting_coordinator}
       {sourcer}
       {previous_interviewers}
-    </Stack>
+    </div>
   );
 };
 export default DebriefDefaults;

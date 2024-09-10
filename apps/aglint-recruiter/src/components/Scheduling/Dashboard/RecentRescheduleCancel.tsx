@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { NoData } from '@devlink3/NoData';
 import { RecentDeclineList } from '@devlink3/RecentDeclineList';
 import { RecentDeclines } from '@devlink3/RecentDeclines';
 import { RecentReschedule } from '@devlink3/RecentReschedule';
@@ -16,6 +15,7 @@ import {
 } from '@/queries/scheduling-dashboard';
 
 import { FilterDropDownDash } from './FilterDropDownDash';
+import { BarChart2 } from 'lucide-react';
 
 const RecentRescheduleCancel = () => {
   const { data: analyticsData } = useScheduleSessionsAnalytics();
@@ -147,7 +147,12 @@ const RecentRescheduleCancel = () => {
                 );
               })
           ) : (
-            <NoData />
+            <div className='h-[296px]'>
+              <div className='flex flex-col items-center justify-center h-full'>
+                <BarChart2 className='w-12 h-12 text-gray-400' />
+                <p className='mt-2 text-sm text-gray-500'>No data available</p>
+              </div>
+            </div>
           )
         }
         slotDropdown={
@@ -178,7 +183,14 @@ const RecentRescheduleCancel = () => {
                 );
               })
             ) : (
-              <NoData />
+              <div className='h-[296px]'>
+                <div className='flex flex-col items-center justify-center h-full'>
+                  <BarChart2 className='w-12 h-12 text-gray-400' />
+                  <p className='mt-2 text-sm text-gray-500'>
+                    No data available
+                  </p>
+                </div>
+              </div>
             )}
           </>
         }

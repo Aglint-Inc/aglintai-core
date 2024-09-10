@@ -1,5 +1,3 @@
-import { DcPopup } from '@devlink/DcPopup';
-import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 
 import { useWorkflow } from '@/context/Workflows/[id]';
@@ -7,6 +5,13 @@ import { useWorkflowStore } from '@/context/Workflows/store';
 
 import { type Form, Forms, validate } from '../common';
 import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 
 const Edit = () => {
   const {
@@ -60,29 +65,26 @@ const Edit = () => {
 
   return (
     <>
-      <Dialog open={open} onClose={() => handleClose()}>
-        <DcPopup
-          popupName={'Edit Workflow'}
-          onClickClosePopup={{ onClick: handleClose }}
-          slotBody={
-            <Stack>
-              <Typography mb={2}>Edit workflow details.</Typography>
-              <Stack spacing={1}>
-                <Forms form={form} setForm={setForm} />
-              </Stack>
-            </Stack>
-          }
-          slotButtons={
-            <>
-              <Button size={'sm'} variant='outline' onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button size={'sm'} onClick={handleSubmit}>
-                Save
-              </Button>
-            </>
-          }
-        />
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent className='sm:max-w-[425px]'>
+          <DialogHeader>
+            <DialogTitle>Edit Workflow</DialogTitle>
+          </DialogHeader>
+          <div className='space-y-4'>
+            <p className='text-sm text-muted-foreground mb-4'>
+              Edit workflow details.
+            </p>
+            <div className='space-y-2'>
+              <Forms form={form} setForm={setForm} />
+            </div>
+          </div>
+          <DialogFooter className='mt-6'>
+            <Button variant='outline' onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </>
   );

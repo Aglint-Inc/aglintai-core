@@ -1,25 +1,22 @@
 /* eslint-disable security/detect-object-injection */
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { ImportResume as ImportResumeDev } from '@devlink/ImportResume';
-import { UploadedResume } from '@devlink/UploadedResume';
-import { UploadedResumeList } from '@devlink/UploadedResumeList';
-import { Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { useApplicationsActions, useJob } from '@/job/hooks';
 import toast from '@/utils/toast';
+import { Button } from '@components/ui/button';
+import { File, FileText, Plus, Upload, X } from 'lucide-react';
+import { Card } from '@components/ui/card';
 
 export const ImportResume = () => {
-  const [selectedfile, setSelectedFile] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const { handleUploadResume } = useJob();
   const { setImportPopup } = useApplicationsActions();
 
-  const InputChange = (files) => {
+  const handleInputChange = (files) => {
     // --For Multiple File Input
     const images = [];
-    const uploadedFileNames = selectedfile.map((file) => file.name);
+    const uploadedFileNames = selectedFiles.map((file) => file.name);
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -32,7 +29,7 @@ export const ImportResume = () => {
         if (!uploadedFileNames.includes(file.name)) {
           images.push(file);
 
-          setSelectedFile((preValue) => {
+          setSelectedFiles((preValue) => {
             return [...preValue, file];
           });
         }
@@ -40,108 +37,109 @@ export const ImportResume = () => {
     }
   };
 
-  const DeleteSelectFile = (index) => {
-    const result = selectedfile.filter((_data, i) => i !== index);
-    setSelectedFile(result);
+  function convertBytesToKB(bytes) {
+    if (Math.floor(bytes / (1024 * 1024))) {
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+    return (bytes / 1024).toFixed(2) + ' KB';
+  }
+  const handleDeleteFile = (index) => {
+    const result = selectedFiles.filter((_data, i) => i !== index);
+    setSelectedFiles(result);
   };
 
-  const FileUploadSubmit = () => {
-    handleUploadResume({ files: selectedfile });
+  const handleFileUpload = () => {
+    handleUploadResume({ files: selectedFiles });
     setImportPopup(false);
   };
 
   return (
-    <>
-      <Stack spacing={2} height={'100%'} p={'1px'}>
-        {selectedfile.length == 0 && (
+    <div className='p-4'>
+      <Card className='p-6'>
+        {selectedFiles.length === 0 ? (
           <FileUploader
             maxSize={4}
-            onSizeError={(file: any) =>
+            onSizeError={(file) =>
               file.size > 4
                 ? null
                 : toast.error('Please upload resumes that are less than 4 MB.')
             }
-            handleChange={InputChange}
+            handleChange={handleInputChange}
             multiple={true}
             name='file'
             types={fileTypes}
           >
-            <Stack height={'398px'}>
-              <ImportResumeDev />
-            </Stack>
+            <div className='h-[398px] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg'>
+              <div className='text-center'>
+                <Upload className='mx-auto h-12 w-12 text-gray-400' />
+                <h3 className='mt-2 text-sm font-semibold text-gray-900'>
+                  Import Resume
+                </h3>
+                <p className='mt-1 text-sm text-gray-500'>
+                  Drag and drop or click to upload
+                </p>
+              </div>
+            </div>
           </FileUploader>
+        ) : (
+          <div className='space-y-4'>
+            <div className='space-y-2'>
+              {selectedFiles.map((file, index) => (
+                <div
+                  key={index}
+                  className='flex items-center justify-between p-2 bg-gray-50 rounded-md'
+                >
+                  {file.type.includes('pdf') ? (
+                    <FileText className='h-5 w-5 text-blue-500' />
+                  ) : (
+                    <File className='h-5 w-5 text-green-500' />
+                  )}
+                  <span className='flex-1 ml-2 truncate'>{file.name}</span>
+                  <span className='text-sm text-gray-500'>
+                    {convertBytesToKB(file.size)}
+                  </span>
+                  <Button
+                    variant='ghost'
+                    size='sm'
+                    onClick={() => handleDeleteFile(index)}
+                    className='ml-2'
+                  >
+                    <X className='h-4 w-4' />
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <div className='flex justify-between items-center'>
+              <FileUploader
+                handleChange={handleInputChange}
+                multiple={true}
+                name='file'
+                types={fileTypes}
+                maxSize={4.5}
+                onSizeError={(file) =>
+                  file.size > 4
+                    ? null
+                    : toast.error(
+                        'Please upload resumes that are less than 4 MB.',
+                      )
+                }
+              >
+                <Button variant='outline' size='sm'>
+                  <Plus className='h-4 w-4 mr-2' />
+                  Add More Resume
+                </Button>
+              </FileUploader>
+              <span className='text-sm text-gray-500'>
+                {selectedFiles.length} documents
+              </span>
+            </div>
+            <div className='flex justify-end'>
+              <Button onClick={handleFileUpload}>Upload</Button>
+            </div>
+          </div>
         )}
-        {selectedfile.length !== 0 && (
-          <Stack spacing={2} position={'relative'}>
-            <Stack spacing={2}>
-              <>
-                <UploadedResume
-                  slotUploadResumeList={selectedfile.map((data, index) => {
-                    const { name, type, size } = data;
-                    function convertBytesToKB(bytes) {
-                      if (Math.floor(bytes / (1024 * 1024))) {
-                        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-                      }
-                      return (bytes / 1024).toFixed(2) + ' KB';
-                    }
-
-                    return (
-                      <UploadedResumeList
-                        isDocVisible={!type.includes('pdf')}
-                        isPdfIconVisible={type.includes('pdf')}
-                        textSize={convertBytesToKB(size)}
-                        key={index}
-                        textName={name}
-                        onClickDelete={{
-                          onClick: () => DeleteSelectFile(index),
-                        }}
-                      />
-                    );
-                  })}
-                  slotSecondaryButton={
-                    <FileUploader
-                      handleChange={InputChange}
-                      classes='outline-none'
-                      multiple={true}
-                      name='file'
-                      types={fileTypes}
-                      maxSize={4.5}
-                      onSizeError={(file: any) =>
-                        file.size > 4
-                          ? null
-                          : toast.error(
-                              'Please upload resumes that are less than 4 MB.',
-                            )
-                      }
-                    >
-                      <Stack style={{ fontWeight: '400' }}>
-                        <ButtonGhost size={2} textButton='Add More Resume' />
-                      </Stack>
-                    </FileUploader>
-                  }
-                  textCountDocument={selectedfile.length + ' documents'}
-                  slotPrimaryButton={
-                    selectedfile.length !== 0 && (
-                      <Stack direction={'row'} justifyContent={'flex-end'}>
-                        <ButtonSolid
-                          textButton='Upload'
-                          size={2}
-                          onClickButton={{
-                            onClick: () => {
-                              FileUploadSubmit();
-                            },
-                          }}
-                        />
-                      </Stack>
-                    )
-                  }
-                />
-              </>
-            </Stack>
-          </Stack>
-        )}
-      </Stack>
-    </>
+      </Card>
+    </div>
   );
 };
 

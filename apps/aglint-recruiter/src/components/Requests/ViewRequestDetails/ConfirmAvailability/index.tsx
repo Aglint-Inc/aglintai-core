@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/utils/toast';
 
@@ -29,6 +28,7 @@ import {
   useConfirmAvailabilitySchedulingFlowStore,
 } from './store';
 import { updateCandidateRequestAvailability } from './utils';
+import { Loader2 } from 'lucide-react';
 
 function ConfirmAvailability() {
   const router = useRouter();
@@ -237,7 +237,9 @@ function ConfirmAvailability() {
               </ShowCode.When>
               <ShowCode.When isTrue={isLoading && !isFetched}>
                 <Stack height={'calc(100vh - 96px)'}>
-                  <DynamicLoader />
+                  <div className='flex justify-center items-center'>
+                    <Loader2 className='w-6 h-6 animate-spin text-primary' />
+                  </div>
                 </Stack>
               </ShowCode.When>
 

@@ -164,7 +164,7 @@ function SchedulingViewComp() {
                       <WorkflowConnectedCard
                         isLinkOffVisible={false}
                         textRoleCategory={
-                          capitalizeFirstLetter(job.departments?.name) || '--'
+                          capitalizeFirstLetter(job?.departments?.name) || '--'
                         }
                         role={job.job_title || '--'}
                         textLocation={

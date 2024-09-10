@@ -36,7 +36,7 @@ const CompanyDetailComp = () => {
             </div>
           )}
           {isSaving === 'saved' && (
-            <div className='flex items-center justify-center space-x-2 text-sm text-green-600'>
+            <div className='flex items-center justify-center space-x-2 text-sm text-green-600 transition-opacity duration-500 opacity-100'>
               <CheckCircle className='h-4 w-4' />
               <span>All changes saved</span>
             </div>

@@ -74,7 +74,7 @@ function RequestList() {
           <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
             <p>{capitalizeFirstLetter(section.sectionName)}</p>
             {section.sectionName === 'completed_request' && (
-              <Button>
+              <Button variant='ghost'>
                 <Link
                   href={{
                     pathname: '/requests/history',

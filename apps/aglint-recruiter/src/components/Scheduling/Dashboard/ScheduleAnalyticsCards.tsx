@@ -1,10 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { ScheduleCountStats } from '@devlink3/ScheduleCountStats';
-import { Skeleton } from '@mui/material';
 import React from 'react';
 
 import { useScheduleSessionsAnalytics } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { Skeleton } from '@components/ui/skeleton';
 type scheduleType = {
   interview_meeting: DatabaseTable['interview_meeting'];
   interview_session: DatabaseTable['interview_session'];
@@ -54,120 +54,70 @@ export default function ScheduleAnalyticsCards() {
     <ScheduleCountStats
       textCompletedCount={
         loading ? (
-          <Skeleton
-            variant='rounded'
-            width={20}
-            height={28}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+          <Skeleton className='w-5 h-7' />
         ) : (
           (processedData.grouping_unit_a.completed || []).length || 0
         )
       }
       textIncreasedCompleted={
-        loading || false ? (
-          <Skeleton
-            variant='rounded'
-            width={130}
-            height={20}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+        loading ? (
+          <Skeleton className='w-[130px] h-5' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textWaitingCount={
         loading ? (
-          <Skeleton
-            variant='rounded'
-            width={20}
-            height={28}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+          <Skeleton className='w-5 h-7' />
         ) : (
           (processedData.grouping_unit_a.waiting || []).length || 0
         )
       }
       textIncreasedWaiting={
-        loading || false ? (
-          <Skeleton
-            variant='rounded'
-            width={130}
-            height={20}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+        loading ? (
+          <Skeleton className='w-[130px] h-5' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.waiting || []).length, (processedData.grouping_unit_b.waiting || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textConfirmedCount={
         loading ? (
-          <Skeleton
-            variant='rounded'
-            width={20}
-            height={28}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+          <Skeleton className='w-5 h-7' />
         ) : (
           (processedData.grouping_unit_a.confirmed || []).length || 0
         )
       }
       textIncreasedConfirmed={
-        loading || false ? (
-          <Skeleton
-            variant='rounded'
-            width={130}
-            height={20}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+        loading ? (
+          <Skeleton className='w-[130px] h-5' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.confirmed || []).length, (processedData.grouping_unit_b.confirmed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textNotScheduledCount={
         loading ? (
-          <Skeleton
-            variant='rounded'
-            width={20}
-            height={28}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+          <Skeleton className='w-5 h-7' />
         ) : (
           (processedData.grouping_unit_a.not_scheduled || []).length || 0
         )
       }
       textIncreasedNotScheduled={
-        loading || false ? (
-          <Skeleton
-            variant='rounded'
-            width={130}
-            height={20}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+        loading ? (
+          <Skeleton className='w-[130px] h-5' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.not_scheduled || []).length, (processedData.grouping_unit_b.not_scheduled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textCancelledCount={
         loading ? (
-          <Skeleton
-            variant='rounded'
-            width={20}
-            height={28}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+          <Skeleton className='w-5 h-7' />
         ) : (
           (processedData.grouping_unit_a.cancelled || []).length || 0
         )
       }
       textIncreasedCancelled={
-        loading || false ? (
-          <Skeleton
-            variant='rounded'
-            width={130}
-            height={20}
-            sx={{ backgroundColor: 'var(--neutral-5)' }}
-          />
+        loading ? (
+          <Skeleton className='w-[130px] h-5' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.cancelled || []).length, (processedData.grouping_unit_b.cancelled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )

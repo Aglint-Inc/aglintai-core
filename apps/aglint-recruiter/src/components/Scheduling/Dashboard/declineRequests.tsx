@@ -16,8 +16,7 @@ import {
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 
-import Loader from '../../Common/Loader';
-import { Empty } from './common';
+import { Loader2 } from 'lucide-react';
 
 export const DeclineRequests = memo(() => (
   <NewInterviewDetail
@@ -35,18 +34,18 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack height={'200px'}>
-        <Loader />
-      </Stack>
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
     );
 
   if (status === 'error') return <>Error</>;
 
   if (data.length === 0)
     return (
-      <Stack>
-        <Empty />
-      </Stack>
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
     );
 
   return (

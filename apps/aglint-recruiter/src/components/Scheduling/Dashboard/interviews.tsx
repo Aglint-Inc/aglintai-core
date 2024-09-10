@@ -16,8 +16,8 @@ import {
 } from '@/context/SchedulingAnalytics';
 import { SafeObject } from '@/utils/safeObject';
 import { capitalizeAll } from '@/utils/text/textUtils';
+import { Loader2 } from 'lucide-react';
 
-import Loader from '../../Common/Loader';
 
 export const Interviewes = memo(() => (
   <NewInterviewDetail
@@ -36,7 +36,9 @@ const Container = memo(() => {
   if (status === 'pending')
     return (
       <Stack width={'400px'} height={'500px'}>
-        <Loader />
+        <div className='flex items-center justify-center h-[350px]'>
+          <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+        </div>
       </Stack>
     );
 
