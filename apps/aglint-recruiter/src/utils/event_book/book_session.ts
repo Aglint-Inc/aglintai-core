@@ -1,30 +1,17 @@
 import {
-  type CompServiceKeyCred,
   type NewCalenderEvent,
-  type RecruiterUserType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { OAuth2Client } from 'google-auth-library';
-import { google } from 'googleapis';
 import { v4 as uuidv4 } from 'uuid';
 
 // eslint-disable-next-line import/no-cycle
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
 import { getCalEventDescription } from './getCalEventDescription';
-export type GetAuthParams = {
-  company_cred: CompServiceKeyCred;
-  recruiter: CalEventAttendeesAuthDetails;
-};
-
-export type CalEventAttendeesAuthDetails = Pick<
-  RecruiterUserType,
-  'user_id' | 'schedule_auth' | 'email'
->;
-
-export type CalEventOrganizerAuthDetails = CalEventAttendeesAuthDetails & {
-  timezone: string;
-};
+import {
+  CalEventAttendeesAuthDetails,
+  CalEventOrganizerAuthDetails
+} from './types';
 
 export const bookSession = async ({
   cal_event_attendees,
@@ -140,51 +127,4 @@ export const bookSession = async ({
   };
 };
 
-export const getUserCalAuth = async ({
-  company_cred,
-  recruiter,
-}: GetAuthParams) => {
-  try {
-    if (recruiter.schedule_auth) {
-      const oAuth2Client = new OAuth2Client(
-        process.env.GOOGLE_SCHEDULE_CLIENT_ID,
-        process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
-      );
-      const schedule_auth = recruiter.schedule_auth as any;
-      oAuth2Client.setCredentials({
-        access_token: schedule_auth.access_token,
-        refresh_token: schedule_auth.refresh_token,
-      });
-      return oAuth2Client;
-    } else {
-      const jwtClient = new google.auth.JWT({
-        email: company_cred.client_email,
-        key: company_cred.private_key,
-        scopes: ['https://www.googleapis.com/auth/calendar'],
-        subject: recruiter.email,
-      });
 
-      await jwtClient.authorize();
-      return jwtClient;
-    }
-  } catch (error) {
-    console.error('Error in getting user cal auth', error);
-    return null;
-  }
-};
-
-export const getSuperAdminAuth = async (
-  company_cred: GetAuthParams['company_cred'],
-  admin_email,
-) => {
-  const jwtClient = new google.auth.JWT({
-    email: company_cred.client_email,
-    key: company_cred.private_key,
-    scopes: ['https://www.googleapis.com/auth/calendar'],
-    subject: admin_email,
-  });
-
-  await jwtClient.authorize();
-  return jwtClient;
-};

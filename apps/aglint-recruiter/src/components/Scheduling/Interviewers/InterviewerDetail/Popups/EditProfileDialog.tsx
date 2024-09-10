@@ -12,7 +12,7 @@ import {
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import { ProfileForms } from '@/components/Profile';
+import { ProfileForms } from '@/components/Profile/ProfileForms';
 import {
   type FormFields,
   type FormValues,
