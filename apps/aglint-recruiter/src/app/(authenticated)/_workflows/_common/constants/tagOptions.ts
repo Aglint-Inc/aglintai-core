@@ -10,7 +10,7 @@ type WorkflowTagOptionsType<
   // eslint-disable-next-line no-unused-vars
 > = {
   // eslint-disable-next-line no-unused-vars
-  [id in T]: string;
+  [_id in T]: string;
 };
 
 const TAG_MAP: WorkflowTagOptionsType = {

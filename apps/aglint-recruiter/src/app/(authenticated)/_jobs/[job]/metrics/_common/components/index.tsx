@@ -74,7 +74,7 @@ const getMatches = (
     },
     {} as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof typeof application_match]: {
+      [_id in keyof typeof application_match]: {
         count: number;
         percentage: string;
       };
@@ -273,7 +273,7 @@ const Pipeline = () => {
     },
     {} as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof Job['section_count']]: { count: number; label: string };
+      [_id in keyof Job['section_count']]: { count: number; label: string };
     },
   );
   const handlClick = (section: Application['status']) => {
@@ -682,7 +682,7 @@ export type DashboardGraphOptions<
   >,
 > = {
   // eslint-disable-next-line no-unused-vars
-  [id in keyof ReturnType<typeof useJobDashboard>[T]['data']]: string;
+  [_id in keyof ReturnType<typeof useJobDashboard>[T]['data']]: string;
 };
 
 const Doughnut = () => {
@@ -713,7 +713,7 @@ const Doughnut = () => {
 const LineGraph = () => {
   const options: {
     // eslint-disable-next-line no-unused-vars
-    [id in keyof Pick<
+    [_id in keyof Pick<
       DashboardGraphOptions<'tenureAndExperience'>,
       'experience' | 'tenure'
     >]: string;

@@ -138,10 +138,7 @@ export class AglintLogger {
     );
   }
 
-  private async logToDB(
-    data: DatabaseTableInsert['logs'],
-    getId: boolean = false,
-  ) {
+  private async logToDB(data: DatabaseTableInsert['logs'], getId = false) {
     const query = supabase.from('logs').insert(data);
     if (getId) {
       this.logDetails.parent_log_id = (

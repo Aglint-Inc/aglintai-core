@@ -2,7 +2,7 @@ import { Application } from '@/types/applications.types';
 
 export const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in Application['status']]: Application['status'][];
+  [_id in Application['status']]: Application['status'][];
 } = {
   new: [
     'new',

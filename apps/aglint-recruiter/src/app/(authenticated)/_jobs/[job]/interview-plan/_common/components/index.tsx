@@ -492,7 +492,7 @@ type InterviewSessionMemeberTypes =
   InterviewSessionType['interview_session_relation'][number]['interviewer_type'];
 type InterviewSessonMembers = {
   // eslint-disable-next-line no-unused-vars
-  [key in InterviewSessionMemeberTypes]: CompanyMember[];
+  [_key in InterviewSessionMemeberTypes]: CompanyMember[];
 };
 const InterviewSession = ({
   session,
