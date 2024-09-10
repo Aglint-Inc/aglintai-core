@@ -41,6 +41,7 @@
     "no-console": ["error", { "allow": ["error"] }],
     "react-hooks/exhaustive-deps": "off",
     "jsx-a11y/click-events-have-key-events": "off",
+    "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "@aglint/linter/enforce-devlink-rules": "error",
     "security/detect-object-injection": "off",
