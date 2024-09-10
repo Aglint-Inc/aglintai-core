@@ -167,7 +167,7 @@ function RoleDetails({
                               {permission.title}
                             </span>
                             {permission.description && (
-                              <span className='text-xs text-gray-500'>
+                              <span className='text-sm text-gray-500'>
                                 {permission.description}
                               </span>
                             )}

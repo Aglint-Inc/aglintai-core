@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { rolesOrder } from '@/constant/role_and_permissions';
 import { useAllMembers } from '@/queries/members';
 import {
@@ -21,6 +20,7 @@ import {
 } from '@components/ui/table';
 import { Skeleton } from '@components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Badge } from '@components/ui/badge';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -180,10 +180,7 @@ const RoleTable = ({
                           );
                         })}
                         {count > 3 && (
-                          <GlobalBadge
-                            textBadge={`+${count - 3} more`}
-                            color='neutral'
-                          />
+                          <Badge variant='secondary'>+{count - 3} more</Badge>
                         )}
                       </>
                     ) : (

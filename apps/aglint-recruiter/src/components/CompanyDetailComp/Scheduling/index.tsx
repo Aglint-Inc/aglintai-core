@@ -222,7 +222,7 @@ function SchedulingSettings({ updateSettings }) {
       {dailyLmit.type && weeklyLmit.type && (
         <Card>
           <CardHeader>
-            <CardTitle className='text-md font-semibold'>
+            <CardTitle className='text-lg font-semibold'>
               Interview Load
             </CardTitle>
             <CardDescription>
@@ -251,7 +251,7 @@ function SchedulingSettings({ updateSettings }) {
       )}
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>
+          <CardTitle className='text-lg font-semibold'>
             Debrief Defaults
           </CardTitle>
           <CardDescription>
@@ -268,7 +268,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>Free</CardTitle>
+          <CardTitle className='text-lg font-semibold'>Free</CardTitle>
           <CardDescription>
             When these keywords appear in a calendar event title, overlapping
             interviews will not be considered scheduling conflicts.
@@ -283,7 +283,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>
+          <CardTitle className='text-lg font-semibold'>
             Soft Conflicts
           </CardTitle>
           <CardDescription>
@@ -301,7 +301,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>Out of Office</CardTitle>
+          <CardTitle className='text-lg font-semibold'>Out of Office</CardTitle>
           <CardDescription>
             When any of these specified keywords appear in a calendar event
             title, the day will be considered an Out of Office day, and
@@ -314,7 +314,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>
+          <CardTitle className='text-lg font-semibold'>
             Recruiting Blocks
           </CardTitle>
           <CardDescription>
@@ -332,42 +332,7 @@ function SchedulingSettings({ updateSettings }) {
     </div>
   );
 }
-{
-  /* <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
-          <div className='flex flex-col gap-4'>
-            {isTipVisible && (
-              <div>
-                <GlobalInfo
-                  color={'purple'}
-                  iconName='lightbulb'
-                  textTitle={'Pro Tip'}
-                  textDescription={
-                    'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-                  }
-                  showCloseButton
-                  onClickClose={{
-                    onClick: () => {
-                      handleCloseInfo();
-                    },
-                  }}
-                />
-              </div>
-            )}
-            <HelperDropdown
-              textName='Interview Load Tips'
-              slotBody={<InterviewLoadHelper />}
-            />
-            <HelperDropdown
-              textName='Debrief Tips'
-              slotBody={<DebreifHelperText />}
-            />
-            <HelperDropdown
-              textName='Keyword Tips'
-              slotBody={<KeywordsHelper />}
-            />
-          </div>
-        </div> */
-}
+
 export default SchedulingSettings;
 
 type TZ = (typeof timeZone)[number];
