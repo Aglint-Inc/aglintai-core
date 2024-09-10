@@ -1,13 +1,14 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
-  type PropsWithChildren,
   createContext,
+  type PropsWithChildren,
   useEffect,
   useState,
 } from 'react';
 
 import { api } from '@/trpc/client';
+import { supabase } from '@/utils/supabase/client';
 
 const useCandidatePortalContext = () => {
   const params = useParams();
