@@ -22,7 +22,7 @@ type Store = {
   };
 };
 
-const useIntegrationContext = () => {
+const useIntegrationStoreContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
       intialIntegrations: INITIAL_STATE,
@@ -39,15 +39,17 @@ const useIntegrationContext = () => {
   return store;
 };
 
-export const IntegrationContext =
-  createContext<ReturnType<typeof useIntegrationContext>>(undefined);
+export const IntegrationStoreContext =
+  createContext<ReturnType<typeof useIntegrationStoreContext>>(undefined);
 
-export const IntegrationProvider = memo(({ children }: PropsWithChildren) => {
-  const value = useIntegrationContext();
-  return (
-    <IntegrationContext.Provider value={value}>
-      {children}
-    </IntegrationContext.Provider>
-  );
-});
-IntegrationProvider.displayName = 'IntegrationProvider';
+export const IntegrationStoreProvider = memo(
+  ({ children }: PropsWithChildren) => {
+    const value = useIntegrationStoreContext();
+    return (
+      <IntegrationStoreContext.Provider value={value}>
+        {children}
+      </IntegrationStoreContext.Provider>
+    );
+  },
+);
+IntegrationStoreProvider.displayName = 'IntegrationStoreProvider';
