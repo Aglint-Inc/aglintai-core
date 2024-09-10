@@ -25,7 +25,7 @@ import { Button } from '@components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { AlertCircle } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 function CompletedRequests() {
@@ -151,14 +151,23 @@ function CompletedRequests() {
                           {dayjs(date).fromNow()} ({requests.length} requests)
                         </AccordionTrigger>
                         <AccordionContent>
-                          <div className='flex flex-col'>
+                          <div className='flex flex-col border rounded-lg overflow-hidden'>
                             {requests.map((request, i) => (
-                              <RequestProvider
-                                key={request.id ?? i}
-                                request_id={request.id}
-                              >
-                                <RequestCard mode='compact' {...request} />
-                              </RequestProvider>
+                              <React.Fragment key={request.id ?? i}>
+                                <RequestProvider request_id={request.id}>
+                                  <RequestCard
+                                    mode='compact-list'
+                                    {...request}
+                                  />
+                                </RequestProvider>
+                                {i !== requests.length - 1 &&
+                                  requests.length > 1 && (
+                                    <hr
+                                      className='border-t border-gray-200 my-0'
+                                      style={{ borderTopWidth: '0.5px' }}
+                                    />
+                                  )}
+                              </React.Fragment>
                             ))}
                           </div>
                         </AccordionContent>
