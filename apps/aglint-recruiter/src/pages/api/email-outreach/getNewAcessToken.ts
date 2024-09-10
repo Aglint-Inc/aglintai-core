@@ -1,5 +1,5 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
-const { OAuth2Client } = require('google-auth-library');
+import { OAuth2Client } from 'google-auth-library';
 
 type BodyParams = {
   refresh_token: string;

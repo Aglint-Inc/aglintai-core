@@ -26,6 +26,7 @@ export default function EmptyJobDashboard({
         }}
         isSelectTitleVisible={true}
         onClickRequestIntegration={{
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           onClick: () => {},
         }}
         onClickGreenHouse={{

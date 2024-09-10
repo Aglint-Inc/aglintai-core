@@ -18,6 +18,7 @@ const Info = () => {
     <CandidateName
       isLinedin={false}
       isResume={!!data?.file_url}
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => setPreview(true) }}
       textName={capitalizeAll(data?.name ?? '---')}

@@ -1,9 +1,6 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
 import { Text } from '@devlink/Text';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { Dialog, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -12,11 +9,11 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';
 import { deleteModuleById } from '../../../utils';
-import UIDialog from '@/components/Common/UIDialog';
-import { UIButton } from '@/components/Common/UIButton';
 
 function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   const router = useRouter();

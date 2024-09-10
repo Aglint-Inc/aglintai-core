@@ -53,11 +53,14 @@ const defaultProvider: ContextValue = {
   recruiter: null,
   userPermissions: null,
   recruiter_id: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setRecruiter: () => {},
   loading: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
   recruiterUser: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setRecruiterUser: () => {},
 };
 

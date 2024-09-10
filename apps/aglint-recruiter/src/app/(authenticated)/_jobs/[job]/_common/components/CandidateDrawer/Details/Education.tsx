@@ -87,7 +87,7 @@ const timeRange = (startDate: string, endDate: string) => {
 
 const timeFormat = (
   obj: { year: number; month: number },
-  isEndDate: boolean = false,
+  isEndDate = false,
 ) => {
   if (obj) {
     if (obj.month) {

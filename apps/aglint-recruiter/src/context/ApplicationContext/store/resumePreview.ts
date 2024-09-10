@@ -8,7 +8,7 @@ export type ResumePreviewSlice = {
   resetPreview: () => void;
 };
 
-const initialPreview: boolean = false;
+const initialPreview = false;
 
 export const createResumePreviewSlice: CreateSlice<ResumePreviewSlice> = (
   set,

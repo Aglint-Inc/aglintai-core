@@ -326,7 +326,7 @@ export const createInterviewPlan = async (
   name: string,
   job_id: string,
   recruiter_id: string,
-  order: number = 1,
+  order = 1,
 ) => {
   const { data, error } = await supabase
     .from('interview_plan')

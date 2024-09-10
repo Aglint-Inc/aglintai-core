@@ -19,7 +19,7 @@ import Footer from './components/footer';
 import Header from './components/header';
 import { box, container, main, paragraph } from './styles';
 
-const sgMail = require('@sendgrid/mail');
+import sgMail from '@sendgrid/mail';
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const subject = `Welcome to Aglint - Your Registration is Successful!`;

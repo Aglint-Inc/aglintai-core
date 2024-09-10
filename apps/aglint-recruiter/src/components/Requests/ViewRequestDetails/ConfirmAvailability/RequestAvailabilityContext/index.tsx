@@ -1,8 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-  type CandReqSlotsType,
-  type DatabaseTable,
-} from '@aglint/shared-types';
+import { type CandReqSlotsType } from '@aglint/shared-types';
 import {
   type Dispatch,
   type SetStateAction,
@@ -23,17 +20,18 @@ interface ContextValue {
 }
 const defaultProvider: ContextValue = {
   selectedDayAvailableBlocks: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedDayAvailableBlocks: () => {},
   selectedDateSlots: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedDateSlots: () => {},
   selectedIndex: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedIndex: () => {},
 };
 const AvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useAvailabilityContext = () => useContext(AvailabilityContext);
 function AvailabilityProvider({ children }) {
-  const [selectedRequestAvailability, setSelectedRequestAvailability] =
-    useState<DatabaseTable['candidate_request_availability'] | null>(null);
   const [selectedDayAvailableBlocks, setSelectedDayAvailableBlocks] =
     useState<CandReqSlotsType['selected_dates']>(null);
 
