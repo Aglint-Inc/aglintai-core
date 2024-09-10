@@ -22,4 +22,6 @@ export const useApplicationDetails = () => {
   return { ...query, refetch };
 };
 
-const getApplicationDetails = () => {};
+const getApplicationDetails = () => {
+  //
+};

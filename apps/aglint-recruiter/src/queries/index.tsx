@@ -41,7 +41,7 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/scheduling/application/[application_id]',
   '/scheduling/invite/[id]',
   '/workflows',
-  '/workflows/[id]',
+  '/workflows/[workflow]',
   '/requests',
   '/interviewers',
 ];

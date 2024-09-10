@@ -18,13 +18,12 @@ import { Briefcase, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { getTriggerOption } from '@/components/Workflow/constants';
-import { WorkflowTags } from '@/components/Workflow/index/body/content';
+import { WorkflowTags } from '@/workflows/components/body/content';
 import {
   getFilteredWorkflows,
   useWorkflowFilterOptions,
-} from '@/components/Workflow/index/body/filters';
-import { useWorkflows } from '@/context/Workflows';
+} from '@/workflows/components/body/filters';
+import { useWorkflows } from '@/workflows/hooks';
 import {
   useJob,
   useJobDashboardActions,
@@ -42,6 +41,7 @@ import { type Workflow } from '@/types/workflow.types';
 import toast from '@/utils/toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { capitalizeSentence } from '@/utils/text/textUtils';
+import { getTriggerOption } from '@/workflows/utils';
 
 const useJobWorkflowActions = () => {
   const { job_id, devlinkProps } = useJob();

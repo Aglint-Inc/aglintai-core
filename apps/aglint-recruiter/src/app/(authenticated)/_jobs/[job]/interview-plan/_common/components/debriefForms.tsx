@@ -310,7 +310,7 @@ export const getAttendeesList = (job: Job) => {
       return acc;
     },
     // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof DebriefFormProps['members_meta']]: string },
+    {} as { [_id in keyof DebriefFormProps['members_meta']]: string },
   );
 };
 

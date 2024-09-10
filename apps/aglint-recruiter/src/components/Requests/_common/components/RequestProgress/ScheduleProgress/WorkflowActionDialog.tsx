@@ -7,7 +7,6 @@ import { get } from 'lodash';
 import React, { useState } from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
@@ -20,6 +19,7 @@ import {
 } from './dialogCtx';
 import { createRequestWorkflowAction } from '../utils';
 import { Button } from '@components/ui/button';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();

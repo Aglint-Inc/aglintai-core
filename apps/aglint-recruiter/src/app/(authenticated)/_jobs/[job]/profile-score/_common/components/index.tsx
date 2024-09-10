@@ -440,7 +440,7 @@ const Pill: FC<{
   item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number];
   handleSubmit: (
     // eslint-disable-next-line no-unused-vars
-    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
+    _item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => void;
   handleDelete: () => void;
 }> = ({ type, item, handleSubmit, handleDelete }) => {
@@ -539,7 +539,7 @@ const AddOption: FC<{
   type: Sections;
   handleSubmit: (
     // eslint-disable-next-line no-unused-vars
-    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
+    _item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => void;
 }> = ({ type, handleSubmit }) => {
   const ref = useRef();

@@ -5,7 +5,6 @@ import React, { useEffect, useMemo } from 'react';
 import MuiPopup from '@/components/Common/MuiPopup';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/components/CompanyDetailComp/Templates/utils';
-import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 
@@ -17,6 +16,7 @@ import ScheduleProgress from './ScheduleProgress';
 import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
 import { RequestProgressMapType, TriggerActionMapType } from './types';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();
