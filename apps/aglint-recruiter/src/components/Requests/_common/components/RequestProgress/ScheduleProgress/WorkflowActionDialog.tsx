@@ -92,6 +92,7 @@ const WorkflowActionDialog = () => {
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
       });
+      // save json
       request_workflow.refetch();
     } catch (err) {
       toast.error('Failed to add action');

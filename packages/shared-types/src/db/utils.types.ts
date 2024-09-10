@@ -70,14 +70,20 @@ export type CustomAgentInstructionPayload = {
     instruction: string;
     ai_response_status: 'not_started' | 'processing' | 'success' | 'failed';
     ai_response: {
-      scheduleWithinNumDays: number;
-      schedulewithMaxNumDays: number;
-      prefferredInterviewTimes: TimeRange;
-      excludeInterviewTimes: TimeRange;
-      maxOptionsToCandidates: number;
-      balanceWorkloadAmongInterviewers: boolean;
-      scheduleOutsideOfficeHoursForTimezoneDifferences: boolean;
-      preferredInterviewer: string[];
+      candidateAvailability: {
+        prefferredDate: {
+          startDate: string;
+          endDate: string;
+        };
+        prefferredTime: {
+          startTime: string;
+          endTime: string;
+        };
+      } | null;
+      prefferredInterviewers: string[];
+      maxTotalSlots: number;
+      includeAllSoftConflictSlots: boolean;
+      overrideSoftConflicts: [];
     };
   };
   email?: CustomEmailPayload['email'];

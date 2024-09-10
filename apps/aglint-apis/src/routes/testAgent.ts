@@ -1,8 +1,8 @@
 import express from 'express';
-import {agentController} from 'src/controllers/agent/agentController';
+import {selfScheduleRequest} from 'src/controllers/agentInstruction';
 
 const aglintAgentRouter = express.Router();
 
-aglintAgentRouter.post('/aglint-agent', agentController);
+aglintAgentRouter.post('/self-schedule', selfScheduleRequest);
 
 export default aglintAgentRouter;

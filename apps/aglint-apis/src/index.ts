@@ -46,7 +46,7 @@ app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
 app.use('/api/slack', slackRoutes);
-app.use('/api', aglintAgentRouter);
+app.use('/api/agent-instruction', aglintAgentRouter);
 app.get('/redis', async (req, res) => {
   console.time('verify-redis');
   await redisClient.set('foo', 'bar');
