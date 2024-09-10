@@ -1,10 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Skeleton } from '@components/ui/skeleton';
 import { ScheduleCountStats } from '@devlink3/ScheduleCountStats';
 import React from 'react';
 
 import { useScheduleSessionsAnalytics } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { Skeleton } from '@components/ui/skeleton';
 type scheduleType = {
   interview_meeting: DatabaseTable['interview_meeting'];
   interview_session: DatabaseTable['interview_session'];

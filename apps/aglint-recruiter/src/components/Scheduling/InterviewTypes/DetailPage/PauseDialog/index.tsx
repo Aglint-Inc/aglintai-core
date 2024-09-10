@@ -4,14 +4,14 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
+import { Calendar } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-
-import { supabase } from '@/utils/supabase/client';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
-import { Calendar } from 'lucide-react';
+import { supabase } from '@/utils/supabase/client';
+
 import { optionsPause } from '../../const';
 import { usePauseHandler } from '../../queries/hooks';
 import {
@@ -76,8 +76,6 @@ function PauseDialog() {
       //
     }
   };
-
-
 
   return (
     <UIDialog

@@ -13,7 +13,7 @@ const AvailabilityCardSkeleton = () => {
           <Skeleton className='h-4 w-1/3' />
         </p>
       </CardHeader>
-      <CardContent  className='p-0 pl-4 pr-4 pb-4'>
+      <CardContent className='p-0 pl-4 pr-4 pb-4'>
         <Skeleton className='h-10 w-full' />
       </CardContent>
     </Card>

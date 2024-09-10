@@ -2,11 +2,11 @@ import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { supabase } from '@/utils/supabase/client';
-
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
+import { supabase } from '@/utils/supabase/client';
+
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
 import {
@@ -30,12 +30,13 @@ function AddInterviewTypeDialog() {
     user_id: interviewer_id,
   });
 
-  const module_ids =
-    [
-      ...new Set(
-        data?.filter((rel) => !rel.is_archived).map((rel) => rel.module_id),
-      ),
-    ] || [];
+  const module_ids = [
+    ...new Set(
+      (data ?? [])
+        .filter((rel) => !rel.is_archived)
+        .map((rel) => rel.module_id),
+    ),
+  ];
 
   const { data: allModules } = useAllInterviewModules();
 

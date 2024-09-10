@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/utils/supabase/client';
+
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 export const useRolesOptions = () => {
   const { recruiter } = useAuthDetails();

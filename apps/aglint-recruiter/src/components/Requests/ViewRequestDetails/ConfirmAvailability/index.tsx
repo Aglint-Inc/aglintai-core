@@ -9,6 +9,7 @@ import { GlobalCta } from '@devlink3/GlobalCta';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -28,7 +29,6 @@ import {
   useConfirmAvailabilitySchedulingFlowStore,
 } from './store';
 import { updateCandidateRequestAvailability } from './utils';
-import { Loader2 } from 'lucide-react';
 
 function ConfirmAvailability() {
   const router = useRouter();

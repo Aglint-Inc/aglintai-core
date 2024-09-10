@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { useKeyPress } from '@/hooks/useKeyPress';
 
 import { type TabInterviewerDetail } from '.';
-import UITab, { UITabWrapper } from '@/components/Common/UITab';
 
 function Tabs() {
   const router = useRouter();

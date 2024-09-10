@@ -1,3 +1,4 @@
+import { StatusBadge } from '@devlink2/StatusBadge';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { MembersList } from '@devlink3/MembersList';
 import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
@@ -19,7 +20,6 @@ import {
 import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
-import { StatusBadge } from '@devlink2/StatusBadge';
 
 function ScheduleMeetingCard({
   meetingDetails,

@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import {
   Dialog,
@@ -18,12 +19,6 @@ import { Briefcase, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { WorkflowTags } from '@/workflows/components/body/content';
-import {
-  getFilteredWorkflows,
-  useWorkflowFilterOptions,
-} from '@/workflows/components/body/filters';
-import { useWorkflows } from '@/workflows/hooks';
 import {
   useJob,
   useJobDashboardActions,
@@ -38,9 +33,14 @@ import {
 } from '@/queries/job-workflow';
 import { useWorkflowQuery } from '@/queries/workflow';
 import { type Workflow } from '@/types/workflow.types';
-import toast from '@/utils/toast';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { capitalizeSentence } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
+import { WorkflowTags } from '@/workflows/components/body/content';
+import {
+  getFilteredWorkflows,
+  useWorkflowFilterOptions,
+} from '@/workflows/components/body/filters';
+import { useWorkflows } from '@/workflows/hooks';
 import { getTriggerOption } from '@/workflows/utils';
 
 const useJobWorkflowActions = () => {

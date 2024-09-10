@@ -1,13 +1,13 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
 import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import { Stack } from '@mui/material';
+import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';
-import { Skeleton } from '@components/ui/skeleton';
-import { BarChart2 } from 'lucide-react';
 
 const LIMIT = 6;
 

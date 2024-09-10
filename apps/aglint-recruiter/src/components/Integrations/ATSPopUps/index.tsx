@@ -1,18 +1,18 @@
+import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Button } from '@components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { DeletePopup } from '../components/DeletePopup';
 import { LearnHowAshby } from '@devlink3/LearnHowAshby';
 import { LearnHowGreenhouse } from '@devlink3/LearnHowGreenhouse';
 import { LearnHowLever } from '@devlink3/LearnHowLever';
+import { Loader2 } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 import { ShowCode } from '../../Common/ShowCode';
+import { DeletePopup } from '../components/DeletePopup';
 import { type PopUpReasonTypes } from '../types';
 
 function ATSPopUps({

@@ -1,10 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import { useQuery } from '@tanstack/react-query';
-
-import Loader from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { supabase } from '@/utils/supabase/client';
-import { capitalizeAll } from '@/utils/text/textUtils';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -13,6 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
+import { useQuery } from '@tanstack/react-query';
+
+import Loader from '@/components/Common/Loader';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 function DeleteDepartmentsDialog({
   handleClose,

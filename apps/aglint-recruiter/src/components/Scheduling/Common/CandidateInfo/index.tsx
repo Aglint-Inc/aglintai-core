@@ -1,16 +1,24 @@
 import { Stack } from '@mui/material';
 
 import { Application } from '@/context/ApplicationContext';
+import { Body } from '@/job/components/CandidateDrawer/Body';
+import { Details } from '@/job/components/CandidateDrawer/Details';
+import { Meta } from '@/job/components/CandidateDrawer/Meta';
+import { Info, TopBar } from '@/job/components/CandidateDrawer/TopBar';
 
 function CandidateInfo({ application_id, job_id }) {
   return (
     <Stack spacing={'var(--space-4)'} padding={'var(--space-4)'}>
       <Application application_id={application_id} job_id={job_id}>
-        <Application.Body.TopBar>
-          <Application.Body.TopBar.Info />
-        </Application.Body.TopBar>
-        <Application.Body.Meta />
-        <Application.Body.Details />
+        <Body
+          topBar={
+            <TopBar>
+              <Info />
+            </TopBar>
+          }
+          meta={<Meta />}
+          details={<Details />}
+        />
       </Application>
     </Stack>
   );

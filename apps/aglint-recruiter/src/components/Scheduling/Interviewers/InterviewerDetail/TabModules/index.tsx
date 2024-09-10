@@ -1,12 +1,12 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { Stack } from '@mui/material';
+import { Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
-
 import { UIButton } from '@/components/Common/UIButton';
-import { Plus } from 'lucide-react';
+
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';

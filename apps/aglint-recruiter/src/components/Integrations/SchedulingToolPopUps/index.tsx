@@ -1,11 +1,4 @@
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
-import { Button } from '@components/ui/button';
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -15,6 +8,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { type ReactNode } from 'react';
 
 import Loader from '../../Common/Lotties/Integration_Loader';

@@ -38,7 +38,9 @@ const AntSwitch = styled(Switch)(() => ({
 
 function ToggleBtn({
   isChecked,
-  handleChange = () => {},
+  handleChange = () => {
+    //
+  },
 }: {
   isChecked: boolean;
   // eslint-disable-next-line no-unused-vars

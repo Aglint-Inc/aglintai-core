@@ -1,17 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { type DB } from '@aglint/shared-types';
-import {
-  type CookieOptions,
-  createServerClient,
-  serialize,
-} from '@supabase/ssr';
+
 import { type PostgrestError } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import {
-  type ResumeReuploadApi,
-  type Supabase,
-} from '@/apiUtils/job/candidateUpload/types';
+import { type ResumeReuploadApi } from '@/apiUtils/job/candidateUpload/types';
 import {
   deleteCandidate,
   deleteFile,
@@ -21,6 +13,7 @@ import {
   reProcessApplication,
   uploadResume,
 } from '@/apiUtils/job/candidateUpload/utils';
+import { createClient } from '@/utils/supabase/server';
 
 export const config = {
   api: {
@@ -40,23 +33,7 @@ const handler = async (
       [key]: decodeURIComponent(value as string),
     })),
   ) as ResumeReuploadApi['request']['params'];
-  const supabase: Supabase = createServerClient<DB>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return req.cookies[name];
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, value, options));
-        },
-        remove(name: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, '', options));
-        },
-      },
-    },
-  );
+  const supabase = createClient();
 
   const result = await uploadResume(supabase, readStream, contentType)
     .then(({ file_url, candidate_file_id }) =>

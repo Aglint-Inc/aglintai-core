@@ -16,15 +16,15 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UIDrawer from '@/components/Common/UIDrawer';
+import UITypography from '@/components/Common/UITypography';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import UIDrawer from '@/components/Common/UIDrawer';
-import UITypography from '@/components/Common/UITypography';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';

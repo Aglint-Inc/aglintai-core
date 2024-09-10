@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
+import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { ExperienceItem } from '@devlink/ExperienceItem';
 import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
-
 import { Avatar } from '@mui/material';
 import { Briefcase } from 'lucide-react';
 import Image from 'next/image';
@@ -11,7 +11,6 @@ import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
 import { EmptyDetailState } from './Common/EmptyDetailState';
-import { Skeleton } from '@components/ui/skeleton';
 
 const Experience = () => {
   return (

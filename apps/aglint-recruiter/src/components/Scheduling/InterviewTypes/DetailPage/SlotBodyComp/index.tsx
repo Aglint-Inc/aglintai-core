@@ -10,10 +10,13 @@ import { TokenItem } from '@devlink3/TokenItem';
 import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Popover, Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Edit, EllipsisVertical, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
+import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { UITextArea } from '@/components/Common/UITextArea';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
@@ -22,9 +25,6 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UITab, { UITabWrapper } from '@/components/Common/UITab';
-import { Edit, EllipsisVertical, Plus } from 'lucide-react';
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {

@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 
 export function encrypt(data, encryptionKey) {
   const iv = crypto.randomBytes(16);
+  //@ts-ignore
   const cipher = crypto.createCipheriv(
     'aes-256-cbc',
     Buffer.from(encryptionKey, 'hex'),

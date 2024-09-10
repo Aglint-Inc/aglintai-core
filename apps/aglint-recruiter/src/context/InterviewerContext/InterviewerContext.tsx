@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { type ReactNode, createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
 

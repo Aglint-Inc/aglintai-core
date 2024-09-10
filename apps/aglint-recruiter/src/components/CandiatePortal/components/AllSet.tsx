@@ -1,8 +1,9 @@
-import { useCandidatePortal } from '@/candidate/authenticated/hooks';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import Link from 'next/link';
 import React from 'react';
+
+import { useCandidatePortal } from '@/candidate/authenticated/hooks';
 
 function AllSet() {
   const { application_id } = useCandidatePortal();

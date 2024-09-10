@@ -1,4 +1,5 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
+import { Checkbox } from '@components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
@@ -12,7 +13,6 @@ import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
-import { Checkbox } from '@components/ui/checkbox';
 
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 

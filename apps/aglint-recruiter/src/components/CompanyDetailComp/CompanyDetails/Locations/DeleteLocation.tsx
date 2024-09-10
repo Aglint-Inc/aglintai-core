@@ -5,7 +5,7 @@ import MuiPopup from '@/components/Common/MuiPopup';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
-import { DialogState } from '..';
+import { DialogState } from '../types';
 
 function DeleteLocation({
   dialog,

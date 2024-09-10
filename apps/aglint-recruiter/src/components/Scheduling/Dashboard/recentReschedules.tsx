@@ -3,6 +3,7 @@ import { RecentReschedule as RecentRescheduleDev } from '@devlink3/RecentResched
 import Avatar from '@mui/material/Avatar';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
 import {
@@ -12,7 +13,6 @@ import {
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
-import { Loader2 } from 'lucide-react';
 
 const LIMIT = 4;
 

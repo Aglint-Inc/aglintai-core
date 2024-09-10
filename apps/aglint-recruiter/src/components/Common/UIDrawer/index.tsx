@@ -3,11 +3,11 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerTitle,
 } from '@components/ui/drawer';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { X as CloseIcon } from 'lucide-react'; // Import Lucide Close Icon
 import React from 'react';
+
 import { UIButton } from '../UIButton';
 import UITypography from '../UITypography';
 

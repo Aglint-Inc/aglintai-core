@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
+import { BarChart2, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
@@ -15,7 +16,6 @@ import { useInterviewConversion } from '@/queries/scheduling-dashboard';
 
 import SchedulingDropdown from './SchedulingDropdown';
 import { interviewConversionTimeFormat } from './utils';
-import { BarChart2, Loader2 } from 'lucide-react';
 
 const InterviewConversion = () => {
   const [type, setType] =

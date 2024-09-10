@@ -1,10 +1,10 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { AnalysisSkeleton } from '@devlink/AnalysisSkeleton';
 
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../../Common/Loader';
 import { AnalysisItem } from './Common/AnalysisItem';
-import { Skeleton } from '@components/ui/skeleton';
 
 export const Experience = () => {
   const {

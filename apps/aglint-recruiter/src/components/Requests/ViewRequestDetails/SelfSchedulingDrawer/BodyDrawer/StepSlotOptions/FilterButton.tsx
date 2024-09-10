@@ -1,34 +1,25 @@
-import { useState } from 'react';
-
-import { UIButton } from '@/components/Common/UIButton';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Filter } from 'lucide-react';
+
+import { UIButton } from '@/components/Common/UIButton';
+
 import { useSelfSchedulingFlowStore } from '../../store';
 import ScheduleFilter from '../ScheduleFilter';
 
 function FilterButton() {
-  const { filterLoading, anchorEl } = useSelfSchedulingFlowStore((state) => ({
+  const { filterLoading } = useSelfSchedulingFlowStore((state) => ({
     filterLoading: state.filterLoading,
-    anchorEl: state.anchorEl,
   }));
-  const [open, setOpen] = useState(false);
 
   return (
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <UIButton
-            size={'sm'}
-            leftIcon={<Filter />}
-            onClick={() => {
-              setOpen(true);
-            }}
-            isLoading={filterLoading}
-          >
+          <UIButton size={'sm'} leftIcon={<Filter />} isLoading={filterLoading}>
             Filters
           </UIButton>
         </PopoverTrigger>

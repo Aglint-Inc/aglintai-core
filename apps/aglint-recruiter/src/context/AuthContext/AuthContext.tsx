@@ -8,9 +8,9 @@ import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import {
+  createContext,
   type Dispatch,
   type SetStateAction,
-  createContext,
   useContext,
   useEffect,
   useState,
@@ -36,7 +36,7 @@ export interface ContextValue {
   userPermissions: {
     role: string;
     permissions: Partial<{
-      [key in DatabaseTable['permissions']['name']]: boolean;
+      [_key in DatabaseTable['permissions']['name']]: boolean;
     }>;
   };
   recruiter_id: string | null;

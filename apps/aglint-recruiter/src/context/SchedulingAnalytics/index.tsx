@@ -1,8 +1,8 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import {
-  type PropsWithChildren,
   createContext,
   memo,
+  type PropsWithChildren,
   useContext,
   useMemo,
   useState,
