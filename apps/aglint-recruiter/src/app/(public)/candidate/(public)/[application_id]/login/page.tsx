@@ -1,15 +1,23 @@
-// import { Login } from '@/components/CandiatePortal/Login';
 'use client';
+
+import { Button } from '@components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import { CheckCircle } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import {
   getCandidateEmailByApplicationId,
   hideEmail,
   sendMagicLink,
 } from '@/candidate/authenticated/uilts';
-import { UIButton } from '@/components/Common/UIButton';
 import { supabase } from '@/utils/supabase/client';
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -60,27 +68,72 @@ const Page = () => {
 
   if (status === 'send')
     return (
-      <div>
-        <h3> Welcome to our company</h3>
-        {email ? (
-          <>
-            <p>{hideEmail(email) || 'sample'}</p>
-            <UIButton onClick={sendLink} size='sm'>
-              {isSending ? 'Sending...' : 'Send login link'}
-            </UIButton>
-          </>
-        ) : (
-          <>Invalid Candidate</>
-        )}
-      </div>
+      <Send email={email} isSending={isSending} handleSendLink={sendLink} />
     );
 
-  if (status === 'sent')
-    return (
-      <div>
-        <h3>check your mail box</h3>
-      </div>
-    );
+  if (status === 'sent') return <Sent email={email} setStatus={setStatus} />;
 };
 
 export default Page;
+
+const Send = ({ email, isSending, handleSendLink }) => {
+  return (
+    <Card className='w-full max-w-md mx-auto'>
+      <CardHeader>
+        <CardTitle className='text-2xl font-bold text-center'>
+          Welcome
+        </CardTitle>
+      </CardHeader>
+      <CardContent className='text-center'>
+        <p className='mb-2'>
+          Welcome to the Candidate Portal. Here you can access your application
+          status, upcoming interviews, and more.
+        </p>
+        {email ? (
+          <>
+            <p className='font-medium mb-4'>
+              Your email:{' '}
+              <span className='text-primary'>{hideEmail(email)}</span>
+            </p>
+            <p className='text-sm text-muted-foreground'>
+              Click the button below to receive a login link.
+            </p>
+          </>
+        ) : (
+          <p className='font-medium mb-4'>Invalide Candidate</p>
+        )}
+      </CardContent>
+      {email && (
+        <CardFooter>
+          <Button className='w-full' onClick={handleSendLink}>
+            {isSending ? 'Sending...' : 'Send Login Link'}
+          </Button>
+        </CardFooter>
+      )}
+    </Card>
+  );
+};
+
+const Sent = ({ email, setStatus }) => {
+  return (
+    <Card className='w-full max-w-md mx-auto text-center'>
+      <CardHeader>
+        <CardTitle className='text-2xl font-bold'>Login Link Sent!</CardTitle>
+      </CardHeader>
+      <CardContent className='flex flex-col items-center'>
+        <CheckCircle className='w-16 h-16 text-green-500 mb-4' />
+        <p className='mb-2'>We&apos;ve successfully sent a login link to:</p>
+        <p className='font-medium text-primary mb-4'>{email}</p>
+        <p className='text-sm text-muted-foreground'>
+          Please check your email and click on the link to access your Candidate
+          Portal.
+        </p>
+      </CardContent>
+      <CardFooter className='flex justify-center'>
+        <Button variant='outline' onClick={() => setStatus('send')}>
+          Back to Welcome
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
