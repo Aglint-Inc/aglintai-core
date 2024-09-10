@@ -5,17 +5,17 @@ import { Button } from '@components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import {
   useCandidatePortal,
   useCandidatePortalMessages,
   useCandidatePortalNavbar,
 } from '@/candidate/authenticated/hooks';
+import { supabase } from '@/utils/supabase/client';
 
 import CandidatePortalLoader from '../components/CandidatePortalLoader';
 import NavProfile from './NavProfile';
-import { supabase } from '@/utils/supabase/client';
-import { useState } from 'react';
 // import { ThemeSwitcher } from '../components/ThemeSwitcher';
 // import NavProfile from './NavProfile';
 
