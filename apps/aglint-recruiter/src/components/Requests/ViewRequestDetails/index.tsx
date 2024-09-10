@@ -46,6 +46,7 @@ import { getStatusColor } from '../_common/utils/getStatusColor';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../_common/Components/RequestProgress';
+import { UISwitch } from '@/components/Common/UISwitch';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -124,6 +125,7 @@ function ViewRequestDetails() {
           <RequestDetail
             slotInterview={
               <>
+                <UISwitch size='lg' />
                 {status === 'pending' ? (
                   <Stack position={'relative'}>
                     <SkeletonScheduleCard />

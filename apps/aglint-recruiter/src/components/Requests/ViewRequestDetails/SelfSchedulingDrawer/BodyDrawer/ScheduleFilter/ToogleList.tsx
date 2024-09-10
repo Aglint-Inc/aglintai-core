@@ -1,4 +1,3 @@
-import { Switch } from '@components/ui/switch';
 import { Text } from '@devlink/Text';
 import { SchedulerConflictCard } from '@devlink3/SchedulerConflictCard';
 import { ToggleWithText } from '@devlink3/ToggleWithText';
@@ -7,6 +6,7 @@ import React, { useMemo } from 'react';
 
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
 import { filterSchedulingOptionsArray } from './utils';
+import { UISwitch } from '@/components/Common/UISwitch';
 
 type AvailabilityType =
   | 'no_conflicts'
@@ -124,7 +124,8 @@ function ToogleList() {
                 slotToggleWithText={
                   <ToggleWithText
                     slotToggle={
-                      <Switch
+                      <UISwitch
+                        size='sm'
                         checked={enabled}
                         onCheckedChange={() => {
                           setLocalFilters({
