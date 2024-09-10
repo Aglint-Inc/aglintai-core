@@ -60,6 +60,18 @@ export const PATHS = [
 '/_jobs/_common/utils',
 '/_jobs/create',
 '/_jobs/create/_common/components',
+'/_workflows',
+'/_workflows/[workflow]',
+'/_workflows/[workflow]/_common/components',
+'/_workflows/[workflow]/_common/components/body',
+'/_workflows/[workflow]/_common/contexts',
+'/_workflows/[workflow]/_common/hooks',
+'/_workflows/_common/components',
+'/_workflows/_common/components/body',
+'/_workflows/_common/constants',
+'/_workflows/_common/contexts',
+'/_workflows/_common/hooks',
+'/_workflows/_common/utils',
 '/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
 '/api/agent-workflow/interviewer-decline',
@@ -322,6 +334,5 @@ export const PATHS = [
 '/supervisor',
 '/user/profile/[user_id]',
 '/workflows',
-'/workflows/[id]',
-'/workflows/real-time-crons'
+'/workflows/[workflow]'
 ] as const

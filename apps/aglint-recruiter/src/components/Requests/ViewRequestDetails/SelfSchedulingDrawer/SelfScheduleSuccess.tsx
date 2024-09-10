@@ -25,24 +25,26 @@ function SelfScheduleSuccess() {
   };
 
   return (
-    <GlobalCta
-      iconName={'mark_email_read'}
-      color={'success'}
-      textTitle={'Self scheduling link sent successfully'}
-      textDescription={
-        'The candidate recieved an email containing a link to select from the provided options. The interview will be confirmed once the candidate makes a selection.'
-      }
-      slotButton={
-        <ButtonSoft
-          textButton={isCopied ? 'Copied' : 'Copy Link'}
-          color={'neutral'}
-          size={1}
-          onClickButton={{
-            onClick: handleCopyLink,
-          }}
-        />
-      }
-    />
+    <div className='flex flex-row w-full items-center justify-center'>
+      <GlobalCta
+        iconName={'mark_email_read'}
+        color={'success'}
+        textTitle={'Self scheduling link sent successfully'}
+        textDescription={
+          'The candidate recieved an email containing a link to select from the provided options. The interview will be confirmed once the candidate makes a selection.'
+        }
+        slotButton={
+          <ButtonSoft
+            textButton={isCopied ? 'Copied' : 'Copy Link'}
+            color={'neutral'}
+            size={1}
+            onClickButton={{
+              onClick: handleCopyLink,
+            }}
+          />
+        }
+      />
+    </div>
   );
 }
 

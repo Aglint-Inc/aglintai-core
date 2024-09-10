@@ -1,7 +1,10 @@
-import Workflows from '@/components/Workflow/index';
+import Layout from 'src/app/(authenticated)/_workflows/layout';
+import Page from 'src/app/(authenticated)/_workflows/page';
 
-const WorkflowsPage = () => {
-  return <Workflows />;
+const Workflows = () => {
+  return <Page />;
 };
 
-export default WorkflowsPage;
+Workflows.privateProvider = (page) => <Layout>{page}</Layout>;
+
+export default Workflows;

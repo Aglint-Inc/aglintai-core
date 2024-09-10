@@ -12,7 +12,6 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { RolesPill } from '@devlink/RolesPill';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
@@ -24,7 +23,6 @@ import { cn } from '@lib/utils';
 import {
   Alert,
   Autocomplete,
-  Chip,
   Stack,
   TextField,
   Typography,
@@ -42,8 +40,9 @@ import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput'
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
-import { useImrQuery } from '../hooks';
+import Chip from '@/components/Common/AddChip/Chip';
 import { Checkbox } from '@components/ui/checkbox';
+import { useImrQuery } from '../hooks';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
   value: number;
@@ -597,24 +596,16 @@ function InterviewerLevelSettings({
                     <>
                       {freeKeyWords.map((item) => {
                         if (companyKeywords.free.includes(item)) {
+                          return <Chip key={item} name={item} disable={true} />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              sx={{ opacity: 0.7 }}
-                              label={item}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setFreeKeywords((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setFreeKeywords((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );
@@ -655,24 +646,16 @@ function InterviewerLevelSettings({
                     <>
                       {softConflictsKeyWords.map((item) => {
                         if (companyKeywords.SoftConflicts.includes(item)) {
+                          return <Chip key={item} name={item} disable />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              label={item}
-                              sx={{ opacity: 0.7 }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setSoftConflictsKeyWords((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setSoftConflictsKeyWords((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );
@@ -716,24 +699,16 @@ function InterviewerLevelSettings({
                     <>
                       {outOfOffice.map((item) => {
                         if (companyKeywords.outOfOffice.includes(item)) {
+                          return <Chip key={item} name={item} disable />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              label={item}
-                              sx={{ opacity: 0.7 }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setOutOfOffice((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setOutOfOffice((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );
@@ -777,24 +752,16 @@ function InterviewerLevelSettings({
                     <>
                       {recruitingBlocks.map((item) => {
                         if (companyKeywords.recruitingBlocks.includes(item)) {
+                          return <Chip key={item} name={item} disable />;
+                        } else {
                           return (
                             <Chip
                               key={item}
-                              label={item}
-                              sx={{ opacity: 0.7 }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <RolesPill
-                              key={item}
-                              textRoles={item}
-                              onClickRemoveRoles={{
-                                onClick: () => {
-                                  setRecruitingBlocks((prev) =>
-                                    prev.filter((ele) => ele !== item),
-                                  );
-                                },
+                              name={item}
+                              onRemove={() => {
+                                setRecruitingBlocks((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
                               }}
                             />
                           );

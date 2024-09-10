@@ -1,8 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Grid, Stack, Typography } from '@mui/material';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { UIButton } from '../UIButton';
 
 function CalendarHeader({
   handleMode,
@@ -52,13 +52,13 @@ function CalendarHeader({
             alignItems={'center'}
             minWidth={'200px'}
           >
-            <IconButtonSoft
-              size={1}
-              iconSize={2}
-              color={'neutral'}
-              iconName='arrow_back_ios'
-              onClickButton={{ onClick: () => calendarApi.prev() }}
+            <UIButton
+              variant='outline'
+              size='sm'
+              icon={<ChevronLeft />}
+              onClick={() => calendarApi.prev()}
             />
+
             <Typography fontWeight={500}>
               {currentViewType === 'listWeek' ||
               currentViewType === 'timeGridWeek'
@@ -68,16 +68,11 @@ function CalendarHeader({
                     dateFormat[currentViewType],
                   )}
             </Typography>
-            <IconButtonSoft
-              size={1}
-              iconSize={2}
-              color={'neutral'}
-              iconName='arrow_forward_ios'
-              onClickButton={{
-                onClick: () => {
-                  calendarApi.next();
-                },
-              }}
+            <UIButton
+              variant='outline'
+              size='sm'
+              icon={<ChevronRight />}
+              onClick={() => calendarApi.next()}
             />
           </Stack>
         </Grid>
@@ -85,38 +80,34 @@ function CalendarHeader({
           <Stack
             minWidth={'250px'}
             direction={'row'}
+            alignItems={'center'}
             justifyContent={'flex-end'}
             spacing={1}
           >
             {!dayjsLocal(currentDate?.startStr).isToday() &&
               !isThisWeekrMonth && (
-                <ButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  textButton='Today'
-                  onClickButton={{
-                    onClick: () => calendarApi?.today(),
-                  }}
-                />
+                <>
+                  {/* <ButtonSoft
+                    size={1}
+                    color={'neutral'}
+                    textButton='Today'
+                    onClickButton={{
+                      onClick: () => calendarApi?.today(),
+                    }}
+                  /> */}
+                  <UIButton onClick={() => calendarApi?.today()}>
+                    Today
+                  </UIButton>
+                </>
               )}
-            <ButtonSoft
-              textButton='Day'
-              size={1}
-              color={type === 'day' ? 'accent' : 'neutral'}
-              onClickButton={{ onClick: () => handleType('day') }}
-            />
-            <ButtonSoft
-              textButton='Week'
-              color={type === 'week' ? 'accent' : 'neutral'}
-              size={1}
-              onClickButton={{ onClick: () => handleType('week') }}
-            />
-            <ButtonSoft
-              textButton='Month'
-              color={type === 'month' ? 'accent' : 'neutral'}
-              size={1}
-              onClickButton={{ onClick: () => handleType('month') }}
-            />
+
+            <Tabs defaultValue={type} value={type} onValueChange={handleType}>
+              <TabsList>
+                <TabsTrigger value='day'>Day</TabsTrigger>
+                <TabsTrigger value='week'>Week</TabsTrigger>
+                <TabsTrigger value='month'>Month</TabsTrigger>
+              </TabsList>
+            </Tabs>
           </Stack>
         </Grid>
       </Grid>

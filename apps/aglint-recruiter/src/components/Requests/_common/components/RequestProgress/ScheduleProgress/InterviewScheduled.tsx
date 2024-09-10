@@ -9,7 +9,6 @@ import React from 'react';
 
 import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
@@ -27,6 +26,7 @@ import {
   deleteRequestWorkflowAction,
 } from '../utils';
 import { Button } from '@components/ui/button';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {

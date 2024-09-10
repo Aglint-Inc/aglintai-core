@@ -45,7 +45,10 @@ import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { getStatusColor } from '../_common/utils/getStatusColor';
 import RequestProgress, {
   RequestProgressSkeleton,
-} from '../_common/Components/RequestProgress';
+} from '../_common/components/RequestProgress';
+// import RequestProgress, {
+//   RequestProgressSkeleton,
+// } from '../_common/Components/RequestProgress';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -130,9 +133,7 @@ function ViewRequestDetails() {
                   </Stack>
                 ) : (
                   <>
-                    {selectedRequest.status === 'to_do' && (
-                      <SelfSchedulingDrawer refetch={refetch} />
-                    )}
+                    <SelfSchedulingDrawer refetch={refetch} />
                     {sessionsCards.map((session) => {
                       return (
                         <ScheduleIndividualCard
@@ -142,6 +143,7 @@ function ViewRequestDetails() {
                           session={session}
                           key={session.interview_session.id}
                           selectedSessionIds={[]}
+                          // eslint-disable-next-line @typescript-eslint/no-empty-function
                           onClickCheckBox={() => {}}
                           isCheckboxVisible={false}
                           candidate={null}

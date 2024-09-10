@@ -1,14 +1,13 @@
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
 import { Text } from '@devlink/Text';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { Dialog, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';
 
@@ -127,60 +126,56 @@ function ArchiveModuleDialog({
   }, [loading]);
 
   return (
-    <Dialog open={isArchiveDialogOpen} onClose={onClose}>
-      <DcPopup
-        popupName={`Archive ${moduleName}`}
-        onClickClosePopup={{ onClick: onClose }}
+    <>
+      <UIDialog
+        open={isArchiveDialogOpen}
+        title={`Archive ${moduleName}`}
+        onClose={onClose}
         slotButtons={
           <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{ onClick: () => onClose() }}
-            />
-            <ButtonSolid
-              textButton='Archive'
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  if (editModule.id) archiveModule();
-                },
-              }}
+            <UIButton onClick={onClose} size='md' variant='secondary'>
+              Cancel
+            </UIButton>
+            <UIButton
+              size='md'
               isLoading={loading}
-              isDisabled={isFetching || errors.length > 0}
-            />
+              disabled={isFetching || errors.length > 0}
+              onClick={() => {
+                if (editModule.id) archiveModule();
+              }}
+            >
+              Archive
+            </UIButton>
           </>
         }
-        slotBody={
-          <Stack spacing={1}>
-            <Text
-              size={2}
-              color={'neutral'}
-              content={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
+      >
+        <Stack spacing={1}>
+          <Text
+            size={2}
+            color={'neutral'}
+            content={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
+          />
+          {errors.length > 0 && (
+            <GlobalBannerShort
+              color={'error'}
+              iconName='warning'
+              textTitle='Unable to Archive'
+              textDescription=''
+              slotButtons={
+                <Stack>
+                  {errors.map((error, index) => (
+                    <Stack direction={'row'} key={index}>
+                      <li style={{ color: 'var(--neutral-11)' }}></li>
+                      <Text size={1} color={'neutral'} content={error} />
+                    </Stack>
+                  ))}
+                </Stack>
+              }
             />
-            {errors.length > 0 && (
-              <GlobalBannerShort
-                color={'error'}
-                iconName='warning'
-                textTitle='Unable to Archive'
-                textDescription=''
-                slotButtons={
-                  <Stack>
-                    {errors.map((error, index) => (
-                      <Stack direction={'row'} key={index}>
-                        <li style={{ color: 'var(--neutral-11)' }}></li>
-                        <Text size={1} color={'neutral'} content={error} />
-                      </Stack>
-                    ))}
-                  </Stack>
-                }
-              />
-            )}
-          </Stack>
-        }
-      />
-    </Dialog>
+          )}
+        </Stack>
+      </UIDialog>
+    </>
   );
 }
 
