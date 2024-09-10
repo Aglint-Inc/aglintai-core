@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { type ReactNode, createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
 
@@ -41,6 +41,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
         panel_id,
         user_id,
         training_status,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
       }).then(() => {});
     };
 
@@ -53,6 +54,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
         user_id: user_id,
         pause_json,
         training_status,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
       }).then(() => {});
     };
 

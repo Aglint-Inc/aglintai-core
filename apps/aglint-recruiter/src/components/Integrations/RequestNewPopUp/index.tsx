@@ -1,11 +1,4 @@
 import { useToast } from '@components/hooks/use-toast';
-
-import axios from 'axios';
-import { useRef, useState } from 'react';
-
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { supabase } from '@/utils/supabase/client';
-
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -14,10 +7,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { ThumbsUp } from 'lucide-react';
+import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Textarea } from '@components/ui/textarea';
-import { Input } from '@components/ui/input';
+import axios from 'axios';
+import { ThumbsUp } from 'lucide-react';
+import { useRef, useState } from 'react';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   const { recruiter } = useAuthDetails();

@@ -1,17 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 
-import { type DatabaseTable, type DB } from '@aglint/shared-types';
-import {
-  type CookieOptions,
-  createServerClient,
-  serialize,
-} from '@supabase/ssr';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { nanoid } from 'nanoid';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { type ChatCompletionMessageParam } from 'openai/resources';
 
 import { distributeScoreWeights } from '@/job/utils';
+import { createClient } from '@/utils/supabase/server';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -28,23 +24,7 @@ const handler = async (
   res: NextApiResponse<JobProfileScoreApi['response']>,
 ) => {
   // eslint-disable-next-line no-unused-vars
-  const supabase = createServerClient<DB>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return req.cookies[name];
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, value, options));
-        },
-        remove(name: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, '', options));
-        },
-      },
-    },
-  );
+  const supabase = createClient();
   const { job_id, regenerate = false } =
     req.body as JobProfileScoreApi['request'];
   const { data: job } = await supabase

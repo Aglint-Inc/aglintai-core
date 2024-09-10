@@ -72,10 +72,12 @@ function SchedulesModules() {
       slotInterviewCard={
         <>
           {isLoading && allSchedules.length === 0 ? (
-            <Loader />
+            <Stack width={'820px'} height={'calc(100vh - 200px)'}>
+              <Loader />
+            </Stack>
           ) : allSchedules.length === 0 ? (
             <Stack width={'820px'}>
-              <AllInterviewEmpty textDynamic='No schedule found' />
+              <AllInterviewEmpty textDynamic='No schedule found ' />
             </Stack>
           ) : (
             <>

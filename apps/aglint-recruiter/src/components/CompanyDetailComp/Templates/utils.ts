@@ -134,8 +134,7 @@ interface TempFilterOptions {
     organizer: DatabaseEnums['email_slack_types'][];
     admin: DatabaseEnums['email_slack_types'][];
   };
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  slackTemplate: {};
+  slackTemplate: object;
 }
 export const tempFilterOptions: TempFilterOptions = {
   emailTemplate: {

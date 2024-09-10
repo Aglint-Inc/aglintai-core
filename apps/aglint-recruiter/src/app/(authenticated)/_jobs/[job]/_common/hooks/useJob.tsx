@@ -4,6 +4,6 @@ import { JobContext } from '@/job/contexts/jobContext';
 
 export const useJob = () => {
   const value = useContext(JobContext);
-  if (value === undefined) throw Error('JobProvider not found');
+  if (!value) throw new Error('JobContext not found as a provider');
   return value;
 };

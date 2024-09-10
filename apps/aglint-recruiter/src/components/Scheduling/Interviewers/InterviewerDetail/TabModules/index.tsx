@@ -1,10 +1,11 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { Stack } from '@mui/material';
+import { Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
@@ -81,19 +82,17 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
-                <ButtonSoft
-                  size={2}
-                  isRightIcon={false}
-                  iconName='add'
-                  textButton={'Add'}
-                  isLeftIcon={true}
-                  onClickButton={{
-                    onClick: () => {
-                      setAddInterviewType('qualified');
-                      setIsAddInterviewTypeDialogOpen(true);
-                    },
+                <UIButton
+                  size='sm'
+                  variant='secondary'
+                  onClick={() => {
+                    setAddInterviewType('qualified');
+                    setIsAddInterviewTypeDialogOpen(true);
                   }}
-                />
+                  leftIcon={<Plus />}
+                >
+                  Add
+                </UIButton>
               </Stack>
             </>
           ) : (
@@ -126,19 +125,17 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
-                <ButtonSoft
-                  size={2}
-                  isRightIcon={false}
-                  iconName='add'
-                  isLeftIcon={true}
-                  textButton={'Add'}
-                  onClickButton={{
-                    onClick: () => {
-                      setAddInterviewType('training');
-                      setIsAddInterviewTypeDialogOpen(true);
-                    },
+                <UIButton
+                  size='sm'
+                  variant='secondary'
+                  onClick={() => {
+                    setAddInterviewType('training');
+                    setIsAddInterviewTypeDialogOpen(true);
                   }}
-                />
+                  leftIcon={<Plus />}
+                >
+                  Add
+                </UIButton>
               </Stack>
             </>
           ) : (

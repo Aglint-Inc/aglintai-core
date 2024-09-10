@@ -14,6 +14,7 @@ import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/job/hooks';
@@ -22,7 +23,6 @@ import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
 
 export const useJobForms = (
   fields: JobMetaFormProps['fields'],

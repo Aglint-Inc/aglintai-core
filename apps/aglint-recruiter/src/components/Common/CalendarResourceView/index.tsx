@@ -39,10 +39,9 @@ function CalendarResourceView({
   return (
     <Stack
       sx={{
-        maxWidth: 'calc(100vw - 700px)',
+        maxWidth: 'calc(100vw - 600px)',
         overflowY: 'auto',
         height: '100vh',
-        width: '100%',
       }}
     >
       <CalendarHeader

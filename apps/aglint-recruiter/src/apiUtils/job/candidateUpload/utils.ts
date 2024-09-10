@@ -40,7 +40,7 @@ export const verifyCandidate = async (
   email: CandidateDuplicationCheckAction['request']['inputData']['email'],
   recruiter_id: CandidateDuplicationCheckAction['request']['inputData']['recruiter_id'],
   jobId: string,
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateDuplicationCheckAction['request']['signal'],
 ): Promise<{ duplicate: boolean; candidate: Candidate }> => {
@@ -233,7 +233,7 @@ export const createFile = async (
   file_url: string,
   candidate_file_id: string,
   contentType: keyof typeof supportedTypes,
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<CandidateFiles> => {
@@ -271,7 +271,7 @@ export const reCreateFile = async (
   file_url: string,
   candidate_file_id: string,
   contentType: keyof typeof supportedTypes,
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<CandidateFiles> => {
@@ -311,7 +311,7 @@ export const reCreateFile = async (
 export const deleteFile = async (
   supabase: Supabase,
   candidate_file_id: CandidateDeleteAction['request']['inputData'],
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateDeleteAction['request']['signal'],
 ): Promise<void> => {
@@ -346,7 +346,7 @@ export const createApplication = async (
   candidate_id: string,
   candidate_file_id: string,
   source: DatabaseEnums['application_source'],
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<Applications> => {
@@ -383,7 +383,7 @@ export const reProcessApplication = async (
   supabase: SupabaseClient<DB>,
   application_id: string,
   candidate_file_id: string,
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<Applications> => {
@@ -421,7 +421,7 @@ export const reProcessApplication = async (
 export const deleteApplication = async (
   supabase: Supabase,
   application_id: string,
-  tries: number = 0,
+  tries = 0,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<void> => {
@@ -453,7 +453,7 @@ export const uploadResume = async (
   supabase: Supabase,
   file: fs.ReadStream,
   contentType: keyof typeof supportedTypes,
-  tries: number = 0,
+  tries = 0,
   prev_error?: string,
 ): Promise<{
   file_url: string;
@@ -494,7 +494,7 @@ export const deleteResume = async (
   supabase: Supabase,
   candidate_file_id: string,
   contentType: keyof typeof supportedTypes,
-  tries: number = 0,
+  tries = 0,
   prev_error?: string,
 ): Promise<void> => {
   if (tries++ === MAX_TRIES) throw new Error(prev_error);

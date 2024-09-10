@@ -1,21 +1,22 @@
 import { useToast } from '@components/hooks/use-toast';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { ButtonGhost } from '@devlink2/ButtonGhost';
-import { InterviewMemberList } from '@devlink2/InterviewMemberList';
+// import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
-import { NewTabPill } from '@devlink3/NewTabPill';
 import { TokenItem } from '@devlink3/TokenItem';
 import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Popover, Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Edit, EllipsisVertical, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
+import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { UITextArea } from '@/components/Common/UITextArea';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
@@ -24,8 +25,6 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { UIButton } from '@/components/Common/UIButton';
-import { Edit, EllipsisVertical } from 'lucide-react';
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {
@@ -45,6 +44,7 @@ import SchedulesModules from '../Schedules';
 import ModuleSettingComp from '../Training';
 import { type TabsModuleMembers } from '../type';
 import SettingsDialog from './EditModule';
+import { InterviewMemberList } from './InterviewMemberList';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
 import { tabsModuleMembers } from './utils';
@@ -171,6 +171,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
         <>
           {editModule && (
             <InterviewMemberList
+              slotBanner={<>dsf</>}
               slotJobsCard={
                 editModule?.id && <ConnectedJobs module_id={editModule?.id} />
               }
@@ -195,33 +196,29 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                 </Stack>
               }
               slotNewTabPill={
-                <Stack direction={'row'}>
-                  {tabsModuleMembers.map((tab) => {
-                    return (
-                      <NewTabPill
-                        key={tab.queryParams}
-                        textLabel={tab.name}
-                        isPillActive={
-                          currentTab === tab.queryParams ||
-                          (!currentTab && tab.queryParams == 'qualified')
-                        }
-                        onClickPill={{
-                          onClick: () => {
-                            router.push(
-                              ROUTES['/scheduling/interview-types/[type_id]']({
-                                type_id: editModule.id,
-                              }) + `?tab=${tab.queryParams}`,
-                              undefined,
-                              {
-                                shallow: true,
-                              },
-                            );
+                <UITabWrapper>
+                  {tabsModuleMembers.map((tab, index) => (
+                    <UITab
+                      textLabel={tab.name}
+                      onClickPill={() => {
+                        router.push(
+                          ROUTES['/scheduling/interview-types/[type_id]']({
+                            type_id: editModule.id,
+                          }) + `?tab=${tab.queryParams}`,
+                          undefined,
+                          {
+                            shallow: true,
                           },
-                        }}
-                      />
-                    );
-                  })}
-                </Stack>
+                        );
+                      }}
+                      isPillActive={
+                        currentTab === tab.queryParams ||
+                        (!currentTab && tab.queryParams == 'qualified')
+                      }
+                      key={index}
+                    />
+                  ))}
+                </UITabWrapper>
               }
               textDepartment={department}
               textObjective={editModule.description || 'No description'}
@@ -311,12 +308,9 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                         </>
                       }
                       slotAddToken={
-                        <ButtonGhost
-                          textButton='Add Token'
-                          iconName='add'
-                          size={2}
-                          isLeftIcon={true}
-                        />
+                        <UIButton size='sm' variant='ghost' leftIcon={<Plus />}>
+                          Add Token
+                        </UIButton>
                       }
                     />
                   )}

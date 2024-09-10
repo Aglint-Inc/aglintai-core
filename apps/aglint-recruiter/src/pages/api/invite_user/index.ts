@@ -26,9 +26,7 @@ export default async function handler(
       const {
         // role,
         user_id: id,
-      } = await server_getUserRoleAndId({
-        getVal: (name) => req.cookies[String(name)],
-      });
+      } = await server_getUserRoleAndId();
       // if (role === 'admin') {
       const user_id: string = null;
       try {

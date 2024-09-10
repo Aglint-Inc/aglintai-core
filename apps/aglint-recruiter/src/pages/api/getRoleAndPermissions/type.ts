@@ -1,8 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
 export type GetRoleAndPermissionsAPI = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  request: {};
+  request: object;
   response: {
     rolesAndPermissions: {
       [roles: string]: {

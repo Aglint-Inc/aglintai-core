@@ -1,13 +1,13 @@
-import React from 'react';
+import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from '@components/ui/dialog';
-import { Button } from '@components/ui/button';
 import { X } from 'lucide-react';
+import React from 'react';
 
 interface DeletePopupProps {
   isOpen: boolean;

@@ -29,7 +29,8 @@ export default function ConfigureCandidateGreeting() {
         <div className='flex flex-col'>
           <h1 className='text-md font-semibold'>Candidate Greeting</h1>
           <p className='text-sm text-muted-foreground'>
-            This section content will be displayed on the candidate portal as the greeting message to the candidate.
+            This section content will be displayed on the candidate portal as
+            the greeting message to the candidate.
           </p>
         </div>
         {data?.greetings?.length && (
@@ -37,8 +38,9 @@ export default function ConfigureCandidateGreeting() {
             <div className='w-full p-4 space-y-4  '>{data?.greetings}</div>
           </ScrollArea>
         )}
-        <Dialog open={isDialogOpen === 'greetings'}
-        onOpenChange={(open) => setIsDialogOpen(open ? 'greetings' : null)} 
+        <Dialog
+          open={isDialogOpen === 'greetings'}
+          onOpenChange={(open) => setIsDialogOpen(open ? 'greetings' : null)}
         >
           <DialogTrigger asChild>
             <Button

@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { type PropsWithChildren, createContext } from 'react';
+import { createContext, type PropsWithChildren } from 'react';
 
 import { api } from '@/trpc/client';
 
@@ -14,8 +14,11 @@ const useCandidatePortalContext = () => {
 export const CandidatePortalContext =
   createContext<ReturnType<typeof useCandidatePortalContext>>(undefined);
 
-export const CandidatePortalProvider = ({ children }: PropsWithChildren) => {
+export const CandidatePortalProvider = async ({
+  children,
+}: PropsWithChildren) => {
   const value = useCandidatePortalContext();
+
   return (
     <CandidatePortalContext.Provider value={value}>
       {children}

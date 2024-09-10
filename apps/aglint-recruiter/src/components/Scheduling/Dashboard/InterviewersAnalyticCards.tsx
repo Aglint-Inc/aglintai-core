@@ -3,6 +3,7 @@ import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
 import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -14,7 +15,6 @@ import {
 } from '@/pages/api/get_users_by_ids';
 import { schedulingDashboardQueryKeys } from '@/queries/scheduling-dashboard/keys';
 import { supabase } from '@/utils/supabase/client';
-import { BarChart2 } from 'lucide-react';
 
 const InterviewersAnalyticCards = () => {
   const [type, setType] =

@@ -58,7 +58,3 @@ export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
     />
   );
 };
-Analysis.Badge = Badge;
-Analysis.Education = Education;
-Analysis.Skills = Skills;
-Analysis.Experience = Experience;

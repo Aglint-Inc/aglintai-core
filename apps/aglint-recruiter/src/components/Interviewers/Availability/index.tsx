@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
@@ -47,7 +48,6 @@ import {
   splitHourAndMin,
   timeToPx,
 } from './utils';
-import { Button } from '@components/ui/button';
 
 const TimeLineCalendar = () => {
   const {

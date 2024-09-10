@@ -10,13 +10,12 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { BarChart2, Loader2 } from 'lucide-react';
 import { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
-
-import { BarChart2, Loader2 } from 'lucide-react';
 
 export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();

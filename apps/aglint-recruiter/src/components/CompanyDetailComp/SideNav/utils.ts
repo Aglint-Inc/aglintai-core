@@ -24,8 +24,16 @@ export const settingsItems: {
   permission?: permissionsEnum | 'authorized';
   icon: string;
 }[] = [
-  { label: 'Company Details', value: settingSubNavItem['COMPANYINFO'], icon: 'Building' },
-  { label: 'Working Hours', value: settingSubNavItem['WORKINGHOURS'], icon: 'Clock' },
+  {
+    label: 'Company Details',
+    value: settingSubNavItem['COMPANYINFO'],
+    icon: 'Building',
+  },
+  {
+    label: 'Working Hours',
+    value: settingSubNavItem['WORKINGHOURS'],
+    icon: 'Clock',
+  },
   { label: 'Holidays', value: settingSubNavItem['HOLIDAYS'], icon: 'Calendar' },
   {
     label: 'User',
@@ -39,8 +47,16 @@ export const settingsItems: {
     permission: 'view_roles',
     icon: 'Shield',
   },
-  { label: 'Templates', value: settingSubNavItem['EMAILTEMPLATE'], icon: 'FileText' },
-  { label: 'Scheduling', value: settingSubNavItem['SCHEDULING'], icon: 'CalendarDays' },
+  {
+    label: 'Templates',
+    value: settingSubNavItem['EMAILTEMPLATE'],
+    icon: 'FileText',
+  },
+  {
+    label: 'Scheduling',
+    value: settingSubNavItem['SCHEDULING'],
+    icon: 'CalendarDays',
+  },
   {
     label: 'Reasons',
     value: settingSubNavItem['SCHEDULING_REASONS'],

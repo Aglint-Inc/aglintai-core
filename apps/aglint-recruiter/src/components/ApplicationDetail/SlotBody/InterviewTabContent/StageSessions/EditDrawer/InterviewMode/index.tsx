@@ -4,10 +4,10 @@ import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
 import { useRouter } from 'next/router';
 
+import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 import { useInterviewModules } from '@/queries/interview-modules';
 import ROUTES from '@/utils/routing/routes';
 
-import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 import {
   EditSessionDrawer,
   setErrorValidation,

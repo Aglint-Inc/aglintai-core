@@ -25,9 +25,11 @@ export default function EmptyJobDashboard({
           onClick: handleClickAddJob,
         }}
         isSelectTitleVisible={true}
-        onClickRequestIntegration={{
-          onClick: () => {},
-        }}
+        onClickRequestIntegration={
+          {
+            // onClick: () => {},
+          }
+        }
         onClickGreenHouse={{
           onClick: () => {
             router.push(ROUTES['/integrations']());

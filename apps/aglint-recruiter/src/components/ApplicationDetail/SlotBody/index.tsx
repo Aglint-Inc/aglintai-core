@@ -3,8 +3,9 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
-import { Application, useApplication } from '@/context/ApplicationContext';
+import { useApplication } from '@/context/ApplicationContext';
 import { Activity } from '@/job/components/CandidateDrawer/Activity';
+import { Details } from '@/job/components/CandidateDrawer/Details';
 import { Resume } from '@/job/components/CandidateDrawer/Resume';
 
 import CandidateInfo from './CandidateInfo';
@@ -51,7 +52,7 @@ function SlotBody() {
               </Stack>
             ) : tab === 'scoring' ? (
               <Stack padding={'var(--space-4)'}>
-                <Application.Body.Details />
+                <Details />
               </Stack>
             ) : tab === 'requests' ? (
               <Requests />

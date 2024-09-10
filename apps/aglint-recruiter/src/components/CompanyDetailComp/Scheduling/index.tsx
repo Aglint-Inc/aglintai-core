@@ -9,13 +9,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
-
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import timeZone from '@/utils/timeZone';
-
-import { LoadMax } from '../Holidays';
-import DebriefDefaults from './DebriefDefaults';
-import InterviewLimitInput from './InterviewLoad';
 import {
   Card,
   CardContent,
@@ -23,6 +16,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import timeZone from '@/utils/timeZone';
+
+import { LoadMax } from '../Holidays';
+import DebriefDefaults from './DebriefDefaults';
+import InterviewLimitInput from './InterviewLoad';
 import KeywordSection from './KeywordSection';
 
 let schedulingSettingObj = {};

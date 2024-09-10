@@ -26,10 +26,5 @@ const Details = (props: PropsWithChildren) => {
     </Stack>
   );
 };
-Details.Insights = Insights;
-Details.Analysis = Analysis;
-Details.Experience = Experience;
-Details.Education = Education;
-Details.Skills = Skills;
 
 export { Details };

@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+
 import { usePauseHandler } from '../../queries/hooks';
 import { setIsResumeDialogOpen, useModulesStore } from '../../store';
 
@@ -27,6 +28,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
         <>
           <UIButton
             variant='secondary'
+            size='sm'
             onClick={() => setIsResumeDialogOpen(false)}
           >
             Cancel
@@ -34,6 +36,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
           <UIButton
             isLoading={isSaving}
             variant='default'
+            size='sm'
             onClick={async () => {
               if (isSaving) return;
               else {

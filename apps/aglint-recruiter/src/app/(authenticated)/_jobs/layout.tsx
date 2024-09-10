@@ -1,9 +1,9 @@
 import { type PropsWithChildren } from 'react';
 
-import { IntegrationProvider } from '@/jobs/contexts/integrations';
+import { IntegrationStoreProvider } from '@/jobs/contexts';
 
 const Layout = ({ children }: PropsWithChildren) => {
-  return <IntegrationProvider>{children}</IntegrationProvider>;
+  return <IntegrationStoreProvider>{children}</IntegrationStoreProvider>;
 };
 
 export default Layout;

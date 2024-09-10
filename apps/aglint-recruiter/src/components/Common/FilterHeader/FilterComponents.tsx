@@ -1,26 +1,25 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
+import { Skeleton } from '@components/ui/skeleton';
 import { AddFilter } from '@devlink2/AddFilter';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-
 import { FilterItem } from '@devlink3/FilterItem';
 import { MultiFilterLayout } from '@devlink3/MultiFilterLayout';
 import { List, ListItemButton, Popover, Stack } from '@mui/material';
 import { ChevronDown, ChevronUp, User } from 'lucide-react';
-import React, { type ReactNode, memo } from 'react';
+import React, { memo, type ReactNode } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import UITextField from '../UITextField';
 import ToggleBtn from '../UIToggle';
 import {
-  type nestedType,
   nestedOptionMapper,
+  type nestedType,
   setValueInNestedObject,
 } from './utils';
-import { Skeleton } from '@components/ui/skeleton';
 
 /* eslint-disable no-unused-vars */
 

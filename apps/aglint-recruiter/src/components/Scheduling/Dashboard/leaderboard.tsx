@@ -1,8 +1,10 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { LeaderBoard } from '@devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
 import {
@@ -13,8 +15,6 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';
-import { Skeleton } from '@components/ui/skeleton';
-import { Loader2 } from 'lucide-react';
 
 const LIMIT = 5;
 

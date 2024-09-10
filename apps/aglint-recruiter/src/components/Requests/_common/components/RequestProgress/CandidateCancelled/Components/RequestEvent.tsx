@@ -1,11 +1,11 @@
 import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
+import { Loader2 } from 'lucide-react';
 
+import { SlackIcon } from '../../../RequestCard/Components/SlackIcon';
 import { workflowCopy } from '../../utils/copy';
 import { type EventProgressItem } from '../types';
 import { getWorkflowText } from '../utils';
-import { SlackIcon } from '../../../RequestCard/Components/SlackIcon';
-import { Loader2 } from 'lucide-react';
 
 function RequestEvent({
   eventType,

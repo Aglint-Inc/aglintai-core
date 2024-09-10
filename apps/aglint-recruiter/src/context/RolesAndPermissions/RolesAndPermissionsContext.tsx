@@ -2,7 +2,7 @@
 'use client';
 
 import { type DatabaseTable } from '@aglint/shared-types';
-import { type ReactNode, createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
@@ -11,8 +11,7 @@ export type RolesAndPermissionsContextType = {
   checkPermissions?: (x: DatabaseTable['permissions']['name'][]) => boolean;
   devlinkProps?: (
     x: DatabaseTable['permissions']['name'][],
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  ) => { onClick: null; style: { display: 'none' } } | {};
+  ) => { onClick: null; style: { display: 'none' } } | object;
   ifAllowed: <T extends any | ReactNode>(
     func: T,
     permission: DatabaseTable['permissions']['name'][],
@@ -60,6 +59,7 @@ export const RolesAndPermissionsProvider = ({
       return func;
     }
     if (typeof func === 'function') {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       return (() => {}) as unknown as typeof func; // Return an empty function if func is a function
     }
     return (<></>) as typeof func; // Return an empty fragment if func is a React node

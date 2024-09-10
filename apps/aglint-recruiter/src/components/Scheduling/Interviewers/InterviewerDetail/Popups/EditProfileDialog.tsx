@@ -12,7 +12,7 @@ import {
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import { ProfileForms } from '@/components/Profile';
+import { ProfileForms } from '@/components/Profile/ProfileForms';
 import {
   type FormFields,
   type FormValues,
@@ -144,6 +144,7 @@ export const EditProfileDialog = ({
         if (error) return;
         let profile_image = recruiterUser.profile_image;
         setLoading(true);
+
         if (isImageChanged) {
           const { data } = await supabase.storage
             .from('recruiter-user')

@@ -1,4 +1,5 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
+import { Checkbox } from '@components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
@@ -6,7 +7,7 @@ import { Text } from '@devlink/Text';
 import { DateOption } from '@devlink3/DateOption';
 import { EmptySlotReason } from '@devlink3/EmptySlotReason';
 import { ScheduleOption } from '@devlink3/ScheduleOption';
-import { Checkbox, Collapse, Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
@@ -151,10 +152,11 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
-            indeterminate={
+            checked={
               noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
+                ? 'indeterminate'
+                : isSelected
             }
-            checked={isSelected}
             onClick={() => {
               setSelectedCombIds(
                 isSelected

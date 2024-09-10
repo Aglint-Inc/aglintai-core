@@ -1,4 +1,4 @@
-import { Switch } from '@components/ui/switch';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -7,22 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { ScrollArea } from '@components/ui/scroll-area';
-
-import { allPermissions } from '@/constant/role_and_permissions';
-import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useSearchQuery } from '@/hooks/useSearchQuery';
-import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
-import { useAllMembers } from '@/queries/members';
-import { type useRoleAndPermissionsHook } from '@/queries/RolesSettings';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
-import RoleEditMember from './RoleEditMember';
-import { RoleUserWidget } from './RoleUserWidget';
 import { Button } from '@components/ui/button';
-import { CirclePlus, Info } from 'lucide-react';
-import { Alert, AlertDescription } from '@components/ui/alert';
-
 import {
   Card,
   CardContent,
@@ -36,7 +21,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { Switch } from '@components/ui/switch';
+import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+import { allPermissions } from '@/constant/role_and_permissions';
+import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useSearchQuery } from '@/hooks/useSearchQuery';
+import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
+import { useAllMembers } from '@/queries/members';
+import { type useRoleAndPermissionsHook } from '@/queries/RolesSettings';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
+import RoleEditMember from './RoleEditMember';
+import { RoleUserWidget } from './RoleUserWidget';
 
 function RoleDetails({
   role,

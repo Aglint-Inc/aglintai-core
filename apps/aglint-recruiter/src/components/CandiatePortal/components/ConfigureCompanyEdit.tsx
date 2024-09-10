@@ -44,63 +44,62 @@ export default function ConfigureCompanyEdit() {
       </div>
 
       <Dialog
-  open={isDialogOpen === 'about'}
-  onOpenChange={(open) => setIsDialogOpen(open ? 'about' : null)}  
->
-  <DialogTrigger asChild>
-    <Button
-      variant='outline'
-      className='mt-4'
-      onClick={() => setIsDialogOpen('about')}
-    >
-      {data?.about?.length ? 'Edit Company About' : 'Add Company About'}
-    </Button>
-  </DialogTrigger>
-  <DialogContent className='sm:max-w-[500px]'>
-    <DialogHeader>
-      <DialogTitle>Edit Company About</DialogTitle>
-      <DialogDescription>
-        Edit the about section of your company.
-      </DialogDescription>
-    </DialogHeader>
-    <div className='border border-muted-foreground rounded-md bg-background'>
-      <TipTapAIEditor
-        enablAI={false}
-        placeholder={''}
-        minHeight='360px'
-        height='330px'
-        padding={'10px'}
-        editor_type='email'
-        isSize
-        handleChange={handleTextChange}
-        initialValue={data?.about}
-      />
-    </div>
-    <DialogFooter className='w-full flex flex-row gap-2 justify-between'>
-      <Button
-        variant='secondary'
-        className='w-full'
-        onClick={() => {
-          setText(data?.about || '');
-          setIsDialogOpen(null);  // Updated to close the dialog
-        }}
+        open={isDialogOpen === 'about'}
+        onOpenChange={(open) => setIsDialogOpen(open ? 'about' : null)}
       >
-        Cancel
-      </Button>
-      <Button
-        type='submit'
-        className='w-full'
-        onClick={() => {
-          updateAbout(text);
-          // setIsDialogOpen(null);  // Close the dialog after saving
-        }}
-      >
-        Save changes
-      </Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
-
+        <DialogTrigger asChild>
+          <Button
+            variant='outline'
+            className='mt-4'
+            onClick={() => setIsDialogOpen('about')}
+          >
+            {data?.about?.length ? 'Edit Company About' : 'Add Company About'}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className='sm:max-w-[500px]'>
+          <DialogHeader>
+            <DialogTitle>Edit Company About</DialogTitle>
+            <DialogDescription>
+              Edit the about section of your company.
+            </DialogDescription>
+          </DialogHeader>
+          <div className='border border-muted-foreground rounded-md bg-background'>
+            <TipTapAIEditor
+              enablAI={false}
+              placeholder={''}
+              minHeight='360px'
+              height='330px'
+              padding={'10px'}
+              editor_type='email'
+              isSize
+              handleChange={handleTextChange}
+              initialValue={data?.about}
+            />
+          </div>
+          <DialogFooter className='w-full flex flex-row gap-2 justify-between'>
+            <Button
+              variant='secondary'
+              className='w-full'
+              onClick={() => {
+                setText(data?.about || '');
+                setIsDialogOpen(null); // Updated to close the dialog
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type='submit'
+              className='w-full'
+              onClick={() => {
+                updateAbout(text);
+                // setIsDialogOpen(null);  // Close the dialog after saving
+              }}
+            >
+              Save changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

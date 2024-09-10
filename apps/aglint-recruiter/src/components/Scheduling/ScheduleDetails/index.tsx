@@ -1,7 +1,7 @@
 // import Feedback from './Feedback';
+import { Skeleton } from '@components/ui/skeleton';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { PageLayout } from '@devlink2/PageLayout';
-
 import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -19,7 +19,6 @@ import ButtonGroup from './ButtonGroup';
 import DetailsOverview from './DetailsOverview';
 import { useScheduleDetails } from './hooks';
 import Requests from './Requests';
-import { Skeleton } from '@components/ui/skeleton';
 
 function SchedulingViewComp() {
   const router = useRouter();
@@ -32,7 +31,6 @@ function SchedulingViewComp() {
   const job = schedule?.job;
 
   const viewScheduleTabs = [
-    { name: 'Candidate Details', tab: 'candidate_details', hide: false },
     { name: 'Job Details', tab: 'job_details', hide: false },
     { name: 'Instructions', tab: 'instructions', hide: false },
     {

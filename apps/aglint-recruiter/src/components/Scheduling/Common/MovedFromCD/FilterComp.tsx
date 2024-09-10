@@ -1,16 +1,16 @@
+import { Button } from '@components/ui/button';
+import { Popover } from '@components/ui/popover';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Filter } from '@devlink/Filter';
 import { FilterButton } from '@devlink/FilterButton';
+import { X } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import UISelect from '../../../Common/UISelectDropDown';
 import UITextField from '../../../Common/UITextField';
-import { Button } from '@components/ui/button';
-import { Popover } from '@components/ui/popover';
-import { X } from 'lucide-react';
 
 type FilterType = {
   id: string;
