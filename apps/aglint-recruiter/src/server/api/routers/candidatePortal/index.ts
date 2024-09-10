@@ -69,22 +69,15 @@ export const candidatePortalRouter = createTRPCRouter({
     .input(candidatePortalSchema)
     .query(async ({ ctx, input }) => {
       const { application_id } = input;
-      const company = (
-        await ctx.adminDb
-          .from('applications')
-          .select('candidates(recruiter(name,logo))')
-          .eq('id', application_id)
-          .single()
-          .throwOnError()
-      ).data;
 
       const messages = (
         await ctx.adminDb
           .from('candidate_portal_message')
           .select(
-            'id,message,created_at,message,title,availability_id,filter_id,interview_filter_json(id,viewed_on,confirmed_on),candidate_request_availability(id,slots,visited)',
+            'id,message,created_at,title,availability_id,filter_id,applications(recruiter(name,logo)),interview_filter_json(id,viewed_on,confirmed_on),candidate_request_availability(id,slots,visited)',
           )
           .eq('application_id', application_id)
+          .order('created_at', { ascending: false })
           .throwOnError()
       ).data;
 
@@ -92,13 +85,16 @@ export const candidatePortalRouter = createTRPCRouter({
         const {
           candidate_request_availability,
           interview_filter_json,
+          applications,
           ...rest
         } = message;
 
+        const company = applications.recruiter;
+
         const messageWithCompany = {
           ...rest,
-          company_name: company.candidates.recruiter.name,
-          company_logo: company.candidates.recruiter.logo,
+          company_name: company.name,
+          company_logo: company.logo,
         };
         if (message.availability_id)
           return {

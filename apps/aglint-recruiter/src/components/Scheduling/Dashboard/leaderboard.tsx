@@ -14,6 +14,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';
 import { Skeleton } from '@components/ui/skeleton';
+import { Loader2 } from 'lucide-react';
 
 const LIMIT = 5;
 
@@ -52,7 +53,12 @@ const Container = memo(() => {
 
   if (status === 'error') return <>Error</>;
 
-  if (status === 'pending') return <Loader />;
+  if (status === 'pending')
+    return (
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
+    );
 
   if (data.length === 0)
     return (

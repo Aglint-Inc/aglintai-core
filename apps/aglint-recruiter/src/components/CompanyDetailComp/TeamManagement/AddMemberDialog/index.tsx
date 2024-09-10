@@ -14,7 +14,6 @@ import { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import UITextField from '@/components/Common/UITextField';
-import DynamicLoader from '@/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllMembers } from '@/queries/members';
@@ -26,6 +25,7 @@ import { useRolesOptions } from '../hooks';
 
 import { inviteUserApi, reinviteUser } from '../utils';
 import { Button } from '@components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 const AddMember = ({
   open,
@@ -625,7 +625,11 @@ const AddMember = ({
                 },
               }}
             />
-            {isDisable && <DynamicLoader />}
+            {isDisable && (
+              <div className="flex justify-center items-center">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
+            )}
           </>
         ) : menu === 'pendingMember' ? (
           <TeamPendingInvites

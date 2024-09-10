@@ -1,7 +1,6 @@
 import { LeaderBoard } from '@devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
-import { NoData } from '@devlink3/NoData';
 import { Avatar, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -13,6 +12,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import SchedulingDropdown from './SchedulingDropdown';
 import { Skeleton } from '@components/ui/skeleton';
+import { BarChart2 } from 'lucide-react';
 
 const LeaderBoardWidget = () => {
   const [type, setType] = useState<LeaderBoardWidgetRowsProps['type']>('month');
@@ -40,7 +40,14 @@ const LeaderBoardWidgetRows = ({ type }: LeaderBoardWidgetRowsProps) => {
     ));
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <NoData />;
+    return (
+      <div className='h-[296px]'>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <BarChart2 className='w-12 h-12 text-gray-400' />
+          <p className='mt-2 text-sm text-gray-500'>No data available</p>
+        </div>
+      </div>
+    );
 
   return <LeaderBoardWidgetComponent interviewLeaderboard={data} />;
 };

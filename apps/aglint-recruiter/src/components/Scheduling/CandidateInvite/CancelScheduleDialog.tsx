@@ -1,11 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Label } from '@components/ui/label';
-import { RadioGroupItem } from '@components/ui/radio-group';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { RequestReschedule } from '@devlink2/RequestReschedule';
-import { Dialog, RadioGroup, Stack, TextField } from '@mui/material';
+import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useState } from 'react';
@@ -162,12 +162,6 @@ const CancelRescheduleDialog = ({
           <RadioGroup
             name='radio-buttons-group'
             value={formData.reason}
-            onChange={(e) => {
-              setFormData((pre) => ({
-                ...pre,
-                reason: e.target.value,
-              }));
-            }}
             className='space-y-1'
           >
             {options.map((item) => (

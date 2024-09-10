@@ -4,12 +4,9 @@ import type {
   DatabaseTable,
 } from '@aglint/shared-types';
 import OptimisticWrapper from '@components/loadingWapper';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { WorkflowAddAction } from '@devlink3/WorkflowAddAction';
-import { WorkflowButton } from '@devlink3/WorkflowButton';
 import { WorkflowConnector } from '@devlink3/WorkflowConnector';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
-import { Stack } from '@mui/material';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -22,6 +19,8 @@ import { type WorkflowAction } from '@/types/workflow.types';
 import { getWorkflowTagIcon } from '../../constants';
 import { useActions } from './context';
 import { Terminal } from 'lucide-react';
+import { Button } from '@components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 
 const Actions = () => {
   const {
@@ -56,12 +55,17 @@ const ActionRecommendations = memo(() => {
   if (!(canCreateAction && manageWorkflow)) return <></>;
   const options = globalOptions.map((option) => {
     return (
-      <WorkflowButton
+      <Button
         key={option.value.target_api}
-        textButton={option.name}
-        slotIcon={getWorkflowTagIcon(option.value.action_type)}
-        onClickButton={{ onClick: () => createAction(option), ...devlinkProps }}
-      />
+        variant='outline'
+        size='sm'
+        className='flex items-center'
+        onClick={() => createAction(option)}
+        {...devlinkProps}
+      >
+        {getWorkflowTagIcon(option.value.action_type)}
+        <span className='ml-2'>{option.name}</span>
+      </Button>
     );
   });
   return (
@@ -166,10 +170,10 @@ const EmailTemplate = ({ action: { payload, action_type } }: ActionProps) => {
   const email_body = <EmailBody name='body' value={payload} />;
 
   const forms = (
-    <Stack spacing={'var(--space-5)'}>
+    <div className='space-y-5'>
       {email_subject}
       {email_body}
-    </Stack>
+    </div>
   );
   return forms;
 };
@@ -190,16 +194,9 @@ type FormsType = {
 const EmailSubject: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
     return (
-      <Stack>
+      <div>
         <UITypography type='small'>Email Subject</UITypography>
-        <Stack
-          sx={{
-            mt: '8px',
-            border: '1px solid',
-            borderColor: 'var(--neutral-6)',
-            borderRadius: 'var(--radius-2)',
-          }}
-        >
+        <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
           <TipTapAIEditor
             singleLine={true}
             padding={1}
@@ -210,8 +207,8 @@ const EmailSubject: React.FC<FormsType> = memo(
             handleChange={null}
             placeholder=''
           />
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     );
   },
 );
@@ -220,16 +217,9 @@ EmailSubject.displayName = 'EmailSubject';
 const EmailBody: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
     return (
-      <Stack>
+      <div>
         <UITypography type='small'>Email Body</UITypography>
-        <Stack
-          sx={{
-            mt: '8px',
-            border: '1px solid',
-            borderColor: 'var(--neutral-6)',
-            borderRadius: 'var(--radius-2)',
-          }}
-        >
+        <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
           <TipTapAIEditor
             toolbar={false}
             disabled={disabled}
@@ -238,8 +228,8 @@ const EmailBody: React.FC<FormsType> = memo(
             handleChange={null}
             placeholder=''
           />
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     );
   },
 );
@@ -249,10 +239,11 @@ const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
   if (action_type !== 'slack') return <></>;
 
   return (
-    <GlobalBannerInline
-      textContent={'A slack notification will be sent for this action.'}
-      slotButton={<></>}
-    />
+    <Alert>
+      <AlertDescription>
+        A slack notification will be sent for this action.
+      </AlertDescription>
+    </Alert>
   );
 };
 
@@ -260,10 +251,12 @@ const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
   if (action_type !== 'end_point') return <></>;
 
   return (
-    <GlobalBannerInline
-      textContent={'Aglint system will handle this action'}
-      slotButton={<></>}
-    />
+    <Alert variant="default">
+      <AlertTitle>System Action</AlertTitle>
+      <AlertDescription>
+        Aglint system will handle this action
+      </AlertDescription>
+    </Alert>
   );
 };
 
@@ -272,7 +265,7 @@ const AgentInstructionTemplate = ({ action }: ActionProps) => {
 
   const email_body = <AgentInstructionBody {...action} />;
 
-  const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
+  const forms = <div className='space-y-5'>{email_body}</div>;
   return forms;
 };
 
@@ -306,26 +299,19 @@ const AgentInstructionBody: React.FC<
   }, [instruction]);
   if (action_type !== 'agent_instruction') return <></>;
   return (
-    <Stack>
+    <div>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
-      <Stack
-        sx={{
-          mt: '8px',
-          border: '1px solid',
-          borderColor: 'var(--neutral-6)',
-          borderRadius: 'var(--radius-2)',
-        }}
-      >
+      <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
         <TipTapAIEditor
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          initialValue={payload.agent.instruction}
+          initialValue={payload.agent?.instruction}
           handleChange={(newInstruction) => setInstruction(newInstruction)}
           placeholder='Provide the instructions to guide the agent through this action.'
         />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 });
 AgentInstructionBody.displayName = 'AgentInstructionBody';

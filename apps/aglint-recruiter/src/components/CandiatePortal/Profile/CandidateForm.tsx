@@ -18,7 +18,7 @@ import {
   useCandidatePortal,
   useCandidatePortalNavbar,
   useCandidatePortalProfile,
-} from '@/app/(public)/candidate/(authenticated)/[application_id]/_common/hooks';
+} from '@/candidate/authenticated/hooks';
 import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
 

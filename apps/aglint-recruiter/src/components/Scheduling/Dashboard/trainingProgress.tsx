@@ -16,6 +16,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { Empty } from './common';
 import { Skeleton } from '@components/ui/skeleton';
+import { Loader2 } from 'lucide-react';
 
 const LIMIT = 4;
 
@@ -45,7 +46,12 @@ const Containter = () => {
     training_progress: { data, status },
   } = useSchedulingAnalytics();
 
-  if (status === 'pending') return <Loader />;
+  if (status === 'pending')
+    return (
+      <div className='flex items-center justify-center h-[350px]'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      </div>
+    );
 
   if (status === 'error') return <>Error</>;
 
@@ -63,14 +69,9 @@ const List = memo(({ data }: Props) => {
   return (
     <>
       {(data ?? []).map((data) => (
-        <Stack
+        <div
           key={data.user_id}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
+          className='cursor-pointer hover:bg-[var(--neutral-3)]'
         >
           <TrainingProgressList
             slotHistoryPill={<Pills {...data} />}
@@ -85,7 +86,7 @@ const List = memo(({ data }: Props) => {
             textName={capitalizeAll(data.name)}
             textRole={data.position}
           />
-        </Stack>
+        </div>
       ))}
     </>
   );

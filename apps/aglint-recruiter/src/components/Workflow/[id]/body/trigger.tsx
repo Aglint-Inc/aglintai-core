@@ -1,4 +1,3 @@
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
 
 import UISelect from '@/components/Common/UISelectDropDown';
@@ -11,6 +10,7 @@ import {
   TRIGGER_PAYLOAD,
 } from '../../constants';
 import { Zap } from 'lucide-react';
+import { Alert, AlertDescription } from '@components/ui/alert';
 
 const Trigger = () => {
   return (
@@ -92,10 +92,17 @@ const TriggerInfo = () => {
   } = useWorkflow();
   const option = DURATION_OPTIONS.find(({ value }) => value === interval);
   return (
-    <GlobalBannerInline
-      slotButton={<></>}
-      textContent={`Any subsequent actions will be triggered ${phase ? (option.value === 0 ? 'with no delay' : (option.name ?? '' + ' ')) : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`}
-    />
+    <Alert variant='default'>
+      <AlertDescription>
+        Any subsequent actions will be triggered{' '}
+        {phase
+          ? option.value === 0
+            ? 'with no delay'
+            : (option.name ?? '' + ' ')
+          : ''}{' '}
+        {getTriggerOption(trigger, phase).toLowerCase()}.
+      </AlertDescription>
+    </Alert>
   );
 };
 

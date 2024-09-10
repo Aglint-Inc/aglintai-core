@@ -1,16 +1,22 @@
-import { DcPopup } from '@devlink/DcPopup';
-import { RolesPopover } from '@devlink/RolesPopover';
-import { UserNameRoleCard } from '@devlink/UserNameRoleCard';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { Avatar, Dialog, Stack } from '@mui/material';
-import { ChevronDown, Loader2 } from 'lucide-react';
+import { AlertCircle, ChevronDown, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
-import SearchField from '@/components/Common/SearchField/SearchField';
 import { updateMember } from '@/context/AuthContext/utils';
 import { useAllMembers } from '@/queries/members';
 import { useRoleAndPermissionsHook } from '@/queries/RolesSettings';
 import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from '@components/ui/dialog';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Card } from '@components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Input } from '@components/ui/input';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 function RoleEditMember({
   role,
@@ -42,144 +48,128 @@ function RoleEditMember({
     );
 
   return (
-    <Dialog
-      open={true}
-      onClose={() => {
-        // resetState();
-        close();
-      }}
-    >
-      <DcPopup
-        popupName='Update Role'
-        onClickClosePopup={{ onClick: close }}
-        slotButtons={
-          <>
-            <Button variant='outline' onClick={close}>
-              Cancel
-            </Button>
-            <Button
-              onClick={async () => {
-                setIsLoading(true);
-                await updateMember({
-                  data: {
-                    user_id: selectedMember.user_id,
-                    role_id: role.id,
-                  },
-                });
-                refetch();
-                setIsLoading(false);
-                close();
-              }}
-              disabled={!selectedMember}
-            >
-              {isLoading ? (
-                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-              ) : null}
-              Update
-            </Button>
-          </>
-        }
-        slotBody={
-          <RolesPopover
-            slotSearch={
-              <SearchField
-                key={'search-role'}
-                value={search}
-                isFullWidth
+    <Dialog open={true} onOpenChange={close}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>
+          <DialogTitle>Update Role</DialogTitle>
+        </DialogHeader>
+        <div className='space-y-4'>
+          {selectedMember ? (
+            <>
+              <Alert variant='destructive'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>Warning</AlertTitle>
+                <AlertDescription>
+                  You are about to update{' '}
+                  {`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                  &apos;s role.
+                </AlertDescription>
+              </Alert>
+              <div className='space-y-2'>
+                <Card className='flex items-center p-4'>
+                  <Avatar className='h-12 w-12 mr-4'>
+                    <AvatarImage
+                      src={selectedMember.profile_image}
+                      alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                    />
+                    <AvatarFallback>
+                      {`${selectedMember.first_name?.[0] || ''}${selectedMember.last_name?.[0] || ''}`.toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className='font-medium'>
+                      {`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                    </h3>
+                    <p className='text-sm text-muted-foreground'>
+                      {selectedMember.role}
+                    </p>
+                  </div>
+                </Card>
+                <ChevronDown className='mx-auto h-4 w-4' />
+                <Card className='flex items-center p-4 border border-dashed'>
+                  <Avatar className='h-12 w-12 mr-4'>
+                    <AvatarImage
+                      src={selectedMember.profile_image}
+                      alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                    />
+                    <AvatarFallback>
+                      {`${selectedMember.first_name?.[0] || ''}${selectedMember.last_name?.[0] || ''}`.toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className='font-medium'>
+                      {`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                    </h3>
+                    <p className='text-sm text-muted-foreground'>{role.role}</p>
+                  </div>
+                </Card>
+              </div>
+            </>
+          ) : (
+            <>
+              <Input
+                type='search'
                 placeholder='Search users to Add'
-                onClear={() => {
-                  setSearch(null);
-                }}
-                onChange={({ target }) => {
-                  setSearch(target.value);
-                }}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className='w-full'
               />
-            }
-            isHeaderVisible={!selectedMember}
-            slotCard={
-              <>
-                {selectedMember ? (
-                  <>
-                    <GlobalBannerInline
-                      color={'error'}
-                      textContent={`You are about to update ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}'s role.`}
-                      iconName={'warning'}
-                      slotButton={<></>}
-                    />
-                    {/* <GlobalBanner
-                      color={'error'}
-                      textTitle={
-                        'You are about to change a role of the selected user'
-                      }
-                      textDescription={`You are attempting to change ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()} current role "${capitalize(selectedMember?.role || '')}" to new role "${capitalize(role.role || '')}".`}
-                      iconName={'warning'}
-                      slotButtons={<></>}
-                    /> */}
-                    <UserNameRoleCard
-                      textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
-                      textRole={selectedMember.role}
-                      slotImage={
-                        <Avatar
-                          key={selectedMember.user_id}
-                          src={selectedMember.profile_image}
-                          variant='rounded'
-                          alt={selectedMember.first_name}
-                          sx={{ height: '100%', width: '100%' }}
-                        />
-                      }
-                    />
-                    <Stack
-                      alignItems={'center'}
-                      width={'100%'}
-                      sx={{ transform: 'rotate(180deg)' }}
-                    >
-                      <ChevronDown size={12} />
-                    </Stack>
-                    <UserNameRoleCard
-                      textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
-                      textRole={role.role}
-                      borderStyle={'dash'}
-                      slotImage={
-                        <Avatar
-                          key={selectedMember.user_id}
-                          src={selectedMember.profile_image}
-                          variant='rounded'
-                          alt={selectedMember.first_name}
-                          sx={{ height: '100%', width: '100%' }}
-                        />
-                      }
-                    />
-                  </>
-                ) : (
-                  filteredMember.map((member) => {
-                    return (
-                      <UserNameRoleCard
-                        key={member.user_id}
-                        textName={`${member.first_name || ''} ${member.last_name || ''}`.trim()}
-                        textRole={member.role}
-                        slotImage={
-                          <Avatar
-                            key={member.user_id}
-                            src={member.profile_image}
-                            variant='rounded'
-                            alt={member.first_name}
-                            sx={{ height: '100%', width: '100%' }}
-                          />
-                        }
-                        onClickCard={{
-                          onClick: () => {
-                            setSelectedMember(member);
-                          },
-                        }}
+              <ScrollArea className='h-[200px]'>
+                {filteredMember.map((member) => (
+                  <Card
+                    key={member.user_id}
+                    className='cursor-pointer hover:bg-accent p-4 flex items-center'
+                    onClick={() => setSelectedMember(member)}
+                  >
+                    <Avatar className='h-10 w-10 mr-4'>
+                      <AvatarImage
+                        src={member.profile_image}
+                        alt={`${member.first_name || ''} ${member.last_name || ''}`.trim()}
                       />
-                    );
-                  })
-                )}
-              </>
-            }
-          />
-        }
-      />
+                      <AvatarFallback>
+                        {`${member.first_name?.[0] || ''}${member.last_name?.[0] || ''}`.toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className='font-medium'>
+                        {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
+                      </h3>
+                      <p className='text-sm text-muted-foreground'>
+                        {member.role}
+                      </p>
+                    </div>
+                  </Card>
+                ))}
+              </ScrollArea>
+            </>
+          )}
+        </div>
+        <DialogFooter>
+          <Button variant='outline' onClick={close}>
+            Cancel
+          </Button>
+          <Button
+            onClick={async () => {
+              setIsLoading(true);
+              await updateMember({
+                data: {
+                  user_id: selectedMember.user_id,
+                  role_id: role.id,
+                },
+              });
+              refetch();
+              setIsLoading(false);
+              close();
+            }}
+            disabled={!selectedMember || isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : null}
+            Update
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 }

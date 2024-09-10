@@ -1,6 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -10,6 +8,7 @@ import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import { Button } from '@components/ui/button';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
@@ -97,18 +96,15 @@ const AvailabilityFlowMenus = ({
           )
         }
       >
-        <Stack direction={'row'}>
-          <ButtonSoft
-            size={1}
-            textButton={'Schedule Reminder'}
-            onClickButton={{
-              onClick: () => {
-                setEditTrigger('sendAvailReqReminder');
-                setShowEditDialog(true);
-              },
-            }}
-          />
-        </Stack>
+        <Button
+          size={'sm'}
+          onClick={() => {
+            setEditTrigger('sendAvailReqReminder');
+            setShowEditDialog(true);
+          }}
+        >
+          Schedule Reminder
+        </Button>
       </ShowCode.When>
       <ShowCode.When
         isTrue={Boolean(

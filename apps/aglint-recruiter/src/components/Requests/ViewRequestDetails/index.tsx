@@ -17,6 +17,8 @@ import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
+import ScheduleIndividualCard from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -25,8 +27,6 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
-import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
-import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 
 import { Label } from '@components/ui/label';
 import { Mail, MapPin, Smartphone } from 'lucide-react';
@@ -42,10 +42,10 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
+import { getStatusColor } from '../_common/utils/getStatusColor';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../_common/Components/RequestProgress';
-import { getStatusColor } from '../_common/utils/getStatusColor';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -319,13 +319,12 @@ function ViewRequestDetails() {
                         onClickButton={{
                           onClick: () => {
                             window.open(
-                              ROUTES['/jobs/[id]/application/[application_id]'](
-                                {
-                                  id: jobDetails.id,
-                                  application_id:
-                                    selectedRequest.application_id,
-                                },
-                              ) + '?tab=interview',
+                              ROUTES[
+                                '/jobs/[job]/application/[application_id]'
+                              ]({
+                                job: jobDetails.id,
+                                application_id: selectedRequest.application_id,
+                              }) + '?tab=interview',
                               '_blank',
                             );
                           },

@@ -7,7 +7,7 @@ import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@devlink3/RoundedNumber';
 import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
-import { Calendar, Circle, Clock, Star, User, Users } from 'lucide-react';
+import { Calendar, Circle, Clock, Loader2, Star, User, Users } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
@@ -21,7 +21,6 @@ import { type API_request_feedback } from '@/pages/api/request_feedback/type';
 import { getFullName } from '@/utils/jsonResume';
 import toast from '@/utils/toast';
 
-import DynamicLoader from '../../Interviewers/DynamicLoader';
 import {
   re_mapper,
   saveInterviewerFeedback,
@@ -182,7 +181,9 @@ const FeedbackWindow = ({
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <Stack position={'relative'} height={'calc(100vh - 172px)'}>
-            <DynamicLoader />
+            <div className="flex items-center justify-center">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
           </Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={checkPermissions(['scheduling_actions'])}>
@@ -445,9 +446,7 @@ const InterviewerFeedback = ({
                             ).format('hh:mm')}`}</span>
                           </div>
 
-                          <Badge
-                            className='flex items-center space-x-1'
-                          >
+                          <Badge className='flex items-center space-x-1'>
                             <Circle size={12} />
                             <span>{session[0].session.status}</span>
                           </Badge>

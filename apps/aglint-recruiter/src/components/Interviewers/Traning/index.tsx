@@ -5,8 +5,8 @@ import { InterviewerTrainingList } from '@devlink3/InterviewerTrainingList';
 import { Avatar, Stack } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
-import { useJobs } from '@/context/JobsContext';
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
+import { useJobs } from '@/jobs/hooks';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 

@@ -1,19 +1,10 @@
-import Seo from '@/components/Common/Seo';
-import DashboardComp from '@/components/Jobs/Dashboard';
-import IntegrationProvider from '@/context/IntegrationProvider/IntegrationProvider';
+import Layout from 'src/app/(authenticated)/_jobs/layout';
+import Page from 'src/app/(authenticated)/_jobs/page';
 
-const Dashboard = () => {
-  return (
-    <>
-      <Seo
-        title={`Job Listings - Job | Aglint AI`}
-        description='AI for People Products'
-      />
-      <IntegrationProvider>
-        <DashboardComp />
-      </IntegrationProvider>
-    </>
-  );
+const Jobs = () => {
+  return <Page />;
 };
 
-export default Dashboard;
+Jobs.privateProvider = (page) => <Layout>{page}</Layout>;
+
+export default Jobs;

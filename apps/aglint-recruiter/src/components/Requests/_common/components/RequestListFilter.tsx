@@ -187,7 +187,7 @@ function RequestListFilter() {
 
   return (
     <FilterHeader
-      layoutMode='left-align'
+      layoutMode='right-align'
       filters={[
         ...safeFilters,
         // assigneeFilter,

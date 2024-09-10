@@ -7,7 +7,7 @@ import {
 import { PanelMemberPill } from '@devlink2/PanelMemberPill';
 import { Stack, Typography } from '@mui/material';
 import { AlertCircle, Check } from 'lucide-react';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getFullName } from '@/utils/jsonResume';

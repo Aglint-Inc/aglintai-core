@@ -5,7 +5,7 @@ import { SessionDetails } from '@devlink3/SessionDetails';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
 import ConflictWithHover from './ConflictWithHover';

@@ -3,7 +3,7 @@ import { TeamEmpty } from '@devlink3/TeamEmpty';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState, useTransition } from 'react';
 
-import { type GreenHouseUserSyncAPI } from '@/app/api/sync/greenhouse/user/type';
+import { type GreenHouseUserSyncAPI } from '@/api/sync/greenhouse/user/type';
 import axios from '@/client/axios';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';

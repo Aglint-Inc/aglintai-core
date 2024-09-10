@@ -2,7 +2,6 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@devlink2/InterviewConfirmedCard';
@@ -14,9 +13,9 @@ import CompanyLogo from '@/components/Common/CompanyLogo';
 import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
-import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -24,6 +23,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import CancelRescheduleDialog from '../CancelScheduleDialog';
 import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { createRequest, dayJS, getCalenderEventUrl } from '../utils';
+import { Button } from '@components/ui/button';
 
 export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &
@@ -243,28 +243,25 @@ export const ConfirmedInvitePage = (
               <Stack direction={'row'} gap={2}>
                 {(!cancelReschedulingDetails ||
                   cancelReschedulingDetails.all == false) && (
-                  <Stack direction={'row'} gap={'var(--space-2)'}>
-                    <ButtonSoft
-                      textButton={'Reschedule'}
-                      size={2}
+                  <div>
+                    <Button
+                      size={'md'}
                       color={'neutral'}
-                      iconName='event_repeat'
-                      isLeftIcon
-                      onClickButton={{
-                        onClick: () => setCancelReschedule('reschedule'),
-                      }}
-                    />
-                    <ButtonSoft
-                      textButton={'Cancel'}
-                      size={2}
-                      color={'error'}
-                      iconName='event_busy'
-                      isLeftIcon
-                      onClickButton={{
-                        onClick: () => setCancelReschedule('cancel'),
-                      }}
-                    />
-                  </Stack>
+                      onClick={() => setCancelReschedule('reschedule')}
+                      type='submit'
+                      variant='outline'
+                    >
+                      Reschedule
+                    </Button>
+                    <Button
+                      size={'md'}
+                      color={'neutral'}
+                      onClick={() => setCancelReschedule('cancel')}
+                      variant='default'
+                    >
+                      Cancel
+                    </Button>
+                  </div>
                 )}
               </Stack>
             }

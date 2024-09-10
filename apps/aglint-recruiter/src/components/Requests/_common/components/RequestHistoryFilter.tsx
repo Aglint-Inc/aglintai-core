@@ -173,7 +173,7 @@ function RequestHistoryFilter() {
 
   return (
     <FilterHeader
-      layoutMode='left-align'
+      layoutMode='right-align'
       filters={[
         {
           type: 'filter',

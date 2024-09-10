@@ -10,11 +10,6 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
-
-<<<<<<< HEAD
-=======
-import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestCard/RequestDetails/RequestProgress/utils/progressMaps';
->>>>>>> 29d7036c5711e9ba1a63bd406d7115ad181c6c96
 import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
 import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';

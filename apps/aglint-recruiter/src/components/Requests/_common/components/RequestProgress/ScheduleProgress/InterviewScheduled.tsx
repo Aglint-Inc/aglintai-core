@@ -1,11 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { RequestProgress } from '@devlink2/RequestProgress';
 import { ScheduleProgress } from '@devlink2/ScheduleProgress';
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import React from 'react';
 
@@ -28,6 +26,7 @@ import {
   createRequestWorkflowAction,
   deleteRequestWorkflowAction,
 } from '../utils';
+import { Button } from '@components/ui/button';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {
@@ -154,19 +153,14 @@ const InterviewScheduled = () => {
                         !reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']
                       }
                     >
-                      <Stack direction={'row'}>
-                        <ButtonSoft
-                          size={1}
-                          textButton={
-                            rsvpSending ? 'Sending' : 'Send rsvp reminder'
-                          }
-                          onClickButton={{
-                            onClick: () => {
-                              handleSendRsVpReminder();
-                            },
-                          }}
-                        />
-                      </Stack>
+                      <Button
+                        size={'sm'}
+                        onClick={() => {
+                          handleSendRsVpReminder();
+                        }}
+                      >
+                        {rsvpSending ? 'Sending' : 'Send rsvp reminder'}
+                      </Button>
                     </ShowCode.When>
                   </>
                 }

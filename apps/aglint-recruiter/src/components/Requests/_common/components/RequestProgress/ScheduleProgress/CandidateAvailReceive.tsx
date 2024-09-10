@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonGhost } from '@devlink2/ButtonGhost';
 import { RequestProgress } from '@devlink2/RequestProgress';
-import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -40,9 +39,14 @@ const CandidateAvailReceive = () => {
     if (request_progress.data.length === 0) {
       return { availRecivedProgEvents, isScheduled };
     }
-    const filteredProg = request_progress.data.filter((prg) =>
-      groupedTriggerEventMap['availReceived'].includes(prg.event_type),
-    );
+    const filteredProg = request_progress.data
+      .filter((prg) =>
+        groupedTriggerEventMap['availReceived'].includes(prg.event_type),
+      )
+      .sort(
+        (a, b) =>
+          dayjsLocal(a.created_at).unix() - dayjsLocal(b.created_at).unix(),
+      );
     let idx = -1;
     filteredProg.forEach((prg) => {
       if (
@@ -74,7 +78,7 @@ const CandidateAvailReceive = () => {
   }
 
   return (
-    <Stack rowGap={2}>
+    <div className='gap-1'>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
         <WActionMenu />
       </ShowCode.When>
@@ -92,7 +96,7 @@ const CandidateAvailReceive = () => {
       >
         <WActionMenu />
       </ShowCode.When>
-    </Stack>
+    </div>
   );
 };
 
@@ -212,7 +216,7 @@ const RequestEvents = ({
                 lastEvent.event_type === 'CAND_AVAIL_REC'
               }
             >
-              <Stack direction={'row'} gap={1}>
+              <div className='gap-1'>
                 <ButtonSoft
                   size={1}
                   color={'accent'}
@@ -234,7 +238,7 @@ const RequestEvents = ({
                   }}
                   textButton='Re Request Availability'
                 />
-              </Stack>
+              </div>
             </ShowCode.When>
           </>
         }
@@ -253,7 +257,7 @@ const WActionMenu = () => {
         textRequestProgress={`Candidate submits Availability`}
         slotProgress={
           <>
-            <Stack direction={'row'} gap={1} justifyContent={'start'}>
+            <div>
               <ShowCode.When
                 isTrue={Boolean(
                   !reqTriggerActionsMap['onReceivingAvailReq'] ||
@@ -298,7 +302,7 @@ const WActionMenu = () => {
                     );
                   })}
               </ShowCode.When>
-            </Stack>
+            </div>
           </>
         }
       />

@@ -41,10 +41,12 @@ const SelectScheduleFlow = ({ scheduleFlow }: { scheduleFlow: any }) => {
               />
             </ShowCode.When>
             <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-              <AvailabilityFlowMenus
-                isManualSchedule={isManualSchedule}
-                isSelectScheduleFlowComplete={isSelectScheduleFlowComplete}
-              />
+              <div>
+                <AvailabilityFlowMenus
+                  isManualSchedule={isManualSchedule}
+                  isSelectScheduleFlowComplete={isSelectScheduleFlowComplete}
+                />
+              </div>
             </ShowCode.When>
           </>
         }

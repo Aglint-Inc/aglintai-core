@@ -1,9 +1,9 @@
-import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { cloneDeep } from 'lodash';
-import { useEffect, useState } from 'react';
+import { cloneDeep, debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -98,10 +98,7 @@ function SchedulingSettings({ updateSettings }) {
       ...pre,
       type,
     }));
-    // setWeeklyLimit((pre) => ({
-    //   ...pre,
-    //   type,
-    // }));
+    handleDailyValue(dailyLmit.value);
   };
 
   const handleWeeklyType = (type: 'Hours' | 'Interviews') => {
@@ -109,6 +106,7 @@ function SchedulingSettings({ updateSettings }) {
       ...pre,
       type,
     }));
+    handleWeeklyValue(weeklyLmit.value);
   };
 
   ///////////// DayOff Popup //////////////
@@ -163,6 +161,13 @@ function SchedulingSettings({ updateSettings }) {
     }
   }
 
+  const debouncedUpsertRequestNotes = useCallback(
+    debounce(async (settings) => {
+      await updateSettings(settings);
+    }, 500),
+    [],
+  );
+
   useEffect(() => {
     if (workingHours.length) {
       schedulingSettingObj = {
@@ -188,7 +193,7 @@ function SchedulingSettings({ updateSettings }) {
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
-        updateSettings(schedulingSettingObj);
+        debouncedUpsertRequestNotes(schedulingSettingObj);
       }
 
       changeValue = 'updating';
@@ -217,7 +222,7 @@ function SchedulingSettings({ updateSettings }) {
       {dailyLmit.type && weeklyLmit.type && (
         <Card>
           <CardHeader>
-            <CardTitle className='text-md font-semibold'>
+            <CardTitle className='text-lg font-semibold'>
               Interview Load
             </CardTitle>
             <CardDescription>
@@ -246,7 +251,7 @@ function SchedulingSettings({ updateSettings }) {
       )}
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>
+          <CardTitle className='text-lg font-semibold'>
             Debrief Defaults
           </CardTitle>
           <CardDescription>
@@ -263,7 +268,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>Free</CardTitle>
+          <CardTitle className='text-lg font-semibold'>Free</CardTitle>
           <CardDescription>
             When these keywords appear in a calendar event title, overlapping
             interviews will not be considered scheduling conflicts.
@@ -278,7 +283,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>
+          <CardTitle className='text-lg font-semibold'>
             Soft Conflicts
           </CardTitle>
           <CardDescription>
@@ -296,7 +301,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>Out of Office</CardTitle>
+          <CardTitle className='text-lg font-semibold'>Out of Office</CardTitle>
           <CardDescription>
             When any of these specified keywords appear in a calendar event
             title, the day will be considered an Out of Office day, and
@@ -309,7 +314,7 @@ function SchedulingSettings({ updateSettings }) {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className='text-md font-semibold'>
+          <CardTitle className='text-lg font-semibold'>
             Recruiting Blocks
           </CardTitle>
           <CardDescription>
@@ -327,42 +332,7 @@ function SchedulingSettings({ updateSettings }) {
     </div>
   );
 }
-{
-  /* <div className='bg-white w-[400px] min-w-[400px] p-4 border-l border-neutral-6 h-[calc(100vh-48px)] flex flex-col gap-4 overflow-y-auto'>
-          <div className='flex flex-col gap-4'>
-            {isTipVisible && (
-              <div>
-                <GlobalInfo
-                  color={'purple'}
-                  iconName='lightbulb'
-                  textTitle={'Pro Tip'}
-                  textDescription={
-                    'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-                  }
-                  showCloseButton
-                  onClickClose={{
-                    onClick: () => {
-                      handleCloseInfo();
-                    },
-                  }}
-                />
-              </div>
-            )}
-            <HelperDropdown
-              textName='Interview Load Tips'
-              slotBody={<InterviewLoadHelper />}
-            />
-            <HelperDropdown
-              textName='Debrief Tips'
-              slotBody={<DebreifHelperText />}
-            />
-            <HelperDropdown
-              textName='Keyword Tips'
-              slotBody={<KeywordsHelper />}
-            />
-          </div>
-        </div> */
-}
+
 export default SchedulingSettings;
 
 type TZ = (typeof timeZone)[number];
@@ -398,9 +368,7 @@ export const TimezoneSelector = ({
         renderOption={(props, option) => {
           return (
             <li {...props}>
-              <Typography variant='body1' color={'var(--neutral-12)'}>
-                {option.label}
-              </Typography>
+              <p>{option.label}</p>
             </li>
           );
         }}

@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
-import { getFullName } from '@aglint/shared-utils';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AssignedToList } from '@devlink2/AssignedToList';
 import { useMemberList } from '@/components/Requests/ViewRequestDetails/Components/MemberList';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
+import { getFullName } from '@aglint/shared-utils';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import Image from 'next/image';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { AssignedToList } from '@devlink2/AssignedToList';
+import { useEffect, useState } from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from '@components/ui/dialog';
-import { Button } from '@components/ui/button';
 
 function MembersPopUps({
-  setOpenAssigneePopup = () => {},
+  setOpenAssigneePopup,
   openAssigneePopup = false,
   selectedRequest = null,
 }: {
@@ -70,6 +71,7 @@ function MembersPopUps({
         <DialogHeader>
           <DialogTitle>Reassign Request</DialogTitle>
         </DialogHeader>
+
         <div>
           <p>{selectedRequest?.title}</p>
           <Input
@@ -112,13 +114,15 @@ function MembersPopUps({
                     textName={getFullName(member.first_name, member.last_name)}
                     textRole={capitalizeFirstLetter(member.role)}
                     slotImage={
-                      <Image
-                        src={member.profile_image}
-                        alt={`${member.first_name} ${member.last_name}`}
-                        width={32}
-                        height={32}
-                        className='rounded'
-                      />
+                      <Avatar>
+                        <AvatarImage
+                          src={member.profile_image}
+                          alt={`${member.first_name} ${member.last_name}`}
+                        />
+                        <AvatarFallback>
+                          {`${member.first_name[0]}`}
+                        </AvatarFallback>
+                      </Avatar>
                     }
                   />
                 ))}

@@ -1,13 +1,12 @@
 import { CompletedInterviews } from '@devlink3/CompletedInterviews';
-import { NoData } from '@devlink3/NoData';
 import { Stack } from '@mui/material';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
+import type { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCompletedInterviewDetails } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
-import { type getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
+import { BarChart2 } from 'lucide-react';
 
 const CompletedInterviewBarChart = () => {
   const {
@@ -30,7 +29,12 @@ const CompletedInterviewBarChart = () => {
               )}
             />
           ) : (
-            <NoData />
+            <div className='h-[296px]'>
+              <div className='flex flex-col items-center justify-center h-full'>
+                <BarChart2 className='w-12 h-12 text-gray-400' />
+                <p className='mt-2 text-sm text-gray-500'>No data available</p>
+              </div>
+            </div>
           )}
         </Stack>
       }

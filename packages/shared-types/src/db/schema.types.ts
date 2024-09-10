@@ -849,7 +849,6 @@ export type Database = {
           is_readed: boolean | null
           message: string | null
           title: string | null
-          type: string | null
         }
         Insert: {
           application_id?: string | null
@@ -860,7 +859,6 @@ export type Database = {
           is_readed?: boolean | null
           message?: string | null
           title?: string | null
-          type?: string | null
         }
         Update: {
           application_id?: string | null
@@ -871,7 +869,6 @@ export type Database = {
           is_readed?: boolean | null
           message?: string | null
           title?: string | null
-          type?: string | null
         }
         Relationships: [
           {
@@ -1402,6 +1399,7 @@ export type Database = {
           application_id: string
           cal_event_id: string | null
           candidate_feedback: Json | null
+          confirmed_candidate_tz: string | null
           confirmed_date: string | null
           created_at: string
           end_time: string | null
@@ -1422,6 +1420,7 @@ export type Database = {
           application_id: string
           cal_event_id?: string | null
           candidate_feedback?: Json | null
+          confirmed_candidate_tz?: string | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -1442,6 +1441,7 @@ export type Database = {
           application_id?: string
           cal_event_id?: string | null
           candidate_feedback?: Json | null
+          confirmed_candidate_tz?: string | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -5350,6 +5350,7 @@ export type Database = {
           break_duration: number | null
           cal_event_id: string | null
           candidate_feedback: Json | null
+          confirmed_candidate_tz: string | null
           confirmed_date: string | null
           confirmed_module_relation_ids: string[] | null
           confirmed_user_ids: string[] | null
@@ -5365,6 +5366,7 @@ export type Database = {
           organizer_id: string | null
           parent_session_id: string | null
           recruiter_id: string | null
+          schedule_request_id: string | null
           schedule_type:
             | Database["public"]["Enums"]["interview_schedule_type"]
             | null
@@ -6931,6 +6933,8 @@ export type Database = {
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
           name: string
           interview_module_relation_entries: Json
+          interview_plan_id: string
+          session_order: number
         }
         Returns: undefined
       }

@@ -14,10 +14,9 @@ import { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
+import { getOrderedGraphValues } from '@/job/metrics/utils';
 
-import Loader from '../../Common/Loader';
-import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
-import { Empty } from './common';
+import { BarChart2, Loader2 } from 'lucide-react';
 
 export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();
@@ -51,7 +50,9 @@ const Container = memo(() => {
   if (status === 'pending')
     return (
       <Stack height={'300px'}>
-        <Loader />
+        <div className='flex items-center justify-center h-[350px]'>
+          <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+        </div>
       </Stack>
     );
 
@@ -59,9 +60,12 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <Stack>
-        <Empty />
-      </Stack>
+      <div className='h-[296px]'>
+        <div className='flex flex-col items-center justify-center h-full'>
+          <BarChart2 className='w-12 h-12 text-gray-400' />
+          <p className='mt-2 text-sm text-gray-500'>No data available</p>
+        </div>
+      </div>
     );
 
   const safeData = getOrderedGraphValues(data);

@@ -6,23 +6,23 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { ResponsiveBanner } from '@devlink2/ResponsiveBanner';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogOut } from 'lucide-react';
-import Link from 'next/link';
+import defaultProfileImage from '@public/images/default-user-profile.svg';
+import defaultCompanyLogo from '@public/images/default-company-logo.svg';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useResizeWindow } from '@/context/ResizeWindow/ResizeWindow';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import NotFoundPage from '@/pages/404';
-import { isEnvProd } from '@/utils/isEnvProd';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 
 // import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
@@ -30,8 +30,8 @@ export default function AppLayout({ children, appRouter = false }) {
   const { recruiter, recruiterUser } = useAuthDetails();
   const queryClient = useQueryClient();
   const router = useRouterPro();
-  const { windowSize } = useResizeWindow();
   const logo = recruiter?.logo;
+  const name = recruiter?.name;
 
   const { data: userDetails } = useImrQuery({ user_id: recruiterUser.user_id });
 
@@ -40,21 +40,19 @@ export default function AppLayout({ children, appRouter = false }) {
     handleLogout();
   };
 
-  if (isEnvProd() && windowSize?.innerWidth < 1000) {
-    return <ResponsiveBanner />;
-  }
   return (
     <div className='flex h-screen'>
       <nav className='flex flex-col justify-between w-16 border-r bg-white'>
         <div className='flex flex-col items-center py-3 flex-grow'>
-          <Button variant='ghost' asChild className='rounded-full'>
-            <Link href='#'>
-              {/*eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={logo}
-                alt='Company Logo'
-                className='rounded-full mb-5'
-                style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+          <Button variant='ghost' className='mt-4' asChild>
+            <Link href='/'>
+              <Image
+                src={logo || defaultCompanyLogo}
+                alt={name}
+                width={40}
+                height={40}
+                className='rounded-sm mb-5'
+                style={{ objectFit: 'contain' }}
               />
             </Link>
           </Button>
@@ -63,7 +61,7 @@ export default function AppLayout({ children, appRouter = false }) {
         <div className='flex flex-col items-center pb-3 space-y-3'>
           <Tooltip>
             <TooltipTrigger>
-              <Button variant='ghost' className='rounded-full' asChild>
+              <Button variant='ghost' className='rounded-sm' asChild>
                 <Link
                   href={
                     ROUTES['/user/profile/[user_id]']({
@@ -71,14 +69,15 @@ export default function AppLayout({ children, appRouter = false }) {
                     }) + '?profile=true'
                   }
                 >
-                  {/*eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={userDetails?.profile_image}
-                    alt='User Profile'
-                    className='rounded-full w-8 h-8'
+                  <Image
+                    src={userDetails?.profile_image || defaultProfileImage}
+                    alt={name}
+                    width={32}
+                    height={32}
+                    className='rounded-sm'
                     style={{ objectFit: 'cover' }}
                   />
-                  <span className='sr-only'>User profile</span>
+                  <span className='sr-only'>Your profile</span>
                 </Link>
               </Button>
             </TooltipTrigger>
@@ -86,16 +85,6 @@ export default function AppLayout({ children, appRouter = false }) {
               <p>Your profile</p>
             </TooltipContent>
           </Tooltip>
-          {/* <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <ThemeSwitcher />
-              </TooltipTrigger>
-              <TooltipContent align='center' side='right'>
-                <p>Toggle theme</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider> */}
           <Tooltip>
             <TooltipTrigger>
               <Button variant='outline' onClick={handleSignOut}>

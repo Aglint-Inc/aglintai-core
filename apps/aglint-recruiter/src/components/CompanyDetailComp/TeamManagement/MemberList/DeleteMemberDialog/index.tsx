@@ -2,12 +2,12 @@
 /* eslint-disable no-unused-vars */
 import { DeletePopup } from '@devlink3/DeletePopup';
 import { Dialog, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { JobCoordinator } from '@/components/Jobs/Create/form';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { JobCoordinator } from '@/jobs/create/components/form';
 import { useAllMembers } from '@/queries/members';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 

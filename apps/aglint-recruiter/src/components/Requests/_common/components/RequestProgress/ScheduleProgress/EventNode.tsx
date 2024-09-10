@@ -38,7 +38,7 @@ const EventNode = ({
     const headingEvent: DatabaseTable['request_progress'] = eventProg.find(
       (prg) => prg.is_progress_step === false,
     );
-    tense = progressStatusToTense(headingEvent.status);
+    tense = progressStatusToTense(headingEvent?.status);
   }
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,

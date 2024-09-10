@@ -17,7 +17,6 @@ import {
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 
 import { DayOffHelper } from '@devlink3/DayOffHelper';
-import { Typography } from '@mui/material';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -36,6 +35,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Skeleton } from '@components/ui/skeleton';
+import { useCompanyDetailComp } from '../hook';
 
 export const LoadMax = {
   dailyHours: 8,
@@ -48,6 +48,7 @@ type specificLocationType = 'all_locations' | 'specific_locations';
 
 function Holidays() {
   const { recruiter } = useAuthDetails();
+  const { isSaving, updateSettings } = useCompanyDetailComp();
   const eventRef = useRef<HTMLInputElement>(null);
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
@@ -67,13 +68,6 @@ function Holidays() {
   function getDate(e: any) {
     setSelectedDate(dayjs(e).format('DD MMM YYYY'));
     // dateRef.current.value = String(new Date(e.$d));
-  }
-
-  function removeDayOff(value: string) {
-    setDaysOff((pre) => {
-      const filtered = pre.filter((item) => item.date !== value);
-      return [...filtered];
-    });
   }
 
   function initialLoad() {
@@ -97,6 +91,24 @@ function Holidays() {
 
   ///////////// DayOff Popup //////////////
   const [addDayOffOpen, setDaysOffOpen] = useState(false);
+
+  const handleAddDayOff = async (newDayoff: holidayType) => {
+    updateSettings({
+      ...recruiter.scheduling_settings,
+      totalDaysOff: [...daysOff, newDayoff],
+    });
+    setDaysOff([...daysOff, newDayoff]);
+    setDaysOffOpen(false);
+  };
+  const handleDeleteDayOff = async (date: string) => {
+    const afterDeleteDayOff = daysOff.filter((dayoff) => dayoff.date !== date);
+    updateSettings({
+      ...recruiter.scheduling_settings,
+      totalDaysOff: afterDeleteDayOff,
+    });
+    setDaysOff(afterDeleteDayOff);
+    setDaysOffOpen(false);
+  };
 
   return (
     <>
@@ -153,16 +165,14 @@ function Holidays() {
                           </Badge>
                         ))
                       ) : (
-                        <Typography variant='caption' fontSize={'14px'}>
-                          All locations
-                        </Typography>
+                        <p>All locations</p>
                       )}
                     </TableCell>
                     <TableCell>
                       <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => removeDayOff(item.date)}
+                        onClick={() => handleDeleteDayOff(item.date)}
                       >
                         Delete
                       </Button>
@@ -290,24 +300,20 @@ function Holidays() {
                   toast.message('Please select a locations.');
                   return;
                 }
-                setDaysOff(
-                  (pre) =>
-                    [
-                      ...pre,
-                      {
-                        date: selectedDate,
-                        event_name: eventRef.current.value,
-                        locations:
-                          specificLocationOn === 'specific_locations'
-                            ? selectedLocations
-                            : recruiter?.office_locations.map(
-                                (item) =>
-                                  `${item.city}, ${item.region}, ${item.country}`,
-                              ),
-                      },
-                    ] as holidayType[],
-                );
-                setDaysOffOpen(false);
+
+                const newDayoff = {
+                  date: selectedDate,
+                  event_name: eventRef.current.value,
+                  locations:
+                    specificLocationOn === 'specific_locations'
+                      ? selectedLocations
+                      : recruiter?.office_locations.map(
+                          (item) =>
+                            `${item.city}, ${item.region}, ${item.country}`,
+                        ),
+                } as holidayType;
+
+                handleAddDayOff(newDayoff);
                 toast.success(
                   `Holiday added on ${dayjs(selectedDate).format(
                     'DD-MMM-YYYY',
@@ -317,7 +323,7 @@ function Holidays() {
                 );
               }}
             >
-              Add
+              {isSaving === 'saving' ? 'Adding...' : 'Add'}
             </Button>
           </div>
         </DialogContent>

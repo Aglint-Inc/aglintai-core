@@ -1,38 +1,40 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { Skeleton } from '@components/ui/skeleton';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@components/ui/accordion';
+import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
+import { Skeleton } from '@components/ui/skeleton';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@components/ui/badge';
 
 import { useRequests } from '@/context/RequestsContext';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { RequestProvider } from '@/context/RequestContext';
-import { getFullName } from '@aglint/shared-utils';
-import { Progress } from '@components/ui/progress';
-import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Columns, LayoutList } from 'lucide-react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { RequestsSectionDefaultData } from '../_common/constant';
-import { useRequestCount } from '../_common/hooks';
-import { RequestCard } from '../_common/Components/RequestCard';
-import RequestListFilter from '../_common/Components/RequestListFilter';
+import { getFullName } from '@aglint/shared-utils';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
+import { Progress } from '@components/ui/progress';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { cn } from '@lib/utils';
+import { Columns, LayoutList } from 'lucide-react';
+import Link from 'next/link';
+import { RequestCard } from '../_common/Components/RequestCard';
+import RequestListFilter from '../_common/Components/RequestListFilter';
+import { RequestsSectionDefaultData } from '../_common/constant';
+import { useRequestCount } from '../_common/hooks';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -52,22 +54,6 @@ function RequestList() {
     }),
   );
 
-  const isFilterApplied =
-    filters.status.length > 0 ||
-    filters.type.length > 0 ||
-    !!filters.title ||
-    filters.jobs.length > 0 ||
-    filters.applications.length > 0 ||
-    filters.assigneeList.length > 0 ||
-    filters.assignerList.length > 0;
-
-  if (
-    isFilterApplied &&
-    isFetched &&
-    defaults.flatMap((d) => d.requests).length === 0
-  )
-    return <GlobalEmptyState iconName='task_alt' textDesc='No results found' />;
-
   const renderContent = () => {
     const urgentRequests = defaults.find(
       ({ sectionName }) => sectionName === 'urgent_request',
@@ -80,11 +66,24 @@ function RequestList() {
         sectionName !== 'urgent_request' && sectionName !== 'completed_request',
     );
 
-    const renderScrollableSection = (section) => (
+    const renderScrollableSection = (
+      section: (typeof RequestsSectionDefaultData)[number],
+    ) => (
       <div key={section.sectionName}>
         {isFetched ? (
-          <div className='text-md font-semibold mb-2'>
-            {capitalizeFirstLetter(section.sectionName)}
+          <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
+            <p>{capitalizeFirstLetter(section.sectionName)}</p>
+            {section.sectionName === 'completed_request' && (
+              <Button variant='ghost'>
+                <Link
+                  href={{
+                    pathname: '/requests/history',
+                  }}
+                >
+                  View all
+                </Link>
+              </Button>
+            )}
           </div>
         ) : (
           <Skeleton className='h-6 w-40 mb-2' />
@@ -99,9 +98,7 @@ function RequestList() {
                     className='flex-shrink-0 max-w-[600px] mr-4'
                   >
                     <RequestProvider request_id={props.id}>
-                      <RequestCard
-                        {...{ ...props, index: i, isExpanded: false }}
-                      />
+                      <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
                   </div>
                 ))
@@ -125,7 +122,7 @@ function RequestList() {
 
     const renderListSection = (sectionName: string, requests: any[]) => {
       const isExpanded = expandedSections.includes(sectionName);
-      const visibleRequests = isExpanded ? requests : requests.slice(0, 5);
+      // const _visibleRequests = isExpanded ? requests : requests.slice(0, 5);
 
       return (
         <Accordion
@@ -148,17 +145,30 @@ function RequestList() {
         >
           <AccordionItem
             value={sectionName}
-            className='border rounded-lg px-4  bg-gray-50'
+            className={cn(
+              'border rounded-lg px-4 bg-gray-50',
+              isExpanded && 'bg-gray-200',
+            )}
           >
             <AccordionTrigger
-              className='text-md font-semibold'
+              className={cn(
+                'text-md font-semibold',
+                requests.length === 0 && 'cursor-default',
+              )}
               disabled={requests.length === 0}
             >
-              <div className='flex items-center'>
-                {capitalizeFirstLetter(sectionName)}
-                <Badge variant='secondary' className='ml-2'>
-                  {requests.length}
-                </Badge>
+              <div className='flex items-center justify-between w-full'>
+                <div className='flex items-center'>
+                  {capitalizeFirstLetter(sectionName)}
+                  <Badge variant='secondary' className='ml-2'>
+                    {requests.length}
+                  </Badge>
+                </div>
+                {requests.length === 0 && (
+                  <Badge variant='outline' className='ml-2'>
+                    No {sectionName.replace('_', ' ')} requests found
+                  </Badge>
+                )}
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -166,19 +176,11 @@ function RequestList() {
                 <div className='flex flex-col gap-4'>
                   {requests.slice(0, 5).map((props, i) => (
                     <RequestProvider key={props.id ?? i} request_id={props.id}>
-                      <RequestCard
-                        {...{ ...props, index: i, isExpanded: false }}
-                      />
+                      <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
                   ))}
                   {requests.length > 5 && (
                     <Collapsible>
-                      <CollapsibleTrigger asChild className='mb-4 w-full'>
-                        <Button variant='outline' className='w-full'>
-                          <ChevronDown className='h-4 w-4 mr-2' />
-                          Show More ({requests.length - 5} more)
-                        </Button>
-                      </CollapsibleTrigger>
                       <CollapsibleContent>
                         <div className='flex flex-col gap-4'>
                           {requests.slice(5).map((props, i) => (
@@ -189,29 +191,28 @@ function RequestList() {
                               <RequestCard
                                 {...{
                                   ...props,
-                                  index: i + 5,
                                   isExpanded: false,
                                 }}
                               />
                             </RequestProvider>
                           ))}
                         </div>
-                        <Button
-                          variant='outline'
-                          className='w-full mt-4'
-                          onClick={() => {
-                            const trigger = document.querySelector(
-                              '[data-state="open"]',
-                            );
-                            if (trigger instanceof HTMLElement) {
-                              trigger.click();
-                            }
-                          }}
-                        >
-                          <ChevronUp className='h-4 w-4 mr-2' />
-                          Show Less
-                        </Button>
                       </CollapsibleContent>
+                      <CollapsibleTrigger asChild className='mt-4 w-full'>
+                        <Button variant='outline' className='w-full'>
+                          {isExpanded ? (
+                            <>
+                              <ChevronUp className='h-4 w-4 mr-2' />
+                              Show Less
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className='h-4 w-4 mr-2' />
+                              Show More ({requests.length - 5} more)
+                            </>
+                          )}
+                        </Button>
+                      </CollapsibleTrigger>
                     </Collapsible>
                   )}
                 </div>
@@ -256,9 +257,7 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard
-                              {...{ ...props, index: i, isExpanded: false }}
-                            />
+                            <RequestCard {...{ ...props, isExpanded: false }} />
                           </RequestProvider>
                         ))}
                       </div>
@@ -323,47 +322,67 @@ function RequestList() {
         100,
     ) || 0;
 
+  const isFilterApplied =
+    filters.status.length > 0 ||
+    filters.type.length > 0 ||
+    !!filters.title ||
+    filters.jobs.length > 0 ||
+    filters.applications.length > 0 ||
+    filters.assigneeList.length > 0 ||
+    filters.assignerList.length > 0;
+  const isRequestListEmpty =
+    isFilterApplied &&
+    isFetched &&
+    defaults.flatMap((d) => d.requests).length === 0;
+
   return (
-    <div className='space-y-2'>
-      <div className='mb-2 flex flex-row justify-between'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-md font-semibold'>
-            👋 Hey,{' '}
-            {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
-          </h1>
-          <p className='text-sm text-muted-foreground'>
-            {formatRequestCountText(
-              requestCount?.card.urgent_request ?? 0,
-              requestCount?.card.standard_request ?? 0,
-              'today',
-            )}
-          </p>
+    <>
+      <div className='sticky top-0 z-50 bg-white p-4'>
+        <div className='mb-2 flex flex-row justify-between'>
+          <div className='flex flex-col gap-1'>
+            <h1 className='text-md font-semibold'>
+              👋 Hey,{' '}
+              {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
+            </h1>
+            <p className='text-sm text-muted-foreground'>
+              {formatRequestCountText(
+                requestCount?.card.urgent_request ?? 0,
+                requestCount?.card.standard_request ?? 0,
+                'today',
+              )}
+            </p>
+          </div>
+          <div className='flex flex-col gap-1'>
+            <h3 className='text-sm text-muted-foreground font-semibold'>
+              {open_request + 1} Open Requests ({completed_percentage}%
+              complete)
+            </h3>
+            <Progress value={completed_percentage} className='w-full' />
+          </div>
         </div>
-        <div className='flex flex-col gap-1'>
-          <h3 className='text-sm text-muted-foreground font-semibold'>
-            {open_request} Open Requests ({completed_percentage}% complete)
-          </h3>
-          <Progress value={completed_percentage} className='w-full' />
+        <div className='flex justify-end'>
+          <RequestListFilter />
+          <Tabs
+            value={view}
+            onValueChange={(value) => setView(value as 'list' | 'kanban')}
+          >
+            <TabsList>
+              <TabsTrigger value='list'>
+                <LayoutList className='h-4 w-4 mr-2' />
+              </TabsTrigger>
+              <TabsTrigger value='kanban'>
+                <Columns className='h-4 w-4 mr-2' />
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
       </div>
-      <div className='flex justify-end'>
-        <RequestListFilter />
-        <Tabs
-          value={view}
-          onValueChange={(value) => setView(value as 'list' | 'kanban')}
-        >
-          <TabsList>
-            <TabsTrigger value='list'>
-              <LayoutList className='h-4 w-4 mr-2' />
-            </TabsTrigger>
-            <TabsTrigger value='kanban'>
-              <Columns className='h-4 w-4 mr-2' />
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-      {renderContent()}
-    </div>
+      {isRequestListEmpty ? (
+        <GlobalEmptyState textDesc='No requests found' iconName='check' />
+      ) : (
+        renderContent()
+      )}
+    </>
   );
 }
 
