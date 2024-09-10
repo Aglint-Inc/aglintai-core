@@ -88,7 +88,4 @@ const TopBar = (props: PropsWithChildren) => {
   );
 };
 
-TopBar.Info = Info;
-TopBar.Actions = Actions;
-
-export { TopBar };
+export { Info, TopBar };
