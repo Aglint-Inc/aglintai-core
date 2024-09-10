@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         {
           request_id,
           session_id: session_ids[0],
-          reqProgressLogger,
+          reqProgress: reqProgressLogger,
         },
         reqProgressLogger,
       );
