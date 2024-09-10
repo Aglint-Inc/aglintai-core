@@ -6,16 +6,16 @@ import { ChangeEvent, DragEvent, useRef } from 'react';
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 
 export function ConfigureCoverImage() {
-  const { data, removeCover, updateCover } = usePortalSettings();
+  const { data, removeCover, updateCover, isCoverUploading, isCoverRemoving } =
+    usePortalSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFile = Array.from(event.target.files)[0];
-      if (newFile.size < 5 * 1000000)
-        updateCover(newFile, data?.banner_image);
-        //chandruAddToast
+      if (newFile.size < 5 * 1000000) updateCover(newFile, data?.banner_image);
+      //chandruAddToast
     }
   };
 
@@ -32,9 +32,8 @@ export function ConfigureCoverImage() {
     if (event.dataTransfer.files) {
       const newFile = Array.from(event.dataTransfer.files)[0];
 
-      if (newFile.size < 5 * 1000000)
-        updateCover(newFile, data?.banner_image);
-        //chandruAddToast
+      if (newFile.size < 5 * 1000000) updateCover(newFile, data?.banner_image);
+      //chandruAddToast
     }
   };
 
@@ -51,36 +50,41 @@ export function ConfigureCoverImage() {
         <div className='flex flex-col '>
           {/* if there is no image show this button */}
           {data?.banner_image ? (
-            <div className='flex flex-col items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden'>
-              {/* eslint-disable-next-line @next/next/no-img-element*/}
-              {/* <img
+            <div className='flex flex-col  items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md '>
+              <Image
                 width={600}
                 height={400}
-                className='object-cover'
                 src={data.banner_image}
-                alt='cover'
-              /> */}
-              <Image width={600} height={400} src={data.banner_image} alt='Company Cover' className='object-cover h-full'></Image>
+                alt='Company Cover'
+                className='object-cover h-full'
+              ></Image>
             </div>
           ) : (
-            <Button
-              className='flex flex-col items-center gap-4 w-96 h-48 '
-              variant='outline'
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <input
-                type='file'
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept='image/*'
-                className='hidden'
-              />
-              <ImagePlus className='w-10 h-10 ' />
-              Add Cover Image
-            </Button>
+            <div className='relative'>
+              <Button
+                className='flex flex-col items-center gap-4 w-96 h-48 '
+                variant='outline'
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <input
+                  type='file'
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept='image/*'
+                  className='hidden'
+                />
+                <ImagePlus className='w-10 h-10 ' />
+                Add Cover Image
+              </Button>
+              {isCoverUploading && (
+                <div className='w-[380px] h-[190px] absolute top-0 left-0 bg-white z-10 flex items-center justify-center'>
+                  Uploading ...
+                </div>
+              )}
+            </div>
           )}
           {/* Button to edit and remove the image only if there is an image */}
           {data?.banner_image && (
@@ -105,7 +109,7 @@ export function ConfigureCoverImage() {
                 className='mt-4'
                 onClick={() => removeCover(data.banner_image)}
               >
-                Remove
+                {isCoverRemoving ? 'Remove...' : 'Remove'}
               </Button>
             </div>
           )}
