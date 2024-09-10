@@ -93,6 +93,7 @@ export const EASING_FUNCTIONS = {
   'ease-in-out-back': 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
 };
 export const isServer = typeof window === 'undefined';
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const useLayoutEffect = isServer ? () => {} : React.useLayoutEffect;
 export function useResizeObserver(ref, fn) {
   const observer = React.useMemo(

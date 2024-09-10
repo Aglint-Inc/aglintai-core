@@ -45,8 +45,7 @@ import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { getStatusColor } from '../_common/utils/getStatusColor';
 import RequestProgress, {
   RequestProgressSkeleton,
-} from '../_common/Components/RequestProgress';
-import { UISwitch } from '@/components/Common/UISwitch';
+} from '../_common/components/RequestProgress';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -125,7 +124,6 @@ function ViewRequestDetails() {
           <RequestDetail
             slotInterview={
               <>
-                <UISwitch size='lg' />
                 {status === 'pending' ? (
                   <Stack position={'relative'}>
                     <SkeletonScheduleCard />
@@ -142,6 +140,7 @@ function ViewRequestDetails() {
                           session={session}
                           key={session.interview_session.id}
                           selectedSessionIds={[]}
+                          // eslint-disable-next-line @typescript-eslint/no-empty-function
                           onClickCheckBox={() => {}}
                           isCheckboxVisible={false}
                           candidate={null}

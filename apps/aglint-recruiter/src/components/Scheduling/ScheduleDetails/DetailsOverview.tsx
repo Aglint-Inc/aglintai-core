@@ -222,6 +222,7 @@ function DetailsOverview({
               session_id: schedule.interview_session.id,
             },
           ]}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           closeDialog={() => {}}
           application_log_id={null}
         />

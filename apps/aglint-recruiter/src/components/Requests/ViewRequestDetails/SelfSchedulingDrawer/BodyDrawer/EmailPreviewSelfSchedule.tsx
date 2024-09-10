@@ -86,6 +86,7 @@ function EmailPreviewSelfSchedule() {
             key={item.date_range.join(', ')}
             isRadioNeeded={false}
             item={item}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             onClickSelect={() => {}}
             selectedCombIds={selectedCombIds}
             isDisabled={false}
@@ -94,6 +95,7 @@ function EmailPreviewSelfSchedule() {
             isDayCollapseNeeded={true}
             isSlotCollapseNeeded={true}
             index={index}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             setSelectedCombIds={() => {}}
             isAutoCollapse={false}
           />

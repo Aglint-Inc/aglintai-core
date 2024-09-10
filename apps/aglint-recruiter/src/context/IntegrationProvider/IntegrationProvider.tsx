@@ -17,7 +17,9 @@ export type IntegrationType = {
 
 const initialContextValue: IntegrationType = {
   integration: initialState,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIntegration: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleClose: () => {},
 };
 

@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   type CompServiceKeyCred,
@@ -7,11 +7,12 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 
+// eslint-disable-next-line import/no-cycle
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
 import { getCalEventDescription } from './getCalEventDescription';
-const { google } = require('googleapis');
-const { OAuth2Client } = require('google-auth-library');
+import { google } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
 export type GetAuthParams = {
   company_cred: CompServiceKeyCred;
   recruiter: CalEventAttendeesAuthDetails;

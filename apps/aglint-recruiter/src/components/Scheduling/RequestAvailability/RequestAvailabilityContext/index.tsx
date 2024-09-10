@@ -93,24 +93,34 @@ interface ContextValue {
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setDateSlots: () => {},
   candidateRequestAvailability: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCandidateRequestAvailability: () => {},
   loading: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setLoading: () => {},
   daySlots: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setDaySlots: () => {},
   selectedDateSlots: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedDateSlots: () => {},
   selectedSlots: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedSlots: () => {},
   multiDaySessions: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setMultiDaySessions: () => {},
   openDaySlotPopup: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setOpenDaySlotPopup: () => {},
   isSubmitted: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsSubmitted: () => {},
   selectedDate: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedDate: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);

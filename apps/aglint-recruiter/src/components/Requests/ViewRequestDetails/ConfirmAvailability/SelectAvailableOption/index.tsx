@@ -146,6 +146,7 @@ function RequestAvailabilityBody({
                   isDayCollapseNeeded={false}
                   index={index}
                   isSlotCollapseNeeded={true}
+                  // eslint-disable-next-line @typescript-eslint/no-empty-function
                   setSelectedCombIds={() => {}}
                   isDayCheckboxNeeded={false}
                   isSlotCheckboxNeeded={false}

@@ -16,6 +16,7 @@ import { type ModuleType } from '../../../types';
 
 function SettingsDialog({ editModule }: { editModule: ModuleType }) {
   const { members } = useSchedulingContext();
+  const [isUpdating, setIsUpdating] = useState(false);
   const isSettingDialogOpen = useModulesStore(
     (state) => state.isSettingDialogOpen,
   );
@@ -31,6 +32,7 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
 
   const updateModule = async () => {
     try {
+      setIsUpdating(true);
       await supabase
         .from('interview_module')
         .update({
@@ -41,10 +43,12 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
         .eq('id', editModule.id)
         .throwOnError();
 
-      refetch();
+      await refetch();
       setIsSettingsDialogOpen(false);
     } catch (e) {
       //
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -65,7 +69,12 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
           >
             Cancel
           </UIButton>
-          <UIButton variant='default' onClick={updateModule}>
+          <UIButton
+            isLoading={isUpdating}
+            disabled={isUpdating}
+            variant='default'
+            onClick={updateModule}
+          >
             Update
           </UIButton>
         </>

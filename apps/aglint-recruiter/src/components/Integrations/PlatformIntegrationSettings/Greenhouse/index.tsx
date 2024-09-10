@@ -73,6 +73,7 @@ function GreenhouseSettings() {
           slotFrequencySync={
             <AutoCompletePro
               value={'24 hours'}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
               onChange={() => {}}
               options={[
                 '6 Hours',
