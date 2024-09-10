@@ -4,10 +4,10 @@ import React from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useWorkflow } from '@/workflow/hooks';
 import { emailTemplateQueries } from '@/queries/email-templates';
 import type { WorkflowAction } from '@/types/workflow.types';
 import toast from '@/utils/toast';
+import { useWorkflow } from '@/workflow/hooks';
 import {
   ACTION_TRIGGER_MAP,
   AI_RESPONSE_PLACEHOLDER,

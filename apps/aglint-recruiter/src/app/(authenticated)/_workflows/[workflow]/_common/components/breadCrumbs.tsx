@@ -1,5 +1,3 @@
-import ROUTES from '@/utils/routing/routes';
-import { capitalizeSentence } from '@/utils/text/textUtils';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,6 +7,10 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { useRouter } from 'next/router';
+
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
+
 import { useWorkflow } from '../hooks';
 
 export const BreadCrumbs = () => {

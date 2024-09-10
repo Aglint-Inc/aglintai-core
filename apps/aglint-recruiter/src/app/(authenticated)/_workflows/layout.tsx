@@ -1,8 +1,8 @@
 import { type PropsWithChildren } from 'react';
 
-import { WorkflowsStoreProvider } from '@/workflows/contexts';
-import { BreadCrumbs } from '@/workflows/components/breadCrumbs';
 import { Actions } from '@/workflows/components/actions';
+import { BreadCrumbs } from '@/workflows/components/breadCrumbs';
+import { WorkflowsStoreProvider } from '@/workflows/contexts';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (

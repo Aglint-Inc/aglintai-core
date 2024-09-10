@@ -1,32 +1,32 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import OptimisticWrapper from '@components/loadingWapper';
-import { GlobalBadge } from '@devlink3/GlobalBadge';
-import { useRouter } from 'next/router';
-import { memo } from 'react';
-
-import {
-  useWorkflows,
-  useWorkflowsActions,
-  useWorkflowsFilters,
-} from '@/workflows/hooks';
-import { type Workflow } from '@/types/workflow.types';
-import ROUTES from '@/utils/routing/routes';
-import { capitalizeSentence } from '@/utils/text/textUtils';
-
-import { getFilteredWorkflows } from './filters';
-import { Skeleton } from '@components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { Skeleton } from '@components/ui/skeleton';
+import { GlobalBadge } from '@devlink3/GlobalBadge';
 import { Inbox, MoreHorizontal, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { getTriggerOption } from '@/workflows/utils';
+import { useRouter } from 'next/router';
+import { memo } from 'react';
+
+import { type Workflow } from '@/types/workflow.types';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeSentence } from '@/utils/text/textUtils';
 import { TAG_OPTIONS } from '@/workflows/constants';
+import {
+  useWorkflows,
+  useWorkflowsActions,
+  useWorkflowsFilters,
+} from '@/workflows/hooks';
+import { getTriggerOption } from '@/workflows/utils';
+
+import { getFilteredWorkflows } from './filters';
 
 const Content = memo(() => {
   const {

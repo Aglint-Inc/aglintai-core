@@ -1,6 +1,7 @@
+import { Checkbox } from '@components/ui/checkbox';
+
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import { Checkbox } from '@components/ui/checkbox';
 import { Form } from '@/workflows/types';
 
 export const Forms = ({

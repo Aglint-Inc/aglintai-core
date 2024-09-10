@@ -1,28 +1,4 @@
 import OptimisticWrapper from '@components/loadingWapper';
-
-import { GlobalBadge } from '@devlink/GlobalBadge';
-import { Page404 } from '@devlink/Page404';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
-import { WorkflowDetail } from '@devlink3/WorkflowDetail';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-
-import Loader from '@/components/Common/Loader';
-import Seo from '@/components/Common/Seo';
-import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useWorkflow } from '@/workflow/hooks';
-import {
-  useJobWorkflowDisconnect,
-  useJobWorkflowMutations,
-} from '@/queries/job-workflow';
-import { type Workflow } from '@/types/workflow.types';
-import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
-import ROUTES from '@/utils/routing/routes';
-import { capitalizeAll } from '@/utils/text/textUtils';
-
-import Actions from './action';
-import { ActionsProvider } from './context';
-import Trigger from './trigger';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -31,8 +7,31 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
+import { GlobalBadge } from '@devlink/GlobalBadge';
+import { Page404 } from '@devlink/Page404';
+import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
+import { WorkflowDetail } from '@devlink3/WorkflowDetail';
 import { Briefcase } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import Loader from '@/components/Common/Loader';
+import Seo from '@/components/Common/Seo';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import {
+  useJobWorkflowDisconnect,
+  useJobWorkflowMutations,
+} from '@/queries/job-workflow';
+import { type Workflow } from '@/types/workflow.types';
+import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
+import { useWorkflow } from '@/workflow/hooks';
+
 import { Edit } from '../edit';
+import Actions from './action';
+import { ActionsProvider } from './context';
+import Trigger from './trigger';
 
 const Body = () => {
   const { workflow } = useWorkflow();

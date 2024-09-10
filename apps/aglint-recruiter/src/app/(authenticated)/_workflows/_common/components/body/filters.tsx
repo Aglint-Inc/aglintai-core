@@ -4,14 +4,14 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase } from 'lucide-react';
 import { memo, useMemo } from 'react';
 
+import { type Workflow } from '@/types/workflow.types';
+import { SafeObject } from '@/utils/safeObject';
+import { TAG_OPTIONS } from '@/workflows/constants';
 import {
   useWorkflows,
   useWorkflowsActions,
   useWorkflowsFilters,
 } from '@/workflows/hooks';
-import { type Workflow } from '@/types/workflow.types';
-import { SafeObject } from '@/utils/safeObject';
-import { TAG_OPTIONS } from '@/workflows/constants';
 
 const Filters = memo(() => {
   const { search, ...filters } = useWorkflowsFilters();

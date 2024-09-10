@@ -1,6 +1,7 @@
-import { SafeObject } from '@/utils/safeObject';
 import { DatabaseView } from '@aglint/shared-types';
 import { ReactNode } from 'react';
+
+import { SafeObject } from '@/utils/safeObject';
 import { getWorkflowTagIcon } from '@/workflows/utils/getWorkflowTagIcon';
 
 type WorkflowTagOptionsType<

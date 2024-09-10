@@ -1,11 +1,10 @@
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { WorkflowItem } from '@devlink3/WorkflowItem';
+import { Zap } from 'lucide-react';
 
 import UISelect from '@/components/Common/UISelectDropDown';
-import { useWorkflow } from '@/workflow/hooks';
 import { type Workflow } from '@/types/workflow.types';
-
-import { Zap } from 'lucide-react';
-import { Alert, AlertDescription } from '@components/ui/alert';
+import { useWorkflow } from '@/workflow/hooks';
 import { DURATION_OPTIONS, TRIGGER_PAYLOAD } from '@/workflows/constants';
 import { getTriggerOption } from '@/workflows/utils';
 

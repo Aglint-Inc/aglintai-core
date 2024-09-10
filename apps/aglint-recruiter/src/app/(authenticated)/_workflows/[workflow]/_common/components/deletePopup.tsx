@@ -1,11 +1,5 @@
-import {
-  useWorkflows,
-  useWorkflowsActions,
-  useWorkflowsDeletion,
-} from '@/workflows/hooks';
-import { useRouter } from 'next/router';
-import { useWorkflow } from '@/workflow/hooks';
-import { useState } from 'react';
+import { Alert, AlertTitle } from '@components/ui/alert';
+import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -13,12 +7,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Alert, AlertTitle } from '@components/ui/alert';
 import { Zap } from 'lucide-react';
-import { capitalizeAll } from '@/utils/text/textUtils';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
 import UITextField from '@/components/Common/UITextField';
-import { Button } from '@components/ui/button';
 import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
+import { useWorkflow } from '@/workflow/hooks';
+import {
+  useWorkflows,
+  useWorkflowsActions,
+  useWorkflowsDeletion,
+} from '@/workflows/hooks';
 
 export const DeletePopup = () => {
   const { push } = useRouter();
