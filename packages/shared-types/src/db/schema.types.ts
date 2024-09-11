@@ -6389,6 +6389,24 @@ export type Database = {
         }
         Returns: undefined
       }
+      interviewers_leaderboard_by_v: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          user_id: string
+          duration: number
+          total_hours: number
+          accepted: number
+          rejected: number
+          feedback: number
+        }[]
+      }
       interviewing_state_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -7172,4 +7190,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-
