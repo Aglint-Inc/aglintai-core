@@ -96,12 +96,12 @@ function BodyComp() {
     setDialogOpen(null);
   };
 
-  const upcomingSchedules = allSchedules;
-  // const upcomingSchedules = allSchedules.filter((schedule) => {
-  //   const itemDateTime = dayjs(schedule.start_time);
-  //   const now = dayjs();
-  //   return itemDateTime.isAfter(now);
-  // });
+  // const upcomingSchedules = allSchedules;
+  const upcomingSchedules = allSchedules.filter((schedule) => {
+    const itemDateTime = dayjs(schedule.start_time);
+    const now = dayjs();
+    return itemDateTime.isAfter(now);
+  });
   const [value, setValue] =
     useState(`Prefer to take interviews on Tuesday and Friday afternoons.
 Cannot take interviews on Sundays.
@@ -197,14 +197,8 @@ Unavailable for interviews on Tuesdays.`);
             slotTabContent={
               <>
                 {tab === 'overview' && (
-                  <Overview
-                    scheduleList={allSchedules}
-                    interviewerDetails={interviewerDetails}
-                  />
+                  <Overview interviewerDetails={interviewerDetails} />
                 )}
-                {/* {tab === 'keywords' && (
-                 
-                )} */}
                 {tab === 'availibility' && (
                   <Availibility
                     interviewerDetailsRefetch={interviewerDetailsRefetch}
