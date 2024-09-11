@@ -7,7 +7,6 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { EmptyState } from '@devlink2/EmptyState';
-import { PageLayout } from '@devlink2/PageLayout';
 import { AvatarGroup } from '@mui/material';
 import { Plus, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';

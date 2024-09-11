@@ -1,7 +1,6 @@
 // import Feedback from './Feedback';
 import { Skeleton } from '@components/ui/skeleton';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { PageLayout } from '@devlink2/PageLayout';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

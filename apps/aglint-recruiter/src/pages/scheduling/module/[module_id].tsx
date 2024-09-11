@@ -8,8 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { EmptyGeneral } from '@devlink2/EmptyGeneral';
-import { PageLayout } from '@devlink2/PageLayout';
 import { ShadowSession } from '@devlink2/ShadowSession';
 import { StatusBadge } from '@devlink2/StatusBadge';
 import { DarkPill } from '@devlink3/DarkPill';
