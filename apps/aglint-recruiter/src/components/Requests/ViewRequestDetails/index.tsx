@@ -327,6 +327,7 @@ export default function ViewRequestDetails() {
                                   });
                                 }
                               }}
+                              disablePastDates={true}
                               customButton={
                                 <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                               }
