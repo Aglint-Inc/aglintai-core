@@ -31,8 +31,8 @@ import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from '../_common/Components/RequestCard';
-import RequestListFilter from '../_common/Components/RequestListFilter';
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestListFilter from '../_common/components/RequestListFilter';
 import { RequestsSectionDefaultData } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 
@@ -71,6 +71,8 @@ function RequestList() {
     ) => (
       <div key={section.sectionName}>
         {isFetched ? (
+          <div style={{ paddingLeft: '5rem', paddingRight: '5rem'}}>
+          <div className='container'>
           <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
             <p>{capitalizeFirstLetter(section.sectionName)}</p>
             {section.sectionName === 'completed_request' && (
@@ -85,17 +87,24 @@ function RequestList() {
               </Button>
             )}
           </div>
+          </div>
+          </div>
         ) : (
           <Skeleton className='h-6 w-40 mb-2' />
         )}
-        <ScrollArea className='w-[100vw] whitespace-nowrap rounded-md'>
-          <div className='flex'>
+        <div
+        className='flex items-start w-full'>
+        <div className=''>
+        <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
+          <div style={{ paddingLeft: '5rem', paddingRight: '5rem'}}>
+          <div className='container'>
+          <div className='flex gap-4 mr-8'>
             {isFetched ? (
               section.requests.length > 0 ? (
                 section.requests.map((props, i) => (
                   <div
                     key={props.id ?? i}
-                    className='flex-shrink-0 max-w-[600px] mr-4'
+                    className={`flex-shrink-0 max-w-[600px] ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
                   >
                     <RequestProvider request_id={props.id}>
                       <RequestCard {...{ ...props, isExpanded: false }} />
@@ -115,8 +124,12 @@ function RequestList() {
               </>
             )}
           </div>
+          </div>
+          </div>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
+        </div>
+        </div>
       </div>
     );
 
@@ -199,12 +212,16 @@ function RequestList() {
                         </div>
                       </CollapsibleContent>
                       <CollapsibleTrigger asChild className='mt-4 w-full'>
-                        <Button 
-                          variant='outline' 
+                        <Button
+                          variant='outline'
                           className='w-full'
                           onClick={() => {
                             if (isExpanded) {
-                              setExpandedSections(expandedSections.filter(s => s !== sectionName));
+                              setExpandedSections(
+                                expandedSections.filter(
+                                  (s) => s !== sectionName,
+                                ),
+                              );
                             }
                           }}
                         >
@@ -236,16 +253,23 @@ function RequestList() {
     };
 
     return (
-      <div className='space-y-6 pt-2'>
+      <div className='space-y-6 mt-8'>
         {urgentRequests &&
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
-
-        <div className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}>
+          <div style={{paddingLeft:"5rem" , paddingRight:"5rem"}}>
+        <div className="container" >
+        <div
+          className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-4'}`}
+        >
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
-              className={view === 'kanban' ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4` : ''}
+              className={
+                view === 'kanban'
+                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4`
+                  : ''
+              }
             >
               {isFetched ? (
                 view === 'list' ? (
@@ -265,7 +289,10 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard {...{ ...props, isExpanded: false }} mode='column-view' />
+                            <RequestCard
+                              {...{ ...props, isExpanded: false }}
+                              mode='column-view'
+                            />
                           </RequestProvider>
                         ))}
                       </div>
@@ -285,6 +312,8 @@ function RequestList() {
               )}
             </div>
           ))}
+        </div>
+        </div>
         </div>
 
         {completedRequests &&
@@ -345,49 +374,60 @@ function RequestList() {
 
   return (
     <>
-    
-    <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
-        <div className='mb-2 flex flex-row justify-between'>
-          <div className='flex flex-col gap-1'>
-            <h1 className='text-md font-semibold'>
-              👋 Hey,{' '}
-              {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
-            </h1>
-            <p className='text-sm text-muted-foreground'>
-              {formatRequestCountText(
-                requestCount?.card.urgent_request ?? 0,
-                requestCount?.card.standard_request ?? 0,
-                'today',
-              )}
-            </p>
+      <div
+        style={{ paddingLeft: '5rem', paddingRight: '5rem', marginTop: '1rem' }}
+        className='flex justify-center items-center w-full'
+      >
+        {' '}
+        {/* Changed padding from 20 to 40 */}
+        <div className='container'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-end justify-between'>
+              <div className='flex flex-col gap-1'>
+                <h1 className='text-lg font-semibold'>
+                  👋 Hey,{' '}
+                  {getFullName(
+                    recruiterUser.first_name,
+                    recruiterUser.last_name,
+                  )}
+                  !
+                </h1>
+                <p className='text-sm text-muted-foreground'>
+                  {formatRequestCountText(
+                    requestCount?.card.urgent_request ?? 0,
+                    requestCount?.card.standard_request ?? 0,
+                    'today',
+                  )}
+                </p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <h3 className='text-sm text-muted-foreground font-semibold'>
+                  {open_request + 1} Open Requests ({completed_percentage}%
+                  complete)
+                </h3>
+                <Progress value={completed_percentage} className='w-full' />
+              </div>
+            </div>
+            <div className='flex justify-end'>
+              <RequestListFilter />
+              <Tabs
+                value={view}
+                onValueChange={(value) => setView(value as 'list' | 'kanban')}
+              >
+                <TabsList className='h-8'>
+                  <TabsTrigger value='list'>
+                    <LayoutList className='h-4 w-4' />
+                  </TabsTrigger>
+                  <TabsTrigger value='kanban'>
+                    <Columns className='h-4 w-4' />
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
           </div>
-          <div className='flex flex-col gap-1'>
-            <h3 className='text-sm text-muted-foreground font-semibold'>
-              {open_request + 1} Open Requests ({completed_percentage}%
-              complete)
-            </h3>
-            <Progress value={completed_percentage} className='w-full' />
-          </div>
-        </div>
-        <div className='flex justify-end'>
-          <RequestListFilter />
-          <Tabs
-            value={view}
-            onValueChange={(value) => setView(value as 'list' | 'kanban')}
-          >
-            <TabsList className='h-8'>
-              <TabsTrigger value='list'>
-                <LayoutList className='h-4 w-4 mr-2' />
-              </TabsTrigger>
-              <TabsTrigger value='kanban'>
-                <Columns className='h-4 w-4 mr-2' />
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
         </div>
       </div>
-    
-     
+
       {isRequestListEmpty ? (
         <GlobalEmptyState textDesc='No requests found' iconName='check' />
       ) : (
