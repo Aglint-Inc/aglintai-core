@@ -1,18 +1,21 @@
 import type { DatabaseTableInsert } from '@aglint/shared-types';
-import { Skeleton } from '@components/ui/skeleton';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
-import { Stack, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import dayjs from 'dayjs';
+import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import {
   RangePicker,
   RequestOption,
 } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
-import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
+import MemberCard from '@/components/Common/MemberCard';
+import UpdateMembers, {
+  useMemberList,
+} from '@/components/Common/UpdateMembers';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useApplications, useJob } from '@/job/hooks';
-import { useAllMembers } from '@/queries/members';
 
 import { SessionList, type sessionType } from './SessionsList';
 function CreateRequest({
@@ -32,16 +35,23 @@ function CreateRequest({
   setSelectedSession: Dispatch<SetStateAction<sessionType[]>>;
   selectedSession: sessionType[];
 }) {
-  const { members } = useAllMembers();
+  const { data: members, status: membersStatus } = useMemberList();
 
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useApplications();
   const { recruiterUser } = useAuthDetails();
-
-  const [selectedInterviewer, setSelectedInterviewer] = useState<string | null>(
-    null,
-  );
+  const selectedMember =
+    membersStatus === 'success' &&
+    members.find(
+      (member) =>
+        member.user_id === recruiting_coordinator ||
+        hiring_manager ||
+        sourcer ||
+        recruiter,
+    );
+  const [selectedInterviewer, setSelectedInterviewer] =
+    useState<MemberType>(selectedMember);
 
   const [dateRange, setDateRange] = useState({
     start: dayjs().toString(),
@@ -50,6 +60,12 @@ function CreateRequest({
   const {
     interviewPlans: { data, status },
   } = useJob();
+
+  useEffect(() => {
+    if (membersStatus === 'success') {
+      setSelectedInterviewer(selectedMember);
+    }
+  }, [membersStatus]);
 
   useEffect(() => {
     if (status === 'success') {
@@ -119,32 +135,29 @@ function CreateRequest({
           </>
         }
         slotAssignedInput={
-          !members.length ? (
-            <Stack position={'relative'} width={'100%'} height={'40px'}>
-              <Skeleton />
-            </Stack>
+          membersStatus === 'pending' ? (
+            <div className='h-10 w-full bg-gray-100 rounded-md animate-pulse'></div>
           ) : (
-            <MemberList
-              selectedMemberId={
-                selectedInterviewer ||
-                recruiting_coordinator ||
-                hiring_manager ||
-                sourcer ||
-                recruiter
-              }
-              members={members}
-              width='436px'
-              onChange={(user_id) => {
-                setSelectedInterviewer(user_id);
-                setRequest((pre) => {
-                  const preData = { ...pre };
-                  return {
-                    ...preData,
-                    assignee_id: user_id,
-                  };
-                });
-              }}
-            />
+            <div className='flex items-center justify-between pr-2 '>
+              {selectedInterviewer && (
+                <MemberCard selectedMember={selectedInterviewer} />
+              )}
+              <UpdateMembers
+                handleChange={(member) => {
+                  setSelectedInterviewer(member);
+                  setRequest((pre) => {
+                    const preData = { ...pre };
+                    return {
+                      ...preData,
+                      assignee_id: member.user_id,
+                    };
+                  });
+                }}
+                updateButton={
+                  <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                }
+              />
+            </div>
           )
         }
         slotRequestOption={

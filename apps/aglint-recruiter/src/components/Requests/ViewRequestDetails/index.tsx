@@ -39,6 +39,8 @@ import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
+import MemberCard from '../../Common/MemberCard';
+import UpdateMembers, { useMemberList } from '../../Common/UpdateMembers';
 import RequestProgress from '../_common/Components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
@@ -48,11 +50,8 @@ import {
 import { useMeetingList } from '../_common/hooks';
 import CandidateAvailability from './CandidateAvailability';
 import { setCandidateAvailabilityDrawerOpen } from './CandidateAvailability/store';
-import MemberCard from './Components/MemberCard';
-import { useMemberList } from './Components/MemberList';
 import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
-import UpdateMembers from './Components/UpdateMembers';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 import RequestNotes from './RequestNotes';
@@ -359,7 +358,6 @@ export default function ViewRequestDetails() {
                                 },
                               });
                             }}
-                            members={members}
                             updateButton={
                               <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                             }
