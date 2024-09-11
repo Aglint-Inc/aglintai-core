@@ -1,6 +1,4 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewerTraining } from '@devlink3/InterviewerTraining';
-import { InterviewerTrainingList } from '@devlink3/InterviewerTrainingList';
 import { Avatar, Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
 
@@ -12,6 +10,8 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';
+import { InterviewerTraining } from '../components/InterviewerTraining';
+import { InterviewerTrainingList } from '../components/InterviewerTrainingList';
 import { useTrainingProgress } from '../Hook';
 
 function TrainingProgress() {
