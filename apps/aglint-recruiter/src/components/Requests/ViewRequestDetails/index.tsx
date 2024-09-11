@@ -39,7 +39,7 @@ import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import RequestProgress from '../_common/Components/RequestProgress';
+import RequestProgress from '../_common/ComponentsNew/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,

@@ -30,9 +30,9 @@ import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
+import { RequestCard } from '../_common/ComponentsNew/RequestCard';
+import RequestListFilter from '../_common/ComponentsNew/RequestListFilter';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
-import { RequestCard } from '../_common/components/RequestCard';
-import RequestListFilter from '../_common/components/RequestListFilter';
 import { useRequestCount } from '../_common/hooks';
 import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
 import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
