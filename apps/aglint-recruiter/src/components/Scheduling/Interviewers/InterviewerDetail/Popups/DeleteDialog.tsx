@@ -1,6 +1,6 @@
 
+import { Skeleton } from '@components/ui/skeleton';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -131,7 +131,9 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
           </p>
           {isFetching ? (
             <Stack>
-              <SkeletonParagraph />
+              <Skeleton className="w-full h-3 mb-2" />
+              <Skeleton className="w-full h-3 mb-2" />
+              <Skeleton className="w-3/4 h-3" />
             </Stack>
           ) : (
             <Stack spacing={'var(--space-2)'}>

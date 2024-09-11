@@ -9,7 +9,6 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { TeamSync } from '@devlink/TeamSync';
-import { TeamEmpty } from '@devlink3/TeamEmpty';
 import { useQuery } from '@tanstack/react-query';
 import {
   Building,
@@ -18,6 +17,7 @@ import {
   Locate,
   RotateCcw,
   User,
+  Users,
 } from 'lucide-react';
 import { useEffect, useState, useTransition } from 'react';
 
@@ -296,11 +296,13 @@ const TeamManagement = () => {
                   </TableCell>
                 </TableRow>
               ) : filteredMembers.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6}>
-                    <TeamEmpty />
-                  </TableCell>
-                </TableRow>
+                <TableCell colSpan={6}>
+                  <div className="flex flex-col items-center justify-center p-8 text-center">
+                    <Users className="w-12 h-12 text-gray-400 mb-2" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-1">No team members</h3>
+                    <p className="text-sm text-gray-500">Get started by adding a new team member.</p>
+                  </div>
+                </TableCell>
               ) : (
                 filteredMembers?.map((member) => (
                   <Member key={member.user_id} member={member} />

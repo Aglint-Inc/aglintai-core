@@ -1,6 +1,5 @@
 
 import { SchedulerConflictCard } from '@devlink3/SchedulerConflictCard';
-import { ToggleWithText } from '@devlink3/ToggleWithText';
 import { Grid, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -119,35 +118,35 @@ function ToogleList() {
                   </Stack>
                 }
                 slotToggleWithText={
-                  <ToggleWithText
-                    slotToggle={
-                      <UISwitch
-                        size='sm'
-                        checked={enabled}
-                        onCheckedChange={() => {
-                          setLocalFilters({
-                            isHardConflicts:
-                              availabilityType === 'hard_conflicts'
-                                ? !localFilters.isHardConflicts
-                                : localFilters.isHardConflicts,
-                            isNoConflicts:
-                              availabilityType === 'no_conflicts'
-                                ? !localFilters.isNoConflicts
-                                : localFilters.isNoConflicts,
-                            isOutSideWorkHours:
-                              availabilityType === 'outside_work_hours'
-                                ? !localFilters.isOutSideWorkHours
-                                : localFilters.isOutSideWorkHours,
-                            isSoftConflicts:
-                              availabilityType === 'soft_conflicts'
-                                ? !localFilters.isSoftConflicts
-                                : localFilters.isSoftConflicts,
-                          });
-                        }}
-                      />
-                    }
-                    textToggleLight={title}
-                  />
+                  <div className="flex items-center space-x-2">
+                    <UISwitch
+                      size='sm'
+                      checked={enabled}
+                      onCheckedChange={() => {
+                        setLocalFilters({
+                          isHardConflicts:
+                            availabilityType === 'hard_conflicts'
+                              ? !localFilters.isHardConflicts
+                              : localFilters.isHardConflicts,
+                          isNoConflicts:
+                            availabilityType === 'no_conflicts'
+                              ? !localFilters.isNoConflicts
+                              : localFilters.isNoConflicts,
+                          isOutSideWorkHours:
+                            availabilityType === 'outside_work_hours'
+                              ? !localFilters.isOutSideWorkHours
+                              : localFilters.isOutSideWorkHours,
+                          isSoftConflicts:
+                            availabilityType === 'soft_conflicts'
+                              ? !localFilters.isSoftConflicts
+                              : localFilters.isSoftConflicts,
+                        });
+                      }}
+                    />
+                    <p>
+                      {title}
+                    </p>
+                  </div>
                 }
               />
             </Grid>
