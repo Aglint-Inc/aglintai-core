@@ -2,15 +2,16 @@ import {
   type PlanCombinationRespType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { SingleDaySchedule } from '@devlink3/SingleDaySchedule';
-import { Collapse } from '@mui/material';
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import dayjs from 'dayjs';
+import { ChevronDown } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
+import { SingleDaySchedule } from '../../../_common/SingleDaySchedule';
 import ConflictWithHover from './SessionIndividual/ConflictWithHover';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
 
@@ -85,15 +86,8 @@ function SingleDayCard({
 
   return (
     <SingleDaySchedule
-      onClickSingleDay={{
-        onClick: () => {
-          setCollapse(!collapse);
-        },
-      }}
-      rotateArrow={{
-        style: {
-          display: isCollapseNeeded ? 'flex' : 'none',
-        },
+      onClickSingleDay={() => {
+        setCollapse(!collapse);
       }}
       isMultiDay={isMultiDay}
       textDayCount={`Day ${ind + 1}`}
@@ -108,7 +102,7 @@ function SingleDayCard({
               isOutsideWorkHours={false}
               isSoftConflict={false}
               conflictReasons={[]}
-              textCount={'No conflicts'}
+              textCount={''}
               isToolTipVisible={false}
             />
           )}
@@ -146,27 +140,27 @@ function SingleDayCard({
             />
           )}
           {isCollapseNeeded && (
-            <IconButtonSoft
-              size={1}
-              color={'neutral'}
-              iconName={'keyboard_double_arrow_down'}
-              onClickButton={{
-                onClick: () => {
-                  setCollapse(!collapse);
-                },
+            <UIButton
+              variant='secondary'
+              size='sm'
+              icon={<ChevronDown />}
+              onClick={() => {
+                setCollapse(!collapse);
               }}
             />
           )}
         </>
       }
       slotSessionDetails={
-        <Collapse in={isCollapseNeeded ? collapse : true}>
-          {sessions.map((session) => {
-            return (
-              <SessionIndividual key={session.session_id} session={session} />
-            );
-          })}
-        </Collapse>
+        <Collapsible open={isCollapseNeeded ? collapse : true}>
+          <CollapsibleContent>
+            {sessions.map((session) => {
+              return (
+                <SessionIndividual key={session.session_id} session={session} />
+              );
+            })}
+          </CollapsibleContent>
+        </Collapsible>
       }
     />
   );

@@ -1,6 +1,5 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -72,7 +71,7 @@ function EmailPreviewSelfSchedule() {
 
   return (
     <div className='flex flex-col gap-2 p-4 h-[calc(100vh-96px)] overflow-scroll'>
-      <UITypography>
+      <UITypography type='small'>
         You have selected {selectedCombIds.length} slots across {numberOfDays}
         days.
       </UITypography>
@@ -82,31 +81,27 @@ function EmailPreviewSelfSchedule() {
             key={item.date_range.join(', ')}
             isRadioNeeded={false}
             item={item}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onClickSelect={() => {}}
-            selectedCombIds={selectedCombIds}
+            selectedCombIds={[]}
             isDisabled={false}
             isDayCheckboxNeeded={false}
             isSlotCheckboxNeeded={false}
             isDayCollapseNeeded={true}
             isSlotCollapseNeeded={true}
             index={index}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            setSelectedCombIds={() => {}}
             isAutoCollapse={false}
           />
         );
       })}
-      <Stack spacing={1} direction={'column'}>
-        <Typography>
+      <div className='flex flex-col space-y-1'>
+        <UITypography type='small'>
           This email will be sent to the candidate. To edit the content, go to
           the template section, make edits, then click refresh.
-        </Typography>
-      </Stack>
+        </UITypography>
+      </div>
       {fetching ? (
-        <Stack height={'80vh'} width={'538px'}>
+        <div className='h-[80vh] w-[538px]'>
           <Loader />
-        </Stack>
+        </div>
       ) : (
         <>
           <div className='flex flex-row justify-between items-center w-full gap-4'>
@@ -134,15 +129,15 @@ function EmailPreviewSelfSchedule() {
             </div>
           </div>
 
-          <Stack sx={{ py: 'var(--space-4)' }}>
+          <div className='py-4'>
             <iframe
               width={'510px'}
               height={'750px'}
               color='white'
               srcDoc={emailData?.html}
-              title='Previw Email'
+              title='Preview Email'
             />
-          </Stack>
+          </div>
         </>
       )}
     </div>

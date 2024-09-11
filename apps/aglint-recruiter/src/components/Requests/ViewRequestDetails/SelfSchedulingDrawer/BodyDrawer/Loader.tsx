@@ -1,27 +1,13 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { Stack } from '@mui/material';
-import React from 'react';
+import { cn } from '@lib/utils';
 
 function LoaderSlots() {
   return (
-    <Stack
-      height={'calc(100vh - 96px)'}
-      p={'var(--space-4)'}
-      spacing={'var(--space-4)'}
-    >
+    <div className={cn('flex flex-col gap-4 p-4')}>
       {Array.from({ length: 10 }).map((_, index) => (
-        <Stack
-          key={index}
-          position={'relative'}
-          height={'50px'}
-          width={'100%'}
-          borderRadius={'10px'}
-          overflow={'hidden'}
-        >
-          <Skeleton />
-        </Stack>
+        <Skeleton className='h-10 w-[100%]' key={index} />
       ))}
-    </Stack>
+    </div>
   );
 }
 

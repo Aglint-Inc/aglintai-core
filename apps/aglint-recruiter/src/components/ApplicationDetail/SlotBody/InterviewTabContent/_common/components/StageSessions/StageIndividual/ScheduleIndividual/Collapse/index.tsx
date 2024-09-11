@@ -1,7 +1,7 @@
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { Briefcase } from 'lucide-react';
+import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
 import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';

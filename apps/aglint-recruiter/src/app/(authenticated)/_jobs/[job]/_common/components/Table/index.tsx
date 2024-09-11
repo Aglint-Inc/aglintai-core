@@ -38,6 +38,9 @@ export const Table = memo(() => {
         <div className='space-y-2 flex-1'>
           <div className='h-4 bg-gray-200 rounded animate-pulse' />
         </div>
+        {cascadeVisibilites.interview && (
+          <div className='h-8 w-20 bg-gray-200 rounded animate-pulse' />
+        )}
         {cascadeVisibilites.disqualified && (
           <div className='h-8 w-20 bg-gray-200 rounded animate-pulse' />
         )}
