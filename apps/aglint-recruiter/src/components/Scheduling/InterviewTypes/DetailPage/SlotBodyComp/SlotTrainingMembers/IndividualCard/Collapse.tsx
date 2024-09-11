@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 // import { TrainingDetailList } from '@devlink2/TrainingDetailList';
-import { TrainingStatus } from '@devlink2/TrainingStatus';
+// import { TrainingStatus } from '@devlink2/TrainingStatus';
 import { Collapse, Stack, Typography } from '@mui/material';
 import { Minus, Plus } from 'lucide-react';
 import React, { useState } from 'react';
@@ -17,6 +17,7 @@ import { supabase } from '@/utils/supabase/client';
 
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
 import { TrainingDetailList } from './TrainingDetailList';
+import { TrainingStatus } from './TraniningStatus';
 
 function CollapseTrainingProgress({
   isCollapseOpen,
@@ -117,11 +118,12 @@ function CollapseTrainingProgress({
           opacity: !isSaving ? 1 : 0.5,
         }}
       >
-        <Stack spacing={'var(--space-2)'}>
+        <div>
           <div className='flex flex-col gap-3 p-4 sm:p-5'>
             <div className='flex flex-col gap-4'>
               {
                 <>
+                  TrainingStatus
                   {shadowProgress.map((prog, ind) => {
                     return (
                       <TrainingDetailList
@@ -285,7 +287,7 @@ function CollapseTrainingProgress({
             </div>
             <div className='hidden flex-row gap-5 pt-4'></div>
           </div>
-        </Stack>
+        </div>
         <Stack
           direction={'row'}
           spacing={'var(--space-2)'}
