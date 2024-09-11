@@ -21,8 +21,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { cn } from '@lib/utils';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Columns, LayoutList } from 'lucide-react';
+import { ChevronDown, ChevronUp, Columns, LayoutList } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -35,6 +34,8 @@ import { RequestCard } from '../_common/Components/RequestCard';
 import RequestListFilter from '../_common/Components/RequestListFilter';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
+import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
+import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -43,9 +44,6 @@ function RequestList() {
     requests: { data, isFetched },
     filters,
   } = useRequests();
-  const { recruiterUser } = useAuthDetails();
-  const { data: requestCount } = useRequestCount();
-
   const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
     ({ sectionName, ...rest }) => ({
       ...rest,
@@ -53,6 +51,12 @@ function RequestList() {
       requests: data?.[sectionName],
     }),
   );
+  const isRequestListEmpty =
+    checkFiltersApplied({ filters }) &&
+    isFetched &&
+    defaults.flatMap((d) => d.requests).length === 0;
+  const { recruiterUser } = useAuthDetails();
+  const { data: requestCount } = useRequestCount();
 
   const renderContent = () => {
     const urgentRequests = defaults.find(
@@ -307,34 +311,6 @@ function RequestList() {
     );
   };
 
-  function formatRequestCountText(
-    urgentCount: number,
-    standardCount: number,
-    dateString: string,
-  ) {
-    const urgentText =
-      urgentCount > 0
-        ? `${urgentCount} urgent request${urgentCount > 1 ? 's' : ''}`
-        : '';
-    const standardText =
-      standardCount > 0
-        ? `${standardCount} standard request${standardCount > 1 ? 's' : ''}`
-        : '';
-
-    let finalText = '';
-
-    if (urgentText && standardText) {
-      finalText = `${urgentText} and ${standardText} ${dateString}.`;
-    } else if (urgentText) {
-      finalText = `${urgentText} ${dateString}.`;
-    } else if (standardText) {
-      finalText = `${standardText} ${dateString}.`;
-    } else {
-      finalText = `No requests ${dateString}.`;
-    }
-
-    return 'You have ' + finalText;
-  }
   const open_request = requestCount?.all_open_request || 0;
   const completed_percentage =
     Math.floor(
@@ -342,19 +318,6 @@ function RequestList() {
         (open_request + requestCount?.card.completed_request)) *
         100,
     ) || 0;
-
-  const isFilterApplied =
-    filters.status.length > 0 ||
-    filters.type.length > 0 ||
-    !!filters.title ||
-    filters.jobs.length > 0 ||
-    filters.applications.length > 0 ||
-    filters.assigneeList.length > 0 ||
-    filters.assignerList.length > 0;
-  const isRequestListEmpty =
-    isFilterApplied &&
-    isFetched &&
-    defaults.flatMap((d) => d.requests).length === 0;
 
   return (
     <>
@@ -366,7 +329,7 @@ function RequestList() {
               {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
             </h1>
             <p className='text-sm text-muted-foreground'>
-              {formatRequestCountText(
+              {formatRequestHeadingText(
                 requestCount?.card.urgent_request ?? 0,
                 requestCount?.card.standard_request ?? 0,
                 'today',

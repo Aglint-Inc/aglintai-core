@@ -93,6 +93,7 @@ export default function ViewRequestDetails() {
     return <ViewRequestDetailsSkeleton />;
   } else if (!isPlaceholderData && status === 'success' && !selectedRequest) {
     return (
+      // we need to fix this empty state
       <Alert variant='destructive'>
         <AlertTitle>Request not found</AlertTitle>
       </Alert>
