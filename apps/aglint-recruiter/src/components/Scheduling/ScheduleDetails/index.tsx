@@ -46,15 +46,9 @@ function SchedulingViewComp() {
     if (data?.schedule_data?.candidates.id) {
       setBreadcrum([
         {
-          name: 'Scheduling',
-          route: checkPermissions(['scheduling_settings_and_reports'])
-            ? ROUTES['/scheduling']() + `?tab=matrics`
-            : ROUTES['/scheduling']() + `?tab=my_interviews`,
-        },
-        {
           name: 'Schedules',
           route: checkPermissions(['scheduling_actions'])
-            ? ROUTES['/scheduling']() + `?tab=schedules`
+            ? ROUTES['/scheduling']() + `?tab=interviews`
             : ROUTES['/scheduling']() + `?tab=my_interviews`,
         },
         {

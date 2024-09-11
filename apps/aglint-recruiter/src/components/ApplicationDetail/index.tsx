@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Application } from '@/context/ApplicationContext';
 
 import BreadCrumb from './_common/components/BreadCrumb';
-import SlotBody from './SlotBody';
+import SlotBody from './_common/components/SlotBody';
 
 function ApplicationDetailComp() {
   const router = useRouter();

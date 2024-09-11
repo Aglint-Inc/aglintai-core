@@ -20,7 +20,7 @@ import toast from '@/utils/toast';
 
 import { updateCandidateRequestAvailability } from '../../_common/functions';
 import { useRequestAvailabilityDetails } from '../../_common/hooks';
-import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './Calendar';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import SelectAvailableOption from './SelectAvailableOption';
