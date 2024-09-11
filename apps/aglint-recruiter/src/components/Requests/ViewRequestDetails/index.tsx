@@ -18,8 +18,8 @@ import { Mail, MapPin, Smartphone } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
-import ScheduleIndividualCard from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
+import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/StageSessions/EditDrawer';
+import ScheduleIndividualCard from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';

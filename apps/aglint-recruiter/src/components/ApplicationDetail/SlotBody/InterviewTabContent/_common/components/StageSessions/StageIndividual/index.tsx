@@ -9,9 +9,9 @@ import {
   setIsScheduleOpen,
   setSelectedSessionIds,
   useApplicationDetailStore,
-} from '../../../../store';
-import { ApplicantDetailStage } from '../../_common/components/ApplicationDetailStage';
-import BreakCard from '../../_common/components/BreakCard';
+} from '../../../../../../store';
+import { ApplicantDetailStage } from '../../ApplicationDetailStage';
+import BreakCard from '../../BreakCard';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
 function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {

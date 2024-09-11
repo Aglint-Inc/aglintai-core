@@ -15,7 +15,7 @@ import { useAllIntegrations } from '@/queries/intergrations';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
-import { GlobalScheduleCard } from '../../../_common/components/GlobalScheduleCard';
+import { GlobalScheduleCard } from '../../../GlobalScheduleCard';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';

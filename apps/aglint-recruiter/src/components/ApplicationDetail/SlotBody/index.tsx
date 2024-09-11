@@ -6,11 +6,11 @@ import { Activity } from '@/job/components/CandidateDrawer/Activity';
 import { Details } from '@/job/components/CandidateDrawer/Details';
 import { Resume } from '@/job/components/CandidateDrawer/Resume';
 
-import CandidateInfo from './CandidateInfo';
+import CandidateInfo from '../_common/components/CandidateInfo';
+import Requests from '../_common/components/Requests';
+import Tabs, { type TabsType } from '../_common/components/Tabs';
 import InterviewTabContent from './InterviewTabContent';
 import { ApplicationDetail } from './InterviewTabContent/_common/components/ApplicationDetail';
-import Requests from './Requests';
-import Tabs, { type TabsType } from './Tabs';
 
 function SlotBody() {
   const router = useRouter();

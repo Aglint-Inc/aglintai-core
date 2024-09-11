@@ -9,11 +9,11 @@ import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
 
-import Progress from '../Progress';
+import Progress from '../../_common/components/Progress';
 import { InterviewStage } from './_common/components/InterviewStage';
-import DialogSchedule from './ScheduleDialog';
-import StageSessions from './StageSessions';
-import SideDrawerEdit from './StageSessions/EditDrawer';
+import DialogSchedule from './_common/components/ScheduleDialog';
+import StageSessions from './_common/components/StageSessions';
+import SideDrawerEdit from './_common/components/StageSessions/EditDrawer';
 
 function InterviewTabContent() {
   const {

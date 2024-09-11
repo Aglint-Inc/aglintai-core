@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { Application } from '@/context/ApplicationContext';
 
-import BreadCrumb from './BreadCrumb';
+import BreadCrumb from './_common/components/BreadCrumb';
 import SlotBody from './SlotBody';
 
 function ApplicationDetailComp() {

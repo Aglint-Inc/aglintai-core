@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 
-import { setSelectedSessionIds } from '../store';
-import StageIcon from './InterviewTabContent/_common/components/StageIcon';
-import { StageListCard } from './InterviewTabContent/_common/components/StageListCard';
+import StageIcon from '../../SlotBody/InterviewTabContent/_common/components/StageIcon';
+import { StageListCard } from '../../SlotBody/InterviewTabContent/_common/components/StageListCard';
+import { setSelectedSessionIds } from '../../store';
 
 function Progress() {
   const router = useRouter();
