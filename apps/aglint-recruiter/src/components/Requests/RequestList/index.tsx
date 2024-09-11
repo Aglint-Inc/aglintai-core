@@ -30,12 +30,12 @@ import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestListFilter from '../_common/components/RequestListFilter';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
 import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
-import RequestListFilter from '../_common/Components/RequestListFilter';
-import { RequestCard } from '../_common/Components/RequestCard';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -75,67 +75,68 @@ function RequestList() {
     ) => (
       <div key={section.sectionName}>
         {isFetched ? (
-          <div style={{ paddingLeft: '3rem', paddingRight: '3rem'}}>
-          <div className='container'>
-          <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
-            <p>{capitalizeFirstLetter(section.sectionName)}</p>
-            {section.sectionName === 'completed_request' && (
-              <Button variant='ghost'>
-                <Link
-                  href={{
-                    pathname: '/requests/history',
-                  }}
-                >
-                  View all
-                </Link>
-              </Button>
-            )}
-          </div>
-          </div>
+          <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+            <div className='container'>
+              <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
+                <p>{capitalizeFirstLetter(section.sectionName)}</p>
+                {section.sectionName === 'completed_request' && (
+                  <Button variant='ghost'>
+                    <Link
+                      href={{
+                        pathname: '/requests/history',
+                      }}
+                    >
+                      View all
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         ) : (
           <Skeleton className='h-6 w-40 mb-2' />
         )}
-        <div
-        className='flex items-start w-full mb-10'>
-        <div className=''>
-        <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
-          <div style={{ paddingLeft: '3rem', paddingRight: '3rem'}}>
-          <div className='container'>
-          <div className='flex'>
-            {isFetched ? (
-              section.requests.length > 0 ? (
-                section.requests.map((props, i) => (
-                  <div className='pr-6'>
-                  <div
-                    style={{width:'650px'}}
-                    key={props.id ?? i}
-                    className={`flex-shrink-0  ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
-                  >
-                    <RequestProvider request_id={props.id}>
-                      <RequestCard {...{ ...props, isExpanded: false }} />
-                    </RequestProvider>
+        <div className='flex items-start w-full mb-10'>
+          <div className=''>
+            <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
+              <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+                <div className='container'>
+                  <div className='flex'>
+                    {isFetched ? (
+                      section.requests.length > 0 ? (
+                        section.requests.map((props, i) => (
+                          <div className='pr-6' key={i}>
+                            <div
+                              style={{ width: '650px' }}
+                              key={props.id ?? i}
+                              className={`flex-shrink-0  ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
+                            >
+                              <RequestProvider request_id={props.id}>
+                                <RequestCard
+                                  {...{ ...props, isExpanded: false }}
+                                />
+                              </RequestProvider>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className='w-full text-center text-muted-foreground'>
+                          No requests in this section
+                        </div>
+                      )
+                    ) : (
+                      <>
+                        <Skeleton className='h-[200px] w-[300px] mr-4' />
+                        <Skeleton className='h-[200px] w-[300px] mr-4' />
+                        <Skeleton className='h-[200px] w-[300px] mr-4' />
+                      </>
+                    )}
                   </div>
-                  </div>
-                ))
-              ) : (
-                <div className='w-full text-center text-muted-foreground'>
-                  No requests in this section
                 </div>
-              )
-            ) : (
-              <>
-                <Skeleton className='h-[200px] w-[300px] mr-4' />
-                <Skeleton className='h-[200px] w-[300px] mr-4' />
-                <Skeleton className='h-[200px] w-[300px] mr-4' />
-              </>
-            )}
+              </div>
+              <ScrollBar orientation='horizontal' />
+            </ScrollArea>
           </div>
-          </div>
-          </div>
-          <ScrollBar orientation='horizontal' />
-        </ScrollArea>
-        </div>
         </div>
       </div>
     );
@@ -264,64 +265,64 @@ function RequestList() {
         {urgentRequests &&
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
-          <div style={{paddingLeft:"3rem" , paddingRight:"3rem"}}>
+        <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
           {/* <div   className={`${view === 'kanban' ? 'px-[5rem]' : 'px-[5rem]'}`} > */}
-        <div   className={`${view === 'kanban' ? 'container' : 'container'}`} >
-        <div
-          className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
-        >
-          {otherSections.map(({ requests, sectionName }) => (
+          <div className={`${view === 'kanban' ? 'container' : 'container'}`}>
             <div
-              key={sectionName}
-              className={
-                view === 'kanban'
-                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-full' : 'w-full'}`
-                  : ''
-              }
+              className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
             >
-              {isFetched ? (
-                view === 'list' ? (
-                  renderListSection(sectionName, requests)
-                ) : (
-                  <>
-                    <div className='text-md font-semibold mb-2'>
-                      {capitalizeFirstLetter(sectionName)}
-                      <Badge variant='outline' className='ml-2'>
-                        {requests.length}
-                      </Badge>
-                    </div>
-                    {requests.length > 0 ? (
-                      <div className='flex flex-col gap-4'>
-                        {requests.map((props, i) => (
-                          <RequestProvider
-                            key={props.id ?? i}
-                            request_id={props.id}
-                          >
-                            <RequestCard
-                              {...{ ...props, isExpanded: false }}
-                              mode='column-view'
-                            />
-                          </RequestProvider>
-                        ))}
-                      </div>
+              {otherSections.map(({ requests, sectionName }) => (
+                <div
+                  key={sectionName}
+                  className={
+                    view === 'kanban'
+                      ? `flex-shrink-0 ${requests.length === 0 ? 'w-full' : 'w-full'}`
+                      : ''
+                  }
+                >
+                  {isFetched ? (
+                    view === 'list' ? (
+                      renderListSection(sectionName, requests)
                     ) : (
-                      <div className='text-center text-muted-foreground p-4 border rounded-md'>
-                        No requests in this section
-                      </div>
-                    )}
-                  </>
-                )
-              ) : (
-                <>
-                  <Skeleton className='h-6 w-40 mb-2' />
-                  <Skeleton className='h-[200px] w-full mb-4' />
-                  <Skeleton className='h-[200px] w-full mb-4' />
-                </>
-              )}
+                      <>
+                        <div className='text-md font-semibold mb-2'>
+                          {capitalizeFirstLetter(sectionName)}
+                          <Badge variant='outline' className='ml-2'>
+                            {requests.length}
+                          </Badge>
+                        </div>
+                        {requests.length > 0 ? (
+                          <div className='flex flex-col gap-4'>
+                            {requests.map((props, i) => (
+                              <RequestProvider
+                                key={props.id ?? i}
+                                request_id={props.id}
+                              >
+                                <RequestCard
+                                  {...{ ...props, isExpanded: false }}
+                                  mode='column-view'
+                                />
+                              </RequestProvider>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className='text-center text-muted-foreground p-4 border rounded-md'>
+                            No requests in this section
+                          </div>
+                        )}
+                      </>
+                    )
+                  ) : (
+                    <>
+                      <Skeleton className='h-6 w-40 mb-2' />
+                      <Skeleton className='h-[200px] w-full mb-4' />
+                      <Skeleton className='h-[200px] w-full mb-4' />
+                    </>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        </div>
+          </div>
         </div>
 
         {completedRequests &&

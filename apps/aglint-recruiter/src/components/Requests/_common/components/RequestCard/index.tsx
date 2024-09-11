@@ -10,8 +10,7 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { cn } from '@lib/utils';
-import { Bot, Calendar, StickyNote, User, UserCircle } from 'lucide-react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronUp, StickyNote, User, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
