@@ -56,18 +56,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
       >
         <Link href={`/requests/${props.id}`} passHref className='flex-grow'>
           <div className='flex items-center space-x-2'>
-            {props?.request_note[0]?.note && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <StickyNote className='w-4 h-4 text-yellow-500' />
-                  </TooltipTrigger>
-                  <TooltipContent className='max-w-xs p-2'>
-                    <p className='text-sm'>{props.request_note[0].note}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+           
             <Label
               className={cn(
                 'text-base break-words whitespace-normal line-clamp-1 flex-grow',
@@ -119,7 +108,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
             <Badge
               variant='secondary'
               className={cn(
-                'capitalize text-xs px-1.5 py-0.5',
+                'capitalize text-xs px-3 py-0.5',
                 mode === 'compact-list' && 'text-xs px-1.5 py-0.5',
                 {
                   'bg-purple-100/50 text-purple-800/90 border-purple-300':
@@ -138,7 +127,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
             <Badge
               variant='outline'
               className={cn(
-                'capitalize text-xs px-1.5 py-0.5',
+                'capitalize text-xs px-3 py-0.5',
                 getStatusColor({ status: props.status }),
                 mode === 'compact-list' && 'text-xs px-1.5 py-0.5',
                 {
@@ -155,6 +144,20 @@ export const RequestCard = ({ ...props }: RequestProps) => {
             >
               {capitalizeFirstLetter(props.status)}
             </Badge>
+             {props?.request_note[0]?.note && (
+             <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge  variant='outline' className='capitalize text-xs px-3 py-0.5'> <StickyNote className='w-3 h-3 mr-1' />Note</Badge>
+                   
+                  </TooltipTrigger>
+                  <TooltipContent className='max-w-xs p-2'>
+                    <p className='text-sm'>{props.request_note[0].note}</p>
+                  
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+             )}
             <div className='space-y-3 flex items-start'>
               <InfoItem
                 icon={<></>}
