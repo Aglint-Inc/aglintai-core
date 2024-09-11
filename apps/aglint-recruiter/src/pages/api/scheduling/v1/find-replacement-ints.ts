@@ -105,6 +105,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         meeting_detail.confirmed_candidate_tz,
       ),
     );
+    //NOTE: explain
     const replacement_ints: APIRespFindReplaceMentInts = time_filtered_slots
       .filter(
         (slot) =>

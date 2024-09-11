@@ -85,10 +85,10 @@ export const useRequestsActions = () => {
   const handleAsyncUpdateRequest = useCallback(
     async (payload: Parameters<typeof asyncUpdateRequest>[0]) => {
       try {
-        await asyncUpdateRequest(payload);
         await axios.post('/api/request/execute-workflow', {
           request_id: payload.payload.requestId,
         });
+        await asyncUpdateRequest(payload);
       } catch {
         //
       }
