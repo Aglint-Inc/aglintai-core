@@ -1,11 +1,11 @@
-import { PiplelineTab } from '@devlink3/PiplelineTab';
-import { CheckCircle, CircleCheck, Network } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 
-import { setSelectedSessionIds } from '../store';
+import StageIcon from '../../SlotBody/InterviewTabContent/_common/components/StageIcon';
+import { StageListCard } from '../../SlotBody/InterviewTabContent/_common/components/StageListCard';
+import { setSelectedSessionIds } from '../../store';
 
 function Progress() {
   const router = useRouter();
@@ -41,28 +41,23 @@ function Progress() {
         ).length;
 
         return (
-          <PiplelineTab
+          <StageListCard
             key={stage.interview_plan.id}
             textStageName={`Stage ${index + 1} ${stage.interview_plan.name}`}
             slotIcon={
-              isNotScheduled ? (
-                <CircleCheck className='text-neutral-500' />
-              ) : isCompleted ? (
-                <CheckCircle className='text-green-500' />
-              ) : (
-                <Network className='text-blue-500' />
-              )
+              <StageIcon
+                isNotScheduled={isNotScheduled}
+                isCompleted={isCompleted}
+              />
             }
-            onClickTab={{
-              onClick: () => {
-                setSelectedSessionIds([]);
-                const currentQuery = { ...router.query };
-                currentQuery.stage = stage.interview_plan.id;
-                router.replace({
-                  pathname: router.pathname,
-                  query: currentQuery,
-                });
-              },
+            onClickTab={() => {
+              setSelectedSessionIds([]);
+              const currentQuery = { ...router.query };
+              currentQuery.stage = stage.interview_plan.id;
+              router.replace({
+                pathname: router.pathname,
+                query: currentQuery,
+              });
             }}
             isActive={selectedStageId === stage.interview_plan.id}
             color={

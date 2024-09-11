@@ -116,18 +116,20 @@ function Tabs() {
   }, [left, right]);
 
   return (
-    <UITabWrapper>
-      {allTabs
-        .filter((tab) => tab.isVisible)
-        .map((tabItem, index) => (
-          <UITab
-            textLabel={tabItem.textLabel}
-            onClickPill={tabItem.onClick}
-            isPillActive={tabItem.tab === tab}
-            key={index}
-          />
-        ))}
-    </UITabWrapper>
+    <div>
+      <UITabWrapper>
+        {allTabs
+          .filter((tab) => tab.isVisible)
+          .map((tabItem, index) => (
+            <UITab
+              textLabel={tabItem.textLabel}
+              onClickPill={tabItem.onClick}
+              isPillActive={tabItem.tab === tab}
+              key={index}
+            />
+          ))}
+      </UITabWrapper>
+    </div>
   );
 }
 

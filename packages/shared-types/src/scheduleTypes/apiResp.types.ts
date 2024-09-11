@@ -71,7 +71,7 @@ export type SessionInterviewerApiRespType = Pick<
 > &
   Pick<
     InterviewerSessionRelation,
-    'training_type' | 'interviewer_type' | 'interview_module_relation_id' | 'id'
+    'training_type' | 'interviewer_type' | 'interview_module_relation_id'
   > & { int_tz: string };
 // planCombination reponse types
 export type PlanCombinationRespType = {

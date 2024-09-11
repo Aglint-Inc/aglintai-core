@@ -1,7 +1,8 @@
-import { ApplicantInfoBox } from '@devlink2/ApplicantInfoBox';
 import { User } from 'lucide-react';
 
 import { useApplication } from '@/context/ApplicationContext';
+
+import { ApplicantInfoBox } from '../../SlotBody/InterviewTabContent/_common/components/ApplicationInfo';
 
 function CandidateInfo() {
   const {
@@ -21,15 +22,13 @@ function CandidateInfo() {
             textEmail={applicationDetail.email}
             isRoleVisible={Boolean(applicationDetail.current_job_title)}
             textRole={applicationDetail.current_job_title || '--'}
-            slotImage={<User />}
+            slotImage={<User size={20} />}
             isLinkedInVisible={!!resume.resume_json?.basics.linkedIn}
-            onClickLinkedIn={{
-              onClick: () => {
-                window.open(
-                  `https://${resume.resume_json?.basics.linkedIn}`,
-                  '_blank',
-                );
-              },
+            onClickLinkedIn={() => {
+              window.open(
+                `https://${resume.resume_json?.basics.linkedIn}`,
+                '_blank',
+              );
             }}
             textLocation={applicationDetail.city || '--'}
             textDepartment={'--'}
