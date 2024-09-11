@@ -29,16 +29,12 @@ export const applicationQuery = {
   tabs: ({
     job_id,
     placeholderData,
-    isAssessmentEnabled,
     isSchedulingEnabled,
-    isScreeningEnabled,
     isScoringEnabled,
     enabled,
   }: Omit<ToggleParams, 'application_id'> &
     Partial<{
-      isAssessmentEnabled: boolean;
       isSchedulingEnabled: boolean;
-      isScreeningEnabled: boolean;
       isScoringEnabled: boolean;
     }>) =>
     queryOptions({
@@ -46,16 +42,11 @@ export const applicationQuery = {
       enabled: enabled && !!job_id,
       gcTime: job_id ? 1 * 60_000 : 0,
       queryKey: [...applicationQuery.all({ job_id }).queryKey, 'tabs'] as const,
-      queryFn: async () => {
-        const job = await getJobTabs({ job_id });
-        return getActiveSection({
-          isAssessmentEnabled,
+      queryFn: async () =>
+        getActiveSection({
           isSchedulingEnabled,
-          isScreeningEnabled,
           isScoringEnabled,
-          job,
-        });
-      },
+        }),
     }),
   meta: ({ application_id, job_id, placeholderData }: Params) =>
     queryOptions({
@@ -163,16 +154,6 @@ type Params = ApplicationAllQueryPrerequistes & {
 };
 
 type ToggleParams = { enabled: boolean } & Params;
-
-const getJobTabs = async ({ job_id }: Pick<Params, 'job_id'>) =>
-  (
-    await supabase
-      .from('public_jobs')
-      .select('phone_screen_enabled, assessment')
-      .eq('id', job_id)
-      .single()
-      .throwOnError()
-  ).data;
 
 const getApplicationMeta = async ({
   application_id,
