@@ -394,9 +394,9 @@ export function RequestCandidate({
       </Card>
       <div className='space-y-2'>
         <p>
-          To proceed with requesting the candidate's availability, please click
-          on the button below. Upon doing so, an email containing the following
-          message will be sent to the candidate:
+          To proceed with requesting the candidate&apos;s availability, please
+          click on the button below. Upon doing so, an email containing the
+          following message will be sent to the candidate:
         </p>
         <div>{slotEmailTemplateHolder ?? slotEmailTemplateHolder}</div>
       </div>
