@@ -2,10 +2,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { RefreshCw, Trash } from 'lucide-react';
+import { Edit, Loader, Trash } from 'lucide-react';
 import React from 'react';
 
-import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
@@ -30,7 +29,7 @@ const EventNode = ({
 }) => {
   const { request_workflow } = useRequest();
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
-  const [onHover, setOnHover] = React.useState(false);
+  const [_onHover, setOnHover] = React.useState(false);
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
   if (eventProg) {
@@ -69,13 +68,7 @@ const EventNode = ({
           }
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
-            <div
-              className={`flex flex-row gap-1 ${
-                onHover
-                  ? 'opacity-100 cursor-pointer'
-                  : 'opacity-0 cursor-default'
-              }`}
-            >
+            <div className={`flex flex-row gap-1`}>
               <Button
                 variant='outline'
                 size='sm'
@@ -84,20 +77,22 @@ const EventNode = ({
                   setShowEditDialog(true);
                 }}
               >
-                <RefreshCw className='h-4 w-4' />
+                <Edit className='h-4 w-4 mr-2' />
+                Edit
               </Button>
               <Button
                 variant='outline'
                 size='sm'
                 onClick={handleDeleteScheduleAction}
               >
-                <Trash className='h-4 w-4 text-destructive' />
+                <Trash className='h-4 w-4 mr-2 text-destructive' />
+                Remove
               </Button>
             </div>
           }
           slotLoader={
             tense === 'present' ? (
-              <LottieAnimations animation='loading_spinner' size={1.5} />
+              <Loader className='h-6 w-6 animate-spin text-gray-500' />
             ) : undefined
           }
           slotAiText={

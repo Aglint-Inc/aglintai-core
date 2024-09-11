@@ -16,7 +16,7 @@ interface ScheduleProgressProps {
 function ScheduleProgressTracker({
   status,
   slotLeftIcon,
-  textProgress = 'This is a global text component',
+  textProgress = '',
   slotRightIcon,
   slotAiText,
   slotButton,
@@ -24,8 +24,8 @@ function ScheduleProgressTracker({
   isAiTextVisible = true,
 }: ScheduleProgressProps) {
   return (
-    <div className='flex items-center space-x-4'>
-      <div className='relative'>
+    <div className='flex items-start space-x-4'>
+      <div className='relative mt-1'>
         {slotLoader ? (
           slotLoader
         ) : (
@@ -45,14 +45,14 @@ function ScheduleProgressTracker({
           </>
         )}
       </div>
-      <div className='flex-1'>
+      <div className='flex flex-col items-start'>
         <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            {slotLeftIcon}
-            <span>{textProgress}</span>
+          <div className='flex items-start space-x-2'>
+            <div>{slotLeftIcon}</div>
+            <p className='flex-1'>{textProgress}</p>
           </div>
-          {slotRightIcon}
         </div>
+        <div className='mt-4 mb-8'>{slotRightIcon}</div>
         {isAiTextVisible && slotAiText && (
           <div className='mt-1'>{slotAiText}</div>
         )}

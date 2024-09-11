@@ -1,9 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { WandSparkles } from 'lucide-react';
+import { Lightbulb, WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -266,18 +267,28 @@ const WActionMenu = () => {
                 ),
             )}
           >
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => {
-                setEditTrigger('onReceivingAvailReq');
-                setShowEditDialog(true);
-              }}
-              className='mb-4'
+            <Alert
+              variant='default'
+              className='bg-purple-100 border-purple-200 mb-4'
             >
-              <WandSparkles className='mr-2 h-4 w-4' />
-              Add Automation
-            </Button>
+              <Lightbulb className='h-4 w-4 text-purple-500' />
+              <AlertDescription className='flex flex-col items-end'>
+                <p className='mb-4 w-full'>
+                  Automate booking when availability is received
+                </p>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    setEditTrigger('onReceivingAvailReq');
+                    setShowEditDialog(true);
+                  }}
+                >
+                  <WandSparkles className='mr-2 h-4 w-4' />
+                  Add Automation
+                </Button>
+              </AlertDescription>
+            </Alert>
           </ShowCode.When>
           <ShowCode.When
             isTrue={Boolean(
