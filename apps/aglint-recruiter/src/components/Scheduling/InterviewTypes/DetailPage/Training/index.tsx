@@ -7,7 +7,6 @@ import { Text } from '@devlink/Text';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@devlink2/ModuleSetting';
-import { TrainingSetting } from '@devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@devlink2/TrainingSettingItem';
 import { Stack, Typography } from '@mui/material';
 import _ from 'lodash';
@@ -28,6 +27,7 @@ import { supabase } from '@/utils/supabase/client';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';
+import { TrainingSetting } from '../../_common/TraninigSetting';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { type ModuleType } from '../../types';
 import SlotTrainingMembers from '../SlotBodyComp/SlotTrainingMembers';
