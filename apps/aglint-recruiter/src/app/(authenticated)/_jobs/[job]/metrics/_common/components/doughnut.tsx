@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { NoData } from '@devlink3/NoData';
+
 import { Stack, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -18,6 +18,7 @@ import { useJobDashboard } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 
 import { type DashboardGraphOptions } from '.';
+import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
@@ -102,7 +103,7 @@ const DashboardDoughnutChart: FC<{
   if (status === 'pending') return <Loader />;
   if (status === 'error') return <>Error</>;
   const locations = locationPool?.[option] ?? null;
-  if (!locations) return <NoData />;
+  if (!locations) return <NoDataAvailable />;
   const totalCount = Object.values(processing_count).reduce((acc, curr) => {
     acc += curr;
     return acc;

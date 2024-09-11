@@ -6,7 +6,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { EmptyState } from '@devlink2/EmptyState';
 import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
 import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
@@ -273,16 +272,16 @@ export function InterviewTypes() {
                             backgroundColor: 'var(--neutral-2)', // replace with your desired background color
                           }}
                         >
-                          <EmptyState
-                            slotIcons={
-                              <Icon
-                                height='60'
-                                width='80'
-                                variant='EmptyState'
-                              />
-                            }
-                            textDescription={'No interview types found.'}
-                          />
+                          <div className="flex flex-col items-center justify-center space-y-4">
+                            <Icon
+                              height='60'
+                              width='80'
+                              variant='EmptyState'
+                            />
+                            <p className="text-sm ">
+                              No interview types found.
+                            </p>
+                          </div>
                         </Box>
                       </Stack>
                     )}

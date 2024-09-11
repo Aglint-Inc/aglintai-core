@@ -9,7 +9,6 @@ import { GraphBlock } from '@devlink3/GraphBlock';
 import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
 import { JobRole } from '@devlink3/JobRole';
 import { JobsBanner } from '@devlink3/JobsBanner';
-import { NoData } from '@devlink3/NoData';
 import { PipeLine } from '@devlink3/PipeLine';
 import { RoleList } from '@devlink3/RoleList';
 import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
@@ -43,6 +42,7 @@ import { capitalize, capitalizeAll } from '@/utils/text/textUtils';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
+import { NoDataAvailable } from './nodata';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 export const JobDashboard = () => {
@@ -323,7 +323,7 @@ const Schedules = () => {
   const { push } = useRouter();
   if (status === 'pending') return <Loader />;
   if (status === 'error') return <>Error</>;
-  if (data.length === 0) return <NoData />;
+  if (data.length === 0) return <NoDataAvailable />;
   const cards = data
     .sort(
       (a, b) =>
