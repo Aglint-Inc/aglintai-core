@@ -1,4 +1,4 @@
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -20,7 +20,7 @@ import {
   Edit2,
   Eye,
   MapPin,
-  User
+  User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -36,7 +36,7 @@ import {
   setTrainingToggle,
 } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer/store';
 import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
-import { UIButton } from '@/components/Common/UIButton';
+import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -54,7 +54,6 @@ import {
 } from '../_common/constant';
 import { useMeetingList } from '../_common/hooks';
 import CandidateAvailability from './CandidateAvailability';
-import { setCandidateAvailabilityDrawerOpen } from './CandidateAvailability/store';
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
 import RecentRequests from './Components/RecentRequests';
@@ -62,13 +61,9 @@ import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
+import RequestDecline from './RequestNextSteps/RequestDecline';
+import ScheduleOptions from './RequestNextSteps/ScheduleOptions';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { useSelfSchedulingDrawer } from './SelfSchedulingDrawer/hooks';
-import {
-  initialFilters,
-  setIsSelfScheduleDrawerOpen,
-  useSelfSchedulingFlowStore,
-} from './SelfSchedulingDrawer/store';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -78,10 +73,6 @@ export default function ViewRequestDetails() {
     handleAsyncUpdateRequest,
   } = useRequests();
   const { data: sessions, status, refetch: refetchMeetings } = useMeetingList();
-  const { findAvailibility } = useSelfSchedulingDrawer({
-    refetch: refetchMeetings,
-  });
-  const { fetchingPlan } = useSelfSchedulingFlowStore();
 
   const { data: members } = useMemberList();
 
@@ -420,33 +411,21 @@ export default function ViewRequestDetails() {
               <AlertDescription>
                 Here is your next step on the request.
               </AlertDescription>
+
               <div className='flex flex-row gap-2 justify-end mt-4'>
-                <UIButton
-                  onClick={() => {
-                    setCandidateAvailabilityDrawerOpen(true);
-                  }}
-                  variant='outline'
-                  size='sm'
+                <ShowCode.When
+                  isTrue={
+                    selectedRequest.type === 'schedule_request' ||
+                    selectedRequest.type === 'reschedule_request'
+                  }
                 >
-                  Get Availability
-                </UIButton>
-                <UIButton
-                  isLoading={fetchingPlan}
-                  size='sm'
-                  onClick={async () => {
-                    if (fetchingPlan) return;
-                    await findAvailibility({
-                      filters: initialFilters,
-                      dateRange: {
-                        start_date: dayjsLocal().toISOString(),
-                        end_date: dayjsLocal().add(7, 'day').toISOString(),
-                      },
-                    });
-                    setIsSelfScheduleDrawerOpen(true);
-                  }}
+                  <ScheduleOptions />
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={selectedRequest.type === 'decline_request'}
                 >
-                  Send Self Scheduling
-                </UIButton>
+                  <RequestDecline />
+                </ShowCode.When>
               </div>
             </Alert>
 
