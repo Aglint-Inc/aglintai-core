@@ -19,7 +19,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { getStatusColor } from '../../utils/getStatusColor';
+import { getStatusColor } from '../../utils';
 import MenuOptions from './MenuOptions';
 
 type RequestProps = RequestType & {

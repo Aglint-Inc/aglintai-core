@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { Text } from '@devlink/Text';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
 import { Stack } from '@mui/material';
@@ -25,12 +24,9 @@ function Requests({ session_id }) {
   // const schedule = data?.schedule_data;
   return (
     <Stack spacing={'var(--space-2)'}>
-      <Text
-        weight={'medium'}
-        color='neutral'
-        content={'Request History'}
-        size={2}
-      />
+      <p className="font-semibold text-muted-foreground">
+        Request History
+      </p>
       {isLoading ? (
         <Loader />
       ) : (
@@ -127,17 +123,10 @@ function Requests({ session_id }) {
                     );
                   }}
                 >
-                  <Text
-                    weight={'medium'}
-                    content={getRequestTitle({
-                      title: request.title,
-                      first_name: schedule.candidates.first_name,
-                      last_name: schedule.candidates.last_name,
-                    })}
-                  />
+                 
 
                   <Stack direction={'row'} spacing={'var(--space-2)'}>
-                    <Text content={'Assigned to'} color={'neutral'} />
+                    
                     <AvatarWithName
                       slotAvatar={
                         <MuiAvatar

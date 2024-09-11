@@ -1,6 +1,5 @@
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { InterviewStage } from '@devlink3/InterviewStage';
 import { Stack } from '@mui/material';
 import { ExternalLink } from 'lucide-react';
 
@@ -10,10 +9,11 @@ import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
 
-import Progress from '../Progress';
-import DialogSchedule from './ScheduleDialog';
-import StageSessions from './StageSessions';
-import SideDrawerEdit from './StageSessions/EditDrawer';
+import Progress from '../../_common/components/Progress';
+import { InterviewStage } from './_common/components/InterviewStage';
+import DialogSchedule from './_common/components/ScheduleDialog';
+import StageSessions from './_common/components/StageSessions';
+import SideDrawerEdit from './_common/components/StageSessions/EditDrawer';
 
 function InterviewTabContent() {
   const {
@@ -49,7 +49,7 @@ function InterviewTabContent() {
         <TabsContent value='internal'>
           <InterviewStage
             slotInterviewStage={<StageSessions />}
-            slotPiplineTab={<Progress />}
+            slotPipelineTab={<Progress />}
           />
         </TabsContent>
         <TabsContent value='candidate'>
@@ -69,7 +69,6 @@ function InterviewTabContent() {
           />
         </TabsContent>
       </Tabs>
-
       <DialogSchedule />
     </>
   );

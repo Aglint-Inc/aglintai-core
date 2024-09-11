@@ -5,7 +5,7 @@
  * @link https://tkdodo.eu/blog/zustand-and-react-context
  *
  */
-import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
@@ -15,7 +15,7 @@ type Checklist = DatabaseTable['applications']['id'][];
 
 type Locations = ReturnType<typeof nestedObjectToArray>;
 
-type ActionPopup = DatabaseEnums['application_status'];
+type ActionPopup = DatabaseTable['applications']['status'];
 
 type States = {
   initial: {

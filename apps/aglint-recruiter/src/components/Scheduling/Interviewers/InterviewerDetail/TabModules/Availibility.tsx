@@ -3,7 +3,6 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { Text } from '@devlink/Text';
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
@@ -206,7 +205,7 @@ function Availibility({
           justifyContent={'space-between'}
           spacing={1}
         >
-          <Text weight={'medium'} content='Time Zone' />
+          <p className="font-semibold">Time Zone</p>
           <Stack width={'47px'} height={'32px'}>
             {isHover && (
               <UIButton

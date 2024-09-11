@@ -300,7 +300,6 @@ export type Database = {
       applications: {
         Row: {
           applied_at: string
-          assessment_id: string | null
           bookmarked: boolean
           candidate_file_id: string | null
           candidate_id: string | null
@@ -322,12 +321,11 @@ export type Database = {
           retry: number
           score_json: Json | null
           source: Database["public"]["Enums"]["application_source"]
-          status: Database["public"]["Enums"]["application_status"]
+          status: string
           status_emails_sent: Json
         }
         Insert: {
           applied_at?: string
-          assessment_id?: string | null
           bookmarked?: boolean
           candidate_file_id?: string | null
           candidate_id?: string | null
@@ -349,12 +347,11 @@ export type Database = {
           retry?: number
           score_json?: Json | null
           source?: Database["public"]["Enums"]["application_source"]
-          status?: Database["public"]["Enums"]["application_status"]
+          status?: string
           status_emails_sent?: Json
         }
         Update: {
           applied_at?: string
-          assessment_id?: string | null
           bookmarked?: boolean
           candidate_file_id?: string | null
           candidate_id?: string | null
@@ -376,17 +373,10 @@ export type Database = {
           retry?: number
           score_json?: Json | null
           source?: Database["public"]["Enums"]["application_source"]
-          status?: Database["public"]["Enums"]["application_status"]
+          status?: string
           status_emails_sent?: Json
         }
         Relationships: [
-          {
-            foreignKeyName: "applications_assessment_id_fkey"
-            columns: ["assessment_id"]
-            isOneToOne: false
-            referencedRelation: "assessment_results"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "applications_candidate_file_id_fkey"
             columns: ["candidate_file_id"]
@@ -430,252 +420,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      assessment: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          level: Database["public"]["Enums"]["question_level"]
-          mode: Database["public"]["Enums"]["assessment_mode"]
-          recruiter_id: string
-          title: string | null
-          type: Database["public"]["Enums"]["template_type"] | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          level?: Database["public"]["Enums"]["question_level"]
-          mode?: Database["public"]["Enums"]["assessment_mode"]
-          recruiter_id: string
-          title?: string | null
-          type?: Database["public"]["Enums"]["template_type"] | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          level?: Database["public"]["Enums"]["question_level"]
-          mode?: Database["public"]["Enums"]["assessment_mode"]
-          recruiter_id?: string
-          title?: string | null
-          type?: Database["public"]["Enums"]["template_type"] | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "assessment_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      assessment_job_relation: {
-        Row: {
-          assessment_id: string
-          created_at: string
-          id: string
-          job_id: string | null
-        }
-        Insert: {
-          assessment_id: string
-          created_at?: string
-          id?: string
-          job_id?: string | null
-        }
-        Update: {
-          assessment_id?: string
-          created_at?: string
-          id?: string
-          job_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "assessment_job_relation_assessment_id_fkey"
-            columns: ["assessment_id"]
-            isOneToOne: false
-            referencedRelation: "assessment"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "assessment_job_relation_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "job_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "assessment_job_relation_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      assessment_question: {
-        Row: {
-          answer: Json | null
-          assessment_id: string
-          created_at: string
-          description: Json | null
-          duration: number | null
-          id: string
-          level: Database["public"]["Enums"]["question_level"] | null
-          order: number
-          parent_question_id: string | null
-          question: Json | null
-          required: boolean
-          type: Database["public"]["Enums"]["question_type"]
-        }
-        Insert: {
-          answer?: Json | null
-          assessment_id: string
-          created_at?: string
-          description?: Json | null
-          duration?: number | null
-          id?: string
-          level?: Database["public"]["Enums"]["question_level"] | null
-          order?: number
-          parent_question_id?: string | null
-          question?: Json | null
-          required?: boolean
-          type?: Database["public"]["Enums"]["question_type"]
-        }
-        Update: {
-          answer?: Json | null
-          assessment_id?: string
-          created_at?: string
-          description?: Json | null
-          duration?: number | null
-          id?: string
-          level?: Database["public"]["Enums"]["question_level"] | null
-          order?: number
-          parent_question_id?: string | null
-          question?: Json | null
-          required?: boolean
-          type?: Database["public"]["Enums"]["question_type"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "assessment_question_assessment_id_fkey"
-            columns: ["assessment_id"]
-            isOneToOne: false
-            referencedRelation: "assessment"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_assessment_question_parent_question_id_fkey"
-            columns: ["parent_question_id"]
-            isOneToOne: false
-            referencedRelation: "question_bank"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      assessment_results: {
-        Row: {
-          application_id: string
-          assessment_id: string | null
-          created_at: string
-          duration: number | null
-          id: string
-          is_submitted: boolean | null
-          responses: Json[] | null
-          result: Json[] | null
-        }
-        Insert: {
-          application_id: string
-          assessment_id?: string | null
-          created_at?: string
-          duration?: number | null
-          id?: string
-          is_submitted?: boolean | null
-          responses?: Json[] | null
-          result?: Json[] | null
-        }
-        Update: {
-          application_id?: string
-          assessment_id?: string | null
-          created_at?: string
-          duration?: number | null
-          id?: string
-          is_submitted?: boolean | null
-          responses?: Json[] | null
-          result?: Json[] | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "assessment_results_application_id_fkey"
-            columns: ["application_id"]
-            isOneToOne: false
-            referencedRelation: "application_status_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "assessment_results_application_id_fkey"
-            columns: ["application_id"]
-            isOneToOne: false
-            referencedRelation: "application_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "assessment_results_application_id_fkey"
-            columns: ["application_id"]
-            isOneToOne: false
-            referencedRelation: "applications"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "assessment_results_application_id_fkey"
-            columns: ["application_id"]
-            isOneToOne: false
-            referencedRelation: "candidate_applications_view"
-            referencedColumns: ["application_id"]
-          },
-          {
-            foreignKeyName: "public_assessment_results_assessment_id_fkey"
-            columns: ["assessment_id"]
-            isOneToOne: false
-            referencedRelation: "assessment"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      assessment_template: {
-        Row: {
-          created_at: string
-          description: string | null
-          embeddings: string | null
-          id: string
-          level: Database["public"]["Enums"]["question_level"]
-          mode: Database["public"]["Enums"]["assessment_mode"]
-          title: string | null
-          type: Database["public"]["Enums"]["template_type"] | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          embeddings?: string | null
-          id?: string
-          level?: Database["public"]["Enums"]["question_level"]
-          mode?: Database["public"]["Enums"]["assessment_mode"]
-          title?: string | null
-          type?: Database["public"]["Enums"]["template_type"] | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          embeddings?: string | null
-          id?: string
-          level?: Database["public"]["Enums"]["question_level"]
-          mode?: Database["public"]["Enums"]["assessment_mode"]
-          title?: string | null
-          type?: Database["public"]["Enums"]["template_type"] | null
-        }
-        Relationships: []
       }
       candidate_files: {
         Row: {
@@ -2830,7 +2574,6 @@ export type Database = {
       public_jobs: {
         Row: {
           active_status: Json
-          assessment: boolean | null
           created_at: string
           department_id: number | null
           description: string | null
@@ -2850,8 +2593,6 @@ export type Database = {
           location_id: number | null
           new_screening_setting: Json
           parameter_weights: Json
-          phone_screen_enabled: boolean | null
-          phone_screening: Json | null
           posted_by: string
           recruiter: string | null
           recruiter_id: string
@@ -2859,9 +2600,7 @@ export type Database = {
           remote_id: string | null
           remote_sync_time: string | null
           scoring_criteria_loading: boolean
-          screening_questions: Json[] | null
           screening_setting: Json | null
-          screening_template: string | null
           slug: string
           sourcer: string | null
           status: Database["public"]["Enums"]["public_job_status"]
@@ -2872,7 +2611,6 @@ export type Database = {
         }
         Insert: {
           active_status?: Json
-          assessment?: boolean | null
           created_at?: string
           department_id?: number | null
           description?: string | null
@@ -2892,8 +2630,6 @@ export type Database = {
           location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
-          phone_screen_enabled?: boolean | null
-          phone_screening?: Json | null
           posted_by?: string
           recruiter?: string | null
           recruiter_id: string
@@ -2901,9 +2637,7 @@ export type Database = {
           remote_id?: string | null
           remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
-          screening_questions?: Json[] | null
           screening_setting?: Json | null
-          screening_template?: string | null
           slug?: string
           sourcer?: string | null
           status?: Database["public"]["Enums"]["public_job_status"]
@@ -2914,7 +2648,6 @@ export type Database = {
         }
         Update: {
           active_status?: Json
-          assessment?: boolean | null
           created_at?: string
           department_id?: number | null
           description?: string | null
@@ -2934,8 +2667,6 @@ export type Database = {
           location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
-          phone_screen_enabled?: boolean | null
-          phone_screening?: Json | null
           posted_by?: string
           recruiter?: string | null
           recruiter_id?: string
@@ -2943,9 +2674,7 @@ export type Database = {
           remote_id?: string | null
           remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
-          screening_questions?: Json[] | null
           screening_setting?: Json | null
-          screening_template?: string | null
           slug?: string
           sourcer?: string | null
           status?: Database["public"]["Enums"]["public_job_status"]
@@ -3080,13 +2809,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_public_jobs_screening_template_fkey"
-            columns: ["screening_template"]
-            isOneToOne: false
-            referencedRelation: "screening_questions"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -4092,85 +3814,6 @@ export type Database = {
           },
         ]
       }
-      screening_answers: {
-        Row: {
-          answers: Json
-          created_at: string
-          screening_id: string
-        }
-        Insert: {
-          answers: Json
-          created_at?: string
-          screening_id?: string
-        }
-        Update: {
-          answers?: Json
-          created_at?: string
-          screening_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_screening_answers_screening_id_fkey"
-            columns: ["screening_id"]
-            isOneToOne: true
-            referencedRelation: "application_status_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_screening_answers_screening_id_fkey"
-            columns: ["screening_id"]
-            isOneToOne: true
-            referencedRelation: "application_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_screening_answers_screening_id_fkey"
-            columns: ["screening_id"]
-            isOneToOne: true
-            referencedRelation: "applications"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_screening_answers_screening_id_fkey"
-            columns: ["screening_id"]
-            isOneToOne: true
-            referencedRelation: "candidate_applications_view"
-            referencedColumns: ["application_id"]
-          },
-        ]
-      }
-      screening_questions: {
-        Row: {
-          created_at: string
-          id: string
-          questions: Json
-          recruiter_id: string
-          title: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          questions: Json
-          recruiter_id: string
-          title: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          questions?: Json
-          recruiter_id?: string
-          title?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_screening_questions_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       support_groups: {
         Row: {
           company_id: string | null
@@ -4358,45 +4001,6 @@ export type Database = {
             columns: ["task_id"]
             isOneToOne: false
             referencedRelation: "tasks_view"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      template_question_relation: {
-        Row: {
-          created_at: string
-          id: string
-          order: number | null
-          question_id: string
-          template_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          order?: number | null
-          question_id: string
-          template_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          order?: number | null
-          question_id?: string
-          template_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "template_question_relation_question_id_fkey"
-            columns: ["question_id"]
-            isOneToOne: false
-            referencedRelation: "question_bank"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "template_question_relation_template_id_fkey"
-            columns: ["template_id"]
-            isOneToOne: false
-            referencedRelation: "assessment_template"
             referencedColumns: ["id"]
           },
         ]
@@ -4783,7 +4387,7 @@ export type Database = {
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
           resume_score: number | null
-          status: Database["public"]["Enums"]["application_status"] | null
+          status: string | null
         }
         Relationships: [
           {
@@ -4858,7 +4462,7 @@ export type Database = {
           resume_score: number | null
           session_names: string[] | null
           state: string | null
-          status: Database["public"]["Enums"]["application_status"] | null
+          status: string | null
           task_count: number | null
           timezone: string | null
         }
@@ -4903,9 +4507,7 @@ export type Database = {
       candidate_applications_view: {
         Row: {
           application_id: string | null
-          application_status:
-            | Database["public"]["Enums"]["application_status"]
-            | null
+          application_status: string | null
           candidate_email: string | null
           candidate_id: string | null
           candidate_name: string | null
@@ -5033,13 +4635,11 @@ export type Database = {
       job_view: {
         Row: {
           application_match: Json | null
-          assessment: boolean | null
           created_at: string | null
           department: string | null
           department_id: number | null
           description: string | null
           draft: Json | null
-          flags: Json | null
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
@@ -5052,7 +4652,6 @@ export type Database = {
           location: Json | null
           location_id: number | null
           parameter_weights: Json | null
-          phone_screen_enabled: boolean | null
           posted_by: string | null
           processing_count: Json | null
           recruiter: string | null
@@ -5686,24 +5285,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      connectassessmenttemplate: {
-        Args: {
-          assessmentid: string
-          recruiterid: string
-          templateid: string
-          jobid: string
-        }
-        Returns: undefined
-      }
-      connectbulkassessmenttemplate: {
-        Args: {
-          assessments: string[]
-          recruiterid: string
-          templates: Json[]
-          jobid: string
-        }
-        Returns: undefined
-      }
       count_candidates: {
         Args: {
           job_ids: string[]
@@ -6241,38 +5822,6 @@ export type Database = {
         }
         Returns: Json
       }
-      getassessments: {
-        Args: {
-          recruiterid: string
-        }
-        Returns: {
-          id: string
-          created_at: string
-          title: string
-          description: string
-          type: Database["public"]["Enums"]["template_type"]
-          recruiter_id: string
-          level: Database["public"]["Enums"]["question_level"]
-          mode: Database["public"]["Enums"]["assessment_mode"]
-          question_count: number
-          duration: number
-          jobs: Json
-        }[]
-      }
-      getassessmenttemplates: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          id: string
-          created_at: string
-          title: string
-          description: string
-          type: Database["public"]["Enums"]["template_type"]
-          level: Database["public"]["Enums"]["question_level"]
-          mode: Database["public"]["Enums"]["assessment_mode"]
-          duration: number
-          question_count: number
-        }[]
-      }
       getexperienceandtenure: {
         Args: {
           jobid: string
@@ -6347,37 +5896,6 @@ export type Database = {
           screening_title: string
           job_title: string
         }[]
-      }
-      getresumematch: {
-        Args: {
-          jobid: string
-          section: Database["public"]["Enums"]["application_status"]
-          topmatch?: number
-          goodmatch?: number
-          averagematch?: number
-          poormatch?: number
-        }
-        Returns: {
-          match: string
-          count: number
-        }[]
-      }
-      getresumematches: {
-        Args: {
-          jobid: string
-          section: Database["public"]["Enums"]["application_status"]
-          topmatch?: number
-          goodmatch?: number
-          averagematch?: number
-          poormatch?: number
-        }
-        Returns: Json
-      }
-      getsectioncounts: {
-        Args: {
-          jobid: string
-        }
-        Returns: Json
       }
       getskillpools: {
         Args: {
@@ -6835,13 +6353,6 @@ export type Database = {
         | "csv_upload"
         | "apply_link"
         | "candidate_database"
-      application_status:
-        | "new"
-        | "assessment"
-        | "qualified"
-        | "disqualified"
-        | "screening"
-        | "interview"
       assessment_mode: "classic" | "verbal" | "visual"
       cancel_type: "reschedule" | "declined"
       db_search_type: "aglint" | "candidate"

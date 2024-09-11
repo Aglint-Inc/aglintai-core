@@ -1,4 +1,4 @@
-import { Text } from '@devlink/Text';
+
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Checkbox, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -141,13 +141,11 @@ function PauseDialog() {
               textDescription=''
               slotButtons={
                 <Stack display={'flex'} flexDirection={'column'}>
-                  <Text
-                    size={1}
-                    color={'neutral'}
-                    content={connectedJobs
+                  <p className="text-sm text-muted-foreground">
+                    {connectedJobs
                       .flatMap((job) => job.job_title)
                       .join(', ')}
-                  />
+                  </p>
                 </Stack>
               }
             />

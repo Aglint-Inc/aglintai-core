@@ -13,6 +13,7 @@ const mutation = ({
     console.log(`World from the db: ${worldId}`);
   }
   console.log(`World from the db: ${worldId}`);
+  return { worldId };
 };
 
 export const world = privateProcedure.input(worldSchema).mutation(mutation);

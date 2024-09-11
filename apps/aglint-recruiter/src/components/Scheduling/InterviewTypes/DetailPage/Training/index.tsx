@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { Text } from '@devlink/Text';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@devlink2/ModuleSetting';
@@ -226,7 +225,7 @@ function ModuleSettingComp({
       )}
       {editModule?.settings?.require_training && (
         <div className='flex flex-col gap-2'>
-          <Text content='Trainee' weight={'medium'} />
+          <p className="font-semibold">Trainee</p>
 
           <TrainingSetting
             isApprovalVisible={editModule?.settings?.reqruire_approval}

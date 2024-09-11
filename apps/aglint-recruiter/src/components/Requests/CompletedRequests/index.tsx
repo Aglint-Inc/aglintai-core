@@ -27,8 +27,8 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
-import { useCompletedRequestsStore } from '../_common/Context/store';
 import { useCompletedRequests } from '../_common/hooks';
+import { useCompletedRequestsStore } from './store';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();

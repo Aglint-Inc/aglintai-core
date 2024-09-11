@@ -8,9 +8,9 @@ import type { DateRange as DateRangeType } from 'react-day-picker';
 
 import { DateRangePicker } from '@/components/Common/DateRange';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
+import { useMeetingList } from '@/components/Requests/_common/hooks';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
-import { useMeetingList } from '../../../hooks';
 import InfoStepSelectState from '../../InfoStepSelectState';
 import { setDateRange, useSelfSchedulingFlowStore } from '../../store';
 import ErrorsFindAvailibility from './ErrorsFindAvailibility';

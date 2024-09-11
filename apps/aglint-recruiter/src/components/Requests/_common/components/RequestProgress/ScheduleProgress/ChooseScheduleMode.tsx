@@ -2,23 +2,10 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Lightbulb, WandSparkles } from 'lucide-react';
 
-import { useMeetingList } from '@/components/Requests/ViewRequestDetails/hooks';
-import { useSelfSchedulingDrawer } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/hooks';
-import {
-  useSelfSchedulingFlowStore,
-} from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
-
 import { useRequestProgressProvider } from '../progressCtx';
 
 const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
-  const { fetchingPlan } = useSelfSchedulingFlowStore((state) => ({
-    fetchingPlan: state.fetchingPlan,
-  }));
-
-  const { refetch } = useMeetingList();
-
-  const { findAvailibility } = useSelfSchedulingDrawer({ refetch });
   return (
     <>
       <div className='flex flex-col gap-4'>

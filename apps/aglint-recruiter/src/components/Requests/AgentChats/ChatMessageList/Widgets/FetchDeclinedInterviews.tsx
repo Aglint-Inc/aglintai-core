@@ -1,5 +1,4 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
@@ -39,7 +38,7 @@ function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
       {selPayload?.length > 0 ? (
         <ScheduleList schedules={uiSchedules} />
       ) : (
-        <Text content={'No scheduled interviews'} />
+        <p>No scheduled interviews</p>
       )}
     </Stack>
   );

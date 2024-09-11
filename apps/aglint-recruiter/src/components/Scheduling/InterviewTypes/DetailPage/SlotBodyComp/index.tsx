@@ -5,7 +5,6 @@ import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
-import { TokenItem } from '@devlink3/TokenItem';
 import { Popover, Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Edit, EllipsisVertical, Plus } from 'lucide-react';
@@ -277,33 +276,45 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     <InterviewTypeToken
                       slotTokenItem={
                         <>
-                          <TokenItem
-                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                            slotBadge={
+                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                            <div className='flex items-center'>
                               <GlobalBadge
                                 textBadge='Token1'
                                 color={'purple'}
                               />
-                            }
-                          />
-                          <TokenItem
-                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                            slotBadge={
+                            </div>
+                            <p className='text-sm text-gray-600'>
+                              Korem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Nunc vulputate libero et velit interdum, ac
+                              aliquet odio mattis.
+                            </p>
+                          </div>
+                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                            <div className='flex items-center'>
                               <GlobalBadge
-                                textBadge='Token1'
+                                textBadge='Token2'
                                 color={'purple'}
                               />
-                            }
-                          />
-                          <TokenItem
-                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                            slotBadge={
+                            </div>
+                            <p className='text-sm text-gray-600'>
+                              Korem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Nunc vulputate libero et velit interdum, ac
+                              aliquet odio mattis.
+                            </p>
+                          </div>
+                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                            <div className='flex items-center'>
                               <GlobalBadge
-                                textBadge='Token1'
+                                textBadge='Token3'
                                 color={'purple'}
                               />
-                            }
-                          />
+                            </div>
+                            <p className='text-sm text-gray-600'>
+                              Korem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Nunc vulputate libero et velit interdum, ac
+                              aliquet odio mattis.
+                            </p>
+                          </div>
                         </>
                       }
                       slotAddToken={

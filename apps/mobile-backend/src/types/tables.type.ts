@@ -18,7 +18,7 @@ export const application_processing_status = pgEnum(
 );
 export const application_status = pgEnum('application_status', [
   'new',
-  'assessment',
+  'interview',
   'qualified',
   'disqualified',
 ]);

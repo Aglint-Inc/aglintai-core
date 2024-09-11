@@ -4,22 +4,7 @@ export const CASCADE_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
   [_id in Application['status']]: Application['status'][];
 } = {
-  new: [
-    'new',
-    'screening',
-    'assessment',
-    'interview',
-    'qualified',
-    'disqualified',
-  ],
-  screening: [
-    'screening',
-    'assessment',
-    'interview',
-    'qualified',
-    'disqualified',
-  ],
-  assessment: ['assessment', 'interview', 'qualified', 'disqualified'],
+  new: ['new', 'interview', 'qualified', 'disqualified'],
   interview: ['interview', 'qualified', 'disqualified'],
   qualified: ['qualified', 'disqualified'],
   disqualified: ['disqualified'],

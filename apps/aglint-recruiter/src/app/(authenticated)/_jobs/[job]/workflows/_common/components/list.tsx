@@ -13,7 +13,6 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
 import { WorkflowCard } from '@devlink3/WorkflowCard';
-import { WorkflowEmpty } from '@devlink3/WorkflowEmpty';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
@@ -257,8 +256,20 @@ const WorkflowBrowser = () => {
         <div className='mt-4'>
           <Filters />
         </div>
-        <ScrollArea className='h-[calc(100vh-300px)] mt-4 bg-gray-50'>
-          {cards.length ? cards : <WorkflowEmpty />}
+        <ScrollArea className='h-[calc(100vh-300px)] mt-4'>
+          {cards.length ? (
+            <div className="grid gap-4">
+              {cards}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <Briefcase className="mx-auto h-12 w-12 text-gray-400" />
+                <h3 className="mt-2 text-sm font-medium text-gray-900">No workflows</h3>
+                <p className="mt-1 text-sm text-gray-500">Get started by creating a new workflow.</p>
+              </div>
+            </div>
+          )}
         </ScrollArea>
         <div className='mt-4 flex justify-end'>
           <Button onClick={handleSubmit}>

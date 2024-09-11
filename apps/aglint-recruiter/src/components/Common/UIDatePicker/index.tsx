@@ -17,7 +17,7 @@ export function UIDatePicker({
   closeOnSelect,
 }: {
   value: Date;
-  onAccept: (value: Date) => void;
+  onAccept: (_value: Date) => void;
   closeOnSelect?: boolean;
 }) {
   const [open, setOpen] = React.useState(false);

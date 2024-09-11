@@ -2,6 +2,8 @@ import {
   type DatabaseEnums,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import {
   Card,
@@ -18,7 +20,7 @@ import React, { useState } from 'react';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
-import toast from '@/utils/toast';
+import { api } from '@/trpc/client';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { useRequestProgressProvider } from '../progressCtx';
@@ -44,6 +46,7 @@ const WorkflowActionDialog = () => {
     setSelectedActionsDetails,
     setEmailTemplate,
     emailTemplate,
+    agentInstructions,
     setTiptapLoadStatus,
   } = useSelectedActionsDetails();
 
@@ -90,19 +93,41 @@ const WorkflowActionDialog = () => {
 
     setTiptapLoadStatus({ email: false, agent: false });
   };
+  const { mutateAsync } =
+    api.textTransform.selfScheduleInstruction.useMutation();
+
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
     try {
       setIsAddingAction(true);
+      if (agentInstructions.length > 0) {
+        const availabilityResp = await mutateAsync({
+          instruction: agentInstructions,
+          user_tz: dayjsLocal.tz.guess(),
+        });
+        wAction.payload = {
+          email: {
+            body: emailTemplate.body,
+            subject: emailTemplate.subject,
+          },
+          agent: {
+            instruction: agentInstructions,
+            ai_response: availabilityResp,
+          },
+        };
+      }
       await createRequestWorkflowAction({
         wAction,
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
       });
-      request_workflow.refetch();
+      await request_workflow.refetch();
     } catch (err) {
-      toast.error('Failed to add action');
+      toast({
+        title: 'Failed to add action',
+        variant: 'destructive',
+      });
     } finally {
       setIsAddingAction(false);
       setShowEditDialog(false);

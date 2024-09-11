@@ -18,9 +18,10 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/utils/toast';
 
+import { updateCandidateRequestAvailability } from '../../_common/functions';
+import { useRequestAvailabilityDetails } from '../../_common/hooks';
 import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './Calendar';
-import { useRequestAvailabilityDetails } from './hooks';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import SelectAvailableOption from './SelectAvailableOption';
 import {
@@ -28,7 +29,6 @@ import {
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
 } from './store';
-import { updateCandidateRequestAvailability } from './utils';
 
 function ConfirmAvailability() {
   const router = useRouter();
@@ -48,7 +48,7 @@ function ConfirmAvailability() {
     isFetched,
     isLoading,
   } = useRequestAvailabilityDetails({
-    request_id: candidateAvailabilityId,
+    availability_id: candidateAvailabilityId,
   });
 
   function closeDrawer() {

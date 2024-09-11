@@ -2,7 +2,6 @@ import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Text } from '@devlink/Text';
 import { AvailabilityReq } from '@devlink2/AvailabilityReq';
 import { MultiDaySelect } from '@devlink2/MultiDaySelect';
 import { GlobalCta } from '@devlink3/GlobalCta';
@@ -319,20 +318,12 @@ function CandidateAvailability() {
             isSubmitted ? (
               <>
                 <CheckCircle size={6} />
-                <Text
-                  size={4}
-                  weight={'medium'}
-                  content={'Availability Submitted successfully'}
-                />
+                <p className="text-lg font-semibold">Availability Submitted successfully</p>
               </>
             ) : (
               <>
                 <Calendar size={6} />
-                <Text
-                  size={4}
-                  weight={'medium'}
-                  content={'Your Availability Requested'}
-                />
+                <p className="text-lg font-semibold">Your Availability Requested</p>
               </>
             )
           }
