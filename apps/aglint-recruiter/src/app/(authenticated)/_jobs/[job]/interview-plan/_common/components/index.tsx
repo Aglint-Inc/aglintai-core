@@ -15,7 +15,6 @@ import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { PageLayout } from '@devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
@@ -40,6 +39,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
@@ -122,7 +122,7 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={

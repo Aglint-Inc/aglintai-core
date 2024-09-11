@@ -10,7 +10,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCard } from '@devlink2/MemberListCard';
-import { PageLayout } from '@devlink2/PageLayout';
 import { ShadowSession } from '@devlink2/ShadowSession';
 import { StatusBadge } from '@devlink2/StatusBadge';
 import { DarkPill } from '@devlink3/DarkPill';
@@ -26,6 +25,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
@@ -108,7 +108,7 @@ function ModuleMembersComp() {
   return (
     <>
       <Seo title={`Scheduling`} description='AI for People Products' />
-      <PageLayout
+      <UIPageLayout
         onClickBack={{
           onClick: () => {
             window.history.back();

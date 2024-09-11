@@ -1,9 +1,9 @@
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
@@ -47,7 +47,7 @@ function ModuleMembersComp() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={
           <>
             {breadcrum}

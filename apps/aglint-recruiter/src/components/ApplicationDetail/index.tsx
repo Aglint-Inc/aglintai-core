@@ -1,8 +1,8 @@
-import { PageLayout } from '@devlink2/PageLayout';
 import { useRouter } from 'next/router';
 
 import { Application } from '@/context/ApplicationContext';
 
+import { UIPageLayout } from '../Common/UIPageLayout';
 import BreadCrumb from './_common/components/BreadCrumb';
 import SlotBody from './_common/components/SlotBody';
 
@@ -14,7 +14,7 @@ function ApplicationDetailComp() {
   return (
     <>
       <Application application_id={application_id} job_id={job_id}>
-        <PageLayout
+        <UIPageLayout
           slotTopbarLeft={<BreadCrumb />}
           slotBody={<SlotBody />}
           slotTopbarRight={<></>}
