@@ -8,7 +8,7 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import {
   RangePicker,
   RequestOption,
-} from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
+} from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
 import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useApplications, useJob } from '@/job/hooks';

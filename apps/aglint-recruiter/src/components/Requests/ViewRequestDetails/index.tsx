@@ -26,9 +26,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/StageSessions/EditDrawer';
-import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
-import { useEditSession } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
+import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
+import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
+import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
@@ -57,12 +57,12 @@ import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { useSelfSchedulingDrawer } from './SelfSchedulingDrawer/hooks';
+import { useSelfSchedulingDrawer } from './SelfSchedulingDrawer/_common/hooks/hooks';
 import {
   initialFilters,
   setIsSelfScheduleDrawerOpen,
   useSelfSchedulingFlowStore,
-} from './SelfSchedulingDrawer/store';
+} from './SelfSchedulingDrawer/_common/store/store';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
