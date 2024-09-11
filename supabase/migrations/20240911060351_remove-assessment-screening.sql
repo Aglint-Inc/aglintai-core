@@ -28,7 +28,8 @@ alter table public_jobs drop column if exists assessment;
 
 alter table public_jobs drop column if exists phone_screen_enabled;
 
-delete from applications
+update applications
+set status = 'qualified'
 where status = 'assessment' or status = 'screening';
 
 alter table applications alter column status type text;
