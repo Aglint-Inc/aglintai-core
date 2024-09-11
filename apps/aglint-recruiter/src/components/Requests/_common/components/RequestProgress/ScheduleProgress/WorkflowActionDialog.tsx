@@ -2,6 +2,8 @@ import {
   type DatabaseEnums,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import {
   Card,
@@ -11,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
-import axios from 'axios';
 import { get } from 'lodash';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
@@ -19,10 +20,11 @@ import React, { useState } from 'react';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
-import toast from '@/utils/toast';
+import { api } from '@/trpc/client';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { createRequestWorkflowAction } from '../utils';
 import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
 import {
   agentTargetApiEmailEndPoint,
@@ -32,12 +34,8 @@ import {
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
-  const {
-    reqTriggerActionsMap,
-    companyEmailTemplatesMp,
-    editTrigger,
-    setShowEditDialog,
-  } = useRequestProgressProvider();
+  const { reqTriggerActionsMap, companyEmailTemplatesMp, editTrigger } =
+    useRequestProgressProvider();
 
   const {
     selectedActionsDetails,
@@ -91,26 +89,43 @@ const WorkflowActionDialog = () => {
 
     setTiptapLoadStatus({ email: false, agent: false });
   };
+
+  const { mutateAsync } =
+    api.textTransform.selfScheduleInstruction.useMutation();
+
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
     try {
-      if (agentInstructions.length > 0) {
-        const { data } = await axios.post('/api/ai/self-schedule-request', {
-          instruction: agentInstructions,
-        });
-        console.log(data);
-      }
       setIsAddingAction(true);
-      // await createRequestWorkflowAction({
-      //   wAction,
-      //   request_id: currentRequest.id,
-      //   recruiter_id: recruiter.id,
-      // });
-      // save json
-      // request_workflow.refetch();
+
+      const availabilityResp = await mutateAsync({
+        instruction: agentInstructions,
+        user_tz: dayjsLocal.tz.guess(),
+      });
+      if (agentInstructions.length > 0) {
+        wAction.payload = {
+          email: {
+            body: emailTemplate.body,
+            subject: emailTemplate.subject,
+          },
+          agent: {
+            instruction: agentInstructions,
+            ai_response: availabilityResp,
+          },
+        };
+      }
+      await createRequestWorkflowAction({
+        wAction,
+        request_id: currentRequest.id,
+        recruiter_id: recruiter.id,
+      });
+      await request_workflow.refetch();
     } catch (err) {
-      toast.error('Failed to add action');
+      toast({
+        title: 'Failed to add action',
+        variant: 'destructive',
+      });
     } finally {
       setIsAddingAction(false);
       // setShowEditDialog(false);
