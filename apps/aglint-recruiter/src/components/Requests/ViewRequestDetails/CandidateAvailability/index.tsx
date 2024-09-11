@@ -10,7 +10,6 @@ import {
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
-import { Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -30,19 +29,18 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { useMeetingList } from '../hooks';
+import {
+  insertCandidateRequestAvailability,
+  updateCandidateRequestAvailability,
+} from '../../_common/functions';
+import { useCandidateAvailability, useMeetingList } from '../../_common/hooks';
 import EmailTemplate from './Components/EmailTemplate';
-import { useCandidateAvailability } from './hooks';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
 } from './store';
-import {
-  insertCandidateRequestAvailability,
-  updateCandidateRequestAvailability,
-} from './utils';
 
 function CandidateAvailability({
   selectedRequest,
@@ -252,8 +250,8 @@ function CandidateAvailability({
                 handleSubmit();
               }}
               className='w-full'
+              isLoading={submitting}
             >
-              {submitting && <Loader className='mr-2 h-4 w-4 animate-spin' />}
               {reRequestAvailability
                 ? 'Re-Request Availability'
                 : 'Send to Candidate'}
@@ -394,9 +392,9 @@ export function RequestCandidate({
       </Card>
       <div className='space-y-2'>
         <p>
-          To proceed with requesting the candidate&apos;s availability, please
-          click on the button below. Upon doing so, an email containing the
-          following message will be sent to the candidate:
+          {`To proceed with requesting the candidate's availability, please click
+          on the button below. Upon doing so, an email containing the following
+          message will be sent to the candidate:`}
         </p>
         <div>{slotEmailTemplateHolder ?? slotEmailTemplateHolder}</div>
       </div>

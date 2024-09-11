@@ -22,19 +22,18 @@ export const findCandSelectedSlots = async ({
   cand_schedule: CandidatesSchedulingV2;
 }) => {
   const ai_response: CustomAgentInstructionPayload['agent']['ai_response'] = {
-    preferredInterviewer: [],
-    excludeInterviewTimes: [],
-    scheduleWithinNumDays: 3,
-    maxOptionsToCandidates: 10,
-    schedulewithMaxNumDays: 5,
-    prefferredInterviewTimes: [
-      {
-        endTime: '18:00',
-        startTime: '10:00',
+    candidateAvailability: {
+      prefferredDate: null,
+
+      prefferredTime: {
+        startTime: '09:00',
+        endTime: '17:00',
       },
-    ],
-    balanceWorkloadAmongInterviewers: true,
-    scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+    },
+    prefferredInterviewers: [],
+    maxTotalSlots: 5,
+    includeAllSoftConflictSlots: false,
+    overrideSoftConflicts: [],
   };
   const cand_picked_slots = cand_schedule.getCandidateSelectedSlots(cand_avail);
   const flatted_plans = cand_picked_slots
@@ -55,24 +54,22 @@ export const findCandSelectedSlots = async ({
     (plan) => plan.no_slot_reasons.length === 0,
   );
   if (filtered_plans.length === 0) {
-    throw new CApiError(
-      'CLIENT',
-      `Not found any slots from the specified ${ai_response.schedulewithMaxNumDays} days`,
-    );
+    throw new CApiError('CLIENT', `Not found any slots`);
   }
 
-  const preferred_times: TimeDurationDayjsType[] =
-    ai_response.prefferredInterviewTimes.map((t) => {
-      const curr_day = dayjsLocal().tz(request_assignee_tz).startOf('day');
-      return {
-        startTime: curr_day
-          .set('hour', Number(t.startTime.split(':')[0]))
-          .set('minutes', Number(t.startTime.split(':')[1])),
-        endTime: curr_day
-          .set('hour', Number(t.endTime.split(':')[0]))
-          .set('minutes', Number(t.endTime.split(':')[1])),
-      };
-    });
+  const prefTIme = ai_response.candidateAvailability.prefferredTime;
+  const curr_day = dayjsLocal().tz(request_assignee_tz).startOf('day');
+
+  const preferred_times: TimeDurationDayjsType[] = [
+    {
+      startTime: curr_day
+        .set('hour', Number(prefTIme.startTime.split(':')[0]))
+        .set('minutes', Number(prefTIme.startTime.split(':')[1])),
+      endTime: curr_day
+        .set('hour', Number(prefTIme.endTime.split(':')[0]))
+        .set('minutes', Number(prefTIme.endTime.split(':')[1])),
+    },
+  ];
 
   // given specified prefferred times
   filtered_plans = filtered_plans.filter((plan) => {

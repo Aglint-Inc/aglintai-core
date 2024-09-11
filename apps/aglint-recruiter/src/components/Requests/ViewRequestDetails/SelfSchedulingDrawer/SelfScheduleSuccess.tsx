@@ -2,7 +2,7 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalCta } from '@devlink3/GlobalCta';
 import React from 'react';
 
-import { useMeetingList } from '../hooks';
+import { useMeetingList } from '../../_common/hooks';
 import { useSelfSchedulingFlowStore } from './store';
 
 function SelfScheduleSuccess() {

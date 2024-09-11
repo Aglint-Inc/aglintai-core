@@ -290,33 +290,13 @@ const Pipeline = () => {
           onClick: () => handlClick('new'),
         }}
       />
-      {job.flags.screening && (
-        <PipeLine
-          textCandidateCount={newSections.screening.label}
-          textName={capitalize('screening')}
-          onClickPipeline={{
-            onClick: () => handlClick('screening'),
-          }}
-        />
-      )}
-      {job.flags.assessment && (
-        <PipeLine
-          textCandidateCount={newSections.assessment.label}
-          textName={capitalize('assessment')}
-          onClickPipeline={{
-            onClick: () => handlClick('assessment'),
-          }}
-        />
-      )}
-      {job.flags.interview && (
-        <PipeLine
-          textCandidateCount={newSections.interview.label}
-          textName={capitalize('interview')}
-          onClickPipeline={{
-            onClick: () => handlClick('interview'),
-          }}
-        />
-      )}
+      <PipeLine
+        textCandidateCount={newSections.interview.label}
+        textName={capitalize('interview')}
+        onClickPipeline={{
+          onClick: () => handlClick('interview'),
+        }}
+      />
       <PipeLine
         textCandidateCount={newSections.qualified.label}
         textName={capitalize('qualified')}

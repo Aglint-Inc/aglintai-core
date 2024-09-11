@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import dayjs from '@/utils/dayjs';
 
-import { updateRequestNotes } from '../../_common/functions/updateRequestNotes';
+import { updateRequestNotes } from '../../_common/functions';
 import { useRequestNotes } from '../../_common/hooks';
 
 function RequestNotes() {
@@ -47,7 +47,10 @@ function RequestNotes() {
   );
 
   return (
-    <div className='space-y-4'>
+    <div>
+      <div className='flex items-center justify-between my-4'>
+        <h3 className='text-lg font-semibold'>Notes</h3>
+      </div>
       <Card
         className={cn(
           'p-4',
@@ -81,7 +84,8 @@ function RequestNotes() {
                       );
                     }}
                     placeholder='Add note'
-                    className='min-h-[40px] resize-none focus:ring-0 focus:border-transparent'
+                    className='min-h-[40px] resize-none focus:ring-0 focus:outline-none focus:border-transparent bg-transparent'
+                    // style={{ background: 'transparent', outline: 'none' }}
                     onBlur={() => {
                       setEditorEnabled(false);
                     }}

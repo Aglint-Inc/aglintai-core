@@ -16,7 +16,6 @@ export type RolesAndPermissionsContextType = {
     func: T,
     permission: DatabaseTable['permissions']['name'][],
   ) => T;
-  isSchedulingEnabled: boolean;
   isScoringEnabled: boolean;
 };
 
@@ -81,7 +80,6 @@ export const RolesAndPermissionsProvider = ({
     return { onClick: null, style: { display: 'none' } };
   };
 
-  const isSchedulingEnabled = true;
   const isScoringEnabled = recruiter?.recruiter_preferences?.scoring ?? false;
 
   return (
@@ -90,7 +88,6 @@ export const RolesAndPermissionsProvider = ({
         checkPermissions,
         ifAllowed,
         devlinkProps,
-        isSchedulingEnabled,
         isScoringEnabled,
       }}
     >

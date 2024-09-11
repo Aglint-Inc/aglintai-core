@@ -1,6 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import { Stack } from '@mui/material';
@@ -86,7 +85,11 @@ function Interviews({
           {isLoading ? (
             ''
           ) : allSchedules.length === 0 ? (
-            <AllInterviewEmpty textDynamic='No schedule found' />
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <Calendar className="w-12 h-12 text-gray-400 mb-2" />
+              <h3 className="text-lg font-medium text-gray-900 mb-1">No schedule found</h3>
+              <p className="text-sm text-gray-500">There are no schedules available at the moment.</p>
+            </div>
           ) : (
             <>
               {transformDataSchedules(allSchedules).map((sch, ind) => {

@@ -6,7 +6,6 @@ import { useRequestProgressProvider } from '../progressCtx';
 
 const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
-
   return (
     <>
       <div className='flex flex-col gap-4'>

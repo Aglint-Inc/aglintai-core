@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { updateRequestNotes } from '@/components/Requests/_common/functions/updateRequestNotes';
+import { updateRequestNotes } from '@/components/Requests/_common/functions';
 import type { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
 import { useApplications } from '@/job/hooks';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
@@ -25,7 +25,7 @@ export const useApplicationContext = (
       defaultTab?: ApplicationStore['tab'];
     },
 ) => {
-  const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();
+  const { isScoringEnabled } = useRolesAndPermissions();
   const router = useRouter();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
@@ -44,9 +44,6 @@ export const useApplicationContext = (
   const tabs = useQuery(
     applicationQuery.tabs({
       ...props,
-      isAssessmentEnabled: false,
-      isSchedulingEnabled,
-      isScreeningEnabled: false,
       isScoringEnabled,
       enabled: !!props?.showTabs,
     }),

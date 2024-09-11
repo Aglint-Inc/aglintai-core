@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-export const seed_workflow_actions: {
+export const modified_seed_workflow_actions: {
   workflow: Pick<
     DatabaseTable['workflow'],
     | 'auto_connect'
@@ -365,22 +365,13 @@ export const seed_workflow_actions: {
         payload: {
           agent: {
             ai_response: {
-              preferredInterviewer: [],
-              excludeInterviewTimes: [],
-              scheduleWithinNumDays: 3,
-              maxOptionsToCandidates: 10,
-              schedulewithMaxNumDays: 5,
-              prefferredInterviewTimes: [
-                {
-                  endTime: '18:00',
-                  startTime: '10:00',
-                },
-              ],
-              balanceWorkloadAmongInterviewers: true,
-              scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+              candidateAvailability: null,
+              prefferredInterviewers: [],
+              maxTotalSlots: 10,
+              includeAllSoftConflictSlots: true,
+              overrideSoftConflicts: [],
             },
             instruction: null,
-            ai_response_status: 'success',
           },
         },
       },
@@ -404,22 +395,13 @@ export const seed_workflow_actions: {
         payload: {
           agent: {
             ai_response: {
-              preferredInterviewer: [],
-              excludeInterviewTimes: [],
-              scheduleWithinNumDays: 3,
-              maxOptionsToCandidates: 10,
-              schedulewithMaxNumDays: 5,
-              prefferredInterviewTimes: [
-                {
-                  endTime: '18:00',
-                  startTime: '10:00',
-                },
-              ],
-              balanceWorkloadAmongInterviewers: true,
-              scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+              candidateAvailability: null,
+              prefferredInterviewers: [],
+              maxTotalSlots: 10,
+              includeAllSoftConflictSlots: true,
+              overrideSoftConflicts: [],
             },
             instruction: null,
-            ai_response_status: 'success',
           },
         },
       },

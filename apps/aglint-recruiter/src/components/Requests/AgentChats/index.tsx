@@ -1,5 +1,3 @@
-
-
 import { Button } from '@components/ui/button';
 
 import AgentInputBox from './AgentInputBox';
@@ -21,13 +19,13 @@ function AgentChats() {
   }));
 
   return (
-    <div className="flex w-[450px] flex-col h-full bg-white border-r">
-      <div className="flex justify-end items-center pt-4 px-4">
-        <div className="flex space-x-2">
+    <div className='flex w-[450px] flex-col h-full bg-white border-r'>
+      <div className='flex justify-end items-center pt-4 px-4'>
+        <div className='flex space-x-2'>
           {chatList.length > 0 && (
             <Button
-              variant="ghost"
-              size="sm"
+              variant='ghost'
+              size='sm'
               onClick={() => {
                 setChatList([]);
                 setViewList(false);
@@ -39,10 +37,10 @@ function AgentChats() {
           )}
         </div>
       </div>
-      <div className="flex-grow">
+      <div className='flex-grow'>
         <ChatMessageList />
       </div>
-      <div className="p-4">
+      <div className='p-4'>
         <AgentInputBox />
       </div>
     </div>

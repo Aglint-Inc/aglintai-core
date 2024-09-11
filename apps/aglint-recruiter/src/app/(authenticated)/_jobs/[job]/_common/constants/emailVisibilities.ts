@@ -5,9 +5,7 @@ export const EMAIL_VISIBILITIES: {
   [_id in Application['status']]: Application['status'][];
 } = {
   new: ['disqualified'],
-  screening: ['new'],
-  assessment: ['new', 'screening'],
-  interview: ['new', 'screening', 'assessment'],
-  qualified: ['new', 'screening', 'assessment', 'interview'],
-  disqualified: ['new', 'screening', 'assessment', 'interview', 'qualified'],
+  interview: ['new'],
+  qualified: ['new', 'interview'],
+  disqualified: ['new', 'interview', 'qualified'],
 };

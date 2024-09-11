@@ -3,7 +3,6 @@ import { JobEmptyState } from '@devlink/JobEmptyState';
 import { JobsListingCard } from '@devlink/JobsListingCard';
 import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
 import { useJobs } from '@/jobs/hooks';
@@ -22,9 +21,6 @@ interface JobsListProps {
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
   const { handleJobPin } = useJobs();
   const router = useRouter();
   if (jobs?.length == 0) {
@@ -42,11 +38,9 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 onClick: () =>
                   handleJobPin({ id: job.id, is_pinned: !job.is_pinned }),
               }}
-              isAssessmentPillVisible={isAssessmentEnabled && job.assessment}
-              isScreeningPillsVisible={
-                isScreeningEnabled && job.phone_screen_enabled
-              }
-              isInterviewPillVisible={isSchedulingEnabled}
+              isAssessmentPillVisible={false}
+              isScreeningPillsVisible={false}
+              isInterviewPillVisible={true}
               slotAtsBadge={
                 job.posted_by === POSTED_BY.LEVER ? (
                   <AtsBadge
@@ -87,7 +81,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               textCompanyLocation={formatOfficeLocation(job?.location)}
               newCount={job?.section_count?.new}
               qualifiedCount={job?.section_count?.qualified}
-              assessmentCount={job?.section_count?.assessment}
+              assessmentCount={'---'}
               disqualifiedCount={job?.section_count?.disqualified}
               bgColorProps={{
                 style: {

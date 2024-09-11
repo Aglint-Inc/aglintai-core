@@ -5,8 +5,8 @@ import CalendarResourceView from '@/components/Common/CalendarResourceView';
 import { type Event } from '@/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/components/Common/MuiAvatar';
 
+import { useRequestAvailabilityDetails } from '../../_common/hooks';
 import { transformAvailability } from '../SelfSchedulingDrawer/utils';
-import { useRequestAvailabilityDetails } from './hooks';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import {
   setCalendarDate,
@@ -19,7 +19,7 @@ function Calendar() {
   const { selectedDateSlots, selectedDayAvailableBlocks } =
     useAvailabilityContext();
   const { data: availableSlots, isLoading } = useRequestAvailabilityDetails({
-    request_id: candidateAvailabilityId,
+    availability_id: candidateAvailabilityId,
   });
 
   useEffect(() => {

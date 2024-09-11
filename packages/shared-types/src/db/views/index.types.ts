@@ -1,7 +1,9 @@
 import type { Database } from "../schema.types";
 import type { Custom, CustomizableTypes } from "../utils.types";
 import { CustomAllInterviewers } from "./all_interviewer";
+import { CustomApplicationStatusView } from "./application_status_view";
 import { CustomApplicationView } from "./application_view.types";
+import { CustomCandidateApplicationView } from "./candidate_applications_view";
 import { CustomInterviewTypesView } from "./interview_types_view";
 import { CustomJobView } from "./job_view.types";
 import { CustomMeetingInterviewersView } from "./meeting_interviewers.types";
@@ -29,7 +31,9 @@ export type ViewType<
 export type Views = Custom<
   DatabaseViews,
   {
+    candidate_applications_view: CustomCandidateApplicationView;
     workflow_view: CustomWorkflowView;
+    application_status_view: CustomApplicationStatusView;
     application_view: CustomApplicationView;
     tasks_view: CustomTasksView;
     job_view: CustomJobView;

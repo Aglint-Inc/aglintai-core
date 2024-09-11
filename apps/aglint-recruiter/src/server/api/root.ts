@@ -2,6 +2,7 @@ import { analyticsRouter } from './routers/analytics';
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
 import { schedulingRouter } from './routers/scheduling';
+import { textTransform } from './routers/textTransform';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
 /**
@@ -13,7 +14,7 @@ export const appRouter = createTRPCRouter({
   scheduling: schedulingRouter,
   example,
   candidatePortal: candidatePortalRouter,
-  analytics: analyticsRouter,
+  textTransform,
 });
 
 export const appRouterSchema = {

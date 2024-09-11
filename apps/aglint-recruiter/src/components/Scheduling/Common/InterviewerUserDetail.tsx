@@ -6,9 +6,8 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { Stack } from '@mui/material';
-import Link from 'next/link';
+import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
@@ -80,11 +79,11 @@ function InterviewerUserDetail({
                 {cancelReason?.reason && (
                   <TooltipContent>
                     <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
-                      <p className="text-sm text-warning">
+                      <p className='text-sm text-warning'>
                         Reason : {cancelReason?.reason}
                       </p>
                       {cancelReason?.other_details?.note && (
-                        <p className="text-sm text-muted-foreground">
+                        <p className='text-sm text-muted-foreground'>
                           Notes : {cancelReason?.other_details?.note}
                         </p>
                       )}
@@ -132,18 +131,14 @@ function InterviewerUserDetail({
       isRoleVisible={true}
       slotRole={
         userDetails?.position ? (
-          <p className="text-sm text-muted-foreground">
+          <p className='text-sm text-muted-foreground'>
             {userDetails.position}
           </p>
         ) : (
           '--'
         )
       }
-      textName={
-        <Link href={`/user/profile/${userDetails.user_id}`}>
-          {getFullName(userDetails.first_name, userDetails.last_name)}
-        </Link>
-      }
+      textName={getFullName(userDetails.first_name, userDetails.last_name)}
       slotImage={
         <MuiAvatar
           level={getFullName(userDetails.first_name, userDetails.last_name)}

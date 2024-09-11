@@ -99,7 +99,6 @@ const useActionsContext = () => {
               payload: {
                 agent: {
                   instruction: '',
-                  ai_response_status: 'not_started',
                   ai_response: AI_RESPONSE_PLACEHOLDER,
                 },
               },
