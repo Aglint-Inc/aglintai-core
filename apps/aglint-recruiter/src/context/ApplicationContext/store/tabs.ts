@@ -1,13 +1,6 @@
 import { type CreateSlice } from '.';
 
-type Tab =
-  | 'Details'
-  | 'Resume'
-  | 'Screening'
-  | 'Assessment'
-  | 'Interview'
-  | 'Tasks'
-  | 'Activity';
+type Tab = 'Details' | 'Resume' | 'Interview' | 'Tasks' | 'Activity';
 
 export type TabSlice = {
   tab: Tab;

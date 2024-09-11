@@ -32,18 +32,18 @@ const MoveCandidate = () => {
   return (
     <>
       <SelectActionsDropdown
-        isAssessment={enabled && emailVisibilities.assessment}
+        isAssessment={false}
         isDisqualified={enabled && emailVisibilities.disqualified}
         isInterview={enabled && emailVisibilities.interview}
         isMoveNew={enabled && emailVisibilities.new}
         isQualified={enabled && emailVisibilities.qualified}
-        isScreening={enabled && emailVisibilities.screening}
-        onClickAssessment={{ onClick: () => setActionPopup('assessment') }}
+        isScreening={false}
+        onClickAssessment={{ style: { display: 'none' } }}
         onClickDisqualified={{ onClick: () => setActionPopup('disqualified') }}
         onClickInterview={{ onClick: () => setActionPopup('interview') }}
         onClickMoveNew={{ onClick: () => setActionPopup('new') }}
         onClickQualified={{ onClick: () => setActionPopup('qualified') }}
-        onClickScreening={{ onClick: () => setActionPopup('screening') }}
+        onClickScreening={{ style: { display: 'none' } }}
       />
       <Dialog open={!!actionPopup} onClose={() => resetActionPopup()}>
         <MoveAction />
@@ -59,16 +59,12 @@ const MoveAction = () => {
     actionPopup,
   }));
   switch (actionPopup) {
-    case 'assessment':
-      return <MoveCandidateAssessment />;
     case 'new':
       return <MoveCandidateNew />;
     case 'qualified':
       return <MoveCandidateQualified />;
     case 'disqualified':
       return <MoveCandidateDisqualified />;
-    case 'screening':
-      return <MoveCandidateScreening />;
     case 'interview':
       return <MoveCandidateInterview />;
   }
@@ -102,58 +98,6 @@ const MoveCandidateNew = () => {
           />
         </Stack>
       }
-      onClickClosePopup={{ onClick: () => resetActionPopup() }}
-      slotButtons={buttons}
-    />
-  );
-};
-
-const MoveCandidateScreening = () => {
-  const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsActions();
-  const [checked, setChecked] = useState(false);
-  const { buttons, title, description, action } = useMeta(() => {
-    handleMoveApplications({
-      status: 'screening',
-      email: checked ? 'phoneScreen_email_candidate' : null,
-    });
-    resetActionPopup();
-  });
-  return (
-    <DcPopup
-      popupName={title}
-      slotBody={
-        <Stack gap={2}>
-          {capitalize(description)}
-          <Stack direction={'row'} alignItems={'center'} gap={1}>
-            <Checkbox
-              checked={checked}
-              onClick={() => setChecked((prev) => !prev)}
-            />
-            {capitalize(action)}
-          </Stack>
-        </Stack>
-      }
-      onClickClosePopup={{ onClick: () => resetActionPopup() }}
-      slotButtons={buttons}
-    />
-  );
-};
-
-const MoveCandidateAssessment = () => {
-  const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsActions();
-  const { buttons, title, description } = useMeta(() => {
-    handleMoveApplications({
-      status: 'assessment',
-      email: null,
-    });
-    resetActionPopup();
-  });
-  return (
-    <DcPopup
-      popupName={title}
-      slotBody={<Stack gap={2}>{capitalize(description)}</Stack>}
       onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />

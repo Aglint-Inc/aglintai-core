@@ -531,20 +531,15 @@ type MoveApplications = ApplicationsAllQueryPrerequistes & {
 };
 type SectionToEmail = {
   interview: null;
-  assessment: null;
   qualified: null;
   new: null;
   disqualified: Extract<
     DatabaseEnums['email_slack_types'],
     'applicantReject_email_applicant'
   > | null;
-  screening: Extract<
-    DatabaseEnums['email_slack_types'],
-    'phoneScreen_email_candidate' | 'phoneScreenRemind_email_applicant'
-  > | null;
 };
 type SectionToEmailGuard = {
-  [id in DatabaseEnums['application_status']]: SectionToEmail[id];
+  [id in DatabaseTable['applications']['status']]: SectionToEmail[id];
 };
 const moveApplications = async ({
   job_id,

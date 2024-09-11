@@ -322,7 +322,7 @@ export type Database = {
           retry: number
           score_json: Json | null
           source: Database["public"]["Enums"]["application_source"]
-          status: Database["public"]["Enums"]["application_status"]
+          status: string
           status_emails_sent: Json
         }
         Insert: {
@@ -349,7 +349,7 @@ export type Database = {
           retry?: number
           score_json?: Json | null
           source?: Database["public"]["Enums"]["application_source"]
-          status?: Database["public"]["Enums"]["application_status"]
+          status?: string
           status_emails_sent?: Json
         }
         Update: {
@@ -376,7 +376,7 @@ export type Database = {
           retry?: number
           score_json?: Json | null
           source?: Database["public"]["Enums"]["application_source"]
-          status?: Database["public"]["Enums"]["application_status"]
+          status?: string
           status_emails_sent?: Json
         }
         Relationships: [
@@ -2830,7 +2830,6 @@ export type Database = {
       public_jobs: {
         Row: {
           active_status: Json
-          assessment: boolean | null
           created_at: string
           department_id: number | null
           description: string | null
@@ -2850,7 +2849,6 @@ export type Database = {
           location_id: number | null
           new_screening_setting: Json
           parameter_weights: Json
-          phone_screen_enabled: boolean | null
           phone_screening: Json | null
           posted_by: string
           recruiter: string | null
@@ -2872,7 +2870,6 @@ export type Database = {
         }
         Insert: {
           active_status?: Json
-          assessment?: boolean | null
           created_at?: string
           department_id?: number | null
           description?: string | null
@@ -2892,7 +2889,6 @@ export type Database = {
           location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
-          phone_screen_enabled?: boolean | null
           phone_screening?: Json | null
           posted_by?: string
           recruiter?: string | null
@@ -2914,7 +2910,6 @@ export type Database = {
         }
         Update: {
           active_status?: Json
-          assessment?: boolean | null
           created_at?: string
           department_id?: number | null
           description?: string | null
@@ -2934,7 +2929,6 @@ export type Database = {
           location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
-          phone_screen_enabled?: boolean | null
           phone_screening?: Json | null
           posted_by?: string
           recruiter?: string | null
@@ -4783,7 +4777,7 @@ export type Database = {
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
           resume_score: number | null
-          status: Database["public"]["Enums"]["application_status"] | null
+          status: string | null
         }
         Relationships: [
           {
@@ -4858,7 +4852,7 @@ export type Database = {
           resume_score: number | null
           session_names: string[] | null
           state: string | null
-          status: Database["public"]["Enums"]["application_status"] | null
+          status: string | null
           task_count: number | null
           timezone: string | null
         }
@@ -4903,9 +4897,7 @@ export type Database = {
       candidate_applications_view: {
         Row: {
           application_id: string | null
-          application_status:
-            | Database["public"]["Enums"]["application_status"]
-            | null
+          application_status: string | null
           candidate_email: string | null
           candidate_id: string | null
           candidate_name: string | null
@@ -5033,13 +5025,11 @@ export type Database = {
       job_view: {
         Row: {
           application_match: Json | null
-          assessment: boolean | null
           created_at: string | null
           department: string | null
           department_id: number | null
           description: string | null
           draft: Json | null
-          flags: Json | null
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
@@ -5052,7 +5042,6 @@ export type Database = {
           location: Json | null
           location_id: number | null
           parameter_weights: Json | null
-          phone_screen_enabled: boolean | null
           posted_by: string | null
           processing_count: Json | null
           recruiter: string | null
@@ -6348,37 +6337,6 @@ export type Database = {
           job_title: string
         }[]
       }
-      getresumematch: {
-        Args: {
-          jobid: string
-          section: Database["public"]["Enums"]["application_status"]
-          topmatch?: number
-          goodmatch?: number
-          averagematch?: number
-          poormatch?: number
-        }
-        Returns: {
-          match: string
-          count: number
-        }[]
-      }
-      getresumematches: {
-        Args: {
-          jobid: string
-          section: Database["public"]["Enums"]["application_status"]
-          topmatch?: number
-          goodmatch?: number
-          averagematch?: number
-          poormatch?: number
-        }
-        Returns: Json
-      }
-      getsectioncounts: {
-        Args: {
-          jobid: string
-        }
-        Returns: Json
-      }
       getskillpools: {
         Args: {
           jobid: string
@@ -6835,13 +6793,6 @@ export type Database = {
         | "csv_upload"
         | "apply_link"
         | "candidate_database"
-      application_status:
-        | "new"
-        | "assessment"
-        | "qualified"
-        | "disqualified"
-        | "screening"
-        | "interview"
       assessment_mode: "classic" | "verbal" | "visual"
       cancel_type: "reschedule" | "declined"
       db_search_type: "aglint" | "candidate"

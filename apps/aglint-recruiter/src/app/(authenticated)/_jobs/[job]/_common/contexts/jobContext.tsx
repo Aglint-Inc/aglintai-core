@@ -186,8 +186,6 @@ const useJobContext = () => {
         // eslint-disable-next-line no-unused-vars
         section_count: _section_count,
         // eslint-disable-next-line no-unused-vars
-        flags: _flags,
-        // eslint-disable-next-line no-unused-vars
         application_match: _application_match,
         // eslint-disable-next-line no-unused-vars
         department: _department,
