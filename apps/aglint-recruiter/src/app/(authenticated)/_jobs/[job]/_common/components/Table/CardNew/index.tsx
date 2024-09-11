@@ -139,8 +139,8 @@ const ApplicationCard = memo(
               />
             )
           }
-          isScreeningVisible={cascadeVisibilites.screening}
-          isAssessmentVisible={cascadeVisibilites.assessment}
+          isScreeningVisible={false}
+          isAssessmentVisible={false}
           isInterviewVisible={cascadeVisibilites.interview}
           isDisqualifiedVisible={cascadeVisibilites.disqualified}
           slotScreening={<>---</>}

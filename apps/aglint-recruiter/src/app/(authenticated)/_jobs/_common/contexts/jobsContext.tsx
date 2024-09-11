@@ -16,11 +16,8 @@ import {
 const useJobContext = () => {
   const { recruiter, recruiter_id } = useAuthDetails();
 
-  const {
-    checkPermissions,
-    devlinkProps: getDevlinkProps,
-    isSchedulingEnabled,
-  } = useRolesAndPermissions();
+  const { checkPermissions, devlinkProps: getDevlinkProps } =
+    useRolesAndPermissions();
 
   const manageJob = useMemo(
     () => checkPermissions(['manage_job']),
@@ -50,22 +47,6 @@ const useJobContext = () => {
       //
     }
   };
-
-  const customJobs = useMemo(
-    () => ({
-      ...jobs,
-      data: (jobs?.data ?? []).map(({ flags, ...job }) => ({
-        ...job,
-        flags: {
-          ...flags,
-          screening: !!flags?.screening,
-          assessment: !!flags?.assessment,
-          interview: !!(flags?.interview && isSchedulingEnabled),
-        },
-      })),
-    }),
-    [jobs, jobs.status, isSchedulingEnabled],
-  );
 
   const { mutateAsync: jobCreate } = useJobCreate();
 
@@ -104,7 +85,7 @@ const useJobContext = () => {
   );
 
   const value = {
-    jobs: customJobs,
+    jobs,
     handleJobCreate,
     handleJobsRefresh: jobs.refetch,
     handleJobDelete,

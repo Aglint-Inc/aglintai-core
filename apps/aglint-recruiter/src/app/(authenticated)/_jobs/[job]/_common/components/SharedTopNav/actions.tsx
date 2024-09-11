@@ -301,7 +301,7 @@ const Close = () => {
 const Modules = () => {
   const { manageJob } = useJob();
   const { currentPath } = useSettings();
-  const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();
+  const { isScoringEnabled } = useRolesAndPermissions();
   if (!manageJob)
     return (
       <>
@@ -315,9 +315,7 @@ const Modules = () => {
         <ProfileScoreModule />
       )}
       {currentPath !== '/jobs/[job]/hiring-team' && <HiringTeamModule />}
-      {currentPath !== '/jobs/[job]/interview-plan' && isSchedulingEnabled && (
-        <InterviewModule />
-      )}
+      {currentPath !== '/jobs/[job]/interview-plan' && <InterviewModule />}
 
       {currentPath !== '/jobs/[job]/workflows' && <WorkflowModule />}
     </>
