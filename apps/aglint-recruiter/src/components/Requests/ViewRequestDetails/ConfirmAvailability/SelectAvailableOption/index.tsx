@@ -7,7 +7,7 @@ import { Divider, Stack } from '@mui/material';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 
-import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import FinalScreen from '../FinalScreen';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { setCalendarDate } from '../store';

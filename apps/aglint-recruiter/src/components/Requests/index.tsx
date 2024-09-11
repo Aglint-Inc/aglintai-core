@@ -1,12 +1,12 @@
 // import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { Button } from '@components/ui/button';
-import { RequestAgentEmpty } from '@devlink2/RequestAgentEmpty';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
+import { RequestEmpty } from './_common/Components/RequestEmpty';
 import { checkFiltersApplied } from './_common/utils/checkFiltersApplied';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
@@ -71,14 +71,15 @@ const Requests = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-1 p-4 pt-0 z-10 overflow-scroll overflow-x-hidden h-screen ${
+        className={`flex-1 pt-0 z-10 overflow-scroll overflow-x-hidden h-screen ${
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
+        
         {showEmptyPage && !checkFiltersApplied({ filters }) ? (
-          <RequestAgentEmpty />
+          <RequestEmpty />
         ) : (
-          <div className='max-w-[1200px] mx-auto'>
+          <div className=''>
             <RequestList />
           </div>
         )}

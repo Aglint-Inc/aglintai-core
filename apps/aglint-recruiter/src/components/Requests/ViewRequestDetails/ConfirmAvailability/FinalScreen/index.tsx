@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import Loader from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 
-import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
 

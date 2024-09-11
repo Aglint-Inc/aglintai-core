@@ -49,3 +49,4 @@ sitemap.xml
 
 .turbo
 ./script/path_gen.js
+.vercel

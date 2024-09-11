@@ -5,10 +5,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { PageLayout } from '@devlink2/PageLayout';
 import { MoreHorizontal, Zap } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { WithPermission } from '@/components/withPermission';
 import { DeletePopup } from '@/workflow//components/deletePopup';
 import { BreadCrumbs } from '@/workflow/components/breadCrumbs';
@@ -21,7 +21,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <WorkflowsStoreProvider>
       <WorkflowProvider>
-        <PageLayout
+        <UIPageLayout
           slotTopbarLeft={<BreadCrumbs />}
           slotBody={children}
           slotTopbarRight={<Edit />}

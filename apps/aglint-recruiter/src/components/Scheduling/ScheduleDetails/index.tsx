@@ -6,6 +6,7 @@ import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -46,15 +47,9 @@ function SchedulingViewComp() {
     if (data?.schedule_data?.candidates.id) {
       setBreadcrum([
         {
-          name: 'Scheduling',
-          route: checkPermissions(['scheduling_settings_and_reports'])
-            ? ROUTES['/scheduling']() + `?tab=matrics`
-            : ROUTES['/scheduling']() + `?tab=my_interviews`,
-        },
-        {
           name: 'Schedules',
           route: checkPermissions(['scheduling_actions'])
-            ? ROUTES['/scheduling']() + `?tab=schedules`
+            ? ROUTES['/scheduling']() + `?tab=interviews`
             : ROUTES['/scheduling']() + `?tab=my_interviews`,
         },
         {
@@ -110,7 +105,7 @@ function SchedulingViewComp() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={
           isLoading ? (
             <div className='w-[150px] h-[20px]'>

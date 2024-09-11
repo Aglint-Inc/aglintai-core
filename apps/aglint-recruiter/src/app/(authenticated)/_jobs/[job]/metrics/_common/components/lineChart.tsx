@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { NoData } from '@devlink3/NoData';
+
 import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
@@ -15,6 +15,7 @@ import Loader from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
 
 import { type DashboardGraphOptions } from '.';
+import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
@@ -131,7 +132,7 @@ const DashboardLineChart: FC<{
         return acc;
       }, 0)
     : 0;
-  if (total === 0) return <NoData />;
+  if (total === 0) return <NoDataAvailable />;
   return <LineChart experience={experience} />;
 };
 

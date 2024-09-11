@@ -7,9 +7,8 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { PageLayout } from '@devlink2/PageLayout';
-import React from 'react';
 
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -25,7 +24,7 @@ function PlatformIntegrationSettingsComponent() {
         title={`Integrations | Aglint AI`}
         description='AI for People Products'
       />
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={
           <>
             <Breadcrumb>

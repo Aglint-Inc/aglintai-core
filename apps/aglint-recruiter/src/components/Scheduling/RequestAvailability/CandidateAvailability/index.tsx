@@ -1,15 +1,14 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+import { useToast } from '@components/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Button } from '@components/ui/button';
 import { AvailabilityReq } from '@devlink2/AvailabilityReq';
 import { MultiDaySelect } from '@devlink2/MultiDaySelect';
-import { GlobalCta } from '@devlink3/GlobalCta';
-import { Stack } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { Calendar, CheckCircle } from 'lucide-react';
+import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import Footer from '@/components/Common/Footer';
@@ -20,7 +19,6 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/utils/jsonResume';
 import timeZones from '@/utils/timeZone';
-import toast from '@/utils/toast';
 
 import {
   insertTaskProgress,
@@ -56,6 +54,8 @@ function CandidateAvailability() {
     candidateRequestAvailability?.request_session_relation.map(
       (ele) => ele.interview_session,
     );
+  const { toast } = useToast();
+
   const getMeetings = async (session_ids: string[], application_id: string) => {
     setConfirmLoading(true);
     const {
@@ -99,7 +99,11 @@ function CandidateAvailability() {
 
   async function handleSubmit() {
     if (multiDaySessions.length !== daySlots.length) {
-      toast.message('Please select slots from each day');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Please select slots from each day',
+      });
       return;
     }
     setSubmitLoading(true);
@@ -238,18 +242,11 @@ function CandidateAvailability() {
   }, [candidateRequestAvailability]);
   if (loading || confirmLoading) {
     return (
-      <Stack
-        width={'100%'}
-        height={'100vh'}
-        direction={'row'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        bgcolor={'var(--neutral-2)'}
-      >
-        <Stack width={'120px'} style={{ transform: 'translateY(-50%)' }}>
+      <div className='w-full h-screen flex justify-center items-center bg-[var(--neutral-2)]'>
+        <div className='w-[120px] -translate-y-1/2'>
           <CandidateSlotLoad />
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     );
   }
 
@@ -278,52 +275,44 @@ function CandidateAvailability() {
   }
   if (dateSlots.length === 0) {
     return (
-      <>
-        <GlobalCta
-          color={'error'}
-          iconName={'error'}
-          textTitle={'No Slots Available'}
-          textDescription={'Please try to contact our support team'}
-          slotButton={
-            <ButtonSoft
-              size={1}
-              color={'neutral'}
-              textButton={'Contact Support'}
-              onClickButton={{
-                onClick: () => {
-                  window.open('mailto:support@aglinthq.com');
-                },
-              }}
-            />
-          }
-        />
-      </>
+      <Alert variant='destructive'>
+        <AlertCircle className='h-4 w-4' />
+        <AlertTitle>No Slots Available</AlertTitle>
+        <AlertDescription>
+          Please try to contact our support team
+          <Button
+            variant='outline'
+            size='sm'
+            className='ml-2'
+            onClick={() => {
+              window.open('mailto:support@aglinthq.com');
+            }}
+          >
+            Contact Support
+          </Button>
+        </AlertDescription>
+      </Alert>
     );
   }
   return (
     <div>
       <DateSlotsPoPup />
-      <Stack
-        sx={{
-          bgcolor: 'var(--sand-3)',
-          width: '100%',
-          height: '100vh',
-          overflow: 'auto',
-          paddingTop: '60px',
-          paddingBottom: '24px',
-        }}
-      >
+      <div className='bg-[var(--sand-3)] w-full h-screen overflow-auto pt-[60px] pb-6'>
         <AvailabilityReq
           slotTtitle={
             isSubmitted ? (
               <>
-                <CheckCircle size={6} />
-                <p className="text-lg font-semibold">Availability Submitted successfully</p>
+                <CheckCircle className='w-6 h-6 text-[var(--success-11)]' />
+                <p className='text-lg font-semibold'>
+                  Availability Submitted successfully
+                </p>
               </>
             ) : (
               <>
-                <Calendar size={6} />
-                <p className="text-lg font-semibold">Your Availability Requested</p>
+                <Calendar className='w-6 h-6 text-[var(--neutral-12)]' />
+                <p className='text-lg font-semibold'>
+                  Your Availability Requested
+                </p>
               </>
             )
           }
@@ -354,13 +343,14 @@ function CandidateAvailability() {
                 <MultiDaySelect
                   slotPrimaryButton={
                     !isSubmitted && (
-                      <ButtonSolid
-                        size={2}
-                        onClickButton={{ onClick: handleSubmit }}
-                        textButton={'Submit Availability'}
-                        isLoading={submitLoading}
-                        isDisabled={multiDaySessions.length !== daySlots.length}
-                      />
+                      <Button
+                        onClick={handleSubmit}
+                        disabled={multiDaySessions.length !== daySlots.length}
+                      >
+                        {submitLoading
+                          ? 'Submitting...'
+                          : 'Submit Availability'}
+                      </Button>
                     )
                   }
                   slotCandidateScheduleCard={multiDaySessions.map(
@@ -425,7 +415,7 @@ function CandidateAvailability() {
           }
         />
         <Footer brand={true} />
-      </Stack>
+      </div>
     </div>
   );
 }

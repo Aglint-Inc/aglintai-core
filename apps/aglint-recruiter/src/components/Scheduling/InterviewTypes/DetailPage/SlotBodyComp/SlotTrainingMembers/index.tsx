@@ -1,4 +1,4 @@
-import { EmptyGeneral } from '@devlink2/EmptyGeneral';
+
 import { User } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -46,21 +46,19 @@ function SlotTrainingMembers({
       {selUser?.user_id && <MoveToQualifiedDialog refetch={refetch} />}
 
       {filtererdUsers.length === 0 && (
-        <EmptyGeneral
-          textEmpt={'No interviewers added yet.'}
-          slotButton={
-            <UIButton
-              variant='outline'
-              leftIcon={<User />}
-              onClick={() => {
-                setIsAddMemberDialogOpen(true);
-                setTrainingStatus('training');
-              }}
-            >
-              Add Trainee
-            </UIButton>
-          }
-        />
+        <div className="flex flex-col items-center justify-center p-8 text-center border border-gray-200 rounded-md">
+          <User className="mb-2 h-8 w-8 text-gray-400" />
+          <p className="mb-4 text-gray-600">No interviewers added yet.</p>
+          <UIButton
+            variant='outline'
+            onClick={() => {
+              setIsAddMemberDialogOpen(true);
+              setTrainingStatus('training');
+            }}
+          >
+            Add Trainee
+          </UIButton>
+        </div>
       )}
       {filtererdUsers.map((user) => {
         const progressDataUser = Array.isArray(progress)

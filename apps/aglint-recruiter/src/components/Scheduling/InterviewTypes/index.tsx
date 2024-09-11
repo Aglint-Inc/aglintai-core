@@ -13,6 +13,7 @@ import { Plus, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
@@ -65,7 +66,7 @@ export function InterviewTypes() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarRight={
           checkPermissions(['interview_types']) && (
             <UIButton

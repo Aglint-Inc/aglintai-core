@@ -8,7 +8,7 @@ import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { FilterItem } from '@devlink3/FilterItem';
 import { MultiFilterLayout } from '@devlink3/MultiFilterLayout';
 import { List, ListItemButton, Popover, Stack } from '@mui/material';
-import { ChevronDown, ChevronUp, User } from 'lucide-react';
+import { ChevronDown, ChevronUp, TextSearch } from 'lucide-react';
 import React, { memo, type ReactNode } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -297,7 +297,7 @@ export function FilterComponent({
               />
             ) : (
               <div className='flex flex-col items-center justify-center p-4 text-center'>
-                <div className='text-4xl mb-2'>🔍</div>
+                <TextSearch className='w-4 h-4 mb-4' />
                 <p className='text-sm text-gray-500'>No {title} found</p>
               </div>
             )
@@ -773,7 +773,7 @@ function FilterOptionsList({
           })
         ) : (
           <div className='flex flex-col items-center justify-center h-[150px]'>
-            <User className='w-24 h-24 text-red-500 mb-4' />
+            <TextSearch className='w-4 h-4 mb-4' />
             <p className='text-sm text-gray-500'>No {title} found</p>
           </div>
         )}

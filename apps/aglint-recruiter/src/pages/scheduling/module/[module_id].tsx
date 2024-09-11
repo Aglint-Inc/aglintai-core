@@ -26,6 +26,7 @@ import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { MemberListCardShadcn } from '@/components/Common/Member/MemberListCard';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
@@ -108,7 +109,7 @@ function ModuleMembersComp() {
   return (
     <>
       <Seo title={`Scheduling`} description='AI for People Products' />
-      <PageLayout
+      <UIPageLayout
         onClickBack={{
           onClick: () => {
             window.history.back();
@@ -289,7 +290,12 @@ function SlotQualifiedMembers({
   return (
     <>
       {allQualified.length === 0 && (
-        <EmptyGeneral textEmpt={'No Members Added Yet'} />
+        <div className='flex flex-col items-center justify-center p-8 text-center'>
+          <div className='font-semibold mb-2'>No Members Added Yet</div>
+          <p className='text-muted-foreground'>
+            Start by adding members to this module.
+          </p>
+        </div>
       )}
       {allQualified.map((user) => {
         const member = members.filter(
