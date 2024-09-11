@@ -1,5 +1,8 @@
 import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Stack } from '@mui/material';
+import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -9,9 +12,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import toast from '@/utils/toast';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
-import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { Button } from '@components/ui/button';
-import { Info } from 'lucide-react';
 
 function EmailTemplate({ application_id }: { application_id?: string }) {
   const { recruiterUser } = useAuthDetails();

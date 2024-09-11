@@ -1,5 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
+import { Bell } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -94,13 +95,15 @@ const SelfScheduleFlowMenus = ({
       >
         <div>
           <Button
+            variant='outline'
             size='sm'
             onClick={() => {
               setEditTrigger('selfScheduleReminder');
               setShowEditDialog(true);
             }}
           >
-            Schedule Reminder
+            <Bell className='mr-2 h-4 w-4' />
+            Add Reminder
           </Button>
         </div>
       </ShowCode.When>

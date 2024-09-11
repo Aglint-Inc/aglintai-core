@@ -6,8 +6,10 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import React, { useState } from 'react';
+
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+
 import MemberCard from './MemberCard';
-import { MemberType } from '@/components/Scheduling/InterviewTypes/types';
 
 function UpdateMembers({
   updateButton,

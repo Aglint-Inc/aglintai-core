@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonGhost } from '@devlink2/ButtonGhost';
-import { RequestProgress } from '@devlink2/RequestProgress';
+import { WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -23,6 +23,7 @@ import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { RequestProgressTracker } from '../RequestProgressTracker';
 import { type RequestProgressMapType } from '../types';
 import {
   apiTargetToEvents,
@@ -171,9 +172,9 @@ const RequestEvents = ({
 
   return (
     <>
-      <RequestProgress
+      <RequestProgressTracker
         circleIndicator={'success'}
-        textRequestProgress={`Candidate submits Availability`}
+        textRequestProgress={`When candidate submits availability`}
         slotProgress={
           <>
             <ShowCode.When isTrue={isManual}>
@@ -251,61 +252,56 @@ const WActionMenu = () => {
   const { setEditTrigger, setShowEditDialog, reqTriggerActionsMap } =
     useRequestProgressProvider();
   return (
-    <>
-      <RequestProgress
-        circleIndicator={'circle'}
-        textRequestProgress={`Candidate submits Availability`}
-        slotProgress={
-          <>
-            <div>
-              <ShowCode.When
-                isTrue={Boolean(
-                  !reqTriggerActionsMap['onReceivingAvailReq'] ||
-                    Boolean(
-                      reqTriggerActionsMap['onReceivingAvailReq'] &&
-                        reqTriggerActionsMap['onReceivingAvailReq'].length ===
-                          0,
-                    ),
-                )}
-              >
-                <ButtonGhost
-                  size={1}
-                  isLeftIcon={true}
-                  iconName={'add_circle'}
-                  textButton={'Add Ai Actions'}
-                  onClickButton={{
-                    onClick: () => {
-                      setEditTrigger('onReceivingAvailReq');
-                      setShowEditDialog(true);
-                    },
-                  }}
-                />
-              </ShowCode.When>
-              <ShowCode.When
-                isTrue={Boolean(
+    <RequestProgressTracker
+      circleIndicator='default'
+      textRequestProgress='When candidate submits availability'
+      slotProgress={
+        <div>
+          <ShowCode.When
+            isTrue={Boolean(
+              !reqTriggerActionsMap['onReceivingAvailReq'] ||
+                Boolean(
                   reqTriggerActionsMap['onReceivingAvailReq'] &&
-                    reqTriggerActionsMap['onReceivingAvailReq'].length > 0,
-                )}
-              >
-                {Boolean(reqTriggerActionsMap['onReceivingAvailReq']) &&
-                  reqTriggerActionsMap['onReceivingAvailReq'].length > 0 &&
-                  reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
-                    const eventAction = apiTargetToEvents[action.target_api];
-                    return (
-                      <EventNode
-                        key={action.id}
-                        currEventTrigger='onReceivingAvailReq'
-                        eventType={eventAction}
-                        reqProgresMap={{}}
-                        currWAction={action}
-                      />
-                    );
-                  })}
-              </ShowCode.When>
-            </div>
-          </>
-        }
-      />
-    </>
+                    reqTriggerActionsMap['onReceivingAvailReq'].length === 0,
+                ),
+            )}
+          >
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => {
+                setEditTrigger('onReceivingAvailReq');
+                setShowEditDialog(true);
+              }}
+              className='mb-4'
+            >
+              <WandSparkles className='mr-2 h-4 w-4' />
+              Add Automation
+            </Button>
+          </ShowCode.When>
+          <ShowCode.When
+            isTrue={Boolean(
+              reqTriggerActionsMap['onReceivingAvailReq'] &&
+                reqTriggerActionsMap['onReceivingAvailReq'].length > 0,
+            )}
+          >
+            {Boolean(reqTriggerActionsMap['onReceivingAvailReq']) &&
+              reqTriggerActionsMap['onReceivingAvailReq'].length > 0 &&
+              reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
+                const eventAction = apiTargetToEvents[action.target_api];
+                return (
+                  <EventNode
+                    key={action.id}
+                    currEventTrigger='onReceivingAvailReq'
+                    eventType={eventAction}
+                    reqProgresMap={{}}
+                    currWAction={action}
+                  />
+                );
+              })}
+          </ShowCode.When>
+        </div>
+      }
+    />
   );
 };

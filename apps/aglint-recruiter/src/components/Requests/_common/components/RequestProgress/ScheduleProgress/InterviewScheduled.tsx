@@ -2,10 +2,8 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { RequestProgress } from '@devlink2/RequestProgress';
-import { ScheduleProgress } from '@devlink2/ScheduleProgress';
 import axios from 'axios';
+import { Plus, Trash } from 'lucide-react';
 import React from 'react';
 
 import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
@@ -17,6 +15,8 @@ import toast from '@/utils/toast';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { RequestProgressTracker } from '../RequestProgressTracker';
+import ScheduleProgressTracker from '../ScheduleProgressTracker';
 import {
   createRequestWorkflowAction,
   deleteRequestWorkflowAction,
@@ -27,6 +27,7 @@ import {
   progressStatusToTense,
 } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
+
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {
@@ -97,9 +98,9 @@ const InterviewScheduled = () => {
     }
   };
   return (
-    <RequestProgress
-      circleIndicator={tense === 'past' ? 'success' : 'neutral'}
-      textRequestProgress={'On Inteview is Scheduled'}
+    <RequestProgressTracker
+      circleIndicator={tense === 'past' ? 'success' : 'default'}
+      textRequestProgress={'When inteview is scheduled'}
       slotProgress={
         <>
           {ACTION_TRIGGER_MAP.candidateBook.map((action, idx) => {
@@ -111,7 +112,7 @@ const InterviewScheduled = () => {
               reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']?.[0];
 
             return (
-              <ScheduleProgress
+              <ScheduleProgressTracker
                 key={idx}
                 textProgress={workflowCopy[eventAction][tense]}
                 status={getProgressCompStatus(slack_status?.status)}
@@ -119,28 +120,26 @@ const InterviewScheduled = () => {
                   <>
                     <ShowCode.When isTrue={tense === 'future'}>
                       <ShowCode.When isTrue={!addedAction}>
-                        <IconButtonSoft
-                          iconName={'add'}
-                          size={1}
-                          color={'neutral'}
-                          onClickButton={{
-                            onClick: () => {
-                              handleAddAction(action.value.target_api);
-                            },
-                          }}
-                        />
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() =>
+                            handleAddAction(action.value.target_api)
+                          }
+                        >
+                          <Plus className='h-4 w-4' />
+                        </Button>
                       </ShowCode.When>
                       <ShowCode.When isTrue={Boolean(addedAction)}>
-                        <IconButtonSoft
-                          iconName={'delete'}
-                          size={1}
-                          color={'error'}
-                          onClickButton={{
-                            onClick: () => {
-                              handleDeleteScheduleAction(addedAction.id);
-                            },
-                          }}
-                        />
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() =>
+                            handleDeleteScheduleAction(addedAction.id)
+                          }
+                        >
+                          <Trash className='h-4 w-4 text-destructive' />
+                        </Button>
                       </ShowCode.When>
                     </ShowCode.When>
                   </>

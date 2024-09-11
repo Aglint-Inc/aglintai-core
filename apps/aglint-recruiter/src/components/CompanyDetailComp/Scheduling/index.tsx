@@ -93,19 +93,16 @@ function SchedulingSettings({ updateSettings }) {
             : value,
     }));
   };
-  const handleDailyType = (type: 'Hours' | 'Interviews') => {
+  const handleType = (type: 'Hours' | 'Interviews') => {
     setDailyLimit((pre) => ({
       ...pre,
       type,
     }));
-    handleDailyValue(dailyLmit.value);
-  };
-
-  const handleWeeklyType = (type: 'Hours' | 'Interviews') => {
     setWeeklyLimit((pre) => ({
       ...pre,
       type,
     }));
+    handleDailyValue(dailyLmit.value);
     handleWeeklyValue(weeklyLmit.value);
   };
 
@@ -236,14 +233,14 @@ function SchedulingSettings({ updateSettings }) {
                 max={dailyLmit.max}
                 type={dailyLmit.type}
                 onValueChange={handleDailyValue}
-                onTypeChange={handleDailyType}
+                onTypeChange={handleType}
               />
               <InterviewLimitInput
                 value={weeklyLmit.value}
                 max={weeklyLmit.max}
                 type={weeklyLmit.type}
                 onValueChange={handleWeeklyValue}
-                onTypeChange={handleWeeklyType}
+                onTypeChange={handleType}
               />
             </div>
           </CardContent>

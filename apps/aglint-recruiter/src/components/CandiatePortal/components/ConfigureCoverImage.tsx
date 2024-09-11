@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
-import { type ChangeEvent, type DragEvent, useRef } from 'react';
+import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
 import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
 
@@ -50,14 +50,8 @@ export function ConfigureCoverImage() {
         <div className='flex flex-col '>
           {/* if there is no image show this button */}
           {data?.banner_image ? (
-            <div className='flex flex-col  items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md '>
-              <Image
-                width={600}
-                height={400}
-                src={data.banner_image}
-                alt='Company Cover'
-                className='object-cover h-full'
-              ></Image>
+            <div className='flex flex-col  items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden '>
+              <ImageWithLoading src={data.banner_image} />
             </div>
           ) : (
             <div className='relative'>
@@ -118,3 +112,49 @@ export function ConfigureCoverImage() {
     </div>
   );
 }
+
+// ------------------------------------------------------------------------
+const ImageWithLoading = ({ src }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const handleImageLoaded = () => {
+    setLoading(false);
+  };
+
+  const handleImageError = () => {
+    setLoading(false);
+    setError(true);
+  };
+
+  return (
+    <div style={{ position: 'relative', width: '24rem', height: '12rem' }}>
+      {loading && !error && (
+        <div
+          className='loading-spinner'
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            fontSize: '1.2em',
+          }}
+        >
+          Loading...
+        </div>
+      )}
+      {!error && (
+        <Image
+          width={600}
+          height={400}
+          src={src}
+          onLoad={handleImageLoaded}
+          onError={handleImageError}
+          alt='Company Cover'
+          className='object-cover h-full'
+        ></Image>
+      )}
+      {error && <p>Error loading image.</p>}
+    </div>
+  );
+};

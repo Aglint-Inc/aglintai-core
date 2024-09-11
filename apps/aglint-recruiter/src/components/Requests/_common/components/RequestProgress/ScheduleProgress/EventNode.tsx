@@ -2,7 +2,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { ScheduleProgress } from '@devlink2/ScheduleProgress';
 import { RefreshCw, Trash } from 'lucide-react';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import ScheduleProgressTracker from '../ScheduleProgressTracker';
 import { type ProgressTenseType, type RequestProgressMapType } from '../types';
 import { deleteRequestWorkflowAction } from '../utils';
 import { workflowCopy } from '../utils/copy';
@@ -63,7 +63,7 @@ const EventNode = ({
           setOnHover(false);
         }}
       >
-        <ScheduleProgress
+        <ScheduleProgressTracker
           status={
             tense === 'past' ? 'completed' : tense === 'future' ? 'circle' : ''
           }
