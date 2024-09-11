@@ -1,6 +1,5 @@
 'use client';
 
-
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { Printer, Text } from 'lucide-react';
@@ -36,13 +35,13 @@ export function InterviewMemberList({
                   <p>{textDepartment}</p>
                 </div>
               </div>
-              <div className='im-detail-item flex gap-1'>
-                <div className='im-detail-item-left flex items-center w-[120px] gap-2'>
+              <div className='im-detail-item flex items-start gap-10'>
+                <div className='flex flex-row items-center gap-2'>
                   <Text className='w-[18px] h-[18px]' strokeWidth={1} />
                   <p className='text-[14px]'> {'Objective'}</p>
                 </div>
 
-                <div className='im-detail-item-right'>
+                <div className=' w-auto'>
                   <p className='text-wrap'>{textObjective}</p>
                 </div>
               </div>
@@ -52,9 +51,7 @@ export function InterviewMemberList({
         </div>
 
         <div className='slot_newtab_pill'>
-          {slotNewTabPill ?? (
-              <div>NewTabPill</div>
-          )}
+          {slotNewTabPill ?? <div>NewTabPill</div>}
         </div>
 
         <div className='iml-new-body-wrap flex '>

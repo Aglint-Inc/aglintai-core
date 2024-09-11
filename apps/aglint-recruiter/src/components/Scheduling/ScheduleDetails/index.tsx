@@ -1,7 +1,6 @@
 // import Feedback from './Feedback';
 import { Skeleton } from '@components/ui/skeleton';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,6 +12,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useKeyPress } from '@/hooks/useKeyPress';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Loader from '../../Common/Loader';
 import ButtonGroup from './ButtonGroup';
@@ -165,13 +165,11 @@ function SchedulingViewComp() {
                             ? '--'
                             : `${job.office_locations?.city}, ${job.office_locations?.country}`
                         }
-                        onClickJob={{
-                          onClick: () => {
-                            window.open(
-                              `/jobs/${job.id}?section=interview`,
-                              '_blank',
-                            );
-                          },
+                        onClickJob={() => {
+                          window.open(
+                            `/jobs/${job.id}?section=interview`,
+                            '_blank',
+                          );
                         }}
                         // textRoleCategory={job.}
                       />

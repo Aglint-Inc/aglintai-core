@@ -1,13 +1,11 @@
 import { useToast } from '@components/hooks/use-toast';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-// import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
-import { Popover, Stack, Typography } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Edit, EllipsisVertical, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -17,12 +15,14 @@ import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { UITextArea } from '@/components/Common/UITextArea';
+import UITypography from '@/components/Common/UITypography';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useAllDepartments } from '@/queries/departments';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
+import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
@@ -170,7 +170,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
         <>
           {editModule && (
             <InterviewMemberList
-              slotBanner={<>dsf</>}
+              slotBanner={<></>}
               slotJobsCard={
                 editModule?.id && <ConnectedJobs module_id={editModule?.id} />
               }
@@ -277,37 +277,43 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     <InterviewTypeToken
                       slotTokenItem={
                         <>
-                          <div className="grid grid-cols-[260px_570px] items-center p-4 border-b">
-                            <div className="flex items-center">
+                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                            <div className='flex items-center'>
                               <GlobalBadge
                                 textBadge='Token1'
                                 color={'purple'}
                               />
                             </div>
-                            <p className="text-sm text-gray-600">
-                              Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.
+                            <p className='text-sm text-gray-600'>
+                              Korem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Nunc vulputate libero et velit interdum, ac
+                              aliquet odio mattis.
                             </p>
                           </div>
-                          <div className="grid grid-cols-[260px_570px] items-center p-4 border-b">
-                            <div className="flex items-center">
+                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                            <div className='flex items-center'>
                               <GlobalBadge
                                 textBadge='Token2'
                                 color={'purple'}
                               />
                             </div>
-                            <p className="text-sm text-gray-600">
-                              Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.
+                            <p className='text-sm text-gray-600'>
+                              Korem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Nunc vulputate libero et velit interdum, ac
+                              aliquet odio mattis.
                             </p>
                           </div>
-                          <div className="grid grid-cols-[260px_570px] items-center p-4 border-b">
-                            <div className="flex items-center">
+                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                            <div className='flex items-center'>
                               <GlobalBadge
                                 textBadge='Token3'
                                 color={'purple'}
                               />
                             </div>
-                            <p className="text-sm text-gray-600">
-                              Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.
+                            <p className='text-sm text-gray-600'>
+                              Korem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Nunc vulputate libero et velit interdum, ac
+                              aliquet odio mattis.
                             </p>
                           </div>
                         </>
@@ -441,7 +447,10 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
   }
   return (
     <>
-      <Typography fontWeight={500}>Connected Jobs</Typography>
+      <UITypography type='medium' variant='p'>
+        Connected Jobs
+      </UITypography>
+
       <Stack mt={2} spacing={1}>
         {filteredConnectedJobs.length > 0 ? (
           filteredConnectedJobs.map((job, i) => (
@@ -465,12 +474,11 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
                   />
                 )
               }
-              onClickJob={{
-                onClick: () =>
-                  router.push(
-                    ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
-                  ),
-              }}
+              onClickJob={() =>
+                router.push(
+                  ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
+                )
+              }
             />
           ))
         ) : (
