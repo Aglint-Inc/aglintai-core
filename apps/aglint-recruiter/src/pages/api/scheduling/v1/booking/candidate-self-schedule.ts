@@ -38,13 +38,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const cand_schedule = new CandidatesSchedulingV2(zod_options);
 
     await cand_schedule.fetchDetails({
-      req_user_tz: parsed.cand_tz,
-      start_date_str: schedule_db_details.start_date_str,
-      end_date_str: schedule_db_details.end_date_str,
-      company_id: company.id,
-      session_ids: interviewer_selected_options[0].sessions.map(
-        (s) => s.session_id,
-      ),
+      params: {
+        req_user_tz: parsed.cand_tz,
+        start_date_str: schedule_db_details.start_date_str,
+        end_date_str: schedule_db_details.end_date_str,
+        company_id: company.id,
+        session_ids: interviewer_selected_options[0].sessions.map(
+          (s) => s.session_id,
+        ),
+      },
     });
 
     const verified_plans =
