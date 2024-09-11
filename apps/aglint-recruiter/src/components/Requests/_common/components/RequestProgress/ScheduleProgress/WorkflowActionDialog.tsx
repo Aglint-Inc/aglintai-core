@@ -34,8 +34,12 @@ import {
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
-  const { reqTriggerActionsMap, companyEmailTemplatesMp, editTrigger } =
-    useRequestProgressProvider();
+  const {
+    reqTriggerActionsMap,
+    companyEmailTemplatesMp,
+    editTrigger,
+    setShowEditDialog,
+  } = useRequestProgressProvider();
 
   const {
     selectedActionsDetails,
@@ -89,7 +93,6 @@ const WorkflowActionDialog = () => {
 
     setTiptapLoadStatus({ email: false, agent: false });
   };
-
   const { mutateAsync } =
     api.textTransform.selfScheduleInstruction.useMutation();
 
@@ -98,12 +101,11 @@ const WorkflowActionDialog = () => {
   ) => {
     try {
       setIsAddingAction(true);
-
-      const availabilityResp = await mutateAsync({
-        instruction: agentInstructions,
-        user_tz: dayjsLocal.tz.guess(),
-      });
       if (agentInstructions.length > 0) {
+        const availabilityResp = await mutateAsync({
+          instruction: agentInstructions,
+          user_tz: dayjsLocal.tz.guess(),
+        });
         wAction.payload = {
           email: {
             body: emailTemplate.body,
@@ -128,7 +130,7 @@ const WorkflowActionDialog = () => {
       });
     } finally {
       setIsAddingAction(false);
-      // setShowEditDialog(false);
+      setShowEditDialog(false);
     }
   };
 

@@ -1,4 +1,8 @@
-import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import type {
+  CustomAgentInstructionPayload,
+  DatabaseEnums,
+  DatabaseTable,
+} from '@aglint/shared-types';
 import {
   createContext,
   type ReactNode,
@@ -51,10 +55,14 @@ interface SelectedActionsDetailsProviderProps {
 export const SelectedActionsDetailsProvider: React.FC<
   SelectedActionsDetailsProviderProps
 > = ({ children, defaultSelectedActionsDetails }) => {
+  const agentInstructionsInfo = (defaultSelectedActionsDetails.payload as any)
+    ?.agent as CustomAgentInstructionPayload | null;
   const [selectedActionsDetails, setSelectedActionsDetails] = useState<
     Omit<DatabaseTable['workflow_action'], 'payload'>
   >(defaultSelectedActionsDetails);
-  const [agentInstructions, setAgentInstructions] = useState<string>(null);
+  const [agentInstructions, setAgentInstructions] = useState<string>(
+    agentInstructionsInfo?.agent?.instruction ?? '',
+  );
   const [tiptapLoadStatus, setTiptapLoadStatus] = useState({
     email: false,
     agent: false,
@@ -77,7 +85,6 @@ export const SelectedActionsDetailsProvider: React.FC<
 
     return selectedActionsDetails.target_api;
   }, [selectedActionsDetails.target_api]);
-
   return (
     <SelectedActionsDetailsContext.Provider
       value={{
