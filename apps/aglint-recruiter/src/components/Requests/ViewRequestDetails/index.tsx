@@ -52,11 +52,15 @@ import {
   REQUEST_URGENT_LIST,
 } from '../_common/constant';
 import { useMeetingList } from '../_common/hooks';
+import CandidateAvailability from './CandidateAvailability';
+import { setCandidateAvailabilityDrawerOpen } from './CandidateAvailability/store';
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
 import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
+import ConfirmAvailability from './ConfirmAvailability';
+import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -101,6 +105,12 @@ export default function ViewRequestDetails() {
   } else
     return (
       <div className='min-h-screen bg-gray-50 p-8'>
+        {selectedRequest && (
+          <CandidateAvailability selectedRequest={selectedRequest} />
+        )}
+        <AvailabilityProvider>
+          <ConfirmAvailability />
+        </AvailabilityProvider>
         <SideDrawerEdit refetch={refetch} />
         <div className='max-w-[calc(100%-12.5rem)] mx-auto space-y-8'>
           <div className='flex items-center space-x-2 text-sm text-gray-500'>
@@ -396,7 +406,14 @@ export default function ViewRequestDetails() {
                   Here is your next step on the request.
                 </AlertDescription>
                 <div className='flex flex-row gap-2 justify-end mt-4'>
-                  <Button variant='outline'>Get Availability</Button>
+                  <Button
+                    onClick={() => {
+                      setCandidateAvailabilityDrawerOpen(true);
+                    }}
+                    variant='outline'
+                  >
+                    Get Availability
+                  </Button>
                   <Button>Send Self Scheduling</Button>
                 </div>
               </Alert>

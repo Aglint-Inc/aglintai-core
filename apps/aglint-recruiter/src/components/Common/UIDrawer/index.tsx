@@ -59,7 +59,7 @@ function UIDrawer({
                 </UITypography>
               </div>
             </DrawerHeader>
-            <ScrollArea>{children}</ScrollArea>
+            <ScrollArea className='h-[calc(100vh-95px)]'>{children}</ScrollArea>
             {slotBottom && (
               <DrawerFooter className='border-t border-gray-200 h-12'>
                 <div className='flex flex-row items-center justify-center gap-4 h-full'>
