@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
+import { Switch } from '@components/ui/switch';
 import {
   Bot,
   Briefcase,
@@ -19,9 +20,7 @@ import {
   Edit2,
   Eye,
   MapPin,
-  Plus,
   User,
-  WandSparkles,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -37,7 +36,7 @@ import {
 } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer/store';
 import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
-import { useRequest } from '@/context/RequestContext';
+import { RequestProvider, useRequest } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
@@ -51,7 +50,6 @@ import ResendRequests from './Components/ResendRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
 import { useMeetingList } from './hooks';
-import { Switch } from '@components/ui/switch';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -80,6 +78,12 @@ export default function ViewRequestDetails() {
 
   if (isPlaceholderData && status === 'pending') {
     return <ViewRequestDetailsSkeleton />;
+  } else if (!isPlaceholderData && status === 'success' && !selectedRequest) {
+    return (
+      <Alert variant='destructive'>
+        <AlertTitle>Request not found</AlertTitle>
+      </Alert>
+    );
   } else
     return (
       <div className='min-h-screen bg-gray-50 p-8'>
@@ -428,7 +432,14 @@ export default function ViewRequestDetails() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <RequestProgress />
+                  {selectedRequest ? (
+                    <RequestProvider
+                      request_id={selectedRequest?.id}
+                      enabled={true}
+                    >
+                      <RequestProgress />
+                    </RequestProvider>
+                  ) : null}
                 </CardContent>
               </Card>
 
