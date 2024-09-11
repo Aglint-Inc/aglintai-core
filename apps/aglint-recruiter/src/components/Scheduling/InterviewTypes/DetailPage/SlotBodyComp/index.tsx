@@ -160,7 +160,6 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
-
       {fetchingModule || loading || (!editModule && isFetching) ? (
         <Stack height={'100%'} width={'100%'}>
           <Loader />
@@ -169,7 +168,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
         <>
           {editModule && (
             <InterviewMemberList
-              slotBanner={<>dsf</>}
+              slotBanner={<></>}
               slotJobsCard={
                 editModule?.id && <ConnectedJobs module_id={editModule?.id} />
               }

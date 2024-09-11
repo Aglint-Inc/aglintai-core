@@ -2,6 +2,8 @@ import { Card, CardContent } from '@components/ui/card';
 import { Archive, Ban, Calendar, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
+import UITypography from '@/components/Common/UITypography';
+
 interface InterviewModuleCardProps {
   textModuleName?: React.ReactNode;
   slotMemberPic?: React.ReactNode;
@@ -28,24 +30,34 @@ export function InterviewModuleCard({
     <Link href={navLink}>
       <Card className='grid grid-cols-[1fr_15%_25%_20%] items-center cursor-pointer hover:bg-neutral-100 transition-all duration-200 rounded-none border-x-0 border-b-1 border-t-0'>
         <CardContent className='flex items-center p-3 space-x-2 '>
-          <span>{textModuleName}</span>
+          <UITypography type='small' variant='p'>
+            {textModuleName}
+          </UITypography>
           {isArchivedIconVisible && <Archive />}
         </CardContent>
         <CardContent className='flex items-center p-3'>
-          <span>{textDepartment}</span>
+          <UITypography type='small' variant='p'>
+            {textDepartment}
+          </UITypography>
         </CardContent>
         <CardContent className='flex items-center p-3 space-x-2'>
           <div className='flex items-center space-x-1'>
             <Calendar size={14} className='text-blue-600' />
-            <span>{textUpcomingSchedules}</span>
+            <UITypography type='small' variant='p'>
+              {textUpcomingSchedules}
+            </UITypography>
           </div>
           <div className='flex items-center space-x-1'>
             <CheckCircle size={14} className='text-green-600' />
-            <span>{textCompletedSchedules}</span>
+            <UITypography type='small' variant='p'>
+              {textCompletedSchedules}
+            </UITypography>
           </div>
           <div className='flex items-center space-x-1'>
             <Ban size={14} className='text-red-600' />
-            <span>{textCancelledSchedules}</span>
+            <UITypography type='small' variant='p'>
+              {textCancelledSchedules}
+            </UITypography>
           </div>
         </CardContent>
         <CardContent className='flex items-center p-3'>

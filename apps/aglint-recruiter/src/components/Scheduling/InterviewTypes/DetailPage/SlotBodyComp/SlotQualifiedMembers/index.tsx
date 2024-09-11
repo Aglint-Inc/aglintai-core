@@ -1,8 +1,7 @@
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
-import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
 import { Popover, Stack } from '@mui/material';
-import { PersonStanding } from 'lucide-react';
+import { FolderOpen, PersonStanding } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -34,21 +33,24 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
   return (
     <>
       {filtererdUsers.length === 0 && (
-        <EmptyGeneral
-          textEmpt={'No interviewers added yet.'}
-          slotButton={
-            <UIButton
-              variant='outline'
-              leftIcon={<PersonStanding />}
-              onClick={() => {
-                setIsAddMemberDialogOpen(true);
-                setTrainingStatus('qualified');
-              }}
-            >
-              Add Interviewer
-            </UIButton>
-          }
-        />
+        <>
+          <div className='flex flex-col items-center p-[60px_20px] text-center border border-neutral-200 rounded-md bg-white'>
+            <FolderOpen size={30} strokeWidth={1} />
+            <div className='text-gray-600'>No interviewers added yet.</div>
+            <div className='mt-2'>
+              <UIButton
+                variant='outline'
+                leftIcon={<PersonStanding />}
+                onClick={() => {
+                  setIsAddMemberDialogOpen(true);
+                  setTrainingStatus('qualified');
+                }}
+              >
+                Add Interviewer
+              </UIButton>
+            </div>
+          </div>
+        </>
       )}
       {filtererdUsers.map((user) => {
         const member = user.recruiter_user;

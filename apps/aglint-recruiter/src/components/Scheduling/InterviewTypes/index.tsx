@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
-import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -175,7 +174,7 @@ export function InterviewTypes() {
                               textUpcomingSchedules={mod.upcoming_meeting_count}
                               textModuleName={
                                 <div className='flex flex-row space-x-2'>
-                                  <UITypography>{mod.name}</UITypography>
+                                  {mod.name}
                                   {mod.is_archived && (
                                     <GlobalBadge
                                       textBadge='Archived'
