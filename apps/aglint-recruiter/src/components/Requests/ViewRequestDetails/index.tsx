@@ -55,6 +55,7 @@ import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
+import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { useSelfSchedulingDrawer } from './SelfSchedulingDrawer/hooks';
 import {
@@ -401,6 +402,8 @@ export default function ViewRequestDetails() {
                     </div>
                   </div>
                 </div>
+                <RequestNotes />
+
                 <SessionCards sessions={sessions} />
               </CardContent>
             </Card>
