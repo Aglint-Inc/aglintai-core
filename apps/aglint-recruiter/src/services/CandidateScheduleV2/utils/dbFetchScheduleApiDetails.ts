@@ -61,11 +61,14 @@ export const dbFetchScheduleApiDetails = async ({
     is_fetch_meeting_data ? schedule_dates : undefined,
   );
 
-  const interviewers: SessionInterviewerType[] = inter_data
-    .filter(Boolean)
-    .reduce((tot, curr) => {
+  let interviewers: SessionInterviewerType[] = [];
+  if (include_all_module_ints) {
+    interviewers = await geAllIntsFromModules(params.session_ids);
+  } else {
+    interviewers = inter_data.filter(Boolean).reduce((tot, curr) => {
       return [...tot, ...curr];
     }, []);
+  }
 
   const int_modules: InterviewModuleType[] = int_modules_data
     .filter(Boolean)
@@ -73,58 +76,29 @@ export const dbFetchScheduleApiDetails = async ({
       return [...tot, ...curr];
     }, []);
   let db_ses_with_ints: InterviewSessionApiType[] = [];
-  if (include_all_module_ints) {
-    const all_module_ints = await geAllIntsFromModules(params.session_ids);
-    db_ses_with_ints = interview_sessions
-      .map((s) => {
-        const session: InterviewSessionApiType = {
-          duration: s.session_duration,
-          schedule_type: s.schedule_type,
-          session_type: s.session_type,
-          session_id: s.id,
-          session_name: s.name,
-          break_duration: s.break_duration,
-          module_id: s.module_id,
-          module_name: int_modules.find((m) => m.id === s.module_id)?.name,
-          interviewer_cnt: s.interviewer_cnt,
-          session_order: s.session_order,
-          qualifiedIntervs: all_module_ints.filter(
-            (i) => i.session_id === s.id && i.training_type === 'qualified',
-          ),
-          trainingIntervs: [],
-          location: s.location,
-          meeting_id: s.meeting_id,
-        };
-        return session;
-      })
-      .sort((s1, s2) => s1.session_order - s2.session_order);
-  } else {
-    db_ses_with_ints = interview_sessions
-      .map((s) => {
-        const session: InterviewSessionApiType = {
-          duration: s.session_duration,
-          schedule_type: s.schedule_type,
-          session_type: s.session_type,
-          session_id: s.id,
-          session_name: s.name,
-          break_duration: s.break_duration,
-          module_id: s.module_id,
-          module_name: int_modules.find((m) => m.id === s.module_id)?.name,
-          interviewer_cnt: s.interviewer_cnt,
-          session_order: s.session_order,
-          qualifiedIntervs: interviewers.filter(
-            (i) => i.session_id === s.id && i.interviewer_type === 'qualified',
-          ),
-          trainingIntervs: interviewers.filter(
-            (i) => i.session_id === s.id && i.interviewer_type === 'training',
-          ),
-          location: s.location,
-          meeting_id: s.meeting_id,
-        };
-        return session;
-      })
-      .sort((s1, s2) => s1.session_order - s2.session_order);
-  }
+  db_ses_with_ints = interview_sessions
+    .map((s) => {
+      const session: InterviewSessionApiType = {
+        duration: s.session_duration,
+        schedule_type: s.schedule_type,
+        session_type: s.session_type,
+        session_id: s.id,
+        session_name: s.name,
+        break_duration: s.break_duration,
+        module_id: s.module_id,
+        module_name: int_modules.find((m) => m.id === s.module_id)?.name,
+        interviewer_cnt: s.interviewer_cnt,
+        session_order: s.session_order,
+        qualifiedIntervs: interviewers.filter(
+          (i) => i.session_id === s.id && i.training_type === 'qualified',
+        ),
+        trainingIntervs: [],
+        location: s.location,
+        meeting_id: s.meeting_id,
+      };
+      return session;
+    })
+    .sort((s1, s2) => s1.session_order - s2.session_order);
 
   const all_session_int_details = getAllSessionIntDetails(db_ses_with_ints);
   const unique_inters = getUniqueInts(interviewers);
