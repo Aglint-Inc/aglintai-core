@@ -1,15 +1,17 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { EmptySlotReason } from '@devlink3/EmptySlotReason';
-import { ScheduleOption } from '@devlink3/ScheduleOption';
-import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { ChevronDown } from 'lucide-react';
 import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UITypography from '@/components/Common/UITypography';
+
 import { DayCard } from '../../../_common/DayCard';
+import { EmptySlotReason } from '../../../_common/EmptySlotReason';
+import { ScheduleOption } from '../../../_common/ScheduleOption';
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
 
@@ -32,8 +34,7 @@ function DayCardWrapper({
 }: {
   isRadioNeeded: boolean;
   item: MultiDayPlanType;
-  // eslint-disable-next-line no-unused-vars
-  onClickSelect: (comb_id: string) => void;
+  onClickSelect?: (_comb_id: string) => void;
   selectedCombIds: string[];
   isDayCollapseNeeded?: boolean;
   isSlotCollapseNeeded?: boolean;
@@ -41,7 +42,7 @@ function DayCardWrapper({
   isDayCheckboxNeeded?: boolean;
   isSlotCheckboxNeeded?: boolean;
   index: number;
-  setSelectedCombIds: Dispatch<React.SetStateAction<string[]>>;
+  setSelectedCombIds?: Dispatch<React.SetStateAction<string[]>>;
   isAutoCollapse?: boolean;
   setCalendarDate?: Dispatch<React.SetStateAction<string>>;
 }) {
@@ -113,15 +114,9 @@ function DayCardWrapper({
   return (
     <>
       <DayCard
-        slotLeftBlock={
-          <p className={`font-semibold ${isSelected ? 'text-accent' : 'text-neutral'}`}>
-            {header}
-          </p>
-        }
-        onClickDateOption={{
-          onClick: () => {
-            setCollapse(!collapse);
-          },
+        slotLeftBlock={<UITypography type='small'>{header}</UITypography>}
+        onClickDateOption={() => {
+          setCollapse(!collapse);
         }}
         slotRightBlock={
           <>
@@ -132,14 +127,12 @@ function DayCardWrapper({
             )}
 
             {isDayCollapseNeeded && (
-              <IconButtonSoft
-                size={1}
-                color={'neutral'}
-                iconName={'keyboard_double_arrow_down'}
-                onClickButton={{
-                  onClick: () => {
-                    setCollapse(!collapse);
-                  },
+              <UIButton
+                size='sm'
+                variant='secondary'
+                icon={<ChevronDown />}
+                onClick={() => {
+                  setCollapse(!collapse);
                 }}
               />
             )}
@@ -173,142 +166,132 @@ function DayCardWrapper({
         }
         isDisabled={isDisabled}
         key={header}
-        textOptionCount={`${slots.length} options`}
-        // rotateArrow={{
-        //   style: {
-        //     display: isDayCollapseNeeded ? 'flex' : 'none',
-        //   },
-        // }}
         slotScheduleOption={
           !isDisabled && (
-            <Collapse in={isDayCollapseNeeded ? collapse : true}>
-              <Stack
-                gap={'var(--space-2)'}
-                pt={'var(--space-2)'}
-                width={'100%'}
-              >
-                {noSlotReasons.length === 0 ? (
-                  <>
-                    {slotsWithDaySessions
-                      .slice(0, displayedSlots)
-                      ?.map((slot) => {
-                        return (
-                          <ScheduleOption
-                            slotCheckbox={
-                              <>
-                                {isSlotCheckboxNeeded && (
-                                  <Checkbox
-                                    checked={selectedCombIds.includes(
-                                      slot.plan_comb_id,
-                                    )}
-                                    onClick={() => {
-                                      onClickSelect(slot.plan_comb_id);
-                                      setCalendarDate(
-                                        dayjs(dates[0]).toISOString(),
-                                      );
-                                      setTimeout(() => {
-                                        const element = document.getElementById(
-                                          slot.daySessions[0].sessions[0]
-                                            .session_id +
-                                            slot.daySessions[0].sessions[0]
-                                              .qualifiedIntervs[0].user_id,
-                                        );
-                                        if (element) {
-                                          element.scrollIntoView({
-                                            behavior: 'smooth',
-                                            block: 'center',
-                                          });
-                                        }
-                                      }, 1000);
-                                    }}
-                                  />
-                                )}
-                                {isRadioNeeded && (
-                                  <RadioGroup
-                                    defaultValue={
-                                      selectedCombIds.includes(
+            <Collapsible open={isDayCollapseNeeded ? collapse : true}>
+              <CollapsibleContent>
+                <div className='flex flex-col gap-2 pt-2'>
+                  {noSlotReasons.length === 0 ? (
+                    <>
+                      {slotsWithDaySessions
+                        .slice(0, displayedSlots)
+                        ?.map((slot) => {
+                          return (
+                            <ScheduleOption
+                              slotCheckbox={
+                                <>
+                                  {isSlotCheckboxNeeded && (
+                                    <Checkbox
+                                      checked={selectedCombIds.includes(
                                         slot.plan_comb_id,
-                                      )
-                                        ? slot.plan_comb_id
-                                        : undefined
-                                    }
-                                    onValueChange={(value) => {
-                                      onClickSelect(value);
-                                      setCalendarDate(
-                                        dayjs(dates[0]).toISOString(),
-                                      );
-                                      setTimeout(() => {
-                                        const element = document.getElementById(
-                                          slot.daySessions[0].sessions[0]
-                                            .session_id +
-                                            slot.daySessions[0].sessions[0]
-                                              .qualifiedIntervs[0].user_id,
+                                      )}
+                                      onClick={() => {
+                                        onClickSelect(slot.plan_comb_id);
+                                        setCalendarDate(
+                                          dayjs(dates[0]).toISOString(),
                                         );
-                                        if (element) {
-                                          element.scrollIntoView({
-                                            behavior: 'smooth',
-                                            block: 'center',
-                                          });
-                                        }
-                                      }, 1000);
-                                    }}
-                                  >
-                                    <RadioGroupItem
-                                      value={slot.plan_comb_id}
-                                      id={`radio-${slot.plan_comb_id}`}
+                                        setTimeout(() => {
+                                          const element =
+                                            document.getElementById(
+                                              slot.daySessions[0].sessions[0]
+                                                .session_id +
+                                                slot.daySessions[0].sessions[0]
+                                                  .qualifiedIntervs[0].user_id,
+                                            );
+                                          if (element) {
+                                            element.scrollIntoView({
+                                              behavior: 'smooth',
+                                              block: 'center',
+                                            });
+                                          }
+                                        }, 1000);
+                                      }}
                                     />
-                                  </RadioGroup>
-                                )}
-                              </>
-                            }
-                            key={slot.plan_comb_id}
-                            isSelected={selectedCombIds.includes(
-                              slot.plan_comb_id,
-                            )}
-                            isCheckbox={isSlotCheckboxNeeded || isRadioNeeded}
-                            slotSingleDaySchedule={slot.daySessions?.map(
-                              (item, ind) => {
-                                return (
-                                  <SingleDayCard
-                                    isAutoCollapse={isAutoCollapse}
-                                    key={ind}
-                                    item={item}
-                                    ind={ind}
-                                    isMultiDay={isMultiDay}
-                                    isCollapseNeeded={isSlotCollapseNeeded}
-                                    selectedCombIds={selectedCombIds}
-                                    comb_id={slot.plan_comb_id}
-                                  />
-                                );
-                              },
-                            )}
-                          />
-                        );
-                      })}
-                  </>
-                ) : (
-                  noSlotReasons.map((reason, index) => (
-                    <EmptySlotReason
-                      key={index}
-                      textMain={reason}
-                      iconName={'nightlife'}
-                      color={'info'}
-                      textSub={''}
-                    />
-                  ))
-                )}
+                                  )}
+                                  {isRadioNeeded && (
+                                    <RadioGroup
+                                      defaultValue={
+                                        selectedCombIds.includes(
+                                          slot.plan_comb_id,
+                                        )
+                                          ? slot.plan_comb_id
+                                          : undefined
+                                      }
+                                      onValueChange={(value) => {
+                                        onClickSelect(value);
+                                        setCalendarDate(
+                                          dayjs(dates[0]).toISOString(),
+                                        );
+                                        setTimeout(() => {
+                                          const element =
+                                            document.getElementById(
+                                              slot.daySessions[0].sessions[0]
+                                                .session_id +
+                                                slot.daySessions[0].sessions[0]
+                                                  .qualifiedIntervs[0].user_id,
+                                            );
+                                          if (element) {
+                                            element.scrollIntoView({
+                                              behavior: 'smooth',
+                                              block: 'center',
+                                            });
+                                          }
+                                        }, 1000);
+                                      }}
+                                    >
+                                      <RadioGroupItem
+                                        value={slot.plan_comb_id}
+                                        id={`radio-${slot.plan_comb_id}`}
+                                      />
+                                    </RadioGroup>
+                                  )}
+                                </>
+                              }
+                              key={slot.plan_comb_id}
+                              isSelected={selectedCombIds.includes(
+                                slot.plan_comb_id,
+                              )}
+                              isCheckbox={isSlotCheckboxNeeded || isRadioNeeded}
+                              slotSingleDaySchedule={slot.daySessions?.map(
+                                (item, ind) => {
+                                  return (
+                                    <SingleDayCard
+                                      isAutoCollapse={isAutoCollapse}
+                                      key={ind}
+                                      item={item}
+                                      ind={ind}
+                                      isMultiDay={isMultiDay}
+                                      isCollapseNeeded={isSlotCollapseNeeded}
+                                      selectedCombIds={selectedCombIds}
+                                      comb_id={slot.plan_comb_id}
+                                    />
+                                  );
+                                },
+                              )}
+                            />
+                          );
+                        })}
+                    </>
+                  ) : (
+                    noSlotReasons.map((reason, index) => (
+                      <EmptySlotReason key={index} textMain={reason} />
+                    ))
+                  )}
 
-                {displayedSlots < slots.length && (
-                  <Stack direction={'row'} justifyContent={'center'} p={1}>
-                    <ButtonGhost
-                      textButton='Load More'
-                      size={2}
-                      onClickButton={{ onClick: loadMoreSlots }}
-                    />
-                  </Stack>
-                )}
-              </Stack>
-            </Collapse>
+                  {displayedSlots < slots.length && (
+                    <div className='flex flex-row justify-center p-1'>
+                      <UIButton
+                        variant='secondary'
+                        size='sm'
+                        onClick={loadMoreSlots}
+                      >
+                        Load More
+                      </UIButton>
+                    </div>
+                  )}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           )
         }
       />

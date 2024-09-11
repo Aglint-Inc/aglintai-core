@@ -42,7 +42,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         }
         calendar={<Calendar />}
       >
-        <BodyDrawer />
+        <div className='w-[550px]'>
+          <BodyDrawer />
+        </div>
       </UIDrawer>
     </>
   );
