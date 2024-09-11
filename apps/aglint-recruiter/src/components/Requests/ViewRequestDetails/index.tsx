@@ -3,13 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
 import {
@@ -476,7 +470,7 @@ export default function ViewRequestDetails() {
               </CardContent>
             </Card>
 
-            <Card className='mb-4'>
+            {/* <Card className='mb-4'>
               <CardHeader>
                 <CardTitle className='text-md'>Add Automations</CardTitle>
                 <CardDescription>
@@ -509,7 +503,7 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>

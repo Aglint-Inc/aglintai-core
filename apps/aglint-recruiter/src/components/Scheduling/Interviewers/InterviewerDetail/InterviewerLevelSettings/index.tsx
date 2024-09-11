@@ -766,24 +766,6 @@ function InterviewerLevelSettings({
                           );
                         }
                       })}
-
-                      {/* {recruitingBlocks.map((item) => (
-                        <Chip
-                          key={item} // Add a unique key prop for each item
-                          clickable
-                          onDelete={() => {
-                            setRecruitingBlocks((prev) =>
-                              prev.filter((ele) => ele !== item),
-                            );
-                          }}
-                          deleteIcon={
-                            <Stack>
-                              <GlobalIcon iconName='close' size='4' />
-                            </Stack>
-                          }
-                          label={item}
-                        />
-                      ))} */}
                     </>
                   )
                 }

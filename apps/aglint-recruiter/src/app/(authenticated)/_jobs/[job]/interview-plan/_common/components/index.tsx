@@ -12,7 +12,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { PageLayout } from '@devlink2/PageLayout';
@@ -31,7 +30,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause } from 'lucide-react';
+import { CirclePause, Kanban } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -432,22 +431,12 @@ const InterviewPlan = ({
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                   </>
                 ) : (
-                  <GlobalEmptyState
-                    iconName={'group'}
-                    textDesc={'No interview plan found'}
-                    slotButton={
-                      <ButtonSoft
-                        iconName='add'
-                        isLeftIcon={true}
-                        color={'neutral'}
-                        size={1}
-                        textButton={'Add Interview'}
-                        onClickButton={{
-                          onClick: () => handleCreate('session', plan_id, 0),
-                        }}
-                      />
-                    }
-                  />
+                  <div className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-lg'>
+                    <Kanban className='w-4 h-4 text-gray-400 mb-4' />
+                    <p className='text-gray-500 mb-4'>
+                      No interview plan found
+                    </p>
+                  </div>
                 )}
               </Stack>
             </Collapse>
