@@ -42,7 +42,7 @@ function ChatMessageList() {
   return (
     <ScrollArea
       ref={chatContainerRef}
-      className='h-[calc(100vh-170px)] px-4 space-y-4'
+      className='h-[calc(100vh-180px)] px-4 space-y-4'
     >
       {!viewHistory ? (
         <AglintAiWelcome
@@ -80,7 +80,7 @@ function ChatMessageList() {
               ))}
             </>
           ) : !viewList ? (
-            <div className='flex items-center justify-center space-x-2 pt-4'>
+            <div className='flex items-center justify-center space-x-2 py-4'>
               <Separator className='w-36' />
               <Button
                 variant='outline'

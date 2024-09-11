@@ -88,7 +88,7 @@ function RequestList() {
         ) : (
           <Skeleton className='h-6 w-40 mb-2' />
         )}
-        <ScrollArea className='w-full whitespace-nowrap rounded-md'>
+        <ScrollArea className='w-[100vw] whitespace-nowrap rounded-md'>
           <div className='flex'>
             {isFetched ? (
               section.requests.length > 0 ? (
@@ -146,27 +146,27 @@ function RequestList() {
           <AccordionItem
             value={sectionName}
             className={cn(
-              'border rounded-lg px-4 bg-gray-50',
-              isExpanded && 'bg-gray-200',
+              'border rounded-lg px-4 bg-white',
+              isExpanded && 'bg-gray-100',
             )}
           >
             <AccordionTrigger
               className={cn(
-                'text-md font-semibold',
+                'text-md font-semibold hover:no-underline',
                 requests.length === 0 && 'cursor-default',
               )}
               disabled={requests.length === 0}
             >
-              <div className='flex items-center justify-between w-full'>
+              <div className='flex items-center justify-between w-full mr-2'>
                 <div className='flex items-center'>
                   {capitalizeFirstLetter(sectionName)}
-                  <Badge variant='secondary' className='ml-2'>
+                  <Badge variant='outline' className='ml-2'>
                     {requests.length}
                   </Badge>
                 </div>
                 {requests.length === 0 && (
                   <Badge variant='outline' className='ml-2'>
-                    No {sectionName.replace('_', ' ')} requests found
+                    No {sectionName.replace('_', ' ')} found
                   </Badge>
                 )}
               </div>
@@ -199,7 +199,15 @@ function RequestList() {
                         </div>
                       </CollapsibleContent>
                       <CollapsibleTrigger asChild className='mt-4 w-full'>
-                        <Button variant='outline' className='w-full'>
+                        <Button 
+                          variant='outline' 
+                          className='w-full'
+                          onClick={() => {
+                            if (isExpanded) {
+                              setExpandedSections(expandedSections.filter(s => s !== sectionName));
+                            }
+                          }}
+                        >
                           {isExpanded ? (
                             <>
                               <ChevronUp className='h-4 w-4 mr-2' />
@@ -228,16 +236,16 @@ function RequestList() {
     };
 
     return (
-      <div className='space-y-4'>
+      <div className='space-y-6 pt-2'>
         {urgentRequests &&
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
 
-        <div className={`${view === 'kanban' ? 'flex gap-4' : 'space-y-4'}`}>
+        <div className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}>
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
-              className={view === 'kanban' ? 'flex-1' : ''}
+              className={view === 'kanban' ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4` : ''}
             >
               {isFetched ? (
                 view === 'list' ? (
@@ -246,7 +254,7 @@ function RequestList() {
                   <>
                     <div className='text-md font-semibold mb-2'>
                       {capitalizeFirstLetter(sectionName)}
-                      <Badge variant='secondary' className='ml-2'>
+                      <Badge variant='outline' className='ml-2'>
                         {requests.length}
                       </Badge>
                     </div>
@@ -257,10 +265,7 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard
-                              mode='column-view'
-                              {...{ ...props, isExpanded: false }}
-                            />
+                            <RequestCard {...{ ...props, isExpanded: false }} mode='column-view' />
                           </RequestProvider>
                         ))}
                       </div>
@@ -340,7 +345,8 @@ function RequestList() {
 
   return (
     <>
-      <div className='sticky top-0 z-50 bg-white p-4'>
+    
+    <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
         <div className='mb-2 flex flex-row justify-between'>
           <div className='flex flex-col gap-1'>
             <h1 className='text-md font-semibold'>
@@ -369,7 +375,7 @@ function RequestList() {
             value={view}
             onValueChange={(value) => setView(value as 'list' | 'kanban')}
           >
-            <TabsList>
+            <TabsList className='h-8'>
               <TabsTrigger value='list'>
                 <LayoutList className='h-4 w-4 mr-2' />
               </TabsTrigger>
@@ -380,6 +386,8 @@ function RequestList() {
           </Tabs>
         </div>
       </div>
+    
+     
       {isRequestListEmpty ? (
         <GlobalEmptyState textDesc='No requests found' iconName='check' />
       ) : (
