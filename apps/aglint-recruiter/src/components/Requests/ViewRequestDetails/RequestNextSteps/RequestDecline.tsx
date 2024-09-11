@@ -18,7 +18,7 @@ const RequestDecline = () => {
       <Dialog
         open={false}
         onOpenChange={() => {
-          console.log('onOpenChange');
+          //
         }}
       >
         <DialogContent className='p-0'>{/*  */}</DialogContent>

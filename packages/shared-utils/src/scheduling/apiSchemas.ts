@@ -69,7 +69,7 @@ export const schema_find_alternative_slots = v.object({
 export const schema_update_meeting_ints = v.object({
   session_id: v.string(),
   curr_declined_int_sesn_reln_id: v.string(),
-  new_int_sesn_reln_id: v.string(),
+  new_int_user_id: v.string(),
 });
 
 export const schema_troubleshoot = v.object({

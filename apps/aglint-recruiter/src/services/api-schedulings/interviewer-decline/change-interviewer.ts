@@ -59,7 +59,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
   const api_payload2: APIUpdateMeetingInterviewers = {
     session_id: payload.session_id,
     curr_declined_int_sesn_reln_id: cancel_rec.session_relation_id,
-    new_int_sesn_reln_id: alternate_slots[0].replacement_int.id,
+    new_int_user_id: alternate_slots[0].replacement_int.user_id,
   };
   await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/update-meeting-interviewers`,

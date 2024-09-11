@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ) {
         updated_int.is_confirmed = false;
       }
-      if (int.session_relation_id === parsed_body.new_int_sesn_reln_id) {
+      if (int.user_id === parsed_body.new_int_user_id) {
         updated_int.is_confirmed = true;
       }
       return updated_int;
@@ -176,13 +176,11 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   }
 
   if (
-    !session_ints_auth.find(
-      (int) => int.session_relation_id === payload.new_int_sesn_reln_id,
-    )
+    !session_ints_auth.find((int) => int.user_id === payload.new_int_user_id)
   ) {
     throw new CApiError(
       'SERVER_ERROR',
-      `${payload.new_int_sesn_reln_id} not exist in meeting_interviewers`,
+      `${payload.new_int_user_id} not exist in meeting_interviewers`,
     );
   }
   return {

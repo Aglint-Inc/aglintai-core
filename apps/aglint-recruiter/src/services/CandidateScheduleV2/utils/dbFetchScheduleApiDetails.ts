@@ -137,7 +137,6 @@ export const dbFetchScheduleApiDetails = async (
 // utility functions
 const mapInt = (i: SessionInterviewerType) => {
   const int: SessionInterviewerApiRespType = {
-    id: i.session_relation_id,
     email: i.email,
     first_name: i.first_name,
     interview_module_relation_id: i.interview_module_relation_id,

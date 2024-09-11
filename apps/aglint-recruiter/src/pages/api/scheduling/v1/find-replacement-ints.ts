@@ -41,13 +41,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const current_confirmed_ints = meeting_ints
       .filter((int) => int.is_confirmed)
       .map((int) => int.user_id);
-    if (
-      !meeting_ints.find(
-        (int) =>
-          int.is_confirmed &&
-          int.session_relation_id === parsed_body.declined_int_sesn_reln_id,
-      )
-    ) {
+    const declined_int = meeting_ints.find(
+      (int) =>
+        int.is_confirmed &&
+        int.session_relation_id === parsed_body.declined_int_sesn_reln_id,
+    );
+    if (!declined_int) {
       throw new CApiError(
         'SERVER_ERROR',
         `${parsed_body.declined_int_sesn_reln_id} is not confirmed interviwer`,
@@ -78,9 +77,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .tz(parsed_body.user_tz)
         .format('DD/MM/YYYY'),
     });
-    const all_ignored_ints = [parsed_body.declined_int_sesn_reln_id];
     cand_schedule.ignoreTrainee();
-    cand_schedule.ignoreInterviewers(all_ignored_ints);
+    cand_schedule.ignoreInterviewers([
+      {
+        sesn_id: parsed_body.session_id,
+        user_id: declined_int.user_id,
+      },
+    ]);
 
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
     if (!single_day_slots) {
