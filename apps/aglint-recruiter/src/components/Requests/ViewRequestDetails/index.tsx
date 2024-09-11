@@ -41,7 +41,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import MemberCard from '../../Common/MemberCard';
 import UpdateMembers, { useMemberList } from '../../Common/UpdateMembers';
-import RequestProgress from '../_common/ComponentsNew/RequestProgress';
+import RequestProgress from '../_common/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,

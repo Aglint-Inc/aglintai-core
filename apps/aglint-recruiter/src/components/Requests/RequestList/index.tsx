@@ -30,8 +30,8 @@ import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from '../_common/ComponentsNew/RequestCard';
-import RequestListFilter from '../_common/ComponentsNew/RequestListFilter';
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestListFilter from '../_common/components/RequestListFilter';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
@@ -105,9 +105,10 @@ function RequestList() {
                     {isFetched ? (
                       section.requests.length > 0 ? (
                         section.requests.map((props, i) => (
-                          <div key={props.id ?? i} className='pr-6'>
+                          <div className='pr-6' key={i}>
                             <div
                               style={{ width: '650px' }}
+                              key={props.id ?? i}
                               className={`flex-shrink-0  ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
                             >
                               <RequestProvider request_id={props.id}>
