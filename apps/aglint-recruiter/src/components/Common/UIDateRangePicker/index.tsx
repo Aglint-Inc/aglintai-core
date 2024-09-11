@@ -20,14 +20,18 @@ export function UIDateRangePicker({
   value,
   onAccept,
   customButton,
+  closeOnSelect,
 }: React.HTMLAttributes<HTMLDivElement> & {
   value?: DateRange;
   onAccept: (date: DateRange) => void;
   customButton?: React.ReactNode;
+  closeOnSelect?: boolean;
 }) {
+  const [open, setOpen] = React.useState(false);
+
   return (
     <div className={cn('grid gap-2', className)}>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           {customButton ?? (
             <Button
@@ -64,7 +68,12 @@ export function UIDateRangePicker({
             mode='range'
             defaultMonth={value?.from}
             selected={value}
-            onSelect={onAccept}
+            onSelect={(dates: DateRange) => {
+              onAccept({ from: dates.from, to: dates.to ?? dates.from });
+              if (closeOnSelect) {
+                setOpen(false);
+              }
+            }}
             numberOfMonths={2}
           />
         </PopoverContent>
