@@ -1,6 +1,5 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { HistoryPill } from '@devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
@@ -9,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 import { memo, useMemo } from 'react';
 
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
@@ -135,7 +135,7 @@ const Pills = memo(
     return (
       <>
         {pillData.map(({ active, shadow }, index) => (
-          <HistoryPill
+          <HistoryPillShadcn
             key={index}
             isActive={active}
             isShadow={shadow}

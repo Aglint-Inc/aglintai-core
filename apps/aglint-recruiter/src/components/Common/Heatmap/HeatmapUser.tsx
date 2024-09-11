@@ -1,10 +1,11 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Stack, Typography } from '@mui/material';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
+import { UIButton } from '../UIButton';
 import { type Meeting } from './type';
 import {
   filling2dArray,
@@ -98,31 +99,27 @@ export default function Heatmap({
               {startDateUI} - {endDateUI}
             </span>
           </Typography>
-          <IconButtonSoft
-            iconName='arrow_back_ios'
-            color={'neutral'}
-            size={1}
-            iconSize={2}
-            onClickButton={{
-              onClick: () =>
-                setDayCount((pre) => ({
-                  start: pre.start === 21 ? -7 : pre.start - 28,
-                  end: pre.end - 28,
-                })),
-            }}
+          <UIButton
+            size='sm'
+            variant='secondary'
+            onClick={() =>
+              setDayCount((pre) => ({
+                start: pre.start === 21 ? -7 : pre.start - 28,
+                end: pre.end - 28,
+              }))
+            }
+            icon={<ChevronLeft />}
           />
-          <IconButtonSoft
-            iconName='arrow_forward_ios'
-            color={'neutral'}
-            size={1}
-            iconSize={2}
-            onClickButton={{
-              onClick: () =>
-                setDayCount((pre) => ({
-                  start: pre.start === -7 ? 21 : pre.start + 28,
-                  end: pre.end + 28,
-                })),
-            }}
+          <UIButton
+            size='sm'
+            variant='secondary'
+            onClick={() =>
+              setDayCount((pre) => ({
+                start: pre.start === -7 ? 21 : pre.start + 28,
+                end: pre.end + 28,
+              }))
+            }
+            icon={<ChevronRight />}
           />
         </Stack>
 

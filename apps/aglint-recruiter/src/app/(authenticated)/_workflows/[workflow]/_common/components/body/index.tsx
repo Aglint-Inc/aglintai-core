@@ -9,7 +9,6 @@ import {
 } from '@components/ui/dialog';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Page404 } from '@devlink/Page404';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { WorkflowDetail } from '@devlink3/WorkflowDetail';
 import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -29,6 +28,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 import { useWorkflow } from '@/workflow/hooks';
 
 import { Edit } from '../edit';
+import { WorkflowConnectedCard } from '../WorkflowConnectedCard';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
@@ -86,7 +86,6 @@ const WorkflowJob = ({
   location,
   department,
   status,
-  devlinkProps,
   workflow_id,
 }: Workflow['jobs'][number] & {
   devlinkProps: ReturnType<
@@ -124,13 +123,8 @@ const WorkflowJob = ({
               />
             )
           }
-          onClickJob={{
-            onClick: () => push(ROUTES['/jobs/[job]/workflows']({ job: id })),
-            ...devlinkProps,
-          }}
-          onClickLinkOff={{
-            onClick: () => setOpen(true),
-          }}
+          onClickJob={() => push(ROUTES['/jobs/[job]/workflows']({ job: id }))}
+          onClickLinkOff={() => setOpen(true)}
           // onClickLinkOff={{
           //   onClick: async () => await mutateAsync({ job_id: id, workflow_id }),
           //   ...devlinkProps,

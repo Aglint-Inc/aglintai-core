@@ -1,17 +1,20 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewerMetricList } from '@devlink3/InterviewerMetricList';
-import { InterviewerMetrics } from '@devlink3/InterviewerMetrics';
-import { MetricsLeaderboard } from '@devlink3/MetricsLeaderboard';
-import { Avatar, Stack } from '@mui/material';
+import { Trophy } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import UITypography from '@/components/Common/UITypography';
 import { useAllDepartments } from '@/queries/departments';
 
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
+import { InterviewerMetricList } from '../components/InterviewerMetricList';
+import { InterviewerMetrics } from '../components/InterviewerMetrics';
 import { Interviewers } from '../components/Interviewers';
 import { useLeaderBoard } from '../Hook';
 import { type LeaderAnalyticsFilterType } from '../types';
@@ -87,22 +90,16 @@ function Metrics() {
 
   if (isLoading)
     return (
-      <Stack
-        height={'100%'}
-        width={'100%'}
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
+      <div className='flex items-center justify-center w-full h-full'>
         <Loader />
-      </Stack>
+      </div>
     );
 
   return (
     <>
       <InterviewerMetrics
         slotFilter={
-          <Stack direction={'row'} gap={1}>
+          <div className='flex flex-row gap-1'>
             <Filter
               setSelectedItems={setDepartments}
               selectedItems={departments}
@@ -124,53 +121,63 @@ function Metrics() {
               setSelectedItems={setInterviewTypes}
               selectedItems={selectedInterviewTypes}
             />
-          </Stack>
+          </div>
         }
         // textDescription={`Metrics showing for the ${leaderTypeFilterList.find((item) => item.value === leaderboardType).name}  ${departmentForDes.length ? 'for ' + departmentForDes.join(', ') : ''} `}
         slotFirstGrid={
           <>
-            <MetricsLeaderboard
-              slotInterviewerMetricsList={
-                filteredInterviewers?.length > 0 ? (
-                  filteredInterviewers.map((interviewer, i) => {
-                    return (
-                      <InterviewerMetricList
-                        onClickCard={{
-                          onClick: () =>
-                            router.push(
-                              `${process.env.NEXT_PUBLIC_HOST_NAME}/user/profile/${interviewer.user_id}`,
-                            ),
-                        }}
-                        key={interviewer.user_id}
-                        slotImage={
-                          <Avatar
-                            style={{
-                              width: '32px',
-                              height: '32px',
-                            }}
-                            src={interviewer.profile_image}
-                            alt={interviewer.name}
-                            variant='rounded-medium'
-                          />
-                        }
-                        textCount={i + 1}
-                        countHours={(interviewer.duration / 60).toFixed(1)}
-                        countInterviews={interviewer.interviews}
-                        textName={interviewer.name}
-                        textRole={interviewer.position}
-                        countDeclines={0}
-                      />
-                    );
-                  })
-                ) : (
-                  <GlobalEmptyState
-                    iconName={'monitoring'}
-                    size={9}
-                    textDesc={'No Data Available'}
-                  />
-                )
-              }
-            />
+            <Card className='h-[420px] p-4 border border-neutral-200 rounded-md'>
+              <CardHeader className='px-4 py-0 mb-2'>
+                <div className='flex gap-2 items-center'>
+                  <Trophy size={14} />
+                  <UITypography>Interviewer Leaderboard</UITypography>
+                </div>
+              </CardHeader>
+              <CardContent className='p-0 mt-1'>
+                <ScrollArea className='h-[378px] px-1 '>
+                  {filteredInterviewers?.length > 0 ? (
+                    filteredInterviewers.map((interviewer, i) => {
+                      return (
+                        <InterviewerMetricList
+                          onClickCard={{
+                            onClick: () =>
+                              router.push(
+                                `${process.env.NEXT_PUBLIC_HOST_NAME}/user/profile/${interviewer.user_id}`,
+                              ),
+                          }}
+                          key={interviewer.user_id}
+                          slotImage={
+                            <>
+                              <Avatar className='h-8 w-8'>
+                                <AvatarImage
+                                  src={interviewer.profile_image}
+                                  alt={interviewer.name}
+                                />
+                                <AvatarFallback>
+                                  {interviewer.name.charAt(0)}
+                                </AvatarFallback>
+                              </Avatar>
+                            </>
+                          }
+                          textCount={i + 1}
+                          countHours={(interviewer.duration / 60).toFixed(1)}
+                          countInterviews={interviewer.interviews}
+                          textName={interviewer.name}
+                          textRole={interviewer.position}
+                          countDeclines={0}
+                        />
+                      );
+                    })
+                  ) : (
+                    <GlobalEmptyState
+                      iconName={'monitoring'}
+                      size={9}
+                      textDesc={'No Data Available'}
+                    />
+                  )}
+                </ScrollArea>
+              </CardContent>
+            </Card>
             <Interviewers />
           </>
         }

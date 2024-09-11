@@ -1,20 +1,18 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Checkbox } from '@components/ui/checkbox';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@devlink2/ModuleSetting';
-import { TrainingSetting } from '@devlink2/TrainingSetting';
-import { TrainingSettingItem } from '@devlink2/TrainingSettingItem';
 import { Stack, Typography } from '@mui/material';
 import _ from 'lodash';
 import { AlertCircle, Settings } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UIDrawer from '@/components/Common/UIDrawer';
@@ -27,6 +25,8 @@ import { supabase } from '@/utils/supabase/client';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';
+import { TrainingSettingItem } from '../../_common/TraningSettingItem';
+import { TrainingSetting } from '../../_common/TraninigSetting';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { type ModuleType } from '../../types';
 import SlotTrainingMembers from '../SlotBodyComp/SlotTrainingMembers';
@@ -258,15 +258,13 @@ function ModuleSettingComp({
               <Link href={`/user/profile/${user.user_id}`} key={i}>
                 <TrainingSettingItem
                   text={getFullName(user.first_name, user.last_name)}
-                  slotImage={
-                    <MuiAvatar
-                      src={user.profile_image}
-                      level={getFullName(user?.first_name, user?.last_name)}
-                      variant='rounded'
-                      height='20px'
-                      width='20px'
-                      fontSize='12px'
-                    />
+                  image={
+                    <Avatar className='w-[20px] h-[20px]'>
+                      <AvatarImage src={user.profile_image} alt='@shadcn' />
+                      <AvatarFallback>
+                        {getFullName(user?.first_name, user?.last_name)}
+                      </AvatarFallback>
+                    </Avatar>
                   }
                 />
               </Link>

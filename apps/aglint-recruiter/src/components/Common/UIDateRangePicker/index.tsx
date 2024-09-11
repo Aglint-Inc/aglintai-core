@@ -67,7 +67,7 @@ export function UIDateRangePicker({
           align={'start'}
         >
           <Calendar
-            initialFocus
+            // initialFocus
             mode='range'
             defaultMonth={value?.from}
             selected={value}

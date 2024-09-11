@@ -2,22 +2,21 @@ import '@styles/fullcalendar-theme.css';
 
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getShortTimeZone } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
-import { FilterDropdown } from '@devlink2/FilterDropdown';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
-import { InterviewerDetail } from '@devlink3/InterviewerDetail';
-import { UpcomingInterviewList } from '@devlink3/UpcomingInterviewList';
-import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { Loader2, Mail, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { UITextArea } from '@/components/Common/UITextArea';
 import { useTeamMembers } from '@/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
@@ -31,6 +30,9 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import { type TabInterviewerDetail } from '..';
+import { AiBookingInstruction } from '../_common/AiBookingInstruction';
+import { UpcomingInterviewList } from '../_common/UpcomingInterviewList';
+import { UserLayout } from '../_common/UserLayout';
 import { useImrQuery } from '../hooks';
 import Overview from '../Overview';
 import AddInterviewTypeDialog from '../Popups/AddInterviewTypeDialog';
@@ -74,17 +76,12 @@ function BodyComp() {
   const { recruiterUser, recruiter } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
   const { data: allIntegrations } = useAllIntegrations();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
 
   const isEditOpen = router.query.edit_enable;
 
   useEffect(() => {
     setIsOpen(isEditOpen);
   }, [isEditOpen]);
-
-  const open = Boolean(anchorEl);
 
   const [dialogOpen, setDialogOpen] = React.useState<'email' | 'slack' | null>(
     null,
@@ -98,6 +95,7 @@ function BodyComp() {
     setDialogOpen(null);
   };
 
+  // const upcomingSchedules = allSchedules;
   const upcomingSchedules = allSchedules.filter((schedule) => {
     const itemDateTime = dayjs(schedule.start_time);
     const now = dayjs();
@@ -108,6 +106,7 @@ function BodyComp() {
 Cannot take interviews on Sundays.
 Available on Monday mornings before 10 AM.
 Unavailable for interviews on Tuesdays.`);
+
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
@@ -146,186 +145,25 @@ Unavailable for interviews on Tuesdays.`);
               interviewerDetailsRefetch={interviewerDetailsRefetch}
             />
           )}
-          {allIntegrations?.service_json === null &&
-            allIntegrations?.google_workspace_domain?.split('//')[1] ===
-              interviewerDetails.email.split('@')[1] &&
-            interviewerDetails.schedule_auth === null &&
-            (interviewerDetails.user_id === recruiterUser.user_id ||
-              recruiterUser.role === 'admin') && (
-              <>
-                <Stack maxWidth={'870px'} ml={2} mt={2}>
-                  <GlobalBannerInline
-                    color={'error'}
-                    textContent={
-                      interviewerDetails.user_id === recruiterUser.user_id
-                        ? 'Your calendar is not connected yet. Please connect it to schedule interviews.'
-                        : `
-                        ${getFullName(
-                          interviewerDetails.first_name,
-                          interviewerDetails.last_name,
-                        )} calendar is not connected yet. Click 'Connect Calender' button to send reminder `
-                    }
-                    slotButton={
-                      <ButtonSolid
-                        textButton='Connect Calender'
-                        color={'error'}
-                        onClickButton={{
-                          onClick: (event) => setAnchorEl(event.currentTarget),
-                        }}
-                      />
-                    }
-                  />
-                  <Popover
-                    open={open}
-                    onClose={() => setAnchorEl(null)}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                  >
-                    <FilterDropdown
-                      slotOption={
-                        <>
-                          <Stack
-                            direction={'row'}
-                            sx={{
-                              width: '100px',
-                              alignItems: 'center',
-                              ':hover': { bgcolor: 'var(--neutral-2)' },
-                              borderRadius: 'var(--radius-2)',
-                            }}
-                            spacing={1}
-                            padding={'var(--space-1) var(--space-2)'}
-                            marginTop={'0px !important'}
-                            onClick={() => {
-                              handleClickOpen('email');
-                              setAnchorEl(null);
-                            }}
-                          >
-                            <Mail size={16} />
-                            <Typography
-                              sx={{
-                                fontSize: '14px',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              Via Email
-                            </Typography>
-                          </Stack>
-                          <Stack
-                            direction={'row'}
-                            sx={{
-                              width: '100px',
-                              alignItems: 'center',
-                              ':hover': { bgcolor: 'var(--neutral-2)' },
-                              borderRadius: 'var(--radius-2)',
-                            }}
-                            spacing={1}
-                            padding={'var(--space-1) var(--space-2)'}
-                            marginTop={'0px !important'}
-                            onClick={() => {
-                              handleClickOpen('slack');
-                              setAnchorEl(null);
-                            }}
-                          >
-                            <MessageSquare size={16} />
-                            <Typography
-                              sx={{
-                                fontSize: '14px',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              Via Slack
-                            </Typography>
-                          </Stack>
-                        </>
-                      }
-                      isRemoveVisible={false}
-                      isResetVisible={false}
-                    />
-                  </Popover>
-                </Stack>
-                <Dialog open={!!dialogOpen} onClose={handleClose}>
-                  <DcPopup
-                    onClickClosePopup={{
-                      onClick: handleClose,
-                    }}
-                    popupName={
-                      dialogOpen === 'email'
-                        ? 'Send Email Reminder'
-                        : 'Send Slack Reminder'
-                    }
-                    slotBody={
-                      <Stack>
-                        <Typography>
-                          Sending calendar connect reminder to{' '}
-                          <span style={{ fontWeight: '500' }}>
-                            {getFullName(
-                              recruiterUser.first_name,
-                              recruiterUser.last_name,
-                            )}
-                          </span>
-                        </Typography>
-                        <Typography mt={2} fontWeight={500}>
-                          {dialogOpen === 'email' ? 'Email' : 'Slack'} Body
-                        </Typography>
-                        <Stack
-                          sx={{
-                            mt: '8px',
-                            border: '1px solid',
-                            borderColor: 'var(--neutral-6)',
-                            borderRadius: 'var(--radius-2)',
-                          }}
-                        >
-                          <TipTapAIEditor
-                            enablAI={false}
-                            disabled
-                            toolbar={false}
-                            placeholder={''}
-                            height='360px'
-                            minHeight='360px'
-                            editor_type='email'
-                            // onfocus={onFocus}
-                            // onblur={onBlur}
-                            // template_type={selectedTemplate.type}
-                            // handleChange={emailBodyChange}
-                            // initialValue={selectedTemplate.body}
-                          />
-                        </Stack>
-                      </Stack>
-                    }
-                    slotButtons={
-                      <>
-                        <ButtonSoft
-                          size={2}
-                          color={'neutral'}
-                          onClickButton={{ onClick: handleClose }}
-                          textButton='Cancel'
-                        />
-                        <ButtonSolid size={2} textButton='Send' />
-                      </>
-                    }
-                  />
-                </Dialog>
-              </>
-            )}
-          <InterviewerDetail
+          {renderCalendarConnectionReminder({
+            allIntegrations,
+            interviewerDetails,
+            recruiterUser,
+            dialogOpen,
+            handleClickOpen,
+            handleClose,
+          })}
+          <UserLayout
             isUpcomingInterviewVisible={true}
             slotUpcomingList={
               upcomingSchedules.length > 0 ? (
                 upcomingSchedules.map((schedule) => (
                   <UpcomingInterviewList
-                    onClickCard={{
-                      onClick: () =>
-                        router.push(
-                          `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
-                        ),
-                    }}
+                    onClick={() =>
+                      router.push(
+                        `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
+                      )
+                    }
                     key={schedule.application_id}
                     textPanelName={schedule.session_name}
                     slotPanelIcon={
@@ -340,23 +178,27 @@ Unavailable for interviews on Tuesdays.`);
                   />
                 ))
               ) : (
-                <div className="flex flex-col items-center justify-center p-8 text-center">
+                <div className='flex flex-col items-center justify-center p-8 text-center'>
                   <svg
-                    className="w-12 h-12 text-gray-400 mb-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
+                    className='w-12 h-12 text-gray-400 mb-2'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                    aria-hidden='true'
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                       strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
                     />
                   </svg>
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">No Interviews found</h3>
-                  <p className="text-sm text-gray-500">There are no interviews scheduled at the moment.</p>
+                  <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                    No Interviews found
+                  </h3>
+                  <p className='text-sm text-gray-500'>
+                    There are no interviews scheduled at the moment.
+                  </p>
                 </div>
               )
             }
@@ -367,16 +209,6 @@ Unavailable for interviews on Tuesdays.`);
                 interviewerDetails.recruiter_relation[0].roles.name !==
                   'admin') ||
               recruiter.primary_admin === recruiterUser.user_id ? (
-                // <ButtonSoft
-                //   textButton={'Edit'}
-                //   size={2}
-                //   color={'neutral'}
-                //   onClickButton={{
-                //     onClick: () => {
-                //       setIsOpen(true);
-                //     },
-                //   }}
-                // />
                 <UserListThreeDot member={interviewerDetails} />
               ) : (
                 <></>
@@ -385,14 +217,8 @@ Unavailable for interviews on Tuesdays.`);
             slotTabContent={
               <>
                 {tab === 'overview' && (
-                  <Overview
-                    scheduleList={allSchedules}
-                    interviewerDetails={interviewerDetails}
-                  />
+                  <Overview interviewerDetails={interviewerDetails} />
                 )}
-                {/* {tab === 'keywords' && (
-                 
-                )} */}
                 {tab === 'availibility' && (
                   <Availibility
                     interviewerDetailsRefetch={interviewerDetailsRefetch}
@@ -441,11 +267,9 @@ Unavailable for interviews on Tuesdays.`);
             }
             textPhone={interviewerDetails.phone || '- -'}
             isLinkedInVisible={!!interviewerDetails.linked_in}
-            onClickLinkedIn={{
-              onClick: () => {
-                window.open(interviewerDetails.linked_in, '_blank');
-              },
-            }}
+            onClickLinkedIn={() =>
+              window.open(interviewerDetails.linked_in, '_blank')
+            }
             textLocation={
               interviewerDetails?.office_locations
                 ? `${interviewerDetails.office_locations.city}, ${interviewerDetails.office_locations.region}, ${interviewerDetails.office_locations.country}`
@@ -463,17 +287,24 @@ Unavailable for interviews on Tuesdays.`);
               (interviewerDetails.last_name ? interviewerDetails.last_name : '')
             }
             slotInterviewerAvatar={
-              <MuiAvatar
+              <Avatar
                 key={interviewerDetails.user_id}
-                src={interviewerDetails.profile_image}
-                level={getFullName(
-                  interviewerDetails.first_name,
-                  interviewerDetails.last_name,
-                )}
-                variant='rounded'
-                height='100%'
-                width='100%'
-              />
+                className='w-full h-full rounded-lg'
+              >
+                <AvatarImage
+                  src={interviewerDetails.profile_image}
+                  alt={getFullName(
+                    interviewerDetails.first_name,
+                    interviewerDetails.last_name,
+                  )}
+                />
+                <AvatarFallback>
+                  {getFullName(
+                    interviewerDetails.first_name,
+                    interviewerDetails.last_name,
+                  ).charAt(0)}
+                </AvatarFallback>
+              </Avatar>
             }
             textTimeZone={
               interviewerDetails.scheduling_settings?.timeZone.label
@@ -485,5 +316,119 @@ Unavailable for interviews on Tuesdays.`);
     </>
   );
 }
+
+// Define the props interface
+interface CalendarConnectionReminderProps {
+  allIntegrations: any;
+  interviewerDetails: any;
+  recruiterUser: any;
+  dialogOpen: 'email' | 'slack' | null;
+  // eslint-disable-next-line no-unused-vars
+  handleClickOpen: (type: 'email' | 'slack') => void;
+  handleClose: () => void;
+}
+const renderCalendarConnectionReminder = ({
+  allIntegrations,
+  interviewerDetails,
+  recruiterUser,
+  dialogOpen,
+  handleClickOpen,
+  handleClose,
+}: CalendarConnectionReminderProps) => {
+  return (
+    allIntegrations?.service_json === null &&
+    allIntegrations?.google_workspace_domain?.split('//')[1] ===
+      interviewerDetails.email.split('@')[1] &&
+    interviewerDetails.schedule_auth === null &&
+    (interviewerDetails.user_id === recruiterUser.user_id ||
+      recruiterUser.role === 'admin') && (
+      <>
+        <div className='max-w-[870px] ml-2 mt-2'>
+          <GlobalBannerInline
+            color={'error'}
+            textContent={
+              interviewerDetails.user_id === recruiterUser.user_id
+                ? 'Your calendar is not connected yet. Please connect it to schedule interviews.'
+                : `
+                ${getFullName(
+                  interviewerDetails.first_name,
+                  interviewerDetails.last_name,
+                )} calendar is not connected yet. Click 'Connect Calender' button to send reminder `
+            }
+            slotButton={
+              <Popover>
+                <PopoverTrigger>
+                  {' '}
+                  <UIButton size='sm'>Connect Calender</UIButton>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-2'>
+                  <div
+                    className='flex gap-2 items-center w-full hover:bg-neutral-200 rounded-lg p-2 mt-0 cursor-pointer'
+                    onClick={() => {
+                      handleClickOpen('email');
+                    }}
+                  >
+                    <Mail className='w-4 h-4' />
+                    <span className='text-sm'>Via Email</span>
+                  </div>
+
+                  <div
+                    className='flex gap-2 items-center w-full hover:bg-neutral-200 rounded-lg p-2 mt-0 cursor-pointer'
+                    onClick={() => {
+                      handleClickOpen('slack');
+                    }}
+                  >
+                    <MessageSquare className='w-4 h-4' />
+                    <span className='text-sm'>Via Slack</span>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            }
+          />
+        </div>
+        <UIDialog
+          open={!!dialogOpen}
+          onClose={handleClose}
+          title={
+            dialogOpen === 'email'
+              ? 'Send Email Reminder'
+              : 'Send Slack Reminder'
+          }
+          slotButtons={
+            <>
+              <UIButton variant='secondary' size='sm' onClick={handleClose}>
+                Cancel
+              </UIButton>
+              <UIButton size='sm'>Send</UIButton>
+            </>
+          }
+        >
+          <div>
+            <p className='font-normal'>
+              Sending calendar connect reminder to{' '}
+              <span className='font-medium'>
+                {getFullName(recruiterUser.first_name, recruiterUser.last_name)}
+              </span>
+            </p>
+            <p className='mt-2 font-medium'>
+              {dialogOpen === 'email' ? 'Email' : 'Slack'} Body
+            </p>
+            <div className='mt-2 border border-[var(--neutral-6)] rounded-[var(--radius-2)]'>
+              <TipTapAIEditor
+                enablAI={false}
+                disabled
+                toolbar={false}
+                placeholder={''}
+                height='360px'
+                minHeight='360px'
+                editor_type='email'
+              />
+            </div>
+          </div>
+        </UIDialog>
+      </>
+    )
+  );
+};
 
 export default BodyComp;

@@ -1,8 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { ButtonGhost } from '@devlink/ButtonGhost';
-import { TrainingDetailList } from '@devlink2/TrainingDetailList';
-import { TrainingProgressDetail } from '@devlink2/TrainingProgressDetail';
+// import { TrainingDetailList } from '@devlink2/TrainingDetailList';
 import { TrainingStatus } from '@devlink2/TrainingStatus';
 import { Collapse, Stack, Typography } from '@mui/material';
 import { Minus, Plus } from 'lucide-react';
@@ -17,6 +16,7 @@ import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
 import { supabase } from '@/utils/supabase/client';
 
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
+import { TrainingDetailList } from './TrainingDetailList';
 
 function CollapseTrainingProgress({
   isCollapseOpen,
@@ -118,31 +118,116 @@ function CollapseTrainingProgress({
         }}
       >
         <Stack spacing={'var(--space-2)'}>
-          <TrainingProgressDetail
-            slotTrainingDetailList={
-              <>
-                {shadowProgress.map((prog, ind) => {
-                  return (
+          <div className='flex flex-col gap-3 p-4 sm:p-5'>
+            <div className='flex flex-col gap-4'>
+              {
+                <>
+                  {shadowProgress.map((prog, ind) => {
+                    return (
+                      <TrainingDetailList
+                        key={ind}
+                        isReverse={false}
+                        isShadow={true}
+                        textTraining={`${numberToOrdinalText(ind + 1)} Shadow`}
+                        slotTrainingStatus={
+                          <TrainingStatus
+                            isNotCompletedVisible={false}
+                            isCompletedVisible={true}
+                            isReverseShadow={false}
+                            isShadow={true}
+                          />
+                        }
+                        slotPanelBlock={
+                          <>
+                            <Stack direction={'row'} spacing={'var(--space-2)'}>
+                              <SessionIcon
+                                session_type={
+                                  prog.interview_session.session_type
+                                }
+                              />
+                              <p className='text-sm'>
+                                {prog.interview_session.name}
+                              </p>
+
+                              {prog.is_approved ? (
+                                <Typography
+                                  color={'var(--accent-11)'}
+                                  fontSize={11}
+                                >
+                                  Approved by{' '}
+                                  <span
+                                    style={{
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {getFullName(
+                                      prog.recruiter_user?.first_name,
+                                      prog.recruiter_user?.last_name,
+                                    )}
+                                  </span>
+                                </Typography>
+                              ) : (
+                                <ButtonGhost
+                                  textButton={'Approve'}
+                                  size={1}
+                                  onClickButton={{
+                                    onClick: async () => {
+                                      await approveTrainingProgress(prog.id);
+                                    },
+                                  }}
+                                />
+                              )}
+                            </Stack>
+                          </>
+                        }
+                      />
+                    );
+                  })}
+                  {mutatedShadowProgress.map((_, index) => (
                     <TrainingDetailList
-                      key={ind}
+                      key={index}
                       isReverse={false}
                       isShadow={true}
-                      textTraining={`${numberToOrdinalText(ind + 1)} Shadow`}
+                      textTraining={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
                       slotTrainingStatus={
                         <TrainingStatus
-                          isNotCompletedVisible={false}
-                          isCompletedVisible={true}
+                          isNotCompletedVisible={true}
+                          isCompletedVisible={false}
                           isReverseShadow={false}
                           isShadow={true}
                         />
                       }
-                      slotPanelBlock={
-                        <>
-                          <Stack direction={'row'} spacing={'var(--space-2)'}>
-                            <SessionIcon
-                              session_type={prog.interview_session.session_type}
-                            />
-                            <p className="text-sm">{prog.interview_session.name}</p>
+                      slotPanelBlock={<></>}
+                    />
+                  ))}
+                  {reverseShadowProgress.map((prog, ind) => {
+                    return (
+                      <TrainingDetailList
+                        key={ind}
+                        isReverse={true}
+                        isShadow={false}
+                        textTraining={`${numberToOrdinalText(ind + 1)} Reverse Shadow`}
+                        slotTrainingStatus={
+                          <TrainingStatus
+                            isNotCompletedVisible={false}
+                            isCompletedVisible={true}
+                            isReverseShadow={true}
+                            isShadow={false}
+                            isPendingApprovalVisible={false}
+                          />
+                        }
+                        slotPanelBlock={
+                          <>
+                            <Stack direction={'row'} spacing={'var(--space-2)'}>
+                              <SessionIcon
+                                session_type={
+                                  prog.interview_session.session_type
+                                }
+                              />
+                              <p className='text-sm'>
+                                {prog.interview_session.name}
+                              </p>
+                            </Stack>
 
                             {prog.is_approved ? (
                               <Typography
@@ -172,108 +257,34 @@ function CollapseTrainingProgress({
                                 }}
                               />
                             )}
-                          </Stack>
-                        </>
-                      }
-                    />
-                  );
-                })}
-                {mutatedShadowProgress.map((_, index) => (
-                  <TrainingDetailList
-                    key={index}
-                    isReverse={false}
-                    isShadow={true}
-                    textTraining={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
-                    slotTrainingStatus={
-                      <TrainingStatus
-                        isNotCompletedVisible={true}
-                        isCompletedVisible={false}
-                        isReverseShadow={false}
-                        isShadow={true}
+                          </>
+                        }
                       />
-                    }
-                    slotPanelBlock={<></>}
-                  />
-                ))}
-                {reverseShadowProgress.map((prog, ind) => {
-                  return (
+                    );
+                  })}
+                  {mutatedReverseShadowProgress.map((_, index) => (
                     <TrainingDetailList
-                      key={ind}
+                      key={index}
                       isReverse={true}
                       isShadow={false}
-                      textTraining={`${numberToOrdinalText(ind + 1)} Reverse Shadow`}
+                      textTraining={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
                       slotTrainingStatus={
                         <TrainingStatus
-                          isNotCompletedVisible={false}
-                          isCompletedVisible={true}
+                          isNotCompletedVisible={true}
+                          isCompletedVisible={false}
                           isReverseShadow={true}
                           isShadow={false}
                           isPendingApprovalVisible={false}
                         />
                       }
-                      slotPanelBlock={
-                        <>
-                          <Stack direction={'row'} spacing={'var(--space-2)'}>
-                            <SessionIcon
-                              session_type={prog.interview_session.session_type}
-                            />
-                            <p className="text-sm">{prog.interview_session.name}</p>
-                          </Stack>
-
-                          {prog.is_approved ? (
-                            <Typography
-                              color={'var(--accent-11)'}
-                              fontSize={11}
-                            >
-                              Approved by{' '}
-                              <span
-                                style={{
-                                  fontWeight: 600,
-                                }}
-                              >
-                                {getFullName(
-                                  prog.recruiter_user?.first_name,
-                                  prog.recruiter_user?.last_name,
-                                )}
-                              </span>
-                            </Typography>
-                          ) : (
-                            <ButtonGhost
-                              textButton={'Approve'}
-                              size={1}
-                              onClickButton={{
-                                onClick: async () => {
-                                  await approveTrainingProgress(prog.id);
-                                },
-                              }}
-                            />
-                          )}
-                        </>
-                      }
+                      slotPanelBlock={<></>}
                     />
-                  );
-                })}
-                {mutatedReverseShadowProgress.map((_, index) => (
-                  <TrainingDetailList
-                    key={index}
-                    isReverse={true}
-                    isShadow={false}
-                    textTraining={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
-                    slotTrainingStatus={
-                      <TrainingStatus
-                        isNotCompletedVisible={true}
-                        isCompletedVisible={false}
-                        isReverseShadow={true}
-                        isShadow={false}
-                        isPendingApprovalVisible={false}
-                      />
-                    }
-                    slotPanelBlock={<></>}
-                  />
-                ))}
-              </>
-            }
-          />
+                  ))}
+                </>
+              }
+            </div>
+            <div className='hidden flex-row gap-5 pt-4'></div>
+          </div>
         </Stack>
         <Stack
           direction={'row'}
