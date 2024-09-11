@@ -6,7 +6,6 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
@@ -80,19 +79,13 @@ function InterviewerUserDetail({
                 {cancelReason?.reason && (
                   <TooltipContent>
                     <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
-                      <Text
-                        size={1}
-                        content={`Reason : ${cancelReason?.reason}`}
-                        color={'warning'}
-                        weight={'regular'}
-                      />
+                      <p className='text-sm text-warning'>
+                        Reason : {cancelReason?.reason}
+                      </p>
                       {cancelReason?.other_details?.note && (
-                        <Text
-                          size={1}
-                          content={`Notes : ${cancelReason?.other_details?.note}`}
-                          weight={'regular'}
-                          color={'neutral'}
-                        />
+                        <p className='text-sm text-muted-foreground'>
+                          Notes : {cancelReason?.other_details?.note}
+                        </p>
                       )}
                     </Stack>
                   </TooltipContent>
@@ -138,12 +131,9 @@ function InterviewerUserDetail({
       isRoleVisible={true}
       slotRole={
         userDetails?.position ? (
-          <Text
-            content={userDetails.position}
-            size={1}
-            color={'neutral'}
-            weight={'regular'}
-          />
+          <p className='text-sm text-muted-foreground'>
+            {userDetails.position}
+          </p>
         ) : (
           '--'
         )

@@ -1,7 +1,8 @@
-import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
+
+import { UIButton } from '@/components/Common/UIButton';
 
 interface CustomSocialFieldProps {
   socialName: string;
@@ -37,14 +38,17 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
         />
         {error?.error && <p className='text-sm text-red-500'>{error.msg}</p>}
       </div>
+
       {isHovered && (
-        <Button
-          variant='ghost'
-          onClick={onDelete}
-          className='absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8'
-        >
-          <Trash2 className='h-3 w-3' />d
-        </Button>
+        <div className='absolute right-2'>
+          <UIButton
+            variant='ghost'
+            size='sm'
+            onClick={onDelete}
+            icon={<Trash2 />}
+            className='absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8'
+          />
+        </div>
       )}
     </div>
   );

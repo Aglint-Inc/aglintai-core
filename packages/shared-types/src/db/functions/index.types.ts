@@ -7,7 +7,6 @@ import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
 import { CustomGetRequestCountStats } from "./get_request_count_stats.types";
 import { CustomGetRequestCountStatsNew } from "./get_request_count_stats_new.types";
-import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
 import { CustomMoveToInterview } from "./move_to_interview.types";
 import { CustomSchedulingAnalyticsCompletedInterviews } from "./scheduling_analytics_completed_interviews.types";
@@ -53,7 +52,6 @@ export type Functions = Custom<
   {
     insert_debrief_session: CustomInsertDebriefSession;
     update_debrief_session: CustomUpdateDebriefSession;
-    getsectioncounts: CustomGetSectionCounts;
     get_applicant_locations: CustomGetApplicantLocations;
     get_applicant_badges: CustomGetApplicantBadges;
     create_session_request: CustomCreateSessionRequest;

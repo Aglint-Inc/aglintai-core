@@ -1,7 +1,6 @@
 import { type DatabaseTableUpdate } from '@aglint/shared-types';
 
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
 export async function updateCandidateRequestAvailability({
   data,
@@ -21,6 +20,6 @@ export async function updateCandidateRequestAvailability({
     if (error) throw new Error(error.message);
     return result;
   } catch (error) {
-    toast.error(error.message);
+    //
   }
 }

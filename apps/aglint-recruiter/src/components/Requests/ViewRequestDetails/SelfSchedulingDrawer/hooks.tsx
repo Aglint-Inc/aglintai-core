@@ -11,7 +11,7 @@ import type {
 import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 import toast from '@/utils/toast';
 
-import { useMeetingList } from '../hooks';
+import { useMeetingList } from '../../_common/hooks';
 import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
 import {
   type SelfSchedulingFlow,

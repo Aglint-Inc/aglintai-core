@@ -11,7 +11,7 @@ import { supabase } from '@/utils/supabase/client';
 import {
   setCompletedFilters,
   useCompletedRequestsStore,
-} from '../Context/store';
+} from '../../CompletedRequests/store';
 
 function RequestHistoryFilter() {
   const [candidateAndJobs, setCandidateAndJobs] =

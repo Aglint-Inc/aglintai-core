@@ -1,6 +1,5 @@
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Text } from '@devlink/Text';
 import { Stack } from '@mui/material';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
@@ -43,23 +42,17 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
 
         <Stack spacing={'var(--space-1)'} width={'100%'}>
           <Stack direction={'row'} spacing={'var(--space-2)'}>
-            <Text
-              size={1}
-              weight={'medium'}
-              content={
-                chat.type === 'agent'
-                  ? 'Aglint'
-                  : getFullName(
-                      recruiterUser.first_name,
-                      recruiterUser.last_name,
-                    )
-              }
-            />
-            <Text
-              size={1}
-              content={dayjsLocal(chat.created_at).fromNow()}
-              color={'neutral'}
-            />
+            <p className="text-sm font-semibold">
+              {chat.type === 'agent'
+                ? 'Aglint'
+                : getFullName(
+                    recruiterUser.first_name,
+                    recruiterUser.last_name,
+                  )}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {dayjsLocal(chat.created_at).fromNow()}
+            </p>
           </Stack>
           {definedUi.includes(chat.function) ? (
             <Widgets chat={chat} />

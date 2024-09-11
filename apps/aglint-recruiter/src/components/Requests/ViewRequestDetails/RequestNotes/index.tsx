@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import dayjs from '@/utils/dayjs';
 
-import { updateRequestNotes } from '../../_common/functions/updateRequestNotes';
+import { updateRequestNotes } from '../../_common/functions';
 import { useRequestNotes } from '../../_common/hooks';
 
 function RequestNotes() {

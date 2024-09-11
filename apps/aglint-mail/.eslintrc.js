@@ -7,8 +7,6 @@ module.exports = {
     '@vercel/style-guide/eslint/typescript',
     '@vercel/style-guide/eslint/react',
     '@vercel/style-guide/eslint/next',
-    "next/typescript" // typechecking with eslint
-
   ]
     .map(require.resolve)
     .concat(['eslint-config-prettier']),

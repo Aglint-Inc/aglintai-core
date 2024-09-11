@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 
-import { RequestProgress } from '@devlink2/RequestProgress';
-
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { RequestProgressTracker } from '../RequestProgressTracker';
 import AvailabilityFlowMenus from './AvailabilityFlowMenus';
 import ChooseScheduleMode from './ChooseScheduleMode';
 import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
@@ -26,9 +25,9 @@ const SelectScheduleFlow = ({ scheduleFlow }: { scheduleFlow: any }) => {
 
   return (
     <>
-      <RequestProgress
-        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
-        textRequestProgress={'Scheduling Request Recieved'}
+      <RequestProgressTracker
+        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'default'}
+        textRequestProgress={'When scheduling request recieved'}
         slotProgress={
           <>
             <ShowCode.When isTrue={scheduleFlow === null}>

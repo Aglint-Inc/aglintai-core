@@ -87,26 +87,6 @@ const useApplicationsContext = () => {
       ...queryParams,
     }),
   );
-  const screeningApplications = useInfiniteQuery(
-    applicationsQueries.applications({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-      status: 'screening',
-      count: job?.section_count?.screening ?? 0,
-      ...queryParams,
-    }),
-  );
-  const assessmentApplications = useInfiniteQuery(
-    applicationsQueries.applications({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-      status: 'assessment',
-      count: job?.section_count?.assessment ?? 0,
-      ...queryParams,
-    }),
-  );
   const interviewApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
@@ -142,26 +122,26 @@ const useApplicationsContext = () => {
     () =>
       Object.entries(EMAIL_VISIBILITIES ?? {}).reduce(
         (acc, [key, value]) => {
-          acc[key] = job?.flags[key] && value.includes(section);
+          acc[key] = value.includes(section);
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
         {} as { [_id in keyof typeof EMAIL_VISIBILITIES]: boolean },
       ),
-    [EMAIL_VISIBILITIES, job?.flags, section],
+    [EMAIL_VISIBILITIES, section],
   );
 
   const cascadeVisibilites = useMemo(
     () =>
       Object.entries(CASCADE_VISIBILITIES ?? {}).reduce(
         (acc, [key, value]) => {
-          acc[key] = job?.flags[key] && value.includes(section);
+          acc[key] = value.includes(section);
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
         {} as { [_id in keyof typeof CASCADE_VISIBILITIES]: boolean },
       ),
-    [CASCADE_VISIBILITIES, job?.flags, section],
+    [CASCADE_VISIBILITIES, section],
   );
 
   const { mutateAsync: moveApplications, mutationQueue: moveMutationQueue } =
@@ -244,23 +224,17 @@ const useApplicationsContext = () => {
 
   const sectionApplication = useMemo(() => {
     switch (section) {
-      case 'assessment':
-        return assessmentApplications;
       case 'new':
         return newApplications;
       case 'qualified':
         return qualifiedApplications;
       case 'disqualified':
         return disqualifiedApplications;
-      case 'screening':
-        return screeningApplications;
       case 'interview':
         return interviewApplications;
     }
   }, [
     newApplications,
-    screeningApplications,
-    assessmentApplications,
     interviewApplications,
     qualifiedApplications,
     disqualifiedApplications,

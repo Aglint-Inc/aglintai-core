@@ -165,7 +165,7 @@ export const usePortalSettings = () => {
         company_images: [...previewImages, ...newImages],
       });
       setSelectedImages([]);
-    } catch (error) {
+    } catch (err) {
       // console.error('Error uploading images: ', error.message);
       //chandruAddToast
       return null;

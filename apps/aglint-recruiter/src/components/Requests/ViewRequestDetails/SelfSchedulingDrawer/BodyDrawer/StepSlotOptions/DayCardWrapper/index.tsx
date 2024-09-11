@@ -3,7 +3,6 @@ import { Checkbox } from '@components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { Text } from '@devlink/Text';
 import { EmptySlotReason } from '@devlink3/EmptySlotReason';
 import { ScheduleOption } from '@devlink3/ScheduleOption';
 import { Collapse, Stack } from '@mui/material';
@@ -115,11 +114,9 @@ function DayCardWrapper({
     <>
       <DayCard
         slotLeftBlock={
-          <Text
-            content={header}
-            weight={'medium'}
-            color={isSelected ? 'accent' : 'neutral'}
-          />
+          <p className={`font-semibold ${isSelected ? 'text-accent' : 'text-neutral'}`}>
+            {header}
+          </p>
         }
         onClickDateOption={{
           onClick: () => {

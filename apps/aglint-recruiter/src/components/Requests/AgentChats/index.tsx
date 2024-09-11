@@ -1,5 +1,4 @@
-import { AglintAiChat } from '@devlink2/AglintAiChat';
-import { useState } from 'react';
+import { Button } from '@components/ui/button';
 
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';
@@ -11,7 +10,6 @@ import {
 } from './ChatMessageList/store';
 
 function AgentChats() {
-  const [openSetting, setOpenSettings] = useState(false);
   const { chatList } = useAgentChatStore((state) => ({
     isFetchingNextPage: state.isFetchingNextPage,
     chatList: state.chatList,
@@ -21,25 +19,31 @@ function AgentChats() {
   }));
 
   return (
-    <>
-      <AglintAiChat
-        onClickMemory={{
-          onClick: () => {
-            setOpenSettings(!openSetting);
-          },
-        }}
-        isClearVisible={chatList.length > 0}
-        onClickClear={{
-          onClick: () => {
-            setChatList([]);
-            setViewList(false);
-            setViewHistory(false);
-          },
-        }}
-        slotAiInput={<AgentInputBox />}
-        slotAiBody={<ChatMessageList />}
-      />
-    </>
+    <div className='flex w-[450px] flex-col h-full bg-white border-r'>
+      <div className='flex justify-end items-center pt-4 px-4'>
+        <div className='flex space-x-2'>
+          {chatList.length > 0 && (
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={() => {
+                setChatList([]);
+                setViewList(false);
+                setViewHistory(false);
+              }}
+            >
+              Clear
+            </Button>
+          )}
+        </div>
+      </div>
+      <div className='flex-grow'>
+        <ChatMessageList />
+      </div>
+      <div className='p-4'>
+        <AgentInputBox />
+      </div>
+    </div>
   );
 }
 
