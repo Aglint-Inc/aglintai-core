@@ -1,10 +1,10 @@
 import UIDrawer from '@/components/Common/UIDrawer';
 
-import BodyDrawer from './BodyDrawer';
-import ButtonMain from './ButtonGroup';
-import Calendar from './Calendar';
-import { useSelfSchedulingDrawer } from './hooks';
-import { useSelfSchedulingFlowStore } from './store';
+import BodyDrawer from './_common/components/BodyDrawer';
+import ButtonMain from './_common/components/ButtonGroup';
+import Calendar from './_common/components/Calendar';
+import { useSelfSchedulingDrawer } from './_common/hooks/hooks';
+import { useSelfSchedulingFlowStore } from './_common/store/store';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const {

@@ -2,7 +2,7 @@ import { User } from 'lucide-react';
 
 import { useApplication } from '@/context/ApplicationContext';
 
-import { ApplicantInfoBox } from '../../SlotBody/InterviewTabContent/_common/components/ApplicationInfo';
+import { ApplicantInfoBox } from './SlotBody/InterviewTabContent/_common/components/ApplicationInfo';
 
 function CandidateInfo() {
   const {

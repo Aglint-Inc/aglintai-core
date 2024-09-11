@@ -53,13 +53,7 @@ function Requests() {
                 key={req.id}
                 justifyContent={'space-between'}
               >
-                <p className="text-sm">
-                  {/* {getRequestTitle({
-                    title: req.title,
-                    first_name: detail.name,
-                    last_name: '',
-                  })} */}
-                </p>
+                <p className='text-sm'>{req.title}</p>
                 <GlobalBadge
                   size={1}
                   textBadge={capitalizeFirstLetter(req.status)}
@@ -77,7 +71,7 @@ function Requests() {
                 />
               </Stack>
               <Stack direction={'row'} spacing={'var(--space-2)'}>
-                <p className="text-sm text-muted-foreground">Assigned to</p>
+                <p className='text-sm text-muted-foreground'>Assigned to</p>
                 <AvatarWithName
                   slotAvatar={
                     <MuiAvatar
