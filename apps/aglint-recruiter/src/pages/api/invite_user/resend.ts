@@ -26,9 +26,7 @@ export default async function handler(
         .status(400)
         .send({ message: 'Invalid request. Required props missing.' });
     }
-    const { role } = await server_getUserRoleAndId({
-      getVal: (name) => req.cookies[String(name)],
-    });
+    const { role } = await server_getUserRoleAndId();
 
     if ('admin' === role) {
       const { error: emailError } = await supabase.auth.resetPasswordForEmail(

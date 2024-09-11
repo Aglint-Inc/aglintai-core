@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
+import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
+import { File, FileText, Plus, Upload, X } from 'lucide-react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { useApplicationsActions, useJob } from '@/job/hooks';
 import toast from '@/utils/toast';
-import { Button } from '@components/ui/button';
-import { File, FileText, Plus, Upload, X } from 'lucide-react';
-import { Card } from '@components/ui/card';
 
 export const ImportResume = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);

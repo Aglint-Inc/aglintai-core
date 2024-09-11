@@ -8,11 +8,11 @@ import { RequestReschedule } from '@devlink2/RequestReschedule';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-import { Trash } from 'lucide-react';
 
 const CancelRescheduleDialog = ({
   title,

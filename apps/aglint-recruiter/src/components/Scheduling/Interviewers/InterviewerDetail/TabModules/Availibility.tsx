@@ -1,28 +1,21 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Text } from '@devlink/Text';
-
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
 import { InterviewLoadCard } from '@devlink3/InterviewLoadCard';
 import { InterviewLoadDetails } from '@devlink3/InterviewLoadDetails';
-import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { WorkingHourDetails } from '@devlink3/WorkingHourDetails';
-import {
-  Autocomplete,
-  Drawer,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDrawer from '@/components/Common/UIDrawer';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
@@ -32,7 +25,6 @@ import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
-import { Checkbox } from '@components/ui/checkbox';
 
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -217,12 +209,13 @@ function Availibility({
           <Text weight={'medium'} content='Time Zone' />
           <Stack width={'47px'} height={'32px'}>
             {isHover && (
-              <ButtonSoft
-                textButton='Edit'
-                color={'neutral'}
-                size={2}
-                onClickButton={{ onClick: () => setEditDrawer(true) }}
-              />
+              <UIButton
+                onClick={() => setEditDrawer(true)}
+                size='sm'
+                variant='secondary'
+              >
+                Edit
+              </UIButton>
             )}
           </Stack>
         </Stack>
@@ -282,7 +275,7 @@ function Availibility({
             {schedulingSettingData.workingHours
               .filter((day) => day.isWorkDay)
               .map((day, i: number) => (
-                <li key={i} className='py-4'>
+                <li key={i} className='py-4 '>
                   <h3 className='text-lg font-medium text-gray-900'>
                     {capitalize(day.day)}
                   </h3>
@@ -328,244 +321,222 @@ function Availibility({
         }}
         isAvailability={false}
       />
-      <Drawer
-        open={editDrawer}
-        anchor='right'
-        onClose={() => setEditDrawer(false)}
-      >
-        <SideDrawerLarge
-          isHeaderIconVisible={false}
-          onClickCancel={{
-            onClick: () => {
-              setEditDrawer(false);
-            },
-          }}
-          drawerSize={'medium'}
-          textDrawertitle={'Edit Availability'}
-          slotButtons={
+
+      <>
+        <UIDrawer
+          onClose={() => setEditDrawer(false)}
+          open={editDrawer}
+          title='Edit Availability'
+          size='md'
+          slotBottom={
             <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => {
-                    setEditDrawer(false);
-                  },
-                }}
-              />
-              <ButtonSolid
-                textButton='Update'
+              <UIButton
+                variant='secondary'
+                onClick={() => setEditDrawer(false)}
+                size='md'
+                fullWidth
+              >
+                Cancel
+              </UIButton>
+              <UIButton
                 isLoading={isSaving}
-                isDisabled={isSaving}
-                size={2}
-                onClickButton={{
-                  onClick: () => {
-                    updateHandle();
-                  },
-                }}
-              />
+                fullWidth
+                disabled={isSaving}
+                size='md'
+                onClick={() => updateHandle()}
+              >
+                Update
+              </UIButton>
             </>
           }
-          slotSideDrawerbody={
-            <Stack padding={'16px'}>
-              <ScheduleSettings
-                isTimeZoneToggleVisible={false}
-                slotTimeZoneInput={
-                  <Stack
-                    spacing={'var(--space-2)'}
-                    width={420}
-                    flexDirection={'column-reverse'}
-                    gap={'var(--space-2)'}
-                  >
-                    <Autocomplete
-                      disabled={isTimeZone}
-                      disableClearable
-                      options={timeZone}
-                      value={selectedTimeZone}
-                      onChange={(_event, value) => {
-                        if (value) {
-                          setSelectedTimeZone(value);
-                        }
-                      }}
-                      autoComplete={false}
-                      getOptionLabel={(option) => option.label}
-                      renderOption={(props, option) => {
-                        return (
-                          <li {...props}>
-                            <Typography
-                              variant='body1'
-                              color={'var(--neutral-12)'}
-                            >
-                              {option.label}
-                            </Typography>
-                          </li>
-                        );
-                      }}
-                      renderInput={(params) => {
-                        return (
-                          <TextField
-                            {...params}
-                            label=''
-                            placeholder='Ex. Healthcare'
-                          />
-                        );
-                      }}
-                    />
-                  </Stack>
-                }
-                isKeywordVisible={false}
-                isCompanyLevelVisible={false}
-                slotKeywordCard={<></>}
-                slotDailyLimit={
-                  <>
-                    <Stack spacing={3} direction={'row'} alignItems={'center'}>
-                      <MuiNumberfield
-                        isMarginTop={false}
-                        handleSelect={(value) => handleDailyValue(+value)}
-                        value={dailyLmit.value}
-                        max={dailyLmit.max}
-                      />
-                      <RadioGroup
-                        defaultValue={dailyLmit.type}
-                        onValueChange={(value) =>
-                          handleType(value as 'Interviews' | 'Hours')
-                        }
-                        className='flex flex-row'
-                      >
-                        {['Interviews', 'Hours'].map((ele) => (
-                          <div
-                            key={ele}
-                            className='flex items-center space-x-2'
+        >
+          <Stack padding={'16px'}>
+            <ScheduleSettings
+              isTimeZoneToggleVisible={false}
+              slotTimeZoneInput={
+                <Stack
+                  spacing={'var(--space-2)'}
+                  width={420}
+                  flexDirection={'column-reverse'}
+                  gap={'var(--space-2)'}
+                >
+                  <Autocomplete
+                    disabled={isTimeZone}
+                    disableClearable
+                    options={timeZone}
+                    value={selectedTimeZone}
+                    onChange={(_event, value) => {
+                      if (value) {
+                        setSelectedTimeZone(value);
+                      }
+                    }}
+                    autoComplete={false}
+                    getOptionLabel={(option) => option.label}
+                    renderOption={(props, option) => {
+                      return (
+                        <li {...props}>
+                          <Typography
+                            variant='body1'
+                            color={'var(--neutral-12)'}
                           >
+                            {option.label}
+                          </Typography>
+                        </li>
+                      );
+                    }}
+                    renderInput={(params) => {
+                      return (
+                        <TextField
+                          {...params}
+                          label=''
+                          placeholder='Ex. Healthcare'
+                        />
+                      );
+                    }}
+                  />
+                </Stack>
+              }
+              isKeywordVisible={false}
+              isCompanyLevelVisible={false}
+              slotKeywordCard={<></>}
+              slotDailyLimit={
+                <>
+                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                    <MuiNumberfield
+                      isMarginTop={false}
+                      handleSelect={(value) => handleDailyValue(+value)}
+                      value={dailyLmit.value}
+                      max={dailyLmit.max}
+                    />
+                    <RadioGroup
+                      defaultValue={dailyLmit.type}
+                      onValueChange={(value) =>
+                        handleType(value as 'Interviews' | 'Hours')
+                      }
+                      className='flex flex-row'
+                    >
+                      {['Interviews', 'Hours'].map((ele) => (
+                        <div key={ele} className='flex items-center space-x-2'>
+                          <RadioGroupItem value={ele} id={`radio-${ele}`} />
+                          <Label htmlFor={`radio-${ele}`}>
+                            {capitalize(ele.replaceAll('_', ' '))}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </Stack>
+                </>
+              }
+              slotWeeklyLimit={
+                <>
+                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                    {' '}
+                    <MuiNumberfield
+                      handleSelect={(value) => handleWeeklyValue(+value)}
+                      isMarginTop={false}
+                      value={weeklyLmit.value}
+                      max={weeklyLmit.max}
+                    />
+                    <RadioGroup
+                      defaultValue={weeklyLmit.type}
+                      onValueChange={(value) =>
+                        handleType(value as 'Interviews' | 'Hours')
+                      }
+                      className='flex flex-row'
+                      name='row-radio-buttons-group'
+                    >
+                      {['Interviews', 'Hours'].map((ele, i) => {
+                        return (
+                          <div key={i} className='flex items-center space-x-2'>
                             <RadioGroupItem value={ele} id={`radio-${ele}`} />
                             <Label htmlFor={`radio-${ele}`}>
                               {capitalize(ele.replaceAll('_', ' '))}
                             </Label>
                           </div>
-                        ))}
-                      </RadioGroup>
-                    </Stack>
-                  </>
-                }
-                slotWeeklyLimit={
-                  <>
-                    <Stack spacing={3} direction={'row'} alignItems={'center'}>
-                      {' '}
-                      <MuiNumberfield
-                        handleSelect={(value) => handleWeeklyValue(+value)}
-                        isMarginTop={false}
-                        value={weeklyLmit.value}
-                        max={weeklyLmit.max}
-                      />
-                      <RadioGroup
-                        defaultValue={weeklyLmit.type}
-                        onValueChange={(value) =>
-                          handleType(value as 'Interviews' | 'Hours')
-                        }
-                        className='flex flex-row'
-                        name='row-radio-buttons-group'
-                      >
-                        {['Interviews', 'Hours'].map((ele, i) => {
-                          return (
-                            <div
-                              key={i}
-                              className='flex items-center space-x-2'
-                            >
-                              <RadioGroupItem value={ele} id={`radio-${ele}`} />
-                              <Label htmlFor={`radio-${ele}`}>
-                                {capitalize(ele.replaceAll('_', ' '))}
-                              </Label>
-                            </div>
-                          );
-                        })}
-                      </RadioGroup>
-                    </Stack>
-                  </>
-                }
-                slotWorkingHourDay={
-                  <>
-                    {!!workingHours.length &&
-                      workingHours.map((day, i) => {
-                        return (
-                          <>
-                            <WorkingHourDay
-                              slotRcCheckbox={
-                                <div className='flex items-center space-x-2'>
-                                  <Checkbox
-                                    id={`checkbox-${day.day}`}
-                                    checked={day.isWorkDay}
-                                    onCheckedChange={() => {
-                                      setWorkingHours((pre) => {
-                                        const data = [...pre];
-                                        data[i].isWorkDay = !data[i].isWorkDay;
-                                        return data;
-                                      });
-                                    }}
-                                  />
-                                  <Label htmlFor={`checkbox-${day.day}`}>
-                                    {capitalize(day.day)}
-                                  </Label>
-                                </div>
-                              }
-                              slotTimeRageInput={
-                                <TimeRangeInput
-                                  slotStartTimeInput={
-                                    <SelectTime
-                                      value={dayjsLocal()
-                                        .set(
-                                          'hour',
-                                          parseInt(
-                                            day.timeRange.startTime.split(
-                                              ':',
-                                            )[0],
-                                          ),
-                                        )
-                                        .set(
-                                          'minute',
-                                          parseInt(
-                                            day.timeRange.startTime.split(
-                                              ':',
-                                            )[1],
-                                          ),
-                                        )}
-                                      onSelect={selectStartTime}
-                                      i={i}
-                                    />
-                                  }
-                                  slotEndTimeInput={
-                                    <SelectTime
-                                      value={dayjsLocal()
-                                        .set(
-                                          'hour',
-                                          parseInt(
-                                            day.timeRange.endTime.split(':')[0],
-                                          ),
-                                        )
-                                        .set(
-                                          'minute',
-                                          parseInt(
-                                            day.timeRange.endTime.split(':')[1],
-                                          ),
-                                        )}
-                                      onSelect={selectEndTime}
-                                      i={i}
-                                    />
-                                  }
-                                />
-                              }
-                            />
-                          </>
                         );
                       })}
-                  </>
-                }
-                isCompanyDaysOffVisible={false}
-              />
-            </Stack>
-          }
-        />
-      </Drawer>
+                    </RadioGroup>
+                  </Stack>
+                </>
+              }
+              slotWorkingHourDay={
+                <>
+                  {!!workingHours.length &&
+                    workingHours.map((day, i) => {
+                      return (
+                        <>
+                          <WorkingHourDay
+                            slotRcCheckbox={
+                              <div className='flex items-center space-x-2'>
+                                <Checkbox
+                                  id={`checkbox-${day.day}`}
+                                  checked={day.isWorkDay}
+                                  onCheckedChange={() => {
+                                    setWorkingHours((pre) => {
+                                      const data = [...pre];
+                                      data[i].isWorkDay = !data[i].isWorkDay;
+                                      return data;
+                                    });
+                                  }}
+                                />
+                                <Label htmlFor={`checkbox-${day.day}`}>
+                                  {capitalize(day.day)}
+                                </Label>
+                              </div>
+                            }
+                            slotTimeRageInput={
+                              <TimeRangeInput
+                                slotStartTimeInput={
+                                  <SelectTime
+                                    value={dayjsLocal()
+                                      .set(
+                                        'hour',
+                                        parseInt(
+                                          day.timeRange.startTime.split(':')[0],
+                                        ),
+                                      )
+                                      .set(
+                                        'minute',
+                                        parseInt(
+                                          day.timeRange.startTime.split(':')[1],
+                                        ),
+                                      )}
+                                    onSelect={selectStartTime}
+                                    i={i}
+                                  />
+                                }
+                                slotEndTimeInput={
+                                  <SelectTime
+                                    value={dayjsLocal()
+                                      .set(
+                                        'hour',
+                                        parseInt(
+                                          day.timeRange.endTime.split(':')[0],
+                                        ),
+                                      )
+                                      .set(
+                                        'minute',
+                                        parseInt(
+                                          day.timeRange.endTime.split(':')[1],
+                                        ),
+                                      )}
+                                    onSelect={selectEndTime}
+                                    i={i}
+                                  />
+                                }
+                              />
+                            }
+                          />
+                        </>
+                      );
+                    })}
+                </>
+              }
+              isCompanyDaysOffVisible={false}
+            />
+          </Stack>
+        </UIDrawer>
+      </>
     </Stack>
   );
 }

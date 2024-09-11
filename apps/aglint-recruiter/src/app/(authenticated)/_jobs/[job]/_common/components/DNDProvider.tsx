@@ -2,7 +2,7 @@
 import { DragPill } from '@devlink3/DragPill';
 import { Stack } from '@mui/material';
 import { type PropsWithChildren } from 'react';
-import { type XYCoord, DndProvider, useDragLayer } from 'react-dnd';
+import { DndProvider, useDragLayer, type XYCoord } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { useMousePosition } from '@/hooks/useMousePosition';

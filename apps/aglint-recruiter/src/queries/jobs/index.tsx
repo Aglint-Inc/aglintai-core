@@ -11,7 +11,7 @@ import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';
 import { type Job, type JobCreate, type JobInsert } from './types';
 
-export const useJobsRead = (manageJob: boolean = false) => {
+export const useJobsRead = (manageJob = false) => {
   const { recruiter_id } = useAuthDetails();
   const { queryKey } = jobsQueryKeys.jobs();
   return useQuery({

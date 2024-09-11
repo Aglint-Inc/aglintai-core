@@ -1,4 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
+import { Bell } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -8,7 +10,6 @@ import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
-import { Button } from '@components/ui/button';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
@@ -97,13 +98,16 @@ const AvailabilityFlowMenus = ({
         }
       >
         <Button
-          size={'sm'}
+          variant='outline'
+          size='sm'
           onClick={() => {
             setEditTrigger('sendAvailReqReminder');
             setShowEditDialog(true);
           }}
+          className='mb-4'
         >
-          Schedule Reminder
+          <Bell className='mr-2 h-4 w-4' />
+          Add Reminder
         </Button>
       </ShowCode.When>
       <ShowCode.When

@@ -89,7 +89,7 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['manage_workflow'],
-    active: ['/workflows', '/workflows/[id]'],
+    active: ['/workflows', '/workflows/[workflow]'],
   },
   {
     text: 'Integrations',

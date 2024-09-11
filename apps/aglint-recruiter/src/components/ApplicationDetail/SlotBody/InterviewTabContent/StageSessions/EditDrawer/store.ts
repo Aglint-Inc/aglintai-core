@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 
+import type { MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
 import { type StageWithSessions } from '@/queries/application';
-
-import { MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
 
 export interface EditSessionDrawer {
   selectedInterviewers: (MemberTypeAutoComplete & {

@@ -1,22 +1,21 @@
 import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-
+import { Dialog, DialogContent } from '@components/ui/dialog';
+import { Skeleton } from '@components/ui/skeleton';
 import React, { useEffect, useMemo } from 'react';
 
-import MuiPopup from '@/components/Common/MuiPopup';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/components/CompanyDetailComp/Templates/utils';
-import { ACTION_TRIGGER_MAP } from '@/components/Workflow/constants';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
-import { Skeleton } from '@components/ui/skeleton';
 import CandidateCancelled from './CandidateCancelled';
 import InterviewerDecline from './InterviewerDecline';
 import { RequestProgressContext } from './progressCtx';
 import ScheduleProgress from './ScheduleProgress';
 import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
-import { RequestProgressMapType, TriggerActionMapType } from './types';
+import type { RequestProgressMapType, TriggerActionMapType } from './types';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();
@@ -113,27 +112,20 @@ function RequestProgress() {
         </ShowCode>
       </div>
 
-      <MuiPopup
-        props={{
-          open: showEditDialog,
-          maxWidth: 'sm',
-          fullWidth: true,
-          onClose: () => {
-            setShowEditDialog(false);
-          },
-        }}
-      >
-        <SelectedActionsDetailsProvider
-          defaultSelectedActionsDetails={getInitialActionDetails({
-            companyEmailTemplatesMp,
-            editTrigger,
-            reqTriggerActionsMap,
-          })}
-          companyTemplatesMp={companyEmailTemplatesMp}
-        >
-          <WorkflowActionDialog />
-        </SelectedActionsDetailsProvider>
-      </MuiPopup>
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className='p-0'>
+          <SelectedActionsDetailsProvider
+            defaultSelectedActionsDetails={getInitialActionDetails({
+              companyEmailTemplatesMp,
+              editTrigger,
+              reqTriggerActionsMap,
+            })}
+            companyTemplatesMp={companyEmailTemplatesMp}
+          >
+            <WorkflowActionDialog />
+          </SelectedActionsDetailsProvider>
+        </DialogContent>
+      </Dialog>
     </RequestProgressContext.Provider>
   );
 }

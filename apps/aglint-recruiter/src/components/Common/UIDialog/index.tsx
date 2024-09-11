@@ -12,8 +12,11 @@ import { UIButton } from '../UIButton';
 function UIDialog({
   slotButtons,
   title = 'Title',
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClose = () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClickPrimary = () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClickSecondary = () => {},
   children,
   open,

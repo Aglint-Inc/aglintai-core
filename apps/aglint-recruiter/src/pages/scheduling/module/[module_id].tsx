@@ -12,7 +12,7 @@ import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCard } from '@devlink2/MemberListCard';
 import { PageLayout } from '@devlink2/PageLayout';
 import { ShadowSession } from '@devlink2/ShadowSession';
-
+import { StatusBadge } from '@devlink2/StatusBadge';
 import { DarkPill } from '@devlink3/DarkPill';
 import { HistoryPill } from '@devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@devlink3/HistoryTrainingCard';
@@ -40,7 +40,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 import { supabase } from '@/utils/supabase/client';
-import { StatusBadge } from '@devlink2/StatusBadge';
 
 const ModuleMembers = () => {
   return (
@@ -159,7 +158,6 @@ function ModuleMembersComp() {
                         <TrainingDetails
                           id={recruiterUser.user_id}
                           members={members}
-                          module={module}
                           progress={
                             progress?.filter(
                               (item) =>
@@ -204,13 +202,10 @@ function ModuleMembersComp() {
 
 const TrainingDetails = ({
   id,
-  // eslint-disable-next-line no-unused-vars
-  module,
   members,
   progress,
 }: {
   id: string;
-  module: any;
   members: any[];
   progress: any;
 }) => {

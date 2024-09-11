@@ -1,6 +1,3 @@
-import { useState } from 'react';
-import { useRequests } from '@/context/RequestsContext';
-import { type Request } from '@/queries/requests/types';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +5,11 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
+import { useState } from 'react';
+
+import { useRequests } from '@/context/RequestsContext';
+import { type Request } from '@/queries/requests/types';
+
 import MembersPopUps from './MembersPopUps';
 
 type actionType = Request['status'] | 'change_assignee';

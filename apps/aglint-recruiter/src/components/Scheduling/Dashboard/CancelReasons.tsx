@@ -1,5 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { BarChart2 } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -7,8 +9,6 @@ import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCancelRescheduleReasons } from '@/queries/scheduling-dashboard';
 
 import { DoughnutChart } from '../../../app/(authenticated)/_jobs/[job]/metrics/_common/components/doughnut';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 
 const CancelReasons = () => {
   const [reasonType, setReasonType] =

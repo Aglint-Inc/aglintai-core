@@ -3,21 +3,21 @@ import {
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import {
-  type ProgressLoggerType,
   createRequestProgressLogger,
+  type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { ButtonSolid } from '@devlink2/ButtonSolid';
-import { RequestCandidate } from '@devlink2/RequestCandidate';
-import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { Autocomplete, Drawer, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { Card, CardContent } from '@components/ui/card';
+import { Label } from '@components/ui/label';
+import { SelectItem } from '@components/ui/select';
+import { Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
+import { UIButton } from '@/components/Common/UIButton';
+import { UIDatePicker } from '@/components/Common/UIDatePicker';
+import UIDrawer from '@/components/Common/UIDrawer';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   requestDaysListOptions,
   slotsListOptions,
@@ -223,143 +223,183 @@ function CandidateAvailability({
     setReRequestAvailability(false);
     setCandidateAvailabilityIdForReRequest('');
   }
+
   return (
     <>
-      <Drawer
-        anchor={'right'}
+      <UIDrawer
+        title={
+          reRequestAvailability
+            ? 'Re-request Availability'
+            : `Request Availability`
+        }
         open={candidateAvailabilityDrawerOpen}
         onClose={closeDrawer}
+        slotBottom={
+          <>
+            <UIButton
+              variant='outline'
+              onClick={() => {
+                setCandidateAvailabilityDrawerOpen(false);
+              }}
+              className='w-full'
+            >
+              Close
+            </UIButton>
+            <UIButton
+              variant='default'
+              disabled={submitting}
+              onClick={() => {
+                handleSubmit();
+              }}
+              className='w-full'
+            >
+              {submitting && <Loader className='mr-2 h-4 w-4 animate-spin' />}
+              {reRequestAvailability
+                ? 'Re-Request Availability'
+                : 'Send to Candidate'}
+            </UIButton>
+          </>
+        }
       >
-        <SideDrawerLarge
-          isHeaderIconVisible={true}
-          slotHeaderIcon={<ArrowLeft size={20} />}
-          textDrawertitle={
-            reRequestAvailability
-              ? 'Re-request Availability'
-              : `Request Availability`
-          }
-          onClickCancel={{
-            onClick: () => {
-              closeDrawer();
-            },
-          }}
-          slotSideDrawerbody={
-            <RequestCandidate
-              slotStartDateInput={
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label='Basic date picker'
-                    value={selectedDate.start_date}
-                    format='DD MMMM YYYY'
-                    onAccept={(value) => {
-                      setSelectedDate({
-                        start_date: value,
-                        end_date: selectedDate?.end_date,
-                      });
-                    }}
-                    sx={{
-                      width: '100%',
-                    }}
-                  />
-                </LocalizationProvider>
-              }
-              slotEndDateInput={
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    value={selectedDate?.end_date}
-                    label='Basic date picker'
-                    format='DD MMMM YYYY'
-                    onAccept={(value) => {
-                      setSelectedDate({
-                        start_date: selectedDate?.start_date,
-                        end_date: value,
-                      });
-                    }}
-                    sx={{
-                      width: '100%',
-                    }}
-                  />
-                </LocalizationProvider>
-              }
-              slotMinNumberDays={
-                <Autocomplete
-                  fullWidth
-                  disableClearable
-                  disablePortal
-                  value={selectedDays}
-                  options={requestDaysListOptions}
-                  renderOption={(props, option, i) => {
-                    if (i.index + 1 < maxDays)
-                      return <li {...props}>{option.label}</li>;
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} placeholder='Days' />
-                  )}
-                  onChange={(_, value) => {
-                    setSelectedDays(value);
-                  }}
-                  popupIcon={<ArrowUpRight />}
-                />
-              }
-              slotMinNumberSlot={
-                <Autocomplete
-                  fullWidth
-                  disableClearable
-                  disablePortal
-                  value={selectedSlots}
-                  options={slotsListOptions}
-                  renderOption={(props, option) => {
-                    return <li {...props}>{option.label}</li>;
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} placeholder='Days' />
-                  )}
-                  onChange={(_, value) => {
-                    setSelectedSlots(value);
-                  }}
-                  popupIcon={<ArrowUpRight />}
-                />
-              }
-              slotEmailTemplateHolder={
-                <EmailTemplate
-                  application_id={selectedRequest.application_id}
-                />
-              }
+        <RequestCandidate
+          slotStartDateInput={
+            <UIDatePicker
+              closeOnSelect={true}
+              value={new Date(selectedDate.start_date.toISOString())}
+              onAccept={(value: Date) => {
+                setSelectedDate({
+                  start_date: dayjs(value),
+                  end_date: selectedDate?.end_date,
+                });
+              }}
             />
           }
-          slotButtons={
-            <>
-              <ButtonSoft
-                color={'neutral'}
-                size={2}
-                onClickButton={{
-                  onClick: () => {
-                    setCandidateAvailabilityDrawerOpen(false);
-                  },
-                }}
-                textButton={'Close'}
-              />
-              <ButtonSolid
-                size={2}
-                isDisabled={submitting}
-                isLoading={submitting}
-                textButton={
-                  reRequestAvailability
-                    ? 'Re-Request Availability'
-                    : 'Send to Candidate'
+          slotEndDateInput={
+            <UIDatePicker
+              closeOnSelect={true}
+              value={new Date(selectedDate.end_date.toISOString())}
+              onAccept={(value: Date) => {
+                setSelectedDate({
+                  start_date: selectedDate?.start_date,
+                  end_date: dayjs(value),
+                });
+              }}
+            />
+          }
+          slotMinNumberDays={
+            <UISelectDropDown
+              fullWidth
+              value={String(selectedDays.value)}
+              menuOptions={requestDaysListOptions
+                .filter((_, index) => index + 1 < maxDays)
+                .map(({ label, value }) => {
+                  return {
+                    name: label,
+                    value,
+                  };
+                })}
+              placeholder='Days'
+              onValueChange={(value) => {
+                const selectedOption = requestDaysListOptions.find(
+                  (option) => option.value === Number(value),
+                );
+                setSelectedDays(selectedOption);
+              }}
+            >
+              {requestDaysListOptions.map((option, index) => {
+                if (index + 1 < maxDays) {
+                  return (
+                    <SelectItem key={option.value} value={String(option.value)}>
+                      {option.label}
+                    </SelectItem>
+                  );
                 }
-                onClickButton={{
-                  onClick: () => {
-                    handleSubmit();
-                  },
-                }}
-              />
-            </>
+                return null;
+              })}
+            </UISelectDropDown>
+          }
+          slotMinNumberSlot={
+            <UISelectDropDown
+              fullWidth
+              value={String(selectedSlots.value)}
+              menuOptions={slotsListOptions.map(({ label, value }) => ({
+                name: label,
+                value,
+              }))}
+              placeholder='Slots'
+              onValueChange={(value) => {
+                const selectedOption = slotsListOptions.find(
+                  (option) => option.value === Number(value),
+                );
+                setSelectedSlots(selectedOption);
+              }}
+            >
+              {slotsListOptions.map((option) => (
+                <SelectItem key={option.value} value={String(option.value)}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </UISelectDropDown>
+          }
+          slotEmailTemplateHolder={
+            <EmailTemplate application_id={selectedRequest.application_id} />
           }
         />
-      </Drawer>
+      </UIDrawer>
     </>
   );
 }
 
 export default CandidateAvailability;
+
+interface RequestCandidateProps {
+  slotStartDateInput: React.ReactNode;
+  slotEndDateInput: React.ReactNode;
+  slotMinNumberDays: React.ReactNode;
+  slotMinNumberSlot: React.ReactNode;
+  slotEmailTemplateHolder?: React.ReactNode;
+}
+export function RequestCandidate({
+  slotStartDateInput,
+  slotEndDateInput,
+  slotMinNumberDays,
+  slotMinNumberSlot,
+  slotEmailTemplateHolder,
+}: RequestCandidateProps) {
+  return (
+    <div className='flex flex-col h-full space-y-6 p-4'>
+      <Card>
+        <CardContent className='grid grid-cols-2 gap-4 pt-6'>
+          <div className='space-y-1'>
+            <Label htmlFor='start-date'>Start Date</Label>
+            <div id='start-date'>{slotStartDateInput}</div>
+          </div>
+          <div className='space-y-1'>
+            <Label htmlFor='end-date'>End Date</Label>
+            <div id='end-date'>{slotEndDateInput}</div>
+          </div>
+          <div className='space-y-1'>
+            <Label htmlFor='min-days'>
+              Minimum number of days should be selected
+            </Label>
+            <div id='min-days'>{slotMinNumberDays}</div>
+          </div>
+          <div className='space-y-1'>
+            <Label htmlFor='min-slots'>
+              Minimum number of slots selected per each day
+            </Label>
+            <div id='min-slots'>{slotMinNumberSlot}</div>
+          </div>
+        </CardContent>
+      </Card>
+      <div className='space-y-2'>
+        <p>
+          To proceed with requesting the candidate's availability, please click
+          on the button below. Upon doing so, an email containing the following
+          message will be sent to the candidate:
+        </p>
+        <div>{slotEmailTemplateHolder ?? slotEmailTemplateHolder}</div>
+      </div>
+    </div>
+  );
+}

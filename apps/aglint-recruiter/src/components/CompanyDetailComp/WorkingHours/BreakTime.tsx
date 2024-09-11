@@ -9,12 +9,12 @@ import {
 } from '@components/ui/popover';
 import { Coffee, Edit, Loader2 } from 'lucide-react';
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useState,
-  useRef,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
   useEffect,
+  useRef,
+  useState,
 } from 'react';
 
 import TimePicker from '@/components/Common/TimePicker';

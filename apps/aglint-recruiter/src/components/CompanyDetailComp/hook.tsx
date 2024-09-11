@@ -1,7 +1,7 @@
-import { schedulingSettingType } from '@aglint/shared-types';
+import type { schedulingSettingType } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
@@ -53,12 +53,10 @@ export const useCompanyDetailComp = () => {
       )
       .single();
     if (!error) {
-      setRecruiter(
-        {
-          ...updatedRecruiter,
-          socials: updatedRecruiter?.socials,
-        }!,
-      );
+      setRecruiter({
+        ...updatedRecruiter,
+        socials: updatedRecruiter?.socials,
+      });
     }
     setIsSaving('saved');
   }
@@ -92,6 +90,10 @@ export const usePortalSettings = () => {
     'greetings' | 'about' | 'images' | null
   >(null);
 
+  const [isCoverUploading, setIsCoverUploading] = useState<boolean>(false);
+  const [isCoverRemoving, setIsCoverRemoving] = useState<boolean>(false);
+  const [isImageRemoving, setIsImageRemoving] = useState<string>(null);
+  const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const {
     recruiter: { name },
@@ -138,6 +140,7 @@ export const usePortalSettings = () => {
   ) => {
     const newImages = [];
     try {
+      setIsImageUploading(true);
       for (const image of images) {
         const fileName = removeSpaces(`${name}-image-${Date.now()}`);
 
@@ -166,11 +169,14 @@ export const usePortalSettings = () => {
       // console.error('Error uploading images: ', error.message);
       //chandruAddToast
       return null;
+    } finally {
+      setIsImageUploading(false);
     }
   };
 
   const deleteImages = async (imageUrl: string) => {
     try {
+      setIsImageRemoving(imageUrl);
       const path = extractPath(imageUrl);
       if (path.length === 0) throw new Error('wrong image');
 
@@ -191,6 +197,8 @@ export const usePortalSettings = () => {
     } catch (error) {
       //chandruAddToast
       // console.error('Error uploading images: ', error?.message);
+    } finally {
+      setIsImageRemoving(null);
     }
   };
 
@@ -215,6 +223,7 @@ export const usePortalSettings = () => {
 
   const updateCover = async (image: File, oldCover: string) => {
     try {
+      setIsCoverUploading(true);
       const fileName = removeSpaces(`${name}-cover-${Date.now()}`);
 
       await removeCover(oldCover);
@@ -240,11 +249,14 @@ export const usePortalSettings = () => {
       // console.error('Error uploading cover: ', error.message);
       //ChandurAddToast
       return null;
+    } finally {
+      setIsCoverUploading(false);
     }
   };
 
   const removeCover = async (imageUrl: string) => {
     try {
+      setIsCoverRemoving(true);
       const path = extractPath(imageUrl);
       if (path.length === 0) throw new Error('wrong image');
 
@@ -263,6 +275,8 @@ export const usePortalSettings = () => {
     } catch (error) {
       // console.error('Error uploading images: ', error?.message);
       //chandruAddToast
+    } finally {
+      setIsCoverRemoving(false);
     }
   };
 
@@ -277,6 +291,10 @@ export const usePortalSettings = () => {
     updateGreetings,
     setIsDialogOpen,
     isDialogOpen,
+    isCoverUploading,
+    isCoverRemoving,
+    isImageUploading,
+    isImageRemoving,
   };
 };
 

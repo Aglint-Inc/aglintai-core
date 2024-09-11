@@ -8,7 +8,7 @@ import { handleUpdatePassword } from '@/context/AuthContext/utils';
 
 import Icon from '../../Common/Icons/Icon';
 import UITypography from '../../Common/UITypography';
-import { ProfileForms } from '..';
+import { ProfileForms } from '../ProfileForms';
 import {
   type FormValues,
   type PasswordFormFields,

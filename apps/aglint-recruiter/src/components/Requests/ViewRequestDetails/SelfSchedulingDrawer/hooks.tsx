@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import {
-  type ApiBodyParamsSelfSchedule,
+import type {
+  ApiBodyParamsSelfSchedule,
   ApiResponseSelfSchedule,
 } from '@/pages/api/scheduling/application/sendselfschedule';
 import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';

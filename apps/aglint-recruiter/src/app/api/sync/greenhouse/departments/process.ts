@@ -34,7 +34,7 @@ export async function mapSaveDepartments(
 }
 
 // eslint-disable-next-line no-unused-vars
-export async function getGreenhouseDepartments(key: string) {
+export async function getGreenhouseDepartments(_key: string) {
   // const res = await axios.get<GreenhouseDepartmentAPI[]>('', {
   //   auth: {
   //     username: key,

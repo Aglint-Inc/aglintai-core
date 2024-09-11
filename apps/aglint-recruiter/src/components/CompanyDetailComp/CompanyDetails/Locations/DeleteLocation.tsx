@@ -1,11 +1,11 @@
 import { DeletePopup } from '@devlink3/DeletePopup';
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 import MuiPopup from '@/components/Common/MuiPopup';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
-import { DialogState } from '..';
+import type { DialogState } from '../types';
 
 function DeleteLocation({
   dialog,

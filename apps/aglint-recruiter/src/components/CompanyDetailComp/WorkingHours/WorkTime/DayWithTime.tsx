@@ -1,6 +1,6 @@
-import { schedulingSettingType } from '@aglint/shared-types';
+import type { schedulingSettingType } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
-import React, { Dispatch } from 'react';
+import type { Dispatch } from 'react';
 
 import TimePicker from '@/components/Common/TimePicker';
 import { capitalize } from '@/utils/text/textUtils';

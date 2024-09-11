@@ -1,8 +1,8 @@
-import { Application } from '@/types/applications.types';
+import type { Application } from '@/types/applications.types';
 
 export const EMAIL_VISIBILITIES: {
   // eslint-disable-next-line no-unused-vars
-  [id in Application['status']]: Application['status'][];
+  [_id in Application['status']]: Application['status'][];
 } = {
   new: ['disqualified'],
   screening: ['new'],

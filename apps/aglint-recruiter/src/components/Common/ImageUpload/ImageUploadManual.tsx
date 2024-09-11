@@ -34,11 +34,6 @@ function ImageUploadManual({
   function onImageChange(file: File) {
     if (file.size > 5 * 1000000) {
       setLoading(false);
-      // toast({
-      //   variant: 'destructive',
-      //   title: 'Error',
-      //   description: 'File size is too large. Maximum size is 5MB.',
-      // });
       return;
     }
     imageFile.current = file;

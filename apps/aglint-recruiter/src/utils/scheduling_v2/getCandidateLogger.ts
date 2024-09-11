@@ -23,23 +23,23 @@ export const getCandidateLogger = (
   default_created: 'candidate' | 'phone_agent' | 'email_agent',
 ) => {
   const logger: LoggerType = async (_log_msg, title_attr, created) => {
-    let created_by = null;
+    let _created_by = null;
     if (!created) {
       created = default_created;
     }
     if (created === 'candidate') {
-      created_by = {
+      _created_by = {
         id: candidate_id,
         name: 'Candidate',
       };
     } else if (created === 'phone_agent') {
-      created_by = {
+      _created_by = {
         id: PhoneAgentId,
         name: 'Phone Agent',
       };
     } else if (created === 'email_agent') {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      created_by = {
+      _created_by = {
         id: EmailAgentId,
         name: 'Email Agent',
       };

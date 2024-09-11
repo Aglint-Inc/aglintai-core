@@ -132,13 +132,15 @@ function FinalScreen() {
                       date_range: [date],
                       plans: item.selected_dates[0].plans,
                     }}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onClickSelect={() => {}}
                     isDayCollapseNeeded={false}
                     isSlotCollapseNeeded={false}
+                    index={index}
                     isRadioNeeded={false}
                     isDayCheckboxNeeded={false}
                     isSlotCheckboxNeeded={false}
-                    index={index}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
                     setSelectedCombIds={() => {}}
                   />
                 );

@@ -2,7 +2,6 @@ import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
-
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -10,8 +9,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import dayjs from '@/utils/dayjs';
 
-import { useRequestNotes } from '../../_common/hooks';
 import { updateRequestNotes } from '../../_common/functions/updateRequestNotes';
+import { useRequestNotes } from '../../_common/hooks';
 
 function RequestNotes() {
   const { query } = useRouter();

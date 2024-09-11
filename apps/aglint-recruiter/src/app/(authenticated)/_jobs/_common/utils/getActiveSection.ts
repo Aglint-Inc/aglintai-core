@@ -1,5 +1,5 @@
-import { ApplicationStore } from '@/context/ApplicationContext/store';
-import { Job } from '@/queries/jobs/types';
+import type { ApplicationStore } from '@/context/ApplicationContext/store';
+import type { Job } from '@/queries/jobs/types';
 
 export const getActiveSection = ({
   isAssessmentEnabled,
@@ -14,7 +14,7 @@ export const getActiveSection = ({
   isScoringEnabled: boolean;
   job: Pick<Job, 'phone_screen_enabled' | 'assessment'>;
   // eslint-disable-next-line no-unused-vars
-}): { [id in ApplicationStore['tab']]: boolean } => ({
+}): { [_id in ApplicationStore['tab']]: boolean } => ({
   Resume: true,
   Details: isScoringEnabled,
   Screening: !!job?.phone_screen_enabled && isScreeningEnabled,

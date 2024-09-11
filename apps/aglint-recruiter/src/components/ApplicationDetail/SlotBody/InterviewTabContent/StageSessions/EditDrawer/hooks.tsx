@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 
 import {
   type EditInterviewSession,
-  type UpdateDebriefSession,
   editInterviewSession,
+  type UpdateDebriefSession,
   updateDebriefSession,
 } from '@/queries/interview-plans';
 import toast from '@/utils/toast';

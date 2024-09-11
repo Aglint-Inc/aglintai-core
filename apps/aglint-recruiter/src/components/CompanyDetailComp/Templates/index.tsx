@@ -2,8 +2,20 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import { Button } from '@components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
+import { Input } from '@components/ui/input';
+import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
 import { debounce } from 'lodash';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -22,18 +34,6 @@ import {
   tempFilterOptions,
   template_tabs,
 } from './utils';
-import { Button } from '@components/ui/button';
-import { Input } from '@components/ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@components/ui/dropdown-menu';
-import { Skeleton } from '@components/ui/skeleton';
-import Link from 'next/link';
 
 function SchedulerEmailTemps({ setSaving }) {
   const { recruiter_id } = useAuthDetails();

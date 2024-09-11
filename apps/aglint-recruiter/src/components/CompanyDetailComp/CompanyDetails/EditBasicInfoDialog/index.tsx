@@ -9,18 +9,25 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
+import _ from 'lodash';
 import { AlertCircle, Upload } from 'lucide-react';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 
-import ImageUpload from '@/components/Common/ImageUpload';
+import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+// import ImageUpload from '@/components/Common/ImageUpload';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
-import _ from 'lodash';
 
 const employeeSizes = [
   '1-10',
@@ -40,13 +47,15 @@ const EditBasicInfoDialog = ({
   editDialog: boolean;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [logo, setLogo] = useState<string>();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter, setRecruiter, recruiterUser } = useAuthDetails();
   const [isError, setError] = useState(false);
   const [IsLoading, setIsLoading] = useState(false);
+  const [logo, setLogo] = useState(null);
   const [nameError, setNameError] = useState(false);
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
+  const imageFile = useRef(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
 
   const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
     recruiter,
@@ -65,6 +74,7 @@ const EditBasicInfoDialog = ({
     //reset a form
     setTimeout(() => {
       setLogo(recruiter?.logo);
+      setIsImageChanged(false);
       setRecruiterLocal(() => recruiter);
     }, 800);
   };
@@ -85,6 +95,26 @@ const EditBasicInfoDialog = ({
 
     try {
       setIsLoading(true);
+
+      let logo = recruiter.logo;
+
+      if (isImageChanged) {
+        const { data } = await supabase.storage
+          .from('recruiter-user')
+          .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+
+        if (data?.path && imageFile?.current?.size) {
+          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+          setError(false);
+        } else {
+          logo = null;
+        }
+        setIsImageChanged(false);
+      }
+
       const { error } = await supabase
         .from('recruiter')
         .update({
@@ -92,6 +122,7 @@ const EditBasicInfoDialog = ({
           name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
           departments: undefined,
           office_locations: undefined,
+          logo: logo,
         })
         .eq('id', recruiter.id)
         .select()
@@ -100,6 +131,7 @@ const EditBasicInfoDialog = ({
       if (!error) {
         setRecruiter({
           ...recruiterLocal,
+          logo: logo,
           name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
         });
         setEditDialog(false);
@@ -121,7 +153,6 @@ const EditBasicInfoDialog = ({
     ];
 
     for (const property of propertiesToCompare) {
-      if (logo !== recruiter.logo) return false;
       if (!_.isEqual(recruiter['socials'], recruiterLocal['socials']))
         return false;
       if (property === 'socials') continue;
@@ -132,10 +163,13 @@ const EditBasicInfoDialog = ({
     return true;
   }
 
-  const isSame = compareObjects(recruiter, recruiterLocal);
+  const isSame = compareObjects(recruiter, recruiterLocal) && !isImageChanged;
 
   return (
-    <Dialog open={editDialog} onOpenChange={setEditDialog}>
+    <Dialog
+      open={editDialog}
+      onOpenChange={editDialog ? handleClose : setEditDialog}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Basic Info</DialogTitle>
@@ -155,22 +189,12 @@ const EditBasicInfoDialog = ({
 
             <div className='flex items-center space-x-4 '>
               <div className='border border-gray-200 p-4 rounded-md'>
-                <ImageUpload
+                <ImageUploadManual
                   image={logo}
-                  disabled={isFormDisabled}
-                  setImage={(newLogo) => {
-                    setLogo(newLogo);
-                    if (recruiterLocal) {
-                      handleChange({
-                        ...recruiterLocal,
-                        logo: newLogo,
-                      });
-                    }
-                  }}
-                  size={48}
-                  table='company-logo'
-                  error={(e) => {
-                    setError(!!e);
+                  size={10}
+                  imageFile={imageFile}
+                  setChanges={() => {
+                    setIsImageChanged(true);
                   }}
                 />
               </div>

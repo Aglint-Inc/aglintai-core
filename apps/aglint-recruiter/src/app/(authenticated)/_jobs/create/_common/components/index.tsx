@@ -16,7 +16,7 @@ import Loader from '@/components/Common/Loader';
 import { WarningSvg } from '@/components/Common/warningSvg';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobs } from '@/jobs/hooks';
-import { Form } from '@/jobs/types';
+import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import ROUTES from '@/utils/routing/routes';
 

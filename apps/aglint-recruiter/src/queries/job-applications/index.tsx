@@ -17,7 +17,7 @@ import {
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { type Application } from '@/types/applications.types';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
@@ -239,7 +239,7 @@ const getApplications = async ({
 
 export const BADGE_CONSTANTS: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsParams['filters']['badges'][number]]: number;
+  [_id in ApplicationsParams['filters']['badges'][number]]: number;
 } = {
   careerGrowth: 89,
   jobStability: 89,
@@ -305,7 +305,7 @@ export const updateApplication = async ({
 
 const sampleApplicationView: {
   // eslint-disable-next-line no-unused-vars
-  [key in keyof Partial<DatabaseTable['applications']>]: keyof Application;
+  [_key in keyof Partial<DatabaseTable['applications']>]: keyof Application;
 } = {
   applied_at: 'applied_at',
   bookmarked: 'bookmarked',

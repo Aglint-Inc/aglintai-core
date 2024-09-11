@@ -18,7 +18,6 @@ const Info = () => {
     <CandidateName
       isLinedin={false}
       isResume={!!data?.file_url}
-      onClickLinkedin={{ onClick: () => {} }}
       onClickResume={{ onClick: () => setPreview(true) }}
       textName={capitalizeAll(data?.name ?? '---')}
     />
@@ -89,7 +88,4 @@ const TopBar = (props: PropsWithChildren) => {
   );
 };
 
-TopBar.Info = Info;
-TopBar.Actions = Actions;
-
-export { TopBar };
+export { Info, TopBar };

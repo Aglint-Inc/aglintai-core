@@ -7,7 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from '@trpc/server';
-import { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
+import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import superjson from 'superjson';

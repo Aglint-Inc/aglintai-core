@@ -7,6 +7,7 @@ import FilterHeader from '@/components/Common/FilterHeader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
+
 import {
   setCompletedFilters,
   useCompletedRequestsStore,

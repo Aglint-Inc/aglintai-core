@@ -1,4 +1,4 @@
-import { type RequestResponse } from '@/queries/requests/types';
+import type { RequestResponse } from '@/queries/requests/types';
 
 export type barChartDataType = {
   name: string;
@@ -30,5 +30,5 @@ export type responseCreatedCompletedType = {
 
 export type SectionRequests = {
   // eslint-disable-next-line no-unused-vars
-  [id in keyof RequestResponse | 'standard_request']: number;
+  [_id in keyof RequestResponse | 'standard_request']: number;
 };

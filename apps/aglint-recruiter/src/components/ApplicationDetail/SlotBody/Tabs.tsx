@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { UITab, UITabWrapper } from '@/components/Common/UITab';
 import { useApplication } from '@/context/ApplicationContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
-import { UITab, UITabWrapper } from '@/components/Common/UITab';
 
 export type TabsType =
   | 'interview'

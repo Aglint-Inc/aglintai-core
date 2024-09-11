@@ -1,11 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { type DB } from '@aglint/shared-types';
-import {
-  type CookieOptions,
-  createServerClient,
-  serialize,
-} from '@supabase/ssr';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
@@ -15,6 +9,7 @@ import {
 } from '@/components/Scheduling/ScheduleDetails/utils';
 import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { createClient } from '@/utils/supabase/server';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
@@ -30,23 +25,7 @@ export type ApiResponseCancelSchedule = 'cancelled';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createServerClient<DB>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return req.cookies[name];
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, value, options));
-          },
-          remove(name: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, '', options));
-          },
-        },
-      },
-    );
+    const supabase = createClient();
 
     const {
       meeting_id,

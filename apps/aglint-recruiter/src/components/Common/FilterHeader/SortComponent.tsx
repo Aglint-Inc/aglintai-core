@@ -1,10 +1,10 @@
-import { Text } from '@devlink/Text';
 import { Button } from '@components/ui/button';
+import { Text } from '@devlink/Text';
 import { MenuItem, Popover, Select, Stack } from '@mui/material';
+import { ChevronDownIcon } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import { ChevronDownIcon } from 'lucide-react';
 
 export type sortComponentType = {
   sortOptions: {

@@ -7,13 +7,13 @@ import { Input } from '@components/ui/input';
 // import relativeTime from 'dayjs/plugin/relativeTime';
 import { AtsSettings } from '@devlink/AtsSettings';
 import dayjs from 'dayjs';
+import { Loader2 } from 'lucide-react';
 import React from 'react';
 
 import { type GreenHouseFullSyncAPI } from '@/api/sync/greenhouse/full_sync/type';
 import axios from '@/client/axios';
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
-import { Loader2 } from 'lucide-react';
 
 function GreenhouseSettings() {
   const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
@@ -73,6 +73,7 @@ function GreenhouseSettings() {
           slotFrequencySync={
             <AutoCompletePro
               value={'24 hours'}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
               onChange={() => {}}
               options={[
                 '6 Hours',

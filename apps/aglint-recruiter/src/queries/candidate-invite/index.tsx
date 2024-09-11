@@ -7,7 +7,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useInviteParams } from '@/context/CandidateInviteContext/hooks';
+import { useInviteParams } from '@/context/CandidateInviteContext/useInviteParams';
 import {
   type ApiResponseAllSlots,
   type ApiResponseCandidateInvite,
@@ -41,8 +41,7 @@ export const useInviteSlots = (params: InviteSlotsParams) => {
 export const useConfirmSlots = () => {
   const queryClient = useQueryClient();
   // eslint-disable-next-line no-unused-vars
-  const { enabled, ...params } = useInviteParams();
-  // meta.data.filter_json.selected_options
+  const { enabled: _, ...params } = useInviteParams();
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
     mutationFn: async ({

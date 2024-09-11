@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
+import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-
 import { Stack } from '@mui/material';
 import { Lightbulb } from 'lucide-react';
 
@@ -9,7 +9,6 @@ import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
 import { EmptyDetailState } from './Common/EmptyDetailState';
-import { Skeleton } from '@components/ui/skeleton';
 
 const Skills = () => {
   return (

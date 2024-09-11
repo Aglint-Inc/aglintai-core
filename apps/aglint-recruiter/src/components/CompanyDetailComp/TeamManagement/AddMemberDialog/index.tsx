@@ -4,11 +4,13 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
+import { Button } from '@components/ui/button';
 import { InviteTeamCard } from '@devlink/InviteTeamCard';
 import { TeamInvite } from '@devlink/TeamInvite';
 import { TeamInvitesBlock } from '@devlink/TeamInvitesBlock';
 import { TeamPendingInvites } from '@devlink/TeamPendingInvites';
 import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import { Loader2 } from 'lucide-react';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -21,11 +23,9 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import timeZone from '@/utils/timeZone';
-import { useRolesOptions } from '../hooks';
 
+import { useRolesOptions } from '../hooks';
 import { inviteUserApi, reinviteUser } from '../utils';
-import { Button } from '@components/ui/button';
-import { Loader2 } from 'lucide-react';
 
 const AddMember = ({
   open,
@@ -626,8 +626,8 @@ const AddMember = ({
               }}
             />
             {isDisable && (
-              <div className="flex justify-center items-center">
-                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <div className='flex justify-center items-center'>
+                <Loader2 className='w-6 h-6 animate-spin text-primary' />
               </div>
             )}
           </>

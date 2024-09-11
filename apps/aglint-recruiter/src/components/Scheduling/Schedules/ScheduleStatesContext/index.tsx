@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-  type RecruiterUserType,
-} from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -13,19 +11,11 @@ import {
   type SchedulesSupabase,
   schedulesSupabase,
 } from '../../schedules-query';
-import { ScheduleFilerType, initialFilterState } from './constant';
+import { initialFilterState, type ScheduleFilerType } from './constant';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
-export type interviewDateRangeType =
-  | 'today'
-  | 'tomorrow'
-  | 'last_7_days'
-  | 'last_30_days'
-  | 'next_7_days'
-  | 'next_30_days'
-  | 'date_range';
 
 interface ContextValue {
   filteredSchedules: SchedulesSupabase | null;
@@ -42,11 +32,15 @@ interface ContextValue {
 
 const defaultProvider: ContextValue = {
   filteredSchedules: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setFilteredSchedule: () => {},
   loadingSchedules: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setLoadingSchedules: () => {},
   filterState: initialFilterState,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setFilterState: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateFilterState: () => {},
 };
 const ScheduleStatesContext = createContext<ContextValue>(defaultProvider);

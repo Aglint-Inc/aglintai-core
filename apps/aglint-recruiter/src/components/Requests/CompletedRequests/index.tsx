@@ -1,8 +1,10 @@
-import { RequestProvider } from '@/context/RequestContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
-import { Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,22 +13,22 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Button } from '@components/ui/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { RequestProvider } from '@/context/RequestContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import type { Request } from '@/queries/requests/types';
+import dayjs from '@/utils/dayjs';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestHistoryFilter from '../_common/Components/RequestHistoryFilter';
 import { useCompletedRequestsStore } from '../_common/Context/store';
 import { useCompletedRequests } from '../_common/hooks';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@components/ui/accordion';
-import { Button } from '@components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import { AlertCircle } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
-import { Loader2 } from 'lucide-react';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();

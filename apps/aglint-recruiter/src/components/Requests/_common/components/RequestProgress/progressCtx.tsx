@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { createContext, useContext } from 'react';
 
-import { RequestProgressMapType, TriggerActionMapType } from './types';
+import type { RequestProgressMapType, TriggerActionMapType } from './types';
 
 // Define the types for the context values
 export interface RequestProgressContextType {

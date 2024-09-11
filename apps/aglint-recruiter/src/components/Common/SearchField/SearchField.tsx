@@ -1,6 +1,7 @@
 import { Button } from '@components/ui/button';
 import { Search, X } from 'lucide-react';
-import React, { ChangeEvent } from 'react';
+import React, { type ChangeEvent } from 'react';
+
 import UITextField from '../UITextField';
 
 interface SearchFieldProps {

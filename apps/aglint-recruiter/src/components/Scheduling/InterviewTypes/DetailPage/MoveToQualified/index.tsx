@@ -1,11 +1,11 @@
 import { useToast } from '@components/hooks/use-toast';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { setIsMovedToQualifiedDialogOpen, useModulesStore } from '../../store';
 
 function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {

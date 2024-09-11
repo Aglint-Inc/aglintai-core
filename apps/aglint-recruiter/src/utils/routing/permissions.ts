@@ -8,7 +8,7 @@ export type PermissionEnums = DatabaseTable['permissions']['name'];
 
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
-  [id in (typeof PATHS)[number]]: PermissionEnums[];
+  [_id in (typeof PATHS)[number]]: PermissionEnums[];
 };
 
 const DEFAULT: Permissions = Object.assign(
@@ -43,8 +43,7 @@ const PERMISSIONS: Permissions = {
   '/workflows': ['workflow_module'],
   '/api/get_member': ['authorized'],
   '/api/get_users_by_ids': ['authorized'],
-  '/workflows/[id]': ['workflow_module'],
-  '/workflows/real-time-crons': ['workflow_module'],
+  '/workflows/[workflow]': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
   '/scheduling/interviewer': ['manage_interviewers'],
@@ -54,7 +53,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
   '/requests/[id]': ['job_module'],
-  '/requests/history':['job_module'],
+  '/requests/history': ['job_module'],
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],

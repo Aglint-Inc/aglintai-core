@@ -6,7 +6,7 @@
  *
  */
 import type { DatabaseView } from '@aglint/shared-types';
-import { type PropsWithChildren, createContext, memo, useState } from 'react';
+import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 type Filters = {

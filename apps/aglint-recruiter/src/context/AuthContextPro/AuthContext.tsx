@@ -1,7 +1,7 @@
 import { type AuthChangeEvent, type Session } from '@supabase/supabase-js';
 import {
-  type ReactNode,
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useState,

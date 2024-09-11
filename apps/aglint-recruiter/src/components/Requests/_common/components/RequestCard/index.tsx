@@ -1,25 +1,26 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import type { Request as RequestType } from '@/queries/requests/types';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
-import { cn } from '@lib/utils';
-import { Bot, Calendar, UserCircle, User, StickyNote } from 'lucide-react';
-import Link from 'next/link';
-import { getStatusColor } from '../../utils/getStatusColor';
-import MenuOptions from './MenuOptions';
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@components/ui/button';
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { cn } from '@lib/utils';
+import { Bot, Calendar, StickyNote, User, UserCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import type { Request as RequestType } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
+import { getStatusColor } from '../../utils/getStatusColor';
+import MenuOptions from './MenuOptions';
 
 type RequestProps = RequestType & {
   isExpanded?: boolean;
@@ -33,6 +34,11 @@ export const RequestCard = ({ ...props }: RequestProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const isCompactList = mode === 'compact-list';
+  const isColumnView = mode === 'column-view';
+
+  if (isColumnView) {
+    return <ColumnViewRequestCard {...props} />;
+  }
 
   return (
     <Card
@@ -133,9 +139,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
           </div>
         </Link>
       </div>
-      {(mode === 'expanded' ||
-        mode === 'column-view' ||
-        (isCompactList && isExpanded)) && (
+      {(mode === 'expanded' || (isCompactList && isExpanded)) && (
         <CardContent
           className={cn(
             'p-4 space-y-4',
@@ -145,11 +149,8 @@ export const RequestCard = ({ ...props }: RequestProps) => {
           <div
             className={cn(
               'grid gap-2',
-              mode === 'column-view' && 'grid-cols-1',
               mode === 'compact-list' && 'grid-cols-3',
-              mode !== 'column-view' &&
-                mode !== 'compact-list' &&
-                'grid-cols-[70%_30%]',
+              mode !== 'compact-list' && 'grid-cols-[70%_30%]',
             )}
           >
             <div className='space-y-3'>
@@ -163,7 +164,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                         <span key={index}>
                           <Link
                             href={`/application/${request.application_id}/sessions/${ele.interview_session.id}`}
-                            className='text-blue-600 hover:underline'
+                            className='hover:underline'
                           >
                             {ele.interview_session.name}
                           </Link>
@@ -188,7 +189,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                   <>
                     <Link
                       href={`/candidate/${request.applications.candidates.id}`}
-                      className='text-blue-600 hover:underline'
+                      className='hover:underline'
                     >
                       {getFullName(
                         request.applications.candidates.first_name,
@@ -198,7 +199,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                     {' for '}
                     <Link
                       href={`/job/${request.applications.public_jobs.id}`}
-                      className='text-blue-600 hover:underline'
+                      className='hover:underline'
                     >
                       {request.applications.public_jobs.job_title}
                     </Link>
@@ -207,15 +208,15 @@ export const RequestCard = ({ ...props }: RequestProps) => {
               />
             </div>
 
-            <div className='space-y-3'>
+            <div className='space-y-3 flex flex-col items-end'>
               <InfoItem
-                icon={<UserCircle className='w-4 h-4' />}
-                label='Created'
+                icon={<></>}
+                label='Created by'
                 value={
                   <>
                     <p>
-                      <div>
-                        by{' '}
+                      <div className='flex items-center space-x-2'>
+                        {<UserCircle className='w-4 h-4' />}
                         <Link
                           href={`/user/profile/${request.assigner_id}`}
                           target='_blank'
@@ -254,27 +255,64 @@ export const RequestCard = ({ ...props }: RequestProps) => {
               </div>
             </div>
           </div>
-
-          {/* {props?.request_note[0]?.note && (
-            <div
-              className={cn(
-                'text-xs text-gray-600 flex items-start mt-2',
-                isCompactList && 'text-xs',
-              )}
-            >
-              <Notebook
-                className={cn(
-                  'w-3 h-3 mr-2 mt-0.5 flex-shrink-0',
-                  isCompactList && 'w-3 h-3',
-                )}
-              />
-              <p className='break-words whitespace-normal line-clamp-2'>
-                {props.request_note[0].note}
-              </p>
-            </div>
-          )} */}
         </CardContent>
       )}
+    </Card>
+  );
+};
+
+const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
+  return (
+    <Card className='w-full p-2 cursor-pointer transition-shadow duration-300 group'>
+      <Link href={`/requests/${props.id}`} passHref>
+        <div className='space-y-2'>
+          <div className='flex items-center justify-between'>
+            <Label className='text-xs font-semibold line-clamp-1'>
+              {props.title}
+            </Label>
+            <MenuOptions request_id={props.id} />
+          </div>
+          <div className='flex flex-wrap gap-1'>
+            <Badge
+              variant='secondary'
+              className={cn('capitalize text-xs px-1 py-0.5', {
+                'bg-purple-100/50 text-purple-800/90 border-purple-300':
+                  props.type === 'schedule_request',
+                'bg-orange-100/50 text-orange-800/90 border-orange-300':
+                  props.type === 'cancel_schedule_request',
+                'bg-pink-100/50 text-pink-800/90 border-pink-300':
+                  props.type === 'decline_request',
+                'bg-indigo-100/50 text-indigo-800/90 border-indigo-300':
+                  props.type === 'reschedule_request',
+              })}
+            >
+              {capitalizeFirstLetter(props.type)}
+            </Badge>
+            <Badge
+              variant='outline'
+              className={cn(
+                'capitalize text-xs px-1 py-0.5',
+                getStatusColor({ status: props.status }),
+              )}
+            >
+              {capitalizeFirstLetter(props.status)}
+            </Badge>
+          </div>
+          <div className='text-xs'>
+            <div className='flex items-center'>
+              <Calendar className='w-3 h-3 mr-1' />
+              {dayjsLocal(props.schedule_start_date).format('MMM D, YYYY')}
+            </div>
+            <div className='flex items-center mt-1'>
+              <User className='w-3 h-3 mr-1' />
+              {getFullName(
+                props.applications.candidates.first_name,
+                props.applications.candidates.last_name,
+              )}
+            </div>
+          </div>
+        </div>
+      </Link>
     </Card>
   );
 };

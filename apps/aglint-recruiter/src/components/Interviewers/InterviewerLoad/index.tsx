@@ -1,8 +1,10 @@
 import { getFullName } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { InterviewerWorkload } from '@devlink3/InterviewerWorkload';
 import { InterviewWorkloadList } from '@devlink3/InterviewWorkloadList';
 import { Avatar, Stack } from '@mui/material';
+import { RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -18,8 +20,6 @@ import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/
 import { Filter } from '../components/Filter';
 import { useAllInterviewer } from '../Hook';
 import LineGraph from './LineGraph';
-import { Button } from '@components/ui/button';
-import { RotateCcw } from 'lucide-react';
 
 function InterviewerLoad() {
   const { data: departments } = useAllDepartments();

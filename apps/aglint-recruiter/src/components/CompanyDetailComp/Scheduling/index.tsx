@@ -9,13 +9,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
-
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import timeZone from '@/utils/timeZone';
-
-import { LoadMax } from '../Holidays';
-import DebriefDefaults from './DebriefDefaults';
-import InterviewLimitInput from './InterviewLoad';
 import {
   Card,
   CardContent,
@@ -23,6 +16,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import timeZone from '@/utils/timeZone';
+
+import { LoadMax } from '../Holidays';
+import DebriefDefaults from './DebriefDefaults';
+import InterviewLimitInput from './InterviewLoad';
 import KeywordSection from './KeywordSection';
 
 let schedulingSettingObj = {};
@@ -93,19 +93,16 @@ function SchedulingSettings({ updateSettings }) {
             : value,
     }));
   };
-  const handleDailyType = (type: 'Hours' | 'Interviews') => {
+  const handleType = (type: 'Hours' | 'Interviews') => {
     setDailyLimit((pre) => ({
       ...pre,
       type,
     }));
-    handleDailyValue(dailyLmit.value);
-  };
-
-  const handleWeeklyType = (type: 'Hours' | 'Interviews') => {
     setWeeklyLimit((pre) => ({
       ...pre,
       type,
     }));
+    handleDailyValue(dailyLmit.value);
     handleWeeklyValue(weeklyLmit.value);
   };
 
@@ -236,14 +233,14 @@ function SchedulingSettings({ updateSettings }) {
                 max={dailyLmit.max}
                 type={dailyLmit.type}
                 onValueChange={handleDailyValue}
-                onTypeChange={handleDailyType}
+                onTypeChange={handleType}
               />
               <InterviewLimitInput
                 value={weeklyLmit.value}
                 max={weeklyLmit.max}
                 type={weeklyLmit.type}
                 onValueChange={handleWeeklyValue}
-                onTypeChange={handleWeeklyType}
+                onTypeChange={handleType}
               />
             </div>
           </CardContent>

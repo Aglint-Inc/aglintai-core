@@ -162,4 +162,4 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
         ).data,
     ),
   // eslint-disable-next-line no-unused-vars
-} satisfies { [id in SchedulingAnalyticsFunctions]: any });
+} satisfies { [_id in SchedulingAnalyticsFunctions]: any });

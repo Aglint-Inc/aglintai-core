@@ -1,10 +1,8 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { DcPopup } from '@devlink/DcPopup';
 import { Text } from '@devlink/Text';
-import { Dialog } from '@mui/material';
 import React from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
@@ -48,56 +46,46 @@ function ResumeDialog() {
   };
 
   return (
-    <Dialog
-      open={isResumeDialogOpen}
-      onClose={() => {
-        setIsPauseDialogOpen(false);
-      }}
-    >
-      <DcPopup
-        popupName={'Resume Member'}
-        onClickClosePopup={{
-          onClick: () => {
-            setIsResumeDialogOpen(false);
-          },
+    <>
+      <UIDialog
+        title='Resume Member'
+        open={isResumeDialogOpen}
+        onClose={() => {
+          if (!isSaving) setIsResumeDialogOpen(false);
         }}
-        slotBody={
-          <Text
-            color={'neutral'}
-            content={`This member is currently paused from scheduling for this interview until  ${selRelation?.pause_json?.isManual ? 'you resume' : dayjs(selRelation?.pause_json?.end_date).format('MMMM DD YYYY')}`}
-          />
-        }
         slotButtons={
           <>
-            <ButtonSoft
-              size={2}
-              color={'neutral'}
-              textButton={'Cancel'}
-              onClickButton={{
-                onClick: () => {
-                  setIsResumeDialogOpen(false);
-                },
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => {
+                if (!isSaving) setIsResumeDialogOpen(false);
               }}
-            />
-            <ButtonSolid
-              size={2}
-              color={'accent'}
-              textButton={'Resume'}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              size='sm'
               isLoading={isSaving}
-              onClickButton={{
-                onClick: async () => {
-                  if (!isSaving) {
-                    setIsSaving(true);
-                    await resume();
-                    setIsResumeDialogOpen(false);
-                  }
-                },
+              onClick={async () => {
+                if (!isSaving) {
+                  setIsSaving(true);
+                  await resume();
+                  setIsResumeDialogOpen(false);
+                }
               }}
-            />
+            >
+              Resume
+            </UIButton>
           </>
         }
-      />
-    </Dialog>
+      >
+        <Text
+          color={'neutral'}
+          content={`This member is currently paused from scheduling for this interview until  ${selRelation?.pause_json?.isManual ? 'you resume' : dayjs(selRelation?.pause_json?.end_date).format('MMMM DD YYYY')}`}
+        />
+      </UIDialog>
+    </>
   );
 }
 

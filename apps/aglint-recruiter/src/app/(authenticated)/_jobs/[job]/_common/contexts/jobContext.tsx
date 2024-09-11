@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import {
   createContext,
   memo,
-  PropsWithChildren,
+  type PropsWithChildren,
   useEffect,
   useMemo,
   useRef,
@@ -19,7 +19,7 @@ import {
   validateJd,
 } from '@/job/utils';
 import { useJobs } from '@/jobs/hooks';
-import { Job } from '@/jobs/types';
+import type { Job } from '@/jobs/types';
 import { jobQueries, useInvalidateJobQueries, useJobSync } from '@/queries/job';
 import {
   useUploadApplication,
@@ -182,17 +182,17 @@ const useJobContext = () => {
     if (publishStatus.publishable) {
       const {
         // eslint-disable-next-line no-unused-vars
-        processing_count,
+        processing_count: _processing_count,
         // eslint-disable-next-line no-unused-vars
-        section_count,
+        section_count: _section_count,
         // eslint-disable-next-line no-unused-vars
-        flags,
+        flags: _flags,
         // eslint-disable-next-line no-unused-vars
-        application_match,
+        application_match: _application_match,
         // eslint-disable-next-line no-unused-vars
-        department,
+        department: _department,
         // eslint-disable-next-line no-unused-vars
-        location,
+        location: _location,
         ...safeJob
       } = job;
       await handleJobAsyncUpdate({

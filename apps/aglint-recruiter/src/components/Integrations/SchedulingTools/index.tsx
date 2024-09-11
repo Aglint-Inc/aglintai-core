@@ -2,17 +2,19 @@ import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Toggle } from '@components/ui/toggle';
 import axios from 'axios';
+import { Loader2, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { Loader2, Upload } from 'lucide-react';
+
 import { ShowCode } from '@/components/Common/ShowCode';
-import SchedulingPopUps from '../SchedulingToolPopUps';
-import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
-import { updateIntegrations } from '../utils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+
 // import GoogleLogo from '@public/images/svg/google-logo.svg';
 // import ZoomLogo from '@public/images/svg/zoom-logo.svg';
 import { IntegrationCard } from '../components/IntegrationCard';
+import SchedulingPopUps from '../SchedulingToolPopUps';
+import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
+import { updateIntegrations } from '../utils';
 
 function Scheduling({ allIntegrations }) {
   const { recruiter } = useAuthDetails();

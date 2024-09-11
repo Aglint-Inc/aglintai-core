@@ -1,16 +1,4 @@
-import { useMemberList } from '@/components/Requests/ViewRequestDetails/Components/MemberList';
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
-import { useRequests } from '@/context/RequestsContext';
-import { type Request } from '@/queries/requests/types';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
 import { getFullName } from '@aglint/shared-utils';
-import { Input } from '@components/ui/input';
-import { Skeleton } from '@components/ui/skeleton';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AssignedToList } from '@devlink2/AssignedToList';
-import { useEffect, useState } from 'react';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
@@ -20,6 +8,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Skeleton } from '@components/ui/skeleton';
+import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { AssignedToList } from '@devlink2/AssignedToList';
+import { useEffect, useState } from 'react';
+
+import { useMemberList } from '@/components/Requests/ViewRequestDetails/Components/MemberList';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
+import { useRequests } from '@/context/RequestsContext';
+import { type Request } from '@/queries/requests/types';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 function MembersPopUps({
   setOpenAssigneePopup,

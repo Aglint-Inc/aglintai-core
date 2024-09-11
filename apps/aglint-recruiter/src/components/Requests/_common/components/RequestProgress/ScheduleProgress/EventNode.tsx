@@ -1,22 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { ScheduleProgress } from '@devlink2/ScheduleProgress';
-
+import { Button } from '@components/ui/button';
+import { Label } from '@components/ui/label';
+import { Edit, Loader, RefreshCw, Trash } from 'lucide-react';
 import React from 'react';
 
 import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
-import { deleteRequestWorkflowAction } from '../utils';
 import { useRequestProgressProvider } from '../progressCtx';
+import ScheduleProgressTracker from '../ScheduleProgressTracker';
 import { type ProgressTenseType, type RequestProgressMapType } from '../types';
+import { deleteRequestWorkflowAction } from '../utils';
 import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
-import { Label } from '@components/ui/label';
-import { Button } from '@components/ui/button';
-import { RefreshCw, Trash } from 'lucide-react';
 
 const EventNode = ({
   eventType,
@@ -64,19 +63,13 @@ const EventNode = ({
           setOnHover(false);
         }}
       >
-        <ScheduleProgress
+        <ScheduleProgressTracker
           status={
             tense === 'past' ? 'completed' : tense === 'future' ? 'circle' : ''
           }
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
-            <div
-              className={`flex flex-row gap-1 ${
-                onHover
-                  ? 'opacity-100 cursor-pointer'
-                  : 'opacity-0 cursor-default'
-              }`}
-            >
+            <div className={`flex flex-row gap-1`}>
               <Button
                 variant='outline'
                 size='sm'
@@ -85,20 +78,22 @@ const EventNode = ({
                   setShowEditDialog(true);
                 }}
               >
-                <RefreshCw className='h-4 w-4' />
+                <Edit className='h-4 w-4 mr-2' />
+                Edit
               </Button>
               <Button
                 variant='outline'
                 size='sm'
                 onClick={handleDeleteScheduleAction}
               >
-                <Trash className='h-4 w-4 text-destructive' />
+                <Trash className='h-4 w-4 mr-2 text-destructive' />
+                Remove
               </Button>
             </div>
           }
           slotLoader={
             tense === 'present' ? (
-              <LottieAnimations animation='loading_spinner' size={1.5} />
+              <Loader className='h-6 w-6 animate-spin text-gray-500' />
             ) : undefined
           }
           slotAiText={

@@ -91,6 +91,7 @@ export async function handleClick(
         .from('request_progress')
         .update({ status: 'completed' })
         .eq('id', data.id)
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         .then(() => {});
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {

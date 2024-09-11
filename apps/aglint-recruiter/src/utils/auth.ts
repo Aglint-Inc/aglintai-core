@@ -1,5 +1,5 @@
-import { SupabaseType } from '@aglint/shared-types';
-import { Session } from '@supabase/supabase-js';
+import type { SupabaseType } from '@aglint/shared-types';
+import type { Session } from '@supabase/supabase-js';
 import axios from 'axios';
 
 import ROUTES from './routing/routes';

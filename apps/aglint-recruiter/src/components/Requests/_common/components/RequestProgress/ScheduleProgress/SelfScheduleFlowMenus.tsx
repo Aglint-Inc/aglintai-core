@@ -1,4 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Button } from '@components/ui/button';
+import { Bell, Lightbulb } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -8,7 +10,7 @@ import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
-import { Button } from '@components/ui/button';
+import { Alert, AlertDescription } from '@components/ui/alert';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
@@ -93,15 +95,28 @@ const SelfScheduleFlowMenus = ({
         }
       >
         <div>
-          <Button
-            size='sm'
-            onClick={() => {
-              setEditTrigger('selfScheduleReminder');
-              setShowEditDialog(true);
-            }}
+          <Alert
+            variant='default'
+            className='bg-purple-100 border-purple-200 mb-4'
           >
-            Schedule Reminder
-          </Button>
+            <Lightbulb className='h-4 w-4 text-purple-500' />
+            <AlertDescription className='flex flex-col items-start'>
+              <p className='mb-4 w-full'>
+                Add Riminders to candidate for follow up.
+              </p>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => {
+                  setEditTrigger('selfScheduleReminder');
+                  setShowEditDialog(true);
+                }}
+              >
+                <Bell className='mr-2 h-4 w-4' />
+                Add Reminder
+              </Button>
+            </AlertDescription>
+          </Alert>
         </div>
       </ShowCode.When>
       <ShowCode.When

@@ -1,24 +1,17 @@
 /* eslint-disable security/detect-object-injection */
-import { type DB } from '@aglint/shared-types';
-import {
-  type CookieOptions,
-  createServerClient,
-  serialize,
-} from '@supabase/ssr';
+
 import { type PostgrestError } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  type CsvUploadApi,
-  type Supabase,
-} from '@/apiUtils/job/candidateUpload/types';
+import { type CsvUploadApi } from '@/apiUtils/job/candidateUpload/types';
 import {
   bulkCreateApplications,
   bulkCreateCandidate,
   bulkCreateFiles,
 } from '@/apiUtils/job/candidateUpload/utils';
 import { type CandidateFilesBulkCreateAction } from '@/context/CandidatesContext/types';
+import { createClient } from '@/utils/supabase/server';
 
 const handler = async (
   req: NextApiRequest,
@@ -26,23 +19,7 @@ const handler = async (
 ) => {
   const { job_id, recruiter_id, candidates } =
     req.body as CsvUploadApi['request'];
-  const supabase: Supabase = createServerClient<DB>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return req.cookies[name];
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, value, options));
-        },
-        remove(name: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, '', options));
-        },
-      },
-    },
-  );
+  const supabase = createClient();
 
   const candidateFileMap = new Map();
 
