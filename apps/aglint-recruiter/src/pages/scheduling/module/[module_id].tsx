@@ -8,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { EmptyGeneral } from '@devlink2/EmptyGeneral';
 import { MemberListCard } from '@devlink2/MemberListCard';
 import { PageLayout } from '@devlink2/PageLayout';
 import { ShadowSession } from '@devlink2/ShadowSession';
@@ -289,7 +288,14 @@ function SlotQualifiedMembers({
   return (
     <>
       {allQualified.length === 0 && (
-        <EmptyGeneral textEmpt={'No Members Added Yet'} />
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <div className="font-semibold mb-2">
+            No Members Added Yet
+          </div>
+          <p className="text-muted-foreground">
+            Start by adding members to this module.
+          </p>
+        </div>
       )}
       {allQualified.map((user) => {
         const member = members.filter(

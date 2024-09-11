@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { EmptyState } from '@devlink2/EmptyState';
 import { Activities } from '@devlink3/Activities';
 import { ActivitiesCard } from '@devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@devlink3/SkeletonActivitiesCard';
@@ -26,10 +25,10 @@ function RightPanel({
         slotActivitiesCard={
           <>
             {isFetched && !isLoading && activities.length === 0 && (
-              <EmptyState
-                slotIcons={<ActivityIcon size={50} />}
-                textDescription={'No activities found.'}
-              />
+              <div className="flex flex-col items-center justify-center h-64 text-center">
+                <ActivityIcon className="w-12 h-12 text-muted-foreground mb-2" />
+                <p className="text-sm text-muted-foreground">No activities found.</p>
+              </div>
             )}
             {!isFetched || isLoading ? (
               <Stack height={'calc(100vh - 60px)'}>
