@@ -8,13 +8,13 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { InterviewModuleCard } from '@devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@devlink2/InterviewModuleTable';
-import { PageLayout } from '@devlink2/PageLayout';
 import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
 import { Plus, RotateCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
@@ -67,7 +67,7 @@ export function InterviewTypes() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarRight={
           checkPermissions(['interview_types']) && (
             <UIButton

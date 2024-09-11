@@ -11,13 +11,13 @@ import {
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AllInterviewers } from '@devlink2/AllInterviewers';
-import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
@@ -38,7 +38,7 @@ const InterviewTab = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   return (
-    <PageLayout
+    <UIPageLayout
       slotTopbarRight={
         recruiter?.recruiter_preferences?.greenhouse ? (
           <></>

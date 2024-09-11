@@ -3,7 +3,6 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { PageLayout } from '@devlink2/PageLayout';
 import { BannerLoading } from '@devlink3/BannerLoading';
 import { DarkPill } from '@devlink3/DarkPill';
 import { GraphBlock } from '@devlink3/GraphBlock';
@@ -23,6 +22,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -107,7 +107,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotBody={
           <JobDashboardDev
             isJobStatsVisible={isScoringEnabled}

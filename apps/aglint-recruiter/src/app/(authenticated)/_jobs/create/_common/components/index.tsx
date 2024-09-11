@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { PageLayout } from '@devlink2/PageLayout';
 import { CreateJobLoader } from '@devlink3/CreateJobLoader';
 import { EditJobTopbarLeft } from '@devlink3/EditJobTopbarLeft';
 import { JobDetailBlock } from '@devlink3/JobDetailBlock';
@@ -13,6 +12,7 @@ import {
 } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { WarningSvg } from '@/components/Common/warningSvg';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobs } from '@/jobs/hooks';
@@ -124,7 +124,7 @@ const JobCreate = () => {
   });
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         isBackButton
         onClickBack={{ onClick: () => push(ROUTES['/jobs']()) }}
         slotTopbarLeft={<EditJobTopbarLeft textName={'Create Job'} />}

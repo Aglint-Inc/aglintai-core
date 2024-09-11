@@ -1,5 +1,6 @@
-import { PageLayout } from '@devlink2/PageLayout';
 import { useRouter } from 'next/router';
+
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 
 import BodyComp from './BodyComp';
 import Breadcrumb from './Breadcrumb';
@@ -24,7 +25,7 @@ function Interviewer() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={
           !isLoading && <Breadcrumb interviewerDetails={interviewerDetails} />
         }
