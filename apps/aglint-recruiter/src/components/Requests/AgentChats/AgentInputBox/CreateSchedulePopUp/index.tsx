@@ -1,6 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { Text } from '@devlink/Text';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
 import { Stack } from '@mui/material';
 import React, { useState } from 'react';
@@ -89,11 +88,9 @@ function CreateSchedulePopUp({
             p={1}
           >
             <Stack>
-              <Text
-                size={1}
-                color={'neutral'}
-                content={`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
-              />
+              <p className="text-sm text-muted-foreground">
+                {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
+              </p>
               <SelectScheduleDate
                 scheduleDate={{
                   start_date: selectedDateRange.start_date,

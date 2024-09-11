@@ -1,6 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
-import { Text } from '@devlink/Text';
 import { UserNameCard } from '@devlink3/UserNameCard';
 import { Stack } from '@mui/material';
 import Link from 'next/link';
@@ -45,14 +44,11 @@ function HiringTeam({ chat }: { chat: ChatType }) {
   return (
     <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
       <Stack>
-        <Text
-          color={'neutral'}
-          content={
-            job?.job_title
-              ? `Here is the hiring team for ${job?.job_title}`
-              : 'Here is the hiring team'
-          }
-        />
+        <p className="text-muted-foreground">
+          {job?.job_title
+            ? `Here is the hiring team for ${job?.job_title}`
+            : 'Here is the hiring team'}
+        </p>
       </Stack>
 
       {hiringTeam?.map((item) => {
