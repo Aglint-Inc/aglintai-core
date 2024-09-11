@@ -1,13 +1,11 @@
 import { useToast } from '@components/hooks/use-toast';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-// import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
 import { TokenItem } from '@devlink3/TokenItem';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Popover, Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Edit, EllipsisVertical, Plus } from 'lucide-react';
@@ -24,6 +22,7 @@ import { useAllDepartments } from '@/queries/departments';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
+import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
@@ -460,12 +459,11 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
                   />
                 )
               }
-              onClickJob={{
-                onClick: () =>
-                  router.push(
-                    ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
-                  ),
-              }}
+              onClickJob={() =>
+                router.push(
+                  ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
+                )
+              }
             />
           ))
         ) : (

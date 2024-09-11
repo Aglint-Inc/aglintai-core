@@ -12,7 +12,6 @@ import { PageLayout } from '@devlink2/PageLayout';
 import { RequestDetail } from '@devlink2/RequestDetail';
 import { RequestDetailRight } from '@devlink2/RequestDetailRight';
 import { SkeletonScheduleCard } from '@devlink2/SkeletonScheduleCard';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Avatar, Stack } from '@mui/material';
 import { Mail, MapPin, Smartphone } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -26,6 +25,7 @@ import { useRequests } from '@/context/RequestsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Loader from '../../Common/Loader';
 import RequestProgress, {
@@ -353,7 +353,6 @@ function ViewRequestDetails() {
                       }
                       jobLink={{
                         href: `/jobs/${jobDetails.id}?section=interview`,
-                        target: '_blank',
                       }}
                     />
                   </Stack>
