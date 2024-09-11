@@ -292,6 +292,7 @@ export const PATHS = [
 '/candidate/[application_id]/test',
 '/company',
 '/company-postings/[id]',
+'/create-request-command',
 '/dashboards',
 '/dashboards/interviewer',
 '/forgot-password',

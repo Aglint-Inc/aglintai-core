@@ -29,7 +29,7 @@ export type CreateContextStore<T extends Record<string, any>> =
       ? // eslint-disable-next-line no-unused-vars
         { [_id in U]: T[U] } & {
           // eslint-disable-next-line no-unused-vars
-          initial: { [_id in U]: T[U] };
+          initial: Readonly<{ [_id in U]: T[U] }>;
           // eslint-disable-next-line no-unused-vars
           actions: { [_id in `set${Capitalize<U>}`]: (x: T[U]) => void } & {
             // eslint-disable-next-line no-unused-vars
