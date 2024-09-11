@@ -1,13 +1,13 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { MemberRow } from '@devlink3/MemberRow';
-import { SessionDetails } from '@devlink3/SessionDetails';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
+import InterviewerTrainingTypeIcon from '@/components/Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
+import { MemberRow } from '../../../../_common/MemberRow';
+import { SessionDetails } from '../../../../_common/SessionDetails';
 import ConflictWithHover from './ConflictWithHover';
 
 function SessionIndividual({
@@ -23,12 +23,11 @@ function SessionIndividual({
     <>
       <SessionDetails
         slotSessionIcon={
-          <IconSessionType type={session.session_type} size={5} />
+          <IconSessionType type={session.session_type} size={14} />
         }
         key={session.session_id}
         textSessionName={session_name}
         textSessionDuration={session_duration}
-        textSessionTime={`${dayjsLocal(session.start_time).format('hh:mm A')} - ${dayjsLocal(session.end_time).format('hh:mm A')}`}
         isMemberRow={true}
         slotMemberRow={members.map((member) => {
           const allUserConflicts = session.ints_conflicts
@@ -64,8 +63,9 @@ function SessionIndividual({
                   height={'100%'}
                 />
               }
-              isShadow={member.training_type === 'shadow'}
-              isReverseShadow={member.training_type === 'reverse_shadow'}
+              iconTraining={
+                <InterviewerTrainingTypeIcon type={member.training_type} />
+              }
               textName={`${getFullName(member.first_name, member.last_name)} 
                  ${member.interviewer_type === 'training' ? '(Training)' : ''}`}
               slotConflicts={

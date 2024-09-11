@@ -268,8 +268,8 @@ export const RangePicker = ({
   setDateRange: (_x: { start: string; end: string }) => void;
 }) => {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(dateRange.start),
-    to: new Date(dateRange.start),
+    from: new Date(dateRange?.start),
+    to: new Date(dateRange?.end),
   });
 
   useEffect(() => {

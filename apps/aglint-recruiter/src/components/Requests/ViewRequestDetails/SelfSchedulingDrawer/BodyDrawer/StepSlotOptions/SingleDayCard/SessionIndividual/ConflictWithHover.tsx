@@ -2,13 +2,12 @@ import { type ConflictReason as ConflictReasonType } from '@aglint/shared-types'
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ConflictPopover } from '@devlink3/ConflictPopover';
 import { ConflictReason } from '@devlink3/ConflictReason';
-import { Stack } from '@mui/material';
-import React from 'react';
 
 function ConflictWithHover({
   isNoConflict,
@@ -72,36 +71,36 @@ function ConflictWithHover({
   return (
     <>
       {!isNoConflict && isToolTipVisible ? (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Stack>
-              <BadgeContent />
-            </Stack>
-          </TooltipTrigger>
-          <TooltipContent>
-            <ConflictPopover
-              isHardConflict={isHardConflict}
-              isOutsideWorkHours={isOutsideWorkHours}
-              isSoftConflict={isSoftConflict}
-              slotConflictReason={conflictReasons.map((item, ind) => {
-                return (
-                  <ConflictReason
-                    key={ind}
-                    textConflictReason={
-                      item.conflict_type === 'out_of_working_hours'
-                        ? item.conflict_event || 'Out of working hours'
-                        : item.conflict_event
-                    }
-                  />
-                );
-              })}
-            />
-          </TooltipContent>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <BadgeContent />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent className='p-0'>
+              <ConflictPopover
+                isHardConflict={isHardConflict}
+                isOutsideWorkHours={isOutsideWorkHours}
+                isSoftConflict={isSoftConflict}
+                slotConflictReason={conflictReasons.map((item, ind) => {
+                  return (
+                    <ConflictReason
+                      key={ind}
+                      textConflictReason={
+                        item.conflict_type === 'out_of_working_hours'
+                          ? item.conflict_event || 'Out of working hours'
+                          : item.conflict_event
+                      }
+                    />
+                  );
+                })}
+              />
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       ) : (
-        <Stack>
-          <BadgeContent />
-        </Stack>
+        <BadgeContent />
       )}
     </>
   );
