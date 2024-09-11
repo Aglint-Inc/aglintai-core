@@ -2,10 +2,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
-export const useAllScheduleList = () => {
+export const useRequestCounts = () => {
   const {
     recruiterUser: { user_id },
   } = useAuthDetails();
@@ -35,17 +34,4 @@ export async function getRequestsList({
     .throwOnError();
 
   return data;
-}
-
-export function dateStringFormat(date) {
-  const today = dayjs();
-  const inputDate = dayjs(date);
-
-  if (inputDate.isSame(today, 'day')) {
-    return 'today';
-  } else if (inputDate.isSame(today.subtract(1, 'day'), 'day')) {
-    return 'yesterday';
-  } else {
-    return inputDate.format('MMM D');
-  }
 }
