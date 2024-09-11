@@ -157,7 +157,6 @@ const PERMISSIONS: Permissions = {
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
   '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],
-  '/api/ai/self-schedule-request': ['job_module'],
 };
 
 export default PERMISSIONS;
