@@ -31,7 +31,7 @@ import {
   setIsScheduleOpen,
   setSelectedSessionIds,
   useApplicationDetailStore,
-} from '../../../store';
+} from '../../../../../store';
 import { type Interviewer } from '../StageSessions/EditDrawer/types';
 
 function DialogSchedule() {

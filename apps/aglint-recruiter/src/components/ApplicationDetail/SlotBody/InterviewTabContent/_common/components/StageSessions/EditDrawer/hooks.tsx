@@ -103,10 +103,9 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           schedule_type: editSession.interview_session.schedule_type,
           session_duration: editSession.interview_session.session_duration,
           session_id: editSession.interview_session.id,
-          members: [], // TODO: fix
-          // debriefMembers.map((member) => ({
-          //   id: member.module_relation_id,
-          // })),
+          members: debriefMembers.map((member) => ({
+            id: member.user_id,
+          })),
           members_meta: editSession.interview_session.members_meta,
         };
         await updateDebriefSession(updateDebriefParams);

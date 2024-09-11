@@ -9,6 +9,7 @@ interface ExtendedButtonProps extends ButtonProps {
   isLoading?: boolean;
   fullWidth?: boolean;
   icon?: React.ReactNode;
+  iconClassName?: string;
 }
 
 const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
@@ -22,28 +23,35 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
       fullWidth,
       className,
       icon = false,
+      iconClassName,
       ...props
     },
     ref,
   ) => {
     const LeftIconWithClass = leftIcon
       ? React.cloneElement(leftIcon as React.ReactElement, {
-          className:
+          className: cn(
             size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-4 w-4' : 'h-5 w-5',
+            iconClassName,
+          ),
         })
       : null;
 
     const RightIconWithClass = rightIcon
       ? React.cloneElement(rightIcon as React.ReactElement, {
-          className:
+          className: cn(
             size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-4 w-4' : 'h-5 w-5',
+            iconClassName,
+          ),
         })
       : null;
 
     const IconWithClass = icon
       ? React.cloneElement(icon as React.ReactElement, {
-          className:
-            size === 'sm' ? 'h-4 w-4' : size === 'md' ? 'h-6 w-6' : 'h-8 w-8',
+          className: cn(
+            size === 'sm' ? 'h-3 w-3' : size === 'md' ? 'h-5 w-5' : 'h-7 w-7',
+            iconClassName,
+          ),
         })
       : null;
 
