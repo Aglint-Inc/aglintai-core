@@ -205,7 +205,24 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink',
         action_type: 'agent_instruction',
-        payload: null,
+        payload: {
+          agent: {
+            instruction: `Pick maximum slots of 5 without any conflicts and candidate preferred time is morning 9 to 12`,
+            ai_response: {
+              candidateAvailability: {
+                prefferredDate: null,
+                prefferredTime: {
+                  startTime: '09:00',
+                  endTime: '12:00',
+                },
+              },
+              includeAllSoftConflictSlots: false,
+              maxTotalSlots: 5,
+              overrideSoftConflicts: [],
+              prefferredInterviewers: [],
+            },
+          },
+        },
       },
     },
     {

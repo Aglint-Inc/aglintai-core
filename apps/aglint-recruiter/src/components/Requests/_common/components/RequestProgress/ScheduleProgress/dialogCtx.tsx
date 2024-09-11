@@ -51,10 +51,14 @@ interface SelectedActionsDetailsProviderProps {
 export const SelectedActionsDetailsProvider: React.FC<
   SelectedActionsDetailsProviderProps
 > = ({ children, defaultSelectedActionsDetails }) => {
+  const agentInstructionsInfo = defaultSelectedActionsDetails.payload;
+
   const [selectedActionsDetails, setSelectedActionsDetails] = useState<
     Omit<DatabaseTable['workflow_action'], 'payload'>
   >(defaultSelectedActionsDetails);
-  const [agentInstructions, setAgentInstructions] = useState<string>(null);
+  const [agentInstructions, setAgentInstructions] = useState<string>(
+    (agentInstructionsInfo as any)?.agent?.instruction ?? '',
+  );
   const [tiptapLoadStatus, setTiptapLoadStatus] = useState({
     email: false,
     agent: false,
@@ -77,7 +81,6 @@ export const SelectedActionsDetailsProvider: React.FC<
 
     return selectedActionsDetails.target_api;
   }, [selectedActionsDetails.target_api]);
-
   return (
     <SelectedActionsDetailsContext.Provider
       value={{
