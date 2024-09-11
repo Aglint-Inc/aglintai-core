@@ -1,4 +1,4 @@
-import v from 'valibot';
+import * as v from 'valibot';
 import { DatabaseEnums } from '..';
 import {
   MeetingAcceptedEmailOrganizerSchema,
