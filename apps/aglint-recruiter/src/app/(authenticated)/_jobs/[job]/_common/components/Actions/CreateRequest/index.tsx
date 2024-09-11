@@ -10,11 +10,10 @@ import {
   RequestOption,
 } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
 import MemberCard from '@/components/Common/MemberCard';
-import UpdateMembers, {
-  useMemberList,
-} from '@/components/Common/UpdateMembers';
+import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useMemberList } from '@/hooks/useMemberList';
 import { useApplications, useJob } from '@/job/hooks';
 
 import { SessionList, type sessionType } from './SessionsList';
@@ -156,6 +155,7 @@ function CreateRequest({
                 updateButton={
                   <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                 }
+                members={members}
               />
             </div>
           )
