@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { candidatePortalGetEmailtype } from '@/api/candidate_portal/get_email/route';
+import type { candidatePortalGetEmailtype } from '@/api/candidate_portal/get_email/route';
 import { supabase } from '@/utils/supabase/client';
 
 export const getCandidateEmailByApplicationId = async (

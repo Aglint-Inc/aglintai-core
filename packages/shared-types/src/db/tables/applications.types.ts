@@ -1,4 +1,7 @@
-import type { CustomApplicationBadges } from "../common.types";
+import type {
+  CustomApplicationBadges,
+  CustomApplicationStatus,
+} from "../common.types";
 import type { TableType } from "./index.types";
 
 export type CustomApplications = TableType<
@@ -6,6 +9,7 @@ export type CustomApplications = TableType<
   {
     feedback: CustomFeedback;
     score_json: CustomScoreJson;
+    status: CustomApplicationStatus;
   }
 >;
 

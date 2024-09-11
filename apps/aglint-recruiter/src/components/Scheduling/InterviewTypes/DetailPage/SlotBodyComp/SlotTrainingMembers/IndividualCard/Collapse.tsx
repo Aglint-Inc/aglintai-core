@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { ButtonGhost } from '@devlink/ButtonGhost';
-import { Text } from '@devlink/Text';
 import { TrainingDetailList } from '@devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@devlink2/TrainingStatus';
@@ -143,7 +142,7 @@ function CollapseTrainingProgress({
                             <SessionIcon
                               session_type={prog.interview_session.session_type}
                             />
-                            <Text content={prog.interview_session.name} />
+                            <p className="text-sm">{prog.interview_session.name}</p>
 
                             {prog.is_approved ? (
                               <Typography
@@ -218,7 +217,7 @@ function CollapseTrainingProgress({
                             <SessionIcon
                               session_type={prog.interview_session.session_type}
                             />
-                            <Text content={prog.interview_session.name} />
+                            <p className="text-sm">{prog.interview_session.name}</p>
                           </Stack>
 
                           {prog.is_approved ? (

@@ -17,8 +17,6 @@ import {
 const allTabs: ApplicationStore['tab'][] = [
   'Resume',
   'Details',
-  'Screening',
-  'Assessment',
   'Interview',
   'Tasks',
   'Activity',

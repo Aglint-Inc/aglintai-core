@@ -1,4 +1,4 @@
-import { Text } from '@devlink/Text';
+
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -129,19 +129,15 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
             />
           ) : (
             <>
-              <Text
-                size={2}
-                color={'neutral'}
-                content={`By clicking delete the Interview Type will be permanently deleted.`}
-              />
+              <p className="text-muted-foreground">
+                By clicking delete the Interview Type will be permanently deleted.
+              </p>
               <Stack direction={'row'} spacing={'3px'} flexWrap={'wrap'}>
-                <Text
-                  size={2}
-                  color={'neutral'}
-                  content={`Confirm by typing the job title`}
-                />
-                <Text size={2} color={'error'} content={moduleName} />
-                <Text size={2} color={'neutral'} content={`below.`} />
+                <p className="text-sm text-muted-foreground">
+                  Confirm by typing the job title
+                </p>
+                <p className="text-sm text-destructive">{moduleName}</p>
+                <p className="text-sm text-muted-foreground">below.</p>
               </Stack>
 
               <UITextField

@@ -1,5 +1,4 @@
 import { useToast } from '@components/hooks/use-toast';
-import { Text } from '@devlink/Text';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
@@ -150,11 +149,9 @@ function ArchiveModuleDialog({
         }
       >
         <Stack spacing={1}>
-          <Text
-            size={2}
-            color={'neutral'}
-            content={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
-          />
+          <p className="text-muted-foreground">
+            By clicking archive the interview type will not be available to select in interview plans while scheduling.
+          </p>
           {errors.length > 0 && (
             <GlobalBannerShort
               color={'error'}
@@ -166,7 +163,7 @@ function ArchiveModuleDialog({
                   {errors.map((error, index) => (
                     <Stack direction={'row'} key={index}>
                       <li style={{ color: 'var(--neutral-11)' }}></li>
-                      <Text size={1} color={'neutral'} content={error} />
+                      <p className="text-sm text-muted-foreground">{error}</p>
                     </Stack>
                   ))}
                 </Stack>

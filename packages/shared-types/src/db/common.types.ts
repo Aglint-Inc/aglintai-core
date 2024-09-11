@@ -78,3 +78,9 @@ export type CustomRequestType = Custom<
 
 export type CustomLocation =
   Database["public"]["Tables"]["office_locations"]["Row"];
+
+export type CustomApplicationStatus =
+  | "new"
+  | "interview"
+  | "qualified"
+  | "disqualified";

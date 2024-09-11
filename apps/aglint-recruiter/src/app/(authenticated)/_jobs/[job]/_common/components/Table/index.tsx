@@ -35,8 +35,8 @@ export const Table = memo(() => {
   const skeleton = useMemo(
     () => (
       <SkeletonCandidateListItem
-        isScreeningVisible={cascadeVisibilites.screening}
-        isAssessmentVisible={cascadeVisibilites.assessment}
+        isScreeningVisible={false}
+        isAssessmentVisible={false}
         isInterviewVisible={cascadeVisibilites.interview}
         isDisqualifiedVisible={cascadeVisibilites.disqualified}
       />
@@ -66,8 +66,8 @@ export const Table = memo(() => {
           <ApplicantsTable
             isResumeMatchVisible={isScoringEnabled}
             isAllChecked={false}
-            isScreeningVisible={cascadeVisibilites.screening}
-            isAssessmentVisible={cascadeVisibilites.assessment}
+            isScreeningVisible={false}
+            isAssessmentVisible={false}
             isInterviewVisible={cascadeVisibilites.interview}
             isDisqualifiedVisible={cascadeVisibilites.disqualified}
             isDragVisible={false}

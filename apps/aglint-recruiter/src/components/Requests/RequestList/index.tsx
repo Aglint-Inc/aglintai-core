@@ -21,8 +21,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { cn } from '@lib/utils';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Columns, LayoutList } from 'lucide-react';
+import { ChevronDown, ChevronUp, Columns, LayoutList } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -33,8 +32,10 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestListFilter from '../_common/Components/RequestListFilter';
-import { RequestsSectionDefaultData } from '../_common/constant';
+import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
+import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
+import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -43,16 +44,19 @@ function RequestList() {
     requests: { data, isFetched },
     filters,
   } = useRequests();
-  const { recruiterUser } = useAuthDetails();
-  const { data: requestCount } = useRequestCount();
-
-  const defaults = RequestsSectionDefaultData.map(
+  const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
     ({ sectionName, ...rest }) => ({
       ...rest,
       sectionName,
       requests: data?.[sectionName],
     }),
   );
+  const isRequestListEmpty =
+    checkFiltersApplied({ filters }) &&
+    isFetched &&
+    defaults.flatMap((d) => d.requests).length === 0;
+  const { recruiterUser } = useAuthDetails();
+  const { data: requestCount } = useRequestCount();
 
   const renderContent = () => {
     const urgentRequests = defaults.find(
@@ -67,7 +71,7 @@ function RequestList() {
     );
 
     const renderScrollableSection = (
-      section: (typeof RequestsSectionDefaultData)[number],
+      section: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number],
     ) => (
       <div key={section.sectionName}>
         {isFetched ? (
@@ -199,12 +203,16 @@ function RequestList() {
                         </div>
                       </CollapsibleContent>
                       <CollapsibleTrigger asChild className='mt-4 w-full'>
-                        <Button 
-                          variant='outline' 
+                        <Button
+                          variant='outline'
                           className='w-full'
                           onClick={() => {
                             if (isExpanded) {
-                              setExpandedSections(expandedSections.filter(s => s !== sectionName));
+                              setExpandedSections(
+                                expandedSections.filter(
+                                  (s) => s !== sectionName,
+                                ),
+                              );
                             }
                           }}
                         >
@@ -241,11 +249,17 @@ function RequestList() {
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
 
-        <div className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}>
+        <div
+          className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}
+        >
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
-              className={view === 'kanban' ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4` : ''}
+              className={
+                view === 'kanban'
+                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4`
+                  : ''
+              }
             >
               {isFetched ? (
                 view === 'list' ? (
@@ -265,7 +279,10 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard {...{ ...props, isExpanded: false }} mode='column-view' />
+                            <RequestCard
+                              {...{ ...props, isExpanded: false }}
+                              mode='column-view'
+                            />
                           </RequestProvider>
                         ))}
                       </div>
@@ -294,34 +311,6 @@ function RequestList() {
     );
   };
 
-  function formatRequestCountText(
-    urgentCount: number,
-    standardCount: number,
-    dateString: string,
-  ) {
-    const urgentText =
-      urgentCount > 0
-        ? `${urgentCount} urgent request${urgentCount > 1 ? 's' : ''}`
-        : '';
-    const standardText =
-      standardCount > 0
-        ? `${standardCount} standard request${standardCount > 1 ? 's' : ''}`
-        : '';
-
-    let finalText = '';
-
-    if (urgentText && standardText) {
-      finalText = `${urgentText} and ${standardText} ${dateString}.`;
-    } else if (urgentText) {
-      finalText = `${urgentText} ${dateString}.`;
-    } else if (standardText) {
-      finalText = `${standardText} ${dateString}.`;
-    } else {
-      finalText = `No requests ${dateString}.`;
-    }
-
-    return 'You have ' + finalText;
-  }
   const open_request = requestCount?.all_open_request || 0;
   const completed_percentage =
     Math.floor(
@@ -330,23 +319,9 @@ function RequestList() {
         100,
     ) || 0;
 
-  const isFilterApplied =
-    filters.status.length > 0 ||
-    filters.type.length > 0 ||
-    !!filters.title ||
-    filters.jobs.length > 0 ||
-    filters.applications.length > 0 ||
-    filters.assigneeList.length > 0 ||
-    filters.assignerList.length > 0;
-  const isRequestListEmpty =
-    isFilterApplied &&
-    isFetched &&
-    defaults.flatMap((d) => d.requests).length === 0;
-
   return (
     <>
-    
-    <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
+      <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
         <div className='mb-2 flex flex-row justify-between'>
           <div className='flex flex-col gap-1'>
             <h1 className='text-md font-semibold'>
@@ -354,7 +329,7 @@ function RequestList() {
               {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
             </h1>
             <p className='text-sm text-muted-foreground'>
-              {formatRequestCountText(
+              {formatRequestHeadingText(
                 requestCount?.card.urgent_request ?? 0,
                 requestCount?.card.standard_request ?? 0,
                 'today',
@@ -386,8 +361,7 @@ function RequestList() {
           </Tabs>
         </div>
       </div>
-    
-     
+
       {isRequestListEmpty ? (
         <GlobalEmptyState textDesc='No requests found' iconName='check' />
       ) : (

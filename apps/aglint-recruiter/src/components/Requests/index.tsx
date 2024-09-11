@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
+import { checkFiltersApplied } from './_common/utils/checkFiltersApplied';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
 import RequestList from './RequestList';
@@ -16,16 +17,6 @@ const Requests = () => {
     requests: { data: requestList, isPlaceholderData },
     filters,
   } = useRequests();
-  const isNotApplied =
-    !filters.is_new &&
-    filters.status.length === 0 &&
-    filters.type.length === 0 &&
-    !filters.title &&
-    !filters.created_at &&
-    filters.jobs.length === 0 &&
-    filters.applications.length === 0 &&
-    filters.assigneeList.length === 0 &&
-    filters.assignerList.length === 0;
 
   const showEmptyPage =
     !isPlaceholderData &&
@@ -81,16 +72,14 @@ const Requests = () => {
       {/* Main Content */}
       <div
         className={`flex-1 p-4 pt-0 z-10 overflow-scroll overflow-x-hidden h-screen ${
-          openChat
-            ? 'w-[calc(100%-450px)]'
-            : ''
+          openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
-        {showEmptyPage && isNotApplied ? (
+        {showEmptyPage && !checkFiltersApplied({ filters }) ? (
           <RequestAgentEmpty />
         ) : (
           <div className='max-w-[1200px] mx-auto'>
-          <RequestList />
+            <RequestList />
           </div>
         )}
       </div>

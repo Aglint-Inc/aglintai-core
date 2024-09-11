@@ -1,28 +1,11 @@
-import { dayjsLocal } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { Lightbulb, Loader2, WandSparkles } from 'lucide-react';
-
-import { setCandidateAvailabilityDrawerOpen } from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import { useMeetingList } from '@/components/Requests/ViewRequestDetails/hooks';
-import { useSelfSchedulingDrawer } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/hooks';
-import {
-  initialFilters,
-  setIsSelfScheduleDrawerOpen,
-  useSelfSchedulingFlowStore,
-} from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
+import { Lightbulb, WandSparkles } from 'lucide-react';
 
 import { useRequestProgressProvider } from '../progressCtx';
 
 const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
-  const { fetchingPlan } = useSelfSchedulingFlowStore((state) => ({
-    fetchingPlan: state.fetchingPlan,
-  }));
-
-  const { refetch } = useMeetingList();
-
-  const { findAvailibility } = useSelfSchedulingDrawer({ refetch });
   return (
     <>
       <div className='flex flex-col gap-4'>

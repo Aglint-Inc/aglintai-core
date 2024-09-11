@@ -39,7 +39,7 @@ const DashboardComp = () => {
     sortValue,
     searchText,
     setSearchText,
-  } = useJobFilterAndSort(data);
+  } = useJobFilterAndSort(data ?? []);
 
   return (
     <div className='h-full w-full'>

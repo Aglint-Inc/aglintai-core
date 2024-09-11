@@ -18,7 +18,6 @@ import { ScorePillMust } from '@devlink/ScorePillMust';
 import { ScorePillNice } from '@devlink/ScorePillNice';
 import { ScoreSetting } from '@devlink/ScoreSetting';
 import { ScoreWeightage } from '@devlink/ScoreWeightage';
-import { Text } from '@devlink/Text';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
 import { PageLayout } from '@devlink2/PageLayout';
@@ -670,18 +669,10 @@ const Tips = () => {
         gap={'4px'}
         padding={'var(--space-3)'}
       >
-        <Text
-          content='How It Works'
-          weight={'medium'}
-          size={2}
-          color={'info'}
-        />
-        <Text
-          content='Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click "Reset" to restore default settings.'
-          size={2}
-          weight={'regular'}
-          color='neutral'
-        />
+        <p className="text-info font-semibold text-sm">How It Works</p>
+        <p className="text-sm text-muted-foreground">
+          Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click &quot;Reset&quot; to restore default settings.
+        </p>
       </Stack>
 
       {firstVisit && (

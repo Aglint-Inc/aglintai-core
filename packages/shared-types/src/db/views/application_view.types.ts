@@ -1,10 +1,14 @@
-import type { CustomApplicationBadges } from "../common.types";
+import type {
+  CustomApplicationBadges,
+  CustomApplicationStatus,
+} from "../common.types";
 import { Database } from "../schema.types";
 import type { ViewType } from "./index.types";
 
 export type CustomApplicationView = ViewType<
   "application_view",
   {
+    status: CustomApplicationStatus;
     badges: CustomApplicationBadges;
     interview_plans: (Pick<
       Database["public"]["Tables"]["interview_plan"]["Row"],

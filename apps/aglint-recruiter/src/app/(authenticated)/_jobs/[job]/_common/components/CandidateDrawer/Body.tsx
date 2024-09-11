@@ -81,8 +81,6 @@ const TabContent = (
       return props.resume ?? <Resume />;
     case 'Details':
       return props.details ?? <Details />;
-    case 'Screening':
-    case 'Assessment':
     case 'Activity':
       return props.activity ?? <Activity />;
   }

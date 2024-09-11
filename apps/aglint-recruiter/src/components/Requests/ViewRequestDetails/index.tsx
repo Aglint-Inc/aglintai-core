@@ -22,6 +22,7 @@ import {
   MapPin,
   User,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -36,20 +37,30 @@ import {
 } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer/store';
 import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
-import { RequestProvider, useRequest } from '@/context/RequestContext';
+import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
+import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RequestProgress from '../_common/Components/RequestProgress';
+import {
+  REQUEST_STATUS_LIST,
+  REQUEST_TYPE_LIST,
+  REQUEST_URGENT_LIST,
+} from '../_common/constant';
+import { useMeetingList } from '../_common/hooks';
+import CandidateAvailability from './CandidateAvailability';
+import { setCandidateAvailabilityDrawerOpen } from './CandidateAvailability/store';
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
-import ResendRequests from './Components/ResendRequests';
+import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
-import { useMeetingList } from './hooks';
+import ConfirmAvailability from './ConfirmAvailability';
+import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -60,12 +71,9 @@ export default function ViewRequestDetails() {
   } = useRequests();
   const { data: sessions, status, refetch } = useMeetingList();
 
-  const { setCollapse } = useRequest();
   const { data: members } = useMemberList();
 
-  useEffect(() => {
-    setCollapse(true);
-  }, [query?.id]);
+  const [dateRange, setDateRange] = useState({ from: null, to: null });
 
   const selectedRequest = Object.values(requestList)
     .flat()
@@ -76,10 +84,20 @@ export default function ViewRequestDetails() {
     members &&
     members.find((member) => member.user_id === selectedRequest?.assignee_id);
 
+  useEffect(() => {
+    if (!isPlaceholderData) {
+      setDateRange({
+        from: new Date(selectedRequest.schedule_start_date).toISOString(),
+        to: new Date(selectedRequest.schedule_end_date).toISOString(),
+      });
+    }
+  }, [isPlaceholderData]);
+
   if (isPlaceholderData && status === 'pending') {
     return <ViewRequestDetailsSkeleton />;
   } else if (!isPlaceholderData && status === 'success' && !selectedRequest) {
     return (
+      // we need to fix this empty state
       <Alert variant='destructive'>
         <AlertTitle>Request not found</AlertTitle>
       </Alert>
@@ -87,6 +105,12 @@ export default function ViewRequestDetails() {
   } else
     return (
       <div className='min-h-screen bg-gray-50 p-8'>
+        {selectedRequest && (
+          <CandidateAvailability selectedRequest={selectedRequest} />
+        )}
+        <AvailabilityProvider>
+          <ConfirmAvailability />
+        </AvailabilityProvider>
         <SideDrawerEdit refetch={refetch} />
         <div className='max-w-[calc(100%-12.5rem)] mx-auto space-y-8'>
           <div className='flex items-center space-x-2 text-sm text-gray-500'>
@@ -113,19 +137,30 @@ export default function ViewRequestDetails() {
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
                   <User className='h-4 w-4' />
-                  <span>
-                    {getFullName(
-                      candidateDetails?.first_name,
-                      candidateDetails?.last_name,
-                    )}
-                  </span>
+                  <Link
+                    href={
+                      ROUTES['/jobs/[job]/application/[application_id]']({
+                        job: jobDetails?.id,
+                        application_id: selectedRequest?.application_id,
+                      }) + '?tab=scoring'
+                    }
+                  >
+                    <span>
+                      {getFullName(
+                        candidateDetails?.first_name,
+                        candidateDetails?.last_name,
+                      )}
+                    </span>
+                  </Link>
                 </div>
                 <span>•</span>
                 <span>{candidateDetails?.current_job_title}</span>
                 <span>•</span>
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
-                  <span>{jobDetails?.job_title}</span>
+                  <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
+                    <span>{jobDetails?.job_title}</span>
+                  </Link>
                 </div>
                 <span>•</span>
                 <span>Finance and Accounting</span>
@@ -153,22 +188,29 @@ export default function ViewRequestDetails() {
                 <h3 className='text-sm font-medium text-gray-500'>
                   Assigned to:
                 </h3>
-                <Avatar className='h-6 w-6'>
-                  <AvatarImage
-                    src={selectedMember?.profile_image}
-                    alt='Avatar'
-                  />
-                  <AvatarFallback>
-                    {selectedMember?.first_name.slice(0, 1)}
-                    {selectedMember?.last_name.slice(0, 1)}
-                  </AvatarFallback>
-                </Avatar>
-                <p className='font-medium'>
-                  {getFullName(
-                    selectedMember?.first_name,
-                    selectedMember?.last_name,
-                  )}
-                </p>
+                <Link
+                  href={ROUTES['/user/profile/[user_id]']({
+                    user_id: selectedMember?.user_id,
+                  })}
+                  className='flex flex-row items-center gap-2'
+                >
+                  <Avatar className='h-6 w-6'>
+                    <AvatarImage
+                      src={selectedMember?.profile_image}
+                      alt='Avatar'
+                    />
+                    <AvatarFallback>
+                      {selectedMember?.first_name.slice(0, 1)}
+                      {selectedMember?.last_name.slice(0, 1)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <p className='font-medium'>
+                    {getFullName(
+                      selectedMember?.first_name,
+                      selectedMember?.last_name,
+                    )}
+                  </p>
+                </Link>
               </div>
             </div>
           </div>
@@ -204,24 +246,7 @@ export default function ViewRequestDetails() {
                                   },
                                 });
                               }}
-                              items={[
-                                {
-                                  label: 'To do',
-                                  value: 'to_do',
-                                },
-                                {
-                                  label: 'In progress',
-                                  value: 'in_progress',
-                                },
-                                {
-                                  label: 'Completed',
-                                  value: 'completed',
-                                },
-                                {
-                                  label: 'Blocked',
-                                  value: 'blocked',
-                                },
-                              ]}
+                              items={REQUEST_STATUS_LIST}
                               updateButton={
                                 <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                               }
@@ -252,16 +277,7 @@ export default function ViewRequestDetails() {
                                   },
                                 });
                               }}
-                              items={[
-                                {
-                                  label: 'Urgent',
-                                  value: 'urgent',
-                                },
-                                {
-                                  label: 'Standard',
-                                  value: 'standard',
-                                },
-                              ]}
+                              items={REQUEST_URGENT_LIST}
                               updateButton={
                                 <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                               }
@@ -282,27 +298,26 @@ export default function ViewRequestDetails() {
                               Interview Date
                             </span>
                             <UIDateRangePicker
-                              value={{
-                                from: new Date(
-                                  selectedRequest?.schedule_start_date,
-                                ),
-                                to: new Date(
-                                  selectedRequest?.schedule_end_date,
-                                ),
-                              }}
-                              onAccept={async ({ from, to }) => {
-                                await handleAsyncUpdateRequest({
-                                  payload: {
-                                    requestId: selectedRequest.id,
-                                    requestPayload: {
-                                      schedule_start_date:
-                                        dayjs(from).toISOString(),
-                                      schedule_end_date:
-                                        dayjs(to).toISOString(),
+                              value={dateRange}
+                              onAccept={(dates) => {
+                                setDateRange(dates);
+                                if (dates) {
+                                  handleAsyncUpdateRequest({
+                                    payload: {
+                                      requestId: selectedRequest.id,
+                                      requestPayload: {
+                                        schedule_start_date: dayjs(
+                                          dates.from,
+                                        ).toISOString(),
+                                        schedule_end_date: dayjs(
+                                          dates.to,
+                                        ).toISOString(),
+                                      },
                                     },
-                                  },
-                                });
+                                  });
+                                }
                               }}
+                              disablePastDates={true}
                               customButton={
                                 <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                               }
@@ -363,24 +378,7 @@ export default function ViewRequestDetails() {
                                 },
                               });
                             }}
-                            items={[
-                              {
-                                label: 'schedule_request',
-                                value: 'schedule_request',
-                              },
-                              {
-                                label: 'reschedule_request',
-                                value: 'reschedule_request',
-                              },
-                              {
-                                label: 'decline_request',
-                                value: 'decline_request',
-                              },
-                              {
-                                label: 'cancel_schedule_request',
-                                value: 'cancel_schedule_request',
-                              },
-                            ]}
+                            items={REQUEST_TYPE_LIST}
                             updateButton={
                               <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                             }
@@ -398,7 +396,7 @@ export default function ViewRequestDetails() {
                   <SessionCards sessions={sessions} />
                 </CardContent>
               </Card>
-              <ResendRequests />
+              <RecentRequests applicationId={selectedRequest?.application_id} />
             </div>
             <div className='w-4/12 flex flex-col space-y-4'>
               <Alert>
@@ -408,7 +406,14 @@ export default function ViewRequestDetails() {
                   Here is your next step on the request.
                 </AlertDescription>
                 <div className='flex flex-row gap-2 justify-end mt-4'>
-                  <Button variant='outline'>Get Availability</Button>
+                  <Button
+                    onClick={() => {
+                      setCandidateAvailabilityDrawerOpen(true);
+                    }}
+                    variant='outline'
+                  >
+                    Get Availability
+                  </Button>
                   <Button>Send Self Scheduling</Button>
                 </div>
               </Alert>
