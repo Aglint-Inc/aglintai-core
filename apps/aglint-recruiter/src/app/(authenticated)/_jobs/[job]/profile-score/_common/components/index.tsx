@@ -20,7 +20,6 @@ import { ScoreSetting } from '@devlink/ScoreSetting';
 import { ScoreWeightage } from '@devlink/ScoreWeightage';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
-import { PageLayout } from '@devlink2/PageLayout';
 import { BannerAlert } from '@devlink3/BannerAlert';
 import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
@@ -42,6 +41,7 @@ import Loader from '@/components/Common/Loader';
 import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useTour } from '@/context/TourContext';
@@ -75,7 +75,7 @@ export const JobProfileScoreDashboard = () => {
 const ProfileScorePage = () => {
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={
@@ -669,9 +669,12 @@ const Tips = () => {
         gap={'4px'}
         padding={'var(--space-3)'}
       >
-        <p className="text-info font-semibold text-sm">How It Works</p>
-        <p className="text-sm text-muted-foreground">
-          Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click &quot;Reset&quot; to restore default settings.
+        <p className='text-info font-semibold text-sm'>How It Works</p>
+        <p className='text-sm text-muted-foreground'>
+          Adjust the weightage for Experience, Skills, and Education to
+          customize the profile score. The total must equal 100%. Use the input
+          fields to set percentages. Click &quot;Reset&quot; to restore default
+          settings.
         </p>
       </Stack>
 
