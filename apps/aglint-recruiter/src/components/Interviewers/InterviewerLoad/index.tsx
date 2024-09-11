@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewWorkloadList } from '@devlink3/InterviewWorkloadList';
 import { Avatar, Stack } from '@mui/material';
 import { RotateCcw } from 'lucide-react';
 import Link from 'next/link';
@@ -18,6 +17,7 @@ import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { InterviewerWorkload } from '../components/InterviewerWorkload';
+import { InterviewWorkloadList } from '../components/InterviewWorkloadList';
 import { useAllInterviewer } from '../Hook';
 import LineGraph from './LineGraph';
 
