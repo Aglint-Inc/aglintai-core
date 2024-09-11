@@ -36,6 +36,8 @@ import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
 import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
+import RequestListFilter from '../_common/Components/RequestListFilter';
+import { RequestCard } from '../_common/Components/RequestCard';
 
 function RequestList() {
   const [view, setView] = useState<'list' | 'kanban'>('list');
@@ -75,6 +77,8 @@ function RequestList() {
     ) => (
       <div key={section.sectionName}>
         {isFetched ? (
+          <div style={{ paddingLeft: '3rem', paddingRight: '3rem'}}>
+          <div className='container'>
           <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
             <p>{capitalizeFirstLetter(section.sectionName)}</p>
             {section.sectionName === 'completed_request' && (
@@ -89,21 +93,31 @@ function RequestList() {
               </Button>
             )}
           </div>
+          </div>
+          </div>
         ) : (
           <Skeleton className='h-6 w-40 mb-2' />
         )}
-        <ScrollArea className='w-[100vw] whitespace-nowrap rounded-md'>
+        <div
+        className='flex items-start w-full mb-10'>
+        <div className=''>
+        <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
+          <div style={{ paddingLeft: '3rem', paddingRight: '3rem'}}>
+          <div className='container'>
           <div className='flex'>
             {isFetched ? (
               section.requests.length > 0 ? (
                 section.requests.map((props, i) => (
+                  <div className='pr-6'>
                   <div
+                    style={{width:'650px'}}
                     key={props.id ?? i}
-                    className='flex-shrink-0 max-w-[600px] mr-4'
+                    className={`flex-shrink-0  ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
                   >
                     <RequestProvider request_id={props.id}>
                       <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
+                  </div>
                   </div>
                 ))
               ) : (
@@ -119,8 +133,12 @@ function RequestList() {
               </>
             )}
           </div>
+          </div>
+          </div>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
+        </div>
+        </div>
       </div>
     );
 
@@ -244,20 +262,22 @@ function RequestList() {
     };
 
     return (
-      <div className='space-y-6 pt-2'>
+      <div className='space-y-6 mt-8'>
         {urgentRequests &&
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
-
+          <div style={{paddingLeft:"3rem" , paddingRight:"3rem"}}>
+          {/* <div   className={`${view === 'kanban' ? 'px-[5rem]' : 'px-[5rem]'}`} > */}
+        <div   className={`${view === 'kanban' ? 'container' : 'container'}`} >
         <div
-          className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}
+          className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
         >
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
               className={
                 view === 'kanban'
-                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4`
+                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-full' : 'w-full'}`
                   : ''
               }
             >
@@ -302,6 +322,8 @@ function RequestList() {
               )}
             </div>
           ))}
+        </div>
+        </div>
         </div>
 
         {completedRequests &&
