@@ -30,7 +30,9 @@ const ScheduleOptions = () => {
   );
   return (
     <>
-      <ShowCode.When isTrue={Boolean(isWorkflowAdded)}>
+      <ShowCode.When
+        isTrue={Boolean(isWorkflowAdded) && requestDetails.status === 'to_do'}
+      >
         <>
           <UIButton
             onClick={async () => {
@@ -41,7 +43,9 @@ const ScheduleOptions = () => {
                   requestPayload: { status: 'in_progress' },
                 },
               });
-              setIsProceeding(false);
+              setTimeout(() => {
+                setIsProceeding(false);
+              }, 2000);
             }}
           >
             {isProceeding ? 'Proceeding...' : 'Click here Proceed'}

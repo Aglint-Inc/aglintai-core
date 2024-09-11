@@ -123,7 +123,7 @@ Unavailable for interviews on Tuesdays.`);
               memberList={activeMembers
                 .map((mem) => ({
                   id: mem.user_id,
-                  name: getFullName(mem.first_name, mem.last_name),
+                  name: getFullName(mem.first_name, mem?.last_name),
                 }))
                 .filter((mem) => mem.id !== recruiterUser.user_id)}
               member={interviewerDetails}
