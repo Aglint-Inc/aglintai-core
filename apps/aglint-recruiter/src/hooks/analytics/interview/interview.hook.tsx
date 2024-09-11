@@ -14,7 +14,7 @@ import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data } = api.analytics.interview_count.useQuery(
+  const { data, isFetched } = api.analytics.interview_count.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
@@ -64,6 +64,7 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
         ...data,
         date,
       })),
+    isFetched,
   };
 }
 export function useDeclineCount() {

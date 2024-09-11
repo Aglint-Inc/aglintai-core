@@ -13,7 +13,6 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   const isRequestPage = useMemo(() => {
     return !!request_id && pathName === '/requests/[id]';
   }, [pathName, request_id]);
-
   const [collapse, setCollapse] = useState(false);
 
   const {

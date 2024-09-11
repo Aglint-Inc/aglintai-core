@@ -35,23 +35,29 @@ export default function HistoricInterviews() {
         </div>
       </div>
       <ResponsiveContainer width='100%' height={300}>
-        <BarChart data={data.groupedData}>
-          <XAxis dataKey='date' />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          {Object.keys(data.groupedData[0] || {}).map((name, index) =>
-            name != 'date' ? (
-              <Bar
-                key={index}
-                dataKey={name}
-                name={capitalizeFirstLetter(name)}
-                stackId={'a'}
-                fill={`hsl(var(--chart-${index + 1}))`}
-              />
-            ) : null,
-          )}
-        </BarChart>
+        {data.groupedData.length ? (
+          <BarChart data={data.groupedData}>
+            <XAxis dataKey='date' />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {Object.keys(data.groupedData[0] || {}).map((name, index) =>
+              name != 'date' ? (
+                <Bar
+                  key={index}
+                  dataKey={name}
+                  name={capitalizeFirstLetter(name)}
+                  stackId={'a'}
+                  fill={`hsl(var(--chart-${index + 1}))`}
+                />
+              ) : null,
+            )}
+          </BarChart>
+        ) : (
+          <div className='flex justify-center items-center h-64'>
+            empty@ravi
+          </div>
+        )}
       </ResponsiveContainer>
     </div>
   );

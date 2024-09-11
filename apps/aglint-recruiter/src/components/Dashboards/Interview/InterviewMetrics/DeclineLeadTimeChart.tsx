@@ -14,17 +14,6 @@ import {
 
 import { useDeclineCount } from '@/hooks/analytics/interview/interview.hook';
 
-// const CustomTooltip = ({ active, payload }) => {
-//   if (active && payload && payload.length) {
-//     return (
-//       <div className='bg-white p-2 border border-gray-300 rounded shadow'>
-//         <p>{`${payload[0].payload.date}: ${payload[0].value} days`}</p>
-//       </div>
-//     );
-//   }
-//   return null;
-// };
-
 export default function DeclineLeadTimeChart() {
   const data = useDeclineCount();
   const averageLeadTime = data.average || 0;
@@ -51,27 +40,31 @@ export default function DeclineLeadTimeChart() {
         </div>
         <div className='h-[300px]'>
           <ResponsiveContainer width='100%' height='100%'>
-            <ScatterChart
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='date' />
-              <YAxis
-                type='number'
-                dataKey='cancelled'
-                // domain={[0, 7]}
-                // ticks={[0, 2, 3, 4, 5, 6, 7]}
-              />
-              {/* <XAxis type='number' dataKey='x' name='stature' unit='cm' />
+            {data.scatterData.filter((item) => item.cancelled).length ? (
+              <ScatterChart
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <CartesianGrid strokeDasharray='3 3' />
+                <XAxis dataKey='date' />
+                <YAxis
+                  type='number'
+                  dataKey='cancelled'
+                  // domain={[0, 7]}
+                  // ticks={[0, 2, 3, 4, 5, 6, 7]}
+                />
+                {/* <XAxis type='number' dataKey='x' name='stature' unit='cm' />
               <YAxis type='number' dataKey='y' name='weight' unit='kg' /> */}
-              <Tooltip />
-              <Scatter data={data.scatterData} fill='#22c55e' />
-            </ScatterChart>
+                <Tooltip />
+                <Scatter data={data.scatterData} fill='#22c55e' />
+              </ScatterChart>
+            ) : (
+              <>empty@ravi</>
+            )}
           </ResponsiveContainer>
         </div>
       </CardContent>

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { z } from 'zod';
 
-import { privateProcedure, type PublicProcedure } from '@/server/api/trpc';
+import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 
 export const barSchema = z.object({ barId: z.string().uuid() });
 
