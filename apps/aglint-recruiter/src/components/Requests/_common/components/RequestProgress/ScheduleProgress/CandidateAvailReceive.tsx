@@ -13,7 +13,6 @@ import {
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
 } from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import { useRequestAvailabilityDetails } from '@/components/Requests/ViewRequestDetails/ConfirmAvailability/hooks';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
@@ -23,6 +22,7 @@ import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { useRequestAvailabilityDetails } from '../../../hooks';
 import { useRequestProgressProvider } from '../progressCtx';
 import { RequestProgressTracker } from '../RequestProgressTracker';
 import { type RequestProgressMapType } from '../types';
@@ -114,7 +114,7 @@ const RequestEvents = ({
   const { candidateAvailabilityId } =
     useConfirmAvailabilitySchedulingFlowStore();
   const { isFetching } = useRequestAvailabilityDetails({
-    request_id: candidateAvailabilityId,
+    availability_id: candidateAvailabilityId,
   });
 
   const { reqTriggerActionsMap } = useRequestProgressProvider();

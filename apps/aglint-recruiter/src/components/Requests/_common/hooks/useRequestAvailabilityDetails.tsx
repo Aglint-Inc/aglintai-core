@@ -6,32 +6,32 @@ import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 export const useRequestAvailabilityDetails = ({
-  request_id,
+  availability_id,
 }: {
-  request_id: string;
+  availability_id: string;
 }) => {
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['get_request_availability_details', { request_id }],
-    queryFn: () => getRequestAvailabilityDetails(request_id),
+    queryKey: ['get_request_availability_details', { availability_id }],
+    queryFn: () => getRequestAvailabilityDetails(availability_id),
     // refetchInterval: 2000,
-    enabled: !!request_id,
+    enabled: !!availability_id,
   });
   const refetch = () =>
     queryClient.invalidateQueries({
-      queryKey: ['get_request_availability_details', { request_id }],
+      queryKey: ['get_request_availability_details', { availability_id }],
     });
   return { ...query, refetch };
 };
 
-async function getRequestAvailabilityDetails(request_id: string) {
-  if (request_id) {
+async function getRequestAvailabilityDetails(availability_id: string) {
+  if (availability_id) {
     // eslint-disable-next-line no-useless-catch
     try {
       const { data } = await axios.post(
         '/api/scheduling/v1/get-candidate-selected-slots',
         {
-          cand_availability_id: request_id,
+          cand_availability_id: availability_id,
           user_tz: userTzDayjs.tz.guess(),
         },
       );

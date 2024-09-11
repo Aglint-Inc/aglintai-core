@@ -30,19 +30,18 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { useMeetingList } from '../../_common/hooks';
+import {
+  insertCandidateRequestAvailability,
+  updateCandidateRequestAvailability,
+} from '../../_common/functions';
+import { useCandidateAvailability, useMeetingList } from '../../_common/hooks';
 import EmailTemplate from './Components/EmailTemplate';
-import { useCandidateAvailability } from './hooks';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
 } from './store';
-import {
-  insertCandidateRequestAvailability,
-  updateCandidateRequestAvailability,
-} from './utils';
 
 function CandidateAvailability({
   selectedRequest,

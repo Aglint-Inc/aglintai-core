@@ -33,7 +33,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../_common/Components/RequestCard';
 import RequestListFilter from '../_common/Components/RequestListFilter';
-import { RequestsSectionDefaultData } from '../_common/constant';
+import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
 import { useRequestCount } from '../_common/hooks';
 
 function RequestList() {
@@ -46,7 +46,7 @@ function RequestList() {
   const { recruiterUser } = useAuthDetails();
   const { data: requestCount } = useRequestCount();
 
-  const defaults = RequestsSectionDefaultData.map(
+  const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
     ({ sectionName, ...rest }) => ({
       ...rest,
       sectionName,
@@ -67,7 +67,7 @@ function RequestList() {
     );
 
     const renderScrollableSection = (
-      section: (typeof RequestsSectionDefaultData)[number],
+      section: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number],
     ) => (
       <div key={section.sectionName}>
         {isFetched ? (
@@ -199,12 +199,16 @@ function RequestList() {
                         </div>
                       </CollapsibleContent>
                       <CollapsibleTrigger asChild className='mt-4 w-full'>
-                        <Button 
-                          variant='outline' 
+                        <Button
+                          variant='outline'
                           className='w-full'
                           onClick={() => {
                             if (isExpanded) {
-                              setExpandedSections(expandedSections.filter(s => s !== sectionName));
+                              setExpandedSections(
+                                expandedSections.filter(
+                                  (s) => s !== sectionName,
+                                ),
+                              );
                             }
                           }}
                         >
@@ -241,11 +245,17 @@ function RequestList() {
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
 
-        <div className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}>
+        <div
+          className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-6'}`}
+        >
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
-              className={view === 'kanban' ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4` : ''}
+              className={
+                view === 'kanban'
+                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4`
+                  : ''
+              }
             >
               {isFetched ? (
                 view === 'list' ? (
@@ -265,7 +275,10 @@ function RequestList() {
                             key={props.id ?? i}
                             request_id={props.id}
                           >
-                            <RequestCard {...{ ...props, isExpanded: false }} mode='column-view' />
+                            <RequestCard
+                              {...{ ...props, isExpanded: false }}
+                              mode='column-view'
+                            />
                           </RequestProvider>
                         ))}
                       </div>
@@ -345,8 +358,7 @@ function RequestList() {
 
   return (
     <>
-    
-    <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
+      <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
         <div className='mb-2 flex flex-row justify-between'>
           <div className='flex flex-col gap-1'>
             <h1 className='text-md font-semibold'>
@@ -386,8 +398,7 @@ function RequestList() {
           </Tabs>
         </div>
       </div>
-    
-     
+
       {isRequestListEmpty ? (
         <GlobalEmptyState textDesc='No requests found' iconName='check' />
       ) : (

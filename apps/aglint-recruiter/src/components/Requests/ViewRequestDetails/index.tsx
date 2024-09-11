@@ -46,6 +46,11 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RequestProgress from '../_common/Components/RequestProgress';
+import {
+  REQUEST_STATUS_LIST,
+  REQUEST_TYPE_LIST,
+  REQUEST_URGENT_LIST,
+} from '../_common/constant';
 import { useMeetingList } from '../_common/hooks';
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
@@ -230,24 +235,7 @@ export default function ViewRequestDetails() {
                                   },
                                 });
                               }}
-                              items={[
-                                {
-                                  label: 'To do',
-                                  value: 'to_do',
-                                },
-                                {
-                                  label: 'In progress',
-                                  value: 'in_progress',
-                                },
-                                {
-                                  label: 'Completed',
-                                  value: 'completed',
-                                },
-                                {
-                                  label: 'Blocked',
-                                  value: 'blocked',
-                                },
-                              ]}
+                              items={REQUEST_STATUS_LIST}
                               updateButton={
                                 <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                               }
@@ -278,16 +266,7 @@ export default function ViewRequestDetails() {
                                   },
                                 });
                               }}
-                              items={[
-                                {
-                                  label: 'Urgent',
-                                  value: 'urgent',
-                                },
-                                {
-                                  label: 'Standard',
-                                  value: 'standard',
-                                },
-                              ]}
+                              items={REQUEST_URGENT_LIST}
                               updateButton={
                                 <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                               }
@@ -388,24 +367,7 @@ export default function ViewRequestDetails() {
                                 },
                               });
                             }}
-                            items={[
-                              {
-                                label: 'schedule_request',
-                                value: 'schedule_request',
-                              },
-                              {
-                                label: 'reschedule_request',
-                                value: 'reschedule_request',
-                              },
-                              {
-                                label: 'decline_request',
-                                value: 'decline_request',
-                              },
-                              {
-                                label: 'cancel_schedule_request',
-                                value: 'cancel_schedule_request',
-                              },
-                            ]}
+                            items={REQUEST_TYPE_LIST}
                             updateButton={
                               <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                             }
