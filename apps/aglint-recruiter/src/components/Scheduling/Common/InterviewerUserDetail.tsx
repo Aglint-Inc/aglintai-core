@@ -7,9 +7,8 @@ import {
 } from '@components/ui/tooltip';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Text } from '@devlink/Text';
-import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { Stack } from '@mui/material';
-import Link from 'next/link';
+import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
@@ -149,11 +148,7 @@ function InterviewerUserDetail({
           '--'
         )
       }
-      textName={
-        <Link href={`/user/profile/${userDetails.user_id}`}>
-          {getFullName(userDetails.first_name, userDetails.last_name)}
-        </Link>
-      }
+      textName={getFullName(userDetails.first_name, userDetails.last_name)}
       slotImage={
         <MuiAvatar
           level={getFullName(userDetails.first_name, userDetails.last_name)}

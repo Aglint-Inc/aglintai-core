@@ -4,13 +4,13 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Text } from '@devlink/Text';
-import { DateOption } from '@devlink3/DateOption';
 import { EmptySlotReason } from '@devlink3/EmptySlotReason';
 import { ScheduleOption } from '@devlink3/ScheduleOption';
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
+import { DayCard } from '../../../_common/DayCard';
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
 
@@ -113,7 +113,7 @@ function DayCardWrapper({
 
   return (
     <>
-      <DateOption
+      <DayCard
         slotLeftBlock={
           <Text
             content={header}
@@ -177,11 +177,11 @@ function DayCardWrapper({
         isDisabled={isDisabled}
         key={header}
         textOptionCount={`${slots.length} options`}
-        rotateArrow={{
-          style: {
-            display: isDayCollapseNeeded ? 'flex' : 'none',
-          },
-        }}
+        // rotateArrow={{
+        //   style: {
+        //     display: isDayCollapseNeeded ? 'flex' : 'none',
+        //   },
+        // }}
         slotScheduleOption={
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>

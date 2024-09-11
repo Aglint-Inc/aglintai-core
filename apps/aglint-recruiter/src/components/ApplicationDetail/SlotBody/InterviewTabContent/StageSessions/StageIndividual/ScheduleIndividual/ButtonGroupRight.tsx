@@ -1,8 +1,8 @@
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { Stack } from '@mui/material';
+import { Edit } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { type StageWithSessions } from '@/queries/application';
 
 import {
@@ -26,7 +26,6 @@ function ButtonGroupRight({
   const router = useRouter();
 
   const interview_meeting = currentSession.interview_meeting;
-
   return (
     <Stack direction={'row'} spacing={'var(--space-2)'}>
       {isViewDetailVisible &&
@@ -35,21 +34,18 @@ function ButtonGroupRight({
           interview_meeting?.status === 'waiting' ||
           interview_meeting?.status === 'cancelled') && (
           <>
-            <ButtonSolid
-              size={1}
-              color={'neutral'}
-              textButton={'View Detail'}
-              onClickButton={{
-                onClick: (e) => {
-                  e.stopPropagation();
-                  router.push(
-                    `/scheduling/view?meeting_id=${interview_meeting.id}&tab=candidate_details`,
-                  );
-                },
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(
+                  `/scheduling/view?meeting_id=${interview_meeting.id}&tab=candidate_details`,
+                );
               }}
-              iconName={'north_east'}
-              isRightIcon={true}
-            />
+            >
+              View Detail
+            </UIButton>
           </>
         )}
 
@@ -57,44 +53,22 @@ function ButtonGroupRight({
         (interview_meeting?.status === 'not_scheduled' ||
           interview_meeting?.status === 'cancelled' ||
           !interview_meeting) && (
-          <IconButtonSoft
-            iconName={'edit'}
-            size={1}
-            iconSize={3}
-            iconWeight={'medium'}
-            color={'neutral'}
-            onClickButton={{
-              onClick: () => {
-                setEditSession(currentSession);
-                if (
-                  currentSession.interview_session.session_type !== 'debrief'
-                ) {
-                  setSelectedInterviewers(
-                    currentSession?.users
-                      ?.filter(
-                        (user) =>
-                          user.interview_session_relation.interviewer_type ===
-                          'qualified',
-                      )
-                      .map((user) => ({
-                        email: user.user_details.email,
-                        user_id: user.interview_module_relation?.user_id,
-                        first_name: user.user_details.first_name,
-                        last_name: user.user_details.last_name,
-                        position: user.user_details.position,
-                        profile_image: user.user_details.profile_image,
-                        module_relation_id: user.interview_module_relation?.id,
-                      })) || [],
-                  );
-
-                  const trainingInterviewers = currentSession?.users?.filter(
-                    (user) =>
-                      user.interview_session_relation.interviewer_type ===
-                      'training',
-                  );
-
-                  setTrainingInterviewers(
-                    trainingInterviewers?.map((user) => ({
+          <UIButton
+            variant='secondary'
+            size='sm'
+            iconClassName='text-neutral-600'
+            icon={<Edit />}
+            onClick={async () => {
+              setEditSession(currentSession);
+              if (currentSession.interview_session.session_type !== 'debrief') {
+                setSelectedInterviewers(
+                  currentSession?.users
+                    ?.filter(
+                      (user) =>
+                        user.interview_session_relation.interviewer_type ===
+                        'qualified',
+                    )
+                    .map((user) => ({
                       email: user.user_details.email,
                       user_id: user.interview_module_relation?.user_id,
                       first_name: user.user_details.first_name,
@@ -103,25 +77,42 @@ function ButtonGroupRight({
                       profile_image: user.user_details.profile_image,
                       module_relation_id: user.interview_module_relation?.id,
                     })) || [],
-                  );
+                );
 
-                  if (trainingInterviewers?.length > 0) {
-                    setTrainingToggle(true);
-                  }
-                } else {
-                  setDebriefMembers(
-                    currentSession?.users?.map((user) => ({
-                      email: user.user_details.email,
-                      user_id: user.interview_module_relation?.user_id,
-                      first_name: user.user_details.first_name,
-                      last_name: user.user_details.last_name,
-                      position: user.user_details.position,
-                      profile_image: user.user_details.profile_image,
-                    })) || [],
-                  );
+                const trainingInterviewers = currentSession?.users?.filter(
+                  (user) =>
+                    user.interview_session_relation.interviewer_type ===
+                    'training',
+                );
+
+                setTrainingInterviewers(
+                  trainingInterviewers?.map((user) => ({
+                    email: user.user_details.email,
+                    user_id: user.interview_module_relation?.user_id,
+                    first_name: user.user_details.first_name,
+                    last_name: user.user_details.last_name,
+                    position: user.user_details.position,
+                    profile_image: user.user_details.profile_image,
+                    module_relation_id: user.interview_module_relation?.id,
+                  })) || [],
+                );
+
+                if (trainingInterviewers?.length > 0) {
+                  setTrainingToggle(true);
                 }
-                setIsEditOpen(true);
-              },
+              } else {
+                setDebriefMembers(
+                  currentSession?.users?.map((user) => ({
+                    email: user.user_details.email,
+                    user_id: user.interview_module_relation?.user_id,
+                    first_name: user.user_details.first_name,
+                    last_name: user.user_details.last_name,
+                    position: user.user_details.position,
+                    profile_image: user.user_details.profile_image,
+                  })) || [],
+                );
+              }
+              setIsEditOpen(true);
             }}
           />
         )}

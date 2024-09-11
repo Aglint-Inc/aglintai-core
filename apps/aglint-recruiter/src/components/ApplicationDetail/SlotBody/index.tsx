@@ -1,5 +1,3 @@
-import { ApplicationDetail } from '@devlink2/ApplicationDetail';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import Loader from '@/components/Common/Loader';
@@ -10,6 +8,7 @@ import { Resume } from '@/job/components/CandidateDrawer/Resume';
 
 import CandidateInfo from './CandidateInfo';
 import InterviewTabContent from './InterviewTabContent';
+import { ApplicationDetail } from './InterviewTabContent/_common/components/ApplicationDetail';
 import Requests from './Requests';
 import Tabs, { type TabsType } from './Tabs';
 
@@ -33,33 +32,29 @@ function SlotBody() {
     <>
       <ApplicationDetail
         slotTabBody={
-          <Stack height={'100%'}>
+          <div className='h-full'>
             {tab === 'interview' ? (
-              <Stack maxWidth={'1400px'} padding={'var(--space-4)'}>
+              <div className='max-w-[1400px] p-4'>
                 <InterviewTabContent />
-              </Stack>
+              </div>
             ) : tab === 'activity' ? (
-              <Stack maxWidth={'600px'} padding={'var(--space-4)'}>
+              <div className='max-w-[600px] p-4'>
                 <Activity />
-              </Stack>
+              </div>
             ) : tab === 'resume' ? (
-              <Stack
-                padding={'var(--space-4)'}
-                // height={'1000px'}
-                maxWidth={'900px'}
-              >
+              <div className='max-w-[900px] p-4'>
                 <Resume />
-              </Stack>
+              </div>
             ) : tab === 'scoring' ? (
-              <Stack padding={'var(--space-4)'}>
+              <div className='p-4'>
                 <Details />
-              </Stack>
+              </div>
             ) : tab === 'requests' ? (
               <Requests />
             ) : (
               ''
             )}
-          </Stack>
+          </div>
         }
         slotApplicantInfoBox={<CandidateInfo />}
         slotTab={<Tabs />}

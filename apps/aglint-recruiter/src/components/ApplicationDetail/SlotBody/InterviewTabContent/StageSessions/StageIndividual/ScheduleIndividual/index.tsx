@@ -2,7 +2,6 @@
 
 import { Checkbox } from '@components/ui/checkbox';
 import { StatusBadge } from '@devlink2/StatusBadge';
-import { GlobalScheduleCard } from '@devlink3/GlobalScheduleCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -16,6 +15,7 @@ import { useAllIntegrations } from '@/queries/intergrations';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
+import { GlobalScheduleCard } from '../../../_common/components/GlobalScheduleCard';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
@@ -102,7 +102,9 @@ function ScheduleIndividualCard({
       }
       isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
       isDropdownIconVisible={true}
-      iconPanel={<IconSessionType type={interview_session.session_type} />}
+      iconPanel={
+        <IconSessionType type={interview_session.session_type} size={16} />
+      }
       iconMeetingPlatform={
         <IconScheduleType type={interview_session.schedule_type} />
       }
@@ -155,14 +157,12 @@ function ScheduleIndividualCard({
       }
       textCandidateName={candidate?.name}
       textDuration={getBreakLabel(interview_session.session_duration)}
-      textPlaformName={getScheduleType(interview_session.schedule_type)}
+      textPlatformName={getScheduleType(interview_session.schedule_type)}
       textRole={candidate?.current_job_title || '--'}
       textPanelName={interview_session.name}
-      onClickDropdown={{
-        onClick: (e) => {
-          e.stopPropagation();
-          setCollapsed(!collapsed);
-        },
+      onClickDropdown={(e) => {
+        e.stopPropagation();
+        setCollapsed(!collapsed);
       }}
       slotDropdownContent={
         <CollapseContent
@@ -178,13 +178,6 @@ function ScheduleIndividualCard({
           currentSession={session}
         />
       }
-      styleGrid={{
-        style: {
-          gridTemplateColumns: hideDateAndTime
-            ? '0fr 1.8fr 0.8fr'
-            : '1fr 1.8fr 0.8fr',
-        },
-      }}
       slotRequestStatus={
         <RequestStatusUnconfirmed interview_meeting={interview_meeting} />
       }
