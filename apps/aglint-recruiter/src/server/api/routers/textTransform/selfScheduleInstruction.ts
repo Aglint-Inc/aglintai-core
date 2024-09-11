@@ -29,18 +29,20 @@ const mutation = async ({
           `Extract the candidate availability information from the given below candidate availability [ do not include placeholder information], current date time is ${dayjsLocal().tz(user_tz).format('DD MMM YYYY HH:mm')}\n` +
           `
             if any of the information is missing use information from below
-            "candidateAvailability": {
-              "prefferredDate": null,
-            },
-            "prefferredTime": {
-              "startTime": "09:00",
-              "endTime": "17:00"
-              }
-            },
-            "prefferredInterviewers": [],
-            "maxTotalSlots": 5,
-            "includeAllSoftConflictSlots": false,
-            "overrideSoftConflicts": []
+      {
+        "candidateAvailability": {
+            "prefferredDate": null,
+          },
+          "prefferredTime": {
+            "startTime": "09:00",
+            "endTime": "17:00"
+            }
+          },
+          "prefferredInterviewers": [],
+          "maxTotalSlots": 5,
+          "includeAllSoftConflictSlots": false,
+          "overrideSoftConflicts": []
+      }
           `,
       },
       {
