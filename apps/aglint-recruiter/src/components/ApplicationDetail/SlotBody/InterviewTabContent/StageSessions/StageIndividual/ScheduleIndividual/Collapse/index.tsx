@@ -1,8 +1,7 @@
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
-import { Text } from '@devlink3/Text';
-import { TextWithIcon } from '@devlink3/TextWithIcon';
 import { Collapse, Stack } from '@mui/material';
+import { Briefcase } from 'lucide-react';
 
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
@@ -64,13 +63,10 @@ function CollapseContent({
                     }
                     isRoleVisible={Boolean(candidate.current_job_title)}
                     slotRole={
-                      <TextWithIcon
-                        fontWeight={'regular'}
-                        textContent={candidate.current_job_title}
-                        iconName={'work'}
-                        iconSize={4}
-                        color='neutral'
-                      />
+                      <div className="flex items-center">
+                        <Briefcase className="w-3 h-3 mr-2 text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground">{candidate.current_job_title}</p>
+                      </div>
                     }
                     textName={candidate.name}
                     isCandidateAvatarVisible={true}
@@ -81,23 +77,18 @@ function CollapseContent({
 
             <Stack spacing={'var(--space-2)'}>
               {count !== 0 && (
-                <Text
-                  content={
-                    interview_meeting?.status === 'confirmed' ||
-                    interview_meeting?.status === 'completed'
-                      ? 'Interviewer(s)'
-                      : interview_session.session_type === 'panel'
-                        ? `${numberToText(
-                            interview_session.interviewer_cnt,
-                          )} of the member below will be picked as interviewer`
-                        : interview_session.session_type === 'individual'
-                          ? `One of the member below will be picked as interviewer`
-                          : 'Interviewer(s)'
-                  }
-                  size={1}
-                  color={'neutral'}
-                  weight={'regular'}
-                />
+                <p className="text-sm text-muted-foreground">
+                  {interview_meeting?.status === 'confirmed' ||
+                  interview_meeting?.status === 'completed'
+                    ? 'Interviewer(s)'
+                    : interview_session.session_type === 'panel'
+                      ? `${numberToText(
+                          interview_session.interviewer_cnt,
+                        )} of the member below will be picked as interviewer`
+                      : interview_session.session_type === 'individual'
+                        ? `One of the member below will be picked as interviewer`
+                        : 'Interviewer(s)'}
+                </p>
               )}
 
               {count === 0 ? (

@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { Text } from '@devlink/Text';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -54,14 +53,13 @@ function Requests() {
                 key={req.id}
                 justifyContent={'space-between'}
               >
-                <Text
-                  content={''}
-                  // getRequestTitle({
-                  //   title: req.title,
-                  //   first_name: detail.name,
-                  //   last_name: '',
-                  // })
-                />
+                <p className="text-sm">
+                  {/* {getRequestTitle({
+                    title: req.title,
+                    first_name: detail.name,
+                    last_name: '',
+                  })} */}
+                </p>
                 <GlobalBadge
                   size={1}
                   textBadge={capitalizeFirstLetter(req.status)}
@@ -79,7 +77,7 @@ function Requests() {
                 />
               </Stack>
               <Stack direction={'row'} spacing={'var(--space-2)'}>
-                <Text content={'Assigned to'} color={'neutral'} />
+                <p className="text-sm text-muted-foreground">Assigned to</p>
                 <AvatarWithName
                   slotAvatar={
                     <MuiAvatar

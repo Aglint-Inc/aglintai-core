@@ -1,4 +1,4 @@
-import { Text } from '@devlink/Text';
+
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -55,10 +55,9 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
         </>
       }
     >
-      <Text
-        color={'neutral'}
-        content={`This member is currently paused from scheduling for this interview until  ${selUser?.pause_json?.isManual ? 'you resume' : dayjs(selUser?.pause_json?.end_date).format('MMMM DD YYYY')}`}
-      />
+      <p className="text-muted-foreground">
+        This member is currently paused from scheduling for this interview until {selUser?.pause_json?.isManual ? 'you resume' : dayjs(selUser?.pause_json?.end_date).format('MMMM DD YYYY')}
+      </p>
     </UIDialog>
   );
 }
