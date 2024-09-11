@@ -34,6 +34,7 @@ export type UserMeetingDetails = {
 export const dbFetchScheduleApiDetails = async (
   params: ScheduleDBDetailsParams,
   is_fetch_meeting_data = true,
+  include_all_module_ints = false,
 ): Promise<ScheduleApiDetails> => {
   const schedule_dates = {
     user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
@@ -70,32 +71,60 @@ export const dbFetchScheduleApiDetails = async (
     .reduce((tot, curr) => {
       return [...tot, ...curr];
     }, []);
+  let db_ses_with_ints: InterviewSessionApiType[] = [];
+  if (include_all_module_ints) {
+    const all_module_ints = await geAllIntsFromModules(params.session_ids);
+    db_ses_with_ints = interview_sessions
+      .map((s) => {
+        const session: InterviewSessionApiType = {
+          duration: s.session_duration,
+          schedule_type: s.schedule_type,
+          session_type: s.session_type,
+          session_id: s.id,
+          session_name: s.name,
+          break_duration: s.break_duration,
+          module_id: s.module_id,
+          module_name: int_modules.find((m) => m.id === s.module_id)?.name,
+          interviewer_cnt: s.interviewer_cnt,
+          session_order: s.session_order,
+          qualifiedIntervs: all_module_ints.filter(
+            (i) => i.session_id === s.id && i.training_type === 'qualified',
+          ),
+          trainingIntervs: [],
+          location: s.location,
+          meeting_id: s.meeting_id,
+        };
+        return session;
+      })
+      .sort((s1, s2) => s1.session_order - s2.session_order);
+  } else {
+    db_ses_with_ints = interview_sessions
+      .map((s) => {
+        const session: InterviewSessionApiType = {
+          duration: s.session_duration,
+          schedule_type: s.schedule_type,
+          session_type: s.session_type,
+          session_id: s.id,
+          session_name: s.name,
+          break_duration: s.break_duration,
+          module_id: s.module_id,
+          module_name: int_modules.find((m) => m.id === s.module_id)?.name,
+          interviewer_cnt: s.interviewer_cnt,
+          session_order: s.session_order,
+          qualifiedIntervs: interviewers.filter(
+            (i) => i.session_id === s.id && i.interviewer_type === 'qualified',
+          ),
+          trainingIntervs: interviewers.filter(
+            (i) => i.session_id === s.id && i.interviewer_type === 'training',
+          ),
+          location: s.location,
+          meeting_id: s.meeting_id,
+        };
+        return session;
+      })
+      .sort((s1, s2) => s1.session_order - s2.session_order);
+  }
 
-  const db_ses_with_ints: InterviewSessionApiType[] = interview_sessions
-    .map((s) => {
-      const session: InterviewSessionApiType = {
-        duration: s.session_duration,
-        schedule_type: s.schedule_type,
-        session_type: s.session_type,
-        session_id: s.id,
-        session_name: s.name,
-        break_duration: s.break_duration,
-        module_id: s.module_id,
-        module_name: int_modules.find((m) => m.id === s.module_id)?.name,
-        interviewer_cnt: s.interviewer_cnt,
-        session_order: s.session_order,
-        qualifiedIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.interviewer_type === 'qualified',
-        ),
-        trainingIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.interviewer_type === 'training',
-        ),
-        location: s.location,
-        meeting_id: s.meeting_id,
-      };
-      return session;
-    })
-    .sort((s1, s2) => s1.session_order - s2.session_order);
   const all_session_int_details = getAllSessionIntDetails(db_ses_with_ints);
   const unique_inters = getUniqueInts(interviewers);
   const ints_schd_meetings = getInterviewersMeetings(
@@ -228,7 +257,6 @@ const getAllSessionIntDetails = (
     const all_ints = [...s.qualifiedIntervs, ...s.trainingIntervs];
     all_ints.forEach((int) => {
       all_session_int_detail[s.session_id].interviewers[int.user_id] = {
-        session_relation_id: int.session_relation_id,
         email: int.email,
         first_name: int.first_name,
         interview_module_relation_id: int.interview_module_relation_id,
@@ -292,4 +320,45 @@ const getInterviewersMeetings = (
     curr_day_details.meeting_duration += meeting.meeting_duration;
   });
   return ints_schd_meetings;
+};
+
+const geAllIntsFromModules = async (session_ids: string[]) => {
+  const sesn_data = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select('*,interview_module(*)')
+      .in('id', session_ids),
+  );
+
+  const module_ints = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_module_relation')
+      .select('*,recruiter_user(*),interview_module(*)')
+      .in(
+        'module_id',
+        sesn_data.map((s) => s.module_id),
+      ),
+  );
+  const sesn_ints: SessionInterviewerType[] = module_ints
+    .filter((i) => i.training_status === 'qualified')
+    .map((m) => {
+      return {
+        email: m.recruiter_user.email,
+        first_name: m.recruiter_user.first_name,
+        last_name: m.recruiter_user.last_name,
+        profile_image: m.recruiter_user.profile_image,
+        user_id: m.recruiter_user.user_id,
+        session_id: sesn_data.find((s) => s.module_id === m.module_id).id,
+        interviewer_type: 'qualified',
+        training_type: 'qualified',
+        position: m.recruiter_user.position,
+        int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
+        scheduling_settings: m.recruiter_user.scheduling_settings,
+        interview_module_relation_id: m.id,
+        pause_json: m.pause_json,
+        schedule_auth: m.recruiter_user.schedule_auth,
+      };
+    });
+
+  return sesn_ints;
 };
