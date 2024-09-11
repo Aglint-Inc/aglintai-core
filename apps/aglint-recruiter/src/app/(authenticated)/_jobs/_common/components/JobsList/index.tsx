@@ -1,10 +1,10 @@
 import { AtsBadge } from '@devlink/AtsBadge';
-import { JobEmptyState } from '@devlink/JobEmptyState';
 import { JobsListingCard } from '@devlink/JobsListingCard';
 import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import EmptyState from '@/components/Common/EmptyStates/EmptyStates';
 import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
 import { getBgColorJobsList } from '@/jobs/utils/getBgColorJobsList';
@@ -24,7 +24,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const { handleJobPin } = useJobs();
   const router = useRouter();
   if (jobs?.length == 0) {
-    return <JobEmptyState />;
+    return <EmptyState type={'job-jobList'} />;
   }
 
   return (
