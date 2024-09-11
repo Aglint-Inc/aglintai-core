@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Bell, Lightbulb } from 'lucide-react';
 import React, { useMemo } from 'react';
@@ -10,7 +11,6 @@ import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
-import { Alert, AlertDescription } from '@components/ui/alert';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
