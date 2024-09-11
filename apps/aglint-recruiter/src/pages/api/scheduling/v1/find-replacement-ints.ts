@@ -66,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         calender_not_connected: true,
       },
     });
+
     await cand_schedule.fetchDetails({
       params: {
         company_id: module_rec.recruiter_id,
@@ -81,7 +82,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       include_all_module_ints: true,
     });
+
     cand_schedule.ignoreTrainee();
+
     cand_schedule.ignoreInterviewers([
       {
         sesn_id: parsed_body.session_id,
@@ -93,6 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!single_day_slots) {
       return res.status(200).json([]);
     }
+
     const slot_combs = single_day_slots.plans.map((comb) => comb.sessions[0]);
     const time_filtered_slots = slot_combs.filter((comb) =>
       filter_slots(
@@ -101,12 +105,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         meeting_detail.confirmed_candidate_tz,
       ),
     );
-    const replacement_ints: APIRespFindReplaceMentInts =
-      time_filtered_slots.map((slot) => {
+    const replacement_ints: APIRespFindReplaceMentInts = time_filtered_slots
+      .filter(
+        (slot) =>
+          slot.qualifiedIntervs.filter(
+            (int) => !current_confirmed_ints.includes(int.user_id),
+          ).length > 0,
+      )
+      .map((slot) => {
         const replacement_int = slot.qualifiedIntervs.filter(
           (int) => !current_confirmed_ints.includes(int.user_id),
         )[0];
-
         const int_conflict = slot.ints_conflicts.find(
           (int) => int.interviewer.user_id === replacement_int.user_id,
         );
@@ -116,6 +125,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           conflicts: int_conflict?.conflict_reasons ?? [],
         };
       });
+
     return res.status(200).json(replacement_ints);
   } catch (error) {
     console.error(error);
