@@ -62,7 +62,6 @@ export const schema_verify_interviewer_selected_slots = v.object({
 
 export const schema_find_alternative_slots = v.object({
   session_id: v.string(),
-  user_tz: v.string(),
   declined_int_sesn_reln_id: v.string(),
 });
 

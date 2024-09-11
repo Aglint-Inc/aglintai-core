@@ -14,6 +14,7 @@ import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import {
+  type DbFetchScheduleApiDetailsParams,
   type ScheduleApiDetails,
   type ScheduleDBDetailsParams,
 } from '../types';
@@ -31,11 +32,11 @@ export type UserMeetingDetails = {
   };
 };
 
-export const dbFetchScheduleApiDetails = async (
-  params: ScheduleDBDetailsParams,
+export const dbFetchScheduleApiDetails = async ({
+  params,
   is_fetch_meeting_data = true,
   include_all_module_ints = false,
-): Promise<ScheduleApiDetails> => {
+}: DbFetchScheduleApiDetailsParams): Promise<ScheduleApiDetails> => {
   const schedule_dates = {
     user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
       params.start_date_str,

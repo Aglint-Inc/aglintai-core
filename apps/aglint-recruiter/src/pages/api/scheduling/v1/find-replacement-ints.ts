@@ -67,15 +67,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     await cand_schedule.fetchDetails({
-      company_id: module_rec.recruiter_id,
-      session_ids: [parsed_body.session_id],
-      req_user_tz: parsed_body.user_tz,
-      end_date_str: userTzDayjs(meeting_detail.start_time)
-        .tz(parsed_body.user_tz)
-        .format('DD/MM/YYYY'),
-      start_date_str: userTzDayjs(meeting_detail.start_time)
-        .tz(parsed_body.user_tz)
-        .format('DD/MM/YYYY'),
+      params: {
+        company_id: module_rec.recruiter_id,
+        session_ids: [parsed_body.session_id],
+        req_user_tz: meeting_detail.confirmed_candidate_tz,
+
+        end_date_str: userTzDayjs(meeting_detail.start_time)
+          .tz(meeting_detail.confirmed_candidate_tz)
+          .format('DD/MM/YYYY'),
+        start_date_str: userTzDayjs(meeting_detail.start_time)
+          .tz(meeting_detail.confirmed_candidate_tz)
+          .format('DD/MM/YYYY'),
+      },
+      include_all_module_ints: true,
     });
     cand_schedule.ignoreTrainee();
     cand_schedule.ignoreInterviewers([
@@ -91,7 +95,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const slot_combs = single_day_slots.plans.map((comb) => comb.sessions[0]);
     const time_filtered_slots = slot_combs.filter((comb) =>
-      filter_slots(comb, meeting_detail.start_time, parsed_body.user_tz),
+      filter_slots(
+        comb,
+        meeting_detail.start_time,
+        meeting_detail.confirmed_candidate_tz,
+      ),
     );
     const replacement_ints: APIRespFindReplaceMentInts =
       time_filtered_slots.map((slot) => {

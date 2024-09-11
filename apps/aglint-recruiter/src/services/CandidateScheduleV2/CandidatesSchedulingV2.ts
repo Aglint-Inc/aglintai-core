@@ -26,10 +26,10 @@ import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
 import {
+  type DbFetchScheduleApiDetailsParams,
   type IntervsWorkHrsEventMapType,
   type IntervsWorkHrsEventType,
   type ScheduleApiDetails,
-  type ScheduleDBDetailsParams,
 } from './types';
 import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
@@ -86,7 +86,7 @@ export class CandidatesSchedulingV2 {
   /**
    * find calender events for each interviewer
    */
-  public async fetchDetails(params: ScheduleDBDetailsParams) {
+  public async fetchDetails(params: DbFetchScheduleApiDetailsParams) {
     const db_details = await dbFetchScheduleApiDetails(params);
     const int_with_events = await fetchIntsCalEventsDetails(db_details);
 
