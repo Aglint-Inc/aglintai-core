@@ -1,4 +1,4 @@
-import { Text } from '@devlink/Text';
+
 import { SchedulerConflictCard } from '@devlink3/SchedulerConflictCard';
 import { ToggleWithText } from '@devlink3/ToggleWithText';
 import { Grid, Stack } from '@mui/material';
@@ -110,16 +110,12 @@ function ToogleList() {
                 key={index}
                 slotCountText={
                   <Stack direction={'row'} gap={1} alignItems={'center'}>
-                    <Text
-                      weight={'medium'}
-                      size={6}
-                      color={enabled ? color : disableColor}
-                      content={number}
-                    />
-                    <Text
-                      color={enabled ? color : disableColor}
-                      content={heading}
-                    />
+                    <p className={`font-semibold text-lg ${enabled ? `text-${color}` : `text-${disableColor}`}`}>
+                      {number}
+                    </p>
+                    <p className={`text-${enabled ? color : disableColor}`}>
+                      {heading}
+                    </p>
                   </Stack>
                 }
                 slotToggleWithText={

@@ -1,5 +1,4 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Text } from '@devlink/Text';
 import { RequestSetting } from '@devlink2/RequestSetting';
 import { Checkbox, MenuItem, Stack } from '@mui/material';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -93,7 +92,7 @@ function SettingsPopup({
                       }}
                       checked={isEnable}
                     />
-                    <Text content={title} />
+                    <p>{title}</p>
                   </Stack>
                 );
               })}
@@ -117,12 +116,12 @@ function SettingsPopup({
                   setAutoPilot(value);
                 }}
               />
-              <Text content={'Auto Pilot On'} />
+              <p>Auto Pilot On</p>
             </Stack>
           }
           slotAiFrequency={
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
-              <Text content={'Once every'} />
+              <p>Once every</p>
               <Stack position={'relative'} width={'70px'}>
                 <SelectionComp
                   height={30}
@@ -142,8 +141,8 @@ function SettingsPopup({
                   ))}
                 </SelectionComp>
               </Stack>
-              <Text content={'hours.'} />
-              <Text content={'Starting'} />
+              <p>hours.</p>
+              <p>Starting</p>
               <Stack position={'relative'} width={'130px'}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopTimePicker
@@ -168,7 +167,7 @@ function SettingsPopup({
                   />
                 </LocalizationProvider>{' '}
               </Stack>
-              <Text content={'every day.'} />
+              <p>every day.</p>
             </Stack>
           }
         />
