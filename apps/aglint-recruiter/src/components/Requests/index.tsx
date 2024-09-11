@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
-import { RequestEmpty } from './_common/Components/RequestEmpty';
+import { RequestEmpty } from './_common/components/RequestEmpty';
 import { checkFiltersApplied } from './_common/utils/checkFiltersApplied';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
@@ -75,7 +75,6 @@ const Requests = () => {
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
-        
         {showEmptyPage && !checkFiltersApplied({ filters }) ? (
           <RequestEmpty />
         ) : (
