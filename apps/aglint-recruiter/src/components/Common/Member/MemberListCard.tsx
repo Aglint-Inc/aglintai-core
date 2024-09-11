@@ -1,7 +1,9 @@
 import { Button } from '@components/ui/button';
 import {} from '@components/ui/dropdown-menu';
-import { ChevronDown, Pause } from 'lucide-react';
+import { Ban, Calendar, CheckCircle, ChevronDown, Pause } from 'lucide-react';
 import React from 'react';
+
+import UITypography from '../UITypography';
 
 interface MemberListCardProps {
   isDropdownIconVisible?: boolean;
@@ -71,7 +73,7 @@ export function MemberListCardShadcn({
   // slotBadge,
 }: MemberListCardProps) {
   return (
-    <div className='border border-gray-200 rounded-lg bg-white'>
+    <div className='border border-gray-200 rounded-lg overflow-hidden bg-white'>
       <div className='flex justify-between items-center p-3'>
         <div className='flex items-center space-x-5 '>
           {isProfileVisible && slotProfileImage}
@@ -95,15 +97,24 @@ export function MemberListCardShadcn({
 
         <div className='flex items-center space-x-4 '>
           {isScheduleCountVisible && (
-            <div className='flex space-x-2'>
-              <div className='px-3 py-1 bg-blue-50 rounded-md'>
-                <span className='text-sm'>{textConfirmed}</span>
+            <div className='flex gap-4'>
+              <div className='flex items-center space-x-1'>
+                <Calendar size={14} className='text-blue-600' />
+                <UITypography type='small' variant='p'>
+                  {textConfirmed}
+                </UITypography>
               </div>
-              <div className='px-3 py-1 bg-green-50 rounded-md'>
-                <span className='text-sm'>{countCompletedSchedule}</span>
+              <div className='flex items-center space-x-1'>
+                <CheckCircle size={14} className='text-green-600' />
+                <UITypography type='small' variant='p'>
+                  {countCompletedSchedule}
+                </UITypography>
               </div>
-              <div className='px-3 py-1 bg-red-50 rounded-md'>
-                <span className='text-sm'>{textCancel}</span>
+              <div className='flex items-center space-x-1'>
+                <Ban size={14} className='text-red-600' />
+                <UITypography type='small' variant='p'>
+                  {textCancel}
+                </UITypography>
               </div>
             </div>
           )}

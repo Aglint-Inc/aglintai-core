@@ -5,7 +5,7 @@ import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
-import { Popover, Stack, Typography } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Edit, EllipsisVertical, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -15,6 +15,7 @@ import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { UITextArea } from '@/components/Common/UITextArea';
+import UITypography from '@/components/Common/UITypography';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useAllDepartments } from '@/queries/departments';
@@ -160,6 +161,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
+
       {fetchingModule || loading || (!editModule && isFetching) ? (
         <Stack height={'100%'} width={'100%'}>
           <Loader />
@@ -445,7 +447,10 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
   }
   return (
     <>
-      <Typography fontWeight={500}>Connected Jobs</Typography>
+      <UITypography type='medium' variant='p'>
+        Connected Jobs
+      </UITypography>
+
       <Stack mt={2} spacing={1}>
         {filteredConnectedJobs.length > 0 ? (
           filteredConnectedJobs.map((job, i) => (
