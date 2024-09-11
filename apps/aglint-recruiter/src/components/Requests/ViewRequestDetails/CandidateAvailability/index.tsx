@@ -10,7 +10,6 @@ import {
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
-import { Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -251,8 +250,8 @@ function CandidateAvailability({
                 handleSubmit();
               }}
               className='w-full'
+              isLoading={submitting}
             >
-              {submitting && <Loader className='mr-2 h-4 w-4 animate-spin' />}
               {reRequestAvailability
                 ? 'Re-Request Availability'
                 : 'Send to Candidate'}
