@@ -1,7 +1,5 @@
 import { Button } from '@components/ui/button';
 
-import { Button } from '@components/ui/button';
-
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';
 import {
