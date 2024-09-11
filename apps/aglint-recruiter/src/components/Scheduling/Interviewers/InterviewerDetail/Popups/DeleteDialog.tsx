@@ -1,4 +1,4 @@
-import { Text } from '@devlink/Text';
+
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
 import { Stack } from '@mui/material';
@@ -126,13 +126,9 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
         }
       >
         <>
-          <Text
-            color={'neutral'}
-            size={2}
-            content={
-              'By clicking remove the member will be permanently removed from this interview type'
-            }
-          />
+          <p className="text-sm text-muted-foreground">
+            By clicking remove the member will be permanently removed from this interview type
+          </p>
           {isFetching ? (
             <Stack>
               <SkeletonParagraph />
@@ -161,18 +157,14 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
                           flexDirection={'column'}
                           spacing={'var(--space-2)'}
                         >
-                          <Text
-                            size={1}
-                            color={'neutral'}
-                            content={connectedJobs
+                          <p className="text-sm text-muted-foreground">
+                            {connectedJobs
                               .flatMap((job) => job.job_title)
                               .join(', ')}
-                          />
-                          <Text
-                            size={1}
-                            color={'neutral'}
-                            content={`If user exist in previous scheduled interviews, the user will be removed from those schedules.`}
-                          />
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            If user exist in previous scheduled interviews, the user will be removed from those schedules.
+                          </p>
                         </Stack>
                       }
                     />

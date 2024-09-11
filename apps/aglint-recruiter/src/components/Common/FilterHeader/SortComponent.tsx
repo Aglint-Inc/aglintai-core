@@ -1,5 +1,4 @@
 import { Button } from '@components/ui/button';
-import { Text } from '@devlink/Text';
 import { MenuItem, Popover, Select, Stack } from '@mui/material';
 import { ChevronDownIcon } from 'lucide-react';
 import React, { type ReactNode } from 'react';
@@ -44,7 +43,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
   };
   return (
     <Stack direction={'row'} alignItems={'center'} gap={1}>
-      <Text color={'neutral'} size={1} content={'Sort by'} />
+      <p className="text-muted-foreground text-sm">Sort by</p>
       <Button
         variant='outline'
         onClick={handleClick}

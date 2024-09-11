@@ -31,7 +31,7 @@ const InterviewScheduled = () => {
     useRequestProgressProvider();
   const { recruiter } = useAuthDetails();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
-  const [rsvpSending, setRsvpSending] = React.useState(false);
+  const [, setRsvpSending] = React.useState(false);
   const event_status =
     reqProgressMap['CAND_CONFIRM_SLOT']?.[0] ??
     reqProgressMap['SCHEDULE_INTERVIEW_SLOT']?.[0];
@@ -60,6 +60,7 @@ const InterviewScheduled = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleDeleteScheduleAction = async (workflowActionId: string) => {
     try {
       await deleteRequestWorkflowAction(workflowActionId);
@@ -68,6 +69,7 @@ const InterviewScheduled = () => {
       toast.error('Failed to remove action');
     }
   };
+  // eslint-disable-next-line no-unused-vars
   const handleSendRsVpReminder = async () => {
     try {
       setRsvpSending(true);
