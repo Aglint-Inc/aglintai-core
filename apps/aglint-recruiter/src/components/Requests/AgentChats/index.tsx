@@ -1,5 +1,7 @@
 
 
+import { Button } from '@components/ui/button';
+
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';
 import {
@@ -8,7 +10,6 @@ import {
   setViewList,
   useAgentChatStore,
 } from './ChatMessageList/store';
-import { Button } from '@components/ui/button';
 
 function AgentChats() {
   const { chatList } = useAgentChatStore((state) => ({

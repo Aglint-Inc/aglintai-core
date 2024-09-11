@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { Lightbulb, WandSparkles } from 'lucide-react';

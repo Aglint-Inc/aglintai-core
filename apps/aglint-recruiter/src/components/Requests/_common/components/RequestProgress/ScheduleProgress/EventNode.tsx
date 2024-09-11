@@ -2,10 +2,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { Edit, Loader, RefreshCw, Trash } from 'lucide-react';
+import { Edit, Loader, Trash } from 'lucide-react';
 import React from 'react';
 
-import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
@@ -30,7 +29,7 @@ const EventNode = ({
 }) => {
   const { request_workflow } = useRequest();
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
-  const [onHover, setOnHover] = React.useState(false);
+  const [_onHover, setOnHover] = React.useState(false);
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
   if (eventProg) {
