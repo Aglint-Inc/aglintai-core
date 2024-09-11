@@ -46,12 +46,12 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RequestProgress from '../_common/Components/RequestProgress';
+import { useMeetingList } from '../_common/hooks';
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
-import ResendRequests from './Components/ResendRequests';
+import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
-import { useMeetingList } from './hooks';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -423,7 +423,7 @@ export default function ViewRequestDetails() {
                   <SessionCards sessions={sessions} />
                 </CardContent>
               </Card>
-              <ResendRequests />
+              <RecentRequests applicationId={selectedRequest?.application_id} />
             </div>
             <div className='w-4/12 flex flex-col space-y-4'>
               <Alert>

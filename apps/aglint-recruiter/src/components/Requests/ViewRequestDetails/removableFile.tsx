@@ -31,6 +31,7 @@ import Loader from '../../Common/Loader';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../_common/Components/RequestProgress';
+import { useMeetingList } from '../_common/hooks';
 import { getStatusColor } from '../_common/utils/getStatusColor';
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
@@ -39,7 +40,6 @@ import MemberList, { useMemberList } from './Components/MemberList';
 import PriorityList from './Components/PriorityList';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
-import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 // import RequestProgress, {
