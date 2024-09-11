@@ -19,7 +19,9 @@ import {
   Edit2,
   Eye,
   MapPin,
+  Plus,
   User,
+  WandSparkles,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -42,12 +44,14 @@ import { type Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
+import RequestProgress from '../_common/Components/RequestProgress';
 import MemberCard from './Components/MemberCard';
 import { useMemberList } from './Components/MemberList';
 import ResendRequests from './Components/ResendRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import UpdateMembers from './Components/UpdateMembers';
 import { useMeetingList } from './hooks';
+import { Switch } from '@components/ui/switch';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -401,18 +405,31 @@ export default function ViewRequestDetails() {
                 </AlertDescription>
                 <div className='flex flex-row gap-2 justify-end mt-4'>
                   <Button variant='outline'>Get Availability</Button>
-                  <Button>
-                    <Bot className='h-4 w-4 mr-2' />
-                    Schedule with Aglint AI
-                  </Button>
+                  <Button>Send Self Scheduling</Button>
                 </div>
               </Alert>
 
               <Card>
-                <CardHeader>
-                  <CardTitle className='text-md'>Scheduling Progress</CardTitle>
+                <CardHeader className='flex justify-between items-center'>
+                  <div className='flex  flex-row  w-full justify-between items-center'>
+                    <CardTitle className='text-lg'>Request Progress</CardTitle>
+                    <div className='flex items-center space-x-2'>
+                      {/* {reqTriggerActionsMap && Object.keys(reqTriggerActionsMap).length > 0 && ( */}
+                      {/* <Button size='sm'>
+                        <WandSparkles className='h-4 w-4 mr-2' />
+                        Proceed with Aglint AI
+                      </Button> */}
+                      {/* )} */}
+                      <div className='flex items-center space-x-2'>
+                        <span className='text-sm'>Automaton</span>
+                        <Switch />
+                      </div>
+                    </div>
+                  </div>
                 </CardHeader>
-                <CardContent>{/* <RequestProgress /> */}</CardContent>
+                <CardContent>
+                  <RequestProgress />
+                </CardContent>
               </Card>
 
               <Card className='mb-4'>
