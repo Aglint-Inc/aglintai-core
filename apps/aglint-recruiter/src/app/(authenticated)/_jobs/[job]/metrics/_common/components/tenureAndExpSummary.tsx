@@ -1,9 +1,10 @@
 import { CardWithNumber } from '@devlink3/CardWithNumber';
-import { NoData } from '@devlink3/NoData';
 import { type FC } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
+
+import { NoDataAvailable } from './nodata';
 
 const TenureAndExpSummary = () => {
   const {
@@ -26,8 +27,8 @@ const TenureAndExpSummary = () => {
   if (!data) {
     return (
       <>
-        <CardWithNumber isEmpty={true} slotEmpty={<NoData />} />
-        <CardWithNumber isEmpty={true} slotEmpty={<NoData />} />
+        <CardWithNumber isEmpty={true} slotEmpty={<NoDataAvailable />} />
+        <CardWithNumber isEmpty={true} slotEmpty={<NoDataAvailable />} />
       </>
     );
   }
