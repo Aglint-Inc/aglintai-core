@@ -1,13 +1,20 @@
 /* eslint-disable no-unused-vars */
-import { Label } from '@components/ui/label';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { cn } from '@lib/utils';
+import { Check } from 'lucide-react';
 import React, { useState } from 'react';
-
-import UITextField from '@/components/Common/UITextField';
 
 import { type MemberType } from '../Scheduling/InterviewTypes/types';
 import MemberCard from './MemberCard';
@@ -17,11 +24,13 @@ function UpdateMembers({
   handleChange,
   side = 'left',
   members,
+  placeholder = 'Search members...',
 }: {
   updateButton: React.ReactNode;
   handleChange: (member: MemberType) => void;
   side?: 'top' | 'right' | 'bottom' | 'left';
   members: MemberType[];
+  placeholder?: string;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
@@ -35,36 +44,45 @@ function UpdateMembers({
         align='start'
         side={side}
       >
-        <UITextField
-          placeholder='Search members'
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className='w-full h-8'
-          width={'100%'}
-        />
-        <div className='flex flex-col space-y-2 max-h-[300px] overflow-auto'>
-          {members
-            .filter((member) =>
-              member.first_name.toLowerCase().includes(value.toLowerCase()),
-            )
-            .map((member) => (
-              <Label
-                key={member.user_id}
-                onClick={() => {
-                  handleChange(member);
-                  setOpen(false);
-                }}
-                className='cursor-pointer hover:bg-slate-200 p-2 rounded-md'
-              >
-                <MemberCard selectedMember={member} />
-              </Label>
-            ))}
-          {members.filter((member) =>
-            member.first_name.toLowerCase().includes(value.toLowerCase()),
-          ).length === 0 ? (
-            <p>No member found</p>
-          ) : null}
-        </div>
+        <Command>
+          <CommandInput placeholder={placeholder} />
+          <CommandList>
+            <CommandEmpty>No members found.</CommandEmpty>
+            <CommandGroup>
+              {members.map((member) => (
+                <CommandItem
+                  key={member.user_id}
+                  value={
+                    member.first_name +
+                    ' ' +
+                    member.last_name +
+                    ' ' +
+                    member.role
+                  }
+                  onSelect={(currentValue) => {
+                    handleChange(member);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      value ===
+                        member.first_name +
+                          ' ' +
+                          member.last_name +
+                          ' ' +
+                          member.role
+                        ? 'opacity-100'
+                        : 'opacity-0',
+                    )}
+                  />
+                  <MemberCard selectedMember={member} />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
       </PopoverContent>
     </Popover>
   );
