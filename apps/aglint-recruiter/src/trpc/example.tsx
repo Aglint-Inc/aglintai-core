@@ -5,14 +5,14 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { api } from './client';
 
-const useHello = () => {
+export const useHello = () => {
   const { recruiter_id } = useAuthDetails();
   return api.example.helloWorld.hello.useQuery({
     helloId: recruiter_id,
   });
 };
 
-const useWorld = () => {
+export const useWorld = () => {
   const { recruiter_id } = useAuthDetails();
   const { mutate } = api.example.helloWorld.world.useMutation();
   const handleWorld = () => {

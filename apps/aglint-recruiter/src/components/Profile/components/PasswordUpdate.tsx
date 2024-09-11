@@ -1,13 +1,11 @@
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { PasswordUpdated } from '@devlink/PasswordUpdated';
-import { UserPasswordChange } from '@devlink/UserPasswordChange';
-import { Dialog, Stack } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { handleUpdatePassword } from '@/context/AuthContext/utils';
 
 import Icon from '../../Common/Icons/Icon';
-import UITypography from '../../Common/UITypography';
 import { ProfileForms } from '../ProfileForms';
 import {
   type FormValues,
@@ -133,63 +131,49 @@ export const PasswordUpdate = () => {
           }}
         />
       </Dialog>
-      <UserPasswordChange
-        slotPassword={
-          <>
-            <ProfileForms
-              profile={password}
-              setProfile={setPassword}
-              setChanges={() => setPasswordChange(true)}
-            />
-          </>
-        }
-        slotSavePassword={
-          <>
-            {error && (
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'start'}
-                marginBottom={'var(--space-3)'}
-              >
-                <Icon
-                  height='12px'
-                  color={'var(--error-9)'}
-                  variant='AlertIcon'
-                />
-                <UITypography type='small' color={'var(--error-11)'}>
-                  {error}
-                </UITypography>
-              </Stack>
-            )}
-            <Stack
-              style={{
-                pointerEvents: loading ? 'none' : 'auto',
-                zIndex: 0,
-              }}
-              width={'200px'}
-            >
-              <ButtonSolid
-                textButton='Update Password'
-                size={2}
-                isLoading={loading}
-                isDisabled={
-                  !passwordChange ||
-                  password.password.value === '' ||
-                  password.confirmPassword.value === ''
-                }
-                onClickButton={{
-                  onClick: async () => {
-                    setLoading(true);
-                    if (!loading) await handleSubmitPassword();
-                    setLoading(false);
-                  },
-                }}
+      <div className="space-y-6">
+        <div>
+          <ProfileForms
+            profile={password}
+            setProfile={setPassword}
+            setChanges={() => setPasswordChange(true)}
+          />
+        </div>
+        <div>
+          {error && (
+            <div className="flex items-center space-x-2 mb-3 text-destructive">
+              <Icon
+                height='12px'
+                color={'currentColor'}
+                variant='AlertIcon'
               />
-            </Stack>
-          </>
-        }
-      />
+              <p className="text-sm">{error}</p>
+            </div>
+          )}
+          <div
+            className={`w-[200px] ${loading ? 'pointer-events-none' : ''}`}
+            style={{ zIndex: 0 }}
+          >
+            <ButtonSolid
+              textButton='Update Password'
+              size={2}
+              isLoading={loading}
+              isDisabled={
+                !passwordChange ||
+                password.password.value === '' ||
+                password.confirmPassword.value === ''
+              }
+              onClickButton={{
+                onClick: async () => {
+                  setLoading(true);
+                  if (!loading) await handleSubmitPassword();
+                  setLoading(false);
+                },
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 };

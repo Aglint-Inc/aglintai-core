@@ -22,10 +22,16 @@ export const changeInterviewer = async (payload: FuncParams) => {
       .select()
       .eq('request_id', payload.request_id),
   );
+  const [meeting_details] = supabaseWrap(
+    await supabaseAdmin
+      .from('meeting_details')
+      .select()
+      .eq('id', payload.session_id),
+  );
   const api_payload1: APIFindAltenativeTimeSlot = {
     session_id: cancel_rec.session_id,
     declined_int_sesn_reln_id: cancel_rec.session_relation_id,
-    user_tz: 'Asia/Colombo',
+    user_tz: meeting_details.confirmed_candidate_tz,
   };
 
   const { data } = await axios.post(

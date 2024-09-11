@@ -1,6 +1,6 @@
 'use client';
 
-import { SlotComp } from '@devlink/SlotComp';
+
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { Printer, Text } from 'lucide-react';
@@ -52,7 +52,9 @@ export function InterviewMemberList({
         </div>
 
         <div className='slot_newtab_pill'>
-          {slotNewTabPill ?? <SlotComp componentName='NewTabPill' />}
+          {slotNewTabPill ?? (
+              <div>NewTabPill</div>
+          )}
         </div>
 
         <div className='iml-new-body-wrap flex '>

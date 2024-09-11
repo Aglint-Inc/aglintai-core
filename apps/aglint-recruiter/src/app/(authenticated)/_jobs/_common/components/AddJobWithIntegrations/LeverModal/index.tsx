@@ -1,3 +1,4 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { AtsCard } from '@devlink/AtsCard';
 import { AtsJobs } from '@devlink/AtsJobs';
 import { ButtonSolid } from '@devlink/ButtonSolid';
@@ -6,7 +7,6 @@ import { IntegrationModal } from '@devlink/IntegrationModal';
 import { LeverApiKey } from '@devlink/LeverApiKey';
 import { LoadingJobsAts } from '@devlink/LoadingJobsAts';
 import { NoResultAts } from '@devlink/NoResultAts';
-import { SkeletonLoaderAtsCard } from '@devlink/SkeletonLoaderAtsCard';
 import { Dialog, Stack } from '@mui/material';
 import LoaderLever from '@public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
@@ -304,9 +304,9 @@ export default function LeverModalComp() {
                     )
                   ) : (
                     <>
-                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
                     </>
                   )
                 }

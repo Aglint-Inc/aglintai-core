@@ -1,7 +1,7 @@
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Stack, Typography } from '@mui/material';
 
-import { RangePicker } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
+import { RangePicker } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
 
 import { useSelfSchedulingDrawer } from '../../hooks';
 import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';

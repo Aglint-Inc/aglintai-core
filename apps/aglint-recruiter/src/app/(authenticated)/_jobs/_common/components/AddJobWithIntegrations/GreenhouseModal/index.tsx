@@ -1,8 +1,8 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { AtsCard } from '@devlink/AtsCard';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { NoResultAts } from '@devlink/NoResultAts';
-import { SkeletonLoaderAtsCard } from '@devlink/SkeletonLoaderAtsCard';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -173,9 +173,9 @@ export function GreenhouseModal() {
               )
             ) : (
               <>
-                <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
+                <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
+                <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
               </>
             )}
           </Stack>

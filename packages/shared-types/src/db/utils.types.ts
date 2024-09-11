@@ -1,5 +1,7 @@
+import { z } from 'zod';
 import type { DatabaseTable } from '..';
 import type { Database } from './schema.types';
+import { agentSelfScheduleInstruction } from '@aglint/shared-utils';
 
 export type Custom<
   T extends Record<any, any>[] | Record<any, any>,
@@ -68,17 +70,7 @@ type TimeRange = { startTime: Timestamp; endTime: Timestamp }[];
 export type CustomAgentInstructionPayload = {
   agent: {
     instruction: string;
-    ai_response_status: 'not_started' | 'processing' | 'success' | 'failed';
-    ai_response: {
-      scheduleWithinNumDays: number;
-      schedulewithMaxNumDays: number;
-      prefferredInterviewTimes: TimeRange;
-      excludeInterviewTimes: TimeRange;
-      maxOptionsToCandidates: number;
-      balanceWorkloadAmongInterviewers: boolean;
-      scheduleOutsideOfficeHoursForTimezoneDifferences: boolean;
-      preferredInterviewer: string[];
-    };
+    ai_response: z.infer<typeof agentSelfScheduleInstruction>;
   };
   email?: CustomEmailPayload['email'];
 };

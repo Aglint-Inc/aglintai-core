@@ -1,6 +1,5 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { ActivitiesCard } from '@devlink3/ActivitiesCard';
-import { SkeletonActivitiesCard } from '@devlink3/SkeletonActivitiesCard';
 import dayjs from 'dayjs';
 import { FileText } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -20,9 +19,14 @@ export const Activity = () => {
   if (status === 'pending')
     return (
       <Loader count={10}>
-        <SkeletonActivitiesCard
-          slotSkeleton={<Skeleton className='h-10 w-full' />}
-        />
+        <div className="flex items-center space-x-4 p-4 border rounded-lg shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse" />
+          <div className="space-y-2 flex-1">
+            <div className="h-4 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded animate-pulse w-5/6" />
+          </div>
+          <Skeleton className='h-10 w-full' />
+        </div>
       </Loader>
     );
   if (status === 'error') return <>Something went wrong</>;

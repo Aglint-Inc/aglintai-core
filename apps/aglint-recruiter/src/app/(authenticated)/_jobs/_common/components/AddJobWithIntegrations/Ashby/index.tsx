@@ -1,3 +1,4 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { AshbyApiKey } from '@devlink/AshbyApiKey';
 import { AshbyAtsJob } from '@devlink/AshbyAtsJob';
 import { AtsCard } from '@devlink/AtsCard';
@@ -7,7 +8,6 @@ import { IntegrationModal } from '@devlink/IntegrationModal';
 import { LeverApiKey } from '@devlink/LeverApiKey';
 import { LoadingJobsAts } from '@devlink/LoadingJobsAts';
 import { NoResultAts } from '@devlink/NoResultAts';
-import { SkeletonLoaderAtsCard } from '@devlink/SkeletonLoaderAtsCard';
 import { Dialog, Stack, Typography } from '@mui/material';
 import LoaderLever from '@public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
@@ -311,9 +311,12 @@ export function AshbyModalComp() {
                     )
                   ) : (
                     <>
-                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                      <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className="w-full h-16 mb-2" />
                     </>
                   )
                 }

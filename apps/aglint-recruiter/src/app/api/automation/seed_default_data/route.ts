@@ -3,7 +3,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
 import { seed_email_templates } from '@/utils/seedCompanyData/seed_email_templates';
-import { seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
+import { modified_seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export async function POST(req) {
@@ -86,7 +86,7 @@ const seedWorkFlow = async (recruiter_id: string) => {
     DatabaseTable['company_email_template'][]
   > = await getAlltemps(recruiter_id);
   const supabaseAdmin = getSupabaseServer();
-  const promies = seed_workflow_actions.map(async (work_flow_act) => {
+  const promies = modified_seed_workflow_actions.map(async (work_flow_act) => {
     const [workflow] = supabaseWrap(
       await supabaseAdmin
         .from('workflow')
