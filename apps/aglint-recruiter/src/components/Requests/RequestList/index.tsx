@@ -30,9 +30,9 @@ import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from '../_common/Components/RequestCard';
-import RequestListFilter from '../_common/Components/RequestListFilter';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
+import { RequestCard } from '../_common/components/RequestCard';
+import RequestListFilter from '../_common/components/RequestListFilter';
 import { useRequestCount } from '../_common/hooks';
 import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
 import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
@@ -321,44 +321,57 @@ function RequestList() {
 
   return (
     <>
-      <div className='sticky top-0 z-50 bg-gray-50 pt-4 pb-2'>
-        <div className='mb-2 flex flex-row justify-between'>
-          <div className='flex flex-col gap-1'>
-            <h1 className='text-md font-semibold'>
-              👋 Hey,{' '}
-              {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
-            </h1>
-            <p className='text-sm text-muted-foreground'>
-              {formatRequestHeadingText(
-                requestCount?.card.urgent_request ?? 0,
-                requestCount?.card.standard_request ?? 0,
-                'today',
-              )}
-            </p>
+      <div
+        style={{ paddingLeft: '3rem', paddingRight: '3rem', marginTop: '1rem' }}
+        className='flex justify-center items-center w-full'
+      >
+        {' '}
+        {/* Changed padding from 20 to 40 */}
+        <div className='container'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-end justify-between'>
+              <div className='flex flex-col gap-1'>
+                <h1 className='text-lg font-semibold'>
+                  👋 Hey,{' '}
+                  {getFullName(
+                    recruiterUser.first_name,
+                    recruiterUser.last_name,
+                  )}
+                  !
+                </h1>
+                <p className='text-sm text-muted-foreground'>
+                  {formatRequestHeadingText(
+                    requestCount?.card.urgent_request ?? 0,
+                    requestCount?.card.standard_request ?? 0,
+                    'today',
+                  )}
+                </p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <h3 className='text-sm text-muted-foreground font-semibold'>
+                  {open_request + 1} Open Requests ({completed_percentage}%
+                  complete)
+                </h3>
+                <Progress value={completed_percentage} className='w-full' />
+              </div>
+            </div>
+            <div className='flex justify-end'>
+              <RequestListFilter />
+              <Tabs
+                value={view}
+                onValueChange={(value) => setView(value as 'list' | 'kanban')}
+              >
+                <TabsList className='h-8'>
+                  <TabsTrigger value='list'>
+                    <LayoutList className='h-4 w-4' />
+                  </TabsTrigger>
+                  <TabsTrigger value='kanban'>
+                    <Columns className='h-4 w-4' />
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
           </div>
-          <div className='flex flex-col gap-1'>
-            <h3 className='text-sm text-muted-foreground font-semibold'>
-              {open_request + 1} Open Requests ({completed_percentage}%
-              complete)
-            </h3>
-            <Progress value={completed_percentage} className='w-full' />
-          </div>
-        </div>
-        <div className='flex justify-end'>
-          <RequestListFilter />
-          <Tabs
-            value={view}
-            onValueChange={(value) => setView(value as 'list' | 'kanban')}
-          >
-            <TabsList className='h-8'>
-              <TabsTrigger value='list'>
-                <LayoutList className='h-4 w-4 mr-2' />
-              </TabsTrigger>
-              <TabsTrigger value='kanban'>
-                <Columns className='h-4 w-4 mr-2' />
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
         </div>
       </div>
 
