@@ -186,6 +186,7 @@ const getInitialActionDetails = ({
           body: template?.body ?? '',
           subject: template?.subject ?? '',
         },
+        agent: (ACTION_TRIGGER_MAP[editTrigger][0].value.payload as any)?.agent,
       },
     };
     return wAction;

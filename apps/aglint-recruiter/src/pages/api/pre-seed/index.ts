@@ -7,7 +7,7 @@ import {
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { seed_email_templates } from '@/utils/seedCompanyData/seed_email_templates';
-import { seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
+import { modified_seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
@@ -131,7 +131,7 @@ const seedWorkFlow = async (
   recruiter_id: string,
   company_email_template: DatabaseTable['company_email_template'][],
 ) => {
-  const promies = seed_workflow_actions.map(async (work_flow_act) => {
+  const promies = modified_seed_workflow_actions.map(async (work_flow_act) => {
     const [workflow] = supabaseWrap(
       await supabaseAdmin
         .from('workflow')
