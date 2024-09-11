@@ -3,14 +3,12 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { PageLayout } from '@devlink2/PageLayout';
 import { BannerLoading } from '@devlink3/BannerLoading';
 import { DarkPill } from '@devlink3/DarkPill';
 import { GraphBlock } from '@devlink3/GraphBlock';
 import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
 import { JobRole } from '@devlink3/JobRole';
 import { JobsBanner } from '@devlink3/JobsBanner';
-import { NoData } from '@devlink3/NoData';
 import { PipeLine } from '@devlink3/PipeLine';
 import { RoleList } from '@devlink3/RoleList';
 import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
@@ -24,6 +22,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -43,6 +42,7 @@ import { capitalize, capitalizeAll } from '@/utils/text/textUtils';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
+import { NoDataAvailable } from './nodata';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 export const JobDashboard = () => {
@@ -107,7 +107,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotBody={
           <JobDashboardDev
             isJobStatsVisible={isScoringEnabled}
@@ -323,7 +323,7 @@ const Schedules = () => {
   const { push } = useRouter();
   if (status === 'pending') return <Loader />;
   if (status === 'error') return <>Error</>;
-  if (data.length === 0) return <NoData />;
+  if (data.length === 0) return <NoDataAvailable />;
   const cards = data
     .sort(
       (a, b) =>

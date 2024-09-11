@@ -1,5 +1,4 @@
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSoft } from '@devlink/ButtonSoft';
+import { Button } from '@components/ui/button';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { MultidayCard } from '@devlink2/MultidayCard';
@@ -63,13 +62,13 @@ function DaySessionCard({
                 !daySlots.map((ele) => ele.round).includes(cardIndex + 1)
               }
             >
-              <ButtonSoft
-                size={1}
-                textButton={'Pick Slots'}
-                onClickButton={{
-                  onClick: () => handleOpen(cardIndex + 1),
-                }}
-              />
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => handleOpen(cardIndex + 1)}
+              >
+                Pick Slots
+              </Button>
             </ShowCode.When>
           </ShowCode>
         }
@@ -82,13 +81,13 @@ function DaySessionCard({
                 daySlots.map((ele) => ele.round).includes(cardIndex + 1)
               }
             >
-              <ButtonGhost
-                size={1}
-                onClickButton={{
-                  onClick: () => handleOpen(cardIndex + 1),
-                }}
-                textButton={'Change'}
-              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleOpen(cardIndex + 1)}
+              >
+                Change
+              </Button>
             </ShowCode.When>
           </ShowCode>
         }

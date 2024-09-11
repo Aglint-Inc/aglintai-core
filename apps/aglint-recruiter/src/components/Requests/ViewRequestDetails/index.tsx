@@ -3,13 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
 import {
@@ -26,20 +20,20 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import SideDrawerEdit from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/StageSessions/EditDrawer';
-import CollapseContent from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
-import { useEditSession } from '@/components/ApplicationDetail/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
+import { useMemberList } from '@/hooks/useMemberList';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import RequestProgress from '../_common/Components/RequestProgress';
+import MemberCard from '../../Common/MemberCard';
+import UpdateMembers from '../../Common/UpdateMembers';
+import RequestProgress from '../_common/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,
@@ -47,17 +41,18 @@ import {
 } from '../_common/constant';
 import { useMeetingList } from '../_common/hooks';
 import CandidateAvailability from './CandidateAvailability';
-import MemberCard from './Components/MemberCard';
-import { useMemberList } from './Components/MemberList';
 import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
-import UpdateMembers from './Components/UpdateMembers';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 import RequestDecline from './RequestNextSteps/RequestDecline';
 import ScheduleOptions from './RequestNextSteps/ScheduleOptions';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
+
+import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
+import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
+import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -350,10 +345,10 @@ export default function ViewRequestDetails() {
                                 },
                               });
                             }}
-                            members={members}
                             updateButton={
                               <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
                             }
+                            members={members}
                           />
                         </div>
                         <MemberCard selectedMember={selectedMember} />
@@ -455,7 +450,7 @@ export default function ViewRequestDetails() {
               </CardContent>
             </Card>
 
-            <Card className='mb-4'>
+            {/* <Card className='mb-4'>
               <CardHeader>
                 <CardTitle className='text-md'>Add Automations</CardTitle>
                 <CardDescription>
@@ -488,7 +483,7 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>

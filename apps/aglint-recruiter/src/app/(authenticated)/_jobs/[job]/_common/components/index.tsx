@@ -1,8 +1,8 @@
 import { JobDetails } from '@devlink2/JobDetails';
-import { PageLayout } from '@devlink2/PageLayout';
 import { CircularProgress, Stack } from '@mui/material';
 
 import Loader from '@/components/Common/Loader';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useApplicationsChecklist, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
@@ -33,7 +33,7 @@ const ApplicationsComponent = () => {
   const checklist = useApplicationsChecklist();
   return (
     <DNDProvider>
-      <PageLayout
+      <UIPageLayout
         slotBody={
           <JobDetails
             isImportCandidates={false}

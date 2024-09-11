@@ -1,5 +1,4 @@
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { PageLayout } from '@devlink2/PageLayout';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -11,6 +10,7 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { ShowCode } from '../Common/ShowCode';
+import { UIPageLayout } from '../Common/UIPageLayout';
 import SchedulingDashboard from './Dashboard';
 import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import MySchedule from './MySchedules';
@@ -51,7 +51,7 @@ function SchedulingMainComp() {
     <>
       <SeoSettings tab={tab} />
 
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={<>{breadcrum}</>}
         slotTopbarRight={
           <>

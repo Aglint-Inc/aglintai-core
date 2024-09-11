@@ -4,8 +4,6 @@ import {
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Page404 } from '@devlink/Page404';
-import { AvailabilityEmpty } from '@devlink2/AvailabilityEmpty';
 import { CalendarPick } from '@devlink2/CalendarPick';
 import { DatePicker } from '@devlink2/DatePicker';
 import { PickSlotDay } from '@devlink2/PickSlotDay';
@@ -13,6 +11,8 @@ import { TimePick } from '@devlink2/TimePick';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Calendar } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -469,7 +469,15 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                         .length === 0
                     }
                   >
-                    <AvailabilityEmpty />
+                    <div className='flex flex-col items-center justify-center p-8 text-center'>
+                      <Calendar className='w-12 h-12 text-gray-400 mb-2' />
+                      <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                        No availability
+                      </h3>
+                      <p className='text-sm text-gray-500'>
+                        There are no available time slots at the moment.
+                      </p>
+                    </div>
                   </ShowCode.When>
                   <ShowCode.Else>
                     {selectedDateSlots.length > 0 &&
@@ -500,9 +508,15 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   }
   if (!candidateRequestAvailability) {
     return (
-      <Stack>
-        <Page404 />
-      </Stack>
+      <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
+        <div className='text-center'>
+          <h1 className='text-6xl font-bold text-gray-800 mb-4'>404</h1>
+          <p className='text-xl text-gray-600 mb-8'>Page not found</p>
+          <div className='flex justify-center'>
+            <AlertCircle className='w-16 h-16 text-red-500' />
+          </div>
+        </div>
+      </div>
     );
   }
 }

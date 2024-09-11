@@ -1,5 +1,4 @@
-import { JobEmptyState } from '@devlink/JobEmptyState';
-import { EmptyState as DevlinkEmptyState } from '@devlink2/EmptyState';
+
 import { Stack } from '@mui/material';
 import NoApplicants from '@public/lottie/NoApplicants';
 import React from 'react';
@@ -237,31 +236,69 @@ function EmptyState({ type }: { type: TabType }) {
         <Stack>No {type} data found</Stack>
       </Stack>
     );
-  if (type === 'job-jobList') return <JobEmptyState />;
+  if (type === 'job-jobList')
+    return (
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon height='60' width='80' variant='EmptyState' />
+        </div>
+        <p className='text-sm'>No jobs found.</p>
+      </div>
+    );
   if (type === 'schedule-NoInterview')
     return (
-      <DevlinkEmptyState
-        slotIcons={<Icon height='60' width='80' variant='EmptyState' />}
-        textDescription={'No interview types found.'}
-      />
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon height='60' width='80' variant='EmptyState' />
+        </div>
+        <p className='text-sm'>No interview types found.</p>
+      </div>
     );
   if (type === 'schedule-NoActivity')
     return (
-      <DevlinkEmptyState
-        slotIcons={
-          <Icon variant='ActivityTimeline' width='50px' height='50px' />
-        }
-        textDescription={'No activities found.'}
-      />
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon variant='ActivityTimeline' width='50' height='50' />
+        </div>
+        <p className='text-sm'>No activities found.</p>
+      </div>
     );
   if (type === 'task-NoCandidate')
-    return <DevlinkEmptyState textDescription={'No candidates found.'} />;
+    return (
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon height='60' width='80' variant='EmptyState' />
+        </div>
+        <p className='text-sm'>No candidates found.</p>
+      </div>
+    );
   if (type === 'task-NoJob')
-    return <DevlinkEmptyState textDescription='No jobs found.' />;
+    return (
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon height='60' width='80' variant='EmptyState' />
+        </div>
+        <p className='text-sm'>No jobs found.</p>
+      </div>
+    );
   if (type === 'task-NoSession')
-    return <DevlinkEmptyState textDescription={'No sessions found.'} />;
+    return (
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon height='60' width='80' variant='EmptyState' />
+        </div>
+        <p className='text-sm'>No sessions found.</p>
+      </div>
+    );
   if (type === 'task-NoProgress')
-    return <DevlinkEmptyState textDescription={'No progress found.'} />;
+    return (
+      <div className='flex flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-1'>
+          <Icon height='60' width='80' variant='EmptyState' />
+        </div>
+        <p className='text-sm'>No progress found.</p>
+      </div>
+    );
 }
 
 export default EmptyState;

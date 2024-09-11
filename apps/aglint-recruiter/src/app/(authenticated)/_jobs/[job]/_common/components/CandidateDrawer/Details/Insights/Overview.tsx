@@ -1,5 +1,5 @@
+import { Skeleton } from '@components/ui/skeleton';
 import { CandidateOverview } from '@devlink/CandidateOverview';
-import { SkeletonTextSmall } from '@devlink/SkeletonTextSmall';
 import { Stack } from '@mui/material';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -13,8 +13,8 @@ const Overview = () => {
       <CandidateOverview
         textOverview={
           <Stack position={'relative'} gap={'4px'} width={'100%'}>
-            <SkeletonTextSmall styleWidth={{ style: { width: '100%' } }} />
-            <SkeletonTextSmall styleWidth={{ style: { width: '60%' } }} />
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-3/5" />
           </Stack>
         }
       />

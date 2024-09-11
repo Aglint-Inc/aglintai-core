@@ -11,14 +11,13 @@ import {
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AllInterviewers } from '@devlink2/AllInterviewers';
-import { EmptyState } from '@devlink2/EmptyState';
-import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
@@ -39,7 +38,7 @@ const InterviewTab = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   return (
-    <PageLayout
+    <UIPageLayout
       slotTopbarRight={
         recruiter?.recruiter_preferences?.greenhouse ? (
           <></>
@@ -250,10 +249,10 @@ const InterviewTab = () => {
                   />
                 </>
               ) : (
-                <EmptyState
-                  textDescription={'No interviewers found'}
-                  slotIcons={<Search size={9} />}
-                />
+                <div className="flex flex-col items-center justify-center h-64 text-center">
+                  <Search className="w-12 h-12 text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">No interviewers found</p>
+                </div>
               )}
             </Stack>
           </ShowCode.When>

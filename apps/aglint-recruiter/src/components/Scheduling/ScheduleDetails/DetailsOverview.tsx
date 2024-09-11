@@ -12,7 +12,6 @@ import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
-import CandidateInfo from '../Common/CandidateInfo';
 import Banners from './Banners';
 import CancelScheduleDialog from './CancelScheduleDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
@@ -125,18 +124,6 @@ function DetailsOverview({
           })}
         slotTabContent={
           <ShowCode>
-            <ShowCode.When
-              isTrue={
-                router.query.tab === 'candidate_details' || !router.query.tab
-              }
-            >
-              {schedule && (
-                <CandidateInfo
-                  application_id={schedule.application_id}
-                  job_id={schedule.job.id}
-                />
-              )}
-            </ShowCode.When>
             <ShowCode.When isTrue={router.query.tab === 'instructions'}>
               <Instructions
                 instruction={schedule?.interview_meeting.instructions as string}
@@ -196,7 +183,9 @@ function DetailsOverview({
                 )}
               </Stack>
             </ShowCode.When>
-            <ShowCode.When isTrue={router.query.tab === 'job_details'}>
+            <ShowCode.When
+              isTrue={router.query.tab === 'job_details' || !router.query.tab}
+            >
               <JobDetails schedule={schedule} />
             </ShowCode.When>
           </ShowCode>

@@ -3,15 +3,15 @@ import { Checkbox } from '@components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ButtonGhost } from '@devlink/ButtonGhost';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { EmptySlotReason } from '@devlink3/EmptySlotReason';
+import { DateOption } from '@devlink3/DateOption';
 import { ScheduleOption } from '@devlink3/ScheduleOption';
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { User } from 'lucide-react';
 import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
-import { DayCard } from '../../../_common/DayCard';
-import SingleDayCard from '../SingleDayCard';
-import DayCardConflicts from './DayCardConflicts';
+import DayCardConflicts from '../../../_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper/DayCardConflicts';
+import SingleDayCard from '../../../_common/components/BodyDrawer/StepSlotOptions/SingleDayCard';
 
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
@@ -112,9 +112,11 @@ function DayCardWrapper({
 
   return (
     <>
-      <DayCard
+      <DateOption
         slotLeftBlock={
-          <p className={`font-semibold ${isSelected ? 'text-accent' : 'text-neutral'}`}>
+          <p
+            className={`font-semibold ${isSelected ? 'text-accent' : 'text-neutral'}`}
+          >
             {header}
           </p>
         }
@@ -174,11 +176,11 @@ function DayCardWrapper({
         isDisabled={isDisabled}
         key={header}
         textOptionCount={`${slots.length} options`}
-        // rotateArrow={{
-        //   style: {
-        //     display: isDayCollapseNeeded ? 'flex' : 'none',
-        //   },
-        // }}
+        rotateArrow={{
+          style: {
+            display: isDayCollapseNeeded ? 'flex' : 'none',
+          },
+        }}
         slotScheduleOption={
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
@@ -288,13 +290,17 @@ function DayCardWrapper({
                   </>
                 ) : (
                   noSlotReasons.map((reason, index) => (
-                    <EmptySlotReason
+                    <div
                       key={index}
-                      textMain={reason}
-                      iconName={'nightlife'}
-                      color={'info'}
-                      textSub={''}
-                    />
+                      className='flex items-center p-4 space-x-4 rounded-lg'
+                    >
+                      <div className='flex-shrink-0'>
+                        <User className='w-6 h-6 text-muted-foreground' />
+                      </div>
+                      <div className='flex-1 min-w-0'>
+                        <p className='text-sm font-semibold'>{reason}</p>
+                      </div>
+                    </div>
                   ))
                 )}
 
