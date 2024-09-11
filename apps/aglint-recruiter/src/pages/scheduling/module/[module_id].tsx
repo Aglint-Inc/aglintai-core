@@ -9,12 +9,10 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
-import { MemberListCard } from '@devlink2/MemberListCard';
 import { PageLayout } from '@devlink2/PageLayout';
 import { ShadowSession } from '@devlink2/ShadowSession';
 import { StatusBadge } from '@devlink2/StatusBadge';
 import { DarkPill } from '@devlink3/DarkPill';
-import { HistoryPill } from '@devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@devlink3/HistoryTrainingCard';
 import { InterviewerPage } from '@devlink3/InterviewerPage';
 import { Stack, Typography } from '@mui/material';
@@ -24,6 +22,8 @@ import { useMemo, useState } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
+import { MemberListCardShadcn } from '@/components/Common/Member/MemberListCard';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
 import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
@@ -357,7 +357,7 @@ function SlotQualifiedMembers({
 
         return (
           <>
-            <MemberListCard
+            <MemberListCardShadcn
               // isTrainingVisible={user.training_status === 'training'}
               isTrainingProgessVisible={
                 !isTrainingDone && user.training_status === 'training'
@@ -365,7 +365,7 @@ function SlotQualifiedMembers({
               slotProgressBar={
                 <>
                   {trainingStatusArray.map((item, index) => (
-                    <HistoryPill
+                    <HistoryPillShadcn
                       key={index}
                       isShadow={item.text === 'shadow'}
                       isReverseShadow={item.text === 'reverse shadow'}

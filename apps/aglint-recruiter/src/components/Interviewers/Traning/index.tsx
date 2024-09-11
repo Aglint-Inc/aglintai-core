@@ -1,10 +1,10 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { HistoryPill } from '@devlink3/HistoryPill';
 import { InterviewerTraining } from '@devlink3/InterviewerTraining';
 import { InterviewerTrainingList } from '@devlink3/InterviewerTrainingList';
 import { Avatar, Stack } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
 import { useJobs } from '@/jobs/hooks';
 import { useAllDepartments } from '@/queries/departments';
@@ -94,20 +94,22 @@ function TrainingProgress() {
         slotInterviewerTrainnigList={
           data?.length ? (
             data.map((interviewer) => (
-              <InterviewerTrainingList
-                key={interviewer.user_id}
-                textName={interviewer.name}
-                textRole={interviewer.position}
-                slotTrainingProgress={<Pills {...interviewer} />}
-                slotImage={
-                  <Avatar
-                    // src={interviewer.}
-                    style={{ width: '32px', height: '32px' }}
-                    alt={interviewer.name}
-                    variant='rounded-medium'
-                  />
-                }
-              />
+              <>
+                <InterviewerTrainingList
+                  key={interviewer.user_id}
+                  textName={interviewer.name}
+                  textRole={interviewer.position}
+                  slotTrainingProgress={<Pills {...interviewer} />}
+                  slotImage={
+                    <Avatar
+                      // src={interviewer.}
+                      style={{ width: '32px', height: '32px' }}
+                      alt={interviewer.name}
+                      variant='rounded-medium'
+                    />
+                  }
+                />
+              </>
             ))
           ) : (
             <Stack p={'16px'} bgcolor={'white'}>
@@ -170,7 +172,7 @@ const Pills = ({
   return (
     <>
       {pillData.map(({ active, shadow }, index) => (
-        <HistoryPill
+        <HistoryPillShadcn
           key={index}
           isActive={active}
           isShadow={shadow}

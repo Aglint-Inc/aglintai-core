@@ -1,11 +1,11 @@
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
-import { MemberListCard } from '@devlink2/MemberListCard';
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
-import { HistoryPill } from '@devlink3/HistoryPill';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
+import { MemberListCardShadcn } from '@/components/Common/Member/MemberListCard';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
@@ -98,7 +98,8 @@ function IndividualCard({
 
   return (
     <>
-      <MemberListCard
+      <MemberListCardShadcn
+        isThreeDotVisible={true}
         textWeekInterview={textWeekInterview}
         textTodayInterview={textTodayInterview}
         isTrainingProgessVisible={true}
@@ -111,7 +112,7 @@ function IndividualCard({
             spacing={'2px'}
           >
             {pills.map((pill, i) => (
-              <HistoryPill
+              <HistoryPillShadcn
                 key={i}
                 isShadow={pill.sessionType === 'shadow'}
                 isReverseShadow={pill.sessionType === 'rshadow'}

@@ -1,12 +1,12 @@
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { EmptyGeneral } from '@devlink2/EmptyGeneral';
-import { MemberListCard } from '@devlink2/MemberListCard';
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
 import { Popover, Stack } from '@mui/material';
 import { PersonStanding } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { MemberListCardShadcn } from '@/components/Common/Member/MemberListCard';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIButton } from '@/components/Common/UIButton';
 import { getFullName } from '@/utils/jsonResume';
@@ -63,35 +63,39 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
             ? `${user.recruiter_user.total_hours_today} / ${userSettings.interviewLoad.dailyLimit.value}  ${userSettings.interviewLoad.dailyLimit.type}`
             : `${user.recruiter_user.total_interviews_today} / ${userSettings.interviewLoad.dailyLimit.value}  ${userSettings.interviewLoad.dailyLimit.type}`;
         return (
-          <MemberListCard
-            textWeekInterview={textWeekInterview}
-            textTodayInterview={textTodayInterview}
-            onClickCard={{
-              onClick: () => {
-                router.push(
-                  ROUTES['/user/profile/[user_id]']({
-                    user_id: user.recruiter_user.user_id,
-                  }),
-                );
-              },
-            }}
-            isDropdownIconVisible={false}
-            key={user.user_id}
-            slotThreeDot={<ThreeDot user={user} />}
-            isTrainingProgessVisible={true}
-            isTrainingCompletedVisible={false}
-            textPauseResumeDate={getPauseMemberText(user.pause_json)}
-            isPauseResumeVisible={Boolean(user.pause_json)}
-            slotProfileImage={
-              <MuiAvatar
-                src={member.profile_image}
-                level={getFullName(member.first_name, member.last_name) || ''}
-                variant='rounded-medium'
-              />
-            }
-            textName={getFullName(member.first_name, member.last_name) || ''}
-            textRole={member.position || '--'}
-          />
+          <>
+            <MemberListCardShadcn
+              isThreeDotVisible={true}
+              isInterviewsVisible
+              textWeekInterview={textWeekInterview}
+              textTodayInterview={textTodayInterview}
+              onClickCard={{
+                onClick: () => {
+                  router.push(
+                    ROUTES['/user/profile/[user_id]']({
+                      user_id: user.recruiter_user.user_id,
+                    }),
+                  );
+                },
+              }}
+              isDropdownIconVisible={false}
+              key={user.user_id}
+              slotThreeDot={<ThreeDot user={user} />}
+              isTrainingProgessVisible={true}
+              isTrainingCompletedVisible={false}
+              textPauseResumeDate={getPauseMemberText(user.pause_json)}
+              isPauseResumeVisible={Boolean(user.pause_json)}
+              slotProfileImage={
+                <MuiAvatar
+                  src={member.profile_image}
+                  level={getFullName(member.first_name, member.last_name) || ''}
+                  variant='rounded-medium'
+                />
+              }
+              textName={getFullName(member.first_name, member.last_name) || ''}
+              textRole={member.position || '--'}
+            />
+          </>
         );
       })}
       {filtererdUsers.length !== 0 && (

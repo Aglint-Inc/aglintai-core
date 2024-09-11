@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { HistoryPill } from '@devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
@@ -7,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import React, { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import {
   type SchedulingAnalyticsContextType,
@@ -16,6 +15,7 @@ import {
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { HistoryPillShadcn } from '../../Common/Member/HistoryPill';
 import { Empty } from './common';
 
 const LIMIT = 4;
@@ -136,7 +136,7 @@ const Pills = memo(
     return (
       <>
         {pillData.map(({ active, shadow }, index) => (
-          <HistoryPill
+          <HistoryPillShadcn
             key={index}
             isActive={active}
             isShadow={shadow}
