@@ -71,7 +71,7 @@ function RequestList() {
     ) => (
       <div key={section.sectionName}>
         {isFetched ? (
-          <div style={{ paddingLeft: '5rem', paddingRight: '5rem'}}>
+          <div style={{ paddingLeft: '3rem', paddingRight: '3rem'}}>
           <div className='container'>
           <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
             <p>{capitalizeFirstLetter(section.sectionName)}</p>
@@ -93,10 +93,10 @@ function RequestList() {
           <Skeleton className='h-6 w-40 mb-2' />
         )}
         <div
-        className='flex items-start w-full'>
+        className='flex items-start w-full mb-10'>
         <div className=''>
         <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
-          <div style={{ paddingLeft: '5rem', paddingRight: '5rem'}}>
+          <div style={{ paddingLeft: '3rem', paddingRight: '3rem'}}>
           <div className='container'>
           <div className='flex'>
             {isFetched ? (
@@ -260,17 +260,18 @@ function RequestList() {
         {urgentRequests &&
           urgentRequests.requests.length > 0 &&
           renderScrollableSection(urgentRequests)}
-          <div style={{paddingLeft:"5rem" , paddingRight:"5rem"}}>
-        <div className="container" >
+          <div style={{paddingLeft:"3rem" , paddingRight:"3rem"}}>
+          {/* <div   className={`${view === 'kanban' ? 'px-[5rem]' : 'px-[5rem]'}`} > */}
+        <div   className={`${view === 'kanban' ? 'container' : 'container'}`} >
         <div
-          className={`${view === 'kanban' ? 'flex overflow-x-auto' : 'space-y-4'}`}
+          className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
         >
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
               className={
                 view === 'kanban'
-                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-[280px]' : 'w-[280px]'} mr-4`
+                  ? `flex-shrink-0 ${requests.length === 0 ? 'w-full' : 'w-full'}`
                   : ''
               }
             >
@@ -378,7 +379,7 @@ function RequestList() {
   return (
     <>
       <div
-        style={{ paddingLeft: '5rem', paddingRight: '5rem', marginTop: '1rem' }}
+        style={{ paddingLeft: '3rem', paddingRight: '3rem', marginTop: '1rem' }}
         className='flex justify-center items-center w-full'
       >
         {' '}
