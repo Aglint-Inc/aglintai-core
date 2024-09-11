@@ -21,11 +21,13 @@ export const findPlanCombs = async ({
   api_options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesSchedulingV2(api_options);
   await cand_schedule.fetchDetails({
-    company_id: recruiter_id,
-    start_date_str: date_range.start_date_str,
-    end_date_str: date_range.end_date_str,
-    req_user_tz: 'Asia/Calcutta', //TODO:
-    session_ids: session_ids,
+    params: {
+      company_id: recruiter_id,
+      start_date_str: date_range.start_date_str,
+      end_date_str: date_range.end_date_str,
+      req_user_tz: 'Asia/Calcutta', //TODO:TZ
+      session_ids: session_ids,
+    },
   });
   const slots = cand_schedule.findAvailabilitySlotsDateRange();
 
