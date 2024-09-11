@@ -15,16 +15,18 @@ import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { cn } from '@lib/utils';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { format } from 'date-fns';
-import { CalendarIcon, FileBadge2 } from 'lucide-react';
+import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
-import MemberList from '@/components/Requests/ViewRequestDetails/Components/MemberList';
+import MemberCard from '@/components/Common/MemberCard';
+import UpdateMembers from '@/components/Common/UpdateMembers';
+import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useApplication } from '@/context/ApplicationContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useAllMembers } from '@/queries/members';
+import { useMemberList } from '@/hooks/useMemberList';
 import dayjs from '@/utils/dayjs';
 
 import {
@@ -40,7 +42,6 @@ function DialogSchedule() {
   const selectedStageId = router.query.stage as string;
   const { recruiterUser } = useAuthDetails();
 
-  const [selectedInterviewer, setSelectedInterviewer] = React.useState('');
   const [note, setNote] = useState('');
   const [requestType, setRequestType] =
     React.useState<DatabaseTable['request']['priority']>('standard');
@@ -50,7 +51,10 @@ function DialogSchedule() {
   });
   const [isSaving, setIsSaving] = React.useState(false);
 
-  const { members } = useAllMembers();
+  const { data: members, status: membersStatus } = useMemberList();
+
+  const [selectedInterviewer, setSelectedInterviewer] =
+    React.useState<MemberType>(null);
 
   const {
     meta,
@@ -84,24 +88,30 @@ function DialogSchedule() {
     requestSessionIds.includes(session.interview_session.id),
   );
 
-  const optionsInterviewers: Interviewer[] = members?.map((member) => {
-    return {
-      name: getFullName(member.first_name, member.last_name),
-      value: member.user_id,
-      start_icon_url: member.profile_image,
-    };
-  });
+  const optionsInterviewers: Interviewer[] =
+    membersStatus === 'success'
+      ? members?.map((member) => {
+          return {
+            name: getFullName(member.first_name, member.last_name),
+            value: member.user_id,
+            start_icon_url: member.profile_image,
+          };
+        })
+      : [];
 
   useEffect(() => {
-    if (optionsInterviewers?.length > 0) {
-      setSelectedInterviewer(String(optionsInterviewers[0].value));
+    if (optionsInterviewers?.length > 0 && membersStatus === 'success') {
+      const selectedMembers = members?.find(
+        (member) => member.user_id === String(optionsInterviewers[0].value),
+      );
+      setSelectedInterviewer(selectedMembers);
     }
-  }, [optionsInterviewers?.length]);
+  }, [optionsInterviewers?.length, membersStatus]);
 
   const onClickSubmit = async () => {
     setIsSaving(true);
     await handleCreateRequest({
-      sel_user_id: selectedInterviewer,
+      sel_user_id: selectedInterviewer.user_id,
       assigned_user_id: recruiterUser.user_id,
       requestType,
       dateRange,
@@ -200,16 +210,20 @@ function DialogSchedule() {
                 />
               }
               slotAssignedInput={
-                <>
-                  <MemberList
-                    onChange={(user_id) => {
-                      setSelectedInterviewer(user_id);
+                <div className='flex items-center justify-between pr-2 '>
+                  {selectedInterviewer && (
+                    <MemberCard selectedMember={selectedInterviewer} />
+                  )}
+                  <UpdateMembers
+                    handleChange={(member) => {
+                      setSelectedInterviewer(member);
                     }}
-                    selectedMemberId={selectedInterviewer}
+                    updateButton={
+                      <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                    }
                     members={members}
-                    width='430px'
                   />
-                </>
+                </div>
               }
               slotRequestOption={
                 <RequestOption
