@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { ApplicantsTable } from '@devlink2/ApplicantsTable';
-import { SkeletonCandidateListItem } from '@devlink2/SkeletonCandidateListItem';
 import { Stack } from '@mui/material';
 import { memo, useEffect, useMemo } from 'react';
 
@@ -34,12 +33,24 @@ export const Table = memo(() => {
 
   const skeleton = useMemo(
     () => (
-      <SkeletonCandidateListItem
-        isScreeningVisible={false}
-        isAssessmentVisible={false}
-        isInterviewVisible={cascadeVisibilites.interview}
-        isDisqualifiedVisible={cascadeVisibilites.disqualified}
-      />
+      <div className='flex items-center space-x-4 p-4 pl-[30px]'>
+        <div className='w-5 h-5 rounded bg-gray-200 animate-pulse' />
+        <div className='space-y-2 flex-1'>
+          <div className='h-4 bg-gray-200 rounded animate-pulse' />
+        </div>
+        {cascadeVisibilites.screening && (
+          <div className='h-8 w-20 bg-gray-200 rounded animate-pulse' />
+        )}
+        {cascadeVisibilites.assessment && (
+          <div className='h-8 w-20 bg-gray-200 rounded animate-pulse' />
+        )}
+        {cascadeVisibilites.interview && (
+          <div className='h-8 w-20 bg-gray-200 rounded animate-pulse' />
+        )}
+        {cascadeVisibilites.disqualified && (
+          <div className='h-8 w-20 bg-gray-200 rounded animate-pulse' />
+        )}
+      </div>
     ),
     [cascadeVisibilites],
   );

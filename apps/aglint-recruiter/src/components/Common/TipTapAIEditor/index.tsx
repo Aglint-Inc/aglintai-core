@@ -1,5 +1,5 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
-import { SkeletonParagraph } from '@devlink2/SkeletonParagraph';
+import { Skeleton } from '@components/ui/skeleton';
 import { Stack } from '@mui/system';
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useState } from 'react';
@@ -205,7 +205,7 @@ const TipTapAIEditor = ({
               {loader.isLoading ? (
                 <Stack gap={1}>
                   {[...Array(loader.count)].map((_e, i) => (
-                    <SkeletonParagraph key={i} />
+                    <Skeleton key={i} className="w-full h-3" />
                   ))}
                 </Stack>
               ) : (

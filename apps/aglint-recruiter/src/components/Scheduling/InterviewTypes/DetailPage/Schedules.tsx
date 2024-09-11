@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { AllInterviewEmpty } from '@devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { Stack } from '@mui/material';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -77,7 +77,11 @@ function SchedulesModules() {
             </Stack>
           ) : allSchedules.length === 0 ? (
             <Stack width={'820px'}>
-              <AllInterviewEmpty textDynamic='No schedule found ' />
+              <div className="flex flex-col items-center justify-center p-8 text-center">
+                <Calendar className="w-12 h-12 text-gray-400 mb-2" />
+                <h3 className="text-lg font-medium text-gray-900 mb-1">No schedule found</h3>
+                <p className="text-sm text-gray-500">There are no schedules available at the moment.</p>
+              </div>
             </Stack>
           ) : (
             <>
