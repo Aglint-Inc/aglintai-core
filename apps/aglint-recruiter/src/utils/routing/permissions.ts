@@ -8,7 +8,7 @@ export type PermissionEnums = DatabaseTable['permissions']['name'];
 
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
-  [id in (typeof PATHS)[number]]: PermissionEnums[];
+  [_id in (typeof PATHS)[number]]: PermissionEnums[];
 };
 
 const DEFAULT: Permissions = Object.assign(

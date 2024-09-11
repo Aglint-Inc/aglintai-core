@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 
-import { GetAuthParams } from '../event_book/types';
+import type { GetAuthParams } from '../event_book/types';
 
 export const getSuperAdminAuth = async (
   company_cred: GetAuthParams['company_cred'],

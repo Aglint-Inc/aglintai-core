@@ -6,7 +6,7 @@ import React from 'react';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { ShadcnPhoneInput } from '../Common/UIPhoneInput/PhoneInput';
-import {
+import type {
   EmailFormFields,
   FormFields,
   FormValues,

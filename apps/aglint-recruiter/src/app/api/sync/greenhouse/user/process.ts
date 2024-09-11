@@ -90,10 +90,10 @@ async function getCurrentUserEmail(supabaseAdmin: SupabaseClientType) {
 
 // eslint-disable-next-line no-unused-vars
 export async function getGreenhouseUsers(key: string, last_sync?: string) {
-  let url = 'https://harvest.greenhouse.io/v1/users';
+  let _url = 'https://harvest.greenhouse.io/v1/users';
   if (last_sync) {
     // eslint-disable-next-line no-unused-vars
-    url += `?created_after=${last_sync}`;
+    _url += `?created_after=${last_sync}`;
   }
   // return axios.get<GreenhouseUserAPI>(
   //   'https://harvest.greenhouse.io/v1/users?',

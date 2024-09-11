@@ -157,7 +157,7 @@ const fetchSessionDetails = async ({
 };
 
 // eslint-disable-next-line no-unused-vars
-const fetchApplicationDetails = async ({
+const _fetchApplicationDetails = async ({
   application_id,
   supabaseCaller,
 }: {

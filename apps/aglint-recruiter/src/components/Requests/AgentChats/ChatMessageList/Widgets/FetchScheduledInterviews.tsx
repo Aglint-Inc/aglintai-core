@@ -6,7 +6,9 @@ import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import ROUTES from '@/utils/routing/routes';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
-import ScheduleList, { ScheduleListProps } from '../../Components/SheduleList';
+import ScheduleList, {
+  type ScheduleListProps,
+} from '../../Components/SheduleList';
 import { type ChatType } from '../hooks/fetch';
 
 function FetchScheduledInterviews({ chat }: { chat: ChatType }) {

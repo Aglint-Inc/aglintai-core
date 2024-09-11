@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const { job_id } = req.query as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof GetInterviewPlansType['request']]: string;
+      [_id in keyof GetInterviewPlansType['request']]: string;
     };
     if (job_id) {
       const resInterviewPlan = await getInterviewPlans({ job_id });
@@ -41,7 +41,7 @@ export type GetInterviewPlansType = {
         {
           members_meta: {
             // eslint-disable-next-line no-unused-vars
-            [id in
+            [_id in
               | keyof Pick<
                   JobCreate,
                   | 'hiring_manager'

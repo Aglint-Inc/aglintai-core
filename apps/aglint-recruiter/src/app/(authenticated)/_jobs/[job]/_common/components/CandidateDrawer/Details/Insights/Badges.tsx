@@ -134,7 +134,7 @@ const Knowledgable = () => (
 
 export const BADGE_ICONS: {
   // eslint-disable-next-line no-unused-vars
-  [id in ApplicationsParams['filters']['badges'][number]]: ReactNode;
+  [_id in ApplicationsParams['filters']['badges'][number]]: ReactNode;
 } = {
   careerGrowth: <Ambitious />,
   jobStability: <Reliable />,

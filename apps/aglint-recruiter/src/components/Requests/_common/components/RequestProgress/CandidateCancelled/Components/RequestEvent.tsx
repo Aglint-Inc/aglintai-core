@@ -1,8 +1,8 @@
-import { ButtonSolid } from '@devlink2/ButtonSolid';
-import { ScheduleProgress } from '@devlink2/ScheduleProgress';
-import { Loader2 } from 'lucide-react';
+import { Button } from '@components/ui/button';
+import { Loader2, Send } from 'lucide-react';
 
 import { SlackIcon } from '../../../RequestCard/Components/SlackIcon';
+import ScheduleProgressTracker from '../../ScheduleProgressTracker';
 import { workflowCopy } from '../../utils/copy';
 import { type EventProgressItem } from '../types';
 import { getWorkflowText } from '../utils';
@@ -16,7 +16,7 @@ function RequestEvent({
 }: EventProgressItem) {
   const workflow = workflowCopy[eventType];
   return (
-    <ScheduleProgress
+    <ScheduleProgressTracker
       slotAiText={null} // Placeholder for AI instructions if needed
       isAiTextVisible={false}
       slotLoader={
@@ -40,19 +40,18 @@ function RequestEvent({
       slotButton={
         isManualFlow &&
         requestProgress?.status !== 'completed' && (
-          <ButtonSolid
-            textButton={
-              api === 'onRequestCancel_agent_cancelEvents'
-                ? 'Cancel'
-                : api === 'onRequestCancel_slack_interviewersOrganizer'
-                  ? 'Send slack'
-                  : ''
-            }
-            onClickButton={{
-              onClick: handleClick,
-            }}
-            size={1}
-          />
+          <Button onClick={handleClick} size='sm'>
+            {api === 'onRequestCancel_agent_cancelEvents' ? (
+              'Cancel'
+            ) : api === 'onRequestCancel_slack_interviewersOrganizer' ? (
+              <>
+                <Send className='mr-2 h-4 w-4' />
+                Send slack
+              </>
+            ) : (
+              ''
+            )}
+          </Button>
         )
       }
     />

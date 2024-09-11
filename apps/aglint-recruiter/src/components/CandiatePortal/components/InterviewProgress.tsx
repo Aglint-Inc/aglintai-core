@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import React from 'react';
 
-import { apiHomepageResponse } from '@/api/candidate_portal/home_page/route';
+import type { apiHomepageResponse } from '@/api/candidate_portal/home_page/route';
 
 import InterviewProgressCard from './InterviewProgressCard';
 

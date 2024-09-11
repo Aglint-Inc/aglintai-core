@@ -26,8 +26,11 @@ import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { validateDescription } from '@/job/utils';
-import { JobMetaFormProps, useJobForms } from '@/jobs/create/components/form';
-import { Form, JobDetailsForm } from '@/jobs/types';
+import {
+  type JobMetaFormProps,
+  useJobForms,
+} from '@/jobs/create/components/form';
+import type { Form, JobDetailsForm } from '@/jobs/types';
 import { type Job } from '@/queries/jobs/types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';

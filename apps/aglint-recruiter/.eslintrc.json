@@ -38,6 +38,7 @@
     "components/ui"
   ],
   "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "src/pages"],
     "no-console": ["error", { "allow": ["error"] }],
     "react-hooks/exhaustive-deps": "off",
     "jsx-a11y/click-events-have-key-events": "off",
@@ -45,7 +46,6 @@
     "simple-import-sort/exports": "error",
     "@aglint/linter/enforce-devlink-rules": "error",
     "security/detect-object-injection": "off",
-    "@typescript-eslint/consistent-type-imports": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
@@ -54,23 +54,23 @@
     "no-unused-vars": ["error", { "args": "all", "argsIgnorePattern": "^_" }], //ignore unused variables starting with _
     "@typescript-eslint/no-unused-vars": "off",
     "import/no-cycle": "error",
-    "unused-imports/no-unused-imports": "error"
-    // "unused-imports/no-unused-vars": [
-    //   "warn",
-    //   {
-    //     "vars": "all",
-    //     "varsIgnorePattern": "^_",
-    //     "args": "after-used",
-    //     "argsIgnorePattern": "^_"
-    //   }
-    // ]
-    // "@typescript-eslint/consistent-type-imports": [
-    //   "warn",
-    //   {
-    //     "prefer": "type-imports",
-    //     "fixStyle": "inline-type-imports"
-    //   }
-    // ]
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "fixStyle": "inline-type-imports"
+      }
+    ]
   },
   "overrides": [
     {

@@ -1,32 +1,29 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { RequestProgress } from '@devlink2/RequestProgress';
-import { ScheduleProgress } from '@devlink2/ScheduleProgress';
 import axios from 'axios';
+import { Lightbulb, Plus } from 'lucide-react';
 import React from 'react';
 
-import LottieAnimations from '@/components/Common/Lotties/LottieIcons';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { RequestProgressTracker } from '../RequestProgressTracker';
 import {
   createRequestWorkflowAction,
   deleteRequestWorkflowAction,
 } from '../utils';
 import { workflowCopy } from '../utils/copy';
-import {
-  getProgressCompStatus,
-  progressStatusToTense,
-} from '../utils/getProgressColor';
+import { progressStatusToTense } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
+import EventNode from './EventNode';
+
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewScheduled = () => {
@@ -96,82 +93,52 @@ const InterviewScheduled = () => {
       setRsvpSending(false);
     }
   };
+  let isWorkflowSet = false;
+  if (triggerActionMp['candidateBook']?.length > 0) {
+    isWorkflowSet = true;
+  }
   return (
-    <RequestProgress
-      circleIndicator={tense === 'past' ? 'success' : 'neutral'}
-      textRequestProgress={'On Inteview is Scheduled'}
+    <RequestProgressTracker
+      circleIndicator={tense === 'past' ? 'success' : 'default'}
+      textRequestProgress={'When inteview is scheduled'}
       slotProgress={
         <>
-          {ACTION_TRIGGER_MAP.candidateBook.map((action, idx) => {
-            const eventAction = apiTargetToEvents[action.value.target_api];
-            const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
-              (a) => a.target_api === action.value.target_api,
-            );
-            const slack_status =
-              reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']?.[0];
-
+          {triggerActionMp['candidateBook']?.map((action, idx) => {
             return (
-              <ScheduleProgress
+              <EventNode
                 key={idx}
-                textProgress={workflowCopy[eventAction][tense]}
-                status={getProgressCompStatus(slack_status?.status)}
-                slotRightIcon={
-                  <>
-                    <ShowCode.When isTrue={tense === 'future'}>
-                      <ShowCode.When isTrue={!addedAction}>
-                        <IconButtonSoft
-                          iconName={'add'}
-                          size={1}
-                          color={'neutral'}
-                          onClickButton={{
-                            onClick: () => {
-                              handleAddAction(action.value.target_api);
-                            },
-                          }}
-                        />
-                      </ShowCode.When>
-                      <ShowCode.When isTrue={Boolean(addedAction)}>
-                        <IconButtonSoft
-                          iconName={'delete'}
-                          size={1}
-                          color={'error'}
-                          onClickButton={{
-                            onClick: () => {
-                              handleDeleteScheduleAction(addedAction.id);
-                            },
-                          }}
-                        />
-                      </ShowCode.When>
-                    </ShowCode.When>
-                  </>
-                }
-                slotAiText={
-                  <>
-                    <ShowCode.When
-                      isTrue={
-                        tense === 'past' &&
-                        !reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']
-                      }
-                    >
-                      <Button
-                        size={'sm'}
-                        onClick={() => {
-                          handleSendRsVpReminder();
-                        }}
-                      >
-                        {rsvpSending ? 'Sending' : 'Send rsvp reminder'}
-                      </Button>
-                    </ShowCode.When>
-                  </>
-                }
-                slotLoader={
-                  tense === 'present' ? (
-                    <LottieAnimations animation='loading_spinner' size={1.5} />
-                  ) : undefined
-                }
+                currEventTrigger='candidateBook'
+                eventType={apiTargetToEvents[action.target_api]}
+                reqProgresMap={reqProgressMap}
+                currWAction={action}
               />
             );
           })}
+          <ShowCode.When isTrue={!isWorkflowSet}>
+            <Alert
+              variant='default'
+              className='bg-purple-100 border-purple-200 mb-4'
+            >
+              <Lightbulb className='h-4 w-4 text-purple-500' />
+              <AlertDescription className='flex flex-col items-end'>
+                <p className='mb-4 w-full'>
+                  {workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]}
+                </p>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() =>
+                    handleAddAction(
+                      'candidateBook_slack_interviewerForConfirmation',
+                    )
+                  }
+                >
+                  <Plus className='h-4 w-4' />
+                  Add RSVP
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </ShowCode.When>
         </>
       }
     />

@@ -3,7 +3,7 @@ import {
   type Resource,
 } from '@/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/components/Common/MuiAvatar';
-import { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 
 export const transformAvailability = (
   availabilities: ApiResponseFindAvailability['availabilities'],

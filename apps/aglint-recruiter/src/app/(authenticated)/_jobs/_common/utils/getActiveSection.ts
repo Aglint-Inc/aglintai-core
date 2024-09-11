@@ -1,5 +1,5 @@
-import { ApplicationStore } from '@/context/ApplicationContext/store';
-import { Job } from '@/queries/jobs/types';
+import type { ApplicationStore } from '@/context/ApplicationContext/store';
+import type { Job } from '@/queries/jobs/types';
 
 export const getActiveSection = ({
   isAssessmentEnabled,

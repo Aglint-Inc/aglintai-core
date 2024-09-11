@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import React from 'react';
 
-import { usePortalHomePage } from '../hook';
+import type { usePortalHomePage } from '../hook';
 
 function CompanyImage({
   candidate,

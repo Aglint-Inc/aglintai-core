@@ -14,7 +14,7 @@ import {
 } from '../util';
 
 // eslint-disable-next-line no-unused-vars
-const MAX_EMAILS_PER_BATCH = 100;
+const _MAX_EMAILS_PER_BATCH = 100;
 
 export async function syncGreenhouseJob(
   supabaseAdmin: SupabaseClientType,

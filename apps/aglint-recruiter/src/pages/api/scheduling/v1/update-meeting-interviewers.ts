@@ -12,7 +12,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
-import { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
+import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -21,7 +21,7 @@ export default async function handler(
   if (req.method === 'GET') {
     const { recruiter_id } = req.query as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof Parameters<getInterviewTrainingProgressType>[0]]: string;
+      [_id in keyof Parameters<getInterviewTrainingProgressType>[0]]: string;
     };
     if (recruiter_id) {
       const resInterviewTrainingProgress = await getInterviewTrainingProgress({

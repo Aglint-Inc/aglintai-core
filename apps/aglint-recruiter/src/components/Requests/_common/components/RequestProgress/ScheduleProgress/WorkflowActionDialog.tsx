@@ -3,10 +3,17 @@ import {
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
-import { WorkflowItem } from '@devlink3/WorkflowItem';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 import axios from 'axios';
 import { get } from 'lodash';
-import { Play } from 'lucide-react';
+import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
@@ -111,13 +118,16 @@ const WorkflowActionDialog = () => {
   };
 
   return (
-    <WorkflowItem
-      textWorkflowType={'Action'}
-      textTypeDescription={'An action to be performed'}
-      slotWorkflowIcon={<ActionIcon />}
-      isDeleteVisible={false}
-      slotInputFields={
-        <>
+    <Card className='border-0 shadow-none'>
+      <CardHeader>
+        <CardTitle className='text-lg flex'>
+          <Terminal width={24} height={24} className='mr-4' />
+          Action
+        </CardTitle>
+        <CardDescription>An action to be performed</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className='space-y-4'>
           <UISelectDropDown
             label='Do this'
             onValueChange={(value) => {
@@ -130,31 +140,28 @@ const WorkflowActionDialog = () => {
             }))}
           />
           <TargetAPIBody action={selectedActionsDetails} />
-          <Button
-            variant='default'
-            onClick={() => {
-              handleSaveScheduleAction({
-                action_type: selectedActionsDetails.action_type as any,
-                target_api: selectedActionsDetails.target_api as any,
-                order: 0,
-                workflow_id: selectedActionsDetails.workflow_id,
-                payload: {
-                  email: emailTemplate,
-                },
-              });
-            }}
-          >
-            {isAddingAction ? 'Adding...' : 'Add Action'}
-          </Button>
-        </>
-      }
-    />
+        </div>
+      </CardContent>
+      <CardFooter className='flex justify-end'>
+        <Button
+          variant='default'
+          onClick={() => {
+            handleSaveScheduleAction({
+              action_type: selectedActionsDetails.action_type as any,
+              target_api: selectedActionsDetails.target_api as any,
+              order: 0,
+              workflow_id: selectedActionsDetails.workflow_id,
+              payload: {
+                email: emailTemplate,
+              },
+            });
+          }}
+        >
+          {isAddingAction ? 'Adding...' : 'Add Action'}
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 
 export default WorkflowActionDialog;
-
-const ActionIcon = () => {
-  return <Play size={12} />;
-};
-ActionIcon.displayName = 'ActionIcon';

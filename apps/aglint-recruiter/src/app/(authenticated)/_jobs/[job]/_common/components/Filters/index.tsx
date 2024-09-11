@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 import { useMemo } from 'react';
 
 import FilterHeader from '@/components/Common/FilterHeader';
@@ -8,7 +7,7 @@ import {
 } from '@/components/Common/FilterHeader/utils';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useApplications, useJob } from '@/job/hooks';
-import { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { capitalize } from '@/utils/text/textUtils';
 
 const Filters = () => {
