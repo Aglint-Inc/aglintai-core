@@ -77,8 +77,45 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                 },
               )}
             >
-              {props.title}
+              {props.title} 
             </Label>
+            {isCompactList ? (
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsExpanded(!isExpanded);
+                }}
+              >
+                {isExpanded ? (
+                  <ChevronUp size={16} />
+                ) : (
+                  <ChevronDown size={16} />
+                )}
+              </Button>
+            ) : (
+              <MenuOptions request_id={props.id} />
+            )}
+          </div>
+        </Link>
+      </div>
+      {(mode === 'expanded' || (isCompactList && isExpanded)) && (
+        <CardContent
+          className={cn(
+            'p-4 space-y-4 pt-0',
+            isCompactList && 'p-2 space-y-2 bg-gray-50',
+          )}
+        >
+          <div
+            className={cn(
+              '',
+              mode === 'compact-list' && '',
+              mode !== 'compact-list' && '',
+            )}
+          >
+            <div className='space-y-3'>
+            <div className="flex gap-2">
             <Badge
               variant='secondary'
               className={cn(
@@ -118,45 +155,58 @@ export const RequestCard = ({ ...props }: RequestProps) => {
             >
               {capitalizeFirstLetter(props.status)}
             </Badge>
-            {isCompactList ? (
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsExpanded(!isExpanded);
-                }}
-              >
-                {isExpanded ? (
-                  <ChevronUp size={16} />
-                ) : (
-                  <ChevronDown size={16} />
-                )}
-              </Button>
-            ) : (
-              <MenuOptions request_id={props.id} />
-            )}
+            <div className='space-y-3 flex items-start'>
+              <InfoItem
+                icon={<></>}
+                label=''
+                value={
+                  <>
+                    <div className='flex flex-row  items-center gap-4'>
+                      <div className='flex flex-row items-center space-x-2'>
+                        {<UserCircle className='w-4 h-4' />}
+                        <Link
+                          href={`/user/profile/${request.assigner_id}`}
+                          target='_blank'
+                          className='hover:underline'
+                        >
+                          {getFullName(
+                            request.assigner.first_name,
+                            request.assigner.last_name,
+                          )}
+                          {request.assigner_id === recruiterUser.user_id
+                            ? ' (You)'
+                            : ''}
+                        </Link>
+                      </div>
+                      <div className='text-xs text-gray-500'>
+                        {dayjsLocal(request.created_at).fromNow()}{' '}
+                      </div>
+                    </div>
+                  </>
+                }
+              />
+              {/* <div className='flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
+                <Button
+                  variant='default'
+                  size='sm'
+                  className='text-xs font-medium transition-colors duration-200'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Add your logic here to proceed with Aglint AI
+                    //console.log('Proceeding with Aglint AI');
+                  }}
+                >
+                  <Bot className='w-3 h-3 mr-1' />
+                  Proceed with Aglint AI
+                </Button>
+              </div> */}
+              {/* hided hover button for now */}
+            </div>
           </div>
-        </Link>
-      </div>
-      {(mode === 'expanded' || (isCompactList && isExpanded)) && (
-        <CardContent
-          className={cn(
-            'p-4 space-y-4',
-            isCompactList && 'p-2 space-y-2 bg-gray-50',
-          )}
-        >
-          <div
-            className={cn(
-              'grid gap-2',
-              mode === 'compact-list' && 'grid-cols-3',
-              mode !== 'compact-list' && 'grid-cols-[70%_30%]',
-            )}
-          >
-            <div className='space-y-3'>
               <InfoItem
                 icon={<Calendar className='w-4 h-4' />}
                 label='Proposed Interview Date'
+                variant='column'
                 value={
                   <>
                     <div className='mt-1'>
@@ -185,6 +235,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
               <InfoItem
                 icon={<User className='w-4 h-4' />}
                 label='Candidate and Job'
+                variant='column'
                 value={
                   <>
                     <Link
@@ -208,52 +259,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
               />
             </div>
 
-            <div className='space-y-3 flex flex-col items-end'>
-              <InfoItem
-                icon={<></>}
-                label='Created by'
-                value={
-                  <>
-                    <p>
-                      <div className='flex items-center space-x-2'>
-                        {<UserCircle className='w-4 h-4' />}
-                        <Link
-                          href={`/user/profile/${request.assigner_id}`}
-                          target='_blank'
-                          className='hover:underline'
-                        >
-                          {getFullName(
-                            request.assigner.first_name,
-                            request.assigner.last_name,
-                          )}
-                          {request.assigner_id === recruiterUser.user_id
-                            ? ' (You)'
-                            : ''}
-                        </Link>
-                      </div>
-                      <div className='text-xs text-gray-500'>
-                        {dayjsLocal(request.created_at).fromNow()}{' '}
-                      </div>
-                    </p>
-                  </>
-                }
-              />
-              <div className='flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
-                <Button
-                  variant='default'
-                  size='sm'
-                  className='text-xs font-medium transition-colors duration-200'
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Add your logic here to proceed with Aglint AI
-                    //console.log('Proceeding with Aglint AI');
-                  }}
-                >
-                  <Bot className='w-3 h-3 mr-1' />
-                  Proceed with Aglint AI
-                </Button>
-              </div>
-            </div>
+           
           </div>
         </CardContent>
       )}
@@ -321,22 +327,48 @@ const InfoItem = ({
   icon,
   label,
   value,
+  variant = 'row',  // Added variant prop
 }: {
   icon: React.ReactNode;
   label: string;
   value: React.ReactNode;
-}) => (
-  <div className='flex items-start space-x-2'>
-    <div className='mt-0.5'>
-      {React.cloneElement(icon as React.ReactElement, { className: 'w-3 h-3' })}
+  variant?: 'row' | 'column';  // Added variant type
+}) => {
+  if (variant === 'column') {
+    return (
+      <div className='flex items-start space-x-2 flex-col'> 
+      <div className='flex flex-row gap-1 items-center '>
+        <div className=''>
+          {React.cloneElement(icon as React.ReactElement, { className: 'w-3 h-3' })}
+        </div>
+        <p className='text-2xs text-gray-500'>{label}</p>
+        </div>
+        <div className="flex flex-row items-start gap-1 pl-2 ">  
+         
+          {typeof value === 'string' ? (
+            <p className='ml-3 text-xs font-medium'>{value}</p>
+          ) : (
+            value
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Default row layout
+  return (
+    <div className='flex items-start space-x-2'>  
+      <div className='mt-0.5'>
+        {React.cloneElement(icon as React.ReactElement, { className: 'w-3 h-3' })}
+      </div>
+      <div className="flex flex-row items-center gap-2">  
+        <p className='text-2xs text-gray-500'>{label}</p>
+        {typeof value === 'string' ? (
+          <p className='text-xs font-medium'>{value}</p>
+        ) : (
+          value
+        )}
+      </div>
     </div>
-    <div>
-      <p className='text-2xs text-gray-500'>{label}</p>
-      {typeof value === 'string' ? (
-        <p className='text-xs font-medium'>{value}</p>
-      ) : (
-        value
-      )}
-    </div>
-  </div>
-);
+  );
+};

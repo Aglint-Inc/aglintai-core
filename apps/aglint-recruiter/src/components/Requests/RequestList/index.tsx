@@ -98,17 +98,20 @@ function RequestList() {
         <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
           <div style={{ paddingLeft: '5rem', paddingRight: '5rem'}}>
           <div className='container'>
-          <div className='flex gap-4 mr-8'>
+          <div className='flex'>
             {isFetched ? (
               section.requests.length > 0 ? (
                 section.requests.map((props, i) => (
+                  <div className='pr-6'>
                   <div
+                    style={{width:'650px'}}
                     key={props.id ?? i}
-                    className={`flex-shrink-0 max-w-[600px] ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
+                    className={`flex-shrink-0  ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
                   >
                     <RequestProvider request_id={props.id}>
                       <RequestCard {...{ ...props, isExpanded: false }} />
                     </RequestProvider>
+                  </div>
                   </div>
                 ))
               ) : (
