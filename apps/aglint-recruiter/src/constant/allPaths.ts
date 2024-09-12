@@ -86,6 +86,7 @@ export const PATHS = [
 '/api/ashby/readme.md',
 '/api/ashby/saveApiKey',
 '/api/ashby/syncapplications',
+'/api/auth/send-reset-email',
 '/api/automation/add_users',
 '/api/automation/booking_self_schedule',
 '/api/automation/cancel_request',
