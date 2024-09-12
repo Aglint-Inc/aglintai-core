@@ -40,7 +40,7 @@ export const fetchInterviewTypesRelationsTool = ({
         links: [
           {
             replace: rel[0].module_name,
-            with: `/scheduling/interview-types/${rel[0].module_id}`,
+            with: `/interview-pool/${rel[0].module_id}`,
           },
         ],
       });

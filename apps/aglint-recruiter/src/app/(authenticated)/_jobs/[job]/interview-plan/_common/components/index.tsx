@@ -203,15 +203,27 @@ const AddStageComponent = () => {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
           }
-        
-          <UIButton size='sm' variant='default' onClick={() => handleAddStage() }>Add</UIButton>
-          <UIButton size='sm' variant='secondary' onClick={() => setForm(!form)}>
+
+          <UIButton
+            size='sm'
+            variant='default'
+            onClick={() => handleAddStage()}
+          >
+            Add
+          </UIButton>
+          <UIButton
+            size='sm'
+            variant='secondary'
+            onClick={() => setForm(!form)}
+          >
             Cancel
           </UIButton>
         </Stack>
       )}
       <Stack direction={'row'}>
-      <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>Add Stage</UIButton>
+        <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
+          Add Stage
+        </UIButton>
       </Stack>
     </>
   );
@@ -377,8 +389,20 @@ const InterviewPlan = ({
           slotInputButton={
             <Stack direction={'row'} gap={1} alignItems={'center'}>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
-              <UIButton size='sm' variant='default' onClick={() => handleUpdatePlan(planRef.current.value)}>Update</UIButton>
-              <UIButton size='sm' variant='secondary' onClick={() => handleEditPlan()}>Cancel</UIButton>
+              <UIButton
+                size='sm'
+                variant='default'
+                onClick={() => handleUpdatePlan(planRef.current.value)}
+              >
+                Update
+              </UIButton>
+              <UIButton
+                size='sm'
+                variant='secondary'
+                onClick={() => handleEditPlan()}
+              >
+                Cancel
+              </UIButton>
             </Stack>
           }
           slotRightIconButton={
@@ -614,7 +638,7 @@ const InterviewSession = ({
             }
             onClickLink={() =>
               window.open(
-                `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
+                `interview-pools/${session.interview_module.id}?tab=qualified`,
                 '_blank',
               )
             }

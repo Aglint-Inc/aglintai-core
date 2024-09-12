@@ -5,11 +5,9 @@ import { useRouter } from 'next/router';
 
 import axios from '@/client/axios';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { type ApiResponseInterviewModuleById } from '@/pages/api/scheduling/fetch_interview_module_by_id';
 
 import { type MemberTypeAutoComplete } from '../../Common/MembersTextField';
-import { type PauseType } from '../DetailPage/type';
-import { type ModuleType } from '../types';
+import { type PauseType } from '../DetailPage/_common/types/type';
 import { QueryKeysInteviewModules } from './type';
 import {
   addMemberbyUserIds,
@@ -21,6 +19,8 @@ import {
   updatePauseJsonByUserId,
   updateRelations,
 } from './utils';
+import { api } from '@/trpc/client';
+import { useModuleAndUsers } from '../DetailPage/_common/hooks/useModuleAndUsers';
 
 export const useAllInterviewModules = () => {
   const { recruiter } = useAuthDetails();
@@ -87,30 +87,6 @@ export const useProgressModuleUsers = ({
   return { ...query, refetch };
 };
 
-export const useModuleAndUsers = () => {
-  const router = useRouter();
-  const module_id = router.query.type_id as string;
-
-  const query = useQuery({
-    queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-      moduleId: module_id,
-    }),
-    queryFn: async () => {
-      const res = await axios.call<ApiResponseInterviewModuleById>(
-        'POST',
-        '/api/scheduling/fetch_interview_module_by_id',
-        {
-          module_id,
-        },
-      );
-      return res;
-    },
-    enabled: !!module_id,
-    refetchOnWindowFocus: false,
-  });
-  return query;
-};
-
 export const usePauseHandler = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -118,31 +94,15 @@ export const usePauseHandler = () => {
   const resumeHandler = async ({
     module_id,
     user_id,
+    editModule,
   }: {
     module_id: string;
     user_id: string;
+    editModule: ReturnType<typeof useModuleAndUsers>['data'];
   }): Promise<boolean> => {
-    const editModule = queryClient.getQueryData<ModuleType>(
-      QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
-    );
     if (user_id && editModule) {
       const isUpdated = await resumePauseDbUpdate({ module_id, user_id });
-
       if (isUpdated) {
-        const updatedEditModule = {
-          ...editModule,
-          relations: editModule.relations.map((rel) =>
-            rel.user_id === user_id ? { ...rel, pause_json: null } : rel,
-          ),
-        };
-        queryClient.setQueryData(
-          QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-            moduleId: editModule.id,
-          }),
-          {
-            ...updatedEditModule,
-          },
-        );
         return true;
       } else {
         return false;

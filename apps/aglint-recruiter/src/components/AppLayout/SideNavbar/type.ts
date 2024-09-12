@@ -54,8 +54,8 @@ export type LinkProps =
       path: Path<'/tasks'>;
     }
   | {
-      module: 'Interview Types';
-      path: Path<'/scheduling/interview-types'>;
+      module: 'Interview Pools';
+      path: Path<'/interview-pool'>;
     }
   | {
       module: 'Candidates';

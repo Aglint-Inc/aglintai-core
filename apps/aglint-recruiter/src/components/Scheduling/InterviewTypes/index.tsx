@@ -161,7 +161,7 @@ export function InterviewTypes() {
                             <InterviewModuleCard
                               textDepartment={mod.department_name}
                               key={mod.id}
-                              navLink={`/scheduling/interview-types/${mod.id}`}
+                              navLink={`/interview-pool/${mod.id}`}
                               textCancelledSchedules={
                                 mod.canceled_meeting_count
                               }

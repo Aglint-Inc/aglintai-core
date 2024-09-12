@@ -60,9 +60,7 @@ const TrainingStatusComponent = () => {
       <Stack
         key={id}
         onClick={() =>
-          router.push(
-            `${ROUTES['/scheduling/interview-types/[type_id]']({ type_id: id })}`,
-          )
+          router.push(`${ROUTES['/interview-pool/[type_id]']({ type_id: id })}`)
         }
         sx={{
           cursor: 'pointer',

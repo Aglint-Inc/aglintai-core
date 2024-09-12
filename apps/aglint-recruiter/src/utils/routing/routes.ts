@@ -192,16 +192,19 @@ const profileLink = {
 const resetPassword = {
   '/reset-password': () => pageRouteBuilder([ROUTES.app(), 'reset-password']),
 } as const;
+
+const interviewTypes = {
+  '/interview-pool': () => pageRouteBuilder([ROUTES.app(), 'interview-pool']),
+  '/interview-pool/[type_id]': ({ type_id }: { type_id: string }) =>
+    pageRouteBuilder([interviewTypes['/interview-pool'](), type_id]),
+} as const;
+
 const scheduling = {
   '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
   '/scheduling/application': () =>
     pageRouteBuilder([ROUTES.app(), 'scheduling/application']),
   '/scheduling/interviewer': () =>
     pageRouteBuilder([ROUTES.app(), 'scheduling/interviewer']),
-  '/scheduling/interview-types': () =>
-    pageRouteBuilder([ROUTES.app(), 'scheduling/interview-types']),
-  '/scheduling/interview-types/[type_id]': ({ type_id }: { type_id: string }) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'interview-types', type_id]),
   '/scheduling/application/[application_id]': ({
     application_id,
   }: {
@@ -314,5 +317,6 @@ const ROUTES = {
   ...workflows,
   ...requests,
   ...interviewers,
+  ...interviewTypes,
 } as const;
 export default ROUTES;

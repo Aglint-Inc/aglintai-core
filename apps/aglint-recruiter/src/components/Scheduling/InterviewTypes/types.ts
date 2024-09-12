@@ -6,6 +6,7 @@ import {
   type PauseJson,
 } from '@aglint/shared-types';
 
+import { type fetchInterviewModuleByIdApi } from '@/pages/api/scheduling/fetch_interview_module_by_id';
 import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
 
 import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
@@ -23,24 +24,13 @@ export type SchedulingSlice = {
   isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
   selectedUsers: MemberTypeAutoComplete[];
-  selUser: ModuleType['relations'][0] | null;
+  selUser:
+    | ReturnType<typeof fetchInterviewModuleByIdApi>[0]['relations'][0]
+    | null;
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;
   initalOpen: StatusTraining | null;
-};
-
-export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
-  relations: (InterviewModuleRelationType & {
-    recruiter_user: DatabaseView['all_interviewers'];
-  })[];
-  settings: {
-    require_training: boolean;
-    noShadow: number;
-    noReverseShadow: number;
-    reqruire_approval: boolean;
-    approve_users: string[];
-  };
 };
 
 export interface TimeSlotsData {

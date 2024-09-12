@@ -1,5 +1,6 @@
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
+import { interviewPool } from './routers/interview_pool';
 import { schedulingRouter } from './routers/scheduling';
 import { textTransform } from './routers/textTransform';
 import { createCallerFactory, createTRPCRouter } from './trpc';
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   example,
   candidatePortal: candidatePortalRouter,
   textTransform,
+  interview_pool: interviewPool,
 });
 
 export const appRouterSchema = {

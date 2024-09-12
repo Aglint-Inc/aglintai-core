@@ -7,8 +7,8 @@ import ROUTES from '@/utils/routing/routes';
 
 import { HistoryPillShadcn } from '../../../../Common/Member/HistoryPill';
 import { MemberListCardShadcn } from '../../../../Common/Member/MemberListCard';
-import { type PillsTraining } from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard';
-import CollapseTrainingProgress from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard/Collapse';
+import { type PillsTraining } from '../../../InterviewTypes/DetailPage/_common/components/old/SlotTrainingMembers/IndividualCard';
+import CollapseTrainingProgress from '../../../InterviewTypes/DetailPage/_common/components/old/SlotTrainingMembers/IndividualCard/Collapse';
 import { useModuleRelations, useTrainingProgressUser } from '../hooks';
 import ThreeDot from './ThreeDot';
 
@@ -140,7 +140,7 @@ function TrainingInterviewerType({
         onClickCard={{
           onClick: () => {
             router.push(
-              ROUTES['/scheduling/interview-types/[type_id]']({
+              ROUTES['/interview-pool/[type_id]']({
                 type_id: relation.module_id,
               }),
             );

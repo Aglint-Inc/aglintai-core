@@ -7,10 +7,10 @@ import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
-import { useModuleAndUsers } from '../queries/hooks';
 import { unArchiveModuleById } from '../utils';
-import SlotBodyComp from './SlotBodyComp';
-import TopRightButtons from './TopRightButtons';
+import SlotBodyComp from './_common/components/old/SlotBodyComp';
+import TopRightButtons from './_common/components/TopRightButtons';
+import { useModuleAndUsers } from './_common/hooks/useModuleAndUsers';
 
 function ModuleMembersComp() {
   const {
@@ -26,7 +26,7 @@ function ModuleMembersComp() {
       setBreadcrum([
         {
           name: 'Interview Types',
-          route: ROUTES['/scheduling/interview-types'](),
+          route: ROUTES['/interview-pool'](),
         },
         {
           name: `${editModule.name}`,

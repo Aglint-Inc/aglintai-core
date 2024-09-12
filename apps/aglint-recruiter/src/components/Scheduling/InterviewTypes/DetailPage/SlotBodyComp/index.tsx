@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { MoreMenu } from '@devlink3/MoreMenu';
@@ -38,18 +39,17 @@ import {
 } from '../../store';
 import { type ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
-import AddMemberDialog from '../AddMemberDialog';
-import DeleteMemberDialog from '../DeleteMemberDialog';
-import PauseDialog from '../PauseDialog';
-import ResumeMemberDialog from '../ResumeMemberDialog';
-import SchedulesModules from '../Schedules';
-import ModuleSettingComp from '../Training';
-import { type TabsModuleMembers } from '../type';
-import SettingsDialog from './EditModule';
-import { InterviewMemberList } from './InterviewMemberList';
-import SlotQualifiedMembers from './SlotQualifiedMembers';
-import SlotTrainingMembers from './SlotTrainingMembers';
-import { tabsModuleMembers } from './utils';
+import SchedulesModules from '../_common/components';
+import SettingsDialog from '../_common/components/old/EditModule';
+import { tabsModuleMembers } from '../_common/components/old/SlotBodyComp/utils';
+import SlotQualifiedMembers from '../_common/components/old/SlotQualifiedMembers';
+import SlotTrainingMembers fro../_common/components/Schedulesnts/SlotTrainingMembers';
+import ModuleSettingComp from '../_common/components/old/Training';
+import AddMemberDialog from '../_common/dialogs/AddMemberDialog';
+import DeleteMemberDialog from '../_common/dialogs/DeleteMemberDialog';
+import PauseDialog from '../_common/dialogs/PauseDialog';
+import ResumeMemberDialog from '../_common/dialogs/ResumeMemberDialog';
+import { type TabsModuleMembers } from '../_common/types/type';
 
 interface SlotBodyCompProps {
   editModule: ModuleType;
@@ -98,7 +98,7 @@ function SlotBodyComp({
       // eslint-disable-next-line security/detect-object-injection
       currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
     router.push(
-      ROUTES['/scheduling/interview-types/[type_id]']({
+      ROUTES['/interview-pool/[type_id]']({
         type_id: editModule.id,
       }) + `?tab=${pre}`,
       undefined,
@@ -112,7 +112,7 @@ function SlotBodyComp({
       currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
 
     router.push(
-      ROUTES['/scheduling/interview-types/[type_id]']({
+      ROUTES['/interview-pool/[type_id]']({
         type_id: editModule.id,
       }) + `?tab=${next}`,
       undefined,
@@ -205,7 +205,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                       textLabel={tab.name}
                       onClickPill={() => {
                         router.push(
-                          ROUTES['/scheduling/interview-types/[type_id]']({
+                          ROUTES['/interview-pool/[type_id]']({
                             type_id: editModule.id,
                           }) + `?tab=${tab.queryParams}`,
                           undefined,
@@ -300,10 +300,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                           <>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <UIBadge
-                                  textBadge='Token1'
-                                  color={'purple'}
-                                />
+                                <UIBadge textBadge='Token1' color={'purple'} />
                               </div>
                               <p className='text-sm text-gray-600'>
                                 Korem ipsum dolor sit amet, consectetur
@@ -313,10 +310,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                             </div>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <UIBadge
-                                  textBadge='Token2'
-                                  color={'purple'}
-                                />
+                                <UIBadge textBadge='Token2' color={'purple'} />
                               </div>
                               <p className='text-sm text-gray-600'>
                                 Korem ipsum dolor sit amet, consectetur
@@ -326,10 +320,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                             </div>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <UIBadge
-                                  textBadge='Token3'
-                                  color={'purple'}
-                                />
+                                <UIBadge textBadge='Token3' color={'purple'} />
                               </div>
                               <p className='text-sm text-gray-600'>
                                 Korem ipsum dolor sit amet, consectetur
@@ -479,7 +470,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               slotBadges={
                 job.status && (
                   <UIBadge
-                  color={
+                    color={
                       job.status === 'published'
                         ? 'success'
                         : job.status === 'closed'

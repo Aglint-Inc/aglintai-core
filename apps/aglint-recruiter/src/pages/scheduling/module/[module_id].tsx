@@ -25,7 +25,7 @@ import { MemberListCardShadcn } from '@/components/Common/Member/MemberListCard'
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import Seo from '@/components/Common/Seo';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
+import { type ProgressUser } from '@/components/Scheduling/InterviewTypes/DetailPage/_common/components/old/SlotTrainingMembers';
 import {
   useModuleAndUsers,
   useProgressModuleUsers,
