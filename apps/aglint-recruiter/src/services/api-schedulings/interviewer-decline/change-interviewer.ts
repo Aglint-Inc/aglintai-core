@@ -1,5 +1,4 @@
 import {
-  type APIFindAltenativeTimeSlot,
   type APIRespFindReplaceMentInts,
   type APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
@@ -7,6 +6,7 @@ import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import axios from 'axios';
 
+import { findReplacementIntsUtil } from '@/server/api/routers/scheduling/v1/findReplacementInts/util';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 type FuncParams = {
   request_id: string;
@@ -23,17 +23,14 @@ export const changeInterviewer = async (payload: FuncParams) => {
       .eq('request_id', payload.request_id),
   );
 
-  const api_payload1: APIFindAltenativeTimeSlot = {
-    session_id: cancel_rec.session_id,
-    declined_int_sesn_reln_id: cancel_rec.session_relation_id,
-  };
-
-  const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find-replacement-ints`,
-    api_payload1,
-  );
-
-  const alternate_slots: APIRespFindReplaceMentInts = data;
+  const alternate_slots: APIRespFindReplaceMentInts =
+    await findReplacementIntsUtil({
+      input: {
+        session_id: cancel_rec.session_id,
+        declined_int_sesn_reln_id: cancel_rec.session_relation_id,
+      },
+      ctx: { db: supabaseAdmin } as any,
+    });
   if (alternate_slots.length === 0) {
     throw new CApiError(
       'CLIENT',

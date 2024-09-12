@@ -1,8 +1,4 @@
-import {
-  type APIFindAltenativeTimeSlot,
-  type APIRespFindReplaceMentInts,
-  type APIUpdateMeetingInterviewers,
-} from '@aglint/shared-types';
+import { type APIUpdateMeetingInterviewers } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import axios from 'axios';
@@ -13,6 +9,7 @@ import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRequest } from '@/context/RequestContext';
+import { api } from '@/trpc/client';
 
 import { useMeetingList } from '../../_common/hooks';
 import { MemberRow } from '../SelfSchedulingDrawer/_common/components/MemberRow';
@@ -24,8 +21,7 @@ const RequestDecline = () => {
   );
   const [isInterviewerChanging, setIsInterviewerChanging] =
     React.useState(false);
-  const [alternativeInterviewers, setAlternativeInterviewers] =
-    React.useState<APIRespFindReplaceMentInts>([]);
+
   const { requestDetails } = useRequest();
   const { data: meetingTime, refetch } = useMeetingList();
   const declinedUserDetails = (meetingTime ?? [])
@@ -35,19 +31,21 @@ const RequestDecline = () => {
     .find(
       (item) => item.interview_session_cancel.request_id === requestDetails.id,
     );
+  const {
+    data: alternativeInts,
+    isPending,
+    isSuccess: isAlternativeIntsSuccess,
+    mutateAsync,
+  } = api.scheduling.v1.findReplacementInts.useMutation();
 
   const handleGetAvailableInterviewers = async () => {
     try {
-      const payload: APIFindAltenativeTimeSlot = {
+      if (isPending) return;
+      await mutateAsync({
         declined_int_sesn_reln_id:
           declinedUserDetails.interview_session_cancel.session_relation_id,
         session_id: declinedUserDetails.interview_session_cancel.session_id,
-      };
-      const { data } = await axios.post(
-        '/api/scheduling/v1/find-replacement-ints',
-        payload,
-      );
-      setAlternativeInterviewers(data);
+      });
       setIsDialogOpen(true);
     } catch (e) {
       toast({
@@ -82,7 +80,7 @@ const RequestDecline = () => {
   };
   return (
     <>
-      <UIButton onClick={handleGetAvailableInterviewers}>
+      <UIButton onClick={handleGetAvailableInterviewers} isLoading={isPending}>
         Change Interviewer
       </UIButton>
       <UIDialog
@@ -125,44 +123,45 @@ const RequestDecline = () => {
             <ArrowDownUp size={18} />
           </div>
           <div className='flex flex-col gap-2'>
-            {alternativeInterviewers.map((item) => {
-              const isSelected =
-                selectedMember === item.replacement_int.user_id;
-              return (
-                <div
-                  key={item.replacement_int.user_id}
-                  className={`bg-neutral-100 p-2 rounded-md ${
-                    isSelected ? 'border-gray-100 outline' : ''
-                  }`}
-                  onClick={() => {
-                    setSelectedMember(item.replacement_int.user_id);
-                  }}
-                >
-                  <MemberRow
+            {isAlternativeIntsSuccess &&
+              alternativeInts.map((item) => {
+                const isSelected =
+                  selectedMember === item.replacement_int.user_id;
+                return (
+                  <div
                     key={item.replacement_int.user_id}
-                    slotConflicts={<></>}
-                    slotInterviewerImage={
-                      <MuiAvatar
-                        level={getFullName(
-                          item.replacement_int.first_name,
-                          item.replacement_int.last_name,
-                        )}
-                        src={item.replacement_int.profile_image}
-                        variant={'rounded'}
-                        width={'100%'}
-                        height={'100%'}
-                      />
-                    }
-                    iconTraining={<></>}
-                    textName={getFullName(
-                      item.replacement_int.first_name,
-                      item.replacement_int.last_name,
-                    )}
-                    textRole={item.replacement_int.position}
-                  />
-                </div>
-              );
-            })}
+                    className={`bg-neutral-100 p-2 rounded-md ${
+                      isSelected ? 'border-gray-100 outline' : ''
+                    }`}
+                    onClick={() => {
+                      setSelectedMember(item.replacement_int.user_id);
+                    }}
+                  >
+                    <MemberRow
+                      key={item.replacement_int.user_id}
+                      slotConflicts={<></>}
+                      slotInterviewerImage={
+                        <MuiAvatar
+                          level={getFullName(
+                            item.replacement_int.first_name,
+                            item.replacement_int.last_name,
+                          )}
+                          src={item.replacement_int.profile_image}
+                          variant={'rounded'}
+                          width={'100%'}
+                          height={'100%'}
+                        />
+                      }
+                      iconTraining={<></>}
+                      textName={getFullName(
+                        item.replacement_int.first_name,
+                        item.replacement_int.last_name,
+                      )}
+                      textRole={item.replacement_int.position}
+                    />
+                  </div>
+                );
+              })}
           </div>
         </div>
       </UIDialog>
