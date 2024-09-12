@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import { capitalize, cloneDeep } from 'lodash';
-import { BookKey, Calendar as CalendarIcon} from 'lucide-react';
+import { BookKey, Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -38,6 +38,7 @@ import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput'
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
+import { ScheduleSettings } from '../_common/ScheduleSettings';
 import { useImrQuery } from '../hooks';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -246,7 +247,6 @@ function InterviewerLevelSettings({
     <Stack overflow={'hidden'}>
       {isAvailability ? (
         <ScheduleSettings
-          isTimeZoneToggleVisible={false}
           slotTimeZoneInput={
             <Stack
               spacing={'var(--space-2)'}
@@ -464,118 +464,116 @@ function InterviewerLevelSettings({
         <div>
           <div className='flex flex-col gap-5 w-[700px]'>
             <div>
-              <div className="flex items-center mb-1">
-                <BookKey className="mr-2 h-6 w-6 text-gray-500" />
+              <div className='flex items-center mb-1'>
+                <BookKey className='mr-2 h-6 w-6 text-gray-500' />
                 <h3 className='text-lg font-semibold'>Keywords</h3>
               </div>
               <p>
-              Use keywords to mark events on interviewers’ calendars that can be overridden for interview scheduling.
+                Use keywords to mark events on interviewers’ calendars that can
+                be overridden for interview scheduling.
               </p>
-              
             </div>
             {[
-                  'Free',
-                  'Soft Conflicts',
-                  'Out of Office',
-                  'Recruiting Blocks',
-                ].map((title, index) => {
-                  const keywords = {
-                    Free: freeKeyWords,
-                    'Soft Conflicts': softConflictsKeyWords,
-                    'Out of Office': outOfOffice,
-                    'Recruiting Blocks': recruitingBlocks,
-                  }[title];
-                  const handleAdd = {
-                    Free: setFreeKeywords,
-                    'Soft Conflicts': setSoftConflictsKeyWords,
-                    'Out of Office': setOutOfOffice,
-                    'Recruiting Blocks': setRecruitingBlocks,
-                  }[title];
-                  const path = {
-                    Free: 'freeKeywords',
-                    'Soft Conflicts': 'softConflictsKeywords',
-                    'Out of Office': 'outOfOfficeKeywords',
-                    'Recruiting Blocks': 'recruitingBlocksKeywords',
-                  }[title];
-                  const textWarning = {
-                    Free: 'If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.',
-                    'Soft Conflicts':
-                      'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation',
-                    'Out of Office':
-                      'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.',
-                    'Recruiting Blocks':
-                      'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.',
-                  }[title];
-                  return (
-                    <Card key={index} className='mb-4'>
-                      <CardHeader className='pt-4'>
-                        <h4 className='text-lg font-semibold'>{title}</h4>
-                        <p className='text-sm'>{textWarning}</p>
-                      </CardHeader>
-                      <CardContent>
-                        <div className='flex flex-wrap gap-2'>
-                          {keywords.length === 0 ? (
-                            <Alert severity='info' icon={false}>
-                              <Typography>
-                                No {title.toLowerCase()} keywords added.
-                              </Typography>
-                            </Alert>
-                          ) : (
-                            <>
-                              {keywords.map((item) => {
-                                if (
-                                  companyKeywords &&
-                                  companyKeywords[title.replace(' ', '')] &&
-                                  companyKeywords[
-                                    title.replace(' ', '')
-                                  ].includes(item)
-                                ) {
-                                  return (
-                                    <Chip key={item} name={item} disable />
-                                  );
-                                } else {
-                                  return (
-                                    <Chip
-                                      key={item}
-                                      name={item}
-                                      onRemove={() => {
-                                        handleAdd((prev) =>
-                                          prev.filter((ele) => ele !== item),
-                                        );
-                                      }}
-                                    />
-                                  );
-                                }
-                              })}
-                            </>
-                          )}
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <div className='w-full'>
-                          <FilterInput
-                            handleAdd={(s) => {
-                              const keyword = String(s).split(',');
-                              keyword.map((itemX) => {
-                                const item = itemX.trim();
-                                if (item?.length) {
-                                  if (keywords && keywords.includes(item)) {
-                                    toast.warning(`"${item}" keyword exists.`);
-                                    return null;
-                                  } else {
-                                    handleAdd((pre) => [item, ...pre]);
-                                  }
-                                }
-                              });
-                            }}
-                            path={path}
-                            type='string'
-                          />
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  );
-                })}
+              'Free',
+              'Soft Conflicts',
+              'Out of Office',
+              'Recruiting Blocks',
+            ].map((title, index) => {
+              const keywords = {
+                Free: freeKeyWords,
+                'Soft Conflicts': softConflictsKeyWords,
+                'Out of Office': outOfOffice,
+                'Recruiting Blocks': recruitingBlocks,
+              }[title];
+              const handleAdd = {
+                Free: setFreeKeywords,
+                'Soft Conflicts': setSoftConflictsKeyWords,
+                'Out of Office': setOutOfOffice,
+                'Recruiting Blocks': setRecruitingBlocks,
+              }[title];
+              const path = {
+                Free: 'freeKeywords',
+                'Soft Conflicts': 'softConflictsKeywords',
+                'Out of Office': 'outOfOfficeKeywords',
+                'Recruiting Blocks': 'recruitingBlocksKeywords',
+              }[title];
+              const textWarning = {
+                Free: 'If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.',
+                'Soft Conflicts':
+                  'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation',
+                'Out of Office':
+                  'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.',
+                'Recruiting Blocks':
+                  'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.',
+              }[title];
+              return (
+                <Card key={index} className='mb-4'>
+                  <CardHeader className='pt-4'>
+                    <h4 className='text-lg font-semibold'>{title}</h4>
+                    <p className='text-sm'>{textWarning}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className='flex flex-wrap gap-2'>
+                      {keywords.length === 0 ? (
+                        <Alert severity='info' icon={false}>
+                          <Typography>
+                            No {title.toLowerCase()} keywords added.
+                          </Typography>
+                        </Alert>
+                      ) : (
+                        <>
+                          {keywords.map((item) => {
+                            if (
+                              companyKeywords &&
+                              companyKeywords[title.replace(' ', '')] &&
+                              companyKeywords[title.replace(' ', '')].includes(
+                                item,
+                              )
+                            ) {
+                              return <Chip key={item} name={item} disable />;
+                            } else {
+                              return (
+                                <Chip
+                                  key={item}
+                                  name={item}
+                                  onRemove={() => {
+                                    handleAdd((prev) =>
+                                      prev.filter((ele) => ele !== item),
+                                    );
+                                  }}
+                                />
+                              );
+                            }
+                          })}
+                        </>
+                      )}
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <div className='w-full'>
+                      <FilterInput
+                        handleAdd={(s) => {
+                          const keyword = String(s).split(',');
+                          keyword.map((itemX) => {
+                            const item = itemX.trim();
+                            if (item?.length) {
+                              if (keywords && keywords.includes(item)) {
+                                toast.warning(`"${item}" keyword exists.`);
+                                return null;
+                              } else {
+                                handleAdd((pre) => [item, ...pre]);
+                              }
+                            }
+                          });
+                        }}
+                        path={path}
+                        type='string'
+                      />
+                    </div>
+                  </CardFooter>
+                </Card>
+              );
+            })}
           </div>
         </div>
       )}

@@ -264,7 +264,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       value: {
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
-        action_type: 'agent_instruction',
+        action_type: 'email' as any,
         payload: {
           agent: null,
         },

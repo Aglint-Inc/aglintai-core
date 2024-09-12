@@ -1,6 +1,7 @@
-
 import type { Dispatch, SetStateAction } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
@@ -30,12 +31,12 @@ function DeleteLocation({
           deletelocation: { open: false, edit: -1 },
         });
       }}
-      title="Delete Office Location"
+      title='Delete Office Location'
       slotButtons={
         <>
           <UIButton
-            variant="secondary"
-            size="sm"
+            variant='secondary'
+            size='sm'
             onClick={() => {
               setDialog({
                 ...dialog,
@@ -46,8 +47,8 @@ function DeleteLocation({
             Cancel
           </UIButton>
           <UIButton
-            variant="destructive"
-            size="sm"
+            variant='destructive'
+            size='sm'
             onClick={() => {
               handleDeleteLocation(dialog.deletelocation.edit);
               setDialog({
@@ -61,7 +62,10 @@ function DeleteLocation({
         </>
       }
     >
-      <p>Are you sure you want to delete this office location? This action is permanent.</p>
+      <p>
+        Are you sure you want to delete this office location? This action is
+        permanent.
+      </p>
     </UIDialog>
   );
 }

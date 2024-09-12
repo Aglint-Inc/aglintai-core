@@ -1,9 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
+import UIDialog from '@/components/Common/UIDialog';
 
 import { useRequestAvailabilityContext } from '../../RequestAvailabilityContext';
 import AvailableSlots from '../AvailableSlots';
@@ -13,14 +8,15 @@ function DateSlotsPoPup() {
     useRequestAvailabilityContext();
   const handleClose = () => setOpenDaySlotPopup(null);
   return (
-    <Dialog open={openDaySlotPopup !== null} onOpenChange={handleClose}>
-      <DialogContent className='sm:max-w-[1000px]'>
-        <DialogHeader>
-          <DialogTitle>Available Slots</DialogTitle>
-        </DialogHeader>
-        <AvailableSlots singleDay={false} />
-      </DialogContent>
-    </Dialog>
+    <UIDialog
+      open={openDaySlotPopup !== null}
+      onClose={handleClose}
+      title='Available Slots'
+      size='xl'
+      slotButtons={<></>}
+    >
+      <AvailableSlots singleDay={false} />
+    </UIDialog>
   );
 }
 
