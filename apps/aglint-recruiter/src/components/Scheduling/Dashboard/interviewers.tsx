@@ -1,10 +1,10 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
 import Stack from '@mui/material/Stack';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
+import { InterviewersCardList } from '@/components/Interviewers/components/_common/InterviewersCardList';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,

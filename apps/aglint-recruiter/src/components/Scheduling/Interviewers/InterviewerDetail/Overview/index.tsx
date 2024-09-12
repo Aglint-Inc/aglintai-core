@@ -1,5 +1,4 @@
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-// import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { useRouter } from 'next/router';
 
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
