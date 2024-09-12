@@ -17,7 +17,6 @@ import {
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
