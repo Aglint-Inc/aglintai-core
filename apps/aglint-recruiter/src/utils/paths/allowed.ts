@@ -7,6 +7,8 @@ export const allowedPaths = new Set<t>([
   '/login',
   '/signup',
   '/api/signup',
+  '/forgot-passwor',
+  '/api/auth/send-reset-email',
   '/api/pre-seed',
   '/api/unauthorized',
   '/api/jobpost/indexing',

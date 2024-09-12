@@ -1,12 +1,10 @@
 'use client';
 
-import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import { Skeleton } from '@components/ui/skeleton';
-import { Loader2 } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,33 +24,36 @@ export default function ForgotPasswordForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<ForgotPasswordFormInputs>();
-  const { toast } = useToast();
 
   const onSubmit = async (data: ForgotPasswordFormInputs) => {
     setIsLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
-    });
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const { data: resetData, error } =
+        await supabase.auth.resetPasswordForEmail(data.email, {
+          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
+        });
 
-    if (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message,
-      });
-    } else {
-      toast({
-        title: 'Success',
-        description: 'Password reset email sent. Please check your inbox.',
-      });
-      router.push(ROUTES['/login']());
+      if (error) throw error;
+
+      // Call your custom email sender
+      // await fetch('/api/auth/send-reset-email', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     email: data.email,
+      //     resetLink: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
+      //   }),
+      // });
+
+      router.push(ROUTES['/login']() + '?resetRequested=true');
+    } catch (error) {
+      console.error(error);
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
-
-  if (isLoading) {
-    return <ForgotPasswordFormSkeleton />;
-  }
 
   return (
     <Card className='w-[400px] border-border'>
@@ -70,8 +71,7 @@ export default function ForgotPasswordForm() {
               {...register('email', {
                 required: 'Email is required',
                 pattern: {
-                  // eslint-disable-next-line security/detect-unsafe-regex
-                  value: /^[\w.+-]+@([\w-]+\.)+[\w-]{2,4}$/,
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                   message: 'Invalid email',
                 },
               })}
@@ -81,8 +81,11 @@ export default function ForgotPasswordForm() {
             )}
           </div>
           <Button className='w-full' type='submit' disabled={isLoading}>
-            {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-            Reset Password
+            {isLoading ? (
+              <Loader className='mr-2 h-4 w-4 animate-spin' />
+            ) : (
+              'Reset Password'
+            )}
           </Button>
         </form>
       </CardContent>
@@ -93,23 +96,6 @@ export default function ForgotPasswordForm() {
             Login
           </a>
         </div>
-      </CardFooter>
-    </Card>
-  );
-}
-
-function ForgotPasswordFormSkeleton() {
-  return (
-    <Card className='w-[350px]'>
-      <CardHeader>
-        <Skeleton className='h-8 w-3/4 mx-auto' />
-      </CardHeader>
-      <CardContent className='space-y-4'>
-        <Skeleton className='h-10 w-full' />
-        <Skeleton className='h-10 w-full' />
-      </CardContent>
-      <CardFooter className='flex flex-col space-y-4'>
-        <Skeleton className='h-4 w-3/4 mx-auto' />
       </CardFooter>
     </Card>
   );

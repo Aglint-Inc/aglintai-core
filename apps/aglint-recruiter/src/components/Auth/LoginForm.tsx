@@ -1,12 +1,13 @@
 'use client';
 
-import { useToast } from '@components/hooks/use-toast';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -21,28 +22,24 @@ export default function LoginForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
-  const { toast } = useToast();
 
   const onSubmit = async (data: LoginFormInputs) => {
-    event.preventDefault();
+    setAuthError(null);
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
       if (error) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: error.message,
-        });
+        setAuthError(error.message);
       } else {
         const response = await fetch('/auth/redirect', {
           method: 'GET',
@@ -57,11 +54,7 @@ export default function LoginForm() {
       }
     } catch (err) {
       if (err instanceof Error) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: err.message,
-        });
+        setAuthError(err.message);
       }
     } finally {
       setIsLoading(false);
@@ -69,6 +62,7 @@ export default function LoginForm() {
   };
 
   const oauthHandler = async (provider: 'google') => {
+    setAuthError(null);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -77,20 +71,17 @@ export default function LoginForm() {
         },
       });
       if (error) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: error.message,
-        });
+        setAuthError(error.message);
       }
     } catch (err) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: err.message,
-      });
+      if (err instanceof Error) {
+        setAuthError(err.message);
+      }
     }
   };
+
+  const searchParams = useSearchParams();
+  const resetRequested = searchParams.get('resetRequested');
 
   return (
     <Card className='w-[400px] border-border'>
@@ -98,6 +89,13 @@ export default function LoginForm() {
         <h2 className='text-2xl font-bold text-center'>Login</h2>
       </CardHeader>
       <CardContent>
+        {resetRequested && (
+          <Alert className='mb-4'>
+            <AlertDescription>
+              Password reset email sent. Please check your inbox.
+            </AlertDescription>
+          </Alert>
+        )}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <div className='space-y-2'>
             <Label htmlFor='email'>Email</Label>
@@ -108,9 +106,8 @@ export default function LoginForm() {
               {...register('email', {
                 required: 'Email is required',
                 pattern: {
-                  // eslint-disable-next-line security/detect-unsafe-regex
-                  value: /^[\w.+-]+@([\w-]+\.)+[\w-]{2,4}$/,
-                  message: 'Invalid email',
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: 'Invalid email format',
                 },
               })}
             />
@@ -126,11 +123,6 @@ export default function LoginForm() {
                 type={showPassword ? 'text' : 'password'}
                 {...register('password', {
                   required: 'Password is required',
-                  pattern: {
-                    value:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                    message: 'Invalid login credentials',
-                  },
                 })}
               />
 
@@ -148,31 +140,36 @@ export default function LoginForm() {
               <p className='text-sm text-red-500'>{errors.password.message}</p>
             )}
           </div>
+          {authError && <p className='text-sm text-red-500'>{authError}</p>}
           <Button className='w-full' type='submit' disabled={isLoading}>
-            {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            {isLoading && <Loader className='mr-2 h-4 w-4 animate-spin' />}
             Login
           </Button>
         </form>
       </CardContent>
       <CardFooter className='flex flex-col space-y-4'>
-        <Button
-          variant='outline'
-          className='w-full'
-          onClick={() => oauthHandler('google')}
-        >
-          Sign in with Google
-        </Button>
+        {process.env.NODE_ENV === 'development' && (
+          <Button
+            variant='outline'
+            className='w-full'
+            onClick={() => oauthHandler('google')}
+          >
+            Sign in with Google
+          </Button>
+        )}
         <div className='text-sm text-center'>
           <a href='/forgot-password' className='text-blue-500 hover:underline'>
             Forgot password?
           </a>
         </div>
-        <div className='text-sm text-center'>
-          Don&apos;t have an account?{' '}
-          <a href='/signup' className='text-blue-500 hover:underline'>
-            Sign up
-          </a>
-        </div>
+        {process.env.NODE_ENV === 'development' && (
+          <div className='text-sm text-center'>
+            Don&apos;t have an account?{' '}
+            <a href='/signup' className='text-blue-500 hover:underline'>
+              Sign up
+            </a>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );

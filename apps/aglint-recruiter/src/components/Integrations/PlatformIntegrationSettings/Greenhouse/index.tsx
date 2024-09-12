@@ -1,190 +1,152 @@
 /* eslint-disable security/detect-object-injection */
-import GreenhouseIcon from '@components/icons/GreenhouseIcon.svg';
-import GreenInCircle from '@components/icons/GreenInCircle.svg';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
-import { Input } from '@components/ui/input';
-// import relativeTime from 'dayjs/plugin/relativeTime';
-import { AtsSettings } from '@devlink/AtsSettings';
 import dayjs from 'dayjs';
-import { Loader2 } from 'lucide-react';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { Lightbulb, Loader2 } from 'lucide-react';
 import React from 'react';
 
 import { type GreenHouseFullSyncAPI } from '@/api/sync/greenhouse/full_sync/type';
 import axios from '@/client/axios';
-import AutoCompletePro from '@/components/Common/AutoCompletePro';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
+
+dayjs.extend(relativeTime);
 
 function GreenhouseSettings() {
   const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
   const timeStamp = data && data.last_sync['full_sync'];
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
+
+  const syncOptions = [
+    { key: 'jobs', label: 'Jobs' },
+    { key: 'interview_stages', label: 'Interview Plan' },
+    { key: 'candidates', label: 'Candidates' },
+    { key: 'applications', label: 'Applications' },
+    { key: 'departments', label: 'Departments' },
+    { key: 'office_locations', label: 'Office Locations' },
+    { key: 'users', label: 'Users' },
+  ];
+
   return (
-    <div className='flex flex-col'>
-      {isPending ? (
-        <div className='flex justify-center items-center'>
-          <Loader2 className='w-6 h-6 animate-spin text-primary' />
-        </div>
-      ) : (
-        <AtsSettings
-          slotButton={<>actions</>}
-          slotAtsIcon={<GreenhouseIcon />}
-          textAtsConnected={'Greenhouse is connected'}
-          textSyncItems={'Sync items'}
-          slotConnectIcon={<GreenInCircle />}
-          slotSyncItems={
-            <>
-              <div className='flex flex-col gap-1'>
-                {Object.entries(GreenhouseSync.options).map(
-                  ([key, subOptions]) => (
-                    <div key={key} className='flex items-center space-x-2'>
-                      <Checkbox
-                        id={subOptions?.name}
-                        checked={data?.options[key]}
-                        onCheckedChange={() => {
-                          data.options[String(key)] =
-                            !data.options?.[String(key)];
-                          setOptions(data);
-                        }}
-                      />
-                      <label
-                        htmlFor={subOptions?.name}
-                        className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-                      >
-                        {subOptions?.name}
-                      </label>
-                    </div>
-                  ),
-                )}
+    <div className='container mx-auto max-w-3xl mt-10 space-y-4'>
+      <Card>
+        <CardHeader className='flex flex-row justify-between items-center space-x-4'>
+          <CardTitle className='text-lg'>Sync Entities</CardTitle>
+          <Badge variant='outline' className='bg-green-50 text-green-700'>
+            Connected
+          </Badge>
+        </CardHeader>
+        <CardContent>
+          <p className='text-sm text-gray-500 mb-4'>
+            Select the entities you want to sync: Jobs, Interview Plans,
+            Candidates, Applications, Users, Office Locations, and Departments.
+          </p>
+          {isPending ? (
+            <div className='flex justify-center items-center'>
+              <Loader2 className='w-6 h-6 animate-spin text-primary' />
+            </div>
+          ) : (
+            <div className='space-y-4'>
+              <div className='grid grid-cols-2 gap-4'>
+                {syncOptions.map(({ key, label }) => (
+                  <div key={key} className='flex items-center space-x-2'>
+                    <Checkbox
+                      id={key}
+                      checked={data?.options[key]}
+                      onCheckedChange={() => {
+                        setOptions({
+                          ...data,
+                          options: {
+                            ...data.options,
+                            [key]: !data.options[key],
+                          },
+                        });
+                      }}
+                    />
+                    <label
+                      htmlFor={key}
+                      className='text-sm font-medium leading-none'
+                    >
+                      {label}
+                    </label>
+                  </div>
+                ))}
               </div>
-              <div className='h-px w-full bg-neutral-200 my-3'></div>
-              <div className='flex flex-row justify-between'>
-                <div className='flex flex-row items-center'>
-                  <p className='text-sm'>{`Last Sync: ${last_sync}`}</p>
-                </div>
+              <div className='flex items-center justify-between mt-4 bg-gray-100 p-4 rounded-md'>
+                <p className='text-sm text-gray-500'>{`Last synchronized on: ${last_sync}`}</p>
                 <Button
+                  size='sm'
                   onClick={() => getGreenhouseSync(data).then(() => refetch())}
                 >
-                  Sync
+                  Sync Now
                 </Button>
               </div>
-            </>
-          }
-          slotFrequencySync={
-            <AutoCompletePro
-              value={'24 hours'}
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-              onChange={() => {}}
-              options={[
-                '6 Hours',
-                '12 Hours',
-                '24 Hours',
-                '3 Days',
-                '7 Days',
-                '15 Days',
-                '30 Days',
-                'Never',
-              ]}
-            />
-          }
-          slotAiInstructionsTextArea={<Input />}
-          slotCheckbox={
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className='text-lg'>AI Task Automation</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='flex items-start space-x-2 mb-4'>
             <Checkbox
-              checked={data.options['task_sync']}
-              onClick={() => {
-                data.options['task_sync'] = !data.options?.['task_sync'];
-                setOptions(data);
+              id='task_sync'
+              checked={data?.options['task_sync']}
+              onCheckedChange={() => {
+                setOptions({
+                  ...data,
+                  options: {
+                    ...data.options,
+                    task_sync: !data.options.task_sync,
+                  },
+                });
               }}
+              className='mt-1'
             />
-          }
-        />
-      )}
+            <div>
+              <label htmlFor='task_sync' className='text-sm font-medium'>
+                Use Aglint AI to automate tasks directly from comments in
+                Greenhouse.
+              </label>
+              <p className='text-sm text-gray-500 mt-1'>
+                Mention `@aglintai` in a comment, then include the task details.
+                Aglint AI will handle the rest.
+              </p>
+            </div>
+          </div>
+          <Alert>
+            <AlertTitle className='flex items-center'>
+              <Lightbulb className='h-4 w-4 text-purple-500 mr-2' />
+              How to Use:
+            </AlertTitle>
+            <AlertDescription>
+              <ol className='list-decimal list-inside space-y-2 text-sm mt-2'>
+                <li>Mention `@aglintai` in your comment.</li>
+                <li>
+                  Specify the action, like creating, rescheduling, or canceling
+                  a request.
+                </li>
+              </ol>
+              <p className='mt-4 text-sm font-medium'>Example:</p>
+              <p className='text-sm italic'>
+                @aglintai Please create a request for a new interview and assign
+                it to the scheduling coordinator.
+              </p>
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 export default GreenhouseSettings;
-
-type GreenhouseSyncOptions = {
-  description: string;
-  options: {
-    [options: string]: {
-      name: string;
-      onCheck?: () => Promise<unknown>;
-      subOption: {
-        description: string;
-        options: {
-          [options: string]: string;
-        };
-      };
-    };
-  };
-};
-
-const GreenhouseSync: GreenhouseSyncOptions = {
-  description: 'Sync Greenhouse Job Plans',
-  options: {
-    jobs: {
-      name: 'Jobs',
-      subOption: undefined,
-      // subOption: {
-      //   description: 'Sync Greenhouse Interview Stages',
-      //   options: {
-      //     job_status: {
-      //       name: 'Active jobs',
-      //       isEnabled: true,
-      //     },
-      //     job_hiring_team: {
-      //       name: 'Hiring team',
-      //       isEnabled: true,
-      //     },
-      //     job_interview_plan: { name: 'Interview plan', isEnabled: true },
-      //   },
-      // },
-    },
-    interview_stages: {
-      name: 'Interview Plan',
-      subOption: undefined,
-    },
-    candidates: {
-      name: 'Candidates',
-      subOption: undefined,
-    },
-    applications: {
-      name: 'Applications',
-      subOption: undefined,
-    },
-    departments: {
-      name: 'Departments',
-      subOption: undefined,
-    },
-    office_locations: {
-      name: 'Office Locations',
-      subOption: undefined,
-    },
-    users: {
-      name: 'Users',
-      subOption: undefined,
-    },
-  },
-} as const;
-
-// async function syncGreenhouseDepartments() {
-//   return await axios.call<GreenhouseDepartmentsAPI>(
-//     'GET',
-//     '/api/integrations/greenhouse/sync/departments',
-//     null,
-//   );
-// }
-
-// async function setGreenhouseOfficeLocations() {
-//   const res = await axios.call<GreenhouseOfficeLocationsAPI>(
-//     'GET',
-//     '/api/integrations/greenhouse/sync/office_locations',
-//     {},
-//   );
-//   return res;
-// }
 
 async function getGreenhouseSync(
   syncData: GreenHouseFullSyncAPI['request']['syncData'],
