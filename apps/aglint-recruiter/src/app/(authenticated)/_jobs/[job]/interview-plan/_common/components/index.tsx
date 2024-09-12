@@ -15,7 +15,6 @@ import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
-import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
@@ -60,6 +59,7 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
+import { AddScheduleOption } from './_common/AddScheduleOption';
 import { InterviewBreakCard } from './_common/InterviewBreakCard';
 import { InterviewPlanDetail } from './_common/InterviewPlanDetail';
 import { InterviewPlanWrap } from './_common/InterviewPlanWrap';
