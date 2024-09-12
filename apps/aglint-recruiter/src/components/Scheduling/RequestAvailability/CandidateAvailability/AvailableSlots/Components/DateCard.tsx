@@ -1,7 +1,7 @@
+import { cn } from '@lib/utils';
 import { X } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import { cn } from '@/utils/shadcn';
 
 interface DatePickerProps {
   textMonth: string;
