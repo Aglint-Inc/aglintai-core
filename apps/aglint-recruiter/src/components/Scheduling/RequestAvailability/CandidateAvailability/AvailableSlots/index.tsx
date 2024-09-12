@@ -3,16 +3,14 @@ import {
   type DatabaseTable,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Button } from '@components/ui/button';
 import { CalendarPick } from '@devlink2/CalendarPick';
 import { DatePicker } from '@devlink2/DatePicker';
 import { PickSlotDay } from '@devlink2/PickSlotDay';
 import { TimePick } from '@devlink2/TimePick';
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { Calendar } from 'lucide-react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -43,6 +41,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setIsSubmitted,
     setCandidateRequestAvailability,
   } = useRequestAvailabilityContext();
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
   const handleClickDate = ({
     selectedDate,
@@ -271,22 +270,20 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   }, [candidateRequestAvailability]);
   if (candidateRequestAvailability) {
     return (
-      <Stack bgcolor={'var(--white-a7'}>
+      <div className='bg-white bg-opacity-70'>
         <PickSlotDay
           isPickedCalendarActive={markAsAllDateSelected}
           textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
           isPickSlotIconActive={markAsAllSlotsSelected}
           textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
           slotPrimaryButton={
-            <ButtonSolid
-              size={2}
-              onClickButton={{
-                onClick: handleSubmit,
-              }}
-              textButton={singleDay ? 'Submit Availability' : 'Done'}
-              isLoading={loading}
-              isDisabled={!markAsAllSlotsSelected}
-            />
+            <Button
+              size='lg'
+              onClick={handleSubmit}
+              disabled={!markAsAllSlotsSelected}
+            >
+              {singleDay ? 'Submit Availability' : 'Done'}
+            </Button>
           }
           slotCalenderPick={
             <ShowCode>
@@ -503,7 +500,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
             />
           }
         />
-      </Stack>
+      </div>
     );
   }
   if (!candidateRequestAvailability) {

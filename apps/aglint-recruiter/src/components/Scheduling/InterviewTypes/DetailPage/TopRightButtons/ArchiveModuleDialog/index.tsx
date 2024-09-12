@@ -1,6 +1,6 @@
 import { useToast } from '@components/hooks/use-toast';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { Stack } from '@mui/material';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -148,29 +148,27 @@ function ArchiveModuleDialog({
           </>
         }
       >
-        <Stack spacing={1}>
-          <p className="text-muted-foreground">
-            By clicking archive the interview type will not be available to select in interview plans while scheduling.
+        <div className='flex flex-col space-y-4'>
+          <p className='text-muted-foreground'>
+            By clicking archive the interview type will not be available to
+            select in interview plans while scheduling.
           </p>
           {errors.length > 0 && (
-            <GlobalBannerShort
-              color={'error'}
-              iconName='warning'
-              textTitle='Unable to Archive'
-              textDescription=''
-              slotButtons={
-                <Stack>
+            <Alert variant='destructive'>
+              <AlertCircle className='h-4 w-4' />
+              <AlertTitle>Unable to Archive</AlertTitle>
+              <AlertDescription>
+                <ul className='list-disc pl-5 space-y-1'>
                   {errors.map((error, index) => (
-                    <Stack direction={'row'} key={index}>
-                      <li style={{ color: 'var(--neutral-11)' }}></li>
-                      <p className="text-sm text-muted-foreground">{error}</p>
-                    </Stack>
+                    <li key={index} className='text-sm text-muted-foreground'>
+                      {error}
+                    </li>
                   ))}
-                </Stack>
-              }
-            />
+                </ul>
+              </AlertDescription>
+            </Alert>
           )}
-        </Stack>
+        </div>
       </UIDialog>
     </>
   );

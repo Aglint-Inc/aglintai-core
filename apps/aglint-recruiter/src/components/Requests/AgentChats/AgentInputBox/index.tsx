@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -112,14 +111,14 @@ function AgentInputBox() {
 
   return (
     <>
-      <Stack position={'relative'} alignItems={'center'}>
-        <Stack position={'absolute'} bottom={'95px'} zIndex={1}>
+      <div className='relative flex flex-col items-center'>
+        <div className='absolute bottom-[95px] z-10'>
           <CreateSchedulePopUp
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
             setText={setText}
           />
-        </Stack>
+        </div>
         <AgentEditor
           inputRef={inputRef}
           text={text}
@@ -171,7 +170,7 @@ function AgentInputBox() {
               : []
           }
         />
-      </Stack>
+      </div>
     </>
   );
 }

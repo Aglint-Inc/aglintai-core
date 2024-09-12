@@ -4,10 +4,11 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { InviteTeamCard } from '@devlink/InviteTeamCard';
 import { TeamInvite } from '@devlink/TeamInvite';
-import { TeamInvitesBlock } from '@devlink/TeamInvitesBlock';
 import { TeamPendingInvites } from '@devlink/TeamPendingInvites';
 import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
 import { Loader2 } from 'lucide-react';
@@ -637,46 +638,47 @@ const AddMember = ({
               pendingList?.length,
             )} pending invites awaiting your response.`}
             slotList={pendingList.map((member) => (
-              <TeamInvitesBlock
-                key={member.user_id}
-                email={member.email}
-                name={member.first_name + ' ' + member.last_name}
-                slotImage={
-                  <MuiAvatar
+              <Alert key={member.user_id}>
+                <Avatar>
+                  <AvatarImage
                     src={member.profile_image}
-                    level={getFullName(member.first_name, member.last_name)}
-                    variant='rounded-medium'
+                    alt={getFullName(member.first_name, member.last_name)}
                   />
-                }
-                slotButton={
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      setResendDisable(member.user_id);
-                      reinviteUser(member.email, recruiterUser.user_id).then(
-                        ({ error, emailSend }) => {
-                          setResendDisable(null);
-                          if (!error && emailSend) {
-                            return toast({
-                              variant: 'default',
-                              title: 'Invite sent successfully.',
-                            });
-                          }
+                  <AvatarFallback>
+                    {getFullName(member.first_name, member.last_name).charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <AlertTitle>
+                  {member.first_name + ' ' + member.last_name}
+                </AlertTitle>
+                <AlertDescription>{member.email}</AlertDescription>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    setResendDisable(member.user_id);
+                    reinviteUser(member.email, recruiterUser.user_id).then(
+                      ({ error, emailSend }) => {
+                        setResendDisable(null);
+                        if (!error && emailSend) {
                           return toast({
-                            variant: 'destructive',
-                            title: 'Failed to resend invite',
-                            description: error,
+                            variant: 'default',
+                            title: 'Invite sent successfully.',
                           });
-                        },
-                      );
-                    }}
-                    disabled={isResendDisable === member.user_id}
-                  >
-                    Resend
-                  </Button>
-                }
-              />
+                        }
+                        return toast({
+                          variant: 'destructive',
+                          title: 'Failed to resend invite',
+                          description: error,
+                        });
+                      },
+                    );
+                  }}
+                  disabled={isResendDisable === member.user_id}
+                >
+                  Resend
+                </Button>
+              </Alert>
             ))}
             onClickClose={{
               onClick: () => onClose(),
@@ -691,18 +693,3 @@ const AddMember = ({
 };
 
 export default AddMember;
-
-// const CustomTextField = (props: TextFieldProps) => {
-//   const label = props.label;
-//   return (
-//     <Stack width={'100%'}>
-//       {Boolean(label) && (
-//         <Typography fontSize={'14px'} marginBottom={'3px'}>
-//           {label}
-//           {props.required && <Typography />}
-//         </Typography>
-//       )}
-//       <TextField {...{ ...props, label: undefined }} />
-//     </Stack>
-//   );
-// };

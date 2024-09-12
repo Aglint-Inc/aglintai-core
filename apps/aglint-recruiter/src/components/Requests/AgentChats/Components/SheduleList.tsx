@@ -1,6 +1,4 @@
-import { Text } from '@devlink//Text';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Box, Stack } from '@mui/material';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -15,10 +13,10 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <Stack spacing={1}>
-      <Stack color={'var(--neutral-11)'}>
-        <Text size={2} content='Schedules'></Text>
-      </Stack>
+    <div className='space-y-1'>
+      <div className='text-neutral-500'>
+        <p className='text-base font-normal text-gray-500'>Schedules</p>
+      </div>
       {schedules.map((schedule) => (
         <Link
           target='_blank'
@@ -27,60 +25,46 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
           key={schedule.link}
           onMouseEnter={() => setHovered(schedule.link)}
           onMouseLeave={() => setHovered(null)}
-          style={{ textDecoration: 'none', color: 'inherit' }}
+          className='block text-inherit no-underline'
         >
-          <Stack
-            direction='row'
-            alignItems='top'
-            spacing={3}
-            position='relative'
-          >
-            <Box sx={{ width: '148px' }}>
-              <Stack color={'var(--neutral-11)'}>
-                <Text size={2} content={schedule.time} weight={'medium'}></Text>
-                <Text size={1} content={schedule.date}></Text>
-              </Stack>
-            </Box>
-            <Box flex={1}>
-              <Stack color={'var(--neutral-11)'}>
-                <Text
-                  size={2}
-                  content={schedule.title}
-                  styleProps={{
-                    style: {
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    },
+          <div className='flex flex-row items-start space-x-3 relative'>
+            <div className='w-36'>
+              <div className='text-neutral-500'>
+                <p className='text-base font-medium text-gray-500'>
+                  {schedule.time}
+                </p>
+                <p className='text-sm text-gray-500'>{schedule.date}</p>
+              </div>
+            </div>
+            <div className='flex-1'>
+              <div className='text-neutral-500'>
+                <p
+                  className='text-base font-normal text-gray-500'
+                  style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                   }}
-                ></Text>
-              </Stack>
-            </Box>
+                >
+                  {schedule.title}
+                </p>
+              </div>
+            </div>
 
             {hovered === schedule.link && (
-              <Box
-                position='absolute'
-                right={0}
-                top={0}
-                bottom={0}
-                display='flex'
-                alignItems='center'
-              >
-                <ButtonSolid
-                  color='neutral'
-                  size={1}
-                  textButton={'View Details'}
-                  isRightIcon={true}
-                  iconName='arrow_outward'
-                />
-              </Box>
+              <div className='absolute right-0 top-0 bottom-0 flex items-center'>
+                <button className='flex items-center px-3 py-1 border border-neutral-300 rounded text-neutral-700'>
+                  View Details
+                  <SquareArrowOutUpRight />
+                </button>
+              </div>
             )}
-          </Stack>
+          </div>
         </Link>
       ))}
-    </Stack>
+    </div>
   );
 };
 
