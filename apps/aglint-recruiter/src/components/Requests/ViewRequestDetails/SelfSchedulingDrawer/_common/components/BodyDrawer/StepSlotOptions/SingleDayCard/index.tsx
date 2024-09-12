@@ -8,7 +8,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
-import ConflictWithHover from '../../../../ConflictWithHover';
+import ConflictWithHover from '../../../ui/ConflictWithHover';
 import { SingleDaySchedule } from '../../../ui/SingleDaySchedule';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
 

@@ -23,6 +23,10 @@ const badgeVariants = cva(
           'border-transparent bg-yellow-300 text-yellow-600 hover:bg-yellow-500',
         error:
           'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
+        purple:
+          'border-transparent bg-purple-300 text-purple-600 hover:bg-purple-500',
+        neutral:
+          'border-transparent bg-neutral-100 text-neutral-400 hover:bg-neutral-200',
       },
       size: {
         default: 'h-6',
@@ -31,55 +35,65 @@ const badgeVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'neutral',
       size: 'default',
     },
   },
 );
 
-interface Props {
+export interface UIBadgeProps {
   iconName?: keyof typeof Icons;
-  showIcon?: boolean;
-  showText?: boolean;
   iconSize?: number;
-  textBadge?: string;
+  textBadge?: string | number;
   size?: 'default' | 'sm' | 'lg';
-  variant?:
+  color?:
     | 'default'
     | 'secondary'
     | 'accent'
     | 'info'
     | 'success'
     | 'warning'
-    | 'error';
+    | 'error'
+    | 'purple'
+    | 'neutral';
 
   className?: string;
+  icon?: React.ReactNode;
 }
 
 export function UIBadge({
   className,
-  variant,
+  color,
   size,
-  showIcon = false,
   textBadge,
   iconName = 'Shapes',
-  showText = true,
   iconSize = 16,
-}: Props) {
+  icon,
+}: UIBadgeProps) {
   const IconComponent = Icons[iconName] as React.ElementType;
 
   return (
     <Badge
       className={cn(
-        badgeVariants({ variant, size }),
+        badgeVariants({ variant: color, size }),
         size === 'sm' ? 'p-1' : '',
         className,
       )}
     >
-      {showIcon && (
-        <IconComponent size={iconSize} className={textBadge ? 'mr-1' : ''} />
+      {icon ? (
+        <div className='mr-1'>{icon}</div>
+      ) : (
+        <>
+          {iconName && (
+            <IconComponent
+              size={iconSize}
+              className={textBadge ? 'mr-1' : ''}
+            />
+          )}
+        </>
       )}
-      {showText ? <div>{textBadge}</div> : null}
+
+      {textBadge ? <div>{textBadge}</div> : null}
     </Badge>
   );
 }

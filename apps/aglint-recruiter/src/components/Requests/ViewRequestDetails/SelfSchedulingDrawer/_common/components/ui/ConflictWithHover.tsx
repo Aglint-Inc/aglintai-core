@@ -5,8 +5,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { ConflictPopover } from '@devlink3/ConflictPopover';
-import { ConflictReason } from '@devlink3/ConflictReason';
 
 import { UIBadge } from '@/components/Common/UIBadge';
 
@@ -76,25 +74,16 @@ function ConflictWithHover({
                         }
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent className='p-0'>
-                      <ConflictPopover
-                        isHardConflict={ele.type === 'hard'}
-                        isOutsideWorkHours={ele.type === 'out_of_working_hours'}
-                        isSoftConflict={ele.type === 'soft'}
-                        slotConflictReason={conflictReasons.map((item, ind) => {
-                          return (
-                            <ConflictReason
-                              key={ind}
-                              textConflictReason={
-                                item.conflict_type === 'out_of_working_hours'
-                                  ? item.conflict_event ||
-                                    'Out of working hours'
-                                  : item.conflict_event
-                              }
-                            />
-                          );
-                        })}
-                      />
+                    <TooltipContent className='px-2 py-1'>
+                      {conflictReasons.map((item, ind) => {
+                        return (
+                          <li key={ind}>
+                            {item.conflict_type === 'out_of_working_hours'
+                              ? item.conflict_event || 'Out of working hours'
+                              : item.conflict_event}
+                          </li>
+                        );
+                      })}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -133,9 +122,8 @@ const BadgeContent = ({
   if (isHardConflict) {
     return (
       <UIBadge
-        showIcon={true}
         iconName='OctagonX'
-        variant='error'
+        color='error'
         size='sm'
         iconSize={14}
         textBadge={textCount}
@@ -144,9 +132,8 @@ const BadgeContent = ({
   } else if (isSoftConflict) {
     return (
       <UIBadge
-        showIcon={true}
         iconName='TriangleAlert'
-        variant='warning'
+        color='warning'
         size='sm'
         iconSize={14}
         textBadge={textCount}
@@ -155,9 +142,8 @@ const BadgeContent = ({
   } else if (isOutsideWorkHours) {
     return (
       <UIBadge
-        showIcon={true}
         iconName='ClockArrowDown'
-        variant='info'
+        color='info'
         size='sm'
         iconSize={14}
         textBadge={textCount}
@@ -166,9 +152,8 @@ const BadgeContent = ({
   } else {
     return (
       <UIBadge
-        showIcon={true}
         iconName='CheckCircle'
-        variant='success'
+        color='success'
         size={'sm'}
         iconSize={14}
         textBadge={textCount}

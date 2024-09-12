@@ -62,7 +62,7 @@ function CandidateAvailability({
     end_date: dayjs.Dayjs;
   } | null>({
     start_date: dayjs(
-      selectedRequest.schedule_start_date || dayjs().toISOString(),
+      selectedRequest?.schedule_start_date || dayjs().toISOString(),
     ),
     end_date: dayjs(selectedRequest.schedule_end_date || dayjs().toISOString()),
   });

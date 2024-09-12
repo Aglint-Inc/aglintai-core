@@ -112,9 +112,9 @@ export default function ViewRequestDetails() {
         <ConfirmAvailability />
       </AvailabilityProvider>
       <SideDrawerEdit refetch={refetchMeetings} />
-      {selectedRequest?.status === 'to_do' && (
-        <SelfSchedulingDrawer refetch={refetchMeetings} />
-      )}
+      {/* {selectedRequest?.status === 'to_do' && ( */}
+      <SelfSchedulingDrawer refetch={refetchMeetings} />
+      {/* )} */}
       <div className='max-w-[calc(100%-12.5rem)] mx-auto space-y-8'>
         <div className='flex items-center space-x-2 text-sm text-gray-500'>
           <span>Home</span>

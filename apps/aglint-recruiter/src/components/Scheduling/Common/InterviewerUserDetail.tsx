@@ -5,9 +5,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Stack } from '@mui/material';
 import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
+
+import { UIBadge } from '@/components/Common/UIBadge';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
@@ -60,7 +61,7 @@ function InterviewerUserDetail({
             <InterviewerTrainingTypeIcon type={trainingType} />
           ) : interviewerType !== 'qualified' &&
             trainingType !== 'qualified' ? (
-            <GlobalBadge color={'info'} textBadge={'Training'} size={1} />
+            <UIBadge color={'info'} textBadge={'Training'} size={'sm'} />
           ) : (
             ''
           )}
@@ -98,20 +99,18 @@ function InterviewerUserDetail({
             interview_meeting?.status !== 'completed' && (
               <>
                 {!isCalendarConnected && (
-                  <GlobalBadge
-                    size={1}
-                    showIcon={true}
-                    iconName={'warning'}
+                  <UIBadge
+                    size={'sm'}
+                    iconName={'CalendarOff'}
                     color={'error'}
                     textBadge={`Calendar not connected`}
                   />
                 )}
                 {isPaused && (
-                  <GlobalBadge
-                    size={1}
-                    showIcon={true}
-                    iconName={'error'}
-                    color={'warning'}
+                  <UIBadge
+                    size={'sm'}
+                    color={'error'}
+                    iconName={'CalendarFold'}
                     textBadge={`Paused ${getPauseMemberText(pause_json)}`}
                   />
                 )}

@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Page404 } from '@devlink/Page404';
 import { WorkflowDetail } from '@devlink3/WorkflowDetail';
 import { Briefcase } from 'lucide-react';
@@ -16,6 +15,7 @@ import { useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import Seo from '@/components/Common/Seo';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   useJobWorkflowDisconnect,
@@ -111,7 +111,7 @@ const WorkflowJob = ({
           textRoleCategory={department || '---'}
           slotBadges={
             status && (
-              <GlobalBadge
+              <UIBadge
                 color={
                   status === 'published'
                     ? 'success'

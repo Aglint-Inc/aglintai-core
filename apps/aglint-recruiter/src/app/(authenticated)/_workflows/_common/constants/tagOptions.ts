@@ -46,7 +46,7 @@ export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
     switch (key) {
       case 'email':
         {
-          payload['color'] = 'blue';
+          payload['color'] = 'info';
           payload['icon'] = getWorkflowTagIcon('email');
         }
         break;

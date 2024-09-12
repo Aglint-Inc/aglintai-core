@@ -6,10 +6,10 @@ import {
   BreadcrumbPage,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { FileQuestion, Plus, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
@@ -173,7 +173,7 @@ export function InterviewTypes() {
                                 <div className='flex flex-row space-x-2'>
                                   {mod.name}
                                   {mod.is_archived && (
-                                    <GlobalBadge
+                                    <UIBadge
                                       textBadge='Archived'
                                       color={'warning'}
                                     />

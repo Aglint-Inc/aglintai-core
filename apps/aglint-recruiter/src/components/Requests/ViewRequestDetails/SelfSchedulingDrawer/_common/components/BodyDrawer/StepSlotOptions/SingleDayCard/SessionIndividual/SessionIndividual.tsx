@@ -6,7 +6,7 @@ import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
-import ConflictWithHover from '../../../../../ConflictWithHover';
+import ConflictWithHover from '../../../../ui/ConflictWithHover';
 import { MemberRow } from '../../../../ui/MemberRow';
 import { SessionDetails } from '../../../../ui/SessionDetails';
 
