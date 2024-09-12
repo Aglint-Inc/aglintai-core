@@ -11,7 +11,6 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { cn } from '@lib/utils';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { format } from 'date-fns';
@@ -35,6 +34,7 @@ import {
   useApplicationDetailStore,
 } from '../../../../../../store/store';
 import { type Interviewer } from '../EditDrawer/types';
+import { ScheduleInterviewPop } from '../ScheduleInterviewPop';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
