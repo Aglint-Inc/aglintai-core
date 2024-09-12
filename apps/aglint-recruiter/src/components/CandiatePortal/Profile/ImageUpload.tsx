@@ -1,6 +1,7 @@
 'use client';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import { Avatar, Stack } from '@mui/material';
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
@@ -15,11 +16,10 @@ function ImageUploadManual({
   imageFile: any;
   setChanges?: () => void;
 }) {
-  const [loading, setLoading] = useState<boolean>();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [initImage, setInitImage] = useState<any>(image);
 
-  function onImageChange(file) {
+  function onImageChange(file: File) {
     if (file.size > 5 * 1000000) {
       setLoading(false);
       return;
@@ -29,63 +29,32 @@ function ImageUploadManual({
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function (e) {
-      setInitImage(e.target.result);
+      setInitImage(e.target?.result);
     };
   }
 
   return (
-    <Stack
-      direction={'row'}
-      alignItems={'flex-end'}
-      gap={2}
-      position={'relative'}
-      sx={{
-        borderRadius: 'var(--radius-2)',
-        borderColor: 'var(--neutral-6)',
-      }}
-      className='mb-2'
-    >
-      <Stack>
-        <div className='rounded-lg overflow-hidden '>
-          <Avatar
-            src={initImage ? initImage : '/images/emptyProfile.jpg'}
-            sx={{
-              width: size ? size : '100%',
-              height: size ? size : '100%',
-              borderRadius: 'var(--radius-4)',
-              '& .MuiAvatar-img ': {
-                objectFit: 'cover',
-              },
-              textTransform: 'capitalize',
-              bgcolor: 'transparent',
-            }}
-            variant='square'
-          ></Avatar>
-        </div>
-      </Stack>
-      {loading && (
-        <Stack
-          height={`${size}px`}
-          width={`${size}px`}
-          sx={{
-            zIndex: 10,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-          alignItems={'center'}
-          justifyContent={'center'}
-        >
-          Loading
-        </Stack>
-      )}
+    <div className='flex items-end gap-4 relative mb-2 rounded-lg border border-gray-200'>
+      <div className='relative'>
+        <Avatar className={`w-${size} h-${size} rounded-lg overflow-hidden`}>
+          <AvatarImage
+            src={initImage || '/images/emptyProfile.jpg'}
+            alt='Profile'
+          />
+          <AvatarFallback>Profile</AvatarFallback>
+        </Avatar>
+        {loading && (
+          <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg'>
+            <Loader2 className='w-8 h-8 animate-spin text-white' />
+          </div>
+        )}
+      </div>
       <div className='flex flex-col gap-2'>
-        <div className='text-sm '>
+        <p className='text-sm text-gray-600'>
           Please upload an image that is less than 5 MB in size and in either
           PNG or JPEG format.
-        </div>
-        <div className='flex flex-row gap-2'>
+        </p>
+        <div className='flex gap-2'>
           <FileUploader
             handleChange={onImageChange}
             name='file'
@@ -93,9 +62,8 @@ function ImageUploadManual({
           >
             <Button
               variant='secondary'
-              type='submit'
               size='sm'
-              className='p-4 h-[10px] text-[12px]'
+              className='px-4 py-2 text-xs'
               disabled={loading}
             >
               Upload Image
@@ -104,11 +72,10 @@ function ImageUploadManual({
 
           <Button
             variant='outline'
-            type='submit'
-            disabled={loading}
             size='sm'
-            className='p-4 h-[10px] text-[12px]'
-            onClick={async (e) => {
+            className='px-4 py-2 text-xs'
+            disabled={loading}
+            onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               setInitImage(null);
@@ -120,7 +87,7 @@ function ImageUploadManual({
           </Button>
         </div>
       </div>
-    </Stack>
+    </div>
   );
 }
 

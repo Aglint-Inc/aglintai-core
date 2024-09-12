@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import React from 'react';
 
 import type { apiHomepageResponse } from '@/api/candidate_portal/home_page/route';
@@ -11,9 +11,11 @@ function InterviewProgress({
   interviews: apiHomepageResponse['interviewPlan'];
 }) {
   return (
-    <div className='w-full max-w-3xl mx-auto flex flex-col gap-4 pb-2'>
-      <Typography fontWeight={500}>Interview Plan</Typography>
-      <div>
+    <Card className='w-full max-w-3xl mx-auto'>
+      <CardHeader>
+        <CardTitle className='text-lg font-medium'>Interview Plan</CardTitle>
+      </CardHeader>
+      <CardContent className='space-y-4'>
         {interviews.map((interview, index) => (
           <InterviewProgressCard
             key={index}
@@ -21,8 +23,8 @@ function InterviewProgress({
             isLast={index === interviews.length - 1}
           />
         ))}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 
