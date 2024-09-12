@@ -24,6 +24,7 @@ import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/Sl
 import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
 import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -96,6 +97,7 @@ export default function ViewRequestDetails() {
   }
   return (
     <div className='min-h-screen bg-gray-50 p-8'>
+      <UIAlert title={'Request not found'} />
       {selectedRequest && (
         <CandidateAvailability selectedRequest={selectedRequest} />
       )}
