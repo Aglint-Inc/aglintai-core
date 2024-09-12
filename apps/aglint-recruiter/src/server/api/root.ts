@@ -1,4 +1,3 @@
-import { analyticsRouter } from './routers/analytics';
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
 import { schedulingRouter } from './routers/scheduling';
