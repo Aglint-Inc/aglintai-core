@@ -12,7 +12,6 @@ import { useMeetingList } from '@/components/Requests/_common/hooks';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { setDateRange, useSelfSchedulingFlowStore } from '../../../store/store';
-import InfoStepSelectState from '../../InfoStepSelectState';
 import ErrorsFindAvailibility from './ErrorsFindAvailibility';
 
 function SelectDateRange() {
@@ -37,12 +36,7 @@ function SelectDateRange() {
   return (
     <>
       <DatePickerBody
-        slotGlobalnfo={
-          <>
-            <InfoStepSelectState />
-            {noOptions && <ErrorsFindAvailibility />}
-          </>
-        }
+        slotGlobalnfo={<>{noOptions && <ErrorsFindAvailibility />}</>}
         textCalenderHelper={
           'Choose the date range within which you want to self schedule.'
         }

@@ -3,7 +3,6 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import { CheckCircle, RotateCcw, XCircle } from 'lucide-react';
@@ -15,6 +14,7 @@ import {
   useState,
 } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { useJobs } from '@/jobs/hooks';
 import {
   type initUser,
@@ -800,7 +800,7 @@ const TooltipComp = ({ title, start_time, end_time, status }) => {
         isScheduleDate={true}
         textScheduleDate={`${dayjsLocal(start_time).format('ddd, MMM DD, YYYY hh:mm A')} - ${dayjsLocal(end_time).format(' hh:mm A')}`}
         slotScheduleStatus={
-          <GlobalBadge
+          <UIBadge
             textBadge={capitalizeAll(status)}
             color={
               status === 'completed'

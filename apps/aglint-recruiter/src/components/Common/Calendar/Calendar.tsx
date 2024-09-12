@@ -9,7 +9,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
@@ -30,6 +29,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
 import Loader from '../Loader';
+import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {
   type colorType,
@@ -215,7 +215,7 @@ const TooltipComp = ({ data }) => {
         isScheduleDate={true}
         textScheduleDate={`${dayjsLocal(data.start_time).format('ddd, MMM DD, YYYY hh:mm A')} - ${dayjsLocal(data.end_time).format(' hh:mm A')}`}
         slotScheduleStatus={
-          <GlobalBadge
+          <UIBadge
             textBadge={capitalizeAll(data?.status)}
             color={
               data?.status === 'completed'

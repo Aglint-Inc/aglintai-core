@@ -1,4 +1,7 @@
-import { type APIUpdateMeetingInterviewers } from '@aglint/shared-types';
+import {
+  type APIUpdateMeetingInterviewers,
+  type ConflictReason,
+} from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import axios from 'axios';
@@ -12,7 +15,8 @@ import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 
 import { useMeetingList } from '../../_common/hooks';
-import { MemberRow } from '../SelfSchedulingDrawer/_common/components/MemberRow';
+import ConflictWithHover from '../SelfSchedulingDrawer/_common/components/ui/ConflictWithHover';
+import { MemberRow } from '../SelfSchedulingDrawer/_common/components/ui/MemberRow';
 
 const RequestDecline = () => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -139,7 +143,12 @@ const RequestDecline = () => {
                   >
                     <MemberRow
                       key={item.replacement_int.user_id}
-                      slotConflicts={<></>}
+                      slotConflicts={
+                        <ConflictWithHover
+                          conflictReasons={item.conflicts as ConflictReason[]}
+                          isToolTipVisible={true}
+                        />
+                      }
                       slotInterviewerImage={
                         <MuiAvatar
                           level={getFullName(

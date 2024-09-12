@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIBadge } from '@/components/Common/UIBadge';
 // import { getRequestTitle } from '@/components/Requests/AgentChats/AgentInputBox';
 import { useApplication } from '@/context/ApplicationContext';
 import ROUTES from '@/utils/routing/routes';
@@ -54,8 +54,8 @@ function Requests() {
                 justifyContent={'space-between'}
               >
                 <p className='text-sm'>{req.title}</p>
-                <GlobalBadge
-                  size={1}
+                <UIBadge
+                  size={'sm'}
                   textBadge={capitalizeFirstLetter(req.status)}
                   color={
                     req.status === 'to_do'
