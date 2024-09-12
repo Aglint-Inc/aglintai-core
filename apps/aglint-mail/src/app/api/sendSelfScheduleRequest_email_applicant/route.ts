@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     if (!req_body.filter_json_id && !req_body.application_id) {
       throw new Error('missing details');
     }
-
+    console.log('req_body', req_body);
     const {
       comp_email_placeholder,
       company_id,
