@@ -16,11 +16,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     await cand_schedule.fetchDetails({
-      req_user_tz: body.user_tz,
-      start_date_str: fetched_details.start_date_str,
-      end_date_str: fetched_details.end_date_str,
-      company_id: fetched_details.recruiter_id,
-      session_ids: body.selectedOption.sessions.map((s) => s.session_id),
+      params: {
+        req_user_tz: body.user_tz,
+        start_date_str: fetched_details.start_date_str,
+        end_date_str: fetched_details.end_date_str,
+        company_id: fetched_details.recruiter_id,
+        session_ids: body.selectedOption.sessions.map((s) => s.session_id),
+      },
     });
 
     const verified_plans = cand_schedule.verifyIntSelectedSlots([

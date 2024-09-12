@@ -1,6 +1,6 @@
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { useEffect } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
@@ -51,7 +51,7 @@ function ModuleMembersComp() {
           <>
             {breadcrum}
             {editModule?.is_archived && (
-              <GlobalBadge textBadge='Archieved' color={'warning'} />
+              <UIBadge textBadge='Archieved' color={'warning'} />
             )}
           </>
         }

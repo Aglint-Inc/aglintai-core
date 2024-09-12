@@ -1,4 +1,3 @@
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import {
   Stack,
   styled,
@@ -7,6 +6,7 @@ import {
   type TooltipProps,
 } from '@mui/material';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { type StageWithSessions } from '@/queries/application';
 
 function BadgesRight({
@@ -56,10 +56,9 @@ function BadgesRight({
   return (
     <>
       {interview_module?.is_archived && (
-        <GlobalBadge
-          size={1}
-          showIcon={true}
-          iconName={'warning'}
+        <UIBadge
+          size={'sm'}
+          iconName={'Archive'}
           color={'error'}
           textBadge={'Interview Type Archived'}
         />
@@ -69,10 +68,9 @@ function BadgesRight({
         interview_meeting?.status !== 'completed' && (
           <>
             {calenderNotConnectedUser.length > 0 && (
-              <GlobalBadge
-                size={1}
-                showIcon={true}
-                iconName={'warning'}
+              <UIBadge
+                size={'sm'}
+                iconName={'CalendarOff'}
                 color={'error'}
                 textBadge={calenderNotConnectedUser.length}
               />
@@ -107,10 +105,9 @@ function BadgesRight({
                 }
               >
                 <Stack>
-                  <GlobalBadge
-                    size={1}
-                    showIcon={true}
-                    iconName={'info'}
+                  <UIBadge
+                    size={'sm'}
+                    iconName={'Info'}
                     color={'warning'}
                     textBadge={pausedUser.length}
                   />
@@ -147,10 +144,9 @@ function BadgesRight({
                 }
               >
                 <Stack>
-                  <GlobalBadge
-                    size={1}
-                    showIcon={true}
-                    iconName={'warning'}
+                  <UIBadge
+                    size={'sm'}
+                    iconName={'CircleAlert'}
                     color={'error'}
                     textBadge={1}
                   />
@@ -163,12 +159,11 @@ function BadgesRight({
       {rescheduleRequests.length > 0 &&
         interview_meeting?.status !== 'completed' &&
         interview_meeting?.status !== 'cancelled' && (
-          <GlobalBadge
+          <UIBadge
+            size={'sm'}
             color={'warning'}
-            iconName='refresh'
+            iconName='RefreshCcw'
             textBadge={`${rescheduleRequests.length} Reschedule Request`}
-            showIcon={true}
-            iconSize={2}
           />
         )}
     </>

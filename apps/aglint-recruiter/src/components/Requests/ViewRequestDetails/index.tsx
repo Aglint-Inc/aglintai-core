@@ -1,4 +1,4 @@
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
 import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
 import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
-import { UIButton } from '@/components/Common/UIButton';
+import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -44,19 +44,14 @@ import {
 } from '../_common/constant';
 import { useMeetingList } from '../_common/hooks';
 import CandidateAvailability from './CandidateAvailability';
-import { setCandidateAvailabilityDrawerOpen } from './CandidateAvailability/store';
 import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
+import RequestDecline from './RequestNextSteps/RequestDecline';
+import ScheduleOptions from './RequestNextSteps/ScheduleOptions';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { useSelfSchedulingDrawer } from './SelfSchedulingDrawer/_common/hooks/hooks';
-import {
-  initialFilters,
-  setIsSelfScheduleDrawerOpen,
-  useSelfSchedulingFlowStore,
-} from './SelfSchedulingDrawer/_common/store/store';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -66,10 +61,6 @@ export default function ViewRequestDetails() {
     handleAsyncUpdateRequest,
   } = useRequests();
   const { data: sessions, status, refetch: refetchMeetings } = useMeetingList();
-  const { findAvailibility } = useSelfSchedulingDrawer({
-    refetch: refetchMeetings,
-  });
-  const { fetchingPlan } = useSelfSchedulingFlowStore();
 
   const { data: members } = useMemberList();
 
@@ -112,9 +103,9 @@ export default function ViewRequestDetails() {
         <ConfirmAvailability />
       </AvailabilityProvider>
       <SideDrawerEdit refetch={refetchMeetings} />
-      {selectedRequest?.status === 'to_do' && (
-        <SelfSchedulingDrawer refetch={refetchMeetings} />
-      )}
+      {/* {selectedRequest?.status === 'to_do' && ( */}
+      <SelfSchedulingDrawer refetch={refetchMeetings} />
+      {/* )} */}
       <div className='max-w-[calc(100%-12.5rem)] mx-auto space-y-8'>
         <div className='flex items-center space-x-2 text-sm text-gray-500'>
           <span>Home</span>
@@ -404,41 +395,31 @@ export default function ViewRequestDetails() {
             <RecentRequests applicationId={selectedRequest?.application_id} />
           </div>
           <div className='w-4/12 flex flex-col space-y-4'>
-            <Alert>
-              <Bot className='h-4 w-4' />
-              <AlertTitle>Next Step</AlertTitle>
-              <AlertDescription>
-                Here is your next step on the request.
-              </AlertDescription>
-              <div className='flex flex-row gap-2 justify-end mt-4'>
-                <UIButton
-                  onClick={() => {
-                    setCandidateAvailabilityDrawerOpen(true);
-                  }}
-                  variant='outline'
-                  size='sm'
-                >
-                  Get Availability
-                </UIButton>
-                <UIButton
-                  isLoading={fetchingPlan}
-                  size='sm'
-                  onClick={async () => {
-                    if (fetchingPlan) return;
-                    await findAvailibility({
-                      filters: initialFilters,
-                      dateRange: {
-                        start_date: dayjsLocal().toISOString(),
-                        end_date: dayjsLocal().add(7, 'day').toISOString(),
-                      },
-                    });
-                    setIsSelfScheduleDrawerOpen(true);
-                  }}
-                >
-                  Send Self Scheduling
-                </UIButton>
-              </div>
-            </Alert>
+            <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
+              <Alert>
+                <Bot className='h-4 w-4' />
+                <AlertTitle>Next Step</AlertTitle>
+                <AlertDescription>
+                  Here is your next step on the request.
+                </AlertDescription>
+
+                <div className='flex flex-row gap-2 justify-end mt-4'>
+                  <ShowCode.When
+                    isTrue={
+                      selectedRequest.type === 'schedule_request' ||
+                      selectedRequest.type === 'reschedule_request'
+                    }
+                  >
+                    <ScheduleOptions />
+                  </ShowCode.When>
+                  <ShowCode.When
+                    isTrue={selectedRequest.type === 'decline_request'}
+                  >
+                    <RequestDecline />
+                  </ShowCode.When>
+                </div>
+              </Alert>
+            </ShowCode.When>
 
             <Card>
               <CardHeader className='flex justify-between items-center'>

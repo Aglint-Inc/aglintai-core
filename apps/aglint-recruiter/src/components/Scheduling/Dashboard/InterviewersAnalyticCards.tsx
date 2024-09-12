@@ -1,6 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { InterviewersCardList } from '@devlink3/InterviewersCardList';
-import { InterviewersDash } from '@devlink3/InterviewersDash';
 import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { BarChart2 } from 'lucide-react';
@@ -8,6 +6,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import axios from '@/client/axios';
+import { InterviewersCardList } from '@/components/Interviewers/components/_common/InterviewersCardList';
+import { InterviewersDash } from '@/components/Interviewers/components/_common/InterviewersDash';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiBodyGetUsersByIds,
@@ -36,16 +36,8 @@ const InterviewersAnalyticCards = () => {
   const router = useRouter();
   return (
     <InterviewersDash
-      onClickQualified={{
-        onClick: () => {
-          setType('qualified');
-        },
-      }}
-      onClickTrainee={{
-        onClick: () => {
-          setType('training');
-        },
-      }}
+      onClickQualified={() => setType('qualified')}
+      onClickTrainee={() => setType('training')}
       isTraineeActive={type == 'training'}
       isQualifiedActive={type == 'qualified'}
       slotInterviewersCardList={

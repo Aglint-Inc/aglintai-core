@@ -274,7 +274,7 @@ function Scheduling({ allIntegrations }) {
                 reason === 'update_google_workspace'
               }
             >
-              <div className='space-y-4'>
+              <div className='space-y-2'>
                 <p className='text-base font-normal'>Domain Name</p>
                 <Input
                   defaultValue={allIntegrations?.google_workspace_domain}
@@ -320,7 +320,6 @@ function Scheduling({ allIntegrations }) {
             >
               <div className='space-y-4'>
                 <div className='flex items-center justify-end space-x-2'>
-                  <p className='text-base font-normal'>Show keys</p>
                   <Toggle
                     pressed={!hideApiKey}
                     onPressedChange={() => setHideApiKey((prev) => !prev)}

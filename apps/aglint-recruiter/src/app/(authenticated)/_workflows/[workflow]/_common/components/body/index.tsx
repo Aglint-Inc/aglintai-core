@@ -7,15 +7,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Page404 } from '@devlink/Page404';
-import { WorkflowDetail } from '@devlink3/WorkflowDetail';
 import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import Seo from '@/components/Common/Seo';
+import { UIBadge } from '@/components/Common/UIBadge';
+import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   useJobWorkflowDisconnect,
@@ -40,18 +40,30 @@ const Body = () => {
   return (
     <>
       <Seo title='Workflow | Aglint AI' description='AI for People Products' />
-      <WorkflowDetail
-        slotWorkflowItem={
-          <>
-            <Edit />
-            <Trigger />
-            <ActionsProvider>
-              <Actions />
-            </ActionsProvider>
-          </>
-        }
-        slotConnectedJobs={<ConnectedJobs />}
-      />
+
+      <div className='flex overflow-auto bg-neutral-100 h-[calc(100vh-48px)]'>
+        <div className='w-full'>
+          <div className='flex flex-col items-center max-w-[800px] p-5'>
+            <>
+              <Edit />
+              <Trigger />
+              <ActionsProvider>
+                <Actions />
+              </ActionsProvider>
+            </>
+          </div>
+        </div>
+        <div className='sticky top-[10px] right-4 z-10 flex flex-col w-[380px] h-[90vh] p-4 rounded-lg bg-white overflow-y-auto'>
+          <div className='flex flex-col w-[367px] space-y-1'>
+            <div className='flex items-center text-neutral-900 font-medium'>
+              Connected Jobs
+            </div>
+          </div>
+          <div className='flex flex-col space-y-2 mt-3'>
+            <ConnectedJobs />
+          </div>
+        </div>
+      </div>
     </>
   );
 };
@@ -66,8 +78,10 @@ const ConnectedJobs = () => {
   if (count === 0)
     return (
       <div className='flex flex-col items-center justify-center p-6 text-center'>
-        <Briefcase className='w-16 h-16 text-gray-400 mb-4' />
-        <p className='text-lg text-gray-600'>No jobs connected</p>
+        <Briefcase size={30} className=' text-gray-400 mb-4' />
+        <UITypography variant='p' type='small'>
+          No jobs connected
+        </UITypography>
       </div>
     );
   return (workflow?.jobs ?? []).map((job) => (
@@ -111,7 +125,7 @@ const WorkflowJob = ({
           textRoleCategory={department || '---'}
           slotBadges={
             status && (
-              <GlobalBadge
+              <UIBadge
                 color={
                   status === 'published'
                     ? 'success'
