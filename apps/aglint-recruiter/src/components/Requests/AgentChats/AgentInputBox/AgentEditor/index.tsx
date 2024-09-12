@@ -2,13 +2,13 @@
 import './EditorStyle.css'; // We will define some styles here
 
 import { CommandShortcut } from '@components/ui/command';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
 import { Command } from 'cmdk';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
@@ -279,15 +279,15 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                 >
                   {selectedItems?.applicant_name[0]?.name ? (
                     <>
-                      <GlobalEmptyState
-                        iconName={''}
-                        textDesc={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
+                      <GlobalEmpty
+                        iconSlot={''}
+                        text={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                       />
                     </>
                   ) : (
-                    <GlobalEmptyState
-                      iconName={''}
-                      textDesc={`Please select an application first`}
+                    <GlobalEmpty
+                      iconSlot={''}
+                      text={`Please select an application first`}
                     />
                   )}
                 </ShowCode>
@@ -298,10 +298,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                     (triggerType === '/' && requestList.length === 0)
                   }
                 >
-                  <GlobalEmptyState
-                    iconName={''}
-                    textDesc={`Results not found`}
-                  />
+                  <GlobalEmpty iconSlot={''} text={`Results not found`} />
                 </ShowCode.When>
               </ShowCode>
               {children}

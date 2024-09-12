@@ -19,12 +19,12 @@ import { Progress } from '@components/ui/progress';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { cn } from '@lib/utils';
-import { ChevronDown, ChevronUp, Columns, LayoutList } from 'lucide-react';
+import { ChevronDown, ChevronUp, Columns, Info, LayoutList } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -397,7 +397,8 @@ function RequestList() {
       </div>
 
       {isRequestListEmpty ? (
-        <GlobalEmptyState textDesc='No requests found' iconName='check' />
+        <GlobalEmpty text={'No requests found'} iconSlot={<Info className='text-gray-500'/>} />
+      
       ) : (
         renderContent()
       )}
