@@ -4,7 +4,6 @@ import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { InterviewMode } from '@devlink2/InterviewMode';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -17,8 +16,6 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { UIAlert } from '@/components/Common/UIAlert';
-import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
@@ -470,71 +467,75 @@ const Interview = ({
   const { push } = useRouter();
 
   return (
-    <InterviewMode
-      isIndividual={session_type.value === 'individual'}
-      isPanel={interviewers.value.length > 1 && session_type.value === 'panel'}
-      isTraining={training.value}
-      textToggleLabel={`Training ${training.value ? 'On' : 'Off'}`}
-      slotToggle={trainingSwitch}
-      slotInterviewModePill={
-        <InterviewModePills
-          session_type={session_type.value}
-          handleModeChange={handleModeChange}
-        />
-      }
-      slotMemberCountDropdown={countField}
-      slotInterviewersDropdown={
-        <Stack gap={1}>
-          {(currentQualifiedModuleMembers ?? []).length === 0 && (
-            <GlobalBannerShort
-              iconName={'warning'}
-              textTitle={'Interview type has no interviewers'}
-              textDescription={
-                'Please add members to the selected interview type'
-              }
-              color={'error'}
-              slotButtons={
-                <ButtonSolid
-                  color={'error'}
-                  size={1}
-                  textButton={'Go to interview type'}
-                  onClickButton={{
-                    onClick: () =>
-                      interview_module?.value?.id &&
-                      push(
-                        ROUTES['/scheduling/interview-types/[type_id]']({
-                          type_id: interview_module.value.id,
-                        }),
-                      ),
-                  }}
-                />
-              }
+    <>
+      <InterviewMode
+        isIndividual={session_type.value === 'individual'}
+        isPanel={
+          interviewers.value.length > 1 && session_type.value === 'panel'
+        }
+        isTraining={training.value}
+        textToggleLabel={`Training ${training.value ? 'On' : 'Off'}`}
+        slotToggle={trainingSwitch}
+        slotInterviewModePill={
+          <InterviewModePills
+            session_type={session_type.value}
+            handleModeChange={handleModeChange}
+          />
+        }
+        slotMemberCountDropdown={countField}
+        slotInterviewersDropdown={
+          <Stack gap={1}>
+            {(currentQualifiedModuleMembers ?? []).length === 0 && (
+              <GlobalBannerShort
+                iconName={'warning'}
+                textTitle={'Interview type has no interviewers'}
+                textDescription={
+                  'Please add members to the selected interview type'
+                }
+                color={'error'}
+                slotButtons={
+                  <ButtonSolid
+                    color={'error'}
+                    size={1}
+                    textButton={'Go to interview type'}
+                    onClickButton={{
+                      onClick: () =>
+                        interview_module?.value?.id &&
+                        push(
+                          ROUTES['/scheduling/interview-types/[type_id]']({
+                            type_id: interview_module.value.id,
+                          }),
+                        ),
+                    }}
+                  />
+                }
+              />
+            )}
+            <InterviewersField
+              value={interviewers.value}
+              error={interviewers.error}
+              type='interviewers'
+              moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
+              handleMemberAdd={handleMemberAdd}
             />
-          )}
-          <InterviewersField
-            value={interviewers.value}
-            error={interviewers.error}
-            type='interviewers'
-            moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
-            handleMemberAdd={handleMemberAdd}
-          />
-        </Stack>
-      }
-      isTrainingVisible={showTraining}
-      slotInterviewersAvatarSelectionPill={<></>}
-      slotTraineeAvatarSelectionPill={<></>}
-      isTraineesDropVisible={showTrainingMembers}
-      slotTraineesDropdown={
-        showTrainingMembers && (
-          <InterviewersField
-            value={trainees.value}
-            type='trainees'
-            moduleMemberRecommendations={trainingModuleMemberRecommendations}
-            handleMemberAdd={handleMemberAdd}
-          />
-        )
-      }
-    />
+          </Stack>
+        }
+        isTrainingVisible={showTraining}
+        slotInterviewersAvatarSelectionPill={<></>}
+        slotTraineeAvatarSelectionPill={<></>}
+        isTraineesDropVisible={showTrainingMembers}
+        slotTraineesDropdown={
+          showTrainingMembers && (
+            <InterviewersField
+              value={trainees.value}
+              type='trainees'
+              moduleMemberRecommendations={trainingModuleMemberRecommendations}
+              handleMemberAdd={handleMemberAdd}
+            />
+          )
+        }
+      />
+    </>
   );
 };
 

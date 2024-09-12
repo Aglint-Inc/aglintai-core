@@ -11,9 +11,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
-import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
