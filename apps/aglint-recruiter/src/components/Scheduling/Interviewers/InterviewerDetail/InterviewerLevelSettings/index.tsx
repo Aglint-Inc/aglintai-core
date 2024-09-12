@@ -16,7 +16,6 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
-import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { cn } from '@lib/utils';
 import {
   Alert,
@@ -39,6 +38,7 @@ import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput'
 import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
+import { ScheduleSettings } from '../_common/ScheduleSettings';
 import { useImrQuery } from '../hooks';
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -113,70 +113,6 @@ function InterviewerLevelSettings({
     handleDailyValue(dailyLmit.value);
   };
 
-  // const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
-  //   daily: {
-  //     type: 'Hours',
-  //     value: 20,
-  //     max: LoadMax.dailyHours,
-  //   },
-  //   weekly: {
-  //     type: 'Hours',
-  //     value: 10,
-  //     max: LoadMax.weeklyHours,
-  //   },
-  // });
-
-  // function loadChangeHandle(value, module, type) {
-  //   if (type === 'type') {
-  //     setInterviewLoad(
-  //       (prevState) =>
-  //         ({
-  //           ...prevState,
-  //           [module]: {
-  //             // eslint-disable-next-line security/detect-object-injection
-  //             ...prevState[module],
-  //             [type]: value,
-  //             value:
-  //               module === 'weekly'
-  //                 ? value === 'Hours'
-  //                   ? // eslint-disable-next-line security/detect-object-injection
-  //                     prevState[module].value > LoadMax.weeklyHours
-  //                     ? LoadMax.weeklyHours
-  //                     : // eslint-disable-next-line security/detect-object-injection
-  //                       prevState[module].value
-  //                   : // eslint-disable-next-line security/detect-object-injection
-  //                     prevState[module].value
-  //                 : value === 'Interviews'
-  //                   ? // eslint-disable-next-line security/detect-object-injection
-  //                     prevState[module].value
-  //                   : // eslint-disable-next-line security/detect-object-injection
-  //                     prevState[module].value > LoadMax.dailyHours
-  //                     ? LoadMax.dailyHours
-  //                     : // eslint-disable-next-line security/detect-object-injection
-  //                       prevState[module].value,
-  //             max:
-  //               module === 'weekly'
-  //                 ? value === 'Hours'
-  //                   ? LoadMax.weeklyHours
-  //                   : LoadMax.weeklyInterviews
-  //                 : value === 'Interviews'
-  //                   ? LoadMax.dailyInterviews
-  //                   : LoadMax.dailyHours,
-  //           },
-  //         }) as InterviewLoadType,
-  //     );
-  //   } else {
-  //     setInterviewLoad((prevState) => ({
-  //       ...prevState,
-  //       [module]: {
-  //         // eslint-disable-next-line security/detect-object-injection
-  //         ...prevState[module],
-  //         [type]: value,
-  //       },
-  //     }));
-  //   }
-  // }
-
   const selectStartTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
@@ -239,24 +175,6 @@ function InterviewerLevelSettings({
             : LoadMax.weeklyInterviews,
       });
 
-      // setInterviewLoad({
-      //   daily: {
-      //     type: schedulingSettingData.interviewLoad.dailyLimit.type,
-      //     value: schedulingSettingData.interviewLoad.dailyLimit.value,
-      //     max:
-      //       schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
-      //         ? LoadMax.dailyHours
-      //         : LoadMax.dailyInterviews,
-      //   },
-      //   weekly: {
-      //     type: schedulingSettingData.interviewLoad.weeklyLimit.type,
-      //     value: schedulingSettingData.interviewLoad.weeklyLimit.value,
-      //     max:
-      //       schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
-      //         ? LoadMax.weeklyHours
-      //         : LoadMax.weeklyInterviews,
-      //   },
-      // });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff]);
       setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
@@ -331,7 +249,6 @@ function InterviewerLevelSettings({
     <Stack overflow={'hidden'}>
       {isAvailability ? (
         <ScheduleSettings
-          isTimeZoneToggleVisible={false}
           slotTimeZoneInput={
             <Stack
               spacing={'var(--space-2)'}
