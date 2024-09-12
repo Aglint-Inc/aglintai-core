@@ -10,7 +10,7 @@ import CandidateInfo from '../CandidateInfo';
 import Requests from '../Requests';
 import Tabs, { type TabsType } from '../Tabs';
 import InterviewTabContent from './InterviewTabContent';
-import { ApplicationDetail } from './InterviewTabContent/_common/components/ApplicationDetail';
+import { ApplicationDetail } from './InterviewTabContent/_common/components/ui/ApplicationDetail';
 
 function SlotBody() {
   const router = useRouter();

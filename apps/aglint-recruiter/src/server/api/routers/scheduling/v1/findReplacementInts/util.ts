@@ -58,6 +58,7 @@ export const findReplacementIntsUtil = async ({
       show_soft_conflicts: true,
       show_conflicts_events: true,
       calender_not_connected: true,
+      day_passed: true,
     },
   });
 

@@ -1,4 +1,3 @@
-import { StatusBadge } from '@devlink2/StatusBadge';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { MembersList } from '@devlink3/MembersList';
 import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
@@ -9,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -38,7 +38,7 @@ function ScheduleMeetingCard({
         }}
         onClick={() => {
           router.push(
-            `/scheduling/view?meeting_id=${meetingDetails.id}&tab=candidate_details`,
+            `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
           );
         }}
       >
@@ -117,15 +117,7 @@ function ScheduleMeetingCard({
           isDurationVisible={true}
           isPhoneCallVisible={false}
           isTimeVisible={Boolean(meetingDetails?.start_time)}
-          slotStatus={
-            <StatusBadge
-              isCancelledVisible={meetingDetails?.status === 'cancelled'}
-              isConfirmedVisible={meetingDetails?.status === 'confirmed'}
-              isWaitingVisible={meetingDetails?.status === 'waiting'}
-              isCompletedVisible={meetingDetails?.status === 'completed'}
-              isNotScheduledVisible={meetingDetails?.status === 'not_scheduled'}
-            />
-          }
+          slotStatus={<MeetingStatusBadge status={meetingDetails.status} />}
           isLocationVisible={false}
           textDuration={getBreakLabel(meetingDetails.session_duration)}
           slotAvatarWithName={

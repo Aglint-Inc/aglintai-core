@@ -275,7 +275,7 @@ function CandidateAvailability() {
   }
   if (dateSlots.length === 0) {
     return (
-      <Alert variant='destructive'>
+      <Alert variant='error'>
         <AlertCircle className='h-4 w-4' />
         <AlertTitle>No Slots Available</AlertTitle>
         <AlertDescription>

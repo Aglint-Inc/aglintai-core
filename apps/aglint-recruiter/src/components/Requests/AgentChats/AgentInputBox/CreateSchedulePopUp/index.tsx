@@ -1,8 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
+import { Send } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import dayjs from '@/utils/dayjs';
@@ -103,20 +104,18 @@ function CreateSchedulePopUp({
                 }}
               />
             </div>
-            <ButtonSoft
+            <UIButton
+              variant='default'
+              leftIcon={<Send/>}
+              onClick={createNewRequest}
               isLoading={loading}
-              isDisabled={
+              disabled={
                 Boolean(!selectedItems?.interview_name.length) ||
                 Boolean(!selectedItems?.applicant_name.length)
               }
-              iconName={'send'}
-              isRightIcon={true}
-              size={1}
-              textButton='Create Request'
-              onClickButton={{
-                onClick: createNewRequest,
-              }}
-            />
+            >
+              Create Request
+            </UIButton>
           </div>
         }
       />

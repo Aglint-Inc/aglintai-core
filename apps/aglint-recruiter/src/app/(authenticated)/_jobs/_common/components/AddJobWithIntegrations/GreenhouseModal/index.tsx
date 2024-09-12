@@ -1,17 +1,16 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { AtsCard } from '@devlink/AtsCard';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { NoResultAts } from '@devlink/NoResultAts';
 import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
 import { Drawer, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { STATE_GREENHOUSE_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
 import toast from '@/utils/toast';
 
+import NoAtsResult from '../NoAtsResult';
 import { POSTED_BY } from '../utils';
 import { type JobGreenhouse } from './types';
 import { fetchAllJobs, getGreenhouseStatusColor } from './utils';
@@ -107,30 +106,29 @@ export function GreenhouseModal() {
         drawerSize={'small'}
         slotButtons={
           <>
-            <ButtonSoft
-              size={2}
-              color={'neutral'}
-              textButton={'Close'}
-              onClickButton={{
-                onClick: () => {
-                  if (saving) return;
-                  handleClose();
-                },
+            <UIButton
+              variant='secondary'
+              size='sm'
+              onClick={() => {
+                if (saving) return;
+                handleClose();
               }}
-            />
-            <ButtonSolid
-              size={2}
-              color={'accent'}
-              textButton={'Import'}
+            >
+              Close
+            </UIButton>
+
+            <UIButton
+              variant='default'
+              size='sm'
               isLoading={saving}
-              isDisabled={selectedGreenhousePostings.length === 0}
-              onClickButton={{
-                onClick: () => {
-                  if (saving) return;
-                  importGreenhouse();
-                },
+              disabled={selectedGreenhousePostings.length === 0}
+              onClick={() => {
+                if (saving) return;
+                importGreenhouse();
               }}
-            />
+            >
+              Import
+            </UIButton>
           </>
         }
         slotSideDrawerbody={
@@ -169,13 +167,16 @@ export function GreenhouseModal() {
                   );
                 })
               ) : (
-                <NoResultAts />
+                <NoAtsResult />
               )
             ) : (
               <>
-                <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
+                <Skeleton className='w-full h-16 mb-2' />{' '}
+                <Skeleton className='w-full h-16 mb-2' />
+                <Skeleton className='w-full h-16 mb-2' />{' '}
+                <Skeleton className='w-full h-16 mb-2' />
+                <Skeleton className='w-full h-16 mb-2' />{' '}
+                <Skeleton className='w-full h-16 mb-2' />
               </>
             )}
           </Stack>

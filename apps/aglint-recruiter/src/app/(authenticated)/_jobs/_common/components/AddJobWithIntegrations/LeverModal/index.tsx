@@ -1,12 +1,10 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { AtsCard } from '@devlink/AtsCard';
 import { AtsJobs } from '@devlink/AtsJobs';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IntegrationFetching } from '@devlink/IntegrationFetching';
 import { IntegrationModal } from '@devlink/IntegrationModal';
 import { LeverApiKey } from '@devlink/LeverApiKey';
 import { LoadingJobsAts } from '@devlink/LoadingJobsAts';
-import { NoResultAts } from '@devlink/NoResultAts';
 import { Dialog, Stack } from '@mui/material';
 import LoaderLever from '@public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
@@ -16,6 +14,7 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
 import axios from '@/client/axios';
+import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
@@ -25,6 +24,7 @@ import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
+import NoAtsResult from '../NoAtsResult';
 import { POSTED_BY } from '../utils';
 import { type LeverJob } from './types/job';
 import { fetchAllJobs, getLeverStatusColor } from './utils';
@@ -166,15 +166,16 @@ export default function LeverModalComp() {
           integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
             <LeverApiKey
               slotPrimaryButton={
-                <ButtonSolid
-                  textButton='Submit'
-                  isDisabled={loading}
+                <UIButton
+                  variant='default'
                   isLoading={loading}
-                  onClickButton={{
-                    onClick: submitApiKey,
+                  disabled={loading}
+                  onClick={() => {
+                    submitApiKey();
                   }}
-                  size={2}
-                />
+                >
+                  Submit
+                </UIButton>
               }
               onClickSupport={{
                 onClick: () => {
@@ -300,7 +301,7 @@ export default function LeverModalComp() {
                           );
                         })
                     ) : (
-                      <NoResultAts />
+                      <NoAtsResult />
                     )
                   ) : (
                     <>

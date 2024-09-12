@@ -2,12 +2,10 @@ import { Skeleton } from '@components/ui/skeleton';
 import { AshbyApiKey } from '@devlink/AshbyApiKey';
 import { AshbyAtsJob } from '@devlink/AshbyAtsJob';
 import { AtsCard } from '@devlink/AtsCard';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IntegrationFetching } from '@devlink/IntegrationFetching';
 import { IntegrationModal } from '@devlink/IntegrationModal';
 import { LeverApiKey } from '@devlink/LeverApiKey';
 import { LoadingJobsAts } from '@devlink/LoadingJobsAts';
-import { NoResultAts } from '@devlink/NoResultAts';
 import { Dialog, Stack, Typography } from '@mui/material';
 import LoaderLever from '@public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
@@ -18,6 +16,7 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
@@ -27,6 +26,7 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import NoAtsResult from '../NoAtsResult';
 import { POSTED_BY } from '../utils';
 import { type JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
@@ -189,15 +189,16 @@ export function AshbyModalComp() {
           integration.ashby.step === STATE_ASHBY_DIALOG.ERROR ? (
             <AshbyApiKey
               slotPrimaryButton={
-                <ButtonSolid
-                  textButton='Submit'
-                  isDisabled={loading}
+                <UIButton
+                  variant='default'
                   isLoading={loading}
-                  onClickButton={{
-                    onClick: submitApiKey,
+                  disabled={loading}
+                  onClick={() => {
+                    submitApiKey();
                   }}
-                  size={2}
-                />
+                >
+                  Submit
+                </UIButton>
               }
               slotInput={
                 <UITextField
@@ -307,7 +308,10 @@ export function AshbyModalComp() {
                         );
                       })
                     ) : (
-                      <NoResultAts />
+                      <>
+                        <NoAtsResult />
+                      </>
+                    
                     )
                   ) : (
                     <>

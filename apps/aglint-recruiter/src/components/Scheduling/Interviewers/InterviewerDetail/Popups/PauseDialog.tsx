@@ -1,11 +1,10 @@
-
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Checkbox, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Calendar } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import dayjs from '@/utils/dayjs';
@@ -124,29 +123,27 @@ function PauseDialog() {
         }
       >
         <Stack spacing={'var(--space-2)'} width={'100%'}>
-          <GlobalBannerShort
+          <UIAlert
+            type='small'
             color={'warning'}
-            iconName={'warning'}
-            textTitle={'Pausing the interviewer'}
-            textDescription={
+            iconName={'CircleAlert'}
+            title={'Pausing the interviewer'}
+            description={
               'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
             }
-            slotButtons={<></>}
           />
           {connectedJobs.length > 0 && (
-            <GlobalBannerShort
+            <UIAlert
+              type='small'
               color={'warning'}
-              iconName={'warning'}
-              textTitle={`Here is a list of job's interview plan that will be impacted:`}
-              textDescription=''
-              slotButtons={
-                <Stack display={'flex'} flexDirection={'column'}>
-                  <p className="text-sm text-muted-foreground">
-                    {connectedJobs
-                      .flatMap((job) => job.job_title)
-                      .join(', ')}
+              iconName={'CircleAlert'}
+              title={`Here is a list of job's interview plan that will be impacted:`}
+              actions={
+                <div className='flex flex-col'>
+                  <p className='text-sm text-muted-foreground'>
+                    {connectedJobs.flatMap((job) => job.job_title).join(', ')}
                   </p>
-                </Stack>
+                </div>
               }
             />
           )}

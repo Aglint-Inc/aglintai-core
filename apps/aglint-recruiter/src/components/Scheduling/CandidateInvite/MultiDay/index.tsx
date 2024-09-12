@@ -1,6 +1,4 @@
 import { type SessionsCombType } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { ButtonSurface } from '@devlink/ButtonSurface';
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
 import { DcPopup } from '@devlink/DcPopup';
@@ -19,6 +17,7 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIButton } from '@/components/Common/UIButton';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
@@ -49,11 +48,12 @@ const MultiDayError = () => {
     toast.error('Something went wrong. Please try again.');
   }, []);
   return (
-    <ButtonSolid
-      size={2}
-      textButton='Try again'
-      onClickButton={{ onClick: () => refetch() }}
-    />
+    <UIButton
+      variant='default'
+      onClick={() => refetch()}
+    >
+      Try again
+    </UIButton>
   );
 };
 
@@ -75,18 +75,15 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
     <>
       <ScheduleCards rounds={props.rounds} />
       <Stack direction={'row'} justifyContent={'center'}>
-        <ButtonSolid
-          isLeftIcon={false}
-          isRightIcon={false}
-          textButton='Proceed'
-          size={2}
-          onClickButton={{
-            onClick: () => {
-              setOpen(true);
-            },
+        <UIButton
+          variant='default'
+          onClick={() => {
+            setOpen(true);
           }}
-          isDisabled={!enabled}
-        />
+          disabled={!enabled}
+        >
+          Proceed
+        </UIButton>
       </Stack>
       <MultiDayConfirmation
         rounds={props.rounds}
@@ -161,19 +158,18 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
         onClickClosePopup={{ onClick: handleClose }}
         slotButtons={
           <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
+            <UIButton
+              variant='secondary'
+              onClick={() => handleClose()}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              variant='default'
+              onClick={() => handleSubmit()}
+            >
+              Confirm
+            </UIButton>
           </>
         }
       />

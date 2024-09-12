@@ -333,28 +333,23 @@ export const RequestOption = ({
 }) => {
   return (
     <Stack direction={'row'} width={'100%'} spacing={'var(--space-2)'}>
-      <ButtonSoft
-        size={2}
-        textButton={'Urgent Request'}
-        color={requestType === 'urgent' ? 'accent' : 'neutral'}
-        isLeftIcon={true}
-        slotIcon={<FileBadge2 />}
-        onClickButton={{
-          onClick: () => {
-            setRequestType('urgent');
-          },
+      <UIButton
+        variant={requestType === 'urgent' ? 'default' : 'outline'}
+        leftIcon={<FileBadge2 />}
+        onClick={() => {
+          setRequestType('urgent');
         }}
-      />
-      <ButtonSoft
-        size={2}
-        color={requestType === 'standard' ? 'accent' : 'neutral'}
-        textButton={'Standard Request'}
-        onClickButton={{
-          onClick: () => {
-            setRequestType('standard');
-          },
+      >
+        Urgent Request
+      </UIButton>
+      <UIButton
+        variant={requestType === 'standard' ? 'default' : 'outline'}
+        onClick={() => {
+          setRequestType('standard');
         }}
-      />
+      >
+        Standard Request
+      </UIButton>
     </Stack>
   );
 };

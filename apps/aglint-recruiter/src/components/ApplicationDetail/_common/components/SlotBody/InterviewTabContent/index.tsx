@@ -11,9 +11,9 @@ import { useInterviewModules } from '@/queries/interview-modules';
 
 import Progress from '../../Progress';
 import SideDrawerEdit from './_common/components/EditDrawer';
-import { InterviewStage } from './_common/components/InterviewStage';
 import DialogSchedule from './_common/components/ScheduleDialog';
 import StageSessions from './_common/components/StageSessions';
+import { InterviewStage } from './_common/components/ui/InterviewStage';
 
 function InterviewTabContent() {
   const {

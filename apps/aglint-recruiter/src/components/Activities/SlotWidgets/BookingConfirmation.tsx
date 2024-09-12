@@ -1,8 +1,7 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { ConfirmScheduleList } from '@devlink3/ConfirmScheduleList';
-import { ConfirmScheduleListCard } from '@devlink3/ConfirmScheduleListCard';
-import { Stack } from '@mui/material';
+import { Card, CardContent } from '@components/ui/card';
+import { Calendar, Clock } from 'lucide-react';
 
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
@@ -20,42 +19,48 @@ function BookingConfirmation({
     const sessions = act.metadata.sessions;
 
     return (
-      <Stack spacing={2} width={'100%'}>
-        <Stack spacing={1} width={'100%'}>
-          {sessions.map((session) => {
-            return (
-              <ConfirmScheduleList
-                key={session.id}
-                textDate={dayjsLocal(
-                  session.interview_meeting.start_time,
-                ).format('DD MMMM YYYY')}
-                slotConfirmScheduleList={
-                  <ConfirmScheduleListCard
-                    textDuration={getBreakLabel(session.session_duration)}
-                    textPanelName={session.name}
-                    textMeetingPlatformName={getScheduleType(
-                      session.schedule_type,
-                    )}
-                    textTime={formatTimeWithTimeZone({
+      <div className='w-full space-y-4'>
+        {sessions.map((session) => (
+          <Card key={session.id}>
+            <CardContent className='p-4'>
+              <div className='flex items-center space-x-2 mb-2'>
+                <Calendar className='w-5 h-5 text-muted-foreground' />
+                <span className='font-medium'>
+                  {dayjsLocal(session.interview_meeting.start_time).format(
+                    'DD MMMM YYYY',
+                  )}
+                </span>
+              </div>
+              <div className='flex items-start space-x-4'>
+                <div className='flex-shrink-0'>
+                  <IconSessionType type={session.session_type} />
+                </div>
+                <div className='flex-grow'>
+                  <h4 className='font-semibold'>{session.name}</h4>
+                  <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
+                    <Clock className='w-4 h-4' />
+                    <span>{getBreakLabel(session.session_duration)}</span>
+                  </div>
+                  <div className='flex items-center space-x-2 text-sm'>
+                    <IconScheduleType type={session.schedule_type} />
+                    <span>{getScheduleType(session.schedule_type)}</span>
+                  </div>
+                  <p className='text-sm mt-1'>
+                    {formatTimeWithTimeZone({
                       start_time: session.interview_meeting.start_time,
                       end_time: session.interview_meeting.end_time,
                       timeZone: dayjsLocal.tz.guess(),
                     })}
-                    slotIconPanel={
-                      <IconSessionType type={session.session_type} />
-                    }
-                    slotMeetingIcon={
-                      <IconScheduleType type={session.schedule_type} />
-                    }
-                  />
-                }
-              />
-            );
-          })}
-        </Stack>
-      </Stack>
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     );
   }
+  return null;
 }
 
 export default BookingConfirmation;

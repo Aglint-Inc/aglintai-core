@@ -6,11 +6,13 @@ import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
+import { ModuleSetting } from '@devlink2/ModuleSetting';
 import _ from 'lodash';
 import { AlertCircle, Minus, Plus, Settings } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UIDrawer from '@/components/Common/UIDrawer';
@@ -204,19 +206,19 @@ function ModuleSettingComp({
   return (
     <div className='p-4 space-y-4 max-w-[900px]'>
       {!editModule?.settings?.require_training && (
-        <GlobalBanner
-          textTitle='To add trainee interviewers and track their progress, enable training using the button on the right.'
-          textDescription=''
+        <UIAlert
+          type='small'
+          title='To add trainee interviewers and track their progress, enable training using the button on the right.'
           color={'warning'}
-          slotButtons={
-            <Button
+          actions={
+            <UIButton
               variant='default'
               size='sm'
               disabled={isBannerLoading}
               onClick={() => enableDiabaleTraining({ type: 'enable' })}
             >
               {isBannerLoading ? 'Loading...' : 'Enable'}
-            </Button>
+            </UIButton>
           }
         />
       )}
@@ -496,13 +498,13 @@ function ModuleSettingComp({
           )}
           {editModule?.settings?.require_training && (
             <div className='mx-2'>
-              <GlobalBannerShort
+              <UIAlert
                 color={'error'}
-                textTitle='Disable Training'
-                textDescription='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
-                slotButtons={
+                title='Disable Training'
+                description='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
+                actions={
                   <>
-                    <Button
+                    <UIButton
                       variant='destructive'
                       onClick={() => {
                         if (
@@ -519,7 +521,7 @@ function ModuleSettingComp({
                       }}
                     >
                       Disable
-                    </Button>
+                    </UIButton>
                   </>
                 }
               />

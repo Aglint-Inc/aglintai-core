@@ -1,8 +1,8 @@
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Briefcase } from 'lucide-react';
 import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
@@ -64,7 +64,7 @@ function CollapseContent({
                       slotRole={
                         <div className='flex items-center space-x-2'>
                           <Briefcase size={16} />
-                          <UITypography color='neutral'>
+                          <UITypography color='neutral' className='text-sm'>
                             {candidate.current_job_title}
                           </UITypography>
                         </div>
@@ -93,11 +93,11 @@ function CollapseContent({
                 )}
 
                 {count === 0 ? (
-                  <GlobalBannerInline
+                  <UIAlert
+                    type='inline'
                     color={'error'}
-                    iconName={'warning'}
-                    textContent={'No interviewers assigned.'}
-                    slotButton={<></>}
+                    iconName={'CircleAlert'}
+                    title={'No interviewers assigned.'}
                   />
                 ) : (
                   users.map((user) => {

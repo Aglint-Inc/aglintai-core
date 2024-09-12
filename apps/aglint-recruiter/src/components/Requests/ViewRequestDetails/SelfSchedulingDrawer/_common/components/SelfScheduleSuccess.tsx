@@ -1,6 +1,7 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalCta } from '@devlink3/GlobalCta';
 import React from 'react';
+
+import { UIButton } from '@/components/Common/UIButton';
 
 import { useMeetingList } from '../../../../_common/hooks';
 import { useSelfSchedulingFlowStore } from '../store/store';
@@ -34,14 +35,9 @@ function SelfScheduleSuccess() {
           'The candidate recieved an email containing a link to select from the provided options. The interview will be confirmed once the candidate makes a selection.'
         }
         slotButton={
-          <ButtonSoft
-            textButton={isCopied ? 'Copied' : 'Copy Link'}
-            color={'neutral'}
-            size={1}
-            onClickButton={{
-              onClick: handleCopyLink,
-            }}
-          />
+          <UIButton variant='secondary' onClick={() => handleCopyLink()}>
+            {isCopied ? 'Copied' : 'Copy Link'}
+          </UIButton>
         }
       />
     </div>

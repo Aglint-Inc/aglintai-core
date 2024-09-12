@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
@@ -15,6 +14,7 @@ import { getFullName } from '@/utils/jsonResume';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import IconSessionType from '../../../Common/Icons/IconSessionType';
+import { MeetingStatusBadge } from '../../_common/components/MeetingStatusBadge';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
@@ -133,19 +133,7 @@ function Overview() {
         }
         textPanelName={schedule.interview_session.name}
         slotStatusBadge={
-          <Badge
-            variant={
-              schedule.interview_meeting.status === 'cancelled'
-                ? 'destructive'
-                : schedule.interview_meeting.status === 'completed'
-                  ? 'secondary'
-                  : schedule.interview_meeting.status === 'confirmed'
-                    ? 'default'
-                    : 'outline'
-            }
-          >
-            {schedule.interview_meeting.status}
-          </Badge>
+          <MeetingStatusBadge status={schedule.interview_meeting.status} />
         }
         slotInterviewTypeButton={
           <Button

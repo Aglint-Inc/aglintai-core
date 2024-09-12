@@ -1,5 +1,3 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { UserDetails } from '@devlink/UserDetails';
 import {
@@ -12,6 +10,7 @@ import {
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import { UIButton } from '@/components/Common/UIButton';
 import { ProfileForms } from '@/components/Profile/ProfileForms';
 import {
   type FormFields,
@@ -223,29 +222,26 @@ export const EditProfileDialog = ({
         }
         slotButton={
           <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  setProfile(structuredClone(initialProfileFormFields));
-                  setIsOpen(false);
-                },
+            <UIButton
+              variant='secondary'
+              onClick={() => {
+                setProfile(structuredClone(initialProfileFormFields));
+                setIsOpen(false);
               }}
-            />
-            <ButtonSolid
-              textButton='Update'
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              variant='default'
               isLoading={Loading}
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  if (!Loading) {
-                    onUpdateSubmit();
-                  }
-                },
+              onClick={() => {
+                if (!Loading) {
+                  onUpdateSubmit();
+                }
               }}
-            />
+            >
+              Update
+            </UIButton>
           </>
         }
         isWarningVisible={isError}

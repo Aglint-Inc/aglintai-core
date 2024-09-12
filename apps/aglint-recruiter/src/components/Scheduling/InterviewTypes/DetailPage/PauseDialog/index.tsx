@@ -1,5 +1,4 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -7,6 +6,7 @@ import dayjs from 'dayjs';
 import { Calendar } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
@@ -113,22 +113,22 @@ function PauseDialog() {
       }
     >
       <div className='flex flex-col gap-2'>
-        <GlobalBannerShort
+        <UIAlert
+          type='small'
           color={'warning'}
-          iconName={'warning'}
-          textTitle={'Pausing the interviewer'}
-          textDescription={
+          iconName={'CircleAlert'}
+          title={'Pausing the interviewer'}
+          description={
             'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
           }
-          slotButtons={<></>}
         />
         {connectedJobs.length > 0 && (
-          <GlobalBannerShort
+          <UIAlert
+            type='small'
             color={'warning'}
-            iconName={'warning'}
-            textTitle={`Here is a list of job's interview plan that will be impacted:`}
-            textDescription=''
-            slotButtons={
+            iconName={'CircleAlert'}
+            title={`Here is a list of job's interview plan that will be impacted:`}
+            actions={
               <div className='flex flex-col'>
                 <UITypography type='small'>
                   {connectedJobs.flatMap((job) => job.job_title).join(', ')}

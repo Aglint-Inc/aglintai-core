@@ -1,5 +1,6 @@
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { cn } from '@lib/utils';
 import {
   Briefcase,
   GraduationCap,
@@ -9,8 +10,6 @@ import {
   UserPlus,
 } from 'lucide-react';
 import React from 'react';
-
-import { cn } from '../../../utils/shadcn';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   activeTab: string;

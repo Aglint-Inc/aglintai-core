@@ -8,13 +8,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { Loader2, Mail, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -161,7 +161,7 @@ Unavailable for interviews on Tuesdays.`);
                   <UpcomingInterviewList
                     onClick={() =>
                       router.push(
-                        `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
+                        `/scheduling/view?meeting_id=${schedule.id}&tab=job_details`,
                       )
                     }
                     key={schedule.application_id}
@@ -344,9 +344,9 @@ const renderCalendarConnectionReminder = ({
       recruiterUser.role === 'admin') && (
       <>
         <div className='max-w-[870px] ml-2 mt-2'>
-          <GlobalBannerInline
+          <UIAlert
             color={'error'}
-            textContent={
+            title={
               interviewerDetails.user_id === recruiterUser.user_id
                 ? 'Your calendar is not connected yet. Please connect it to schedule interviews.'
                 : `
@@ -355,7 +355,7 @@ const renderCalendarConnectionReminder = ({
                   interviewerDetails.last_name,
                 )} calendar is not connected yet. Click 'Connect Calender' button to send reminder `
             }
-            slotButton={
+            actions={
               <Popover>
                 <PopoverTrigger>
                   {' '}
