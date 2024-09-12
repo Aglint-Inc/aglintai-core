@@ -1,11 +1,11 @@
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { PasswordUpdated } from '@devlink/PasswordUpdated';
-import { Dialog } from '@mui/material';
+import { useToast } from '@components/hooks/use-toast';
+import { Button } from '@components/ui/button';
+import { ToastAction } from '@components/ui/toast';
+import { AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { handleUpdatePassword } from '@/context/AuthContext/utils';
 
-import Icon from '../../Common/Icons/Icon';
 import { ProfileForms } from '../ProfileForms';
 import {
   type FormValues,
@@ -54,6 +54,8 @@ export const PasswordUpdate = () => {
 
   const [password, setPassword] = useState(initialPassword);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { toast } = useToast();
 
   const handleValidatePassword = () => {
     if (
@@ -79,7 +81,6 @@ export const PasswordUpdate = () => {
           'Must contain more than 7 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
       };
   };
-  const [error, setError] = useState('');
 
   const handleSubmitPassword = async () => {
     const { newPassword, error: valiError } = handleValidatePassword();
@@ -96,6 +97,15 @@ export const PasswordUpdate = () => {
           password: { ...prev.password, modal: true },
         }));
         setPasswordChange(true);
+        toast({
+          title: 'Password Updated',
+          description: 'Your password has been successfully updated.',
+          action: (
+            <ToastAction altText='Close' onClick={handleClosePassword}>
+              Close
+            </ToastAction>
+          ),
+        });
       } else {
         setError(message);
       }
@@ -113,67 +123,50 @@ export const PasswordUpdate = () => {
       });
     }
   };
+
   const handleClosePassword = () => {
     setPassword(initialPassword);
   };
+
   useEffect(() => {
     setError('');
   }, [password]);
+
   return (
-    <>
-      <Dialog
-        open={password.password.modal}
-        onClose={() => handleClosePassword()}
-      >
-        <PasswordUpdated
-          onClickClose={{
-            onClick: () => handleClosePassword(),
-          }}
+    <div className='space-y-6'>
+      <div>
+        <ProfileForms
+          profile={password}
+          setProfile={setPassword}
+          setChanges={() => setPasswordChange(true)}
         />
-      </Dialog>
-      <div className="space-y-6">
-        <div>
-          <ProfileForms
-            profile={password}
-            setProfile={setPassword}
-            setChanges={() => setPasswordChange(true)}
-          />
-        </div>
-        <div>
-          {error && (
-            <div className="flex items-center space-x-2 mb-3 text-destructive">
-              <Icon
-                height='12px'
-                color={'currentColor'}
-                variant='AlertIcon'
-              />
-              <p className="text-sm">{error}</p>
-            </div>
-          )}
-          <div
-            className={`w-[200px] ${loading ? 'pointer-events-none' : ''}`}
-            style={{ zIndex: 0 }}
-          >
-            <ButtonSolid
-              textButton='Update Password'
-              size={2}
-              isLoading={loading}
-              isDisabled={
-                !passwordChange ||
-                password.password.value === '' ||
-                password.confirmPassword.value === ''
-              }
-              onClickButton={{
-                onClick: async () => {
-                  setLoading(true);
-                  if (!loading) await handleSubmitPassword();
-                  setLoading(false);
-                },
-              }}
-            />
+      </div>
+      <div>
+        {error && (
+          <div className='flex items-center space-x-2 mb-3 text-destructive'>
+            <AlertCircle className='h-4 w-4' />
+            <p className='text-sm'>{error}</p>
           </div>
+        )}
+        <div className={`w-[200px] ${loading ? 'pointer-events-none' : ''}`}>
+          <Button
+            variant='default'
+            size='lg'
+            disabled={
+              !passwordChange ||
+              password.password.value === '' ||
+              password.confirmPassword.value === ''
+            }
+            onClick={async () => {
+              setLoading(true);
+              if (!loading) await handleSubmitPassword();
+              setLoading(false);
+            }}
+          >
+            {loading ? 'Updating...' : 'Update Password'}
+          </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
