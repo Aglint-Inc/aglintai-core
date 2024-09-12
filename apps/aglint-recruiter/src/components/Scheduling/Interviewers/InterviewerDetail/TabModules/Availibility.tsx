@@ -6,7 +6,6 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
-import { InterviewLoadCard } from '@devlink3/InterviewLoadCard';
 import { InterviewLoadDetails } from '@devlink3/InterviewLoadDetails';
 import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
@@ -22,6 +21,7 @@ import { updateMember } from '@/context/AuthContext/utils';
 import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
+import { InterviewLoadCard } from '../_common/InterviewLoadCard';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
 
 type interviewLoadType = {
