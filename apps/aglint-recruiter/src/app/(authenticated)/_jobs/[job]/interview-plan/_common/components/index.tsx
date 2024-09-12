@@ -14,7 +14,6 @@ import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
@@ -25,7 +24,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause, Kanban, Trash2 } from 'lucide-react';
+import { CirclePause, Kanban, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -711,7 +710,19 @@ const InterviewSession = ({
                   }
                 >
                   <Stack>
-                    <AddScheduleCardDev />
+                    <div
+                      className={
+                        'relative flex h-6 justify-center items-center'
+                      }
+                    >
+                      <div className='w-full ' />
+                      <div className=' w-full absolute inset-0 flex flex-col justify-center items-center'>
+                        <div className='relative top-[50%] flex h-[2px] w-full bg-[#cc4e00]  flex-col justify-center items-center cursor-pointer transition-all duration-250 ease hover:opacity-80'></div>
+                        <div className='h-[20px] w-[20px] bg-[#cc4e00] flex items-center justify-center z-10 rounded-[20px]'>
+                          <Plus size={10} color='white' />
+                        </div>
+                      </div>
+                    </div>
                   </Stack>
                 </Tooltip>
               </Stack>
