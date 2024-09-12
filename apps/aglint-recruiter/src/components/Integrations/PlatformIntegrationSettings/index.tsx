@@ -8,7 +8,6 @@ import {
 } from '@components/ui/breadcrumb';
 import Link from 'next/link';
 
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
