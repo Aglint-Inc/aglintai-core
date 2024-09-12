@@ -4,15 +4,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { MoreMenu } from '@devlink3/MoreMenu';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
+import { Calendar, Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -498,12 +498,11 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
             />
           ))
         ) : (
-          <GlobalEmptyState
-            iconName={'work'}
-            size={4}
-            slotButton={<></>}
-            textDesc={'No jobs connected'}
-          />
+          <>
+          <GlobalEmpty text={'No jobs connected'} iconSlot={<Calendar className='h-6 w-6 text-gray-500'/>}/>
+
+          </>
+          
         )}
       </div>
     </>

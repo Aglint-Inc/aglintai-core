@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { Stack } from '@mui/material';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
@@ -96,15 +96,15 @@ function Requests() {
         })}
 
       {!requests?.length && (
-        <GlobalEmptyState
-          iconName={'calendar_month'}
-          styleEmpty={{
-            style: {
-              background: 'var(--neutral-2)',
-            },
-          }}
-          textDesc={'No requests found'}
-        />
+        <>
+        <div className="flex flex-col items-center justify-center p-4 bg-gray-100">
+      <div className="mb-2">
+        <Calendar className="h-9 w-9 text-gray-500" />
+      </div>
+      <p className="text-sm text-gray-500">No requests found</p>
+    </div>
+        </>
+       
       )}
     </Stack>
   );

@@ -1,9 +1,10 @@
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+
 import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { Stack } from '@mui/material';
-import { Plus } from 'lucide-react';
+import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -69,16 +70,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   })}
                 </>
               ) : (
-                <GlobalEmptyState
-                  textDesc='No Interview type found.'
-                  size={6}
-                  iconName='school'
-                  styleEmpty={{
-                    style: {
-                      backgroundColor: 'var(--neutral-2)',
-                      height: '220px',
-                    },
-                  }}
+                <GlobalEmpty
+                  text={'No Interview type found.'}
+                  iconSlot={<School className='text-gray-500' />}
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
@@ -115,14 +109,10 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   })}
                 </>
               ) : (
-                <GlobalEmptyState
-                  textDesc='No Interview type found.'
-                  size={6}
-                  iconName='school'
-                  styleEmpty={{
-                    style: { backgroundColor: 'var(--neutral-2)' },
-                  }}
-                />
+                <GlobalEmpty
+                text={'No Interview type found.'}
+                iconSlot={<School className='text-gray-500' />}
+              />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
                 <UIButton
