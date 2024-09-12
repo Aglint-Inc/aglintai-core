@@ -1,5 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
@@ -7,6 +6,7 @@ import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -73,8 +73,8 @@ function Requests({ session_id }) {
                   }
                   slotStatus={
                     <Stack direction={'row'}>
-                      <GlobalBadge
-                        size={1}
+                      <UIBadge
+                        size={'sm'}
                         textBadge={capitalizeFirstLetter(request.status)}
                         color={
                           request.status === 'to_do'

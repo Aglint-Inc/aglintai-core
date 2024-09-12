@@ -1,7 +1,7 @@
 import { useSelfSchedulingFlowStore } from '../../store/store';
 import SelfScheduleSuccess from '../SelfScheduleSuccess';
+import LoaderSlots from '../ui/Loader';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
-import LoaderSlots from './Loader';
 import StepSlotOptions from './StepSlotOptions';
 
 function BodyDrawer() {

@@ -14,7 +14,9 @@ export function ScheduleOption({
         <div className='flex pt-3 pr-3 pl-4 justify-center items-start'>
           <div className='relative'>{slotCheckbox}</div>
         </div>
-      ) : <div className='w-4' />}
+      ) : (
+        <div className='w-4' />
+      )}
       <div className='z-1 w-full rounded-lg'>
         <div className='flex w-full flex-col flex-nowrap gap-[1px] rounded-lg bg-gray-200'>
           {slotSingleDaySchedule ?? <SingleDaySchedule />}

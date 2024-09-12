@@ -4,7 +4,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
@@ -15,6 +14,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -300,7 +300,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                           <>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <GlobalBadge
+                                <UIBadge
                                   textBadge='Token1'
                                   color={'purple'}
                                 />
@@ -313,7 +313,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                             </div>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <GlobalBadge
+                                <UIBadge
                                   textBadge='Token2'
                                   color={'purple'}
                                 />
@@ -326,7 +326,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                             </div>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <GlobalBadge
+                                <UIBadge
                                   textBadge='Token3'
                                   color={'purple'}
                                 />
@@ -478,8 +478,8 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               textRoleCategory={job.departments?.name || '---'}
               slotBadges={
                 job.status && (
-                  <GlobalBadge
-                    color={
+                  <UIBadge
+                  color={
                       job.status === 'published'
                         ? 'success'
                         : job.status === 'closed'

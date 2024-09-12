@@ -75,7 +75,6 @@ function ScheduleIndividualCard({
               .map((user, i) => (
                 <InterviewerAcceptDeclineIcon
                   key={i}
-                  isIcon={true}
                   type={user.interview_session_relation.accepted_status}
                 />
               ))}
