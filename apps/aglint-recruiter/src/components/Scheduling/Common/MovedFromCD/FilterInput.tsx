@@ -1,9 +1,9 @@
-import { AddPreference } from '@devlink/AddPreference';
 import { Popover } from '@mui/material';
 import { isNumber } from 'lodash';
 import { useState } from 'react';
 
 import UITextField from '../../../Common/UITextField';
+import { AddPreference } from './_common/AddPreference';
 import { dialogFormContent } from './utils';
 
 const FilterInput = ({
