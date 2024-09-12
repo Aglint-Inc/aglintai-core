@@ -26,147 +26,168 @@ function ATSTools({ integrations, refetch }) {
   const [inputValue, setInputValue] = useState(null);
   // const { data: integrations, refetch } = useAllIntegrations();
 
-  async function action() {
-    const apiKey = inputRef.current && inputRef.current.value;
-    setLoading(true);
-    if (reason === 'disconnect_greenhouse') {
-      await updateIntegrations({ greenhouse_key: null }, recruiter.id);
-    }
-    if (reason === 'disconnect_ashby') {
-      await updateIntegrations({ ashby_key: null }, recruiter.id);
-    }
-    if (reason === 'disconnect_lever') {
-      await updateIntegrations({ lever_key: null }, recruiter.id);
-    }
+  async function action(): Promise<boolean> {
+    try {
+      const apiKey = inputRef.current && inputRef.current.value;
+      setLoading(true);
+      if (reason === 'disconnect_greenhouse') {
+        await updateIntegrations({ greenhouse_key: null }, recruiter.id);
+      }
+      if (reason === 'disconnect_ashby') {
+        await updateIntegrations({ ashby_key: null }, recruiter.id);
+      }
+      if (reason === 'disconnect_lever') {
+        await updateIntegrations({ lever_key: null }, recruiter.id);
+      }
 
-    if (reason === 'connect_greenhouse' || reason === 'update_greenhouse') {
-      if (apiKey) {
-        try {
-          // verifying greenhouse key
-          const response = await axios.post('/api/greenhouse/getPostings', {
-            page: 1,
-            apiKey: apiKey,
-            isInitial: true,
-          });
-          if (response.status === 200 && response.data.length > 0) {
-            // updating key to database
-            const responseRec = await axios.post('/api/greenhouse/saveApiKey', {
-              recruiterId: recruiter.id,
+      if (reason === 'connect_greenhouse' || reason === 'update_greenhouse') {
+        if (apiKey) {
+          try {
+            // verifying greenhouse key
+            const response = await axios.post('/api/greenhouse/getPostings', {
+              page: 1,
               apiKey: apiKey,
+              isInitial: true,
             });
-            if (
-              responseRec.status === 200 &&
-              responseRec.data[0]?.greenhouse_key
-            ) {
-              // Removedposthog.capture('Greenhouse Data Fetched');
+            if (response.status === 200 && response.data.length > 0) {
+              // updating key to database
+              const responseRec = await axios.post(
+                '/api/greenhouse/saveApiKey',
+                {
+                  recruiterId: recruiter.id,
+                  apiKey: apiKey,
+                },
+              );
+              if (
+                responseRec.status === 200 &&
+                responseRec.data[0]?.greenhouse_key
+              ) {
+                // Removedposthog.capture('Greenhouse Data Fetched');
+              }
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'API is invalid!',
+              });
+              setLoading(false);
+              return false;
             }
-          } else {
+          } catch (error) {
             toast({
               variant: 'destructive',
-              title: 'API is invalid!',
+              title: 'Something went wrong.',
             });
             setLoading(false);
-            return;
+            return false;
           }
-        } catch (error) {
+        } else {
           toast({
             variant: 'destructive',
-            title: 'Something went wrong.',
+            title: 'Please provide API key.',
           });
+          setLoading(false);
+          return false;
         }
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Please provide API key.',
-        });
-        setLoading(false);
-        return;
       }
-    }
-    if (reason === 'connect_ashby' || reason === 'update_ashby') {
-      if (apiKey) {
-        try {
-          // verifying greenhouse key
-          const response = await axios.post('/api/ashby/getPostings', {
-            page: 1,
-            apiKey: inputRef.current.value,
-            isInitial: true,
-          });
-          if (response.status === 200 && response.data?.results?.length > 0) {
-            // updating key to database
-            const responseRec = await axios.post('/api/ashby/saveApiKey', {
-              recruiterId: recruiter.id,
-              apiKey: apiKey,
+      if (reason === 'connect_ashby' || reason === 'update_ashby') {
+        if (apiKey) {
+          try {
+            // verifying greenhouse key
+            const response = await axios.post('/api/ashby/getPostings', {
+              page: 1,
+              apiKey: inputRef.current.value,
+              isInitial: true,
             });
-            if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-              //Removedposthog posthog.capture('Ashby Data Fetched');
+            if (response.status === 200 && response.data?.results?.length > 0) {
+              // updating key to database
+              const responseRec = await axios.post('/api/ashby/saveApiKey', {
+                recruiterId: recruiter.id,
+                apiKey: apiKey,
+              });
+              if (
+                responseRec.status === 200 &&
+                responseRec.data[0]?.ashby_key
+              ) {
+                //Removedposthog posthog.capture('Ashby Data Fetched');
+              }
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'API is invalid.',
+              });
+              setLoading(false);
+              return false;
             }
-          } else {
+          } catch (error) {
             toast({
               variant: 'destructive',
-              title: 'API is invalid.',
+              title: 'Something went wrong!',
             });
             setLoading(false);
-            return;
+            return false;
           }
-        } catch (error) {
+        } else {
           toast({
             variant: 'destructive',
-            title: 'Something went wrong!',
+            title: 'Please provide API key!',
           });
+          setLoading(false);
+          return false;
         }
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Please provide API key!',
-        });
-        setLoading(false);
-        return;
       }
-    }
-    if (reason === 'connect_lever' || reason === 'update_lever') {
-      if (apiKey) {
-        try {
-          // verifying greenhouse key
-          const response = await axios.post('/api/lever/getPostings', {
-            offset: 0,
-            apiKey: inputRef.current.value,
-            isInitial: true,
-          });
-          if (response.status === 200 && response.data.data) {
-            // updating key to database
-            const responseRec = await axios.post('/api/lever/saveApiKey', {
-              recruiterId: recruiter.id,
-              apiKey: apiKey,
+      if (reason === 'connect_lever' || reason === 'update_lever') {
+        if (apiKey) {
+          try {
+            // verifying greenhouse key
+            const response = await axios.post('/api/lever/getPostings', {
+              offset: 0,
+              apiKey: inputRef.current.value,
+              isInitial: true,
             });
-            if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
-              // Removed posthog.capture('Lever Data Fetched');
+            if (response.status === 200 && response.data.data) {
+              // updating key to database
+              const responseRec = await axios.post('/api/lever/saveApiKey', {
+                recruiterId: recruiter.id,
+                apiKey: apiKey,
+              });
+              if (
+                responseRec.status === 200 &&
+                responseRec.data[0]?.lever_key
+              ) {
+                // Removed posthog.capture('Lever Data Fetched');
+              }
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'API is invalid!',
+              });
+              setLoading(false);
+              return false;
             }
-          } else {
+          } catch (error) {
             toast({
               variant: 'destructive',
-              title: 'API is invalid!',
+              title: 'Something went wrong.',
             });
             setLoading(false);
-            return;
+            return false;
           }
-        } catch (error) {
+        } else {
           toast({
             variant: 'destructive',
-            title: 'Something went wrong.',
+            title: 'Please provide API key!',
           });
+          setLoading(false);
+          return false;
         }
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Please provide API key!',
-        });
-        setLoading(false);
-        return;
       }
+      refetch();
+      close();
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-    refetch();
-    close();
   }
 
   function close() {

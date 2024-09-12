@@ -52,7 +52,7 @@ export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
         break;
       case 'slack':
         {
-          payload['color'] = 'pink';
+          payload['color'] = 'purple';
           payload['icon'] = getWorkflowTagIcon('slack');
         }
         break;
@@ -72,7 +72,7 @@ export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
       name: string;
       iconName: string | null;
       icon: ReactNode | null;
-      color: string;
+      color: 'purple' | 'info' | 'accent' | 'neutral';
       value: T;
     };
   },

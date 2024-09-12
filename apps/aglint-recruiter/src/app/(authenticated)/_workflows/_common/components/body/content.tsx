@@ -166,6 +166,7 @@ export const WorkflowTags = ({ tags }: Pick<Workflow, 'tags'>) => {
             textBadge={option.name}
             size={'sm'}
             icon={(!!option.iconName || !!option.icon) && option.icon}
+            color={option.color}
           />
         );
       })}

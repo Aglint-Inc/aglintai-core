@@ -132,6 +132,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-share": "^5.1.0",
     "recharts": "^2.12.7",
+    "resend": "^4.0.0",
     "sass": "1.78.0",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",

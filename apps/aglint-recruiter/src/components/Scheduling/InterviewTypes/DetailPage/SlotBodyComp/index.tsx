@@ -7,7 +7,6 @@ import {
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
-import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
@@ -279,47 +278,78 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                   )}
 
                   {currentTab === 'aglintaitoken' && (
-                    <InterviewTypeToken
-                      slotTokenItem={
-                        <>
-                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
-                            <div className='flex items-center'>
-                              <UIBadge textBadge='Token1' color={'purple'} />
-                            </div>
-                            <p className='text-sm text-gray-600'>
-                              Korem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Nunc vulputate libero et velit interdum, ac
-                              aliquet odio mattis.
-                            </p>
+                    <div className='flex max-w-[880px] p-4 flex-col gap-3'>
+                      <UITypography variant='p' type='small'>
+                        These tokens will be used in emails send to candidate or
+                        any communication messages to the candidate.
+                      </UITypography>
+                      <div className='overflow-hidden border border-neutral-200 rounded-md'>
+                        <div className='grid grid-cols-[260px_570px] bg-neutral-100'>
+                          <div className='p-1 px-3'>
+                            <UITypography variant='p' type='small'>
+                              Token
+                            </UITypography>
                           </div>
-                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
-                            <div className='flex items-center'>
-                              <UIBadge textBadge='Token2' color={'purple'} />
-                            </div>
-                            <p className='text-sm text-gray-600'>
-                              Korem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Nunc vulputate libero et velit interdum, ac
-                              aliquet odio mattis.
-                            </p>
+                          <div className='p-1 px-3'>
+                            <UITypography variant='p' type='small'>
+                              Token Detail
+                            </UITypography>
                           </div>
-                          <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
-                            <div className='flex items-center'>
-                              <UIBadge textBadge='Token3' color={'purple'} />
+                        </div>
+                        <div>
+                          <>
+                            <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                              <div className='flex items-center'>
+                                <UIBadge
+                                  textBadge='Token1'
+                                  color={'purple'}
+                                />
+                              </div>
+                              <p className='text-sm text-gray-600'>
+                                Korem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Nunc vulputate libero et velit
+                                interdum, ac aliquet odio mattis.
+                              </p>
                             </div>
-                            <p className='text-sm text-gray-600'>
-                              Korem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Nunc vulputate libero et velit interdum, ac
-                              aliquet odio mattis.
-                            </p>
-                          </div>
-                        </>
-                      }
-                      slotAddToken={
-                        <UIButton size='sm' variant='ghost' leftIcon={<Plus />}>
-                          Add Token
-                        </UIButton>
-                      }
-                    />
+                            <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                              <div className='flex items-center'>
+                                <UIBadge
+                                  textBadge='Token2'
+                                  color={'purple'}
+                                />
+                              </div>
+                              <p className='text-sm text-gray-600'>
+                                Korem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Nunc vulputate libero et velit
+                                interdum, ac aliquet odio mattis.
+                              </p>
+                            </div>
+                            <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                              <div className='flex items-center'>
+                                <UIBadge
+                                  textBadge='Token3'
+                                  color={'purple'}
+                                />
+                              </div>
+                              <p className='text-sm text-gray-600'>
+                                Korem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Nunc vulputate libero et velit
+                                interdum, ac aliquet odio mattis.
+                              </p>
+                            </div>
+                          </>
+                        </div>
+                        <div className='flex h-[62px] p-1 px-3 items-center'>
+                          <UIButton
+                            size='sm'
+                            variant='ghost'
+                            leftIcon={<Plus />}
+                          >
+                            Add Token
+                          </UIButton>
+                        </div>
+                      </div>
+                    </div>
                   )}
 
                   {currentTab === 'aglintaiinstruction' && (

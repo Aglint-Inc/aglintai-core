@@ -32,11 +32,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const cand_schedule = new CandidatesSchedulingV2(zod_options);
 
     await cand_schedule.fetchDetails({
-      req_user_tz: parsed.cand_tz,
-      start_date_str: selected_date,
-      end_date_str: selected_date,
-      company_id: filter_json_data.applications.candidates.recruiter.id,
-      session_ids: filter_json_data.session_ids,
+      params: {
+        req_user_tz: parsed.cand_tz,
+        start_date_str: selected_date,
+        end_date_str: selected_date,
+        company_id: filter_json_data.applications.candidates.recruiter.id,
+        session_ids: filter_json_data.session_ids,
+      },
     });
 
     const [first_day_slots] = cand_schedule.findCandSlotForTheDay();

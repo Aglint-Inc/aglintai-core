@@ -4,7 +4,7 @@
  */
 
 import { InterviewerSessionRelation, RecruiterUserType } from '../data.types';
-import { InterviewSessionApiType } from './types';
+import { InterviewSessionApiType, SessionInterviewerType } from './types';
 
 export type CalConflictType =
   | 'soft'
@@ -61,18 +61,18 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
 };
 
 export type SessionInterviewerApiRespType = Pick<
-  RecruiterUserType,
+  SessionInterviewerType,
   | 'first_name'
   | 'last_name'
   | 'email'
   | 'profile_image'
   | 'user_id'
   | 'position'
-> &
-  Pick<
-    InterviewerSessionRelation,
-    'training_type' | 'interviewer_type' | 'interview_module_relation_id' | 'id'
-  > & { int_tz: string };
+  | 'training_type'
+  | 'interviewer_type'
+  | 'interview_module_relation_id'
+  | 'int_tz'
+>;
 // planCombination reponse types
 export type PlanCombinationRespType = {
   plan_comb_id: string;
