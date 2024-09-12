@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 
 import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type StageWithSessions } from '@/queries/application';
 
@@ -28,15 +28,15 @@ function CancelBanners({
             iconName={'CalendarClock'}
             actions={
               <>
-                <ButtonSolid
-                  size={'1'}
-                  textButton={'Reschedule Now'}
-                  onClickButton={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                    },
+                <UIButton
+                  variant='default'
+                  size='sm'
+                  onClick={(e) => {
+                    e.stopPropagation();
                   }}
-                />
+                >
+                  Reschedule Now
+                </UIButton>
               </>
             }
           />

@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Stack } from '@mui/material';
 import React from 'react';
 
@@ -48,8 +47,7 @@ function Banners({
               {isDeclineVisible && (
                 <UIButton
                   variant='secondary'
-                  size={'sm'}
-                  color={'neutral'}
+                  size='sm'
                   onClick={() => {
                     setIsDeclineOpen(true);
                   }}
@@ -59,16 +57,16 @@ function Banners({
               )}
 
               {isAcceptVisible && (
-                <ButtonSolid
-                  size={'1'}
-                  textButton={'Accept'}
-                  onClickButton={{
-                    onClick: async () => {
-                      await onClickAccept(sessionRelation.id);
-                      refetch();
-                    },
+                <UIButton
+                  variant='default'
+                  size='sm'
+                  onClick={async () => {
+                    await onClickAccept(sessionRelation.id);
+                    refetch();
                   }}
-                />
+                >
+                  Accept
+                </UIButton>
               )}
             </>
           }

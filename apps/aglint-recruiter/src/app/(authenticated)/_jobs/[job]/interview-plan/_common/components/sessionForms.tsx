@@ -2,7 +2,6 @@
 import { type DB } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonSolid } from '@devlink2/ButtonSolid';
 import { InterviewMode } from '@devlink2/InterviewMode';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
@@ -17,6 +16,7 @@ import React, {
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
@@ -489,20 +489,20 @@ const Interview = ({
               description={'Please add members to the selected interview type'}
               color={'error'}
               actions={
-                <ButtonSolid
-                  color={'error'}
-                  size={1}
-                  textButton={'Go to interview type'}
-                  onClickButton={{
-                    onClick: () =>
-                      interview_module?.value?.id &&
-                      push(
-                        ROUTES['/scheduling/interview-types/[type_id]']({
-                          type_id: interview_module.value.id,
-                        }),
-                      ),
-                  }}
-                />
+                <UIButton
+                  variant='destructive'
+                  size='sm'
+                  onClick={() =>
+                    interview_module?.value?.id &&
+                    push(
+                      ROUTES['/scheduling/interview-types/[type_id]']({
+                        type_id: interview_module.value.id,
+                      }),
+                    )
+                  }
+                >
+                  Go to interview type
+                </UIButton>
               }
             />
           )}

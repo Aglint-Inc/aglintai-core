@@ -7,8 +7,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { cn } from '@lib/utils';
@@ -22,6 +20,7 @@ import type { DateRange } from 'react-day-picker';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/components/Common/UIButton';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useApplication } from '@/context/ApplicationContext';
@@ -152,19 +151,19 @@ function DialogSchedule() {
                 color={'warning'}
                 actions={
                   <>
-                    <ButtonSoft
-                      size={1}
-                      textButton='View Request'
-                      onClickButton={{
-                        onClick: () => {
-                          router.push({
-                            query: { tab: 'requests' },
-                            pathname: `/jobs/${job_id}/application/${application_id}`,
-                          });
-                          onClose();
-                        },
+                    <UIButton
+                      variant='default'
+                      size='sm'
+                      onClick={() => {
+                        router.push({
+                          query: { tab: 'requests' },
+                          pathname: `/jobs/${job_id}/application/${application_id}`,
+                        });
+                        onClose();
                       }}
-                    />
+                    >
+                      View Request
+                    </UIButton>
                   </>
                 }
                 title={`${sessionHasRequest
@@ -180,18 +179,19 @@ function DialogSchedule() {
                 <>
                   {sessions.map((session) => {
                     return (
-                      <ButtonSoft
+                      <UIButton
                         key={session.interview_session.id}
-                        size={2}
-                        textButton={session.interview_session.name}
-                        color={'neutral'}
-                        isLeftIcon={true}
-                        slotIcon={
+                        variant='secondary'
+                        size='sm'
+                        color='neutral'
+                        leftIcon={
                           <IconSessionType
                             type={session.interview_session.session_type}
                           />
                         }
-                      />
+                      >
+                        {session.interview_session.name}
+                      </UIButton>
                     );
                   })}
                 </>
@@ -245,27 +245,24 @@ function DialogSchedule() {
         }
         slotButtons={
           <>
-            <ButtonSoft
-              size={2}
-              textButton='Cancel'
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  setIsScheduleOpen(false);
-                },
+            <UIButton
+              variant='secondary'
+              onClick={() => {
+                setIsScheduleOpen(false);
               }}
-            />
-            <ButtonSolid
-              size={2}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              variant='default'
               isLoading={isSaving}
-              textButton={'Proceed'}
-              onClickButton={{
-                onClick: async () => {
-                  if (isSaving) return;
-                  onClickSubmit();
-                },
+              onClick={async () => {
+                if (isSaving) return;
+                onClickSubmit();
               }}
-            />
+            >
+              Proceed
+            </UIButton>
           </>
         }
       />
@@ -346,28 +343,23 @@ export const RequestOption = ({
 }) => {
   return (
     <Stack direction={'row'} width={'100%'} spacing={'var(--space-2)'}>
-      <ButtonSoft
-        size={2}
-        textButton={'Urgent Request'}
-        color={requestType === 'urgent' ? 'accent' : 'neutral'}
-        isLeftIcon={true}
-        slotIcon={<FileBadge2 />}
-        onClickButton={{
-          onClick: () => {
-            setRequestType('urgent');
-          },
+      <UIButton
+        variant={requestType === 'urgent' ? 'default' : 'outline'}
+        leftIcon={<FileBadge2 />}
+        onClick={() => {
+          setRequestType('urgent');
         }}
-      />
-      <ButtonSoft
-        size={2}
-        color={requestType === 'standard' ? 'accent' : 'neutral'}
-        textButton={'Standard Request'}
-        onClickButton={{
-          onClick: () => {
-            setRequestType('standard');
-          },
+      >
+        Urgent Request
+      </UIButton>
+      <UIButton
+        variant={requestType === 'standard' ? 'default' : 'outline'}
+        onClick={() => {
+          setRequestType('standard');
         }}
-      />
+      >
+        Standard Request
+      </UIButton>
     </Stack>
   );
 };

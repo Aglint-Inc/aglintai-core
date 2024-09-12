@@ -1,11 +1,11 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { RescheduleCard } from '@devlink3/RescheduleCard';
-import { Stack } from '@mui/material';
+import { Card, CardContent } from '@components/ui/card';
+import { AlertTriangle, CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import ROUTES from '@/utils/routing/routes';
 
 import BookingConfirmation from './BookingConfirmation';
@@ -29,36 +29,35 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
     ).isBefore(dayjsLocal().add(-1, 'day'));
 
     return (
-      <Stack spacing={2} width={'100%'}>
-        <RescheduleCard
-          slotAdditionalNotes={rescheduleDetails.other_details.note}
-          isNotesVisible={Boolean(rescheduleDetails.other_details.note)}
-          textReason={rescheduleDetails.reason}
-          slotDateReason={
-            <>
-              {`${dayjsLocal(
-                rescheduleDetails.other_details?.dateRange?.start,
-              ).format('DD MMMM, YYYY')} - ${dayjsLocal(
-                rescheduleDetails.other_details?.dateRange?.end,
-              ).format('DD MMMM, YYYY')}`}
-            </>
-          }
-        />
-        {checkDate && (
-          <UIAlert
-            color={'warning'}
-            title={'Proposed date is expired'}
-            type='inline'
-          />
-        )}
-      </Stack>
+      <Card className='mt-4'>
+        <CardContent className='p-4 space-y-4'>
+          <div className='flex items-center space-x-2'>
+            <CalendarIcon className='w-5 h-5 text-muted-foreground' />
+            <span className='text-sm'>
+              {`${dayjsLocal(rescheduleDetails.other_details?.dateRange?.start).format('DD MMMM, YYYY')} - ${dayjsLocal(rescheduleDetails.other_details?.dateRange?.end).format('DD MMMM, YYYY')}`}
+            </span>
+          </div>
+          {rescheduleDetails.other_details.note && (
+            <p className='text-sm'>{rescheduleDetails.other_details.note}</p>
+          )}
+          <p className='text-sm font-medium'>
+            Reason: {rescheduleDetails.reason}
+          </p>
+          {checkDate && (
+            <Alert variant='error'>
+              <AlertTriangle className='h-4 w-4' />
+              <AlertDescription>Proposed date is expired</AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
     );
   } else if (act.metadata.type === 'interviewer_decline') {
     const meeting_id = act.metadata.meeting_id;
     return (
-      <Stack direction={'row'}>
+      <div className='mt-4'>
         <Button
-          size={'sm'}
+          size='sm'
           onClick={() => {
             router.push(
               ROUTES['/scheduling/view']() +
@@ -68,7 +67,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
         >
           View details
         </Button>
-      </Stack>
+      </div>
     );
   } else {
     return null;

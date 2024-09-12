@@ -1,14 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
 import { Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   useApplications,
@@ -233,20 +232,13 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
   const { resetActionPopup } = useApplicationsActions();
   const buttons = (
     <>
-      <ButtonSoft
-        textButton='Cancel'
-        color={'neutral'}
-        size={2}
-        onClickButton={{ onClick: () => resetActionPopup() }}
-      />
+      <UIButton size='sm' variant='secondary' onClick={() => resetActionPopup()}>
+        Cancel
+      </UIButton>
 
-      <ButtonSolid
-        textButton={buttonText ?? `Move to ${actionPopup}`}
-        size={2}
-        onClickButton={{
-          onClick: () => onSubmit(),
-        }}
-      />
+      <UIButton size='sm' variant='default' onClick={() => onSubmit()}>
+        {buttonText ?? `Move to ${actionPopup}`}
+      </UIButton>
     </>
   );
   const count = checklist.length;

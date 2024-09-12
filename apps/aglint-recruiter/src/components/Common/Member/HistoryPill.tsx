@@ -1,6 +1,5 @@
+import { cn } from '@lib/utils';
 import React from 'react';
-
-import { cn } from '@/utils/shadcn';
 
 interface HistoryPillProps {
   isReverseShadow?: boolean;

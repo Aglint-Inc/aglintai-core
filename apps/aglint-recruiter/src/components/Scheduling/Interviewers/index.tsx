@@ -9,14 +9,14 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AllInterviewers } from '@devlink2/AllInterviewers';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
@@ -43,17 +43,16 @@ const InterviewTab = () => {
         recruiter?.recruiter_preferences?.greenhouse ? (
           <></>
         ) : (
-          <ButtonSoft
-            textButton='Add Interviewer'
-            iconName='add'
-            isLeftIcon
-            size={1}
-            onClickButton={{
-              onClick: () => {
-                setOpenDrawer(true);
-              },
+          <UIButton
+            size='sm'
+            variant='default'
+            leftIcon={<Plus />}
+            onClick={() => {
+              setOpenDrawer(true);
             }}
-          />
+          >
+            Add Interviewer
+          </UIButton>
         )
       }
       slotTopbarLeft={
@@ -249,9 +248,11 @@ const InterviewTab = () => {
                   />
                 </>
               ) : (
-                <div className="flex flex-col items-center justify-center h-64 text-center">
-                  <Search className="w-12 h-12 text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground">No interviewers found</p>
+                <div className='flex flex-col items-center justify-center h-64 text-center'>
+                  <Search className='w-12 h-12 text-muted-foreground mb-2' />
+                  <p className='text-sm text-muted-foreground'>
+                    No interviewers found
+                  </p>
                 </div>
               )}
             </Stack>

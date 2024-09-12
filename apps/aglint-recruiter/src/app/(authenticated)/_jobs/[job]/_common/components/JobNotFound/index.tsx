@@ -1,7 +1,7 @@
 import { Page404 } from '@devlink/Page404';
-import { ButtonSoft } from '@devlink3/ButtonSoft';
 import { useRouter } from 'next/router';
 
+import { UIButton } from '@/components/Common/UIButton';
 import ROUTES from '@/utils/routing/routes';
 
 export const JobNotFound = () => {
@@ -10,12 +10,12 @@ export const JobNotFound = () => {
     <Page404
       text404={'Job not found'}
       slot404={
-        <ButtonSoft
-          iconSize={2}
-          color={'neutral'}
-          textButton={'Go to Jobs'}
-          onClickButton={{ onClick: () => replace(ROUTES['/jobs']()) }}
-        />
+        <UIButton
+          variant={'secondary'}
+          onClick={() => replace(ROUTES['/jobs']())}
+        >
+          Go to Jobs
+        </UIButton>
       }
     />
   );
