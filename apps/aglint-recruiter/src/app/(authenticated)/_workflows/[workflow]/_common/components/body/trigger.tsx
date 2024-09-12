@@ -1,8 +1,8 @@
 import { Alert, AlertDescription } from '@components/ui/alert';
-import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { Zap } from 'lucide-react';
 
 import UISelect from '@/components/Common/UISelectDropDown';
+import { WorkflowItem } from '@/components/Workflow/_common/WorkflowItem';
 import { type Workflow } from '@/types/workflow.types';
 import { useWorkflow } from '@/workflow/hooks';
 import { DURATION_OPTIONS, TRIGGER_PAYLOAD } from '@/workflows/constants';
@@ -88,7 +88,7 @@ const TriggerInfo = () => {
   } = useWorkflow();
   const option = DURATION_OPTIONS.find(({ value }) => value === interval);
   return (
-    <Alert variant='default'>
+    <Alert variant='default' className='mt-2'>
       <AlertDescription>
         Any subsequent actions will be triggered{' '}
         {phase
