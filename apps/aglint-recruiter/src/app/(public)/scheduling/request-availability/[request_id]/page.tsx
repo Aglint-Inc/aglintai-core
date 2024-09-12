@@ -13,7 +13,7 @@ function RequestAvailability() {
           title='Request Availability | Aglint AI'
           description='AI for People Products'
         />
-        <CandidateAvailability />;
+        <CandidateAvailability />
       </RequestAvailabilityProvider>
     </>
   );
