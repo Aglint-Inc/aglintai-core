@@ -2,31 +2,42 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
+export type Menus = 'jobs' | 'requestType';
+
+type Selections = {
+  jobs: { id: DatabaseTable['public_jobs']['id']; label: string };
+  requestType: { id: DatabaseTable['request']['type']; label: string };
+};
+
+type Payloads = {
+  jobs: { cursor: number; search: string };
+  requestType: { search: string };
+};
+
+type SafeSelections<T extends Menus = Menus> = { [id in T]: Selections[id] };
+
+type SafePayload<T extends Menus = Menus> = { [id in T]: Payloads[id] };
+
 type States = {
   open: boolean;
-  selections: {
-    requestType: DatabaseTable['request']['type'];
-    job: Pick<DatabaseTable['public_jobs'], 'id' | 'job_title'>;
-  };
-  payloads: {
-    requestType: { search: string };
-    jobs: { search: string; cursor: number };
-  };
+  selections: SafeSelections;
+  payloads: SafePayload;
 };
 
 type Actions = {
   onOpenChange: (_open: States['open']) => void;
   setJobCursor: (_cursor: States['payloads']['jobs']['cursor']) => void;
   setJobSearch: (_search: States['payloads']['jobs']['search']) => void;
-  addJobSelection: (_job: States['selections']['job']) => void;
+  addJobSelection: (_jobs: States['selections']['jobs']) => void;
   removeJobSelection: () => void;
   setRequestType: (_requestType: States['selections']['requestType']) => void;
   setRequestTypeSearch: (
     _search: States['payloads']['requestType']['search'],
   ) => void;
+  resetMenu: (_payload: keyof States['payloads']) => void;
 };
 
-type Store = States & {
+export type Store = States & {
   initial: States;
   actions: Actions;
 };
@@ -35,7 +46,7 @@ const initial = Object.freeze<States>({
   open: false,
   selections: {
     requestType: null,
-    job: null,
+    jobs: null,
   },
   payloads: {
     requestType: { search: '' },
@@ -69,11 +80,11 @@ const useCreateRequestContext = () => {
               jobs: { ...state.payloads.jobs, search },
             },
           })),
-        addJobSelection: (job) =>
-          set((state) => ({ selections: { ...state.selections, job } })),
+        addJobSelection: (jobs) =>
+          set((state) => ({ selections: { ...state.selections, jobs } })),
         removeJobSelection: () =>
           set((state) => ({
-            selections: { ...state.selections, job: initial.selections.job },
+            selections: { ...state.selections, jobs: initial.selections.jobs },
           })),
         setRequestType: (requestType) =>
           set((state) => ({
@@ -86,6 +97,7 @@ const useCreateRequestContext = () => {
               requestType: { ...state.payloads.requestType, search },
             },
           })),
+        resetMenu: (payload) => set((state) => resetPayload(payload, state)),
       },
     })),
   );
@@ -104,3 +116,16 @@ export const CreateRequestProvider = memo((props: PropsWithChildren) => {
   );
 });
 CreateRequestProvider.displayName = 'CreateRequestProvider';
+
+const resetPayload = (menu: Menus, state: States): Partial<States> => {
+  let response = {
+    payloads: structuredClone(initial.payloads),
+    selections: structuredClone(initial.selections),
+  };
+  if (menu === 'requestType') return response;
+  if (menu === 'jobs') {
+    response.payloads.requestType = state.payloads.requestType;
+    response.selections.requestType = state.selections.requestType;
+  }
+  return response;
+};

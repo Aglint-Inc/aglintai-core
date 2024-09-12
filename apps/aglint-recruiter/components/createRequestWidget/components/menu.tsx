@@ -5,6 +5,6 @@ import { RequestType } from './requestType';
 export const Menu = () => {
   const selections = useCreateRequest((state) => state.selections);
   if (!selections.requestType) return <RequestType />;
-  if (!selections.job) return <Jobs />;
+  if (!selections.jobs) return <Jobs />;
   return <></>;
 };

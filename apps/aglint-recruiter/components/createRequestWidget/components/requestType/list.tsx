@@ -45,7 +45,11 @@ const Content = () => {
         <Placeholder>No suggestions available.</Placeholder>
       </CommandEmpty>
       {requestTypes.map(({ id, label }) => (
-        <CommandItem key={id} value={id} onSelect={() => setRequestType(id)}>
+        <CommandItem
+          key={id}
+          value={id}
+          onSelect={() => setRequestType({ id, label })}
+        >
           <>
             <Calendar className='mr-2 h-4 w-4' />
             <span>{label}</span>

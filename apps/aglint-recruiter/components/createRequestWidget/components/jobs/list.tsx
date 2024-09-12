@@ -71,7 +71,7 @@ const Content = () => {
             <CommandItem
               key={virtualRow.index}
               value={`${id} ${job.job_title}`}
-              onSelect={() => addJobSelection({ id, job_title })}
+              onSelect={() => addJobSelection({ id, label: job_title })}
               className={`absolute top-0 left-0 w-full h-[${virtualRow.size}px]`}
               style={{
                 transform: `translateY(${virtualRow.start}px)`,
