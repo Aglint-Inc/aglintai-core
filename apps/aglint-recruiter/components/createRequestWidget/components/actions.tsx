@@ -20,10 +20,15 @@ const Selections = () => {
   const selections = useCreateRequest((state) => state.selections);
   const { resetSelection } = useCreateRequestActions();
   return SafeObject.entries(selections)
-    .filter(([, value]) => Boolean(value))
-    .map(([key, { label }]) => (
+    .filter(([, value]) =>
+      Array.isArray(value) ? value.length !== 0 : Boolean(value),
+    )
+    .map(([key, value]) => (
       <Badge key={key} variant='secondary' className='text-sm'>
-        {getKey(key)} : {label}
+        {getKey(key)} :{' '}
+        {Array.isArray(value)
+          ? value.map(({ label }) => label).join(', ')
+          : value.label}
         <button className='ml-1' onClick={() => resetSelection(key)}>
           <X className='h-3 w-4' />
         </button>
@@ -37,7 +42,10 @@ const Buttons = () => {
     selections: state.selections,
   }));
   const { nextPage } = useCreateRequestActions();
-  const isEnabled = !!selections[STEPS[step]];
+  const currentSelection = selections[STEPS[step]];
+  const isEnabled = Array.isArray(currentSelection)
+    ? currentSelection.length !== 0
+    : Boolean(currentSelection);
   return (
     <div className='flex justify-between'>
       <Button variant='outline'>Cancel</Button>
@@ -55,6 +63,8 @@ const getKey = (key: Menus) => {
     case 'jobs':
       return 'Job';
     case 'candidates':
-      return 'Candidate';
+      return 'Candidates';
+    case 'schedules':
+      return 'Schedules';
   }
 };
