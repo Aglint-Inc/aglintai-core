@@ -8,7 +8,6 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { WorkflowAddAction } from '@devlink3/WorkflowAddAction';
 import { WorkflowConnector } from '@devlink3/WorkflowConnector';
-import { WorkflowItem } from '@devlink3/WorkflowItem';
 import { Terminal } from 'lucide-react';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -16,6 +15,7 @@ import Loader from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelect from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
+import { WorkflowItem } from '@/components/Workflow/_common/WorkflowItem';
 import { type WorkflowAction } from '@/types/workflow.types';
 import { useWorkflow } from '@/workflow/hooks';
 import { getWorkflowTagIcon } from '@/workflows/utils';
