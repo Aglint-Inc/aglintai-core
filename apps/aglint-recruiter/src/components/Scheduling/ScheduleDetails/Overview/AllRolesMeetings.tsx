@@ -30,12 +30,12 @@ function AllRolesMeetings() {
   const filteredRoles = allRoles.filter((item) => Boolean(item.details));
 
   return (
-    <div className='flex flex-col space-y-2'>
+    <div className='flex flex-col space-y-4'>
       {filteredRoles.map((item) => {
         return (
           <div key={item.type}>
-            <div className='flex items-center space-x-4 p-4 bg-white rounded-lg shadow'>
-              <Avatar className='h-12 w-12'>
+            <div className='flex items-center space-x-4 bg-white'>
+              <Avatar className='h-10 w-10'>
                 <AvatarImage
                   src={item.details.profile_image}
                   alt={getFullName(

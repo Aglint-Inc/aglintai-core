@@ -1,7 +1,6 @@
 'use strict';
 
 import { Checkbox } from '@components/ui/checkbox';
-import { StatusBadge } from '@devlink2/StatusBadge';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -9,13 +8,14 @@ import { useState } from 'react';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
+import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { type StageWithSessions } from '@/queries/application';
 import { useAllIntegrations } from '@/queries/intergrations';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
-import { GlobalScheduleCard } from '../../../GlobalScheduleCard';
+import { GlobalScheduleCard } from '../../../ui/GlobalScheduleCard';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
@@ -109,26 +109,11 @@ function ScheduleIndividualCard({
       }
       isRoleVisible={false}
       slotGlobalBadge={
-        isStatusVisible &&
-        (interview_meeting?.status ? (
-          <StatusBadge
-            isCancelledVisible={interview_meeting.status === 'cancelled'}
-            isConfirmedVisible={interview_meeting.status === 'confirmed'}
-            isWaitingVisible={interview_meeting.status === 'waiting'}
-            isCompletedVisible={interview_meeting.status === 'completed'}
-            isNotScheduledVisible={
-              interview_meeting.status === 'not_scheduled' || false
-            }
+        isStatusVisible && (
+          <MeetingStatusBadge
+            status={interview_session.interview_meeting.status}
           />
-        ) : (
-          <StatusBadge
-            isNotScheduledVisible={true}
-            isCancelledVisible={false}
-            isConfirmedVisible={false}
-            isWaitingVisible={false}
-            isCompletedVisible={false}
-          />
-        ))
+        )
       }
       isDateVisible={
         !hideDateAndTime &&
