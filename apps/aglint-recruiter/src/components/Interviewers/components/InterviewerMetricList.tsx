@@ -1,7 +1,6 @@
 import { Card } from '@components/ui/card';
+import { cn } from '@lib/utils';
 import React from 'react';
-
-import { cn } from '@/utils/shadcn';
 
 interface InterviewerMetricListProps {
   slotImage?: React.ReactNode;

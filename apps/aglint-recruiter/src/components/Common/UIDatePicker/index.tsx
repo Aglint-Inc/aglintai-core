@@ -6,10 +6,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { cn } from '@lib/utils';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
-
-import { cn } from '@/utils/shadcn';
 
 export function UIDatePicker({
   value,
