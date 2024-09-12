@@ -17,10 +17,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import {
-  requestDaysListOptions,
-  slotsListOptions,
-} from '@/components/Scheduling/RequestAvailability/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/queries/requests/types';
 import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
@@ -29,6 +25,7 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { DAYS_LIST, SLOTS_LIST } from '../../_common/constant';
 import {
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
@@ -55,8 +52,8 @@ function CandidateAvailability({
   const { recruiter, recruiterUser } = useAuthDetails();
   const selectedSessions = selectedRequest.request_relation;
   // states
-  const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
-  const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
+  const [selectedDays, setSelectedDays] = useState(DAYS_LIST[1]);
+  const [selectedSlots, setSelectedSlots] = useState(SLOTS_LIST[1]);
   const [selectedDate, setSelectedDate] = useState<{
     start_date: dayjs.Dayjs;
     end_date: dayjs.Dayjs;
@@ -288,23 +285,23 @@ function CandidateAvailability({
             <UISelectDropDown
               fullWidth
               value={String(selectedDays.value)}
-              menuOptions={requestDaysListOptions
-                .filter((_, index) => index + 1 < maxDays)
-                .map(({ label, value }) => {
-                  return {
-                    name: label,
-                    value,
-                  };
-                })}
+              menuOptions={DAYS_LIST.filter(
+                (_, index) => index + 1 < maxDays,
+              ).map(({ label, value }) => {
+                return {
+                  name: label,
+                  value,
+                };
+              })}
               placeholder='Days'
               onValueChange={(value) => {
-                const selectedOption = requestDaysListOptions.find(
+                const selectedOption = DAYS_LIST.find(
                   (option) => option.value === Number(value),
                 );
                 setSelectedDays(selectedOption);
               }}
             >
-              {requestDaysListOptions.map((option, index) => {
+              {DAYS_LIST.map((option, index) => {
                 if (index + 1 < maxDays) {
                   return (
                     <SelectItem key={option.value} value={String(option.value)}>
@@ -320,19 +317,19 @@ function CandidateAvailability({
             <UISelectDropDown
               fullWidth
               value={String(selectedSlots.value)}
-              menuOptions={slotsListOptions.map(({ label, value }) => ({
+              menuOptions={SLOTS_LIST.map(({ label, value }) => ({
                 name: label,
                 value,
               }))}
               placeholder='Slots'
               onValueChange={(value) => {
-                const selectedOption = slotsListOptions.find(
+                const selectedOption = SLOTS_LIST.find(
                   (option) => option.value === Number(value),
                 );
                 setSelectedSlots(selectedOption);
               }}
             >
-              {slotsListOptions.map((option) => (
+              {SLOTS_LIST.map((option) => (
                 <SelectItem key={option.value} value={String(option.value)}>
                   {option.label}
                 </SelectItem>
