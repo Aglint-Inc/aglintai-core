@@ -79,6 +79,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }),
       ),
     );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session_cancel')
+        .update({
+          is_resolved: true,
+        })
+        .eq('session_relation_id', parsed_body.curr_declined_int_sesn_reln_id),
+    );
 
     return res.status(200).json('ok');
   } catch (error) {

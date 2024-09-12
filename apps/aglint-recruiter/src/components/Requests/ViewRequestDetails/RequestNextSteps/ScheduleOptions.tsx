@@ -8,12 +8,12 @@ import { useRequests } from '@/context/RequestsContext';
 
 import { useMeetingList } from '../../_common/hooks';
 import { setCandidateAvailabilityDrawerOpen } from '../CandidateAvailability/store';
-import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/hooks';
+import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
 import {
   initialFilters,
   setIsSelfScheduleDrawerOpen,
   useSelfSchedulingFlowStore,
-} from '../SelfSchedulingDrawer/store';
+} from '../SelfSchedulingDrawer/_common/store/store';
 
 const ScheduleOptions = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
