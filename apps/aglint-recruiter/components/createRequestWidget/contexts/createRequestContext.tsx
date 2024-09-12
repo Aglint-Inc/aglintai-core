@@ -1,3 +1,4 @@
+import dayjs from '@/utils/dayjs';
 import type { DatabaseTable } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
@@ -35,11 +36,20 @@ type Payloads = {
 
 type SafeSelections<T extends Menus = Menus> = { [id in T]: Selections[id] };
 
-type SafePayload<T extends Menus = Menus> = { [id in T]: Payloads[id] };
+type PayloadMenus = Exclude<Menus, 'dates'>;
+
+type SafePayload<T extends PayloadMenus = PayloadMenus> = {
+  [id in T]: Payloads[id];
+};
 
 type States = {
   open: boolean;
   step: number;
+  dates: {
+    start_date: string;
+    end_date: string;
+  };
+  note: string;
   selections: SafeSelections;
   payloads: SafePayload;
 };
@@ -73,6 +83,8 @@ type Actions = {
   ) => void;
   selectAssignee: (_assignees: States['selections']['assignees']) => void;
   resetSelection: (_payload: keyof States['payloads']) => void;
+  setDates: (_dates: States['dates']) => void;
+  setNote: (_note: States['note']) => void;
 };
 
 export type Store = States & {
@@ -109,6 +121,11 @@ const initial = Object.freeze<States>({
       cursor: 0,
     },
   },
+  dates: {
+    end_date: dayjs().toISOString(),
+    start_date: dayjs().add(7, 'day').toISOString(),
+  },
+  note: '',
 });
 
 const useCreateRequestContext = () => {
@@ -117,6 +134,8 @@ const useCreateRequestContext = () => {
       initial,
       open: initial.open,
       step: initial.step,
+      dates: structuredClone(initial.dates),
+      note: initial.note,
       payloads: structuredClone(initial.payloads),
       selections: structuredClone(initial.selections),
       actions: {
@@ -222,6 +241,8 @@ const useCreateRequestContext = () => {
               step: newPayload.step + 1,
             };
           }),
+        setDates: (dates) => set(() => ({ dates })),
+        setNote: (note) => set(() => ({ note })),
         resetSelection: (payload) =>
           set((state) => resetPayload(payload, state)),
       },
