@@ -94,6 +94,9 @@ const RequestDecline = () => {
         onClose={() => {
           setIsDialogOpen(false);
         }}
+        onClickSecondary={() => {
+          setIsDialogOpen(false);
+        }}
         onClickPrimary={changeInterviewer}
         isPrimaryActionLoading={isInterviewerChanging}
       >

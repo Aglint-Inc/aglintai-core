@@ -209,37 +209,34 @@ function DayCardWrapper({
                                     />
                                   )}
                                   {isRadioNeeded && (
-                                    <RadioGroup
-                                      defaultValue={
-                                        selectedCombIds.includes(
-                                          slot.plan_comb_id,
-                                        )
-                                          ? slot.plan_comb_id
-                                          : undefined
-                                      }
-                                      onValueChange={(value) => {
-                                        onClickSelect(value);
-                                        setCalendarDate(
-                                          dayjs(dates[0]).toISOString(),
-                                        );
-                                        setTimeout(() => {
-                                          const element =
-                                            document.getElementById(
-                                              slot.daySessions[0].sessions[0]
-                                                .session_id +
-                                                slot.daySessions[0].sessions[0]
-                                                  .qualifiedIntervs[0].user_id,
-                                            );
-                                          if (element) {
-                                            element.scrollIntoView({
-                                              behavior: 'smooth',
-                                              block: 'center',
-                                            });
-                                          }
-                                        }, 1000);
-                                      }}
-                                    >
+                                    <RadioGroup>
                                       <RadioGroupItem
+                                        checked={selectedCombIds.includes(
+                                          slot.plan_comb_id,
+                                        )}
+                                        onClick={() => {
+                                          onClickSelect(slot.plan_comb_id);
+                                          setCalendarDate(
+                                            dayjs(dates[0]).toISOString(),
+                                          );
+                                          setTimeout(() => {
+                                            const element =
+                                              document.getElementById(
+                                                slot.daySessions[0].sessions[0]
+                                                  .session_id +
+                                                  slot.daySessions[0]
+                                                    .sessions[0]
+                                                    .qualifiedIntervs[0]
+                                                    .user_id,
+                                              );
+                                            if (element) {
+                                              element.scrollIntoView({
+                                                behavior: 'smooth',
+                                                block: 'center',
+                                              });
+                                            }
+                                          }, 1000);
+                                        }}
                                         value={slot.plan_comb_id}
                                         id={`radio-${slot.plan_comb_id}`}
                                       />
