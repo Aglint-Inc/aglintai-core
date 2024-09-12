@@ -88,7 +88,7 @@ const TriggerInfo = () => {
   } = useWorkflow();
   const option = DURATION_OPTIONS.find(({ value }) => value === interval);
   return (
-    <Alert variant='default'>
+    <Alert variant='default' className='mt-2'>
       <AlertDescription>
         Any subsequent actions will be triggered{' '}
         {phase

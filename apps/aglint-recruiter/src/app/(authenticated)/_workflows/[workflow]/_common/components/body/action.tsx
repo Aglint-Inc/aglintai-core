@@ -6,7 +6,7 @@ import type {
 import OptimisticWrapper from '@components/loadingWapper';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { WorkflowAddAction } from '@devlink3/WorkflowAddAction';
+import { CardContent } from '@components/ui/card';
 import { Terminal } from 'lucide-react';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -71,7 +71,14 @@ const ActionRecommendations = memo(() => {
     <>
       <WorkflowConnector />
 
-      <WorkflowAddAction slotWorkflowButton={options} />
+      <div className='flex flex-col items-center gap-4 py-2'>
+        <UITypography type='small' variant='p'>
+          Choose an action from below
+        </UITypography>
+        <CardContent className='flex flex-col items-center gap-2'>
+          {options}
+        </CardContent>
+      </div>
     </>
   );
 });
