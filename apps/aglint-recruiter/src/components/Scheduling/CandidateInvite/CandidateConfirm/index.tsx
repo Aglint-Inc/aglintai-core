@@ -2,10 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Button } from '@components/ui/button';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { InterviewConfirmed } from '@devlink2/InterviewConfirmed';
-import { InterviewConfirmedCard } from '@devlink2/InterviewConfirmedCard';
 import { Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -13,6 +10,7 @@ import axios from '@/client/axios';
 import CompanyLogo from '@/components/Common/CompanyLogo';
 import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIButton } from '@/components/Common/UIButton';
 import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';
@@ -24,7 +22,8 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import CancelRescheduleDialog from '../CancelScheduleDialog';
 import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { createRequest, dayJS, getCalenderEventUrl } from '../utils';
-
+import InterviewConfirmed from './InterviewConfirmed';
+import { InterviewConfirmedCard } from './InterviewConfirmedCard';
 export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &
     Pick<
@@ -224,7 +223,6 @@ export const ConfirmedInvitePage = (
             )}
           </Stack>
           <InterviewConfirmed
-            isBannerVisible={Boolean(cancelReschedulingDetails?.all)}
             slotCompanyLogo={
               <Logo companyName={recruiter.name} logo={recruiter.logo} />
             }
@@ -243,8 +241,8 @@ export const ConfirmedInvitePage = (
               <Stack direction={'row'} gap={2}>
                 {(!cancelReschedulingDetails ||
                   cancelReschedulingDetails.all == false) && (
-                  <div>
-                    <Button
+                  <div className='flex gap-2'>
+                    <UIButton
                       size={'md'}
                       color={'neutral'}
                       onClick={() => setCancelReschedule('reschedule')}
@@ -252,15 +250,15 @@ export const ConfirmedInvitePage = (
                       variant='outline'
                     >
                       Reschedule
-                    </Button>
-                    <Button
+                    </UIButton>
+                    <UIButton
                       size={'md'}
                       color={'neutral'}
                       onClick={() => setCancelReschedule('cancel')}
                       variant='default'
                     >
                       Cancel
-                    </Button>
+                    </UIButton>
                   </div>
                 )}
               </Stack>
@@ -362,31 +360,29 @@ const ConfirmedScheduleCard = (
         }
         isAddtoCalenderVisible={props.isValid}
         isJoinMeetingButtonVisible={props.isValid}
-        onClickAddCalendar={{
-          onClick: () =>
-            window.open(
-              getCalenderEventUrl({
-                start_time: session.interview_meeting.start_time,
-                end_time: session.interview_meeting.end_time,
-                title: session.interview_session.name,
-                description: `Meeting ${session.interview_session.schedule_type != 'in_person_meeting' ? 'Link' : 'Address'}: ${session.interview_meeting.meeting_link}`,
-                location: capitalizeFirstLetter(
-                  session.interview_session.schedule_type,
-                ),
-              }),
-              '_blank',
-            ),
-        }}
+        onClickAddCalendar={() =>
+          window.open(
+            getCalenderEventUrl({
+              start_time: session.interview_meeting.start_time,
+              end_time: session.interview_meeting.end_time,
+              title: session.interview_session.name,
+              description: `Meeting ${session.interview_session.schedule_type != 'in_person_meeting' ? 'Link' : 'Address'}: ${session.interview_meeting.meeting_link}`,
+              location: capitalizeFirstLetter(
+                session.interview_session.schedule_type,
+              ),
+            }),
+            '_blank',
+          )
+        }
         textDate={`${day}, ${month} ${date}, ${year}`}
         textDuration={getBreakLabel(session.interview_session.session_duration)}
         textPanel={name}
         textPlatformName={capitalizeFirstLetter(
           session.interview_session.schedule_type,
         )}
-        onClickJoinGoogleMeet={{
-          onClick: () =>
-            window.open(session.interview_meeting.meeting_link, '_blank'),
-        }}
+        onClickJoinGoogleMeet={() =>
+          window.open(session.interview_meeting.meeting_link, '_blank')
+        }
         textTime={duration}
       />
     );
