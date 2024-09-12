@@ -1,4 +1,5 @@
 import { useCreateRequest } from '../hooks';
+import { Assignees } from './assignees';
 import { Candidates } from './candidates';
 import { Jobs } from './jobs';
 import { RequestType } from './requestType';
@@ -10,5 +11,6 @@ export const Menu = () => {
   if (step === 1) return <Jobs />;
   if (step === 2) return <Candidates />;
   if (step === 3) return <Schedules />;
+  if (step === 4) return <Assignees />;
   return <></>;
 };

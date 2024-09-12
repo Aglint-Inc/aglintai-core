@@ -1,12 +1,12 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 
 import { useCreateRequest } from './useCreateRequest';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
-export const useCreateRequestJobs = () => {
+export const useCreateRequestAssignees = () => {
   const { recruiter_id } = useAuthDetails();
-  const search = useCreateRequest((state) => state.payloads.jobs.search);
-  const [, result] = api.requests.create.jobs.useSuspenseInfiniteQuery(
+  const search = useCreateRequest((state) => state.payloads.assignees.search);
+  const [, result] = api.requests.create.assignees.useSuspenseInfiniteQuery(
     { recruiter_id, search },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,

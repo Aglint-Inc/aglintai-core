@@ -2,13 +2,19 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
-export type Menus = 'requestType' | 'jobs' | 'candidates' | 'schedules';
+export type Menus =
+  | 'requestType'
+  | 'jobs'
+  | 'candidates'
+  | 'schedules'
+  | 'assignees';
 
 export const STEPS: Readonly<Menus[]> = Object.freeze([
   'requestType',
   'jobs',
   'candidates',
   'schedules',
+  'assignees',
 ]);
 
 type Selections = {
@@ -16,6 +22,7 @@ type Selections = {
   jobs: { id: DatabaseTable['public_jobs']['id']; label: string };
   candidates: { id: DatabaseTable['applications']['id']; label: string }[];
   schedules: { id: DatabaseTable['interview_session']['id']; label: string }[];
+  assignees: { id: DatabaseTable['recruiter_user']['user_id']; label: string };
 };
 
 type Payloads = {
@@ -23,6 +30,7 @@ type Payloads = {
   jobs: { cursor: number; search: string };
   candidates: { cursor: number; search: string };
   schedules: { cursor: number; search: string };
+  assignees: { cursor: number; search: string };
 };
 
 type SafeSelections<T extends Menus = Menus> = { [id in T]: Selections[id] };
@@ -60,6 +68,10 @@ type Actions = {
   selectSchedule: (
     _schedules: States['selections']['schedules'][number],
   ) => void;
+  setAssigneeSearch: (
+    _search: States['payloads']['assignees']['search'],
+  ) => void;
+  selectAssignee: (_assignees: States['selections']['assignees']) => void;
   resetSelection: (_payload: keyof States['payloads']) => void;
 };
 
@@ -76,6 +88,7 @@ const initial = Object.freeze<States>({
     jobs: null,
     candidates: [],
     schedules: [],
+    assignees: null,
   },
   payloads: {
     requestType: { search: '' },
@@ -88,6 +101,10 @@ const initial = Object.freeze<States>({
       cursor: 0,
     },
     schedules: {
+      search: '',
+      cursor: 0,
+    },
+    assignees: {
       search: '',
       cursor: 0,
     },
@@ -186,6 +203,25 @@ const useCreateRequestContext = () => {
               },
             };
           }),
+        setAssigneeSearch: (search) =>
+          set((state) => ({
+            payloads: {
+              ...state.payloads,
+              assignees: { ...state.payloads.assignees, search },
+            },
+          })),
+        selectAssignee: (assignees) =>
+          set((state) => {
+            const newPayload = resetPayload('assignees', state);
+            return {
+              ...newPayload,
+              selections: {
+                ...newPayload.selections,
+                assignees,
+              },
+              step: newPayload.step + 1,
+            };
+          }),
         resetSelection: (payload) =>
           set((state) => resetPayload(payload, state)),
       },
@@ -234,6 +270,17 @@ const resetPayload = (menu: Menus, state: States): Partial<States> => {
     response.payloads.candidates = state.payloads.candidates;
     response.selections.candidates = state.selections.candidates;
     response.step = STEPS.findIndex((step) => step === 'schedules');
+  }
+  if (menu === 'assignees') {
+    response.payloads.requestType = state.payloads.requestType;
+    response.selections.requestType = state.selections.requestType;
+    response.payloads.jobs = state.payloads.jobs;
+    response.selections.jobs = state.selections.jobs;
+    response.payloads.candidates = state.payloads.candidates;
+    response.selections.candidates = state.selections.candidates;
+    response.payloads.schedules = state.payloads.schedules;
+    response.selections.schedules = state.selections.schedules;
+    response.step = STEPS.findIndex((step) => step === 'assignees');
   }
   return response;
 };

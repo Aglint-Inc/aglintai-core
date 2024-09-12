@@ -66,5 +66,7 @@ const getKey = (key: Menus) => {
       return 'Candidates';
     case 'schedules':
       return 'Schedules';
+    case 'assignees':
+      return 'Assignee';
   }
 };

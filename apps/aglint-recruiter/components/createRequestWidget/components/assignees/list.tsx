@@ -6,16 +6,20 @@ import { Briefcase } from 'lucide-react';
 import { type PropsWithChildren, Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { useCreateRequestActions, useCreateRequestJobs } from '../../hooks';
+import {
+  useCreateRequestActions,
+  useCreateRequestAssignees,
+  useCreateRequestJobs,
+} from '../../hooks';
 
 const containerHeight = 200;
 
 export const List = () => {
   return (
     <ErrorBoundary
-      fallback={<Placeholder>Error while loading jobs</Placeholder>}
+      fallback={<Placeholder>Error while loading users</Placeholder>}
     >
-      <Suspense fallback={<Placeholder>Loading jobs...</Placeholder>}>
+      <Suspense fallback={<Placeholder>Loading users...</Placeholder>}>
         <Content />
       </Suspense>
     </ErrorBoundary>
@@ -24,8 +28,8 @@ export const List = () => {
 
 const Content = () => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useCreateRequestJobs();
-  const { selectJob } = useCreateRequestActions();
+    useCreateRequestAssignees();
+  const { selectAssignee } = useCreateRequestActions();
   const allRows = data.pages.flatMap((d) => d.items);
   const parentRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
@@ -64,14 +68,14 @@ const Content = () => {
       <div className={`relative w-full h-[${rowVirtualizer.getTotalSize()}px]`}>
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const isLoaderRow = virtualRow.index > allRows.length - 1;
-          const job = allRows[virtualRow.index];
-          if (!job) return <></>;
-          const { id, job_title } = job;
+          const user = allRows[virtualRow.index];
+          if (!user) return <></>;
+          const { id, name } = user;
           return (
             <CommandItem
               key={virtualRow.index}
-              value={`${id} ${job_title}`}
-              onSelect={() => selectJob({ id, label: job_title })}
+              value={`${id} ${name}`}
+              onSelect={() => selectAssignee({ id, label: name })}
               className={`absolute top-0 left-0 w-full h-[${virtualRow.size}px]`}
               style={{
                 transform: `translateY(${virtualRow.start}px)`,
@@ -86,7 +90,7 @@ const Content = () => {
               ) : (
                 <>
                   <Briefcase className='mr-2 h-4 w-4' />
-                  <span>{job_title}</span>
+                  <span>{name}</span>
                 </>
               )}
             </CommandItem>

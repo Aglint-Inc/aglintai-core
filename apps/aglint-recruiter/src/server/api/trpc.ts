@@ -34,7 +34,8 @@ type CreateContextOptions = {
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: CreateContextOptions) => {
-  return opts;
+  const adminDb = createPublicClient();
+  return { ...opts, adminDb };
 };
 
 /**
@@ -167,16 +168,6 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   });
 });
 
-const adminClientMiddleware = t.middleware(async ({ ctx, next }) => {
-  const db = createPublicClient();
-  return await next({
-    ctx: {
-      ...ctx,
-      db,
-    },
-  });
-});
-
 /**
  * Public (unauthenticated) procedure
  *
@@ -184,9 +175,7 @@ const adminClientMiddleware = t.middleware(async ({ ctx, next }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(adminClientMiddleware);
+export const publicProcedure = t.procedure.use(timingMiddleware);
 
 export type PublicProcedure<T extends z.ZodObject<any, any, any, any, any>> =
   typeof publicProcedure extends ProcedureBuilder<
