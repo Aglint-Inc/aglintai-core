@@ -1,13 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useToast } from '@components/hooks/use-toast';
-import { LoaderSvg } from '@devlink/LoaderSvg';
 import { MyScheduleLanding } from '@devlink/MyScheduleLanding';
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
-import { Stack } from '@mui/material';
 import axios from 'axios';
-import { Calendar } from 'lucide-react';
+import { Calendar, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -75,15 +73,9 @@ function MySchedule() {
 
   if (scheduleLoading || integrationLoading)
     return (
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        width={'100%'}
-        height={'100vh'}
-        justifyContent={'center'}
-      >
-        <LoaderSvg />
-      </Stack>
+      <div className='flex items-center justify-center w-full h-screen'>
+        <Loader2 className='w-8 h-8 animate-spin' />
+      </div>
     );
 
   return (
@@ -100,7 +92,6 @@ function MySchedule() {
           <InterviewMemberSide
             propsGrids={{ style: { maxWidth: 'none' } }}
             slotInterview={
-              <Stack>
                 <SearchField
                   value={changeText}
                   onChange={(e) => {
@@ -109,7 +100,6 @@ function MySchedule() {
                   onClear={() => setChangeText('')}
                   placeholder={'Search by session name'}
                 />
-              </Stack>
             }
             isUpcomingActive={filter === 'confirmed'}
             isCancelActive={filter === 'cancelled'}
@@ -131,10 +121,14 @@ function MySchedule() {
                 {scheduleLoading ? (
                   ''
                 ) : allSchedules.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center p-8 text-center">
-                    <Calendar className="w-12 h-12 text-gray-400 mb-2" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">No schedule found</h3>
-                    <p className="text-sm text-gray-500">There are no schedules available at the moment.</p>
+                  <div className='flex flex-col items-center justify-center p-8 text-center'>
+                    <Calendar className='w-12 h-12 text-gray-400 mb-2' />
+                    <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                      No schedule found
+                    </h3>
+                    <p className='text-sm text-gray-500'>
+                      There are no schedules available at the moment.
+                    </p>
                   </div>
                 ) : (
                   <>

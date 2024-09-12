@@ -1,7 +1,11 @@
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { Button } from '@components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
-import { Popover, Stack } from '@mui/material';
-import { FolderOpen, PersonStanding } from 'lucide-react';
+import { FolderOpen, MoreVertical, PersonStanding } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -121,42 +125,16 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
 export default SlotQualifiedMembers;
 
 const ThreeDot = ({ user }: { user: ModuleType['relations'][0] }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
   return (
-    <>
-      <Stack onClick={handleClick}>
-        <IconButtonGhost
-          iconName='more_vert'
-          size={2}
-          iconSize={6}
-          color={'neutral'}
-        />
-      </Stack>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant='ghost' size='sm'>
+          <MoreVertical className='h-4 w-4' />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className='w-auto p-0'>
         <MemberListCardOption
           isMoveToQualifierVisible={false}
           isPauseVisible={!user.pause_json}
@@ -165,25 +143,25 @@ const ThreeDot = ({ user }: { user: ModuleType['relations'][0] }) => {
             onClick: () => {
               setSelUser(user);
               setIsDeleteMemberDialogOpen(true);
-              handleClose();
+              setOpen(false);
             },
           }}
           onClickResumeInterview={{
             onClick: () => {
               setSelUser(user);
               setIsResumeDialogOpen(true);
-              handleClose();
+              setOpen(false);
             },
           }}
           onClickPauseInterview={{
             onClick: () => {
               setSelUser(user);
               setIsPauseDialogOpen(true);
-              handleClose();
+              setOpen(false);
             },
           }}
         />
-      </Popover>
-    </>
+      </PopoverContent>
+    </Popover>
   );
 };

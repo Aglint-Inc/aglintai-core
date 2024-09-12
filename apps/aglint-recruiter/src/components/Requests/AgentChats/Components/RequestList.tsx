@@ -1,9 +1,12 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Text } from '@devlink//Text';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalBadge } from '@devlink/GlobalBadge';
-import { Box, Stack, Tooltip } from '@mui/material';
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -33,50 +36,46 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
   }, [requests]);
 
   return (
-    <Stack spacing={1}>
+    <div className='space-y-1'>
       {requests.length === 0 ? (
-        <Stack color={'var(--neutral-11)'} spacing={1}>
-          <Text size={2} content='No requests found.'></Text>
-        </Stack>
+        <div className='text-neutral-500 space-y-1'>
+          <p className='text-sm text-gray-500'>No requests found.</p>
+        </div>
       ) : (
         <>
-          <Stack color={'var(--neutral-11)'}>
-            <Text size={2} content='Here are the list of requests :'></Text>
-          </Stack>
+          <div className='text-neutral-500'>
+            <p className='text-base font-normal text-gray-500'>
+              Here are the list of requests :
+            </p>
+          </div>
           {Object.keys(groupedRequests)?.map(
             (type: RequestListProps['type']) => {
               const allRequests = groupedRequests[String(type)];
               return (
-                <Stack key={type} spacing={1} pb={2}>
-                  <Text
-                    size={2}
-                    content={transformString(type)}
-                    weight={'medium'}
-                  ></Text>
+                <div key={type} className='space-y-1 pb-2'>
+                  <p className='text-lg font-medium'>{transformString(type)}</p>
                   {(viewMore ? allRequests.slice(0, 5) : allRequests)?.map(
                     (request, ind) => (
                       <CardIndividual request={request} key={ind} />
                     ),
                   )}
                   {allRequests?.length > 5 && (
-                    <Stack direction={'row'}>
-                      <ButtonSoft
-                        size={1}
-                        color={'neutral'}
-                        textButton={viewMore ? 'View more' : 'View less'}
-                        onClickButton={{
-                          onClick: () => setViewMore((prev) => !prev),
-                        }}
-                      />
-                    </Stack>
+                    <div className='flex flex-row'>
+                      <Button
+                        variant='outline'
+                        onClick={() => setViewMore((prev) => !prev)}
+                      >
+                        {viewMore ? 'View more' : 'View less'}
+                      </Button>
+                    </div>
                   )}
-                </Stack>
+                </div>
               );
             },
           )}
         </>
       )}
-    </Stack>
+    </div>
   );
 };
 
@@ -95,65 +94,39 @@ const CardIndividual = ({ request }: { request: RequestListProps }) => {
     <>
       <Link
         href={request.link}
-        passHref
         key={request.link}
         onMouseEnter={() => setHovered(request.link)}
         onMouseLeave={() => setHovered(null)}
-        style={{ textDecoration: 'none', color: 'inherit' }}
+        className='block text-inherit no-underline'
       >
-        <Stack
-          direction='row'
-          alignItems='center'
-          spacing={1}
-          color={'var(--neutral-11)'}
-          position='relative'
-        >
-          <Box flex={1}>
-            <Tooltip title={request.title}>
-              <Stack>
-                <Text
-                  size={2}
-                  content={request.title}
-                  styleProps={{
-                    style: {
-                      display: '-webkit-box',
-                      WebkitLineClamp: 1,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    },
-                  }}
-                />
-              </Stack>
+        <div className='flex items-center space-x-1 text-neutral-800 relative'>
+          <div className='flex-1'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className='overflow-hidden'>
+                  <p className='text-sm line-clamp-1'>{request.title}</p>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>{request.title}</TooltipContent>
             </Tooltip>
-          </Box>
-          <Box ml={3}>
-            <GlobalBadge
-              textBadge={transformString(request.status)}
-              size={1}
-              color={request.color}
-              variant={'soft'}
-            />
-          </Box>
-          {hovered === request.link && (
-            <Box
-              position='absolute'
-              right={0}
-              top={0}
-              bottom={0}
-              display='flex'
-              alignItems='center'
+          </div>
+          <div className='ml-3'>
+            <Badge
+              variant='secondary'
+              className={`bg-${request.color}-100 text-${request.color}-800`}
             >
-              <ButtonSolid
-                color='neutral'
-                size={1}
-                textButton={'View Details'}
-                isRightIcon={true}
-                iconName='open_in_new'
-              />
-            </Box>
+              {transformString(request.status)}
+            </Badge>
+          </div>
+          {hovered === request.link && (
+            <div className='absolute right-0 top-0 bottom-0 flex items-center'>
+              <Button variant='outline' size='sm' className='flex items-center'>
+                View Details
+                <ArrowUpRight className='ml-2 h-4 w-4' />
+              </Button>
+            </div>
           )}
-        </Stack>
+        </div>
       </Link>
     </>
   );

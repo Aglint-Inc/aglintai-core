@@ -1,13 +1,17 @@
 import { useToast } from '@components/hooks/use-toast';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
-import { Popover, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Edit, EllipsisVertical, Plus } from 'lucide-react';
+import { Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -143,6 +147,7 @@ function SlotBodyComp({
   };
 
   const open = Boolean(anchorEl);
+  // eslint-disable-next-line no-unused-vars
   const id = open ? 'simple-popover' : undefined;
 
   const queryClient = useQueryClient();
@@ -163,9 +168,9 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
       <ResumeMemberDialog editModule={editModule} />
 
       {fetchingModule || loading || (!editModule && isFetching) ? (
-        <Stack height={'100%'} width={'100%'}>
-          <Loader />
-        </Stack>
+        <div className='h-full w-full flex items-center justify-center'>
+          <Loader2 className='w-8 h-8 animate-spin' />
+        </div>
       ) : (
         <>
           {editModule && (
@@ -175,7 +180,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                 editModule?.id && <ConnectedJobs module_id={editModule?.id} />
               }
               slotEditButton={
-                <Stack direction={'row'} spacing={1}>
+                <div className='flex flex-row space-x-1'>
                   <UIButton
                     variant='secondary'
                     leftIcon={<Edit />}
@@ -192,7 +197,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     onClick={handleClick}
                     leftIcon={<EllipsisVertical />}
                   />
-                </Stack>
+                </div>
               }
               slotNewTabPill={
                 <UITabWrapper>
@@ -345,66 +350,56 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
           )}
         </>
       )}
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          style: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MoreMenu
-          isArchiveVisible={!editModule?.is_archived}
-          isUnarchiveVisible={editModule?.is_archived}
-          onClickDelete={{
-            onClick: () => {
-              setIsDeleteModuleDialogOpen(true);
-              handleClose();
-            },
-          }}
-          onClickArchive={{
-            onClick: () => {
-              setIsArchiveDialogOpen(true);
-              handleClose();
-            },
-          }}
-          onClickUnarchive={{
-            onClick: async () => {
-              const isUnArchived = await unArchiveModuleById(editModule.id);
-              if (isUnArchived) {
-                const updatedEditModule = {
-                  ...editModule,
-                  is_archived: false,
-                } as ModuleType;
-                queryClient.setQueryData<ModuleType>(
-                  QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-                    moduleId: editModule.id,
-                  }),
-                  {
-                    ...updatedEditModule,
-                  },
-                );
-                toast({
-                  title: 'Interview type unarchived successfully.',
-                });
-              }
-              handleClose();
-            },
-          }}
-        />
+      <Popover>
+        <PopoverTrigger asChild>
+          <UIButton
+            variant='secondary'
+            size='sm'
+            onClick={handleClick}
+            leftIcon={<EllipsisVertical />}
+          />
+        </PopoverTrigger>
+        <PopoverContent className='w-56 p-0'>
+          <MoreMenu
+            isArchiveVisible={!editModule?.is_archived}
+            isUnarchiveVisible={editModule?.is_archived}
+            onClickDelete={{
+              onClick: () => {
+                setIsDeleteModuleDialogOpen(true);
+                handleClose();
+              },
+            }}
+            onClickArchive={{
+              onClick: () => {
+                setIsArchiveDialogOpen(true);
+                handleClose();
+              },
+            }}
+            onClickUnarchive={{
+              onClick: async () => {
+                const isUnArchived = await unArchiveModuleById(editModule.id);
+                if (isUnArchived) {
+                  const updatedEditModule = {
+                    ...editModule,
+                    is_archived: false,
+                  } as ModuleType;
+                  queryClient.setQueryData<ModuleType>(
+                    QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                      moduleId: editModule.id,
+                    }),
+                    {
+                      ...updatedEditModule,
+                    },
+                  );
+                  toast({
+                    title: 'Interview type unarchived successfully.',
+                  });
+                }
+                handleClose();
+              },
+            }}
+          />
+        </PopoverContent>
       </Popover>
     </>
   );
@@ -451,7 +446,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
         Connected Jobs
       </UITypography>
 
-      <Stack mt={2} spacing={1}>
+      <div className='mt-2 space-y-1'>
         {filteredConnectedJobs.length > 0 ? (
           filteredConnectedJobs.map((job, i) => (
             <WorkflowConnectedCard
@@ -489,7 +484,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
             textDesc={'No jobs connected'}
           />
         )}
-      </Stack>
+      </div>
     </>
   );
 };

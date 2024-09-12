@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
-import { Stack } from '@mui/material';
 import React, { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -75,20 +74,13 @@ function CreateSchedulePopUp({
   return selectedItems?.schedule_type[0]?.id === 'schedule' &&
     selectedItems.applicant_name[0]?.id &&
     !!selectedItems.interview_name.length ? (
-    <Stack px={'16px'} position={'relative'} top={'-10px'}>
+    <div className='px-4 relative -top-2.5'>
       <AiChatSuggest
         textHeader={'Schedule an interview'}
         slotList={
-          <Stack
-            height={'100%'}
-            width={'100%'}
-            direction={'column'}
-            justifyContent={'space-between'}
-            alignItems={'flex-end'}
-            p={1}
-          >
-            <Stack>
-              <p className="text-sm text-muted-foreground">
+          <div className='h-full w-full flex flex-col justify-between items-end p-1'>
+            <div>
+              <p className='text-sm text-muted-foreground'>
                 {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
               </p>
               <SelectScheduleDate
@@ -110,7 +102,7 @@ function CreateSchedulePopUp({
                   }
                 }}
               />
-            </Stack>
+            </div>
             <ButtonSoft
               isLoading={loading}
               isDisabled={
@@ -125,10 +117,10 @@ function CreateSchedulePopUp({
                 onClick: createNewRequest,
               }}
             />
-          </Stack>
+          </div>
         }
       />
-    </Stack>
+    </div>
   ) : null;
 }
 

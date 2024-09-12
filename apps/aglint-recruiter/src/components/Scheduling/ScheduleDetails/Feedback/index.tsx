@@ -2,19 +2,26 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+import { Dialog, DialogContent } from '@components/ui/dialog';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 import { FeedbackCard } from '@devlink3/FeedbackCard';
 import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@devlink3/RoundedNumber';
-import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
-import axios from 'axios';
 import {
   Calendar,
   Circle,
   Clock,
+  Edit,
   Loader2,
+  Mail,
+  MessageSquare,
+  Plus,
   Star,
   User,
   Users,
@@ -22,6 +29,7 @@ import {
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
+import axios from '@/client/axios';
 import Avatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
@@ -186,11 +194,9 @@ const FeedbackWindow = ({
     <>
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
-          <Stack position={'relative'} height={'calc(100vh - 172px)'}>
-            <div className='flex items-center justify-center'>
-              <Loader2 className='w-8 h-8 animate-spin text-primary' />
-            </div>
-          </Stack>
+          <div className='flex items-center justify-center'>
+            <Loader2 className='w-8 h-8 animate-spin text-primary' />
+          </div>
         </ShowCode.When>
         <ShowCode.When isTrue={checkPermissions(['scheduling_actions'])}>
           <AdminFeedback
@@ -295,85 +301,82 @@ const AdminFeedback = ({
   const router = useRouter();
   return (
     <>
-      <Stack direction={'column'} spacing={2} p={2}>
+      <div className='flex flex-col space-y-2 p-2'>
         {router.pathname !== '/scheduling/view'
           ? Object.keys(sessions)
               .map((key) => {
                 const session = sessions[key] || [];
                 if (!session.length) return null;
                 return (
-                  <>
-                    <Card className='p-4'>
-                      <CardHeader className='space-y-2'>
-                        <div className='flex items-center space-x-2'>
-                          {session[0].session.session_type === 'panel' ? (
-                            <Users size={18} className='text-gray-500' />
-                          ) : (
-                            <User size={18} className='text-gray-500' />
+                  <Card key={key} className='p-4'>
+                    <CardHeader className='space-y-2'>
+                      <div className='flex items-center space-x-2'>
+                        {session[0].session.session_type === 'panel' ? (
+                          <Users size={18} className='text-gray-500' />
+                        ) : (
+                          <User size={18} className='text-gray-500' />
+                        )}
+                        <span className='text-lg font-medium'>
+                          {session[0].session.title}
+                        </span>
+                      </div>
+                      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                        <Calendar className='h-4 w-4' />
+                        <span>
+                          {dayjsLocal(session[0].session.time.start).format(
+                            'ddd, MMMM DD, YYYY',
                           )}
-                          <span className='text-lg font-medium'>
-                            {session[0].session.title}
-                          </span>
-                        </div>
-                        <div className='flex items-center space-x-2 text-sm text-gray-500'>
-                          <Calendar className='h-4 w-4' />
-                          <span>
-                            {dayjsLocal(session[0].session.time.start).format(
-                              'ddd, MMMM DD, YYYY',
-                            )}
-                          </span>
-                        </div>
-                        <div className='flex items-center space-x-2 text-sm text-gray-500'>
-                          <Clock className='h-4 w-4' />
-                          <span>
-                            {`${dayjsLocal(session[0].session.time.start).format('hh:mm')} - ${dayjsLocal(session[0].session.time.end).format('hh:mm')}`}
-                          </span>
-                        </div>
-                        <Badge className='flex items-center space-x-1'>
-                          <Circle className='h-2 w-2 fill-current' />
-                          <span>{session[0].session.status}</span>
-                        </Badge>
-                      </CardHeader>
-                      <CardContent>
-                        {session.map((int, index) => {
-                          const isFeedBackEnabled =
-                            int.session.status === 'completed';
-                          return (
-                            <FeedbackCardDetails
-                              key={index}
-                              index={index}
-                              int={int}
-                              user_id={user_id}
-                              isFeedBackEnabled={isFeedBackEnabled}
-                              isAdmin={isAdmin}
-                              setSelectedInterviewer={setSelectedInterviewer}
-                              handelFeedbackRequest={handelFeedbackRequest}
-                            />
-                          );
-                        })}
-                      </CardContent>
-                    </Card>
-                  </>
+                        </span>
+                      </div>
+                      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                        <Clock className='h-4 w-4' />
+                        <span>
+                          {`${dayjsLocal(session[0].session.time.start).format('hh:mm')} - ${dayjsLocal(session[0].session.time.end).format('hh:mm')}`}
+                        </span>
+                      </div>
+                      <Badge className='flex items-center space-x-1'>
+                        <Circle className='h-2 w-2 fill-current' />
+                        <span>{session[0].session.status}</span>
+                      </Badge>
+                    </CardHeader>
+                    <CardContent>
+                      {session.map((int, index) => {
+                        const isFeedBackEnabled =
+                          int.session.status === 'completed';
+                        return (
+                          <FeedbackCardDetails
+                            key={index}
+                            index={index}
+                            int={int}
+                            user_id={user_id}
+                            isFeedBackEnabled={isFeedBackEnabled}
+                            isAdmin={isAdmin}
+                            setSelectedInterviewer={setSelectedInterviewer}
+                            handelFeedbackRequest={handelFeedbackRequest}
+                          />
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
                 );
               })
               .filter((item) => Boolean(item))
           : Object.values(sessions)[0]?.map((int, index) => {
               const isFeedBackEnabled = int.session.status === 'completed';
               return (
-                <>
-                  <FeedbackCardDetails
-                    index={index}
-                    int={int}
-                    user_id={user_id}
-                    isFeedBackEnabled={isFeedBackEnabled}
-                    isAdmin={isAdmin}
-                    setSelectedInterviewer={setSelectedInterviewer}
-                    handelFeedbackRequest={handelFeedbackRequest}
-                  />
-                </>
+                <FeedbackCardDetails
+                  key={index}
+                  index={index}
+                  int={int}
+                  user_id={user_id}
+                  isFeedBackEnabled={isFeedBackEnabled}
+                  isAdmin={isAdmin}
+                  setSelectedInterviewer={setSelectedInterviewer}
+                  handelFeedbackRequest={handelFeedbackRequest}
+                />
               );
             })}
-      </Stack>
+      </div>
       <EditFeedbackPopUp
         setSelectedInterviewer={setSelectedInterviewer}
         selectedInterviewer={selectedInterviewer}
@@ -413,89 +416,87 @@ const InterviewerFeedback = ({
   const router = useRouter();
   return (
     <>
-      <Stack direction={'column'} spacing={2} p={2}>
-        <>
-          {router.pathname !== '/scheduling/view'
-            ? Object.keys(sessions)
-                .map((key) => {
-                  const session = sessions[key] || [];
-                  if (!session.length) return null;
-                  return (
-                    <Card key={key}>
-                      <CardHeader>
-                        <div className='space-y-2'>
-                          {session[0].session.session_type === 'panel' ? (
-                            <div className='flex items-center space-x-2'>
-                              <Users size={18} />
-                              <span>{session[0].session.title}</span>
-                            </div>
-                          ) : (
-                            <div className='flex items-center space-x-2'>
-                              <User size={18} />
-                              <span>{session[0].session.title}</span>
-                            </div>
-                          )}
-                          <div className='flex items-center space-x-2'>
-                            <Calendar size={16} />
-                            <span>
-                              {dayjsLocal(session[0].session.time.start).format(
-                                'ddd, MMMM DD, YYYY',
-                              )}
-                            </span>
-                          </div>
-                          <div className='flex items-center space-x-2 text-neutral-500 text-sm'>
-                            <Clock size={16} />
-                            <span>{`${dayjsLocal(
-                              session[0].session.time.start,
-                            ).format('hh:mm')} - ${dayjsLocal(
-                              session[0].session.time.end,
-                            ).format('hh:mm')}`}</span>
-                          </div>
-
-                          <Badge className='flex items-center space-x-1'>
-                            <Circle size={12} />
-                            <span>{session[0].session.status}</span>
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        {session.map((int, index) => {
-                          const isFeedBackEnabled =
-                            int.session.status === 'completed';
-                          return (
-                            <FeedbackCardDetails
-                              key={index}
-                              isFeedBackEnabled={isFeedBackEnabled}
-                              index={index}
-                              setSelectedInterviewer={setSelectedInterviewer}
-                              int={int}
-                            />
-                          );
-                        })}
-                      </CardContent>
-                    </Card>
-                  );
-                })
-                .filter((item) => Boolean(item))
-            : Object.values(sessions)[0]?.map((int, index) => {
-                const isFeedBackEnabled = int.session.status === 'completed';
+      <div className='flex flex-col space-y-2 p-2'>
+        {router.pathname !== '/scheduling/view'
+          ? Object.keys(sessions)
+              .map((key) => {
+                const session = sessions[key] || [];
+                if (!session.length) return null;
                 return (
-                  <FeedbackCardDetails
-                    key={index}
-                    isFeedBackEnabled={isFeedBackEnabled}
-                    index={index}
-                    setSelectedInterviewer={setSelectedInterviewer}
-                    int={int}
-                  />
+                  <Card key={key}>
+                    <CardHeader>
+                      <div className='space-y-2'>
+                        {session[0].session.session_type === 'panel' ? (
+                          <div className='flex items-center space-x-2'>
+                            <Users size={18} />
+                            <span>{session[0].session.title}</span>
+                          </div>
+                        ) : (
+                          <div className='flex items-center space-x-2'>
+                            <User size={18} />
+                            <span>{session[0].session.title}</span>
+                          </div>
+                        )}
+                        <div className='flex items-center space-x-2'>
+                          <Calendar size={16} />
+                          <span>
+                            {dayjsLocal(session[0].session.time.start).format(
+                              'ddd, MMMM DD, YYYY',
+                            )}
+                          </span>
+                        </div>
+                        <div className='flex items-center space-x-2 text-neutral-500 text-sm'>
+                          <Clock size={16} />
+                          <span>{`${dayjsLocal(
+                            session[0].session.time.start,
+                          ).format('hh:mm')} - ${dayjsLocal(
+                            session[0].session.time.end,
+                          ).format('hh:mm')}`}</span>
+                        </div>
+
+                        <Badge className='flex items-center space-x-1'>
+                          <Circle size={12} />
+                          <span>{session[0].session.status}</span>
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {session.map((int, index) => {
+                        const isFeedBackEnabled =
+                          int.session.status === 'completed';
+                        return (
+                          <FeedbackCardDetails
+                            key={index}
+                            isFeedBackEnabled={isFeedBackEnabled}
+                            index={index}
+                            setSelectedInterviewer={setSelectedInterviewer}
+                            int={int}
+                          />
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
                 );
-              })}
-        </>
-        <EditFeedbackPopUp
-          setSelectedInterviewer={setSelectedInterviewer}
-          selectedInterviewer={selectedInterviewer}
-          handelSubmit={handelSubmit}
-        />
-      </Stack>
+              })
+              .filter((item) => Boolean(item))
+          : Object.values(sessions)[0]?.map((int, index) => {
+              const isFeedBackEnabled = int.session.status === 'completed';
+              return (
+                <FeedbackCardDetails
+                  key={index}
+                  isFeedBackEnabled={isFeedBackEnabled}
+                  index={index}
+                  setSelectedInterviewer={setSelectedInterviewer}
+                  int={int}
+                />
+              );
+            })}
+      </div>
+      <EditFeedbackPopUp
+        setSelectedInterviewer={setSelectedInterviewer}
+        selectedInterviewer={selectedInterviewer}
+        handelSubmit={handelSubmit}
+      />
     </>
   );
 };
@@ -511,47 +512,39 @@ function EditFeedbackPopUp({
 }) {
   return (
     <>
-      {selectedInterviewer?.interviewer &&
-        [1].map(() => {
-          return (
-            <Dialog
-              key={1}
-              // fullWidth
-              open={selectedInterviewer.interviewer !== null}
-              onClose={() => {
-                setSelectedInterviewer(null);
+      {selectedInterviewer?.interviewer && (
+        <Dialog
+          open={selectedInterviewer.interviewer !== null}
+          onOpenChange={() => setSelectedInterviewer(null)}
+        >
+          <DialogContent className='sm:max-w-[650px]'>
+            <FeedbackForm
+              interviewerData={selectedInterviewer.interviewer}
+              onSubmit={(feedback) =>
+                handelSubmit(feedback).then(() => {
+                  toast.success('Feedback saved successfully.');
+                  setSelectedInterviewer({
+                    index: null,
+                    interviewer: null,
+                  });
+                })
+              }
+              onCancel={() => {
+                setSelectedInterviewer({
+                  index: null,
+                  interviewer: null,
+                });
               }}
-              maxWidth={'lg'}
-              // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
-            >
-              <FeedbackForm
-                interviewerData={selectedInterviewer.interviewer}
-                onSubmit={(feedback) =>
-                  handelSubmit(feedback).then(() => {
-                    toast.success('Feedback saved successfully.');
-
-                    setSelectedInterviewer({
-                      index: null,
-                      interviewer: null,
-                    });
-                  })
-                }
-                onCancel={() => {
-                  setSelectedInterviewer({
-                    index: null,
-                    interviewer: null,
-                  });
-                }}
-                onClose={() => {
-                  setSelectedInterviewer({
-                    index: null,
-                    interviewer: null,
-                  });
-                }}
-              />
-            </Dialog>
-          );
-        })}
+              onClose={() => {
+                setSelectedInterviewer({
+                  index: null,
+                  interviewer: null,
+                });
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }
@@ -589,225 +582,178 @@ function FeedbackCardDetails({
           <ShowCode.When isTrue={isFeedBackEnabled && isAdmin}>
             <ShowCode>
               <ShowCode.When isTrue={Boolean(int.user_id === user_id)}>
-                <ButtonSoft
-                  size={1}
-                  color={
-                    int.feedback && int.feedback?.recommendation
-                      ? 'neutral'
-                      : 'accent'
-                  }
-                  textButton={
-                    int.feedback && int.feedback?.recommendation
-                      ? 'Edit Feedback'
-                      : 'Add Feedback'
-                  }
-                  isLeftIcon={true}
-                  iconName={
-                    int.feedback && int.feedback?.recommendation
-                      ? 'edit_square'
-                      : 'add'
-                  }
-                  onClickButton={{
-                    onClick: () => {
-                      if (isFeedBackEnabled) {
-                        setSelectedInterviewer({
-                          index,
-                          interviewer: int,
-                        });
-                      }
-                    },
-                  }}
-                />
-              </ShowCode.When>
-              {/* <ShowCode.When
-                isTrue={
-                  Boolean(int.feedback && int.feedback?.recommendation) &&
-                  int.user_id !== user_id
-                }
-              >
-                {null}
-              </ShowCode.When> */}
-              <ShowCode>
-                <ShowCode.When isTrue={true}>
-                  <Tooltip
-                    placement='bottom-end'
-                    slotProps={{
-                      popper: {
-                        sx: {
-                          '& .MuiTooltip-tooltip': {
-                            margin: '5px !important',
-                          },
-                        },
-                      },
-                    }}
-                    title={
-                      <Stack gap={1}>
-                        <ButtonSoft
-                          size={1}
-                          textButton={'Stack'}
-                          isLeftIcon={true}
-                          iconName={'alternate_email'}
-                          color={'neutral'}
-                          onClickButton={{
-                            onClick: (e) => {
-                              handelFeedbackRequest({
-                                e,
-                                session_id: int.session.id,
-                                relation_id: int.relation_id,
-                                recruiter_user_id: int.user_id,
-                                tool: 'slack',
-                              });
-                            },
-                          }}
-                        />
-                        <ButtonSoft
-                          textButton={'Email'}
-                          isLeftIcon={true}
-                          iconName={'mail'}
-                          color={'neutral'}
-                          size={1}
-                          onClickButton={{
-                            onClick: (e) => {
-                              handelFeedbackRequest({
-                                e,
-                                session_id: int.session.id,
-                                relation_id: int.relation_id,
-                                recruiter_user_id: int.user_id,
-                                tool: 'email',
-                              });
-                            },
-                          }}
-                        />
-                      </Stack>
-                    }
-                  >
-                    <Stack>
-                      <ButtonSoft size={1} textButton={'Re-request Feedback'} />
-                    </Stack>
-                  </Tooltip>
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <Tooltip
-                    placement='bottom-end'
-                    slotProps={{
-                      popper: {
-                        sx: {
-                          '& .MuiTooltip-tooltip': {
-                            marginTop: '5px !important',
-                          },
-                        },
-                      },
-                    }}
-                    arrow={false}
-                    title={
-                      <Stack gap={1}>
-                        <ButtonSoft
-                          size={1}
-                          textButton={'Stack'}
-                          isLeftIcon={true}
-                          iconName={'alternate_email'}
-                          color={'neutral'}
-                          onClickButton={{
-                            onClick: (e) => {
-                              handelFeedbackRequest({
-                                e,
-                                session_id: int.session.id,
-                                relation_id: int.relation_id,
-                                recruiter_user_id: int.user_id,
-                                tool: 'slack',
-                              });
-                            },
-                          }}
-                        />
-                        <ButtonSoft
-                          textButton={'Email'}
-                          isLeftIcon={true}
-                          iconName={'mail'}
-                          color={'neutral'}
-                          size={1}
-                          onClickButton={{
-                            onClick: (e) => {
-                              handelFeedbackRequest({
-                                e,
-                                session_id: int.session.id,
-                                relation_id: int.relation_id,
-                                recruiter_user_id: int.user_id,
-                                tool: 'email',
-                              });
-                            },
-                          }}
-                        />
-                      </Stack>
-                    }
-                  >
-                    <Stack>
-                      <ButtonSoft size={1} textButton={'Request Feedback'} />
-                    </Stack>
-                  </Tooltip>
-                </ShowCode.Else>
-              </ShowCode>
-            </ShowCode>
-          </ShowCode.When>
-          <ShowCode.Else>
-            <>
-              <ButtonSoft
-                size={1}
-                color={
-                  int.feedback && int.feedback?.objective ? 'neutral' : 'accent'
-                }
-                textButton={
-                  int.feedback && int.feedback?.objective
-                    ? 'Edit Feedback'
-                    : 'Add Feedback'
-                }
-                isLeftIcon={true}
-                iconName={
-                  int.feedback && int.feedback?.objective
-                    ? 'edit_square'
-                    : 'add'
-                }
-                onClickButton={{
-                  onClick: () => {
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
                     if (isFeedBackEnabled) {
                       setSelectedInterviewer({
                         index,
                         interviewer: int,
                       });
                     }
-                  },
-                }}
-              />
-            </>
+                  }}
+                >
+                  {int.feedback && int.feedback?.recommendation ? (
+                    <>
+                      <Edit className='mr-2 h-4 w-4' />
+                      Edit Feedback
+                    </>
+                  ) : (
+                    <>
+                      <Plus className='mr-2 h-4 w-4' />
+                      Add Feedback
+                    </>
+                  )}
+                </Button>
+              </ShowCode.When>
+              <ShowCode>
+                <ShowCode.When isTrue={true}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant='outline' size='sm'>
+                        Re-request Feedback
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side='bottom' align='end'>
+                      <div className='flex flex-col space-y-2'>
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={(e) => {
+                            handelFeedbackRequest({
+                              e,
+                              session_id: int.session.id,
+                              relation_id: int.relation_id,
+                              recruiter_user_id: int.user_id,
+                              tool: 'slack',
+                            });
+                          }}
+                        >
+                          <MessageSquare className='mr-2 h-4 w-4' />
+                          Slack
+                        </Button>
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={(e) => {
+                            handelFeedbackRequest({
+                              e,
+                              session_id: int.session.id,
+                              relation_id: int.relation_id,
+                              recruiter_user_id: int.user_id,
+                              tool: 'email',
+                            });
+                          }}
+                        >
+                          <Mail className='mr-2 h-4 w-4' />
+                          Email
+                        </Button>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant='outline' size='sm'>
+                        Request Feedback
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side='bottom' align='end'>
+                      <div className='flex flex-col space-y-2'>
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={(e) => {
+                            handelFeedbackRequest({
+                              e,
+                              session_id: int.session.id,
+                              relation_id: int.relation_id,
+                              recruiter_user_id: int.user_id,
+                              tool: 'slack',
+                            });
+                          }}
+                        >
+                          <MessageSquare className='mr-2 h-4 w-4' />
+                          Slack
+                        </Button>
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={(e) => {
+                            handelFeedbackRequest({
+                              e,
+                              session_id: int.session.id,
+                              relation_id: int.relation_id,
+                              recruiter_user_id: int.user_id,
+                              tool: 'email',
+                            });
+                          }}
+                        >
+                          <Mail className='mr-2 h-4 w-4' />
+                          Email
+                        </Button>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </ShowCode.Else>
+              </ShowCode>
+            </ShowCode>
+          </ShowCode.When>
+          <ShowCode.Else>
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => {
+                if (isFeedBackEnabled) {
+                  setSelectedInterviewer({
+                    index,
+                    interviewer: int,
+                  });
+                }
+              }}
+            >
+              {int.feedback && int.feedback?.objective ? (
+                <>
+                  <Edit className='mr-2 h-4 w-4' />
+                  Edit Feedback
+                </>
+              ) : (
+                <>
+                  <Plus className='mr-2 h-4 w-4' />
+                  Add Feedback
+                </>
+              )}
+            </Button>
           </ShowCode.Else>
         </ShowCode>
       }
       slotDesc={
-        <Stack direction={'column'} gap={'10px'}>
-          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+        <div className='flex flex-col space-y-2.5'>
+          <div className='flex items-center space-x-2.5'>
             <ShowCode>
               <ShowCode.When isTrue={!!int.feedback?.recommendation}>
-                <Stack direction={'column'} gap={'10px'}>
-                  <Stack direction={'row'} gap={'10px'}>
-                    <Typography fontSize={20}>
-                      <Star size={'30'} />
-                    </Typography>
-                    <Typography>
+                <div className='flex flex-col space-y-2.5'>
+                  <div className='flex items-center space-x-2.5'>
+                    <Star className='h-7 w-7' />
+                    <span>
                       Recommendation Level : {int.feedback?.recommendation}
-                    </Typography>
-                  </Stack>
+                    </span>
+                  </div>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: int.feedback?.objective,
                     }}
                   ></div>
-                </Stack>
+                </div>
               </ShowCode.When>
               <ShowCode.Else>
-                <Typography>Not Submitted Feedback</Typography>
+                <span>Not Submitted Feedback</span>
               </ShowCode.Else>
             </ShowCode>
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       }
     />
   );
@@ -843,28 +789,24 @@ const FeedbackForm = ({
       }}
       slotButton={
         <>
-          <ButtonSoft
-            textButton='Cancel'
-            size={2}
-            color={'neutral'}
-            onClickButton={{ onClick: onCancel }}
-          />
-          <ButtonSolid
-            textButton='Submit Feedback'
-            size={2}
-            onClickButton={{
-              onClick: () => {
-                if (!interviewer.feedback) {
-                  return toast.warning('Please provide feedback.');
-                }
-                onSubmit({
-                  relation_id: interviewer.relation_id,
-                  session_id: interviewer.session.id,
-                  feedback: interviewer.feedback,
-                });
-              },
+          <Button variant='outline' size='sm' onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button
+            size='sm'
+            onClick={() => {
+              if (!interviewer.feedback) {
+                return toast.warning('Please provide feedback.');
+              }
+              onSubmit({
+                relation_id: interviewer.relation_id,
+                session_id: interviewer.session.id,
+                feedback: interviewer.feedback,
+              });
             }}
-          />
+          >
+            Submit Feedback
+          </Button>
         </>
       }
       slotRoundedNumber={

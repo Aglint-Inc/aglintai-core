@@ -2,7 +2,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { AvailableTimeRange } from '@devlink/AvailableTimeRange';
 import { SlotPicker } from '@devlink2/SlotPicker';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { useRequestAvailabilityContext } from '../../../RequestAvailabilityContext';
@@ -114,7 +113,7 @@ function SlotColumn({
               .includes(slot.startTime)) ||
           isSubmitted;
         return (
-          <Stack key={ind}>
+          <div key={ind}>
             <AvailableTimeRange
               onClickTime={{
                 onClick: () => {
@@ -130,7 +129,7 @@ function SlotColumn({
               key={ind}
               textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
             />
-          </Stack>
+          </div>
         );
       })}
     />

@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { UserNameCard } from '@devlink3/UserNameCard';
-import { Stack } from '@mui/material';
 import Link from 'next/link';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
@@ -42,18 +41,18 @@ function HiringTeam({ chat }: { chat: ChatType }) {
   ];
 
   return (
-    <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
-      <Stack>
-        <p className="text-muted-foreground">
+    <div className='space-y-2 pt-2'>
+      <div>
+        <p className='text-gray-500'>
           {job?.job_title
             ? `Here is the hiring team for ${job?.job_title}`
             : 'Here is the hiring team'}
         </p>
-      </Stack>
+      </div>
 
       {hiringTeam?.map((item) => {
         return (
-          <>
+          <div key={item.user_id}>
             <UserNameCard
               slotAvatar={
                 <MuiAvatar
@@ -70,22 +69,22 @@ function HiringTeam({ chat }: { chat: ChatType }) {
               }
               textRole={item.role}
             />
-          </>
+          </div>
         );
       })}
 
       {job?.id && (
         <Link href={`/jobs/${job?.id}/hiring-team`}>
-          <Stack direction={'row'}>
+          <div className='flex flex-row'>
             <ButtonSoft
               size={1}
               color={'neutral'}
               textButton={'View Hiring Team'}
             />
-          </Stack>
+          </div>
         </Link>
       )}
-    </Stack>
+    </div>
   );
 }
 

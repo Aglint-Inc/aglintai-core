@@ -1,5 +1,4 @@
 import { useToast } from '@components/hooks/use-toast';
-import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -113,7 +112,7 @@ function AddMemberDialog({
       }
     >
       <div className='flex flex-col w-full'>
-        <Typography marginBottom={1}>Choose members from your team.</Typography>
+        <p className='mb-1'>Choose members from your team.</p>
         <MembersAutoComplete
           maxWidth={'460px'}
           pillColor='var(--neutral-3)'
