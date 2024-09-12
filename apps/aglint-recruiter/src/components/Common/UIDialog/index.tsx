@@ -21,6 +21,7 @@ function UIDialog({
   children,
   open,
   size = 'md',
+  isPrimaryActionLoading = false,
 }: {
   slotButtons?: React.ReactNode;
   title?: string;
@@ -30,6 +31,7 @@ function UIDialog({
   children?: React.ReactNode;
   open: boolean;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  isPrimaryActionLoading?: boolean;
 }) {
   const sizeClasses = {
     sm: 'max-w-sm',
@@ -57,7 +59,12 @@ function UIDialog({
               >
                 Cancel
               </UIButton>
-              <UIButton variant='default' size='sm' onClick={onClickPrimary}>
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={onClickPrimary}
+                isLoading={isPrimaryActionLoading}
+              >
                 Confirm
               </UIButton>
             </>

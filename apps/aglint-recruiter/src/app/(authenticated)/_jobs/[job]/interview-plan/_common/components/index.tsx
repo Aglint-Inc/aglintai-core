@@ -17,9 +17,6 @@ import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
-import { InterviewBreakCard } from '@devlink3/InterviewBreakCard';
-import { InterviewPlanDetail } from '@devlink3/InterviewPlanDetail';
-import { InterviewPlanWrap } from '@devlink3/InterviewPlanWrap';
 import {
   Collapse,
   MenuItem,
@@ -29,7 +26,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause, Kanban } from 'lucide-react';
+import { CirclePause, Kanban, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -38,6 +35,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -62,6 +60,9 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
+import { InterviewBreakCard } from './_common/InterviewBreakCard';
+import { InterviewPlanDetail } from './_common/InterviewPlanDetail';
+import { InterviewPlanWrap } from './_common/InterviewPlanWrap';
 import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';
@@ -619,53 +620,29 @@ const InterviewSession = ({
                     color: 'var(--neutral-9)',
                     fontSize: 'var(--font-size-1)',
                     fontWeight: 400,
-                    // fontStyle: 'italic',
                   }}
                 >
                   {getSessionType(session.session_type)}
                 </Stack>
               </Stack>
             }
-            // isRolesvisible={
-            //   session.session_type === 'debrief' && !!roles.length
-            // }
-            // slotRoles={<Roles roles={roles} />}
-            // isSubHeaderVisible={false}
-            // isHeaderTitleVisible={true}
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
             isPanelIconVisible={session.session_type === 'panel'}
-            // isTimingVisible={false}
             textDuration={`${session.session_duration} minutes`}
             slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
-            // isLinkVisilble={session.session_type !== 'debrief'}
             textPlatformName={capitalizeAll(session.schedule_type)}
             textLink={session?.interview_module?.name ?? '---'}
-            // isTextSelectedVisible={
-            //   session.session_type !== 'debrief' && members.qualified.length > 1
-            // }
             textSelected={`Interviewers (${session.interviewer_cnt} out of ${members.qualified.length} members will be selected)`}
-            // isTraineesVisible={members.training.length !== 0}
-            // slotTrainees={members.training.map((member) => (
-            //   <InterviewSessionMember key={member.user_id} member={member} />
-            // ))}
-            // isInterviewersVisible={session.session_type !== 'debrief'}
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
-            // isMembersVisible={
-            //   session.session_type === 'debrief' && members.members.length !== 0
-            // }
-            // slotMembers={members.members.map((member) => (
-            //   <InterviewSessionMember key={member.user_id} member={member} />
-            // ))}
-            onClickLink={{
-              onClick: () =>
-                window.open(
-                  `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
-                  '_blank',
-                ),
-            }}
+            onClickLink={() =>
+              window.open(
+                `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
+                '_blank',
+              )
+            }
             isBreakCardVisible={!lastSession && session.break_duration !== 0}
             slotBreakCard={
               <InterviewBreak
@@ -829,7 +806,9 @@ const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
       />
     );
   return members.map((member) => (
-    <InterviewSessionMember key={member.user_id} member={member} />
+    <div className='mt-2' key={member.user_id}>
+      <InterviewSessionMember member={member} />
+    </div>
   ));
 };
 
@@ -837,7 +816,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'} gap={3}>
+    <Stack direction={'row'} gap={3} mb={1}>
       <AvatarWithName
         textName={name}
         textRole={member.position}
@@ -871,13 +850,11 @@ const InterviewBreak = ({
       slotEditButton={
         manageJob && (
           <>
-            <IconButtonSoft
-              iconName={'delete'}
-              size={1}
-              color={'error'}
-              onClickButton={{
-                onClick: () => handleDelete(),
-              }}
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={handleDelete}
+              icon={<Trash2 />}
             />
           </>
         )

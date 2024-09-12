@@ -1,13 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import {
   Dialog,
@@ -46,6 +40,8 @@ import {
 } from '@/workflows/components/body/filters';
 import { useWorkflows } from '@/workflows/hooks';
 import { getTriggerOption } from '@/workflows/utils';
+
+import { WorkflowCard } from './WorkflowCard';
 
 const useJobWorkflowActions = () => {
   const { job_id, devlinkProps } = useJob();
@@ -218,32 +214,28 @@ const WorkflowBrowser = () => {
       const checked = selections.includes(id);
       const jobCount = (jobs ?? []).length;
       return (
-        <Card key={id} className='p-4 border'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>{title}</CardTitle>
-            <Checkbox
-              checked={checked}
-              onCheckedChange={() =>
-                handleClick(checked ? 'delete' : 'insert', id)
-              }
-            />
-          </CardHeader>
-          <CardContent>
-            <p className='text-xs text-muted-foreground'>
-              {getTriggerOption(trigger, phase)}
-            </p>
-            <p className='text-xs text-muted-foreground'>{`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}</p>
-          </CardContent>
-          <CardFooter className='flex justify-end pt-2'>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => handleClick(checked ? 'delete' : 'insert', id)}
-            >
-              {checked ? 'Remove' : 'Add'}
-            </Button>
-          </CardFooter>
-        </Card>
+        <>
+          <WorkflowCard
+            widthText={'small'}
+            border={'visible'}
+            key={id}
+            isCheckboxVisible={true}
+            slotCheckbox={
+              <Checkbox
+                checked={checked}
+                onCheckedChange={() =>
+                  handleClick(checked ? 'delete' : 'insert', id)
+                }
+              />
+            }
+            textWorkflowName={title}
+            textWorkflowTrigger={getTriggerOption(trigger, phase)}
+            textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
+            // onClickDelete={{ style: { display: 'none' } }}
+            isEditButton={false}
+            onClickEdit={() => handleClick(checked ? 'delete' : 'insert', id)}
+          />
+        </>
       );
     },
   );

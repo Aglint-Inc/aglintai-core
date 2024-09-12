@@ -1,5 +1,4 @@
 import {
-  type APIFindAltenativeTimeSlot,
   type APIRespFindReplaceMentInts,
   type APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
@@ -7,6 +6,7 @@ import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import axios from 'axios';
 
+import { findReplacementIntsUtil } from '@/server/api/routers/scheduling/v1/findReplacementInts/util';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 type FuncParams = {
   request_id: string;
@@ -22,24 +22,15 @@ export const changeInterviewer = async (payload: FuncParams) => {
       .select()
       .eq('request_id', payload.request_id),
   );
-  const [meeting_details] = supabaseWrap(
-    await supabaseAdmin
-      .from('meeting_details')
-      .select()
-      .eq('id', payload.session_id),
-  );
-  const api_payload1: APIFindAltenativeTimeSlot = {
-    session_id: cancel_rec.session_id,
-    declined_int_sesn_reln_id: cancel_rec.session_relation_id,
-    user_tz: meeting_details.confirmed_candidate_tz,
-  };
 
-  const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find-replacement-ints`,
-    api_payload1,
-  );
-
-  const alternate_slots: APIRespFindReplaceMentInts = data;
+  const alternate_slots: APIRespFindReplaceMentInts =
+    await findReplacementIntsUtil({
+      input: {
+        session_id: cancel_rec.session_id,
+        declined_int_sesn_reln_id: cancel_rec.session_relation_id,
+      },
+      ctx: { db: supabaseAdmin } as any,
+    });
   if (alternate_slots.length === 0) {
     throw new CApiError(
       'CLIENT',
@@ -59,7 +50,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
   const api_payload2: APIUpdateMeetingInterviewers = {
     session_id: payload.session_id,
     curr_declined_int_sesn_reln_id: cancel_rec.session_relation_id,
-    new_int_sesn_reln_id: alternate_slots[0].replacement_int.id,
+    new_int_user_id: alternate_slots[0].replacement_int.user_id,
   };
   await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/update-meeting-interviewers`,

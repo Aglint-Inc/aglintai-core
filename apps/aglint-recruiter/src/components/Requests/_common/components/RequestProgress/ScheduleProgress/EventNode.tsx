@@ -92,7 +92,7 @@ const EventNode = ({
           }
           slotLoader={
             tense === 'present' ? (
-              <Loader className='h-6 w-6 animate-spin text-gray-500' />
+              <Loader className='h-4 w-4 animate-spin text-gray-500' />
             ) : undefined
           }
           slotAiText={
