@@ -1,6 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
-import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
@@ -14,6 +12,7 @@ import {
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { InterviewModuleStats } from '../Common/InterviewType/InterviewModulesStats.';
 import { Empty } from './common';
 
 const LIMIT = 6;
@@ -26,9 +25,9 @@ export const InterviewTypes = memo(() => {
   return (
     <>
       <InterviewModuleStats
-        onClickViewAllModules={{
-          onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-        }}
+        onClickViewAllModules={() =>
+          push(`${ROUTES['/scheduling']()}?tab=interviewtypes`)
+        }
         isViewAllVisible={(data ?? []).length > LIMIT}
         slotInterviewModuleStatsCard={<Container />}
       />
@@ -68,12 +67,22 @@ const List = memo(({ data }: Props) => {
   return (
     <>
       {(data ?? []).map(({ id, name, qualified, training }) => (
-        <InterviewModuleStatsCard
-          key={id}
-          textInterviewModule={capitalizeAll(name)}
-          textQualifiedMember={qualified}
-          textTraining={training}
-        />
+        <>
+          <div
+            key={id}
+            className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'
+          >
+            <div className='p-2 px-4'>
+              <span>{capitalizeAll(name)}</span>
+            </div>
+            <div className='p-2 px-4'>
+              <span>{qualified}</span>
+            </div>
+            <div className='p-2 px-4'>
+              <span>{training}</span>
+            </div>
+          </div>
+        </>
       ))}
     </>
   );
