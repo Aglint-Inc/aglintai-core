@@ -1,8 +1,7 @@
-
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
 import { useRouter } from 'next/router';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
@@ -109,14 +108,13 @@ function InterviewModeComp() {
       }
       slotInterviewersDropdown={
         moduleCurrent?.members.length === 0 ? (
-          <GlobalBannerShort
-            iconName={'warning'}
-            textTitle={'Interview type has no interviewers.'}
-            textDescription={
-              'Please add members to the selected interview type.'
-            }
+          <UIAlert
+            type='small'
+            iconName={'CircleAlert'}
+            title={'Interview type has no interviewers.'}
+            description={'Please add members to the selected interview type.'}
             color={'error'}
-            slotButtons={
+            actions={
               <UIButton
                 variant='destructive'
                 size='sm'

@@ -2,7 +2,6 @@
 import { type DB } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
@@ -16,6 +15,7 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -483,14 +483,12 @@ const Interview = ({
       slotInterviewersDropdown={
         <Stack gap={1}>
           {(currentQualifiedModuleMembers ?? []).length === 0 && (
-            <GlobalBannerShort
-              iconName={'warning'}
-              textTitle={'Interview type has no interviewers'}
-              textDescription={
-                'Please add members to the selected interview type'
-              }
+            <UIAlert
+              iconName={'CircleAlert'}
+              title={'Interview type has no interviewers'}
+              description={'Please add members to the selected interview type'}
               color={'error'}
-              slotButtons={
+              actions={
                 <UIButton
                   variant='destructive'
                   size='sm'

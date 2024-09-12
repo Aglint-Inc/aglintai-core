@@ -11,7 +11,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
@@ -33,6 +32,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
@@ -771,13 +771,13 @@ type InterviewSessionMembersProps = { members: CompanyMember[] };
 const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
   if (members.length === 0)
     return (
-      <GlobalBannerInline
+      <UIAlert
         color={'error'}
-        iconName={'warning'}
-        textContent={
+        iconName={'CircleAlert'}
+        title={
           'No interviewers assigned. Click on edit to assign interviewers.'
         }
-        slotButton={<></>}
+        type='inline'
       />
     );
   return members.map((member) => (

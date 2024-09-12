@@ -1,10 +1,10 @@
 // import Feedback from './Feedback';
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
@@ -129,12 +129,9 @@ function SchedulingViewComp() {
                     />
                   ) : (
                     <Stack padding={2}>
-                      <GlobalBanner
-                        textTitle={'Meeting Not Found'}
-                        iconName={'schedule'}
-                        isDescriptionVisible={false}
-                        isAdditionalNotes={false}
-                        slotButtons={<></>}
+                      <UIAlert
+                        title={'Meeting Not Found'}
+                        iconName={'Calendar'}
                       />
                     </Stack>
                   )}

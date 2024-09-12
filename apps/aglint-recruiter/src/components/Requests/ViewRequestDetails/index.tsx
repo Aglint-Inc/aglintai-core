@@ -86,7 +86,7 @@ export default function ViewRequestDetails() {
   if (!isPlaceholderData && status === 'success' && !selectedRequest) {
     return (
       // we need to fix this empty state
-      <Alert variant='destructive'>
+      <Alert variant='error'>
         <AlertTitle>Request not found</AlertTitle>
       </Alert>
     );

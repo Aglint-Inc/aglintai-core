@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 import Loader from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
-import { UIButton } from '@/components/Common/UIButton';
 
 import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';

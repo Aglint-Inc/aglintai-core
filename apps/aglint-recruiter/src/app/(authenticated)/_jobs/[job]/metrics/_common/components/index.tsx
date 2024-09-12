@@ -1,6 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { BannerLoading } from '@devlink3/BannerLoading';
 import { DarkPill } from '@devlink3/DarkPill';
 import { GraphBlock } from '@devlink3/GraphBlock';
@@ -20,6 +18,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -393,10 +392,11 @@ const useBanners = () => {
   if (isInterviewPlanDisabled)
     banners.push(
       <>
-        <GlobalBannerInline
-          textContent='Interview plan not set'
+        <UIAlert
+          title='Interview plan not set'
+          type='inline'
           color={'warning'}
-          slotButton={
+          actions={
             <>
               <UIButton
                 variant='secondary'
@@ -440,10 +440,11 @@ const useBanners = () => {
   if (isInterviewSessionEmpty)
     banners.push(
       <>
-        <GlobalBannerInline
-          textContent='Interview plan not set'
+        <UIAlert
+          title='Interview plan not set'
           color={'warning'}
-          slotButton={
+          type='inline'
+          actions={
             <>
               <UIButton
                 variant='secondary'
@@ -467,21 +468,6 @@ const useBanners = () => {
           }
         />
       </>,
-      // <Banner
-      //   type='warning'
-      //   title='Interview plan not set'
-      //   description='Add one or more interview types to create an interview plan.'
-      //   primary={{
-      //     title: 'Ignore',
-      //     onClick: () =>
-      //       push(ROUTES['/jobs/[job]/interview-plan']({ id: job?.id })),
-      //   }}
-      //   secondary={{
-      //     title: 'View',
-      //     onClick: () =>
-      //       handleJobUpdate({ interview_session_warning_ignore: true }),
-      //   }}
-      // />,
     );
   if (
     !publishStatus.detailsValidity.validity ||
@@ -489,11 +475,11 @@ const useBanners = () => {
   ) {
     if (!publishStatus.detailsValidity.validity) {
       banners.push(
-        <GlobalBannerInline
-          textContent={publishStatus.detailsValidity.message}
-          iconName='warning'
+        <UIAlert
+          title={publishStatus.detailsValidity.message}
+          iconName='CircleAlert'
           color={'error'}
-          slotButton={
+          actions={
             <>
               <UIButton
                 variant='destructive'
@@ -506,26 +492,17 @@ const useBanners = () => {
               </UIButton>
             </>
           }
+          type='inline'
         />,
-        // <Banner
-        //   type='error'
-        //   title={publishStatus.detailsValidity.message}
-        //   description='Please ensure that valid job details are provided.'
-        //   primary={{
-        //     title: 'View',
-        //     onClick: () =>
-        //       push(ROUTES['/jobs/[job]/job-details']({ id: job?.id })),
-        //   }}
-        // />,
       );
     }
     if (!publishStatus.hiringTeamValidity.validity) {
       banners.push(
-        <GlobalBannerInline
-          iconName='warning'
+        <UIAlert
+          iconName='CircleAlert'
           color={'error'}
-          textContent='Hiring team not set'
-          slotButton={
+          title='Hiring team not set'
+          actions={
             <UIButton
               variant='destructive'
               size='sm'
@@ -536,17 +513,8 @@ const useBanners = () => {
               Set Now
             </UIButton>
           }
+          type={'inline'}
         />,
-        // <Banner
-        //   type='error'
-        //   title='Hiring team not set'
-        //   description='Please ensure that necessary hiring members are selected.'
-        //   primary={{
-        //     title: 'Set Now',
-        //     onClick: () =>
-        //       push(ROUTES['/jobs/[job]/hiring-team']({ id: job?.id })),
-        //   }}
-        // />,
       );
     }
   } else if (publishStatus.loading)
@@ -767,10 +735,10 @@ const Banner = (props: BannerProps) => {
   switch (props.type) {
     case 'warning':
       return (
-        <GlobalBanner
+        <UIAlert
           color={'warning'}
-          iconName={'info'}
-          slotButtons={
+          iconName={'Info'}
+          actions={
             <>
               <UIButton
                 variant='secondary'
@@ -789,16 +757,17 @@ const Banner = (props: BannerProps) => {
               </UIButton>
             </>
           }
-          textTitle={props.title}
-          textDescription={props.description}
+          title={props.title}
+          description={props.description}
         />
       );
+    
     case 'error':
       return (
-        <GlobalBanner
+        <UIAlert
           color={'error'}
-          iconName={'warning'}
-          slotButtons={
+          iconName={'CircleAlert'}
+          actions={
             <UIButton
               variant='destructive'
               size='sm'
@@ -807,8 +776,8 @@ const Banner = (props: BannerProps) => {
               {props.primary.title}
             </UIButton>
           }
-          textTitle={props.title}
-          textDescription={props.description}
+          title={props.title}
+          description={props.description}
         />
       );
   }

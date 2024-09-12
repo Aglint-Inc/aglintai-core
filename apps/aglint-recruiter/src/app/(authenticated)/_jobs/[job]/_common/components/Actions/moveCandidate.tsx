@@ -2,11 +2,11 @@
 import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
 import { Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
@@ -84,16 +84,11 @@ const MoveCandidateNew = () => {
       popupName={title}
       slotBody={
         <Stack gap={2}>
-          <GlobalBannerShort
+          <UIAlert
             color={'error'}
-            iconName={'warning'}
-            slotButtons={<></>}
-            textTitle={`You are about to ${description}`}
-            textDescription={
-              <Stack px={1}>
-                <li>All the schedules will be deleted</li>
-              </Stack>
-            }
+            iconName={'CircleAlert'}
+            title={`You are about to ${description}`}
+            description={<li>All the schedules will be deleted</li>}
           />
         </Stack>
       }
@@ -202,18 +197,17 @@ const MoveCandidateDisqualified = () => {
         popupName={title}
         slotBody={
           <Stack gap={1}>
-            <GlobalBannerShort
+            <UIAlert
               color={'error'}
-              iconName={'warning'}
-              slotButtons={<></>}
-              textTitle={`You are about to ${description}`}
-              textDescription={
-                <Stack px={1}>
+              iconName={'CircleAlert'}
+              title={`You are about to ${description}`}
+              description={
+                <div className='pt-1'>
                   <li>All the schedules will be cancelled</li>
                   <li>All the related requests will be closed</li>
                   <li>You can still view the candidate details</li>
                   <li>Move to new state to start the process again</li>
-                </Stack>
+                </div>
               }
             />
             <Stack direction={'row'} alignItems={'center'} gap={1}>

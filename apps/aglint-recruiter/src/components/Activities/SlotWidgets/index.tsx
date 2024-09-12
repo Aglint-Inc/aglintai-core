@@ -44,7 +44,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
             Reason: {rescheduleDetails.reason}
           </p>
           {checkDate && (
-            <Alert variant='destructive'>
+            <Alert variant='error'>
               <AlertTriangle className='h-4 w-4' />
               <AlertDescription>Proposed date is expired</AlertDescription>
             </Alert>

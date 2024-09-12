@@ -142,7 +142,7 @@ const CalendarHeader = ({
             }}
           />
           <Typography fontWeight={500}>
-            {dayjsLocal(currentDate).format('DD MMM YYYY')}
+            {dayjsLocal(currentDate).format('DD MMM YYYY ddd')}
           </Typography>
           <IconButtonSoft
             size={1}

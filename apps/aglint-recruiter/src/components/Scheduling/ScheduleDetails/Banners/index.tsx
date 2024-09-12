@@ -1,8 +1,8 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useScheduleDetails } from '../hooks';
@@ -38,13 +38,11 @@ function Banners({
   return (
     <Stack spacing={'var(--space-4)'}>
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
-        <GlobalBanner
+        <UIAlert
           color={'info'}
-          textTitle={'You are invited for this interview'}
-          isDescriptionVisible={false}
-          isAdditionalNotes={false}
-          iconName={'archive'}
-          slotButtons={
+          title={'You are invited for this interview'}
+          iconName={'Archive'}
+          actions={
             <>
               {isDeclineVisible && (
                 <UIButton

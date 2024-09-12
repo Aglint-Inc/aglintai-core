@@ -177,7 +177,7 @@ const EditBasicInfoDialog = ({
         <DialogTitle>
           <div className='space-y-6'>
             {isError && (
-              <Alert variant='destructive'>
+              <Alert variant='error'>
                 <AlertCircle className='h-4 w-4' />
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>

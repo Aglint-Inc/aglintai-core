@@ -56,7 +56,7 @@ function RoleEditMember({
         <div className='space-y-4'>
           {selectedMember ? (
             <>
-              <Alert variant='destructive'>
+              <Alert variant='error'>
                 <AlertCircle className='h-4 w-4' />
                 <AlertTitle>Warning</AlertTitle>
                 <AlertDescription>
