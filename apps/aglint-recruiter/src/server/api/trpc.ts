@@ -34,7 +34,8 @@ type CreateContextOptions = {
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: CreateContextOptions) => {
-  return opts;
+  const adminDb = createPublicClient();
+  return { ...opts, adminDb };
 };
 
 /**
@@ -98,7 +99,6 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const end = Date.now();
   // eslint-disable-next-line no-console
   console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
-
   return result;
 });
 
@@ -141,9 +141,8 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 
   const {
     recruiter_id,
-    roles: { name: role, role_permissions },
+    roles: { role_permissions },
   } = data;
-
   const permissions = role_permissions.reduce(
     (acc, { permissions: { is_enable, name } }) => {
       if (is_enable) acc.push(name);
@@ -161,18 +160,6 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
       db,
       user,
       recruiter_id,
-      role,
-      permissions,
-    },
-  });
-});
-
-const adminClientMiddleware = t.middleware(async ({ ctx, next }) => {
-  const db = createPublicClient();
-  return await next({
-    ctx: {
-      ...ctx,
-      db,
     },
   });
 });
@@ -184,22 +171,20 @@ const adminClientMiddleware = t.middleware(async ({ ctx, next }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(adminClientMiddleware);
+export const publicProcedure = t.procedure.use(timingMiddleware);
 
 export type PublicProcedure<T extends z.ZodObject<any, any, any, any, any>> =
   typeof publicProcedure extends ProcedureBuilder<
+    infer TContext,
     any,
-    any,
-    infer Ctx,
+    infer TContextOverrides,
     any,
     any,
     any,
     any,
     any
   >
-    ? { ctx: Ctx; input: z.infer<T> }
+    ? { ctx: TContext & TContextOverrides; input: z.infer<T> }
     : never;
 
 /**
@@ -215,14 +200,14 @@ export const privateProcedure = t.procedure
 
 export type PrivateProcedure<T extends z.ZodObject<any, any, any, any, any>> =
   typeof privateProcedure extends ProcedureBuilder<
+    infer TContext,
     any,
-    any,
-    infer Ctx,
+    infer TContextOverrides,
     any,
     any,
     any,
     any,
     any
   >
-    ? { ctx: Ctx; input: z.infer<T> }
+    ? { ctx: TContext & TContextOverrides; input: z.infer<T> }
     : never;

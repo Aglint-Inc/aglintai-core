@@ -275,6 +275,10 @@ const interviewers = {
   '/interviewers': () => pageRouteBuilder([ROUTES.app(), 'interviewers']),
 } as const;
 
+const analytics = {
+  '/analytics': () => pageRouteBuilder([ROUTES.app(), 'analytics']),
+} as const;
+
 const ROUTES = {
   app: () => '',
   ...agent,
@@ -314,5 +318,6 @@ const ROUTES = {
   ...workflows,
   ...requests,
   ...interviewers,
+  ...analytics,
 } as const;
 export default ROUTES;
