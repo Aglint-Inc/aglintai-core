@@ -1,4 +1,3 @@
-
 import { GlobalCta } from '@devlink3/GlobalCta';
 import React from 'react';
 
@@ -36,10 +35,7 @@ function SelfScheduleSuccess() {
           'The candidate recieved an email containing a link to select from the provided options. The interview will be confirmed once the candidate makes a selection.'
         }
         slotButton={
-          <UIButton
-            variant='secondary'
-            onClick={()=>handleCopyLink()}
-          >
+          <UIButton variant='secondary' onClick={() => handleCopyLink()}>
             {isCopied ? 'Copied' : 'Copy Link'}
           </UIButton>
         }

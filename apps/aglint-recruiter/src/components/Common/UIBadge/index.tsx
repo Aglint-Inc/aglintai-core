@@ -66,7 +66,7 @@ export function UIBadge({
   color,
   size,
   textBadge,
-  iconName = 'Shapes',
+  iconName,
   iconSize = 16,
   icon,
 }: UIBadgeProps) {

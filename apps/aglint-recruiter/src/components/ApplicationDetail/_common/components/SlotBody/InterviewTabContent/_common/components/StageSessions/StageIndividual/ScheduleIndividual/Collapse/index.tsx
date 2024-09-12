@@ -64,7 +64,7 @@ function CollapseContent({
                       slotRole={
                         <div className='flex items-center space-x-2'>
                           <Briefcase size={16} />
-                          <UITypography color='neutral'>
+                          <UITypography color='neutral' className='text-sm'>
                             {candidate.current_job_title}
                           </UITypography>
                         </div>
