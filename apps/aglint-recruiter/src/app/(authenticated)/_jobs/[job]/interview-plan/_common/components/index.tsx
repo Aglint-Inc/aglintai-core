@@ -11,8 +11,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
-import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
@@ -23,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause, Kanban, Trash2 } from 'lucide-react';
+import { CirclePause, Kanban, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -58,6 +56,7 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
+import { AddScheduleOption } from './_common/AddScheduleOption';
 import { InterviewBreakCard } from './_common/InterviewBreakCard';
 import { InterviewPlanDetail } from './_common/InterviewPlanDetail';
 import { InterviewPlanWrap } from './_common/InterviewPlanWrap';
@@ -203,15 +202,27 @@ const AddStageComponent = () => {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
           }
-        
-          <UIButton size='sm' variant='default' onClick={() => handleAddStage() }>Add</UIButton>
-          <UIButton size='sm' variant='secondary' onClick={() => setForm(!form)}>
+
+          <UIButton
+            size='sm'
+            variant='default'
+            onClick={() => handleAddStage()}
+          >
+            Add
+          </UIButton>
+          <UIButton
+            size='sm'
+            variant='secondary'
+            onClick={() => setForm(!form)}
+          >
             Cancel
           </UIButton>
         </Stack>
       )}
       <Stack direction={'row'}>
-      <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>Add Stage</UIButton>
+        <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
+          Add Stage
+        </UIButton>
       </Stack>
     </>
   );
@@ -377,8 +388,20 @@ const InterviewPlan = ({
           slotInputButton={
             <Stack direction={'row'} gap={1} alignItems={'center'}>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
-              <UIButton size='sm' variant='default' onClick={() => handleUpdatePlan(planRef.current.value)}>Update</UIButton>
-              <UIButton size='sm' variant='secondary' onClick={() => handleEditPlan()}>Cancel</UIButton>
+              <UIButton
+                size='sm'
+                variant='default'
+                onClick={() => handleUpdatePlan(planRef.current.value)}
+              >
+                Update
+              </UIButton>
+              <UIButton
+                size='sm'
+                variant='secondary'
+                onClick={() => handleEditPlan()}
+              >
+                Cancel
+              </UIButton>
             </Stack>
           }
           slotRightIconButton={
@@ -686,7 +709,19 @@ const InterviewSession = ({
                   }
                 >
                   <Stack>
-                    <AddScheduleCardDev />
+                    <div
+                      className={
+                        'relative flex h-6 justify-center items-center'
+                      }
+                    >
+                      <div className='w-full ' />
+                      <div className=' w-full absolute inset-0 flex flex-col justify-center items-center'>
+                        <div className='relative top-[50%] flex h-[2px] w-full bg-[#cc4e00]  flex-col justify-center items-center cursor-pointer transition-all duration-250 ease hover:opacity-80'></div>
+                        <div className='h-[20px] w-[20px] bg-[#cc4e00] flex items-center justify-center z-10 rounded-[20px]'>
+                          <Plus size={10} color='white' />
+                        </div>
+                      </div>
+                    </div>
                   </Stack>
                 </Tooltip>
               </Stack>
