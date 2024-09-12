@@ -25,7 +25,7 @@ export const List = () => {
 const Content = () => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useCreateRequestJobs();
-  const { addJobSelection } = useCreateRequestActions();
+  const { selectJob } = useCreateRequestActions();
   const allRows = data.pages.flatMap((d) => d.items);
   const parentRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
@@ -71,7 +71,7 @@ const Content = () => {
             <CommandItem
               key={virtualRow.index}
               value={`${id} ${job.job_title}`}
-              onSelect={() => addJobSelection({ id, label: job_title })}
+              onSelect={() => selectJob({ id, label: job_title })}
               className={`absolute top-0 left-0 w-full h-[${virtualRow.size}px]`}
               style={{
                 transform: `translateY(${virtualRow.start}px)`,

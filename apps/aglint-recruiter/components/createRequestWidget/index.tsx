@@ -1,13 +1,13 @@
 import { Menu } from './components/menu';
-import { Pop } from './components/pop';
+import { Container } from './components/container';
 import { CreateRequestProvider } from './contexts';
 
 export const CreateRequestWidget = () => {
   return (
     <CreateRequestProvider>
-      <Pop>
+      <Container>
         <Menu />
-      </Pop>
+      </Container>
     </CreateRequestProvider>
   );
 };

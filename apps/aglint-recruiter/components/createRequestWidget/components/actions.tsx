@@ -4,7 +4,7 @@ import { ArrowRight, X } from 'lucide-react';
 
 import { SafeObject } from '@/utils/safeObject';
 
-import type { Menus } from '../contexts/createRequestContext';
+import { STEPS, type Menus } from '../contexts/createRequestContext';
 import { useCreateRequest, useCreateRequestActions } from '../hooks';
 
 export const Actions = () => {
@@ -18,13 +18,13 @@ export const Actions = () => {
 
 const Selections = () => {
   const selections = useCreateRequest((state) => state.selections);
-  const { resetMenu } = useCreateRequestActions();
+  const { resetSelection } = useCreateRequestActions();
   return SafeObject.entries(selections)
     .filter(([, value]) => Boolean(value))
     .map(([key, { label }]) => (
       <Badge key={key} variant='secondary' className='text-sm'>
         {getKey(key)} : {label}
-        <button className='ml-1' onClick={() => resetMenu(key)}>
+        <button className='ml-1' onClick={() => resetSelection(key)}>
           <X className='h-3 w-4' />
         </button>
       </Badge>
@@ -32,10 +32,16 @@ const Selections = () => {
 };
 
 const Buttons = () => {
+  const { step, selections } = useCreateRequest((state) => ({
+    step: state.step,
+    selections: state.selections,
+  }));
+  const { nextPage } = useCreateRequestActions();
+  const isEnabled = !!selections[STEPS[step]];
   return (
     <div className='flex justify-between'>
       <Button variant='outline'>Cancel</Button>
-      <Button>
+      <Button disabled={!isEnabled} onClick={() => nextPage()}>
         Next <ArrowRight className='ml-2 h-4 w-4' />
       </Button>
     </div>

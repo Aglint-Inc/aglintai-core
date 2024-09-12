@@ -36,7 +36,7 @@ const requestTypes: Options = [
 ];
 
 const Content = () => {
-  const { setRequestType } = useCreateRequestActions();
+  const { selectRequestType } = useCreateRequestActions();
   return (
     <CommandList
       className={`w-full h-[${containerHeight}px] overflow-y-auto overflow-x-hidden`}
@@ -48,7 +48,7 @@ const Content = () => {
         <CommandItem
           key={id}
           value={id}
-          onSelect={() => setRequestType({ id, label })}
+          onSelect={() => selectRequestType({ id, label })}
         >
           <>
             <Calendar className='mr-2 h-4 w-4' />
