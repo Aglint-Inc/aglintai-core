@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -43,13 +44,13 @@ const nextConfig = {
       },
       ...(process.env.NODE_ENV === 'production'
         ? [
-            {
-              source: '/signup',
-              destination: '/login',
-              basePath: undefined,
-              permanent: false,
-            },
-          ]
+          {
+            source: '/signup',
+            destination: '/login',
+            basePath: undefined,
+            permanent: false,
+          },
+        ]
         : []),
     ];
   },
