@@ -1,7 +1,4 @@
-import {
-  type PlanCombinationRespType,
-  type SessionCombinationRespType,
-} from '@aglint/shared-types';
+import { type SessionCombinationRespType } from '@aglint/shared-types';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import dayjs from 'dayjs';
 import { ChevronDown } from 'lucide-react';
@@ -11,8 +8,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
-import { SingleDaySchedule } from '../../../SingleDaySchedule';
-import ConflictWithHover from './SessionIndividual/ConflictWithHover';
+import ConflictWithHover from '../../../../ConflictWithHover';
+import { SingleDaySchedule } from '../../../ui/SingleDaySchedule';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
 
 function SingleDayCard({
@@ -43,34 +40,9 @@ function SingleDayCard({
     timeZone: userTzDayjs.tz.guess(),
   });
 
-  const sesAllConflicts: PlanCombinationRespType['sessions'][number]['ints_conflicts'] =
-    [];
-
-  sessions.map((session) =>
-    session.ints_conflicts.map((item) => sesAllConflicts.push(item)),
+  const sesAllConflicts = sessions.flatMap((session) =>
+    session.ints_conflicts.flatMap((item) => item.conflict_reasons),
   );
-
-  const sesSoftConflicts = sesAllConflicts
-    .map((item) => item.conflict_reasons)
-    .map((item) => item)
-    .flat()
-    .filter((item) => item.conflict_type === 'soft');
-
-  const sesHardConflicts = sesAllConflicts
-    .map((item) => item.conflict_reasons)
-    .map((item) => item)
-    .flat()
-    .filter(
-      (item) =>
-        item.conflict_type !== 'soft' &&
-        item.conflict_type !== 'out_of_working_hours',
-    );
-
-  const sesOutsideWorkHours = sesAllConflicts
-    .map((item) => item.conflict_reasons)
-    .map((item) => item)
-    .flat()
-    .filter((item) => item.conflict_type === 'out_of_working_hours');
 
   const [collapse, setCollapse] = React.useState(false);
 
@@ -95,50 +67,11 @@ function SingleDayCard({
       textTotalTimeRange={totalTimeRange}
       slotConflicts={
         <>
-          {sesAllConflicts.length === 0 && (
-            <ConflictWithHover
-              isNoConflict={true}
-              isHardConflict={false}
-              isOutsideWorkHours={false}
-              isSoftConflict={false}
-              conflictReasons={[]}
-              textCount={''}
-              isToolTipVisible={false}
-            />
-          )}
-          {sesSoftConflicts.length > 0 && (
-            <ConflictWithHover
-              isHardConflict={false}
-              isOutsideWorkHours={false}
-              isSoftConflict={true}
-              isNoConflict={false}
-              conflictReasons={sesSoftConflicts}
-              textCount={sesSoftConflicts.length}
-              isToolTipVisible={false}
-            />
-          )}
-          {sesHardConflicts.length > 0 && (
-            <ConflictWithHover
-              isNoConflict={false}
-              isHardConflict={true}
-              isOutsideWorkHours={false}
-              isSoftConflict={false}
-              conflictReasons={sesHardConflicts}
-              textCount={sesHardConflicts.length}
-              isToolTipVisible={false}
-            />
-          )}
-          {sesOutsideWorkHours.length > 0 && (
-            <ConflictWithHover
-              isNoConflict={false}
-              isHardConflict={false}
-              isOutsideWorkHours={true}
-              isSoftConflict={false}
-              conflictReasons={sesOutsideWorkHours}
-              textCount={sesOutsideWorkHours.length}
-              isToolTipVisible={false}
-            />
-          )}
+          <ConflictWithHover
+            conflictReasons={sesAllConflicts}
+            isToolTipVisible={false}
+          />
+
           {isCollapseNeeded && (
             <UIButton
               variant='secondary'

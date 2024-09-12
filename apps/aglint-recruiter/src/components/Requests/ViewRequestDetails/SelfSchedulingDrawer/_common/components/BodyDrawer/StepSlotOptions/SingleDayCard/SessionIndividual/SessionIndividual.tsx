@@ -6,9 +6,9 @@ import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
-import { MemberRow } from '../../../../MemberRow';
-import { SessionDetails } from '../../../../SessionDetails';
-import ConflictWithHover from './ConflictWithHover';
+import ConflictWithHover from '../../../../../ConflictWithHover';
+import { MemberRow } from '../../../../ui/MemberRow';
+import { SessionDetails } from '../../../../ui/SessionDetails';
 
 function SessionIndividual({
   session,
@@ -36,20 +36,6 @@ function SessionIndividual({
             .map((item) => item)
             .flat();
 
-          const userSoftConflicts = allUserConflicts.filter(
-            (item) => item.conflict_type === 'soft',
-          );
-
-          const userHardConflicts = allUserConflicts.filter(
-            (item) =>
-              item.conflict_type !== 'soft' &&
-              item.conflict_type !== 'out_of_working_hours',
-          );
-
-          const userOutsideWorkHours = allUserConflicts.filter(
-            (item) => item.conflict_type === 'out_of_working_hours',
-          );
-
           return (
             <MemberRow
               key={member.user_id}
@@ -70,50 +56,10 @@ function SessionIndividual({
                  ${member.interviewer_type === 'training' ? '(Training)' : ''}`}
               slotConflicts={
                 <>
-                  {allUserConflicts.length === 0 && (
-                    <ConflictWithHover
-                      isNoConflict={true}
-                      isHardConflict={false}
-                      isOutsideWorkHours={false}
-                      isSoftConflict={false}
-                      conflictReasons={[]}
-                      textCount={'No conflicts'}
-                      isToolTipVisible={true}
-                    />
-                  )}
-                  {userSoftConflicts.length > 0 && (
-                    <ConflictWithHover
-                      isHardConflict={false}
-                      isOutsideWorkHours={false}
-                      isSoftConflict={true}
-                      isNoConflict={false}
-                      conflictReasons={userSoftConflicts}
-                      textCount={userSoftConflicts.length}
-                      isToolTipVisible={true}
-                    />
-                  )}
-                  {userHardConflicts.length > 0 && (
-                    <ConflictWithHover
-                      isNoConflict={false}
-                      isHardConflict={true}
-                      isOutsideWorkHours={false}
-                      isSoftConflict={false}
-                      conflictReasons={userHardConflicts}
-                      textCount={userHardConflicts.length}
-                      isToolTipVisible={true}
-                    />
-                  )}
-                  {userOutsideWorkHours.length > 0 && (
-                    <ConflictWithHover
-                      isNoConflict={false}
-                      isHardConflict={false}
-                      isOutsideWorkHours={true}
-                      isSoftConflict={false}
-                      conflictReasons={userOutsideWorkHours}
-                      textCount={userOutsideWorkHours.length}
-                      isToolTipVisible={true}
-                    />
-                  )}
+                  <ConflictWithHover
+                    conflictReasons={allUserConflicts}
+                    isToolTipVisible={true}
+                  />
                 </>
               }
             />
