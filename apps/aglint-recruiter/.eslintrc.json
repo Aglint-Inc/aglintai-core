@@ -35,7 +35,8 @@
     "src/components/JobTracker/Activities/devlink",
     "src/types/*",
     ".github",
-    "components/ui"
+    "components/ui",
+    "script/*"
   ],
   "rules": {
     "@next/next/no-html-link-for-pages": ["error", "src/pages"],
@@ -54,16 +55,6 @@
     "no-unused-vars": ["error", { "args": "all", "argsIgnorePattern": "^_" }], //ignore unused variables starting with _
     "@typescript-eslint/no-unused-vars": "off",
     "import/no-cycle": "error",
-    // "unused-imports/no-unused-imports": "error",
-    // "unused-imports/no-unused-vars": [
-    //   "error",
-    //   {
-    //     "vars": "all",
-    //     "varsIgnorePattern": "^_",
-    //     "args": "after-used",
-    //     "argsIgnorePattern": "^_"
-    //   }
-    // ],
     "@typescript-eslint/consistent-type-imports": [
       "error",
       {

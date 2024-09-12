@@ -1,5 +1,4 @@
 import type { DatabaseTableInsert } from '@aglint/shared-types';
-import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
@@ -9,6 +8,7 @@ import {
   RangePicker,
   RequestOption,
 } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
+import { ScheduleInterviewPop } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleInterviewPop';
 import MemberCard from '@/components/Common/MemberCard';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';

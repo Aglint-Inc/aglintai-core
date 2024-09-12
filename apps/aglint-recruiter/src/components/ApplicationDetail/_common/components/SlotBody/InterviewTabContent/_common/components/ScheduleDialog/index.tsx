@@ -7,10 +7,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { DcPopup } from '@devlink/DcPopup';
-import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
+import { ButtonSoft } from '@devlink/ButtonSoft';
+import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { cn } from '@lib/utils';
-import { Dialog, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -19,8 +19,8 @@ import type { DateRange } from 'react-day-picker';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useApplication } from '@/context/ApplicationContext';
@@ -34,6 +34,7 @@ import {
   useApplicationDetailStore,
 } from '../../../../../../store/store';
 import { type Interviewer } from '../EditDrawer/types';
+import { ScheduleInterviewPop } from '../ScheduleInterviewPop';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
@@ -130,131 +131,26 @@ function DialogSchedule() {
   };
 
   return (
-    <Dialog
-      open={isScheduleOpen}
-      onClose={() => {
-        onClose();
-      }}
-    >
-      <DcPopup
-        popupName={'Schedule Interviews'}
-        onClickClosePopup={{
-          onClick: () => {
-            onClose();
-          },
-        }}
-        slotBody={
-          <>
-            {sessionHasRequest.length > 0 && (
-              <UIAlert
-                type={'small'}
-                color={'warning'}
-                actions={
-                  <>
-                    <UIButton
-                      variant='default'
-                      size='sm'
-                      onClick={() => {
-                        router.push({
-                          query: { tab: 'requests' },
-                          pathname: `/jobs/${job_id}/application/${application_id}`,
-                        });
-                        onClose();
-                      }}
-                    >
-                      View Request
-                    </UIButton>
-                  </>
-                }
-                title={`${sessionHasRequest
-                  .map((session) => session.interview_session.name)
-                  .join(', ')} already has a schedule request.`}
-                description={`Please wait for the request to be accepted or rejected before creating a new request.`}
-              />
-            )}
-
-            <ScheduleInterviewPop
-              textName={candidate.name}
-              slotStagePill={
-                <>
-                  {sessions.map((session) => {
-                    return (
-                      <UIButton
-                        key={session.interview_session.id}
-                        variant='secondary'
-                        size='sm'
-                        color='neutral'
-                        leftIcon={
-                          <IconSessionType
-                            type={session.interview_session.session_type}
-                          />
-                        }
-                      >
-                        {session.interview_session.name}
-                      </UIButton>
-                    );
-                  })}
-                </>
-              }
-              slotNotes={
-                <TextField
-                  value={note || ''}
-                  onChange={(e) => {
-                    setNote(e.target.value);
-                  }}
-                  placeholder='Add note'
-                  multiline // Enables textarea behavior
-                  minRows={2} // Minimum number of rows
-                  maxRows={4} // Maximum number of rows
-                  variant='outlined' // Uses the outlined variant
-                  fullWidth // Takes full width of the container
-                />
-              }
-              slotAssignedInput={
-                <div className='flex items-center justify-between pr-2 '>
-                  {selectedInterviewer && (
-                    <MemberCard selectedMember={selectedInterviewer} />
-                  )}
-                  <UpdateMembers
-                    handleChange={(member) => {
-                      setSelectedInterviewer(member);
-                    }}
-                    updateButton={
-                      <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
-                    }
-                    members={members}
-                  />
-                </div>
-              }
-              slotRequestOption={
-                <RequestOption
-                  requestType={requestType}
-                  setRequestType={setRequestType}
-                />
-              }
-              isRequestTypeVisible={true}
-              textSelectedSchedule={`Selected Schedules from stage ${selectedStage?.interview_plan.name} `}
-              slotPickDateInput={
-                <RangePicker
-                  dateRange={dateRange}
-                  setDateRange={setDateRange}
-                />
-              }
-            />
-          </>
-        }
+    <>
+      <UIDialog
+        open={isScheduleOpen}
+        onClose={onClose}
+        title='Schedule Interviews'
         slotButtons={
           <>
             <UIButton
               variant='secondary'
+              size='md'
+              color='neutral'
               onClick={() => {
                 setIsScheduleOpen(false);
               }}
             >
               Cancel
             </UIButton>
+
             <UIButton
-              variant='default'
+              size='md'
               isLoading={isSaving}
               onClick={async () => {
                 if (isSaving) return;
@@ -265,8 +161,102 @@ function DialogSchedule() {
             </UIButton>
           </>
         }
-      />
-    </Dialog>
+      >
+        <>
+          {sessionHasRequest.length > 0 && (
+            <GlobalBannerShort
+              color={'warning'}
+              slotButtons={
+                <>
+                  <ButtonSoft
+                    size={1}
+                    textButton='View Request'
+                    onClickButton={{
+                      onClick: () => {
+                        router.push({
+                          query: { tab: 'requests' },
+                          pathname: `/jobs/${job_id}/application/${application_id}`,
+                        });
+                        onClose();
+                      },
+                    }}
+                  />
+                </>
+              }
+              textTitle={`${sessionHasRequest
+                .map((session) => session.interview_session.name)
+                .join(', ')} already has a schedule request.`}
+              textDescription={`Please wait for the request to be accepted or rejected before creating a new request.`}
+            />
+          )}
+
+          <ScheduleInterviewPop
+            textName={candidate.name}
+            slotStagePill={
+              <>
+                {sessions.map((session) => {
+                  return (
+                    <ButtonSoft
+                      key={session.interview_session.id}
+                      size={2}
+                      textButton={session.interview_session.name}
+                      color={'neutral'}
+                      isLeftIcon={true}
+                      slotIcon={
+                        <IconSessionType
+                          type={session.interview_session.session_type}
+                        />
+                      }
+                    />
+                  );
+                })}
+              </>
+            }
+            slotNotes={
+              <TextField
+                value={note || ''}
+                onChange={(e) => {
+                  setNote(e.target.value);
+                }}
+                placeholder='Add note'
+                multiline // Enables textarea behavior
+                minRows={2} // Minimum number of rows
+                maxRows={4} // Maximum number of rows
+                variant='outlined' // Uses the outlined variant
+                fullWidth // Takes full width of the container
+              />
+            }
+            slotAssignedInput={
+              <div className='flex items-center justify-between pr-2 '>
+                {selectedInterviewer && (
+                  <MemberCard selectedMember={selectedInterviewer} />
+                )}
+                <UpdateMembers
+                  handleChange={(member) => {
+                    setSelectedInterviewer(member);
+                  }}
+                  updateButton={
+                    <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                  }
+                  members={members}
+                />
+              </div>
+            }
+            slotRequestOption={
+              <RequestOption
+                requestType={requestType}
+                setRequestType={setRequestType}
+              />
+            }
+            isRequestTypeVisible={true}
+            textSelectedSchedule={`Selected Schedules from stage ${selectedStage?.interview_plan.name} `}
+            slotPickDateInput={
+              <RangePicker dateRange={dateRange} setDateRange={setDateRange} />
+            }
+          />
+        </>
+      </UIDialog>
+    </>
   );
 }
 

@@ -4,7 +4,6 @@ import { Card } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
 import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
@@ -22,6 +21,7 @@ import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import { InterviewLoadCard } from '../_common/InterviewLoadCard';
+import { ScheduleSettings } from '../_common/ScheduleSettings';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
 
 type interviewLoadType = {
@@ -349,7 +349,7 @@ function Availibility({
         >
           <Stack padding={'16px'}>
             <ScheduleSettings
-              isTimeZoneToggleVisible={false}
+              slotDayOff={<></>}
               slotTimeZoneInput={
                 <Stack
                   spacing={'var(--space-2)'}
