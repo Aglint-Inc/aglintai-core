@@ -92,14 +92,14 @@ function MySchedule() {
           <InterviewMemberSide
             propsGrids={{ style: { maxWidth: 'none' } }}
             slotInterview={
-                <SearchField
-                  value={changeText}
-                  onChange={(e) => {
-                    setChangeText(e.target.value);
-                  }}
-                  onClear={() => setChangeText('')}
-                  placeholder={'Search by session name'}
-                />
+              <SearchField
+                value={changeText}
+                onChange={(e) => {
+                  setChangeText(e.target.value);
+                }}
+                onClear={() => setChangeText('')}
+                placeholder={'Search by session name'}
+              />
             }
             isUpcomingActive={filter === 'confirmed'}
             isCancelActive={filter === 'cancelled'}

@@ -1,7 +1,13 @@
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { LoaderSvg } from '@devlink/LoaderSvg';
-import { Avatar, Stack } from '@mui/material';
-import { Building, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import {
+  Building,
+  Loader2,
+  RefreshCw,
+  Trash2,
+  Upload,
+  User,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -10,245 +16,153 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
+/* eslint-disable */
+interface ImageUploadProps {
+  setImage?: (url: string) => void;
+  image: string;
+  disabled?: boolean;
+  size: number;
+  table: 'company-logo' | 'recruiter-user';
+  handleUpdateProfile?: (data: {
+    profile_image: string | null;
+  }) => Promise<void>;
+  dynamic?: boolean;
+  changeCallback?: (url: string) => void;
+  error?: (hasError: boolean) => void;
+}
+/* eslint-enable */
+
 function ImageUpload({
   setImage,
   image,
   disabled = false,
   size,
   table,
-  handleUpdateProfile = null,
+  handleUpdateProfile,
   dynamic = false,
   changeCallback,
   error,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  setImage?: (url: string) => void;
-  image: string;
-  disabled?: boolean;
-  size: number;
-  table: 'company-logo' | 'recruiter-user';
-  handleUpdateProfile?: any;
-  dynamic?: boolean;
-  changeCallback?: any;
-  error?: any;
-}) {
+}: ImageUploadProps) {
   const router = useRouter();
-  const [isStackHovered, setIsStackHovered] = useState<boolean>();
-  const [loading, setLoading] = useState<boolean>();
+  const [isHovered, setIsHovered] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { recruiterUser } = useAuthDetails();
 
-  image = image === null ? '/images/logo/company.png' : image;
-  const setProfilePicture = async (file) => {
+  const defaultImage = '/images/logo/company.png';
+  const displayImage = image || defaultImage;
+
+  const setProfilePicture = async (file: File) => {
     if (disabled) return;
     setLoading(true);
-    if (file.size > 5 * 1000000) {
-      error && error(true);
 
+    if (file.size > 5 * 1000000) {
+      error?.(true);
       setLoading(false);
       return;
     }
+
     const { data } = await supabase.storage
       .from(table)
       .upload(`public/${recruiterUser?.user_id}`, file, {
         cacheControl: '3600',
         upsert: true,
       });
+
     if (data?.path) {
-      error && error(false);
-      if (setImage)
-        setImage(
-          `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
-        );
-      changeCallback &&
-        changeCallback(
-          `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
-        );
+      error?.(false);
+      const newImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data.path}?t=${new Date().toISOString()}`;
+
+      setImage?.(newImageUrl);
+      changeCallback?.(newImageUrl);
 
       if (handleUpdateProfile) {
-        await handleUpdateProfile({
-          profile_image: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
-        });
+        await handleUpdateProfile({ profile_image: newImageUrl });
       }
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+
+      setTimeout(() => setLoading(false), 2000);
     }
   };
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setImage?.(null);
+    handleUpdateProfile?.({ profile_image: null });
+  };
+
   return (
-    <>
-      <Stack direction={'row'} justifyContent={'center'}>
-        <Stack
-          position={'relative'}
-          sx={{
-            borderRadius: 'var(--radius-2)',
-            borderColor: 'var(--neutral-6)',
-          }}
-          onMouseEnter={() => setIsStackHovered(true)}
-          onMouseLeave={() => setIsStackHovered(false)}
+    <div className='flex justify-center'>
+      <div
+        className='relative'
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <Avatar
+          className={`${dynamic ? 'w-full h-full' : `w-${size} h-${size}`} rounded-lg`}
         >
-          <Stack>
-            <Avatar
-              src={image}
-              sx={{
-                width: dynamic ? '100%' : size,
-                height: dynamic ? '100%' : size,
-                borderRadius: 'var(--radius-4)',
-                '& .MuiAvatar-img ': {
-                  objectFit: 'cover',
-                },
-                textTransform: 'capitalize',
-                bgcolor: 'transparent',
-              }}
-              variant='square'
+          <AvatarImage src={displayImage} alt='Profile' />
+          <AvatarFallback>
+            {router.route.includes(ROUTES['/profile']()) ? (
+              <User className='w-6 h-6' />
+            ) : (
+              <Building className='w-6 h-6' />
+            )}
+          </AvatarFallback>
+        </Avatar>
+
+        {loading && (
+          <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg'>
+            <Loader2 className='w-8 h-8 animate-spin text-white' />
+          </div>
+        )}
+
+        <div
+          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {!image ? (
+            <FileUploader
+              handleChange={setProfilePicture}
+              name='file'
+              types={['PNG', 'JPEG', 'JPG']}
             >
-              {router.route.includes(ROUTES['/profile']()) ? (
-                <User size={6} />
-              ) : (
-                <Building size={6} />
+              {!disabled && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  className='bg-black bg-opacity-50 text-white'
+                >
+                  <Upload className='w-6 h-6' />
+                </Button>
               )}
-            </Avatar>
-            {/* {image && (
-              <Stack position={'absolute'} bottom={-10} left={26}></Stack>
-            )} */}
-          </Stack>
-          {loading && (
-            <Stack
-              height={`${size}px`}
-              width={`${size}px`}
-              sx={{
-                zIndex: 10,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              <LoaderSvg />
-            </Stack>
-          )}
-          <Stack
-            sx={{
-              zIndex: 1,
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            {!image ? (
+            </FileUploader>
+          ) : (
+            <div className='flex space-x-2 bg-black bg-opacity-50 p-2 rounded-lg'>
               <FileUploader
                 handleChange={setProfilePicture}
                 name='file'
                 types={['PNG', 'JPEG', 'JPG']}
               >
                 {!disabled && (
-                  <Stack
-                    id={'image-upload'}
-                    sx={{
-                      position: 'relative',
-                      cursor: 'pointer',
-                      transition: 'all 0.5s ease',
-                      opacity: isStackHovered ? 1 : 0,
-                      borderRadius: 'var(--radius-2)',
-                      mt: 'var(--space-1)',
-                    }}
-                    height={`${size}px`}
-                    width={`${size}px`}
-                    direction={'row'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                  >
-                    <IconButtonSoft
-                      iconSize={6}
-                      color='neutral'
-                      iconWeight='thin'
-                      iconName='cloud_upload'
-                      iconColor='neutral'
-                    />
-                  </Stack>
+                  <Button variant='ghost' size='sm' className='text-white'>
+                    <RefreshCw className='w-4 h-4' />
+                  </Button>
                 )}
               </FileUploader>
-            ) : (
-              <Stack
-                height={`${size}px`}
-                width={`${size}px`}
-                direction={'row'}
-                justifyContent={'center'}
-                alignItems={'center'}
-                sx={{
-                  transition: 'all 0.5s ease',
-                  opacity: isStackHovered ? 1 : 0,
-                  background: isStackHovered
-                    ? 'var(--nutral-5)'
-                    : 'transparent',
-                  borderRadius: 'var(--radius-4)',
-                }}
-              >
-                {image && (
-                  <Stack
-                    direction={'row'}
-                    sx={{
-                      transition: 'all 0.5s ease',
-                      visibility: isStackHovered ? 'visible' : 'hidden',
-                      opacity: isStackHovered ? 1 : 0,
-                      background: 'var(--black)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      borderRadius: 'var(--radius-4)',
-                    }}
-                  >
-                    <FileUploader
-                      handleChange={setProfilePicture}
-                      name='file'
-                      types={['PNG', 'JPEG', 'JPG']}
-                    >
-                      {!disabled && (
-                        <Stack
-                          id={'image-upload'}
-                          sx={{
-                            cursor: 'pointer',
-                            color: 'var(--white)',
-                            transition: '',
-                          }}
-                        >
-                          <IconButtonSoft
-                            iconSize={4}
-                            color={'white'}
-                            iconName='restart_alt'
-                            iconColor='white'
-                          />
-                        </Stack>
-                      )}
-                    </FileUploader>
 
-                    {!disabled && (
-                      <Stack
-                        onClick={async (e) => {
-                          e.stopPropagation();
-                          if (setImage) setImage(null);
-                          if (handleUpdateProfile)
-                            await handleUpdateProfile({ profile_image: null });
-                        }}
-                        sx={{ color: 'var(--white)', cursor: 'pointer' }}
-                      >
-                        <IconButtonSoft
-                          iconSize={4}
-                          color={'error'}
-                          iconName='delete'
-                        />
-                      </Stack>
-                    )}
-                  </Stack>
-                )}
-              </Stack>
-            )}
-          </Stack>
-        </Stack>
-      </Stack>
-    </>
+              {!disabled && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  className='text-white'
+                  onClick={handleDelete}
+                >
+                  <Trash2 className='w-4 h-4' />
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -1,9 +1,8 @@
 'use client';
 import { InvalidJob } from '@devlink/InvalidJob';
-import { LoaderSvg } from '@devlink/LoaderSvg';
-import { Stack } from '@mui/material';
 import InvalidJobPostLottie from '@public/lottie/InvalidJobPostLottie';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { SeoPro } from '@/components/Common/SeoPro';
@@ -98,7 +97,7 @@ function JobPost({
   };
 
   return (
-    <Stack minHeight={'100vh'}>
+    <div className='min-h-screen'>
       <SeoPro
         jsonLd={jsonLd}
         title={
@@ -109,20 +108,15 @@ function JobPost({
         description='AI for People Products'
       />
       {loading ? (
-        <Stack
-          height={'100vh'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          width={'100%'}
-        >
-          <LoaderSvg />
-        </Stack>
+        <div className='flex h-screen items-center justify-center w-full'>
+          <Loader2 className='animate-spin' />
+        </div>
       ) : valid ? (
         <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
       ) : (
         <InvalidJob slotLottie={<InvalidJobPostLottie />} />
       )}
-    </Stack>
+    </div>
   );
 }
 

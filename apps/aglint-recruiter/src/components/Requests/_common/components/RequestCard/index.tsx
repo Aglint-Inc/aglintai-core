@@ -26,12 +26,11 @@ import type { Request as RequestType } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { getStatusColor } from '../../utils';
-import MenuOptions from './MenuOptions';
 
-type RequestProps = RequestType & {
+interface RequestProps extends RequestType {
   isExpanded?: boolean;
   mode?: 'expanded' | 'compact' | 'column-view' | 'compact-list';
-};
+}
 
 export const RequestCard = ({ ...props }: RequestProps) => {
   const { recruiterUser } = useAuthDetails();
@@ -89,7 +88,8 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                 )}
               </Button>
             ) : (
-              <MenuOptions request_id={props.id} />
+              <></>
+              // <RequestOverflowMenu request_id={props.id} />
             )}
           </div>
         </Link>
@@ -287,7 +287,7 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
             <Label className='text-xs font-semibold line-clamp-1'>
               {props.title}
             </Label>
-            <MenuOptions request_id={props.id} />
+            {/* <RequestOverflowMenu request_id={props.id} /> */}
           </div>
           <div className='flex flex-wrap gap-1'>
             <Badge

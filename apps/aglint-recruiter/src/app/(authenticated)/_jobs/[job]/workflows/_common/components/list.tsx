@@ -1,7 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import {
   Dialog,
@@ -12,7 +18,6 @@ import {
 import { ScrollArea } from '@components/ui/scroll-area';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
-import { WorkflowCard } from '@devlink3/WorkflowCard';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
@@ -213,28 +218,32 @@ const WorkflowBrowser = () => {
       const checked = selections.includes(id);
       const jobCount = (jobs ?? []).length;
       return (
-        <WorkflowCard
-          widthText={'small'}
-          border={'visible'}
-          key={id}
-          isCheckboxVisible={true}
-          slotCheckbox={
+        <Card key={id} className='p-4 border'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>{title}</CardTitle>
             <Checkbox
               checked={checked}
               onCheckedChange={() =>
                 handleClick(checked ? 'delete' : 'insert', id)
               }
             />
-          }
-          textWorkflowName={title}
-          textWorkflowTrigger={getTriggerOption(trigger, phase)}
-          textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
-          onClickDelete={{ style: { display: 'none' } }}
-          isEditButton={false}
-          onClickEdit={{
-            onClick: () => handleClick(checked ? 'delete' : 'insert', id),
-          }}
-        />
+          </CardHeader>
+          <CardContent>
+            <p className='text-xs text-muted-foreground'>
+              {getTriggerOption(trigger, phase)}
+            </p>
+            <p className='text-xs text-muted-foreground'>{`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}</p>
+          </CardContent>
+          <CardFooter className='flex justify-end pt-2'>
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={() => handleClick(checked ? 'delete' : 'insert', id)}
+            >
+              {checked ? 'Remove' : 'Add'}
+            </Button>
+          </CardFooter>
+        </Card>
       );
     },
   );
@@ -258,15 +267,17 @@ const WorkflowBrowser = () => {
         </div>
         <ScrollArea className='h-[calc(100vh-300px)] mt-4'>
           {cards.length ? (
-            <div className="grid gap-4">
-              {cards}
-            </div>
+            <div className='grid gap-4'>{cards}</div>
           ) : (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <Briefcase className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No workflows</h3>
-                <p className="mt-1 text-sm text-gray-500">Get started by creating a new workflow.</p>
+            <div className='flex items-center justify-center h-full'>
+              <div className='text-center'>
+                <Briefcase className='mx-auto h-12 w-12 text-gray-400' />
+                <h3 className='mt-2 text-sm font-medium text-gray-900'>
+                  No workflows
+                </h3>
+                <p className='mt-1 text-sm text-gray-500'>
+                  Get started by creating a new workflow.
+                </p>
               </div>
             </div>
           )}

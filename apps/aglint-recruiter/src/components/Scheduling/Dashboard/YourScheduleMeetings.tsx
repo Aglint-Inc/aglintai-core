@@ -1,7 +1,7 @@
 import { InterviewRatio } from '@devlink3/InterviewRatio';
 import { NewScheduleCard } from '@devlink3/NewScheduleCard';
 import { YourSchedules } from '@devlink3/YourSchedules';
-import { Avatar, Stack } from '@mui/material';
+import { Avatar } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -35,7 +35,7 @@ const YourScheduleMeetings = ({
       <YourSchedules
         onClickViewSchedules={{ onClick: () => onClickViewSchedules() }}
         slotScheduleCard={
-          <Stack gap={1}>
+          <div className='flex flex-col space-y-4'>
             {meetings.map((item, index) => {
               const date = new Date(item.time.start);
               const meetingDay = dayjs(date).format('ddd');
@@ -56,20 +56,14 @@ const YourScheduleMeetings = ({
                     <Avatar
                       src={item.candidate.image}
                       alt={item.candidate.name}
-                      sx={{
-                        width: '100%',
-                        height: '100%',
-                      }}
+                      className='w-full h-full'
                     />
                   }
                   slotIconMeeting={
                     <Avatar
                       src={item.meetingClient.icon}
                       alt={item.meetingClient.name}
-                      sx={{
-                        width: '24px',
-                        height: '24px',
-                      }}
+                      className='w-6 h-6'
                     />
                   }
                   textCandidateName={capitalizeAll(item.candidate.name)}
@@ -78,7 +72,7 @@ const YourScheduleMeetings = ({
                 />
               );
             })}
-          </Stack>
+          </div>
         }
       />
       <InterviewRatio />

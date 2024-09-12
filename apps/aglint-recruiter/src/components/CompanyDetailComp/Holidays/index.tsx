@@ -25,7 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { DayOffHelper } from '@devlink3/DayOffHelper';
 import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -57,14 +56,6 @@ function Holidays() {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [specificLocationOn, setSpecificLocationOn] =
     useState<specificLocationType>('all_locations');
-
-  const [openDialog, setOpenDialog] = useState(false);
-  const openCompany = () => {
-    setOpenDialog(true);
-  };
-  const closeDialog = () => {
-    setOpenDialog(false);
-  };
 
   function getDate(e: any) {
     setSelectedDate(dayjs(e).format('DD MMM YYYY'));
@@ -121,9 +112,6 @@ function Holidays() {
             <h1 className='text-lg font-semibold mb-2'>Standard Days Off</h1>
             <p className='text-gray-600'>
               List company holidays to exclude them from scheduling.
-              <Button variant='ghost' size='sm' onClick={openCompany}>
-                Learn How
-              </Button>
             </p>
           </div>
           <Button
@@ -330,16 +318,6 @@ function Holidays() {
               {isSaving === 'saving' ? 'Adding...' : 'Add'}
             </Button>
           </div>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent>
-          <DayOffHelper
-            onClickClose={{
-              onClick: closeDialog,
-            }}
-            slotButton={<Button onClick={closeDialog}>Got It</Button>}
-          />
         </DialogContent>
       </Dialog>
     </>

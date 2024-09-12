@@ -4,8 +4,8 @@ import {
   type RecruiterUserType,
   type SocialsType,
 } from '@aglint/shared-types';
-import { LoaderSvg } from '@devlink/LoaderSvg';
 import { Stack } from '@mui/material';
+import { Loader2 } from 'lucide-react';
 import posthog from 'posthog-js';
 import {
   createContext,
@@ -187,8 +187,8 @@ export { AuthContext, AuthProvider };
 
 const AuthLoader = () => {
   return (
-    <Stack height={'100vh'} justifyContent={'center'} alignItems={'center'}>
-      <LoaderSvg />
-    </Stack>
+    <div className='flex h-screen items-center justify-center w-full'>
+      <Loader2 className='animate-spin' />
+    </div>
   );
 };
