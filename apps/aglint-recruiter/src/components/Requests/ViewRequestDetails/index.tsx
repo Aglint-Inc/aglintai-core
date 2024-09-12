@@ -20,6 +20,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
+import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
+import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
@@ -49,10 +52,6 @@ import RequestDecline from './RequestNextSteps/RequestDecline';
 import ScheduleOptions from './RequestNextSteps/ScheduleOptions';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-
-import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
-import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
-import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
 
 export default function ViewRequestDetails() {
   const { query } = useRouter();
@@ -396,29 +395,31 @@ export default function ViewRequestDetails() {
             <RecentRequests applicationId={selectedRequest?.application_id} />
           </div>
           <div className='w-4/12 flex flex-col space-y-4'>
-            <Alert>
-              <Bot className='h-4 w-4' />
-              <AlertTitle>Next Step</AlertTitle>
-              <AlertDescription>
-                Here is your next step on the request.
-              </AlertDescription>
+            <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
+              <Alert>
+                <Bot className='h-4 w-4' />
+                <AlertTitle>Next Step</AlertTitle>
+                <AlertDescription>
+                  Here is your next step on the request.
+                </AlertDescription>
 
-              <div className='flex flex-row gap-2 justify-end mt-4'>
-                <ShowCode.When
-                  isTrue={
-                    selectedRequest.type === 'schedule_request' ||
-                    selectedRequest.type === 'reschedule_request'
-                  }
-                >
-                  <ScheduleOptions />
-                </ShowCode.When>
-                <ShowCode.When
-                  isTrue={selectedRequest.type === 'decline_request'}
-                >
-                  <RequestDecline />
-                </ShowCode.When>
-              </div>
-            </Alert>
+                <div className='flex flex-row gap-2 justify-end mt-4'>
+                  <ShowCode.When
+                    isTrue={
+                      selectedRequest.type === 'schedule_request' ||
+                      selectedRequest.type === 'reschedule_request'
+                    }
+                  >
+                    <ScheduleOptions />
+                  </ShowCode.When>
+                  <ShowCode.When
+                    isTrue={selectedRequest.type === 'decline_request'}
+                  >
+                    <RequestDecline />
+                  </ShowCode.When>
+                </div>
+              </Alert>
+            </ShowCode.When>
 
             <Card>
               <CardHeader className='flex justify-between items-center'>
