@@ -1,10 +1,10 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewersDash } from '@devlink3/InterviewersDash';
 import Stack from '@mui/material/Stack';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
 import { InterviewersCardList } from '@/components/Interviewers/components/_common/InterviewersCardList';
+import { InterviewersDash } from '@/components/Interviewers/components/_common/InterviewersDash';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
@@ -19,8 +19,8 @@ export const Interviewers = memo(() => {
     <InterviewersDash
       isQualifiedActive={interviewersType === 'qualified'}
       isTraineeActive={interviewersType === 'training'}
-      onClickQualified={{ onClick: () => setInterviewersType('qualified') }}
-      onClickTrainee={{ onClick: () => setInterviewersType('training') }}
+      onClickQualified={() => setInterviewersType('qualified')}
+      onClickTrainee={() => setInterviewersType('training')}
       slotInterviewersCardList={<Container />}
     />
   );

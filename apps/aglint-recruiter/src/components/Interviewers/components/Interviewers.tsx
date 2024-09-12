@@ -1,6 +1,5 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewersDash } from '@devlink3/InterviewersDash';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { memo, useState } from 'react';
@@ -12,6 +11,7 @@ import {
   type useMatricsInterviewersType,
 } from '../Hook';
 import { InterviewersCardList } from './_common/InterviewersCardList';
+import { InterviewersDash } from './_common/InterviewersDash';
 
 const LIMIT = 4;
 
@@ -20,13 +20,15 @@ export const Interviewers = memo(() => {
     'training' | 'qualified'
   >('qualified');
   return (
-    <InterviewersDash
-      isQualifiedActive={interviewersType === 'qualified'}
-      isTraineeActive={interviewersType === 'training'}
-      onClickQualified={{ onClick: () => setInterviewersType('qualified') }}
-      onClickTrainee={{ onClick: () => setInterviewersType('training') }}
-      slotInterviewersCardList={<Container type={interviewersType} />}
-    />
+    <>
+      <InterviewersDash
+        isQualifiedActive={interviewersType === 'qualified'}
+        isTraineeActive={interviewersType === 'training'}
+        onClickQualified={() => setInterviewersType('qualified')}
+        onClickTrainee={() => setInterviewersType('training')}
+        slotInterviewersCardList={<Container type={interviewersType} />}
+      />
+    </>
   );
 });
 Interviewers.displayName = 'Interviewers';
