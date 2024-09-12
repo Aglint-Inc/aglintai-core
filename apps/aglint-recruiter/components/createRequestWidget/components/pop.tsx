@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 
 import { useCreateRequest, useCreateRequestActions } from '../hooks';
+import { Actions } from './actions';
 
 export const Pop = (props: PropsWithChildren) => {
   const open = useCreateRequest((state) => state.open);
@@ -19,8 +20,13 @@ export const Pop = (props: PropsWithChildren) => {
           <Plus className='mr-2 h-4 w-4' /> New Request
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[400px] p-0' align='start' sideOffset={4}>
+      <PopoverContent
+        className='w-[400px] px-4 py-2'
+        align='start'
+        sideOffset={4}
+      >
         {props.children}
+        <Actions />
       </PopoverContent>
     </Popover>
   );
