@@ -15,7 +15,6 @@ function FilterDropDown({
   setSelectedItems,
   selectedItems,
   icon,
-  iconname,
 }: {
   title: string;
   itemList: any[];
