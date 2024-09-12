@@ -1,9 +1,9 @@
 import { useToast } from '@components/hooks/use-toast';
-import { Button } from '@components/ui/button';
 import { ToastAction } from '@components/ui/toast';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { handleUpdatePassword } from '@/context/AuthContext/utils';
 
 import { ProfileForms } from '../ProfileForms';
@@ -149,9 +149,9 @@ export const PasswordUpdate = () => {
           </div>
         )}
         <div className={`w-[200px] ${loading ? 'pointer-events-none' : ''}`}>
-          <Button
+          <UIButton
             variant='default'
-            size='lg'
+            size='md'
             disabled={
               !passwordChange ||
               password.password.value === '' ||
@@ -164,7 +164,7 @@ export const PasswordUpdate = () => {
             }}
           >
             {loading ? 'Updating...' : 'Update Password'}
-          </Button>
+          </UIButton>
         </div>
       </div>
     </div>

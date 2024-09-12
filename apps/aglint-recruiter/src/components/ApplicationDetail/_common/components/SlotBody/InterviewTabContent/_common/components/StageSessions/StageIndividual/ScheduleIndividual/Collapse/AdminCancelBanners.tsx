@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type StageWithSessions } from '@/queries/application';
 
@@ -34,15 +34,15 @@ function CancelBanners({
             iconName={'event_busy'}
             slotButtons={
               <>
-                <ButtonSolid
-                  size={'1'}
-                  textButton={'Reschedule Now'}
-                  onClickButton={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                    },
+                <UIButton
+                  variant='default'
+                  size='sm'
+                  onClick={(e) => {
+                    e.stopPropagation();
                   }}
-                />
+                >
+                  Reschedule Now
+                </UIButton>
               </>
             }
           />

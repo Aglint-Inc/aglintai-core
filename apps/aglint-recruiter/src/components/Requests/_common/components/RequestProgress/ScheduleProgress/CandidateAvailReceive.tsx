@@ -3,11 +3,11 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { Lightbulb, WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIButton } from '@/components/Common/UIButton';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
@@ -219,27 +219,25 @@ const RequestEvents = ({
               }
             >
               <div className='gap-1'>
-                <ButtonSoft
-                  size={1}
-                  color={'accent'}
-                  textButton='Schedule Interview'
-                  onClickButton={{
-                    onClick: () => {
-                      handleConfirmSlot(lastEvent.request_id);
-                    },
+                <UIButton
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    handleConfirmSlot(lastEvent.request_id);
                   }}
                   isLoading={isFetching}
-                />
-                <ButtonSoft
-                  size={1}
-                  color='accent'
-                  onClickButton={{
-                    onClick: () => {
-                      handleReReq(lastEvent.request_id);
-                    },
+                >
+                  Schedule Interview
+                </UIButton>
+                <UIButton
+                  variant='default'
+                  size='sm'
+                  onClick={() => {
+                    handleReReq(lastEvent.request_id);
                   }}
-                  textButton='Re Request Availability'
-                />
+                >
+                  Re Request Availability
+                </UIButton>
               </div>
             </ShowCode.When>
           </>

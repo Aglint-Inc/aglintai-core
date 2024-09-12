@@ -1,13 +1,13 @@
 import { Button } from '@components/ui/button';
 import { Popover } from '@components/ui/popover';
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { Filter } from '@devlink/Filter';
 import { FilterButton } from '@devlink/FilterButton';
-import { X } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
+
+import { UIButton } from '@/components/Common/UIButton';
 
 import UISelect from '../../../Common/UISelectDropDown';
 import UITextField from '../../../Common/UITextField';
@@ -141,32 +141,30 @@ const FilterComp = () => {
           isFilterEmpty={filters.length == 0}
           slotButton={
             <>
-              <ButtonGhost
-                textButton='Add Filter'
-                size={2}
-                iconName='add'
-                isLeftIcon
-                onClickButton={{
-                  onClick: () => {
-                    const remainingFilters = allFilters.filter(
-                      (alFil) => !filters.includes(alFil),
-                    );
-                    if (remainingFilters.length > 0 && filters.length < 3) {
-                      setFilters((prev) => [...prev, remainingFilters[0]]);
-                    }
-                  },
+              <UIButton
+                leftIcon={<Plus size={12} />}
+                variant='ghost'
+                size='sm'
+                onClick={() => {
+                  const remainingFilters = allFilters.filter(
+                    (alFil) => !filters.includes(alFil),
+                  );
+                  if (remainingFilters.length > 0 && filters.length < 3) {
+                    setFilters((prev) => [...prev, remainingFilters[0]]);
+                  }
                 }}
-              />
-              <ButtonSolid
-                textButton='Apply Filter'
-                size={2}
-                isDisabled={ApplyButtonDisable || isSubmitDisabled}
-                onClickButton={{
-                  onClick: () => {
-                    handleApply();
-                  },
+              >
+                Add Filter
+              </UIButton>
+              <UIButton
+                variant='default'
+                onClick={() => {
+                  handleApply();
                 }}
-              />
+                disabled={ApplyButtonDisable || isSubmitDisabled}
+              >
+                Apply Filter
+              </UIButton>
             </>
           }
           slotFilter={
