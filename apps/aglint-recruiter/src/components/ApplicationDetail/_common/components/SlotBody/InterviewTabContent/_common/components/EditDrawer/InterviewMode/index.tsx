@@ -1,8 +1,9 @@
-import { ButtonSolid } from '@devlink/ButtonSolid';
+
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { InterviewMode } from '@devlink2/InterviewMode';
 import { useRouter } from 'next/router';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -116,19 +117,19 @@ function InterviewModeComp() {
             }
             color={'error'}
             slotButtons={
-              <ButtonSolid
-                color={'error'}
-                size={1}
-                textButton={'Go to interview type'}
-                onClickButton={{
-                  onClick: () =>
-                    router.push(
-                      ROUTES['/scheduling/interview-types/[type_id]']({
-                        type_id: moduleCurrent.id,
-                      }),
-                    ),
+              <UIButton
+                variant='destructive'
+                size='sm'
+                onClick={() => {
+                  router.push(
+                    ROUTES['/scheduling/interview-types/[type_id]']({
+                      type_id: moduleCurrent.id,
+                    }),
+                  );
                 }}
-              />
+              >
+                Go to interview type
+              </UIButton>
             }
           />
         ) : (

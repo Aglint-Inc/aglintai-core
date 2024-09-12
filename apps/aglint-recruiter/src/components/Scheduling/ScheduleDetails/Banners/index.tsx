@@ -1,9 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { Stack } from '@mui/material';
 import React from 'react';
+
+import { UIButton } from '@/components/Common/UIButton';
 
 import { useScheduleDetails } from '../hooks';
 import { onClickAccept } from '../utils';
@@ -47,29 +47,28 @@ function Banners({
           slotButtons={
             <>
               {isDeclineVisible && (
-                <ButtonSoft
-                  size={'1'}
-                  textButton={'Decline'}
-                  color={'neutral'}
-                  onClickButton={{
-                    onClick: () => {
-                      setIsDeclineOpen(true);
-                    },
+                <UIButton
+                  variant='secondary'
+                  size='sm'
+                  onClick={() => {
+                    setIsDeclineOpen(true);
                   }}
-                />
+                >
+                  Decline
+                </UIButton>
               )}
 
               {isAcceptVisible && (
-                <ButtonSolid
-                  size={'1'}
-                  textButton={'Accept'}
-                  onClickButton={{
-                    onClick: async () => {
-                      await onClickAccept(sessionRelation.id);
-                      refetch();
-                    },
+                <UIButton
+                  variant='default'
+                  size='sm'
+                  onClick={async () => {
+                    await onClickAccept(sessionRelation.id);
+                    refetch();
                   }}
-                />
+                >
+                  Accept
+                </UIButton>
               )}
             </>
           }

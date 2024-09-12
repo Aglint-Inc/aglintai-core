@@ -1,6 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { BannerLoading } from '@devlink3/BannerLoading';
@@ -22,6 +20,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
@@ -399,26 +398,24 @@ const useBanners = () => {
           color={'warning'}
           slotButton={
             <>
-              <ButtonSoft
-                textButton='Ignore'
-                color={'neutral'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    push(
-                      ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }),
-                    ),
-                }}
-              />
-              <ButtonSolid
-                textButton='View'
-                color={'accent'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    handleJobUpdate({ interview_plan_warning_ignore: true }),
-                }}
-              />
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={() =>
+                  push(ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }))
+                }
+              >
+                Ignore
+              </UIButton>
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={() =>
+                  handleJobUpdate({ interview_plan_warning_ignore: true })
+                }
+              >
+                View
+              </UIButton>
             </>
           }
         />
@@ -448,26 +445,24 @@ const useBanners = () => {
           color={'warning'}
           slotButton={
             <>
-              <ButtonSoft
-                textButton='Ignore'
-                color={'neutral'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    push(
-                      ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }),
-                    ),
-                }}
-              />
-              <ButtonSolid
-                textButton='View'
-                color={'accent'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    handleJobUpdate({ interview_session_warning_ignore: true }),
-                }}
-              />
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={() =>
+                  push(ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }))
+                }
+              >
+                Ignore
+              </UIButton>
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={() =>
+                  handleJobUpdate({ interview_session_warning_ignore: true })
+                }
+              >
+                View
+              </UIButton>
             </>
           }
         />
@@ -500,14 +495,15 @@ const useBanners = () => {
           color={'error'}
           slotButton={
             <>
-              <ButtonSolid
-                textButton='View'
-                color={'error'}
-                onClickButton={{
-                  onClick: () =>
-                    push(ROUTES['/jobs/[job]/job-details']({ job: job?.id })),
-                }}
-              />
+              <UIButton
+                variant='destructive'
+                size='sm'
+                onClick={() =>
+                  push(ROUTES['/jobs/[job]/job-details']({ job: job?.id }))
+                }
+              >
+                View
+              </UIButton>
             </>
           }
         />,
@@ -530,15 +526,15 @@ const useBanners = () => {
           color={'error'}
           textContent='Hiring team not set'
           slotButton={
-            <ButtonSolid
-              size={1}
-              textButton='Set Now'
-              color={'error'}
-              onClickButton={{
-                onClick: () =>
-                  push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id })),
-              }}
-            />
+            <UIButton
+              variant='destructive'
+              size='sm'
+              onClick={() =>
+                push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id }))
+              }
+            >
+              Set Now
+            </UIButton>
           }
         />,
         // <Banner
@@ -776,24 +772,21 @@ const Banner = (props: BannerProps) => {
           iconName={'info'}
           slotButtons={
             <>
-              <ButtonSoft
-                textButton={props.secondary.title}
-                size={1}
-                color={'neutral'}
-                highContrast={'true'}
-                onClickButton={{
-                  onClick: props.secondary.onClick,
-                }}
-              />
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={props.secondary.onClick}
+              >
+                {props.secondary.title}
+              </UIButton>
 
-              <ButtonSolid
-                textButton={props.primary.title}
-                size={1}
-                color={'accent'}
-                onClickButton={{
-                  onClick: props.primary.onClick,
-                }}
-              />
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={props.primary.onClick}
+              >
+                {props.primary.title}
+              </UIButton>
             </>
           }
           textTitle={props.title}
@@ -806,15 +799,13 @@ const Banner = (props: BannerProps) => {
           color={'error'}
           iconName={'warning'}
           slotButtons={
-            <ButtonSolid
-              size={1}
-              color={'error'}
-              textButton={props.primary.title}
-              highContrast='false'
-              onClickButton={{
-                onClick: props.primary.onClick,
-              }}
-            />
+            <UIButton
+              variant='destructive'
+              size='sm'
+              onClick={props.primary.onClick}
+            >
+              {props.primary.title}
+            </UIButton>
           }
           textTitle={props.title}
           textDescription={props.description}

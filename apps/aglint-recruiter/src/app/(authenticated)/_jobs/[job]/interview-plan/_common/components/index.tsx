@@ -10,8 +10,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
@@ -205,25 +203,15 @@ const AddStageComponent = () => {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
           }
-          <ButtonSolid
-            textButton={'Add'}
-            size={2}
-            onClickButton={{ onClick: handleAddStage }}
-          />
-          <ButtonSoft
-            textButton={'Cancel'}
-            size={2}
-            onClickButton={{ onClick: () => setForm(!form) }}
-          />
+        
+          <UIButton size='sm' variant='default' onClick={() => handleAddStage() }>Add</UIButton>
+          <UIButton size='sm' variant='secondary' onClick={() => setForm(!form)}>
+            Cancel
+          </UIButton>
         </Stack>
       )}
       <Stack direction={'row'}>
-        <ButtonSolid
-          textButton={'Add Stage'}
-          isDisabled={form}
-          size={2}
-          onClickButton={{ onClick: () => setForm(!form) }}
-        />
+      <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>Add Stage</UIButton>
       </Stack>
     </>
   );
@@ -389,21 +377,8 @@ const InterviewPlan = ({
           slotInputButton={
             <Stack direction={'row'} gap={1} alignItems={'center'}>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
-              <ButtonSolid
-                size={2}
-                textButton={'Update'}
-                onClickButton={{
-                  onClick: () => handleUpdatePlan(planRef.current.value),
-                }}
-              />
-              <ButtonSoft
-                color={'neutral'}
-                size={2}
-                textButton={'Cancel'}
-                onClickButton={{
-                  onClick: handleEditPlan,
-                }}
-              />
+              <UIButton size='sm' variant='default' onClick={() => handleUpdatePlan(planRef.current.value)}>Update</UIButton>
+              <UIButton size='sm' variant='secondary' onClick={() => handleEditPlan()}>Cancel</UIButton>
             </Stack>
           }
           slotRightIconButton={
