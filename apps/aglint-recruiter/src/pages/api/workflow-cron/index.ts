@@ -78,6 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .throwOnError();
     return res.status(200).send('OK');
   } catch (error) {
+    console.error(error);
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'failed' })

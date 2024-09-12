@@ -70,11 +70,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     await cand_schedule.fetchDetails({
-      session_ids,
-      start_date_str: avail_record.date_range[0],
-      end_date_str: avail_record.date_range[1],
-      company_id: recruiter_id,
-      req_user_tz: request_assignee_tz,
+      params: {
+        session_ids,
+        start_date_str: avail_record.date_range[0],
+        end_date_str: avail_record.date_range[1],
+        company_id: recruiter_id,
+        req_user_tz: request_assignee_tz,
+      },
     });
 
     const cand_picked_slots = await executeWorkflowAction(

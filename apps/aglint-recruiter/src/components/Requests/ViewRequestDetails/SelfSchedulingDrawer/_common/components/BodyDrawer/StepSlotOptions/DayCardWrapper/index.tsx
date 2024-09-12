@@ -9,9 +9,9 @@ import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 
-import { DayCard } from '../../../DayCard';
-import { EmptySlotReason } from '../../../EmptySlotReason';
-import { ScheduleOption } from '../../../ScheduleOption';
+import { DayCard } from '../../../ui/DayCard';
+import { EmptySlotReason } from '../../../ui/EmptySlotReason';
+import { ScheduleOption } from '../../../ui/ScheduleOption';
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
 

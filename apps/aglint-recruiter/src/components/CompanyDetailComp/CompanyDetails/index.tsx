@@ -171,7 +171,7 @@ const CompanyInfoComp = () => {
                     region={loc.region}
                     country={loc.country}
                     address={loc.line1}
-                    timeZone={selectedTimeZone.label}
+                    timeZone={selectedTimeZone?.label}
                     isHeadquarter={loc.is_headquarter}
                     onEdit={() => {
                       setDialog({

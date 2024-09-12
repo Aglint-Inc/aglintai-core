@@ -2,10 +2,11 @@ import {
   type CandReqSlotsType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
-import { Stepper } from '@devlink2/Stepper';
-import { Divider, Stack } from '@mui/material';
+import { Check } from 'lucide-react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIDivider } from '@/components/Common/UIDivider';
+import { cn } from '@/utils/shadcn';
 
 import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import FinalScreen from '../FinalScreen';
@@ -75,13 +76,8 @@ function RequestAvailabilityBody({
     .flat();
 
   return (
-    <Stack
-      overflow={'auto'}
-      height={'calc(100vh - 96px)'}
-      direction={'column'}
-      // gap={'var(--space-2)'}
-    >
-      <Stack p={2} height={'80px'} direction={'row'}>
+    <div className='flex w-[500px] flex-col gap-2 p-4'>
+      <div className='flex w-full mb-2'>
         {availableSlots &&
           [...availableSlots, [{}]]?.map(
             (_ele: PlanCombinationRespType[][], i) => {
@@ -93,37 +89,21 @@ function RequestAvailabilityBody({
                   key={i}
                   isLeftLine={i !== firstIndex}
                   isRightLine={i !== lastIndex}
-                  textStepName={
-                    i === lastIndex
-                      ? 'Final Confirmation'
-                      : `Pick Slot For Day ${i + 1}`
-                  }
+                  textStepName={i === lastIndex ? 'Final' : `Day ${i + 1}`}
                   isCurrent={selectedIndex === i}
                   isCompleted={i < selectedIndex}
-                  onClickCompleted={{
-                    onClick: () => {
-                      if (i < lastIndex) {
-                        setSelectedIndex(i);
-                      }
-                    },
+                  onClickCompleted={() => {
+                    if (i < lastIndex) {
+                      setSelectedIndex(i);
+                    }
                   }}
                 />
               );
             },
           )}
-      </Stack>
-      <Divider
-        sx={{
-          margin: 0,
-        }}
-      />
-      <Stack
-        p={2}
-        height={'calc(100vh - 177px)'}
-        overflow={'auto'}
-        direction={'column'}
-        gap={'16px'}
-      >
+      </div>
+      <UIDivider />
+      <div className='flex flex-col gap-2 overflow-auto h-[calc(100vh - 123px)]'>
         <ShowCode>
           <ShowCode.When isTrue={selectedIndex === availableSlots?.length}>
             <FinalScreen />
@@ -156,9 +136,81 @@ function RequestAvailabilityBody({
             })}
           </ShowCode.Else>
         </ShowCode>
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }
 
 export default RequestAvailabilityBody;
+
+interface StepperProps {
+  textStepName: string;
+  isLeftLine?: boolean;
+  isRightLine?: boolean;
+  isCurrent?: boolean;
+  isCompleted?: boolean;
+  onClickCompleted?: () => void;
+}
+
+export function Stepper({
+  textStepName,
+  isLeftLine = true,
+  isRightLine = true,
+  isCurrent = false,
+  isCompleted = false,
+  onClickCompleted,
+}: StepperProps) {
+  return (
+    <div
+      className={`flex flex-col  w-full ${!isLeftLine ? 'items-start' : !isRightLine ? 'items-end' : 'items-center'}`}
+    >
+      <div className='flex items-center  w-full'>
+        {isLeftLine && (
+          <div
+            className={cn(
+              'w-full h-0.5 transition-all duration-200 ease-in-out',
+              isCompleted || isCurrent ? 'bg-blue-500' : 'bg-gray-300',
+            )}
+          />
+        )}
+        <div
+          className={cn(
+            'min-w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 ease-in-out',
+            isCompleted
+              ? 'bg-blue-500 border-blue-500 text-white'
+              : isCurrent
+                ? 'border-blue-500 text-blue-500'
+                : 'border-gray-300 text-gray-300',
+          )}
+          onClick={isCompleted ? onClickCompleted : undefined}
+        >
+          {isCompleted ? (
+            <Check className='w-5 h-5' />
+          ) : (
+            <span>{/* You can add step number here if needed */}</span>
+          )}
+        </div>
+        {isRightLine && (
+          <div
+            className={cn(
+              'w-full h-0.5 transition-all duration-200 ease-in-out',
+              isCompleted ? 'bg-blue-500' : 'bg-gray-300',
+            )}
+          />
+        )}
+      </div>
+      <span
+        className={cn(
+          'mt-2 text-xs font-medium ',
+          isCurrent
+            ? 'text-blue-500'
+            : isCompleted
+              ? 'text-blue-500'
+              : 'text-gray-500',
+        )}
+      >
+        {textStepName}
+      </span>
+    </div>
+  );
+}

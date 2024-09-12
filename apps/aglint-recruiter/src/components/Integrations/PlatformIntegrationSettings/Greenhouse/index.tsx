@@ -31,7 +31,7 @@ function GreenhouseSettings() {
   ];
 
   return (
-    <div className='container mx-auto max-w-3xl mt-10 space-y-4'>
+    <div className='container mt-10 space-y-4'>
       <Card>
         <CardHeader className='flex flex-row justify-between items-center space-x-4'>
           <CardTitle className='text-lg'>Sync Entities</CardTitle>

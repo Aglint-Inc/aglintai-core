@@ -1,18 +1,17 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Stack, Tooltip, Typography } from '@mui/material';
 import React from 'react';
 
+import { UIBadge } from '../UIBadge';
+
 function InterviewerAcceptDeclineIcon({
   type,
-  isIcon = false,
 }: {
   type: DatabaseTable['interview_session_relation']['accepted_status'];
-  isIcon?: boolean;
 }) {
   return (
     <>
-      {type === 'request_reschedule' && isIcon === true && (
+      {type === 'request_reschedule' && (
         <Tooltip
           title={
             <React.Fragment>
@@ -21,37 +20,15 @@ function InterviewerAcceptDeclineIcon({
           }
         >
           <Stack>
-            <GlobalBadge
-              iconName={'event_repeat'}
-              size={1}
-              showIcon={true}
-              textBadge={null}
+            <UIBadge
+              iconName={'CalendarSearch'}
+              size={'sm'}
               color={'warning'}
-              // showText={false}
             />
           </Stack>
         </Tooltip>
       )}
-      {type === 'request_reschedule' && isIcon === false && (
-        <Tooltip
-          title={
-            <React.Fragment>
-              <Typography variant='body2'>Requested Reschedule</Typography>
-            </React.Fragment>
-          }
-        >
-          <Stack>
-            <GlobalBadge
-              iconName={'event_repeat'}
-              size={1}
-              showIcon={true}
-              textBadge={null}
-              color={'warning'}
-              // showText={false}
-            />
-          </Stack>
-        </Tooltip>
-      )}
+
       {type == 'waiting' && (
         <svg
           width='12'

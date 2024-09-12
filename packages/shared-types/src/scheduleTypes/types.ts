@@ -41,7 +41,6 @@ export type SessionInterviewerType = Pick<
     | 'interview_module_relation_id'
   > & {
     pause_json: PauseJson;
-    session_relation_id: string;
   } & {
     int_tz: string;
   };

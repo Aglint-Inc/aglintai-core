@@ -104,7 +104,7 @@ const fetchSessionDetails = async ({
                 session_id: cancel.session_id,
                 session_relation_id: cancel.session_relation_id,
                 type: cancel.type,
-                request_id: null,
+                request_id: cancel.request_id,
                 application_id: cancel.application_id,
               };
             return {

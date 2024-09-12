@@ -1,10 +1,10 @@
 import { Button } from '@components/ui/button';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { MultidayCard } from '@devlink2/MultidayCard';
 import { SelectedSlot } from '@devlink2/SelectedSlot';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIBadge } from '@/components/Common/UIBadge';
 import dayjs from '@/utils/dayjs';
 
 import { useRequestAvailabilityContext } from '../../RequestAvailabilityContext';
@@ -63,8 +63,8 @@ function DaySessionCard({
               }
             >
               <Button
-                variant="secondary"
-                size="sm"
+                variant='secondary'
+                size='sm'
                 onClick={() => handleOpen(cardIndex + 1)}
               >
                 Pick Slots
@@ -82,8 +82,8 @@ function DaySessionCard({
               }
             >
               <Button
-                variant="ghost"
-                size="sm"
+                variant='ghost'
+                size='sm'
                 onClick={() => handleOpen(cardIndex + 1)}
               >
                 Change
@@ -102,7 +102,7 @@ function DaySessionCard({
                 textDate={dayjs(ele.curr_day).format('DD MMMM YYYY')}
                 slotBadge={ele.slots.map((slot, i) => {
                   return (
-                    <GlobalBadge
+                    <UIBadge
                       color={isSubmitted ? 'success' : 'warning'}
                       key={i}
                       textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}

@@ -311,7 +311,7 @@ const EditMember = ({
               <div className='space-y-2'>
                 <Label htmlFor='location'>Location</Label>
                 <Select
-                  value={form.location_id.toString()}
+                  value={form.location_id?.toString()}
                   onValueChange={(value) =>
                     setForm({ ...form, location_id: parseInt(value) })
                   }
@@ -336,7 +336,7 @@ const EditMember = ({
               <div className='space-y-2'>
                 <Label htmlFor='department'>Department</Label>
                 <Select
-                  value={form.department_id.toString()}
+                  value={form.department_id?.toString()}
                   onValueChange={(value) =>
                     setForm({ ...form, department_id: parseInt(value) })
                   }
