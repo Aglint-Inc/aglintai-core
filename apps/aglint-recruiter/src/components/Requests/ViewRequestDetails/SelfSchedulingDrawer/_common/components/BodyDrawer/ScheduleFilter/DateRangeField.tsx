@@ -7,13 +7,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { RolesPill } from '@devlink/RolesPill';
 import { TimeRangeSelector } from '@devlink3/TimeRangeSelector';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { ClockIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import toast from '@/utils/toast';
 
@@ -37,43 +37,42 @@ function DateRangeField() {
       <Typography variant='body1'>Preferred Date Ranges</Typography>
       <TimeRangeSelector
         slotButton={
-          <ButtonSoft
-            size={2}
-            isDisabled={!value?.startTime || !value?.endTime}
-            textButton={'Add'}
-            onClickButton={{
-              onClick: () => {
-                if (!value) {
-                  toast.error('Choose start time and end time then add');
-                  return;
-                }
-                if (
-                  dayjsLocal(value.startTime).valueOf() >=
-                  dayjsLocal(value.endTime).valueOf()
-                ) {
-                  toast.error(
-                    'Start time End time cannot be same and End time must be greater than start time',
-                  );
-                  return;
-                }
+          <UIButton
+            variant='default'
+            disabled={!value?.startTime || !value?.endTime}
+            onClick={() => {
+              if (!value) {
+                toast.error('Choose start time and end time then add');
+                return;
+              }
+              if (
+                dayjsLocal(value.startTime).valueOf() >=
+                dayjsLocal(value.endTime).valueOf()
+              ) {
+                toast.error(
+                  'Start time End time cannot be same and End time must be greater than start time',
+                );
+                return;
+              }
 
-                if (!value?.startTime || !value?.endTime) return;
-                setLocalFilters({
-                  preferredDateRanges: [
-                    ...localFilters.preferredDateRanges,
-                    {
-                      startTime: dayjs(value.startTime)?.toISOString(),
-                      endTime: dayjs(value.endTime)?.toISOString(),
-                    },
-                  ],
-                });
-                setValue({
-                  endTime: null,
-                  startTime: null,
-                });
-              },
+              if (!value?.startTime || !value?.endTime) return;
+              setLocalFilters({
+                preferredDateRanges: [
+                  ...localFilters.preferredDateRanges,
+                  {
+                    startTime: dayjs(value.startTime)?.toISOString(),
+                    endTime: dayjs(value.endTime)?.toISOString(),
+                  },
+                ],
+              });
+              setValue({
+                endTime: null,
+                startTime: null,
+              });
             }}
-          />
+          >
+            Add
+          </UIButton>
         }
         slotSelectedTime={
           localFilters.preferredDateRanges.length > 0 && (

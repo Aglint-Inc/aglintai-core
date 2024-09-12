@@ -86,7 +86,7 @@ export default function ViewRequestDetails() {
   if (!isPlaceholderData && status === 'success' && !selectedRequest) {
     return (
       // we need to fix this empty state
-      <Alert variant='destructive'>
+      <Alert variant='error'>
         <AlertTitle>Request not found</AlertTitle>
       </Alert>
     );
@@ -539,7 +539,7 @@ function SessionCards({
                       onClick={(e) => {
                         e.stopPropagation();
                         window.open(
-                          `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
+                          `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
                           '_blank',
                         );
                       }}

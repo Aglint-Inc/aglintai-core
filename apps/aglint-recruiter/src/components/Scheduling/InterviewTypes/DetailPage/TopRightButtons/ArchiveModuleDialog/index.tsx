@@ -154,7 +154,7 @@ function ArchiveModuleDialog({
             select in interview plans while scheduling.
           </p>
           {errors.length > 0 && (
-            <Alert variant='destructive'>
+            <Alert variant='error'>
               <AlertCircle className='h-4 w-4' />
               <AlertTitle>Unable to Archive</AlertTitle>
               <AlertDescription>

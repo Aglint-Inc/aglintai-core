@@ -277,7 +277,7 @@ const Banners = () => {
   if (status.loading) return <></>;
   if (status.description_error)
     return (
-      <Alert variant='destructive'>
+      <Alert variant='error'>
         <AlertTitle>Job description is unavailable</AlertTitle>
         <AlertDescription>
           <Button onClick={() => push(`/jobs/${job.id}/edit`)}>View</Button>

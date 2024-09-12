@@ -1,9 +1,8 @@
-
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
@@ -126,57 +125,57 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
         }
       >
         <>
-          <p className="text-sm text-muted-foreground">
-            By clicking remove the member will be permanently removed from this interview type
+          <p className='text-sm text-muted-foreground'>
+            By clicking remove the member will be permanently removed from this
+            interview type
           </p>
           {isFetching ? (
             <Stack>
-              <Skeleton className="w-full h-3 mb-2" />
-              <Skeleton className="w-full h-3 mb-2" />
-              <Skeleton className="w-3/4 h-3" />
+              <Skeleton className='w-full h-3 mb-2' />
+              <Skeleton className='w-full h-3 mb-2' />
+              <Skeleton className='w-3/4 h-3' />
             </Stack>
           ) : (
             <Stack spacing={'var(--space-2)'}>
               {isOngoingSchedules ? (
-                <GlobalBannerShort
+                <UIAlert
+                  type='small'
                   color={'error'}
-                  iconName={'warning'}
-                  textTitle={'User cannot be removed'}
-                  textDescription={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
-                  slotButtons={<></>}
+                  iconName={'CircleAlert'}
+                  title={'User cannot be removed'}
+                  description={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
                 />
               ) : (
                 <>
                   {connectedJobs.length > 0 ? (
-                    <GlobalBannerShort
+                    <UIAlert
                       color={'warning'}
-                      iconName={'error'}
-                      textTitle={`Here is a list of job's interview plan that will be impacted:`}
-                      textDescription=''
-                      slotButtons={
+                      iconName={'TriangleAlert'}
+                      title={`Here is a list of job's interview plan that will be impacted:`}
+                      actions={
                         <Stack
                           display={'flex'}
                           flexDirection={'column'}
                           spacing={'var(--space-2)'}
                         >
-                          <p className="text-sm text-muted-foreground">
+                          <p className='text-sm text-muted-foreground'>
                             {connectedJobs
                               .flatMap((job) => job.job_title)
                               .join(', ')}
                           </p>
-                          <p className="text-sm text-muted-foreground">
-                            If user exist in previous scheduled interviews, the user will be removed from those schedules.
+                          <p className='text-sm text-muted-foreground'>
+                            If user exist in previous scheduled interviews, the
+                            user will be removed from those schedules.
                           </p>
                         </Stack>
                       }
                     />
                   ) : (
-                    <GlobalBannerShort
+                    <UIAlert
                       color={'warning'}
-                      iconName={'error'}
-                      textTitle={`Note :`}
-                      textDescription='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
-                      slotButtons={<></>}
+                      iconName={'TriangleAlert'}
+                      title={`Note :`}
+                      description='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
                     />
                   )}
                 </>

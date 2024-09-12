@@ -1,7 +1,8 @@
-import { ButtonSolid } from '@devlink/ButtonSolid';
+
 import { Typography } from '@mui/material';
 
 import { RangePicker } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
+import { UIButton } from '@/components/Common/UIButton';
 
 import { useSelfSchedulingDrawer } from '../../../hooks/hooks';
 import {
@@ -43,14 +44,12 @@ function ScheduleFilter() {
       <ToogleList />
       <DateRangeField />
       <PreferedInterviewers />
-      <ButtonSolid
-        color={'neutral'}
-        onClickButton={{
-          onClick: filterSlots,
-        }}
-        textButton={'Apply Filters'}
-        size={2}
-      />
+      <UIButton
+        variant='secondary'
+        onClick={() => filterSlots()}
+      >
+        Apply Filters
+      </UIButton>
     </div>
   );
 }

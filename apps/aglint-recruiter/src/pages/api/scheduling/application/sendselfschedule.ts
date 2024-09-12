@@ -32,7 +32,7 @@ export interface ApiBodyParamsSelfSchedule {
 }
 
 export interface ApiResponseSelfSchedule {
-  data: { filter_id: string; schedule_id: string } | null;
+  data: { filter_id: string } | null;
   error: string | null;
 }
 
@@ -77,7 +77,6 @@ const sendToCandidate = async ({
 }: ApiBodyParamsSelfSchedule & {
   reqProgressLogger: ProgressLoggerType;
 }) => {
-  let filter_id;
   const selectedSessionIds = allSessions.map((ses) => ses.interview_session.id);
 
   const schedule = (
@@ -90,7 +89,6 @@ const sendToCandidate = async ({
   ).data;
 
   const candidate = schedule.candidates;
-  const schedule_id = schedule.id;
 
   const { organizer_id } = await handleMeetingsOrganizerResetRelations({
     application_id,
@@ -149,8 +147,7 @@ const sendToCandidate = async ({
 
   const res: ApiResponseSelfSchedule = {
     data: {
-      filter_id,
-      schedule_id,
+      filter_id: filterJson[0].id,
     },
     error: null,
   };

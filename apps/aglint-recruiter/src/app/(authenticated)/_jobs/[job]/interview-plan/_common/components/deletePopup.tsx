@@ -1,7 +1,7 @@
-import { DeletePopup } from '@devlink3/DeletePopup';
 import { useCallback } from 'react';
 
-import MuiPopup from '@/components/Common/MuiPopup';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 
 export type InterviewDeletePopupType = {
@@ -31,19 +31,29 @@ const InterviewDeletePopup = ({
     }
   }, [popup]);
   return (
-    <MuiPopup props={{ open, onClose: handleClose }}>
+    <>
       {popup && (
-        <DeletePopup
-          onClickCancel={{ onClick: handleClose }}
-          buttonText={'Delete'}
-          onClickDelete={{ onClick: onDelete }}
-          textTitle={`Delete ${popup.break ? 'Break for' : ''} ${popup.name}`}
-          textDescription={`By clicking "Delete", ${
+        <UIDialog
+          open={open}
+          onClose={handleClose}
+          title={`Delete ${popup.break ? 'Break for' : ''} ${popup.name}`}
+          slotButtons={
+            <>
+              <UIButton size='md' variant='secondary' onClick={handleClose}>
+                Cancel
+              </UIButton>
+              <UIButton size='md' onClick={onDelete}>
+                Delete
+              </UIButton>
+            </>
+          }
+        >
+          {`By clicking "Delete", ${
             popup.break ? 'Break for' : ''
           } ${popup.name} will be deleted from the interview plan.`}
-        />
+        </UIDialog>
       )}
-    </MuiPopup>
+    </>
   );
 };
 

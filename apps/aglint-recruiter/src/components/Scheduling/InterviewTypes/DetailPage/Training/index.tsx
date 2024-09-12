@@ -4,14 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
-import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { ModuleSetting } from '@devlink2/ModuleSetting';
 import _ from 'lodash';
 import { AlertCircle, Minus, Plus, Settings } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UIDrawer from '@/components/Common/UIDrawer';
@@ -28,6 +26,7 @@ import { TrainingSetting } from '../../_common/TraninigSetting';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { type ModuleType } from '../../types';
 import SlotTrainingMembers from '../SlotBodyComp/SlotTrainingMembers';
+import { ModuleSetting } from './ModuleSetting';
 
 function ModuleSettingComp({
   editModule,
@@ -204,19 +203,19 @@ function ModuleSettingComp({
   return (
     <div className='p-4 space-y-4 max-w-[900px]'>
       {!editModule?.settings?.require_training && (
-        <GlobalBanner
-          textTitle='To add trainee interviewers and track their progress, enable training using the button on the right.'
-          textDescription=''
+        <UIAlert
+          type='small'
+          title='To add trainee interviewers and track their progress, enable training using the button on the right.'
           color={'warning'}
-          slotButtons={
-            <Button
+          actions={
+            <UIButton
               variant='default'
               size='sm'
               disabled={isBannerLoading}
               onClick={() => enableDiabaleTraining({ type: 'enable' })}
             >
               {isBannerLoading ? 'Loading...' : 'Enable'}
-            </Button>
+            </UIButton>
           }
         />
       )}
@@ -344,166 +343,165 @@ function ModuleSettingComp({
       >
         <>
           {localModule && (
-            <ModuleSetting
-              onClickClose={{
-                onClick: () => setIsModuleSettingsDialogOpen(false),
-              }}
-              isDisable={!localModule?.settings?.require_training}
-              isRequireTrainingVisible={true}
-              isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
-              slotCheckbox={
-                <Checkbox
-                  checked={localModule?.settings?.reqruire_approval}
-                  onChange={() => {
-                    setEditLocalModule((prev) => ({
-                      ...prev,
-                      settings: {
-                        ...prev.settings,
-                        reqruire_approval: !prev.settings.reqruire_approval,
-                      },
-                    }));
-                  }}
-                />
-              }
-              slotButtonPrimary={<></>}
-              slotApprovalDoneInput={
-                <>
-                  <MembersAutoComplete
-                    error={errorApproval || selectedUsers.length === 0}
-                    renderUsers={dropDownMembers}
-                    setSelectedUsers={setSelectedUsers}
-                    selectedUsers={selectedUsers}
-                    pillColor='var(--neutral-3)'
-                    maxWidth='430px'
-                    onUserSelect={() => setErrorApproval(false)}
+            <>
+              <ModuleSetting
+                isDisable={!localModule?.settings?.require_training}
+                isRequireTrainingVisible={true}
+                isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
+                slotCheckbox={
+                  <Checkbox
+                    checked={localModule?.settings?.reqruire_approval}
+                    onChange={() => {
+                      setEditLocalModule((prev) => ({
+                        ...prev,
+                        settings: {
+                          ...prev.settings,
+                          reqruire_approval: !prev.settings.reqruire_approval,
+                        },
+                      }));
+                    }}
                   />
-                  {selectedUsers.length === 0 && (
-                    <div className='text-error-9 mb-2 pt-2 flex items-center'>
-                      <AlertCircle className='h-3 w-3 text-error-9 mr-1' />
-                      Please select users to approve or uncheck require approval
-                    </div>
-                  )}
-                </>
-              }
-              slotInputNoOfReverse={
-                <div className='flex items-center gap-1'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    disabled={localModule.settings.noReverseShadow === 1}
-                    onClick={() => {
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noReverseShadow: Number(
-                            localModule.settings.noReverseShadow - 1,
-                          ),
-                        },
-                      }));
-                    }}
-                  >
-                    <Minus className='h-4 w-4' />
-                  </Button>
-                  <Input
-                    className='w-20'
-                    type='number'
-                    value={localModule.settings.noReverseShadow}
-                    onChange={(e) =>
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noReverseShadow:
-                            Number(e.target.value) === 0
-                              ? editModule.settings.noReverseShadow
-                              : Number(e.target.value),
-                        },
-                      }))
-                    }
-                  />
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noReverseShadow: Number(
-                            localModule.settings.noReverseShadow + 1,
-                          ),
-                        },
-                      }));
-                    }}
-                  >
-                    <Plus className='h-4 w-4' />
-                  </Button>
-                </div>
-              }
-              slotInputNoOfShadow={
-                <div className='flex items-center gap-1'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    disabled={localModule.settings.noShadow === 1}
-                    onClick={() => {
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noShadow: Number(localModule.settings.noShadow - 1),
-                        },
-                      }));
-                    }}
-                  >
-                    <Minus className='h-4 w-4' />
-                  </Button>
-                  <Input
-                    className='w-20'
-                    type='number'
-                    value={localModule.settings.noShadow}
-                    onChange={(e) =>
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noShadow:
-                            Number(e.target.value) === 0
-                              ? editModule.settings.noShadow
-                              : Number(e.target.value),
-                        },
-                      }))
-                    }
-                  />
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noShadow: Number(localModule.settings.noShadow + 1),
-                        },
-                      }));
-                    }}
-                  >
-                    <Plus className='h-4 w-4' />
-                  </Button>
-                </div>
-              }
-            />
+                }
+                slotApprovalDoneInput={
+                  <>
+                    <MembersAutoComplete
+                      error={errorApproval || selectedUsers.length === 0}
+                      renderUsers={dropDownMembers}
+                      setSelectedUsers={setSelectedUsers}
+                      selectedUsers={selectedUsers}
+                      pillColor='var(--neutral-3)'
+                      maxWidth='430px'
+                      onUserSelect={() => setErrorApproval(false)}
+                    />
+                    {selectedUsers.length === 0 && (
+                      <div className='text-error-9 mb-2 pt-2 flex items-center'>
+                        <AlertCircle className='h-3 w-3 text-error-9 mr-1' />
+                        Please select users to approve or uncheck require
+                        approval
+                      </div>
+                    )}
+                  </>
+                }
+                slotInputNoOfReverse={
+                  <div className='flex items-center gap-1'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      disabled={localModule.settings.noReverseShadow === 1}
+                      onClick={() => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noReverseShadow: Number(
+                              localModule.settings.noReverseShadow - 1,
+                            ),
+                          },
+                        }));
+                      }}
+                    >
+                      <Minus className='h-4 w-4' />
+                    </Button>
+                    <Input
+                      className='w-20'
+                      type='number'
+                      value={localModule.settings.noReverseShadow}
+                      onChange={(e) =>
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noReverseShadow:
+                              Number(e.target.value) === 0
+                                ? editModule.settings.noReverseShadow
+                                : Number(e.target.value),
+                          },
+                        }))
+                      }
+                    />
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noReverseShadow: Number(
+                              localModule.settings.noReverseShadow + 1,
+                            ),
+                          },
+                        }));
+                      }}
+                    >
+                      <Plus className='h-4 w-4' />
+                    </Button>
+                  </div>
+                }
+                slotInputNoOfShadow={
+                  <div className='flex items-center gap-1'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      disabled={localModule.settings.noShadow === 1}
+                      onClick={() => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noShadow: Number(localModule.settings.noShadow - 1),
+                          },
+                        }));
+                      }}
+                    >
+                      <Minus className='h-4 w-4' />
+                    </Button>
+                    <Input
+                      className='w-20'
+                      type='number'
+                      value={localModule.settings.noShadow}
+                      onChange={(e) =>
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noShadow:
+                              Number(e.target.value) === 0
+                                ? editModule.settings.noShadow
+                                : Number(e.target.value),
+                          },
+                        }))
+                      }
+                    />
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => {
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noShadow: Number(localModule.settings.noShadow + 1),
+                          },
+                        }));
+                      }}
+                    >
+                      <Plus className='h-4 w-4' />
+                    </Button>
+                  </div>
+                }
+              />
+            </>
           )}
           {editModule?.settings?.require_training && (
             <div className='mx-2'>
-              <GlobalBannerShort
+              <UIAlert
                 color={'error'}
-                textTitle='Disable Training'
-                textDescription='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
-                slotButtons={
+                title='Disable Training'
+                description='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
+                actions={
                   <>
-                    <Button
+                    <UIButton
                       variant='destructive'
                       onClick={() => {
                         if (
@@ -520,7 +518,7 @@ function ModuleSettingComp({
                       }}
                     >
                       Disable
-                    </Button>
+                    </UIButton>
                   </>
                 }
               />

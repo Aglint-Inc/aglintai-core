@@ -10,8 +10,8 @@ import {
   setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../../../../../../../store/store';
-import { ApplicantDetailStage } from '../../ApplicationDetailStage';
-import BreakCard from '../../BreakCard';
+import { ApplicantDetailStage } from '../../ui/ApplicationDetailStage';
+import BreakCard from '../../ui/BreakCard';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
 function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {

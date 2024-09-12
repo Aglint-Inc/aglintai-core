@@ -1,7 +1,5 @@
 'use client';
 
-import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
-import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { Printer, Text } from 'lucide-react';
 
 export function InterviewMemberList({
@@ -56,13 +54,7 @@ export function InterviewMemberList({
 
         <div className='iml-new-body-wrap flex '>
           <div className='im-slot-tab-content flex justify-between w-full'>
-            {slotModuleContent ?? (
-              <>
-                <ModuleMembers />
-                <InterviewMemberSide />
-                <InterviewMemberSide />
-              </>
-            )}
+            {slotModuleContent}
           </div>
           <div className='iml-right-wrappers w-[400px] bg-[var(--neutral-2)] p-[16px] m-[16px] h-[calc(100vh_-_210px)]'>
             {slotJobsCard}

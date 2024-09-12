@@ -15,18 +15,18 @@ const badgeVariants = cva(
         secondary:
           'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
         accent:
-          'border-transparent bg-amber-300 text-amber-600 hover:bg-amber-500',
-        info: 'border-transparent bg-sky-300 text-sky-800 hover:bg-sky-500',
+          'border-transparent bg-amber-100 text-amber-600 hover:bg-amber-200',
+        info: 'border-transparent bg-sky-100 text-sky-600 hover:bg-sky-200',
         success:
-          'border-transparent bg-green-300 text-green-600 hover:bg-green-500',
+          'border-transparent bg-green-100 text-green-600 hover:bg-green-200',
         warning:
-          'border-transparent bg-yellow-300 text-yellow-600 hover:bg-yellow-500',
+          'border-transparent bg-yellow-100 text-yellow-600 hover:bg-yellow-200',
         error:
           'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
         purple:
-          'border-transparent bg-purple-300 text-purple-600 hover:bg-purple-500',
+          'border-transparent bg-purple-100 text-purple-600 hover:bg-purple-200',
         neutral:
-          'border-transparent bg-neutral-100 text-neutral-400 hover:bg-neutral-200',
+          'border-transparent bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
       },
       size: {
         default: 'h-6',
@@ -66,7 +66,7 @@ export function UIBadge({
   color,
   size,
   textBadge,
-  iconName = 'Shapes',
+  iconName,
   iconSize = 16,
   icon,
 }: UIBadgeProps) {

@@ -1,11 +1,10 @@
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
 import toast from '@/utils/toast';
@@ -93,30 +92,26 @@ function CancelScheduleDialog({
         }}
         slotButtons={
           <>
-            <ButtonSoft
-              textButton='Close'
-              color={'neutral'}
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  setIsDeclineOpen(false);
-                  closeDialog();
-                },
+            <UIButton
+              variant='secondary'
+              onClick={() => {
+                setIsDeclineOpen(false);
+                closeDialog();
               }}
-            />
-            <ButtonSolid
+            >
+              Close
+            </UIButton>
+            <UIButton
+              variant='destructive'
               isLoading={isSaving}
-              textButton='Cancel Schedule'
-              color={'error'}
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  if (reason && !isSaving) {
-                    onClickConfirm();
-                  }
-                },
+              onClick={() => {
+                if (reason && !isSaving) {
+                  onClickConfirm();
+                }
               }}
-            />
+            >
+              Cancel Schedule
+            </UIButton>
           </>
         }
         slotBody={

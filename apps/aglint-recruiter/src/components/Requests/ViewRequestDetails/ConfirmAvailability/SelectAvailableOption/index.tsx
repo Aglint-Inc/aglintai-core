@@ -2,11 +2,11 @@ import {
   type CandReqSlotsType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { cn } from '@lib/utils';
 import { Check } from 'lucide-react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDivider } from '@/components/Common/UIDivider';
-import { cn } from '@/utils/shadcn';
 
 import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import FinalScreen from '../FinalScreen';
