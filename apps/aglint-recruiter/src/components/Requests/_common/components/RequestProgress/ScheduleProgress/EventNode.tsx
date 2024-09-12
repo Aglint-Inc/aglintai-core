@@ -52,7 +52,7 @@ const EventNode = ({
   return (
     <>
       <div
-        className='relative'
+        className='relative mb-1'
         onMouseEnter={() => {
           if (tense === 'future') {
             setOnHover(true);

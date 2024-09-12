@@ -3,7 +3,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { Lightbulb, WandSparkles } from 'lucide-react';
+import { Bell, Lightbulb, WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -250,21 +250,29 @@ const RequestEvents = ({
 const WActionMenu = () => {
   const { setEditTrigger, setShowEditDialog, reqTriggerActionsMap } =
     useRequestProgressProvider();
+  let wActionAfterAvailRecive: DatabaseTable['workflow_action'][] = [];
+  if (
+    reqTriggerActionsMap['onReceivingAvailReq'] &&
+    reqTriggerActionsMap['onReceivingAvailReq'].length > 0
+  ) {
+    wActionAfterAvailRecive = [...reqTriggerActionsMap['onReceivingAvailReq']];
+    if (
+      reqTriggerActionsMap['onReceivingAvailReq'][0].target_api ===
+      'onReceivingAvailReq_agent_sendSelfScheduleRequest'
+    ) {
+      wActionAfterAvailRecive = [
+        ...wActionAfterAvailRecive,
+        ...(reqTriggerActionsMap['selfScheduleReminder'] ?? []),
+      ];
+    }
+  }
   return (
     <RequestProgressTracker
       circleIndicator='default'
       textRequestProgress='When candidate submits availability'
       slotProgress={
         <div>
-          <ShowCode.When
-            isTrue={Boolean(
-              !reqTriggerActionsMap['onReceivingAvailReq'] ||
-                Boolean(
-                  reqTriggerActionsMap['onReceivingAvailReq'] &&
-                    reqTriggerActionsMap['onReceivingAvailReq'].length === 0,
-                ),
-            )}
-          >
+          <ShowCode.When isTrue={wActionAfterAvailRecive.length === 0}>
             <Alert
               variant='default'
               className='bg-purple-100 border-purple-200 mb-4'
@@ -288,17 +296,23 @@ const WActionMenu = () => {
               </AlertDescription>
             </Alert>
           </ShowCode.When>
-          <ShowCode.When
-            isTrue={Boolean(
-              reqTriggerActionsMap['onReceivingAvailReq'] &&
-                reqTriggerActionsMap['onReceivingAvailReq'].length > 0,
-            )}
-          >
-            {Boolean(reqTriggerActionsMap['onReceivingAvailReq']) &&
-              reqTriggerActionsMap['onReceivingAvailReq'].length > 0 &&
-              reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
-                const eventAction = apiTargetToEvents[action.target_api];
-                return (
+          {wActionAfterAvailRecive.map((action) => {
+            const eventAction = apiTargetToEvents[action.target_api];
+
+            if (
+              action.target_api ===
+              'onReceivingAvailReq_agent_sendSelfScheduleRequest'
+            ) {
+              let isSelfScheduleReminderSet = false;
+              if (
+                reqTriggerActionsMap['selfScheduleReminder'] &&
+                reqTriggerActionsMap['selfScheduleReminder'].length > 0
+              ) {
+                isSelfScheduleReminderSet = true;
+              }
+
+              return (
+                <>
                   <EventNode
                     key={action.id}
                     currEventTrigger='onReceivingAvailReq'
@@ -306,9 +320,46 @@ const WActionMenu = () => {
                     reqProgresMap={{}}
                     currWAction={action}
                   />
-                );
-              })}
-          </ShowCode.When>
+                  {!isSelfScheduleReminderSet && (
+                    <div>
+                      <Alert
+                        variant='default'
+                        className='bg-purple-100 border-purple-200 mb-4'
+                      >
+                        <Lightbulb className='h-4 w-4 text-purple-500' />
+                        <AlertDescription className='flex flex-col items-start'>
+                          <p className='mb-4 w-full'>
+                            Add Riminders to candidate for follow up.
+                          </p>
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => {
+                              setEditTrigger('selfScheduleReminder');
+                              setShowEditDialog(true);
+                            }}
+                          >
+                            <Bell className='mr-2 h-4 w-4' />
+                            Schedule Reminder
+                          </Button>
+                        </AlertDescription>
+                      </Alert>
+                    </div>
+                  )}
+                </>
+              );
+            }
+
+            return (
+              <EventNode
+                key={action.id}
+                currEventTrigger='onReceivingAvailReq'
+                eventType={eventAction}
+                reqProgresMap={{}}
+                currWAction={action}
+              />
+            );
+          })}
         </div>
       }
     />

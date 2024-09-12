@@ -52,7 +52,7 @@ function ScheduleProgressTracker({
             <p className='flex-1'>{textProgress}</p>
           </div>
         </div>
-        <div className='mt-4 mb-8'>{slotRightIcon}</div>
+        <div className='mb-2 mt-2'>{slotRightIcon}</div>
         {isAiTextVisible && slotAiText && (
           <div className='mt-1'>{slotAiText}</div>
         )}

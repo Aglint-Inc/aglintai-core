@@ -100,6 +100,17 @@ const WorkflowActionDialog = () => {
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
     try {
+      if (
+        wAction.action_type == 'email' &&
+        (wAction.payload.email.subject.length == 0 ||
+          wAction.payload.email.body.length == 0)
+      ) {
+        toast({
+          title: 'Email Subject and Body cannot be empty',
+          variant: 'destructive',
+        });
+        return;
+      }
       setIsAddingAction(true);
       if (agentInstructions.length > 0) {
         const availabilityResp = await mutateAsync({
@@ -123,14 +134,15 @@ const WorkflowActionDialog = () => {
         recruiter_id: recruiter.id,
       });
       await request_workflow.refetch();
+      setShowEditDialog(false);
     } catch (err) {
       toast({
         title: 'Failed to add action',
         variant: 'destructive',
       });
+      setShowEditDialog(false);
     } finally {
       setIsAddingAction(false);
-      setShowEditDialog(false);
     }
   };
 
