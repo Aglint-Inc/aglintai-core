@@ -17,7 +17,6 @@ import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
-import { InterviewBreakCard } from '@devlink3/InterviewBreakCard';
 import { InterviewPlanDetail } from '@devlink3/InterviewPlanDetail';
 import { InterviewPlanWrap } from '@devlink3/InterviewPlanWrap';
 import {
@@ -29,7 +28,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause, Kanban } from 'lucide-react';
+import { CirclePause, Kanban, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -38,6 +37,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -62,6 +62,7 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
+import { InterviewBreakCard } from './_common/InterviewBreakCard';
 import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';
@@ -871,13 +872,11 @@ const InterviewBreak = ({
       slotEditButton={
         manageJob && (
           <>
-            <IconButtonSoft
-              iconName={'delete'}
-              size={1}
-              color={'error'}
-              onClickButton={{
-                onClick: () => handleDelete(),
-              }}
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={handleDelete}
+              icon={<Trash2 />}
             />
           </>
         )
