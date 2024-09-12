@@ -1,12 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
-import { Stack } from '@mui/material';
-import { Calendar } from 'lucide-react';
+import { Calendar, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
-import Loader from '@/components/Common/Loader';
 import SearchField from '@/components/Common/SearchField/SearchField';
 
 import { useAllSchedulesByModuleId } from '../queries/hooks';
@@ -54,16 +52,14 @@ function SchedulesModules() {
       }}
       isMenuTabVisible={false}
       slotInterview={
-        <Stack>
-          <SearchField
-            value={changeText}
-            onChange={(e) => {
-              setChangeText(e.target.value);
-            }}
-            onClear={() => setChangeText('')}
-            placeholder={'Search by session name'}
-          />
-        </Stack>
+        <SearchField
+          value={changeText}
+          onChange={(e) => {
+            setChangeText(e.target.value);
+          }}
+          onClear={() => setChangeText('')}
+          placeholder={'Search by session name'}
+        />
       }
       isUpcomingActive={false}
       textUpcomingCount={counts.upcomingCount}
@@ -72,17 +68,21 @@ function SchedulesModules() {
       slotInterviewCard={
         <>
           {isLoading && allSchedules.length === 0 ? (
-            <Stack width={'820px'} height={'calc(100vh - 200px)'}>
-              <Loader />
-            </Stack>
+            <div className='w-[820px] h-[calc(100vh-200px)] flex items-center justify-center'>
+              <Loader2 className='w-8 h-8 animate-spin' />
+            </div>
           ) : allSchedules.length === 0 ? (
-            <Stack width={'820px'}>
-              <div className="flex flex-col items-center justify-center p-8 text-center">
-                <Calendar className="w-12 h-12 text-gray-400 mb-2" />
-                <h3 className="text-lg font-medium text-gray-900 mb-1">No schedule found</h3>
-                <p className="text-sm text-gray-500">There are no schedules available at the moment.</p>
+            <div className='w-[820px]'>
+              <div className='flex flex-col items-center justify-center p-8 text-center'>
+                <Calendar className='w-12 h-12 text-muted-foreground mb-2' />
+                <h3 className='text-lg font-medium text-foreground mb-1'>
+                  No schedule found
+                </h3>
+                <p className='text-sm text-muted-foreground'>
+                  There are no schedules available at the moment.
+                </p>
               </div>
-            </Stack>
+            </div>
           ) : (
             <>
               <CalendarComp

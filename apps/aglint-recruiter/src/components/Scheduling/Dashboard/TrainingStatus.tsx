@@ -1,7 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewModuleStats } from '@devlink3/InterviewModuleStats';
-import { InterviewModuleStatsCard } from '@devlink3/InterviewModuleStatsCard';
-import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import { Stack } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -9,19 +6,24 @@ import { useRouter } from 'next/router';
 import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';
 
+import { InterviewModuleStats } from '../Common/InterviewType/InterviewModulesStats.';
+import { InterviewStatsLoader } from './interviewers';
+
 const LIMIT = 6;
 
 const TrainingStatus = () => {
   const { push } = useRouter();
   const { data } = useInterviewTrainingStatus();
   return (
-    <InterviewModuleStats
-      onClickViewAllModules={{
-        onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-      }}
-      isViewAllVisible={!!data && data.length !== 0}
-      slotInterviewModuleStatsCard={<TrainingStatusComponent />}
-    />
+    <>
+      <InterviewModuleStats
+        onClickViewAllModules={{
+          onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
+        }}
+        isViewAllVisible={!!data && data.length !== 0}
+        slotInterviewModuleStatsCard={<TrainingStatusComponent />}
+      />
+    </>
   );
 };
 
@@ -70,11 +72,17 @@ const TrainingStatusComponent = () => {
         }}
         // scheduling/module/members/0f337bba-fd0b-41ed-b356-408d9c4a8b5c
       >
-        <InterviewModuleStatsCard
-          textInterviewModule={name}
-          textQualifiedMember={qualified}
-          textTraining={training}
-        />
+        <div className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'>
+          <div className='p-2 px-4'>
+            <span>{name}</span>
+          </div>
+          <div className='p-2 px-4'>
+            <span>{qualified}</span>
+          </div>
+          <div className='p-2 px-4'>
+            <span>{training}</span>
+          </div>
+        </div>
       </Stack>
     ));
   return <>{rows}</>;

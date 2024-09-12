@@ -1,10 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { UserNameCard } from '@devlink3/UserNameCard';
-import { Stack } from '@mui/material';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import Link from 'next/link';
-
-import MuiAvatar from '@/components/Common/MuiAvatar';
 
 import { type ChatType } from '../hooks/fetch';
 
@@ -42,50 +38,43 @@ function HiringTeam({ chat }: { chat: ChatType }) {
   ];
 
   return (
-    <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
-      <Stack>
-        <p className="text-muted-foreground">
+    <div className='space-y-2 pt-2'>
+      <div>
+        <p className='text-muted-foreground'>
           {job?.job_title
             ? `Here is the hiring team for ${job?.job_title}`
             : 'Here is the hiring team'}
         </p>
-      </Stack>
+      </div>
 
       {hiringTeam?.map((item) => {
         return (
-          <>
-            <UserNameCard
-              slotAvatar={
-                <MuiAvatar
-                  level={item.name}
-                  src={item.image}
-                  variant={'rounded'}
-                  width='100%'
-                  height='100%'
-                  fontSize='20px'
-                />
-              }
-              textName={
-                <Link href={`/user/profile/${item.user_id}`}>{item.name}</Link>
-              }
-              textRole={item.role}
-            />
-          </>
+          <div key={item.user_id} className='flex items-center space-x-4'>
+            <Avatar className='rounded-full w-10 h-10'>
+              <AvatarImage src={item.image} alt={item.name} />
+              <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+              <Link
+                href={`/user/profile/${item.user_id}`}
+                className='text-blue-500 hover:underline'
+              >
+                {item.name}
+              </Link>
+              <p className='text-sm text-gray-500'>{item.role}</p>
+            </div>
+          </div>
         );
       })}
 
       {job?.id && (
-        <Link href={`/jobs/${job?.id}/hiring-team`}>
-          <Stack direction={'row'}>
-            <ButtonSoft
-              size={1}
-              color={'neutral'}
-              textButton={'View Hiring Team'}
-            />
-          </Stack>
+        <Link href={`/jobs/${job?.id}/hiring-team`} className='flex flex-row'>
+          <button className='px-4 py-2 bg-neutral-200 text-neutral-700 rounded'>
+            View Hiring Team
+          </button>
         </Link>
       )}
-    </Stack>
+    </div>
   );
 }
 

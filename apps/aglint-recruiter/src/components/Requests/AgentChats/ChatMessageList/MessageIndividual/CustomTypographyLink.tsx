@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { marked } from 'marked';
 
 const CustomTypographyLink = ({
@@ -25,7 +24,10 @@ const CustomTypographyLink = ({
   const replacedText = replaceWithLinks(text);
 
   return (
-    <Typography dangerouslySetInnerHTML={{ __html: marked(replacedText) }} />
+    <div
+      className='text-base font-normal text-gray-800'
+      dangerouslySetInnerHTML={{ __html: marked(replacedText) }}
+    />
   );
 };
 

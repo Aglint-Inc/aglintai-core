@@ -1,5 +1,4 @@
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -57,18 +56,14 @@ function ModuleMembersComp() {
           </>
         }
         slotTopbarRight={
-          <Stack
-            direction={'row'}
-            justifyItems={'center'}
-            gap={'var(--space-2)'}
-          >
+          <div className='flex flex-row items-center space-x-2'>
             {editModule?.is_archived && (
               <UIButton variant='secondary' onClick={unArcheive} size='sm'>
                 Unarchive
               </UIButton>
             )}
             <TopRightButtons editModule={editModule} refetch={refetch} />
-          </Stack>
+          </div>
         }
         slotBody={
           <>

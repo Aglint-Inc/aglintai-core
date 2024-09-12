@@ -1,6 +1,5 @@
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack } from '@mui/material';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -26,8 +25,8 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
       .filter(Boolean) || [];
 
   return (
-    <Stack width={'100%'} id={chat.id}>
-      <Stack direction={'row'} spacing={'var(--space-2)'} width={'100%'}>
+    <div className='w-full' id={chat.id}>
+      <div className='flex flex-row space-x-2 w-full'>
         {chat.type === 'user' ? (
           <MuiAvatar
             src={recruiterUser.profile_image}
@@ -40,9 +39,9 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
           <AgentIcon />
         )}
 
-        <Stack spacing={'var(--space-1)'} width={'100%'}>
-          <Stack direction={'row'} spacing={'var(--space-2)'}>
-            <p className="text-sm font-semibold">
+        <div className='flex flex-col space-y-1 w-full'>
+          <div className='flex flex-row space-x-2'>
+            <p className='text-sm font-semibold'>
               {chat.type === 'agent'
                 ? 'Aglint'
                 : getFullName(
@@ -50,18 +49,18 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
                     recruiterUser.last_name,
                   )}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className='text-sm text-muted-foreground'>
               {dayjsLocal(chat.created_at).fromNow()}
             </p>
-          </Stack>
+          </div>
           {definedUi.includes(chat.function) ? (
             <Widgets chat={chat} />
           ) : (
             <CustomTypographyLink text={chat.content} links={replaceLinks} />
           )}
-        </Stack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,9 +7,7 @@ import {
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { GlobalBadge } from '@devlink/GlobalBadge';
-import { EmptyState } from '@devlink2/EmptyState';
-import { AvatarGroup } from '@mui/material';
-import { Plus, RotateCcw } from 'lucide-react';
+import { FileQuestion, Plus, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -17,9 +16,7 @@ import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
 
-import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
 import { InterviewModuleCard } from './_common/InterviewModuleCard';
 import { InterviewModuleTable } from './_common/InterviewModuleTable';
 import CreateModuleDialog from './CreateModuleDialog';
@@ -186,31 +183,27 @@ export function InterviewTypes() {
                               slotMemberPic={
                                 <>
                                   {mod.users.length ? (
-                                    <AvatarGroup
-                                      variant='rounded'
-                                      total={mod.users.length}
-                                      sx={{
-                                        '& .MuiAvatar-root': {
-                                          width: 'var(--space-5)',
-                                          height: 'var(--space-5)',
-                                          fontSize: 12,
-                                        },
-                                      }}
-                                    >
-                                      {mod.users.slice(0, 5).map((user) => {
-                                        return (
-                                          <MuiAvatar
-                                            key={user.user_id}
+                                    <>
+                                      {mod.users.slice(0, 5).map((user) => (
+                                        <Avatar key={user.user_id}>
+                                          <AvatarImage
                                             src={user.profile_image}
-                                            level={getFullName(
+                                            alt={getFullName(
                                               user.first_name,
                                               user.last_name,
                                             )}
-                                            variant='rounded-small'
                                           />
-                                        );
-                                      })}
-                                    </AvatarGroup>
+                                          <AvatarFallback>{`${user.first_name[0].toUpperCase()}${user.last_name[0].toUpperCase()}`}</AvatarFallback>
+                                        </Avatar>
+                                      ))}
+                                      {mod.users.length > 5 && (
+                                        <Avatar>
+                                          <AvatarFallback>
+                                            +{mod.users.length - 5}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                      )}
+                                    </>
                                   ) : (
                                     <UIButton
                                       variant='ghost'
@@ -232,16 +225,12 @@ export function InterviewTypes() {
                     ) : (
                       <div className='p-2'>
                         <div className='p-4 rounded-md flex justify-center items-center min-h-[calc(100vh-166px)] bg-neutral-200'>
-                          <EmptyState
-                            slotIcons={
-                              <Icon
-                                height='60'
-                                width='80'
-                                variant='EmptyState'
-                              />
-                            }
-                            textDescription={'No interview types found.'}
-                          />
+                          <div className='flex flex-col items-center justify-center space-y-4'>
+                            <FileQuestion className='h-16 w-20 text-gray-400' />
+                            <p className='text-sm text-gray-500'>
+                              No interview types found.
+                            </p>
+                          </div>
                         </div>
                       </div>
                     )}
