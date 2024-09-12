@@ -1,9 +1,8 @@
 import type { DatabaseTable } from '@aglint/shared-types';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import React from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
 
 import { useSelectedActionsDetails } from '../ScheduleProgress/dialogCtx';
@@ -107,19 +106,16 @@ EmailBody.displayName = 'EmailBody';
 
 const SlackTemplate = () => {
   return (
-    <GlobalBannerInline
-      textContent={'A slack notification will be sent for this action.'}
-      slotButton={<></>}
+    <UIAlert
+      type='inline'
+      title={'A slack notification will be sent for this action.'}
     />
   );
 };
 
 const EndPointTemplate = () => {
   return (
-    <GlobalBannerInline
-      textContent={'Aglint system will handle this action'}
-      slotButton={<></>}
-    />
+    <UIAlert type='inline' title={'Aglint system will handle this action'} />
   );
 };
 

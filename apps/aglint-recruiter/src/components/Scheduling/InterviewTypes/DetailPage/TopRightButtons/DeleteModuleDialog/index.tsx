@@ -1,7 +1,7 @@
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
@@ -118,12 +118,12 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
       >
         <div className='space-y-2'>
           {isSessionExist ? (
-            <GlobalBannerShort
+            <UIAlert
+              type='small'
               color={'error'}
-              iconName='warning'
-              textTitle='Cannot delete interview type'
-              textDescription={`Interview type is used in job's interview plan or scheduled interviews.`}
-              slotButtons={<></>}
+              iconName='Circle'
+              title='Cannot delete interview type'
+              description={`Interview type is used in job's interview plan or scheduled interviews.`}
             />
           ) : (
             <>

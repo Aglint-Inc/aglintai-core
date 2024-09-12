@@ -10,29 +10,25 @@ import * as Icons from 'lucide-react';
 import React from 'react';
 
 interface UIAlertProps {
-  variant?: VariantProps<typeof alertVariants>['variant'];
+  color?: VariantProps<typeof alertVariants>['variant'];
   title?: React.ReactNode;
   description?: React.ReactNode;
   iconName?: keyof typeof Icons;
-  iconSize?: number;
   actions?: React.ReactNode;
   notes?: React.ReactNode;
   className?: string;
-  inline?: boolean;
-  short?: boolean;
+  type?: 'large' | 'small' | 'inline';
 }
 
 export function UIAlert({
-  variant = 'default',
+  color = 'default',
   title,
   description,
-  iconName,
-  iconSize = 20,
+  iconName = 'Calendar',
   actions,
   notes,
   className,
-  inline = false,
-  short = false,
+  type = 'large',
 }: UIAlertProps) {
   const IconComponent = iconName
     ? (Icons[iconName] as React.ElementType)
@@ -40,30 +36,69 @@ export function UIAlert({
 
   const alertClass = cn(
     'flex items-start',
-    inline ? 'flex-row items-center' : 'flex-col',
-    short ? 'py-2' : 'py-4',
+    'flex-col',
+    type === 'inline' ? 'px-2 py-1' : type === 'small' ? 'p-3' : 'p-4',
     className,
   );
 
-  const contentClass = cn(
-    'flex',
-    inline || short ? 'flex-row items-center' : 'flex-col',
-    'gap-2',
-  );
-
   return (
-    <Alert variant={variant} className={alertClass}>
-      <div className={contentClass}>
-        {IconComponent && <IconComponent size={iconSize} className='mr-2' />}
-        <div className='flex flex-col'>
-          {title && <AlertTitle>{title}</AlertTitle>}
-          {description && <AlertDescription>{description}</AlertDescription>}
+    <Alert variant={color} className={alertClass}>
+      {type === 'large' ? (
+        <div className='w-full'>
+          <div
+            className={
+              'flex flex-row gap-2 justify-between w-full items-center'
+            }
+          >
+            <div className={'flex flex-row gap-2'}>
+              <div className='p-1'>
+                {IconComponent && <IconComponent size={32} className='mr-2' />}
+              </div>
+              <div className='flex flex-col'>
+                {title && <AlertTitle>{title}</AlertTitle>}
+                {description && (
+                  <AlertDescription>{description}</AlertDescription>
+                )}
+              </div>
+            </div>
+            {actions && <div className='flex gap-2 w-full'>{actions}</div>}
+          </div>
+          {notes && (
+            <div className='mt-4 pl-2'>
+              <div className={'flex flex-row gap-2 items-center'}>
+                <Icons.NotebookPen size={16} className=' text-neutral-500' />
+                <p>Additional Note</p>
+              </div>
+              <AlertDescription>{notes}</AlertDescription>
+            </div>
+          )}
         </div>
-      </div>
-      {actions && <div className='flex gap-2 mt-2'>{actions}</div>}
-      {notes && (
-        <div className='mt-4 pl-2'>
-          <AlertDescription>{notes}</AlertDescription>
+      ) : type === 'inline' ? (
+        <div
+          className={'flex flex-row gap-2 justify-between w-full items-center'}
+        >
+          <div className={'flex flex-row gap-2'}>
+            {IconComponent && <IconComponent size={16} />}
+            <div className='flex flex-col'>
+              {title && <AlertTitle>{title}</AlertTitle>}
+            </div>
+          </div>
+          {actions && <div className='flex gap-2 w-full'>{actions}</div>}
+        </div>
+      ) : (
+        <div className={'flex flex-col gap-1 w-full'}>
+          <div className={'flex flex-row gap-2'}>
+            {IconComponent && <IconComponent size={16} />}
+            <div className='flex flex-col'>
+              {title && <AlertTitle>{title}</AlertTitle>}
+            </div>
+          </div>
+          {description && (
+            <AlertDescription className='text-xs'>
+              {description}
+            </AlertDescription>
+          )}
+          {actions && <div className='flex gap-2 w-full'>{actions}</div>}
         </div>
       )}
     </Alert>

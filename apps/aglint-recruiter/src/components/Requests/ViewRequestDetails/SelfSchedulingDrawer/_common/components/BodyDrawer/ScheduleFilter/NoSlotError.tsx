@@ -1,5 +1,6 @@
-import { GlobalBanner } from '@devlink2/GlobalBanner';
 import { Stack } from '@mui/material';
+
+import { UIAlert } from '@/components/Common/UIAlert';
 
 import { useSelfSchedulingFlowStore } from '../../../store/store';
 
@@ -20,18 +21,16 @@ function NoSlotError({
 
   return (
     <Stack padding={'var(--space-4)'}>
-      <GlobalBanner
+      <UIAlert
         color={'error'}
-        textTitle={'No available times found with the current settings.'}
-        textDescription={`To proceed, please try one of the following : 
+        title={'No available times found with the current settings.'}
+        description={`To proceed, please try one of the following : 
                       ${!filters.isNoConflicts && totalNumberHardConflicts ? `Enable "Show no conflict suggestions".` : ''}
                       ${!filters.isSoftConflicts && totalNumberNoConflicts ? `Enable "Show soft conflict suggestions".` : ''}
                       ${!filters.isHardConflicts && totalNumberOutsideWorkHours ? `Enable "Show hard conflict suggestions".` : ''}
                       ${!filters.isOutSideWorkHours && totalNumberSoftConflicts ? `Enable "Show outside work hours suggestions".` : ''}
                       Change the interviewer by editing the interview plan.
                       Extend the date range for the interviewer.`}
-        isDescriptionVisible={true}
-        slotButtons={<></>}
       />
     </Stack>
   );

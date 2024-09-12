@@ -1,11 +1,11 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { RescheduleCard } from '@devlink3/RescheduleCard';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import ROUTES from '@/utils/routing/routes';
 
 import BookingConfirmation from './BookingConfirmation';
@@ -45,10 +45,10 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           }
         />
         {checkDate && (
-          <GlobalBannerInline
+          <UIAlert
             color={'warning'}
-            textContent={'Proposed date is expired'}
-            slotButton={<></>}
+            title={'Proposed date is expired'}
+            type='inline'
           />
         )}
       </Stack>

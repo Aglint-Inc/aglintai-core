@@ -10,7 +10,6 @@ import {
 import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { DcPopup } from '@devlink/DcPopup';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@devlink2/ScheduleInterviewPop';
 import { cn } from '@lib/utils';
 import { Dialog, Stack, TextField } from '@mui/material';
@@ -22,6 +21,7 @@ import type { DateRange } from 'react-day-picker';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
+import { UIAlert } from '@/components/Common/UIAlert';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useApplication } from '@/context/ApplicationContext';
@@ -147,9 +147,10 @@ function DialogSchedule() {
         slotBody={
           <>
             {sessionHasRequest.length > 0 && (
-              <GlobalBannerShort
+              <UIAlert
+                type={'small'}
                 color={'warning'}
-                slotButtons={
+                actions={
                   <>
                     <ButtonSoft
                       size={1}
@@ -166,10 +167,10 @@ function DialogSchedule() {
                     />
                   </>
                 }
-                textTitle={`${sessionHasRequest
+                title={`${sessionHasRequest
                   .map((session) => session.interview_session.name)
                   .join(', ')} already has a schedule request.`}
-                textDescription={`Please wait for the request to be accepted or rejected before creating a new request.`}
+                description={`Please wait for the request to be accepted or rejected before creating a new request.`}
               />
             )}
 

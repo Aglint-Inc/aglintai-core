@@ -1,11 +1,11 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import axios from 'axios';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -105,10 +105,10 @@ function EmailPreviewSelfSchedule() {
       ) : (
         <>
           <div className='flex flex-row justify-between items-center w-full gap-4'>
-            <GlobalBannerInline
-              textContent='This is a preview only. All actions in this email are disabled.'
-              iconName='info'
-              slotButton={<></>}
+            <UIAlert
+              type='inline'
+              title='This is a preview only. All actions in this email are disabled.'
+              iconName='Info'
               color={'warning'}
             />
             <div className='flex flex-row space-x-2 items-start'>

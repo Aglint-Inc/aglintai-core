@@ -11,10 +11,10 @@ export const alertVariants = cva(
         default: 'bg-background text-foreground',
         error:
           'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
-        info: 'bg-blue-50 border border-blue-500 text-blue-800',
+        info: 'bg-sky-50 border border-sky-500 text-sky-800',
         success: 'bg-green-50 border border-green-500 text-green-800',
         warning: 'bg-yellow-50 border border-yellow-500 text-yellow-800',
-        neutral: 'bg-neutral-50 border border-neutral-500 text-neutral-800',
+        neutral: 'bg-neutral-50 border border-neutral-300 text-neutral-500',
         purple: 'bg-purple-50 border border-purple-500 text-purple-800',
       },
     },
