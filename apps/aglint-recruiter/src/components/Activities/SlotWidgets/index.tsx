@@ -61,7 +61,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           onClick={() => {
             router.push(
               ROUTES['/scheduling/view']() +
-                `?meeting_id=${meeting_id}&tab=candidate_details`,
+                `?meeting_id=${meeting_id}&tab=job_details`,
             );
           }}
         >

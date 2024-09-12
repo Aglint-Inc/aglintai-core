@@ -161,7 +161,7 @@ Unavailable for interviews on Tuesdays.`);
                   <UpcomingInterviewList
                     onClick={() =>
                       router.push(
-                        `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
+                        `/scheduling/view?meeting_id=${schedule.id}&tab=job_details`,
                       )
                     }
                     key={schedule.application_id}
