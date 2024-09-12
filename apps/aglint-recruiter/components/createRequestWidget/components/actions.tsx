@@ -50,9 +50,11 @@ const Buttons = () => {
 
 const getKey = (key: Menus) => {
   switch (key) {
-    case 'jobs':
-      return 'Job';
     case 'requestType':
       return 'Request type';
+    case 'jobs':
+      return 'Job';
+    case 'candidates':
+      return 'Candidate';
   }
 };

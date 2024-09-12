@@ -2,20 +2,23 @@ import { CommandList } from '@components/ui/command';
 import { CommandItem } from '@components/ui/command';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { CommandEmpty } from 'cmdk';
-import { Briefcase } from 'lucide-react';
+import { User } from 'lucide-react';
 import { type PropsWithChildren, Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { useCreateRequestActions, useCreateRequestJobs } from '../../hooks';
+import {
+  useCreateRequestActions,
+  useCreateRequestCandidates,
+} from '../../hooks';
 
 const containerHeight = 200;
 
 export const List = () => {
   return (
     <ErrorBoundary
-      fallback={<Placeholder>Error while loading jobs</Placeholder>}
+      fallback={<Placeholder>Error while loading candidates</Placeholder>}
     >
-      <Suspense fallback={<Placeholder>Loading job...</Placeholder>}>
+      <Suspense fallback={<Placeholder>Loading candidates...</Placeholder>}>
         <Content />
       </Suspense>
     </ErrorBoundary>
@@ -24,8 +27,8 @@ export const List = () => {
 
 const Content = () => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useCreateRequestJobs();
-  const { selectJob } = useCreateRequestActions();
+    useCreateRequestCandidates();
+  const { selectCandidate } = useCreateRequestActions();
   const allRows = data.pages.flatMap((d) => d.items);
   const parentRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
@@ -64,14 +67,14 @@ const Content = () => {
       <div className={`relative w-full h-[${rowVirtualizer.getTotalSize()}px]`}>
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const isLoaderRow = virtualRow.index > allRows.length - 1;
-          const job = allRows[virtualRow.index];
-          if (!job) return <></>;
-          const { id, job_title } = job;
+          const candidate = allRows[virtualRow.index];
+          if (!candidate) return <></>;
+          const { id, name } = candidate;
           return (
             <CommandItem
               key={virtualRow.index}
-              value={`${id} ${job_title}`}
-              onSelect={() => selectJob({ id, label: job_title })}
+              value={`${id} ${name}`}
+              onSelect={() => selectCandidate({ id, label: name })}
               className={`absolute top-0 left-0 w-full h-[${virtualRow.size}px]`}
               style={{
                 transform: `translateY(${virtualRow.start}px)`,
@@ -85,8 +88,8 @@ const Content = () => {
                 )
               ) : (
                 <>
-                  <Briefcase className='mr-2 h-4 w-4' />
-                  <span>{job_title}</span>
+                  <User className='mr-2 h-4 w-4' />
+                  <span>{name}</span>
                 </>
               )}
             </CommandItem>
