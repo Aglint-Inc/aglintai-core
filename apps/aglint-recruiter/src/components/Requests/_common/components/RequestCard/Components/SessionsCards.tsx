@@ -1,6 +1,8 @@
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { Stack } from '@mui/material';
 
+import { Stack } from '@mui/material';
+import { ArrowUpRight } from 'lucide-react';
+
+import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function SessionsCards({
@@ -21,22 +23,20 @@ function SessionsCards({
         <Stack direction={'row'} spacing={1}>
           {sessions.map(({ name, id }, i) => {
             return (
-              <ButtonSoft
+              <UIButton
                 key={id ?? i}
-                size={1}
-                color={`neutral`}
-                textButton={capitalizeFirstLetter(name)}
-                isRightIcon={true}
-                iconName={'north_east'}
-                onClickButton={{
-                  onClick: () => {
-                    window.open(
-                      `${process.env.NEXT_PUBLIC_HOST_NAME}/jobs/${job_id}/application/${application_id}?tab=interview`,
-                      '_blank',
-                    );
-                  },
+                variant='secondary'
+                size='sm'
+                rightIcon={<ArrowUpRight/>}
+                onClick={() => {
+                  window.open(
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/jobs/${job_id}/application/${application_id}?tab=interview`,
+                    '_blank',
+                  );
                 }}
-              />
+              >
+                {capitalizeFirstLetter(name)}
+              </UIButton>
             );
           })}
         </Stack>

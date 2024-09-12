@@ -1,21 +1,20 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { StatusBadge } from '@devlink2/StatusBadge';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
 import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { NewScheduleDetail } from '@devlink3/NewScheduleDetail';
-import { UserNameCard } from '@devlink3/UserNameCard';
-import { Stack } from '@mui/material';
-import dayjs from 'dayjs';
+import { SquareArrowOutUpRight, Users } from 'lucide-react';
 import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import IconSessionType from '../../../Common/Icons/IconSessionType';
+import { MeetingStatusBadge } from '../../_common/components/MeetingStatusBadge';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
@@ -55,59 +54,57 @@ function Overview() {
         }
         slotInterviewerList={
           confirmedUsers?.length > 0 ? (
-            confirmedUsers?.map((item) => {
+            confirmedUsers?.map((item, i) => {
               return (
-                <>
-                  <InterviewerListCard
-                    item={item}
-                    schedule={schedule}
-                    cancelReasons={cancelReasons}
-                  />
-                </>
+                <InterviewerListCard
+                  key={i}
+                  item={item}
+                  schedule={schedule}
+                  cancelReasons={cancelReasons}
+                />
               );
             })
           ) : (
-            <GlobalEmptyState
-              iconName='groups'
-              textDesc={
-                'Interviewers will be decided once interview is confirmed'
-              }
-              size={8}
-              styleEmpty={{
-                style: {
-                  backgroundColor: 'var(--neutral-2)',
-                  color: 'var(--neutral-11)',
-                },
-              }}
-            />
+            <Card className='bg-neutral-100 text-neutral-700 p-4 flex items-center justify-center'>
+              <Users className='w-8 h-8 mr-2' />
+              <p>Interviewers will be decided once interview is confirmed</p>
+            </Card>
           )
         }
         slotHiringTeamList={<AllRolesMeetings />}
         slotOrganizerList={
           schedule.organizer && (
-            <UserNameCard
-              textRole={schedule.organizer.position}
-              textName={
-                <Link href={`/user/profile/${schedule.organizer.user_id}`}>
+            <div className='flex items-center space-x-4'>
+              <Avatar className='h-10 w-10'>
+                <AvatarImage
+                  src={schedule.organizer.profile_image}
+                  alt={getFullName(
+                    schedule.organizer.first_name,
+                    schedule.organizer.last_name,
+                  )}
+                />
+                <AvatarFallback>
+                  {getFullName(
+                    schedule.organizer.first_name,
+                    schedule.organizer.last_name,
+                  ).charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <Link
+                  href={`/user/profile/${schedule.organizer.user_id}`}
+                  className='font-medium'
+                >
                   {getFullName(
                     schedule.organizer.first_name,
                     schedule.organizer.last_name,
                   )}
                 </Link>
-              }
-              slotAvatar={
-                <MuiAvatar
-                  level={getFullName(
-                    schedule.organizer.first_name,
-                    schedule.organizer.last_name,
-                  )}
-                  src={schedule.organizer.profile_image}
-                  variant={'rounded'}
-                  width='100%'
-                  height='100%'
-                />
-              }
-            />
+                <p className='text-sm text-gray-500'>
+                  {schedule.organizer.position}
+                </p>
+              </div>
+            </div>
           )
         }
         textDate={
@@ -136,40 +133,23 @@ function Overview() {
         }
         textPanelName={schedule.interview_session.name}
         slotStatusBadge={
-          <StatusBadge
-            isCancelledVisible={
-              schedule.interview_meeting.status === 'cancelled'
-            }
-            isCompletedVisible={
-              schedule.interview_meeting.status === 'completed'
-            }
-            isConfirmedVisible={
-              schedule.interview_meeting.status === 'confirmed'
-            }
-            isInProgressVisible={false}
-            isWaitingVisible={schedule.interview_meeting.status === 'waiting'}
-          />
+          <MeetingStatusBadge status={schedule.interview_meeting.status} />
         }
         slotInterviewTypeButton={
-          <Stack direction={'row'}>
-            <ButtonSoft
-              size={1}
-              color={'accent'}
-              textButton={schedule?.interview_module?.name}
-              isRightIcon={true}
-              iconName='north_east'
-              iconSize={3}
-              onClickButton={{
-                onClick: () => {
-                  checkPermissions(['interview_types']) &&
-                    window.open(
-                      `/scheduling/interview-types/${schedule.interview_session.module_id}?tab=qualified`,
-                      '_blank',
-                    );
-                },
-              }}
-            />
-          </Stack>
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => {
+              checkPermissions(['interview_types']) &&
+                window.open(
+                  `/scheduling/interview-types/${schedule.interview_session.module_id}?tab=qualified`,
+                  '_blank',
+                );
+            }}
+          >
+            {schedule?.interview_module?.name}
+            <SquareArrowOutUpRight className='w-4 h-4 ml-2' />
+          </Button>
         }
         slotCandidateList={
           <GlobalUserDetail
@@ -189,23 +169,16 @@ function Overview() {
         slotJoinMeeting={
           schedule?.interview_meeting?.status === 'confirmed' &&
           schedule?.interview_meeting?.meeting_link && (
-            <ButtonSoft
-              color={'accent'}
-              size={1}
-              textButton={'Join Meeting'}
-              isLeftIcon={false}
-              isRightIcon={true}
-              iconName='north_east'
-              iconSize={3}
-              onClickButton={{
-                onClick: () => {
-                  window.open(
-                    schedule.interview_meeting.meeting_link,
-                    '_blank',
-                  );
-                },
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => {
+                window.open(schedule.interview_meeting.meeting_link, '_blank');
               }}
-            />
+            >
+              Join Meeting
+              <SquareArrowOutUpRight className='w-4 h-4 ml-2' />
+            </Button>
           )
         }
         textDuration={getBreakLabel(

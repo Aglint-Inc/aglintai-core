@@ -1,6 +1,14 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { Card } from '@components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table';
+import { FileText, Upload } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useApplicationsActions, useJob } from '@/job/hooks';
@@ -73,57 +81,80 @@ export const ImportCsv: React.FC = () => {
   };
 
   return (
-    <Card className='bg-white rounded-lg h-full p-4'>
-      <div className='space-y-4 h-full'>
+    <div className='border-0 shadow-none h-[500px] flex flex-col'>
+      <div className='flex-grow overflow-auto p-6'>
         {isLoading ? (
-          <div className='flex justify-center items-center w-full h-[200px]'>
-            <p>Loading...</p>
+          <div className='flex justify-center items-center w-full h-full'>
+            <p className='text-gray-500'>Loading...</p>
           </div>
         ) : (
-          <div>
-            <input
-              type='file'
-              accept='.csv'
-              onChange={handleFileUpload}
-              className='mb-4'
-            />
-            <p className='text-sm mb-4'>{`Listing ${candidates.length} candidates`}</p>
-            {candidates.length > 0 ? (
-              <CandidatesListTable candidates={candidates} />
-            ) : (
-              <div className='border-2 border-dashed border-gray-300 p-6 text-center'>
-                <p>Upload a CSV file to import candidates</p>
-              </div>
-            )}
-            <Button onClick={handleImport} disabled={candidates.length === 0}>
-              Import
-            </Button>
+          <div className='space-y-6 h-full flex flex-col'>
+            <div className='flex items-center justify-center w-full'>
+              <label
+                htmlFor='file-upload'
+                className='flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer'
+              >
+                <Upload className='w-5 h-5 mr-2 text-gray-400' />
+                Select CSV file
+                <input
+                  id='file-upload'
+                  type='file'
+                  className='hidden'
+                  accept='.csv'
+                  onChange={handleFileUpload}
+                />
+              </label>
+            </div>
+            <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
+            <div className='flex-grow overflow-auto'>
+              {candidates.length > 0 ? (
+                <CandidatesListTable candidates={candidates} />
+              ) : (
+                <div className='border border-dashed border-gray-300 p-6 text-center rounded-lg'>
+                  <FileText className='w-12 h-12 text-gray-400 mx-auto mb-4' />
+                  <p className='text-gray-500'>
+                    Upload a CSV file to import candidates
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
-    </Card>
+      <div className='p-4'>
+        <Button
+          onClick={handleImport}
+          disabled={candidates.length === 0}
+          className='w-full'
+        >
+          Import
+        </Button>
+      </div>
+    </div>
   );
 };
 
 const CandidatesListTable: React.FC<{ candidates: Candidate[] }> = ({
   candidates,
 }) => (
-  <table className='w-full mb-4'>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-      </tr>
-    </thead>
-    <tbody>
-      {candidates.map((candidate, index) => (
-        <tr key={index}>
-          <td>{`${candidate.first_name} ${candidate.last_name}`}</td>
-          <td>{candidate.email}</td>
-          <td>{candidate.phone}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <div className='overflow-auto max-h-[300px]'>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Phone</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {candidates.map((candidate, index) => (
+          <TableRow key={index}>
+            <TableCell>{`${candidate.first_name} ${candidate.last_name}`}</TableCell>
+            <TableCell>{candidate.email}</TableCell>
+            <TableCell>{candidate.phone}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </div>
 );

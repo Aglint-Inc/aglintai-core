@@ -2,17 +2,16 @@ import type {
   EmailTemplateAPi,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
-import { Stack, Typography } from '@mui/material';
+import { ScrollArea } from '@components/ui/scroll-area';
 import axios from 'axios';
+import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIButton } from '@/components/Common/UIButton';
 
-import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
 
@@ -64,93 +63,72 @@ function FinalScreen() {
     }
   }, []);
   return (
-    <div>
-      <Stack
-        overflow={'auto'}
-        height={'calc(100vh - 96px)'}
-        direction={'column'}
-      >
-        <EmailPreviewOnScheduling
-          textSlotCount={'Please confirm the selected schedule'}
-          slotButton={<></>}
-          textEmailPreview={
-            <Stack spacing={1} direction={'column'}>
-              <Typography>
-                {
-                  'While clicking send to candidate ,an email containing the following message will be sent to the candidate:'
-                }
-              </Typography>
-              <Stack direction={'row'} spacing={1} justifyItems={'start'}>
-                <ButtonSoft
-                  size={1}
-                  textButton={'Edit Email Template'}
-                  color={'neutral'}
-                  onClickButton={{
-                    onClick: () => {
-                      window.open(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email`,
-                      );
-                    },
-                  }}
-                />
-                <IconButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  iconName={'refresh'}
-                  onClickButton={{
-                    onClick: getEmail,
-                  }}
-                />
-              </Stack>
-            </Stack>
-          }
-          slotEmailPreview={
-            <ShowCode>
-              <ShowCode.When isTrue={fetching}>
-                <Loader />
-              </ShowCode.When>
-              <ShowCode.Else>
-                <iframe
-                  width={'470px'}
-                  height={'620px'}
-                  color='white'
-                  srcDoc={emailData?.html}
-                  title='Preview Email'
-                />
-              </ShowCode.Else>
-            </ShowCode>
-          }
-          slotSelectedScheduleOptions={
-            <>
-              {selectedDateSlots?.map((item, index) => {
-                const date = item.selected_dates[0].curr_date;
-                return (
-                  <DayCardWrapper
-                    key={index}
-                    selectedCombIds={[]}
-                    item={{
-                      date_range: [date],
-                      plans: item.selected_dates[0].plans,
-                    }}
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    onClickSelect={() => {}}
-                    isDayCollapseNeeded={false}
-                    isSlotCollapseNeeded={false}
-                    index={index}
-                    isRadioNeeded={false}
-                    isDayCheckboxNeeded={false}
-                    isSlotCheckboxNeeded={false}
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    setSelectedCombIds={() => {}}
-                  />
-                );
-              })}
-            </>
-          }
-          showSelectedSchedules={true}
-        />
-      </Stack>
-    </div>
+    <ScrollArea className='w-full h-[calc(100vh-123px)] flex flex-col gap-2'>
+      <p>Please confirm the selected schedule</p>
+      <div className='flex flex-col gap-2'>
+        {selectedDateSlots?.map((item, index) => {
+          const date = item.selected_dates[0].curr_date;
+          return (
+            <DayCardWrapper
+              key={index}
+              selectedCombIds={[]}
+              item={{
+                date_range: [date],
+                plans: item.selected_dates[0].plans,
+              }}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onClickSelect={() => {}}
+              isDayCollapseNeeded={false}
+              isSlotCollapseNeeded={false}
+              index={index}
+              isRadioNeeded={false}
+              isDayCheckboxNeeded={false}
+              isSlotCheckboxNeeded={false}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              setSelectedCombIds={() => {}}
+            />
+          );
+        })}
+      </div>
+      <div className='flex flex-col gap-2'>
+        <p>
+          While clicking send to candidate ,an email containing the following
+          message will be sent to the candidate:
+        </p>
+        <div className='flex flex-row gap-1 justify-start mb-2'>
+          <UIButton
+            size={'sm'}
+            variant='secondary'
+            onClick={() => {
+              window.open(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email`,
+              );
+            }}
+          >
+            Edit Email Template
+          </UIButton>
+          <UIButton variant='ghost' size='sm' onClick={getEmail}>
+            <RotateCw className='h4 w-4' />
+          </UIButton>
+        </div>
+      </div>
+      <ShowCode>
+        <ShowCode.When isTrue={fetching}>
+          <div className='flex h-40 w-full items-center justify-center'>
+            <Loader />
+          </div>
+        </ShowCode.When>
+        <ShowCode.Else>
+          <iframe
+            width={'425px'}
+            height={'620px'}
+            color='white'
+            srcDoc={emailData?.html}
+            title='Preview Email'
+          />
+        </ShowCode.Else>
+      </ShowCode>
+    </ScrollArea>
   );
 }
 

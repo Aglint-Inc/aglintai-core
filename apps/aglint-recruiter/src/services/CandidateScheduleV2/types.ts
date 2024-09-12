@@ -65,3 +65,9 @@ export type SlotIntDetails = SessionInterviewerApiRespType & {
   session_id: string;
   curr_day_work_hrs: TimeDurationType[];
 };
+
+export type DbFetchScheduleApiDetailsParams = {
+  params: ScheduleDBDetailsParams;
+  is_fetch_meeting_data?: boolean;
+  include_all_module_ints?: boolean;
+};

@@ -1,6 +1,7 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
+
 import React, { type Dispatch } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { useScheduleDetails } from './hooks';
@@ -23,16 +24,15 @@ function ButtonGroup({
   return (
     <>
       {isCancelButtonVisible && (
-        <ButtonSoft
-          color={'neutral'}
-          size={1}
-          textButton={'Cancel Schedule'}
-          onClickButton={{
-            onClick: () => {
-              setIsCancelOpen(true);
-            },
+        <UIButton
+          variant='secondary'
+          size='sm'
+          onClick={() => {
+            setIsCancelOpen(true);
           }}
-        />
+        >
+          Cancel Schedule
+        </UIButton>
       )}
       {/* {checkPermissions(['scheduling_actions']) && (
         <ButtonSoft

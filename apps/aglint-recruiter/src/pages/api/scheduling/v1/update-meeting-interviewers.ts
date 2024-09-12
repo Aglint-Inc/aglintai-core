@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ) {
         updated_int.is_confirmed = false;
       }
-      if (int.session_relation_id === parsed_body.new_int_sesn_reln_id) {
+      if (int.user_id === parsed_body.new_int_user_id) {
         updated_int.is_confirmed = true;
       }
       return updated_int;
@@ -79,6 +79,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }),
       ),
     );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session_cancel')
+        .update({
+          is_resolved: true,
+        })
+        .eq('session_relation_id', parsed_body.curr_declined_int_sesn_reln_id),
+    );
 
     return res.status(200).json('ok');
   } catch (error) {
@@ -94,7 +102,7 @@ export default handler;
 const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   const { session_id } = payload;
 
-  const [meeting_details, session_intes] = await Promise.all([
+  const [meeting_details] = await Promise.all([
     (async () => {
       const [meeting_details] = supabaseWrap(
         await supabaseAdmin
@@ -115,16 +123,19 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         schedule_auth: rec_auth.schedule_auth,
       };
     })(),
-    (async () => {
-      const session_intes = supabaseWrap(
-        await supabaseAdmin
-          .from('meeting_interviewers')
-          .select()
-          .eq('session_id', session_id),
-      );
-      return session_intes;
-    })(),
   ]);
+
+  await createSesnRelnIfNotExists({
+    module_id: meeting_details.module_id,
+    session_id,
+    user_id: payload.new_int_user_id,
+  });
+  const session_intes = supabaseWrap(
+    await supabaseAdmin
+      .from('meeting_interviewers')
+      .select()
+      .eq('session_id', session_id),
+  );
 
   const meeting_organizer_auth: Omit<
     CalEventAttendeesAuthDetails,
@@ -176,13 +187,11 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   }
 
   if (
-    !session_ints_auth.find(
-      (int) => int.session_relation_id === payload.new_int_sesn_reln_id,
-    )
+    !session_ints_auth.find((int) => int.user_id === payload.new_int_user_id)
   ) {
     throw new CApiError(
       'SERVER_ERROR',
-      `${payload.new_int_sesn_reln_id} not exist in meeting_interviewers`,
+      `${payload.new_int_user_id} not exist in meeting_interviewers`,
     );
   }
   return {
@@ -212,3 +221,38 @@ const updateInterviewers = async ({ id, is_confirmed }) => {
 // get meeting organizer and meeting attendees and candidate
 // if organizer need to be changed  update organizer
 // if attendeed need to be changed update attendees
+const createSesnRelnIfNotExists = async ({
+  module_id,
+  user_id,
+  session_id,
+}: {
+  module_id: string;
+  user_id: string;
+  session_id: string;
+}) => {
+  const [new_int_module_reln] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_module_relation')
+      .select()
+      .eq('user_id', user_id)
+      .eq('module_id', module_id),
+  );
+  const [sesnReln] = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session_relation')
+      .select()
+      .eq('interview_module_relation_id', new_int_module_reln.id),
+    false,
+  );
+  if (!sesnReln) {
+    await supabaseWrap(
+      await supabaseAdmin.from('interview_session_relation').insert({
+        interview_module_relation_id: new_int_module_reln.id,
+        is_confirmed: false,
+        session_id,
+        training_type: 'qualified',
+        interviewer_type: 'qualified',
+      }),
+    );
+  }
+};

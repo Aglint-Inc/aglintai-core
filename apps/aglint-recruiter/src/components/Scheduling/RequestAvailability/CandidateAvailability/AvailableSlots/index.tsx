@@ -3,16 +3,14 @@ import {
   type DatabaseTable,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { Page404 } from '@devlink/Page404';
+import { Button } from '@components/ui/button';
 import { CalendarPick } from '@devlink2/CalendarPick';
 import { DatePicker } from '@devlink2/DatePicker';
 import { PickSlotDay } from '@devlink2/PickSlotDay';
 import { TimePick } from '@devlink2/TimePick';
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { Calendar } from 'lucide-react';
+import { AlertCircle, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -43,6 +41,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
     setIsSubmitted,
     setCandidateRequestAvailability,
   } = useRequestAvailabilityContext();
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
   const handleClickDate = ({
     selectedDate,
@@ -271,22 +270,20 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   }, [candidateRequestAvailability]);
   if (candidateRequestAvailability) {
     return (
-      <Stack bgcolor={'var(--white-a7'}>
+      <div className='bg-white bg-opacity-70'>
         <PickSlotDay
           isPickedCalendarActive={markAsAllDateSelected}
           textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
           isPickSlotIconActive={markAsAllSlotsSelected}
           textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
           slotPrimaryButton={
-            <ButtonSolid
-              size={2}
-              onClickButton={{
-                onClick: handleSubmit,
-              }}
-              textButton={singleDay ? 'Submit Availability' : 'Done'}
-              isLoading={loading}
-              isDisabled={!markAsAllSlotsSelected}
-            />
+            <Button
+              size='lg'
+              onClick={handleSubmit}
+              disabled={!markAsAllSlotsSelected}
+            >
+              {singleDay ? 'Submit Availability' : 'Done'}
+            </Button>
           }
           slotCalenderPick={
             <ShowCode>
@@ -469,10 +466,14 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                         .length === 0
                     }
                   >
-                    <div className="flex flex-col items-center justify-center p-8 text-center">
-                      <Calendar className="w-12 h-12 text-gray-400 mb-2" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">No availability</h3>
-                      <p className="text-sm text-gray-500">There are no available time slots at the moment.</p>
+                    <div className='flex flex-col items-center justify-center p-8 text-center'>
+                      <Calendar className='w-12 h-12 text-gray-400 mb-2' />
+                      <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                        No availability
+                      </h3>
+                      <p className='text-sm text-gray-500'>
+                        There are no available time slots at the moment.
+                      </p>
                     </div>
                   </ShowCode.When>
                   <ShowCode.Else>
@@ -499,14 +500,20 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
             />
           }
         />
-      </Stack>
+      </div>
     );
   }
   if (!candidateRequestAvailability) {
     return (
-      <Stack>
-        <Page404 />
-      </Stack>
+      <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
+        <div className='text-center'>
+          <h1 className='text-6xl font-bold text-gray-800 mb-4'>404</h1>
+          <p className='text-xl text-gray-600 mb-8'>Page not found</p>
+          <div className='flex justify-center'>
+            <AlertCircle className='w-16 h-16 text-red-500' />
+          </div>
+        </div>
+      </div>
     );
   }
 }

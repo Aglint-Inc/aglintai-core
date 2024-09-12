@@ -1,11 +1,10 @@
-import { ButtonGhost } from '@devlink/ButtonGhost';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { GlobalBadge } from '@devlink/GlobalBadge';
+import { Button } from '@components/ui/button';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { MultidayCard } from '@devlink2/MultidayCard';
 import { SelectedSlot } from '@devlink2/SelectedSlot';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIBadge } from '@/components/Common/UIBadge';
 import dayjs from '@/utils/dayjs';
 
 import { useRequestAvailabilityContext } from '../../RequestAvailabilityContext';
@@ -63,13 +62,13 @@ function DaySessionCard({
                 !daySlots.map((ele) => ele.round).includes(cardIndex + 1)
               }
             >
-              <ButtonSoft
-                size={1}
-                textButton={'Pick Slots'}
-                onClickButton={{
-                  onClick: () => handleOpen(cardIndex + 1),
-                }}
-              />
+              <Button
+                variant='secondary'
+                size='sm'
+                onClick={() => handleOpen(cardIndex + 1)}
+              >
+                Pick Slots
+              </Button>
             </ShowCode.When>
           </ShowCode>
         }
@@ -82,13 +81,13 @@ function DaySessionCard({
                 daySlots.map((ele) => ele.round).includes(cardIndex + 1)
               }
             >
-              <ButtonGhost
-                size={1}
-                onClickButton={{
-                  onClick: () => handleOpen(cardIndex + 1),
-                }}
-                textButton={'Change'}
-              />
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => handleOpen(cardIndex + 1)}
+              >
+                Change
+              </Button>
             </ShowCode.When>
           </ShowCode>
         }
@@ -103,7 +102,7 @@ function DaySessionCard({
                 textDate={dayjs(ele.curr_day).format('DD MMMM YYYY')}
                 slotBadge={ele.slots.map((slot, i) => {
                   return (
-                    <GlobalBadge
+                    <UIBadge
                       color={isSubmitted ? 'success' : 'warning'}
                       key={i}
                       textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}

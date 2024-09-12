@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { Stack } from '@mui/material';
 import { Lightbulb } from 'lucide-react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
@@ -63,7 +63,7 @@ const Skill = () => {
   return (
     <>
       {skills.map((skill, i) => (
-        <GlobalBadge
+        <UIBadge
           key={i}
           textBadge={skill}
           color={relevance[skill] === 'high' ? 'purple' : 'neutral'}

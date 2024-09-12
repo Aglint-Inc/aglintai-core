@@ -1,9 +1,10 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Checkbox } from '@components/ui/checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { LinearProgress, Popover, Stack, Typography } from '@mui/material';
-import { capitalize, debounce } from 'lodash';
+import { capitalize,debounce } from 'lodash';
 import { ChevronDown, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
@@ -28,34 +29,21 @@ type UserType = {
 function FilterCreatedBy() {
   const { toast } = useToast();
   const { recruiter } = useAuthDetails();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
   const [members, setMembers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(false);
   const createdBy = useFilterModuleStore((state) => state.created_by);
   const [createSearchText, setCreateSeachText] = useState('');
+
   useEffect(() => {
     handleSearch('');
   }, []);
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'interview-panels' : undefined;
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSearch = (value) => {
+  const handleSearch = (value: string) => {
     setCreateSeachText(value);
     debouncedHandleSearch(value);
   };
 
-  const debouncedHandleSearch = debounce(async (value) => {
+  const debouncedHandleSearch = debounce(async (value: string) => {
     try {
       setLoading(true);
       const { data, error } = await supabase.rpc('search_members', {
@@ -87,7 +75,7 @@ function FilterCreatedBy() {
     }
   }, 300);
 
-  const handleFilterClick = (user_id) => {
+  const handleFilterClick = (user_id: string) => {
     if (createdBy.includes(user_id)) {
       setCreatedBy(createdBy.filter((l) => l != user_id));
     } else {
@@ -96,106 +84,76 @@ function FilterCreatedBy() {
   };
 
   return (
-    <>
-      <ButtonFilter
-        isActive={createdBy.length > 0}
-        isDotVisible={createdBy.length > 0}
-        onClickStatus={{
-          id: 'cordinator' + 'click',
-          onClick: handleClick,
-          style: {
-            whiteSpace: 'nowrap',
-            height: '100%',
-          },
-        }}
-        textLabel={'Created by'}
-        slotRightIcon={
-          <Stack>
+    <Popover>
+      <PopoverTrigger asChild>
+        <ButtonFilter
+          isActive={createdBy.length > 0}
+          isDotVisible={createdBy.length > 0}
+          onClickStatus={{
+            id: 'cordinator' + 'click',
+            style: {
+              whiteSpace: 'nowrap',
+              height: '100%',
+            },
+          }}
+          textLabel={'Created by'}
+          slotRightIcon={
             <ChevronDown
               size={16}
               color={'var(--neutral-2)'}
-              className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+              className="transition-transform duration-200 ease-in-out"
             />
-          </Stack>
-        }
-      />
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{ vertical: -10, horizontal: 0 }}
-        sx={{
-          '& .MuiPopover-paper': {
-            borderRadius: 'var(--radius-4)',
-            borderColor: 'var(--neutral-6)',
-            minWidth: '176px',
-          },
-        }}
-      >
+          }
+        />
+      </PopoverTrigger>
+      <PopoverContent className="w-[300px] p-0" align="start">
         <FilterDropdown
           slotOption={
-            <Stack minWidth={'300px'}>
-              <Stack height={'40px'}>
+            <div className="flex flex-col">
+              <div className="p-2">
                 <SearchField
                   value={createSearchText}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder='Search users'
+                  placeholder="Search users"
                   isFullWidth
                   onClear={() => handleSearch('')}
                 />
-                <Stack height='10px'>
-                  {loading && <LinearProgress color='info' />}
-                </Stack>
-              </Stack>
-              <Stack height={'290px'} overflow={'auto'}>
+              </div>
+              {loading && (
+                <div className="h-1 w-full bg-blue-200">
+                  <div className="h-1 bg-blue-600 animate-pulse" style={{width: '50%'}}></div>
+                </div>
+              )}
+              <ScrollArea className="h-[290px]">
                 {members.length > 0 ? (
                   members.map((item, index) => (
-                    <Stack
+                    <div
                       key={index}
-                      direction={'row'}
-                      spacing={1}
-                      sx={{
-                        p: 'var(--space-2) var(--space-3)',
-                        cursor: 'pointer',
-                        ':hover': { bgcolor: 'var(--neutral-2)' },
-                        borderRadius: 'var(--radius-2)',
-                      }}
-                      alignItems={'center'}
-                      onClick={() => {
-                        handleFilterClick(item.user_id);
-                      }}
+                      className="flex items-center space-x-2 p-2 hover:bg-neutral-100 cursor-pointer rounded"
+                      onClick={() => handleFilterClick(item.user_id)}
                     >
                       <Checkbox checked={createdBy.includes(item.user_id)} />
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
-                        variant='rounded-small'
+                        variant="rounded-small"
                       />
-                      <Typography variant='body1'>
+                      <span className="text-sm font-medium">
                         {capitalize(item.first_name)}
-                      </Typography>
-                      <Typography variant='caption'>
+                      </span>
+                      <span className="text-xs text-gray-500">
                         - {item.position}
-                      </Typography>
-                    </Stack>
+                      </span>
+                    </div>
                   ))
                 ) : (
-                  <Stack
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    height={'100%'}
-                  >
-                    <User size={16} color={'var(--neutral-2)'} />
-                    No user found
-                  </Stack>
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <User size={16} className="text-neutral-400" />
+                    <span className="text-sm text-neutral-400">No user found</span>
+                  </div>
                 )}
-              </Stack>
-            </Stack>
+              </ScrollArea>
+            </div>
           }
           isRemoveVisible={false}
           onClickDelete={{
@@ -209,8 +167,8 @@ function FilterCreatedBy() {
             },
           }}
         />
-      </Popover>
-    </>
+      </PopoverContent>
+    </Popover>
   );
 }
 

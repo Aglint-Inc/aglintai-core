@@ -23,22 +23,24 @@ export const UploadApplications = ({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='sm:max-w-[660px] pb-0'>
         <Tabs defaultValue='manual' className='w-full'>
           <TabsList className='grid w-full grid-cols-3'>
             <TabsTrigger value='manual'>Manual</TabsTrigger>
             <TabsTrigger value='csv'>CSV</TabsTrigger>
             <TabsTrigger value='resume'>Resume</TabsTrigger>
           </TabsList>
-          <TabsContent value='manual'>
-            <ImportManual />
-          </TabsContent>
-          <TabsContent value='csv'>
-            <ImportCsv />
-          </TabsContent>
-          <TabsContent value='resume'>
-            <ImportResume />
-          </TabsContent>
+          <div className='p-4'>
+            <TabsContent value='manual'>
+              <ImportManual />
+            </TabsContent>
+            <TabsContent value='csv'>
+              <ImportCsv />
+            </TabsContent>
+            <TabsContent value='resume'>
+              <ImportResume />
+            </TabsContent>
+          </div>
         </Tabs>
       </DialogContent>
     </Dialog>

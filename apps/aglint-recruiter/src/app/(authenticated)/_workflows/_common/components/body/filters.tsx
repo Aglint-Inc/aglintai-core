@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { GlobalBadge } from '@devlink3/GlobalBadge';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase } from 'lucide-react';
 import { memo, useMemo } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { type Workflow } from '@/types/workflow.types';
 import { SafeObject } from '@/utils/safeObject';
 import { TAG_OPTIONS } from '@/workflows/constants';
@@ -90,14 +90,12 @@ export const useWorkflowFilterOptions = () => {
         .map((option) => ({
           id: option.value,
           label: (
-            <GlobalBadge
+            <UIBadge
               key={option.value}
               textBadge={option.name}
-              size={1}
-              showIcon={!!option.iconName || !!option.icon}
-              color={option.color}
-              iconName={option.iconName}
-              slotIcon={option.icon}
+              size={'sm'}
+              icon={option.icon}
+              color={option.color as any}
             />
           ),
         })),

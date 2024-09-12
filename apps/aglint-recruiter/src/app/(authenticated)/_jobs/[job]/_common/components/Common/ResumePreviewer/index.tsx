@@ -1,7 +1,8 @@
-import { BookMark } from '@devlink/BookMark';
+import { Button } from '@components/ui/button';
 import { Download } from '@devlink/Download';
 import { ResumeWrap } from '@devlink3/ResumeWrap';
 import { Dialog, Stack } from '@mui/material';
+import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -81,12 +82,19 @@ const ResumePreviewer = ({
               />
             )}
             {isAllowed && bookmark && (
-              <BookMark
-                isBookMarked={bookmark.isBookmarked}
-                onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}
-                isDarkIconVisible={true}
-                isLightIconVisible={false}
-              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => bookmark.handleBookmark()}
+                className="hover:bg-transparent"
+              >
+                {bookmark.isBookmarked ? (
+                  <Bookmark className="h-4 w-4 text-black" />
+                ) : (
+                  <BookmarkCheck className="h-4 w-4" />
+                )}
+                <span className="sr-only">Bookmark</span>
+              </Button>
             )}
           </Stack>
         }

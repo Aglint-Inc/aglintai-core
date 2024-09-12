@@ -1,86 +1,45 @@
-export const refactorEmail = (email: string) => {
-  const regex = /\+.*@/;
-  if (regex.test(email)) return email.replace(regex, '@');
-  return email;
+import { z } from 'zod';
+
+export const refactorEmail = (email: string): string => {
+  return email.replace(/\+.*@/, '@');
 };
 
-export const validateMail = (value: string) => {
-  return (
-    value &&
-    value.trim() !== '' &&
-    // eslint-disable-next-line no-useless-escape
-    /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
-      value.trim(),
-    )
-  );
+const emailSchema = z.string().email();
+export const validateMail = (value: string): boolean => {
+  return emailSchema.safeParse(value).success;
 };
 
-export const validateString = (value: string) => {
-  return value && value.trim() !== '';
-};
-export const validatePassword = (value: string) => {
-  if (
-    validateString(value) &&
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-      value.trim(),
-    )
-  )
-    return true;
+export const validateString = (value: string): boolean => {
+  return value !== undefined && value.trim() !== '';
 };
 
-export const validateGMail = (value: string) => {
-  return (
-    value &&
-    value.trim() !== '' &&
-    // eslint-disable-next-line no-useless-escape
-    /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@g(oogle)?mail([\.])com/g.test(
-      value.trim(),
-    )
-  );
-};
-export const validatePhone = (value: string) => {
-  function countRept(string, regex) {
-    const numbers = string?.match(regex);
-    return numbers ? numbers.length : 0;
-  }
-  return !(
-    value.trim() === '' ||
-    !(
-      countRept(value.trim(), /\d/g) === countRept('+.. .....-.....', /\./g) ||
-      countRept(value.trim(), /\d/g) === countRept('+. ......-....', /\./g)
-    )
-  );
+const passwordSchema = z.string().min(8).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/);
+export const validatePassword = (value: string): boolean => {
+  return passwordSchema.safeParse(value).success;
 };
 
-export const validateLinkedIn = (value: string) => {
-  const linkedInURLPattern =
-    // eslint-disable-next-line security/detect-unsafe-regex
-    /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
-  return linkedInURLPattern.test(value);
+const gmailSchema = z.string().email().endsWith('@gmail.com');
+export const validateGMail = (value: string): boolean => {
+  return gmailSchema.safeParse(value).success;
 };
 
-export type PreferenceFormFields = {
-  language: FormValues;
-  timezone: FormValues;
+const phoneSchema = z.string().regex(/^\+\d{1,3}\s\d{3,}[-\s]\d{4}$/);
+export const validatePhone = (value: string): boolean => {
+  return phoneSchema.safeParse(value).success;
 };
 
-export type PasswordFormFields = {
-  password: FormValues;
-  confirmPassword: FormValues;
+const linkedInSchema = z.string().url().includes('linkedin.com/in/');
+export const validateLinkedIn = (value: string): boolean => {
+  return linkedInSchema.safeParse(value).success;
 };
-export type FormValues = {
+
+export interface FormValues {
   value: string;
   label: string;
   type: 'text' | 'password';
   placeholder: string;
   error: boolean;
-  validation:
-    | 'string'
-    | 'phone'
-    | 'mail'
-    | 'password'
-    | 'linkedIn'
-    | 'timeZone';
+  validation: 'string' | 'phone' | 'mail' | 'password' | 'linkedIn' | 'timeZone';
   helperText: string;
   blocked: boolean;
   required: boolean;
@@ -88,20 +47,25 @@ export type FormValues = {
   specialForm: boolean;
   options: string[];
   modal: boolean;
-};
+}
 
-export type EmailFormFields = {
+export interface PreferenceFormFields {
+  language: FormValues;
+  timezone: FormValues;
+}
+
+export interface PasswordFormFields {
+  password: FormValues;
+  confirmPassword: FormValues;
+}
+
+export interface EmailFormFields {
   email: FormValues;
-};
+}
 
-export type FormFields = {
+export interface FormFields {
   first_name: FormValues;
   last_name: FormValues;
-  // email: FormValues;
   phone: FormValues;
   linked_in: FormValues;
-  // location: FormValues;
-  // designation: FormValues;
-  // department: FormValues;
-  // role: FormValues;
-};
+}

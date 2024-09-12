@@ -1,18 +1,22 @@
-import { Button } from '@components/ui/button';
+import { useToast } from '@components/hooks/use-toast';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
+import { Label } from '@components/ui/label';
+import { Skeleton } from '@components/ui/skeleton';
 import { LearnHowAshby } from '@devlink3/LearnHowAshby';
 import { LearnHowGreenhouse } from '@devlink3/LearnHowGreenhouse';
 import { LearnHowLever } from '@devlink3/LearnHowLever';
-import { Loader2 } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 import { ShowCode } from '../../Common/ShowCode';
-import { DeletePopup } from '../components/DeletePopup';
 import { type PopUpReasonTypes } from '../types';
 
 function ATSPopUps({
@@ -26,53 +30,78 @@ function ATSPopUps({
   isOpen: boolean;
   close: () => void;
   popUpBody: ReactNode;
-  action: () => void;
+  action: () => Promise<boolean>;
   reason: PopUpReasonTypes;
   isLoading: boolean;
   inputValue: string;
 }) {
+  const { toast } = useToast();
+  const isDisconnect = reason?.startsWith('disconnect_');
+  const atsName = reason?.split('_')[1];
+
+  const handleAction = async () => {
+    try {
+      const result = await action();
+      if (result) {
+        toast({
+          title: 'Success',
+          description: isDisconnect
+            ? `Disconnected from ${atsName} successfully`
+            : 'Action completed successfully',
+          variant: 'default',
+        });
+      } else {
+        throw new Error('Action failed');
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An error occurred. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      close();
+    }
+  };
+
+  if (isDisconnect) {
+    return (
+      <AlertDialog open={isOpen} onOpenChange={close}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Disconnect {atsName}</AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription>
+            By clicking <strong>Disconnect</strong>, {atsName} will be
+            disconnected from Aglint and will no longer be accessible in this
+            application. You can reconnect again on the Integrations page.
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleAction}
+              className='bg-red-600 hover:bg-red-700 font-bold'
+            >
+              Disconnect
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className='sm:max-w-[425px]'>
+    <AlertDialog open={isOpen} onOpenChange={close}>
+      <AlertDialogContent>
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>
             <div className='flex flex-col items-center justify-center space-y-2'>
-              <Loader2 className='w-8 h-8 animate-spin text-primary' />
+              <Skeleton className='w-8 h-8' />
               <p className='text-sm'>
-                {reason && reason.startsWith('connect')
-                  ? 'Connecting'
-                  : 'Reconnecting'}{' '}
-                to {reason && reason.split('_')[1]}
+                {reason?.startsWith('connect') ? 'Connecting' : 'Reconnecting'}{' '}
+                to {atsName}
               </p>
             </div>
-          </ShowCode.When>
-          <ShowCode.When
-            isTrue={
-              reason === 'disconnect_greenhouse' ||
-              reason === 'disconnect_ashby' ||
-              reason === 'disconnect_lever'
-            }
-          >
-            <DeletePopup
-              isOpen={isOpen}
-              onClose={close}
-              onDelete={action}
-              title={`Disconnect ${
-                reason === 'disconnect_greenhouse'
-                  ? 'Greenhouse'
-                  : reason === 'disconnect_ashby'
-                    ? 'Ashby'
-                    : 'Lever'
-              }`}
-              description={`By clicking "Disconnect", ${
-                reason === 'disconnect_greenhouse'
-                  ? 'Greenhouse'
-                  : reason === 'disconnect_ashby'
-                    ? 'Ashby'
-                    : 'Lever'
-              } will be disconnected from Aglint and will no longer be accessible in this application. You can reconnect again on the Integrations page.`}
-              deleteButtonText='Disconnect'
-            />
           </ShowCode.When>
           <ShowCode.When
             isTrue={
@@ -83,73 +112,48 @@ function ATSPopUps({
           >
             <ShowCode>
               <ShowCode.When isTrue={reason === 'learn_how_greenhouse'}>
-                <LearnHowGreenhouse
-                  onClickClose={{
-                    onClick: close,
-                  }}
-                />
+                <LearnHowGreenhouse onClickClose={{ onClick: close }} />
               </ShowCode.When>
               <ShowCode.When isTrue={reason === 'learn_how_ashby'}>
-                <LearnHowAshby
-                  onClickClose={{
-                    onClick: close,
-                  }}
-                />
+                <LearnHowAshby onClickClose={{ onClick: close }} />
               </ShowCode.When>
               <ShowCode.When isTrue={reason === 'learn_how_lever'}>
-                <LearnHowLever
-                  onClickClose={{
-                    onClick: close,
-                  }}
-                />
+                <LearnHowLever onClickClose={{ onClick: close }} />
               </ShowCode.When>
             </ShowCode>
           </ShowCode.When>
           <ShowCode.Else>
-            <DialogHeader>
-              <DialogTitle>
-                {reason &&
-                typeof reason === 'string' &&
-                reason.includes('connect')
-                  ? `Connect ${reason.split('_')[1]}`
-                  : reason && typeof reason === 'string'
-                    ? reason.split('_')[1]
-                    : 'Unknown Action'}
-              </DialogTitle>
-            </DialogHeader>
-            <div className='flex flex-col space-y-2'>
-              {['greenhouse', 'lever', 'ashby'].map((ats) => (
-                <ShowCode.When
-                  key={ats}
-                  isTrue={
-                    reason && typeof reason === 'string' && reason.includes(ats)
-                  }
-                >
-                  {`${ats.charAt(0).toUpperCase() + ats.slice(1)} API key`}
-                </ShowCode.When>
-              ))}
-              <ShowCode.Else>
-                <div className='flex flex-row items-center space-x-2'>
-                  {popUpBody}
-                </div>
-              </ShowCode.Else>
-            </div>
-            <div className='flex flex-row justify-end space-x-2 mt-4'>
-              <Button variant='outline' onClick={close}>
-                Cancel
-              </Button>
-              <Button onClick={action}>
-                {reason &&
-                typeof reason === 'string' &&
-                reason.startsWith('connect')
-                  ? 'Connect'
-                  : 'Update'}
-              </Button>
-            </div>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {reason?.includes('connect')
+                  ? `Connect ${atsName}`
+                  : atsName || 'Unknown Action'}
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogDescription>
+              <div className='flex flex-col space-y-2'>
+                {['greenhouse', 'lever', 'ashby'].map((ats) => (
+                  <ShowCode.When key={ats} isTrue={reason?.includes(ats)}>
+                    <Label>{`${ats.charAt(0).toUpperCase() + ats.slice(1)} API key`}</Label>
+                  </ShowCode.When>
+                ))}
+                <ShowCode.Else>
+                  <div className='flex flex-row items-center space-x-2'>
+                    {popUpBody}
+                  </div>
+                </ShowCode.Else>
+              </div>
+            </AlertDialogDescription>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleAction}>
+                {reason?.startsWith('connect') ? 'Connect' : 'Update'}
+              </AlertDialogAction>
+            </AlertDialogFooter>
           </ShowCode.Else>
         </ShowCode>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

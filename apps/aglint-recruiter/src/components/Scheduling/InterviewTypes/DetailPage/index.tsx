@@ -1,9 +1,8 @@
-import { GlobalBadge } from '@devlink/GlobalBadge';
-import { PageLayout } from '@devlink2/PageLayout';
-import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
@@ -47,28 +46,24 @@ function ModuleMembersComp() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={
           <>
             {breadcrum}
             {editModule?.is_archived && (
-              <GlobalBadge textBadge='Archieved' color={'warning'} />
+              <UIBadge textBadge='Archieved' color={'warning'} />
             )}
           </>
         }
         slotTopbarRight={
-          <Stack
-            direction={'row'}
-            justifyItems={'center'}
-            gap={'var(--space-2)'}
-          >
+          <div className='flex flex-row items-center space-x-2'>
             {editModule?.is_archived && (
               <UIButton variant='secondary' onClick={unArcheive} size='sm'>
                 Unarchive
               </UIButton>
             )}
             <TopRightButtons editModule={editModule} refetch={refetch} />
-          </Stack>
+          </div>
         }
         slotBody={
           <>

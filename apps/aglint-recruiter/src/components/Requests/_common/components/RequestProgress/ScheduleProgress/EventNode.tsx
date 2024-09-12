@@ -68,31 +68,33 @@ const EventNode = ({
           }
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
-            <div className={`flex flex-row gap-1`}>
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={() => {
-                  setEditTrigger(currEventTrigger);
-                  setShowEditDialog(true);
-                }}
-              >
-                <Edit className='h-4 w-4 mr-2' />
-                Edit
-              </Button>
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={handleDeleteScheduleAction}
-              >
-                <Trash className='h-4 w-4 mr-2 text-destructive' />
-                Remove
-              </Button>
-            </div>
+            tense === 'future' && (
+              <div className={`flex flex-row gap-1`}>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    setEditTrigger(currEventTrigger);
+                    setShowEditDialog(true);
+                  }}
+                >
+                  <Edit className='h-4 w-4 mr-2' />
+                  Edit
+                </Button>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={handleDeleteScheduleAction}
+                >
+                  <Trash className='h-4 w-4 mr-2 text-destructive' />
+                  Remove
+                </Button>
+              </div>
+            )
           }
           slotLoader={
             tense === 'present' ? (
-              <Loader className='h-6 w-6 animate-spin text-gray-500' />
+              <Loader className='h-4 w-4 animate-spin text-gray-500' />
             ) : undefined
           }
           slotAiText={

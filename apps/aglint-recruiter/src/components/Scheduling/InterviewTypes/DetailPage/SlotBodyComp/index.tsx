@@ -1,28 +1,31 @@
 import { useToast } from '@components/hooks/use-toast';
-import { GlobalBadge } from '@devlink/GlobalBadge';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-// import { InterviewMemberList } from '@devlink2/InterviewMemberList';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
-import { InterviewTypeToken } from '@devlink3/InterviewTypeToken';
 import { MoreMenu } from '@devlink3/MoreMenu';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
-import { Popover, Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Edit, EllipsisVertical, Plus } from 'lucide-react';
+import { Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITab, { UITabWrapper } from '@/components/Common/UITab';
 import { UITextArea } from '@/components/Common/UITextArea';
+import UITypography from '@/components/Common/UITypography';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useAllDepartments } from '@/queries/departments';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
+import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
@@ -143,6 +146,7 @@ function SlotBodyComp({
   };
 
   const open = Boolean(anchorEl);
+  // eslint-disable-next-line no-unused-vars
   const id = open ? 'simple-popover' : undefined;
 
   const queryClient = useQueryClient();
@@ -163,19 +167,19 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
       <ResumeMemberDialog editModule={editModule} />
 
       {fetchingModule || loading || (!editModule && isFetching) ? (
-        <Stack height={'100%'} width={'100%'}>
-          <Loader />
-        </Stack>
+        <div className='h-full w-full flex items-center justify-center'>
+          <Loader2 className='w-8 h-8 animate-spin' />
+        </div>
       ) : (
         <>
           {editModule && (
             <InterviewMemberList
-              slotBanner={<>dsf</>}
+              slotBanner={<></>}
               slotJobsCard={
                 editModule?.id && <ConnectedJobs module_id={editModule?.id} />
               }
               slotEditButton={
-                <Stack direction={'row'} spacing={1}>
+                <div className='flex flex-row space-x-1'>
                   <UIButton
                     variant='secondary'
                     leftIcon={<Edit />}
@@ -192,7 +196,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     onClick={handleClick}
                     leftIcon={<EllipsisVertical />}
                   />
-                </Stack>
+                </div>
               }
               slotNewTabPill={
                 <UITabWrapper>
@@ -274,50 +278,78 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                   )}
 
                   {currentTab === 'aglintaitoken' && (
-                    <InterviewTypeToken
-                      slotTokenItem={
-                        <>
-                          <div className="grid grid-cols-[260px_570px] items-center p-4 border-b">
-                            <div className="flex items-center">
-                              <GlobalBadge
-                                textBadge='Token1'
-                                color={'purple'}
-                              />
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.
-                            </p>
+                    <div className='flex max-w-[880px] p-4 flex-col gap-3'>
+                      <UITypography variant='p' type='small'>
+                        These tokens will be used in emails send to candidate or
+                        any communication messages to the candidate.
+                      </UITypography>
+                      <div className='overflow-hidden border border-neutral-200 rounded-md'>
+                        <div className='grid grid-cols-[260px_570px] bg-neutral-100'>
+                          <div className='p-1 px-3'>
+                            <UITypography variant='p' type='small'>
+                              Token
+                            </UITypography>
                           </div>
-                          <div className="grid grid-cols-[260px_570px] items-center p-4 border-b">
-                            <div className="flex items-center">
-                              <GlobalBadge
-                                textBadge='Token2'
-                                color={'purple'}
-                              />
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.
-                            </p>
+                          <div className='p-1 px-3'>
+                            <UITypography variant='p' type='small'>
+                              Token Detail
+                            </UITypography>
                           </div>
-                          <div className="grid grid-cols-[260px_570px] items-center p-4 border-b">
-                            <div className="flex items-center">
-                              <GlobalBadge
-                                textBadge='Token3'
-                                color={'purple'}
-                              />
+                        </div>
+                        <div>
+                          <>
+                            <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                              <div className='flex items-center'>
+                                <UIBadge
+                                  textBadge='Token1'
+                                  color={'purple'}
+                                />
+                              </div>
+                              <p className='text-sm text-gray-600'>
+                                Korem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Nunc vulputate libero et velit
+                                interdum, ac aliquet odio mattis.
+                              </p>
                             </div>
-                            <p className="text-sm text-gray-600">
-                              Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.
-                            </p>
-                          </div>
-                        </>
-                      }
-                      slotAddToken={
-                        <UIButton size='sm' variant='ghost' leftIcon={<Plus />}>
-                          Add Token
-                        </UIButton>
-                      }
-                    />
+                            <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                              <div className='flex items-center'>
+                                <UIBadge
+                                  textBadge='Token2'
+                                  color={'purple'}
+                                />
+                              </div>
+                              <p className='text-sm text-gray-600'>
+                                Korem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Nunc vulputate libero et velit
+                                interdum, ac aliquet odio mattis.
+                              </p>
+                            </div>
+                            <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
+                              <div className='flex items-center'>
+                                <UIBadge
+                                  textBadge='Token3'
+                                  color={'purple'}
+                                />
+                              </div>
+                              <p className='text-sm text-gray-600'>
+                                Korem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Nunc vulputate libero et velit
+                                interdum, ac aliquet odio mattis.
+                              </p>
+                            </div>
+                          </>
+                        </div>
+                        <div className='flex h-[62px] p-1 px-3 items-center'>
+                          <UIButton
+                            size='sm'
+                            variant='ghost'
+                            leftIcon={<Plus />}
+                          >
+                            Add Token
+                          </UIButton>
+                        </div>
+                      </div>
+                    </div>
                   )}
 
                   {currentTab === 'aglintaiinstruction' && (
@@ -339,66 +371,56 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
           )}
         </>
       )}
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          style: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MoreMenu
-          isArchiveVisible={!editModule?.is_archived}
-          isUnarchiveVisible={editModule?.is_archived}
-          onClickDelete={{
-            onClick: () => {
-              setIsDeleteModuleDialogOpen(true);
-              handleClose();
-            },
-          }}
-          onClickArchive={{
-            onClick: () => {
-              setIsArchiveDialogOpen(true);
-              handleClose();
-            },
-          }}
-          onClickUnarchive={{
-            onClick: async () => {
-              const isUnArchived = await unArchiveModuleById(editModule.id);
-              if (isUnArchived) {
-                const updatedEditModule = {
-                  ...editModule,
-                  is_archived: false,
-                } as ModuleType;
-                queryClient.setQueryData<ModuleType>(
-                  QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-                    moduleId: editModule.id,
-                  }),
-                  {
-                    ...updatedEditModule,
-                  },
-                );
-                toast({
-                  title: 'Interview type unarchived successfully.',
-                });
-              }
-              handleClose();
-            },
-          }}
-        />
+      <Popover>
+        <PopoverTrigger asChild>
+          <UIButton
+            variant='secondary'
+            size='sm'
+            onClick={handleClick}
+            leftIcon={<EllipsisVertical />}
+          />
+        </PopoverTrigger>
+        <PopoverContent className='w-56 p-0'>
+          <MoreMenu
+            isArchiveVisible={!editModule?.is_archived}
+            isUnarchiveVisible={editModule?.is_archived}
+            onClickDelete={{
+              onClick: () => {
+                setIsDeleteModuleDialogOpen(true);
+                handleClose();
+              },
+            }}
+            onClickArchive={{
+              onClick: () => {
+                setIsArchiveDialogOpen(true);
+                handleClose();
+              },
+            }}
+            onClickUnarchive={{
+              onClick: async () => {
+                const isUnArchived = await unArchiveModuleById(editModule.id);
+                if (isUnArchived) {
+                  const updatedEditModule = {
+                    ...editModule,
+                    is_archived: false,
+                  } as ModuleType;
+                  queryClient.setQueryData<ModuleType>(
+                    QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                      moduleId: editModule.id,
+                    }),
+                    {
+                      ...updatedEditModule,
+                    },
+                  );
+                  toast({
+                    title: 'Interview type unarchived successfully.',
+                  });
+                }
+                handleClose();
+              },
+            }}
+          />
+        </PopoverContent>
       </Popover>
     </>
   );
@@ -441,8 +463,11 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
   }
   return (
     <>
-      <Typography fontWeight={500}>Connected Jobs</Typography>
-      <Stack mt={2} spacing={1}>
+      <UITypography type='medium' variant='p'>
+        Connected Jobs
+      </UITypography>
+
+      <div className='mt-2 space-y-1'>
         {filteredConnectedJobs.length > 0 ? (
           filteredConnectedJobs.map((job, i) => (
             <WorkflowConnectedCard
@@ -453,8 +478,8 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               textRoleCategory={job.departments?.name || '---'}
               slotBadges={
                 job.status && (
-                  <GlobalBadge
-                    color={
+                  <UIBadge
+                  color={
                       job.status === 'published'
                         ? 'success'
                         : job.status === 'closed'
@@ -465,12 +490,11 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
                   />
                 )
               }
-              onClickJob={{
-                onClick: () =>
-                  router.push(
-                    ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
-                  ),
-              }}
+              onClickJob={() =>
+                router.push(
+                  ROUTES['/jobs/[job]']({ job: job.id }) + '/interview-plan',
+                )
+              }
             />
           ))
         ) : (
@@ -481,7 +505,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
             textDesc={'No jobs connected'}
           />
         )}
-      </Stack>
+      </div>
     </>
   );
 };

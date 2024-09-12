@@ -17,8 +17,6 @@ import { DayOff } from '@devlink2/DayOff';
 import { KeywordCard } from '@devlink2/KeywordCard';
 import { Keywords } from '@devlink2/Keywords';
 import { ScheduleSettings } from '@devlink2/ScheduleSettings';
-import { TimeRangeInput } from '@devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@devlink2/WorkingHourDay';
 import { cn } from '@lib/utils';
 import {
   Alert,
@@ -445,68 +443,56 @@ function InterviewerLevelSettings({
                 workingHours.map((day, i) => {
                   return (
                     <>
-                      <WorkingHourDay
-                        slotRcCheckbox={
-                          <div className='flex items-center space-x-2'>
-                            <Checkbox
-                              id={`checkbox-${day.day}`}
-                              checked={day.isWorkDay}
-                              onCheckedChange={() => {
-                                setWorkingHours((pre) => {
-                                  const data = [...pre];
-                                  data[i].isWorkDay = !data[i].isWorkDay;
-                                  return data;
-                                });
-                              }}
-                            />
-                            <Label htmlFor={`checkbox-${day.day}`}>
-                              {capitalize(day.day)}
-                            </Label>
-                          </div>
-                        }
-                        slotTimeRageInput={
-                          <TimeRangeInput
-                            slotStartTimeInput={
-                              <SelectTime
-                                value={dayjsLocal()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      day.timeRange.startTime.split(':')[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      day.timeRange.startTime.split(':')[1],
-                                    ),
-                                  )}
-                                onSelect={selectStartTime}
-                                i={i}
-                              />
-                            }
-                            slotEndTimeInput={
-                              <SelectTime
-                                value={dayjsLocal()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      day.timeRange.endTime.split(':')[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      day.timeRange.endTime.split(':')[1],
-                                    ),
-                                  )}
-                                onSelect={selectEndTime}
-                                i={i}
-                              />
-                            }
+                      <div className='flex items-center justify-between p-4 border rounded-lg shadow-sm'>
+                        <div className='flex items-center space-x-2'>
+                          <Checkbox
+                            id={`checkbox-${day.day}`}
+                            checked={day.isWorkDay}
+                            onCheckedChange={() => {
+                              setWorkingHours((pre) => {
+                                const data = [...pre];
+                                data[i].isWorkDay = !data[i].isWorkDay;
+                                return data;
+                              });
+                            }}
                           />
-                        }
-                      />
+                          <Label
+                            htmlFor={`checkbox-${day.day}`}
+                            className='text-sm font-medium'
+                          >
+                            {capitalize(day.day)}
+                          </Label>
+                        </div>
+                        <div className='flex items-center space-x-2'>
+                          <SelectTime
+                            value={dayjsLocal()
+                              .set(
+                                'hour',
+                                parseInt(day.timeRange.startTime.split(':')[0]),
+                              )
+                              .set(
+                                'minute',
+                                parseInt(day.timeRange.startTime.split(':')[1]),
+                              )}
+                            onSelect={selectStartTime}
+                            i={i}
+                          />
+                          <span className='text-sm text-gray-500'>to</span>
+                          <SelectTime
+                            value={dayjsLocal()
+                              .set(
+                                'hour',
+                                parseInt(day.timeRange.endTime.split(':')[0]),
+                              )
+                              .set(
+                                'minute',
+                                parseInt(day.timeRange.endTime.split(':')[1]),
+                              )}
+                            onSelect={selectEndTime}
+                            i={i}
+                          />
+                        </div>
+                      </div>
                     </>
                   );
                 })}
@@ -766,24 +752,6 @@ function InterviewerLevelSettings({
                           );
                         }
                       })}
-
-                      {/* {recruitingBlocks.map((item) => (
-                        <Chip
-                          key={item} // Add a unique key prop for each item
-                          clickable
-                          onDelete={() => {
-                            setRecruitingBlocks((prev) =>
-                              prev.filter((ele) => ele !== item),
-                            );
-                          }}
-                          deleteIcon={
-                            <Stack>
-                              <GlobalIcon iconName='close' size='4' />
-                            </Stack>
-                          }
-                          label={item}
-                        />
-                      ))} */}
                     </>
                   )
                 }

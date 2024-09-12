@@ -1,9 +1,7 @@
-
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
@@ -118,27 +116,28 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
           </>
         }
       >
-        <Stack spacing={'var(--space-2)'}>
+        <div className='space-y-2'>
           {isSessionExist ? (
-            <GlobalBannerShort
+            <UIAlert
+              type='small'
               color={'error'}
-              iconName='warning'
-              textTitle='Cannot delete interview type'
-              textDescription={`Interview type is used in job's interview plan or scheduled interviews.`}
-              slotButtons={<></>}
+              iconName='Circle'
+              title='Cannot delete interview type'
+              description={`Interview type is used in job's interview plan or scheduled interviews.`}
             />
           ) : (
             <>
-              <p className="text-muted-foreground">
-                By clicking delete the Interview Type will be permanently deleted.
+              <p className='text-muted-foreground'>
+                By clicking delete the Interview Type will be permanently
+                deleted.
               </p>
-              <Stack direction={'row'} spacing={'3px'} flexWrap={'wrap'}>
-                <p className="text-sm text-muted-foreground">
+              <div className='flex flex-wrap items-center space-x-1'>
+                <p className='text-sm text-muted-foreground'>
                   Confirm by typing the job title
                 </p>
-                <p className="text-sm text-destructive">{moduleName}</p>
-                <p className="text-sm text-muted-foreground">below.</p>
-              </Stack>
+                <p className='text-sm text-destructive'>{moduleName}</p>
+                <p className='text-sm text-muted-foreground'>below.</p>
+              </div>
 
               <UITextField
                 disabled={loading}
@@ -155,7 +154,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
               />
             </>
           )}
-        </Stack>
+        </div>
       </UIDialog>
     </>
   );

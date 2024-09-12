@@ -1,11 +1,16 @@
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
-import { MemberListCard } from '@devlink2/MemberListCard';
+import { Button } from '@components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
-import { HistoryPill } from '@devlink3/HistoryPill';
-import { Popover, Stack } from '@mui/material';
+import { MoreVertical } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
+import { MemberListCardShadcn } from '@/components/Common/Member/MemberListCard';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
@@ -98,27 +103,23 @@ function IndividualCard({
 
   return (
     <>
-      <MemberListCard
+      <MemberListCardShadcn
+        isThreeDotVisible={true}
         textWeekInterview={textWeekInterview}
         textTodayInterview={textTodayInterview}
         isTrainingProgessVisible={true}
         isInterviewsVisible={false}
         slotProgressBar={
-          <Stack
-            direction={'row'}
-            overflow={'hidden'}
-            borderRadius={'var(--radius-2)'}
-            spacing={'2px'}
-          >
+          <div className='flex flex-row overflow-hidden rounded-[var(--radius-2)] space-x-0.5'>
             {pills.map((pill, i) => (
-              <HistoryPill
+              <HistoryPillShadcn
                 key={i}
                 isShadow={pill.sessionType === 'shadow'}
                 isReverseShadow={pill.sessionType === 'rshadow'}
                 isActive={pill.completed}
               />
             ))}
-          </Stack>
+          </div>
         }
         isPauseResumeVisible={Boolean(user.pause_json)}
         onClickCard={{
@@ -178,50 +179,14 @@ function IndividualCard({
 export default IndividualCard;
 
 const ThreeDot = ({ isMoveToQualifierVisible, user }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
   return (
-    <>
-      <Stack onClick={handleClick}>
-        <IconButtonGhost
-          iconName='more_vert'
-          size={2}
-          iconSize={6}
-          color={'neutral'}
-        />
-      </Stack>
-
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          style: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant='ghost' size='sm' className='h-8 w-8'>
+          <MoreVertical className='h-4 w-4' />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className='w-auto p-0'>
         <MemberListCardOption
           isMoveToQualifierVisible={isMoveToQualifierVisible}
           isRemoveVisible={true}
@@ -231,32 +196,28 @@ const ThreeDot = ({ isMoveToQualifierVisible, user }) => {
             onClick: () => {
               setSelUser(user);
               setIsMovedToQualifiedDialogOpen(true);
-              handleClose();
             },
           }}
           onClickRemoveModule={{
             onClick: () => {
               setSelUser(user);
               setIsDeleteMemberDialogOpen(true);
-              handleClose();
             },
           }}
           onClickResumeInterview={{
             onClick: () => {
               setSelUser(user);
               setIsResumeDialogOpen(true);
-              handleClose();
             },
           }}
           onClickPauseInterview={{
             onClick: () => {
               setSelUser(user);
               setIsPauseDialogOpen(true);
-              handleClose();
             },
           }}
         />
-      </Popover>
-    </>
+      </PopoverContent>
+    </Popover>
   );
 };

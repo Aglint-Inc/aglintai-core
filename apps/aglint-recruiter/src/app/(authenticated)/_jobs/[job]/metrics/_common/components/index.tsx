@@ -1,16 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { PageLayout } from '@devlink2/PageLayout';
 import { BannerLoading } from '@devlink3/BannerLoading';
 import { DarkPill } from '@devlink3/DarkPill';
 import { GraphBlock } from '@devlink3/GraphBlock';
 import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
 import { JobRole } from '@devlink3/JobRole';
 import { JobsBanner } from '@devlink3/JobsBanner';
-import { NoData } from '@devlink3/NoData';
 import { PipeLine } from '@devlink3/PipeLine';
 import { RoleList } from '@devlink3/RoleList';
 import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
@@ -24,6 +18,9 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 // import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/components/Common/UIButton';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -43,6 +40,7 @@ import { capitalize, capitalizeAll } from '@/utils/text/textUtils';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
+import { NoDataAvailable } from './nodata';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 export const JobDashboard = () => {
@@ -107,7 +105,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotBody={
           <JobDashboardDev
             isJobStatsVisible={isScoringEnabled}
@@ -323,7 +321,7 @@ const Schedules = () => {
   const { push } = useRouter();
   if (status === 'pending') return <Loader />;
   if (status === 'error') return <>Error</>;
-  if (data.length === 0) return <NoData />;
+  if (data.length === 0) return <NoDataAvailable />;
   const cards = data
     .sort(
       (a, b) =>
@@ -336,7 +334,7 @@ const Schedules = () => {
         key={i}
         onClick={() =>
           push(
-            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=candidate_details`,
+            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=job_details`,
           )
         }
       >
@@ -394,31 +392,30 @@ const useBanners = () => {
   if (isInterviewPlanDisabled)
     banners.push(
       <>
-        <GlobalBannerInline
-          textContent='Interview plan not set'
+        <UIAlert
+          title='Interview plan not set'
+          type='inline'
           color={'warning'}
-          slotButton={
+          actions={
             <>
-              <ButtonSoft
-                textButton='Ignore'
-                color={'neutral'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    push(
-                      ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }),
-                    ),
-                }}
-              />
-              <ButtonSolid
-                textButton='View'
-                color={'accent'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    handleJobUpdate({ interview_plan_warning_ignore: true }),
-                }}
-              />
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={() =>
+                  push(ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }))
+                }
+              >
+                Ignore
+              </UIButton>
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={() =>
+                  handleJobUpdate({ interview_plan_warning_ignore: true })
+                }
+              >
+                View
+              </UIButton>
             </>
           }
         />
@@ -443,50 +440,34 @@ const useBanners = () => {
   if (isInterviewSessionEmpty)
     banners.push(
       <>
-        <GlobalBannerInline
-          textContent='Interview plan not set'
+        <UIAlert
+          title='Interview plan not set'
           color={'warning'}
-          slotButton={
+          type='inline'
+          actions={
             <>
-              <ButtonSoft
-                textButton='Ignore'
-                color={'neutral'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    push(
-                      ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }),
-                    ),
-                }}
-              />
-              <ButtonSolid
-                textButton='View'
-                color={'accent'}
-                size={1}
-                onClickButton={{
-                  onClick: () =>
-                    handleJobUpdate({ interview_session_warning_ignore: true }),
-                }}
-              />
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={() =>
+                  push(ROUTES['/jobs/[job]/interview-plan']({ job: job?.id }))
+                }
+              >
+                Ignore
+              </UIButton>
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={() =>
+                  handleJobUpdate({ interview_session_warning_ignore: true })
+                }
+              >
+                View
+              </UIButton>
             </>
           }
         />
       </>,
-      // <Banner
-      //   type='warning'
-      //   title='Interview plan not set'
-      //   description='Add one or more interview types to create an interview plan.'
-      //   primary={{
-      //     title: 'Ignore',
-      //     onClick: () =>
-      //       push(ROUTES['/jobs/[job]/interview-plan']({ id: job?.id })),
-      //   }}
-      //   secondary={{
-      //     title: 'View',
-      //     onClick: () =>
-      //       handleJobUpdate({ interview_session_warning_ignore: true }),
-      //   }}
-      // />,
     );
   if (
     !publishStatus.detailsValidity.validity ||
@@ -494,63 +475,46 @@ const useBanners = () => {
   ) {
     if (!publishStatus.detailsValidity.validity) {
       banners.push(
-        <GlobalBannerInline
-          textContent={publishStatus.detailsValidity.message}
-          iconName='warning'
+        <UIAlert
+          title={publishStatus.detailsValidity.message}
+          iconName='CircleAlert'
           color={'error'}
-          slotButton={
+          actions={
             <>
-              <ButtonSolid
-                textButton='View'
-                color={'error'}
-                onClickButton={{
-                  onClick: () =>
-                    push(ROUTES['/jobs/[job]/job-details']({ job: job?.id })),
-                }}
-              />
+              <UIButton
+                variant='destructive'
+                size='sm'
+                onClick={() =>
+                  push(ROUTES['/jobs/[job]/job-details']({ job: job?.id }))
+                }
+              >
+                View
+              </UIButton>
             </>
           }
+          type='inline'
         />,
-        // <Banner
-        //   type='error'
-        //   title={publishStatus.detailsValidity.message}
-        //   description='Please ensure that valid job details are provided.'
-        //   primary={{
-        //     title: 'View',
-        //     onClick: () =>
-        //       push(ROUTES['/jobs/[job]/job-details']({ id: job?.id })),
-        //   }}
-        // />,
       );
     }
     if (!publishStatus.hiringTeamValidity.validity) {
       banners.push(
-        <GlobalBannerInline
-          iconName='warning'
+        <UIAlert
+          iconName='CircleAlert'
           color={'error'}
-          textContent='Hiring team not set'
-          slotButton={
-            <ButtonSolid
-              size={1}
-              textButton='Set Now'
-              color={'error'}
-              onClickButton={{
-                onClick: () =>
-                  push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id })),
-              }}
-            />
+          title='Hiring team not set'
+          actions={
+            <UIButton
+              variant='destructive'
+              size='sm'
+              onClick={() =>
+                push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id }))
+              }
+            >
+              Set Now
+            </UIButton>
           }
+          type={'inline'}
         />,
-        // <Banner
-        //   type='error'
-        //   title='Hiring team not set'
-        //   description='Please ensure that necessary hiring members are selected.'
-        //   primary={{
-        //     title: 'Set Now',
-        //     onClick: () =>
-        //       push(ROUTES['/jobs/[job]/hiring-team']({ id: job?.id })),
-        //   }}
-        // />,
       );
     }
   } else if (publishStatus.loading)
@@ -771,53 +735,49 @@ const Banner = (props: BannerProps) => {
   switch (props.type) {
     case 'warning':
       return (
-        <GlobalBanner
+        <UIAlert
           color={'warning'}
-          iconName={'info'}
-          slotButtons={
+          iconName={'Info'}
+          actions={
             <>
-              <ButtonSoft
-                textButton={props.secondary.title}
-                size={1}
-                color={'neutral'}
-                highContrast={'true'}
-                onClickButton={{
-                  onClick: props.secondary.onClick,
-                }}
-              />
+              <UIButton
+                variant='secondary'
+                size='sm'
+                onClick={props.secondary.onClick}
+              >
+                {props.secondary.title}
+              </UIButton>
 
-              <ButtonSolid
-                textButton={props.primary.title}
-                size={1}
-                color={'accent'}
-                onClickButton={{
-                  onClick: props.primary.onClick,
-                }}
-              />
+              <UIButton
+                variant='default'
+                size='sm'
+                onClick={props.primary.onClick}
+              >
+                {props.primary.title}
+              </UIButton>
             </>
           }
-          textTitle={props.title}
-          textDescription={props.description}
+          title={props.title}
+          description={props.description}
         />
       );
+    
     case 'error':
       return (
-        <GlobalBanner
+        <UIAlert
           color={'error'}
-          iconName={'warning'}
-          slotButtons={
-            <ButtonSolid
-              size={1}
-              color={'error'}
-              textButton={props.primary.title}
-              highContrast='false'
-              onClickButton={{
-                onClick: props.primary.onClick,
-              }}
-            />
+          iconName={'CircleAlert'}
+          actions={
+            <UIButton
+              variant='destructive'
+              size='sm'
+              onClick={props.primary.onClick}
+            >
+              {props.primary.title}
+            </UIButton>
           }
-          textTitle={props.title}
-          textDescription={props.description}
+          title={props.title}
+          description={props.description}
         />
       );
   }

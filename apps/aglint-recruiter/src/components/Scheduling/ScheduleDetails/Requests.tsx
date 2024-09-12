@@ -1,5 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalBadge } from '@devlink/GlobalBadge';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
@@ -7,26 +6,21 @@ import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-// import { getRequestTitle } from '../../Requests/AgentChats/AgentInputBox';
-// import { useScheduleDetails } from './hooks';
 
 function Requests({ session_id }) {
   const router = useRouter();
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
-  // const { data } = useScheduleDetails();
 
-  // const schedule = data?.schedule_data;
   return (
     <Stack spacing={'var(--space-2)'}>
-      <p className="font-semibold text-muted-foreground">
-        Request History
-      </p>
+      <p className='font-semibold text-muted-foreground'>Request History</p>
       {isLoading ? (
         <Loader />
       ) : (
@@ -56,12 +50,7 @@ function Requests({ session_id }) {
                       );
                     },
                   }}
-                  textHistory=''
-                  // {getRequestTitle({
-                  //   title: request.title,
-                  //   first_name: schedule.candidates.first_name,
-                  //   last_name: schedule.candidates.last_name,
-                  // })}
+                  textHistory={request.title}
                   slotAssignedTo={
                     <AvatarWithName
                       slotAvatar={
@@ -84,8 +73,8 @@ function Requests({ session_id }) {
                   }
                   slotStatus={
                     <Stack direction={'row'}>
-                      <GlobalBadge
-                        size={1}
+                      <UIBadge
+                        size={'sm'}
                         textBadge={capitalizeFirstLetter(request.status)}
                         color={
                           request.status === 'to_do'

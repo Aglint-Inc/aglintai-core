@@ -43,7 +43,7 @@ export const DeletePopup = () => {
           <DialogTitle>Delete workflow</DialogTitle>
         </DialogHeader>
         <div className='space-y-4'>
-          <Alert variant='destructive'>
+          <Alert variant='error'>
             <AlertTitle>
               {count === 0
                 ? 'Are you sure you want to delete this workflow?'

@@ -1,9 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
-import { Stack } from '@mui/material';
+import { Send } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import dayjs from '@/utils/dayjs';
@@ -75,20 +75,13 @@ function CreateSchedulePopUp({
   return selectedItems?.schedule_type[0]?.id === 'schedule' &&
     selectedItems.applicant_name[0]?.id &&
     !!selectedItems.interview_name.length ? (
-    <Stack px={'16px'} position={'relative'} top={'-10px'}>
+    <div className='px-4 relative -top-2.5'>
       <AiChatSuggest
         textHeader={'Schedule an interview'}
         slotList={
-          <Stack
-            height={'100%'}
-            width={'100%'}
-            direction={'column'}
-            justifyContent={'space-between'}
-            alignItems={'flex-end'}
-            p={1}
-          >
-            <Stack>
-              <p className="text-sm text-muted-foreground">
+          <div className='h-full w-full flex flex-col justify-between items-end p-1'>
+            <div>
+              <p className='text-sm text-muted-foreground'>
                 {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
               </p>
               <SelectScheduleDate
@@ -110,25 +103,23 @@ function CreateSchedulePopUp({
                   }
                 }}
               />
-            </Stack>
-            <ButtonSoft
+            </div>
+            <UIButton
+              variant='default'
+              leftIcon={<Send/>}
+              onClick={createNewRequest}
               isLoading={loading}
-              isDisabled={
+              disabled={
                 Boolean(!selectedItems?.interview_name.length) ||
                 Boolean(!selectedItems?.applicant_name.length)
               }
-              iconName={'send'}
-              isRightIcon={true}
-              size={1}
-              textButton='Create Request'
-              onClickButton={{
-                onClick: createNewRequest,
-              }}
-            />
-          </Stack>
+            >
+              Create Request
+            </UIButton>
+          </div>
         }
       />
-    </Stack>
+    </div>
   ) : null;
 }
 

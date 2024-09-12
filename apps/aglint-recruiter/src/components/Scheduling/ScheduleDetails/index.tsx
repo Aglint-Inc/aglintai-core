@@ -1,18 +1,18 @@
 // import Feedback from './Feedback';
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { PageLayout } from '@devlink2/PageLayout';
-import { WorkflowConnectedCard } from '@devlink3/WorkflowConnectedCard';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Loader from '../../Common/Loader';
 import ButtonGroup from './ButtonGroup';
@@ -46,15 +46,9 @@ function SchedulingViewComp() {
     if (data?.schedule_data?.candidates.id) {
       setBreadcrum([
         {
-          name: 'Scheduling',
-          route: checkPermissions(['scheduling_settings_and_reports'])
-            ? ROUTES['/scheduling']() + `?tab=matrics`
-            : ROUTES['/scheduling']() + `?tab=my_interviews`,
-        },
-        {
           name: 'Schedules',
           route: checkPermissions(['scheduling_actions'])
-            ? ROUTES['/scheduling']() + `?tab=schedules`
+            ? ROUTES['/scheduling']() + `?tab=interviews`
             : ROUTES['/scheduling']() + `?tab=my_interviews`,
         },
         {
@@ -110,7 +104,7 @@ function SchedulingViewComp() {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={
           isLoading ? (
             <div className='w-[150px] h-[20px]'>
@@ -135,12 +129,9 @@ function SchedulingViewComp() {
                     />
                   ) : (
                     <Stack padding={2}>
-                      <GlobalBanner
-                        textTitle={'Meeting Not Found'}
-                        iconName={'schedule'}
-                        isDescriptionVisible={false}
-                        isAdditionalNotes={false}
-                        slotButtons={<></>}
+                      <UIAlert
+                        title={'Meeting Not Found'}
+                        iconName={'Calendar'}
                       />
                     </Stack>
                   )}
@@ -171,13 +162,11 @@ function SchedulingViewComp() {
                             ? '--'
                             : `${job.office_locations?.city}, ${job.office_locations?.country}`
                         }
-                        onClickJob={{
-                          onClick: () => {
-                            window.open(
-                              `/jobs/${job.id}?section=interview`,
-                              '_blank',
-                            );
-                          },
+                        onClickJob={() => {
+                          window.open(
+                            `/jobs/${job.id}?section=interview`,
+                            '_blank',
+                          );
                         }}
                         // textRoleCategory={job.}
                       />

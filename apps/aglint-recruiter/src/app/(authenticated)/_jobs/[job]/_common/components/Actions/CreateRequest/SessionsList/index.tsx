@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { ButtonSoft } from '@devlink2/ButtonSoft';
-import { EmptyState } from '@devlink2/EmptyState';
+
 import { Popover, Stack, Typography } from '@mui/material';
+import { FileQuestion } from 'lucide-react';
 import React from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIButton } from '@/components/Common/UIButton';
 import {
   IndividualIcon,
   PanelIcon,
@@ -61,15 +62,12 @@ export function SessionList({
             <>
               {selectedSession.map((ele, i) => {
                 return (
-                  <ButtonSoft
-                    key={i}
-                    size={2}
-                    textButton={ele.name}
-                    color={'neutral'}
-                  />
+                  <UIButton key={i} variant={'secondary'}>
+                    {ele.name}
+                  </UIButton>
                 );
               })}
-              <ButtonSoft size={2} textButton={'+'} color={'accent'} />
+              <UIButton variant={'default'}>+</UIButton>
             </>
           </ShowCode.When>
 
@@ -175,7 +173,12 @@ export function SessionList({
             </ShowCode.When>
 
             <ShowCode.Else>
-              <EmptyState textDescription={'No sessions found.'} />
+              <div className='flex flex-col items-center justify-center h-32 text-center'>
+                <FileQuestion className='w-12 h-12 text-muted-foreground mb-2' />
+                <p className='text-sm text-muted-foreground'>
+                  No sessions found.
+                </p>
+              </div>
             </ShowCode.Else>
           </ShowCode>
         </Stack>

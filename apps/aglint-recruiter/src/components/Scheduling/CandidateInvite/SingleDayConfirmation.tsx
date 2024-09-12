@@ -1,5 +1,4 @@
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
+
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
 import { DcPopup } from '@devlink/DcPopup';
 import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
@@ -7,6 +6,7 @@ import { SessionAndTime } from '@devlink/SessionAndTime';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 
 import { dayJS } from './utils';
@@ -80,19 +80,18 @@ export const SingleDayConfirmation = () => {
         onClickClosePopup={{ onClick: handleClose }}
         slotButtons={
           <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
+            <UIButton
+              variant='secondary'
+              onClick={() => handleClose()}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              variant='default'
+              onClick={() => handleSubmit()}
+            >
+              Confirm
+            </UIButton>
           </>
         }
       />

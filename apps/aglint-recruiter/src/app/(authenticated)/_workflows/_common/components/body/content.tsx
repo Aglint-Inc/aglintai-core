@@ -9,12 +9,12 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalBadge } from '@devlink3/GlobalBadge';
 import { Inbox, MoreHorizontal, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { type Workflow } from '@/types/workflow.types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
@@ -161,14 +161,12 @@ export const WorkflowTags = ({ tags }: Pick<Workflow, 'tags'>) => {
         // eslint-disable-next-line security/detect-object-injection
         const option = TAG_OPTIONS[tag];
         return (
-          <GlobalBadge
+          <UIBadge
             key={tag}
             textBadge={option.name}
-            size={1}
-            showIcon={!!option.iconName || !!option.icon}
+            size={'sm'}
+            icon={(!!option.iconName || !!option.icon) && option.icon}
             color={option.color}
-            iconName={option.iconName}
-            slotIcon={option.icon}
           />
         );
       })}

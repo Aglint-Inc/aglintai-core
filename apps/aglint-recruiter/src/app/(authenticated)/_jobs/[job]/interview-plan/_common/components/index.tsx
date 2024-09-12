@@ -10,18 +10,10 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
-import { PageLayout } from '@devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
-import { InterviewBreakCard } from '@devlink3/InterviewBreakCard';
-import { InterviewPlanDetail } from '@devlink3/InterviewPlanDetail';
-import { InterviewPlanWrap } from '@devlink3/InterviewPlanWrap';
 import {
   Collapse,
   MenuItem,
@@ -31,7 +23,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause } from 'lucide-react';
+import { CirclePause, Kanban, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -40,6 +32,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/components/Common/UIButton';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
@@ -63,6 +58,9 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
+import { InterviewBreakCard } from './_common/InterviewBreakCard';
+import { InterviewPlanDetail } from './_common/InterviewPlanDetail';
+import { InterviewPlanWrap } from './_common/InterviewPlanWrap';
 import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';
@@ -122,7 +120,7 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={
@@ -205,25 +203,15 @@ const AddStageComponent = () => {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
           }
-          <ButtonSolid
-            textButton={'Add'}
-            size={2}
-            onClickButton={{ onClick: handleAddStage }}
-          />
-          <ButtonSoft
-            textButton={'Cancel'}
-            size={2}
-            onClickButton={{ onClick: () => setForm(!form) }}
-          />
+        
+          <UIButton size='sm' variant='default' onClick={() => handleAddStage() }>Add</UIButton>
+          <UIButton size='sm' variant='secondary' onClick={() => setForm(!form)}>
+            Cancel
+          </UIButton>
         </Stack>
       )}
       <Stack direction={'row'}>
-        <ButtonSolid
-          textButton={'Add Stage'}
-          isDisabled={form}
-          size={2}
-          onClickButton={{ onClick: () => setForm(!form) }}
-        />
+      <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>Add Stage</UIButton>
       </Stack>
     </>
   );
@@ -389,21 +377,8 @@ const InterviewPlan = ({
           slotInputButton={
             <Stack direction={'row'} gap={1} alignItems={'center'}>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
-              <ButtonSolid
-                size={2}
-                textButton={'Update'}
-                onClickButton={{
-                  onClick: () => handleUpdatePlan(planRef.current.value),
-                }}
-              />
-              <ButtonSoft
-                color={'neutral'}
-                size={2}
-                textButton={'Cancel'}
-                onClickButton={{
-                  onClick: handleEditPlan,
-                }}
-              />
+              <UIButton size='sm' variant='default' onClick={() => handleUpdatePlan(planRef.current.value)}>Update</UIButton>
+              <UIButton size='sm' variant='secondary' onClick={() => handleEditPlan()}>Cancel</UIButton>
             </Stack>
           }
           slotRightIconButton={
@@ -432,22 +407,12 @@ const InterviewPlan = ({
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                   </>
                 ) : (
-                  <GlobalEmptyState
-                    iconName={'group'}
-                    textDesc={'No interview plan found'}
-                    slotButton={
-                      <ButtonSoft
-                        iconName='add'
-                        isLeftIcon={true}
-                        color={'neutral'}
-                        size={1}
-                        textButton={'Add Interview'}
-                        onClickButton={{
-                          onClick: () => handleCreate('session', plan_id, 0),
-                        }}
-                      />
-                    }
-                  />
+                  <div className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-lg'>
+                    <Kanban className='w-4 h-4 text-gray-400 mb-4' />
+                    <p className='text-gray-500 mb-4'>
+                      No interview plan found
+                    </p>
+                  </div>
                 )}
               </Stack>
             </Collapse>
@@ -630,53 +595,29 @@ const InterviewSession = ({
                     color: 'var(--neutral-9)',
                     fontSize: 'var(--font-size-1)',
                     fontWeight: 400,
-                    // fontStyle: 'italic',
                   }}
                 >
                   {getSessionType(session.session_type)}
                 </Stack>
               </Stack>
             }
-            // isRolesvisible={
-            //   session.session_type === 'debrief' && !!roles.length
-            // }
-            // slotRoles={<Roles roles={roles} />}
-            // isSubHeaderVisible={false}
-            // isHeaderTitleVisible={true}
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
             isPanelIconVisible={session.session_type === 'panel'}
-            // isTimingVisible={false}
             textDuration={`${session.session_duration} minutes`}
             slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
-            // isLinkVisilble={session.session_type !== 'debrief'}
             textPlatformName={capitalizeAll(session.schedule_type)}
             textLink={session?.interview_module?.name ?? '---'}
-            // isTextSelectedVisible={
-            //   session.session_type !== 'debrief' && members.qualified.length > 1
-            // }
             textSelected={`Interviewers (${session.interviewer_cnt} out of ${members.qualified.length} members will be selected)`}
-            // isTraineesVisible={members.training.length !== 0}
-            // slotTrainees={members.training.map((member) => (
-            //   <InterviewSessionMember key={member.user_id} member={member} />
-            // ))}
-            // isInterviewersVisible={session.session_type !== 'debrief'}
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
-            // isMembersVisible={
-            //   session.session_type === 'debrief' && members.members.length !== 0
-            // }
-            // slotMembers={members.members.map((member) => (
-            //   <InterviewSessionMember key={member.user_id} member={member} />
-            // ))}
-            onClickLink={{
-              onClick: () =>
-                window.open(
-                  `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
-                  '_blank',
-                ),
-            }}
+            onClickLink={() =>
+              window.open(
+                `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
+                '_blank',
+              )
+            }
             isBreakCardVisible={!lastSession && session.break_duration !== 0}
             slotBreakCard={
               <InterviewBreak
@@ -830,17 +771,19 @@ type InterviewSessionMembersProps = { members: CompanyMember[] };
 const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
   if (members.length === 0)
     return (
-      <GlobalBannerInline
+      <UIAlert
         color={'error'}
-        iconName={'warning'}
-        textContent={
+        iconName={'CircleAlert'}
+        title={
           'No interviewers assigned. Click on edit to assign interviewers.'
         }
-        slotButton={<></>}
+        type='inline'
       />
     );
   return members.map((member) => (
-    <InterviewSessionMember key={member.user_id} member={member} />
+    <div className='mt-2' key={member.user_id}>
+      <InterviewSessionMember member={member} />
+    </div>
   ));
 };
 
@@ -848,7 +791,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'} gap={3}>
+    <Stack direction={'row'} gap={3} mb={1}>
       <AvatarWithName
         textName={name}
         textRole={member.position}
@@ -882,13 +825,11 @@ const InterviewBreak = ({
       slotEditButton={
         manageJob && (
           <>
-            <IconButtonSoft
-              iconName={'delete'}
-              size={1}
-              color={'error'}
-              onClickButton={{
-                onClick: () => handleDelete(),
-              }}
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={handleDelete}
+              icon={<Trash2 />}
             />
           </>
         )

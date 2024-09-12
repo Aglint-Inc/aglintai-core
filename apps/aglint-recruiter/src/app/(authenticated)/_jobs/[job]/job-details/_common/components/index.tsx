@@ -8,7 +8,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { SavedChanges } from '@devlink/SavedChanges';
-import { PageLayout } from '@devlink2/PageLayout';
 import { JobDetailBlock } from '@devlink3/JobDetailBlock';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -21,6 +20,7 @@ import {
 } from 'react';
 
 import Loader from '@/components/Common/Loader';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { WarningSvg } from '@/components/Common/warningSvg';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
@@ -131,7 +131,7 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <PageLayout
+    <UIPageLayout
       slotTopbarLeft={<BreadCrumbs job={job} />}
       slotTopbarRight={<Settings />}
       slotBody={

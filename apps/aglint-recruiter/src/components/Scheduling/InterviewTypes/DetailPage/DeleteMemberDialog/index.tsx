@@ -1,7 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { useEffect, useState } from 'react';
 
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
@@ -144,22 +144,21 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
         ) : (
           <>
             {isOngoingSchedules ? (
-              <GlobalBannerShort
+              <UIAlert
+                type='small'
                 color={'error'}
-                iconName={'warning'}
-                textTitle={'User cannot be removed'}
-                textDescription={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
-                slotButtons={<></>}
+                iconName={'CircleAlert'}
+                title={'User cannot be removed'}
+                description={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
               />
             ) : (
               <>
                 {connectedJobs.length > 0 ? (
-                  <GlobalBannerShort
+                  <UIAlert
                     color={'warning'}
-                    iconName={'error'}
-                    textTitle={`Here is a list of job's interview plan that will be impacted:`}
-                    textDescription=''
-                    slotButtons={
+                    iconName={'TriangleAlert'}
+                    title={`Here is a list of job's interview plan that will be impacted:`}
+                    actions={
                       <div className='flex flex-col space-y-2'>
                         <UITypography type='small' color='neutral'>
                           {connectedJobs
@@ -174,12 +173,12 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
                     }
                   />
                 ) : (
-                  <GlobalBannerShort
+                  <UIAlert
+                    type={'small'}
                     color={'warning'}
-                    iconName={'error'}
-                    textTitle={`Note :`}
-                    textDescription='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
-                    slotButtons={<></>}
+                    iconName={'TriangleAlert'}
+                    title={`Note :`}
+                    description='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
                   />
                 )}
               </>
