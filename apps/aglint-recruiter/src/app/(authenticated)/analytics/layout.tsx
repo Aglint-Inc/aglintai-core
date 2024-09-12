@@ -7,7 +7,9 @@ import React, { useState } from 'react';
 
 import DashboardDataFilter from '@/components/Dashboards/Interview/DashboardDataFilter';
 import InterviewDashboardSideNav from '@/components/Dashboards/Interview/InterviewDashboardSideNav';
-import AnalyticsProvider from '@/context/AnalyticsContext/AnalyticsContextProvider';
+
+import AnalyticsProvider from './_common/context/AnalyticsContext/AnalyticsContextProvider';
+
 export default function AnalyticsLayout({
   children,
 }: {

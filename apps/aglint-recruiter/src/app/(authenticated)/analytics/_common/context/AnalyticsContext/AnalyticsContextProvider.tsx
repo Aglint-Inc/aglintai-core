@@ -5,14 +5,11 @@ import {
   useEffect,
   useState,
 } from 'react';
-import {
-  type AnalyticsContextInterface,
-  type AnalyticsFilters,
-} from 'src/app/(authenticated)/analytics/_common/context/AnalyticsContext/Type';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 
-import { useAuthDetails } from '../AuthContext/AuthContext';
+import { type AnalyticsContextInterface, type AnalyticsFilters } from './Type';
 
 const InitialAnalyticsContext: AnalyticsContextInterface = {
   filtersOptions: {

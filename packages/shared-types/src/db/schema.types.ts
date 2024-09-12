@@ -5274,12 +5274,48 @@ export type Database = {
           candfile_id: string
         }[]
       }
+      calculate_experience: {
+        Args: {
+          start_time: Json
+          end_time: Json
+        }
+        Returns: number
+      }
       calculate_resume_score: {
         Args: {
           in_score_json: Json
           app_id: string
         }
         Returns: boolean
+      }
+      candidate_exp_analytic: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          app_id: string
+          total_exp: number
+          count: number
+        }[]
+      }
+      candidate_skills_analysis: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          skill: string
+          frequency: number
+        }[]
       }
       check_user_auth: {
         Args: Record<PropertyKey, never>
@@ -5949,6 +5985,41 @@ export type Database = {
         }
         Returns: undefined
       }
+      interviewers_analytic_extra: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          user_id: string
+          average_weekly_count: number
+          average_weekly_duration: number
+          upcoming: number
+          qualified: number
+          training: number
+        }[]
+      }
+      interviewers_analytic_rejections: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          user_id: string
+          decline: number
+          lead_time: number
+          reason: string[]
+          note: string[]
+        }[]
+      }
       interviewers_leaderboard_by_v: {
         Args: {
           recruiter_id: string
@@ -5970,6 +6041,22 @@ export type Database = {
       interviewing_state_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      jobs_locations_count: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          locations?: number[]
+          jobs?: string[]
+          start_datetime?: string
+          end_datetime?: string
+        }
+        Returns: {
+          country: string
+          state: string
+          city: string
+          app_count: number
+        }[]
       }
       lever_resume_save: {
         Args: Record<PropertyKey, never>

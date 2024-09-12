@@ -9,8 +9,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { useInterviewCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
 
-import { useInterviewCount } from '@/hooks/analytics/interview/interview.hook';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export default function HistoricInterviews() {

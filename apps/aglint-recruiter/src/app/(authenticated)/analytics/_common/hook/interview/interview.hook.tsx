@@ -7,9 +7,10 @@ import {
   startOfWeek,
 } from 'date-fns';
 
-import { useAnalyticsContext } from '@/context/AnalyticsContext/AnalyticsContextProvider';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+
+import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   const { recruiter } = useAuthDetails();

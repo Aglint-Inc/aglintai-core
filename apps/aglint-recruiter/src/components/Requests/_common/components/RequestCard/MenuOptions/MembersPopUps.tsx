@@ -13,10 +13,10 @@ import { Skeleton } from '@components/ui/skeleton';
 import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssignedToList } from '@devlink2/AssignedToList';
 import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/members';
 
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/context/RequestsContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';

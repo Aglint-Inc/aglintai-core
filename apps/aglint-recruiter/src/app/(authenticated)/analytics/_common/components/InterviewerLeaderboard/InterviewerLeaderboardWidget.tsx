@@ -16,11 +16,12 @@ import {
 } from '@components/ui/tooltip';
 import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
 import { useState } from 'react';
-
-import { useInterviewerMatrix } from '@/hooks/analytics/interview/interviewerMatrix.hook';
+import { useMemberList } from 'src/app/_common/hooks/members';
+import { useInterviewerLeaderboard } from 'src/app/(authenticated)/analytics/_common/hook/interview/interviewerMatrix.hook';
 
 export default function InterviewerLeaderboardWidget() {
-  const { data, isFetching } = useInterviewerMatrix();
+  const { data, isFetching } = useInterviewerLeaderboard();
+  const { data: members, isFetching: isFetchingMem } = useMemberList();
   const [sortBy, setSortBy] = useState('rank');
   const sortedData = data.sort((a, b) => {
     if (sortBy === 'rank') return b.rank - b.rank;
@@ -59,11 +60,18 @@ export default function InterviewerLeaderboardWidget() {
         </CardHeader>
         <CardContent>
           <div className='space-y-6'>
-            {!isFetching ? (
+            {!(isFetching && isFetchingMem) ? (
               sortedData.length ? (
                 sortedData.map((interviewer) => {
-                  const name =
-                    `${interviewer.first_name || ''} ${interviewer.last_name || ''}`.trim();
+                  const tempMem =
+                    (members || []).find(
+                      (member) => member.user_id === interviewer.user_id,
+                    ) || ({} as (typeof members)[number]);
+                  const mem = {
+                    ...tempMem,
+                    topSkills: [],
+                    name: `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim(),
+                  };
                   const accept_per =
                     (interviewer.accepted / interviewer.interviews) * 100;
                   const reject_per =
@@ -72,10 +80,10 @@ export default function InterviewerLeaderboardWidget() {
                     <InterviewerLeaderboardItem
                       key={interviewer.user_id}
                       rank={interviewer.rank}
-                      name={name}
-                      profileImage={interviewer.profile_image}
-                      role={interviewer.role}
-                      topSkills={interviewer.topSkills}
+                      name={mem.name}
+                      profileImage={mem.profile_image}
+                      role={mem.role}
+                      topSkills={mem.topSkills}
                       totalHours={interviewer.total_hours?.toFixed(1)}
                       interviews={interviewer.interviews}
                       acceptenceRate={accept_per}

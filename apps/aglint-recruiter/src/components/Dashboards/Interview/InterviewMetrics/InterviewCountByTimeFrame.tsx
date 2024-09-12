@@ -1,8 +1,7 @@
 import { ToggleGroup, ToggleGroupItem } from '@components/ui/toggle-group';
 import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-
-import { useInterviewCount } from '@/hooks/analytics/interview/interview.hook';
+import { useInterviewCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<

@@ -1,9 +1,12 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
+import InterviewerLeaderboard from 'src/app/(authenticated)/analytics/_common/components/InterviewerLeaderboard';
 
+import CandidateDropoutFunnelReport from '@/components/Dashboards/Interview/CandidateMetrics';
 import Checklist from '@/components/Dashboards/Interview/InterviewerChecklist/Checklist';
 import InterviewCount from '@/components/Dashboards/Interview/InterviewMetrics';
-import TrainingDashboard from '@/components/Dashboards/InterviewerLeaderboard';
+
+import JobMetrics from './_common/components/jobMetrics';
 
 const Analytics = () => {
   const activeTab = useSearchParams().get('tab');
@@ -11,10 +14,10 @@ const Analytics = () => {
   return (
     <div className='flex-grow p-6'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
-      {activeTab === 'trainingMetrics' && <TrainingDashboard />}
-      {/* {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
-      {activeTab === 'candidateMetrics' && <CandidateMetrics />}
-      {activeTab === 'jobMetrics' && <JobMetrics />} */}
+      {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
+      {/* {activeTab === 'trainingMetrics' && <TrainingDashboard />} */}
+      {activeTab === 'candidateMetrics' && <CandidateDropoutFunnelReport />}
+      {activeTab === 'jobMetrics' && <JobMetrics />}
       {activeTab === 'requestMetrics' && <Checklist />}
     </div>
   );

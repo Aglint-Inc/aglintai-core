@@ -11,8 +11,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
-import { useDeclineCount } from '@/hooks/analytics/interview/interview.hook';
+import { useDeclineCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
 
 export default function DeclineLeadTimeChart() {
   const data = useDeclineCount();
