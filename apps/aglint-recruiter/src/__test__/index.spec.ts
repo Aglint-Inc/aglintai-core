@@ -10,10 +10,12 @@ test('nfkewjnkefwjn', async () => {
     .mockImplementation(mockFetchDBCase1);
   const cand_schedule = new CandidatesSchedulingV2({});
   await cand_schedule.fetchDetails({
-    company_id: '',
-    end_date_str: '',
-    req_user_tz: '',
-    session_ids: [],
-    start_date_str: '',
+    params: {
+      company_id: '',
+      end_date_str: '',
+      req_user_tz: '',
+      session_ids: [],
+      start_date_str: '',
+    },
   });
 });
