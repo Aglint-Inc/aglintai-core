@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import { Stack } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -8,6 +7,7 @@ import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';
 
 import { InterviewModuleStats } from '../Common/InterviewType/InterviewModulesStats.';
+import { InterviewStatsLoader } from './interviewers';
 
 const LIMIT = 6;
 

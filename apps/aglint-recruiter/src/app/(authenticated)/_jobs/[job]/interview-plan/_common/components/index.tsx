@@ -17,7 +17,6 @@ import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
 import { AddScheduleOption } from '@devlink3/AddScheduleOption';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
-import { InterviewPlanWrap } from '@devlink3/InterviewPlanWrap';
 import {
   Collapse,
   MenuItem,
@@ -63,6 +62,7 @@ import toast from '@/utils/toast';
 
 import { InterviewBreakCard } from './_common/InterviewBreakCard';
 import { InterviewPlanDetail } from './_common/InterviewPlanDetail';
+import { InterviewPlanWrap } from './_common/InterviewPlanWrap';
 import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';

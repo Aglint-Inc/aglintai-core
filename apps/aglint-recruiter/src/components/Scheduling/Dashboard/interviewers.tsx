@@ -1,7 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { InterviewersCardList } from '@devlink3/InterviewersCardList';
 import { InterviewersDash } from '@devlink3/InterviewersDash';
-import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
@@ -94,3 +93,19 @@ const Loader = memo(() => {
   );
 });
 Loader.displayName = 'Loader';
+
+export const InterviewStatsLoader = ({ slotSkeleton }) => {
+  return (
+    <div className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'>
+      <div className='p-2 px-4'>
+        <div className='relative w-[150px] h-5'>{slotSkeleton}</div>
+      </div>
+      <div className='p-2 px-4'>
+        <div className='relative w-5 h-5'>{slotSkeleton}</div>
+      </div>
+      <div className='p-2 px-4'>
+        <div className='relative w-5 h-5'>{slotSkeleton}</div>
+      </div>
+    </div>
+  );
+};

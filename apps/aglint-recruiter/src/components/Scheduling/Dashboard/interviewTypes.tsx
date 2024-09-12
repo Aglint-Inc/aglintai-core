@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -14,6 +13,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { InterviewModuleStats } from '../Common/InterviewType/InterviewModulesStats.';
 import { Empty } from './common';
+import { InterviewStatsLoader } from './interviewers';
 
 const LIMIT = 6;
 
