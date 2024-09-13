@@ -263,5 +263,5 @@ export const PATHS = [
   '/api/emails/selfScheduleReminder_email_applicant',
   '/api/emails/sendAvailabilityRequest_email_applicant',
   '/api/emails/sendAvailReqReminder_email_applicant',
-  '/api/emails/sendSelfScheduleRequest_email_applicant'
-] as const
+  '/api/emails/sendSelfScheduleRequest_email_applicant',
+] as const;

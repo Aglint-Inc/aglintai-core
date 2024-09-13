@@ -62,7 +62,7 @@ function CreateSchedulePopUp({
             schedule_end_date: selectedDateRange.end_date,
             note: null,
           },
-          applications: [selectedItems.applicant_name[0].id],
+          application: selectedItems.applicant_name[0].id,
           sessions: selectedItems.interview_name.map((ele) => ele.id),
         },
       });
@@ -106,7 +106,7 @@ function CreateSchedulePopUp({
             </div>
             <UIButton
               variant='default'
-              leftIcon={<Send/>}
+              leftIcon={<Send />}
               onClick={createNewRequest}
               isLoading={loading}
               disabled={

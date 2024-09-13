@@ -1,6 +1,7 @@
 import { analyticsRouter } from './routers/analytics';
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
+import { requests } from './routers/requests';
 import { schedulingRouter } from './routers/scheduling';
 import { textTransform } from './routers/textTransform';
 import { createCallerFactory, createTRPCRouter } from './trpc';
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   candidatePortal: candidatePortalRouter,
   analytics: analyticsRouter,
   textTransform,
+  requests,
 });
 
 export const appRouterSchema = {

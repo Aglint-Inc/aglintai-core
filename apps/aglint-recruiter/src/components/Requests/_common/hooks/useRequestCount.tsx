@@ -14,7 +14,7 @@ export const useRequestCount = () => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_requests_Count'],
-    refetchInterval: 30000,
+    refetchInterval: 10000,
     refetchOnMount: true,
     queryFn: () => getRequestsCount({ assigner_id: user_id }),
     gcTime: 20000,
