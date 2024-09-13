@@ -1,7 +1,7 @@
-import { DeletePopup } from '@devlink3/DeletePopup';
 import type { Dispatch, SetStateAction } from 'react';
 
-import MuiPopup from '@/components/Common/MuiPopup';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
@@ -21,42 +21,50 @@ function DeleteLocation({
   };
 
   return (
-    <MuiPopup
-      props={{
-        open: dialog.deletelocation.open,
-        onClose: () => {
-          setDialog({
-            ...dialog,
-            deletelocation: { open: false, edit: -1 },
-          });
-        },
+    <UIDialog
+      open={dialog.deletelocation.open}
+      onClose={() => {
+        setDialog({
+          ...dialog,
+          deletelocation: { open: false, edit: -1 },
+        });
       }}
+      title='Delete Office Location'
+      slotButtons={
+        <>
+          <UIButton
+            variant='secondary'
+            size='sm'
+            onClick={() => {
+              setDialog({
+                ...dialog,
+                deletelocation: { open: false, edit: -1 },
+              });
+            }}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            variant='destructive'
+            size='sm'
+            onClick={() => {
+              handleDeleteLocation(dialog.deletelocation.edit);
+              setDialog({
+                ...dialog,
+                deletelocation: { open: false, edit: -1 },
+              });
+            }}
+          >
+            Delete
+          </UIButton>
+        </>
+      }
     >
-      <DeletePopup
-        textDescription={
-          'Are you sure you want to delete this office location? This action is permanent.'
-        }
-        textTitle={'Delete Office Location'}
-        isIcon={false}
-        onClickCancel={{
-          onClick: () => {
-            setDialog({
-              ...dialog,
-              deletelocation: { open: false, edit: -1 },
-            });
-          },
-        }}
-        onClickDelete={{
-          onClick: () => {
-            handleDeleteLocation(dialog.deletelocation.edit);
-            setDialog({
-              ...dialog,
-              deletelocation: { open: false, edit: -1 },
-            });
-          },
-        }}
-      />
-    </MuiPopup>
+      <p>
+        Are you sure you want to delete this office location? This action is
+        permanent.
+      </p>
+    </UIDialog>
   );
 }
 

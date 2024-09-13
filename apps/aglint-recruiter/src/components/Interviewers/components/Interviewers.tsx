@@ -1,9 +1,10 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
+import { HardDrive } from 'lucide-react';
 import { memo, useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
@@ -42,13 +43,10 @@ const Container = memo(({ type }: { type: 'training' | 'qualified' }) => {
 
   if (data.length === 0)
     return (
-      <Stack>
-        <GlobalEmptyState
-          iconName={'monitoring'}
-          size={8}
-          textDesc={'No Data Available'}
-        />
-      </Stack>
+      <GlobalEmpty
+        iconSlot={<HardDrive className='text-gray-500' />}
+        text={'No Data Available'}
+      />
     );
 
   return <List data={data} />;

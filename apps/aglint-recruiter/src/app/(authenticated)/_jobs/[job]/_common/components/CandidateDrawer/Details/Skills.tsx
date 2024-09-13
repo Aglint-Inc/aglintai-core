@@ -2,13 +2,13 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { Stack } from '@mui/material';
-import { Lightbulb } from 'lucide-react';
+import { Lightbulb, Medal } from 'lucide-react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
-import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Skills = () => {
   return (
@@ -45,7 +45,7 @@ const Content = () => {
       data?.score_json?.relevance?.skills
     )
   )
-    return <EmptyDetailState section='Skills' />;
+    return <GlobalEmpty iconSlot={<Medal className='text-gray-500'/>} text={'No skills found'}/>;
   return <Skill />;
 };
 

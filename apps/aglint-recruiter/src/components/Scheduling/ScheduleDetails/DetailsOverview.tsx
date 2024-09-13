@@ -1,12 +1,13 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { NewTabPill } from '@devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@devlink3/ScheduleDetailTabs';
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
@@ -175,9 +176,11 @@ function DetailsOverview({
                     justifyContent={'center'}
                     alignItems={'center'}
                   >
-                    <GlobalEmptyState
-                      textDesc='Feedback will be enabled once the interview is completed'
-                      iconName='chat'
+                    <GlobalEmpty
+                      text={
+                        'Feedback will be enabled once the interview is completed'
+                      }
+                      iconSlot={<MessageCircle className='text-gray-500' />}
                     />
                   </Stack>
                 )}

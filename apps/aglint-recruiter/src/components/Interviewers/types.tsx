@@ -1,6 +1,6 @@
 import { type CalendarEvent } from '@aglint/shared-types';
 
-import { type RouterHelper, type RouterInputs } from '@/trpc/client';
+import { type RouterInputs, type Unvoid } from '@/trpc/client';
 
 export type interviewersTab =
   | 'availability'
@@ -12,11 +12,11 @@ export type CalendarEventWithType = (CalendarEvent & {
   type: string;
 })[];
 
-export type LeaderAnalyticsFilterType = RouterHelper<
+export type LeaderAnalyticsFilterType = Unvoid<
   RouterInputs['scheduling']['analytics']['leaderboard']
 >;
 
-export type TrainingProgressType = RouterHelper<
+export type TrainingProgressType = Unvoid<
   RouterInputs['scheduling']['analytics']['training_progress']
 >;
 export type EventType =

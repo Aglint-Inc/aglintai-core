@@ -45,11 +45,12 @@ export const PublicProviders = ({ children }: PropsWithChildren) => {
         <ThemeProvider
           attribute='class'
           defaultTheme='light'
-          enableSystem
+          enableSystem={false}
           disableTransitionOnChange
         >
           <Toaster />
           <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Toaster />
         </ThemeProvider>
       </Theme>
     </Suspense>

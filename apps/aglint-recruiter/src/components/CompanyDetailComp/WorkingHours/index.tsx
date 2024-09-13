@@ -1,4 +1,5 @@
 import type { schedulingSettingType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +22,6 @@ export default function WorkingHour({
     start_time: string;
     end_time: string;
   } | null>({ start_time: '', end_time: '' });
-  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     initialLoad();
@@ -42,17 +42,17 @@ export default function WorkingHour({
   }
 
   const handleUpdate = async (updatedData) => {
-    setIsUpdating(true);
     try {
       const schedulingSettingObj = {
         ...initialData,
         ...updatedData,
       } as schedulingSettingType;
       await updateSettings(schedulingSettingObj);
-    } catch (e) {
-      // Handle error
-    } finally {
-      setIsUpdating(false);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong',
+      });
     }
   };
   return (
@@ -62,19 +62,16 @@ export default function WorkingHour({
         selectedTimeZone={selectedTimeZone}
         setSelectedTimeZone={setSelectedTimeZone}
         handleUpdate={handleUpdate}
-        isUpdating={isUpdating}
       />
       <WorkTime
         workingHours={workingHours}
         setWorkingHours={setWorkingHours}
         handleUpdate={handleUpdate}
-        isUpdating={isUpdating}
       />
       <BreakTimeCard
         breaktime={selectedHourBreak}
         setSelectedHourBreak={setSelectedHourBreak}
         handleUpdate={handleUpdate}
-        isUpdating={isUpdating}
       />
     </div>
   );

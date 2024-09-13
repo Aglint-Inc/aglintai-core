@@ -98,6 +98,15 @@ export const navList: {
     active: ['/integrations', '/integrations/[platform]'],
   },
   {
+    text: 'Analytics',
+    SubComponents: null,
+    route: ROUTES['/analytics'](),
+    comingSoon: false,
+    isVisible: true,
+    permission: ['company_settings_module'],
+    active: ['/analytics'],
+  },
+  {
     text: 'Company Settings',
     SubComponents: null,
     route: ROUTES['/company'](),

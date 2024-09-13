@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 import { z } from 'zod';
 
-import { privateProcedure, type PublicProcedure } from '@/server/api/trpc';
+import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 
 export const barSchema = z.object({ barId: z.string().uuid() });
 
 const mutation = ({
-  ctx: { db },
+  ctx: { adminDb },
   input: { barId },
 }: PublicProcedure<typeof barSchema>) => {
-  if (db) {
-    console.log(`Bar from the db: ${barId}`);
+  if (adminDb) {
+    console.log(`Bar from the adminDb: ${barId}`);
   }
-  console.log(`Bar from the db: ${barId}`);
+  console.log(`Bar from the adminDb: ${barId}`);
 };
 
-export const bar = privateProcedure.input(barSchema).mutation(mutation);
+export const bar = publicProcedure.input(barSchema).mutation(mutation);

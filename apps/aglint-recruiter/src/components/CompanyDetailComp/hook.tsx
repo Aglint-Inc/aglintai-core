@@ -1,5 +1,7 @@
 import type { schedulingSettingType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
@@ -44,6 +46,15 @@ export const useCompanyDetailComp = () => {
 
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setIsSaving('saving');
+    toast({
+      title: 'Saving changes',
+      description: (
+        <div className='flex items-center justify-start space-x-2 text-sm text-gray-600'>
+          <Loader2 className='h-4 w-4 animate-spin' />
+          <span>Please wait while we save your settings.</span>
+        </div>
+      ),
+    });
     const { data: updatedRecruiter, error } = await supabase
       .from('recruiter')
       .update({ scheduling_settings: schedulingSettingObj })
@@ -59,6 +70,12 @@ export const useCompanyDetailComp = () => {
       });
     }
     setIsSaving('saved');
+
+    toast({
+      title: 'Saved',
+      description: 'Settings saved successfully.',
+      variant: 'default',
+    });
   }
 
   const [show, setShow] = useState(false);

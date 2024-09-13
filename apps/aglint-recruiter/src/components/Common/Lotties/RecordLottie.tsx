@@ -1,5 +1,4 @@
 // this file is not used
-import { Stack } from '@mui/material';
 import { recordLottie } from '@public/lottie/record-lottie';
 import Lottie from 'lottie-react';
 
@@ -24,16 +23,16 @@ function RecordLottie({ lottieRef, listening }) {
     }
   }, [listening]);
   return (
-    <Stack height={21} position={'relative'}>
-      <Stack left={-18} top={-25} position={'absolute'} width={65}>
+    <div className='h-[21px] relative'>
+      <div className='absolute left-[-18px] top-[-25px] w-[65px]'>
         <Lottie
           lottieRef={lottieRef}
           animationData={recordLottie}
           loop={true}
           autoplay={false}
         />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }
 

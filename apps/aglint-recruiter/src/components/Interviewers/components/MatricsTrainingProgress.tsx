@@ -1,13 +1,14 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import { HardDrive } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { memo, useMemo } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -48,11 +49,7 @@ const Containter = () => {
   if (data.length === 0)
     return (
       <Stack>
-        <GlobalEmptyState
-          iconName={'monitoring'}
-          size={8}
-          textDesc={'No Data Available'}
-        />
+        <GlobalEmpty iconSlot={<HardDrive />} text={'No Data Available'} />
       </Stack>
     );
 
@@ -74,13 +71,7 @@ const List = memo(({ data }: { data: useTrainingProgressType }) => {
         >
           <TrainingProgressList
             slotHistoryPill={<Pills {...data} />}
-            slotInterviewerImage={
-              <Avatar
-                //src={data.}
-                alt={data.name}
-                variant='rounded-medium'
-              />
-            }
+            slotInterviewerImage={<Avatar alt={data.name} />}
             textInterviewModule={''}
             textName={capitalizeAll(data.name)}
             textRole={data.position}

@@ -1,13 +1,13 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { privateProcedure, type PublicProcedure } from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 
 export const trainingProgressSchema = z.object({
   trainer_ids: z.array(z.string().uuid()),
 });
 
-const query = (p: PublicProcedure<typeof trainingProgressSchema>) => {
+const query = (p: PrivateProcedure<typeof trainingProgressSchema>) => {
   return fetchProgress(p);
 };
 
@@ -16,7 +16,7 @@ export const trainingProgress = privateProcedure
   .query(query);
 
 export const fetchProgress = async (
-  props: PublicProcedure<typeof trainingProgressSchema>,
+  props: PrivateProcedure<typeof trainingProgressSchema>,
 ) => {
   const {
     ctx: { db },

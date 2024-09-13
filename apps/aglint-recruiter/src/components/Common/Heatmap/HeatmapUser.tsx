@@ -1,5 +1,4 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -84,21 +83,15 @@ export default function Heatmap({
   const mapDatas: number[][] = heatMapData.map((data) => data.map(() => 1));
 
   return (
-    <Stack m={2}>
-      <Stack
-        direction={'row'}
-        justifyContent={'space-between'}
-        alignItems={'center'}
-        mb={1}
-        maxWidth={'870px'}
-      >
-        <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          <Typography minWidth={'250px'}>
+    <div className='m-2'>
+      <div className='flex justify-between items-center mb-1 max-w-[870px]'>
+        <div className='flex items-center space-x-1'>
+          <p className='min-w-[250px]'>
             Activity on{' '}
-            <span style={{ fontWeight: 500 }}>
+            <span className='font-medium'>
               {startDateUI} - {endDateUI}
             </span>
-          </Typography>
+          </p>
           <UIButton
             size='sm'
             variant='secondary'
@@ -108,7 +101,7 @@ export default function Heatmap({
                 end: pre.end - 28,
               }))
             }
-            icon={<ChevronLeft />}
+            icon={<ChevronLeft className='w-4 h-4' />}
           />
           <UIButton
             size='sm'
@@ -119,21 +112,21 @@ export default function Heatmap({
                 end: pre.end + 28,
               }))
             }
-            icon={<ChevronRight />}
+            icon={<ChevronRight className='w-4 h-4' />}
           />
-        </Stack>
+        </div>
 
-        <Stack direction={'row'} spacing={1}>
-          <Stack direction={'row'} spacing={1}>
-            <Typography fontWeight={500}>Daily :</Typography>
-            <Typography>{loadSetting?.dailyLimit.value}</Typography>
-            <Typography>{todayTypeText}</Typography>
-            <Typography fontWeight={500}> Weekly : </Typography>
-            <Typography>{loadSetting?.weeklyLimit.value}</Typography>
-            <Typography>{weeklyTypeText}</Typography>
-          </Stack>
-        </Stack>
-      </Stack>
+        <div className='flex space-x-1'>
+          <div className='flex space-x-1'>
+            <p className='font-medium'>Daily :</p>
+            <p>{loadSetting?.dailyLimit.value}</p>
+            <p>{todayTypeText}</p>
+            <p className='font-medium'> Weekly : </p>
+            <p>{loadSetting?.weeklyLimit.value}</p>
+            <p>{weeklyTypeText}</p>
+          </div>
+        </div>
+      </div>
       <HeatMapGrid
         data={mapDatas}
         xLabels={xLabel}
@@ -142,16 +135,13 @@ export default function Heatmap({
         cellHeight='30px'
         xLabelsPos='bottom'
         onClick={(x, y) => {
-          // eslint-disable-next-line security/detect-object-injection
           if (heatMapData[x][y].meeting_id)
             router.push(
-              // eslint-disable-next-line security/detect-object-injection
               `/scheduling/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
             );
         }}
         yLabelsPos='left'
         xLabelsStyle={(index) => {
-          // eslint-disable-next-line security/detect-object-injection
           const isToday = dayjsLocal(arrayDates[index]).isToday();
           return {
             visibility: isToday ? 'visible' : 'hidden',
@@ -168,7 +158,6 @@ export default function Heatmap({
           fontSize: '10px',
         })}
         cellStyle={(x: number, y: number) => {
-          // eslint-disable-next-line security/detect-object-injection
           const value = heatMapData[x][y];
 
           return {
@@ -188,7 +177,7 @@ export default function Heatmap({
           };
         }}
       />
-    </Stack>
+    </div>
   );
 }
 
@@ -197,7 +186,6 @@ const arrayStructure = ({ datesArray, gridData, maxCount }): Meeting[][] => {
     Object.keys(gridData).forEach((date) => {
       if (datesArray.includes(date)) {
         const index = datesArray.indexOf(date);
-        // eslint-disable-next-line security/detect-object-injection
         datesArray[index] = gridData[date];
       }
     });

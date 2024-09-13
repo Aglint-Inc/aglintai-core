@@ -4,9 +4,6 @@ import { Card } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ScheduleSettings } from '@devlink2/ScheduleSettings';
-import { TimeRangeInput } from '@devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@devlink2/WorkingHourDay';
 import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -22,6 +19,7 @@ import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import { InterviewLoadCard } from '../_common/InterviewLoadCard';
+import { ScheduleSettings } from '../_common/ScheduleSettings';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
 
 type interviewLoadType = {
@@ -349,7 +347,7 @@ function Availibility({
         >
           <Stack padding={'16px'}>
             <ScheduleSettings
-              isTimeZoneToggleVisible={false}
+              slotDayOff={<></>}
               slotTimeZoneInput={
                 <Stack
                   spacing={'var(--space-2)'}
@@ -462,68 +460,63 @@ function Availibility({
                     workingHours.map((day, i) => {
                       return (
                         <>
-                          <WorkingHourDay
-                            slotRcCheckbox={
-                              <div className='flex items-center space-x-2'>
-                                <Checkbox
-                                  id={`checkbox-${day.day}`}
-                                  checked={day.isWorkDay}
-                                  onCheckedChange={() => {
-                                    setWorkingHours((pre) => {
-                                      const data = [...pre];
-                                      data[i].isWorkDay = !data[i].isWorkDay;
-                                      return data;
-                                    });
-                                  }}
-                                />
-                                <Label htmlFor={`checkbox-${day.day}`}>
-                                  {capitalize(day.day)}
-                                </Label>
-                              </div>
-                            }
-                            slotTimeRageInput={
-                              <TimeRangeInput
-                                slotStartTimeInput={
-                                  <SelectTime
-                                    value={dayjsLocal()
-                                      .set(
-                                        'hour',
-                                        parseInt(
-                                          day.timeRange.startTime.split(':')[0],
-                                        ),
-                                      )
-                                      .set(
-                                        'minute',
-                                        parseInt(
-                                          day.timeRange.startTime.split(':')[1],
-                                        ),
-                                      )}
-                                    onSelect={selectStartTime}
-                                    i={i}
-                                  />
-                                }
-                                slotEndTimeInput={
-                                  <SelectTime
-                                    value={dayjsLocal()
-                                      .set(
-                                        'hour',
-                                        parseInt(
-                                          day.timeRange.endTime.split(':')[0],
-                                        ),
-                                      )
-                                      .set(
-                                        'minute',
-                                        parseInt(
-                                          day.timeRange.endTime.split(':')[1],
-                                        ),
-                                      )}
-                                    onSelect={selectEndTime}
-                                    i={i}
-                                  />
-                                }
+                          <div className='flex flex-col space-y-4'>
+                            <div className='flex items-center space-x-2'>
+                              <Checkbox
+                                id={`checkbox-${day.day}`}
+                                checked={day.isWorkDay}
+                                onCheckedChange={() => {
+                                  setWorkingHours((pre) => {
+                                    const data = [...pre];
+                                    data[i].isWorkDay = !data[i].isWorkDay;
+                                    return data;
+                                  });
+                                }}
                               />
-                            }
-                          />
+                              <Label
+                                htmlFor={`checkbox-${day.day}`}
+                                className='text-sm font-medium'
+                              >
+                                {capitalize(day.day)}
+                              </Label>
+                            </div>
+                            <div className='flex space-x-4'>
+                              <SelectTime
+                                value={dayjsLocal()
+                                  .set(
+                                    'hour',
+                                    parseInt(
+                                      day.timeRange.startTime.split(':')[0],
+                                    ),
+                                  )
+                                  .set(
+                                    'minute',
+                                    parseInt(
+                                      day.timeRange.startTime.split(':')[1],
+                                    ),
+                                  )}
+                                onSelect={selectStartTime}
+                                i={i}
+                              />
+                              <SelectTime
+                                value={dayjsLocal()
+                                  .set(
+                                    'hour',
+                                    parseInt(
+                                      day.timeRange.endTime.split(':')[0],
+                                    ),
+                                  )
+                                  .set(
+                                    'minute',
+                                    parseInt(
+                                      day.timeRange.endTime.split(':')[1],
+                                    ),
+                                  )}
+                                onSelect={selectEndTime}
+                                i={i}
+                              />
+                            </div>
+                          </div>
                         </>
                       );
                     })}

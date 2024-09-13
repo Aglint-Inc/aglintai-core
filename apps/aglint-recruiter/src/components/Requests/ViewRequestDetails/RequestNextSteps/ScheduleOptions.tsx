@@ -1,3 +1,4 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import React from 'react';
 
@@ -24,14 +25,19 @@ const ScheduleOptions = () => {
   const { fetchingPlan } = useSelfSchedulingFlowStore();
   const { request_workflow, requestDetails } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
-
-  const isWorkflowAdded = request_workflow.data.find(
+  const addedWorkflow = request_workflow.data.find(
     (w) => w.trigger === 'onRequestSchedule',
   );
+  let scheduleWorkflowAction: DatabaseTable['workflow_action'] = null;
+  if (addedWorkflow && addedWorkflow.workflow_action.length > 0) {
+    scheduleWorkflowAction = addedWorkflow.workflow_action[0];
+  }
   return (
     <>
       <ShowCode.When
-        isTrue={Boolean(isWorkflowAdded) && requestDetails.status === 'to_do'}
+        isTrue={
+          Boolean(scheduleWorkflowAction) && requestDetails.status === 'to_do'
+        }
       >
         <>
           <UIButton
@@ -52,7 +58,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
-      <ShowCode.When isTrue={Boolean(!isWorkflowAdded)}>
+      <ShowCode.When isTrue={Boolean(!scheduleWorkflowAction)}>
         <>
           <UIButton
             onClick={() => {

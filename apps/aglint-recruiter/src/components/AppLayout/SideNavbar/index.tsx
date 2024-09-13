@@ -7,6 +7,7 @@ import {
 import {
   BriefcaseBusiness,
   Calendar,
+  GitGraph,
   LayoutGrid,
   LayoutList,
   LibraryBig,
@@ -93,6 +94,7 @@ const LinkIcon = ({
     'Company Settings': <Settings className='w-6 h-6' strokeWidth={1.5} />,
     Workflows: <Workflow className='w-6 h-6' strokeWidth={1.5} />,
     Tasks: <ListTodo className='w-6 h-6' strokeWidth={1.5} />,
+    Analytics: <GitGraph className='w-6 h-6' strokeWidth={1.5} />,
   };
 
   return (

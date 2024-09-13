@@ -1,12 +1,10 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AvatarWithName } from '@devlink3/AvatarWithName';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Stack } from '@mui/material';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIBadge } from '@/components/Common/UIBadge';
-// import { getRequestTitle } from '@/components/Requests/AgentChats/AgentInputBox';
 import { useApplication } from '@/context/ApplicationContext';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -70,41 +68,45 @@ function Requests() {
                   }
                 />
               </Stack>
-              <Stack direction={'row'} spacing={'var(--space-2)'}>
+              <div className='flex items-center space-x-2'>
                 <p className='text-sm text-muted-foreground'>Assigned to</p>
-                <AvatarWithName
-                  slotAvatar={
-                    <MuiAvatar
+                <div className='flex items-center space-x-2'>
+                  <Avatar className='h-5 w-5 rounded'>
+                    <AvatarImage
                       src={req.assignee_details.profile_image}
-                      level={getFullName(
+                      alt={getFullName(
                         req.assignee_details.first_name,
                         req.assignee_details.last_name,
                       )}
-                      variant='rounded'
-                      width={'20px'}
-                      height={'20px'}
                     />
-                  }
-                  textName={getFullName(
-                    req.assignee_details.first_name,
-                    req.assignee_details.last_name,
-                  )}
-                />
-              </Stack>
+                    <AvatarFallback>
+                      {getFullName(
+                        req.assignee_details.first_name,
+                        req.assignee_details.last_name,
+                      ).charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className='text-sm font-medium'>
+                    {getFullName(
+                      req.assignee_details.first_name,
+                      req.assignee_details.last_name,
+                    )}
+                  </span>
+                </div>
+              </div>
             </Stack>
           );
         })}
 
       {!requests?.length && (
-        <GlobalEmptyState
-          iconName={'calendar_month'}
-          styleEmpty={{
-            style: {
-              background: 'var(--neutral-2)',
-            },
-          }}
-          textDesc={'No requests found'}
-        />
+        <>
+          <div className='flex flex-col items-center justify-center p-4 bg-gray-100'>
+            <div className='mb-2'>
+              <Calendar className='h-9 w-9 text-gray-500' />
+            </div>
+            <p className='text-sm text-gray-500'>No requests found</p>
+          </div>
+        </>
       )}
     </Stack>
   );

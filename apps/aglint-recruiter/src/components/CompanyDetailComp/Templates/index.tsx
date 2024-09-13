@@ -355,10 +355,14 @@ function SchedulerEmailTemps({ setSaving }) {
                           }}
                         >
                           <div className='w-full'>
-                            <div className='font-semibold'>
+                            <div
+                              className={`font-semibold ${emailPath.type === temp_email ? 'text-white' : 'text-neutral-900'}`}
+                            >
                               {emailTemplateCopy[emailPath.type]?.heading}
                             </div>
-                            <div className='text-sm text-gray-500 line-clamp-2'>
+                            <div
+                              className={`text-sm line-clamp-2 ${emailPath.type === temp_email ? 'text-primary-600' : 'text-neutral-500'}`}
+                            >
                               {emailTemplateCopy[emailPath.type].description}
                             </div>
                           </div>

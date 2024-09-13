@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
-import { privateProcedure, type PublicProcedure } from '@/server/api/trpc';
+import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 
 export const fooSchema = z.object({ fooId: z.string().uuid() });
 
 const query = ({
-  ctx: { db },
+  ctx: { adminDb },
   input: { fooId },
 }: PublicProcedure<typeof fooSchema>) => {
-  if (db) {
-    return `Foo from the db: ${fooId}`;
+  if (adminDb) {
+    return `Foo from the adminDb: ${fooId}`;
   }
   return `Foo: ${fooId}`;
 };
 
-export const foo = privateProcedure.input(fooSchema).query(query);
+export const foo = publicProcedure.input(fooSchema).query(query);

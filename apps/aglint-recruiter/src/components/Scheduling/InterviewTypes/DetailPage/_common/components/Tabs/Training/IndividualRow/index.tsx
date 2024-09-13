@@ -78,7 +78,6 @@ function IndividualRow({
               <MuiAvatar
                 src={relation.recruiter_user.profile_image}
                 level={relation.full_name}
-                variant='rounded-medium'
               />
               <div>
                 <div className='font-medium text-gray-900 flex flex-row gap-2'>

@@ -1,13 +1,11 @@
-import Avatar, { type AvatarProps } from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import * as radixColors from '@radix-ui/colors';
 import React from 'react';
 
-interface MuiAvatarProps {
+interface AvatarProps {
   level: string;
   width?: string;
   height?: string;
-  variant: AvatarProps['variant'];
   src?: string;
   fontSize?: string;
   dynamicSizing?: boolean;
@@ -47,18 +45,17 @@ const colors = [
 
 export const getStringColor = (index: number) => colors[index % colors.length];
 
-export default function MuiAvatar({
+export default function CustomAvatar({
   level,
   width,
   height,
-  variant,
   src,
   fontSize,
   dynamicSizing,
   bgColor,
   color,
   extended,
-}: MuiAvatarProps): React.JSX.Element {
+}: AvatarProps): React.JSX.Element {
   const index = level ? level.charCodeAt(0) : 0;
   const colorData = getStringColor(index);
 
@@ -69,9 +66,10 @@ export default function MuiAvatar({
           width: width || '40px',
           height: height || '40px',
         }),
-    bgcolor: bgColor || colorData.bg,
+    backgroundColor: bgColor || colorData.bg,
     color: color || colorData.text,
     border: 'none',
+    fontSize: fontSize || '16px',
   };
 
   const avatarContent = level
@@ -81,14 +79,16 @@ export default function MuiAvatar({
     : '0';
 
   return (
-    <Avatar src={src || ''} variant={variant} sx={avatarStyle}>
-      <Typography
-        position={'relative'}
-        color={colorData.text}
-        fontSize={fontSize}
+    <Avatar style={avatarStyle}>
+      <AvatarImage src={src} alt={level} />
+      <AvatarFallback
+        style={{
+          backgroundColor: avatarStyle.backgroundColor,
+          color: avatarStyle.color,
+        }}
       >
         {avatarContent}
-      </Typography>
+      </AvatarFallback>
     </Avatar>
   );
 }

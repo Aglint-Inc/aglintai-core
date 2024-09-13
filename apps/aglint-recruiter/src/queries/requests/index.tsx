@@ -597,9 +597,9 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
       .throwOnError()
   ).data;
 
-type CreateRequests = DatabaseFunctions['create_session_requests']['Args'];
+type CreateRequests = DatabaseFunctions['create_session_request']['Args'];
 export const createRequests = async (requestPayload: CreateRequests) =>
-  await supabase.rpc('create_session_requests', requestPayload).throwOnError();
+  await supabase.rpc('create_session_request', requestPayload).throwOnError();
 
 type UpdateRequest = {
   requestId: DatabaseTable['request']['id'];

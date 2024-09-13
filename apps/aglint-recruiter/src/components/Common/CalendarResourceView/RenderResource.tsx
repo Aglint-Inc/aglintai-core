@@ -18,7 +18,6 @@ function RenderResourceContent(resourceInfo) {
           <MuiAvatar
             src={data.profile_pic}
             level={data.name}
-            variant='rounded'
             width='32px'
             height='32px'
             fontSize='12px'

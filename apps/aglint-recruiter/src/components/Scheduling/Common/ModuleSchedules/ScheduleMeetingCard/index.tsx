@@ -1,4 +1,3 @@
-import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { MembersList } from '@devlink3/MembersList';
 import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
 import { Collapse, Stack, Typography } from '@mui/material';
@@ -121,14 +120,15 @@ function ScheduleMeetingCard({
           isLocationVisible={false}
           textDuration={getBreakLabel(meetingDetails.session_duration)}
           slotAvatarWithName={
-            <AvatarWithName
-              isAvatarVisible={false}
-              isCandidateIconVisible={true}
-              textName={getFullName(
-                meetingDetails.applications.candidates.first_name,
-                meetingDetails.applications.candidates.last_name,
-              )}
-            />
+            <div className='flex items-center space-x-2'>
+              <User className='h-4 w-4' />
+              <span className='text-sm font-medium'>
+                {getFullName(
+                  meetingDetails.applications.candidates.first_name,
+                  meetingDetails.applications.candidates.last_name,
+                )}
+              </span>
+            </div>
           }
           isAvatarWithNameVisible={!collapseOpen}
           textJob={

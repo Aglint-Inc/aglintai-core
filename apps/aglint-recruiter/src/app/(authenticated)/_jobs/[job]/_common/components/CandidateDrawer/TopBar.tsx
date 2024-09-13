@@ -1,4 +1,3 @@
-import { CandidateName } from '@devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@devlink/CandidateSidedrawerTop';
 import { Stack } from '@mui/material';
 import { type PropsWithChildren, useEffect, useMemo } from 'react';
@@ -15,12 +14,19 @@ const Info = () => {
   } = useApplication();
   const setPreview = useApplicationStore(({ setPreview }) => setPreview);
   return (
-    <CandidateName
-      isLinedin={false}
-      isResume={!!data?.file_url}
-      onClickResume={{ onClick: () => setPreview(true) }}
-      textName={capitalizeAll(data?.name ?? '---')}
-    />
+    <div className='flex items-center space-x-2'>
+      <span className='text-lg font-semibold'>
+        {capitalizeAll(data?.name ?? '---')}
+      </span>
+      {data?.file_url && (
+        <button
+          onClick={() => setPreview(true)}
+          className='text-blue-600 hover:text-blue-800 focus:outline-none'
+        >
+          Resume
+        </button>
+      )}
+    </div>
   );
 };
 

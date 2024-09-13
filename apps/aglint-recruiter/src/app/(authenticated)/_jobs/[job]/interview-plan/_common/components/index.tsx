@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,10 +11,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { AddScheduleCard as AddScheduleCardDev } from '@devlink3/AddScheduleCard';
-import { AddScheduleOption } from '@devlink3/AddScheduleOption';
-import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
   MenuItem,
@@ -23,7 +20,15 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause, Kanban, Trash2 } from 'lucide-react';
+import {
+  ChevronDown,
+  Kanban,
+  PauseCircle,
+  Pencil,
+  Plus,
+  Trash,
+  Trash2,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -31,7 +36,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
@@ -58,6 +62,7 @@ import {
 } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
+import { AddScheduleOption } from './_common/AddScheduleOption';
 import { InterviewBreakCard } from './_common/InterviewBreakCard';
 import { InterviewPlanDetail } from './_common/InterviewPlanDetail';
 import { InterviewPlanWrap } from './_common/InterviewPlanWrap';
@@ -407,20 +412,16 @@ const InterviewPlan = ({
           }
           slotRightIconButton={
             <Stack direction={'row'} gap={1}>
-              <IconButtonSoft
-                iconName='delete'
-                color={'error'}
-                onClickButton={{
-                  onClick: () => deletePlan({ id: plan_id }),
-                }}
-              />
-              <IconButtonSoft
-                iconName='keyboard_double_arrow_down'
-                color={'neutral'}
-                onClickButton={{
-                  onClick: handleExpandClick,
-                }}
-              />
+              <UIButton
+                variant='destructive'
+                onClick={() => deletePlan({ id: plan_id })}
+              >
+                <Trash className='h-4 w-4' />
+              </UIButton>
+
+              <UIButton variant='secondary' onClick={handleExpandClick}>
+                <ChevronDown className='h-4 w-4' />
+              </UIButton>
             </Stack>
           }
           slotInterviewPlanDetail={
@@ -710,7 +711,19 @@ const InterviewSession = ({
                   }
                 >
                   <Stack>
-                    <AddScheduleCardDev />
+                    <div
+                      className={
+                        'relative flex h-6 justify-center items-center'
+                      }
+                    >
+                      <div className='w-full ' />
+                      <div className=' w-full absolute inset-0 flex flex-col justify-center items-center'>
+                        <div className='relative top-[50%] flex h-[2px] w-full bg-[#cc4e00]  flex-col justify-center items-center cursor-pointer transition-all duration-250 ease hover:opacity-80'></div>
+                        <div className='h-[20px] w-[20px] bg-[#cc4e00] flex items-center justify-center z-10 rounded-[20px]'>
+                          <Plus size={10} color='white' />
+                        </div>
+                      </div>
+                    </div>
                   </Stack>
                 </Tooltip>
               </Stack>
@@ -718,30 +731,29 @@ const InterviewSession = ({
             slotButtons={
               manageJob && (
                 <>
-                  <IconButtonSoft
-                    iconName={'delete'}
-                    size={1}
-                    color={'error'}
-                    onClickButton={{
-                      onClick: () =>
-                        handleDeletionSelect({
-                          id: session.id,
-                          name: session.name,
-                          break: false,
-                        }),
-                    }}
+                  <UIButton
+                    size='sm'
+                    variant='destructive'
+                    onClick={() =>
+                      handleDeletionSelect({
+                        id: session.id,
+                        name: session.name,
+                        break: false,
+                      })
+                    }
+                    icon={<Trash2 />}
                   />
-                  <IconButtonSoft
-                    iconName={'edit'}
-                    size={1}
-                    color={'neutral'}
-                    onClickButton={{
-                      onClick: () =>
-                        handleEdit(
-                          sessionToEdit(session.session_type),
-                          session.id,
-                        ),
-                    }}
+
+                  <UIButton
+                    size='sm'
+                    variant='secondary'
+                    onClick={() =>
+                      handleEdit(
+                        sessionToEdit(session.session_type),
+                        session.id,
+                      )
+                    }
+                    icon={<Pencil />}
                   />
                 </>
               )
@@ -815,21 +827,21 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'} gap={3} mb={1}>
-      <AvatarWithName
-        textName={name}
-        textRole={member.position}
-        isRoleVisible={!!member?.position}
-        slotAvatar={
-          <MuiAvatar
-            src={member.profile_image}
-            level={name}
-            variant='rounded-small'
-          />
-        }
-      />
-      {member.paused && <CirclePause size={16} />}
-    </Stack>
+    <div className='flex flex-row gap-3 mb-1'>
+      <div className='flex items-center space-x-3'>
+        <Avatar className='h-8 w-8 rounded-sm'>
+          <AvatarImage src={member.profile_image} alt={name} />
+          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className='text-sm font-medium leading-none'>{name}</p>
+          {member.position && (
+            <p className='text-sm text-muted-foreground'>{member.position}</p>
+          )}
+        </div>
+      </div>
+      {member.paused && <PauseCircle className='h-4 w-4' />}
+    </div>
   );
 };
 

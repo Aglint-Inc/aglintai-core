@@ -140,7 +140,6 @@ function Interviewers() {
                         <MuiAvatar
                           src={interviewer.image}
                           level={interviewer.name}
-                          variant='rounded-medium'
                         />
                         <div>
                           <div className='font-medium text-gray-900 flex flex-row gap-2'>

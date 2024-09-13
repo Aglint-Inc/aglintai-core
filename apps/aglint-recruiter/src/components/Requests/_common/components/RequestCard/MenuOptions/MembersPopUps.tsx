@@ -10,13 +10,13 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AssignedToList } from '@devlink2/AssignedToList';
+import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/members';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/context/RequestsContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
@@ -88,10 +88,7 @@ function MembersPopUps({
           />
 
           {filteredMembers.length === 0 ? (
-            <GlobalEmptyState
-              iconName={'Search'}
-              textDesc={'No members found'}
-            />
+            <GlobalEmpty iconSlot={<Search />} text={'No members found'} />
           ) : status === 'success' ? (
             <div className='h-[150px] max-h-[150px] overflow-auto w-full mt-4'>
               {filteredMembers
@@ -99,32 +96,31 @@ function MembersPopUps({
                   ({ user_id }) => user_id !== selectedRequest?.assignee_id,
                 )
                 .map((member) => (
-                  <AssignedToList
+                  <div
                     key={member.user_id}
-                    onClickCard={{
-                      onClick: () => {
-                        setSelectedMember(member);
-                      },
-                      className: `rounded ${
-                        selectedMember?.user_id === member.user_id
-                          ? 'bg-black/[0.08]'
-                          : ''
-                      }`,
-                    }}
-                    textName={getFullName(member.first_name, member.last_name)}
-                    textRole={capitalizeFirstLetter(member.role)}
-                    slotImage={
-                      <Avatar>
-                        <AvatarImage
-                          src={member.profile_image}
-                          alt={`${member.first_name} ${member.last_name}`}
-                        />
-                        <AvatarFallback>
-                          {`${member.first_name[0]}`}
-                        </AvatarFallback>
-                      </Avatar>
-                    }
-                  />
+                    onClick={() => setSelectedMember(member)}
+                    className={`flex items-center p-2 rounded cursor-pointer ${
+                      selectedMember?.user_id === member.user_id
+                        ? 'bg-black/[0.08]'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <Avatar className='h-10 w-10 mr-3'>
+                      <AvatarImage
+                        src={member.profile_image}
+                        alt={`${member.first_name} ${member.last_name}`}
+                      />
+                      <AvatarFallback>{member.first_name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className='font-medium'>
+                        {getFullName(member.first_name, member.last_name)}
+                      </p>
+                      <p className='text-sm text-gray-500'>
+                        {capitalizeFirstLetter(member.role)}
+                      </p>
+                    </div>
+                  </div>
                 ))}
             </div>
           ) : (

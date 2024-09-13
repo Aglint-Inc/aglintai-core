@@ -10,10 +10,9 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
+import { Skeleton } from '@components/ui/skeleton';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
-import { Briefcase, X } from 'lucide-react';
+import { Briefcase, Globe, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -114,7 +113,7 @@ const JobWorkflows = () => {
       <>
         {[...Array(3)].map((_e, i) => (
           <div key={i} className='bg-white'>
-            <AssessmentListCardLoader border={'none'} />
+            <Skeleton className='h-[100px] w-full' />
           </div>
         ))}
       </>
@@ -122,12 +121,11 @@ const JobWorkflows = () => {
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-      <div className='bg-white p-3'>
-        <GlobalEmptyState
-          iconName={'lan'}
-          styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
-          textDesc={'No workflows connected'}
-        />
+      <div className='flex flex-col items-center justify-center p-4 bg-white'>
+        <div className='mb-2'>
+          <Globe className='h-9 w-9 text-gray-500' />
+        </div>
+        <p className='text-sm text-gray-500'>No workflows connected</p>
       </div>
     );
   const cards = workflows

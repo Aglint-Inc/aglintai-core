@@ -15,4 +15,8 @@ export const API_PERMISSIONS: ApiPermissions = {
     feedbacks: ['view_interview_types'],
     schedules: ['view_interview_types'],
   },
+  analytics: ['job_module'],
+  example: [],
+  candidatePortal: [],
+  requests: [],
 };

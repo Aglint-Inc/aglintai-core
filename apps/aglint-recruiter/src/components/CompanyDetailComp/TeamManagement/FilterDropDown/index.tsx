@@ -1,21 +1,20 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Info } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
 type ItemType = string;
 
 function FilterDropDown({
   title,
-  itemList,
+  itemList, 
   setSelectedItems,
   selectedItems,
   icon,
-  iconname,
 }: {
   title: string;
   itemList: any[];
@@ -120,10 +119,8 @@ function FilterDropDown({
                 );
               })
             ) : (
-              <GlobalEmptyState
-                textDesc={`No ${capitalizeAll(title)}`}
-                iconName={iconname}
-              />
+              <GlobalEmpty text={`No ${capitalizeAll(title)}`} iconSlot={<Info className='text-gray-500'/>}/>
+              
             )
           }
           onClickReset={{

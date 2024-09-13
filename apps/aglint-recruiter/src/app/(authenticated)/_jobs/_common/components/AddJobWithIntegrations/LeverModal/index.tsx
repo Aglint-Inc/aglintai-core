@@ -1,5 +1,6 @@
+import { Card, CardContent } from '@components/ui/card';
+import { Checkbox } from '@components/ui/checkbox';
 import { Skeleton } from '@components/ui/skeleton';
-import { AtsCard } from '@devlink/AtsCard';
 import { AtsJobs } from '@devlink/AtsJobs';
 import { IntegrationFetching } from '@devlink/IntegrationFetching';
 import { IntegrationModal } from '@devlink/IntegrationModal';
@@ -27,7 +28,7 @@ import toast from '@/utils/toast';
 import NoAtsResult from '../NoAtsResult';
 import { POSTED_BY } from '../utils';
 import { type LeverJob } from './types/job';
-import { fetchAllJobs, getLeverStatusColor } from './utils';
+import { fetchAllJobs } from './utils';
 
 export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -102,6 +103,18 @@ export default function LeverModalComp() {
     }
   };
 
+  function getLeverStatusColorClass(state: string): string {
+    switch (state.toLowerCase()) {
+      case 'published':
+        return 'text-green-500';
+      case 'internal':
+        return 'text-blue-500';
+      case 'closed':
+        return 'text-red-500';
+      default:
+        return 'text-gray-500';
+    }
+  }
   const submitApiKey = async () => {
     if (!apiRef.current.value) {
       setError(true);
@@ -276,38 +289,43 @@ export default function LeverModalComp() {
                             return true;
                           }
                         })
-                        .map((post) => {
-                          return (
-                            <>
-                              <AtsCard
-                                isChecked={
-                                  selectedLeverPostings?.id === post.id
-                                }
-                                onClickCheck={{
-                                  onClick: () => {
-                                    setSelectedLeverPostings(post);
-                                  },
+                        .map((post) => (
+                          <Card key={post.id} className='mb-2'>
+                            <CardContent className='flex items-center p-4'>
+                              <Checkbox
+                                checked={selectedLeverPostings?.id === post.id}
+                                onCheckedChange={() => {
+                                  setSelectedLeverPostings(post);
                                 }}
-                                propsTextColor={{
-                                  style: {
-                                    color: getLeverStatusColor(post.state),
-                                  },
-                                }}
-                                textRole={post.text}
-                                textStatus={post.state}
-                                textWorktypeLocation={post.categories.location}
+                                className='mr-4'
                               />
-                            </>
-                          );
-                        })
+                              <div className='flex-grow'>
+                                <h3 className='text-lg font-semibold'>
+                                  {post.text}
+                                </h3>
+                                <p className='text-sm text-gray-500'>
+                                  {post.categories.location}
+                                </p>
+                              </div>
+                              <span
+                                className={`text-sm font-medium ${getLeverStatusColorClass(post.state)}`}
+                              >
+                                {post.state}
+                              </span>
+                            </CardContent>
+                          </Card>
+                        ))
                     ) : (
                       <NoAtsResult />
                     )
                   ) : (
                     <>
-                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
+                      <Skeleton className='w-full h-16 mb-2' />{' '}
+                      <Skeleton className='w-full h-16 mb-2' />
+                      <Skeleton className='w-full h-16 mb-2' />{' '}
+                      <Skeleton className='w-full h-16 mb-2' />
+                      <Skeleton className='w-full h-16 mb-2' />{' '}
+                      <Skeleton className='w-full h-16 mb-2' />
                     </>
                   )
                 }

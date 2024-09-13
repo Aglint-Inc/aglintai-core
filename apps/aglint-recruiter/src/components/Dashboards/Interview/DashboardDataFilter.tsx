@@ -28,183 +28,123 @@ import {
 } from 'date-fns';
 import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { useAnalyticsContext } from 'src/app/(authenticated)/analytics/_common/context/AnalyticsContext/AnalyticsContextProvider';
+
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export default function Component() {
-  const [job, setJob] = useState('');
-  const [department, setDepartment] = useState('');
-  const [location, setLocation] = useState('');
-  const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | null>(
-    null,
-  );
-  // const [startDate, setStartDate] = useState<Date | undefined>();
-  // const [endDate, setEndDate] = useState<Date | undefined>();
-  const [dateOption, setDateOption] = useState<string>('');
+  const {
+    filtersOptions,
+    filters: init_filters,
+    handleSetFilter,
+  } = useAnalyticsContext();
 
-  const dateOptions = [
-    { value: 'today', label: 'Today' },
-    { value: 'yesterday', label: 'Yesterday' },
-    { value: 'thisWeek', label: 'This Week' },
-    { value: 'thisMonth', label: 'This Month' },
-    { value: 'thisQuarter', label: 'This Quarter' },
-    { value: 'thisYear', label: 'This Year' },
-    { value: 'yearToDate', label: 'Year to Date' },
-    { value: 'custom', label: 'Custom Range' },
-  ];
+  const [filters, setFilter] = useState(init_filters);
+  const [dateOption, setDateOption] = useState<string>('');
 
   const handleDateOptionChange = (value: string) => {
     setDateOption(value);
-    const today = new Date();
-    let from: Date, to: Date;
-    switch (value) {
-      case 'today':
-        from = to = today;
-        break;
-      case 'yesterday':
-        from = to = subDays(today, 1);
-        break;
-      case 'thisWeek':
-        from = startOfWeek(today);
-        to = endOfWeek(today);
-        break;
-      case 'thisMonth':
-        from = startOfMonth(today);
-        to = endOfMonth(today);
-        break;
-      case 'thisQuarter':
-        from = startOfQuarter(today);
-        to = endOfQuarter(today);
-        break;
-      case 'thisYear':
-        from = startOfYear(today);
-        to = endOfYear(today);
-        break;
-      case 'yearToDate':
-        from = startOfYear(today);
-        to = today;
-        break;
-      case 'custom':
-        // Don't set dates for custom, let the user pick
-        return;
-      default:
-        return;
-    }
-    setDateRange({ from: startOfDay(from), to: endOfDay(to) });
+    const { from, to } = MapDateOption(value);
+    handleFilterChange({
+      dateRange: { from: startOfDay(from), to: endOfDay(to) },
+    });
   };
 
-  const clearFilter = (filter: string) => {
-    switch (filter) {
-      case 'job':
-        setJob('');
-        break;
-      case 'department':
-        setDepartment('');
-        break;
-      case 'location':
-        setLocation('');
-        break;
-      case 'dateRange':
-        setDateRange(null);
-        // setStartDate(undefined);
-        // setEndDate(undefined);
-        setDateOption('');
-        break;
-      default:
-        setJob('');
-        setDepartment('');
-        setLocation('');
-        setDateRange(null);
-        // setStartDate(undefined);
-        // setEndDate(undefined);
-        setDateOption('');
-    }
+  const handleFilterChange: typeof handleSetFilter = (data) => {
+    setFilter((pre) => ({ ...pre, ...data }));
   };
 
-  const handleFilter = () => {
-    // console.log('Filtering with:', {
-    //   job,
-    //   department,
-    //   location,
-    //   dateRange,
-    //   startDate,
-    //   endDate,
-    // });
+  const clearFilter = (filter: keyof typeof filters) => {
+    handleFilterChange({ [filter]: '' });
   };
 
-  const renderSelect = (
-    value: string,
+  const clearAllFilter = () => {
+    handleFilterChange({
+      job: null,
+      department: null,
+      location: null,
+      dateRange: null,
+    });
+  };
+
+  const applyFilter = (filters) => {
+    handleSetFilter(filters);
+  };
+
+  const renderSelect = <
+    X extends keyof typeof filtersOptions,
+    T extends (typeof filtersOptions)[X][number],
+  >(
+    value: T['id'],
     // eslint-disable-next-line no-unused-vars
-    onChange: (value: string) => void,
-    placeholder: string,
-    options: { value: string; label: string }[],
+    onChange: (value: T['id']) => void,
+    placeholder: keyof typeof filters,
+    options: T[],
     icon: React.ReactNode,
-  ) => (
-    <div className='relative flex items-center space-x-2'>
-      <div className='flex-grow'>
-        <Select value={value} onValueChange={onChange}>
-          <SelectTrigger className='min-w-[120px] w-auto h-9'>
-            <div className='flex items-center space-x-2'>
-              {icon}
-              <SelectValue placeholder={placeholder} className='ml-2' />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            {options.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+  ) => {
+    return (
+      <div className='relative flex items-center space-x-2'>
+        <div className='flex-grow'>
+          {/* @ts-ignore */}
+          <Select value={value || ''} onValueChange={onChange}>
+            <SelectTrigger className='min-w-[120px] w-auto h-9'>
+              <div className='flex items-center space-x-2'>
+                {icon}
+                <SelectValue
+                  placeholder={capitalizeFirstLetter(placeholder)}
+                  className='ml-2'
+                />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              {options.map((option) => (
+                // @ts-ignore
+                <SelectItem key={option.id} value={option.id}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {value && (
+          <Button
+            variant='ghost'
+            // size='icon'
+            className='flex-shrink-0 h-9 w-9'
+            onClick={() => clearFilter(placeholder)}
+          >
+            <X className='h-4 w-4' />
+          </Button>
+        )}
       </div>
-      {value && (
-        <Button
-          variant='ghost'
-          className='flex-shrink-0 h-9 w-9'
-          onClick={() => clearFilter(placeholder.toLowerCase())}
-        >
-          <X className='h-4 w-4' />
-        </Button>
-      )}
-    </div>
-  );
+    );
+  };
 
   return (
     <div className=''>
       <div className='flex items-center space-x-2 justify-between'>
         <div className='flex items-center space-x-2'>
           {renderSelect(
-            job,
-            setJob,
-            'Job',
-            [
-              { value: 'engineer', label: 'Software Engineer' },
-              { value: 'designer', label: 'UX Designer' },
-              { value: 'manager', label: 'Product Manager' },
-            ],
+            filters.job,
+            (job) => handleFilterChange({ job: job }),
+            'job',
+            filtersOptions.job,
             <Briefcase className='h-4 w-4' />,
           )}
 
           {renderSelect(
-            department,
-            setDepartment,
-            'Department',
-            [
-              { value: 'engineering', label: 'Engineering' },
-              { value: 'design', label: 'Design' },
-              { value: 'product', label: 'Product' },
-            ],
+            filters.department,
+            (department) => handleFilterChange({ department: department }),
+            'department',
+            filtersOptions.department,
             <Building2 className='h-4 w-4' />,
           )}
 
           {renderSelect(
-            location,
-            setLocation,
-            'Location',
-            [
-              { value: 'newyork', label: 'New York' },
-              { value: 'sanfrancisco', label: 'San Francisco' },
-              { value: 'london', label: 'London' },
-            ],
+            filters.location,
+            (location) => handleFilterChange({ location: location }),
+            'location',
+            filtersOptions.location,
             <MapPin className='h-4 w-4' />,
           )}
 
@@ -212,8 +152,8 @@ export default function Component() {
             <PopoverTrigger asChild>
               <Button variant='outline' size='sm' className='min-w-[120px] h-9'>
                 <CalendarIcon className='mr-2 h-4 w-4' />
-                {dateRange
-                  ? `${format(dateRange.from, 'PP')} - ${format(dateRange.to, 'PP')}`
+                {filters.dateRange
+                  ? `${format(filters.dateRange.from, 'PP')} - ${format(filters.dateRange.to, 'PP')}`
                   : 'Date Range'}
               </Button>
             </PopoverTrigger>
@@ -237,8 +177,9 @@ export default function Component() {
                 {dateOption === 'custom' && (
                   <Calendar
                     mode='range'
-                    selected={dateRange}
+                    selected={filters.dateRange}
                     // onSelect={setDateRange}
+                    // initialFocus
                   />
                 )}
               </div>
@@ -250,12 +191,14 @@ export default function Component() {
             variant='ghost'
             size='sm'
             className='min-w-[120px] h-9'
-            onClick={() => clearFilter('all')}
+            onClick={clearAllFilter}
           >
             Clear All
           </Button>
           <Button
-            onClick={handleFilter}
+            onClick={() => {
+              applyFilter(filters);
+            }}
             size='sm'
             className='min-w-[120px] h-9'
           >
@@ -266,3 +209,48 @@ export default function Component() {
     </div>
   );
 }
+
+const dateOptions = [
+  { value: 'today', label: 'Today' },
+  { value: 'yesterday', label: 'Yesterday' },
+  { value: 'thisWeek', label: 'This Week' },
+  { value: 'thisMonth', label: 'This Month' },
+  { value: 'thisQuarter', label: 'This Quarter' },
+  { value: 'thisYear', label: 'This Year' },
+  { value: 'yearToDate', label: 'Year to Date' },
+  { value: 'custom', label: 'Custom Range' },
+];
+
+const MapDateOption = (value: string) => {
+  const today = new Date();
+  let from: Date, to: Date;
+  switch (value) {
+    case 'today':
+      from = to = today;
+      break;
+    case 'yesterday':
+      from = to = subDays(today, 1);
+      break;
+    case 'thisWeek':
+      from = startOfWeek(today);
+      to = endOfWeek(today);
+      break;
+    case 'thisMonth':
+      from = startOfMonth(today);
+      to = endOfMonth(today);
+      break;
+    case 'thisQuarter':
+      from = startOfQuarter(today);
+      to = endOfQuarter(today);
+      break;
+    case 'thisYear':
+      from = startOfYear(today);
+      to = endOfYear(today);
+      break;
+    case 'yearToDate':
+      from = startOfYear(today);
+      to = today;
+      break;
+  }
+  return { from, to };
+};

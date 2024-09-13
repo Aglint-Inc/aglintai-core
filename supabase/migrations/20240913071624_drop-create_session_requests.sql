@@ -1,0 +1,1 @@
+drop function if exists create_session_requests;

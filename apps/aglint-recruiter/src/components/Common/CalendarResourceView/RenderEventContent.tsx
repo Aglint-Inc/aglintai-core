@@ -1,13 +1,12 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { Stack, Typography } from '@mui/material';
 
 import InterviewerAcceptDeclineIcon from '../Icons/InterviewerAcceptDeclineIcon';
-import MuiAvatar from '../MuiAvatar';
 import { type Event } from './types';
 
 function RenderEventContent(eventInfo) {
@@ -30,83 +29,71 @@ function RenderEventContent(eventInfo) {
   return (
     <>
       {isLoading ? (
-        <Stack height={'100%'} width={'100%'} className='skeleton-item'></Stack>
+        <div className='h-full w-full skeleton-item'></div>
       ) : (
         <Tooltip>
           <TooltipTrigger asChild>
-            <Stack
+            <div
               id={session_id}
-              sx={{
-                padding: '4px 10px',
-                width: '100%',
-                borderRadius: '4px',
-                bgcolor: isSelected ? 'var(--accent-2)' : color,
-                color: 'white',
-                height: '100%',
-                border: isSelected ? '1px dashed' : '1px solid',
-                borderColor: isSelected ? 'var(--accent-6)' : color,
+              className={`p-[4px_10px] w-full rounded-md h-full ${
+                isSelected
+                  ? 'bg-accent-2 border border-dashed border-accent-6'
+                  : ''
+              }`}
+              style={{
+                backgroundColor: isSelected ? undefined : color,
+                borderColor: isSelected ? undefined : color,
               }}
             >
-              <Typography
-                fontSize={'12px'}
-                color={isSelected ? 'var(--accent-12)' : 'white'}
-                className='one-line-clamp'
+              <p
+                className={`text-xs one-line-clamp ${
+                  isSelected ? 'text-accent-12' : 'text-white'
+                }`}
               >
                 {title}
-              </Typography>
-            </Stack>
+              </p>
+            </div>
           </TooltipTrigger>
           <TooltipContent>
             {title && (
-              <Stack spacing={1} p={1}>
-                <Typography
-                  variant='body1'
-                  fontWeight={600}
-                  color={'var(--neutral-12)'}
-                >
+              <div className='space-y-1 p-1'>
+                <p className='text-base font-semibold text-neutral-12'>
                   {title}
-                </Typography>
-                <Stack direction={'row'} spacing={1}>
-                  <Typography variant='caption'>
+                </p>
+                <div className='flex flex-row space-x-1'>
+                  <p className='text-xs'>
                     {dayjsLocal(new Date(start)).format('dddd MMMM')}
                     {' , '}
                     {dayjsLocal(new Date(start)).format('hh:mm A')} -{' '}
                     {dayjsLocal(new Date(end)).format('hh:mm A')}
-                  </Typography>
-                </Stack>
+                  </p>
+                </div>
 
                 {conferenceData && (
-                  <Stack direction={'row'} spacing={1}>
+                  <div className='flex flex-row items-center space-x-1'>
                     {conferenceData.iconUri && (
-                      <MuiAvatar
-                        src={conferenceData.iconUri}
-                        level=''
-                        variant='square'
-                        height='20px'
-                        width='20px'
-                      />
+                      <Avatar className='h-5 w-5'>
+                        <AvatarImage src={conferenceData.iconUri} alt='' />
+                        <AvatarFallback>
+                          {conferenceData.name[0]}
+                        </AvatarFallback>
+                      </Avatar>
                     )}
-                    <Typography variant='caption'>
-                      {conferenceData.name}
-                    </Typography>
-                  </Stack>
+                    <p className='text-xs'>{conferenceData.name}</p>
+                  </div>
                 )}
 
                 {attendees && (
-                  <Stack spacing={0.5}>
-                    <Typography variant='body2' fontWeight={600}>
+                  <div className='space-y-0.5'>
+                    <p className='text-sm font-semibold'>
                       Attendees ({attendees.length})
-                    </Typography>
+                    </p>
                     {attendees.map((attendee) => (
-                      <Stack
-                        direction={'row'}
-                        spacing={0.5}
+                      <div
                         key={attendee.email}
-                        alignItems={'center'}
+                        className='flex flex-row items-center space-x-0.5'
                       >
-                        <Typography key={attendee.email}>
-                          {attendee.email}
-                        </Typography>
+                        <p>{attendee.email}</p>
                         <InterviewerAcceptDeclineIcon
                           type={
                             attendee.responseStatus === 'accepted'
@@ -116,11 +103,11 @@ function RenderEventContent(eventInfo) {
                                 : 'waiting'
                           }
                         />
-                      </Stack>
+                      </div>
                     ))}
-                  </Stack>
+                  </div>
                 )}
-              </Stack>
+              </div>
             )}
           </TooltipContent>
         </Tooltip>

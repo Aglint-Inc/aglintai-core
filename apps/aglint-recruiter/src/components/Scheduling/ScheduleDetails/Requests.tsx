@@ -1,18 +1,18 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AvatarWithName } from '@devlink3/AvatarWithName';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
 
 function Requests({ session_id }) {
   const router = useRouter();
@@ -26,14 +26,9 @@ function Requests({ session_id }) {
       ) : (
         <Stack spacing={'var(--space-2)'}>
           {requests.length === 0 && (
-            <GlobalEmptyState
-              iconName={'calendar_month'}
-              styleEmpty={{
-                style: {
-                  background: 'var(--neutral-2)',
-                },
-              }}
-              textDesc={'No requests found'}
+            <GlobalEmpty
+              iconSlot={<Calendar className='text-gray-500' />}
+              text={'No requests found'}
             />
           )}
           {requests?.map((request) => {
@@ -52,24 +47,29 @@ function Requests({ session_id }) {
                   }}
                   textHistory={request.title}
                   slotAssignedTo={
-                    <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
+                    <div className='flex items-center space-x-2'>
+                      <Avatar className='h-5 w-5 rounded'>
+                        <AvatarImage
                           src={request.assignee_details.profile_image}
-                          level={getFullName(
+                          alt={getFullName(
                             request.assignee_details.first_name,
                             request.assignee_details.last_name,
                           )}
-                          variant='rounded'
-                          width={'20px'}
-                          height={'20px'}
                         />
-                      }
-                      textName={getFullName(
-                        request.assignee_details.first_name,
-                        request.assignee_details.last_name,
-                      )}
-                    />
+                        <AvatarFallback>
+                          {getFullName(
+                            request.assignee_details.first_name,
+                            request.assignee_details.last_name,
+                          ).charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className='text-sm font-medium'>
+                        {getFullName(
+                          request.assignee_details.first_name,
+                          request.assignee_details.last_name,
+                        )}
+                      </span>
+                    </div>
                   }
                   slotStatus={
                     <Stack direction={'row'}>
@@ -91,51 +91,6 @@ function Requests({ session_id }) {
                     </Stack>
                   }
                 />
-                {/* <Stack
-                  key={request.id}
-                  sx={{
-                    padding: '12px',
-                    backgroundColor: 'white',
-                    borderRadius: '8px',
-                    border: '1px solid var(--neutral-5)',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      backgroundColor: 'var(--neutral-2)',
-                    },
-                  }}
-                  spacing={'var(--space-2)'}
-                  onClick={() => {
-                    router.push(
-                      ROUTES['/requests/[id]']({
-                        id: request.id,
-                      }),
-                    );
-                  }}
-                >
-                 
-
-                  <Stack direction={'row'} spacing={'var(--space-2)'}>
-                    
-                    <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
-                          src={request.assignee_details.profile_image}
-                          level={getFullName(
-                            request.assignee_details.first_name,
-                            request.assignee_details.last_name,
-                          )}
-                          variant='rounded'
-                          width={'20px'}
-                          height={'20px'}
-                        />
-                      }
-                      textName={getFullName(
-                        request.assignee_details.first_name,
-                        request.assignee_details.last_name,
-                      )}
-                    />
-                  </Stack>
-                </Stack> */}
               </>
             );
           })}

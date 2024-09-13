@@ -1,7 +1,6 @@
 import { Button } from '@components/ui/button';
-import { QualifiedIcons } from '@devlink2/QualifiedIcons';
 import { Stack } from '@mui/material';
-import { RotateCcw } from 'lucide-react';
+import { Award, GraduationCap, RotateCcw } from 'lucide-react';
 import React, { useEffect, useState, useTransition } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
@@ -109,12 +108,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
           itemList={uniqueQualifiedModules}
           selectedItems={selectedQualifiedModule}
           setSelectedItems={setSelectedQualifiedModule}
-          icon={
-            <QualifiedIcons
-              isQualifiedVisible={true}
-              isTrainingVisible={false}
-            />
-          }
+          icon={<Award className="h-4 w-4" />}
         />
         <FilterDropDown
           title={'Training'}
@@ -122,12 +116,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
           itemList={uniqueTrainingModules}
           selectedItems={selectedTrainingModule}
           setSelectedItems={setSelectedTrainingModule}
-          icon={
-            <QualifiedIcons
-              isTrainingVisible={true}
-              isQualifiedVisible={false}
-            />
-          }
+          icon={<GraduationCap className="h-4 w-4" />}
         />
         {(selectedQualifiedModule.length > 0 ||
           selectedTrainingModule.length > 0) && (

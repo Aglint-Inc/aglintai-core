@@ -75,13 +75,7 @@ const List = memo(({ data }: Props) => {
         >
           <TrainingProgressList
             slotHistoryPill={<Pills {...data} />}
-            slotInterviewerImage={
-              <Avatar
-                //src={data.}
-                alt={data.name}
-                variant='rounded-medium'
-              />
-            }
+            slotInterviewerImage={<Avatar alt={data.name} />}
             textInterviewModule={''}
             textName={capitalizeAll(data.name)}
             textRole={data.position}

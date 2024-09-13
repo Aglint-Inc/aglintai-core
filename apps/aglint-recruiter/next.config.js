@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -75,6 +76,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'ecfwsyxpcuzxlxrkhxjz.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'logo.clearbit.com',
       },
     ],
   },

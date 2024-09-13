@@ -2,13 +2,12 @@
 import './EditorStyle.css'; // We will define some styles here
 
 import { CommandShortcut } from '@components/ui/command';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { AiChatSuggest } from '@devlink2/AiChatSuggest';
 import { Command } from 'cmdk';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
@@ -256,58 +255,52 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     },
     customSuggestionsContainer: (children) => (
       <div>
-        <AiChatSuggest
-          textHeader={`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
-          slotKbd={
-            <>
-              <CommandShortcut>↑</CommandShortcut>
-              <CommandShortcut>↓</CommandShortcut>
-            </>
-          }
-          slotList={
-            <div
-              id='listContainer'
-              style={{
-                maxHeight: '200px',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-              }}
-            >
-              <ShowCode>
-                <ShowCode
-                  isTrue={triggerType === '$' && filteredSessions.length === 0}
-                >
-                  {selectedItems?.applicant_name[0]?.name ? (
-                    <>
-                      <GlobalEmptyState
-                        iconName={''}
-                        textDesc={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
-                      />
-                    </>
-                  ) : (
-                    <GlobalEmptyState
-                      iconName={''}
-                      textDesc={`Please select an application first`}
+        <div className="border rounded-md shadow-sm bg-white">
+          <div className='p-3 flex justify-between'>
+          <div className="mb-2 text-sm text-gray-700">
+            {`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
+          </div>
+          <div className="flex items-center space-x-2 mb-2">
+            <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded">↑</kbd>
+            <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded">↓</kbd>
+          </div>
+          </div>
+          
+          <div
+            id='listContainer'
+            className="max-h-48 overflow-y-auto overflow-x-hidden p-3 pt-0"
+          >
+            <ShowCode>
+              <ShowCode
+                isTrue={triggerType === '$' && filteredSessions.length === 0}
+              >
+                {selectedItems?.applicant_name[0]?.name ? (
+                  <>
+                    <GlobalEmpty
+                      iconSlot={''}
+                      text={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                     />
-                  )}
-                </ShowCode>
-                <ShowCode.When
-                  isTrue={
-                    (triggerType === '@' && applicationsList.length === 0) ||
-                    (triggerType === '#' && jobList.length === 0) ||
-                    (triggerType === '/' && requestList.length === 0)
-                  }
-                >
-                  <GlobalEmptyState
-                    iconName={''}
-                    textDesc={`Results not found`}
+                  </>
+                ) : (
+                  <GlobalEmpty
+                    iconSlot={''}
+                    text={`Please select an application first`}
                   />
-                </ShowCode.When>
+                )}
               </ShowCode>
-              {children}
-            </div>
-          }
-        />
+              <ShowCode.When
+                isTrue={
+                  (triggerType === '@' && applicationsList.length === 0) ||
+                  (triggerType === '#' && jobList.length === 0) ||
+                  (triggerType === '/' && requestList.length === 0)
+                }
+              >
+                <GlobalEmpty iconSlot={''} text={`Results not found`} />
+              </ShowCode.When>
+            </ShowCode>
+            {children}
+          </div>
+        </div>
       </div>
     ),
     singleLine: false,

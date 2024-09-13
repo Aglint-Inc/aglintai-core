@@ -1,10 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { InterviewMode } from '@devlink2/InterviewMode';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
+import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, {
   type ChangeEventHandler,
@@ -15,7 +16,6 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -33,6 +33,7 @@ import { sessionDurations } from '@/utils/scheduling/const';
 import { validateString } from '@/utils/validateString';
 
 import { type CompanyMember } from '.';
+import { InterviewMode } from './_common/InterviewMode';
 
 export type SessionUser = CompanyMember & {
   module_relation_id: string;
@@ -467,31 +468,34 @@ const Interview = ({
   const { push } = useRouter();
 
   return (
-    <InterviewMode
-      isIndividual={session_type.value === 'individual'}
-      isPanel={interviewers.value.length > 1 && session_type.value === 'panel'}
-      isTraining={training.value}
-      textToggleLabel={`Training ${training.value ? 'On' : 'Off'}`}
-      slotToggle={trainingSwitch}
-      slotInterviewModePill={
-        <InterviewModePills
-          session_type={session_type.value}
-          handleModeChange={handleModeChange}
-        />
-      }
-      slotMemberCountDropdown={countField}
-      slotInterviewersDropdown={
-        <Stack gap={1}>
-          {(currentQualifiedModuleMembers ?? []).length === 0 && (
-            <UIAlert
-              iconName={'CircleAlert'}
-              title={'Interview type has no interviewers'}
-              description={'Please add members to the selected interview type'}
-              color={'error'}
-              actions={
+    <>
+      <InterviewMode
+        isIndividual={session_type.value === 'individual'}
+        isPanel={
+          interviewers.value.length > 1 && session_type.value === 'panel'
+        }
+        isTraining={training.value}
+        textToggleLabel={`Training ${training.value ? 'On' : 'Off'}`}
+        slotToggle={trainingSwitch}
+        slotInterviewModePill={
+          <InterviewModePills
+            session_type={session_type.value}
+            handleModeChange={handleModeChange}
+          />
+        }
+        slotMemberCountDropdown={countField}
+        slotInterviewersDropdown={
+          <Stack gap={1}>
+            {(currentQualifiedModuleMembers ?? []).length === 0 && (
+              <Alert variant='error'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>Interview type has no interviewers</AlertTitle>
+                <AlertDescription>
+                  Please add members to the selected interview type
+                </AlertDescription>
                 <UIButton
                   variant='destructive'
-                  size='sm'
+                  size={'sm'}
                   onClick={() =>
                     interview_module?.value?.id &&
                     push(
@@ -503,33 +507,33 @@ const Interview = ({
                 >
                   Go to interview type
                 </UIButton>
-              }
+              </Alert>
+            )}
+            <InterviewersField
+              value={interviewers.value}
+              error={interviewers.error}
+              type='interviewers'
+              moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
+              handleMemberAdd={handleMemberAdd}
             />
-          )}
-          <InterviewersField
-            value={interviewers.value}
-            error={interviewers.error}
-            type='interviewers'
-            moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
-            handleMemberAdd={handleMemberAdd}
-          />
-        </Stack>
-      }
-      isTrainingVisible={showTraining}
-      slotInterviewersAvatarSelectionPill={<></>}
-      slotTraineeAvatarSelectionPill={<></>}
-      isTraineesDropVisible={showTrainingMembers}
-      slotTraineesDropdown={
-        showTrainingMembers && (
-          <InterviewersField
-            value={trainees.value}
-            type='trainees'
-            moduleMemberRecommendations={trainingModuleMemberRecommendations}
-            handleMemberAdd={handleMemberAdd}
-          />
-        )
-      }
-    />
+          </Stack>
+        }
+        isTrainingVisible={showTraining}
+        slotInterviewersAvatarSelectionPill={<></>}
+        slotTraineeAvatarSelectionPill={<></>}
+        isTraineesDropVisible={showTrainingMembers}
+        slotTraineesDropdown={
+          showTrainingMembers && (
+            <InterviewersField
+              value={trainees.value}
+              type='trainees'
+              moduleMemberRecommendations={trainingModuleMemberRecommendations}
+              handleMemberAdd={handleMemberAdd}
+            />
+          )
+        }
+      />
+    </>
   );
 };
 
