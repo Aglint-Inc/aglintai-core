@@ -21,11 +21,13 @@ const EventNode = ({
   reqProgresMap,
   currEventTrigger,
   currWAction,
+  showEditBtns = true,
 }: {
   eventType: DatabaseTable['request_progress']['event_type'];
   reqProgresMap: RequestProgressMapType;
   currEventTrigger: DatabaseTable['workflow']['trigger'];
   currWAction?: DatabaseTable['workflow_action'];
+  showEditBtns?: boolean;
 }) => {
   const { request_workflow } = useRequest();
   const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
@@ -68,7 +70,8 @@ const EventNode = ({
           }
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
-            tense === 'future' && (
+            tense === 'future' &&
+            showEditBtns && (
               <div className={`flex flex-row gap-1`}>
                 <Button
                   variant='outline'

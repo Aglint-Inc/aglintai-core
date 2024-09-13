@@ -28,7 +28,6 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import { ModuleMembers } from '../../_common/ModuleMembers';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsArchiveDialogOpen,

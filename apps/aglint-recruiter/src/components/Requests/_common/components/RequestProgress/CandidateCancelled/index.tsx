@@ -1,59 +1,38 @@
 /* eslint-disable security/detect-possible-timing-attacks */
-import { type DatabaseEnums } from '@aglint/shared-types';
-import { useState } from 'react';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import { useRequest } from '@/context/RequestContext';
-
+import { useRequestProgressProvider } from '../progressCtx';
+import EventNode from '../ScheduleProgress/EventNode';
 import { apiTargetToEvents } from '../utils/progressMaps';
-import RequestProgressWrapper from './Components/RequestProgressWrapper';
-import { type ProgressDataItem } from './types';
-import { handleClick, useEventTargetMap, useReqProgressMap } from './utils';
 
 function CandidateCancelled() {
-  const { requestDetails, request_progress, request_workflow } = useRequest();
-  const [manualEvents] = useState<DatabaseEnums['email_slack_types'][]>([
-    'onRequestCancel_agent_cancelEvents',
-    'onRequestCancel_slack_interviewersOrganizer',
-  ]);
+  const { reqProgressMap, reqTriggerActionsMap } = useRequestProgressProvider();
 
-  const isManualFlow = request_workflow.data.length === 0;
-  const eventTargetMap = useEventTargetMap(request_workflow.data);
-  const reqProgressMap = useReqProgressMap(request_progress.data);
-
-  const events = isManualFlow ? manualEvents : eventTargetMap.onRequestCancel;
-  const EventProgress = events.map((api) => {
-    const eventType = apiTargetToEvents[api];
-    const requestProgress = reqProgressMap[eventType]?.find(
-      (row) => !row.is_progress_step,
-    );
-
-    return {
-      eventType,
-      api,
-      requestProgress,
-      isManualFlow,
-      handleClick: () => handleClick(api, requestDetails),
-    };
-  });
-
-  const requestProgressData = [
-    {
-      id: 'cancel_request',
-      isDividerVisible: false,
-      textRequestProgress: 'Cancel request received from the candidate',
-      indicator: 'error',
-      circleIndicator: 'error',
-      slotIndicator: null,
-      eventProgress: EventProgress,
-      addActionButton: false,
-    },
-  ] as ProgressDataItem[];
+  let workflowActions: DatabaseTable['workflow_action'][] = [];
+  if (
+    reqTriggerActionsMap['onRequestCancel'] &&
+    reqTriggerActionsMap['onRequestCancel'].length > 0
+  ) {
+    workflowActions = [...reqTriggerActionsMap['onRequestCancel']];
+  }
 
   return (
-    <RequestProgressWrapper
-      progressData={requestProgressData}
-      EventProgress={EventProgress}
-    />
+    <>
+      {workflowActions.map((action) => {
+        const event = apiTargetToEvents[action.target_api];
+        return (
+          <EventNode
+            currEventTrigger='onRequestCancel'
+            eventType={event}
+            reqProgresMap={reqProgressMap}
+            currWAction={action}
+            key={action.id}
+            showEditBtns={false}
+          />
+        );
+      })}
+      {workflowActions.length === 0 && <>No Actions Set</>}
+    </>
   );
 }
 

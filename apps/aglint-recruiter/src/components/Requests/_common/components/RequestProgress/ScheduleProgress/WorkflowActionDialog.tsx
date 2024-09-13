@@ -61,8 +61,9 @@ const WorkflowActionDialog = () => {
     ) {
       const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
       setEmailTemplate({
-        body: existing_workflow_action.payload?.email?.body || '',
-        subject: existing_workflow_action.payload?.email?.subject || '',
+        body: (existing_workflow_action.payload as any)?.email?.body || '',
+        subject:
+          (existing_workflow_action.payload as any)?.email?.subject || '',
       });
       existing_workflow_action.payload = undefined;
       setSelectedActionsDetails({
@@ -129,7 +130,7 @@ const WorkflowActionDialog = () => {
         };
       }
       await createRequestWorkflowAction({
-        wAction,
+        wActions: [wAction],
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
       });
@@ -140,7 +141,6 @@ const WorkflowActionDialog = () => {
         title: 'Failed to add action',
         variant: 'destructive',
       });
-      setShowEditDialog(false);
     } finally {
       setIsAddingAction(false);
     }
