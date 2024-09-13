@@ -67,8 +67,9 @@ export const SelectedActionsDetailsProvider: React.FC<
     body: string;
     subject: string;
   }>({
-    body: defaultSelectedActionsDetails.payload?.email?.body ?? '',
-    subject: defaultSelectedActionsDetails.payload?.email?.subject ?? '',
+    body: (defaultSelectedActionsDetails.payload as any)?.email?.body ?? '',
+    subject:
+      (defaultSelectedActionsDetails.payload as any)?.email?.subject ?? '',
   });
 
   const emailTemplateTargetAPI = useMemo(() => {

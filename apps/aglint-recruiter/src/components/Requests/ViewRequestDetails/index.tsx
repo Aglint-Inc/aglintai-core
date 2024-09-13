@@ -48,6 +48,7 @@ import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
+import CandidateCancelRequest from './RequestNextSteps/CandidateCancelRequest';
 import RequestDecline from './RequestNextSteps/RequestDecline';
 import ScheduleOptions from './RequestNextSteps/ScheduleOptions';
 import RequestNotes from './RequestNotes';
@@ -415,6 +416,13 @@ export default function ViewRequestDetails() {
                       isTrue={selectedRequest.type === 'decline_request'}
                     >
                       <RequestDecline />
+                    </ShowCode.When>
+                    <ShowCode.When
+                      isTrue={
+                        selectedRequest.type === 'cancel_schedule_request'
+                      }
+                    >
+                      <CandidateCancelRequest />
                     </ShowCode.When>
                   </div>
                 </Alert>
