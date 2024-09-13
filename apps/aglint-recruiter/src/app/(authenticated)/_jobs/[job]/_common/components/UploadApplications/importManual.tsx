@@ -1,54 +1,38 @@
 import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { CheckCircle2, FileIcon, UploadCloud } from 'lucide-react';
-import React from 'react';
-import { type Dispatch, type SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import UIPhoneInput from '@/components/Common/UIPhoneInput';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { PhoneInput } from '@/components/PhoneInput';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 
 const fileTypes = ['PDF', 'DOCX', 'TXT'];
+
+type FormField = {
+  value: string | File | null;
+  error: boolean;
+  required: boolean;
+};
 
 type FormEntries = {
   first_name: FormField;
   last_name: FormField;
   email: FormField;
   phone: FormField;
-  linkedin?: FormField;
-  resume?: FormField;
-  status: FormField;
-};
-
-type FormField = {
-  value: string | File | null;
-  error: boolean;
-  validation: 'text' | 'mail' | 'phone' | 'url' | 'file';
-  required: boolean;
-};
-
-const initialFormField: FormField = {
-  value: null,
-  error: false,
-  validation: 'text',
-  required: true,
+  linkedin: FormField;
+  resume: FormField;
 };
 
 const initialFormFields: FormEntries = {
-  first_name: initialFormField,
-  last_name: initialFormField,
-  email: { ...initialFormField, validation: 'mail' },
-  phone: { ...initialFormField, validation: 'phone', required: false },
-  linkedin: { ...initialFormField, validation: 'url', required: false },
-  resume: { ...initialFormField, validation: 'file' },
-  status: { ...initialFormField, value: 'new' },
-};
-
-const validatePhone = (value: string): boolean => {
-  const digitCount = (value.match(/\d/g) || []).length;
-  return digitCount === 10 || digitCount === 11;
+  first_name: { value: '', error: false, required: true },
+  last_name: { value: '', error: false, required: true },
+  email: { value: '', error: false, required: true },
+  phone: { value: '', error: false, required: false },
+  linkedin: { value: '', error: false, required: false },
+  resume: { value: null, error: false, required: true },
 };
 
 export const ImportManual = () => {
@@ -56,67 +40,29 @@ export const ImportManual = () => {
   const { setImportPopup } = useApplicationsActions();
   const { handleUploadApplication } = useJob();
 
-  const handleValidate = (): {
-    newApplicant: FormEntries;
-    validation: boolean;
-  } => {
-    return Object.entries(applicant).reduce(
-      (acc, [key, curr]) => {
-        const value = curr.value;
-        let error = false;
+  const validateForm = () => {
+    const newApplicant = { ...applicant };
+    let isValid = true;
 
-        if (
-          !curr.required &&
-          (!value || (typeof value === 'string' && value.trim() === ''))
-        ) {
-          return {
-            ...acc,
-            newApplicant: {
-              ...acc.newApplicant,
-              [key]: { ...curr, value: '', error: false },
-            },
-          };
-        }
+    Object.entries(newApplicant).forEach(([key, field]) => {
+      if (field.required && !field.value) {
+        newApplicant[key].error = true;
+        isValid = false;
+      } else if (
+        key === 'email' &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value as string)
+      ) {
+        newApplicant[key].error = true;
+        isValid = false;
+      }
+    });
 
-        switch (curr.validation) {
-          case 'text':
-            error =
-              !value || (typeof value === 'string' && value.trim() === '');
-            break;
-          case 'mail':
-            error =
-              !value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value as string);
-            break;
-          case 'url':
-            error =
-              !value ||
-              !/^https?:\/\/(?:www\.)?linkedin\.com\/\S+$/i.test(
-                value as string,
-              );
-            break;
-          case 'file':
-            error = !value;
-            break;
-          case 'phone':
-            error = !validatePhone(value as string);
-            break;
-        }
-
-        return {
-          newApplicant: {
-            ...acc.newApplicant,
-            [key]: { ...curr, value, error },
-          },
-          validation: acc.validation && !error,
-        };
-      },
-      { newApplicant: applicant, validation: true },
-    );
+    setApplicant(newApplicant);
+    return isValid;
   };
 
-  const handleSubmit = async () => {
-    const { newApplicant, validation } = handleValidate();
-    if (validation) {
+  const handleSubmit = () => {
+    if (validateForm()) {
       handleUploadApplication({
         candidate: {
           first_name: applicant.first_name.value as string,
@@ -128,173 +74,116 @@ export const ImportManual = () => {
         file: applicant.resume.value as File,
       });
       setImportPopup(false);
-    } else {
-      setApplicant(newApplicant);
     }
   };
 
   return (
-    <div className='bg-white p-4'>
-      <FormBody applicant={applicant} setApplicant={setApplicant} />
-      <div className='flex justify-end mt-4'>
-        <Button onClick={handleSubmit}>Add Candidate</Button>
+    <Card className='border-0 shadow-none h-[500px] flex flex-col'>
+      <div className='flex-grow overflow-auto p-6'>
+        <FormBody applicant={applicant} setApplicant={setApplicant} />
       </div>
-    </div>
+      <div className='p-4'>
+        <Button onClick={handleSubmit} className='w-full'>
+          Add Candidate
+        </Button>
+      </div>
+    </Card>
   );
 };
 
-const FormBody = ({
-  applicant,
-  setApplicant,
-}: {
-  applicant: FormEntries;
-  setApplicant: Dispatch<SetStateAction<FormEntries>>;
-}) => {
-  const { userCountry } = useAuthDetails();
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | string | File,
-    key: keyof FormEntries,
-  ) => {
+const FormBody = ({ applicant, setApplicant }) => {
+  const handleChange = (value, key) => {
     setApplicant((prev) => ({
       ...prev,
-      [key]: {
-        ...prev[key],
-        value:
-          key === 'resume'
-            ? e
-            : typeof e === 'string'
-              ? e
-              : 'target' in e
-                ? e.target.value
-                : e,
-        error: false,
-      },
+      [key]: { ...prev[key], value, error: false },
     }));
   };
 
   return (
     <div className='space-y-4'>
       <div className='grid grid-cols-2 gap-4'>
-        <div className='space-y-2'>
-          <Label htmlFor='first_name'>First Name</Label>
-          <Input
-            id='first_name'
-            placeholder='First Name'
-            value={applicant.first_name.value as string}
-            onChange={(e) => handleChange(e, 'first_name')}
-            className={applicant.first_name.error ? 'border-red-500' : ''}
-          />
-          {applicant.first_name.error && (
-            <p className='text-red-500 text-sm'>{getHelper('First Name')}</p>
-          )}
-        </div>
-        <div className='space-y-2'>
-          <Label htmlFor='last_name'>Last Name</Label>
-          <Input
-            id='last_name'
-            placeholder='Last Name'
-            value={applicant.last_name.value as string}
-            onChange={(e) => handleChange(e, 'last_name')}
-            className={applicant.last_name.error ? 'border-red-500' : ''}
-          />
-          {applicant.last_name.error && (
-            <p className='text-red-500 text-sm'>{getHelper('Last Name')}</p>
-          )}
-        </div>
-      </div>
-      <div className='grid grid-cols-2 gap-4'>
-        <div className='space-y-2'>
-          <Label htmlFor='email'>Email</Label>
-          <Input
-            id='email'
-            type='email'
-            placeholder='Email'
-            value={applicant.email.value as string}
-            onChange={(e) => handleChange(e, 'email')}
-            className={applicant.email.error ? 'border-red-500' : ''}
-          />
-          {applicant.email.error && (
-            <p className='text-red-500 text-sm'>{getHelper('Email')}</p>
-          )}
-        </div>
+        <FormField
+          label='First Name'
+          id='first_name'
+          value={applicant.first_name.value}
+          onChange={(e) => handleChange(e.target.value, 'first_name')}
+          error={applicant.first_name.error}
+        />
+        <FormField
+          label='Last Name'
+          id='last_name'
+          value={applicant.last_name.value}
+          onChange={(e) => handleChange(e.target.value, 'last_name')}
+          error={applicant.last_name.error}
+        />
+        <FormField
+          label='Email'
+          id='email'
+          type='email'
+          value={applicant.email.value}
+          onChange={(e) => handleChange(e.target.value, 'email')}
+          error={applicant.email.error}
+        />
         <div className='space-y-2'>
           <Label htmlFor='phone'>Phone Number</Label>
-          <UIPhoneInput
-            phoneNumber={applicant.phone.value as string}
-            setPhoneNumber={(formattedValue) =>
-              handleChange(formattedValue, 'phone')
-            }
-            country={userCountry}
-            isError={applicant.phone.error}
+          <PhoneInput
+            value={applicant.phone.value}
+            onChange={(value) => handleChange(value, 'phone')}
           />
-          {applicant.phone.error && (
-            <p className='text-red-500 text-sm'>{getHelper('Phone Number')}</p>
-          )}
         </div>
       </div>
-      <div className='space-y-2'>
-        <Label htmlFor='linkedin'>LinkedIn URL</Label>
-        <Input
-          id='linkedin'
-          placeholder='LinkedIn'
-          value={applicant.linkedin.value as string}
-          onChange={(e) => handleChange(e, 'linkedin')}
-          className={applicant.linkedin.error ? 'border-red-500' : ''}
-        />
-        {applicant.linkedin.error && (
-          <p className='text-red-500 text-sm'>{getHelper('LinkedIn url')}</p>
-        )}
-      </div>
+      <FormField
+        label='LinkedIn URL'
+        id='linkedin'
+        value={applicant.linkedin.value}
+        onChange={(e) => handleChange(e.target.value, 'linkedin')}
+        error={applicant.linkedin.error}
+      />
       <ResumeUploadComp
-        value={applicant.resume.value as File}
+        value={applicant.resume.value}
         error={applicant.resume.error}
-        handleChange={() => handleChange(null, 'resume')}
+        handleChange={(file) => handleChange(file, 'resume')}
       />
     </div>
   );
 };
 
-export const ResumeUploadComp = ({
-  value,
-  handleChange,
-  error = false,
-  label = true,
-}: {
-  value: File;
-  handleChange: () => any;
-  error?: boolean;
-  label?: boolean;
-}) => {
-  return (
-    <div className='space-y-2'>
-      {label && (
-        <Label htmlFor='resume' className='flex items-center gap-1'>
-          Upload Resume <span className='text-red-500'>*</span>
-        </Label>
-      )}
-      <FileUploader handleChange={handleChange} types={fileTypes}>
-        <div
-          className={`border border-dashed rounded-md p-8 cursor-pointer flex items-center justify-center space-x-2 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
-        >
-          {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
-          <span
-            className={`text-sm ${error ? 'text-red-500' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
-          >
-            {value ? value.name : 'Upload candidate resume [PDF/DOCX]'}
-          </span>
-          {value && <CheckCircle2 size={16} className='text-green-600' />}
-        </div>
-      </FileUploader>
-      {error && (
-        <p className='text-red-500 text-sm'>
-          Please upload the candidate resume
-        </p>
-      )}
-    </div>
-  );
-};
+const FormField = ({ label, id, value, onChange, error, type = 'text' }) => (
+  <div className='space-y-2'>
+    <Label htmlFor={id}>{label}</Label>
+    <Input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onChange}
+      className={error ? 'border-red-500' : ''}
+    />
+    {error && (
+      <p className='text-red-500 text-sm'>Please provide a valid {label}</p>
+    )}
+  </div>
+);
 
-const getHelper = (title: string) => {
-  return `Please provide a valid ${title}`;
-};
+const ResumeUploadComp = ({ value, handleChange, error }) => (
+  <div className='space-y-2'>
+    <Label htmlFor='resume' className='flex items-center gap-1 mb-3'>
+      Upload Resume <span className='text-red-500'>*</span>
+    </Label>
+    <FileUploader handleChange={handleChange} types={fileTypes}>
+      <div
+        className={`border border-dashed rounded-md p-8 cursor-pointer flex items-center justify-center space-x-2 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
+      >
+        {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
+        <span
+          className={`text-sm ${error ? 'text-red-500' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
+        >
+          {value ? value.name : 'Upload candidate resume [PDF/DOCX]'}
+        </span>
+        {value && <CheckCircle2 size={16} className='text-green-600' />}
+      </div>
+    </FileUploader>
+    {error && (
+      <p className='text-red-500 text-sm'>Please upload the candidate resume</p>
+    )}
+  </div>
+);

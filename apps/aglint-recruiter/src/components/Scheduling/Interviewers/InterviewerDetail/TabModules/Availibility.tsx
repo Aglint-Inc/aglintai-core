@@ -1,14 +1,11 @@
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Card } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@devlink2/WorkingHourDay';
-import { InterviewLoadCard } from '@devlink3/InterviewLoadCard';
-import { InterviewLoadDetails } from '@devlink3/InterviewLoadDetails';
-import { WorkingHourDetails } from '@devlink3/WorkingHourDetails';
 import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -23,6 +20,8 @@ import { updateMember } from '@/context/AuthContext/utils';
 import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
+import { InterviewLoadCard } from '../_common/InterviewLoadCard';
+import { ScheduleSettings } from '../_common/ScheduleSettings';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
 
 type interviewLoadType = {
@@ -205,7 +204,7 @@ function Availibility({
           justifyContent={'space-between'}
           spacing={1}
         >
-          <p className="font-semibold">Time Zone</p>
+          <p className='font-semibold'>Time Zone</p>
           <Stack width={'47px'} height={'32px'}>
             {isHover && (
               <UIButton
@@ -220,8 +219,8 @@ function Availibility({
         </Stack>
         <Typography>{selectedTimeZone?.label}</Typography>
       </Stack>
-      <InterviewLoadDetails
-        slotInterviewLoadCard={
+      <div className='flex flex-col w-[600px] space-y-2'>
+        <Card className='grid grid-cols-3 gap-3 border-none shadow-none'>
           <>
             <InterviewLoadCard
               textHeading='Today'
@@ -266,47 +265,46 @@ function Availibility({
               }
             />
           </>
-        }
-      />
-      <WorkingHourDetails
-        slotDays={
-          <>
-            {schedulingSettingData.workingHours
-              .filter((day) => day.isWorkDay)
-              .map((day, i: number) => (
-                <li key={i} className='py-4 '>
-                  <h3 className='text-lg font-medium text-gray-900'>
-                    {capitalize(day.day)}
-                  </h3>
-                  <p className='mt-1 text-sm text-gray-500'>
-                    {dayjsLocal()
+        </Card>
+      </div>
+
+      <div className='space-y-4'>
+        <ul>
+          {schedulingSettingData.workingHours
+            .filter((day) => day.isWorkDay)
+            .map((day, i: number) => (
+              <li key={i} className='py-4'>
+                <h3 className='text-lg font-medium text-gray-900'>
+                  {capitalize(day.day)}
+                </h3>
+                <p className='mt-1 text-sm text-gray-500'>
+                  {dayjsLocal()
+                    .set(
+                      'hour',
+                      parseInt(day.timeRange.startTime.split(':')[0]),
+                    )
+                    .set(
+                      'minute',
+                      parseInt(day.timeRange.startTime.split(':')[1]),
+                    )
+                    .format('hh:mm A') +
+                    ' to ' +
+                    dayjsLocal()
                       .set(
                         'hour',
-                        parseInt(day.timeRange.startTime.split(':')[0]),
+                        parseInt(day.timeRange.endTime.split(':')[0]),
                       )
                       .set(
                         'minute',
-                        parseInt(day.timeRange.startTime.split(':')[1]),
+                        parseInt(day.timeRange.endTime.split(':')[1]),
                       )
-                      .format('hh:mm A') +
-                      ' to ' +
-                      dayjsLocal()
-                        .set(
-                          'hour',
-                          parseInt(day.timeRange.endTime.split(':')[0]),
-                        )
-                        .set(
-                          'minute',
-                          parseInt(day.timeRange.endTime.split(':')[1]),
-                        )
-                        .format('hh:mm A')}{' '}
-                    {getShortTimeZone(schedulingSettingData.timeZone.tzCode)}
-                  </p>
-                </li>
-              ))}
-          </>
-        }
-      />
+                      .format('hh:mm A')}{' '}
+                  {getShortTimeZone(schedulingSettingData.timeZone.tzCode)}
+                </p>
+              </li>
+            ))}
+        </ul>
+      </div>
       <InterviewerLevelSettings
         initialData={interviewerDetails?.scheduling_settings}
         companyKeywords={recruiter.scheduling_settings.schedulingKeyWords}
@@ -351,7 +349,7 @@ function Availibility({
         >
           <Stack padding={'16px'}>
             <ScheduleSettings
-              isTimeZoneToggleVisible={false}
+              slotDayOff={<></>}
               slotTimeZoneInput={
                 <Stack
                   spacing={'var(--space-2)'}

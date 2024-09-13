@@ -159,7 +159,7 @@ function CreateModuleDialog() {
                 Requires Training
               </Label>
             </div>
-            <p className='text-xs text-gray-500 ml-6'>
+            <p className='text-sm text-gray-500 ml-6'>
               Select if the interviewer requires training before conducting this
               interview
             </p>

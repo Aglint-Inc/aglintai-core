@@ -3,12 +3,12 @@
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import {
-  type LucideIcon,
   Briefcase,
   CalendarClock,
   FileBarChart,
   FileText,
   LayoutDashboard,
+  type LucideIcon,
   PlusCircle,
   Users,
 } from 'lucide-react';
@@ -75,7 +75,9 @@ export function EmptyState({
 
 // Example usage
 export function ExampleUsage() {
-  const handleAction = () => {};
+  const handleAction = () => {
+    //
+  };
 
   return (
     <div className='space-y-8'>

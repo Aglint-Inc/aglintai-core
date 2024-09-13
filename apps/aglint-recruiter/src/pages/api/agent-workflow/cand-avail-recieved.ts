@@ -6,7 +6,7 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
@@ -70,11 +70,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     await cand_schedule.fetchDetails({
-      session_ids,
-      start_date_str: avail_record.date_range[0],
-      end_date_str: avail_record.date_range[1],
-      company_id: recruiter_id,
-      req_user_tz: request_assignee_tz,
+      params: {
+        session_ids,
+        start_date_str: avail_record.date_range[0],
+        end_date_str: avail_record.date_range[1],
+        company_id: recruiter_id,
+        req_user_tz: request_assignee_tz,
+      },
     });
 
     const cand_picked_slots = await executeWorkflowAction(

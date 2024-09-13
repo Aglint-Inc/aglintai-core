@@ -4,9 +4,9 @@ import { useState } from 'react';
 import CandidateMetrics from '@/components/Dashboards/Interview/CandidateMetrics';
 import Checklist from '@/components/Dashboards/Interview/Checklist';
 import DashboardDataFilter from '@/components/Dashboards/Interview/DashboardDataFilter';
-import InterviewCount from '@/components/Dashboards/Interview/InterviewCount';
 import InterviewDashboardSideNav from '@/components/Dashboards/Interview/InterviewDashboardSideNav';
 import InterviewerLeaderboard from '@/components/Dashboards/Interview/InterviewerLeaderboard';
+import InterviewCount from '@/components/Dashboards/Interview/InterviewMetrics';
 import JobMetrics from '@/components/Dashboards/Jobs/JobMetrics';
 import TrainingDashboard from '@/components/Reports/TrainingDashboard';
 

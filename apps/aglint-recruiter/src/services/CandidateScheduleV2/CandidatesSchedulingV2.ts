@@ -15,7 +15,6 @@ import {
   type SessionsCombType,
 } from '@aglint/shared-types';
 import {
-  CApiError,
   getFullName,
   ScheduleUtils,
   scheduling_options_schema,
@@ -27,10 +26,10 @@ import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
 import {
+  type DbFetchScheduleApiDetailsParams,
   type IntervsWorkHrsEventMapType,
   type IntervsWorkHrsEventType,
   type ScheduleApiDetails,
-  type ScheduleDBDetailsParams,
 } from './types';
 import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
@@ -87,7 +86,7 @@ export class CandidatesSchedulingV2 {
   /**
    * find calender events for each interviewer
    */
-  public async fetchDetails(params: ScheduleDBDetailsParams) {
+  public async fetchDetails(params: DbFetchScheduleApiDetailsParams) {
     const db_details = await dbFetchScheduleApiDetails(params);
     const int_with_events = await fetchIntsCalEventsDetails(db_details);
 
@@ -229,25 +228,24 @@ export class CandidatesSchedulingV2 {
       (i) => i.interviewer_type !== 'training',
     );
   }
-  public ignoreInterviewers(sess_reln_ids: string[]) {
-    sess_reln_ids.forEach((reln_id) => {
-      if (
-        !this.db_details.all_inters.find(
-          (int) => int.session_relation_id === reln_id,
-        )
-      ) {
-        throw new CApiError('SERVER_ERROR', `${reln_id} does not exist`);
-      }
-    });
+  public ignoreInterviewers(sesssion_ints: { sesn_id; user_id: string }[]) {
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
       qualifiedIntervs: s.qualifiedIntervs.filter(
-        (i) => !sess_reln_ids.includes(i.id),
+        (i) =>
+          !sesssion_ints.includes({
+            sesn_id: s.session_id,
+            user_id: i.user_id,
+          }),
       ),
       trainingIntervs: [],
     }));
     this.db_details.all_inters = this.db_details.all_inters.filter(
-      (i) => !sess_reln_ids.includes(i.session_relation_id),
+      (i) =>
+        !sesssion_ints.includes({
+          sesn_id: i.session_id,
+          user_id: i.user_id,
+        }),
     );
   }
 

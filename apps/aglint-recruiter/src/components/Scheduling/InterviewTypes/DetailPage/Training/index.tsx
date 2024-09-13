@@ -1,25 +1,19 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { GlobalBanner } from '@devlink2/GlobalBanner';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
-import { ModuleSetting } from '@devlink2/ModuleSetting';
-import { TrainingSetting } from '@devlink2/TrainingSetting';
-import { TrainingSettingItem } from '@devlink2/TrainingSettingItem';
-import { Stack, Typography } from '@mui/material';
+import { Input } from '@components/ui/input';
 import _ from 'lodash';
-import { AlertCircle, Settings } from 'lucide-react';
+import { AlertCircle, Minus, Plus, Settings } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UITypography from '@/components/Common/UITypography';
-import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/utils/supabase/client';
@@ -27,9 +21,12 @@ import { supabase } from '@/utils/supabase/client';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';
+import { TrainingSettingItem } from '../../_common/TraningSettingItem';
+import { TrainingSetting } from '../../_common/TraninigSetting';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { type ModuleType } from '../../types';
 import SlotTrainingMembers from '../SlotBodyComp/SlotTrainingMembers';
+import { ModuleSetting } from './ModuleSetting';
 
 function ModuleSettingComp({
   editModule,
@@ -204,28 +201,27 @@ function ModuleSettingComp({
   };
 
   return (
-    <Stack p={'var(--space-4)'} spacing={'var(--space-4)'} maxWidth={'900px'}>
+    <div className='p-4 space-y-4 max-w-[900px]'>
       {!editModule?.settings?.require_training && (
-        <GlobalBanner
-          textTitle='To add trainee interviewers and track their progress, enable training using the button on the right.'
-          textDescription=''
+        <UIAlert
+          type='small'
+          title='To add trainee interviewers and track their progress, enable training using the button on the right.'
           color={'warning'}
-          slotButtons={
+          actions={
             <UIButton
               variant='default'
               size='sm'
-              isLoading={isBannerLoading}
               disabled={isBannerLoading}
-              onClick={enableDiabaleTraining.bind(null, { type: 'enable' })}
+              onClick={() => enableDiabaleTraining({ type: 'enable' })}
             >
-              Enable
+              {isBannerLoading ? 'Loading...' : 'Enable'}
             </UIButton>
           }
         />
       )}
       {editModule?.settings?.require_training && (
         <div className='flex flex-col gap-2'>
-          <p className="font-semibold">Trainee</p>
+          <p className='font-semibold'>Trainee</p>
 
           <TrainingSetting
             isApprovalVisible={editModule?.settings?.reqruire_approval}
@@ -240,16 +236,14 @@ function ModuleSettingComp({
             textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
             slotButton={
               checkPermissions(['interview_types']) ? (
-                <UIButton
-                  variant='secondary'
-                  leftIcon={<Settings />}
+                <Button
+                  variant='outline'
                   size='sm'
-                  onClick={() => {
-                    setOpen(true);
-                  }}
+                  onClick={() => setOpen(true)}
                 >
+                  <Settings className='w-4 h-4 mr-2' />
                   Settings
-                </UIButton>
+                </Button>
               ) : (
                 <></>
               )
@@ -258,15 +252,13 @@ function ModuleSettingComp({
               <Link href={`/user/profile/${user.user_id}`} key={i}>
                 <TrainingSettingItem
                   text={getFullName(user.first_name, user.last_name)}
-                  slotImage={
-                    <MuiAvatar
-                      src={user.profile_image}
-                      level={getFullName(user?.first_name, user?.last_name)}
-                      variant='rounded'
-                      height='20px'
-                      width='20px'
-                      fontSize='12px'
-                    />
+                  image={
+                    <Avatar className='w-[20px] h-[20px]'>
+                      <AvatarImage src={user.profile_image} alt='@shadcn' />
+                      <AvatarFallback>
+                        {getFullName(user?.first_name, user?.last_name)}
+                      </AvatarFallback>
+                    </Avatar>
                   }
                 />
               </Link>
@@ -285,19 +277,18 @@ function ModuleSettingComp({
         open={open}
         slotBottom={
           <>
-            <UIButton
-              fullWidth
+            <Button
+              className='w-full'
               variant='outline'
-              color='neutral'
-              size='md'
+              size='lg'
               onClick={() => setOpen(false)}
             >
               Close
-            </UIButton>
-            <UIButton
-              fullWidth
+            </Button>
+            <Button
+              className='w-full'
               variant='default'
-              size='md'
+              size='lg'
               disabled={
                 isSaving ||
                 (localModule?.settings.reqruire_approval &&
@@ -310,15 +301,14 @@ function ModuleSettingComp({
                   editModule?.settings,
                 )
               }
-              isLoading={isSaving}
               onClick={() => {
                 if (!isSaving) {
                   updateModule();
                 }
               }}
             >
-              Update
-            </UIButton>
+              {isSaving ? 'Updating...' : 'Update'}
+            </Button>
           </>
         }
         onClose={() => {
@@ -353,60 +343,52 @@ function ModuleSettingComp({
       >
         <>
           {localModule && (
-            <ModuleSetting
-              onClickClose={{
-                onClick: () => setIsModuleSettingsDialogOpen(false),
-              }}
-              isDisable={!localModule?.settings?.require_training}
-              isRequireTrainingVisible={true}
-              isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
-              slotCheckbox={
-                <Checkbox
-                  checked={localModule?.settings?.reqruire_approval}
-                  onChange={() => {
-                    setEditLocalModule((prev) => ({
-                      ...prev,
-                      settings: {
-                        ...prev.settings,
-                        reqruire_approval: !prev.settings.reqruire_approval,
-                      },
-                    }));
-                  }}
-                />
-              }
-              slotButtonPrimary={<></>}
-              slotApprovalDoneInput={
-                <>
-                  <MembersAutoComplete
-                    error={errorApproval || selectedUsers.length === 0}
-                    renderUsers={dropDownMembers}
-                    setSelectedUsers={setSelectedUsers}
-                    selectedUsers={selectedUsers}
-                    pillColor='var(--neutral-3)'
-                    maxWidth='430px'
-                    onUserSelect={() => setErrorApproval(false)}
+            <>
+              <ModuleSetting
+                isDisable={!localModule?.settings?.require_training}
+                isRequireTrainingVisible={true}
+                isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
+                slotCheckbox={
+                  <Checkbox
+                    checked={localModule?.settings?.reqruire_approval}
+                    onChange={() => {
+                      setEditLocalModule((prev) => ({
+                        ...prev,
+                        settings: {
+                          ...prev.settings,
+                          reqruire_approval: !prev.settings.reqruire_approval,
+                        },
+                      }));
+                    }}
                   />
-                  {selectedUsers.length === 0 && (
-                    <Typography
-                      color={'var(--error-9)'}
-                      mb={'var(--space-2)'}
-                      pt={'2px'}
-                    >
-                      <AlertCircle className='h-3 w-3 text-[var(--error-9)]' />
-                      Please select users to approve or uncheck require approval
-                    </Typography>
-                  )}
-                </>
-              }
-              slotInputNoOfReverse={
-                <Stack direction={'row'} gap={1} alignItems={'center'}>
-                  <IconButtonSoft
-                    isDisabled={localModule.settings.noReverseShadow === 1}
-                    color={'neutral'}
-                    iconName='remove'
-                    size={1}
-                    onClickButton={{
-                      onClick: () => {
+                }
+                slotApprovalDoneInput={
+                  <>
+                    <MembersAutoComplete
+                      error={errorApproval || selectedUsers.length === 0}
+                      renderUsers={dropDownMembers}
+                      setSelectedUsers={setSelectedUsers}
+                      selectedUsers={selectedUsers}
+                      pillColor='var(--neutral-3)'
+                      maxWidth='430px'
+                      onUserSelect={() => setErrorApproval(false)}
+                    />
+                    {selectedUsers.length === 0 && (
+                      <div className='text-error-9 mb-2 pt-2 flex items-center'>
+                        <AlertCircle className='h-3 w-3 text-error-9 mr-1' />
+                        Please select users to approve or uncheck require
+                        approval
+                      </div>
+                    )}
+                  </>
+                }
+                slotInputNoOfReverse={
+                  <div className='flex items-center gap-1'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      disabled={localModule.settings.noReverseShadow === 1}
+                      onClick={() => {
                         setEditLocalModule((prev) => ({
                           ...prev,
                           settings: {
@@ -416,33 +398,31 @@ function ModuleSettingComp({
                             ),
                           },
                         }));
-                      },
-                    }}
-                  />
-                  <MuiNumberfield
-                    width='80px'
-                    isMarginTop={false}
-                    value={localModule.settings.noReverseShadow}
-                    isDebounceEnable={false}
-                    handleSelect={(value) =>
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noReverseShadow:
-                            value === 0
-                              ? editModule.settings.noReverseShadow
-                              : value,
-                        },
-                      }))
-                    }
-                  />
-                  <IconButtonSoft
-                    iconName='Add'
-                    size={1}
-                    color={'neutral'}
-                    onClickButton={{
-                      onClick: () => {
+                      }}
+                    >
+                      <Minus className='h-4 w-4' />
+                    </Button>
+                    <Input
+                      className='w-20'
+                      type='number'
+                      value={localModule.settings.noReverseShadow}
+                      onChange={(e) =>
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noReverseShadow:
+                              Number(e.target.value) === 0
+                                ? editModule.settings.noReverseShadow
+                                : Number(e.target.value),
+                          },
+                        }))
+                      }
+                    />
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => {
                         setEditLocalModule((prev) => ({
                           ...prev,
                           settings: {
@@ -452,20 +432,19 @@ function ModuleSettingComp({
                             ),
                           },
                         }));
-                      },
-                    }}
-                  />
-                </Stack>
-              }
-              slotInputNoOfShadow={
-                <Stack direction={'row'} gap={1} alignItems={'center'}>
-                  <IconButtonSoft
-                    isDisabled={localModule.settings.noShadow === 1}
-                    color={'neutral'}
-                    iconName='remove'
-                    size={1}
-                    onClickButton={{
-                      onClick: () => {
+                      }}
+                    >
+                      <Plus className='h-4 w-4' />
+                    </Button>
+                  </div>
+                }
+                slotInputNoOfShadow={
+                  <div className='flex items-center gap-1'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      disabled={localModule.settings.noShadow === 1}
+                      onClick={() => {
                         setEditLocalModule((prev) => ({
                           ...prev,
                           settings: {
@@ -473,31 +452,31 @@ function ModuleSettingComp({
                             noShadow: Number(localModule.settings.noShadow - 1),
                           },
                         }));
-                      },
-                    }}
-                  />
-                  <MuiNumberfield
-                    width='80px'
-                    isMarginTop={false}
-                    value={localModule.settings.noShadow}
-                    isDebounceEnable={false}
-                    handleSelect={(value) =>
-                      setEditLocalModule((prev) => ({
-                        ...prev,
-                        settings: {
-                          ...prev.settings,
-                          noShadow:
-                            value === 0 ? editModule.settings.noShadow : value,
-                        },
-                      }))
-                    }
-                  />
-                  <IconButtonSoft
-                    iconName='Add'
-                    size={1}
-                    color={'neutral'}
-                    onClickButton={{
-                      onClick: () => {
+                      }}
+                    >
+                      <Minus className='h-4 w-4' />
+                    </Button>
+                    <Input
+                      className='w-20'
+                      type='number'
+                      value={localModule.settings.noShadow}
+                      onChange={(e) =>
+                        setEditLocalModule((prev) => ({
+                          ...prev,
+                          settings: {
+                            ...prev.settings,
+                            noShadow:
+                              Number(e.target.value) === 0
+                                ? editModule.settings.noShadow
+                                : Number(e.target.value),
+                          },
+                        }))
+                      }
+                    />
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => {
                         setEditLocalModule((prev) => ({
                           ...prev,
                           settings: {
@@ -505,54 +484,52 @@ function ModuleSettingComp({
                             noShadow: Number(localModule.settings.noShadow + 1),
                           },
                         }));
-                      },
-                    }}
-                  />
-                </Stack>
-              }
-            />
+                      }}
+                    >
+                      <Plus className='h-4 w-4' />
+                    </Button>
+                  </div>
+                }
+              />
+            </>
           )}
           {editModule?.settings?.require_training && (
-            <Stack marginInline={2}>
-              <GlobalBannerShort
+            <div className='mx-2'>
+              <UIAlert
                 color={'error'}
-                textTitle='Disable Training'
-                textDescription='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
-                slotButtons={
+                title='Disable Training'
+                description='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
+                actions={
                   <>
-                    <ButtonSolid
-                      textButton='Disable'
-                      color={'error'}
-                      onClickButton={{
-                        onClick: () => {
-                          if (
-                            localModule.relations.filter(
-                              (relation) =>
-                                relation.training_status === 'training' &&
-                                !relation.is_archived,
-                            ).length > 0
-                          ) {
-                            // toast.warning(
-                            //   'Cannot disable training while members are still in training.',
-                            // );
-                            disableError();
-                          } else {
-                            setDisableOpen(true);
-                          }
-                        },
+                    <UIButton
+                      variant='destructive'
+                      onClick={() => {
+                        if (
+                          localModule.relations.filter(
+                            (relation) =>
+                              relation.training_status === 'training' &&
+                              !relation.is_archived,
+                          ).length > 0
+                        ) {
+                          disableError();
+                        } else {
+                          setDisableOpen(true);
+                        }
                       }}
-                    />
+                    >
+                      Disable
+                    </UIButton>
                   </>
                 }
               />
 
               {isDisableError && (
-                <Typography mt={1} color={'error'}>
-                  <AlertCircle size={12} color='var(--error-9)' />
+                <div className='text-error mt-1 flex items-center'>
+                  <AlertCircle size={12} className='text-error-9 mr-1' />
                   Cannot disable training while members are still in training.
-                </Typography>
+                </div>
               )}
-            </Stack>
+            </div>
           )}
         </>
       </UIDrawer>
@@ -594,14 +571,8 @@ function ModuleSettingComp({
           </div>
         </>
       </UIDialog>
-    </Stack>
+    </div>
   );
 }
 
 export default ModuleSettingComp;
-
-// {
-//   onClick: () => {
-//     enableDiabaleTraining({ type: 'disable' });
-//   },
-// }

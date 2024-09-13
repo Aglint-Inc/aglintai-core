@@ -6,9 +6,7 @@ import type {
 import OptimisticWrapper from '@components/loadingWapper';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { WorkflowAddAction } from '@devlink3/WorkflowAddAction';
-import { WorkflowConnector } from '@devlink3/WorkflowConnector';
-import { WorkflowItem } from '@devlink3/WorkflowItem';
+import { CardContent } from '@components/ui/card';
 import { Terminal } from 'lucide-react';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -16,6 +14,7 @@ import Loader from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelect from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
+import { WorkflowItem } from '@/components/Workflow/_common/WorkflowItem';
 import { type WorkflowAction } from '@/types/workflow.types';
 import { useWorkflow } from '@/workflow/hooks';
 import { getWorkflowTagIcon } from '@/workflows/utils';
@@ -71,7 +70,15 @@ const ActionRecommendations = memo(() => {
   return (
     <>
       <WorkflowConnector />
-      <WorkflowAddAction slotWorkflowButton={options} />
+
+      <div className='flex flex-col items-center gap-4 py-2'>
+        <UITypography type='small' variant='p'>
+          Choose an action from below
+        </UITypography>
+        <CardContent className='flex flex-col items-center gap-2'>
+          {options}
+        </CardContent>
+      </div>
     </>
   );
 });
@@ -313,3 +320,25 @@ const AgentInstructionBody: React.FC<
   );
 });
 AgentInstructionBody.displayName = 'AgentInstructionBody';
+
+// -----
+
+const WorkflowConnector = () => {
+  return (
+    <div className={'flex w-full justify-center items-center text-neutral-600'}>
+      <svg
+        className='flex justify-center items-center'
+        width='16'
+        height='45'
+        viewBox='0 0 16 45'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path
+          d='M7.29289 44.7071C7.68342 45.0976 8.31658 45.0976 8.70711 44.7071L15.0711 38.3431C15.4616 37.9526 15.4616 37.3195 15.0711 36.9289C14.6805 36.5384 14.0474 36.5384 13.6569 36.9289L8 42.5858L2.34315 36.9289C1.95262 36.5384 1.31946 36.5384 0.928932 36.9289C0.538408 37.3195 0.538408 37.9526 0.928932 38.3431L7.29289 44.7071ZM7 0L7 44H9L9 0L7 0Z'
+          fill='currentColor'
+        />
+      </svg>
+    </div>
+  );
+};

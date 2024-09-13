@@ -1,8 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
-import { LoaderSvg } from '@devlink/LoaderSvg';
-import { Stack } from '@mui/material';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -83,15 +82,9 @@ const Google = () => {
 
   return (
     <>
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        width={'100vw'}
-        justifyContent={'center'}
-        height={'100vh'}
-      >
-        <LoaderSvg />
-      </Stack>
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loader2 className='w-8 h-8 animate-spin' />
+      </div>
     </>
   );
 };

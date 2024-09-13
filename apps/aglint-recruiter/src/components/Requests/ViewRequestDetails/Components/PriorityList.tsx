@@ -1,9 +1,11 @@
-import { GlobalBadge } from '@devlink2/GlobalBadge';
-import { IconButtonSoft } from '@devlink3/IconButtonSoft';
+
 import { Popover, Stack } from '@mui/material';
+import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -22,14 +24,13 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
 
   return (
     <>
-      <IconButtonSoft
-        onClickButton={{
-          onClick: handleClick,
-        }}
-        iconName={'edit_square'}
-        color={'neutral'}
-        size={1}
-      />
+      <UIButton
+        variant='secondary'
+        size='sm'
+        onClick={handleClick}
+      >
+       <Pencil className='h-4 w-4'/>
+      </UIButton>
       <Popover
         id={id}
         open={open}
@@ -80,10 +81,8 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
               direction={'row'}
               gap={1}
             >
-              <GlobalBadge
-                showIcon={true}
-                iconSize={4}
-                iconName={priority === 'urgent' ? 'flag_2' : ''}
+              <UIBadge
+                iconName={priority === 'urgent' ? 'ShieldAlert' : null}
                 color={priority === 'urgent' ? 'warning' : 'neutral'}
                 textBadge={capitalizeFirstLetter(priority)}
               />

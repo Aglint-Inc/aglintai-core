@@ -1,8 +1,6 @@
-import { UserNameCard } from '@devlink3/UserNameCard';
-import { Stack } from '@mui/material';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import Link from 'next/link';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getFullName } from '@/utils/jsonResume';
 
 import { useScheduleDetails } from '../hooks';
@@ -32,35 +30,40 @@ function AllRolesMeetings() {
   const filteredRoles = allRoles.filter((item) => Boolean(item.details));
 
   return (
-    <Stack spacing={'var(--space-2)'}>
+    <div className='flex flex-col space-y-4'>
       {filteredRoles.map((item) => {
         return (
-          <>
-            <UserNameCard
-              slotAvatar={
-                <MuiAvatar
-                  level={getFullName(
+          <div key={item.type}>
+            <div className='flex items-center space-x-4 bg-white'>
+              <Avatar className='h-10 w-10'>
+                <AvatarImage
+                  src={item.details.profile_image}
+                  alt={getFullName(
                     item.details.first_name,
                     item.details.last_name,
                   )}
-                  src={item.details.profile_image}
-                  variant={'rounded'}
-                  width='100%'
-                  height='100%'
-                  fontSize='20px'
                 />
-              }
-              textName={
-                <Link href={`/user/profile/${item.details.user_id}`}>
+                <AvatarFallback>
+                  {getFullName(
+                    item.details.first_name,
+                    item.details.last_name,
+                  ).charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <Link
+                  href={`/user/profile/${item.details.user_id}`}
+                  className='text-sm font-medium hover:underline'
+                >
                   {getFullName(item.details.first_name, item.details.last_name)}
                 </Link>
-              }
-              textRole={item.label}
-            />
-          </>
+                <p className='text-sm text-gray-500'>{item.label}</p>
+              </div>
+            </div>
+          </div>
         );
       })}
-    </Stack>
+    </div>
   );
 }
 

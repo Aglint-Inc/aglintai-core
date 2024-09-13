@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { Edit } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
@@ -83,15 +82,15 @@ function Instructions({
           </div>
         </div>
       </UIDialog>
-      <Stack direction={'column'} p={'var(--space-5)'}>
-        <Stack
-          gap={2}
-          bgcolor={'white'}
-          padding={isPadding && 'var(--space-4)'}
-          border={isBorder && '1px solid var(--neutral-6)'}
-          borderRadius={'var(--radius-4)'}
-          width={isWidth && '855px'}
-          minWidth={isMinWidth && '100%'}
+      <div className="flex flex-col p-5">
+        <div
+          className={`
+            flex flex-col gap-2 bg-white
+            ${isPadding ? 'p-4' : ''}
+            ${isBorder ? 'border border-neutral-200 rounded-md' : ''}
+            ${isWidth ? 'w-[855px]' : ''}
+            ${isMinWidth ? 'min-w-full' : ''}
+          `}
         >
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>
@@ -99,9 +98,9 @@ function Instructions({
                 <p className='text-base font-medium'>Instructions</p>
                 <UIButton
                   variant='secondary'
-                  leftIcon={<Edit />}
+                  leftIcon={<Edit className="w-4 h-4" />}
                   size='sm'
-                  onClick={setEdit.bind(null, true)}
+                  onClick={() => setEdit(true)}
                 >
                   Edit
                 </UIButton>
@@ -109,15 +108,13 @@ function Instructions({
             </ShowCode.When>
           </ShowCode>
           <div
-            style={{
-              maxWidth: '600px',
-            }}
+            className="max-w-[600px]"
             dangerouslySetInnerHTML={{
               __html: marked(instruction || 'Instructions not given'),
             }}
           ></div>
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </>
   );
 }

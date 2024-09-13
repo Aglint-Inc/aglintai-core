@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import React from 'react';
 
 import { type ModuleType } from '../../types';
@@ -14,10 +13,10 @@ function TopRightButtons({
 }) {
   return (
     <>
-      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+      <div className='flex items-center space-x-4'>
         <DeleteModuleDialog editModule={editModule} />
         <ArchiveModuleDialog editModule={editModule} refetch={refetch} />
-      </Stack>
+      </div>
     </>
   );
 }

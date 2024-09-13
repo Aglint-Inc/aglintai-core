@@ -7,7 +7,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
-import { WorkflowJobs } from '@devlink/WorkflowJobs';
 import { Stack } from '@mui/material';
 import { Bolt } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -36,7 +35,13 @@ export const JobWorkflowDashboard = () => {
           </div>
         </header>
         <main className='flex-grow'>
-          <WorkflowJobs slotWorkflowCards={<JobWorkflow />} />
+          <div className='grid grid-cols-[390px_1fr] h-[calc(100vh-48px)]'>
+            <div className='flex flex-col overflow-auto pb-5 border-r border-neutral-200 h-[calc(100vh-48px)]'>
+              <div className='flex flex-col gap-px'>
+                <JobWorkflow />
+              </div>
+            </div>
+          </div>
         </main>
       </div>
     ) : (

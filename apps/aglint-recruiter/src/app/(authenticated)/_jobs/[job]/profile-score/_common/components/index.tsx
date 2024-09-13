@@ -1,5 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Badge } from '@components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,22 +12,22 @@ import {
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
+import { Label } from '@components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { Skeleton } from '@components/ui/skeleton';
+import { Textarea } from '@components/ui/textarea';
 import { ScoreCard } from '@devlink/ScoreCard';
-import { ScoreCardEdit } from '@devlink/ScoreCardEdit';
 import { ScorePercentage } from '@devlink/ScorePercentage';
-import { ScorePillMust } from '@devlink/ScorePillMust';
-import { ScorePillNice } from '@devlink/ScorePillNice';
 import { ScoreSetting } from '@devlink/ScoreSetting';
 import { ScoreWeightage } from '@devlink/ScoreWeightage';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@devlink2/GlobalInfo';
-import { PageLayout } from '@devlink2/PageLayout';
-import { BannerAlert } from '@devlink3/BannerAlert';
 import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
-import { Popover, Stack } from '@mui/material';
-import { Delete, RefreshCcw } from 'lucide-react';
+import { Loader2, RefreshCcw, Trash2 } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
@@ -38,14 +40,13 @@ import {
   useState,
 } from 'react';
 
-import Loader from '@/components/Common/Loader';
 import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useTour } from '@/context/TourContext';
-import { JobNotFound } from '@/job/components/JobNotFound';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { distributeScoreWeights } from '@/job/utils';
@@ -63,19 +64,27 @@ export const JobProfileScoreDashboard = () => {
     job && isScoringEnabled && job?.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
-      <JobNotFound />
+      <div className='flex items-center justify-center h-screen'>
+        <div className='text-center'>
+          <h1 className='text-2xl font-bold mb-4'>Job Not Found</h1>
+          <p className='text-gray-600'>
+            The job you&apos;re looking for doesn&apos;t exist or you don`&apost
+            have permission to view it.
+          </p>
+        </div>
+      </div>
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-      <Loader />
-    </Stack>
+    <div className='flex items-center justify-center h-screen'>
+      <Loader2 className='h-32 w-32 animate-spin text-gray-900' />
+    </div>
   );
 };
 
 const ProfileScorePage = () => {
   return (
     <>
-      <PageLayout
+      <UIPageLayout
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={
@@ -157,20 +166,10 @@ const ProfileScoreControls = () => {
     }
   }, Object.values(safeWeights));
   return (
-    <Stack
-      style={{
-        opacity: job.scoring_criteria_loading ? 0.4 : 1,
-        pointerEvents: job.scoring_criteria_loading ? 'none' : 'auto',
-      }}
-      sx={{
-        position: 'sticky',
-        top: 0,
-        right: 0,
-        minHeight: 'calc(100vh - 60px)',
-        boxShadow: 1,
-        padding: 2,
-        bgcolor: 'var(--neutral-2)',
-      }}
+    <div
+      className={`sticky top-0 right-0 min-h-[calc(100vh-60px)] shadow p-4 bg-neutral-100 ${
+        job.scoring_criteria_loading ? 'opacity-40 pointer-events-none' : ''
+      }`}
     >
       <ScoreWeightage
         slotResetButton={
@@ -180,18 +179,12 @@ const ProfileScoreControls = () => {
         }
         slotScoreWheel={
           <>
-            <Stack
-              direction={'row'}
-              width={'80%'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              gap={'40px'}
-            >
+            <div className='flex flex-row w-4/5 justify-center items-center gap-10'>
               <ScoreWheel
                 id={'ScoreWheelSetting'}
                 parameter_weights={weights}
               />
-            </Stack>
+            </div>
           </>
         }
         slotScorePercent={
@@ -211,7 +204,6 @@ const ProfileScoreControls = () => {
                   value={weights.experience}
                   onChange={(e) => handleChange(e)}
                   disabled={disabled.experience}
-                  // E
                 />
               }
             />
@@ -230,11 +222,6 @@ const ProfileScoreControls = () => {
                   value={weights.skills}
                   onChange={(e) => handleChange(e)}
                   disabled={disabled.skills}
-                  // InputProps={{
-                  //   endAdornment: (
-                  //     <Stack style={{ color: palette.grey[500] }}>%</Stack>
-                  //   ),
-                  // }}
                 />
               }
             />
@@ -253,11 +240,6 @@ const ProfileScoreControls = () => {
                   value={weights.education}
                   onChange={(e) => handleChange(e)}
                   disabled={disabled.education}
-                  // InputProps={{
-                  //   endAdornment: (
-                  //     <Stack style={{ color: palette.grey[500] }}>%</Stack>
-                  //   ),
-                  // }}
                 />
               }
             />
@@ -265,7 +247,7 @@ const ProfileScoreControls = () => {
         }
         slotBanner={<Tips />}
       />
-    </Stack>
+    </div>
   );
 };
 
@@ -295,41 +277,36 @@ const Banners = () => {
   if (status.loading) return <></>;
   if (status.description_error)
     return (
-      <GlobalBannerInline
-        textContent='Job description is unavailable'
-        iconName='warning'
-        color={'error'}
-        slotButton={
+      <Alert variant='error'>
+        <AlertTitle>Job description is unavailable</AlertTitle>
+        <AlertDescription>
           <Button onClick={() => push(`/jobs/${job.id}/edit`)}>View</Button>
-        }
-      />
+        </AlertDescription>
+      </Alert>
     );
   if (status.jd_json_error)
     return (
-      <BannerAlert
-        textBanner={'No profile score criterias set.'}
-        textButton={'Generate'}
-        onClickButton={{
-          onClick: () => handleRegenerateJd(job),
-        }}
-      />
+      <Alert>
+        <AlertTitle>No profile score criterias set.</AlertTitle>
+        <AlertDescription>
+          <Button onClick={() => handleRegenerateJd(job)}>Generate</Button>
+        </AlertDescription>
+      </Alert>
     );
   if (status.description_changed && !status.scoring_criteria_changed)
     return (
-      <GlobalBannerInline
-        color={'warning'}
-        textContent='Job description has changed. Regenerate to update scoring criteria.'
-        slotButton={
-          <>
-            <Button size='sm' color='neutral'>
+      <Alert>
+        <AlertTitle>Job description has changed.</AlertTitle>
+        <AlertDescription>
+          Regenerate to update scoring criteria.
+          <div className='mt-2'>
+            <Button variant='outline' className='mr-2'>
               Ignore
             </Button>
-            <Button size='sm' onClick={() => handleRegenerateJd(job)}>
-              Regenerate
-            </Button>
-          </>
-        }
-      />
+            <Button onClick={() => handleRegenerateJd(job)}>Regenerate</Button>
+          </div>
+        </AlertDescription>
+      </Alert>
     );
   return <></>;
 };
@@ -439,7 +416,7 @@ const Pill: FC<{
     _item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => void;
   handleDelete: () => void;
-}> = ({ type, item, handleSubmit, handleDelete }) => {
+}> = ({ item, handleSubmit, handleDelete }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(item.field);
@@ -459,75 +436,62 @@ const Pill: FC<{
     setCheck(item.isMustHave);
   }, [...Object.values(item)]);
   return (
-    <Stack ref={ref}>
+    <div ref={ref} className='relative'>
       {item.isMustHave ? (
-        <ScorePillMust
-          onClickEditText={{ onClick: () => setOpen(true) }}
-          textDetails={item.field}
-        />
+        <Badge
+          variant='default'
+          className='cursor-pointer'
+          onClick={() => setOpen(true)}
+        >
+          {item.field}
+        </Badge>
       ) : (
-        <ScorePillNice
-          onClickEditText={{ onClick: () => setOpen(true) }}
-          textDetails={item.field}
-        />
+        <Badge
+          variant='secondary'
+          className='cursor-pointer'
+          onClick={() => setOpen(true)}
+        >
+          {item.field}
+        </Badge>
       )}
-      <Popover
-        open={open}
-        onClose={() => setOpen(false)}
-        anchorEl={ref.current}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        sx={{
-          '& .MuiPaper-root': {
-            borderRadius: 'var(--radius-3)',
-          },
-          '& .MuiPaper-outlined': {
-            border: 'none',
-            outline: 'none',
-          },
-        }}
-      >
-        <ScoreCardEdit
-          slotCheckBox={
-            <Checkbox
-              checked={check}
-              onClick={() => setCheck((prev) => !prev)}
-            />
-          }
-          slotTextEdit={
-            <textarea
-              style={{
-                width: type === 'experience' ? '500px' : '250px',
-                outline: 'none',
-                border: 'none',
-                backgroundColor: 'transparent',
-                resize: 'none',
-              }}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={true}
-              placeholder={'Experience details'}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <div className='sr-only'>Open popover</div>
+        </PopoverTrigger>
+        <PopoverContent className='w-80'>
+          <div className='space-y-4'>
+            <div className='flex items-center space-x-2'>
+              <Checkbox
+                id='must-have'
+                checked={check}
+                onCheckedChange={() => setCheck((prev) => !prev)}
+              />
+              <Label htmlFor='must-have'>Must Have</Label>
+            </div>
+            <Textarea
+              placeholder='Experience details'
               value={value}
               onChange={(e) => setValue(e.target.value)}
+              className='min-h-[100px]'
             />
-          }
-          isDeleteVisible={true}
-          isCancelVisible={false}
-          slotButton={
-            <Button variant='ghost' color='error' onClick={() => onDelete()}>
-              <Delete />
-              Delete
-            </Button>
-          }
-          slotButtonUpdate={
-            <Button size={'sm'} disabled={!value} onClick={() => onSubmit()}>
-              Update
-            </Button>
-          }
-        />
+            <div className='flex justify-between'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={onDelete}
+                className='text-destructive'
+              >
+                <Trash2 className='mr-2 h-4 w-4' />
+                Delete
+              </Button>
+              <Button size='sm' onClick={onSubmit} disabled={!value}>
+                Update
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
       </Popover>
-    </Stack>
+    </div>
   );
 };
 
@@ -556,63 +520,42 @@ const AddOption: FC<{
     }
   };
   return (
-    <Stack ref={ref}>
-      <Button size={'sm'} onClick={() => setOpen(true)}>
+    <div ref={ref} className='flex flex-col space-y-2'>
+      <Button size='sm' onClick={() => setOpen(true)}>
         Add {capitalize(type)}
       </Button>
-      <Popover
-        open={open}
-        onClose={() => handleClose()}
-        anchorEl={ref.current}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        sx={{
-          '& .MuiPaper-outlined': {
-            border: 'none',
-            outline: 'none',
-          },
-        }}
-      >
-        <ScoreCardEdit
-          slotCheckBox={
-            <Checkbox
-              checked={check}
-              onClick={() => setCheck((prev) => !prev)}
-            />
-          }
-          slotTextEdit={
-            <textarea
-              style={{
-                width: type === 'experience' ? '500px' : '250px',
-                outline: 'none',
-                border: 'none',
-                backgroundColor: '#f8f9f9',
-                resize: 'none',
-              }}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={true}
+      <Popover open={open} onOpenChange={handleClose}>
+        <PopoverTrigger asChild>
+          <div /> {/* Empty div as trigger */}
+        </PopoverTrigger>
+        <PopoverContent className='w-auto p-0' side='bottom' align='start'>
+          <div className='p-4 space-y-4'>
+            <div className='flex items-center space-x-2'>
+              <Checkbox
+                id='must-have'
+                checked={check}
+                onCheckedChange={() => setCheck((prev) => !prev)}
+              />
+              <Label htmlFor='must-have'>Must Have</Label>
+            </div>
+            <Textarea
+              className={`w-full ${type === 'experience' ? 'w-[500px]' : 'w-[250px]'} min-h-[100px]`}
               placeholder={`Type ${type} here`}
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
-          }
-          isDeleteVisible={false}
-          isCancelVisible={true}
-          slotButton={
-            <Button color={'neutral'} size={'sm'} onClick={() => handleClose()}>
-              Cancel
-            </Button>
-          }
-          slotButtonUpdate={
-            <Button size={'sm'} disabled={!value} onClick={() => onSubmit()}>
-              Update
-            </Button>
-          }
-        />
+            <div className='flex justify-between'>
+              <Button variant='outline' size='sm' onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button size='sm' disabled={!value} onClick={onSubmit}>
+                Update
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
       </Popover>
-    </Stack>
+    </div>
   );
 };
 
@@ -661,22 +604,18 @@ const Tips = () => {
   }, [handleCreateTourLog, firstVisit]);
   return (
     <>
-      <Stack
-        bgcolor={'white'}
-        borderRadius={'4px'}
-        display={'flex'}
-        flexDirection={'column'}
-        gap={'4px'}
-        padding={'var(--space-3)'}
-      >
-        <p className="text-info font-semibold text-sm">How It Works</p>
-        <p className="text-sm text-muted-foreground">
-          Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click &quot;Reset&quot; to restore default settings.
+      <div className='bg-white rounded-md flex flex-col gap-1 p-3'>
+        <p className='text-info font-semibold text-sm'>How It Works</p>
+        <p className='text-sm text-muted-foreground'>
+          Adjust the weightage for Experience, Skills, and Education to
+          customize the profile score. The total must equal 100%. Use the input
+          fields to set percentages. Click &quot;Reset&quot; to restore default
+          settings.
         </p>
-      </Stack>
+      </div>
 
       {firstVisit && (
-        <Stack marginTop={'16px'}>
+        <div className='mt-4'>
           <GlobalInfo
             color={'purple'}
             iconName='lightbulb'
@@ -687,7 +626,7 @@ const Tips = () => {
             showCloseButton
             onClickClose={{ onClick: () => handleTip() }}
           />
-        </Stack>
+        </div>
       )}
     </>
   );

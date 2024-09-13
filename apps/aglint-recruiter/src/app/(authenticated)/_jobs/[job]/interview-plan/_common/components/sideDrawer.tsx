@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { useToast } from '@components/hooks/use-toast';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { InterviewPlanEmpty } from '@devlink2/InterviewPlanEmpty';
+import { Button } from '@components/ui/button';
 import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
 import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import Icon from '@/components/Common/Icons/Icon';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
@@ -56,11 +56,21 @@ const InterviewDrawers = ({
         />
       ) : (
         <Stack px={'80px'}>
-          <InterviewPlanEmpty
-            onClickCreateInterviewPlan={{
-              onClick: () => push('/scheduling?tab=interviewtypes'),
-            }}
-          />
+          <div className='flex flex-col items-center justify-center p-8 text-center'>
+            <div className='mb-2'>
+              <Icon variant='EmptyState' width='80' height='80' />
+            </div>
+            <h3 className='text-lg font-semibold mb-2'>No Interview Plan</h3>
+            <p className='text-sm text-gray-600 mb-4'>
+              Create an interview plan to get started
+            </p>
+            <Button
+              onClick={() => push('/scheduling?tab=interviewtypes')}
+              className='bg-primary text-white hover:bg-primary-dark'
+            >
+              Create Interview Plan
+            </Button>
+          </div>
         </Stack>
       )}
     </Drawer>
@@ -159,19 +169,22 @@ const CreateSession = ({
     <SideDrawerBlock
       slotButton={
         <>
-          <ButtonSoft
-            textButton='Cancel'
-            isDisabled={sessionCreation}
-            color={'neutral'}
-            size={2}
-            onClickButton={{ onClick: () => handleClose() }}
-          />
-          <ButtonSolid
-            textButton='Add'
+          <UIButton
+            size='sm'
+            variant='secondary'
+            onClick={() => handleClose()}
+            disabled={sessionCreation}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            size='sm'
+            variant='default'
             isLoading={sessionCreation}
-            size={2}
-            onClickButton={{ onClick: () => handleAdd() }}
-          />
+            onClick={() => handleAdd()}
+          >
+            Add
+          </UIButton>
         </>
       }
       onClickClose={{ onClick: () => handleClose() }}
@@ -272,19 +285,22 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
-          <ButtonSoft
-            textButton='Cancel'
-            isDisabled={isLoading}
-            color={'neutral'}
-            size={2}
-            onClickButton={{ onClick: () => handleClose() }}
-          />
-          <ButtonSolid
-            textButton='Update'
+          <UIButton
+            disabled={isLoading}
+            variant='secondary'
+            size='sm'
+            onClick={() => handleClose()}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            variant='default'
+            size='sm'
             isLoading={isLoading}
-            size={2}
-            onClickButton={{ onClick: () => handleEdit() }}
-          />
+            onClick={() => handleEdit()}
+          >
+            Update
+          </UIButton>
         </>
       }
     />
@@ -337,19 +353,22 @@ const CreateDebrief = ({
       onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
-          <ButtonSoft
-            textButton='Cancel'
-            color={'neutral'}
-            isDisabled={debriefCreation}
-            size={2}
-            onClickButton={{ onClick: () => handleClose() }}
-          />
-          <ButtonSolid
-            textButton='Add'
+          <UIButton
+            variant='secondary'
+            disabled={debriefCreation}
+            size='sm'
+            onClick={() => handleClose()}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            size='sm'
+            variant='default'
             isLoading={debriefCreation}
-            size={2}
-            onClickButton={{ onClick: () => handleAdd() }}
-          />
+            onClick={() => handleAdd()}
+          >
+            Add
+          </UIButton>
         </>
       }
     />
@@ -424,19 +443,22 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       onClickClose={{ onClick: () => handleClose() }}
       slotButton={
         <>
-          <ButtonSoft
-            textButton='Cancel'
-            color={'neutral'}
-            isDisabled={isLoading}
-            size={2}
-            onClickButton={{ onClick: () => handleClose() }}
-          />
-          <ButtonSolid
-            textButton='Update'
+          <UIButton
+            variant='secondary'
+            disabled={isLoading}
+            size='sm'
+            onClick={() => handleClose()}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            variant='default'
+            size='sm'
             isLoading={isLoading}
-            size={2}
-            onClickButton={{ onClick: () => handleEdit() }}
-          />
+            onClick={() => handleEdit()}
+          >
+            Update
+          </UIButton>
         </>
       }
     />
@@ -483,19 +505,22 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
       slotSidedrawerBody={<BreakForms fields={fields} setFields={setFields} />}
       slotButton={
         <>
-          <ButtonSoft
-            textButton='Cancel'
-            isDisabled={isLoading}
-            color={'neutral'}
-            size={2}
-            onClickButton={{ onClick: () => handleClose() }}
-          />
-          <ButtonSolid
-            textButton={break_duration === 0 ? 'Add' : 'Update'}
+          <UIButton
+            disabled={isLoading}
+            variant='secondary'
+            size='sm'
+            onClick={() => handleClose()}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            variant='default'
+            size='sm'
             isLoading={isLoading}
-            size={2}
-            onClickButton={{ onClick: () => handleUpdate() }}
-          />
+            onClick={() => handleUpdate()}
+          >
+            {break_duration === 0 ? 'Add' : 'Update'}
+          </UIButton>
         </>
       }
     />

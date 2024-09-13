@@ -10,16 +10,23 @@
     "aglint",
     "asce",
     "Breadcrum",
+    "datetime",
     "devlink",
     "fullcalendar",
+    "hookform",
+    "Leaderboard",
+    "lucide",
     "nextjs",
     "notprovidet",
+    "plpgsql",
     "posthog",
     "sendgrid",
     "sourcer",
     "supabase",
     "tanstack",
     "tiptap",
+    "Topbar",
+    "TRPC",
     "webflow"
   ],
   "files.exclude": {
@@ -31,7 +38,8 @@
     "**/Thumbs.db": true,
     "**/.retool_types/**": true,
     ".cache": true,
-    "retool.config.json": true
+    "retool.config.json": true,
+    "**/*tsconfig.json": true
   },
   "typescript.tsdk": "./node_modules/typescript/lib"
 }

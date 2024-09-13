@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -15,9 +14,9 @@ function JobDetails({
     extensions: [StarterKit],
   });
   return (
-    <Stack p={'var(--space-5)'} maxWidth={'800px'}>
+    <div className='p-5 max-w-[800px]'>
       <EditorContent editor={editor} />
-    </Stack>
+    </div>
   );
 }
 

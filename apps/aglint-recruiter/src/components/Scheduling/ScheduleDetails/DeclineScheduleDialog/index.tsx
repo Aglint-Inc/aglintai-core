@@ -2,10 +2,11 @@ import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { useToast } from '@components/hooks/use-toast';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { DeletePopup } from '@devlink3/DeletePopup';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
@@ -101,78 +102,82 @@ function DeclineScheduleDialog({
   };
 
   return (
-    <Dialog
-      open={isDeclineOpen}
-      onClose={() => {
-        setIsDeclineOpen(false);
-      }}
-    >
-      <DeletePopup
-        textTitle={'Decline Schedule'}
-        textDescription=''
-        isIcon={false}
-        isWidget={true}
-        slotWidget={
-          <Stack spacing={2} width={'100%'}>
-            <Typography variant='body1'>
-              Please provide a reason for declineing and any additional notes.
-            </Typography>
-            <Stack spacing={1}>
-              {reasons.map((rea) => {
-                return (
-                  <Stack
-                    direction={'row'}
-                    key={rea}
-                    onClick={() => {
-                      setReason(rea);
-                    }}
-                    alignItems={'center'}
-                    spacing={1}
-                  >
-                    <RadioGroupItem
-                      value={rea}
-                      checked={rea === reason}
-                      id={`radio-${rea}`}
-                    />
-                    <Typography
-                      variant='body1'
-                      color={'var(--neutral-12)'}
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {rea}
-                    </Typography>
-                  </Stack>
-                );
-              })}
-            </Stack>
-
-            <Typography variant='body1'>Additional Notes</Typography>
-            <TextField
-              multiline
-              value={notes}
-              minRows={3}
-              placeholder='Add additional notes.'
-              onChange={(e) => {
-                setNotes(e.target.value);
+    <>
+      <UIDialog
+        open={isDeclineOpen}
+        title='Decline Schedule'
+        onClose={() => {
+          setIsDeclineOpen(false);
+        }}
+        slotButtons={
+          <>
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => {
+                setIsDeclineOpen(false);
               }}
-            />
-          </Stack>
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              onClick={() => {
+                onClickConfirm();
+              }}
+            >
+              Decline
+            </UIButton>
+          </>
         }
-        onClickCancel={{
-          onClick: () => {
-            setIsDeclineOpen(false);
-          },
-        }}
-        onClickDelete={{
-          onClick: () => {
-            onClickConfirm();
-          },
-        }}
-        buttonText={'Decline'}
-      />
-    </Dialog>
+      >
+        <Stack spacing={2} width={'100%'}>
+          <Typography variant='body1'>
+            Please provide a reason for declineing and any additional notes.
+          </Typography>
+          <Stack spacing={1}>
+            {reasons.map((rea) => {
+              return (
+                <Stack
+                  direction={'row'}
+                  key={rea}
+                  onClick={() => {
+                    setReason(rea);
+                  }}
+                  alignItems={'center'}
+                  spacing={1}
+                >
+                  <RadioGroupItem
+                    value={rea}
+                    checked={rea === reason}
+                    id={`radio-${rea}`}
+                  />
+                  <Typography
+                    variant='body1'
+                    color={'var(--neutral-12)'}
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {rea}
+                  </Typography>
+                </Stack>
+              );
+            })}
+          </Stack>
+
+          <Typography variant='body1'>Additional Notes</Typography>
+          <TextField
+            multiline
+            value={notes}
+            minRows={3}
+            placeholder='Add additional notes.'
+            onChange={(e) => {
+              setNotes(e.target.value);
+            }}
+          />
+        </Stack>
+      </UIDialog>
+    </>
   );
 }
 

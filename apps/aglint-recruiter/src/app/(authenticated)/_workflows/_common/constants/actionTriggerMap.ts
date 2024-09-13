@@ -6,7 +6,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'sendAvailReqReminder_email_applicant',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to applicant',
     },
@@ -16,7 +18,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'selfScheduleReminder_email_applicant',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to applicant',
     },
@@ -26,7 +30,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewStart_email_applicant',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to applicant',
     },
@@ -34,7 +40,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewStart_email_interviewers',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send emails to interviewers',
     },
@@ -42,7 +50,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewStart_email_organizer',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send emails to organizer',
     },
@@ -50,7 +60,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewStart_slack_interviewers',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send slack messages to interviewers',
     },
@@ -60,7 +72,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewerConfirmation_slack_interviewers',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send slack messages to interviewers',
     },
@@ -70,7 +84,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_email_interviewerForFeedback',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send feedback emails to interviewers',
     },
@@ -78,7 +94,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_slack_interviewerForFeedback',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send feedback messages to interviewers on slack',
     },
@@ -86,7 +104,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_email_organizerForMeetingStatus',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send a meeting completion confirmation form to the organizer, through email',
     },
@@ -94,7 +114,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_slack_organizerForMeetingStatus',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send a meeting completion confirmation form to the organizer, through slack',
     },
@@ -102,7 +124,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send an attendance confirmation form to shadowing trainees, through email',
     },
@@ -110,7 +134,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send an attendance confirmation form to shadowing trainees, through slack',
     },
@@ -118,7 +144,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send an attendance confirmation form to reverse shadowing trainees, through email',
     },
@@ -126,7 +154,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send an attendance confirmation form to reverse shadowing trainees, through slack',
     },
@@ -136,7 +166,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'meetingDeclined_email_organizer',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to organizer',
     },
@@ -146,7 +178,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'meetingAccepted_email_organizer',
         action_type: 'email',
-        payload: {},
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to organizer',
     },
@@ -156,7 +190,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'candidateBook_slack_interviewerForConfirmation',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send confirmation messages to interviewers on slack',
     },
@@ -166,7 +202,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'onQualified_email_trainee',
         action_type: 'email',
-        payload: null,
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to trainee',
     },
@@ -174,7 +212,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'onQualified_slack_trainee',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send slack notification to trainee',
     },
@@ -185,7 +225,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         target_api:
           'onTrainingComplete_email_approverForTraineeMeetingQualification',
         action_type: 'email',
-        payload: null,
+        payload: {
+          email: null,
+        },
       },
       name: 'Send email to approver',
     },
@@ -194,7 +236,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         target_api:
           'onTrainingComplete_slack_approverForTraineeMeetingQualification',
         action_type: 'slack',
-        payload: null,
+        payload: {
+          slack: null,
+        },
       },
       name: 'Send slack notification to approver',
     },
@@ -230,23 +274,29 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'onRequestSchedule_emailLink_getCandidateAvailability',
         action_type: 'email',
-        payload: null,
+        payload: {
+          email: null,
+        },
       },
     },
     {
       name: 'Self Schedule with Agent via mail',
       value: {
         target_api: 'onRequestSchedule_emailAgent_selfSchedule',
-        action_type: 'agent_instruction',
-        payload: null,
+        action_type: 'end_point',
+        payload: {
+          end_point: null,
+        },
       },
     },
     {
       name: 'Self Schedule with Agent via Phone',
       value: {
-        action_type: 'agent_instruction',
+        action_type: 'end_point',
         target_api: 'onRequestSchedule_phoneAgent_selfSchedule',
-        payload: null,
+        payload: {
+          end_point: null,
+        },
       },
     },
   ],
@@ -254,9 +304,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       value: {
         target_api: 'onReceivingAvailReq_agent_confirmSlot',
-        action_type: 'agent_instruction',
+        action_type: 'end_point',
         payload: {
-          agent: null,
+          end_point: null,
         },
       },
       name: 'Pick Suitable slot/s and Schedule Interviews',
@@ -264,9 +314,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       value: {
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
-        action_type: 'agent_instruction',
+        action_type: 'end_point',
         payload: {
-          agent: null,
+          end_point: null,
         },
       },
       name: 'Let Aglint AI choose time slots and send a self-schedule link to the candidate.',
@@ -278,7 +328,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         action_type: 'end_point',
         target_api: 'onRequestCancel_agent_cancelEvents',
-        payload: null,
+        payload: {
+          end_point: null,
+        },
       },
     },
     {
@@ -286,7 +338,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         action_type: 'end_point',
         target_api: 'onRequestCancel_slack_interviewersOrganizer',
-        payload: null,
+        payload: {
+          end_point: null,
+        },
       },
     },
   ],
@@ -294,10 +348,10 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       name: 'Ask Candidate for providing new availability',
       value: {
-        action_type: 'agent_instruction',
+        action_type: 'end_point',
         target_api: 'onRequestReschedule_emailLink_resendAvailRequest',
         payload: {
-          agent: null,
+          end_point: null,
         },
       },
     },
@@ -306,10 +360,10 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       name: 'Change next Available interviewer',
       value: {
-        action_type: 'agent_instruction',
+        action_type: 'end_point',
         target_api: 'onRequestInterviewerDecline_agent_changeInterviewer',
         payload: {
-          agent: null,
+          end_point: null,
         },
       },
     },

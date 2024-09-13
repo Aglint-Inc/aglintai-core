@@ -1,12 +1,13 @@
 import './customcss.css';
 
 import { dayjsLocal } from '@aglint/shared-utils';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import { Stack, Typography } from '@mui/material';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 
+import { UIButton } from '../UIButton';
 import RenderEventContent from './RenderEventContent';
 import RenderResourceContent from './RenderResource';
 import { type Event, type Resource } from './types';
@@ -125,39 +126,30 @@ const CalendarHeader = ({
           bgcolor={'#fff'}
           minHeight={'47px'}
         >
-          <IconButtonSoft
-            size={1}
-            iconSize={1}
-            color={'neutral'}
-            iconName='arrow_back_ios'
-            isDisabled={dayjsLocal(dateRange.start).isSame(currentDate, 'day')}
-            onClickButton={{
-              onClick: () => {
-                if (dayjsLocal(dateRange.start).isSame(currentDate, 'day'))
-                  return;
-                setCurrentDate(
-                  dayjsLocal(currentDate).subtract(1, 'day').toISOString(),
-                );
-              },
+          <UIButton
+            size='sm'
+            variant='secondary'
+            icon={<ChevronLeft />}
+            disabled={dayjsLocal(dateRange.start).isSame(currentDate, 'day')}
+            onClick={() => {
+              if (dayjsLocal(dateRange.start).isSame(currentDate, 'day'))
+                return;
+              setCurrentDate(
+                dayjsLocal(currentDate).subtract(1, 'day').toISOString(),
+              );
             }}
           />
           <Typography fontWeight={500}>
-            {dayjsLocal(currentDate).format('DD MMM YYYY')}
+            {dayjsLocal(currentDate).format('DD MMM YYYY ddd')}
           </Typography>
-          <IconButtonSoft
-            size={1}
-            iconSize={1}
-            color={'neutral'}
-            iconName='arrow_forward_ios'
-            isDisabled={dayjsLocal(dateRange.end).isSame(currentDate, 'day')}
-            onClickButton={{
-              onClick: () => {
-                if (dayjsLocal(dateRange.end).isSame(currentDate, 'day'))
-                  return;
-                setCurrentDate(
-                  dayjsLocal(currentDate).add(1, 'day').toISOString(),
-                );
-              },
+          <UIButton
+            size='sm'
+            variant='secondary'
+            icon={<ChevronRight />}
+            disabled={dayjsLocal(dateRange.end).isSame(currentDate, 'day')}
+            onClick={() => {
+              if (dayjsLocal(dateRange.end).isSame(currentDate, 'day')) return;
+              setCurrentDate(dayjsLocal(currentDate).add(1, 'day').toISOString());
             }}
           />
         </Stack>

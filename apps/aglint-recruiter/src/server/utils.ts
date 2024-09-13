@@ -18,7 +18,7 @@ type NestedPermissions<T> = T extends
   | MutationProcedure<any>
   ? Permissions
   : {
-      [K in keyof T]?: Permissions | NestedPermissions<T[K]>;
+      [K in keyof T]: Permissions | NestedPermissions<T[K]>;
     };
 
 const getPermissions = (
@@ -33,7 +33,7 @@ const getPermissions = (
     return level;
   }
   input.shift();
-  return getPermissions(input, level as ApiPermissions);
+  return getPermissions(input, level as unknown as ApiPermissions);
 };
 
 export const authorize = (path, permissions) => {

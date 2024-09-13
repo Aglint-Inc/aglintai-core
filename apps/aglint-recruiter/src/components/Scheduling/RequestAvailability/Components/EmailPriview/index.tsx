@@ -1,14 +1,11 @@
 import { type EmailTemplateAPi } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
-import { GlobalBannerInline } from '@devlink2/GlobalBannerInline';
+import { Alert, AlertDescription } from '@components/ui/alert';
+import { Button } from '@components/ui/button';
 import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
-import { Stack, Typography } from '@mui/material';
-import axios from 'axios';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { AlertCircle, Loader2, RefreshCcw } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import axios from '@/client/axios';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import toast from '@/utils/toast';
@@ -20,9 +17,8 @@ function EmailPreview({
   application_id,
 }: {
   requestAvailabilityId: string;
-  setRequestSteps: Dispatch<
-    SetStateAction<'finding_slots' | 'preview' | 'success'>
-  >;
+  // eslint-disable-next-line no-unused-vars
+  setRequestSteps: (value: 'finding_slots' | 'preview' | 'success') => void;
   onSubmit: () => void;
   loading: boolean;
   application_id: string;
@@ -64,96 +60,76 @@ function EmailPreview({
   return (
     <EmailPreviewOnScheduling
       textEmailPreview={
-        <Stack spacing={1} direction={'column'}>
-          <Typography>
+        <div className='flex flex-col space-y-1'>
+          <p>
             This email will be sent to the candidate. To edit the content, go to
             the template section, make edits, then click refresh.
             <br />
             {`Click "Request Availability" to send.`}
-          </Typography>
-        </Stack>
+          </p>
+        </div>
       }
       slotButton={
         <>
-          <ButtonSoft
-            color={'neutral'}
-            size={2}
-            onClickButton={{
-              onClick: () => {
-                setRequestSteps('finding_slots');
-              },
+          <Button
+            variant='outline'
+            onClick={() => {
+              setRequestSteps('finding_slots');
             }}
-            textButton={'Back'}
-          />
-          <ButtonSolid
-            size={2}
-            isLoading={loading}
-            textButton={'Request Availability'}
-            onClickButton={{
-              onClick: onSubmit,
-            }}
-          />
+          >
+            Back
+          </Button>
+          <Button disabled={loading} onClick={onSubmit}>
+            {loading ? (
+              <>
+                <RefreshCcw className='mr-2 h-4 w-4 animate-spin' />
+                Loading...
+              </>
+            ) : (
+              'Request Availability'
+            )}
+          </Button>
         </>
       }
       slotEmailPreview={
         <ShowCode>
           <ShowCode.When isTrue={fetching}>
-            <Stack height={'80vh'} width={'538px'}>
-              <Loader />
-            </Stack>
+            <div className='h-[80vh] w-[538px] flex items-center justify-center'>
+              <Loader2 className='w-8 h-8 animate-spin' />
+            </div>
           </ShowCode.When>
           <ShowCode.Else>
-            <Stack
-              display={'flex'}
-              gap={'32px'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-              width={'100%'}
-              padding={'0px 20px'}
-            >
-              <Stack>
-                <GlobalBannerInline
-                  textContent='This is a preview only. All actions in this email are disabled.'
-                  iconName='info'
-                  slotButton={<></>}
-                  color={'warning'}
-                />
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                justifyItems={'start'}
-                minWidth={'152px'}
-              >
-                <ButtonSoft
-                  size={1}
-                  textButton={'Edit Email Template'}
-                  color={'accent'}
-                  onClickButton={{
-                    onClick: () => {
-                      window.open(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
-                      );
-                    },
+            <div className='flex flex-row justify-between items-center w-full px-5 gap-8'>
+              <div>
+                <Alert>
+                  <AlertCircle className='h-4 w-4' />
+                  <AlertDescription>
+                    This is a preview only. All actions in this email are
+                    disabled.
+                  </AlertDescription>
+                </Alert>
+              </div>
+              <div className='flex flex-row space-x-1 justify-start min-w-[152px]'>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    window.open(
+                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
+                    );
                   }}
-                />
-                <IconButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  iconName={'refresh'}
-                  onClickButton={{
-                    onClick: getEmail,
-                  }}
-                />
-              </Stack>
-            </Stack>
+                >
+                  Edit Email Template
+                </Button>
+                <Button variant='outline' size='sm' onClick={getEmail}>
+                  <RefreshCcw className='h-4 w-4' />
+                </Button>
+              </div>
+            </div>
             <iframe
-              width={'600px'}
-              height={'720px'}
-              color='white'
+              className='w-[600px] h-[720px]'
               srcDoc={emailData?.html}
-              title='Previw Email'
+              title='Preview Email'
             />
           </ShowCode.Else>
         </ShowCode>

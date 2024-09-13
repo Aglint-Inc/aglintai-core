@@ -37,6 +37,9 @@ function processDirectory(
       const fullPath = path.join(dir, entry.name);
 
       if (entry.isDirectory()) {
+        if (entry.name.startsWith('_')) {
+          continue;
+        }
         walkDirectory(rootDir, fullPath, { base, appRouter });
       } else if (entry.isFile()) {
         if (entry.name.startsWith('type')) {
@@ -89,12 +92,13 @@ function processDirectory(
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(
       item.path,
-      `export const ${item.objectName} = [\n${tempResult
-        .sort()
-        .map((item) => "'" + item + "'")
-        .join(',\n')}\n] as const`,
+      `export const ${item.objectName} = ${JSON.stringify(tempResult, null, 2).replace(/"/g, "'")} as const`,
       'utf-8',
     );
+    // [\n${tempResult
+    //     .sort()
+    //     .map((item) => "'" + item + "'")
+    //     .join(',\n')}\n]
   });
 }
 

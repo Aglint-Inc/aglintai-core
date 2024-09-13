@@ -61,8 +61,9 @@ const WorkflowActionDialog = () => {
     ) {
       const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
       setEmailTemplate({
-        body: existing_workflow_action.payload?.email?.body || '',
-        subject: existing_workflow_action.payload?.email?.subject || '',
+        body: (existing_workflow_action.payload as any)?.email?.body || '',
+        subject:
+          (existing_workflow_action.payload as any)?.email?.subject || '',
       });
       existing_workflow_action.payload = undefined;
       setSelectedActionsDetails({
@@ -100,6 +101,17 @@ const WorkflowActionDialog = () => {
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
     try {
+      if (
+        wAction.action_type == 'email' &&
+        (wAction.payload.email.subject.length == 0 ||
+          wAction.payload.email.body.length == 0)
+      ) {
+        toast({
+          title: 'Email Subject and Body cannot be empty',
+          variant: 'destructive',
+        });
+        return;
+      }
       setIsAddingAction(true);
       if (agentInstructions.length > 0) {
         const availabilityResp = await mutateAsync({
@@ -118,11 +130,12 @@ const WorkflowActionDialog = () => {
         };
       }
       await createRequestWorkflowAction({
-        wAction,
+        wActions: [wAction],
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
       });
       await request_workflow.refetch();
+      setShowEditDialog(false);
     } catch (err) {
       toast({
         title: 'Failed to add action',
@@ -130,7 +143,6 @@ const WorkflowActionDialog = () => {
       });
     } finally {
       setIsAddingAction(false);
-      setShowEditDialog(false);
     }
   };
 

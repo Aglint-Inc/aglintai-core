@@ -1,11 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { AvailableTimeRange } from '@devlink/AvailableTimeRange';
-import { SlotPicker } from '@devlink2/SlotPicker';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { X } from 'lucide-react';
 
 import { useRequestAvailabilityContext } from '../../../RequestAvailabilityContext';
+import { TimeRangeCard } from '../Components/TimeRangeCard';
 
 function SlotColumn({
   slotTime,
@@ -100,40 +99,50 @@ function SlotColumn({
   };
 
   return (
-    <SlotPicker
-      isCloseButtonVisible={day === 1}
-      onClickClose={{ onClick: () => onClose() }}
-      textDateHeading={dayjs(slotTime.curr_day).format('dddd DD, MMMM')}
-      slotTime={slotTime.slots.map((slot, ind) => {
-        const isSelected =
-          (!isSubmitted &&
-            selectedSlots
-              .find((ele) => ele.round === day)
-              .dates.find((ele) => ele.curr_day === slotTime.curr_day)
-              .slots.map((ele) => ele.startTime)
-              .includes(slot.startTime)) ||
-          isSubmitted;
-        return (
-          <Stack key={ind}>
-            <AvailableTimeRange
-              onClickTime={{
-                onClick: () => {
-                  if (!isSubmitted)
-                    handleSlotClick({
-                      curr_day: slotTime.curr_day,
-                      slot: slot,
-                    });
-                },
-              }}
-              isSemiActive={slot.isSlotAvailable && !isSelected}
-              isActive={isSelected}
-              key={ind}
-              textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
-            />
-          </Stack>
-        );
-      })}
-    />
+    <>
+      <div className='relative w-[237px]  flex-1 border border-gray-200 rounded-lg'>
+        <div className='flex h-10 justify-center items-center bg-gray-50 rounded-t-lg px-2.5'>
+          <div>{dayjs(slotTime.curr_day).format('dddd DD, MMMM')}</div>
+        </div>
+        {day === 1 && (
+          <span
+            onClick={onClose}
+            className='absolute  -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-white border border-neutral-300 rounded-full'
+          >
+            <X className='w-5 h-5 text-neutral-600' />
+          </span>
+        )}
+        <div className='h-[300px] overflow-auto p-2.5 gap-2 flex flex-col'>
+          {slotTime.slots.map((slot, ind) => {
+            const isSelected =
+              (!isSubmitted &&
+                selectedSlots
+                  .find((ele) => ele.round === day)
+                  .dates.find((ele) => ele.curr_day === slotTime.curr_day)
+                  .slots.map((ele) => ele.startTime)
+                  .includes(slot.startTime)) ||
+              isSubmitted;
+            return (
+              <div key={ind}>
+                <TimeRangeCard
+                  onClickTime={() => {
+                    if (!isSubmitted)
+                      handleSlotClick({
+                        curr_day: slotTime.curr_day,
+                        slot: slot,
+                      });
+                  }}
+                  isSemiActive={slot.isSlotAvailable && !isSelected}
+                  isActive={isSelected}
+                  key={ind}
+                  textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
 

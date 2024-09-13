@@ -35,8 +35,9 @@ export const AiPromptNodeSchema = Node.create({
   },
 });
 
-import { AddCommandInput } from '@devlink/AddCommandInput';
 import { TemplateAddSentence } from '@devlink/TemplateAddSentence';
+
+import { AddCommandInput } from './_common/AddCommandInput';
 
 const Component = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);

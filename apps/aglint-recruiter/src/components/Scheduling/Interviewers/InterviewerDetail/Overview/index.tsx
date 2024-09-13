@@ -1,14 +1,15 @@
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
+
+import { School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { type ApiResponseGetMember } from '@/pages/api/get_member';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
-import { type SchedulesSupabase } from '../../../schedules-query';
+import { InterviewerDetailOverview } from '../_common/InterviewerDetailOverview';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
 import PauseDialog from '../Popups/PauseDialog';
@@ -16,15 +17,11 @@ import ResumeDialog from '../Popups/ResumeDialog';
 import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
 
 function Overview({
-  scheduleList,
   interviewerDetails,
 }: {
-  scheduleList: SchedulesSupabase;
   interviewerDetails: ApiResponseGetMember;
 }) {
   const router = useRouter();
-  const upcomingScheduleList =
-    scheduleList?.filter((item) => item.status === 'confirmed') || [];
 
   const user_id = router?.query?.user_id as string;
   const {
@@ -57,23 +54,7 @@ function Overview({
       />
 
       <InterviewerDetailOverview
-        slotButtonSchedule={
-          upcomingScheduleList?.length ? (
-            <UIButton
-              size='sm'
-              variant='secondary'
-              onClick={() => {
-                router.push(
-                  `/user/profile/${user_id}?profile=true&tab=allschedules`,
-                );
-              }}
-            >
-              View all
-            </UIButton>
-          ) : (
-            <></>
-          )
-        }
+        textHeader='Training'
         slotButtonTraining={
           trainingModulesList?.length ? (
             <UIButton
@@ -91,8 +72,6 @@ function Overview({
             <></>
           )
         }
-        isUpcomingVisible={false}
-        slotUpcomingSchedule={<></>}
         slotTrainingModules={
           !isLoading ? (
             <>
@@ -110,10 +89,9 @@ function Overview({
                 </>
               ) : (
                 <>
-                  <GlobalEmptyState
-                    textDesc='No Interview type found.'
-                    size={6}
-                    iconName='school'
+                  <GlobalEmpty
+                    text={'No Interview type found.'}
+                    iconSlot={<School />}
                   />
                 </>
               )}

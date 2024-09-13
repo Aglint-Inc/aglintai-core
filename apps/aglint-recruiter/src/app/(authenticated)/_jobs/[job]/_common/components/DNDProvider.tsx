@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { DragPill } from '@devlink3/DragPill';
 import { Stack } from '@mui/material';
+import { Move } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 import { DndProvider, useDragLayer, type XYCoord } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -80,11 +80,14 @@ const CustomDragLayer = ({ x }: { x: number }) => {
 const DragCard = () => {
   const count = useApplicationsChecklist()?.length ?? 0;
   return (
-    <Stack style={{ width: '180px' }}>
-      <DragPill
-        textLabel={`Move ${count} candidate${count === 1 ? '' : 's'}`}
-      />
-    </Stack>
+    <div className='w-[180px]'>
+      <div className='flex items-center justify-center px-3 py-2 bg-primary text-primary-foreground rounded-full shadow-sm'>
+        <Move className='w-4 h-4 mr-2' />
+        <span className='text-sm font-medium'>
+          Move {count} candidate{count === 1 ? '' : 's'}
+        </span>
+      </div>
+    </div>
   );
 };
 

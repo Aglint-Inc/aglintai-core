@@ -1,10 +1,9 @@
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { HistoryPill } from '@devlink3/HistoryPill';
-import { InterviewerTraining } from '@devlink3/InterviewerTraining';
-import { InterviewerTrainingList } from '@devlink3/InterviewerTrainingList';
-import { Avatar, Stack } from '@mui/material';
-import React, { useMemo, useState } from 'react';
 
+import { Avatar, Stack } from '@mui/material';
+import { HardDrive } from 'lucide-react';
+import { useMemo, useState } from 'react';
+
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
 import { useJobs } from '@/jobs/hooks';
 import { useAllDepartments } from '@/queries/departments';
@@ -12,6 +11,8 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';
+import { InterviewerTraining } from '../components/InterviewerTraining';
+import { InterviewerTrainingList } from '../components/InterviewerTrainingList';
 import { useTrainingProgress } from '../Hook';
 
 function TrainingProgress() {
@@ -94,29 +95,32 @@ function TrainingProgress() {
         slotInterviewerTrainnigList={
           data?.length ? (
             data.map((interviewer) => (
-              <InterviewerTrainingList
-                key={interviewer.user_id}
-                textName={interviewer.name}
-                textRole={interviewer.position}
-                slotTrainingProgress={<Pills {...interviewer} />}
-                slotImage={
-                  <Avatar
-                    // src={interviewer.}
-                    style={{ width: '32px', height: '32px' }}
-                    alt={interviewer.name}
-                    variant='rounded-medium'
-                  />
-                }
-              />
+              <>
+                <InterviewerTrainingList
+                  key={interviewer.user_id}
+                  textName={interviewer.name}
+                  textRole={interviewer.position}
+                  slotTrainingProgress={<Pills {...interviewer} />}
+                  slotImage={
+                    <Avatar
+                      // src={interviewer.}
+                      style={{ width: '32px', height: '32px' }}
+                      alt={interviewer.name}
+                      variant='rounded-medium'
+                    />
+                  }
+                />
+              </>
             ))
           ) : (
-            <Stack p={'16px'} bgcolor={'white'}>
-              <GlobalEmptyState
-                iconName={'monitoring'}
-                size={9}
-                textDesc={'No Data Available'}
-              />
-            </Stack>
+          
+              <div className="flex flex-col items-center justify-center p-4 bg-white h-[200px]">
+                <div className="mb-2">
+                  <HardDrive className="h-9 w-9 text-gray-500" />
+                </div>
+                <p className="text-sm text-gray-500">No Data Available</p>
+              </div>
+            
           )
         }
       />
@@ -170,7 +174,7 @@ const Pills = ({
   return (
     <>
       {pillData.map(({ active, shadow }, index) => (
-        <HistoryPill
+        <HistoryPillShadcn
           key={index}
           isActive={active}
           isShadow={shadow}

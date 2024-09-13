@@ -8,6 +8,7 @@ import { onUpdateInterviewFilterJson } from './trigger-funcs/onUpdateInterviewFi
 import { onUpdateInterviewMeeting } from './trigger-funcs/onUpdateInterviewMeeting';
 import { onUpdateInterviewModuleRelation } from './trigger-funcs/onUpdateInterviewModuleRelation';
 import { onUpdateInterviewTrainingProgress } from './trigger-funcs/onUpdateInterviewTrainingProgress';
+import { onUpdateIntSesnCancel } from './trigger-funcs/onUpdateIntSesnCancel';
 
 type DBEvents = 'UPDATE' | 'INSERT' | 'DELETE';
 export const db_event_triggers: Record<`${DBEvents}_${string}`, any> = {
@@ -21,4 +22,5 @@ export const db_event_triggers: Record<`${DBEvents}_${string}`, any> = {
   INSERT_workflow_action_logs: onInsertWorkflowActionLogs,
   INSERT_interview_session_cancel: onInsertInterviewSessionCancel,
   INSERT_request: onInsertRequest,
+  UPDATE_interview_session_cancel: onUpdateIntSesnCancel,
 };

@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { CandidateDetail } from '@devlink/CandidateDetail';
-import { Brain } from 'lucide-react';
+import { Brain, ChartBar } from 'lucide-react';
 import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useApplication } from '@/context/ApplicationContext';
 
-import { EmptyDetailState } from '../Common/EmptyDetailState';
 import { Badge } from './Badge';
 import { Education } from './Education';
 import { Experience } from './Experience';
@@ -42,7 +42,7 @@ export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
       slotBadge={props.score ?? <Badge />}
       slotBody={
         isEmpty ? (
-          <EmptyDetailState section='Analysis' />
+          <GlobalEmpty iconSlot={<ChartBar className='text-gray-500'/>} text={'No analysis found'}/>
         ) : (
           (props.children ?? (
             <>

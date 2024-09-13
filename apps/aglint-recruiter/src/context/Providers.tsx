@@ -11,6 +11,7 @@ import { TRPCReactProvider } from '../trpc/client';
 import { TooltipProvider } from '@components/ui/tooltip';
 import { JobsProvider } from '@/jobs/contexts';
 import { WorkflowsProvider } from '@/workflows/contexts';
+import { Toaster } from '@components/ui/toaster';
 
 export const PrivateProviders = ({
   children,
@@ -44,10 +45,11 @@ export const PublicProviders = ({ children }: PropsWithChildren) => {
         <ThemeProvider
           attribute='class'
           defaultTheme='light'
-          enableSystem
+          enableSystem={false}
           disableTransitionOnChange
         >
           <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Toaster />
         </ThemeProvider>
       </Theme>
     </Suspense>

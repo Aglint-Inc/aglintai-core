@@ -1,18 +1,18 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { NewTabPill } from '@devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@devlink3/ScheduleDetailTabs';
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
-import CandidateInfo from '../Common/CandidateInfo';
 import Banners from './Banners';
 import CancelScheduleDialog from './CancelScheduleDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
@@ -125,18 +125,6 @@ function DetailsOverview({
           })}
         slotTabContent={
           <ShowCode>
-            <ShowCode.When
-              isTrue={
-                router.query.tab === 'candidate_details' || !router.query.tab
-              }
-            >
-              {schedule && (
-                <CandidateInfo
-                  application_id={schedule.application_id}
-                  job_id={schedule.job.id}
-                />
-              )}
-            </ShowCode.When>
             <ShowCode.When isTrue={router.query.tab === 'instructions'}>
               <Instructions
                 instruction={schedule?.interview_meeting.instructions as string}
@@ -188,15 +176,19 @@ function DetailsOverview({
                     justifyContent={'center'}
                     alignItems={'center'}
                   >
-                    <GlobalEmptyState
-                      textDesc='Feedback will be enabled once the interview is completed'
-                      iconName='chat'
+                    <GlobalEmpty
+                      text={
+                        'Feedback will be enabled once the interview is completed'
+                      }
+                      iconSlot={<MessageCircle className='text-gray-500' />}
                     />
                   </Stack>
                 )}
               </Stack>
             </ShowCode.When>
-            <ShowCode.When isTrue={router.query.tab === 'job_details'}>
+            <ShowCode.When
+              isTrue={router.query.tab === 'job_details' || !router.query.tab}
+            >
               <JobDetails schedule={schedule} />
             </ShowCode.When>
           </ShowCode>

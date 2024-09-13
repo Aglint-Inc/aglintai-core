@@ -1,13 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { InterviewerWorkload } from '@devlink3/InterviewerWorkload';
-import { InterviewWorkloadList } from '@devlink3/InterviewWorkloadList';
 import { Avatar, Stack } from '@mui/material';
-import { RotateCcw } from 'lucide-react';
+import { HardDrive, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useJobs } from '@/jobs/hooks';
 import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/queries/departments';
@@ -18,6 +16,8 @@ import ROUTES from '@/utils/routing/routes';
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
+import { InterviewerWorkload } from '../components/InterviewerWorkload';
+import { InterviewWorkloadList } from '../components/InterviewWorkloadList';
 import { useAllInterviewer } from '../Hook';
 import LineGraph from './LineGraph';
 
@@ -125,15 +125,11 @@ function InterviewerLoad() {
     <>
       <InterviewerWorkload
         textDateRange={`${startDay.format('DD MMM YYYY')} - ${endDay.format('DD MMM YYYY')}`}
-        onClickRight={{
-          onClick: () => {
-            setDayCount((pre) => (pre > 0 ? pre - 1 : 0));
-          },
+        onClickRight={() => {
+          setDayCount((pre) => (pre > 0 ? pre - 1 : 0));
         }}
-        onClickLeft={{
-          onClick: () => {
-            setDayCount((pre) => pre + 1);
-          },
+        onClickLeft={() => {
+          setDayCount((pre) => pre + 1);
         }}
         slotFilter={
           <Stack direction={'row'} gap={1}>
@@ -191,10 +187,9 @@ function InterviewerLoad() {
             ))
           ) : (
             <Stack padding={'16px'} bgcolor={'white'}>
-              <GlobalEmptyState
-                iconName={'monitoring'}
-                size={9}
-                textDesc={'No Data Available'}
+              <GlobalEmpty
+                iconSlot={<HardDrive />}
+                text={'No Data Available'}
               />
             </Stack>
           )

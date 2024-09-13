@@ -12,7 +12,6 @@ import {
 import { EditEmail } from '@devlink/EditEmail';
 import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
-import { PageLayout } from '@devlink2/PageLayout';
 import { Stack } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -23,6 +22,7 @@ import { useCallback, useState } from 'react';
 import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/components/Common/Loader';
+import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -45,7 +45,7 @@ export const JobEmailTemplatesDashboard = () => {
       {isFetching ? (
         <Loader />
       ) : (
-        <PageLayout
+        <UIPageLayout
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
           slotTopbarRight={<Settings />}
           slotSaving={<></>}

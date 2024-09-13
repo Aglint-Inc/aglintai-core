@@ -8,13 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { TeamSync } from '@devlink/TeamSync';
 import { useQuery } from '@tanstack/react-query';
 import {
   Building,
   CircleDot,
   CirclePlus,
   Locate,
+  RefreshCw,
   RotateCcw,
   User,
   Users,
@@ -228,10 +228,15 @@ const TeamManagement = () => {
             {canManage &&
               (remote_sync.isEnabled ? (
                 <div className='flex flex-col space-y-2'>
-                  <TeamSync
-                    textSync={last_sync}
-                    onClickSync={{ onClick: remote_sync.sync }}
-                  />
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={remote_sync.sync}
+                    className='flex items-center'
+                  >
+                    <RefreshCw className='mr-2 h-4 w-4' />
+                    Sync Team ({last_sync})
+                  </Button>
                 </div>
               ) : (
                 <Button
@@ -297,10 +302,14 @@ const TeamManagement = () => {
                 </TableRow>
               ) : filteredMembers.length === 0 ? (
                 <TableCell colSpan={6}>
-                  <div className="flex flex-col items-center justify-center p-8 text-center">
-                    <Users className="w-12 h-12 text-gray-400 mb-2" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">No team members</h3>
-                    <p className="text-sm text-gray-500">Get started by adding a new team member.</p>
+                  <div className='flex flex-col items-center justify-center p-8 text-center'>
+                    <Users className='w-12 h-12 text-gray-400 mb-2' />
+                    <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                      No team members
+                    </h3>
+                    <p className='text-sm text-gray-500'>
+                      Get started by adding a new team member.
+                    </p>
                   </div>
                 </TableCell>
               ) : (

@@ -1,7 +1,12 @@
 import { Checkbox } from '@components/ui/checkbox';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Popover, Stack, Typography } from '@mui/material';
 import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
@@ -23,12 +28,12 @@ function FilterDepartment() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'filter-status' : undefined;
+  // const id = open ? 'filter-status' : undefined;
 
   const handleFilterClick = (
     item: ReturnType<typeof useAllDepartments>['data'][0],
@@ -44,34 +49,19 @@ function FilterDepartment() {
     item: ReturnType<typeof useAllDepartments>['data'][0],
   ) => {
     return (
-      <Stack
-        direction={'row'}
-        sx={{
-          alignItems: 'center',
-          ':hover': { bgcolor: 'var(--neutral-2)' },
-          borderRadius: 'var(--radius-2)',
-        }}
-        spacing={1}
-        padding={'var(--space-2) var(--space-3)'}
-        marginTop={'0px !important'}
-      >
+      <div className='flex items-center hover:bg-neutral-2 rounded-[var(--radius-2)] p-[var(--space-2)_var(--space-3)] mt-0 space-x-1'>
         <Checkbox
           checked={!!departments.find((id) => id === item.id)}
-          onClick={() => {
-            handleFilterClick(item);
-          }}
+          onCheckedChange={() => handleFilterClick(item)}
         />
-        <Typography
+        <span
           key={item.id}
-          sx={{
-            fontSize: '14px',
-            cursor: 'pointer',
-          }}
+          className='text-sm cursor-pointer'
           onClick={() => handleFilterClick(item)}
         >
           {capitalizeFirstLetter(item.name)}
-        </Typography>
-      </Stack>
+        </span>
+      </div>
     );
   };
 
@@ -90,47 +80,54 @@ function FilterDepartment() {
         }}
         textLabel={'Department'}
         slotRightIcon={
-          <Stack>
-            <ChevronDown
-              size={16}
-              color={'var(--neutral-2)'}
-              className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-            />
-          </Stack>
+          <ChevronDown
+            size={16}
+            color={'var(--neutral-2)'}
+            className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+          />
         }
       />
 
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{ vertical: -10, horizontal: 0 }}
-        sx={{
-          '& .MuiPopover-paper': {
-            borderRadius: 'var(--radius-4)',
-            borderColor: 'var(--neutral-6)',
-            minWidth: '176px',
-          },
-        }}
-      >
-        <FilterDropdown
-          slotOption={
-            <Stack maxHeight={'50vh'} overflow={'auto'} spacing={1.5}>
-              {allDepartments.map((item) => renderStatus(item))}
-            </Stack>
-          }
-          isRemoveVisible={false}
-          onClickReset={{
-            onClick: () => {
-              setDepartments([]);
-            },
-          }}
-        />
+      <Popover>
+        <PopoverTrigger asChild>
+          <ButtonFilter
+            isActive={departments.length > 0}
+            isDotVisible={departments.length > 0}
+            onClickStatus={{
+              id: 'department' + 'click',
+              onClick: handleClick,
+              style: {
+                whiteSpace: 'nowrap',
+                height: '100%',
+              },
+            }}
+            textLabel={'Department'}
+            slotRightIcon={
+              <ChevronDown
+                size={16}
+                color={'var(--neutral-2)'}
+                className={open ? 'rotate-180 transform' : ''}
+              />
+            }
+          />
+        </PopoverTrigger>
+        <PopoverContent className='w-[176px] p-0' align='start' sideOffset={5}>
+          <FilterDropdown
+            slotOption={
+              <ScrollArea className='h-[50vh]'>
+                <div className='space-y-1.5 p-2'>
+                  {allDepartments.map((item) => renderStatus(item))}
+                </div>
+              </ScrollArea>
+            }
+            isRemoveVisible={false}
+            onClickReset={{
+              onClick: () => {
+                setDepartments([]);
+              },
+            }}
+          />
+        </PopoverContent>
       </Popover>
     </>
   );

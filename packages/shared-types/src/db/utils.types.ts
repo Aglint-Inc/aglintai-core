@@ -59,9 +59,13 @@ type CustomEmailPayload = {
   >;
 };
 
-type CustomSlackPayload = null | undefined;
+type CustomSlackPayload = {
+  slack: null;
+};
 
-type CustomEndPointPayload = null | undefined;
+type CustomEndPointPayload = {
+  end_point: null;
+};
 
 type Timestamp = `${number}${number}:${number}${number}`;
 
@@ -107,14 +111,7 @@ export type ValidWorkflowActionEntries<
       payload: ActionPayloadType['end_point'];
       target_api: Extract<
         Database['public']['Enums']['email_slack_types'],
-        `${T}_${
-          | 'end_point'
-          | 'slack'
-          | 'agent'
-          | 'EmailLink'
-          | 'EmailAgent'
-          | 'emailAgent'
-          | 'PhoneAgent'}_${string}`
+        `${T}_${string}_${string}`
       >;
     }
   | {

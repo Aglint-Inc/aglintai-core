@@ -1,4 +1,3 @@
-import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -9,6 +8,7 @@ import UITextField from '@/components/Common/UITextField';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { useAllDepartments } from '@/queries/departments';
 import { supabase } from '@/utils/supabase/client';
+import { capitalize } from '@/utils/text/textUtils';
 
 import { useModuleAndUsers } from '../../../queries/hooks';
 import { setIsSettingsDialogOpen, useModulesStore } from '../../../store';

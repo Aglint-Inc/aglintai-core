@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalBadge } from '@devlink/GlobalBadge';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { Stack } from '@mui/material';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
+import { UIBadge } from '@/components/Common/UIBadge';
 // import { getRequestTitle } from '@/components/Requests/AgentChats/AgentInputBox';
 import { useApplication } from '@/context/ApplicationContext';
 import ROUTES from '@/utils/routing/routes';
@@ -53,15 +53,9 @@ function Requests() {
                 key={req.id}
                 justifyContent={'space-between'}
               >
-                <p className="text-sm">
-                  {/* {getRequestTitle({
-                    title: req.title,
-                    first_name: detail.name,
-                    last_name: '',
-                  })} */}
-                </p>
-                <GlobalBadge
-                  size={1}
+                <p className='text-sm'>{req.title}</p>
+                <UIBadge
+                  size={'sm'}
                   textBadge={capitalizeFirstLetter(req.status)}
                   color={
                     req.status === 'to_do'
@@ -77,7 +71,7 @@ function Requests() {
                 />
               </Stack>
               <Stack direction={'row'} spacing={'var(--space-2)'}>
-                <p className="text-sm text-muted-foreground">Assigned to</p>
+                <p className='text-sm text-muted-foreground'>Assigned to</p>
                 <AvatarWithName
                   slotAvatar={
                     <MuiAvatar
@@ -102,15 +96,15 @@ function Requests() {
         })}
 
       {!requests?.length && (
-        <GlobalEmptyState
-          iconName={'calendar_month'}
-          styleEmpty={{
-            style: {
-              background: 'var(--neutral-2)',
-            },
-          }}
-          textDesc={'No requests found'}
-        />
+        <>
+        <div className="flex flex-col items-center justify-center p-4 bg-gray-100">
+      <div className="mb-2">
+        <Calendar className="h-9 w-9 text-gray-500" />
+      </div>
+      <p className="text-sm text-gray-500">No requests found</p>
+    </div>
+        </>
+       
       )}
     </Stack>
   );

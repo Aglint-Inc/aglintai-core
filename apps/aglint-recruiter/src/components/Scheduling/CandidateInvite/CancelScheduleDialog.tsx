@@ -2,8 +2,6 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { RequestReschedule } from '@devlink2/RequestReschedule';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
@@ -90,12 +89,12 @@ const CancelRescheduleDialog = ({
         isCancelWarningVisible={type === 'cancel'}
         isRangeVisible={type === 'reschedule'}
         slotCancelButton={
-          <ButtonSoft
-            textButton='Close'
-            size={2}
-            onClickButton={{ onClick: onClose }}
-            color={'neutral'}
-          />
+          <UIButton
+            variant='secondary'
+            onClick={() => onClose()}
+          >
+            Close
+          </UIButton>
         }
         slotDateRangeInput={
           <Stack spacing={2} direction={'row'}>
@@ -177,19 +176,14 @@ const CancelRescheduleDialog = ({
         slotPrimaryButton={
           <Stack>
             {type === 'reschedule' && (
-              <ButtonSolid
-                textButton='Request Reschedule'
-                size={2}
-                onClickButton={{ onClick: handleSubmit }}
-              />
+              <UIButton variant='default' onClick={() => handleSubmit()}>
+                Request Reschedule
+              </UIButton>
             )}
             {type === 'cancel' && (
-              <ButtonSolid
-                textButton='Cancel Interview'
-                size={2}
-                color={'error'}
-                onClickButton={{ onClick: handleSubmit }}
-              />
+              <UIButton variant='destructive' onClick={() => handleSubmit()}>
+                Cancel Interview
+              </UIButton>
             )}
           </Stack>
         }

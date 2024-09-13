@@ -1,5 +1,3 @@
-import { MemberListCard } from '@devlink2/MemberListCard';
-import { HistoryPill } from '@devlink3/HistoryPill';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -7,6 +5,8 @@ import React, { useState } from 'react';
 import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 
+import { HistoryPillShadcn } from '../../../../Common/Member/HistoryPill';
+import { MemberListCardShadcn } from '../../../../Common/Member/MemberListCard';
 import { type PillsTraining } from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard';
 import CollapseTrainingProgress from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard/Collapse';
 import { useModuleRelations, useTrainingProgressUser } from '../hooks';
@@ -69,7 +69,8 @@ function TrainingInterviewerType({
 
   return (
     <>
-      <MemberListCard
+      <MemberListCardShadcn
+        isThreeDotVisible={true}
         isDropdownIconVisible={true}
         onClickDropdownIcon={{
           onClick: () => {
@@ -88,7 +89,7 @@ function TrainingInterviewerType({
             spacing={'2px'}
           >
             {pills.map((pill, i) => (
-              <HistoryPill
+              <HistoryPillShadcn
                 key={i}
                 isShadow={pill.sessionType === 'shadow'}
                 isReverseShadow={pill.sessionType === 'rshadow'}

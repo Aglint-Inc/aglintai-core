@@ -6,7 +6,6 @@ import {
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/utils/supabase/client';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const triggerinterval: Partial<
   Record<DatabaseEnums['workflow_trigger'], number>
@@ -16,15 +15,15 @@ const triggerinterval: Partial<
 };
 
 export const createRequestWorkflowAction = async ({
-  wAction,
+  wActions,
   request_id,
   recruiter_id,
 }: {
-  wAction: DatabaseTableInsert['workflow_action'];
+  wActions: DatabaseTableInsert['workflow_action'][];
   request_id: string;
   recruiter_id: string;
 }) => {
-  const trigger = wAction.target_api.split('_')[0] as any;
+  const trigger = wActions[0].target_api.split('_')[0] as any;
   let interval = 0;
   if (triggerinterval[trigger]) {
     interval = triggerinterval[trigger];
@@ -54,7 +53,7 @@ export const createRequestWorkflowAction = async ({
     );
   }
   supabaseWrap(
-    await supabaseAdmin
+    await supabase
       .from('workflow_action')
       .delete()
       .eq('workflow_id', wTrigger.id),
@@ -62,12 +61,14 @@ export const createRequestWorkflowAction = async ({
   supabaseWrap(
     await supabase
       .from('workflow_action')
-      .insert([
-        {
-          ...wAction,
-          workflow_id: wTrigger.id,
-        },
-      ])
+      .insert(
+        wActions.map((action) => {
+          return {
+            ...action,
+            workflow_id: wTrigger.id,
+          };
+        }),
+      )
       .select(),
   );
 };

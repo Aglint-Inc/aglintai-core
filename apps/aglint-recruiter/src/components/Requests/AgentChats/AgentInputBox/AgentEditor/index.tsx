@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import './EditorStyle.css'; // We will define some styles here
 
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+import { CommandShortcut } from '@components/ui/command';
 import { AiChatSuggest } from '@devlink2/AiChatSuggest';
-import { Kbd } from '@devlink3/Kbd';
-import { Stack } from '@mui/material';
+import { Command } from 'cmdk';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
@@ -260,8 +260,8 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
           textHeader={`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
           slotKbd={
             <>
-              <Kbd textShortcut={<ArrowUp size={2} />} />
-              <Kbd textShortcut={<ArrowDown size={2} />} />
+              <CommandShortcut>↑</CommandShortcut>
+              <CommandShortcut>↓</CommandShortcut>
             </>
           }
           slotList={
@@ -279,15 +279,15 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                 >
                   {selectedItems?.applicant_name[0]?.name ? (
                     <>
-                      <GlobalEmptyState
-                        iconName={''}
-                        textDesc={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
+                      <GlobalEmpty
+                        iconSlot={''}
+                        text={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                       />
                     </>
                   ) : (
-                    <GlobalEmptyState
-                      iconName={''}
-                      textDesc={`Please select an application first`}
+                    <GlobalEmpty
+                      iconSlot={''}
+                      text={`Please select an application first`}
                     />
                   )}
                 </ShowCode>
@@ -298,10 +298,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                     (triggerType === '/' && requestList.length === 0)
                   }
                 >
-                  <GlobalEmptyState
-                    iconName={''}
-                    textDesc={`Results not found`}
-                  />
+                  <GlobalEmpty iconSlot={''} text={`Results not found`} />
                 </ShowCode.When>
               </ShowCode>
               {children}
@@ -396,23 +393,9 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         <Mention {...mentionSessionList} />
         <Mention {...mentionRequestList} />
       </MentionsInput>
-      <Stack
-        position={'relative'}
-        top={'-10px'}
-        sx={{
-          border: '1px solid var(--neutral-6)',
-          borderTop: 'none',
-          borderRadius: '0 0 10px 10px',
-        }}
-        height={'28px'}
-        bgcolor={'#F9F9F8'}
-        width={'100%'}
-        direction={'row'}
-        justifyContent={'center'}
-        alignItems={'center'}
-      >
+      <div className='relative -top-[10px] border border-[var(--neutral-6)] border-t-0 rounded-b-[10px] h-[28px] bg-[#F9F9F8] w-full flex flex-row justify-center items-center'>
         <ScrollingText />
-      </Stack>
+      </div>
     </div>
   );
 };

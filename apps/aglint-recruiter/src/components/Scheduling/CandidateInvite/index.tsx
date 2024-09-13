@@ -1,17 +1,16 @@
 'use client';
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { ButtonSolid } from '@devlink/ButtonSolid';
 import { CandidateConfirmationPage } from '@devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
 import { Page404 } from '@devlink/Page404';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { Container, Dialog, Stack } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
-import { Coffee } from 'lucide-react';
+import { Coffee, X } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
@@ -196,16 +195,13 @@ const DetailsPopup = () => {
         isPopup={true}
         isSelected={false}
         slotButton={
-          <IconButtonGhost
-            color={'neutral'}
-            size={1}
-            iconName={'close'}
-            onClickButton={{
-              onClick: () => {
-                setDetailsPop(false);
-              },
-            }}
-          />
+          <UIButton
+            variant='ghost'
+            size='sm'
+            onClick={() => setDetailsPop(false)}
+          >
+            <X className='h-4 w-4'/>
+          </UIButton>
         }
         isSlotButtonVisible={true}
         textDuration={getDurationText(duration)}
@@ -238,11 +234,12 @@ const SingleDayError = () => {
     toast.error('Something went wrong. Please try again.');
   }, []);
   return (
-    <ButtonSolid
-      textButton='Try again'
-      size={2}
-      onClickButton={{ onClick: () => refetch() }}
-    />
+    <UIButton
+      variant='default'
+      onClick={() => refetch()}
+    >
+      Try again
+    </UIButton>
   );
 };
 

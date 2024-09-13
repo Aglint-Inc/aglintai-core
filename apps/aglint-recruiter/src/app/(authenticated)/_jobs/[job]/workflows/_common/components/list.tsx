@@ -10,11 +10,9 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssessmentListCardLoader } from '@devlink2/AssessmentListCardLoader';
-import { WorkflowCard } from '@devlink3/WorkflowCard';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
-import { Briefcase, X } from 'lucide-react';
+import { Briefcase, Globe, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -41,6 +39,8 @@ import {
 } from '@/workflows/components/body/filters';
 import { useWorkflows } from '@/workflows/hooks';
 import { getTriggerOption } from '@/workflows/utils';
+
+import { WorkflowCard } from './WorkflowCard';
 
 const useJobWorkflowActions = () => {
   const { job_id, devlinkProps } = useJob();
@@ -121,13 +121,13 @@ const JobWorkflows = () => {
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-      <div className='bg-white p-3'>
-        <GlobalEmptyState
-          iconName={'lan'}
-          styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
-          textDesc={'No workflows connected'}
-        />
+      <div className="flex flex-col items-center justify-center p-4 bg-white">
+      <div className="mb-2">
+        <Globe className="h-9 w-9 text-gray-500" />
       </div>
+      <p className="text-sm text-gray-500">No workflows connected</p>
+    </div>
+      
     );
   const cards = workflows
     .toSorted((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
@@ -213,28 +213,28 @@ const WorkflowBrowser = () => {
       const checked = selections.includes(id);
       const jobCount = (jobs ?? []).length;
       return (
-        <WorkflowCard
-          widthText={'small'}
-          border={'visible'}
-          key={id}
-          isCheckboxVisible={true}
-          slotCheckbox={
-            <Checkbox
-              checked={checked}
-              onCheckedChange={() =>
-                handleClick(checked ? 'delete' : 'insert', id)
-              }
-            />
-          }
-          textWorkflowName={title}
-          textWorkflowTrigger={getTriggerOption(trigger, phase)}
-          textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
-          onClickDelete={{ style: { display: 'none' } }}
-          isEditButton={false}
-          onClickEdit={{
-            onClick: () => handleClick(checked ? 'delete' : 'insert', id),
-          }}
-        />
+        <>
+          <WorkflowCard
+            widthText={'small'}
+            border={'visible'}
+            key={id}
+            isCheckboxVisible={true}
+            slotCheckbox={
+              <Checkbox
+                checked={checked}
+                onCheckedChange={() =>
+                  handleClick(checked ? 'delete' : 'insert', id)
+                }
+              />
+            }
+            textWorkflowName={title}
+            textWorkflowTrigger={getTriggerOption(trigger, phase)}
+            textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
+            // onClickDelete={{ style: { display: 'none' } }}
+            isEditButton={false}
+            onClickEdit={() => handleClick(checked ? 'delete' : 'insert', id)}
+          />
+        </>
       );
     },
   );
@@ -258,15 +258,17 @@ const WorkflowBrowser = () => {
         </div>
         <ScrollArea className='h-[calc(100vh-300px)] mt-4'>
           {cards.length ? (
-            <div className="grid gap-4">
-              {cards}
-            </div>
+            <div className='grid gap-4'>{cards}</div>
           ) : (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <Briefcase className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No workflows</h3>
-                <p className="mt-1 text-sm text-gray-500">Get started by creating a new workflow.</p>
+            <div className='flex items-center justify-center h-full'>
+              <div className='text-center'>
+                <Briefcase className='mx-auto h-12 w-12 text-gray-400' />
+                <h3 className='mt-2 text-sm font-medium text-gray-900'>
+                  No workflows
+                </h3>
+                <p className='mt-1 text-sm text-gray-500'>
+                  Get started by creating a new workflow.
+                </p>
               </div>
             </div>
           )}

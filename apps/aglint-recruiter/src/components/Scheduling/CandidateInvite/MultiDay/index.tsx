@@ -1,16 +1,12 @@
 import { type SessionsCombType } from '@aglint/shared-types';
-import { ButtonSoft } from '@devlink/ButtonSoft';
-import { ButtonSolid } from '@devlink/ButtonSolid';
-import { ButtonSurface } from '@devlink/ButtonSurface';
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
 import { DcPopup } from '@devlink/DcPopup';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@devlink/SessionAndTime';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { Dialog, Stack, Typography } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
-import { Coffee, Plus } from 'lucide-react';
+import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -19,6 +15,7 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIButton } from '@/components/Common/UIButton';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
@@ -49,11 +46,9 @@ const MultiDayError = () => {
     toast.error('Something went wrong. Please try again.');
   }, []);
   return (
-    <ButtonSolid
-      size={2}
-      textButton='Try again'
-      onClickButton={{ onClick: () => refetch() }}
-    />
+    <UIButton variant='default' onClick={() => refetch()}>
+      Try again
+    </UIButton>
   );
 };
 
@@ -75,18 +70,15 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
     <>
       <ScheduleCards rounds={props.rounds} />
       <Stack direction={'row'} justifyContent={'center'}>
-        <ButtonSolid
-          isLeftIcon={false}
-          isRightIcon={false}
-          textButton='Proceed'
-          size={2}
-          onClickButton={{
-            onClick: () => {
-              setOpen(true);
-            },
+        <UIButton
+          variant='default'
+          onClick={() => {
+            setOpen(true);
           }}
-          isDisabled={!enabled}
-        />
+          disabled={!enabled}
+        >
+          Proceed
+        </UIButton>
       </Stack>
       <MultiDayConfirmation
         rounds={props.rounds}
@@ -161,19 +153,12 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
         onClickClosePopup={{ onClick: handleClose }}
         slotButtons={
           <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
+            <UIButton variant='secondary' onClick={() => handleClose()}>
+              Cancel
+            </UIButton>
+            <UIButton variant='default' onClick={() => handleSubmit()}>
+              Confirm
+            </UIButton>
           </>
         }
       />
@@ -259,23 +244,20 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         slotButton={
           enabled ? (
             isSelected ? (
-              <IconButtonSoft
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => setOpen(true),
-                }}
-                iconName='repeat'
-                highContrast={true}
+              <UIButton
+                variant='secondary'
+                onClick={() => setOpen(true)}
+                leftIcon={<Repeat />}
               />
             ) : (
-              <ButtonSurface
-                slotIcon={<Plus size={'sm'} />}
-                isLeftIcon={true}
-                isRightIcon={false}
-                size={1}
-                onClickButton={{ onClick: () => setOpen(true) }}
-                textButton='Select Option'
-              />
+              <UIButton
+                leftIcon={<Plus size={'sm'} />}
+                onClick={() => setOpen(true)}
+                variant='outline'
+                size='sm'
+              >
+                Select Option
+              </UIButton>
             )
           ) : (
             <></>
