@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
+import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { MoreMenu } from '@devlink3/MoreMenu';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Calendar, Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
@@ -331,17 +331,28 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                   )}
 
                   {currentTab === 'aglintaiinstruction' && (
-                    <AiBookingInstruction
-                      textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
-                      textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
-                      slotTextArea={
-                        <UITextArea
-                          value={value}
-                          rows={8}
-                          onChange={(e) => setValue(e.target.value)}
-                        />
-                      }
-                    />
+                    <div className='p-4'>
+                      <UITypography variant='h4' className='font-semibold mb-2'>
+                        How to Use
+                      </UITypography>
+                      <p className='text-sm text-gray-600 mb-4'>
+                        Use these instructions to balance interview load, ensure
+                        diverse evaluations, and avoid conflicts.
+                      </p>
+
+                      <UITypography variant='h4' className='font-semibold mb-2'>
+                        Example
+                      </UITypography>
+                      <p className='text-sm text-gray-600 mb-4'>
+                        Rotate interviewers to ensure diverse perspectives and
+                        assign technical interviews to senior team members.
+                      </p>
+                      <UITextArea
+                        value={value}
+                        rows={8}
+                        onChange={(e) => setValue(e.target.value)}
+                      />
+                    </div>
                   )}
                 </>
               }
