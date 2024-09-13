@@ -38,7 +38,7 @@ const EditMember = ({
   onClose,
 }: {
   open: boolean;
-  refetch: () => Promise<void>;
+  refetch: any;
   member: ApiResponseGetMember;
   memberList: { id: string; name: string }[];
   onClose: () => void;
