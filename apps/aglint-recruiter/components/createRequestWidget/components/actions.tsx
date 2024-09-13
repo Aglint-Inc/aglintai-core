@@ -71,8 +71,8 @@ const getKey = (key: Menus) => {
       return 'Request type';
     case 'jobs':
       return 'Job';
-    case 'candidates':
-      return 'Candidates';
+    case 'candidate':
+      return 'Candidate';
     case 'schedules':
       return 'Schedules';
     case 'assignees':

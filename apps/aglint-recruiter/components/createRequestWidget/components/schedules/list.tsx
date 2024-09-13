@@ -67,14 +67,16 @@ const Content = () => {
       <div className={`relative w-full h-[${rowVirtualizer.getTotalSize()}px]`}>
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const isLoaderRow = virtualRow.index > allRows.length - 1;
-          const candidate = allRows[virtualRow.index];
-          if (!candidate) return <></>;
-          const { id, name } = candidate;
+          const session = allRows[virtualRow.index];
+          if (!session) return <></>;
+          const { session_id, session_name } = session;
           return (
             <CommandItem
               key={virtualRow.index}
-              value={`${id} ${name}`}
-              onSelect={() => selectSchedule({ id, label: name })}
+              value={`${session_id} ${name}`}
+              onSelect={() =>
+                selectSchedule({ id: session_id, label: session_name })
+              }
               className={`absolute top-0 left-0 w-full h-[${virtualRow.size}px]`}
               style={{
                 transform: `translateY(${virtualRow.start}px)`,
@@ -89,7 +91,7 @@ const Content = () => {
               ) : (
                 <>
                   <User className='mr-2 h-4 w-4' />
-                  <span>{name}</span>
+                  <span>{session_name}</span>
                 </>
               )}
             </CommandItem>

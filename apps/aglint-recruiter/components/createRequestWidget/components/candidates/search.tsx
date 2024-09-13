@@ -7,7 +7,7 @@ import { Search as SearchIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 export const Search = () => {
-  const search = useCreateRequest((state) => state.payloads.candidates.search);
+  const search = useCreateRequest((state) => state.payloads.candidate.search);
   const { setCandidateSearch } = useCreateRequestActions();
   const [value, setValue] = useState(search);
   const initialRef = useRef(true);

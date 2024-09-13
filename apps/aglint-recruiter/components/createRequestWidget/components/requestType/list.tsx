@@ -31,7 +31,7 @@ const requestTypes: Options = [
   },
   {
     id: 'schedule_request',
-    label: 'Schedult request',
+    label: 'Schedule request',
   },
 ];
 

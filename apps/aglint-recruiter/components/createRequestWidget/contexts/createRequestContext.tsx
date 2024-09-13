@@ -7,7 +7,7 @@ import dayjs from '@/utils/dayjs';
 export type Menus =
   | 'requestType'
   | 'jobs'
-  | 'candidates'
+  | 'candidate'
   | 'schedules'
   | 'assignees'
   | 'final';
@@ -15,7 +15,7 @@ export type Menus =
 export const STEPS: Readonly<Menus[]> = Object.freeze([
   'requestType',
   'jobs',
-  'candidates',
+  'candidate',
   'schedules',
   'assignees',
   'final',
@@ -24,7 +24,7 @@ export const STEPS: Readonly<Menus[]> = Object.freeze([
 type Selections = {
   requestType: { id: DatabaseTable['request']['type']; label: string };
   jobs: { id: DatabaseTable['public_jobs']['id']; label: string };
-  candidates: { id: DatabaseTable['applications']['id']; label: string }[];
+  candidate: { id: DatabaseTable['applications']['id']; label: string };
   schedules: { id: DatabaseTable['interview_session']['id']; label: string }[];
   assignees: { id: DatabaseTable['recruiter_user']['user_id']; label: string };
 };
@@ -32,7 +32,7 @@ type Selections = {
 type Payloads = {
   requestType: { search: string };
   jobs: { cursor: number; search: string };
-  candidates: { cursor: number; search: string };
+  candidate: { cursor: number; search: string };
   schedules: { cursor: number; search: string };
   assignees: { cursor: number; search: string };
 };
@@ -72,11 +72,9 @@ type Actions = {
   setJobSearch: (_search: States['payloads']['jobs']['search']) => void;
   selectJob: (_jobs: States['selections']['jobs']) => void;
   setCandidateSearch: (
-    _search: States['payloads']['candidates']['search'],
+    _search: States['payloads']['candidate']['search'],
   ) => void;
-  selectCandidate: (
-    _candidates: States['selections']['candidates'][number],
-  ) => void;
+  selectCandidate: (_candidate: States['selections']['candidate']) => void;
   setScheduleSearch: (
     _search: States['payloads']['schedules']['search'],
   ) => void;
@@ -103,7 +101,7 @@ const initial = Object.freeze<States>({
   selections: {
     requestType: null,
     jobs: null,
-    candidates: [],
+    candidate: null,
     schedules: [],
     assignees: null,
   },
@@ -113,7 +111,7 @@ const initial = Object.freeze<States>({
       search: '',
       cursor: 0,
     },
-    candidates: {
+    candidate: {
       search: '',
       cursor: 0,
     },
@@ -193,22 +191,16 @@ const useCreateRequestContext = () => {
           set((state) => ({
             payloads: {
               ...state.payloads,
-              candidates: { ...state.payloads.candidates, search },
+              candidate: { ...state.payloads.candidate, search },
             },
           })),
         selectCandidate: (candidate) =>
           set((state) => {
-            if (
-              state.selections.candidates.find(({ id }) => id === candidate.id)
-            )
-              return state;
-            const newPayload = resetPayload('candidates', state);
+            const newPayload = resetPayload('candidate', state);
             return {
               ...newPayload,
-              selections: {
-                ...newPayload.selections,
-                candidates: [...state.selections.candidates, candidate],
-              },
+              selections: { ...newPayload.selections, candidate },
+              step: newPayload.step + 1,
             };
           }),
         setScheduleSearch: (search) =>
@@ -287,20 +279,20 @@ const resetPayload = (menu: PayloadMenus, state: States): Partial<States> => {
     response.selections.requestType = state.selections.requestType;
     response.step = STEPS.findIndex((step) => step === 'jobs');
   }
-  if (menu === 'candidates') {
+  if (menu === 'candidate') {
     response.payloads.requestType = state.payloads.requestType;
     response.selections.requestType = state.selections.requestType;
     response.payloads.jobs = state.payloads.jobs;
     response.selections.jobs = state.selections.jobs;
-    response.step = STEPS.findIndex((step) => step === 'candidates');
+    response.step = STEPS.findIndex((step) => step === 'candidate');
   }
   if (menu === 'schedules') {
     response.payloads.requestType = state.payloads.requestType;
     response.selections.requestType = state.selections.requestType;
     response.payloads.jobs = state.payloads.jobs;
     response.selections.jobs = state.selections.jobs;
-    response.payloads.candidates = state.payloads.candidates;
-    response.selections.candidates = state.selections.candidates;
+    response.payloads.candidate = state.payloads.candidate;
+    response.selections.candidate = state.selections.candidate;
     response.step = STEPS.findIndex((step) => step === 'schedules');
   }
   if (menu === 'assignees') {
@@ -308,8 +300,8 @@ const resetPayload = (menu: PayloadMenus, state: States): Partial<States> => {
     response.selections.requestType = state.selections.requestType;
     response.payloads.jobs = state.payloads.jobs;
     response.selections.jobs = state.selections.jobs;
-    response.payloads.candidates = state.payloads.candidates;
-    response.selections.candidates = state.selections.candidates;
+    response.payloads.candidate = state.payloads.candidate;
+    response.selections.candidate = state.selections.candidate;
     response.payloads.schedules = state.payloads.schedules;
     response.selections.schedules = state.selections.schedules;
     response.step = STEPS.findIndex((step) => step === 'assignees');
