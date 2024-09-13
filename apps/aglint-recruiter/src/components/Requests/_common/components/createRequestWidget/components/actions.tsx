@@ -63,7 +63,7 @@ const Submit = () => {
   const { mutate, isPending } = useCreateRequestMutation();
   return (
     <Button disabled={isPending} onClick={() => mutate()}>
-      Create Requesta
+      Create Request
     </Button>
   );
 };
