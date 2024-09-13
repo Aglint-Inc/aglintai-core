@@ -1,8 +1,4 @@
-import type {
-  DatabaseTable,
-  EmailTemplateAPi,
-  SupabaseType,
-} from '@aglint/shared-types';
+import type { DatabaseTable, EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { FetchUtilType } from '../../types/emailfetchUtil';
 

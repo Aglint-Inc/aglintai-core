@@ -1,8 +1,6 @@
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
-  SupabaseType,
-  TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';

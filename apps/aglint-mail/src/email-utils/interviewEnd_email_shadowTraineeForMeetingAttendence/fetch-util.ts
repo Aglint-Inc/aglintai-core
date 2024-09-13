@@ -1,4 +1,4 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { numberToOrdinal } from '../../utils/email/common/functions';
 import { FetchUtilType } from '../../types/emailfetchUtil';
