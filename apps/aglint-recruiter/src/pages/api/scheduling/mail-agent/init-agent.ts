@@ -6,16 +6,16 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import {
   type APISendgridPayload,
-  type EmailTemplateAPi,
+  type TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidV4 } from 'uuid';
 
 import { type InitAgentBodyParams } from '@/components/ScheduleAgent/types';
 import { EmailWebHook } from '@/services/EmailWebhook/EmailWebhook';
 import { getFullName } from '@/utils/jsonResume';
+import { mailSender } from '@/utils/mailSender';
 import { agent_activities } from '@/utils/scheduling_v2/agents_activity';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -43,22 +43,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       process.env.LOCAL_AGENT_EMAIL ?? comp_integration.schedule_agent_email;
     //FORMAT `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
     const message_id = EmailWebHook.getMessageId(thread_id, agent_email);
-    const mailPayload: EmailTemplateAPi<'agent_email_candidate'>['api_payload'] =
-      {
-        recruiter_user_id,
-        filter_id: filter_json_id,
-        mail_headers: {
-          'Message-ID': message_id,
-          'In-Reply-To': message_id,
-        },
-        agent_email,
-      };
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/agent_email_candidate`,
-      {
+    const mailPayload: TargetApiPayloadType<'agent_email_candidate'> = {
+      recruiter_user_id,
+      filter_id: filter_json_id,
+      mail_headers: {
+        'Message-ID': message_id,
+        'In-Reply-To': message_id,
+      },
+      agent_email,
+    };
+
+    const data = await mailSender({
+      target_api: 'agent_email_candidate',
+      payload: {
         ...mailPayload,
       },
-    );
+    });
     const email_details = data as APISendgridPayload;
     supabaseWrap(
       await supabaseAdmin.from('scheduling_agent_chat_history').insert({

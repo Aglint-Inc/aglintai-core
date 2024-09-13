@@ -1,4 +1,4 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 
 export type API_request_feedback = {
   request: requestFeedbackType;
@@ -14,6 +14,6 @@ export type API_request_feedback = {
 };
 
 type requestFeedbackType =
-  EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'] & {
+  TargetApiPayloadType<'interviewEnd_email_interviewerForFeedback'> & {
     tool: 'email' | 'slack';
   };
