@@ -7,7 +7,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { ButtonSoft } from '@devlink/ButtonSoft';
 import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { cn } from '@lib/utils';
 import { Stack, TextField } from '@mui/material';
@@ -168,19 +167,19 @@ function DialogSchedule() {
               color={'warning'}
               slotButtons={
                 <>
-                  <ButtonSoft
-                    size={1}
-                    textButton='View Request'
-                    onClickButton={{
-                      onClick: () => {
-                        router.push({
-                          query: { tab: 'requests' },
-                          pathname: `/jobs/${job_id}/application/${application_id}`,
-                        });
-                        onClose();
-                      },
+                  <UIButton
+                    variant='secondary'
+                    size='sm'
+                    onClick={() => {
+                      router.push({
+                        query: { tab: 'requests' },
+                        pathname: `/jobs/${job_id}/application/${application_id}`,
+                      });
+                      onClose();
                     }}
-                  />
+                  >
+                    View Request
+                  </UIButton>
                 </>
               }
               textTitle={`${sessionHasRequest
@@ -196,18 +195,17 @@ function DialogSchedule() {
               <>
                 {sessions.map((session) => {
                   return (
-                    <ButtonSoft
+                    <UIButton
                       key={session.interview_session.id}
-                      size={2}
-                      textButton={session.interview_session.name}
-                      color={'neutral'}
-                      isLeftIcon={true}
-                      slotIcon={
+                      variant='secondary'
+                      leftIcon={
                         <IconSessionType
                           type={session.interview_session.session_type}
                         />
                       }
-                    />
+                    >
+                      {session.interview_session.name}
+                    </UIButton>
                   );
                 })}
               </>

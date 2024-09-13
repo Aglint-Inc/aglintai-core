@@ -1,7 +1,10 @@
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
+
 import { MemberListCardOption } from '@devlink2/MemberListCardOption';
-import { Popover, Stack } from '@mui/material';
+import { Popover } from '@mui/material';
+import { EllipsisVertical } from 'lucide-react';
 import { useState } from 'react';
+
+import { UIButton } from '@/components/Common/UIButton';
 
 import { type useModuleRelations } from '../hooks';
 import {
@@ -33,14 +36,9 @@ const ThreeDot = ({
 
   return (
     <>
-      <Stack onClick={handleClick}>
-        <IconButtonGhost
-          iconName='more_vert'
-          size={2}
-          iconSize={6}
-          color={'neutral'}
-        />
-      </Stack>
+      <UIButton variant='ghost' size='sm' onClick={handleClick}>
+        <EllipsisVertical className='h-4 w-4' />
+      </UIButton>
 
       <Popover
         id={id}

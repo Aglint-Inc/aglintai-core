@@ -10,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
@@ -21,7 +20,16 @@ import {
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { CirclePause, Kanban, Plus, Trash2 } from 'lucide-react';
+import {
+  ChevronDown,
+  CirclePause,
+  Delete,
+  Kanban,
+  Pencil,
+  Plus,
+  Trash,
+  Trash2,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -406,20 +414,16 @@ const InterviewPlan = ({
           }
           slotRightIconButton={
             <Stack direction={'row'} gap={1}>
-              <IconButtonSoft
-                iconName='delete'
-                color={'error'}
-                onClickButton={{
-                  onClick: () => deletePlan({ id: plan_id }),
-                }}
-              />
-              <IconButtonSoft
-                iconName='keyboard_double_arrow_down'
-                color={'neutral'}
-                onClickButton={{
-                  onClick: handleExpandClick,
-                }}
-              />
+              <UIButton
+                variant='destructive'
+                onClick={() => deletePlan({ id: plan_id })}
+              >
+                <Trash className='h-4 w-4' />
+              </UIButton>
+
+              <UIButton variant='secondary' onClick={handleExpandClick}>
+                <ChevronDown className='h-4 w-4' />
+              </UIButton>
             </Stack>
           }
           slotInterviewPlanDetail={
@@ -729,30 +733,29 @@ const InterviewSession = ({
             slotButtons={
               manageJob && (
                 <>
-                  <IconButtonSoft
-                    iconName={'delete'}
-                    size={1}
-                    color={'error'}
-                    onClickButton={{
-                      onClick: () =>
-                        handleDeletionSelect({
-                          id: session.id,
-                          name: session.name,
-                          break: false,
-                        }),
-                    }}
+                  <UIButton
+                    size='sm'
+                    variant='destructive'
+                    onClick={() =>
+                      handleDeletionSelect({
+                        id: session.id,
+                        name: session.name,
+                        break: false,
+                      })
+                    }
+                    icon={<Trash2 />}
                   />
-                  <IconButtonSoft
-                    iconName={'edit'}
-                    size={1}
-                    color={'neutral'}
-                    onClickButton={{
-                      onClick: () =>
-                        handleEdit(
-                          sessionToEdit(session.session_type),
-                          session.id,
-                        ),
-                    }}
+
+                  <UIButton
+                    size='sm'
+                    variant='secondary'
+                    onClick={() =>
+                      handleEdit(
+                        sessionToEdit(session.session_type),
+                        session.id,
+                      )
+                    }
+                    icon={<Pencil />}
                   />
                 </>
               )
