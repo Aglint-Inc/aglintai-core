@@ -62,7 +62,7 @@ function CreateSchedulePopUp({
             schedule_end_date: selectedDateRange.end_date,
             note: null,
           },
-          applications: [selectedItems.applicant_name[0].id],
+          application: selectedItems.applicant_name[0].id,
           sessions: selectedItems.interview_name.map((ele) => ele.id),
         },
       });
@@ -88,7 +88,7 @@ function CreateSchedulePopUp({
             p={1}
           >
             <Stack>
-              <p className="text-sm text-muted-foreground">
+              <p className='text-sm text-muted-foreground'>
                 {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
               </p>
               <SelectScheduleDate
