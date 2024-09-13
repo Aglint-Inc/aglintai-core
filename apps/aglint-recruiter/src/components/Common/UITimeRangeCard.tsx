@@ -3,16 +3,18 @@ import { X } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-export function TimeRangeCard({
+export function UITimeRangeCard({
   isActive = false,
   textTime,
   isSemiActive = false,
   onClickTime,
+  ShowCloseIcon = true,
 }: {
   isActive?: boolean;
   textTime: string;
   isSemiActive?: boolean;
   onClickTime?: () => void;
+  ShowCloseIcon?: boolean;
 }) {
   return (
     <div className='relative'>
@@ -27,7 +29,7 @@ export function TimeRangeCard({
       >
         <span className='relative z-10'>{textTime}</span>
       </UIButton>
-      {isActive && (
+      {ShowCloseIcon && isActive && (
         <span
           onClick={onClickTime}
           className='absolute z-2 -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-white border border-neutral-300 rounded-full '

@@ -7,7 +7,7 @@ const CandidateInvitePage = () => {
     <>
       <CandidateInviteProvider>
         <Seo title={'Candidate Booking | Aglint AI'} />
-        <CandidateInviteNew />;
+        <CandidateInviteNew />
       </CandidateInviteProvider>
     </>
   );
