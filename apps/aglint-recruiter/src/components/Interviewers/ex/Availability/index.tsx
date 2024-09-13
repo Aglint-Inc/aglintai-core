@@ -16,7 +16,7 @@ import {
 
 import Loader from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
-import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/queries/hooks';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useJobs } from '@/jobs/hooks';
 import {
   type initUser,

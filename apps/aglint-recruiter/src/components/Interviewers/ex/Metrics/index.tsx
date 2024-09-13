@@ -9,7 +9,7 @@ import { useState } from 'react';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import UITypography from '@/components/Common/UITypography';
-import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/queries/hooks';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useAllDepartments } from '@/queries/departments';
 
 import { Filter } from '../components/Filter';

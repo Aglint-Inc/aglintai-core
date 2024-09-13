@@ -1,13 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from '../../trpc';
+import { createTRPCRouter, privateProcedure } from '../../trpc';
 
 const interviewerSchema = z.object({ recruiter_id: z.string().uuid() });
 const userSchema = z.object({ user_id: z.string().uuid() });
 
 export const interviewerRouter = createTRPCRouter({
-  get_all_interviewers: publicProcedure
+  get_all_interviewers: privateProcedure
     .input(interviewerSchema)
     .query(async ({ ctx, input }) => {
       const { recruiter_id } = input;
@@ -40,7 +40,7 @@ export const interviewerRouter = createTRPCRouter({
 
       return stuData;
     }),
-  get_user_details: publicProcedure
+  get_user_details: privateProcedure
     .input(userSchema)
     .query(async ({ ctx, input }) => {
       const { user_id } = input;
