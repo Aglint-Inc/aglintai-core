@@ -41,63 +41,72 @@ type Interviewer = Awaited<ReturnType<typeof useInterviewer>>['data'];
 
 export const Top = ({ interviewer, isTopBarVisible }) => {
   return (
-    <div
-      className={`sticky top-0 z-10 bg-white shadow transition-all duration-300 ${isTopBarVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-    >
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-4'>
-            <Avatar className='h-10 w-10'>
-              <AvatarImage src={interviewer.avatar} alt={interviewer.name} />
-              <AvatarFallback>
-                {interviewer.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')}
-              </AvatarFallback>
-            </Avatar>
+    <>
+      {interviewer ? (
+        <div
+          className={`sticky top-0 z-10 bg-white shadow transition-all duration-300 ${isTopBarVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center space-x-4'>
+                <Avatar className='h-10 w-10'>
+                  <AvatarImage
+                    src={interviewer?.avatar}
+                    alt={interviewer?.name}
+                  />
+                  <AvatarFallback>
+                    {interviewer?.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
+                  </AvatarFallback>
+                </Avatar>
 
-            <div>
-              <h1 className='text-xl font-bold text-gray-900'>
-                {interviewer.name}
-              </h1>
-              <p className='text-sm text-gray-600'>
-                {interviewer.role} {interviewer.department}
-              </p>
-            </div>
-          </div>
+                <div>
+                  <h1 className='text-xl font-bold text-gray-900'>
+                    {interviewer?.name}
+                  </h1>
+                  <p className='text-sm text-gray-600'>
+                    {interviewer?.role} {interviewer?.department}
+                  </p>
+                </div>
+              </div>
 
-          <div className='flex items-center space-x-4'>
-            <div className='flex items-center space-x-2'>
-              <Badge
-              //   variant={
-              //     interviewer.calendarConnected ? 'success' : 'secondary'
-              //   }
-              >
-                {interviewer.calendarConnected ? (
-                  <CheckCircle className='h-4 w-4 mr-1' />
-                ) : (
-                  <AlertCircle className='h-4 w-4 mr-1' />
-                )}
-                Calendar
-              </Badge>
-              <Badge
-              //   variant={interviewer.gmailConnected ? 'success' : 'secondary'}
-              >
-                {interviewer.gmailConnected ? (
-                  <CheckCircle className='h-4 w-4 mr-1' />
-                ) : (
-                  <AlertCircle className='h-4 w-4 mr-1' />
-                )}
-                Gmail
-              </Badge>
+              <div className='flex items-center space-x-4'>
+                <div className='flex items-center space-x-2'>
+                  <Badge
+                  //   variant={
+                  //     interviewer.calendarConnected ? 'success' : 'secondary'
+                  //   }
+                  >
+                    {interviewer.calendarConnected ? (
+                      <CheckCircle className='h-4 w-4 mr-1' />
+                    ) : (
+                      <AlertCircle className='h-4 w-4 mr-1' />
+                    )}
+                    Calendar
+                  </Badge>
+                  <Badge
+                  //   variant={interviewer.gmailConnected ? 'success' : 'secondary'}
+                  >
+                    {interviewer.gmailConnected ? (
+                      <CheckCircle className='h-4 w-4 mr-1' />
+                    ) : (
+                      <AlertCircle className='h-4 w-4 mr-1' />
+                    )}
+                    Gmail
+                  </Badge>
+                </div>
+                <Button variant='outline'>Edit Profile</Button>
+                <Button>Schedule Interview</Button>
+              </div>
             </div>
-            <Button variant='outline'>Edit Profile</Button>
-            <Button>Schedule Interview</Button>
           </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
