@@ -5333,14 +5333,6 @@ export type Database = {
         }
         Returns: string
       }
-      create_session_requests: {
-        Args: {
-          applications?: string[]
-          sessions?: string[]
-          request?: Json
-        }
-        Returns: undefined
-      }
       createrecuriterrelation: {
         Args: {
           in_user_id: string
