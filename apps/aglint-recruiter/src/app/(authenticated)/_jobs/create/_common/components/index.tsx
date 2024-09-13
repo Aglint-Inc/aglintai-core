@@ -1,8 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { CreateJobLoader } from '@devlink3/CreateJobLoader';
-import { EditJobTopbarLeft } from '@devlink3/EditJobTopbarLeft';
-import { JobDetailBlock } from '@devlink3/JobDetailBlock';
-import { Dialog, Stack } from '@mui/material';
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent } from '@components/ui/dialog';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import {
   type Dispatch,
@@ -11,9 +10,6 @@ import {
   useState,
 } from 'react';
 
-import Loader from '@/components/Common/Loader';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import { WarningSvg } from '@/components/Common/warningSvg';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
@@ -26,25 +22,15 @@ const JobCreateComponent = () => {
   const { status } = useCompanyMembers();
   if (status === 'error')
     return (
-      <Stack
-        width={'100%'}
-        height={'100%'}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
-        <Stack>Error</Stack>
-      </Stack>
+      <div className='w-full h-full flex items-center justify-center'>
+        <div>Error</div>
+      </div>
     );
   if (status === 'pending')
     return (
-      <Stack
-        width={'100%'}
-        height={'100%'}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
-        <Loader />
-      </Stack>
+      <div className='w-full h-full flex items-center justify-center'>
+        <Loader2 className='animate-spin' />
+      </div>
     );
   return <JobCreate />;
 };
@@ -122,15 +108,17 @@ const JobCreate = () => {
       },
     },
   });
+
   return (
-    <>
-      <UIPageLayout
-        isBackButton
-        onClickBack={{ onClick: () => push(ROUTES['/jobs']()) }}
-        slotTopbarLeft={<EditJobTopbarLeft textName={'Create Job'} />}
-        slotBody={<JobCreateForm fields={fields} setFields={setFields} />}
-      />
-    </>
+    <div className='p-4'>
+      <div className='flex items-center mb-4'>
+        <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
+          Back
+        </Button>
+        <h1 className='ml-4 text-2xl font-bold'>Create Job</h1>
+      </div>
+      <JobCreateForm fields={fields} setFields={setFields} />
+    </div>
   );
 };
 
@@ -210,7 +198,7 @@ const JobCreateForm = ({
 
   const handleCancel = useCallback(() => {
     push(ROUTES['/jobs']());
-  }, []);
+  }, [push]);
 
   return (
     <>
@@ -220,8 +208,13 @@ const JobCreateForm = ({
         handleCreate={handleCreate}
         handleCancel={handleCancel}
       />
-      <Dialog open={modal}>
-        <CreateJobLoader slotLottie={<Loader />} />
+      <Dialog open={modal} onOpenChange={setModal}>
+        <DialogContent>
+          <div className='flex items-center justify-center'>
+            <Loader2 className='animate-spin' />
+            <span className='ml-2'>Creating job...</span>
+          </div>
+        </DialogContent>
       </Dialog>
     </>
   );
@@ -247,55 +240,51 @@ const JobForms = ({
   } = useJobForms(fields, handleChange);
 
   const forms = (
-    <>
+    <div className='space-y-4'>
       {job_title}
       {job_type}
       {workplace_type}
       {department_id}
       {location_id}
-    </>
+    </div>
   );
 
   const roleForms = (
-    <>
+    <div className='space-y-4'>
       {hiring_manager}
       {recruiter}
       {recruiting_coordinator}
       {sourcer}
-    </>
+    </div>
   );
 
   return (
-    <JobDetailBlock
-      isJobDetailVisible={true}
-      slotJobForm={forms}
-      isHiringTeamVisible={true}
-      slotHiringTeamForm={roleForms}
-      slotRichtext={description}
-      textDescription={'Enter the basic job details below.'}
-      isCreate={true}
-      onClickCreate={{ onClick: () => handleCreate() }}
-      styleBorder={{
-        style: {
-          borderColor: fields.description.error.value
-            ? 'var(--error-9)'
-            : 'var(--neutral-a6)',
-        },
-      }}
-      slotRichtextWarning={
-        fields.description.error.value && (
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            color={'var(--error-11)'}
-          >
-            <WarningSvg />
-            {fields.description.error.helper}
-          </Stack>
-        )
-      }
-      onClickCancel={{ onClick: () => handleCancel() }}
-    />
+    <div className='space-y-6'>
+      <div className='p-4 border rounded-md'>
+        <h2 className='text-lg font-semibold mb-4'>Job Details</h2>
+        {forms}
+      </div>
+      <div className='p-4 border rounded-md'>
+        <h2 className='text-lg font-semibold mb-4'>Hiring Team</h2>
+        {roleForms}
+      </div>
+      <div className='p-4 border rounded-md'>
+        <h2 className='text-lg font-semibold mb-4'>Job Description</h2>
+        {description}
+        {fields.description.error.value && (
+          <div className='flex items-center text-red-500 mt-2'>
+            <AlertTriangle className='mr-2' />
+            <span>{fields.description.error.helper}</span>
+          </div>
+        )}
+      </div>
+      <div className='flex justify-end space-x-4'>
+        <Button variant='outline' onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button onClick={handleCreate}>Create Job</Button>
+      </div>
+    </div>
   );
 };
 

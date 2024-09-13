@@ -1,17 +1,27 @@
 import { useToast } from '@components/hooks/use-toast';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { ModuleMembers } from '@devlink2/ModuleMembers';
-import { MoreMenu } from '@devlink3/MoreMenu';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Calendar, Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
+import {
+  Calendar,
+  Edit,
+  EllipsisVertical,
+  Loader2,
+  MoreHorizontal,
+  Plus,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -27,6 +37,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
+import { ModuleMembers } from '../../_common/ModuleMembers';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsArchiveDialogOpen,
@@ -370,45 +381,62 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
           />
         </PopoverTrigger>
         <PopoverContent className='w-56 p-0'>
-          <MoreMenu
-            isArchiveVisible={!editModule?.is_archived}
-            isUnarchiveVisible={editModule?.is_archived}
-            onClickDelete={{
-              onClick: () => {
-                setIsDeleteModuleDialogOpen(true);
-                handleClose();
-              },
-            }}
-            onClickArchive={{
-              onClick: () => {
-                setIsArchiveDialogOpen(true);
-                handleClose();
-              },
-            }}
-            onClickUnarchive={{
-              onClick: async () => {
-                const isUnArchived = await unArchiveModuleById(editModule.id);
-                if (isUnArchived) {
-                  const updatedEditModule = {
-                    ...editModule,
-                    is_archived: false,
-                  } as ModuleType;
-                  queryClient.setQueryData<ModuleType>(
-                    QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-                      moduleId: editModule.id,
-                    }),
-                    {
-                      ...updatedEditModule,
-                    },
-                  );
-                  toast({
-                    title: 'Interview type unarchived successfully.',
-                  });
-                }
-                handleClose();
-              },
-            }}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <UIButton variant='ghost' size='sm'>
+                <MoreHorizontal className='h-4 w-4' />
+              </UIButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {!editModule?.is_archived && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    setIsArchiveDialogOpen(true);
+                    handleClose();
+                  }}
+                >
+                  Archive
+                </DropdownMenuItem>
+              )}
+              {editModule?.is_archived && (
+                <DropdownMenuItem
+                  onClick={async () => {
+                    const isUnArchived = await unArchiveModuleById(
+                      editModule.id,
+                    );
+                    if (isUnArchived) {
+                      const updatedEditModule = {
+                        ...editModule,
+                        is_archived: false,
+                      } as ModuleType;
+                      queryClient.setQueryData<ModuleType>(
+                        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                          moduleId: editModule.id,
+                        }),
+                        {
+                          ...updatedEditModule,
+                        },
+                      );
+                      toast({
+                        title: 'Interview type unarchived successfully.',
+                      });
+                    }
+                    handleClose();
+                  }}
+                >
+                  Unarchive
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem
+                onClick={() => {
+                  setIsDeleteModuleDialogOpen(true);
+                  handleClose();
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </PopoverContent>
       </Popover>
     </>
@@ -488,10 +516,13 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
           ))
         ) : (
           <>
-            <GlobalEmpty
-              text={'No jobs connected'}
-              iconSlot={<Calendar className='h-6 w-6 text-gray-500' />}
-            />
+            <div className='flex flex-col items-center justify-center p-4 text-center'>
+              <Calendar className='h-12 w-12 text-gray-400 mb-2' />
+              <p className='text-sm text-gray-500'>No jobs connected</p>
+              <p className='text-xs text-gray-400 mt-1'>
+                Connect jobs to see them listed here
+              </p>
+            </div>
           </>
         )}
       </div>

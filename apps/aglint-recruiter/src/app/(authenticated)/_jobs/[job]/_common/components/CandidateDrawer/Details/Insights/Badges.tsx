@@ -1,21 +1,25 @@
 /* eslint-disable security/detect-object-injection */
+import { Badge } from '@components/ui/badge';
 import { Skeleton } from '@components/ui/skeleton';
-import { Badge as BadgeDev } from '@devlink/Badge';
-import { Stack } from '@mui/material';
-import Image from 'next/image';
+import {
+  Anchor,
+  Award,
+  BookOpen,
+  Briefcase,
+  TrendingUp,
+  Zap,
+} from 'lucide-react';
 import { type ReactNode } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { BADGE_CONSTANTS } from '@/queries/job-applications';
 
-import { Loader } from '../../Common/Loader';
-
 export const Badges = () => {
   return (
-    <Stack style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+    <div className='flex flex-row gap-2'>
       <Content />
-    </Stack>
+    </div>
   );
 };
 
@@ -25,11 +29,11 @@ const Content = () => {
   } = useApplication();
   if (status === 'pending')
     return (
-      <Loader count={10}>
-        <Stack style={{ position: 'relative', width: '70px', height: '20px' }}>
-          <Skeleton className='h-10 w-full' />
-        </Stack>
-      </Loader>
+      <div className='flex gap-2'>
+        {[...Array(10)].map((_, index) => (
+          <Skeleton key={index} className='h-5 w-16' />
+        ))}
+      </div>
     );
   return Object.entries(data?.badges ?? {}).reduce((acc, [key, value]) => {
     if (value > BADGE_CONSTANTS[key]) acc.push(BADGE_ICONS[key]);
@@ -37,99 +41,39 @@ const Content = () => {
   }, [] as ReactNode[]);
 };
 
+const BadgeDev = ({ icon, text }: { icon: ReactNode; text: string }) => (
+  <Badge variant='secondary' className='flex items-center gap-1'>
+    {icon}
+    <span className='text-xs'>{text}</span>
+  </Badge>
+);
+
 const Leader = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image src={'/images/badges/leader.svg'} width={16} height={16} alt='' />
-    }
-    text={'Leader'}
-  />
+  <BadgeDev icon={<Award className='h-4 w-4' />} text='Leader' />
 );
 
 const Ambitious = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image
-        src={'/images/badges/ambitious.svg'}
-        width={16}
-        height={16}
-        alt=''
-      />
-    }
-    text={'Ambitious'}
-  />
+  <BadgeDev icon={<TrendingUp className='h-4 w-4' />} text='Ambitious' />
 );
 
 const Reliable = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image
-        src={'/images/badges/ambitious.svg'}
-        width={16}
-        height={16}
-        alt=''
-      />
-    }
-    text={'Ambitious'}
-  />
+  <BadgeDev icon={<Anchor className='h-4 w-4' />} text='Reliable' />
 );
 
 const JobHopper = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image
-        src={'/images/badges/jobhopper.svg'}
-        width={16}
-        height={16}
-        alt=''
-      />
-    }
-    text={'Job Hopper'}
-  />
+  <BadgeDev icon={<Briefcase className='h-4 w-4' />} text='Job Hopper' />
 );
 
 const Skilled = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image src={'/images/badges/skilled.svg'} width={16} height={16} alt='' />
-    }
-    text={'Skilled'}
-  />
+  <BadgeDev icon={<Zap className='h-4 w-4' />} text='Skilled' />
 );
 
 const Experienced = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image
-        src={'/images/badges/experienced.svg'}
-        width={16}
-        height={16}
-        alt=''
-      />
-    }
-    text={'Experienced'}
-  />
+  <BadgeDev icon={<Briefcase className='h-4 w-4' />} text='Experienced' />
 );
 
-const Knowledgable = () => (
-  <BadgeDev
-    isIcon={true}
-    slotIcon={
-      <Image
-        src={'/images/badges/knowledgable.svg'}
-        width={16}
-        height={16}
-        alt=''
-      />
-    }
-    text={'Knowledgable'}
-  />
+const Knowledgeable = () => (
+  <BadgeDev icon={<BookOpen className='h-4 w-4' />} text='Knowledgeable' />
 );
 
 export const BADGE_ICONS: {
@@ -141,6 +85,6 @@ export const BADGE_ICONS: {
   leadership: <Leader />,
   jobHopping: <JobHopper />,
   positions: <Experienced />,
-  schools: <Knowledgable />,
+  schools: <Knowledgeable />,
   skills: <Skilled />,
 };

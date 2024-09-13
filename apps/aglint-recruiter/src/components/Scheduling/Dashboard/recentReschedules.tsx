@@ -59,9 +59,7 @@ const List = memo(({ data }: Props) => {
       {(data ?? []).map(({ id, name, note, profile_image }) => (
         <RecentDeclineList
           key={id}
-          slotImage={
-            <Avatar src={profile_image} alt={name} variant='rounded-medium' />
-          }
+          slotImage={<Avatar src={profile_image} alt={name} />}
           textDesc={note?.trim() || '--'}
           textName={capitalizeAll(name)}
           textTime={''}

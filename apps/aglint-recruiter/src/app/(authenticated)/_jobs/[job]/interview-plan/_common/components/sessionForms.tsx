@@ -1,10 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { Stack, Typography } from '@mui/material';
+import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, {
   type ChangeEventHandler,
@@ -486,30 +487,27 @@ const Interview = ({
         slotInterviewersDropdown={
           <Stack gap={1}>
             {(currentQualifiedModuleMembers ?? []).length === 0 && (
-              <GlobalBannerShort
-                iconName={'warning'}
-                textTitle={'Interview type has no interviewers'}
-                textDescription={
-                  'Please add members to the selected interview type'
-                }
-                color={'error'}
-                slotButtons={
-                  <UIButton
-                    variant='destructive'
-                    size={'sm'}
-                    onClick={() =>
-                      interview_module?.value?.id &&
-                      push(
-                        ROUTES['/scheduling/interview-types/[type_id]']({
-                          type_id: interview_module.value.id,
-                        }),
-                      )
-                    }
-                  >
-                    Go to interview type
-                  </UIButton>
-                }
-              />
+              <Alert variant='error'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>Interview type has no interviewers</AlertTitle>
+                <AlertDescription>
+                  Please add members to the selected interview type
+                </AlertDescription>
+                <UIButton
+                  variant='destructive'
+                  size={'sm'}
+                  onClick={() =>
+                    interview_module?.value?.id &&
+                    push(
+                      ROUTES['/scheduling/interview-types/[type_id]']({
+                        type_id: interview_module.value.id,
+                      }),
+                    )
+                  }
+                >
+                  Go to interview type
+                </UIButton>
+              </Alert>
             )}
             <InterviewersField
               value={interviewers.value}

@@ -342,11 +342,7 @@ const Member = ({
           onClickRemove={null}
           textMemberName={name}
           slotMemberAvatar={
-            <MuiAvatar
-              src={member.profile_image}
-              level={name}
-              variant='rounded-small'
-            />
+            <MuiAvatar src={member.profile_image} level={name} />
           }
         />
       }

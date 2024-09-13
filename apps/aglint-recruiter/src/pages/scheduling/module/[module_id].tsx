@@ -225,7 +225,6 @@ const TrainingDetails = ({
               progressUser.user.first_name,
               progressUser.user.last_name,
             )}
-            variant='rounded-small'
           />
         )
       }
@@ -481,7 +480,6 @@ function SlotQualifiedMembers({
                 <MuiAvatar
                   src={member.profile_image}
                   level={getFullName(member.first_name, member.last_name) || ''}
-                  variant='rounded-medium'
                 />
               }
               textName={getFullName(member.first_name, member.last_name) || ''}

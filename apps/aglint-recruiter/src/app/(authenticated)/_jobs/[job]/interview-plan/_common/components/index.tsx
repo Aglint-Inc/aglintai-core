@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,7 +11,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { AvatarWithName } from '@devlink3/AvatarWithName';
 import {
   Collapse,
   MenuItem,
@@ -22,8 +22,8 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
-  CirclePause,
   Kanban,
+  PauseCircle,
   Pencil,
   Plus,
   Trash,
@@ -36,7 +36,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
@@ -828,21 +827,21 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'} gap={3} mb={1}>
-      <AvatarWithName
-        textName={name}
-        textRole={member.position}
-        isRoleVisible={!!member?.position}
-        slotAvatar={
-          <MuiAvatar
-            src={member.profile_image}
-            level={name}
-            variant='rounded-small'
-          />
-        }
-      />
-      {member.paused && <CirclePause size={16} />}
-    </Stack>
+    <div className='flex flex-row gap-3 mb-1'>
+      <div className='flex items-center space-x-3'>
+        <Avatar className='h-8 w-8 rounded-sm'>
+          <AvatarImage src={member.profile_image} alt={name} />
+          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className='text-sm font-medium leading-none'>{name}</p>
+          {member.position && (
+            <p className='text-sm text-muted-foreground'>{member.position}</p>
+          )}
+        </div>
+      </div>
+      {member.paused && <PauseCircle className='h-4 w-4' />}
+    </div>
   );
 };
 

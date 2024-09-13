@@ -95,7 +95,6 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
                 <MuiAvatar
                   src={member.profile_image}
                   level={getFullName(member.first_name, member.last_name) || ''}
-                  variant='rounded-medium'
                 />
               }
               textName={getFullName(member.first_name, member.last_name) || ''}

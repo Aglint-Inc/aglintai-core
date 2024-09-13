@@ -80,7 +80,6 @@ function MembersAutoComplete({
                 <MuiAvatar
                   src={user.profile_image}
                   level={getFullName(user?.first_name, user?.last_name)}
-                  variant='rounded'
                   height='20px'
                   width='20px'
                   fontSize='12px'
@@ -143,7 +142,6 @@ function MembersAutoComplete({
                   <MuiAvatar
                     src={option.profile_image}
                     level={getFullName(option.first_name, option.last_name)}
-                    variant='circular'
                     height='24px'
                     width='24px'
                     fontSize='12px'

@@ -7,16 +7,24 @@ import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import { InviteTeamCard } from '@devlink/InviteTeamCard';
-import { TeamInvite } from '@devlink/TeamInvite';
-import { TeamPendingInvites } from '@devlink/TeamPendingInvites';
-import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import { Input } from '@components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@components/ui/sheet';
 import { Loader2 } from 'lucide-react';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
-import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllMembers } from '@/queries/members';
@@ -46,6 +54,7 @@ const AddMember = ({
     role_id: string;
   };
 }) => {
+  const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
   const { data: locations } = useAllOfficeLocations();
   const { data: departments } = useAllDepartments();
@@ -76,8 +85,6 @@ const AddMember = ({
     manager_id: null,
   });
 
-  const [inviteData, setInviteData] = useState<Omit<typeof form, 'role'>[]>([]);
-
   const [formError, setFormError] = useState<{
     first_name: boolean;
     email: boolean;
@@ -102,9 +109,8 @@ const AddMember = ({
 
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState<string>(null);
-  const [isInviteCardVisible, setInviteCardVisible] = useState(false);
   const { data: roleOptions } = useRolesOptions();
-  const { toast } = useToast();
+
   const checkValidation = () => {
     let flag = false;
     let temp = { ...formError };
@@ -167,6 +173,7 @@ const AddMember = ({
     }
     return true;
   };
+
   const inviteUser = async () => {
     try {
       const resData = await inviteUserApi(
@@ -189,22 +196,6 @@ const AddMember = ({
       const { created } = resData;
       if (created) {
         refetchMembers();
-        setInviteData((prev) => [
-          ...prev,
-          {
-            first_name: form.first_name,
-            last_name: form.last_name,
-            email: form.email,
-            linked_in: form.linked_in,
-            department_id: form.department_id,
-            location_id: form.location_id,
-            position: form.position,
-            role_id: form.role_id,
-            manager_id: form.manager_id,
-            employment: form.employment,
-          },
-        ]);
-        setInviteCardVisible(true);
         toast({
           variant: 'default',
           title: 'Invite sent successfully.',
@@ -234,10 +225,7 @@ const AddMember = ({
       setIsDisable(false);
     }
   };
-  const memberListObj = memberList.reduce((acc, curr) => {
-    acc[curr.id] = curr.name;
-    return acc;
-  }, {});
+
   const isSubmittable = !(
     form.first_name &&
     form.email &&
@@ -249,446 +237,265 @@ const AddMember = ({
   );
 
   return (
-    <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '600px', height: '100%' }}>
-        {menu === 'addMember' ? (
-          <>
-            <TeamInvite
-              isFixedButtonVisible
-              slotPrimaryButton={
-                <Button
-                  variant='default'
-                  size='lg'
-                  disabled={!inviteData?.length}
-                  onClick={() => {
-                    onClose();
-                    setInviteData([]);
-                    setForm({
-                      ...form,
-                      first_name: null,
-                      last_name: null,
-                      email: null,
-                      department_id: null,
-                      position: null,
-                    });
-                  }}
-                >
-                  Done
-                </Button>
-              }
-              textTitle={'Add Member'}
-              isInviteSentVisible={false}
-              isInviteTeamCardVisible={isInviteCardVisible}
-              slotInviteTeamCard={inviteData.map((data) => {
-                return (
-                  <>
-                    <InviteTeamCard
-                      textEmail={data.email}
-                      textName={data.first_name + ' ' + data.last_name}
-                      slotAvatar={
-                        <MuiAvatar
-                          // src={data.}
-                          level={getFullName(data.first_name, data.last_name)}
-                          variant='rounded-medium'
-                        />
-                      }
-                    />
-                  </>
-                );
-              })}
-              slotForm={
-                <Stack spacing={2} component={'form'} autoComplete='on'>
-                  <Stack direction={'row'} gap={2} width={'100%'}>
-                    <UITextField
-                      value={form.first_name ? form.first_name : ''}
-                      name='first_name'
-                      placeholder='First Name'
-                      label='First Name'
-                      required
-                      error={formError.first_name}
-                      helperText={
-                        formError.first_name ? 'First name must required' : ''
-                      }
-                      onFocus={() => {
-                        setFormError({ ...formError, first_name: false });
-                      }}
-                      onChange={(e) => {
-                        setForm({ ...form, first_name: e.target.value });
-                      }}
-                    />
-                    <UITextField
-                      value={form.last_name ? form.last_name : ''}
-                      name='last_name'
-                      placeholder='Last Name'
-                      label='Last Name'
-                      onChange={(e) => {
-                        setForm({ ...form, last_name: e.target.value });
-                      }}
-                    />
-                  </Stack>
-
-                  <UITextField
-                    value={form.email ? form.email : ''}
-                    name='email'
-                    placeholder='Email'
-                    label='Email'
-                    required
-                    error={formError.email}
-                    helperText={
-                      formError.email ? 'Please enter valid email' : ''
+    <Sheet open={open} onOpenChange={onClose}>
+      <SheetContent side='right' className='w-[600px] sm:w-[540px]'>
+        <SheetHeader>
+          <SheetTitle>
+            {menu === 'addMember' ? 'Add Member' : 'Pending Invites'}
+          </SheetTitle>
+        </SheetHeader>
+        <div className='mt-4 space-y-4'>
+          {menu === 'addMember' ? (
+            <>
+              <form className='space-y-4'>
+                <div className='grid grid-cols-2 gap-4'>
+                  <Input
+                    value={form.first_name || ''}
+                    name='first_name'
+                    placeholder='First Name'
+                    onChange={(e) =>
+                      setForm({ ...form, first_name: e.target.value })
                     }
-                    onFocus={() => {
-                      setFormError({ ...formError, email: false });
-                    }}
-                    onChange={(e) => {
-                      setForm({ ...form, email: e.target.value.trim() });
-                    }}
+                    className={formError.first_name ? 'border-red-500' : ''}
                   />
-                  <UITextField
-                    value={form.linked_in ? form.linked_in : ''}
-                    name='LinkedIn'
-                    placeholder='Enter linkedin URL'
-                    label='LinkedIn'
-                    error={formError.linked_in}
-                    onFocus={() => {
-                      setFormError({ ...formError, linked_in: false });
-                    }}
-                    onChange={(e) => {
-                      setForm({ ...form, linked_in: e.target.value.trim() });
-                    }}
+                  <Input
+                    value={form.last_name || ''}
+                    name='last_name'
+                    placeholder='Last Name'
+                    onChange={(e) =>
+                      setForm({ ...form, last_name: e.target.value })
+                    }
                   />
-                  <Stack direction={'row'} gap={2}>
-                    <UITextField
-                      fullWidth
-                      value={form.position ? form.position : ''}
-                      name='title'
-                      placeholder='Enter title'
-                      label='Title'
-                      required
-                      error={formError.position}
-                      helperText={
-                        formError.position ? 'Title must required' : ''
-                      }
-                      onFocus={() => {
-                        setFormError({ ...formError, position: false });
-                      }}
-                      onChange={(e) => {
-                        setForm({ ...form, position: e.target.value });
-                      }}
-                    />
-                    <Autocomplete
-                      // style={{ marginTop: '20px' }}
-                      fullWidth
-                      value={form.employment || ''}
-                      onChange={(_, newValue: employmentTypeEnum | null) => {
-                        setForm({
-                          ...form,
-                          employment: newValue,
-                        });
-                      }}
-                      options={
-                        [
-                          'contractor',
-                          'fulltime',
-                          'parttime',
-                        ] as employmentTypeEnum[]
-                      }
-                      getOptionLabel={(option) => capitalizeFirstLetter(option)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          error={formError.employment}
-                          onFocus={() => {
-                            setFormError({
-                              ...formError,
-                              employment: false,
-                            });
-                          }}
-                          required
-                          name='Employment'
-                          placeholder='Select Employment Type'
-                          label='Employment'
-                        />
-                      )}
-                    />
-                  </Stack>
-
-                  <Stack direction={'row'} gap={2}>
-                    <Autocomplete
-                      fullWidth
-                      value={
-                        locations.find((loc) => form.location_id === loc.id) ||
-                        null
-                      }
-                      onChange={(_event, newValue) => {
-                        setForm({
-                          ...form,
-                          location_id: newValue.id,
-                        });
-                      }}
-                      getOptionLabel={(item) =>
-                        capitalizeFirstLetter(
-                          `${item.city}, ${item.region}, ${item.country}`,
-                        )
-                      }
-                      options={locations}
-                      renderOption={(props, item) => (
-                        <li {...props}>
-                          {capitalizeFirstLetter(
-                            `${item.city}, ${item.region}, ${item.country}`,
-                          )}
-                        </li>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          error={formError.location}
-                          required
-                          onFocus={() => {
-                            setFormError({
-                              ...formError,
-                              location: false,
-                            });
-                          }}
-                          name='Location'
-                          placeholder='Choose Location'
-                          label='Location'
-                        />
-                      )}
-                    />
-                    <Autocomplete
-                      fullWidth
-                      value={
-                        departments.find(
-                          (dep) => form.department_id === dep.id,
-                        ) || null
-                      }
-                      onChange={(_event: any, newValue) => {
-                        setForm({
-                          ...form,
-                          department_id: newValue.id,
-                        });
-                      }}
-                      getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
-                      options={departments}
-                      renderOption={(props, op) => (
-                        <li {...props}>{capitalizeFirstLetter(op.name)}</li>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          error={formError.department}
-                          onFocus={() => {
-                            setFormError({ ...formError, department: false });
-                          }}
-                          name='Department'
-                          placeholder='Select Department'
-                          label='Department'
-                          required
-                          helperText={
-                            formError.department
-                              ? 'Department is must required'
-                              : ''
-                          }
-                        />
-                      )}
-                    />
-                  </Stack>
-
-                  <Stack direction={'row'} gap={2}>
-                    <Stack width={'100%'} maxWidth={'276px'}>
-                      <Autocomplete
-                        fullWidth
-                        value={{ name: form.role, id: form.role_id }}
-                        getOptionLabel={(option) =>
-                          capitalizeFirstLetter(option.name)
-                        }
-                        onChange={(_event: any, newValue) => {
-                          setForm({
-                            ...form,
-                            role: newValue && newValue.name,
-                            role_id: newValue && newValue.id,
-                          });
-                        }}
-                        id='controllable-states-demo'
-                        options={roleOptions}
-                        renderOption={(props, op) => (
-                          <li {...props}>{capitalizeFirstLetter(op.name)}</li>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            name='Role'
-                            placeholder='Choose Role'
-                            label='Role'
-                            required
-                            error={formError.role}
-                            helperText={
-                              formError.role ? 'Role must required' : ''
-                            }
-                            onFocus={() => {
-                              setFormError({ ...formError, role: false });
-                            }}
-                          />
-                        )}
-                      />
-                    </Stack>
-
-                    {form.role != 'admin' && (
-                      <Autocomplete
-                        fullWidth
-                        value={form.manager_id}
-                        onChange={(_event: any, newValue: string | null) => {
-                          setForm({
-                            ...form,
-                            manager_id: newValue,
-                          });
-                        }}
-                        id='controllable-states-demo'
-                        options={memberList.map((member) => member.id)}
-                        getOptionLabel={(option) => {
-                          return memberListObj[String(option)];
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            name='manager'
-                            placeholder='Select Manager'
-                            label='Manager'
-                            required
-                            error={formError.manager}
-                            onFocus={() => {
-                              setFormError({ ...formError, manager: false });
-                            }}
-                            helperText={
-                              formError.manager ? 'Manager must required' : ''
-                            }
-                          />
-                        )}
-                      />
-                    )}
-                  </Stack>
-                </Stack>
-              }
-              slotButtons={
-                <div className='flex flex-row gap-2 w-full mt-4'>
-                  <Button
-                    variant='outline'
-                    className='w-full'
-                    onClick={() => {
-                      onClose();
-                      setInviteData([]);
+                </div>
+                <Input
+                  value={form.email || ''}
+                  name='email'
+                  placeholder='Email'
+                  onChange={(e) =>
+                    setForm({ ...form, email: e.target.value.trim() })
+                  }
+                  className={formError.email ? 'border-red-500' : ''}
+                />
+                <Input
+                  value={form.linked_in || ''}
+                  name='LinkedIn'
+                  placeholder='Enter linkedin URL'
+                  onChange={(e) =>
+                    setForm({ ...form, linked_in: e.target.value.trim() })
+                  }
+                  className={formError.linked_in ? 'border-red-500' : ''}
+                />
+                <div className='grid grid-cols-2 gap-4'>
+                  <Input
+                    value={form.position || ''}
+                    name='title'
+                    placeholder='Enter title'
+                    onChange={(e) =>
+                      setForm({ ...form, position: e.target.value })
+                    }
+                    className={formError.position ? 'border-red-500' : ''}
+                  />
+                  <Select
+                    value={form.employment || ''}
+                    onValueChange={(value) =>
                       setForm({
                         ...form,
-                        first_name: null,
-                        last_name: null,
-                        email: null,
-                        department_id: null,
-                        position: null,
-                        employment: null,
-                        role: null,
-                        role_id: null,
-                        manager_id: null,
-                        location_id: null,
-                        linked_in: null,
-                      });
-                    }}
+                        employment: value as employmentTypeEnum,
+                      })
+                    }
                   >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant='default'
-                    className='w-full'
-                    disabled={isSubmittable}
-                    onClick={() => {
-                      setIsDisable(true);
-                      if (checkValidation()) {
-                        inviteUser();
-                      }
-                    }}
-                  >
-                    Invite
-                  </Button>
+                    <SelectTrigger
+                      className={formError.employment ? 'border-red-500' : ''}
+                    >
+                      <SelectValue placeholder='Select Employment Type' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {['contractor', 'fulltime', 'parttime'].map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {capitalizeFirstLetter(option)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-              }
-              onClickClose={{
-                onClick: () => {
-                  onClose();
-                  setInviteData([]);
-                  setForm({
-                    ...form,
-                    first_name: null,
-                    last_name: null,
-                    email: null,
-                    department_id: null,
-                    position: null,
-                  });
-                },
-              }}
-            />
-            {isDisable && (
-              <div className='flex justify-center items-center'>
-                <Loader2 className='w-6 h-6 animate-spin text-primary' />
-              </div>
-            )}
-          </>
-        ) : menu === 'pendingMember' ? (
-          <TeamPendingInvites
-            textTitleDescription={`You currently have ${converter.toWords(
-              pendingList?.length,
-            )} pending invites awaiting your response.`}
-            slotList={pendingList.map((member) => (
-              <Alert key={member.user_id}>
-                <Avatar>
-                  <AvatarImage
-                    src={member.profile_image}
-                    alt={getFullName(member.first_name, member.last_name)}
-                  />
-                  <AvatarFallback>
-                    {getFullName(member.first_name, member.last_name).charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <AlertTitle>
-                  {member.first_name + ' ' + member.last_name}
-                </AlertTitle>
-                <AlertDescription>{member.email}</AlertDescription>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    setResendDisable(member.user_id);
-                    reinviteUser(member.email, recruiterUser.user_id).then(
-                      ({ error, emailSend }) => {
-                        setResendDisable(null);
-                        if (!error && emailSend) {
-                          return toast({
-                            variant: 'default',
-                            title: 'Invite sent successfully.',
-                          });
-                        }
-                        return toast({
-                          variant: 'destructive',
-                          title: 'Failed to resend invite',
-                          description: error,
-                        });
-                      },
-                    );
-                  }}
-                  disabled={isResendDisable === member.user_id}
-                >
-                  Resend
+                <div className='grid grid-cols-2 gap-4'>
+                  <Select
+                    value={form.location_id?.toString()}
+                    onValueChange={(value) =>
+                      setForm({ ...form, location_id: Number(value) })
+                    }
+                  >
+                    <SelectTrigger
+                      className={formError.location ? 'border-red-500' : ''}
+                    >
+                      <SelectValue placeholder='Choose Location' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {locations.map((loc) => (
+                        <SelectItem key={loc.id} value={loc.id.toString()}>
+                          {capitalizeFirstLetter(
+                            `${loc.city}, ${loc.region}, ${loc.country}`,
+                          )}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={form.department_id?.toString()}
+                    onValueChange={(value) =>
+                      setForm({ ...form, department_id: Number(value) })
+                    }
+                  >
+                    <SelectTrigger
+                      className={formError.department ? 'border-red-500' : ''}
+                    >
+                      <SelectValue placeholder='Select Department' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {departments.map((dep) => (
+                        <SelectItem key={dep.id} value={dep.id.toString()}>
+                          {capitalizeFirstLetter(dep.name)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className='grid grid-cols-2 gap-4'>
+                  <Select
+                    value={form.role_id?.toString()}
+                    onValueChange={(value) =>
+                      setForm({
+                        ...form,
+                        role_id: value,
+                        role: roleOptions.find((op) => op.id === value)?.name,
+                      })
+                    }
+                  >
+                    <SelectTrigger
+                      className={formError.role ? 'border-red-500' : ''}
+                    >
+                      <SelectValue placeholder='Choose Role' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {roleOptions.map((op) => (
+                        <SelectItem key={op.id} value={op.id.toString()}>
+                          {capitalizeFirstLetter(op.name)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {form.role !== 'admin' && (
+                    <Select
+                      value={form.manager_id || ''}
+                      onValueChange={(value) =>
+                        setForm({ ...form, manager_id: value })
+                      }
+                    >
+                      <SelectTrigger
+                        className={formError.manager ? 'border-red-500' : ''}
+                      >
+                        <SelectValue placeholder='Select Manager' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {memberList.map((member) => (
+                          <SelectItem key={member.id} value={member.id}>
+                            {member.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                </div>
+              </form>
+              <div className='flex space-x-2'>
+                <Button variant='outline' className='w-full' onClick={onClose}>
+                  Cancel
                 </Button>
-              </Alert>
-            ))}
-            onClickClose={{
-              onClick: () => onClose(),
-            }}
-          />
-        ) : (
-          <></>
-        )}
-      </Stack>
-    </Drawer>
+                <Button
+                  variant='default'
+                  className='w-full'
+                  disabled={isSubmittable}
+                  onClick={() => {
+                    setIsDisable(true);
+                    if (checkValidation()) {
+                      inviteUser();
+                    }
+                  }}
+                >
+                  Invite
+                </Button>
+              </div>
+              {isDisable && (
+                <div className='flex justify-center items-center'>
+                  <Loader2 className='w-6 h-6 animate-spin text-primary' />
+                </div>
+              )}
+            </>
+          ) : menu === 'pendingMember' ? (
+            <div className='space-y-4'>
+              <p className='text-sm text-gray-500'>
+                You currently have {converter.toWords(pendingList?.length)}{' '}
+                pending invites awaiting your response.
+              </p>
+              {pendingList.map((member) => (
+                <Alert
+                  key={member.user_id}
+                  className='flex items-center justify-between'
+                >
+                  <div className='flex items-center space-x-4'>
+                    <Avatar>
+                      <AvatarImage
+                        src={member.profile_image}
+                        alt={getFullName(member.first_name, member.last_name)}
+                      />
+                      <AvatarFallback>
+                        {getFullName(
+                          member.first_name,
+                          member.last_name,
+                        ).charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <AlertTitle>
+                        {member.first_name + ' ' + member.last_name}
+                      </AlertTitle>
+                      <AlertDescription>{member.email}</AlertDescription>
+                    </div>
+                  </div>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() => {
+                      setResendDisable(member.user_id);
+                      reinviteUser(member.email, recruiterUser.user_id).then(
+                        ({ error, emailSend }) => {
+                          setResendDisable(null);
+                          if (!error && emailSend) {
+                            toast({
+                              variant: 'default',
+                              title: 'Invite sent successfully.',
+                            });
+                          } else {
+                            toast({
+                              variant: 'destructive',
+                              title: 'Failed to resend invite',
+                              description: error,
+                            });
+                          }
+                        },
+                      );
+                    }}
+                    disabled={isResendDisable === member.user_id}
+                  >
+                    Resend
+                  </Button>
+                </Alert>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 

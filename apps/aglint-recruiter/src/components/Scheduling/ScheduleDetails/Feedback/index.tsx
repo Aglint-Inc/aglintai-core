@@ -570,7 +570,6 @@ function FeedbackCardDetails({
     <FeedbackCard
       slotImage={
         <Avatar
-          variant='rounded-medium'
           src={int.profile_image}
           level={getFullName(int.first_name, int.last_name)}
         />

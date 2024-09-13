@@ -234,7 +234,6 @@ const InterviewerCard = ({
         slotImage={
           <Avatar
             src={interviewer.profile_image}
-            variant='rounded'
             alt={interviewer.first_name}
             style={{
               width: '32px',

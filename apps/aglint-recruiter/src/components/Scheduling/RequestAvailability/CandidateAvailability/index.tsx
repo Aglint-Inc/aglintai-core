@@ -302,7 +302,6 @@ function CandidateAvailability() {
             <div className='flex justify-center items-center mb-4'>
               {candidateRequestAvailability?.recruiter.logo ? (
                 <MuiAvatar
-                  variant='square-large'
                   height='100px'
                   width='100px'
                   level=''
