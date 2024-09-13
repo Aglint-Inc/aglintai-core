@@ -3,13 +3,13 @@ import type {
   TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { ScrollArea } from '@components/ui/scroll-area';
-import axios from 'axios';
 import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
+import { mailSender } from '@/utils/mailSender';
 
 import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
@@ -40,15 +40,16 @@ function FinalScreen() {
         meeting_start_time: ele.start_time,
       })),
     },
+    is_preview: true,
   };
 
   function getEmail() {
     setFetching(true);
-    axios
-      .post('/api/emails/confirmInterview_email_applicant', {
-        ...payload,
-      })
-      .then(({ data }) => {
+    mailSender({
+      target_api: 'confirmInterview_email_applicant',
+      payload,
+    })
+      .then((data) => {
         setEmailData(data);
         setFetching(false);
       })

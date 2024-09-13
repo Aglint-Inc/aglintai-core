@@ -74,6 +74,7 @@ export const confirmInterviewEmailApplicantSchema = z.object({
       body: z.string(),
     })
   ),
+  is_preview: z.optional(z.boolean()).default(false),
 });
 
 export const applicantRejectEmailApplicantSchema = z.object({

@@ -1,5 +1,4 @@
 import type { TargetApiPayloadType } from '@aglint/shared-types';
-import axios from 'axios';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
+import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../../store/store';
@@ -55,11 +55,11 @@ function EmailPreviewSelfSchedule() {
 
   const getEmail = () => {
     setFetching(true);
-    axios
-      .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
-        ...payload,
-      })
-      .then(({ data }) => {
+    mailSender({
+      target_api: 'sendSelfScheduleRequest_email_applicant',
+      payload,
+    })
+      .then((data) => {
         setEmailData(data);
         setFetching(false);
       })

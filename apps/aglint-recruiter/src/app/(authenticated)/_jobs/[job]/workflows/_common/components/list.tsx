@@ -11,7 +11,6 @@ import {
 } from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
-import { Skeleton } from '@components/ui/skeleton';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase, Globe, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';

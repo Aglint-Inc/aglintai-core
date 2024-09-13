@@ -5,10 +5,10 @@ import { Stack } from '@mui/material';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import axios from '@/client/axios';
 import Loader from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
@@ -39,11 +39,11 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
           avail_req_id: candidateAvailabilityIdForReRequest,
           recruiter_user_id: recruiterUser.user_id,
         };
-      axios
-        .post('/api/emails/availabilityReqResend_email_candidate', {
-          ...payload1,
-        })
-        .then(({ data }) => {
+      mailSender({
+        target_api: 'availabilityReqResend_email_candidate',
+        payload: payload1,
+      })
+        .then((data) => {
           setEmailData(data);
           setFetching(false);
         })
@@ -52,11 +52,11 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
           setFetching(false);
         });
     } else {
-      axios
-        .post('/api/emails/sendAvailabilityRequest_email_applicant', {
-          ...payload,
-        })
-        .then(({ data }) => {
+      mailSender({
+        target_api: 'sendAvailabilityRequest_email_applicant',
+        payload: payload,
+      })
+        .then((data) => {
           setEmailData(data);
           setFetching(false);
         })
