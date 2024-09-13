@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 export default async function POST(req: Request) {
-  const req_body = await req.json();
+  // const req_body = await req.json();
 
-  const supabaseAdmin = getSupabaseServer();
+  // const supabaseAdmin = getSupabaseServer();
 
   try {
     //

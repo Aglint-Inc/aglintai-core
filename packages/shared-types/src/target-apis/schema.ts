@@ -1,4 +1,3 @@
-import * as v from 'valibot';
 import {
   debriefEmailInterviewerSchema,
   applicationRecievedEmailApplicantSchema,
@@ -28,9 +27,7 @@ import {
   onQualifiedEmailApproverSchema,
   interviewEndEmailOrganizerForMeetingStatusSchema,
 } from '../aglint-mail/api_schema';
-import { DatabaseEnums } from '..';
-
-const Payloads = {
+export const TargetApiSchema = {
   debrief_email_interviewer: debriefEmailInterviewerSchema,
 
   applicationRecieved_email_applicant: applicationRecievedEmailApplicantSchema,
@@ -100,6 +97,3 @@ const Payloads = {
   interviewEnd_slack_interviewerForFeedback:
     interviewEndEmailInterviewerForFeedbackSchema,
 } as const;
-
-export type TargetApiSchema<T extends DatabaseEnums['email_slack_types']> =
-  T extends keyof typeof Payloads ? (typeof Payloads)[T] : never;
