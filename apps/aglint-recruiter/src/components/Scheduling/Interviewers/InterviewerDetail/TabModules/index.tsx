@@ -1,5 +1,4 @@
-
-import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
+import { CardContent } from '@components/ui/card';
 import { Stack } from '@mui/material';
 import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -110,9 +109,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                 </>
               ) : (
                 <GlobalEmpty
-                text={'No Interview type found.'}
-                iconSlot={<School className='text-gray-500' />}
-              />
+                  text={'No Interview type found.'}
+                  iconSlot={<School className='text-gray-500' />}
+                />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
                 <UIButton
