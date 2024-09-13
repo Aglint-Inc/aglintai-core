@@ -6,6 +6,7 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
+import type { RecursiveRequired } from '@aglint/shared-types';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
@@ -184,7 +185,10 @@ export type PublicProcedure<T extends z.ZodObject<any, any, any, any, any>> =
     any,
     any
   >
-    ? { ctx: TContext & TContextOverrides; input: z.infer<T> }
+    ? {
+        ctx: TContext & TContextOverrides;
+        input: RecursiveRequired<z.infer<T>>;
+      }
     : never;
 
 /**
@@ -209,5 +213,8 @@ export type PrivateProcedure<T extends z.ZodObject<any, any, any, any, any>> =
     any,
     any
   >
-    ? { ctx: TContext & TContextOverrides; input: z.infer<T> }
+    ? {
+        ctx: TContext & TContextOverrides;
+        input: RecursiveRequired<z.infer<T>>;
+      }
     : never;

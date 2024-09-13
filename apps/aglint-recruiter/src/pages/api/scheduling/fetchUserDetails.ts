@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (
+export const fetchUsers = async (
   recruiter_id: string,
   includeSuspended: boolean,
   isCalendarConnected: boolean | null,
