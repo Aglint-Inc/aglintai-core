@@ -18,7 +18,7 @@ const CandidateCancelRequest = () => {
   const handleAddWorkflows = async () => {
     try {
       const cancelReqActions = ACTION_TRIGGER_MAP.onRequestCancel.map(
-        (trigger) => trigger.value,
+        (trigger, idx) => ({ ...trigger.value, order: idx }),
       ) as unknown as DatabaseTableInsert['workflow_action'][];
 
       await createRequestWorkflowAction({
