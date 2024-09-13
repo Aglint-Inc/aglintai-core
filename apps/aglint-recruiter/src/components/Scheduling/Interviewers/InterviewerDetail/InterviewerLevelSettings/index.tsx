@@ -15,7 +15,6 @@ import {
 } from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { DayOff } from '@devlink2/DayOff';
-import { ScheduleSettings } from '@devlink2/ScheduleSettings';
 import { cn } from '@lib/utils';
 import {
   Alert,

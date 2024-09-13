@@ -46,11 +46,13 @@ const InterviewScheduled = () => {
   ) => {
     try {
       await createRequestWorkflowAction({
-        wAction: {
-          target_api: target_api as any,
-          order: 0,
-          action_type: 'slack',
-        },
+        wActions: [
+          {
+            target_api: target_api as any,
+            order: 0,
+            action_type: 'slack',
+          },
+        ],
         recruiter_id: recruiter.id,
         request_id: currentRequest.id,
       });
