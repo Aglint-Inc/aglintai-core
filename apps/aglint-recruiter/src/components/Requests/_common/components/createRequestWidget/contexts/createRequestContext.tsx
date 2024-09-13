@@ -4,22 +4,8 @@ import { createStore } from 'zustand';
 
 import dayjs from '@/utils/dayjs';
 
-export type Menus =
-  | 'requestType'
-  | 'jobs'
-  | 'candidate'
-  | 'schedules'
-  | 'assignees'
-  | 'final';
-
-export const STEPS: Readonly<Menus[]> = Object.freeze([
-  'requestType',
-  'jobs',
-  'candidate',
-  'schedules',
-  'assignees',
-  'final',
-]);
+import { STEPS } from '../constants';
+import type { Menus } from '../types';
 
 type Selections = {
   requestType: { id: DatabaseTable['request']['type']; label: string };

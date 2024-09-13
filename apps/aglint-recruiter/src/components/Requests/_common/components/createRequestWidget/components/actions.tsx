@@ -4,12 +4,13 @@ import { ArrowRight, X } from 'lucide-react';
 
 import { SafeObject } from '@/utils/safeObject';
 
-import { type Menus, STEPS } from '../contexts/createRequestContext';
+import { STEPS } from '../constants';
 import {
   useCreateRequest,
   useCreateRequestActions,
   useCreateRequestMutation,
 } from '../hooks';
+import type { Menus } from '../types';
 
 export const Actions = () => {
   return (

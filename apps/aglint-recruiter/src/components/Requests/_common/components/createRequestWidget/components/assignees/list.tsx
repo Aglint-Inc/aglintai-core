@@ -9,7 +9,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 import {
   useCreateRequestActions,
   useCreateRequestAssignees,
-  useCreateRequestJobs,
 } from '../../hooks';
 
 const containerHeight = 200;

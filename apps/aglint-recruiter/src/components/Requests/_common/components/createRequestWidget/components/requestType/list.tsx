@@ -1,9 +1,10 @@
 import type { DatabaseTable } from '@aglint/shared-types';
-import { useCreateRequestActions } from '@components/createRequestWidget/hooks';
 import { CommandItem, CommandList } from '@components/ui/command';
 import { CommandEmpty } from 'cmdk';
 import { Calendar } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
+
+import { useCreateRequestActions } from '../../hooks';
 
 const containerHeight = 200;
 

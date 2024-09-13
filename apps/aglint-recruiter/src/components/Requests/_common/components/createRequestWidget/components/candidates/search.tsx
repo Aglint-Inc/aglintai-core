@@ -1,10 +1,8 @@
-import {
-  useCreateRequest,
-  useCreateRequestActions,
-} from '@components/createRequestWidget/hooks';
 import { Input } from '@components/ui/input';
 import { Search as SearchIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+
+import { useCreateRequest, useCreateRequestActions } from '../../hooks';
 
 export const Search = () => {
   const search = useCreateRequest((state) => state.payloads.candidate.search);

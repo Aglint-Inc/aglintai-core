@@ -1,6 +1,7 @@
 'use client';
 import { CreateRequestCommand } from '@components/create-request-command';
-import { CreateRequestWidget } from '@components/createRequestWidget';
+
+import { CreateRequestWidget } from '@/components/Requests/_common/components/createRequestWidget';
 
 const Page = () => {
   return (

@@ -1,6 +1,6 @@
-import { useCreateRequesJobsPrefetch } from '@components/createRequestWidget/hooks';
 import { Command } from '@components/ui/command';
 
+import { useCreateRequesJobsPrefetch } from '../../hooks';
 import { List } from './list';
 import { Search } from './search';
 
