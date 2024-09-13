@@ -1,17 +1,15 @@
 'use client';
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { CandidateConfirmationPage } from '@devlink/CandidateConfirmationPage';
-import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Page404 } from '@devlink/Page404';
-import { SessionInfo } from '@devlink/SessionInfo';
-import { Container, Dialog, Stack } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
@@ -22,12 +20,13 @@ import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
 import Loader from '../../Common/Loader';
-import { TimezoneSelector } from '../../CompanyDetailComp/Scheduling';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
 } from './calender';
 import { ConfirmedInvitePage } from './CandidateConfirm';
+import { CandidateScheduleCard } from './Components/CandidateScheduleCard';
+import { SessionInfo } from './Components/SessionInfo';
 import MultiDay from './MultiDay';
 import { SingleDayConfirmation } from './SingleDayConfirmation';
 import { type ScheduleCardProps, type ScheduleCardsProps } from './types';
@@ -37,30 +36,27 @@ const CandidateInviteNew = () => {
   const load = useCandidateInvite();
 
   return (
-    <Stack
-      height={'100vh'}
-      width={'100%'}
-      alignItems={'center'}
-      justifyContent={'center'}
-    >
-      {load === undefined ? (
-        <Stack>
-          <Loader />
-        </Stack>
-      ) : load === null ? (
-        <Stack width={'100%'} height={'100vh'}>
-          <Page404 text404='The requested page was not found' />
-          <Stack bgcolor={'var(--neutral-2)'} height={'48px'}>
-            <Footer brand={true} />
-          </Stack>
-        </Stack>
-      ) : (
-        <>
-          <CandidateInvitePlanPage key={load.timezone.tzCode} />
-          <DetailsPopup />
-        </>
-      )}
-    </Stack>
+    <div className='h-screen'>
+      <div className='bg-[var(--sand-3)] w-full min-h-[calc(100vh-50px)] max-h-[calc(100vh-50px)] overflow-auto py-10 '>
+        {load === undefined ? (
+          <div className='w-full h-screen flex justify-center items-center'>
+            <Loader />
+          </div>
+        ) : load === null ? (
+          <div className='w-full h-screen flex justify-center items-center'>
+            <Page404 text404='The requested page was not found' />
+          </div>
+        ) : (
+          <>
+            <CandidateInvitePlanPage key={load.timezone.tzCode} />
+            <DetailsPopup />
+          </>
+        )}
+      </div>
+      <div className='h-[50px]'>
+        <Footer brand={true} />
+      </div>
+    </div>
   );
 };
 export default CandidateInviteNew;
@@ -107,12 +103,9 @@ const CandidateInvitePlanPage = () => {
 
   if (meetings.length === 0)
     return (
-      <Stack width={'100%'} height={'100vh'}>
+      <div className='w-full h-screen'>
         <Page404 />
-        <Stack bgcolor={'var(--neutral-2)'} height={'48px'}>
-          <Footer brand={true} />
-        </Stack>
-      </Stack>
+      </div>
     );
 
   if (!waiting)
@@ -129,44 +122,48 @@ const CandidateInvitePlanPage = () => {
     );
 
   return (
-    <Stack
-      sx={{
-        backgroundColor: 'var(--sand-3)',
-        width: '100%',
-        minHeight: '100vh',
-        overflow: 'auto',
-        paddingBottom: '24px',
-      }}
-    >
-      <CandidateConfirmationPage
-        slotCompanyLogo={
-          <Logo companyName={recruiter.name} logo={recruiter.logo} />
-        }
-        onClickView={{
-          onClick: () => {
-            setDetailsPop(true);
-          },
-        }}
-        slotCandidateCalender={
-          <>
-            <TimezoneSelector
-              disabled={false}
-              value={timezone}
-              setValue={(e) => {
-                setTimezone(e);
-                setSelectedSlots([]);
+    <div className='flex flex-col items-center justify-center w-full py-4 bg-sand-3'>
+      <Card className='w-full max-w-[900px] space-y-4 border-neutral-6'>
+        <CardHeader className='text-center space-y-2'>
+          <div className='w-full flex justify-center'>
+            <Logo companyName={recruiter.name} logo={recruiter.logo} />
+          </div>
+          <CardTitle className='text-2xl font-medium'>
+            Select a date and time that works best for you.
+          </CardTitle>
+          <p className='text-neutral-11 text-center'>
+            Available slots are organized by day. Each slot includes the total
+            time required for your interview, including breaks.
+          </p>
+          <div>
+            <UIButton
+              variant='ghost'
+              onClick={() => {
+                setDetailsPop(true);
               }}
-            />
-            <Container maxWidth='md'>
-              <Stack spacing={'var(--space-4)'}>
-                <Invite rounds={rounds} />
-              </Stack>
-            </Container>
-          </>
-        }
-      />
-      <Footer brand={true} />
-    </Stack>
+            >
+              View Schedule details
+            </UIButton>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className='w-full max-w-[900px] mx-auto space-y-2'>
+            <div className='flex w-full justify-end'>
+              <div className='w-[300px]'>
+                <TimezonePicker
+                  onChange={(e) => {
+                    setTimezone(e);
+                    setSelectedSlots([]);
+                  }}
+                  value={timezone.tzCode}
+                />
+              </div>
+            </div>
+            <Invite rounds={rounds} />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
@@ -184,37 +181,24 @@ const DetailsPopup = () => {
     return acc;
   }, 0);
 
-  const schedule_name = '';
+  // const schedule_name = '';
 
   return (
-    <Dialog
+    <UIDialog
       open={detailsPop}
       onClose={() => setDetailsPop(false)}
-      maxWidth='md'
+      title='Schedule Details'
+      slotButtons={<></>}
     >
       <CandidateScheduleCard
-        isPopup={true}
         isSelected={false}
-        slotButton={
-          <IconButtonGhost
-            color={'neutral'}
-            size={1}
-            iconName={'close'}
-            onClickButton={{
-              onClick: () => {
-                setDetailsPop(false);
-              },
-            }}
-          />
-        }
+        slotButton={null}
         isSlotButtonVisible={true}
         textDuration={getDurationText(duration)}
-        onClickClose={{ onClick: () => setDetailsPop(false) }}
-        textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
         isTitle={false}
       />
-    </Dialog>
+    </UIDialog>
   );
 };
 
@@ -238,10 +222,7 @@ const SingleDayError = () => {
     toast.error('Something went wrong. Please try again.');
   }, []);
   return (
-    <UIButton
-      variant='default'
-      onClick={() => refetch()}
-    >
+    <UIButton variant='default' onClick={() => refetch()}>
       Try again
     </UIButton>
   );
@@ -249,11 +230,11 @@ const SingleDayError = () => {
 
 const SingleDayLoading = () => {
   return (
-    <Stack direction={'row'} justifyContent={'center'}>
-      <Stack width={'120px'}>
+    <div className={'flex justify-center'}>
+      <div className={'w-[120px]'}>
         <CandidateSlotLoad />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -345,15 +326,15 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
       slotInterviewtypeIcon={<Coffee size={16} color={'var(--neutral-2)'} />}
-      iconName={''}
+      iconName={null}
     />
   );
 };
 
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
-    <Stack height={'60px'}>
+    <div className={'relative max-h-[60px] max-w-[60px]'}>
       <CompanyLogo companyName={companyName} companyLogo={logo} />
-    </Stack>
+    </div>
   );
 };

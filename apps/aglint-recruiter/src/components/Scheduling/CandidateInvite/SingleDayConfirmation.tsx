@@ -1,14 +1,12 @@
-
-import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { DcPopup } from '@devlink/DcPopup';
-import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
-import { SessionAndTime } from '@devlink/SessionAndTime';
-import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 
+import { CandidateScheduleCard } from './Components/CandidateScheduleCard';
+import { SelectedDateAndTime } from './Components/SelectedDateAndTime';
+import { SessionAndTime } from './Components/SessionAndTime';
 import { dayJS } from './utils';
 
 export const SingleDayConfirmation = () => {
@@ -52,50 +50,44 @@ export const SingleDayConfirmation = () => {
   // end
 
   return (
-    <Dialog open={open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack>
-            <Typography mb={2}>
-              Before we finalize your schedule, please take a moment to confirm
-              the chosen option. Your interview is crucial, and we want to
-              ensure it aligns perfectly with your availability.
-            </Typography>
-            <CandidateScheduleCard
-              isTitle={false}
-              textDuration={totalTimeDifference}
-              slotButton={<></>}
-              slotSessionInfo={
-                <SelectedDateAndTime
-                  slotSessionAndTime={<SingleDaySessions index={0} />}
-                  textDate={date}
-                  textDay={day}
-                  textMonth={month}
-                />
-              }
-            />
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <UIButton
-              variant='secondary'
-              onClick={() => handleClose()}
-            >
-              Cancel
-            </UIButton>
-            <UIButton
-              variant='default'
-              onClick={() => handleSubmit()}
-            >
-              Confirm
-            </UIButton>
-          </>
-        }
-      />
-    </Dialog>
+    <UIDialog
+      title='Confirm your interview'
+      open={open}
+      onClose={() => handleClose()}
+      slotButtons={
+        <>
+          <UIButton variant='secondary' onClick={() => handleClose()}>
+            Cancel
+          </UIButton>
+          <UIButton variant='default' onClick={() => handleSubmit()}>
+            Confirm
+          </UIButton>
+        </>
+      }
+    >
+      <>
+        <div>
+          <p className='mb-2'>
+            Before we finalize your schedule, please take a moment to confirm
+            the chosen option. Your interview is crucial, and we want to ensure
+            it aligns perfectly with your availability.
+          </p>
+          <CandidateScheduleCard
+            isTitle={false}
+            textDuration={totalTimeDifference}
+            slotButton={<></>}
+            slotSessionInfo={
+              <SelectedDateAndTime
+                slotSessionAndTime={<SingleDaySessions index={0} />}
+                textDate={date}
+                textDay={day}
+                textMonth={month}
+              />
+            }
+          />
+        </div>
+      </>
+    </UIDialog>
   );
 };
 

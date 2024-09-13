@@ -1,11 +1,9 @@
-import { AvailableTimeRange } from '@devlink/AvailableTimeRange';
-import { CandidateCalender } from '@devlink/CandidateCalender';
-import { DayColumn } from '@devlink/DayColumn';
-import { Stack, useMediaQuery } from '@mui/material';
-import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
+import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type useInviteSlots } from '@/queries/candidate-invite';
+import dayjs from '@/utils/dayjs';
 
 import { dayJS } from './utils';
 
@@ -22,13 +20,9 @@ export type CandidateInviteCalendarProps = {
   tz: Parameters<typeof dayJS>[1];
 };
 const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
-  const xl = useMediaQuery('(min-width:1920px)');
-  const l = useMediaQuery('(min-width:1440px)');
-  const m = useMediaQuery('(min-width:768px)');
   // const s = useMediaQuery('(min-width:768px)');
-  const columns = xl ? 4 : l ? 3 : m ? 2 : 1;
-  const [offset, setOffest] = useState(0);
-  const sessions = props.sessions.slice(offset, offset + columns);
+
+  const sessions = props.sessions;
   const startMonth = sessions[0]?.date
     ? dayJS(sessions[0].date, props.tz).format('MMMM YYYY')
     : null;
@@ -38,19 +32,40 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
   const displayMonth =
     startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
   return (
-    <CandidateCalender
-      slotDayColumn={<Columns {...props} sessions={sessions} />}
-      isLeftArrow={offset !== 0}
-      isRightArrow={props.sessions.length - columns > offset}
-      textMonth={displayMonth}
-      slotTimeZone={<></>}
-      onClickLeft={{ onClick: () => setOffest((prev) => prev - 1) }}
-      onClickRight={{ onClick: () => setOffest((prev) => prev + 1) }}
-    />
+    <>
+      <CandidateCalender
+        slotDayColumn={<Columns {...props} sessions={sessions} />}
+        textMonth={displayMonth}
+      />
+    </>
   );
 };
 
 export default CandidateInviteCalendar;
+
+function CandidateCalender({
+  slotDayColumn,
+
+  textMonth,
+}: {
+  slotDayColumn: React.ReactNode;
+
+  textMonth: string;
+}) {
+  return (
+    <div className='flex flex-col h-[500px]  border border-neutral-200 rounded-md bg-white overflow-hidden'>
+      <div className='flex justify-between items-center h-10 px-4 border-b border-neutral-200 bg-neutral-100'>
+        <div className='flex items-center space-x-1'>
+          <Calendar className='w-5 h-5 text-neutral-700' />
+          <span className='font-medium'>{textMonth}</span>
+        </div>
+      </div>
+      <div className='flex gap-2 p-2 items-center justify-center overflow-auto'>
+        {slotDayColumn}
+      </div>
+    </div>
+  );
+}
 
 const Columns = (props: CandidateInviteCalendarProps) => {
   const columns = props.sessions.map((session) => (
@@ -62,11 +77,7 @@ const Columns = (props: CandidateInviteCalendarProps) => {
       tz={props.tz}
     />
   ));
-  return (
-    <Stack direction={'row'} gap={1}>
-      {columns}
-    </Stack>
-  );
+  return columns;
 };
 
 type ColumnType = {
@@ -76,24 +87,22 @@ type ColumnType = {
   tz: CandidateInviteCalendarProps['tz'];
 };
 const Column = (props: ColumnType) => {
-  const [date, day] = dayJS(props.session.date, props.tz)
-    .format('DD ddd')
-    .split(' ');
+  const date = dayJS(props.session.date, props.tz);
   return (
-    <Stack flexGrow={1}>
-      <DayColumn
-        textDate={date}
-        textDay={day}
-        slotAvailableTimeRange={
-          <Slots
-            slots={props.session.slots}
-            selections={props.selections}
-            handleSelect={props.handleSelect}
-            tz={props.tz}
-          />
-        }
-      />
-    </Stack>
+    <div className='relative min-w-[237px] max-w-[237px]  flex-1 border border-gray-200 rounded-lg'>
+      <div className='flex h-10 justify-center items-center bg-gray-50 rounded-t-lg px-2.5'>
+        <div>{dayjs(date).format('dddd DD, MMMM')}</div>
+      </div>
+
+      <div className='h-[390px] overflow-auto p-2.5 gap-2 flex flex-col'>
+        <Slots
+          slots={props.session.slots}
+          selections={props.selections}
+          handleSelect={props.handleSelect}
+          tz={props.tz}
+        />
+      </div>
+    </div>
   );
 };
 
@@ -105,30 +114,22 @@ type SlotsType = {
 };
 const Slots = (props: SlotsType) => {
   const slots = props.slots.map((slot, i) => {
+    const count = slot.sessions.length;
+    const timing = `${dayJS(slot.sessions[0].start_time, props.tz).format(
+      'hh:mm A',
+    )} - ${dayJS(slot.sessions[count - 1].end_time, props.tz).format(
+      'hh:mm A',
+    )}`;
+    const isActive = props.selections.includes(slot);
     return (
-      <Stack key={i} onClick={() => props.handleSelect(slot)}>
-        <Slot
-          slot={slot}
-          isActive={props.selections.includes(slot)}
-          tz={props.tz}
-        />
-      </Stack>
+      <UITimeRangeCard
+        ShowCloseIcon={false}
+        key={i}
+        textTime={timing}
+        isActive={isActive}
+        onClickTime={() => props.handleSelect(slot)}
+      />
     );
   });
   return <>{slots}</>;
-};
-
-type SlotType = {
-  slot: SlotsType['slots'][number];
-  tz: SlotsType['tz'];
-  isActive: boolean;
-};
-const Slot = (props: SlotType) => {
-  const count = props.slot.sessions.length;
-  const timing = `${dayJS(props.slot.sessions[0].start_time, props.tz).format(
-    'hh:mm A',
-  )} - ${dayJS(props.slot.sessions[count - 1].end_time, props.tz).format(
-    'hh:mm A',
-  )}`;
-  return <AvailableTimeRange textTime={timing} isActive={props.isActive} />;
 };

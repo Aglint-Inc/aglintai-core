@@ -3,8 +3,9 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
 
+import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
+
 import { useRequestAvailabilityContext } from '../../../RequestAvailabilityContext';
-import { TimeRangeCard } from '../Components/TimeRangeCard';
 
 function SlotColumn({
   slotTime,
@@ -124,7 +125,7 @@ function SlotColumn({
               isSubmitted;
             return (
               <div key={ind}>
-                <TimeRangeCard
+                <UITimeRangeCard
                   onClickTime={() => {
                     if (!isSubmitted)
                       handleSlotClick({

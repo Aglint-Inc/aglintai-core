@@ -2,14 +2,13 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { RequestReschedule } from '@devlink2/RequestReschedule';
-import { Dialog, Stack, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Trash } from 'lucide-react';
+import { TriangleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UIDatePicker } from '@/components/Common/UIDatePicker';
+import UIDialog from '@/components/Common/UIDialog';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
@@ -83,98 +82,16 @@ const CancelRescheduleDialog = ({
   );
 
   return (
-    <Dialog open={true}>
-      <RequestReschedule
-        textHeader={title}
-        isCancelWarningVisible={type === 'cancel'}
-        isRangeVisible={type === 'reschedule'}
-        slotCancelButton={
-          <UIButton
-            variant='secondary'
-            onClick={() => onClose()}
-          >
+    <UIDialog
+      open={true}
+      onClose={onClose}
+      title={title}
+      slotButtons={
+        <>
+          <UIButton variant='secondary' onClick={onClose}>
             Close
           </UIButton>
-        }
-        slotDateRangeInput={
-          <Stack spacing={2} direction={'row'}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dayjsLocal(formData.dateRange.start)}
-                onChange={(newValue) => {
-                  if (
-                    dayjsLocal(newValue) < dayjsLocal(formData.dateRange.end)
-                  ) {
-                    setFormData((pre) => {
-                      pre.dateRange.start = dayjsLocal(newValue).toISOString();
-                      return pre;
-                    });
-                  } else {
-                    setFormData((pre) => {
-                      pre.dateRange.start = dayjsLocal(newValue).toISOString();
-                      pre.dateRange.end = null;
-                      return pre;
-                    });
-                  }
-                }}
-                minDate={dayjsLocal()}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    variant: 'outlined',
-                    margin: 'none',
-                    placeholder: 'Start Date',
-                  },
-                }}
-                slots={{
-                  openPickerIcon: () => <Trash size={20} />,
-                }}
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dayjsLocal(formData.dateRange.end)}
-                minDate={dayjsLocal(formData.dateRange.start)}
-                maxDate={dayjsLocal(formData.dateRange.start).add(1, 'month')}
-                onChange={(newValue) => {
-                  setFormData((pre) => {
-                    pre.dateRange.end = dayjsLocal(newValue).toISOString();
-                    return pre;
-                  });
-                }}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    variant: 'outlined',
-                    margin: 'none',
-                    placeholder: 'End Date',
-                  },
-                }}
-                slots={{
-                  openPickerIcon: () => <Trash size={20} />,
-                }}
-              />
-            </LocalizationProvider>
-          </Stack>
-        }
-        slotRadioText={
-          <RadioGroup
-            name='radio-buttons-group'
-            value={formData.reason}
-            className='space-y-1'
-          >
-            {options.map((item) => (
-              <div key={item} className='flex items-center space-x-2'>
-                <RadioGroupItem value={item} id={item} />
-                <Label htmlFor={item} className='text-sm'>
-                  {capitalizeFirstLetter(item)}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        }
-        slotPrimaryButton={
-          <Stack>
+          <div>
             {type === 'reschedule' && (
               <UIButton variant='default' onClick={() => handleSubmit()}>
                 Request Reschedule
@@ -185,11 +102,65 @@ const CancelRescheduleDialog = ({
                 Cancel Interview
               </UIButton>
             )}
-          </Stack>
+          </div>
+        </>
+      }
+    >
+      <RequestReschedule
+        isCancelWarningVisible={type === 'cancel'}
+        isRangeVisible={type === 'reschedule'}
+        slotDateRangeInput={
+          <div className='flex gap-2'>
+            <UIDatePicker
+              value={new Date(formData.dateRange.start)}
+              onAccept={(value) => {
+                if (dayjsLocal(value) < dayjsLocal(formData.dateRange.end)) {
+                  setFormData((pre) => {
+                    pre.dateRange.start = dayjsLocal(value).toISOString();
+                    return { ...pre };
+                  });
+                } else {
+                  setFormData((pre) => {
+                    pre.dateRange.start = dayjsLocal(value).toISOString();
+                    pre.dateRange.end = null;
+                    return { ...pre };
+                  });
+                }
+              }}
+              closeOnSelect={true}
+            />
+            <UIDatePicker
+              value={new Date(formData.dateRange.end)}
+              onAccept={(value) => {
+                setFormData((pre) => {
+                  pre.dateRange.end = dayjsLocal(value).toISOString();
+                  return { ...pre };
+                });
+              }}
+              closeOnSelect={true}
+            />
+          </div>
         }
+        slotRadioText={options.map((item, i) => (
+          <div key={i} className='flex items-center space-x-2'>
+            <RadioGroup>
+              <RadioGroupItem
+                checked={item === formData.reason}
+                value={formData.reason}
+                onClick={() => {
+                  setFormData((pre) => ({ ...pre, reason: item }));
+                }}
+                id={`radio-${item + 1}`}
+              />
+            </RadioGroup>
+            <Label htmlFor={item} className='text-sm'>
+              {capitalizeFirstLetter(item)}
+            </Label>
+          </div>
+        ))}
         slotInputAdditionalNotes={
-          <TextField
-            multiline
+          <UITextArea
+            className='resize-none'
             placeholder='Add additional notes.'
             rows={6}
             value={formData.additionalNote}
@@ -202,15 +173,75 @@ const CancelRescheduleDialog = ({
             }
           />
         }
-        onClickClose={{
-          onClick: onClose,
-        }}
-        onClickTryReschedulingNow={{
-          onClick: onClickTryRescheduling,
-        }}
+        onClickTryReschedulingNow={onClickTryRescheduling}
       />
-    </Dialog>
+    </UIDialog>
   );
 };
 
 export default CancelRescheduleDialog;
+
+interface RequestRescheduleProps {
+  isRangeVisible: boolean;
+  isCancelWarningVisible: boolean;
+  slotDateRangeInput: React.ReactNode;
+  slotRadioText: React.ReactNode;
+  slotInputAdditionalNotes: React.ReactNode;
+  onClickTryReschedulingNow: () => void;
+}
+
+export function RequestReschedule({
+  isRangeVisible,
+  isCancelWarningVisible,
+  slotDateRangeInput,
+  slotRadioText,
+  slotInputAdditionalNotes,
+  onClickTryReschedulingNow,
+}: RequestRescheduleProps) {
+  return (
+    <div className='space-y-4'>
+      {isRangeVisible && (
+        <div className='space-y-2'>
+          <p className='text-sm text-neutral-600'>
+            Please select new dates for your interview and provide a reason for
+            the reschedule.
+          </p>
+          {slotDateRangeInput}
+        </div>
+      )}
+
+      {isCancelWarningVisible && (
+        <div className='flex items-start space-x-2 p-3 bg-red-50 rounded-lg'>
+          <TriangleAlert className='w-6 h-6 ' />
+          <div className='flex flex-col space-y-1'>
+            <p className='text-sm'>
+              If you wish to keep this job opportunity open, consider opting for
+              rescheduling rather than canceling.
+            </p>
+            <div>
+              <UIButton
+                variant='link'
+                className='text-accent-600 p-0 h-auto'
+                onClick={onClickTryReschedulingNow}
+              >
+                Reschedule
+              </UIButton>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className='space-y-2'>
+        <p className='text-sm text-neutral-600'>
+          Please provide a reason to cancel.
+        </p>
+        {slotRadioText}
+      </div>
+
+      <div className='space-y-2'>
+        <p className='text-sm text-neutral-600'>Additional Notes</p>
+        {slotInputAdditionalNotes}
+      </div>
+    </div>
+  );
+}
