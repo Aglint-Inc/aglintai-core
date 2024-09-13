@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ScoreSetting } from '@devlink3/ScoreSetting';
 import { CircularProgress, Dialog } from '@mui/material';
 import {
   BarChart,
@@ -30,6 +29,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
+import { ScoreSetting } from '@/job/profile-score/components/ScoreSetting';
 import { useJobs } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
@@ -259,8 +259,11 @@ const Close = () => {
   return (
     <Dialog open={modal} onClose={() => handleCloseModal()}>
       <div className='shadow-md p-4 rounded-lg bg-white w-[500px] relative'>
-        <button className='absolute p-1 top-0 right-0 m-4 hover:bg-gray-50 rounded-md' onClick={() => handleCloseModal()}>
-        <X className='h-3 w-3 ' />
+        <button
+          className='absolute p-1 top-0 right-0 m-4 hover:bg-gray-50 rounded-md'
+          onClick={() => handleCloseModal()}
+        >
+          <X className='h-3 w-3 ' />
         </button>
         <h2 className='text-lg font-semibold mb-2'>
           {isDelete ? 'Delete' : 'Close'} This Job
@@ -276,7 +279,6 @@ const Close = () => {
         </p>
         <div className='mb-4'>
           <UITextField
-          
             placeholder={job_title.trim()}
             value={value}
             onChange={(e) => setValue(e.target.value)}

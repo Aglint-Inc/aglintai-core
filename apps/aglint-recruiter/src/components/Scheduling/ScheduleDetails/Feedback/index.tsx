@@ -11,7 +11,6 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { FeedbackCard } from '@devlink3/FeedbackCard';
-import { MyFeedbackPopup } from '@devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@devlink3/RoundedNumber';
 import {
   Calendar,
@@ -25,6 +24,7 @@ import {
   Star,
   User,
   Users,
+  X,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
@@ -33,6 +33,7 @@ import axios from '@/client/axios';
 import Avatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
@@ -570,7 +571,6 @@ function FeedbackCardDetails({
     <FeedbackCard
       slotImage={
         <Avatar
-          variant='rounded-medium'
           src={int.profile_image}
           level={getFullName(int.first_name, int.last_name)}
         />
@@ -783,12 +783,73 @@ const FeedbackForm = ({
 }) => {
   const [interviewer, setInterviewer] = useState(interviewerData);
   return (
-    <MyFeedbackPopup
-      onClickClose={{
-        onClick: onClose,
-      }}
-      slotButton={
-        <>
+    // Feedback Popup Card
+
+    <div className='flex items-center justify-center w-[650px]'>
+      <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
+        <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+          <h2 className='font-semibold'>My Feedback</h2>
+          <UIButton onClick={() => onClose()} variant='ghost' size='sm'>
+            <X className='w-4 h-4' />
+          </UIButton>
+        </div>
+        <div className='p-4'>
+          <div className='flex flex-col gap-3'>
+            <div className='flex flex-col gap-1'>
+              <p>Recommendation Level</p>
+              <div>
+                <div className='flex gap-2'>
+                  {Array(10)
+                    .fill(1)
+                    .map((_, i) => {
+                      return (
+                        <RoundedNumber
+                          key={i}
+                          textNumber={i + 1}
+                          isActive={
+                            (interviewer.feedback?.recommendation || 0) > i
+                          }
+                          onClickRound={{
+                            onClick: () => {
+                              const temp = { ...interviewer };
+                              temp.feedback = {
+                                ...temp.feedback,
+                                recommendation: i + 1,
+                              };
+                              setInterviewer(temp);
+                            },
+                          }}
+                        />
+                      );
+                    })}
+                </div>
+                <p>{re_mapper[interviewer.feedback?.recommendation || 0]}</p>
+              </div>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <p>Feedback</p>
+              <div>
+                <TipTapAIEditor
+                  placeholder='Your feedback.'
+                  initialValue={interviewer.feedback?.objective || ''}
+                  border
+                  height='300px'
+                  isSize={false}
+                  isAlign={false}
+                  handleChange={(html) => {
+                    const temp = { ...interviewer };
+                    temp.feedback = {
+                      ...temp.feedback,
+                      objective: html,
+                    };
+                    setInterviewer(temp);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
           <Button variant='outline' size='sm' onClick={onCancel}>
             Cancel
           </Button>
@@ -807,53 +868,9 @@ const FeedbackForm = ({
           >
             Submit Feedback
           </Button>
-        </>
-      }
-      slotRoundedNumber={
-        <>
-          {Array(10)
-            .fill(1)
-            .map((_, i) => {
-              return (
-                <RoundedNumber
-                  key={i}
-                  textNumber={i + 1}
-                  isActive={(interviewer.feedback?.recommendation || 0) > i}
-                  onClickRound={{
-                    onClick: () => {
-                      const temp = { ...interviewer };
-                      temp.feedback = {
-                        ...temp.feedback,
-                        recommendation: i + 1,
-                      };
-                      setInterviewer(temp);
-                    },
-                  }}
-                />
-              );
-            })}
-        </>
-      }
-      textRecommendation={re_mapper[interviewer.feedback?.recommendation || 0]}
-      slotObjective={
-        <TipTapAIEditor
-          placeholder='Your feedback.'
-          initialValue={interviewer.feedback?.objective || ''}
-          border
-          height='300px'
-          isSize={false}
-          isAlign={false}
-          handleChange={(html) => {
-            const temp = { ...interviewer };
-            temp.feedback = {
-              ...temp.feedback,
-              objective: html,
-            };
-            setInterviewer(temp);
-          }}
-        />
-      }
-    />
+        </div>
+      </div>
+    </div>
   );
 };
 

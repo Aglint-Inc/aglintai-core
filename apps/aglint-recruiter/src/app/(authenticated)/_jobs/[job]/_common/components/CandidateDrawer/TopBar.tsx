@@ -1,6 +1,4 @@
-import { CandidateName } from '@devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@devlink/CandidateSidedrawerTop';
-import { Stack } from '@mui/material';
 import { type PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -15,12 +13,19 @@ const Info = () => {
   } = useApplication();
   const setPreview = useApplicationStore(({ setPreview }) => setPreview);
   return (
-    <CandidateName
-      isLinedin={false}
-      isResume={!!data?.file_url}
-      onClickResume={{ onClick: () => setPreview(true) }}
-      textName={capitalizeAll(data?.name ?? '---')}
-    />
+    <div className='flex items-center space-x-2'>
+      <span className='text-lg font-semibold'>
+        {capitalizeAll(data?.name ?? '---')}
+      </span>
+      {data?.file_url && (
+        <button
+          onClick={() => setPreview(true)}
+          className='text-blue-600 hover:text-blue-800 focus:outline-none'
+        >
+          Resume
+        </button>
+      )}
+    </div>
   );
 };
 
@@ -68,23 +73,14 @@ const TopBar = (props: PropsWithChildren) => {
   } = useApplication();
   if (status === 'pending') return <>Loadin...</>;
   return (
-    <Stack
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        height: '100%',
-      }}
-    >
+    <div className="flex flex-row items-center justify-between w-full h-full">
       {props.children ?? (
         <>
           <Info />
           <Actions />
         </>
       )}
-    </Stack>
+    </div>
   );
 };
 

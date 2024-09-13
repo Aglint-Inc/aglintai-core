@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 
-import { Stack, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BarElement,
@@ -54,21 +53,20 @@ export const DoughnutChart: React.FC<{
   const s = useMediaQuery('(min-width:1300px)');
 
   return (
-    <Stack
-      {...(fixedHeight
-        ? { height: '100%' }
-        : {
-            width: s
-              ? m
-                ? l
-                  ? xl
-                    ? '275px'
-                    : '250px'
-                  : '225px'
-                : '200px'
-              : '175px',
-          })}
-      style={{ aspectRatio: 1 }}
+    <div
+      className={`aspect-square ${
+        fixedHeight
+          ? 'h-full'
+          : s
+            ? m
+              ? l
+                ? xl
+                  ? 'w-[275px]'
+                  : 'w-[250px]'
+                : 'w-[225px]'
+              : 'w-[200px]'
+            : 'w-[175px]'
+      }`}
     >
       <Doughnut
         options={{
@@ -89,7 +87,7 @@ export const DoughnutChart: React.FC<{
         }}
         data={dataBar}
       />
-    </Stack>
+    </div>
   );
 };
 
@@ -110,47 +108,29 @@ const DashboardDoughnutChart: FC<{
   }, 0);
   const safeLocations = getOrderedGraphValues(locations);
   return (
-    <Stack display={'flex'} flexDirection={'column'} width={'100%'}>
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'space-around'}
-      >
+    <div className='flex flex-col w-full'>
+      <div className='flex flex-row items-center justify-around'>
         <DoughnutChart locations={safeLocations} />
-        <Stack gap={3}>
-          {safeLocations.map(({ color, count, name }, i) => {
-            return (
-              <Stack
-                direction={'row'}
-                justifyContent={'space-between'}
-                gap={5}
-                key={i}
-              >
-                <Stack direction={'row'} gap={1} alignItems={'center'}>
-                  <Stack
-                    sx={{
-                      bgcolor: color,
-                      width: '10px',
-                      aspectRatio: 1,
-                      borderRadius: 'var(--radius-full)',
-                    }}
-                  />
-                  <Typography
-                    variant='body1'
-                    sx={{ textWrap: 'nowrap', textTransform: 'capitalize' }}
-                  >
-                    {capitalize(name)}
-                  </Typography>
-                </Stack>
-                <Typography variant='body1'>
-                  {((count / totalCount) * 100).toFixed(0)}%
-                </Typography>
-              </Stack>
-            );
-          })}
-        </Stack>
-      </Stack>
-    </Stack>
+        <div className='flex flex-col gap-3'>
+          {safeLocations.map(({ color, count, name }, i) => (
+            <div key={i} className='flex flex-row justify-between gap-5'>
+              <div className='flex flex-row gap-1 items-center'>
+                <div
+                  className='w-2.5 aspect-square rounded-full'
+                  style={{ backgroundColor: color }}
+                />
+                <span className='text-sm capitalize whitespace-nowrap'>
+                  {capitalize(name)}
+                </span>
+              </div>
+              <span className='text-sm'>
+                {((count / totalCount) * 100).toFixed(0)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

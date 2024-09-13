@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useToast } from '@components/hooks/use-toast';
-import { MyScheduleLanding } from '@devlink/MyScheduleLanding';
+import { Button } from '@components/ui/button';
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import axios from 'axios';
@@ -175,14 +175,31 @@ function MySchedule() {
           />
         </ShowCode.When>
         <ShowCode.Else>
-          <MyScheduleLanding
-            onClickConnectCalender={{
-              onClick: getConsent,
-            }}
-            textConnectedTo={`Connected to ${(recruiterUser.schedule_auth as any)?.email}`}
-            isConnectedVisible={!!recruiterUser.schedule_auth}
-            isConnectCalenderVisible={!recruiterUser.schedule_auth}
-          />
+          <div className='p-4 border rounded-md bg-white shadow-md'>
+            {recruiterUser.schedule_auth ? (
+              <div>
+                <p className='text-lg font-semibold'>
+                  Connected to {recruiterUser.schedule_auth.email}
+                </p>
+              </div>
+            ) : (
+              <div>
+                <p className='text-lg font-semibold'>
+                  Connect your Google Calendar
+                </p>
+                <p className='text-sm text-gray-500 mt-2'>
+                  To manage your schedules, please connect your Google Calendar
+                  via OAuth.
+                </p>
+                <Button
+                  onClick={getConsent}
+                  className='mt-4 bg-blue-500 hover:bg-blue-600'
+                >
+                  Connect Calendar
+                </Button>
+              </div>
+            )}
+          </div>
         </ShowCode.Else>
       </ShowCode>
     </>

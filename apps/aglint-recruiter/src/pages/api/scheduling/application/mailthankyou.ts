@@ -1,13 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import {
   type APICandScheduleMailThankYou,
-  type EmailTemplateAPi,
+  type TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { mailSender } from '@/utils/mailSender';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -62,17 +63,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (!is_debreif) {
-      const payload: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'] =
+      const payload: TargetApiPayloadType<'confirmInterview_email_applicant'> =
         {
           availability_req_id: availability_request_id,
           application_id: application_id,
           session_ids: session_ids,
           filter_id: filter_id,
         };
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confirmInterview_email_applicant`,
-        { ...payload },
-      );
+      await mailSender({
+        target_api: 'confirmInterview_email_applicant',
+        payload: {
+          ...payload,
+        },
+      });
     }
 
     return res.status(200).send('ok');

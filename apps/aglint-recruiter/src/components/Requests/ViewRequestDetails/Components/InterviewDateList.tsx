@@ -1,6 +1,6 @@
 
-import { IconButtonSoft } from '@devlink3/IconButtonSoft';
 import { Popover, Stack } from '@mui/material';
+import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -35,14 +35,13 @@ function InterviewDateList({
 
   return (
     <>
-      <IconButtonSoft
-        onClickButton={{
-          onClick: handleClick,
-        }}
-        iconName={'edit_square'}
-        color={'neutral'}
-        size={1}
-      />
+      <UIButton
+        variant='secondary'
+        size='sm'
+        onClick={handleClick}
+      >
+       <Pencil className='h-4 w-4'/>
+      </UIButton>
       <Popover
         id={id}
         open={open}

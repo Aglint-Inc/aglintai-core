@@ -8,12 +8,12 @@ import {
 import { Stack } from '@mui/material';
 import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
+import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
 
-import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
-import { getPauseMemberText } from '../InterviewTypes/DetailPage/SlotBodyComp/utils';
+import { getPauseMemberText } from '../InterviewTypes/DetailPage/_common/utils/utils';
 import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
 
 function InterviewerUserDetail({
@@ -142,7 +142,6 @@ function InterviewerUserDetail({
         <MuiAvatar
           level={getFullName(userDetails.first_name, userDetails.last_name)}
           src={userDetails.profile_image}
-          variant={'rounded'}
           fontSize={'14px'}
           width='100%'
           height='100%'

@@ -1,20 +1,19 @@
-import { Stack } from '@mui/material';
 import { loaderLottie } from '@public/lottie/loader-loattie';
 import Lottie from 'lottie-react';
 import React from 'react';
 
 function Loader() {
   return (
-    <Stack height={100} position={'relative'}>
-      <Stack left={-100} top={-25} position={'absolute'} width={200}>
+    <div className='h-[100px] relative'>
+      <div className='absolute left-[-100px] top-[-25px] w-[200px]'>
         <Lottie
           //   lottieRef={lottieRef}
           animationData={loaderLottie}
           loop={true}
           autoplay={true}
         />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }
 

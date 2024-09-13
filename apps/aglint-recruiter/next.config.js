@@ -44,13 +44,13 @@ const nextConfig = {
       },
       ...(process.env.NODE_ENV === 'production'
         ? [
-          {
-            source: '/signup',
-            destination: '/login',
-            basePath: undefined,
-            permanent: false,
-          },
-        ]
+            {
+              source: '/signup',
+              destination: '/login',
+              basePath: undefined,
+              permanent: false,
+            },
+          ]
         : []),
     ];
   },
@@ -76,6 +76,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'ecfwsyxpcuzxlxrkhxjz.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'logo.clearbit.com',
       },
     ],
   },

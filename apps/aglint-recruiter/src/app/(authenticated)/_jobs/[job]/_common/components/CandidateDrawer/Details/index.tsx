@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -13,7 +12,7 @@ const Details = (props: PropsWithChildren) => {
   const { isScoringEnabled } = useRolesAndPermissions();
   if (!isScoringEnabled) return <></>;
   return (
-    <Stack sx={{ display: 'flex', gap: 4 }}>
+    <div className='flex flex-col gap-4'>
       {props.children ?? (
         <>
           <Insights />
@@ -23,7 +22,7 @@ const Details = (props: PropsWithChildren) => {
           <Skills />
         </>
       )}
-    </Stack>
+    </div>
   );
 };
 

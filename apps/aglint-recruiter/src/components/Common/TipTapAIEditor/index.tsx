@@ -1,6 +1,5 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { Skeleton } from '@components/ui/skeleton';
-import { Stack } from '@mui/system';
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useState } from 'react';
 
@@ -61,7 +60,6 @@ const TipTapAIEditor = ({
   editor_type = 'regular',
   template_type,
   toolbar = true,
-  padding = 2,
   onfocus,
   onblur,
   isSize = true,
@@ -132,103 +130,73 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <Stack
-        sx={{
-          ...(border && {
-            border: '1px solid',
-            borderColor: 'var(--neutral-6)',
-            borderRadius: borderRadius || 'var(--radius-2)',
-          }),
-        }}
-      >
+      <div>
         <div>
           {editor && toolbar && (
-            <>
-              <Stack
-                sx={{
-                  pointerEvents: disabled ? 'none' : 'auto',
-                  opacity: disabled ? 0.5 : 1,
-                }}
-              >
-                <MenuBtns
-                  borderRadius={(border && borderRadius) || 'var(--radius-2)'}
-                  isSize={isSize}
-                  isAlign={isAlign}
-                />
-              </Stack>
-            </>
+            <div
+              className={`${disabled ? 'pointer-events-none opacity-50' : ''}`}
+            >
+              <MenuBtns
+                borderRadius={(border && borderRadius) || 'var(--radius-2)'}
+                isSize={isSize}
+                isAlign={isAlign}
+              />
+            </div>
           )}
-          <Stack
-            position={'relative'}
-            sx={{
-              pointerEvents: disabled ? 'none' : 'auto',
-              opacity: disabled ? 0.5 : 1,
-              backgroundColor: 'var(--white)',
-              borderRadius: borderRadius || 'var(--radius-2)',
+          <div
+            className={`
+              relative
+              ${disabled ? 'pointer-events-none opacity-50' : ''}
+              bg-white
+              rounded-[var(--radius-2)]
+              overflow-auto
+            `}
+            style={{
               minHeight: minHeight,
               height: height,
-              overflow: 'auto',
-              '& .ProseMirror': {
-                width: '100%',
-                height: height !== 'auto' ? height : 'auto',
-                wordBreak: 'break-word',
-                color: disabled ? 'var(--neutral-3)' : 'var(--neutral-12)',
-                cursor: disabled ? 'default' : 'auto',
-              },
-              '& .ProseMirror *::selection': {
-                background: 'var(--accent-4)',
-              },
-              '.tiptap p.is-editor-empty:first-child::before ': {
-                color: 'var(--neutral-9)',
-                content: 'attr(data-placeholder)',
-                float: 'left',
-                height: 0,
-                'pointer-events': 'none',
-              },
-              '& .ProseMirror-focused': {
-                outline: 0,
-              },
-              '& .ProseMirror .temp-variable': {
-                backgroundColor: '#f7ebfc',
-                paddingLeft: '3px',
-                paddingRight: '3px',
-                paddingBottom: '3px',
-                color: '#B552E2',
-                borderRadius: '2px',
-              },
             }}
           >
-            <Stack
-              p={singleLine ? '9px 6px 6px 12px ' : padding}
-              sx={{ border: '1px solid #D3D3D3', borderRadius: '4px' }}
+            <div
+              className={`
+                [&_.ProseMirror]:w-full
+                [&_.ProseMirror]:break-words
+                [&_.ProseMirror]:${disabled ? 'text-neutral-3 cursor-default' : 'text-neutral-12 cursor-auto'}
+                [&_.ProseMirror_*::selection]:bg-accent-4
+                [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-9
+                [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]
+                [&_.tiptap_p.is-editor-empty:first-child::before]:float-left
+                [&_.tiptap_p.is-editor-empty:first-child::before]:h-0
+                [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none
+                [&_.ProseMirror-focused]:outline-none
+                [&_.ProseMirror_.temp-variable]:bg-[#f7ebfc]
+                [&_.ProseMirror_.temp-variable]:px-[3px]
+                [&_.ProseMirror_.temp-variable]:pb-[3px]
+                [&_.ProseMirror_.temp-variable]:text-[#B552E2]
+                [&_.ProseMirror_.temp-variable]:rounded-[2px]
+              `}
+              style={{
+                height: height !== 'auto' ? height : 'auto',
+              }}
             >
-              {loader.isLoading ? (
-                <Stack gap={1}>
-                  {[...Array(loader.count)].map((_e, i) => (
-                    <Skeleton key={i} className="w-full h-3" />
-                  ))}
-                </Stack>
-              ) : (
-                <EditorContent
-                  onFocus={onfocus}
-                  onBlur={onblur}
-                  editor={editor}
-                  className={singleLine && 'single-line-editor'}
-                  style={
-                    singleLine
-                      ? {
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }
-                      : {}
-                  }
-                />
-              )}
-            </Stack>
-          </Stack>
+              <div className={`${singleLine ? 'py-2 px-4' : 'p-6'}`}>
+                {loader.isLoading ? (
+                  <div className='flex flex-col gap-1'>
+                    {[...Array(loader.count)].map((_e, i) => (
+                      <Skeleton key={i} className='w-full h-3' />
+                    ))}
+                  </div>
+                ) : (
+                  <EditorContent
+                    onFocus={onfocus}
+                    onBlur={onblur}
+                    editor={editor}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-      </Stack>
+      </div>
     </TipTapCtx.Provider>
   );
 };

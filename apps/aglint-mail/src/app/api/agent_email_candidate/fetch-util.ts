@@ -1,4 +1,8 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type {
+  EmailTemplateAPi,
+  SupabaseType,
+  TargetApiPayloadType,
+} from '@aglint/shared-types';
 import {
   DAYJS_FORMATS,
   ScheduleUtils,
@@ -10,7 +14,7 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'agent_email_candidate'>['api_payload'],
+  req_body: TargetApiPayloadType<'agent_email_candidate'>,
 ) {
   const [filterJson] = supabaseWrap(
     await supabaseAdmin

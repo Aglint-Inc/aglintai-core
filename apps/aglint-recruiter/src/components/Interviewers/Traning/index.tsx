@@ -1,4 +1,3 @@
-
 import { Avatar, Stack } from '@mui/material';
 import { HardDrive } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -106,21 +105,18 @@ function TrainingProgress() {
                       // src={interviewer.}
                       style={{ width: '32px', height: '32px' }}
                       alt={interviewer.name}
-                      variant='rounded-medium'
                     />
                   }
                 />
               </>
             ))
           ) : (
-          
-              <div className="flex flex-col items-center justify-center p-4 bg-white h-[200px]">
-                <div className="mb-2">
-                  <HardDrive className="h-9 w-9 text-gray-500" />
-                </div>
-                <p className="text-sm text-gray-500">No Data Available</p>
+            <div className='flex flex-col items-center justify-center p-4 bg-white h-[200px]'>
+              <div className='mb-2'>
+                <HardDrive className='h-9 w-9 text-gray-500' />
               </div>
-            
+              <p className='text-sm text-gray-500'>No Data Available</p>
+            </div>
           )
         }
       />

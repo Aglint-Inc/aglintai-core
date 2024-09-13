@@ -1,11 +1,17 @@
 import { type DB } from '@aglint/shared-types';
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/ScheduleProgressPill';
 import { StatusBadge } from '@devlink2/StatusBadge';
 import { Stack } from '@mui/material';
@@ -71,22 +77,25 @@ const ScheduleProgressPill = memo(
               </TooltipTrigger>
               <TooltipContent>
                 <Stack>
-                  <ProgressHoverCard
-                    isScheduleDate={isScheduleDate}
-                    textScheduleDate={scheduleDate}
-                    slotInterviewTypeIcon={
-                      <SessionIcon session_type={props.session_type} />
-                    }
-                    slotMeetingTypeIcon={
-                      <IconScheduleType type={props.schedule_type} />
-                    }
-                    textMeetingType={scheduleType}
-                    textScheduleName={props.session_name}
-                    textDuration={duration}
-                    slotScheduleStatus={
-                      <ScheduleStatus status={props.status} />
-                    }
-                  />
+                  <Card className='w-[350px]'>
+                    <CardHeader>
+                      <CardTitle>{props.session_name}</CardTitle>
+                      <CardDescription>{duration}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className='space-y-2'>
+                        {isScheduleDate && (
+                          <p className='text-sm'>{scheduleDate}</p>
+                        )}
+                        <div className='flex items-center space-x-2'>
+                          <SessionIcon session_type={props.session_type} />
+                          <IconScheduleType type={props.schedule_type} />
+                          <span>{scheduleType}</span>
+                        </div>
+                        <ScheduleStatus status={props.status} />
+                      </div>
+                    </CardContent>
+                  </Card>
                 </Stack>
               </TooltipContent>
             </Tooltip>

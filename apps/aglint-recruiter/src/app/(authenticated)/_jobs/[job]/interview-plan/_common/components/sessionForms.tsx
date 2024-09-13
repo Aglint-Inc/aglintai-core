@@ -1,11 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ButtonSolid } from '@devlink2/ButtonSolid';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
-import { Stack, Typography } from '@mui/material';
+import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, {
   type ChangeEventHandler,
@@ -16,6 +15,7 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
@@ -253,8 +253,8 @@ const SessionForms = ({
   const locationField = useMemo(
     () =>
       schedule_type.value === 'in_person_meeting' ? (
-        <Stack gap={1}>
-          <Typography>Address</Typography>
+        <div className='flex flex-col space-y-1'>
+          <span className='text-sm font-medium'>Address</span>
           <UITextArea
             name={'location'}
             rows={5}
@@ -265,7 +265,7 @@ const SessionForms = ({
               handleChange('location', value)
             }
           />
-        </Stack>
+        </div>
       ) : null,
     [location, schedule_type],
   );
@@ -282,13 +282,13 @@ const SessionForms = ({
         />
       }
       slotScheduleTypeDropdown={
-        <Stack gap={2}>
+        <div className='flex flex-col gap-2'>
           <ScheduleTypeField
             value={schedule_type.value}
             handleTypeChange={handleTypeChange}
           />
           {locationField}
-        </Stack>
+        </div>
       }
       slotInterviewMode={
         interview_module.value ? (
@@ -484,32 +484,29 @@ const Interview = ({
         }
         slotMemberCountDropdown={countField}
         slotInterviewersDropdown={
-          <Stack gap={1}>
+          <div className='flex flex-col gap-1'>
             {(currentQualifiedModuleMembers ?? []).length === 0 && (
-              <GlobalBannerShort
-                iconName={'warning'}
-                textTitle={'Interview type has no interviewers'}
-                textDescription={
-                  'Please add members to the selected interview type'
-                }
-                color={'error'}
-                slotButtons={
-                  <ButtonSolid
-                    color={'error'}
-                    size={1}
-                    textButton={'Go to interview type'}
-                    onClickButton={{
-                      onClick: () =>
-                        interview_module?.value?.id &&
-                        push(
-                          ROUTES['/scheduling/interview-types/[type_id]']({
-                            type_id: interview_module.value.id,
-                          }),
-                        ),
-                    }}
-                  />
-                }
-              />
+              <Alert variant='error'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>Interview type has no interviewers</AlertTitle>
+                <AlertDescription>
+                  Please add members to the selected interview type
+                </AlertDescription>
+                <UIButton
+                  variant='destructive'
+                  size={'sm'}
+                  onClick={() =>
+                    interview_module?.value?.id &&
+                    push(
+                      ROUTES['/interview-pool/[type_id]']({
+                        type_id: interview_module.value.id,
+                      }),
+                    )
+                  }
+                >
+                  Go to interview type
+                </UIButton>
+              </Alert>
             )}
             <InterviewersField
               value={interviewers.value}
@@ -518,7 +515,7 @@ const Interview = ({
               moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
               handleMemberAdd={handleMemberAdd}
             />
-          </Stack>
+          </div>
         }
         isTrainingVisible={showTraining}
         slotInterviewersAvatarSelectionPill={<></>}

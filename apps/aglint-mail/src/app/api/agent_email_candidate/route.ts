@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-import * as v from 'valibot';
 import { agentEmailCandidateSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import type { APISendgridPayload } from '@aglint/shared-types';
 import sendMail from '../../../config/sendgrid';
-import { fetchUtil } from './fetch-util';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
@@ -12,7 +11,7 @@ export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
 
   try {
-    const parsed_body = v.parse(agentEmailCandidateSchema, req_body);
+    const parsed_body = agentEmailCandidateSchema.parse(req_body);
     const { filled_comp_template, recipient_email } = await fetchUtil(
       supabaseAdmin,
       parsed_body,

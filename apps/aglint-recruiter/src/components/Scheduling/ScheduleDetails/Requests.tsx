@@ -1,5 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
-import { AvatarWithName } from '@devlink3/AvatarWithName';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
@@ -13,7 +13,6 @@ import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
 
 function Requests({ session_id }) {
   const router = useRouter();
@@ -48,24 +47,29 @@ function Requests({ session_id }) {
                   }}
                   textHistory={request.title}
                   slotAssignedTo={
-                    <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
+                    <div className='flex items-center space-x-2'>
+                      <Avatar className='h-5 w-5 rounded'>
+                        <AvatarImage
                           src={request.assignee_details.profile_image}
-                          level={getFullName(
+                          alt={getFullName(
                             request.assignee_details.first_name,
                             request.assignee_details.last_name,
                           )}
-                          variant='rounded'
-                          width={'20px'}
-                          height={'20px'}
                         />
-                      }
-                      textName={getFullName(
-                        request.assignee_details.first_name,
-                        request.assignee_details.last_name,
-                      )}
-                    />
+                        <AvatarFallback>
+                          {getFullName(
+                            request.assignee_details.first_name,
+                            request.assignee_details.last_name,
+                          ).charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className='text-sm font-medium'>
+                        {getFullName(
+                          request.assignee_details.first_name,
+                          request.assignee_details.last_name,
+                        )}
+                      </span>
+                    </div>
                   }
                   slotStatus={
                     <Stack direction={'row'}>
@@ -87,51 +91,6 @@ function Requests({ session_id }) {
                     </Stack>
                   }
                 />
-                {/* <Stack
-                  key={request.id}
-                  sx={{
-                    padding: '12px',
-                    backgroundColor: 'white',
-                    borderRadius: '8px',
-                    border: '1px solid var(--neutral-5)',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      backgroundColor: 'var(--neutral-2)',
-                    },
-                  }}
-                  spacing={'var(--space-2)'}
-                  onClick={() => {
-                    router.push(
-                      ROUTES['/requests/[id]']({
-                        id: request.id,
-                      }),
-                    );
-                  }}
-                >
-                 
-
-                  <Stack direction={'row'} spacing={'var(--space-2)'}>
-                    
-                    <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
-                          src={request.assignee_details.profile_image}
-                          level={getFullName(
-                            request.assignee_details.first_name,
-                            request.assignee_details.last_name,
-                          )}
-                          variant='rounded'
-                          width={'20px'}
-                          height={'20px'}
-                        />
-                      }
-                      textName={getFullName(
-                        request.assignee_details.first_name,
-                        request.assignee_details.last_name,
-                      )}
-                    />
-                  </Stack>
-                </Stack> */}
               </>
             );
           })}

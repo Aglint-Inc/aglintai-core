@@ -1,11 +1,11 @@
-import { RecentDeclineList } from '@devlink3/RecentDeclineList';
-import { RecentDeclines as RecentDeclinesDev } from '@devlink3/RecentDeclines';
+
 import Avatar from '@mui/material/Avatar';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
+import UITypography from '@/components/Common/UITypography';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
@@ -17,7 +17,16 @@ import { Empty } from './common';
 const LIMIT = 4;
 
 export const RecentDeclines = memo(() => (
-  <RecentDeclinesDev slotRecentDeclineList={<Container />} />
+  <div className='border border-gray-200 rounded-md h-[450px] overflow-hidden'>
+    <div className='p-3 bg-gray-100 border-b border-gray-200'>
+      <UITypography type='small' fontBold='normal' color='black'>
+        Recent Decline
+      </UITypography>
+    </div>
+    <div className='flex flex-col'>
+      <Container />
+    </div>
+  </div>
 ));
 RecentDeclines.displayName = 'RecentDeclines';
 
@@ -57,15 +66,21 @@ const List = memo(({ data }: Props) => {
   return (
     <>
       {(data ?? []).map(({ id, name, note, profile_image }) => (
-        <RecentDeclineList
-          key={id}
-          slotImage={
-            <Avatar src={profile_image} alt={name} variant='rounded-medium' />
-          }
-          textDesc={note?.trim() || '---'}
-          textName={capitalizeAll(name)}
-          textTime={''}
-        />
+        <div key={id} className='flex items-center space-x-4 p-4'>
+          <div className='flex-shrink-0'>
+            <Avatar src={profile_image} alt={name}>
+              {/* <AvatarFallback>{name.charAt(0)}</AvatarFallback> */}
+            </Avatar>
+          </div>
+          <div className='flex-1 min-w-0'>
+            <p className='text-sm font-medium text-gray-900 truncate'>
+              {capitalizeAll(name)}
+            </p>
+            <p className='text-sm text-gray-500 truncate'>
+              {note?.trim() || '---'}
+            </p>
+          </div>
+        </div>
       ))}
     </>
   );
@@ -75,21 +90,16 @@ List.displayName = 'List';
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
     (_, i) => (
-      <RecentDeclineList
-        key={i}
-        slotImage={
-          <Skeleton variant='circular' width={'100%'} height={'100%'} />
-        }
-        textName={
-          <Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />
-        }
-        textTime={
-          <Skeleton variant='text' width={'50px'} height={'var(--space-6)'} />
-        }
-        textDesc={
-          <Skeleton variant='text' width={'200px'} height={'var(--space-6)'} />
-        }
-      />
+      <div key={i} className='flex items-center space-x-4 p-4'>
+        <div className='flex-shrink-0'>
+          <Skeleton className='rounded-full' width={'100%'} height={'100%'} />
+        </div>
+        <div className='flex-1 min-w-0'>
+          <Skeleton className='h-4 w-24' />
+          <Skeleton className='h-4 w-12' />
+          <Skeleton className='h-4 w-48' />
+        </div>
+      </div>
     ),
   );
 });

@@ -34,7 +34,6 @@ function InterviewerDetailsCard({
         <MuiAvatar
           src={profile_image}
           level={getFullName(first_name, last_name)}
-          variant='rounded-medium'
         />
       }
       textName={getFullName(first_name, last_name)}

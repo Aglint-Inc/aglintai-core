@@ -7,10 +7,10 @@ import {
   MapPin,
   Smartphone,
   SquareUser,
+  User,
 } from 'lucide-react';
 import React from 'react';
 
-import IconCandidate from '@/components/Common/Icons/IconCandidate';
 import UITypography from '@/components/Common/UITypography';
 
 export function ApplicantInfoBox({
@@ -33,7 +33,7 @@ export function ApplicantInfoBox({
       <div className='flex w-full justify-between items-start'>
         <div className='flex flex-auto gap-2.5'>
           <div className='overflow-hidden w-6 h-6 rounded-md'>
-            {slotImage ?? <IconCandidate />}
+            {slotImage ?? <User className='w-6 h-6 text-neutral-600' />}
           </div>
           <div className='flex flex-col gap-3'>
             <div className='flex items-center gap-2'>

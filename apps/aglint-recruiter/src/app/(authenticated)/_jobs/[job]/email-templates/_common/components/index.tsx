@@ -9,17 +9,22 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { EditEmail } from '@devlink/EditEmail';
-import { EmailTemplateCards } from '@devlink/EmailTemplateCards';
-import { EmailTemplatesStart } from '@devlink/EmailTemplatesStart';
-import { Stack } from '@mui/material';
+import { Button } from '@components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { debounce } from 'lodash';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
-import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/components/Common/Loader';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
@@ -41,7 +46,7 @@ export const JobEmailTemplatesDashboard = () => {
   const { isFetching } = useCurrJobTemps({ setSaving });
 
   return (
-    <Stack height={'100%'} width={'100%'}>
+    <div className='h-full w-full'>
       {isFetching ? (
         <Loader />
       ) : (
@@ -52,7 +57,7 @@ export const JobEmailTemplatesDashboard = () => {
           slotBody={<JobEmailTemplates setSaving={setSaving} />}
         />
       )}
-    </Stack>
+    </div>
   );
 };
 
@@ -94,7 +99,6 @@ const JobEmailTemplates = ({ setSaving }) => {
     handleUpdateTemp,
   } = useCurrJobTemps({ setSaving });
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isHtml, setHtml] = useState(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
@@ -126,65 +130,68 @@ const JobEmailTemplates = ({ setSaving }) => {
   const emailBodyChange = (s) => {
     handleUpdateTemp({ ...editTemp, body: s });
   };
+  const EmailPreviewContent = ({ isHtml, loading }) => {
+    if (loading) {
+      return <Loader2 className='h-8 w-8 animate-spin' />;
+    }
+
+    return <div dangerouslySetInnerHTML={{ __html: isHtml }} />;
+  };
 
   return (
-    <EmailTemplatesStart
-      isSearchFilterVisible={false}
-      showTabs={false}
-      // isSearchFilterVisible={false}// build is failing
-      isWarningVisible={true}
-      slotEmailTemplateCards={
-        <>
+    <div className='w-full space-y-4'>
+      {/* <Tabs defaultValue="templates" className="w-full">
+        <TabsList>
+          <TabsTrigger value="templates">Templates</TabsTrigger>
+          {/* Add more tabs if needed */}
+      {/* </TabsList>
+        <TabsContent value="templates" className="space-y-4">  */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Email Templates</CardTitle>
+        </CardHeader>
+        <CardContent>
           <Sections
             selectedTemp={selectedTemp}
             handleChangeSelectedTemplate={handleChangeSelectedTemplate}
           />
-        </>
-      }
-      slotSearchFilter={<></>}
-      currentModule={'jobs'}
-      slotEmailDetails={
-        <>
-          {isloadTiptap ? (
-            <>
-              <Loader />
-            </>
-          ) : (
-            <EditEmail
-              editEmailDescription={
-                emailTemplateCopy[editTemp.type].description
-              }
-              textEmailName={emailTemplateCopy[editTemp.type].heading}
-              onClickPreview={{
-                onClick: (e) => {
-                  preview();
-                  setAnchorEl(e.currentTarget);
-                },
-              }}
-              slotForm={
-                <>
-                  <EmailTemplateEditForm
-                    senderNameChange={senderNameChange}
-                    emailSubjectChange={emailSubjectChange}
-                    emailBodyChange={emailBodyChange}
-                    selectedTemplate={editTemp}
-                    isJobTemplate={true}
-                  />
-                  <EmailPreviewPopover
-                    anchorEl={anchorEl}
-                    setAnchorEl={setAnchorEl}
-                    setHtml={setHtml}
-                    isHtml={isHtml}
-                    Loading={popOverLoading}
-                  />
-                </>
-              }
-              isSaveChangesButtonVisible={false}
+        </CardContent>
+      </Card>
+
+      {isloadTiptap ? (
+        <div className='flex justify-center'>
+          <Loader2 className='h-8 w-8 animate-spin' />
+        </div>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>{emailTemplateCopy[editTemp.type].heading}</CardTitle>
+            <p className='text-sm text-gray-500'>
+              {emailTemplateCopy[editTemp.type].description}
+            </p>
+          </CardHeader>
+          <CardContent>
+            <EmailTemplateEditForm
+              senderNameChange={senderNameChange}
+              emailSubjectChange={emailSubjectChange}
+              emailBodyChange={emailBodyChange}
+              selectedTemplate={editTemp}
+              isJobTemplate={true}
             />
-          )}
-        </>
-      }
-    />
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button onClick={preview}>Preview</Button>
+              </DialogTrigger>
+              <DialogContent className='sm:max-w-[425px]'>
+                <EmailPreviewContent isHtml={isHtml} loading={popOverLoading} />
+              </DialogContent>
+            </Dialog>
+          </CardContent>
+        </Card>
+      )}
+      {/* </TabsContent> */}
+      {/* // </Tabs> */}
+    </div>
   );
 };
 
@@ -202,17 +209,18 @@ const Sections = ({
     <>
       {templates_order.map((tempKey) => {
         return (
-          <EmailTemplateCards
+          <Card
             key={tempKey}
-            textTitle={emailTemplateCopy[tempKey].heading}
-            textDescription={emailTemplateCopy[tempKey].description}
-            isActive={selectedTemp === tempKey}
-            onClickApplicationRecieved={{
-              onClick: () => {
-                handleChangeSelectedTemplate(tempKey);
-              },
-            }}
-          />
+            className={`cursor-pointer ${selectedTemp === tempKey ? 'border-primary' : ''}`}
+            onClick={() => handleChangeSelectedTemplate(tempKey)}
+          >
+            <CardHeader>
+              <CardTitle>{emailTemplateCopy[tempKey].heading}</CardTitle>
+              <CardDescription>
+                {emailTemplateCopy[tempKey].description}
+              </CardDescription>
+            </CardHeader>
+          </Card>
         );
       })}
     </>

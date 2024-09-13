@@ -142,7 +142,7 @@ function Overview() {
             onClick={() => {
               checkPermissions(['interview_types']) &&
                 window.open(
-                  `/scheduling/interview-types/${schedule.interview_session.module_id}?tab=qualified`,
+                  `/interview-pool/${schedule.interview_session.module_id}`,
                   '_blank',
                 );
             }}

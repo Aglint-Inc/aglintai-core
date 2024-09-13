@@ -1,4 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
@@ -7,10 +8,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { RolesPill } from '@devlink/RolesPill';
 import { TimeRangeSelector } from '@devlink3/TimeRangeSelector';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { X } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -76,14 +77,20 @@ function DateRangeField() {
         }
         slotSelectedTime={
           localFilters.preferredDateRanges.length > 0 && (
-            <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
+            <div className='flex flex-wrap gap-1'>
               {localFilters.preferredDateRanges.map((dateRange, index) => {
                 return (
-                  <RolesPill
-                    textRoles={`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
+                  <Badge
                     key={index}
-                    onClickRemoveRoles={{
-                      onClick: () => {
+                    variant='secondary'
+                    className='flex items-center gap-1'
+                  >
+                    {`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      className='h-auto p-0 text-muted-foreground hover:text-foreground'
+                      onClick={() => {
                         setLocalFilters({
                           preferredDateRanges:
                             localFilters.preferredDateRanges.filter(
@@ -91,12 +98,14 @@ function DateRangeField() {
                                 range.startTime !== dateRange.startTime,
                             ),
                         });
-                      },
-                    }}
-                  />
+                      }}
+                    >
+                      <X className='h-3 w-3' />
+                    </Button>
+                  </Badge>
                 );
               })}
-            </Stack>
+            </div>
           )
         }
         slotCheckbox={<Checkbox />}

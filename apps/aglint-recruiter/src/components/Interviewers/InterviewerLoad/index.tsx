@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useJobs } from '@/jobs/hooks';
 import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/queries/departments';
@@ -14,7 +15,6 @@ import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
-import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { InterviewerWorkload } from '../components/InterviewerWorkload';
 import { InterviewWorkloadList } from '../components/InterviewWorkloadList';
@@ -234,7 +234,6 @@ const InterviewerCard = ({
         slotImage={
           <Avatar
             src={interviewer.profile_image}
-            variant='rounded'
             alt={interviewer.first_name}
             style={{
               width: '32px',

@@ -3,7 +3,6 @@ import { Switch } from '@components/ui/switch';
 import { Attendee } from '@devlink2/Attendee';
 import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
-import { Stack, Typography } from '@mui/material';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -205,10 +204,10 @@ const DebriefForms = ({
   const locationField = useMemo(
     () =>
       schedule_type.value === 'in_person_meeting' ? (
-        <Stack gap={1}>
-          <Typography>Address</Typography>
+        <div className="flex flex-col space-y-1">
+          <span className="text-sm font-medium">Address</span>
           <UITextArea
-            name={'location'}
+            name="location"
             rows={5}
             value={location.value}
             error={location.error}
@@ -216,8 +215,9 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </Stack>
+        </div>
       ) : null,
     [location, schedule_type],
   );
@@ -228,13 +228,13 @@ const DebriefForms = ({
       slotDurationDropdown={sessionDurationField}
       slotMemberAvatarSelectionPill={<></>}
       slotScheduleTypeDropdown={
-        <Stack gap={2}>
+        <div className="flex flex-col gap-2">
           <ScheduleTypeField
             value={schedule_type.value}
             handleTypeChange={handleTypeChange}
           />
           {locationField}
-        </Stack>
+        </div>
       }
       slotMembersDropdown={
         showMembers && (
@@ -342,11 +342,7 @@ const Member = ({
           onClickRemove={null}
           textMemberName={name}
           slotMemberAvatar={
-            <MuiAvatar
-              src={member.profile_image}
-              level={name}
-              variant='rounded-small'
-            />
+            <MuiAvatar src={member.profile_image} level={name} />
           }
         />
       }

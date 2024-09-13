@@ -9,7 +9,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { SavedChanges } from '@devlink/SavedChanges';
 import { JobDetailBlock } from '@devlink3/JobDetailBlock';
-import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import {
   type Dispatch,
@@ -46,9 +45,9 @@ export const JobDetailsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+    <div className='w-full h-screen flex items-center justify-center'>
       <Loader />
-    </Stack>
+    </div>
   );
 };
 
@@ -142,19 +141,17 @@ const JobEdit = () => {
         />
       }
       slotSaving={
-        <Stack style={{ opacity: show ? 1 : 0, transition: '0.3s' }}>
+        <div
+          className={`flex flex-col transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+        >
           <SavedChanges
             isSaving={saving}
             isSaved={!saving}
             slotLoaderIcon={
-              <CircularProgress
-                color='inherit'
-                size={'15px'}
-                sx={{ color: 'var(--neutral-6)' }}
-              />
+              <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
             }
           />
-        </Stack>
+        </div>
       }
     />
   );
@@ -295,14 +292,10 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
       }}
       slotRichtextWarning={
         fields.description.error.value && (
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            color={'var(--error-a11)'}
-          >
+          <div className='flex items-center flex-row text-error-600'>
             <WarningSvg />
-            {fields.description.error.helper}
-          </Stack>
+            <span>{fields.description.error.helper}</span>
+          </div>
         )
       }
     />

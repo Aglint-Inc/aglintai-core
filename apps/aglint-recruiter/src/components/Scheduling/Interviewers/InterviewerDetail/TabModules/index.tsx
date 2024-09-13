@@ -7,8 +7,8 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 
-import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
 import PauseDialog from '../Popups/PauseDialog';

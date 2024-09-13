@@ -1,38 +1,40 @@
-import { Drawer } from '@mui/material';
+import { Sheet, SheetContent, SheetPortal } from '@components/ui/sheet';
 import React, { type ReactNode } from 'react';
 
-function SidePanelDrawer({
-  openSidePanelDrawer,
-  setOpenPanelDrawer,
+function SidePanelSheet({
+  openSidePanelSheet,
+  setOpenPanelSheet,
   children,
   dir = 'right',
   onClose = () => null,
   zIndex = 1300,
 }: {
-  openSidePanelDrawer: boolean;
+  openSidePanelSheet: boolean;
   // eslint-disable-next-line no-unused-vars
-  setOpenPanelDrawer: (x: boolean) => void;
+  setOpenPanelSheet: (x: boolean) => void;
   children?: ReactNode;
   dir?: 'top' | 'right' | 'bottom' | 'left';
   onClose?: () => void;
   zIndex?: number;
 }) {
+  const handleOpenChange = (open: boolean) => {
+    setOpenPanelSheet(open);
+    if (!open) onClose();
+  };
+
   return (
-    <Drawer
-      sx={{
-        zIndex: Number(zIndex),
-      }}
-      disableEscapeKeyDown
-      anchor={dir}
-      open={openSidePanelDrawer}
-      onClose={() => {
-        setOpenPanelDrawer(false);
-        onClose();
-      }}
-    >
-      {children}
-    </Drawer>
+    <Sheet open={openSidePanelSheet} onOpenChange={handleOpenChange}>
+      <SheetPortal>
+        <SheetContent
+          side={dir}
+          className='p-6 w-full max-w-[400px]'
+          style={{ zIndex }}
+        >
+          {children}
+        </SheetContent>
+      </SheetPortal>
+    </Sheet>
   );
 }
 
-export default SidePanelDrawer;
+export default SidePanelSheet;

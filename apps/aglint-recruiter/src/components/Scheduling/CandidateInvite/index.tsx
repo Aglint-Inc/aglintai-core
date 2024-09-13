@@ -4,7 +4,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Page404 } from '@devlink/Page404';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
-import { Coffee } from 'lucide-react';
+import { Coffee, X } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';

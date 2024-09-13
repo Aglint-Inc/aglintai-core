@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
+import { SheetContent, SheetTrigger } from '@components/ui/sheet';
 import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
-import { Drawer, Stack } from '@mui/material';
+import { FileQuestion, Sheet } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Icon from '@/components/Common/Icons/Icon';
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
@@ -38,27 +38,26 @@ type InterviewDrawersProps = {
   drawers: DrawerType;
   handleClose: () => void;
 };
-const InterviewDrawers = ({
-  open,
-  drawers,
-  handleClose,
-}: InterviewDrawersProps) => {
+const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
   const { push } = useRouter();
   const {
     interviewModules: { data },
   } = useJobInterviewPlan();
   return (
-    <Drawer open={open} onClose={() => handleClose()} anchor='right'>
-      {data.length ? (
-        <InterviewSideDrawer
-          drawers={drawers}
-          handleClose={() => handleClose()}
-        />
-      ) : (
-        <Stack px={'80px'}>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button onClick={() => handleClose()}>Close</Button>
+      </SheetTrigger>
+      <SheetContent side='right'>
+        {data.length ? (
+          <InterviewSideDrawer
+            drawers={drawers}
+            handleClose={() => handleClose()}
+          />
+        ) : (
           <div className='flex flex-col items-center justify-center p-8 text-center'>
             <div className='mb-2'>
-              <Icon variant='EmptyState' width='80' height='80' />
+              <FileQuestion size={80} />
             </div>
             <h3 className='text-lg font-semibold mb-2'>No Interview Plan</h3>
             <p className='text-sm text-gray-600 mb-4'>
@@ -71,9 +70,9 @@ const InterviewDrawers = ({
               Create Interview Plan
             </Button>
           </div>
-        </Stack>
-      )}
-    </Drawer>
+        )}
+      </SheetContent>
+    </Sheet>
   );
 };
 

@@ -82,7 +82,7 @@ function Instructions({
           </div>
         </div>
       </UIDialog>
-      <div className="flex flex-col p-5">
+      <div className='flex flex-col'>
         <div
           className={`
             flex flex-col gap-2 bg-white
@@ -98,7 +98,7 @@ function Instructions({
                 <p className='text-base font-medium'>Instructions</p>
                 <UIButton
                   variant='secondary'
-                  leftIcon={<Edit className="w-4 h-4" />}
+                  leftIcon={<Edit className='w-4 h-4' />}
                   size='sm'
                   onClick={() => setEdit(true)}
                 >
@@ -108,7 +108,7 @@ function Instructions({
             </ShowCode.When>
           </ShowCode>
           <div
-            className="max-w-[600px]"
+            className='max-w-[600px]'
             dangerouslySetInnerHTML={{
               __html: marked(instruction || 'Instructions not given'),
             }}

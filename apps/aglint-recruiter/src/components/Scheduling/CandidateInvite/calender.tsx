@@ -19,6 +19,7 @@ export type CandidateInviteCalendarProps = {
   ) => void;
   tz: Parameters<typeof dayJS>[1];
 };
+
 const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
   // const s = useMediaQuery('(min-width:768px)');
 
@@ -31,6 +32,7 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
     : null;
   const displayMonth =
     startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
+
   return (
     <>
       <CandidateCalender
@@ -86,6 +88,7 @@ type ColumnType = {
   handleSelect: CandidateInviteCalendarProps['handleSelect'];
   tz: CandidateInviteCalendarProps['tz'];
 };
+
 const Column = (props: ColumnType) => {
   const date = dayJS(props.session.date, props.tz);
   return (
@@ -112,6 +115,7 @@ type SlotsType = {
   handleSelect: ColumnType['handleSelect'];
   tz: ColumnType['tz'];
 };
+
 const Slots = (props: SlotsType) => {
   const slots = props.slots.map((slot, i) => {
     const count = slot.sessions.length;

@@ -2,8 +2,8 @@ import { type QueryData } from '@supabase/supabase-js';
 
 import { supabase } from '@/utils/supabase/client';
 
-export const schedulesSupabase = () =>
-  supabase
+export const schedulesSupabase = (db = supabase) =>
+  db
     .from('meeting_details')
     .select(
       '*,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',

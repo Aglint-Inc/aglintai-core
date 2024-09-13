@@ -120,7 +120,7 @@ function InterviewModeComp() {
                 size='sm'
                 onClick={() => {
                   router.push(
-                    ROUTES['/scheduling/interview-types/[type_id]']({
+                    ROUTES['/interview-pool/[type_id]']({
                       type_id: moduleCurrent.id,
                     }),
                   );

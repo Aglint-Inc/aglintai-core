@@ -1,7 +1,7 @@
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { DcPopup } from '@devlink/DcPopup';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import { X } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -82,16 +82,70 @@ function CancelScheduleDialog({
         closeDialog();
       }}
     >
-      <DcPopup
-        popupName='Cancel Schedule Initial Screening'
-        onClickClosePopup={{
-          onClick: () => {
-            setIsDeclineOpen(false);
-            closeDialog();
-          },
-        }}
-        slotButtons={
-          <>
+      <div className='flex items-center justify-center w-[500px]'>
+        <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
+          <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+            <h2 className='font-semibold'>Cancel Schedule Initial Screening</h2>
+            <UIButton
+              onClick={() => {
+                setIsDeclineOpen(false);
+                closeDialog();
+              }}
+              variant='ghost'
+              size='sm'
+            >
+              <X className='w-4 h-4' />
+            </UIButton>
+          </div>
+          <div className='p-4'>
+            <Stack spacing={2} width={'100%'}>
+              <Typography variant='body1'>
+                Please provide a reason for canceling and any additional notes.
+              </Typography>
+              <Stack spacing={1}>
+                {reasons.map((rea) => {
+                  return (
+                    <Stack
+                      direction={'row'}
+                      key={rea}
+                      onClick={() => {
+                        setReason(rea);
+                      }}
+                      alignItems={'center'}
+                      spacing={1}
+                    >
+                      <RadioGroupItem
+                        value={rea}
+                        checked={rea === reason}
+                        id={`radio-${rea}`}
+                      />
+                      <Typography
+                        variant='body1'
+                        color={'var(--neutral-12)'}
+                        sx={{
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {rea}
+                      </Typography>
+                    </Stack>
+                  );
+                })}
+              </Stack>
+
+              <Typography variant='body1'>Additional Notes</Typography>
+              <TextField
+                multiline
+                value={notes}
+                minRows={3}
+                placeholder='Add additional notes.'
+                onChange={(e) => {
+                  setNotes(e.target.value);
+                }}
+              />
+            </Stack>
+          </div>
+          <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
             <UIButton
               variant='secondary'
               onClick={() => {
@@ -112,57 +166,9 @@ function CancelScheduleDialog({
             >
               Cancel Schedule
             </UIButton>
-          </>
-        }
-        slotBody={
-          <Stack spacing={2} width={'100%'}>
-            <Typography variant='body1'>
-              Please provide a reason for canceling and any additional notes.
-            </Typography>
-            <Stack spacing={1}>
-              {reasons.map((rea) => {
-                return (
-                  <Stack
-                    direction={'row'}
-                    key={rea}
-                    onClick={() => {
-                      setReason(rea);
-                    }}
-                    alignItems={'center'}
-                    spacing={1}
-                  >
-                    <RadioGroupItem
-                      value={rea}
-                      checked={rea === reason}
-                      id={`radio-${rea}`}
-                    />
-                    <Typography
-                      variant='body1'
-                      color={'var(--neutral-12)'}
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {rea}
-                    </Typography>
-                  </Stack>
-                );
-              })}
-            </Stack>
-
-            <Typography variant='body1'>Additional Notes</Typography>
-            <TextField
-              multiline
-              value={notes}
-              minRows={3}
-              placeholder='Add additional notes.'
-              onChange={(e) => {
-                setNotes(e.target.value);
-              }}
-            />
-          </Stack>
-        }
-      />
+          </div>
+        </div>
+      </div>
     </Dialog>
   );
 }
