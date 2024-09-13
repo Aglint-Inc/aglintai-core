@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import { z } from 'zod';
 import { DatabaseEnums } from '..';
 import {
   debriefEmailInterviewerSchema,
@@ -31,111 +31,111 @@ import {
 } from '../aglint-mail/api_schema';
 
 type Payloads = {
-  debrief_email_interviewer: v.InferInput<typeof debriefEmailInterviewerSchema>;
+  debrief_email_interviewer: z.infer<typeof debriefEmailInterviewerSchema>;
 
-  applicationRecieved_email_applicant: v.InferInput<
+  applicationRecieved_email_applicant: z.infer<
     typeof applicationRecievedEmailApplicantSchema
   >;
 
-  interviewCancel_email_applicant: v.InferInput<
+  interviewCancel_email_applicant: z.infer<
     typeof interviewCancelEmailApplicantSchema
   >;
 
-  agent_email_candidate: v.InferInput<typeof agentEmailCandidateSchema>;
+  agent_email_candidate: z.infer<typeof agentEmailCandidateSchema>;
 
-  confInterview_email_organizer: v.InferInput<
+  confInterview_email_organizer: z.infer<
     typeof confInterviewEmailOrganizerSchema
   >;
 
-  confirmInterview_email_applicant: v.InferInput<
+  confirmInterview_email_applicant: z.infer<
     typeof confirmInterviewEmailApplicantSchema
   >;
 
-  applicantReject_email_applicant: v.InferInput<
+  applicantReject_email_applicant: z.infer<
     typeof applicantRejectEmailApplicantSchema
   >;
 
-  availabilityReqResend_email_candidate: v.InferInput<
+  availabilityReqResend_email_candidate: z.infer<
     typeof availabilityReqResendEmailCandidateSchema
   >;
 
-  InterviewCancelReq_email_recruiter: v.InferInput<
+  InterviewCancelReq_email_recruiter: z.infer<
     typeof interviewCancelReqEmailRecruiterSchema
   >;
 
-  interReschedReq_email_recruiter: v.InferInput<
+  interReschedReq_email_recruiter: z.infer<
     typeof interReschedReqEmailRecruiterSchema
   >;
 
-  rescheduleSelfSchedule_email_applicant: v.InferInput<
+  rescheduleSelfSchedule_email_applicant: z.infer<
     typeof interviewRescheduleEmailApplicantSchema
   >;
 
-  interviewStart_email_applicant: v.InferInput<
+  interviewStart_email_applicant: z.infer<
     typeof interviewStartEmailApplicantSchema
   >;
 
-  interviewStart_email_interviewers: v.InferInput<
+  interviewStart_email_interviewers: z.infer<
     typeof interviewStartEmailInterviewersSchema
   >;
 
-  interviewStart_email_organizer: v.InferInput<
+  interviewStart_email_organizer: z.infer<
     typeof interviewStartEmailOrganizerSchema
   >;
 
-  sendSelfScheduleRequest_email_applicant: v.InferInput<
+  sendSelfScheduleRequest_email_applicant: z.infer<
     typeof sendSelfScheduleRequest_email_applicant
   >;
 
-  sendAvailabilityRequest_email_applicant: v.InferInput<
+  sendAvailabilityRequest_email_applicant: z.infer<
     typeof sendAvailabilityRequestEmailApplicantSchema
   >;
 
-  sendAvailReqReminder_email_applicant: v.InferInput<
+  sendAvailReqReminder_email_applicant: z.infer<
     typeof sendAvailReqReminderEmailApplicant
   >;
 
-  selfScheduleReminder_email_applicant: v.InferInput<
+  selfScheduleReminder_email_applicant: z.infer<
     typeof selfScheduleReminderEmailApplicantSchema
   >;
 
-  meetingAccepted_email_organizer: v.InferInput<
+  meetingAccepted_email_organizer: z.infer<
     typeof MeetingAcceptedEmailOrganizerSchema
   >;
 
-  meetingDeclined_email_organizer: v.InferInput<
+  meetingDeclined_email_organizer: z.infer<
     typeof meetingDeclinedEmailOrganizerSchema
   >;
 
-  interviewEnd_email_interviewerForFeedback: v.InferInput<
+  interviewEnd_email_interviewerForFeedback: z.infer<
     typeof interviewEndEmailInterviewerForFeedbackSchema
   >;
 
-  onSignup_email_admin: v.InferInput<typeof onSignupEmailAdminSchema>;
+  onSignup_email_admin: z.infer<typeof onSignupEmailAdminSchema>;
 
-  interviewerResumed_email_admin: v.InferInput<
+  interviewerResumed_email_admin: z.infer<
     typeof interviewerResumedEmailAdminSchema
   >;
 
-  interviewEnd_email_shadowTraineeForMeetingAttendence: v.InferInput<
+  interviewEnd_email_shadowTraineeForMeetingAttendence: z.infer<
     typeof onShadowCompleteEmailTraineeSchema
   >;
 
-  interviewEnd_email_rShadowTraineeForMeetingAttendence: v.InferInput<
+  interviewEnd_email_rShadowTraineeForMeetingAttendence: z.infer<
     typeof onShadowCompleteEmailTraineeSchema
   >;
 
-  onQualified_email_trainee: v.InferInput<typeof onQualifiedEmailTraineeSchema>;
+  onQualified_email_trainee: z.infer<typeof onQualifiedEmailTraineeSchema>;
 
-  onTrainingComplete_email_approverForTraineeMeetingQualification: v.InferInput<
+  onTrainingComplete_email_approverForTraineeMeetingQualification: z.infer<
     typeof onQualifiedEmailApproverSchema
   >;
 
-  interviewEnd_email_organizerForMeetingStatus: v.InferInput<
+  interviewEnd_email_organizerForMeetingStatus: z.infer<
     typeof interviewEndEmailOrganizerForMeetingStatusSchema
   >;
 
-  interviewEnd_slack_interviewerForFeedback: v.InferInput<
+  interviewEnd_slack_interviewerForFeedback: z.infer<
     typeof interviewEndEmailInterviewerForFeedbackSchema
   >;
 };
