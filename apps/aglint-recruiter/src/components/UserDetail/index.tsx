@@ -71,6 +71,7 @@ export default function InterviewerDetailsPage() {
       </div>
     );
 
+  const interviewer = [];
   return (
     <div className='min-h-screen bg-gray-50'>
       <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />

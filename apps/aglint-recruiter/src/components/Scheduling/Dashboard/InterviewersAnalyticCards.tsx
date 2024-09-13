@@ -6,8 +6,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import axios from '@/client/axios';
-import { InterviewersCardList } from '@/components/Interviewers/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/components/_common/InterviewersDash';
+import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
+import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiBodyGetUsersByIds,

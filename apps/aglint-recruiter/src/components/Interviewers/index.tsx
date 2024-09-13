@@ -28,7 +28,7 @@ import Loader from '../Common/Loader';
 import { UIButton } from '../Common/UIButton';
 import UITextField from '../Common/UITextField';
 import UITypography from '../Common/UITypography';
-import { useAllInterviewModules } from '../Scheduling/InterviewTypes/queries/hooks';
+import { useAllInterviewModules } from '../Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useAllInterviewers } from './hook';
 
 function Interviewers() {
