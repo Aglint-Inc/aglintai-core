@@ -1,7 +1,6 @@
 import type { Database } from "../schema.types";
 import type { CustomizableTypes, Custom } from "../utils.types";
 import { CustomCreateSessionRequest } from "./create_session_request.types";
-import { CustomCreateSessionRequests } from "./create_session_requests.types";
 import { CustomGetAllInterviewers } from "./get_all_interviewers";
 import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
@@ -56,7 +55,6 @@ export type Functions = Custom<
     get_applicant_badges: CustomGetApplicantBadges;
     create_session_request: CustomCreateSessionRequest;
     move_to_interview: CustomMoveToInterview;
-    create_session_requests: CustomCreateSessionRequests;
     get_request_count_stats: CustomGetRequestCountStats;
     get_request_count_stats_new: CustomGetRequestCountStatsNew;
     scheduling_analytics_completed_interviews: CustomSchedulingAnalyticsCompletedInterviews;
