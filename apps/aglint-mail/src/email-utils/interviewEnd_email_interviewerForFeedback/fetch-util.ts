@@ -1,15 +1,15 @@
 import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewEnd_email_interviewerForFeedback'
+> = async (supabaseAdmin, req_body) => {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo,name)),public_jobs(job_title,recruiter_id)',
+        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo,name)),public_jobs(id,job_title,recruiter_id)',
       )
       .eq('id', req_body.application_id),
   );
@@ -64,9 +64,11 @@ export async function fetchUtil(
     };
 
   return {
-    company_id: candidateJob.candidates.recruiter_id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: interviewer.email,
+    mail_data: {
+      company_id: candidateJob.candidates.recruiter_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: interviewer.email,
+    },
   };
-}
+};

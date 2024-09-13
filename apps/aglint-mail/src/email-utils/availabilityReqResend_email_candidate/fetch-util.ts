@@ -65,7 +65,6 @@ export const fetchUtil: FetchUtilType<
       comp_email_placeholder,
       react_email_placeholders,
       recipient_email: cand_email,
-      job_id: avail_req_data.applications.public_jobs.id,
     },
   };
 };

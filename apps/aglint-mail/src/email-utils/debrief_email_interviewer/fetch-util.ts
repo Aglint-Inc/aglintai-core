@@ -12,11 +12,12 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: TargetApiPayloadType<'debrief_email_interviewer'>,
-) {
+export const fetchUtil: FetchUtilType<'debrief_email_interviewer'> = async (
+  supabaseAdmin,
+  req_body,
+) => {
   const [session] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -30,7 +31,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
+        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo,name)),public_jobs(id,job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -99,15 +100,16 @@ export async function fetchUtil(
         candidateLink,
       };
 
-    return {
+    const resp: FetchUtilResp<'debrief_email_interviewer'> = {
       company_id: candidateJob.candidates.recruiter_id,
       comp_email_placeholder,
-      react_email_placeholders,
+      react_email_placeholders: react_email_placeholders,
       recipient_email: inter.email,
     };
+    return resp;
   });
 
   return {
-    interviewers_mail_data,
+    mail_data: interviewers_mail_data,
   };
-}
+};

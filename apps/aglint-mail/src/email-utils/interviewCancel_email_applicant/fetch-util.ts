@@ -1,7 +1,6 @@
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
-  SupabaseType,
 } from '@aglint/shared-types';
 import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -11,11 +10,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewCancel_email_applicant'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewCancel_email_applicant'
+> = async (supabaseAdmin, req_body) => {
   const int_sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -29,7 +28,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
+        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo,name)),public_jobs(id,job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -86,9 +85,11 @@ export async function fetchUtil(
     };
 
   return {
-    comp_email_placeholder,
-    company_id: candidateJob.candidates.recruiter_id,
-    react_email_placeholders,
-    recipient_email: candidates.email,
+    mail_data: {
+      comp_email_placeholder,
+      company_id: candidateJob.candidates.recruiter_id,
+      react_email_placeholders,
+      recipient_email: candidates.email,
+    },
   };
-}
+};

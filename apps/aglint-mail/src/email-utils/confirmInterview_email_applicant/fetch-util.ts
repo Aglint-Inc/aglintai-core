@@ -1,8 +1,4 @@
-import type {
-  EmailTemplateAPi,
-  SupabaseType,
-  TargetApiPayloadType,
-} from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { createICSAttachment } from '../../utils/ceateIcsContent';
@@ -12,16 +8,16 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: TargetApiPayloadType<'confirmInterview_email_applicant'>,
-) {
+export const fetchUtil: FetchUtilType<
+  'confirmInterview_email_applicant'
+> = async (supabaseAdmin, req_body) => {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name),timezone),public_jobs(job_title)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name),timezone),public_jobs(id,job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -130,10 +126,12 @@ export async function fetchUtil(
     };
 
   return {
-    company_id: recruiter_id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: cand_email,
-    mail_attachments,
+    mail_data: {
+      company_id: recruiter_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: cand_email,
+      mail_attachments,
+    },
   };
-}
+};

@@ -11,11 +11,12 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: TargetApiPayloadType<'confInterview_email_organizer'>,
-) {
+export const fetchUtil: FetchUtilType<'confInterview_email_organizer'> = async (
+  supabaseAdmin,
+  req_body,
+) => {
   const int_sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -28,7 +29,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo,name)),public_jobs(job_title)',
+        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo,name)),public_jobs(id,job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -45,7 +46,7 @@ export async function fetchUtil(
 
   const org_tz = organizer.scheduling_settings.timeZone.tzCode;
 
-  return int_sessions.map((int_session) => {
+  const mail_data = int_sessions.map((int_session) => {
     const comp_email_placeholder: EmailTemplateAPi<'confInterview_email_organizer'>['comp_email_placeholders'] =
       {
         candidateFirstName: first_name,
@@ -78,11 +79,16 @@ export async function fetchUtil(
         },
         candidateDetails: candidateLink,
       };
-    return {
+    const resp: FetchUtilResp<'confInterview_email_organizer'> = {
       comp_email_placeholder,
       company_id: recruiter_id,
       react_email_placeholders,
       recipient_email: int_session.interview_meeting.recruiter_user.email,
     };
+    return resp;
   });
-}
+
+  return {
+    mail_data,
+  };
+};
