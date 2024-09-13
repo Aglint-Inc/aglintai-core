@@ -29,7 +29,7 @@ import { UIButton } from '../Common/UIButton';
 import UITextField from '../Common/UITextField';
 import UITypography from '../Common/UITypography';
 import { useAllInterviewModules } from '../Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
-import { useAllInterviewers } from './hook';
+import { useAllInterviewers } from './_hook';
 
 function Interviewers() {
   const { data: interviewers, isLoading } = useAllInterviewers();

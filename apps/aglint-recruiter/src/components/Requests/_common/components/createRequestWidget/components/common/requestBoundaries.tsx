@@ -1,5 +1,6 @@
-import { ErrorBoundary } from 'react-error-boundary';
 import { type PropsWithChildren, type ReactNode, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+
 import { RequestLayout } from './requestLayout';
 
 type Props = {

@@ -1,26 +1,20 @@
-import { CommandList } from '@components/ui/command';
-import { CommandItem } from '@components/ui/command';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { CommandEmpty } from 'cmdk';
-import {
-  memo,
-  type PropsWithChildren,
-  ReactNode,
-  useEffect,
-  useRef,
-} from 'react';
+import { CommandItem, CommandList } from '@components/ui/command';
 import type {
   InfiniteData,
   UseSuspenseInfiniteQueryResult,
 } from '@tanstack/react-query';
-import type { TRPCHookResult } from '@trpc/react-query/dist/shared';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import type { TRPCClientErrorLike } from '@trpc/client';
+import type { TRPCHookResult } from '@trpc/react-query/dist/shared';
+import { CommandEmpty } from 'cmdk';
+import { memo, type ReactNode, useEffect, useRef } from 'react';
+
 import { CONTAINER_HEIGHT } from '../../constants';
 import { RequestLayout } from './requestLayout';
 
 type Props = {
   icon: ReactNode;
-  onSelect: (x: { id: string; label: string }) => void;
+  onSelect: (_x: { id: string; label: string }) => void;
 } & UseSuspenseInfiniteQueryResult<
   InfiniteData<any>,
   TRPCClientErrorLike<any>
