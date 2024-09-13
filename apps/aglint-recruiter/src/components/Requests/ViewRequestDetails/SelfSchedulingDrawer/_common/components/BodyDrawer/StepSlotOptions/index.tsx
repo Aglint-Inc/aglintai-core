@@ -1,5 +1,4 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
-import axios from 'axios';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -7,6 +6,7 @@ import { useEffect } from 'react';
 import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
+import { mailSender } from '@/utils/mailSender';
 
 import {
   setCalendarDate,
@@ -50,7 +50,7 @@ function StepSlotOptions() {
     }
   };
 
-  const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
+  const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
       organizer_id: recruiterUser.user_id,
@@ -59,13 +59,14 @@ function StepSlotOptions() {
 
   useEffect(() => {
     try {
-      axios
-        .post(`/api/emails/sendSelfScheduleRequest_email_applicant`, {
+      mailSender({
+        target_api: 'sendSelfScheduleRequest_email_applicant',
+        payload: {
           ...payload,
-        })
-        .then(({ data }) => {
-          setEmailData(data);
-        });
+        },
+      }).then((data) => {
+        setEmailData(data);
+      });
     } catch (e) {
       //
     }

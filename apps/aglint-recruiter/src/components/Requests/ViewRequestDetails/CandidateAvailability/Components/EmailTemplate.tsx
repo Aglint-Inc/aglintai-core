@@ -1,4 +1,4 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Stack } from '@mui/material';
@@ -21,7 +21,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
     null,
   );
   const [fetching, setFetching] = useState(false);
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+  const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
     {
       preview_details: {
         application_id: application_id,
@@ -32,7 +32,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
   function getEmail() {
     setFetching(true);
     if (reRequestAvailability) {
-      const payload1: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+      const payload1: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
         {
           is_preview: true,
           avail_req_id: candidateAvailabilityIdForReRequest,

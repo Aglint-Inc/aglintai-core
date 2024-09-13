@@ -13,10 +13,15 @@ export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({
   payload: TargetApiPayloadType<T>;
 }) => {
   try {
-    await axios.post(`${process.env.NEXT_PUBLIC_MAIL_HOST}/api/mail`, {
-      target_api: target_api,
-      payload: payload,
-    });
+    const resp = await axios.post(
+      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/mail`,
+      {
+        target_api: target_api,
+        payload: payload,
+      },
+    );
+
+    return resp.data;
   } catch (err) {
     console.error(err);
     if (err instanceof AxiosError) {

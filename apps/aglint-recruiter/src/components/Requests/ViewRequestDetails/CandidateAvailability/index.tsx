@@ -1,6 +1,6 @@
 import {
-  type EmailTemplateAPi,
   type InterviewSessionTypeDB,
+  type TargetApiPayloadType,
 } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
@@ -105,7 +105,7 @@ function CandidateAvailability({
         id: candidateAvailabilityIdForReRequest,
       });
       try {
-        const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+        const payload: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
           {
             recruiter_user_id: recruiterUser.user_id,
             avail_req_id: candidateAvailabilityIdForReRequest,
@@ -168,7 +168,7 @@ function CandidateAvailability({
           event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         },
       );
-      const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+      const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
         {
           organizer_user_id: recruiterUser.user_id,
           avail_req_id: result.id,

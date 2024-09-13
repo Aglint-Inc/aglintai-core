@@ -48,9 +48,12 @@ export const candidateSelfSchedule = async ({
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {
-      filter_json_id: filter_json.id,
+      application_id,
+      filter_json_id,
+      is_preview: false,
       organizer_id,
-      payload: mail_payload,
+      overridedMailSubBody: mail_payload,
+      request_id,
     },
   });
 

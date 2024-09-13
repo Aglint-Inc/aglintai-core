@@ -1,6 +1,6 @@
 import type {
-  EmailTemplateAPi,
   SessionCombinationRespType,
+  TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { ScrollArea } from '@components/ui/scroll-area';
 import axios from 'axios';
@@ -31,17 +31,16 @@ function FinalScreen() {
     .flat()
     .map((ele) => ele.sessions)
     .flat();
-  const payload: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'] =
-    {
-      application_id: applicationIdForConfirmAvailability,
-      session_ids: allSessions.map((ele) => ele.session_id),
-      preview_details: {
-        meeting_timings: allSessions.map((ele) => ({
-          meeting_end_time: ele.end_time,
-          meeting_start_time: ele.start_time,
-        })),
-      },
-    };
+  const payload: TargetApiPayloadType<'confirmInterview_email_applicant'> = {
+    application_id: applicationIdForConfirmAvailability,
+    session_ids: allSessions.map((ele) => ele.session_id),
+    preview_details: {
+      meeting_timings: allSessions.map((ele) => ({
+        meeting_end_time: ele.end_time,
+        meeting_start_time: ele.start_time,
+      })),
+    },
+  };
 
   function getEmail() {
     setFetching(true);

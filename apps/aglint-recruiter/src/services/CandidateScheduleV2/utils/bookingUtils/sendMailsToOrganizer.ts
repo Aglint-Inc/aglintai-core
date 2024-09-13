@@ -1,5 +1,4 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
-import axios from 'axios';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 
 import { type BookedMeetingDetails, type ScheduleDBDetails } from './types';
 
@@ -8,14 +7,14 @@ export const sendMailsToOrganizer = async (
   booked_meeting_details: BookedMeetingDetails,
 ) => {
   const sendMail = async (
-    meeting: EmailTemplateAPi<'confInterview_email_organizer'>['api_payload'],
+    meeting: TargetApiPayloadType<'confInterview_email_organizer'>,
   ) => {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confInterview_email_organizer`,
-      {
+    await mailSender({
+      target_api: 'confInterview_email_organizer',
+      payload: {
         ...meeting,
       },
-    );
+    });
   };
 
   booked_meeting_details.map(async (meeting) => {

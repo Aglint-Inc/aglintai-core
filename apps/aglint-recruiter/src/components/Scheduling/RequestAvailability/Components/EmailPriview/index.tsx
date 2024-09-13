@@ -1,4 +1,4 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
@@ -28,7 +28,7 @@ function EmailPreview({
     null,
   );
   const [fetching, setFetching] = useState(false);
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+  const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
     {
       preview_details: {
         application_id,

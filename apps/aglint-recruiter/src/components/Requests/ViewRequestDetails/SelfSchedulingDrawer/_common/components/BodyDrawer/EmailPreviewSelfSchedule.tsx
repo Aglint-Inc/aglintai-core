@@ -1,4 +1,4 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { TargetApiPayloadType } from '@aglint/shared-types';
 import axios from 'axios';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -28,7 +28,7 @@ function EmailPreviewSelfSchedule() {
     .flat()
     .find((request) => request?.id === router.query?.id);
 
-  const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
+  const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
       organizer_id: recruiterUser.user_id,

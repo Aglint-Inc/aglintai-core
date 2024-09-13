@@ -5,6 +5,7 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { getResponseFactory } from '@/utils/apiUtils/responseFactory';
+import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,12 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
     if (meta.target_api.split('_').find((s) => s === 'email')) {
-      await axios.post(
-        process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.target_api}`,
-        {
+      await mailSender({
+        target_api: 'agent_email_candidate',
+        payload: {
           ...meta,
         },
-      );
+      });
     } else if (meta.target_api.split('_').find((s) => s === 'slack')) {
       await axios.post(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
