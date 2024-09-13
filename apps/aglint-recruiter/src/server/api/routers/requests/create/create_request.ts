@@ -13,7 +13,6 @@ export const schema = z.object({
   sessions: z.array(z.string().uuid()),
   request: z.object({
     assignee_id: z.string().uuid(),
-    assigner_id: z.string().uuid(),
     note: z.string(),
     priority: z.enum(['urgent', 'standard']),
     schedule_end_date: z.string(),
@@ -52,6 +51,7 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       ...input,
       request: {
         ...input.request,
+        assigner_id: ctx.user.id,
         status: 'to_do',
         title: `Schedule ${sessions} for ${name}`,
       },

@@ -1,5 +1,3 @@
-import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
-
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
 import { requests } from './routers/requests';
@@ -26,10 +24,6 @@ export const appRouterSchema = {
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
-
-export type RouterInput = inferRouterInputs<AppRouter>;
-export type RouterOutput = inferRouterOutputs<AppRouter>;
-export type Unvoid<T> = T extends void ? never : T;
 
 /**
  * Create a server-side caller for the tRPC API.
