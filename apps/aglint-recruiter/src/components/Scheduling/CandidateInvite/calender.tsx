@@ -1,10 +1,9 @@
-import { Button } from '@components/ui/button';
-import { CandidateCalender } from '@devlink/CandidateCalender';
-import { Clock } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Calendar } from 'lucide-react';
 
+import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type useInviteSlots } from '@/queries/candidate-invite';
+import dayjs from '@/utils/dayjs';
 
 import { dayJS } from './utils';
 
@@ -22,23 +21,9 @@ export type CandidateInviteCalendarProps = {
 };
 
 const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
-  const [columns, setColumns] = useState(1);
-  const [offset, setOffset] = useState(0);
+  // const s = useMediaQuery('(min-width:768px)');
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1920) setColumns(4);
-      else if (window.innerWidth >= 1440) setColumns(3);
-      else if (window.innerWidth >= 768) setColumns(2);
-      else setColumns(1);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const sessions = props.sessions.slice(offset, offset + columns);
+  const sessions = props.sessions;
   const startMonth = sessions[0]?.date
     ? dayJS(sessions[0].date, props.tz).format('MMMM YYYY')
     : null;
@@ -49,34 +34,52 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
     startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
 
   return (
-    <CandidateCalender
-      slotDayColumn={<Columns {...props} sessions={sessions} />}
-      isLeftArrow={offset !== 0}
-      isRightArrow={props.sessions.length - columns > offset}
-      textMonth={displayMonth}
-      slotTimeZone={<></>}
-      onClickLeft={{ onClick: () => setOffset((prev) => prev - 1) }}
-      onClickRight={{ onClick: () => setOffset((prev) => prev + 1) }}
-    />
+    <>
+      <CandidateCalender
+        slotDayColumn={<Columns {...props} sessions={sessions} />}
+        textMonth={displayMonth}
+      />
+    </>
   );
 };
 
 export default CandidateInviteCalendar;
 
-const Columns = (props: CandidateInviteCalendarProps) => {
+function CandidateCalender({
+  slotDayColumn,
+
+  textMonth,
+}: {
+  slotDayColumn: React.ReactNode;
+
+  textMonth: string;
+}) {
   return (
-    <div className='flex flex-row gap-4'>
-      {props.sessions.map((session) => (
-        <Column
-          key={session.date}
-          session={session}
-          selections={props.selections}
-          handleSelect={props.handleSelect}
-          tz={props.tz}
-        />
-      ))}
+    <div className='flex flex-col h-[500px]  border border-neutral-200 rounded-md bg-white overflow-hidden'>
+      <div className='flex justify-between items-center h-10 px-4 border-b border-neutral-200 bg-neutral-100'>
+        <div className='flex items-center space-x-1'>
+          <Calendar className='w-5 h-5 text-neutral-700' />
+          <span className='font-medium'>{textMonth}</span>
+        </div>
+      </div>
+      <div className='flex gap-2 p-2 items-center justify-center overflow-auto'>
+        {slotDayColumn}
+      </div>
     </div>
   );
+}
+
+const Columns = (props: CandidateInviteCalendarProps) => {
+  const columns = props.sessions.map((session) => (
+    <Column
+      key={session.date}
+      session={session}
+      selections={props.selections}
+      handleSelect={props.handleSelect}
+      tz={props.tz}
+    />
+  ));
+  return columns;
 };
 
 type ColumnType = {
@@ -87,23 +90,20 @@ type ColumnType = {
 };
 
 const Column = (props: ColumnType) => {
-  const [date, day] = dayJS(props.session.date, props.tz)
-    .format('DD ddd')
-    .split(' ');
-
+  const date = dayJS(props.session.date, props.tz);
   return (
-    <div className='flex-grow'>
-      <div className='flex flex-col items-center'>
-        <div className='text-2xl font-bold'>{date}</div>
-        <div className='text-lg text-gray-600'>{day}</div>
-        <div className='mt-4 w-full'>
-          <Slots
-            slots={props.session.slots}
-            selections={props.selections}
-            handleSelect={props.handleSelect}
-            tz={props.tz}
-          />
-        </div>
+    <div className='relative min-w-[237px] max-w-[237px]  flex-1 border border-gray-200 rounded-lg'>
+      <div className='flex h-10 justify-center items-center bg-gray-50 rounded-t-lg px-2.5'>
+        <div>{dayjs(date).format('dddd DD, MMMM')}</div>
+      </div>
+
+      <div className='h-[390px] overflow-auto p-2.5 gap-2 flex flex-col'>
+        <Slots
+          slots={props.session.slots}
+          selections={props.selections}
+          handleSelect={props.handleSelect}
+          tz={props.tz}
+        />
       </div>
     </div>
   );
@@ -117,42 +117,23 @@ type SlotsType = {
 };
 
 const Slots = (props: SlotsType) => {
-  return (
-    <div className='space-y-2'>
-      {props.slots.map((slot, i) => (
-        <div key={i} onClick={() => props.handleSelect(slot)}>
-          <Slot
-            slot={slot}
-            isActive={props.selections.includes(slot)}
-            tz={props.tz}
-          />
-        </div>
-      ))}
-    </div>
-  );
-};
-
-type SlotType = {
-  slot: SlotsType['slots'][number];
-  tz: SlotsType['tz'];
-  isActive: boolean;
-};
-
-const Slot = (props: SlotType) => {
-  const count = props.slot.sessions.length;
-  const timing = `${dayJS(props.slot.sessions[0].start_time, props.tz).format(
-    'hh:mm A',
-  )} - ${dayJS(props.slot.sessions[count - 1].end_time, props.tz).format(
-    'hh:mm A',
-  )}`;
-
-  return (
-    <Button
-      variant={props.isActive ? 'default' : 'outline'}
-      className='w-full justify-start text-left font-normal'
-    >
-      <Clock className='mr-2 h-4 w-4' />
-      {timing}
-    </Button>
-  );
+  const slots = props.slots.map((slot, i) => {
+    const count = slot.sessions.length;
+    const timing = `${dayJS(slot.sessions[0].start_time, props.tz).format(
+      'hh:mm A',
+    )} - ${dayJS(slot.sessions[count - 1].end_time, props.tz).format(
+      'hh:mm A',
+    )}`;
+    const isActive = props.selections.includes(slot);
+    return (
+      <UITimeRangeCard
+        ShowCloseIcon={false}
+        key={i}
+        textTime={timing}
+        isActive={isActive}
+        onClickTime={() => props.handleSelect(slot)}
+      />
+    );
+  });
+  return <>{slots}</>;
 };
