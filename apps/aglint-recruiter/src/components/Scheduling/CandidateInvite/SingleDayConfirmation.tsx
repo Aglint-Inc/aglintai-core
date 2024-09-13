@@ -1,9 +1,8 @@
-
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { DcPopup } from '@devlink/DcPopup';
 import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@devlink/SessionAndTime';
-import { Dialog, Stack, Typography } from '@mui/material';
+import { Dialog, Typography } from '@mui/material';
+import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -53,48 +52,46 @@ export const SingleDayConfirmation = () => {
 
   return (
     <Dialog open={open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack>
-            <Typography mb={2}>
-              Before we finalize your schedule, please take a moment to confirm
-              the chosen option. Your interview is crucial, and we want to
-              ensure it aligns perfectly with your availability.
-            </Typography>
-            <CandidateScheduleCard
-              isTitle={false}
-              textDuration={totalTimeDifference}
-              slotButton={<></>}
-              slotSessionInfo={
-                <SelectedDateAndTime
-                  slotSessionAndTime={<SingleDaySessions index={0} />}
-                  textDate={date}
-                  textDay={day}
-                  textMonth={month}
-                />
-              }
-            />
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <UIButton
-              variant='secondary'
-              onClick={() => handleClose()}
-            >
+      <div className='flex items-center justify-center w-[500px]'>
+        <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
+          <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+            <h2 className='font-semibold'>Confirm your interview</h2>
+            <UIButton onClick={() => handleClose()} variant='ghost' size='sm'>
+              <X className='w-4 h-4' />
+            </UIButton>
+          </div>
+          <div className='p-4'>
+            <div>
+              <Typography mb={2}>
+                Before we finalize your schedule, please take a moment to
+                confirm the chosen option. Your interview is crucial, and we
+                want to ensure it aligns perfectly with your availability.
+              </Typography>
+              <CandidateScheduleCard
+                isTitle={false}
+                textDuration={totalTimeDifference}
+                slotButton={<></>}
+                slotSessionInfo={
+                  <SelectedDateAndTime
+                    slotSessionAndTime={<SingleDaySessions index={0} />}
+                    textDate={date}
+                    textDay={day}
+                    textMonth={month}
+                  />
+                }
+              />
+            </div>
+          </div>
+          <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+            <UIButton variant='secondary' onClick={() => handleClose()}>
               Cancel
             </UIButton>
-            <UIButton
-              variant='default'
-              onClick={() => handleSubmit()}
-            >
+            <UIButton variant='default' onClick={() => handleSubmit()}>
               Confirm
             </UIButton>
-          </>
-        }
-      />
+          </div>
+        </div>
+      </div>
     </Dialog>
   );
 };
