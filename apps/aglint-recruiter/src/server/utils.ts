@@ -33,7 +33,7 @@ const getPermissions = (
     return level;
   }
   input.shift();
-  return getPermissions(input, level as ApiPermissions);
+  return getPermissions(input, level as unknown as ApiPermissions);
 };
 
 export const authorize = (path, permissions) => {
