@@ -5,7 +5,8 @@ import { Dialog, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
-import { ShowCode } from '@/components/Common/ShowCode';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { JobCoordinator } from '@/jobs/create/components/form';
 import { useAllMembers } from '@/queries/members';
@@ -22,13 +23,15 @@ function DeleteMemberDialog({
   name: string;
   reason: 'cancel_invite' | 'delete' | 'suspend';
   role?: string;
-  action: ({
-    interviewTypes,
-    task,
-  }: {
-    interviewTypes: string;
-    task: string;
-  }) => void;
+  action:
+    | (({
+        interviewTypes,
+        task,
+      }: {
+        interviewTypes: string;
+        task: string;
+      }) => void)
+    | (() => void);
   warning?: string;
   close: () => void;
 }) {
@@ -82,150 +85,133 @@ function DeleteMemberDialog({
     return flag;
   }
 
-  return (
-    <Dialog
-      open={Boolean(reason)}
-      onClose={() => {
-        // resetState();
-        close();
-      }}
-    >
-      <ShowCode>
-        <ShowCode.When isTrue={reason === 'delete'}>
-          <DeletePopup
-            textTitle={
-              <Typography variant='body1bold'>
-                Delete the member:{' '}
-                <span style={{ color: 'var(--error-11)' }}>{name}</span>
-              </Typography>
-            }
-            textDescription={
-              <>
-                <Typography variant='body1'>
-                  By clicking delete the member will be permanently deleted.
-                </Typography>
-                {warning && (
-                  <>
-                    <br />
-                    <Typography variant='body1' color={'var(--error-11)'}>
-                      Warning: {warning}
-                    </Typography>
-                  </>
-                )}
-              </>
-            }
-            isIcon={false}
-            isWidget={true}
-            onClickCancel={{ onClick: close }}
-            onClickDelete={{
-              onClick: action,
-            }}
-            buttonText={'Delete'}
-          />
-        </ShowCode.When>
-        <ShowCode.When isTrue={reason === 'cancel_invite'}>
-          <DeletePopup
-            textTitle={
-              <Typography variant='body1bold'>
-                Cancel invitation to:{' '}
-                <span style={{ color: 'var(--warning-11)' }}>{name}</span>
-              </Typography>
-            }
-            textDescription={
-              <Typography variant='body1'>
-                By clicking cancel invitation will be canceled and removed from
-                the members list.
-              </Typography>
-            }
-            isIcon={false}
-            isWidget={true}
-            onClickCancel={{ onClick: close }}
-            onClickDelete={{
-              onClick: action,
-            }}
-            buttonText={'Cancel Invite'}
-          />
-        </ShowCode.When>
-        <ShowCode.When isTrue={reason === 'suspend'}>
-          <DeletePopup
-            textTitle={
-              <Typography variant='body1'>
-                Suspend{' '}
-                <span style={{ color: 'var(--warning-11)' }}>{name}</span>
-              </Typography>
-            }
-            textDescription={
-              <Stack spacing={2}>
-                <Typography fontWeight={500}>
-                  You are about to suspend {name} from the system.
-                </Typography>
-                <ul>
-                  <li> Once suspended, {name} will not have login access.</li>
-                  <li>
-                    The user will be removed from interview types, so no new
-                    interviews will be scheduled.
-                  </li>
-                  <li>
-                    However, they can still attend and complete current
-                    interviews.
-                  </li>
-                  <li>
-                    To suspend the user, you must Assign their job roles to
-                    another user.
-                  </li>
-                </ul>
+  const title =
+    reason === 'delete'
+      ? `Delete the member: ${name}`
+      : reason === 'cancel_invite'
+        ? `Cancel invitation to: ${name}`
+        : reason === 'suspend'
+          ? `Suspend ${name}`
+          : '';
 
-                <Stack spacing={2}>
-                  {isInterviewTypesRequire && (
-                    <Stack spacing={1}>
-                      Reassign current Interview Types to:
-                      <JobCoordinator
-                        // @ts-expect-error
-                        name={isInterviewTypesRequire}
-                        value={{
-                          required: true,
-                          error: {
-                            helper: '',
-                            value: form.error.interviewTypes,
-                          },
-                          value: form.values.interviewTypes,
-                        }}
-                        label={false}
-                        onChange={(_, val) =>
-                          handelFormUpdate({ interviewTypes: val })
-                        }
-                      />
-                    </Stack>
-                  )}
-                  <Stack spacing={1}>
-                    Reassign current Tasks to:
-                    <TaskAutoComplete
-                      val={form.values.task}
-                      setVal={(id) => handelFormUpdate({ task: id })}
-                      error={form.error.task}
-                    />
-                  </Stack>
-                </Stack>
-              </Stack>
+  const button_text =
+    reason === 'delete'
+      ? 'Delete'
+      : reason === 'cancel_invite'
+        ? 'Cancel Invite'
+        : reason === 'suspend'
+          ? 'Suspend'
+          : '';
+
+  const description =
+    reason === 'delete' ? (
+      <>
+        <Typography variant='body1'>
+          By clicking delete the member will be permanently deleted.
+        </Typography>
+        {warning && (
+          <>
+            <br />
+            <Typography variant='body1' color={'var(--error-11)'}>
+              Warning: {warning}
+            </Typography>
+          </>
+        )}
+      </>
+    ) : reason === 'cancel_invite' ? (
+      <Typography variant='body1'>
+        By clicking cancel invitation will be canceled and removed from the
+        members list.
+      </Typography>
+    ) : reason === 'suspend' ? (
+      <Stack spacing={2}>
+        <Typography fontWeight={500}>
+          You are about to suspend {name} from the system.
+        </Typography>
+        <ul>
+          <li> Once suspended, {name} will not have login access.</li>
+          <li>
+            The user will be removed from interview types, so no new interviews
+            will be scheduled.
+          </li>
+          <li>
+            However, they can still attend and complete current interviews.
+          </li>
+          <li>
+            To suspend the user, you must Assign their job roles to another
+            user.
+          </li>
+        </ul>
+
+        <Stack spacing={2}>
+          {isInterviewTypesRequire && (
+            <Stack spacing={1}>
+              Reassign current Interview Types to:
+              <JobCoordinator
+                // @ts-expect-error
+                name={isInterviewTypesRequire}
+                value={{
+                  required: true,
+                  error: {
+                    helper: '',
+                    value: form.error.interviewTypes,
+                  },
+                  value: form.values.interviewTypes,
+                }}
+                label={false}
+                onChange={(_, val) => handelFormUpdate({ interviewTypes: val })}
+              />
+            </Stack>
+          )}
+          <Stack spacing={1}>
+            Reassign current Tasks to:
+            <TaskAutoComplete
+              val={form.values.task}
+              setVal={(id) => handelFormUpdate({ task: id })}
+              error={form.error.task}
+            />
+          </Stack>
+        </Stack>
+      </Stack>
+    ) : (
+      <></>
+    );
+
+  const onClick = () =>
+    reason === 'delete'
+      ? action
+      : reason === 'cancel_invite'
+        ? action
+        : reason === 'suspend'
+          ? () => {
+              if (validateForm()) {
+                action({
+                  interviewTypes: form.values.interviewTypes,
+                  task: form.values.task,
+                });
+              }
             }
-            isIcon={false}
-            isWidget={true}
-            onClickCancel={{ onClick: close }}
-            onClickDelete={{
-              onClick: () => {
-                if (validateForm()) {
-                  action({
-                    interviewTypes: form.values.interviewTypes,
-                    task: form.values.task,
-                  });
-                }
-              },
-            }}
-            buttonText={'Suspend'}
-          />
-        </ShowCode.When>
-      </ShowCode>
-    </Dialog>
+          : null;
+  return (
+    <>
+      <UIDialog
+        open={Boolean(reason)}
+        onClose={close}
+        title={title}
+        slotButtons={
+          <>
+            <UIButton variant='secondary' onClick={close}>
+              Cancel
+            </UIButton>
+            <UIButton size='md' onClick={onClick}>
+              {button_text}
+            </UIButton>
+          </>
+        }
+      >
+        {description}
+      </UIDialog>
+    </>
   );
 }
 

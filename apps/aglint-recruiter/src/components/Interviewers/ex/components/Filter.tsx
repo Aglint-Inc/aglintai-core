@@ -1,11 +1,11 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Plus } from 'lucide-react';
 import React from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export const Filter = ({
@@ -112,10 +112,8 @@ export const Filter = ({
                 );
               })
             ) : (
-              <GlobalEmptyState
-                textDesc={`No ${capitalizeAll(title)}`}
-                iconName={'add'}
-              />
+             
+              <GlobalEmpty iconSlot={<Plus/>} text={`No ${capitalizeAll(title)}`}/>
             )
           }
           onClickReset={{

@@ -2,11 +2,11 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
-import { Trophy } from 'lucide-react';
+import { HardDrive, Trophy } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UITypography from '@/components/Common/UITypography';
 import { useAllDepartments } from '@/queries/departments';
 
@@ -169,11 +169,7 @@ function Metrics() {
                       );
                     })
                   ) : (
-                    <GlobalEmptyState
-                      iconName={'monitoring'}
-                      size={9}
-                      textDesc={'No Data Available'}
-                    />
+                   <GlobalEmpty iconSlot={<HardDrive className='text-gray-500'/>} text={'No Data Available'}/>
                   )}
                 </ScrollArea>
               </CardContent>

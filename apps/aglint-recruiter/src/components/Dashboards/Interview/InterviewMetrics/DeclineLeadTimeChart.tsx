@@ -6,34 +6,16 @@ import {
   ResponsiveContainer,
   Scatter,
   ScatterChart,
+  Tooltip,
   // Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
-
-const data = [
-  { date: '18 Feb', days: 2.8 },
-  { date: '19 Feb', days: 4.1 },
-  { date: '20 Feb', days: 3.7 },
-  { date: '21 Feb', days: 3.9 },
-  { date: '22 Feb', days: 4.2 },
-  { date: '23 Feb', days: 6.5 },
-];
-
-// const CustomTooltip = ({ active, payload }) => {
-//   if (active && payload && payload.length) {
-//     return (
-//       <div className='bg-white p-2 border border-gray-300 rounded shadow'>
-//         <p>{`${payload[0].payload.date}: ${payload[0].value} days`}</p>
-//       </div>
-//     );
-//   }
-//   return null;
-// };
+import { useDeclineCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
 
 export default function DeclineLeadTimeChart() {
-  const averageLeadTime = 4.5;
-
+  const data = useDeclineCount();
+  const averageLeadTime = data.average || 0;
   return (
     <Card className='w-full max-w-2xl mx-auto'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -57,24 +39,31 @@ export default function DeclineLeadTimeChart() {
         </div>
         <div className='h-[300px]'>
           <ResponsiveContainer width='100%' height='100%'>
-            <ScatterChart
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='date' />
-              <YAxis
-                type='number'
-                domain={[0, 7]}
-                ticks={[0, 2, 3, 4, 5, 6, 7]}
-              />
-              {/* <Tooltip content={<CustomTooltip />} /> */}
-              <Scatter data={data} fill='#22c55e' />
-            </ScatterChart>
+            {data.scatterData.filter((item) => item.cancelled).length ? (
+              <ScatterChart
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <CartesianGrid strokeDasharray='3 3' />
+                <XAxis dataKey='date' />
+                <YAxis
+                  type='number'
+                  dataKey='cancelled'
+                  // domain={[0, 7]}
+                  // ticks={[0, 2, 3, 4, 5, 6, 7]}
+                />
+                {/* <XAxis type='number' dataKey='x' name='stature' unit='cm' />
+              <YAxis type='number' dataKey='y' name='weight' unit='kg' /> */}
+                <Tooltip />
+                <Scatter data={data.scatterData} fill='#22c55e' />
+              </ScatterChart>
+            ) : (
+              <>empty@ravi</>
+            )}
           </ResponsiveContainer>
         </div>
       </CardContent>

@@ -4,15 +4,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ModuleMembers } from '@devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@devlink3/AiBookingInstruction';
 import { MoreMenu } from '@devlink3/MoreMenu';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
+import { Calendar, Edit, EllipsisVertical, Loader2, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -28,13 +28,12 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
+import { ModuleMembers } from '../../_common/ModuleMembers';
 import { QueryKeysInteviewModules } from '../../queries/type';
 import {
-  setIsAddMemberDialogOpen,
   setIsArchiveDialogOpen,
   setIsDeleteModuleDialogOpen,
   setIsSettingsDialogOpen,
-  setTrainingStatus,
 } from '../../store';
 import { type ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
@@ -228,30 +227,20 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
               slotModuleContent={
                 <>
                   {(currentTab === 'qualified' || !currentTab) && (
-                    <ModuleMembers
-                      isMembersTrainingVisible={false}
-                      slotQualifiedMemberList={
-                        <SlotQualifiedMembers editModule={editModule} />
-                      }
-                      slotMembersInTraining={
-                        <SlotTrainingMembers
-                          editModule={editModule}
-                          refetch={refetch}
-                        />
-                      }
-                      onClickAddMember={{
-                        onClick: () => {
-                          setIsAddMemberDialogOpen(true);
-                          setTrainingStatus('qualified');
-                        },
-                      }}
-                      onClickAddTrainee={{
-                        onClick: () => {
-                          setIsAddMemberDialogOpen(true);
-                          setTrainingStatus('training');
-                        },
-                      }}
-                    />
+                    <>
+                      <ModuleMembers
+                        isMembersTrainingVisible={false}
+                        slotQualifiedMemberList={
+                          <SlotQualifiedMembers editModule={editModule} />
+                        }
+                        slotMembersInTraining={
+                          <SlotTrainingMembers
+                            editModule={editModule}
+                            refetch={refetch}
+                          />
+                        }
+                      />
+                    </>
                   )}
                   {currentTab === 'schedules' && <SchedulesModules />}
 
@@ -300,10 +289,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                           <>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <UIBadge
-                                  textBadge='Token1'
-                                  color={'purple'}
-                                />
+                                <UIBadge textBadge='Token1' color={'purple'} />
                               </div>
                               <p className='text-sm text-gray-600'>
                                 Korem ipsum dolor sit amet, consectetur
@@ -313,10 +299,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                             </div>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <UIBadge
-                                  textBadge='Token2'
-                                  color={'purple'}
-                                />
+                                <UIBadge textBadge='Token2' color={'purple'} />
                               </div>
                               <p className='text-sm text-gray-600'>
                                 Korem ipsum dolor sit amet, consectetur
@@ -326,10 +309,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                             </div>
                             <div className='grid grid-cols-[260px_570px] items-center p-4 border-b'>
                               <div className='flex items-center'>
-                                <UIBadge
-                                  textBadge='Token3'
-                                  color={'purple'}
-                                />
+                                <UIBadge textBadge='Token3' color={'purple'} />
                               </div>
                               <p className='text-sm text-gray-600'>
                                 Korem ipsum dolor sit amet, consectetur
@@ -479,7 +459,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               slotBadges={
                 job.status && (
                   <UIBadge
-                  color={
+                    color={
                       job.status === 'published'
                         ? 'success'
                         : job.status === 'closed'
@@ -498,12 +478,12 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
             />
           ))
         ) : (
-          <GlobalEmptyState
-            iconName={'work'}
-            size={4}
-            slotButton={<></>}
-            textDesc={'No jobs connected'}
-          />
+          <>
+            <GlobalEmpty
+              text={'No jobs connected'}
+              iconSlot={<Calendar className='h-6 w-6 text-gray-500' />}
+            />
+          </>
         )}
       </div>
     </>

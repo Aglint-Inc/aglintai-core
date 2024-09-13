@@ -1,11 +1,12 @@
 import { getFullName } from '@aglint/shared-utils';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AvatarWithName } from '@devlink3/AvatarWithName';
 import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -26,14 +27,9 @@ function Requests({ session_id }) {
       ) : (
         <Stack spacing={'var(--space-2)'}>
           {requests.length === 0 && (
-            <GlobalEmptyState
-              iconName={'calendar_month'}
-              styleEmpty={{
-                style: {
-                  background: 'var(--neutral-2)',
-                },
-              }}
-              textDesc={'No requests found'}
+            <GlobalEmpty
+              iconSlot={<Calendar className='text-gray-500' />}
+              text={'No requests found'}
             />
           )}
           {requests?.map((request) => {

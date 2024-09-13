@@ -10,13 +10,14 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { AssignedToList } from '@devlink2/AssignedToList';
+import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/members';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/context/RequestsContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
@@ -88,10 +89,7 @@ function MembersPopUps({
           />
 
           {filteredMembers.length === 0 ? (
-            <GlobalEmptyState
-              iconName={'Search'}
-              textDesc={'No members found'}
-            />
+            <GlobalEmpty iconSlot={<Search />} text={'No members found'} />
           ) : status === 'success' ? (
             <div className='h-[150px] max-h-[150px] overflow-auto w-full mt-4'>
               {filteredMembers

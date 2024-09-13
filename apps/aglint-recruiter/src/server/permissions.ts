@@ -8,4 +8,7 @@ export const API_PERMISSIONS: ApiPermissions = {
   textTransform: {
     selfScheduleInstruction: ['job_module'],
   },
+  analytics: ['job_module'],
+  example: [],
+  candidatePortal: [],
 };

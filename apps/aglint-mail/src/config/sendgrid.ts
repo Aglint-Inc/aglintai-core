@@ -52,7 +52,7 @@ export default async function sendMail(data: APISendgridPayload) {
     }
     throw new MailSenderError(`mail failed to send`);
   } catch (error) {
-    console.error(error);
+    console.error(error?.response?.body);
     throw new MailSenderError(`mail failed to send`);
   }
 }

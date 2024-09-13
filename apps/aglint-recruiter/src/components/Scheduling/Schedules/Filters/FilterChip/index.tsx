@@ -1,5 +1,4 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
@@ -7,6 +6,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import DateRange from '@/components/Common/DateRange';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
@@ -153,9 +153,9 @@ function FilterChip({
                     );
                   })}
                   {itemList?.length === 0 && (
-                    <GlobalEmptyState
-                      // iconName={''}
-                      textDesc={`No ${capitalizeAll(filterType.name)}`}
+                    <GlobalEmpty
+                      iconSlot={''}
+                      text={`No ${capitalizeAll(filterType.name)}`}
                     />
                   )}
                 </Stack>

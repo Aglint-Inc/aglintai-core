@@ -3,13 +3,13 @@ import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
 import { EducationItem } from '@devlink/EducationItem';
 import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, School } from 'lucide-react';
 import Image from 'next/image';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
-import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Education = () => {
   return (
@@ -40,7 +40,7 @@ const Content = () => {
       data?.score_json?.relevance?.schools
     )
   )
-    return <EmptyDetailState section='Education' />;
+    return <GlobalEmpty iconSlot={<School className='text-gray-500'/>} text={'No education found'}/>;
   return <Schools />;
 };
 

@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
 import { Avatar, Stack } from '@mui/material';
-import { RotateCcw } from 'lucide-react';
+import { HardDrive, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useJobs } from '@/jobs/hooks';
 import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/queries/departments';
@@ -187,10 +187,9 @@ function InterviewerLoad() {
             ))
           ) : (
             <Stack padding={'16px'} bgcolor={'white'}>
-              <GlobalEmptyState
-                iconName={'monitoring'}
-                size={9}
-                textDesc={'No Data Available'}
+              <GlobalEmpty
+                iconSlot={<HardDrive />}
+                text={'No Data Available'}
               />
             </Stack>
           )

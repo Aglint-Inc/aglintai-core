@@ -1,6 +1,8 @@
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+
+import { School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
@@ -87,10 +89,9 @@ function Overview({
                 </>
               ) : (
                 <>
-                  <GlobalEmptyState
-                    textDesc='No Interview type found.'
-                    size={6}
-                    iconName='school'
+                  <GlobalEmpty
+                    text={'No Interview type found.'}
+                    iconSlot={<School />}
                   />
                 </>
               )}

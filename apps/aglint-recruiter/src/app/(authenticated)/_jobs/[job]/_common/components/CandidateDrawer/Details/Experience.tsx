@@ -7,10 +7,10 @@ import { Avatar } from '@mui/material';
 import { Briefcase } from 'lucide-react';
 import Image from 'next/image';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useApplication } from '@/context/ApplicationContext';
 
 import { Loader } from '../Common/Loader';
-import { EmptyDetailState } from './Common/EmptyDetailState';
 
 const Experience = () => {
   return (
@@ -41,7 +41,7 @@ const Content = () => {
       data?.score_json?.relevance?.positions
     )
   )
-    return <EmptyDetailState section='Experience' />;
+    return <GlobalEmpty iconSlot={<Briefcase className='text-gray-500'/>} text={'No experience found'}/>;
   return <Experiences />;
 };
 

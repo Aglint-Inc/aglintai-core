@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { CloseJobModal } from '@devlink/CloseJobModal';
 import { ScoreSetting } from '@devlink3/ScoreSetting';
 import { CircularProgress, Dialog } from '@mui/material';
 import {
@@ -20,12 +19,14 @@ import {
   RefreshCw,
   UserPlus,
   Workflow,
+  X,
   XCircle,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
+import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
@@ -257,43 +258,43 @@ const Close = () => {
   const job_title = job?.job_title ?? '';
   return (
     <Dialog open={modal} onClose={() => handleCloseModal()}>
-      <CloseJobModal
-        textPopupTitle={`${isDelete ? 'Delete' : 'Close'}  This Job`}
-        textWarning={
-          isDelete
+      <div className='shadow-md p-4 rounded-lg bg-white w-[500px] relative'>
+        <button className='absolute p-1 top-0 right-0 m-4 hover:bg-gray-50 rounded-md' onClick={() => handleCloseModal()}>
+        <X className='h-3 w-3 ' />
+        </button>
+        <h2 className='text-lg font-semibold mb-2'>
+          {isDelete ? 'Delete' : 'Close'} This Job
+        </h2>
+        <p className='text-sm text-gray-600 mb-2'>
+          {isDelete
             ? 'Deleting this job will permanently remove all related data and make the job inaccessible. Candidate data will remain unaffected.'
-            : 'Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.'
-        }
-        textButton={isDelete ? 'Delete Job' : 'Close Job'}
-        textJobTitle={job_title.trim()}
-        onClickCloseJob={{ onClick: () => handleCloseModal() }}
-        textLocation={''}
-        slotInput={
+            : 'Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.'}
+        </p>
+        <p className='mb-2'>
+          Confirm by typing the job title{' '}
+          <span style={{ color: 'red' }}>{job_title.trim()}</span> below.
+        </p>
+        <div className='mb-4'>
           <UITextField
+          
             placeholder={job_title.trim()}
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
-        }
-        slotButton={
-          <>
-            <Button
-              variant='outline'
-              onClick={() => handleCloseModal()}
-              className='w-auto'
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleModalSubmit}
-              className='w-auto'
-              disabled={job_title.trim() !== value.trim()}
-            >
-              {isDelete ? 'Delete Job' : 'Close Job'}
-            </Button>
-          </>
-        }
-      />
+        </div>
+        <div className='flex justify-end gap-2'>
+          <UIButton variant='secondary' onClick={() => handleCloseModal()}>
+            Cancel
+          </UIButton>
+          <UIButton
+            onClick={handleModalSubmit}
+            variant='default'
+            disabled={job_title.trim() !== value.trim()}
+          >
+            {isDelete ? 'Delete Job' : 'Close Job'}
+          </UIButton>
+        </div>
+      </div>
     </Dialog>
   );
 };

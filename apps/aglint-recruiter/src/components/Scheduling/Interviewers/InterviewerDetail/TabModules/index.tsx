@@ -1,11 +1,13 @@
-import { GlobalEmptyState } from '@devlink/GlobalEmptyState';
+
 import { InterviewerDetailOverview } from '@devlink3/InterviewerDetailOverview';
 import { Stack } from '@mui/material';
-import { Plus } from 'lucide-react';
+import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
+import UITypography from '@/components/Common/UITypography';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
@@ -49,7 +51,6 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
       <ResumeDialog />
       <DeleteMemberDialog refetch={refetch} />
       <InterviewerDetailOverview
-        isViewButtonVisible={false}
         textHeader1={'Interview Types'}
         textHeader2={'Interview Types'}
         isTrainingVisible={type === 'training' ? true : false}
@@ -69,16 +70,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   })}
                 </>
               ) : (
-                <GlobalEmptyState
-                  textDesc='No Interview type found.'
-                  size={6}
-                  iconName='school'
-                  styleEmpty={{
-                    style: {
-                      backgroundColor: 'var(--neutral-2)',
-                      height: '220px',
-                    },
-                  }}
+                <GlobalEmpty
+                  text={'No Interview type found.'}
+                  iconSlot={<School className='text-gray-500' />}
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
@@ -115,14 +109,10 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   })}
                 </>
               ) : (
-                <GlobalEmptyState
-                  textDesc='No Interview type found.'
-                  size={6}
-                  iconName='school'
-                  styleEmpty={{
-                    style: { backgroundColor: 'var(--neutral-2)' },
-                  }}
-                />
+                <GlobalEmpty
+                text={'No Interview type found.'}
+                iconSlot={<School className='text-gray-500' />}
+              />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
                 <UIButton
@@ -148,3 +138,37 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
 }
 
 export default TabInterviewModules;
+
+function InterviewerDetailOverview({
+  slotUpcomingSchedule,
+  slotTrainingModules,
+  textHeader1 = 'Upcoming Schedules',
+  textHeader2 = 'Training',
+  isTrainingVisible = true,
+  isUpcomingVisible = true,
+}) {
+  return (
+    <div className='flex flex-col w-[900px] p-4 space-y-6'>
+      {isUpcomingVisible && (
+        <div>
+          <UITypography variant='p' type='small' className='font-semibold mb-2'>
+            {textHeader1}
+          </UITypography>
+          <CardContent className=' p-0 flex flex-col space-y-2'>
+            {slotUpcomingSchedule}
+          </CardContent>
+        </div>
+      )}
+      {isTrainingVisible && (
+        <div>
+          <UITypography variant='p' type='small' className='font-semibold mb-2'>
+            {textHeader2}
+          </UITypography>
+          <CardContent className='p-0 flex flex-col space-y-4'>
+            {slotTrainingModules}
+          </CardContent>
+        </div>
+      )}
+    </div>
+  );
+}

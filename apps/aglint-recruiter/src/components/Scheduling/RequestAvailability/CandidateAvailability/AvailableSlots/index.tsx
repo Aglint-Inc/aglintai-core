@@ -4,16 +4,19 @@ import {
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
-import { CalendarPick } from '@devlink2/CalendarPick';
-import { DatePicker } from '@devlink2/DatePicker';
-import { PickSlotDay } from '@devlink2/PickSlotDay';
-import { TimePick } from '@devlink2/TimePick';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { AlertCircle, Calendar } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {
+  AlertCircle,
+  Calendar,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/utils/jsonResume';
@@ -23,6 +26,7 @@ import {
   insertTaskProgress,
   useRequestAvailabilityContext,
 } from '../../RequestAvailabilityContext';
+import { DateCard } from './Components/DateCard';
 import SlotColumn from './SlotColumn';
 
 export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
@@ -268,33 +272,49 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
       setIsSubmitted(true);
     }
   }, [candidateRequestAvailability]);
+  const scrollRef = useRef<HTMLDivElement>(null);
   if (candidateRequestAvailability) {
     return (
-      <div className='bg-white bg-opacity-70'>
+      <div className='bg-white bg-opacity-70 p-2'>
         <PickSlotDay
           isPickedCalendarActive={markAsAllDateSelected}
           textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
           isPickSlotIconActive={markAsAllSlotsSelected}
           textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
           slotPrimaryButton={
-            <Button
-              size='lg'
+            <UIButton
+              size='md'
               onClick={handleSubmit}
               disabled={!markAsAllSlotsSelected}
+              className='w-full'
             >
               {singleDay ? 'Submit Availability' : 'Done'}
-            </Button>
+            </UIButton>
           }
           slotCalenderPick={
             <ShowCode>
               <ShowCode.When isTrue={singleDay}>
                 <CalendarPick
+                  onClickNext={() => {
+                    const TypoElement =
+                      document.getElementById('newCalendarPick');
+
+                    TypoElement.scrollLeft = TypoElement.scrollLeft + 400;
+                  }}
+                  onClickPrev={() => {
+                    const TypoElement =
+                      document.getElementById('newCalendarPick');
+                    TypoElement.scrollLeft = TypoElement.scrollLeft - 400;
+                  }}
+                  styleScrollProps={{
+                    id: 'newCalendarPick',
+                  }}
                   slotDatePicker={dateSlots
                     .find((ele) => ele.round === 1)
                     ?.dates.filter((ele) => ele.slots.length)
                     .map((dateSlot, i) => {
                       return (
-                        <DatePicker
+                        <DateCard
                           // isDisable={day > 1}
                           isActive={selectedDateSlots
                             .find((ele) => ele.round === day)
@@ -304,10 +324,8 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                           textDate={dayjs(dateSlot.curr_day).format('DD')}
                           textDay={dayjs(dateSlot.curr_day).format('dddd')}
                           textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-                          onClickDate={{
-                            onClick: () => {
-                              handleClickDate({ selectedDate: dateSlot, day });
-                            },
+                          onClickDate={() => {
+                            handleClickDate({ selectedDate: dateSlot, day });
                           }}
                         />
                       );
@@ -316,20 +334,16 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
               </ShowCode.When>
               <ShowCode.Else>
                 <CalendarPick
-                  onClickNext={{
-                    onClick: () => {
-                      const TypoElement =
-                        document.getElementById('newCalendarPick');
+                  onClickNext={() => {
+                    const TypoElement =
+                      document.getElementById('newCalendarPick');
 
-                      TypoElement.scrollLeft = TypoElement.scrollLeft + 400;
-                    },
+                    TypoElement.scrollLeft = TypoElement.scrollLeft + 400;
                   }}
-                  onClickPrev={{
-                    onClick: () => {
-                      const TypoElement =
-                        document.getElementById('newCalendarPick');
-                      TypoElement.scrollLeft = TypoElement.scrollLeft - 400;
-                    },
+                  onClickPrev={() => {
+                    const TypoElement =
+                      document.getElementById('newCalendarPick');
+                    TypoElement.scrollLeft = TypoElement.scrollLeft - 400;
                   }}
                   styleScrollProps={{
                     id: 'newCalendarPick',
@@ -417,7 +431,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                       }
 
                       return (
-                        <DatePicker
+                        <DateCard
                           isDisable={enable}
                           isActive={selectedDateSlots
                             .find((ele) => ele.round === day)
@@ -427,10 +441,8 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                           textDate={dayjs(dateSlot.curr_day).format('DD')}
                           textDay={dayjs(dateSlot.curr_day).format('dddd')}
                           textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-                          onClickDate={{
-                            onClick: () => {
-                              handleClickDate({ selectedDate: dateSlot, day });
-                            },
+                          onClickDate={() => {
+                            handleClickDate({ selectedDate: dateSlot, day });
                           }}
                         />
                       );
@@ -440,65 +452,90 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
             </ShowCode>
           }
           slotTimePick={
-            <TimePick
-              onClickNext={{
-                onClick: () => {
-                  const TypoElement = document.getElementById('newTimePick');
-
-                  TypoElement.scrollLeft = TypoElement.scrollLeft + 400;
-                },
-              }}
-              onClickPrev={{
-                onClick: () => {
-                  const TypoElement = document.getElementById('newTimePick');
-                  TypoElement.scrollLeft = TypoElement.scrollLeft - 400;
-                },
-              }}
-              styleScrollProps={{
-                id: 'newTimePick',
-              }}
-              slotSlotPicker={
-                <ShowCode>
-                  <ShowCode.When
-                    isTrue={
-                      !selectedDateSlots.find((ele) => ele.round === day) ||
-                      selectedDateSlots.find((ele) => ele.round === day)?.dates
-                        .length === 0
+            <>
+              <div className='flex max-w-2xl  items-center space-x-2'>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => {
+                    if (scrollRef.current) {
+                      const scrollAmount = 400;
+                      scrollRef.current.scrollLeft += -scrollAmount;
                     }
-                  >
-                    <div className='flex flex-col items-center justify-center p-8 text-center'>
-                      <Calendar className='w-12 h-12 text-gray-400 mb-2' />
-                      <h3 className='text-lg font-medium text-gray-900 mb-1'>
-                        No availability
-                      </h3>
-                      <p className='text-sm text-gray-500'>
-                        There are no available time slots at the moment.
-                      </p>
-                    </div>
-                  </ShowCode.When>
-                  <ShowCode.Else>
-                    {selectedDateSlots.length > 0 &&
-                      selectedDateSlots
-                        .find((ele) => ele.round === day)
-                        ?.dates.sort((a, b) =>
-                          dayjs(a.curr_day).isAfter(dayjs(b.curr_day)) ? 1 : -1,
-                        )
-                        .map((slotTime, i) => {
-                          return (
+                    const element = document.getElementById('newTimePick');
+                    if (element) element.scrollLeft -= 400;
+                  }}
+                  className='flex-shrink-0'
+                >
+                  <ChevronLeft className='h-4 w-4' />
+                </Button>
+                <div
+                  ref={scrollRef}
+                  className='flex overflow-x-auto space-x-4 py-2 max-w-[900px] h-[360px] scrollbar-hide p-4'
+                  id='newTimePick'
+                >
+                  <ShowCode>
+                    <ShowCode.When
+                      isTrue={
+                        !selectedDateSlots.find((ele) => ele.round === day) ||
+                        selectedDateSlots.find((ele) => ele.round === day)
+                          ?.dates.length === 0
+                      }
+                    >
+                      <div className='flex flex-col items-center justify-center p-8 text-center'>
+                        <Calendar className='w-12 h-12 text-gray-400 mb-2' />
+                        <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                          No availability
+                        </h3>
+                        <p className='text-sm text-gray-500'>
+                          There are no available time slots at the moment.
+                        </p>
+                      </div>
+                    </ShowCode.When>
+                    <ShowCode.Else>
+                      {selectedDateSlots.length > 0 &&
+                        selectedDateSlots
+                          .find((ele) => ele.round === day)
+                          ?.dates.sort((a, b) =>
+                            dayjs(a.curr_day).isAfter(dayjs(b.curr_day))
+                              ? 1
+                              : -1,
+                          )
+                          .map((slotTime, i) => (
                             <SlotColumn
                               onClose={() =>
-                                handleClickDate({ selectedDate: slotTime, day })
+                                handleClickDate({
+                                  selectedDate: slotTime,
+                                  day,
+                                })
                               }
                               key={i}
                               slotTime={slotTime}
                             />
-                          );
-                        })}
-                  </ShowCode.Else>
-                </ShowCode>
-              }
-            />
+                          ))}
+                    </ShowCode.Else>
+                  </ShowCode>
+                </div>
+
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => {
+                    if (scrollRef.current) {
+                      const scrollAmount = 400;
+                      scrollRef.current.scrollLeft += scrollAmount;
+                    }
+                    const element = document.getElementById('newTimePick');
+                    if (element) element.scrollLeft += 400;
+                  }}
+                  className='flex-shrink-0'
+                >
+                  <ChevronRight className='h-4 w-4' />
+                </Button>
+              </div>
+            </>
           }
+          isPickTimeDescVisible={false}
         />
       </div>
     );
@@ -516,4 +553,103 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
       </div>
     );
   }
+}
+
+export function CalendarPick({
+  onClickPrev,
+  onClickNext,
+  slotDatePicker,
+  styleScrollProps,
+  isArrowVisible = true,
+}: {
+  onClickPrev?: () => void;
+  onClickNext?: () => void;
+  slotDatePicker?: React.ReactNode;
+  styleScrollProps?: React.HTMLAttributes<HTMLDivElement>;
+  isArrowVisible?: boolean;
+}) {
+  return (
+    <div className='flex items-center justify-start space-x-4'>
+      {isArrowVisible && (
+        <Button variant='ghost' size='sm' onClick={onClickPrev}>
+          <ChevronLeft className='h-4 w-4' />
+        </Button>
+      )}
+      <div
+        className='flex overflow-x-auto w-[800px] max-w-[800px] space-x-4 scrollbar-hide p-3'
+        {...styleScrollProps}
+      >
+        {slotDatePicker}
+      </div>
+      {isArrowVisible && (
+        <Button variant='ghost' size='sm' onClick={onClickNext}>
+          <ChevronRight className='h-4 w-4' />
+        </Button>
+      )}
+    </div>
+  );
+}
+
+export function PickSlotDay({
+  isPickedCalendarActive = false,
+  textPickDays = 'Pick at least 4 days',
+  slotCalenderPick,
+  isPickSlotIconActive = false,
+  textPickSlots = 'Pick at least 2 slots from each day',
+  isPickTimeDescVisible = true,
+  slotTimePick,
+  slotPrimaryButton,
+}: {
+  isPickedCalendarActive: boolean;
+  textPickDays: string;
+  slotCalenderPick: React.ReactNode;
+  isPickSlotIconActive: boolean;
+  textPickSlots: string;
+  isPickTimeDescVisible: boolean;
+  slotTimePick: React.ReactNode;
+  slotPrimaryButton: React.ReactNode;
+}) {
+  return (
+    <div className='flex flex-col px-4 space-y-4'>
+      <div className='flex flex-col items-center space-y-4'>
+        <div className='flex items-center space-x-2'>
+          <div className='relative'>
+            <Calendar className='w-4 h-4 text-gray-500' />
+            {isPickedCalendarActive && (
+              <div className='absolute inset-0 bg-white'>
+                <CheckCircle className='w-4 h-4 text-green-800' />
+              </div>
+            )}
+          </div>
+          <span className='text-sm'>{textPickDays}</span>
+        </div>
+        <div className='max-w-2xl'>{slotCalenderPick}</div>
+      </div>
+      <div className='flex flex-col items-center space-y-4'>
+        <div className='flex flex-col items-center space-y-1'>
+          <div className='flex items-center space-x-2'>
+            <div className='relative'>
+              <Calendar className='w-4 h-4 text-gray-500' />
+              {isPickSlotIconActive ? (
+                <div className='absolute inset-0 bg-white'>
+                  <CheckCircle className='w-4 h-4 text-green-800' />
+                </div>
+              ) : null}
+            </div>
+            <span className='text-sm'>{textPickSlots}</span>
+          </div>
+          {isPickTimeDescVisible ? (
+            <span className='text-xs text-gray-500'>
+              Pick more than preferred slots to increase the flexibility of your
+              interview
+            </span>
+          ) : null}
+        </div>
+        <div>{slotTimePick}</div>
+      </div>
+      <div className='flex justify-center'>
+        <div className='w-[300px]'>{slotPrimaryButton}</div>
+      </div>
+    </div>
+  );
 }
