@@ -37,9 +37,12 @@ const Selections = () => {
 };
 
 const Buttons = () => {
+  const { onOpenChange } = useCreateRequestActions();
   return (
     <div className='flex justify-between'>
-      <Button variant='outline'>Cancel</Button>
+      <Button variant='outline' onClick={() => onOpenChange(false)}>
+        Cancel
+      </Button>
       <Submit />
     </div>
   );

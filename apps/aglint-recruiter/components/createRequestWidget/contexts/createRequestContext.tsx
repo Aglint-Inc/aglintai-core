@@ -144,7 +144,11 @@ const useCreateRequestContext = () => {
       payloads: structuredClone(initial.payloads),
       selections: structuredClone(initial.selections),
       actions: {
-        onOpenChange: (open) => set(() => ({ open })),
+        onOpenChange: (open) =>
+          set((state) => {
+            if (open === true) return { open };
+            return { open, ...resetPayload('requestType', state) };
+          }),
         previousPage: () =>
           set((state) => ({
             step: state.step !== 0 ? state.step - 1 : state.step,
