@@ -2,13 +2,13 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
-// import CalendarComp from '@/components/Common/Calendar/Calendar';
+import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Loader from '@/components/Common/Loader';
+import { type SchedulesSupabase } from '@/components/Scheduling/schedules-query';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
 
 function Schedules() {
-  // eslint-disable-next-line no-unused-vars
   const [filter, setFilter] = useState<
     DatabaseTable['interview_meeting']['status'][]
   >(['completed', 'confirmed', 'cancelled']);
@@ -37,12 +37,12 @@ function Schedules() {
         </div>
       ) : (
         <>
-          {/* <CalendarComp
-            allSchedules={allSchedules}
+          <CalendarComp
+            allSchedules={allSchedules as SchedulesSupabase}
             isLoading={isLoading}
             setFilter={setFilter}
             filter={filter}
-          /> */}
+          />
         </>
       )}
     </>
