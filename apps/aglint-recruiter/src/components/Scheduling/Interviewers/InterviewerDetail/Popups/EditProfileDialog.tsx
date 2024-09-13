@@ -1,4 +1,4 @@
-import { IconButtonGhost } from '@devlink/IconButtonGhost';
+
 import { UserDetails } from '@devlink/UserDetails';
 import {
   Autocomplete,
@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { X } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
@@ -208,17 +209,16 @@ export const EditProfileDialog = ({
     >
       <UserDetails
         slotClose={
-          <IconButtonGhost
-            iconName='close'
-            size={2}
-            color={'neutral'}
-            onClickButton={{
-              onClick: () => {
-                setProfile(structuredClone(initialProfileFormFields));
-                setIsOpen(false);
-              },
+          <UIButton
+            variant='ghost'
+            size='sm'
+            onClick={() => {
+              setProfile(structuredClone(initialProfileFormFields));
+              setIsOpen(false);
             }}
-          />
+          >
+            <X className='h-4 w-4' />
+          </UIButton>
         }
         slotButton={
           <>
