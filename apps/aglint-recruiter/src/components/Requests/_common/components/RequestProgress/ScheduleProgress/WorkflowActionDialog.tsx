@@ -129,7 +129,7 @@ const WorkflowActionDialog = () => {
         };
       }
       await createRequestWorkflowAction({
-        wAction,
+        wActions: [wAction],
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
       });
@@ -140,7 +140,6 @@ const WorkflowActionDialog = () => {
         title: 'Failed to add action',
         variant: 'destructive',
       });
-      setShowEditDialog(false);
     } finally {
       setIsAddingAction(false);
     }
