@@ -4,7 +4,7 @@ import { ArrowRight, X } from 'lucide-react';
 
 import { SafeObject } from '@/utils/safeObject';
 
-import { STEPS, type Menus } from '../contexts/createRequestContext';
+import { type Menus, STEPS } from '../contexts/createRequestContext';
 import { useCreateRequest, useCreateRequestActions } from '../hooks';
 
 export const Actions = () => {
@@ -37,22 +37,28 @@ const Selections = () => {
 };
 
 const Buttons = () => {
-  const { step, selections } = useCreateRequest((state) => ({
-    step: state.step,
-    selections: state.selections,
-  }));
+  return (
+    <div className='flex justify-between'>
+      <Button variant='outline'>Cancel</Button>
+      <Submit />
+    </div>
+  );
+};
+
+const Submit = () => {
+  const step = useCreateRequest((state) => state.step);
+  const selections = useCreateRequest((state) => state.selections);
   const { nextPage } = useCreateRequestActions();
+  if (step === 5)
+    return <Button onClick={() => nextPage()}>Create Request</Button>;
   const currentSelection = selections[STEPS[step]];
   const isEnabled = Array.isArray(currentSelection)
     ? currentSelection.length !== 0
     : Boolean(currentSelection);
   return (
-    <div className='flex justify-between'>
-      <Button variant='outline'>Cancel</Button>
-      <Button disabled={!isEnabled} onClick={() => nextPage()}>
-        Next <ArrowRight className='ml-2 h-4 w-4' />
-      </Button>
-    </div>
+    <Button disabled={!isEnabled} onClick={() => nextPage()}>
+      Next <ArrowRight className='ml-2 h-4 w-4' />
+    </Button>
   );
 };
 

@@ -1,7 +1,7 @@
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 
 import { useCreateRequest } from './useCreateRequest';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 export const useCreateRequestAssignees = () => {
   const { recruiter_id } = useAuthDetails();

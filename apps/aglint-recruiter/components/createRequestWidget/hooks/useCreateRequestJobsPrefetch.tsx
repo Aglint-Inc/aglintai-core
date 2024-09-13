@@ -5,11 +5,9 @@ import { useCreateRequest } from './useCreateRequest';
 
 export const useCreateRequesJobsPrefetch = () => {
   const { recruiter_id } = useAuthDetails();
-  const {
-    payloads: {
-      jobs: { search },
-    },
-  } = useCreateRequest((state) => state.initial);
+  const search = useCreateRequest(
+    (state) => state.initial.payloads.jobs.search,
+  );
   void api.requests.create.jobs.usePrefetchInfiniteQuery(
     {
       recruiter_id,

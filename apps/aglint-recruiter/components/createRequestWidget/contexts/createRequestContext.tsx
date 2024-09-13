@@ -1,14 +1,16 @@
-import dayjs from '@/utils/dayjs';
 import type { DatabaseTable } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
+
+import dayjs from '@/utils/dayjs';
 
 export type Menus =
   | 'requestType'
   | 'jobs'
   | 'candidates'
   | 'schedules'
-  | 'assignees';
+  | 'assignees'
+  | 'final';
 
 export const STEPS: Readonly<Menus[]> = Object.freeze([
   'requestType',
@@ -16,6 +18,7 @@ export const STEPS: Readonly<Menus[]> = Object.freeze([
   'candidates',
   'schedules',
   'assignees',
+  'final',
 ]);
 
 type Selections = {
@@ -34,9 +37,11 @@ type Payloads = {
   assignees: { cursor: number; search: string };
 };
 
-type SafeSelections<T extends Menus = Menus> = { [id in T]: Selections[id] };
+type PayloadMenus = Exclude<Menus, 'final'>;
 
-type PayloadMenus = Exclude<Menus, 'dates'>;
+type SafeSelections<T extends PayloadMenus = PayloadMenus> = {
+  [id in T]: Selections[id];
+};
 
 type SafePayload<T extends PayloadMenus = PayloadMenus> = {
   [id in T]: Payloads[id];
@@ -146,7 +151,7 @@ const useCreateRequestContext = () => {
           })),
         nextPage: () =>
           set((state) => ({
-            step: state.step !== STEPS.length - 1 ? state.step + 1 : state.step,
+            step: state.step !== STEPS.length ? state.step + 1 : state.step,
           })),
         setRequestTypeSearch: (search) =>
           set((state) => ({
@@ -264,11 +269,13 @@ export const CreateRequestProvider = memo((props: PropsWithChildren) => {
 });
 CreateRequestProvider.displayName = 'CreateRequestProvider';
 
-const resetPayload = (menu: Menus, state: States): Partial<States> => {
-  let response = {
+const resetPayload = (menu: PayloadMenus, state: States): Partial<States> => {
+  const response = {
     payloads: structuredClone(initial.payloads),
     selections: structuredClone(initial.selections),
     step: initial.step,
+    dates: structuredClone(initial.dates),
+    note: initial.note,
   };
   if (menu === 'requestType') return response;
   if (menu === 'jobs') {
