@@ -639,7 +639,7 @@ const InterviewSession = ({
             }
             onClickLink={() =>
               window.open(
-                `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
+                `interview-pools/${session.interview_module.id}?tab=qualified`,
                 '_blank',
               )
             }

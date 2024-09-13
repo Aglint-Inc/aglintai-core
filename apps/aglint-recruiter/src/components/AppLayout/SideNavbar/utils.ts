@@ -62,16 +62,13 @@ export const navList: {
     active: ['/interviewers', '/user/profile/[user_id]'],
   },
   {
-    text: 'Interview Types',
+    text: 'Interview Pools',
     SubComponents: null,
-    route: ROUTES['/scheduling/interview-types'](),
+    route: ROUTES['/interview-pool'](),
     comingSoon: false,
     isVisible: true,
     permission: ['interview_types'],
-    active: [
-      '/scheduling/interview-types',
-      '/scheduling/interview-types/[type_id]',
-    ],
+    active: ['/interview-pool', '/interview-pool/[type_id]'],
   },
   {
     text: 'Sourcing Hub',

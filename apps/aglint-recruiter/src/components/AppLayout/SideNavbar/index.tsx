@@ -86,7 +86,7 @@ const LinkIcon = ({
     Requests: <LayoutList className='w-6 h-6' strokeWidth={1.5} />,
     Jobs: <BriefcaseBusiness className='w-6 h-6' strokeWidth={1.5} />,
     Interviews: <Calendar className='w-6 h-6' strokeWidth={1.5} />,
-    'Interview Types': <LibraryBig className='w-6 h-6' strokeWidth={1.5} />,
+    'Interview Pools': <LibraryBig className='w-6 h-6' strokeWidth={1.5} />,
     Candidates: <Users className='w-6 h-6' strokeWidth={1.5} />,
     Interviewers: <Users className='w-6 h-6' strokeWidth={1.5} />,
     'Sourcing Hub': <Search className='w-6 h-6' strokeWidth={1.5} />,

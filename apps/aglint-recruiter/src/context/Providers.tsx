@@ -48,6 +48,7 @@ export const PublicProviders = ({ children }: PropsWithChildren) => {
           enableSystem={false}
           disableTransitionOnChange
         >
+          <Toaster />
           <TRPCReactProvider>{children}</TRPCReactProvider>
           <Toaster />
         </ThemeProvider>
