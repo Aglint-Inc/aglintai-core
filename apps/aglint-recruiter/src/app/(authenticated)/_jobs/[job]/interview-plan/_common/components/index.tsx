@@ -23,7 +23,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
   CirclePause,
-  Delete,
   Kanban,
   Pencil,
   Plus,
