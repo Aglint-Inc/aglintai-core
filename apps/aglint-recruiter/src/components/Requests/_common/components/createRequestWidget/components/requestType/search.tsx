@@ -7,9 +7,9 @@ export const Search = () => {
   const { setRequestTypeSearch } = useCreateRequestActions();
   return (
     <CommandInput
-      placeholder='What type of request?'
       value={search}
       onValueChange={setRequestTypeSearch}
+      placeholder='What type of request?'
     />
   );
 };

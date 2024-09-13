@@ -7,6 +7,7 @@ import { useCreateRequestActions } from './useCreateRequestActions';
 export const useCreateRequestMutation = () => {
   const note = useCreateRequest((state) => state.note);
   const dates = useCreateRequest((state) => state.dates);
+  const priority = useCreateRequest((state) => state.priority);
   const selections = useCreateRequest((state) => state.selections);
   const { onOpenChange } = useCreateRequestActions();
   const mutation = api.requests.create.create_request.useMutation({
@@ -24,7 +25,7 @@ export const useCreateRequestMutation = () => {
   >['request'] = {
     assignee_id: selections.assignees.id,
     note,
-    priority: 'standard' as const,
+    priority,
     schedule_end_date: dates.end_date,
     schedule_start_date: dates.start_date,
     type: selections.requestType.id,

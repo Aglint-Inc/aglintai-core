@@ -15,15 +15,16 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   const cursor = input?.cursor ?? 0;
   const query = ctx.db
     .from('application_view')
-    .select('id, status, name', { count: 'exact' })
+    .select('id, name', { count: 'exact' })
     .range(cursor, cursor + pageSize)
     .eq('status', 'interview')
     .eq('job_id', input.job_id);
   if (input.search) query.ilike('name', `%${input.search}%`);
   query.order('id');
   const { data, count } = await query.throwOnError();
-  const safeData = data.map((data, i) => ({
-    ...data,
+  const safeData = data.map(({ id, name }, i) => ({
+    id,
+    label: name,
     cursor: cursor + i,
   }));
   const nextCursor =

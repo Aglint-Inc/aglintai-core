@@ -41,6 +41,7 @@ type States = {
     end_date: string;
   };
   note: string;
+  priority: DatabaseTable['request']['priority'];
   selections: SafeSelections;
   payloads: SafePayload;
 };
@@ -74,6 +75,7 @@ type Actions = {
   resetSelection: (_payload: keyof States['payloads']) => void;
   setDates: (_dates: States['dates']) => void;
   setNote: (_note: States['note']) => void;
+  setPriority: (_priority: States['priority']) => void;
 };
 
 export type Store = States & {
@@ -111,10 +113,11 @@ const initial = Object.freeze<States>({
     },
   },
   dates: {
-    end_date: dayjs().toISOString(),
-    start_date: dayjs().add(7, 'day').toISOString(),
+    start_date: dayjs().toISOString(),
+    end_date: dayjs().add(7, 'day').toISOString(),
   },
   note: '',
+  priority: 'standard',
 });
 
 const useCreateRequestContext = () => {
@@ -125,6 +128,7 @@ const useCreateRequestContext = () => {
       step: initial.step,
       dates: structuredClone(initial.dates),
       note: initial.note,
+      priority: initial.priority,
       payloads: structuredClone(initial.payloads),
       selections: structuredClone(initial.selections),
       actions: {
@@ -230,6 +234,7 @@ const useCreateRequestContext = () => {
           }),
         setDates: (dates) => set(() => ({ dates })),
         setNote: (note) => set(() => ({ note })),
+        setPriority: (priority) => set(() => ({ priority })),
         resetSelection: (payload) =>
           set((state) => resetPayload(payload, state)),
       },

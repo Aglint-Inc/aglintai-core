@@ -21,8 +21,9 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   if (input.search) query.ilike('job_title', `%${input.search}%`);
   query.order('id');
   const { data, count } = await query.throwOnError();
-  const safeData = data.map((data, i) => ({
-    ...data,
+  const safeData = data.map(({ id, job_title }, i) => ({
+    id,
+    label: job_title,
     cursor: cursor + i,
   }));
   const nextCursor =
