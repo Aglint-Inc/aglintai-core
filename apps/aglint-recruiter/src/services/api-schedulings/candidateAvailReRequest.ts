@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
-import axios from 'axios';
 import * as v from 'valibot';
 
+import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateAvailReRequest = async ({
@@ -61,15 +61,16 @@ export const candidateAvailReRequest = async ({
     ),
   );
 
-  const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+  const payload: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
     {
       recruiter_user_id: organizer_id,
       avail_req_id: cand_avail.id,
     };
-  await axios.post(
-    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/availabilityReqResend_email_candidate`,
-    {
+
+  await mailSender({
+    target_api: 'availabilityReqResend_email_candidate',
+    payload: {
       ...payload,
     },
-  );
+  });
 };
