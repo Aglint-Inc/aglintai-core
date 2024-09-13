@@ -1,11 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import {
-  Briefcase,
-  CalendarIcon,
-  CheckCircle2,
-  MessageSquare,
-  UserCircle,
-} from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -19,6 +12,7 @@ import {
   KeyMatrics,
   Qualifications,
   RecentInterviews,
+  SideBar,
   Top,
   UpcomingInterview,
 } from './Components';
@@ -179,16 +173,6 @@ const interviewer = {
   ],
 };
 
-const SideNavItem = ({ icon: Icon, label, active = false, onClick }) => (
-  <div
-    className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'}`}
-    onClick={onClick}
-  >
-    <Icon className='h-5 w-5' />
-    <span className='font-medium'>{label}</span>
-  </div>
-);
-
 export default function InterviewerDetailsPage() {
   //scrolling-------------------
   const [activeSection, setActiveSection] = useState('overview');
@@ -267,65 +251,10 @@ export default function InterviewerDetailsPage() {
         </div>
 
         <div className='flex gap-8'>
-          <aside className='w-64 flex-shrink-0 sticky  top-[275px] self-start'>
-            <nav className='space-y-1'>
-              <SideNavItem
-                icon={UserCircle}
-                label='Overview'
-                active={activeSection === 'overview'}
-                onClick={() => scrollToSection('overview')}
-              />
-              <SideNavItem
-                icon={CheckCircle2}
-                label='Qualifications'
-                active={activeSection === 'qualifications'}
-                onClick={() => scrollToSection('qualifications')}
-              />
-
-              <SideNavItem
-                icon={CalendarIcon}
-                label='Upcoming Interviews'
-                active={activeSection === 'upcomingInterviews'}
-                onClick={() => scrollToSection('upcomingInterviews')}
-              />
-              <SideNavItem
-                icon={Briefcase}
-                label='Recent Interviews'
-                active={activeSection === 'recentInterviews'}
-                onClick={() => scrollToSection('recentInterviews')}
-              />
-              <SideNavItem
-                icon={MessageSquare}
-                label='Interview Feedback'
-                active={activeSection === 'interviewFeedback'}
-                onClick={() => scrollToSection('interviewFeedback')}
-              />
-              {/*<SideNavItem
-                icon={BarChart}
-                label='Performance'
-                active={activeSection === 'performance'}
-                onClick={() => scrollToSection('performance')}
-              /> 
-              <SideNavItem
-                icon={Clock}
-                label='Availability'
-                active={activeSection === 'availability'}
-                onClick={() => scrollToSection('availability')}
-              />
-              <SideNavItem
-                icon={AlertTriangle}
-                label='Pending Actions'
-                active={activeSection === 'pendingActions'}
-                onClick={() => scrollToSection('pendingActions')}
-              />
-              <SideNavItem
-                icon={FileText}
-                label='Recent Activity'
-                active={activeSection === 'recentActivity'}
-                onClick={() => scrollToSection('recentActivity')}
-              />*/}
-            </nav>
-          </aside>
+          <SideBar
+            activeSection={activeSection}
+            scrollToSection={scrollToSection}
+          />
           <main className='flex-1 space-y-6'>
             <section ref={sectionRefs.overview}>
               <KeyMatrics

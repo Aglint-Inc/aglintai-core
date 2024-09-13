@@ -25,6 +25,13 @@ import {
   MapPin,
   Phone,
 } from 'lucide-react';
+import {
+  Briefcase,
+  CalendarIcon,
+  CheckCircle2,
+  MessageSquare,
+  UserCircle,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import { UIButton } from '../Common/UIButton';
@@ -94,6 +101,86 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
   );
 };
 
+export const SideBar = ({
+  scrollToSection,
+  activeSection,
+}: {
+  // eslint-disable-next-line no-unused-vars
+  scrollToSection: (sectionKey: any) => void;
+  activeSection: string;
+}) => {
+  const SideNavItem = ({ icon: Icon, label, active = false, onClick }) => (
+    <div
+      className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'}`}
+      onClick={onClick}
+    >
+      <Icon className='h-5 w-5' />
+      <span className='font-medium'>{label}</span>
+    </div>
+  );
+
+  return (
+    <aside className='w-64 flex-shrink-0 sticky  top-[275px] self-start'>
+      <nav className='space-y-1'>
+        <SideNavItem
+          icon={UserCircle}
+          label='Overview'
+          active={activeSection === 'overview'}
+          onClick={() => scrollToSection('overview')}
+        />
+        <SideNavItem
+          icon={CheckCircle2}
+          label='Qualifications'
+          active={activeSection === 'qualifications'}
+          onClick={() => scrollToSection('qualifications')}
+        />
+
+        <SideNavItem
+          icon={CalendarIcon}
+          label='Upcoming Interviews'
+          active={activeSection === 'upcomingInterviews'}
+          onClick={() => scrollToSection('upcomingInterviews')}
+        />
+        <SideNavItem
+          icon={Briefcase}
+          label='Recent Interviews'
+          active={activeSection === 'recentInterviews'}
+          onClick={() => scrollToSection('recentInterviews')}
+        />
+        <SideNavItem
+          icon={MessageSquare}
+          label='Interview Feedback'
+          active={activeSection === 'interviewFeedback'}
+          onClick={() => scrollToSection('interviewFeedback')}
+        />
+        {/*<SideNavItem
+      icon={BarChart}
+      label='Performance'
+      active={activeSection === 'performance'}
+      onClick={() => scrollToSection('performance')}
+    /> 
+    <SideNavItem
+      icon={Clock}
+      label='Availability'
+      active={activeSection === 'availability'}
+      onClick={() => scrollToSection('availability')}
+    />
+    <SideNavItem
+      icon={AlertTriangle}
+      label='Pending Actions'
+      active={activeSection === 'pendingActions'}
+      onClick={() => scrollToSection('pendingActions')}
+    />
+    <SideNavItem
+      icon={FileText}
+      label='Recent Activity'
+      active={activeSection === 'recentActivity'}
+      onClick={() => scrollToSection('recentActivity')}
+    />*/}
+      </nav>
+    </aside>
+  );
+};
 export const BreadCrumb = ({ name }) => {
   return (
     <div className='mb-6'>
@@ -239,35 +326,41 @@ export const Qualifications = ({
       </CardHeader>
       <CardContent>
         <div className='space-y-4 max-h-[360px] overflow-y-auto'>
-          {interview_types.map((interview_type, index) => (
-            <div key={index} className='bg-gray-50 p-4 rounded-lg'>
-              <h3 className='text-base font-medium mb-2'>
-                {interview_type.module_name}
-              </h3>
-              <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
-                <div>
-                  <p className='text-sm text-gray-500'>Monthly Scheduled</p>
-                  <p className='text-base font-bold'>-</p>
-                </div>
-                <div>
-                  <p className='text-sm text-gray-500'>Avg. Duration</p>
-                  <p className='text-base font-bold'>
-                    {interview_type.completed_meeting_duration || 0} min
-                  </p>
-                </div>
-                <div>
-                  <p className='text-sm text-gray-500'>Pass Rate</p>
-                  <p className='text-base font-bold'>-</p>
-                </div>
-                <div>
-                  <p className='text-sm text-gray-500'>Upcoming Slots</p>
-                  <p className='text-base font-bold'>
-                    {interview_type.confirmed_meeting_count || 0}
-                  </p>
+          {interview_types?.length ? (
+            interview_types.map((interview_type, index) => (
+              <div key={index} className='bg-gray-50 p-4 rounded-lg'>
+                <h3 className='text-base font-medium mb-2'>
+                  {interview_type.module_name}
+                </h3>
+                <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
+                  <div>
+                    <p className='text-sm text-gray-500'>Monthly Scheduled</p>
+                    <p className='text-base font-bold'>-</p>
+                  </div>
+                  <div>
+                    <p className='text-sm text-gray-500'>Avg. Duration</p>
+                    <p className='text-base font-bold'>
+                      {interview_type.completed_meeting_duration || 0} min
+                    </p>
+                  </div>
+                  <div>
+                    <p className='text-sm text-gray-500'>Pass Rate</p>
+                    <p className='text-base font-bold'>-</p>
+                  </div>
+                  <div>
+                    <p className='text-sm text-gray-500'>Upcoming Slots</p>
+                    <p className='text-base font-bold'>
+                      {interview_type.confirmed_meeting_count || 0}
+                    </p>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className='w-full h-[100px] flex items-center justify-center'>
+              No Qulifications found
             </div>
-          ))}
+          )}
         </div>
       </CardContent>
     </Card>
@@ -509,7 +602,9 @@ export const UpcomingInterview = ({
             ))}
           </div>
         ) : (
-          <>No Upcoming</>
+          <div className='w-full h-[100px] flex items-center justify-center'>
+            No Upcoming
+          </div>
         )}
       </CardContent>
     </Card>
@@ -562,7 +657,9 @@ export const RecentInterviews = ({
             ))}
           </div>
         ) : (
-          <>No recent</>
+          <div className='w-full h-[100px] flex items-center justify-center'>
+            No recent
+          </div>
         )}
       </CardContent>
     </Card>
@@ -595,7 +692,9 @@ export const Feedback = ({
               </div>
             ))
           ) : (
-            <>No feedback available</>
+            <div className='w-full h-[100px] flex items-center justify-center'>
+              No feedback available
+            </div>
           )}
         </div>
       </CardContent>
