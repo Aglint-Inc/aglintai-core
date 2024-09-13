@@ -94,13 +94,7 @@ const List = memo(({ data }: Props) => {
               textCountNo={index + 1}
               textName={capitalizeAll(name)}
               textRole={capitalizeAll(position)}
-              slotImage={
-                <Avatar
-                  src={profile_image}
-                  alt={name}
-                  variant='rounded-medium'
-                />
-              }
+              slotImage={<Avatar src={profile_image} alt={name} />}
               noInterview={interviews}
               noHours={(duration / 60).toFixed(1)}
             />

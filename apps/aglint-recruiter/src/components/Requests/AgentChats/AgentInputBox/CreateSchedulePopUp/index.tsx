@@ -1,5 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import { AiChatSuggest } from '@devlink2/AiChatSuggest';
 import { Send } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -62,7 +61,7 @@ function CreateSchedulePopUp({
             schedule_end_date: selectedDateRange.end_date,
             note: null,
           },
-          applications: [selectedItems.applicant_name[0].id],
+          application: selectedItems.applicant_name[0].id,
           sessions: selectedItems.interview_name.map((ele) => ele.id),
         },
       });
@@ -76,49 +75,47 @@ function CreateSchedulePopUp({
     selectedItems.applicant_name[0]?.id &&
     !!selectedItems.interview_name.length ? (
     <div className='px-4 relative -top-2.5'>
-      <AiChatSuggest
-        textHeader={'Schedule an interview'}
-        slotList={
-          <div className='h-full w-full flex flex-col justify-between items-end p-1'>
-            <div>
-              <p className='text-sm text-muted-foreground'>
-                {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
-              </p>
-              <SelectScheduleDate
-                scheduleDate={{
-                  start_date: selectedDateRange.start_date,
-                  end_date: selectedDateRange.end_date,
-                }}
-                onChange={(e: any) => {
-                  if (e[1]) {
-                    setSelectedDateRange({
-                      start_date: e[0],
-                      end_date: e[1],
-                    });
-                  } else {
-                    setSelectedDateRange({
-                      start_date: e[0],
-                      end_date: null,
-                    });
-                  }
-                }}
-              />
-            </div>
-            <UIButton
-              variant='default'
-              leftIcon={<Send/>}
-              onClick={createNewRequest}
-              isLoading={loading}
-              disabled={
-                Boolean(!selectedItems?.interview_name.length) ||
-                Boolean(!selectedItems?.applicant_name.length)
-              }
-            >
-              Create Request
-            </UIButton>
+      <div className='border rounded-md shadow-sm p-4'>
+        <div className='mb-2 text-sm text-gray-700'>Schedule an interview</div>
+        <div className='h-full w-full flex flex-col justify-between items-end p-1'>
+          <div>
+            <p className='text-sm text-muted-foreground'>
+              {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between.`}
+            </p>
+            <SelectScheduleDate
+              scheduleDate={{
+                start_date: selectedDateRange.start_date,
+                end_date: selectedDateRange.end_date,
+              }}
+              onChange={(e: any) => {
+                if (e[1]) {
+                  setSelectedDateRange({
+                    start_date: e[0],
+                    end_date: e[1],
+                  });
+                } else {
+                  setSelectedDateRange({
+                    start_date: e[0],
+                    end_date: null,
+                  });
+                }
+              }}
+            />
           </div>
-        }
-      />
+          <UIButton
+            variant='default'
+            leftIcon={<Send />}
+            onClick={createNewRequest}
+            isLoading={loading}
+            disabled={
+              Boolean(!selectedItems?.interview_name.length) ||
+              Boolean(!selectedItems?.applicant_name.length)
+            }
+          >
+            Create Request
+          </UIButton>
+        </div>
+      </div>
     </div>
   ) : null;
 }

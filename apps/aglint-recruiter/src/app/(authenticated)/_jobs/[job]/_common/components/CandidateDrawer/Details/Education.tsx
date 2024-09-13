@@ -1,24 +1,22 @@
 /* eslint-disable security/detect-object-injection */
 import { Skeleton } from '@components/ui/skeleton';
-import { CandidateDetail } from '@devlink/CandidateDetail';
-import { EducationItem } from '@devlink/EducationItem';
-import { ExperienceSkeleton } from '@devlink/ExperienceSkeleton';
 import { GraduationCap, School } from 'lucide-react';
 import Image from 'next/image';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useApplication } from '@/context/ApplicationContext';
 
-import { Loader } from '../Common/Loader';
-
 const Education = () => {
   return (
-    <CandidateDetail
-      slotIcon={<GraduationCap size={16} />}
-      slotBody={<Content />}
-      textTitle={'Education'}
-      slotBadge={<></>}
-    />
+    <>
+      <div className='flex items-center space-x-4'>
+        <GraduationCap className='w-4 h-4' />
+        <h3 className='text-lg font-semibold'>Education</h3>
+      </div>
+      <div className='mt-4'>
+        <Content />
+      </div>
+    </>
   );
 };
 
@@ -28,19 +26,19 @@ const Content = () => {
   const {
     details: { data, status },
   } = useApplication();
-  if (status === 'pending')
-    return (
-      <Loader count={3}>
-        <ExperienceSkeleton slotLoader={<Skeleton />} />
-      </Loader>
-    );
+  if (status === 'pending') return <Skeleton />;
   if (
     !(
       (data?.resume_json?.schools ?? []).length &&
       data?.score_json?.relevance?.schools
     )
   )
-    return <GlobalEmpty iconSlot={<School className='text-gray-500'/>} text={'No education found'}/>;
+    return (
+      <GlobalEmpty
+        iconSlot={<School className='text-gray-500' />}
+        text={'No education found'}
+      />
+    );
   return <Schools />;
 };
 
@@ -56,25 +54,27 @@ const Schools = () => {
     },
   } = useApplication();
   return schools.map(({ institution, start, end, degree }, i) => (
-    <EducationItem
-      key={i}
-      slotSchoolIcon={null}
-      textEducation={degree}
-      textSchool={institution}
-      slotBadge={
-        relevance && relevance[i] === 'high' ? (
+    <div key={i} className='flex items-center space-x-4 mb-4'>
+      <div className='flex-shrink-0'>{/* Placeholder for school icon */}</div>
+      <div className='flex-grow'>
+        <h4 className='text-lg font-semibold'>{degree}</h4>
+        <p className='text-sm text-gray-600'>{institution}</p>
+        <p className='text-xs text-gray-500'>
+          {timeRange(timeFormat(start), timeFormat(end))}
+        </p>
+      </div>
+      <div className='flex-shrink-0'>
+        {relevance && relevance[i] === 'high' ? (
           <Image
-            src={'/images/badges/knowledgable.svg'}
+            src='/images/badges/knowledgable.svg'
             width={16}
             height={16}
-            alt=''
+            alt='Knowledgeable badge'
+            className='w-4 h-4'
           />
-        ) : (
-          <></>
-        )
-      }
-      textDate={timeRange(timeFormat(start), timeFormat(end))}
-    />
+        ) : null}
+      </div>
+    </div>
   ));
 };
 

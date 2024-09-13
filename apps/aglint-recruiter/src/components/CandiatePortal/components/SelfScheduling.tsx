@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
 import { type schedule } from '@/api/candidate_portal/home_page/route';
-import { formatSessions } from '@/job/utils';
+import { formatSessions } from '@/utils/formatSessions';
 
 function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
   const latestschedule = scheduleData.sort((a, b) =>

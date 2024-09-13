@@ -238,7 +238,6 @@ const RecentRescheduleListItem = ({
         <Avatar
           src={detail.image ? detail.image : undefined}
           alt={detail.name}
-          variant='rounded-medium'
         />
       }
       onClickCandidate={{
@@ -296,7 +295,6 @@ const RecentDeclineListItem = ({
         <Avatar
           src={detail.image ? detail.image : undefined}
           alt={detail.name}
-          variant='rounded-medium'
         />
       }
       textName={detail.name}

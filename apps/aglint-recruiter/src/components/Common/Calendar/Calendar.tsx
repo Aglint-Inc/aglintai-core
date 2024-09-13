@@ -5,17 +5,22 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import {
   type Dispatch,
@@ -29,7 +34,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
 import Loader from '../Loader';
-import { UIBadge } from '../UIBadge';
+// import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {
   type colorType,
@@ -106,61 +111,54 @@ function CalendarComp({
   };
 
   return (
-    <>
-      <Stack p={2} width={'900px'} height={'624px'} spacing={2}>
-        {isLoading ? (
-          <Stack
-            width={'900px'}
-            height={'400px'}
-            display={'flex'}
-            alignItems={'center'}
-          >
-            <Loader />
-          </Stack>
-        ) : (
-          <>
-            <CalendarHeader
-              calendarApi={calendarApi}
-              currentDate={currentDate}
-              handleMode={handleMode}
-              handleType={handleType}
-              mode={viewMode}
-              type={viewType}
+    <div className='p-2 w-[900px] h-[624px] space-y-2'>
+      {isLoading ? (
+        <div className='w-[900px] h-[400px] flex items-center justify-center'>
+          <Loader />
+        </div>
+      ) : (
+        <>
+          <CalendarHeader
+            calendarApi={calendarApi}
+            currentDate={currentDate}
+            handleMode={handleMode}
+            handleType={handleType}
+            mode={viewMode}
+            type={viewType}
+          />
+          <div>
+            <FullCalendar
+              key={events?.length}
+              ref={calendarRef}
+              plugins={[
+                resourceTimelinePlugin,
+                dayGridPlugin,
+                listPlugin,
+                timeGridPlugin,
+              ]}
+              // eslint-disable-next-line security/detect-object-injection
+              initialView={view[viewMode][viewType]}
+              initialEvents={events}
+              eventContent={renderEventContent}
+              nowIndicator={true}
+              editable={true}
+              selectable={false}
+              selectMirror={true}
+              allDaySlot={false}
+              resources={events}
+              datesSet={handleDatesSet}
+              height='auto'
+              views={{
+                dayGridMonth: {
+                  dayMaxEventRows: 2,
+                },
+              }}
             />
-            <Stack>
-              <FullCalendar
-                key={events?.length}
-                ref={calendarRef}
-                plugins={[
-                  resourceTimelinePlugin,
-                  dayGridPlugin,
-                  listPlugin,
-                  timeGridPlugin,
-                ]}
-                // eslint-disable-next-line security/detect-object-injection
-                initialView={view[viewMode][viewType]}
-                initialEvents={events}
-                eventContent={renderEventContent}
-                nowIndicator={true}
-                editable={true}
-                selectable={false}
-                selectMirror={true}
-                allDaySlot={false}
-                resources={events}
-                datesSet={handleDatesSet}
-                height='auto'
-                views={{
-                  dayGridMonth: {
-                    dayMaxEventRows: 2,
-                  },
-                }}
-              />
-            </Stack>
-            <CalendarFilter filter={filter} setFilter={setFilter} />
-          </>
-        )}
-      </Stack>
-    </>
+          </div>
+          <CalendarFilter filter={filter} setFilter={setFilter} />
+        </>
+      )}
+    </div>
   );
 }
 
@@ -172,16 +170,14 @@ function renderEventContent(eventInfo) {
     <Tooltip>
       <TooltipTrigger asChild>
         <div
+          className='rounded-md p-[5px_10px] w-full'
           style={{
             backgroundColor: color?.bg,
-            borderRadius: '4px',
-            padding: '5px 10px',
             borderLeft: `3px solid ${color.pri}`,
-            width: '100%',
           }}
         >
-          <p style={{ fontWeight: 500 }}>{eventInfo.event.title}</p>
-          <p style={{ fontSize: '10px' }}>
+          <p className='font-medium'>{eventInfo.event.title}</p>
+          <p className='text-xs'>
             {dayjsLocal(data.start_time).format('hh:mm A -')}
             {dayjsLocal(data.end_time).format('hh:mm A')}
           </p>
@@ -207,36 +203,45 @@ const colorPick = (status): colorType => {
 const TooltipComp = ({ data }) => {
   const router = useRouter();
   return (
-    <Stack>
-      <ProgressHoverCard
-        textScheduleName={data?.session_name}
-        textDuration={`${data?.session_duration} minutes`}
-        textMeetingType={capitalizeAll(data?.schedule_type)}
-        isScheduleDate={true}
-        textScheduleDate={`${dayjsLocal(data.start_time).format('ddd, MMM DD, YYYY hh:mm A')} - ${dayjsLocal(data.end_time).format(' hh:mm A')}`}
-        slotScheduleStatus={
-          <UIBadge
-            textBadge={capitalizeAll(data?.status)}
-            color={
-              data?.status === 'completed'
-                ? 'success'
-                : data?.status === 'canceled'
-                  ? 'error'
-                  : data?.status === 'confirmed'
-                    ? 'info'
-                    : null
-            }
-          />
-        }
-      />
-      <Stack sx={{ padding: '0 16px 16px 16px' }} spacing={1}>
-        <Typography>
-          Candidate :{' '}
+    <div className='space-y-4'>
+      <Card className='w-[350px]'>
+        <CardHeader>
+          <CardTitle>{data?.session_name}</CardTitle>
+          <CardDescription>
+            {`${data?.session_duration} minutes`} •{' '}
+            {capitalizeAll(data?.schedule_type)}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className='space-y-2'>
+            <p className='text-sm'>
+              {dayjsLocal(data.start_time).format('ddd, MMM DD, YYYY hh:mm A')}{' '}
+              - {dayjsLocal(data.end_time).format('hh:mm A')}
+            </p>
+            {/* <UIBadge
+              variant={
+                data?.status === 'completed'
+                  ? 'success'
+                  : data?.status === 'canceled'
+                    ? 'destructive'
+                    : data?.status === 'confirmed'
+                      ? 'default'
+                      : 'secondary'
+              }
+            >
+              {capitalizeAll(data?.status)}
+            </UIBadge> */}
+          </div>
+        </CardContent>
+      </Card>
+      <div className='px-4 pb-4 space-y-1'>
+        <p>
+          Candidate:{' '}
           {getFullName(
             data.applications.candidates.first_name,
             data.applications.candidates.last_name,
           )}
-        </Typography>
+        </p>
         <Button
           color={'neutral'}
           size={'sm'}
@@ -248,7 +253,7 @@ const TooltipComp = ({ data }) => {
         >
           View Details
         </Button>
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

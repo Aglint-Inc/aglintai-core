@@ -3,6 +3,7 @@ import { Progress } from '@components/ui/progress';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Columns, LayoutList } from 'lucide-react';
 
+import { CreateRequestWidget } from '../_common/components/createRequestWidget';
 import RequestListFilter from '../_common/components/RequestListFilter';
 import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
 
@@ -45,8 +46,9 @@ function Header({
           <Progress value={completed_percentage} className='w-full' />
         </div>
       </div>
-      <div className='flex justify-end mt-4'>
+      <div className='flex justify-end items-center mt-4 gap-2'>
         <RequestListFilter />
+        <CreateRequestWidget />
         <Tabs
           value={view}
           onValueChange={(value) => setView(value as 'list' | 'kanban')}

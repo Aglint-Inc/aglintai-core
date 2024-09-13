@@ -3,7 +3,6 @@ import './customcss.css';
 import { dayjsLocal } from '@aglint/shared-utils';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import { Stack, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 
@@ -38,13 +37,7 @@ function CalendarResourceView({
   }, [currentDate]);
 
   return (
-    <Stack
-      sx={{
-        maxWidth: 'calc(100vw - 600px)',
-        overflowY: 'auto',
-        height: '100vh',
-      }}
-    >
+    <div className='max-w-[calc(100vw-600px)] overflow-y-auto h-screen'>
       <CalendarHeader
         currentDate={currentDate}
         dateRange={dateRange}
@@ -52,7 +45,7 @@ function CalendarResourceView({
         isLoading={isLoading}
       />
 
-      <Stack minWidth={`${resources.length * 250}px`}>
+      <div className={`min-w-[${resources.length * 250}px]`}>
         <FullCalendar
           key={events.length}
           ref={calendarRef}
@@ -90,8 +83,8 @@ function CalendarResourceView({
           slotDuration={'01:00:00'}
           initialDate={currentDate}
         />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }
 
@@ -111,49 +104,37 @@ const CalendarHeader = ({
   setCurrentDate: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
 }) => {
+  if (isLoading) return null;
+
   return (
-    <>
-      {isLoading ? (
-        ''
-      ) : (
-        <Stack
-          direction={'row'}
-          spacing={2}
-          alignItems={'center'}
-          justifyContent={'center'}
-          width={'100%'}
-          p={1}
-          bgcolor={'#fff'}
-          minHeight={'47px'}
-        >
-          <UIButton
-            size='sm'
-            variant='secondary'
-            icon={<ChevronLeft />}
-            disabled={dayjsLocal(dateRange.start).isSame(currentDate, 'day')}
-            onClick={() => {
-              if (dayjsLocal(dateRange.start).isSame(currentDate, 'day'))
-                return;
-              setCurrentDate(
-                dayjsLocal(currentDate).subtract(1, 'day').toISOString(),
-              );
-            }}
-          />
-          <Typography fontWeight={500}>
-            {dayjsLocal(currentDate).format('DD MMM YYYY ddd')}
-          </Typography>
-          <UIButton
-            size='sm'
-            variant='secondary'
-            icon={<ChevronRight />}
-            disabled={dayjsLocal(dateRange.end).isSame(currentDate, 'day')}
-            onClick={() => {
-              if (dayjsLocal(dateRange.end).isSame(currentDate, 'day')) return;
-              setCurrentDate(dayjsLocal(currentDate).add(1, 'day').toISOString());
-            }}
-          />
-        </Stack>
-      )}
-    </>
+    <div className='flex flex-row items-center justify-center w-full p-1 bg-white min-h-[47px] space-x-2'>
+      <UIButton
+        variant='outline'
+        size='sm'
+        disabled={dayjsLocal(dateRange.start).isSame(currentDate, 'day')}
+        onClick={() => {
+          if (dayjsLocal(dateRange.start).isSame(currentDate, 'day')) return;
+          setCurrentDate(
+            dayjsLocal(currentDate).subtract(1, 'day').toISOString(),
+          );
+        }}
+      >
+        <ChevronLeft className='h-4 w-4' />
+      </UIButton>
+      <p className='font-medium'>
+        {dayjsLocal(currentDate).format('DD MMM YYYY ddd')}
+      </p>
+      <UIButton
+        variant='outline'
+        size='sm'
+        disabled={dayjsLocal(dateRange.end).isSame(currentDate, 'day')}
+        onClick={() => {
+          if (dayjsLocal(dateRange.end).isSame(currentDate, 'day')) return;
+          setCurrentDate(dayjsLocal(currentDate).add(1, 'day').toISOString());
+        }}
+      >
+        <ChevronRight className='h-4 w-4' />
+      </UIButton>
+    </div>
   );
 };

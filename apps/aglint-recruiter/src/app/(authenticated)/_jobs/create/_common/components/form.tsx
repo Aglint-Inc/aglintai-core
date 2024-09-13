@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { cn } from '@lib/utils';
-import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
@@ -94,49 +93,6 @@ export const useJobForms = (
   );
 };
 
-// export const JobForms: FC<JobMetaFormProps> = ({
-//   fields,
-//   handleChange,
-//   handleCreate = null,
-// }) => {
-
-//   const forms =
-
-//   return (
-//     <JobDetailBlock
-//       slotJobForm={forms}
-//       slotHiringTeamForm={roleForms}
-//       slotRichtext={description}
-//       textDescription={
-//         !handleCreate
-//           ? 'Update the job details here; changes will be saved automatically. Publish to make the updates live.'
-//           : 'Enter the basic job details below.'
-//       }
-//       isCreate={!!handleCreate}
-//       onClickCreate={{ onClick: () => !!handleCreate && handleCreate() }}
-//       styleBorder={{
-//         style: {
-//           borderColor: fields.description.error.value
-//             ? palette.red['500']
-//             : palette.grey['300'],
-//         },
-//       }}
-//       slotRichtextWarning={
-//         fields.description.error.value && (
-//           <Stack
-//             alignItems={'center'}
-//             direction={'row'}
-//             color={palette.red[500]}
-//           >
-//             <WarningSvg />
-//             {fields.description.error.helper}
-//           </Stack>
-//         )
-//       }
-//     />
-//   );
-// };
-
 const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
   return (
     <UITextField
@@ -152,8 +108,8 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
   );
 });
 JobTitle.displayName = 'JobTitle';
+
 const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  // const { recruiter } = useAuthDetails();
   return (
     <div className='relative'>
       <Input
@@ -409,12 +365,12 @@ const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
       });
   };
   return (
-    <Stack onClick={() => handleToast()}>
-      <Stack
-        style={{
-          opacity: job?.scoring_criteria_loading ? 0.4 : 1,
-          pointerEvents: job?.scoring_criteria_loading ? 'none' : 'auto',
-        }}
+    <div onClick={() => handleToast()} className='w-full'>
+      <div
+        className={cn(
+          'w-full',
+          job?.scoring_criteria_loading && 'opacity-40 pointer-events-none',
+        )}
       >
         <TipTapAIEditor
           initialValue={value.value as string}
@@ -422,8 +378,8 @@ const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
           placeholder='Enter job description'
           disabled={disable}
         />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 });
 JobDescription.displayName = 'JobDescription';

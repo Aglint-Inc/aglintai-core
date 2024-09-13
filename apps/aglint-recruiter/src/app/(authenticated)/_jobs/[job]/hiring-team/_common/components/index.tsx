@@ -7,8 +7,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { SavedChanges } from '@devlink/SavedChanges';
 import { JobDetailBlock } from '@devlink3/JobDetailBlock';
+import { CheckCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import {
   type Dispatch,
@@ -114,31 +114,19 @@ const JobEdit = () => {
       slotTopbarRight={<Settings />}
       slotSaving={
         <div
-          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'} flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-2 rounded-md`}
         >
-          <SavedChanges
-            isSaving={saving}
-            isSaved={!saving}
-            slotLoaderIcon={
-              <div className='text-neutral-600'>
-                <svg className='animate-spin h-4 w-4' viewBox='0 0 24 24'>
-                  <circle
-                    className='opacity-25'
-                    cx='12'
-                    cy='12'
-                    r='10'
-                    stroke='currentColor'
-                    strokeWidth='4'
-                  ></circle>
-                  <path
-                    className='opacity-75'
-                    fill='currentColor'
-                    d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z'
-                  ></path>
-                </svg>
-              </div>
-            }
-          />
+          {saving ? (
+            <>
+              <Loader2 className='h-4 w-4 animate-spin text-green-600' />
+              <span>Saving changes...</span>
+            </>
+          ) : (
+            <>
+              <CheckCircle className='h-4 w-4 text-green-600' />
+              <span>Changes saved</span>
+            </>
+          )}
         </div>
       }
     />

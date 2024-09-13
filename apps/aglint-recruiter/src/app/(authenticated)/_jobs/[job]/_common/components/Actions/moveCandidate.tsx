@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
-import { DcPopup } from '@devlink/DcPopup';
 import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
 import { Dialog, Stack } from '@mui/material';
+import { X } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
@@ -16,7 +16,7 @@ import {
   useApplicationsChecklist,
   useApplicationsStore,
 } from '@/job/hooks';
-import { formatSessions } from '@/job/utils';
+import { formatSessions } from '@/utils/formatSessions';
 import { capitalize } from '@/utils/text/textUtils';
 
 import CreateRequest from './CreateRequest';
@@ -80,21 +80,21 @@ const MoveCandidateNew = () => {
     resetActionPopup();
   });
   return (
-    <DcPopup
-      popupName={title}
+    <ReusablePopup
+      title={title}
       slotBody={
-        <Stack gap={2}>
-          <UIAlert
-            color={'error'}
-            iconName={'CircleAlert'}
-            title={`You are about to ${description}`}
-            description={<li>All the schedules will be deleted</li>}
-          />
-        </Stack>
+        <div className='space-y-4'>
+            <UIAlert
+              color={'error'}
+              iconName={'CircleAlert'}
+              title={`You are about to ${description}`}
+              description={<li>All the schedules will be deleted</li>}
+            />
+          </div>
       }
-      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
+    
   );
 };
 
@@ -138,8 +138,8 @@ const MoveCandidateInterview = () => {
   }, buttonText);
 
   return (
-    <DcPopup
-      popupName={title}
+    <ReusablePopup
+      title={title}
       slotBody={
         <Stack gap={2}>
           {capitalize(description)}
@@ -154,7 +154,6 @@ const MoveCandidateInterview = () => {
           />
         </Stack>
       }
-      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
   );
@@ -170,11 +169,11 @@ const MoveCandidateQualified = () => {
     });
     resetActionPopup();
   });
+
   return (
-    <DcPopup
-      popupName={title}
+    <ReusablePopup
+      title={title}
       slotBody={<Stack gap={2}>{capitalize(description)}</Stack>}
-      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
   );
@@ -193,8 +192,8 @@ const MoveCandidateDisqualified = () => {
   });
   return (
     <>
-      <DcPopup
-        popupName={title}
+      <ReusablePopup
+        title={title}
         slotBody={
           <Stack gap={1}>
             <UIAlert
@@ -219,7 +218,6 @@ const MoveCandidateDisqualified = () => {
             </Stack>
           </Stack>
         }
-        onClickClosePopup={{ onClick: () => resetActionPopup() }}
         slotButtons={buttons}
       />
     </>
@@ -232,11 +230,11 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
   const { resetActionPopup } = useApplicationsActions();
   const buttons = (
     <>
-      <UIButton size='sm' variant='secondary' onClick={() => resetActionPopup()}>
+      <UIButton variant='secondary' onClick={() => resetActionPopup()}>
         Cancel
       </UIButton>
 
-      <UIButton size='sm' variant='default' onClick={() => onSubmit()}>
+      <UIButton variant='default' onClick={() => onSubmit()}>
         {buttonText ?? `Move to ${actionPopup}`}
       </UIButton>
     </>
@@ -247,3 +245,23 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
   const action = `Send ${actionPopup} email${count === 1 ? '' : 's'} to ${count} candidate${count === 1 ? '' : 's'}`;
   return { title, description, buttons, action, count };
 }
+
+const ReusablePopup = ({ title, slotBody, slotButtons }) => {
+  const { resetActionPopup } = useApplicationsActions();
+  return (
+    <div className='flex items-center justify-center w-[500px]'>
+      <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
+        <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+          <h2 className='font-semibold'>{title}</h2>
+          <UIButton onClick={() => resetActionPopup()} variant='ghost' size='sm'>
+            <X className='w-4 h-4' />
+          </UIButton>
+        </div>
+        <div className='p-4'>{slotBody}</div>
+        <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+          {slotButtons}
+        </div>
+      </div>
+    </div>
+  );
+};

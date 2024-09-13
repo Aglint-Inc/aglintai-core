@@ -93,7 +93,9 @@ export function UIBadge({
         </>
       )}
 
-      {textBadge ? <div>{textBadge}</div> : null}
+      {textBadge !== undefined || textBadge !== null ? (
+        <div>{textBadge.toString()}</div>
+      ) : null}
     </Badge>
   );
 }

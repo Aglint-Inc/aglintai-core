@@ -31,7 +31,6 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
           <MuiAvatar
             src={recruiterUser.profile_image}
             level={recruiterUser.first_name}
-            variant='rounded'
             width='24px'
             height='24px'
           />

@@ -8,7 +8,7 @@ import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { deleteRelationByUserDbDelete } from '../../../InterviewTypes/queries/utils';
+import { deleteRelationByUserDbDelete } from '../../../InterviewTypes/DetailPage/_common/utils/utils';
 import {
   setisRemoveModuleDialogOpen,
   setSelRelation,

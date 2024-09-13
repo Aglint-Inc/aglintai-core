@@ -1,5 +1,4 @@
 import type { DatabaseTable } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
@@ -72,66 +71,53 @@ const ScoreWheel = ({
     ? getOverallResumeScore(scores, parameter_weights)
     : 0;
   return (
-    <>
-      <Stack
-        id={id}
-        width={'100%'}
-        display={'flex'}
-        alignItems={'center'}
-        justifyContent={'center'}
-        borderRadius={'50%'}
-        sx={{
-          aspectRatio: 1,
-          background: `conic-gradient(${conicGradient})`,
+    <div
+      id={id}
+      className='w-full flex items-center justify-center rounded-full cursor-pointer'
+      style={{
+        aspectRatio: '1',
+        background: `conic-gradient(${conicGradient})`,
+      }}
+      onMouseMove={(e) => {
+        setDegree(getCursorDegrees(e, id));
+      }}
+      onMouseOut={() => {
+        setDegree(null);
+      }}
+      onBlur={() => {
+        setDegree(null);
+      }}
+    >
+      <div
+        className='w-4/5 flex items-center justify-center rounded-full text-center'
+        style={{
+          aspectRatio: '1',
+          backgroundColor: 'var(--white)',
+          color:
+            isSettings &&
+            (hoverKey === null || hoverKey === 'unused') &&
+            unused.isUnused
+              ? 'red'
+              : 'black',
         }}
-        onMouseMove={(e) => {
-          setDegree(getCursorDegrees(e, id));
-        }}
-        onMouseOut={() => {
-          setDegree(null);
-        }}
-        style={{ cursor: 'pointer' }}
       >
-        <Stack
-          width={'80%'}
-          display={'flex'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          borderRadius={'50%'}
-          textAlign={'center'}
-          sx={{
-            aspectRatio: 1,
-            backgroundColor: 'var(--white)',
-          }}
-          style={{
-            color:
-              isSettings &&
-              (hoverKey === null || hoverKey === 'unused') &&
-              unused.isUnused
-                ? 'red'
-                : 'black',
-          }}
-        >
-          <Stack
-            fontSize={`${fontSize}px`}
-            sx={{ transform: 'translateY(2px)' }}
-          >
-            <Stack fontSize={'200%'} sx={{ fontWeight: 600 }}>
-              {isSettings
-                ? hoverKey
-                  ? `${parameter_weights[hoverKey] ?? unused.count}%`
-                  : unused.isUnused
-                    ? `${unused.count}%`
-                    : '100%'
-                : `${
-                    hoverKey
-                      ? Math.trunc(
-                          (parameter_weights[hoverKey] * jdScore[hoverKey]) /
-                            100,
-                        )
-                      : overallScore
-                  }`}
-            </Stack>
+        <div className={`text-[${fontSize}px] translate-y-[2px]`}>
+          <div className='text-[200%] font-semibold'>
+            {isSettings
+              ? hoverKey
+                ? `${parameter_weights[hoverKey] ?? unused.count}%`
+                : unused.isUnused
+                  ? `${unused.count}%`
+                  : '100%'
+              : `${
+                  hoverKey
+                    ? Math.trunc(
+                        (parameter_weights[hoverKey] * jdScore[hoverKey]) / 100,
+                      )
+                    : overallScore
+                }`}
+          </div>
+          <div>
             {isSettings
               ? hoverKey
                 ? capitalize(hoverKey)
@@ -141,10 +127,10 @@ const ScoreWheel = ({
               : hoverKey
                 ? capitalize(hoverKey)
                 : 'Overall Score'}
-          </Stack>
-        </Stack>
-      </Stack>
-    </>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

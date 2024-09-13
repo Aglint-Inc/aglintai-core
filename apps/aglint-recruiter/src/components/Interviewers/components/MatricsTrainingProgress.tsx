@@ -49,7 +49,7 @@ const Containter = () => {
   if (data.length === 0)
     return (
       <Stack>
-        <GlobalEmpty iconSlot={<HardDrive/>} text={'No Data Available'}/>
+        <GlobalEmpty iconSlot={<HardDrive />} text={'No Data Available'} />
       </Stack>
     );
 
@@ -71,13 +71,7 @@ const List = memo(({ data }: { data: useTrainingProgressType }) => {
         >
           <TrainingProgressList
             slotHistoryPill={<Pills {...data} />}
-            slotInterviewerImage={
-              <Avatar
-                //src={data.}
-                alt={data.name}
-                variant='rounded-medium'
-              />
-            }
+            slotInterviewerImage={<Avatar alt={data.name} />}
             textInterviewModule={''}
             textName={capitalizeAll(data.name)}
             textRole={data.position}

@@ -3,10 +3,10 @@ import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
 import { Drawer, Stack } from '@mui/material';
+import { FileQuestion } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Icon from '@/components/Common/Icons/Icon';
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
@@ -58,7 +58,7 @@ const InterviewDrawers = ({
         <Stack px={'80px'}>
           <div className='flex flex-col items-center justify-center p-8 text-center'>
             <div className='mb-2'>
-              <Icon variant='EmptyState' width='80' height='80' />
+              <FileQuestion size={80} />
             </div>
             <h3 className='text-lg font-semibold mb-2'>No Interview Plan</h3>
             <p className='text-sm text-gray-600 mb-4'>

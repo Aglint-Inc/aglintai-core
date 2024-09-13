@@ -1,5 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import {
@@ -7,7 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { GlobalBannerShort } from '@devlink2/GlobalBannerShort';
 import { cn } from '@lib/utils';
 import { Stack, TextField } from '@mui/material';
 import { format } from 'date-fns';
@@ -163,30 +163,31 @@ function DialogSchedule() {
       >
         <>
           {sessionHasRequest.length > 0 && (
-            <GlobalBannerShort
-              color={'warning'}
-              slotButtons={
-                <>
-                  <UIButton
-                    variant='secondary'
-                    size='sm'
-                    onClick={() => {
-                      router.push({
-                        query: { tab: 'requests' },
-                        pathname: `/jobs/${job_id}/application/${application_id}`,
-                      });
-                      onClose();
-                    }}
-                  >
-                    View Request
-                  </UIButton>
-                </>
-              }
-              textTitle={`${sessionHasRequest
-                .map((session) => session.interview_session.name)
-                .join(', ')} already has a schedule request.`}
-              textDescription={`Please wait for the request to be accepted or rejected before creating a new request.`}
-            />
+            <Alert variant='warning'>
+              <AlertTitle>
+                {`${sessionHasRequest
+                  .map((session) => session.interview_session.name)
+                  .join(', ')} already has a schedule request.`}
+              </AlertTitle>
+              <AlertDescription>
+                Please wait for the request to be accepted or rejected before
+                creating a new request.
+              </AlertDescription>
+              <Button
+                variant='outline'
+                size='sm'
+                className='mt-3'
+                onClick={() => {
+                  router.push({
+                    query: { tab: 'requests' },
+                    pathname: `/jobs/${job_id}/application/${application_id}`,
+                  });
+                  onClose();
+                }}
+              >
+                View Request
+              </Button>
+            </Alert>
           )}
 
           <ScheduleInterviewPop

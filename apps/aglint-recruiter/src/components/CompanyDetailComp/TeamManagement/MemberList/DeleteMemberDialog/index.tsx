@@ -1,7 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
-import { DeletePopup } from '@devlink3/DeletePopup';
-import { Dialog, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import AutoCompletePro from '@/components/Common/AutoCompletePro';
@@ -105,30 +103,25 @@ function DeleteMemberDialog({
 
   const description =
     reason === 'delete' ? (
-      <>
-        <Typography variant='body1'>
+      <div className='space-y-4'>
+        <p className='text-base'>
           By clicking delete the member will be permanently deleted.
-        </Typography>
+        </p>
         {warning && (
-          <>
-            <br />
-            <Typography variant='body1' color={'var(--error-11)'}>
-              Warning: {warning}
-            </Typography>
-          </>
+          <p className='text-base text-[var(--error-11)]'>Warning: {warning}</p>
         )}
-      </>
+      </div>
     ) : reason === 'cancel_invite' ? (
-      <Typography variant='body1'>
+      <p className='text-base'>
         By clicking cancel invitation will be canceled and removed from the
         members list.
-      </Typography>
+      </p>
     ) : reason === 'suspend' ? (
-      <Stack spacing={2}>
-        <Typography fontWeight={500}>
+      <div className='space-y-4'>
+        <p className='font-medium'>
           You are about to suspend {name} from the system.
-        </Typography>
-        <ul>
+        </p>
+        <ul className='list-disc pl-5 space-y-2'>
           <li> Once suspended, {name} will not have login access.</li>
           <li>
             The user will be removed from interview types, so no new interviews
@@ -143,10 +136,10 @@ function DeleteMemberDialog({
           </li>
         </ul>
 
-        <Stack spacing={2}>
+        <div className='space-y-4'>
           {isInterviewTypesRequire && (
-            <Stack spacing={1}>
-              Reassign current Interview Types to:
+            <div className='space-y-1'>
+              <p>Reassign current Interview Types to:</p>
               <JobCoordinator
                 // @ts-expect-error
                 name={isInterviewTypesRequire}
@@ -161,18 +154,18 @@ function DeleteMemberDialog({
                 label={false}
                 onChange={(_, val) => handelFormUpdate({ interviewTypes: val })}
               />
-            </Stack>
+            </div>
           )}
-          <Stack spacing={1}>
-            Reassign current Tasks to:
+          <div className='space-y-1'>
+            <p>Reassign current Tasks to:</p>
             <TaskAutoComplete
               val={form.values.task}
               setVal={(id) => handelFormUpdate({ task: id })}
               error={form.error.task}
             />
-          </Stack>
-        </Stack>
-      </Stack>
+          </div>
+        </div>
+      </div>
     ) : (
       <></>
     );
@@ -193,25 +186,23 @@ function DeleteMemberDialog({
             }
           : null;
   return (
-    <>
-      <UIDialog
-        open={Boolean(reason)}
-        onClose={close}
-        title={title}
-        slotButtons={
-          <>
-            <UIButton variant='secondary' onClick={close}>
-              Cancel
-            </UIButton>
-            <UIButton size='md' onClick={onClick}>
-              {button_text}
-            </UIButton>
-          </>
-        }
-      >
-        {description}
-      </UIDialog>
-    </>
+    <UIDialog
+      open={Boolean(reason)}
+      onClose={close}
+      title={title}
+      slotButtons={
+        <>
+          <UIButton variant='secondary' onClick={close}>
+            Cancel
+          </UIButton>
+          <UIButton size='md' onClick={onClick}>
+            {button_text}
+          </UIButton>
+        </>
+      }
+    >
+      {description}
+    </UIDialog>
   );
 }
 

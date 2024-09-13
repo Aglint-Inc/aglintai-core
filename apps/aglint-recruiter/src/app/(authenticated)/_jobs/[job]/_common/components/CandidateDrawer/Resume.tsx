@@ -2,7 +2,6 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 import { Skeleton } from '@components/ui/skeleton';
-import { Stack } from '@mui/material';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { type PropsWithChildren } from 'react';
 
@@ -31,14 +30,7 @@ export const Resume = () => {
 const Content = ({ url }: { url: string }) => {
   return (
     <ResumeLayout>
-      <Stack
-        position={'absolute'}
-        zIndex={1}
-        top={'10px'}
-        left={'-30px'}
-        width={'100%'}
-        height={'1120px'}
-      >
+      <div className="absolute z-10 top-[10px] -left-[30px] w-full h-[1120px]">
         {/* <ResumeEmbed url={`${props.url}#toolbar=0&navpanes=0&scrollbar=0`} /> */}
         <Worker
           workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
@@ -46,33 +38,21 @@ const Content = ({ url }: { url: string }) => {
           <Viewer
             fileUrl={url}
             renderLoader={() => (
-              <Stack
-                position={'absolute'}
-                zIndex={0}
-                width={'100%'}
-                height={'100%'}
-              >
+              <div className="absolute z-0 w-full h-full">
                 <Skeleton />
-              </Stack>
+              </div>
             )}
           />
         </Worker>
-      </Stack>
+      </div>
     </ResumeLayout>
   );
 };
 
 const ResumeLayout = (props: PropsWithChildren) => {
   return (
-    <Stack
-      position={'relative'}
-      display={'flex'}
-      width={'100%'}
-      height={'100%'}
-      alignItems={'center'}
-      justifyContent={'center'}
-    >
+    <div className="relative flex w-full h-full items-center justify-center">
       {props.children}
-    </Stack>
+    </div>
   );
 };

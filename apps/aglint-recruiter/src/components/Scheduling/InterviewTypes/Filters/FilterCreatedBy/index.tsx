@@ -1,10 +1,14 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Checkbox } from '@components/ui/checkbox';
-import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { capitalize,debounce } from 'lodash';
+import { capitalize, debounce } from 'lodash';
 import { ChevronDown, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
@@ -101,55 +105,59 @@ function FilterCreatedBy() {
             <ChevronDown
               size={16}
               color={'var(--neutral-2)'}
-              className="transition-transform duration-200 ease-in-out"
+              className='transition-transform duration-200 ease-in-out'
             />
           }
         />
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0" align="start">
+      <PopoverContent className='w-[300px] p-0' align='start'>
         <FilterDropdown
           slotOption={
-            <div className="flex flex-col">
-              <div className="p-2">
+            <div className='flex flex-col'>
+              <div className='p-2'>
                 <SearchField
                   value={createSearchText}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="Search users"
+                  placeholder='Search users'
                   isFullWidth
                   onClear={() => handleSearch('')}
                 />
               </div>
               {loading && (
-                <div className="h-1 w-full bg-blue-200">
-                  <div className="h-1 bg-blue-600 animate-pulse" style={{width: '50%'}}></div>
+                <div className='h-1 w-full bg-blue-200'>
+                  <div
+                    className='h-1 bg-blue-600 animate-pulse'
+                    style={{ width: '50%' }}
+                  ></div>
                 </div>
               )}
-              <ScrollArea className="h-[290px]">
+              <ScrollArea className='h-[290px]'>
                 {members.length > 0 ? (
                   members.map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center space-x-2 p-2 hover:bg-neutral-100 cursor-pointer rounded"
+                      className='flex items-center space-x-2 p-2 hover:bg-neutral-100 cursor-pointer rounded'
                       onClick={() => handleFilterClick(item.user_id)}
                     >
                       <Checkbox checked={createdBy.includes(item.user_id)} />
                       <MuiAvatar
                         src={item.profile_image}
                         level={getFullName(item.first_name, item.last_name)}
-                        variant="rounded-small"
                       />
-                      <span className="text-sm font-medium">
+                      <span className='text-sm font-medium'>
                         {capitalize(item.first_name)}
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className='text-xs text-gray-500'>
                         - {item.position}
                       </span>
                     </div>
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full">
-                    <User size={16} className="text-neutral-400" />
-                    <span className="text-sm text-neutral-400">No user found</span>
+                  <div className='flex flex-col items-center justify-center h-full'>
+                    <User size={16} className='text-neutral-400' />
+                    <span className='text-sm text-neutral-400'>
+                      No user found
+                    </span>
                   </div>
                 )}
               </ScrollArea>

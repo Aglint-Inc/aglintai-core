@@ -17,13 +17,13 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { getFullName } from '@/utils/jsonResume';
 
 import Loader from '../../Common/Loader';
+import { useAllInterviewModules } from './_common/hooks/useAllInterviewModules';
 import { InterviewModuleCard } from './_common/InterviewModuleCard';
 import { InterviewModuleTable } from './_common/InterviewModuleTable';
 import CreateModuleDialog from './CreateModuleDialog';
 import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
 import FilterDepartment from './Filters/FilterDepartment';
-import { useAllInterviewModules } from './queries/hooks';
 import {
   resetModulesStore,
   setInitalOpen,
@@ -94,7 +94,6 @@ export function InterviewTypes() {
           ) : (
             <>
               <CreateModuleDialog />
-
               <InterviewModuleTable
                 slotFilter={
                   <div className='flex flex-row gap-4 justify-between items-center w-full h-8'>
@@ -161,7 +160,7 @@ export function InterviewTypes() {
                             <InterviewModuleCard
                               textDepartment={mod.department_name}
                               key={mod.id}
-                              navLink={`/scheduling/interview-types/${mod.id}`}
+                              navLink={`/interview-pool/${mod.id}`}
                               textCancelledSchedules={
                                 mod.canceled_meeting_count
                               }

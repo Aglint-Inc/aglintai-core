@@ -1,25 +1,14 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { Stack, Typography } from '@mui/material';
+import { Label } from '@components/ui/label';
 
 function CalendarFilter({ setFilter, filter }) {
   return (
-    <Stack
-      direction={'row'}
-      gap={2}
-      mb={2}
-      sx={{
-        paddingBottom: '100px',
-      }}
-    >
-      <Typography
-        display={'flex'}
-        flexDirection={'row'}
-        alignItems={'center'}
-        gap={1}
-      >
+    <div className='flex flex-row gap-2 mb-2 pb-[100px]'>
+      <div className='flex flex-row items-center gap-1'>
         <Checkbox
+          id='confirmed'
           checked={!!filter?.find((fil) => fil === 'confirmed')}
-          onClick={() => {
+          onCheckedChange={() => {
             if (filter?.find((fil) => fil === 'confirmed')) {
               setFilter((pre) => pre.filter((p) => p !== 'confirmed'));
             } else {
@@ -27,17 +16,13 @@ function CalendarFilter({ setFilter, filter }) {
             }
           }}
         />
-        Confirmed
-      </Typography>
-      <Typography
-        display={'flex'}
-        flexDirection={'row'}
-        alignItems={'center'}
-        gap={1}
-      >
+        <Label htmlFor='confirmed'>Confirmed</Label>
+      </div>
+      <div className='flex flex-row items-center gap-1'>
         <Checkbox
+          id='completed'
           checked={!!filter?.find((fil) => fil === 'completed')}
-          onClick={() => {
+          onCheckedChange={() => {
             if (filter?.find((fil) => fil === 'completed')) {
               setFilter((pre) => pre.filter((p) => p !== 'completed'));
             } else {
@@ -45,17 +30,13 @@ function CalendarFilter({ setFilter, filter }) {
             }
           }}
         />
-        Completed
-      </Typography>
-      <Typography
-        display={'flex'}
-        flexDirection={'row'}
-        alignItems={'center'}
-        gap={1}
-      >
+        <Label htmlFor='completed'>Completed</Label>
+      </div>
+      <div className='flex flex-row items-center gap-1'>
         <Checkbox
+          id='cancelled'
           checked={!!filter?.find((fil) => fil === 'cancelled')}
-          onClick={() => {
+          onCheckedChange={() => {
             if (filter?.find((fil) => fil === 'cancelled')) {
               setFilter((pre) => pre.filter((p) => p !== 'cancelled'));
             } else {
@@ -63,9 +44,9 @@ function CalendarFilter({ setFilter, filter }) {
             }
           }}
         />
-        Cancelled
-      </Typography>
-    </Stack>
+        <Label htmlFor='cancelled'>Cancelled</Label>
+      </div>
+    </div>
   );
 }
 

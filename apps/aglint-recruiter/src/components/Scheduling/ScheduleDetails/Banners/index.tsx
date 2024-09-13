@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
 import React from 'react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
@@ -36,9 +35,10 @@ function Banners({
   const isConfirmed = schedule.interview_meeting.status === 'confirmed';
 
   return (
-    <Stack spacing={'var(--space-4)'}>
+    <div className='flex flex-col gap-4'>
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
         <UIAlert
+          type='inline'
           color={'info'}
           title={'You are invited for this interview'}
           iconName={'Archive'}
@@ -46,7 +46,7 @@ function Banners({
             <>
               {isDeclineVisible && (
                 <UIButton
-                  variant='secondary'
+                  variant='outline'
                   size='sm'
                   onClick={() => {
                     setIsDeclineOpen(true);
@@ -72,7 +72,7 @@ function Banners({
           }
         />
       )}
-    </Stack>
+    </div>
   );
 }
 

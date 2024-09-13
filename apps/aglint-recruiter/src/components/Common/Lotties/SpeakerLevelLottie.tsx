@@ -1,48 +1,27 @@
 // this file is not used
-import { Stack } from '@mui/material';
 
 function SpeakerLevelLottie({ children, speaking }) {
   return (
     <div>
-      <Stack
-        borderRadius={{ xs: '10px', md: '50%' }}
-        height={{ xs: '80px', md: '140px' }}
-        width={{ xs: '80px', md: '140px' }}
-        direction={'row'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        position={'relative'}
-      >
-        <Stack
-          borderRadius={'50%'}
-          bgcolor={'green.200'}
-          sx={{
-            width: speaking ? `${200}px` : '0px',
-            height: speaking ? ` ${200}px` : '',
-            maxWidth: 200,
-            maxHeight: 200,
+      <div className='relative flex justify-center items-center rounded-[10px] md:rounded-full h-[80px] w-[80px] md:h-[140px] md:w-[140px]'>
+        <div
+          className={`absolute flex justify-center items-center rounded-full bg-green-200 border-[15px] border-green-100 ${
+            speaking ? 'wave1' : ''
+          }`}
+          style={{
+            width: speaking ? '200px' : '0px',
+            height: speaking ? '200px' : '0px',
+            maxWidth: '200px',
+            maxHeight: '200px',
           }}
-          position={'absolute'}
-          direction={'row'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          border={'15px solid'}
-          borderColor={'green.100'}
-          className={speaking ? 'wave1' : ''}
-        ></Stack>
+        ></div>
 
-        <Stack position={'absolute'} zIndex={3}>
-          {children}
-        </Stack>
-        <Stack
-          borderRadius={'50%'}
-          className={speaking ? 'blink-layer' : ''}
-          border={'1px solid'}
-          borderColor={'green.300'}
-          position={'absolute'}
-          zIndex={2}
-          bgcolor={'var(--neutral-1)'}
-        ></Stack>
+        <div className='absolute z-[3]'>{children}</div>
+        <div
+          className={`absolute z-[2] rounded-full border border-green-300 bg-[var(--neutral-1)] ${
+            speaking ? 'blink-layer' : ''
+          }`}
+        ></div>
         <style>{`
         .blink-layer{
           animation: blinkLayer 2s infinite;
@@ -54,16 +33,14 @@ function SpeakerLevelLottie({ children, speaking }) {
         }
         .wave1{
           animation: waveAnime 2.5s infinite;
-  
         }
         @keyframes waveAnime{
           0%{width: 180px; height: 180px;}
            50%{width: 200px; height: 200px;} 
           100%{width: 180px; height: 180px;}
-  
         }
         `}</style>
-      </Stack>
+      </div>
     </div>
   );
 }

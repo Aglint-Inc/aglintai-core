@@ -1,4 +1,3 @@
-// import { Stack } from '@mui/material';
 import allLottie from '@public/lottie/allLottie';
 import Lottie from 'lottie-react';
 
@@ -14,7 +13,6 @@ const LottieAnimations = ({
   size?: number;
 }) => {
   return (
-    // <Stack height={'100%'} alignItems={'center'}>
     <Lottie
       // eslint-disable-next-line security/detect-object-injection
       animationData={allLottie[animation]}
@@ -27,7 +25,6 @@ const LottieAnimations = ({
         transform: `scale(${size || 1})`,
       }}
     />
-    //   </Stack>
   );
 };
 export default LottieAnimations;

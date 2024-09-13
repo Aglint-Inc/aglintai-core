@@ -8,10 +8,10 @@ import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UITypography from '@/components/Common/UITypography';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useAllDepartments } from '@/queries/departments';
 
 import Loader from '../../Common/Loader';
-import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { InterviewerMetricList } from '../components/InterviewerMetricList';
 import { InterviewerMetrics } from '../components/InterviewerMetrics';

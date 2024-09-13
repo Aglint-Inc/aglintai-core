@@ -20,14 +20,7 @@ import {
 } from '@components/ui/popover';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
-import { ScoreCard } from '@devlink/ScoreCard';
-import { ScorePercentage } from '@devlink/ScorePercentage';
-import { ScoreSetting } from '@devlink/ScoreSetting';
-import { ScoreWeightage } from '@devlink/ScoreWeightage';
-import { GlobalInfo } from '@devlink2/GlobalInfo';
-import { BodyWithSidePanel } from '@devlink3/BodyWithSidePanel';
-import { ProfileScoreSkeleton } from '@devlink3/ProfileScoreSkeleton';
-import { Loader2, RefreshCcw, Trash2 } from 'lucide-react';
+import { Lightbulb, Loader2, RefreshCcw, Trash2, X } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
@@ -53,6 +46,11 @@ import { distributeScoreWeights } from '@/job/utils';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
+
+import { ScoreCard } from './ScoreCard';
+import { ScorePercentage } from './ScorePercentage';
+import { ScoreSetting } from './ScoreSetting';
+import { ScoreWeightage } from './ScoreWeightage';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -88,10 +86,14 @@ const ProfileScorePage = () => {
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={
-          <BodyWithSidePanel
-            slotLeft={<ProfileScore />}
-            slotRight={<ProfileScoreControls />}
-          />
+          <div className='flex'>
+            <div className='flex-1'>
+              <ProfileScore />
+            </div>
+            <div className='w-1/3'>
+              <ProfileScoreControls />
+            </div>
+          </div>
         }
       />
     </>
@@ -190,11 +192,7 @@ const ProfileScoreControls = () => {
         slotScorePercent={
           <>
             <ScorePercentage
-              colorPropsBg={{
-                style: {
-                  backgroundColor: '#30AABC',
-                },
-              }}
+              bgColor="bg-[#30AABC]"
               textTitle={'Experience'}
               slotInputPercent={
                 <UITextField
@@ -208,11 +206,7 @@ const ProfileScoreControls = () => {
               }
             />
             <ScorePercentage
-              colorPropsBg={{
-                style: {
-                  backgroundColor: '#886BD8',
-                },
-              }}
+              bgColor="bg-[#886BD8]"
               textTitle={'Skills'}
               slotInputPercent={
                 <UITextField
@@ -226,11 +220,7 @@ const ProfileScoreControls = () => {
               }
             />
             <ScorePercentage
-              colorPropsBg={{
-                style: {
-                  backgroundColor: '#5D7DF5',
-                },
-              }}
+              bgColor="bg-[#5D7DF5]"
               textTitle={'Education'}
               slotInputPercent={
                 <UITextField
@@ -258,7 +248,11 @@ const ProfileScore = () => {
       slotBanner={<Banners />}
       slotScoreCardDetails={
         job.scoring_criteria_loading ? (
-          <ProfileScoreSkeleton slotSkeleton={<Skeleton />} />
+          <div className="space-y-4">
+            <Skeleton className="h-[200px] w-full" />
+            <Skeleton className="h-[200px] w-full" />
+            <Skeleton className="h-[200px] w-full" />
+          </div>
         ) : (
           <>
             <Section type='experience' />
@@ -389,22 +383,18 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   ));
   return (
     <ScoreCard
-      colorPropsHeading={{
-        style: {
-          backgroundColor:
-            type === 'experience'
-              ? '#30aabc'
-              : type === 'education'
-                ? '#5d7df5'
-                : '#886bd8',
-        },
-      }}
-      textHeading={capitalize(type)}
-      slotScorePills={pills}
-      slotAddButton={
-        <AddOption type={type} handleSubmit={(e) => handleCreate(e)} />
+      bgColor={
+        type === 'experience'
+          ? 'bg-[#30aabc]'
+          : type === 'education'
+          ? 'bg-[#5d7df5]'
+          : 'bg-[#886bd8]'
       }
-    />
+      textHeading={capitalize(type)}
+    >
+      {pills}
+      <AddOption type={type} handleSubmit={(e) => handleCreate(e)} />
+    </ScoreCard>
   );
 };
 
@@ -616,16 +606,24 @@ const Tips = () => {
 
       {firstVisit && (
         <div className='mt-4'>
-          <GlobalInfo
-            color={'purple'}
-            iconName='lightbulb'
-            textTitle={'Pro Tip'}
-            textDescription={
-              'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-            }
-            showCloseButton
-            onClickClose={{ onClick: () => handleTip() }}
-          />
+          <div className='bg-purple-100 p-4 rounded-md flex items-start space-x-4'>
+            <Lightbulb className='w-6 h-6 text-purple-500 flex-shrink-0' />
+            <div className='flex-grow'>
+              <h4 className='text-lg font-semibold text-purple-700 mb-1'>
+                Pro Tip
+              </h4>
+              <p className='text-sm text-purple-600'>
+                Tailor the evaluation criteria to match the specific needs of
+                the role you are hiring for by adjusting the weightages.
+              </p>
+            </div>
+            <button
+              onClick={handleTip}
+              className='text-purple-500 hover:text-purple-700 focus:outline-none'
+            >
+              <X className='w-5 h-5' />
+            </button>
+          </div>
         </div>
       )}
     </>

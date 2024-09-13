@@ -1,6 +1,5 @@
-import { AtsBadge } from '@devlink/AtsBadge';
 import { JobsListingCard } from '@devlink/JobsListingCard';
-import { Avatar } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -43,38 +42,30 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               isInterviewPillVisible={true}
               slotAtsBadge={
                 job.posted_by === POSTED_BY.LEVER ? (
-                  <AtsBadge
-                    slotLogo={
-                      <Avatar
-                        variant='square'
-                        src='/images/ats/lever-job-badge.svg'
-                        sx={{ width: '100%', height: '20px' }}
-                      />
-                    }
+                  <Image
+                    src='/images/ats/lever-job-badge.svg'
+                    alt='Lever ATS'
+                    width={20}
+                    height={20}
+                    className='w-full h-5 object-contain'
                   />
                 ) : job.posted_by === POSTED_BY.GREENHOUSE ? (
-                  <AtsBadge
-                    slotLogo={
-                      <Avatar
-                        variant='square'
-                        src='/images/ats/greenhouse-job-badge.svg'
-                        sx={{ width: '100%', height: '20px' }}
-                      />
-                    }
+                  <Image
+                    src='/images/ats/greenhouse-job-badge.svg'
+                    alt='Greenhouse ATS'
+                    width={20}
+                    height={20}
+                    className='w-full h-5 object-contain'
                   />
                 ) : job.posted_by === POSTED_BY.ASHBY ? (
-                  <AtsBadge
-                    slotLogo={
-                      <Avatar
-                        variant='square'
-                        src='/images/ats/ashby-job-badge.svg'
-                        sx={{ width: '100%', height: '20px' }}
-                      />
-                    }
+                  <Image
+                    src='/images/ats/ashby-job-badge.svg'
+                    alt='Ashby ATS'
+                    width={20}
+                    height={20}
+                    className='w-full h-5 object-contain'
                   />
-                ) : (
-                  ''
-                )
+                ) : null
               }
               key={ind}
               textJobRole={capitalizeSentence(job?.job_title ?? '---')}

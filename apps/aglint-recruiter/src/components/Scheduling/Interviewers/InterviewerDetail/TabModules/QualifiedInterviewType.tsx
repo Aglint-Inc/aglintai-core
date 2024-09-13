@@ -64,7 +64,7 @@ function QualifiedInterviewTypeCard({
         onClickCard={{
           onClick: () => {
             router.push(
-              ROUTES['/scheduling/interview-types/[type_id]']({
+              ROUTES['/interview-pool/[type_id]']({
                 type_id: relation.module_id,
               }),
             );
