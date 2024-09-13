@@ -1,9 +1,16 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type {
+  EmailTemplateAPi,
+  SupabaseType,
+  TargetApiPayloadType,
+} from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export const fetchUtil = async (
+export const fetchUtil: FetchUtilType<
+  'applicationRecieved_email_applicant'
+> = async (
   supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'applicationRecieved_email_applicant'>['api_payload'],
+  req_body: TargetApiPayloadType<'applicationRecieved_email_applicant'>,
 ) => {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
