@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { PopoverClose } from '@radix-ui/react-popover';
 import { Clock, Edit, Loader2 } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
@@ -21,7 +22,6 @@ interface TimeZoneProps {
   handleUpdate: (data: {
     timeZone: { tzCode: string } | null;
   }) => Promise<void>;
-  isUpdating: boolean;
 }
 
 const TimeZone: FC<TimeZoneProps> = ({
@@ -29,24 +29,11 @@ const TimeZone: FC<TimeZoneProps> = ({
   selectedTimeZone,
   setSelectedTimeZone,
   handleUpdate,
-  isUpdating,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
     await handleUpdate({ timeZone: selectedTimeZone });
-    setIsOpen(false);
-  };
-
-  const handleTogglePopover = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const _handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsOpen(false);
-    }, 300); // Delay of 300ms before closing the popover
   };
 
   useEffect(() => {
@@ -58,16 +45,15 @@ const TimeZone: FC<TimeZoneProps> = ({
   }, []);
 
   return (
-    <Card>
+    <Card className='relative group'>
       <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Time Zone</CardTitle>
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <Popover>
           <PopoverTrigger asChild>
             <Button
               variant='outline'
               size='sm'
-              className='absolute top-4 right-4'
-              onClick={handleTogglePopover}
+              className='absolute top-1 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Time Zone</span>
@@ -81,12 +67,11 @@ const TimeZone: FC<TimeZoneProps> = ({
                 onChange={(value) => setSelectedTimeZone(value)}
                 width={'300'}
               />
-              <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
-                {isUpdating && (
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                )}
-                Update
-              </Button>
+              <PopoverClose>
+                <Button className='w-full' onClick={handleUpdateAndClose}>
+                  Update
+                </Button>
+              </PopoverClose>
             </div>
           </PopoverContent>
         </Popover>
