@@ -1,8 +1,0 @@
-import * as React from "react";
-import * as Types from "./types";
-
-declare function QualifiedIcons(props: {
-  as?: React.ElementType;
-  isQualifiedVisible?: Types.Visibility.VisibilityConditions;
-  isTrainingVisible?: Types.Visibility.VisibilityConditions;
-}): React.JSX.Element;

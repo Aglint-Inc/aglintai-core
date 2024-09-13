@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
 import { Move } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 import { DndProvider, useDragLayer, type XYCoord } from 'react-dnd';
@@ -54,26 +53,20 @@ const CustomDragLayer = ({ x }: { x: number }) => {
   }
 
   return (
-    <Stack
-      style={{
-        position: 'fixed',
-        pointerEvents: 'none',
-        zIndex: section_count[section] + 1,
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-      }}
+    <div
+      className={`fixed pointer-events-none left-0 top-0 w-full h-full`}
+      style={{ zIndex: section_count[section] + 1 }}
     >
-      <Stack
+      <div
+        className='transform'
         style={getItemStyles(initialOffset, {
           x: x - 180 + (currentOffset?.x ?? 0),
           y: currentOffset?.y ?? 0,
         })}
       >
         {renderItem()}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 

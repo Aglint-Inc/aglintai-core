@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { playStopLottie } from '@public/lottie/play-stop-lottie';
 import Lottie from 'lottie-react';
 import { useEffect } from 'react';
@@ -16,18 +15,19 @@ function PlayStop({ lottieRef, speaking }) {
         lottieRef.current.goToAndStop(0, true);
       }, 1000);
     }
-  }, [speaking]);
+  }, [speaking, lottieRef]);
+
   return (
-    <Stack height={21} position={'relative'}>
-      <Stack left={-5} top={-8} position={'absolute'} width={35}>
+    <div className='h-[21px] relative'>
+      <div className='absolute left-[-5px] top-[-8px] w-[35px]'>
         <Lottie
           lottieRef={lottieRef}
           animationData={playStopLottie}
           loop={true}
           autoplay={false}
         />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 }
 

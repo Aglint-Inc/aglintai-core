@@ -105,7 +105,6 @@ function TrainingProgress() {
                       // src={interviewer.}
                       style={{ width: '32px', height: '32px' }}
                       alt={interviewer.name}
-                      variant='rounded-medium'
                     />
                   }
                 />

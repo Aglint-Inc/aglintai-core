@@ -1,6 +1,8 @@
 import { analyticsRouter } from './routers/analytics';
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
+import { interviewPool } from './routers/interview_pool';
+import { requests } from './routers/requests';
 import { interviewerRouter } from './routers/interviewers';
 import { schedulingRouter } from './routers/scheduling';
 import { textTransform } from './routers/textTransform';
@@ -18,6 +20,8 @@ export const appRouter = createTRPCRouter({
   analytics: analyticsRouter,
   textTransform,
   interviewers: interviewerRouter,
+  interview_pool: interviewPool,
+  requests,
 });
 
 export const appRouterSchema = {

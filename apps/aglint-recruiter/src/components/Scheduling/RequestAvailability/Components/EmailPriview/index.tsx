@@ -1,13 +1,13 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
 import { AlertCircle, Loader2, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import axios from '@/client/axios';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
 
 function EmailPreview({
@@ -28,7 +28,7 @@ function EmailPreview({
     null,
   );
   const [fetching, setFetching] = useState(false);
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+  const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
     {
       preview_details: {
         application_id,
@@ -38,11 +38,11 @@ function EmailPreview({
 
   function getEmail() {
     setFetching(true);
-    axios
-      .post('/api/emails/sendAvailabilityRequest_email_applicant', {
-        ...payload,
-      })
-      .then(({ data }) => {
+    mailSender({
+      target_api: 'sendAvailabilityRequest_email_applicant',
+      payload,
+    })
+      .then((data) => {
         setEmailData(data);
         setFetching(false);
       })

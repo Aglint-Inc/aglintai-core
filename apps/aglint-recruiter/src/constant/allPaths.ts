@@ -101,7 +101,6 @@ export const PATHS = [
   '/api/scheduling/debrief/task_create',
   '/api/scheduling/fetchUserDetails',
   '/api/scheduling/fetch_activities',
-  '/api/scheduling/fetch_interview_module_by_id',
   '/api/scheduling/fetch_interview_session_task',
   '/api/scheduling/get-accesstoken',
   '/api/scheduling/get_interviewer_and_modules',
@@ -155,6 +154,8 @@ export const PATHS = [
   '/integrations',
   '/integrations/[platform]',
   '/interview/feedback',
+  '/interview-pool/[type_id]',
+  '/interview-pool',
   '/interviewers',
   '/jobs/create',
   '/jobs',
@@ -185,6 +186,7 @@ export const PATHS = [
   '/analytics',
   '/auth/callback',
   '/auth/redirect',
+  '/create-request-command',
   '/candidate/[application_id]/home',
   '/candidate/[application_id]/interviews',
   '/candidate/[application_id]/messages',
@@ -263,5 +265,5 @@ export const PATHS = [
   '/api/emails/selfScheduleReminder_email_applicant',
   '/api/emails/sendAvailabilityRequest_email_applicant',
   '/api/emails/sendAvailReqReminder_email_applicant',
-  '/api/emails/sendSelfScheduleRequest_email_applicant'
-] as const
+  '/api/emails/sendSelfScheduleRequest_email_applicant',
+] as const;

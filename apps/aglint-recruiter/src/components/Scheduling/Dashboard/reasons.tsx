@@ -1,5 +1,5 @@
-import { DarkPill } from '@devlink3/DarkPill';
-import { Reason } from '@devlink3/Reason';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -20,23 +20,30 @@ import { getOrderedGraphValues } from '@/job/metrics/utils';
 export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();
   return (
-    <Reason
-      slotReasonDropdown={
-        <Stack gap={1} direction={'row'}>
-          <DarkPill
-            textPill='Reschedule'
-            isActive={reasonsType === 'reschedule'}
-            onClickPill={{ onClick: () => setReasonsType('reschedule') }}
-          />
-          <DarkPill
-            textPill='Declined'
-            isActive={reasonsType === 'declined'}
-            onClickPill={{ onClick: () => setReasonsType('declined') }}
-          />
-        </Stack>
-      }
-      slotReasonGraph={<Container />}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle>Reasons</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs
+          value={reasonsType}
+          onValueChange={(value) =>
+            setReasonsType(value as 'reschedule' | 'declined')
+          }
+        >
+          <TabsList>
+            <TabsTrigger value='reschedule'>Reschedule</TabsTrigger>
+            <TabsTrigger value='declined'>Declined</TabsTrigger>
+          </TabsList>
+          <TabsContent value='reschedule'>
+            <Container />
+          </TabsContent>
+          <TabsContent value='declined'>
+            <Container />
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 });
 Reasons.displayName = 'Reasons';

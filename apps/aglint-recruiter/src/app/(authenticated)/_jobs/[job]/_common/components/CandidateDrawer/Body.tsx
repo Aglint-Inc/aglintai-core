@@ -3,10 +3,9 @@ import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { CandidateSideDrawer } from '@devlink/CandidateSideDrawer';
-import { GeneralError } from '@devlink/GeneralError';
 import { ResumeErrorBlock } from '@devlink2/ResumeErrorBlock';
 import ResumeWait from '@public/lottie/ResumeWait';
-import { CheckCircle2, FileIcon, UploadCloud } from 'lucide-react';
+import { CheckCircle2, FileIcon, RefreshCw, UploadCloud } from 'lucide-react';
 import { type ReactNode, useCallback, useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -94,14 +93,20 @@ const useBlocker = () => {
   if (details.status === 'error' || meta.status === 'error')
     return (
       <div className='w-[700px]'>
-        <GeneralError
-          onClickRetry={{
-            onClick: () => {
+        <div className='flex flex-col items-center justify-center'>
+          <p className='text-red-500'>An error occurred. Please try again.</p>
+          <Button
+            variant='default'
+            onClick={() => {
               details.refetch();
               meta.refetch();
-            },
-          }}
-        />
+            }}
+            className='mt-4'
+          >
+            <RefreshCw className='mr-2 h-4 w-4' />
+            Retry
+          </Button>
+        </div>
       </div>
     );
   switch (meta?.data?.resume_processing_state) {

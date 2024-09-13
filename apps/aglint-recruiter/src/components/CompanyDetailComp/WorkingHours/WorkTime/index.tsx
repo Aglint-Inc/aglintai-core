@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
+import { PopoverClose } from '@radix-ui/react-popover';
 import { capitalize } from 'lodash';
 import { Calendar, Edit, Loader2 } from 'lucide-react';
 import {
@@ -46,31 +47,17 @@ interface WorkTimeProps {
   workingHours: WorkingHour[];
   setWorkingHours: Dispatch<SetStateAction<WorkingHour[]>>;
   handleUpdate: (data: { workingHours: WorkingHour[] }) => Promise<void>;
-  isUpdating: boolean;
 }
 
 const WorkTime: FC<WorkTimeProps> = ({
   workingHours,
   setWorkingHours,
   handleUpdate,
-  isUpdating,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
     await handleUpdate({ workingHours });
-    setIsOpen(false);
-  };
-
-  const handleTogglePopover = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsOpen(false);
-    }, 300);
   };
 
   useEffect(() => {
@@ -82,16 +69,15 @@ const WorkTime: FC<WorkTimeProps> = ({
   }, []);
 
   return (
-    <Card>
-      <CardHeader className='relative'>
+    <Card className='relative group'>
+      <CardHeader>
         <CardTitle className='text-lg font-semibold'>Working Hours</CardTitle>
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <Popover>
           <PopoverTrigger asChild>
             <Button
               variant='outline'
               size='sm'
-              className='absolute top-2 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
-              onClick={handleTogglePopover}
+              className='absolute top-1 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Working Hours</span>
@@ -150,21 +136,17 @@ const WorkTime: FC<WorkTimeProps> = ({
                   />
                 );
               })}
-              <Button onClick={handleUpdateAndClose} disabled={isUpdating}>
-                {isUpdating && (
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                )}
-                Update
-              </Button>
+              <PopoverClose>
+                <Button className='w-full' onClick={handleUpdateAndClose}>
+                  Update
+                </Button>
+              </PopoverClose>
             </div>
           </PopoverContent>
         </Popover>
       </CardHeader>
       <CardContent>
-        <div
-          className='relative  rounded-lg py-4 group'
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className='relative  rounded-lg py-4 group'>
           <div className='flex items-center space-x-2 mb-4'>
             <Calendar className='h-4 w-4 text-muted-foreground' />
             <p className='text-sm font-medium'>Weekly Schedule</p>

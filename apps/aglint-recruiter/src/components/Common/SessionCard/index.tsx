@@ -1,11 +1,9 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { AvailableOptionCardDate } from '@devlink2/AvailableOptionCardDate';
 import { OptionAvailable } from '@devlink2/OptionAvailable';
-import { AvatarWithName } from '@devlink3/AvatarWithName';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getFullName } from '@/utils/jsonResume';
 
 export type meetingCardType = {
@@ -72,29 +70,29 @@ function SessionCard({
               isTitleVisible={true}
               isBreakVisible={false}
               slotMember={
-                <Stack
-                  direction={'row'}
-                  sx={{
-                    flexWrap: 'wrap',
-                    gap: 2.5,
-                  }}
-                >
-                  {ses.users?.map((user) => {
+                <div className='flex flex-row flex-wrap gap-2.5'>
+                  {ses.users?.map((user, i) => {
                     return (
-                      <AvatarWithName
-                        key={user.first_name}
-                        textName={getFullName(user.first_name, user.last_name)}
-                        slotAvatar={
-                          <MuiAvatar
-                            level={getFullName(user.first_name, user.last_name)}
+                      <div key={i} className='flex items-center space-x-2'>
+                        <Avatar className='h-8 w-8 rounded-sm'>
+                          <AvatarImage
                             src={user?.profile_image}
-                            variant={'rounded-small'}
+                            alt={getFullName(user.first_name, user.last_name)}
                           />
-                        }
-                      />
+                          <AvatarFallback>
+                            {getFullName(
+                              user.first_name,
+                              user.last_name,
+                            ).charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className='text-sm font-medium'>
+                          {getFullName(user.first_name, user.last_name)}
+                        </span>
+                      </div>
                     );
                   })}
-                </Stack>
+                </div>
               }
             />
           </>

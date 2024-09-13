@@ -1,9 +1,9 @@
-import { type ModuleType } from '@/components/Scheduling/InterviewTypes/types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 import { type CustomType } from '../scheduling-dashboard/types';
 import { type getInterviewModulesAPI } from '.';
 
 export type InterviewModulesType = CustomType<
   Awaited<ReturnType<typeof getInterviewModulesAPI>>,
-  { settings: ModuleType['settings'] }
+  { settings: DatabaseTable['interview_module']['settings'] }
 >;

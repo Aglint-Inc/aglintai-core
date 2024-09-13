@@ -112,7 +112,6 @@ const RequestDecline = () => {
                       declinedUserDetails.recruiter_user.last_name,
                     )}
                     src={declinedUserDetails.recruiter_user.profile_image}
-                    variant={'rounded'}
                     width={'100%'}
                     height={'100%'}
                   />
@@ -159,7 +158,6 @@ const RequestDecline = () => {
                             item.replacement_int.last_name,
                           )}
                           src={item.replacement_int.profile_image}
-                          variant={'rounded'}
                           width={'100%'}
                           height={'100%'}
                         />

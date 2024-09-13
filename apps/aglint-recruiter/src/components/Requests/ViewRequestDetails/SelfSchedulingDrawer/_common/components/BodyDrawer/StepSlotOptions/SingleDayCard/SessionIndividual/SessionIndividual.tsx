@@ -44,7 +44,6 @@ function SessionIndividual({
                 <MuiAvatar
                   level={getFullName(member.first_name, member.last_name)}
                   src={member.profile_image}
-                  variant={'rounded'}
                   width={'100%'}
                   height={'100%'}
                 />

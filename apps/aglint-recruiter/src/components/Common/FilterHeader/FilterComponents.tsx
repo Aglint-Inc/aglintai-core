@@ -2,6 +2,7 @@ import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { Skeleton } from '@components/ui/skeleton';
+import { Switch } from '@components/ui/switch';
 import { AddFilter } from '@devlink2/AddFilter';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
@@ -14,7 +15,6 @@ import React, { memo, type ReactNode } from 'react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import UITextField from '../UITextField';
-import ToggleBtn from '../UIToggle';
 import {
   nestedOptionMapper,
   type nestedType,
@@ -194,9 +194,9 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
           isActive={filter.isActive}
           isDotVisible={false}
           slotLeftIcon={
-            <Stack style={{ pointerEvents: 'none' }}>
-              <ToggleBtn isChecked={filter.isActive} />
-            </Stack>
+            <div className='pointer-events-none'>
+              <Switch checked={filter.isActive} />
+            </div>
           }
           textLabel={capitalizeFirstLetter(filter.name || '')}
           onClickStatus={{ onClick: () => filter.onClick() }}

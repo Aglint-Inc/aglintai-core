@@ -1,347 +1,360 @@
-import * as v from "valibot";
-export const applicationRecievedEmailApplicantSchema = v.object({
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+import { z } from 'zod';
+
+export const applicationRecievedEmailApplicantSchema = z.object({
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const debriefEmailInterviewerSchema = v.object({
-  session_id: v.string(),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const debriefEmailInterviewerSchema = z.object({
+  session_id: z.string(),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewCancelEmailApplicantSchema = v.object({
-  session_ids: v.array(v.string()),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const interviewCancelEmailApplicantSchema = z.object({
+  session_ids: z.array(z.string()),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const agentEmailCandidateSchema = v.object({
-  agent_email: v.string(),
-  recruiter_user_id: v.string(),
-  filter_id: v.string(),
-  mail_headers: v.object({
-    "Message-ID": v.string(),
-    "In-Reply-To": v.string(),
+export const agentEmailCandidateSchema = z.object({
+  agent_email: z.string(),
+  recruiter_user_id: z.string(),
+  filter_id: z.string(),
+  mail_headers: z.object({
+    'Message-ID': z.string(),
+    'In-Reply-To': z.string(),
   }),
 });
 
-export const confInterviewEmailOrganizerSchema = v.object({
-  session_ids: v.array(v.string()),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const confInterviewEmailOrganizerSchema = z.object({
+  session_ids: z.array(z.string()),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const confirmInterviewEmailApplicantSchema = v.object({
-  application_id: v.string(),
-  session_ids: v.array(v.string()),
-  filter_id: v.nullish(v.string()),
-  availability_req_id: v.nullish(v.string()),
-  preview_details: v.optional(
-    v.object({
-      meeting_timings: v.array(
-        v.object({
-          meeting_start_time: v.string(),
-          meeting_end_time: v.string(),
+export const confirmInterviewEmailApplicantSchema = z.object({
+  application_id: z.string(),
+  session_ids: z.array(z.string()),
+  filter_id: z.nullable(z.string()),
+  availability_req_id: z.nullable(z.string()),
+  preview_details: z.optional(
+    z.object({
+      meeting_timings: z.array(
+        z.object({
+          meeting_start_time: z.string(),
+          meeting_end_time: z.string(),
         })
       ),
-    }),
+    })
+  ),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+  is_preview: z.optional(z.boolean()).default(false),
+});
+
+export const applicantRejectEmailApplicantSchema = z.object({
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const availabilityReqResendEmailCandidateSchema = z.object({
+  avail_req_id: z.string(),
+  recruiter_user_id: z.string(),
+  is_preview: z.optional(z.boolean()).default(false),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewReminderEmailApplicantSchema = z.object({
+  application_id: z.string(),
+  session_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewReminderEmailInterviewerSchema = z.object({
+  application_id: z.string(),
+  session_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewCancelReqEmailRecruiterSchema = z.object({
+  session_ids: z.array(z.string()),
+  application_id: z.string(),
+  interview_cancel_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interReschedReqEmailRecruiterSchema = z.object({
+  session_ids: z.array(z.string()),
+  application_id: z.string(),
+  interview_cancel_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewRescheduleEmailApplicantSchema = z.object({
+  application_id: z.string(),
+  session_ids: z.array(z.string()),
+  self_schedule_link: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewStartEmailApplicantSchema = z.object({
+  application_id: z.string(),
+  meeting_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewStartEmailInterviewersSchema = z.object({
+  application_id: z.string(),
+  meeting_id: z.string(),
+  recruiter_user_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const interviewStartEmailOrganizerSchema = z.object({
+  session_id: z.string(),
+  application_id: z.string(),
+  is_preview: z.optional(z.boolean()).default(false),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const sendSelfScheduleRequest_email_applicant = z.object({
+  organizer_id: z.string(),
+  filter_json_id: z.optional(z.string()),
+  application_id: z.optional(z.string()),
+  is_preview: z.nullable(z.boolean()).default(false),
+  request_id: z.optional(z.string(), undefined),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+});
+
+export const sendAvailabilityRequestEmailApplicantSchema = z.object({
+  organizer_user_id: z.string(),
+  avail_req_id: z.nullable(z.string().optional(), undefined),
+  preview_details: z.nullable(
+    z
+      .object({
+        application_id: z.string(),
+      })
+      .optional(),
     undefined
   ),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
+    })
+  ),
+  is_preview: z.optional(z.boolean()).default(false),
+});
+
+export const sendAvailReqReminderEmailApplicant = z.object({
+  avail_req_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const applicantRejectEmailApplicantSchema = v.object({
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const availabilityReqResendEmailCandidateSchema = v.object({
-  avail_req_id: v.string(),
-  recruiter_user_id: v.string(),
-  is_preview: v.optional(v.boolean(), false),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const selfScheduleReminderEmailApplicantSchema = z.object({
+  filter_id: z.string(),
+  task_id: z.optional(z.string(), undefined),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewReminderEmailApplicantSchema = v.object({
-  application_id: v.string(),
-  session_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const meetingDeclinedEmailOrganizerSchema = z.object({
+  session_id: z.string(),
+  interviewer_id: z.string(),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewReminderEmailInterviewerSchema = v.object({
-  application_id: v.string(),
-  session_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const MeetingAcceptedEmailOrganizerSchema = z.object({
+  session_id: z.string(),
+  interviewer_id: z.string(),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewCancelReqEmailRecruiterSchema = v.object({
-  session_ids: v.array(v.string()),
-  application_id: v.string(),
-  interview_cancel_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const interviewEndEmailInterviewerForFeedbackSchema = z.object({
+  session_id: z.string(),
+  recruiter_user_id: z.string(),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interReschedReqEmailRecruiterSchema = v.object({
-  session_ids: v.array(v.string()),
-  application_id: v.string(),
-  interview_cancel_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const onSignupEmailAdminSchema = z.object({
+  recruiter_user_id: z.string(),
+  recruiter_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewRescheduleEmailApplicantSchema = v.object({
-  application_id: v.string(),
-  session_ids: v.array(v.string()),
-  self_schedule_link: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const interviewerResumedEmailAdminSchema = z.object({
+  interviewe_module_relation_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewStartEmailApplicantSchema = v.object({
-  application_id: v.string(),
-  meeting_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const onShadowCompleteEmailTraineeSchema = z.object({
+  meeting_id: z.string(),
+  application_id: z.string(),
+  session_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewStartEmailInterviewersSchema = v.object({
-  application_id: v.string(),
-  meeting_id: v.string(),
-  recruiter_user_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const onRShadowCompleteEmailTraineeSchema = z.object({
+  meeting_id: z.string(),
+  session_id: z.string(),
+  application_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const interviewStartEmailOrganizerSchema = v.object({
-  session_id: v.string(),
-  application_id: v.string(),
-  is_preview: v.optional(v.boolean(), false),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const onQualifiedEmailTraineeSchema = z.object({
+  interview_module_relation_id: z.string(),
+  approver_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const sendSelfScheduleRequest_email_applicant = v.object({
-  organizer_id: v.string(),
-  filter_json_id: v.optional(v.string()),
-  application_id: v.optional(v.string()),
-  is_preview: v.nullish(v.boolean(), false),
-  request_id: v.optional(v.string(), undefined),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const onQualifiedEmailApproverSchema = z.object({
+  session_relation_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });
 
-export const sendAvailabilityRequestEmailApplicantSchema = v.object({
-  organizer_user_id: v.string(),
-  avail_req_id: v.nullish(v.string("missing avail_req_id"), undefined),
-  preview_details: v.nullish(
-    v.object({
-      application_id: v.string(),
-    }),
-    undefined
-  ),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const sendAvailReqReminderEmailApplicant = v.object({
-  avail_req_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-
-export const selfScheduleReminderEmailApplicantSchema = v.object({
-  filter_id: v.string(),
-  task_id: v.optional(v.string(), undefined),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-
-export const meetingDeclinedEmailOrganizerSchema = v.object({
-  session_id: v.string(),
-  interviewer_id: v.string(),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const MeetingAcceptedEmailOrganizerSchema = v.object({
-  session_id: v.string(),
-  interviewer_id: v.string(),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const interviewEndEmailInterviewerForFeedbackSchema = v.object({
-  session_id: v.string(),
-  recruiter_user_id: v.string(),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const onSignupEmailAdminSchema = v.object({
-  recruiter_user_id: v.string(),
-  recruiter_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-
-export const interviewerResumedEmailAdminSchema = v.object({
-  interviewe_module_relation_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-
-export const onShadowCompleteEmailTraineeSchema = v.object({
-  meeting_id: v.string(),
-  application_id: v.string(),
-  session_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const onRShadowCompleteEmailTraineeSchema = v.object({
-  meeting_id: v.string(),
-  session_id: v.string(),
-  application_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const onQualifiedEmailTraineeSchema = v.object({
-  interview_module_relation_id: v.string(),
-  approver_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const onQualifiedEmailApproverSchema = v.object({
-  session_relation_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
-    })
-  ),
-});
-export const interviewEndEmailOrganizerForMeetingStatusSchema = v.object({
-  session_id: v.string(),
-  payload: v.optional(
-    v.object({
-      subject: v.string(),
-      body: v.string(),
+export const interviewEndEmailOrganizerForMeetingStatusSchema = z.object({
+  session_id: z.string(),
+  overridedMailSubBody: z.optional(
+    z.object({
+      subject: z.string(),
+      body: z.string(),
     })
   ),
 });

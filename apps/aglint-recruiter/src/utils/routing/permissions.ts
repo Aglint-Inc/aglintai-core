@@ -47,10 +47,10 @@ const PERMISSIONS: Permissions = {
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
   '/scheduling/interviewer': ['manage_interviewers'],
-  '/scheduling/interview-types/[type_id]': ['interview_types'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
-  '/scheduling/interview-types': ['view_interview_types'],
+  '/interview-pool': ['view_interview_types'],
+  '/interview-pool/[type_id]': ['interview_types'],
   '/requests': ['job_module'],
   '/requests/[id]': ['job_module'],
   '/requests/history': ['job_module'],
@@ -83,7 +83,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
   '/api/scheduling/fetch_activities': ['authorized'],
   '/api/scheduling/get_interview_modules': ['scheduling_module'],
-  '/api/scheduling/fetch_interview_module_by_id': ['scheduling_module'],
   // scheduling application apis
   '/api/scheduling/application/cancelschedule': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagentwithouttaskid': [

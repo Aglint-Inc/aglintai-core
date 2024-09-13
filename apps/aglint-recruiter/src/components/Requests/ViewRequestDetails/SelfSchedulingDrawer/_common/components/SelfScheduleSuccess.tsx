@@ -1,4 +1,5 @@
-import { GlobalCta } from '@devlink3/GlobalCta';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { CheckCircle2 } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -27,19 +28,23 @@ function SelfScheduleSuccess() {
 
   return (
     <div className='flex flex-row w-full items-center justify-center'>
-      <GlobalCta
-        iconName={'mark_email_read'}
-        color={'success'}
-        textTitle={'Self scheduling link sent successfully'}
-        textDescription={
-          'The candidate recieved an email containing a link to select from the provided options. The interview will be confirmed once the candidate makes a selection.'
-        }
-        slotButton={
-          <UIButton variant='secondary' onClick={() => handleCopyLink()}>
-            {isCopied ? 'Copied' : 'Copy Link'}
-          </UIButton>
-        }
-      />
+      <Alert variant='success'>
+        <CheckCircle2 className='h-4 w-4' />
+        <AlertTitle>Self scheduling link sent successfully</AlertTitle>
+        <AlertDescription>
+          The candidate received an email containing a link to select from the
+          provided options. The interview will be confirmed once the candidate
+          makes a selection.
+        </AlertDescription>
+        <UIButton
+          variant='outline'
+          size='sm'
+          className='mt-3'
+          onClick={() => handleCopyLink()}
+        >
+          {isCopied ? 'Copied' : 'Copy Link'}
+        </UIButton>
+      </Alert>
     </div>
   );
 }

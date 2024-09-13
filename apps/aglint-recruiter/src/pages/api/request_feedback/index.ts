@@ -1,6 +1,8 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+
+import { mailSender } from '@/utils/mailSender';
 
 import { type API_request_feedback } from './type';
 
@@ -12,14 +14,14 @@ export default async function handler(
     req.body as API_request_feedback['request'];
   try {
     if (tool === 'email') {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/interviewEnd_email_interviewerForFeedback`,
-        {
+      mailSender({
+        target_api: 'interviewEnd_email_interviewerForFeedback',
+        payload: {
           application_id,
           recruiter_user_id,
           session_id,
-        } as EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'],
-      );
+        },
+      });
     } else {
       await axios.post(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/interviewEnd_slack_interviewerForFeedback`,
@@ -27,7 +29,7 @@ export default async function handler(
           application_id,
           recruiter_user_id,
           session_id,
-        } as EmailTemplateAPi<'interviewEnd_slack_interviewerForFeedback'>['api_payload'],
+        } as TargetApiPayloadType<'interviewEnd_slack_interviewerForFeedback'>,
       );
     }
     return res.status(200).json({

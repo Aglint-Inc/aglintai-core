@@ -1,6 +1,4 @@
 'use client';
-import { InvalidJob } from '@devlink/InvalidJob';
-import InvalidJobPostLottie from '@public/lottie/InvalidJobPostLottie';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -114,7 +112,11 @@ function JobPost({
       ) : valid ? (
         <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
       ) : (
-        <InvalidJob slotLottie={<InvalidJobPostLottie />} />
+        <div className='flex flex-col items-center justify-center h-screen'>
+          <p className='mt-4 text-xl font-semibold text-gray-700'>
+            Job not found. Please check the URL or try again later.
+          </p>
+        </div>
       )}
     </div>
   );

@@ -1,8 +1,6 @@
 import { Button } from '@components/ui/button';
-import { Download } from '@devlink/Download';
-import { ResumeWrap } from '@devlink3/ResumeWrap';
-import { Dialog, Stack } from '@mui/material';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Dialog, DialogContent } from '@components/ui/dialog';
+import { Bookmark, BookmarkCheck, DownloadCloud, X } from 'lucide-react';
 import { useMemo } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -11,7 +9,6 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 const ResumePreviewer = ({
   open,
   onClose,
-  id,
   url,
   name,
   bookmark = null,
@@ -38,6 +35,7 @@ const ResumePreviewer = ({
     () => checkPermissions(['manage_job']),
     [checkPermissions],
   );
+
   const downloadFile = async () => {
     fetch(url).then((response) => {
       response.blob().then((blob) => {
@@ -49,90 +47,74 @@ const ResumePreviewer = ({
       });
     });
   };
+
   return (
-    <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          backgroundColor: 'transparent !important',
-        },
-        '.MuiDialog-container': {
-          height: 'auto',
-        },
-      }}
-      fullWidth
-      maxWidth={'lg'}
-      open={open}
-      onClose={() => onClose()}
-    >
-      <ResumeWrap
-        key={id}
-        textName={name}
-        onClickDown={{
-          style: { display: navigation?.handleDown ? 'flex' : 'none' },
-          onClick: () => navigation?.handleDown(),
-        }}
-        slotBookmark={
-          <Stack direction={'row'} gap={1}>
-            {download && (
-              <Download
-                onClickDownload={{
-                  onClick: () => downloadFile(),
-                  style: { cursor: 'pointer' },
-                }}
-              />
-            )}
-            {isAllowed && bookmark && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => bookmark.handleBookmark()}
-                className="hover:bg-transparent"
-              >
-                {bookmark.isBookmarked ? (
-                  <Bookmark className="h-4 w-4 text-black" />
-                ) : (
-                  <BookmarkCheck className="h-4 w-4" />
-                )}
-                <span className="sr-only">Bookmark</span>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className='bg-transparent p-0 max-w-4xl'>
+        <div className='bg-white rounded-lg shadow-lg overflow-hidden'>
+          <div className='flex justify-between items-center p-4 border-b'>
+            <h2 className='text-xl font-semibold'>{name}</h2>
+            <div className='flex items-center space-x-2'>
+              {download && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={downloadFile}
+                  className='hover:bg-transparent'
+                >
+                  <DownloadCloud className='h-4 w-4' />
+                  <span className='sr-only'>Download</span>
+                </Button>
+              )}
+              {isAllowed && bookmark && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => bookmark.handleBookmark()}
+                  className='hover:bg-transparent'
+                >
+                  {bookmark.isBookmarked ? (
+                    <Bookmark className='h-4 w-4 text-black' />
+                  ) : (
+                    <BookmarkCheck className='h-4 w-4' />
+                  )}
+                  <span className='sr-only'>Bookmark</span>
+                </Button>
+              )}
+              <Button variant='ghost' size='sm' onClick={onClose}>
+                <X className='h-4 w-4' />
+                <span className='sr-only'>Close</span>
               </Button>
-            )}
-          </Stack>
-        }
-        onClickUp={{
-          style: { display: navigation?.handleUp ? 'flex' : 'none' },
-          onClick: () => navigation?.handleUp(),
-        }}
-        onClickClose={{ onClick: () => onClose() }}
-        slotResume={
-          <Stack
-            direction={'row'}
-            justifyContent={'center'}
-            height={'85vh'}
-            position={'relative'}
-          >
-            <Stack
-              width={'100%'}
-              height={'100%'}
-              position={'absolute'}
-              zIndex={1}
-            >
+            </div>
+          </div>
+          <div className='relative h-[85vh]'>
+            <div className='absolute inset-0 z-10'>
               <ResumeEmbed url={url} />
-            </Stack>
-            <Stack
-              position={'absolute'}
-              width={'100%'}
-              height={'100%'}
-              display={'flex'}
-              alignItems={'center'}
-              justifyContent={'center'}
-              zIndex={0}
-              bgcolor={'var(--neutral-11)'}
-            >
+            </div>
+            <div className='absolute inset-0 flex items-center justify-center bg-neutral-100 z-0'>
               <Loader />
-            </Stack>
-          </Stack>
-        }
-      />
+            </div>
+          </div>
+          {navigation && (
+            <div className='flex justify-between p-4 border-t'>
+              <Button
+                variant='outline'
+                onClick={navigation.handleUp}
+                disabled={!navigation.handleUp}
+              >
+                Previous
+              </Button>
+              <Button
+                variant='outline'
+                onClick={navigation.handleDown}
+                disabled={!navigation.handleDown}
+              >
+                Next
+              </Button>
+            </div>
+          )}
+        </div>
+      </DialogContent>
     </Dialog>
   );
 };

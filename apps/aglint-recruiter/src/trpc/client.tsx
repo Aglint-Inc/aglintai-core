@@ -64,7 +64,7 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
-export type RouterHelper<T> = T extends void ? never : T;
+export type Unvoid<T> = T extends void ? never : T;
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();

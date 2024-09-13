@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { PopoverClose } from '@radix-ui/react-popover';
 import { Coffee, Edit, Loader2 } from 'lucide-react';
 import {
   type Dispatch,
@@ -29,38 +30,28 @@ interface BreakTimeCardProps {
   breaktime: BreakTime;
   setSelectedHourBreak: Dispatch<SetStateAction<BreakTime>>;
   handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;
-  isUpdating: boolean;
 }
 
 const BreakTimeCard: FC<BreakTimeCardProps> = ({
   breaktime,
   setSelectedHourBreak,
   handleUpdate,
-  isUpdating,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const handleUpdateAndClose = async (newBreaktime) => {
     await handleUpdate({ break_hour: newBreaktime });
-    setIsOpen(false);
     setSelectedHourBreak(newBreaktime);
   };
 
-  const handleTogglePopover = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <Card>
+    <Card className='relative group'>
       <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Break Time</CardTitle>
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <Popover>
           <PopoverTrigger asChild>
             <Button
               variant='outline'
               size='sm'
-              className='absolute top-2 right-2'
-              onClick={handleTogglePopover}
+              className='absolute top-1 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Break Time</span>
@@ -70,7 +61,6 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
             <EditBreakTime
               breaktime={breaktime}
               handleUpdateAndClose={handleUpdateAndClose}
-              isUpdating={isUpdating}
             />
           </PopoverContent>
         </Popover>
@@ -105,11 +95,9 @@ export default BreakTimeCard;
 const EditBreakTime = ({
   breaktime,
   handleUpdateAndClose,
-  isUpdating,
 }: {
   breaktime: BreakTime;
   handleUpdateAndClose: (arg: BreakTime) => void;
-  isUpdating: boolean;
 }) => {
   const [localBreakTime, setLocalBreakTime] = useState<BreakTime>(breaktime);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -174,17 +162,18 @@ const EditBreakTime = ({
           }
         />
       </div>
-      <Button
-        onClick={() => {
-          if (isStartTimeLessThanEndTime(localBreakTime)) {
-            handleUpdateAndClose(localBreakTime);
-          }
-        }}
-        disabled={isUpdating}
-      >
-        {isUpdating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-        Update
-      </Button>
+      <PopoverClose>
+        <Button
+          className='w-full'
+          onClick={() => {
+            if (isStartTimeLessThanEndTime(localBreakTime)) {
+              handleUpdateAndClose(localBreakTime);
+            }
+          }}
+        >
+          Update
+        </Button>
+      </PopoverClose>
     </div>
   );
 };

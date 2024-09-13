@@ -1,10 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { Skeleton } from '@components/ui/skeleton';
 import { CandidateDetail } from '@devlink/CandidateDetail';
-import { Stack } from '@mui/material';
 import { Lightbulb, Medal } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { useApplication } from '@/context/ApplicationContext';
 
@@ -15,9 +13,9 @@ const Skills = () => {
     <CandidateDetail
       slotIcon={<Lightbulb size={16} />}
       slotBody={
-        <Stack direction={'row'} width={'100%'} flexWrap={'wrap'} gap={1}>
+        <div className='flex flex-row flex-wrap w-full gap-1'>
           <Content />
-        </Stack>
+        </div>
       }
       textTitle={'Skills'}
       slotBadge={<></>}
@@ -34,9 +32,9 @@ const Content = () => {
   if (status === 'pending')
     return (
       <Loader count={10}>
-        <Stack style={{ position: 'relative', width: '60px', height: '22px' }}>
+        <div className='relative w-[60px] h-[22px]'>
           <Skeleton className='h-10 w-full' />
-        </Stack>
+        </div>
       </Loader>
     );
   if (
@@ -45,7 +43,12 @@ const Content = () => {
       data?.score_json?.relevance?.skills
     )
   )
-    return <GlobalEmpty iconSlot={<Medal className='text-gray-500'/>} text={'No skills found'}/>;
+    return (
+      <div className='flex flex-col items-center justify-center p-4'>
+        <Medal className='text-gray-500 w-12 h-12 mb-2' />
+        <p className='text-gray-600 text-sm'>No skills found</p>
+      </div>
+    );
   return <Skill />;
 };
 

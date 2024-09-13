@@ -1,5 +1,11 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
-import { MenuItem, Select, Stack, Typography } from '@mui/material';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select';
 import React from 'react';
 
 import TipTapAIEditor from '../TipTapAIEditor';
@@ -37,98 +43,50 @@ export default function EmailTemplateEditForm({
     : ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
 
   return (
-    <Stack spacing={'var(--space-5)'}>
+    <div className='space-y-[var(--space-5)]'>
       {showSender && (
-        <Stack>
+        <div className='space-y-2'>
           <UITypography type='small' fontBold='normal'>
             From
           </UITypography>
-          <Stack>
-            {`This name appears as the "From" name in emails to
-  candidates. Choose a representative name for your
-  company or recruiter.
-  `}
-          </Stack>
+          <p className='text-sm text-gray-600'>
+            This name appears as the &quot;From&quot; name in emails to
+            candidates. Choose a representative name for your company or
+            recruiter.
+          </p>
           <Select
             defaultValue={selectedTemplate?.from_name}
             disabled={disabled}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onChange={senderNameChange}
-            sx={{
-              '& .MuiOutlinedInput-notchedOutline': {
-                border: '1px solid #DAD9D6',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                border: '1px solid #DAD9D6',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                border: '1px solid #DAD9D6',
-              },
-            }}
+            onValueChange={senderNameChange}
           >
-            {options.length === 0 ? (
-              <Stack
-                px={1}
-                style={{
-                  fontStyle: 'italic',
-                  color: 'var(--neutral-9)',
-                  cursor: 'default',
-                }}
-              >
-                No options available
-              </Stack>
-            ) : (
-              options.map((value, idx) => (
-                <MenuItem
-                  key={idx}
-                  value={value}
-                  sx={{
-                    backgroundColor: '#f7f7f7', // normal state background color
-                    '&:hover': {
-                      backgroundColor: '#ededed', // hover state background color
-                    },
-                    '&.Mui-selected': {
-                      backgroundColor: '#e3e3e3', // selected state background color
-                      '&:hover': {
-                        backgroundColor: '#d6d6d6', // maintain selected state color on hover
-                      },
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      backgroundColor: '#f7ebfc',
-                      paddingLeft: '3px',
-                      paddingRight: '3px',
-                      paddingBottom: '3px',
-                      color: '#B552E2',
-                      borderRadius: '2px',
-                      width: 'fit-content',
-                    }}
-                  >
-                    {value}
-                  </Typography>
-                </MenuItem>
-              ))
-            )}
+            <SelectTrigger className='w-full border-[#DAD9D6]'>
+              <SelectValue placeholder='Select sender name' />
+            </SelectTrigger>
+            <SelectContent>
+              {options.length === 0 ? (
+                <div className='px-2 py-1 italic text-[var(--neutral-9)] cursor-default'>
+                  No options available
+                </div>
+              ) : (
+                options.map((value, idx) => (
+                  <SelectItem key={idx} value={value}>
+                    <span className='bg-[#f7ebfc] px-1 pb-[3px] text-[#B552E2] rounded-sm'>
+                      {value}
+                    </span>
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
           </Select>
-        </Stack>
+        </div>
       )}
 
       {showSubject && (
-        <Stack>
+        <div className='space-y-2'>
           <UITypography type='small' fontBold='normal'>
             Subject
           </UITypography>
-          <Stack
-            sx={{
-              mt: '8px',
-              border: '1px solid',
-              borderColor: 'var(--neutral-6)',
-              borderRadius: 'var(--radius-2)',
-            }}
-          >
+          <div className='mt-2 border border-[var(--neutral-6)] rounded-[var(--radius-2)]'>
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
@@ -143,22 +101,15 @@ export default function EmailTemplateEditForm({
               handleChange={emailSubjectChange}
               initialValue={selectedTemplate?.subject}
             />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       )}
 
-      <Stack>
+      <div className='space-y-2'>
         <UITypography type='small' fontBold='normal'>
           Message
         </UITypography>
-        <Stack
-          sx={{
-            mt: '8px',
-            border: '1px solid',
-            borderColor: 'var(--neutral-6)',
-            borderRadius: 'var(--radius-2)',
-          }}
-        >
+        <div className='mt-2 border border-[var(--neutral-6)] rounded-[var(--radius-2)]'>
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}
@@ -172,8 +123,8 @@ export default function EmailTemplateEditForm({
             handleChange={emailBodyChange}
             initialValue={selectedTemplate.body}
           />
-        </Stack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }

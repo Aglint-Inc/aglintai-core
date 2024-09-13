@@ -1,14 +1,11 @@
 import { type SessionsCombType } from '@aglint/shared-types';
-import { ButtonSurface } from '@devlink/ButtonSurface';
 import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { DcPopup } from '@devlink/DcPopup';
-import { IconButtonSoft } from '@devlink/IconButtonSoft';
 import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@devlink/SessionAndTime';
 import { SessionInfo } from '@devlink/SessionInfo';
 import { Dialog, Stack, Typography } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
-import { Coffee, Plus } from 'lucide-react';
+import { Coffee, Plus, Repeat, X } from 'lucide-react';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -48,10 +45,7 @@ const MultiDayError = () => {
     toast.error('Something went wrong. Please try again.');
   }, []);
   return (
-    <UIButton
-      variant='default'
-      onClick={() => refetch()}
-    >
+    <UIButton variant='default' onClick={() => refetch()}>
       Try again
     </UIButton>
   );
@@ -133,46 +127,48 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
 
   return (
     <Dialog open={props.open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack gap={'10px'}>
-            <Stack>
-              {selectedDateAndSessions.map((item, index) => (
-                <>
-                  <Typography variant='subtitle1'>
-                    Day-{index + 1} -{' '}
-                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
-                    {item.date}
-                  </Typography>
-                </>
-              ))}
-            </Stack>
-            <Typography>
-              Please review and confirm your selected time slot before we
-              finalize your schedule. It’s important that your interview time
-              aligns with your availability.
-            </Typography>
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
+      <div className='flex items-center justify-center w-[500px]'>
+        <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
+          <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+            <h2 className='font-semibold'>Confirm your interview</h2>
             <UIButton
-              variant='secondary'
               onClick={() => handleClose()}
+              variant='ghost'
+              size='sm'
             >
+              <X className='w-4 h-4' />
+            </UIButton>
+          </div>
+          <div className='p-4'>
+            <Stack gap={'10px'}>
+              <Stack>
+                {selectedDateAndSessions.map((item, index) => (
+                  <>
+                    <Typography variant='subtitle1'>
+                      Day-{index + 1} -{' '}
+                      {item.sessions.map((ele) => ele.session_name).join(' ,')}{' '}
+                      on {item.date}
+                    </Typography>
+                  </>
+                ))}
+              </Stack>
+              <Typography>
+                Please review and confirm your selected time slot before we
+                finalize your schedule. It’s important that your interview time
+                aligns with your availability.
+              </Typography>
+            </Stack>
+          </div>
+          <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+          <UIButton variant='secondary' onClick={() => handleClose()}>
               Cancel
             </UIButton>
-            <UIButton
-              variant='default'
-              onClick={() => handleSubmit()}
-            >
+            <UIButton variant='default' onClick={() => handleSubmit()}>
               Confirm
             </UIButton>
-          </>
-        }
-      />
+          </div>
+        </div>
+      </div>
     </Dialog>
   );
 };
@@ -255,23 +251,20 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         slotButton={
           enabled ? (
             isSelected ? (
-              <IconButtonSoft
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => setOpen(true),
-                }}
-                iconName='repeat'
-                highContrast={true}
+              <UIButton
+                variant='secondary'
+                onClick={() => setOpen(true)}
+                leftIcon={<Repeat />}
               />
             ) : (
-              <ButtonSurface
-                slotIcon={<Plus size={'sm'} />}
-                isLeftIcon={true}
-                isRightIcon={false}
-                size={1}
-                onClickButton={{ onClick: () => setOpen(true) }}
-                textButton='Select Option'
-              />
+              <UIButton
+                leftIcon={<Plus size={'sm'} />}
+                onClick={() => setOpen(true)}
+                variant='outline'
+                size='sm'
+              >
+                Select Option
+              </UIButton>
             )
           ) : (
             <></>

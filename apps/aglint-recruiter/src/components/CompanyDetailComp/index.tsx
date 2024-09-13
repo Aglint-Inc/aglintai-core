@@ -1,5 +1,3 @@
-import { CheckCircle, Loader2 } from 'lucide-react';
-
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import CompanyInfoComp from './CompanyDetails';
@@ -17,7 +15,7 @@ import WorkingHour from './WorkingHours';
 
 const CompanyDetailComp = () => {
   const { recruiter } = useAuthDetails();
-  const { isSaving, updateSettings, tab, setIsSaving } = useCompanyDetailComp();
+  const { updateSettings, tab, setIsSaving } = useCompanyDetailComp();
 
   return (
     <div className='flex h-screen bg-gray-50'>
@@ -27,23 +25,7 @@ const CompanyDetailComp = () => {
       </div>
 
       {/* Content Area */}
-      <div className='flex-1 overflow-y-auto'>
-        {/* Auto-save Banner */}
-        <div className='sticky top-0 z-10 p-2'>
-          {isSaving === 'saving' && (
-            <div className='flex items-center justify-center space-x-2 text-sm text-gray-600'>
-              <Loader2 className='h-4 w-4 animate-spin' />
-              <span>Saving changes...</span>
-            </div>
-          )}
-          {isSaving === 'saved' && (
-            <div className='flex items-center justify-center space-x-2 text-sm text-green-600 transition-opacity duration-500 opacity-100'>
-              <CheckCircle className='h-4 w-4' />
-              <span>All changes saved</span>
-            </div>
-          )}
-        </div>
-
+      <div className='flex-1 overflow-y-auto p-2'>
         {/* Main Content */}
         <div className='w-full max-w-[1200px] mx-auto'>
           {tab === settingSubNavItem['COMPANYINFO'] && <CompanyInfoComp />}

@@ -6,9 +6,9 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { type ApiResponseGetMember } from '@/pages/api/get_member';
 
-import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { InterviewerDetailOverview } from '../_common/InterviewerDetailOverview';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';

@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import axios from 'axios';
+
+import { mailSender } from '../mailSender';
 
 export const selfScheduleMailToCandidate = async ({
   filter_id,
@@ -10,23 +12,17 @@ export const selfScheduleMailToCandidate = async ({
   organizer_id: string;
 }) => {
   try {
-    const bodyParams: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
+    const bodyParams: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
       {
         filter_json_id: filter_id,
         organizer_id,
       };
+    await mailSender({
+      target_api: 'sendSelfScheduleRequest_email_applicant',
+      payload: bodyParams,
+    });
 
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendSelfScheduleRequest_email_applicant`,
-      {
-        ...bodyParams,
-      },
-    );
-    if (res.status === 200) {
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   } catch (e) {
     console.log(e);
   }
@@ -40,7 +36,7 @@ export const selfScheduleReminderMailToCandidate = async ({
   task_id?: string;
 }) => {
   try {
-    const bodyParams: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'] =
+    const bodyParams: TargetApiPayloadType<'selfScheduleReminder_email_applicant'> =
       {
         filter_id: filter_id,
         task_id: task_id,
@@ -70,21 +66,13 @@ export const cancelMailHandler = async ({
   session_ids: string[];
 }) => {
   try {
-    const bodyParams: EmailTemplateAPi<'interviewCancel_email_applicant'>['api_payload'] =
+    const bodyParams: TargetApiPayloadType<'interviewCancel_email_applicant'> =
       { application_id, session_ids };
 
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/interviewCancel_email_applicant`,
-      {
-        ...bodyParams,
-      },
-    );
-
-    if (res.status === 200) {
-      return true;
-    } else {
-      return false;
-    }
+    await mailSender({
+      target_api: 'interviewCancel_email_applicant',
+      payload: bodyParams,
+    });
   } catch (e) {
     console.log(e);
   }

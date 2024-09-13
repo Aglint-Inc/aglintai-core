@@ -99,7 +99,6 @@ export const API_PATHS = [
   '/api/scheduling/debrief/task_create',
   '/api/scheduling/fetchUserDetails',
   '/api/scheduling/fetch_activities',
-  '/api/scheduling/fetch_interview_module_by_id',
   '/api/scheduling/fetch_interview_session_task',
   '/api/scheduling/get-accesstoken',
   '/api/scheduling/get_interviewer_and_modules',

@@ -1,33 +1,6 @@
-import { type PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
-import {
-  type ModuleType,
-  type SchedulingSlice,
-  type StatusTraining,
-} from './types';
-
-export const initialEditModule: ModuleType = {
-  id: '',
-  name: '',
-  relations: [],
-  duration_available: { activeDuration: 0, availabletimeSlots: [] },
-  created_at: '',
-  recruiter_id: '',
-  department_id: null,
-  settings: {
-    require_training: false,
-    noShadow: 2,
-    noReverseShadow: 2,
-    reqruire_approval: false,
-    approve_users: [], // this users come from interview_module_approve_users table
-  },
-  description: '',
-  instructions: '',
-  created_by: '',
-  is_archived: false,
-};
+import { type SchedulingSlice } from './types';
 
 export const initialStateSchedulingStore: SchedulingSlice = {
   isCreateDialogOpen: null,
@@ -46,13 +19,17 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   pause_json: { isManual: true, start_date: '', end_date: '' },
   trainingStatus: 'qualified',
   initalOpen: null,
+  localModule: null,
 };
 
 export const useModulesStore = create<SchedulingSlice>()(
   () => initialStateSchedulingStore,
 );
 
-export const setInitalOpen = (initalOpen: StatusTraining | null) =>
+export const setLocalModule = (localModule: SchedulingSlice['localModule']) =>
+  useModulesStore.setState({ localModule });
+
+export const setInitalOpen = (initalOpen: SchedulingSlice['initalOpen']) =>
   useModulesStore.setState({ initalOpen });
 
 export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
@@ -68,8 +45,9 @@ export const setIsMovedToQualifiedDialogOpen = (
   isMovedToQualifiedDialogOpen: boolean,
 ) => useModulesStore.setState({ isMovedToQualifiedDialogOpen });
 
-export const setSelectedUsers = (selectedUsers: MemberTypeAutoComplete[]) =>
-  useModulesStore.setState({ selectedUsers });
+export const setSelectedUsers = (
+  selectedUsers: SchedulingSlice['selectedUsers'],
+) => useModulesStore.setState({ selectedUsers });
 
 export const setIsDeleteMemberDialogOpen = (
   isDeleteMemberDialogOpen: boolean,
@@ -95,14 +73,15 @@ export const setIsDeleteModuleDialogOpen = (
 export const setIsPauseDialogOpen = (isPauseDialogOpen: boolean) =>
   useModulesStore.setState({ isPauseDialogOpen });
 
-export const setSelUser = (selUser: ModuleType['relations'][0] | null) =>
+export const setSelUser = (selUser: SchedulingSlice['selUser']) =>
   useModulesStore.setState({ selUser });
 
-export const setPauseJson = (pause_json: PauseJson | null) =>
+export const setPauseJson = (pause_json: SchedulingSlice['pause_json']) =>
   useModulesStore.setState({ pause_json });
 
 export const resetModulesStore = () =>
   useModulesStore.setState(initialStateSchedulingStore);
 
-export const setTrainingStatus = (trainingStatus: StatusTraining) =>
-  useModulesStore.setState({ trainingStatus });
+export const setTrainingStatus = (
+  trainingStatus: SchedulingSlice['trainingStatus'],
+) => useModulesStore.setState({ trainingStatus });

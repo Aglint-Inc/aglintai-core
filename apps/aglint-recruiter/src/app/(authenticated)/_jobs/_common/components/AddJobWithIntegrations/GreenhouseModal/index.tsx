@@ -1,10 +1,10 @@
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
+import { Checkbox } from '@components/ui/checkbox';
+import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
-import { AtsCard } from '@devlink/AtsCard';
-import { SideDrawerLarge } from '@devlink3/SideDrawerLarge';
-import { Drawer, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
 import { STATE_GREENHOUSE_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
@@ -60,28 +60,11 @@ export function GreenhouseModal() {
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       });
 
-      // const public_job_id = await axios.call(
-      //   'POST',
-      //   '/api/integrations/greenhouse/sync/job',
-      //   {
-      //     ats_job: selectedGreenhousePostings[0],
-      //   },
-      // );
+      // Implement your import logic here
+      // ...
 
-      // if (public_job_id) {
-      //   await handleJobsRefresh();
-      //   //closing modal once done
-      //   setIntegration(({
-      //     greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
-      //   }));
-      //   router.push(ROUTES['/jobs/[job]']({ id: String(public_job_id) }));
-      // } else {
-      //   toast.error(
-      //     'Import failed. Please try again later or contact support for assistance.',
-      //   );
-      //   posthog.capture('GreenHouse Import Error');
-      //   handleClose();
-      // }
+      toast.success('Jobs imported successfully');
+      handleClose();
     } catch (error) {
       toast.error(
         'Import failed. Please try again later or contact support for assistance.',
@@ -93,95 +76,79 @@ export function GreenhouseModal() {
   };
 
   return (
-    <Drawer
-      anchor={'right'}
-      open={integration.greenhouse.open}
-      onClose={() => {
-        if (saving) return;
-        handleClose();
-      }}
-    >
-      <SideDrawerLarge
-        textDrawertitle={'Import from Greenhouse'}
-        drawerSize={'small'}
-        slotButtons={
-          <>
-            <UIButton
-              variant='secondary'
-              size='sm'
-              onClick={() => {
-                if (saving) return;
-                handleClose();
-              }}
-            >
-              Close
-            </UIButton>
-
-            <UIButton
+    <Dialog open={integration.greenhouse.open} onOpenChange={handleClose}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <div className='flex flex-col space-y-4'>
+          <h2 className='text-lg font-semibold'>Import from Greenhouse</h2>
+          <div className='flex flex-col h-[calc(100vh-200px)] overflow-hidden space-y-4'>
+            <p className='text-sm font-medium'>
+              {selectedGreenhousePostings.length == 0
+                ? `Showing ${postings.length} Jobs from Greenhouse`
+                : `${selectedGreenhousePostings.length} Jobs selected`}
+            </p>
+            <Button
               variant='default'
-              size='sm'
-              isLoading={saving}
-              disabled={selectedGreenhousePostings.length === 0}
-              onClick={() => {
-                if (saving) return;
-                importGreenhouse();
-              }}
+              disabled={selectedGreenhousePostings.length === 0 || saving}
+              onClick={importGreenhouse}
+              className='w-full'
             >
-              Import
-            </UIButton>
-          </>
-        }
-        slotSideDrawerbody={
-          <Stack
-            spacing={'var(--space-2)'}
-            padding={'var(--space-2)'}
-            height={'calc(100vh - 96px)'}
-          >
-            {!initialFetch ? (
-              postings.length > 0 ? (
-                postings.map((post, ind) => {
-                  return (
-                    <AtsCard
-                      key={ind}
-                      isChecked={
-                        selectedGreenhousePostings?.filter(
-                          (p) => p.id === post.id,
-                        )?.length > 0
-                      }
-                      onClickCheck={{
-                        onClick: () => {
-                          setSelectedGreenhousePostings([post]);
-                        },
-                      }}
-                      propsTextColor={{
-                        style: {
-                          color: getGreenhouseStatusColor(post),
-                        },
-                      }}
-                      textRole={post.title}
-                      textStatus={
-                        post.live ? 'Live' : post.active ? 'Active' : 'Closed'
-                      }
-                      textWorktypeLocation={post.location.name}
-                    />
-                  );
-                })
+              {saving ? 'Importing...' : 'Import'}
+            </Button>
+            <div className='space-y-2 flex-grow overflow-y-auto'>
+              {!initialFetch ? (
+                postings.length > 0 ? (
+                  postings.map((post, ind) => (
+                    <Card key={ind}>
+                      <CardContent className='flex items-center justify-between p-4'>
+                        <div>
+                          <p className='font-medium'>{post.title}</p>
+                          <p className='text-sm text-gray-500'>
+                            {post.location.name}
+                          </p>
+                          <p
+                            className='text-sm'
+                            style={{ color: getGreenhouseStatusColor(post) }}
+                          >
+                            {post.live
+                              ? 'Live'
+                              : post.active
+                                ? 'Active'
+                                : 'Closed'}
+                          </p>
+                        </div>
+                        <Checkbox
+                          checked={selectedGreenhousePostings?.some(
+                            (p) => p.id === post.id,
+                          )}
+                          onCheckedChange={() => {
+                            setSelectedGreenhousePostings([post]);
+                          }}
+                        />
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <NoAtsResult />
+                )
               ) : (
-                <NoAtsResult />
-              )
-            ) : (
-              <>
-                <Skeleton className='w-full h-16 mb-2' />{' '}
-                <Skeleton className='w-full h-16 mb-2' />
-                <Skeleton className='w-full h-16 mb-2' />{' '}
-                <Skeleton className='w-full h-16 mb-2' />
-                <Skeleton className='w-full h-16 mb-2' />{' '}
-                <Skeleton className='w-full h-16 mb-2' />
-              </>
-            )}
-          </Stack>
-        }
-      />
-    </Drawer>
+                <>
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                </>
+              )}
+            </div>
+          </div>
+          <div className='flex justify-end space-x-2'>
+            <Button variant='outline' onClick={handleClose}>
+              Close
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

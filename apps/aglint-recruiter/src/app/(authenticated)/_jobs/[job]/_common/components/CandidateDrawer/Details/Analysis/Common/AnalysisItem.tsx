@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { JdAnalysisItem } from '@devlink/JdAnalysisItem';
+import { Badge } from '@components/ui/badge';
 
 import { useApplication } from '@/context/ApplicationContext';
 import type { ApplicationDetails } from '@/context/ApplicationContext/type';
@@ -31,13 +31,12 @@ export const AnalysisItem = ({
     return <></>;
   const tier = getScoreTier(scores[type]);
   return (
-    <JdAnalysisItem
-      textTitle={capitalizeAll(type)}
-      textAnalysis={reasoning[reasoningType]}
-      textBadge={`${tier} -  ${scores[type]}`}
-      isHigh={tier === 'High'}
-      isMedium={tier === 'Medium'}
-      isPoor={tier === 'Low'}
-    />
+    <div className={`p-4 border rounded-md ${tier === 'High' ? 'bg-green-100' : tier === 'Medium' ? 'bg-yellow-100' : 'bg-red-100'}`}>
+      <h3 className="text-lg font-semibold">{capitalizeAll(type)}</h3>
+      <p className="mt-2">{reasoning[reasoningType]}</p>
+      <Badge className={`inline-block mt-2 px-2 py-1 text-sm font-medium rounded ${tier === 'High' ? 'bg-green-200 text-green-800' : tier === 'Medium' ? 'bg-yellow-200 text-yellow-800' : 'bg-red-200 text-red-800'}`}>
+        {`${tier} - ${scores[type]}`}
+      </Badge>
+    </div>
   );
 };

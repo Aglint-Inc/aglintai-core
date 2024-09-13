@@ -1,18 +1,18 @@
 /* eslint-disable security/detect-object-injection */
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { BannerLoading } from '@devlink3/BannerLoading';
-import { DarkPill } from '@devlink3/DarkPill';
-import { GraphBlock } from '@devlink3/GraphBlock';
 import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
-import { JobRole } from '@devlink3/JobRole';
 import { JobsBanner } from '@devlink3/JobsBanner';
 import { PipeLine } from '@devlink3/PipeLine';
-import { RoleList } from '@devlink3/RoleList';
 import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
-import { CircularProgress, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { Fragment, useMemo, useState } from 'react';
+import React, { Fragment, useMemo } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
@@ -52,9 +52,9 @@ export const JobDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+    <div className="w-full h-screen flex items-center justify-center">
       <Loader />
-    </Stack>
+    </div>
   );
 };
 
@@ -112,11 +112,11 @@ const Dashboard = () => {
             isJobRoleVisible={false}
             isBanner={banners.length !== 0}
             slotBanner={
-              <Stack gap={1}>
+              <div className="flex flex-col gap-1">
                 {banners.map((banner, i) => (
                   <Fragment key={i}>{banner}</Fragment>
                 ))}
-              </Stack>
+              </div>
             }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
@@ -214,23 +214,29 @@ const Roles = () => {
               user?.last_name ?? null,
             );
             acc.push(
-              <RoleList
-                key={i}
-                slotImage={
-                  <MuiAvatar
-                    src={user?.profile_image ?? null}
-                    level={name}
-                    variant='rounded-medium'
+              <div key={i} className='flex items-center space-x-3'>
+                <Avatar className='h-10 w-10 rounded-md'>
+                  <AvatarImage
+                    src={user?.profile_image ?? undefined}
+                    alt={name}
                   />
-                }
-                textDesignation={user?.position ?? '--'}
-                textName={
-                  <Link href={`/user/profile/${user.user_id}`} key={i}>
+                  <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className='flex flex-col'>
+                  <Link
+                    href={`/user/profile/${user.user_id}`}
+                    className='font-medium hover:underline'
+                  >
                     {name}
                   </Link>
-                }
-                textRoleHeader={capitalizeAll(key)}
-              />,
+                  <span className='text-sm text-gray-500'>
+                    {user?.position ?? '--'}
+                  </span>
+                  <span className='text-xs text-gray-400'>
+                    {capitalizeAll(key)}
+                  </span>
+                </div>
+              </div>,
             );
           }
           return acc;
@@ -247,13 +253,36 @@ const Roles = () => {
   ]);
   if (status !== 'success' || coordinators.length === 0) return <></>;
   return (
-    <JobRole
-      onClickEdit={{
-        onClick: () =>
-          push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id })),
-      }}
-      slotRoleList={coordinators}
-    />
+    <div className='space-y-4'>
+      <div className='flex justify-between items-center'>
+        <h2 className='text-xl font-semibold'>Hiring Team</h2>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={() =>
+            push(ROUTES['/jobs/[job]/hiring-team']({ job: job?.id }))
+          }
+        >
+          <Pencil className='h-4 w-4 mr-2' />
+          Edit
+        </Button>
+      </div>
+      <div className='space-y-3'>
+        {coordinators.map((coordinator, index) => (
+          <div
+            key={index}
+            className='flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
+            onClick={() =>
+              push(
+                `/user/profile/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
+              )
+            }
+          >
+            {coordinator}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -330,8 +359,9 @@ const Schedules = () => {
     )
     .slice(0, 3)
     .map((sch, i) => (
-      <Stack
+      <div
         key={i}
+        className="cursor-pointer"
         onClick={() =>
           push(
             `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=job_details`,
@@ -347,7 +377,6 @@ const Schedules = () => {
                 sch.candidates.first_name,
                 sch.candidates.last_name,
               )}
-              variant='circular'
               height='28px'
               width='28px'
               fontSize='12px'
@@ -371,12 +400,12 @@ const Schedules = () => {
             sch.candidates.last_name,
           )}
         />
-      </Stack>
+      </div>
     ));
   return (
-    <Stack width={'100%'} height={'100%'} gap={2}>
+    <div className="w-full h-full flex flex-col gap-2">
       {cards}
-    </Stack>
+    </div>
   );
 };
 
@@ -521,11 +550,7 @@ const useBanners = () => {
     banners.push(
       <BannerLoading
         slotLoader={
-          <CircularProgress
-            color='inherit'
-            size={'100%'}
-            sx={{ color: 'var(--neutral-6)' }}
-          />
+          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
         }
       />,
     );
@@ -635,22 +660,29 @@ const Doughnut = () => {
     state: 'State',
     country: 'Country',
   };
-  const [selection, setSelection] = useState<keyof typeof options>('city');
-  const pills = Object.entries(options).map(([key, value]) => (
-    <DarkPill
-      key={key}
-      isActive={selection === key}
-      textPill={value}
-      onClickPill={{
-        onClick: () => setSelection(key as keyof typeof options),
-      }}
-    />
-  ));
+
   return (
-    <GraphBlock
-      slotLocationGraph={<DashboardDoughnutChart option={selection} />}
-      slotDarkPillLocation={pills}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle>Location Distribution</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue='city'>
+          <TabsList>
+            {Object.entries(options).map(([key, value]) => (
+              <TabsTrigger key={key} value={key}>
+                {value}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {Object.keys(options).map((key) => (
+            <TabsContent key={key} value={key}>
+              <DashboardDoughnutChart option={key as keyof typeof options} />
+            </TabsContent>
+          ))}
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -665,23 +697,29 @@ const LineGraph = () => {
     experience: 'Experience',
     tenure: 'Tenure',
   };
-  const [selection, setSelection] =
-    useState<keyof typeof options>('experience');
-  const pills = Object.entries(options).map(([key, value]) => (
-    <DarkPill
-      key={key}
-      isActive={selection === key}
-      textPill={value}
-      onClickPill={{
-        onClick: () => setSelection(key as keyof typeof options),
-      }}
-    />
-  ));
+
   return (
-    <GraphBlock
-      slotLocationGraph={<DashboardLineChart option={selection} />}
-      slotDarkPillLocation={pills}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle>Experience and Tenure</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue='experience'>
+          <TabsList>
+            {Object.entries(options).map(([key, value]) => (
+              <TabsTrigger key={key} value={key}>
+                {value}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {Object.keys(options).map((key) => (
+            <TabsContent key={key} value={key}>
+              <DashboardLineChart option={key as keyof typeof options} />
+            </TabsContent>
+          ))}
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -690,23 +728,29 @@ const Bars = () => {
     top_skills: 'Top skills',
     required_skills: 'Skills mentioned in JD',
   };
-  const [selection, setSelection] =
-    useState<keyof typeof options>('top_skills');
-  const pills = Object.entries(options).map(([key, value]) => (
-    <DarkPill
-      key={key}
-      isActive={selection === key}
-      textPill={value}
-      onClickPill={{
-        onClick: () => setSelection(key as keyof typeof options),
-      }}
-    />
-  ));
+
   return (
-    <GraphBlock
-      slotLocationGraph={<DashboardBarChart option={selection} />}
-      slotDarkPillLocation={pills}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle>Skills</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue='top_skills'>
+          <TabsList>
+            {Object.entries(options).map(([key, value]) => (
+              <TabsTrigger key={key} value={key}>
+                {value}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {Object.keys(options).map((key) => (
+            <TabsContent key={key} value={key}>
+              <DashboardBarChart option={key as keyof typeof options} />
+            </TabsContent>
+          ))}
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -739,7 +783,7 @@ const Banner = (props: BannerProps) => {
           color={'warning'}
           iconName={'Info'}
           actions={
-            <>
+            <div className="flex gap-2">
               <UIButton
                 variant='secondary'
                 size='sm'
@@ -755,13 +799,13 @@ const Banner = (props: BannerProps) => {
               >
                 {props.primary.title}
               </UIButton>
-            </>
+            </div>
           }
           title={props.title}
           description={props.description}
         />
       );
-    
+
     case 'error':
       return (
         <UIAlert

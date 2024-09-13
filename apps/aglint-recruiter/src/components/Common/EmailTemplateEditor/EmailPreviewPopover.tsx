@@ -1,9 +1,10 @@
 import { Alert, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
-import { PreviewEmail } from '@devlink2/PreviewEmail';
 import { AlertCircle, Loader2, X } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction } from 'react';
+
+import { PreviewEmail } from './PreviewEmail';
 
 interface Prop {
   Loading: boolean;
@@ -58,14 +59,7 @@ export default function EmailPreviewPopover({
             )
           }
           slotClose={
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => {
-                setAnchorEl(null);
-                setHtml(null);
-              }}
-            >
+            <Button variant='ghost' size='sm' onClick={handleClose}>
               <X className='h-4 w-4' />
             </Button>
           }

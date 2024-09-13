@@ -1,11 +1,10 @@
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
+import { Checkbox } from '@components/ui/checkbox';
+import { Dialog, DialogContent } from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { AtsCard } from '@devlink/AtsCard';
-import { AtsJobs } from '@devlink/AtsJobs';
-import { IntegrationFetching } from '@devlink/IntegrationFetching';
-import { IntegrationModal } from '@devlink/IntegrationModal';
-import { LeverApiKey } from '@devlink/LeverApiKey';
-import { LoadingJobsAts } from '@devlink/LoadingJobsAts';
-import { Dialog, Stack } from '@mui/material';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import LoaderLever from '@public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
 import Image from 'next/image';
@@ -14,8 +13,6 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
 import axios from '@/client/axios';
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
@@ -27,7 +24,7 @@ import toast from '@/utils/toast';
 import NoAtsResult from '../NoAtsResult';
 import { POSTED_BY } from '../utils';
 import { type LeverJob } from './types/job';
-import { fetchAllJobs, getLeverStatusColor } from './utils';
+import { fetchAllJobs } from './utils';
 
 export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -102,6 +99,19 @@ export default function LeverModalComp() {
     }
   };
 
+  function getLeverStatusColorClass(state: string): string {
+    switch (state.toLowerCase()) {
+      case 'published':
+        return 'text-green-500';
+      case 'internal':
+        return 'text-blue-500';
+      case 'closed':
+        return 'text-red-500';
+      default:
+        return 'text-gray-500';
+    }
+  }
+
   const submitApiKey = async () => {
     if (!apiRef.current.value) {
       setError(true);
@@ -149,186 +159,147 @@ export default function LeverModalComp() {
   };
 
   return (
-    <Dialog open={integration.lever.open} onClose={handleClose} maxWidth={'lg'}>
-      <IntegrationModal
-        slotLogo={
-          <>
+    <Dialog open={integration.lever.open} onOpenChange={handleClose}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <div className='flex flex-col space-y-4'>
+          <div className='flex justify-center'>
             <Image
               src={'/images/ats/lever.png'}
               width={120}
               height={34}
-              alt=''
+              alt='Lever logo'
             />
-          </>
-        }
-        slotApiKey={
-          integration.lever.step === STATE_LEVER_DIALOG.API ||
+          </div>
+
+          {integration.lever.step === STATE_LEVER_DIALOG.API ||
           integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
-            <LeverApiKey
-              slotPrimaryButton={
-                <UIButton
-                  variant='default'
-                  isLoading={loading}
-                  disabled={loading}
-                  onClick={() => {
-                    submitApiKey();
-                  }}
-                >
-                  Submit
-                </UIButton>
-              }
-              onClickSupport={{
-                onClick: () => {
+            <div className='space-y-4'>
+              <Input
+                ref={apiRef}
+                type='password'
+                placeholder='API key'
+                className={error ? 'border-red-500' : ''}
+              />
+              {error && (
+                <p className='text-red-500 text-sm'>Please enter an API key</p>
+              )}
+              <Button
+                variant='default'
+                disabled={loading}
+                onClick={submitApiKey}
+                className='w-full'
+              >
+                {loading ? 'Submitting...' : 'Submit'}
+              </Button>
+              {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
+                <p className='text-red-500 text-sm'>
+                  Invalid API key. Please try again.
+                </p>
+              )}
+              <Button
+                variant='outline'
+                onClick={() =>
                   window.open(
                     'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
                     '_blank',
-                  );
-                },
-              }}
-              isApiWrong={integration.lever.step === STATE_LEVER_DIALOG.ERROR}
-              slotSearch={
-                <UITextField
-                  ref={apiRef}
-                  labelSize='small'
-                  error={error}
-                  helperText='Please enter a API key'
-                  fullWidth
-                  height={32}
-                  placeholder='API key'
-                  type='password'
-                />
-              }
-            />
-          ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
-            <IntegrationFetching
-              slotIntegrationLogo={
-                <Image
-                  src={'/images/ats/leverbig.svg'}
-                  width={50}
-                  height={50}
-                  alt=''
-                />
-              }
-              textCompany={'Lever'}
-              slotLottie={
-                <Stack
-                  height={'100px'}
-                  style={{ transform: 'rotate(270deg)' }}
-                  width={'100px'}
-                >
-                  <FetchingJobsLever />
-                </Stack>
-              }
-            />
-          ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-            <Stack
-              justifyContent={'flex-start'}
-              height={'100%'}
-              overflow={'hidden'}
-            >
-              <AtsJobs
-                textNumberofJobs={<></>}
-                onClickImport={{
-                  onClick: () => {
-                    importLever();
-                    posthog.capture('Lever Jobs successfully imported');
-                  },
-                }}
-                isImportDisable={!selectedLeverPostings}
-                isAllActive={leverFilter == 'all'}
-                isClosedActive={leverFilter == 'closed'}
-                isInternalActive={leverFilter == 'internal'}
-                isPublishedActive={leverFilter == 'published'}
-                onClickClosed={{
-                  onClick: () => {
-                    setLeverFilter('closed');
-                  },
-                }}
-                onClickPublished={{
-                  onClick: () => {
-                    setLeverFilter('published');
-                  },
-                }}
-                onClickInternal={{
-                  onClick: () => {
-                    setLeverFilter('internal');
-                  },
-                }}
-                onClickAll={{
-                  onClick: () => {
-                    setLeverFilter('all');
-                  },
-                }}
-                slotAtsCard={
-                  !initialFetch ? (
-                    leverPostings.filter((job) => {
-                      if (leverFilter !== 'all') {
-                        return job.state === leverFilter;
-                      } else {
-                        return true;
-                      }
-                    }).length > 0 ? (
-                      leverPostings
-                        .filter((job) => {
-                          if (leverFilter !== 'all') {
-                            return job.state === leverFilter;
-                          } else {
-                            return true;
-                          }
-                        })
-                        .map((post) => {
-                          return (
-                            <>
-                              <AtsCard
-                                isChecked={
-                                  selectedLeverPostings?.id === post.id
-                                }
-                                onClickCheck={{
-                                  onClick: () => {
-                                    setSelectedLeverPostings(post);
-                                  },
-                                }}
-                                propsTextColor={{
-                                  style: {
-                                    color: getLeverStatusColor(post.state),
-                                  },
-                                }}
-                                textRole={post.text}
-                                textStatus={post.state}
-                                textWorktypeLocation={post.categories.location}
-                              />
-                            </>
-                          );
-                        })
-                    ) : (
-                      <NoAtsResult />
-                    )
-                  ) : (
-                    <>
-                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" /> <Skeleton className="w-full h-16 mb-2" />
-                    </>
                   )
                 }
+                className='w-full'
+              >
+                Support
+              </Button>
+            </div>
+          ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
+            <div className='flex flex-col items-center space-y-4'>
+              <Image
+                src={'/images/ats/leverbig.svg'}
+                width={50}
+                height={50}
+                alt='Lever logo'
               />
-            </Stack>
+              <p>Fetching data from Lever...</p>
+              <div className='h-[100px] w-[100px] transform rotate-270'>
+                <FetchingJobsLever />
+              </div>
+            </div>
+          ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
+            <div className='flex flex-col h-full overflow-hidden space-y-4'>
+              <Tabs value={leverFilter} onValueChange={setLeverFilter}>
+                <TabsList className='grid w-full grid-cols-4'>
+                  <TabsTrigger value='all'>All</TabsTrigger>
+                  <TabsTrigger value='published'>Published</TabsTrigger>
+                  <TabsTrigger value='internal'>Internal</TabsTrigger>
+                  <TabsTrigger value='closed'>Closed</TabsTrigger>
+                </TabsList>
+              </Tabs>
+              <Button
+                variant='default'
+                disabled={!selectedLeverPostings}
+                onClick={() => {
+                  importLever();
+                  posthog.capture('Lever Jobs successfully imported');
+                }}
+                className='w-full'
+              >
+                Import
+              </Button>
+              <div className='space-y-2 max-h-[400px] overflow-y-auto'>
+                {!initialFetch ? (
+                  leverPostings.filter(
+                    (job) => leverFilter === 'all' || job.state === leverFilter,
+                  ).length > 0 ? (
+                    leverPostings
+                      .filter(
+                        (job) =>
+                          leverFilter === 'all' || job.state === leverFilter,
+                      )
+                      .map((post) => (
+                        <Card key={post.id}>
+                          <CardContent className='flex items-center justify-between p-4'>
+                            <div>
+                              <p className='font-medium'>{post.text}</p>
+                              <p className='text-sm text-gray-500'>
+                                {post.categories.location}
+                              </p>
+                              <p
+                                className={`text-sm ${getLeverStatusColorClass(post.state)}`}
+                              >
+                                {post.state}
+                              </p>
+                            </div>
+                            <Checkbox
+                              checked={selectedLeverPostings?.id === post.id}
+                              onCheckedChange={() =>
+                                setSelectedLeverPostings(post)
+                              }
+                            />
+                          </CardContent>
+                        </Card>
+                      ))
+                  ) : (
+                    <NoAtsResult />
+                  )
+                ) : (
+                  <>
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                  </>
+                )}
+              </div>
+            </div>
           ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
-            <LoadingJobsAts
-              textAtsCompany={'Lever'}
-              textJobCount={selectedLeverPostings ? 1 : 0}
-              slotLottie={<LoaderLever />}
-            />
-          ) : (
-            <LeverApiKey />
-          )
-        }
-        onClickClose={{
-          onClick: () => {
-            handleClose();
-          },
-        }}
-      />
+            <div className='flex flex-col items-center space-y-4'>
+              <p>Importing from Lever</p>
+              <p>{selectedLeverPostings ? '1 Job' : '0 Jobs'}</p>
+              <LoaderLever />
+            </div>
+          ) : null}
+        </div>
+      </DialogContent>
     </Dialog>
   );
 }

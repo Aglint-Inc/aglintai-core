@@ -1,14 +1,14 @@
-import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Stack } from '@mui/material';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import axios from '@/client/axios';
 import Loader from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
@@ -21,28 +21,29 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
     null,
   );
   const [fetching, setFetching] = useState(false);
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+  const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
     {
       preview_details: {
         application_id: application_id,
       },
       organizer_user_id: recruiterUser.user_id,
+      is_preview: true,
     };
 
   function getEmail() {
     setFetching(true);
     if (reRequestAvailability) {
-      const payload1: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+      const payload1: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
         {
           is_preview: true,
           avail_req_id: candidateAvailabilityIdForReRequest,
           recruiter_user_id: recruiterUser.user_id,
         };
-      axios
-        .post('/api/emails/availabilityReqResend_email_candidate', {
-          ...payload1,
-        })
-        .then(({ data }) => {
+      mailSender({
+        target_api: 'availabilityReqResend_email_candidate',
+        payload: payload1,
+      })
+        .then((data) => {
           setEmailData(data);
           setFetching(false);
         })
@@ -51,11 +52,11 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
           setFetching(false);
         });
     } else {
-      axios
-        .post('/api/emails/sendAvailabilityRequest_email_applicant', {
-          ...payload,
-        })
-        .then(({ data }) => {
+      mailSender({
+        target_api: 'sendAvailabilityRequest_email_applicant',
+        payload: payload,
+      })
+        .then((data) => {
           setEmailData(data);
           setFetching(false);
         })
