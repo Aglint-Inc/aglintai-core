@@ -1,6 +1,7 @@
 import {
   DatabaseEnums,
   EmailTemplateAPi,
+  MailAttachment,
   SupabaseType,
   TargetApiPayloadType,
 } from '@aglint/shared-types';
@@ -14,4 +15,5 @@ export type FetchUtilType<T extends DatabaseEnums['email_slack_types']> = (
   comp_email_placeholder: EmailTemplateAPi<T>['comp_email_placeholders'];
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'];
   recipient_email: string;
+  mail_attachments?: MailAttachment[];
 }>;

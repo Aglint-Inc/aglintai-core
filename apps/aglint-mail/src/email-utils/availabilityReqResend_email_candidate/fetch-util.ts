@@ -1,9 +1,13 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type {
+  EmailTemplateAPi,
+  SupabaseType,
+  TargetApiPayloadType,
+} from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 
 export async function dbUtil(
   supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'],
+  req_body: TargetApiPayloadType<'availabilityReqResend_email_candidate'>,
 ) {
   const [avail_req_data] = supabaseWrap(
     await supabaseAdmin

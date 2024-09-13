@@ -1,4 +1,8 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type {
+  EmailTemplateAPi,
+  SupabaseType,
+  TargetApiPayloadType,
+} from '@aglint/shared-types';
 import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { createICSAttachment } from '../../utils/ceateIcsContent';
@@ -11,7 +15,7 @@ import {
 
 export async function fetchUtil(
   supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'],
+  req_body: TargetApiPayloadType<'confirmInterview_email_applicant'>,
 ) {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin

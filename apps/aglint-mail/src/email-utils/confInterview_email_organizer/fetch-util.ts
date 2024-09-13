@@ -1,4 +1,8 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type {
+  EmailTemplateAPi,
+  SupabaseType,
+  TargetApiPayloadType,
+} from '@aglint/shared-types';
 import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
@@ -10,7 +14,7 @@ import {
 
 export async function fetchUtil(
   supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'confInterview_email_organizer'>['api_payload'],
+  req_body: TargetApiPayloadType<'confInterview_email_organizer'>,
 ) {
   const int_sessions = supabaseWrap(
     await supabaseAdmin

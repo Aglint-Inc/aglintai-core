@@ -29,8 +29,10 @@ export async function POST(req: Request) {
       job_id,
       react_email_placeholders,
       recipient_email,
+      mail_attachments,
     } = await fetchUtil(supabaseAdmin, parsed_body);
-    await sendMailFun({
+
+    const { html, subject } = await sendMailFun({
       supabaseAdmin,
       comp_email_placeholder,
       react_email_placeholders,
@@ -39,7 +41,18 @@ export async function POST(req: Request) {
       job_id,
       api_target: target_api,
       overridedMailSubBody: parsed_body.overridedMailSubBody,
+      is_preview: parsed_body.is_preview,
+      attachments: mail_attachments,
     });
+
+    if (parsed_body.is_preview) {
+      return NextResponse.json(
+        { html, subject },
+        {
+          status: 200,
+        },
+      );
+    }
 
     return NextResponse.json('OK');
   } catch (e: any) {
