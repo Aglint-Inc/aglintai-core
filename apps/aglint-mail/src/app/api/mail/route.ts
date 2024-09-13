@@ -1,12 +1,47 @@
 import { NextResponse } from 'next/server';
-export default async function POST(req: Request) {
-  // const req_body = await req.json();
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { FetchUtilType } from '../../../types/emailfetchUtil';
+import { DatabaseEnums, TargetApiSchema } from '@aglint/shared-types';
+import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+import * as v from 'valibot';
+export async function POST(req: Request) {
+  const { target_api, payload } = await req.json();
 
-  // const supabaseAdmin = getSupabaseServer();
+  const supabaseAdmin = getSupabaseServer();
 
   try {
-    //
-    return NextResponse.json({});
+    const schema =
+      TargetApiSchema[target_api as DatabaseEnums['email_slack_types']];
+    if (!schema) {
+      throw new Error(`Invalid target_api: ${target_api}`);
+    }
+    const parsed_body = v.parse(schema, payload);
+
+    const { fetchUtil } = (await import(
+      `../../../email-utils/${target_api}/fetch-util`
+    )) as {
+      fetchUtil: FetchUtilType<any>;
+    };
+
+    const {
+      comp_email_placeholder,
+      company_id,
+      job_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await fetchUtil(supabaseAdmin, parsed_body);
+    await sendMailFun({
+      supabaseAdmin,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email,
+      company_id,
+      job_id,
+      api_target: target_api,
+      overridedMailSubBody: parsed_body.overridedMailSubBody,
+    });
+
+    return NextResponse.json('OK');
   } catch (e: any) {
     console.error(e);
 

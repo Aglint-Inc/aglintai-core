@@ -27,7 +27,7 @@ export const sendMailFun = async <
   portalMessage = null,
   company_id,
   job_id,
-  payload,
+  overridedMailSubBody,
   supabaseAdmin,
 }: {
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'];
@@ -37,7 +37,7 @@ export const sendMailFun = async <
   is_preview?: boolean;
   attachments?: ICSAttachment[];
   job_id?: string;
-  payload?: MailPayloadType;
+  overridedMailSubBody?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
   supabaseAdmin: SupabaseType;
   portalMessage?: PortalPayload;
@@ -56,9 +56,9 @@ export const sendMailFun = async <
     );
   }
 
-  if (payload) {
-    fetched_temp.subject = payload.subject;
-    fetched_temp.body = payload.body;
+  if (overridedMailSubBody) {
+    fetched_temp.subject = overridedMailSubBody.subject;
+    fetched_temp.body = overridedMailSubBody.body;
   }
 
   const filled_comp_template = fillCompEmailTemplate(
