@@ -1,14 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent } from '@components/ui/card';
-import { Input } from '@components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
 import {
   Table,
   TableBody,
@@ -26,11 +18,15 @@ import {
   Layers,
   MapPin,
 } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
+import FilterHeader from '../Common/FilterHeader';
+import Loader from '../Common/Loader';
+import { UIButton } from '../Common/UIButton';
+import UITextField from '../Common/UITextField';
 import UITypography from '../Common/UITypography';
 import { useAllInterviewModules } from '../Scheduling/InterviewTypes/queries/hooks';
 import { useAllInterviewers } from './hook';
@@ -39,36 +35,65 @@ function Interviewers() {
   const { data: interviewers, isLoading } = useAllInterviewers();
 
   const [searchText, setSearchText] = useState('');
-  const [selectedDepartments, setDepartments] = useState<number[]>([]);
-  const [selectedLocations, setLocations] = useState<number[]>([]);
+  const [selectedDepartments, setDepartments] = useState<string[]>([]);
+  const [selectedLocations, setLocations] = useState<string[]>([]);
   const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
 
-  if (isLoading) return <>Loading</>;
+  if (isLoading)
+    return (
+      <div className='flex items-center justify-center w-full h-full'>
+        <Loader />
+      </div>
+    );
 
-  //isFilterApplied
-  //   const isFilterApplied =
-  //     !!selectedDepartments.length ||
-  //     !!searchText.length ||
-  //     !!selectedLocations.length ||
-  //     !!selectedInterviewTypes.length;
+  const isFilterApplied =
+    !!selectedDepartments?.length ||
+    !!selectedInterviewTypes?.length ||
+    !!selectedLocations?.length ||
+    !!searchText?.length;
 
-  const filteredInterviewers = interviewers.filter((interviewer) => {
-    if (searchText.length !== 0) {
-      return interviewer.name
-        .toLocaleLowerCase()
-        .includes(searchText.toLocaleLowerCase());
-    } else return true;
-  });
+  const filteredInterviewers = isFilterApplied
+    ? interviewers.filter((interviewer) => {
+        const userInterviewTypeIds = [
+          ...interviewer.qualified_types,
+          ...interviewer.training_types,
+        ]?.map((interviewType) => interviewType.id);
+
+        const isSearch =
+          searchText.length !== 0
+            ? interviewer.name
+                .toLocaleLowerCase()
+                .includes(searchText.toLocaleLowerCase())
+            : true;
+
+        const isInterviewType = selectedInterviewTypes?.length
+          ? userInterviewTypeIds.some((item) =>
+              selectedInterviewTypes.includes(item),
+            )
+          : true;
+
+        const isDepartment = selectedDepartments?.length
+          ? selectedDepartments.includes(interviewer.department?.id.toString())
+          : true;
+
+        const isLocation = selectedLocations.length
+          ? selectedLocations.includes(interviewer.location?.id.toString())
+          : true;
+
+        return isSearch && isDepartment && isLocation && isInterviewType;
+      })
+    : interviewers;
 
   return (
     <div className='min-h-screen bg-gray-100 py-8'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <Header
+          isFilterApplied={isFilterApplied}
           searchText={searchText}
           selectedDepartments={selectedDepartments}
           selectedLocations={selectedLocations}
-          setSearchText={setSearchText}
           selectedInterviewTypes={selectedInterviewTypes}
+          setSearchText={setSearchText}
           setDepartments={setDepartments}
           setLocations={setLocations}
           setInterviewTypes={setInterviewTypes}
@@ -88,11 +113,22 @@ function Interviewers() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredInterviewers.map((interviewer, i) => (
-                  <InterviewerList key={i} interviewer={interviewer} />
-                ))}
+                {filteredInterviewers?.length ? (
+                  filteredInterviewers.map((interviewer, i) => (
+                    <InterviewerList key={i} interviewer={interviewer} />
+                  ))
+                ) : (
+                  <></>
+                )}
               </TableBody>
             </Table>
+            {filteredInterviewers?.length === 0 ? (
+              <div className='w-full flex items-center justify-center h-[200px]'>
+                No Interviewers found
+              </div>
+            ) : (
+              <></>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -224,17 +260,19 @@ const InterviewerList = ({
 };
 
 type HeaderProps = {
+  isFilterApplied: boolean;
   searchText: string;
-  selectedDepartments: number[];
-  selectedLocations: number[];
+  selectedDepartments: string[];
+  selectedLocations: string[];
   selectedInterviewTypes: string[];
   setSearchText: Dispatch<SetStateAction<string>>;
-  setDepartments: Dispatch<SetStateAction<number[]>>;
-  setLocations: Dispatch<SetStateAction<number[]>>;
+  setDepartments: Dispatch<SetStateAction<string[]>>;
+  setLocations: Dispatch<SetStateAction<string[]>>;
   setInterviewTypes: Dispatch<SetStateAction<string[]>>;
 };
 
 const Header = ({
+  isFilterApplied,
   searchText,
   selectedDepartments,
   selectedLocations,
@@ -248,41 +286,33 @@ const Header = ({
   const { data: locations } = useAllOfficeLocations();
   const { data: InterivewTypes } = useAllInterviewModules();
 
-  //Location filter List
+  // options for filter ------------------------
   const locationList = locations?.length
     ? locations.map((loc) => ({
-        name: loc.city + ', ' + loc.region + ', ' + loc.country,
-        value: loc.id,
+        label: [loc.city, loc.region, loc.country]
+          .filter((loc) => loc)
+          .join(', '),
+        id: loc.id.toString(),
       }))
     : [];
 
-  //Department filter list
   const departmentList = departments?.length
-    ? departments.map((dep) => ({ name: dep.name, value: dep.id }))
+    ? departments.map((dep) => ({ label: dep.name, id: dep.id.toString() }))
     : [];
 
-  // Interview Type filter list
   const InterviewTypeOptions = InterivewTypes?.length
     ? InterivewTypes.map((type) => ({
-        name: type.name,
-        value: type.id,
+        label: type.name,
+        id: type.id.toString(),
       }))
     : [];
 
-  //isFilterApplied
-  const isFilterApplied =
-    !!selectedDepartments.length ||
-    !!searchText.length ||
-    !!selectedLocations.length ||
-    !!selectedInterviewTypes.length;
-
-  useEffect(() => {
+  const resetAllFilter = () => {
     setDepartments([]);
     setLocations([]);
+    setSearchText('');
     setInterviewTypes([]);
-  });
-
-  console.log(isFilterApplied);
+  };
 
   return (
     <>
@@ -290,56 +320,55 @@ const Header = ({
         Interviewer Management
       </h1>
       <div className='mb-6 flex justify-between items-center'>
-        <div className='flex space-x-4 flex-1'>
-          <Input
-            placeholder='Search interviewers...'
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className='max-w-xs'
+        <UITextField
+          placeholder='Search interviewers...'
+          fieldSize='medium'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className='w-[250px]'
+        />
+        <div className='flex items-center gap-2'>
+          {isFilterApplied ? (
+            <UIButton size='sm' onClick={resetAllFilter}>
+              Reset all
+            </UIButton>
+          ) : (
+            <></>
+          )}
+          <FilterHeader
+            filters={[
+              {
+                type: 'filter',
+                name: 'Department',
+                value: selectedDepartments,
+                options: departmentList,
+                multiSelect: true,
+                setValue: (value) => {
+                  setDepartments(value);
+                },
+              },
+              {
+                type: 'filter',
+                name: 'Location',
+                value: selectedLocations,
+                options: locationList,
+                multiSelect: true,
+                setValue: (value) => {
+                  setLocations(value);
+                },
+              },
+              {
+                type: 'filter',
+                name: 'Interview Type',
+                value: selectedInterviewTypes,
+                options: InterviewTypeOptions,
+                multiSelect: true,
+                setValue: (value) => {
+                  setInterviewTypes(value);
+                },
+              },
+            ]}
           />
-          {/* ----- department */}
-          <Select>
-            <SelectTrigger className='w-[180px]'>
-              <SelectValue placeholder='Department' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='All'>All Departments</SelectItem>
-              {departmentList.map((dep) => (
-                <SelectItem key={dep.value} value={dep.value.toString()}>
-                  {dep.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* ----- locationList */}
-          <Select>
-            <SelectTrigger className='w-[180px]'>
-              <SelectValue placeholder='Location' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='All'>All Location</SelectItem>
-              {locationList.map((loc) => (
-                <SelectItem key={loc.value} value={loc.value.toString()}>
-                  {loc.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {/* ----- InterviewTypeOptions */}
-          <Select>
-            <SelectTrigger className='w-[180px]'>
-              <SelectValue placeholder='Interview Types' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='All'>All Interview Types</SelectItem>
-              {InterviewTypeOptions.map((type) => (
-                <SelectItem key={type.value} value={type.value.toString()}>
-                  {type.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </div>
     </>

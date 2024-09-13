@@ -142,7 +142,7 @@ export const Header = ({
               </Avatar>
               <div>
                 <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>
-                <p className='text-lg text-gray-600'>
+                <p className=' text-gray-600'>
                   {role} - {department}
                 </p>
                 <div className='flex items-center mt-2 space-x-4'>

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import Loader from '@/components/Common/Loader';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/queries/hooks';
 import { useJobs } from '@/jobs/hooks';
 import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/queries/departments';
@@ -13,8 +15,6 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 
-import Loader from '../../Common/Loader';
-import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { InterviewerWorkload } from '../components/InterviewerWorkload';
 import { InterviewWorkloadList } from '../components/InterviewWorkloadList';

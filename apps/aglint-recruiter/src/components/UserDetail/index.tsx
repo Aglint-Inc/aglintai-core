@@ -2,14 +2,19 @@ import { getFullName } from '@aglint/shared-utils';
 import {
   Briefcase,
   CalendarIcon,
+  CheckCircle2,
   MessageSquare,
   UserCircle,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { capitalizeAll } from '@/utils/text/textUtils';
+
+import Loader from '../Common/Loader';
 import {
   BreadCrumb,
+  Feedback,
   Header,
   KeyMatrics,
   Qualifications,
@@ -229,7 +234,12 @@ export default function InterviewerDetailsPage() {
   const user_id = router.query.user_id as string;
   const { data: interviewerDetails, isLoading } = useInterviewer({ user_id });
 
-  if (isLoading) return <>Loading..</>;
+  if (isLoading)
+    return (
+      <div className='flex items-center justify-center w-full h-full'>
+        <Loader />
+      </div>
+    );
 
   return (
     <div className='min-h-screen bg-gray-50'>
@@ -246,7 +256,7 @@ export default function InterviewerDetailsPage() {
               interviewerDetails.first_name,
               interviewerDetails.last_name,
             )}
-            role={interviewerDetails.role}
+            role={capitalizeAll(interviewerDetails.role)}
             department={interviewerDetails.department}
             location={interviewerDetails.location}
             timeZone={interviewerDetails.timeZone}
@@ -265,13 +275,32 @@ export default function InterviewerDetailsPage() {
                 active={activeSection === 'overview'}
                 onClick={() => scrollToSection('overview')}
               />
-              {/*<SideNavItem
+              <SideNavItem
                 icon={CheckCircle2}
                 label='Qualifications'
                 active={activeSection === 'qualifications'}
                 onClick={() => scrollToSection('qualifications')}
-              /> 
-               <SideNavItem
+              />
+
+              <SideNavItem
+                icon={CalendarIcon}
+                label='Upcoming Interviews'
+                active={activeSection === 'upcomingInterviews'}
+                onClick={() => scrollToSection('upcomingInterviews')}
+              />
+              <SideNavItem
+                icon={Briefcase}
+                label='Recent Interviews'
+                active={activeSection === 'recentInterviews'}
+                onClick={() => scrollToSection('recentInterviews')}
+              />
+              <SideNavItem
+                icon={MessageSquare}
+                label='Interview Feedback'
+                active={activeSection === 'interviewFeedback'}
+                onClick={() => scrollToSection('interviewFeedback')}
+              />
+              {/*<SideNavItem
                 icon={BarChart}
                 label='Performance'
                 active={activeSection === 'performance'}
@@ -295,24 +324,6 @@ export default function InterviewerDetailsPage() {
                 active={activeSection === 'recentActivity'}
                 onClick={() => scrollToSection('recentActivity')}
               />*/}
-              <SideNavItem
-                icon={CalendarIcon}
-                label='Upcoming Interviews'
-                active={activeSection === 'upcomingInterviews'}
-                onClick={() => scrollToSection('upcomingInterviews')}
-              />
-              <SideNavItem
-                icon={Briefcase}
-                label='Recent Interviews'
-                active={activeSection === 'recentInterviews'}
-                onClick={() => scrollToSection('recentInterviews')}
-              />
-              <SideNavItem
-                icon={MessageSquare}
-                label='Interview Feedback'
-                active={activeSection === 'interviewFeedback'}
-                onClick={() => scrollToSection('interviewFeedback')}
-              />
             </nav>
           </aside>
           <main className='flex-1 space-y-6'>
@@ -346,10 +357,9 @@ export default function InterviewerDetailsPage() {
                 )}
               />
             </section>
-
-            {/* <section ref={sectionRefs.interviewFeedback}>
+            <section ref={sectionRefs.interviewFeedback}>
               <Feedback feedbacks={interviewerDetails.feedbacks} />
-            </section>  */}
+            </section>
 
             {/* 
             <section ref={sectionRefs.performance}>

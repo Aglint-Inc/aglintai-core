@@ -1,15 +1,14 @@
-
 import { Avatar, Stack } from '@mui/material';
 import { HardDrive } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
+import Loader from '@/components/Common/Loader';
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
 import { useJobs } from '@/jobs/hooks';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
-import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';
 import { InterviewerTraining } from '../components/InterviewerTraining';
 import { InterviewerTrainingList } from '../components/InterviewerTrainingList';
@@ -113,14 +112,12 @@ function TrainingProgress() {
               </>
             ))
           ) : (
-          
-              <div className="flex flex-col items-center justify-center p-4 bg-white h-[200px]">
-                <div className="mb-2">
-                  <HardDrive className="h-9 w-9 text-gray-500" />
-                </div>
-                <p className="text-sm text-gray-500">No Data Available</p>
+            <div className='flex flex-col items-center justify-center p-4 bg-white h-[200px]'>
+              <div className='mb-2'>
+                <HardDrive className='h-9 w-9 text-gray-500' />
               </div>
-            
+              <p className='text-sm text-gray-500'>No Data Available</p>
+            </div>
           )
         }
       />

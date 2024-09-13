@@ -14,7 +14,9 @@ import {
   useState,
 } from 'react';
 
+import Loader from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
+import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/queries/hooks';
 import { useJobs } from '@/jobs/hooks';
 import {
   type initUser,
@@ -25,8 +27,6 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import dayjs from '@/utils/dayjs';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import Loader from '../../Common/Loader';
-import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
 import { type CalendarEventWithType, type EventType } from '../types';
