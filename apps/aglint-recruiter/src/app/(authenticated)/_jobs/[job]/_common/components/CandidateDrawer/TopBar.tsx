@@ -1,5 +1,4 @@
 import { CandidateSidedrawerTop } from '@devlink/CandidateSidedrawerTop';
-import { Stack } from '@mui/material';
 import { type PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -74,23 +73,14 @@ const TopBar = (props: PropsWithChildren) => {
   } = useApplication();
   if (status === 'pending') return <>Loadin...</>;
   return (
-    <Stack
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        height: '100%',
-      }}
-    >
+    <div className="flex flex-row items-center justify-between w-full h-full">
       {props.children ?? (
         <>
           <Info />
           <Actions />
         </>
       )}
-    </Stack>
+    </div>
   );
 };
 

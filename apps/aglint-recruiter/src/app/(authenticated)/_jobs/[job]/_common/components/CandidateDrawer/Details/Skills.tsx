@@ -4,7 +4,6 @@ import { CandidateDetail } from '@devlink/CandidateDetail';
 import { Stack } from '@mui/material';
 import { Lightbulb, Medal } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { useApplication } from '@/context/ApplicationContext';
 
@@ -45,7 +44,12 @@ const Content = () => {
       data?.score_json?.relevance?.skills
     )
   )
-    return <GlobalEmpty iconSlot={<Medal className='text-gray-500'/>} text={'No skills found'}/>;
+    return (
+      <div className="flex flex-col items-center justify-center p-4">
+        <Medal className="text-gray-500 w-12 h-12 mb-2" />
+        <p className="text-gray-600 text-sm">No skills found</p>
+      </div>
+    );
   return <Skill />;
 };
 
