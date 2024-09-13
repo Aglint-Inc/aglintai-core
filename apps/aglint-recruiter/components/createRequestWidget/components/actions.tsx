@@ -5,7 +5,11 @@ import { ArrowRight, X } from 'lucide-react';
 import { SafeObject } from '@/utils/safeObject';
 
 import { type Menus, STEPS } from '../contexts/createRequestContext';
-import { useCreateRequest, useCreateRequestActions } from '../hooks';
+import {
+  useCreateRequest,
+  useCreateRequestActions,
+  useCreateRequestMutation,
+} from '../hooks';
 
 export const Actions = () => {
   return (
@@ -43,17 +47,30 @@ const Buttons = () => {
       <Button variant='outline' onClick={() => onOpenChange(false)}>
         Cancel
       </Button>
-      <Submit />
+      <Action />
     </div>
   );
 };
 
+const Action = () => {
+  const step = useCreateRequest((state) => state.step);
+  if (STEPS.length - 1 !== step) return <Next />;
+  return <Submit />;
+};
+
 const Submit = () => {
+  const { mutate, isPending } = useCreateRequestMutation();
+  return (
+    <Button disabled={isPending} onClick={() => mutate()}>
+      Create Requesta
+    </Button>
+  );
+};
+
+const Next = () => {
   const step = useCreateRequest((state) => state.step);
   const selections = useCreateRequest((state) => state.selections);
   const { nextPage } = useCreateRequestActions();
-  if (step === 5)
-    return <Button onClick={() => nextPage()}>Create Request</Button>;
   const currentSelection = selections[STEPS[step]];
   const isEnabled = Array.isArray(currentSelection)
     ? currentSelection.length !== 0

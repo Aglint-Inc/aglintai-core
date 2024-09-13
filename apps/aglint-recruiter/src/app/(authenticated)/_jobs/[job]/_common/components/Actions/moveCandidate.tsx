@@ -17,7 +17,7 @@ import {
   useApplicationsChecklist,
   useApplicationsStore,
 } from '@/job/hooks';
-import { formatSessions } from '@/job/utils';
+import { formatSessions } from '@/utils/formatSessions';
 import { capitalize } from '@/utils/text/textUtils';
 
 import CreateRequest from './CreateRequest';
