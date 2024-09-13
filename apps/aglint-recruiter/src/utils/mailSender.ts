@@ -1,6 +1,6 @@
 import {
   type DatabaseEnums,
-  type EmailTemplateAPi,
+  type TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
 import axios, { AxiosError } from 'axios';
@@ -10,11 +10,12 @@ export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({
   payload,
 }: {
   target_api: T;
-  payload: EmailTemplateAPi<T>['api_payload'];
+  payload: TargetApiPayloadType<T>;
 }) => {
   try {
-    await axios.post(`${process.env.NEXT_PUBLIC_MAIL_HOST}/api/${target_api}`, {
-      ...payload,
+    await axios.post(`${process.env.NEXT_PUBLIC_MAIL_HOST}/api/mail`, {
+      target_api: target_api,
+      payload: payload,
     });
   } catch (err) {
     console.error(err);
