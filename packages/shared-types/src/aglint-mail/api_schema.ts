@@ -222,6 +222,7 @@ export const sendAvailabilityRequestEmailApplicantSchema = z.object({
       body: z.string(),
     })
   ),
+  is_preview: z.optional(z.boolean()).default(false),
 });
 
 export const sendAvailReqReminderEmailApplicant = z.object({

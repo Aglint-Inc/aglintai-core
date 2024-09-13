@@ -27,6 +27,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
         application_id: application_id,
       },
       organizer_user_id: recruiterUser.user_id,
+      is_preview: true,
     };
 
   function getEmail() {
