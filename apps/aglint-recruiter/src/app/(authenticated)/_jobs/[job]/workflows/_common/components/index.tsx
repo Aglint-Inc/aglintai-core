@@ -7,7 +7,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
-import { Stack } from '@mui/material';
 import { Bolt } from 'lucide-react';
 import { useRouter } from 'next/router';
 
@@ -48,9 +47,9 @@ export const JobWorkflowDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+    <div className='w-full h-screen flex items-center justify-center'>
       <Loader />
-    </Stack>
+    </div>
   );
 };
 

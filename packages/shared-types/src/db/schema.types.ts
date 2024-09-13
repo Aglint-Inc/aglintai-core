@@ -5027,6 +5027,7 @@ export type Database = {
         Row: {
           cancelled_meeting_count: number | null
           completed_meeting_count: number | null
+          completed_meeting_duration: number | null
           confirmed_meeting_count: number | null
           first_name: string | null
           id: string | null

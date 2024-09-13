@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Loader from '@/components/Common/Loader';
-import { type SchedulesSupabase } from '@/components/Scheduling/schedules-query';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
 
@@ -38,7 +37,7 @@ function Schedules() {
       ) : (
         <>
           <CalendarComp
-            allSchedules={allSchedules as SchedulesSupabase}
+            allSchedules={allSchedules as any} //TODO:fix
             isLoading={isLoading}
             setFilter={setFilter}
             filter={filter}

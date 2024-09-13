@@ -13,7 +13,6 @@ import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
 import { fetchCompEmailTemp, fetchJobEmailTemp } from './fetchCompEmailTemp';
-import sendMessageToCandidatePortal from './sendMessageToCandidatePortal';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],
@@ -24,10 +23,9 @@ export const sendMailFun = async <
   attachments,
   is_preview,
   api_target,
-  portalMessage = null,
   company_id,
   job_id,
-  payload,
+  overridedMailSubBody,
   supabaseAdmin,
 }: {
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'];
@@ -37,7 +35,7 @@ export const sendMailFun = async <
   is_preview?: boolean;
   attachments?: ICSAttachment[];
   job_id?: string;
-  payload?: MailPayloadType;
+  overridedMailSubBody?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
   supabaseAdmin: SupabaseType;
   portalMessage?: PortalPayload;
@@ -56,9 +54,9 @@ export const sendMailFun = async <
     );
   }
 
-  if (payload) {
-    fetched_temp.subject = payload.subject;
-    fetched_temp.body = payload.body;
+  if (overridedMailSubBody) {
+    fetched_temp.subject = overridedMailSubBody.subject;
+    fetched_temp.body = overridedMailSubBody.body;
   }
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -75,8 +73,12 @@ export const sendMailFun = async <
     subject: filled_comp_template.subject,
     emailBody: filled_comp_template.body,
   });
+  const mailResp = {
+    html,
+    subject: filled_comp_template.subject,
+  };
   if (is_preview) {
-    return { html, subject: filled_comp_template.subject };
+    return mailResp;
   }
 
   await sendMail({
@@ -87,12 +89,6 @@ export const sendMailFun = async <
     fromName: filled_comp_template.from_name,
     attachments,
   });
-  if (portalMessage) {
-    await sendMessageToCandidatePortal({
-      portalMessage,
-      body: filled_comp_template.body,
-      subject: filled_comp_template.subject,
-    });
-  }
-  return null;
+
+  return mailResp;
 };

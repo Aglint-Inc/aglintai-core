@@ -1,12 +1,9 @@
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
+import { Checkbox } from '@components/ui/checkbox';
+import { Dialog, DialogContent } from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { AshbyApiKey } from '@devlink/AshbyApiKey';
-import { AshbyAtsJob } from '@devlink/AshbyAtsJob';
-import { AtsCard } from '@devlink/AtsCard';
-import { IntegrationFetching } from '@devlink/IntegrationFetching';
-import { IntegrationModal } from '@devlink/IntegrationModal';
-import { LeverApiKey } from '@devlink/LeverApiKey';
-import { LoadingJobsAts } from '@devlink/LoadingJobsAts';
-import { Dialog, Stack, Typography } from '@mui/material';
 import LoaderLever from '@public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
 import axios from 'axios';
@@ -16,8 +13,6 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
@@ -172,180 +167,147 @@ export function AshbyModalComp() {
   };
 
   return (
-    <Dialog open={integration.ashby.open} onClose={handleClose} maxWidth={'lg'}>
-      <IntegrationModal
-        slotLogo={
-          <>
+    <Dialog open={integration.ashby.open} onOpenChange={handleClose}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <div className='flex flex-col space-y-4'>
+          <div className='flex justify-center'>
             <Image
               src={'/images/ats/ashby.svg'}
               width={80}
               height={26}
-              alt=''
+              alt='Ashby logo'
             />
-          </>
-        }
-        slotApiKey={
-          integration.ashby.step === STATE_ASHBY_DIALOG.API ||
+          </div>
+
+          {integration.ashby.step === STATE_ASHBY_DIALOG.API ||
           integration.ashby.step === STATE_ASHBY_DIALOG.ERROR ? (
-            <AshbyApiKey
-              slotPrimaryButton={
-                <UIButton
-                  variant='default'
-                  isLoading={loading}
-                  disabled={loading}
-                  onClick={() => {
-                    submitApiKey();
-                  }}
-                >
-                  Submit
-                </UIButton>
-              }
-              slotInput={
-                <UITextField
-                  ref={apiRef}
-                  onFocus={() => setError(false)}
-                  error={error}
-                  helperText='Please enter a API key'
-                  labelSize='small'
-                  height={32}
-                  fullWidth
-                  placeholder='API key'
-                  type='password'
-                />
-              }
-              isApiWrong={integration.ashby.step === STATE_ASHBY_DIALOG.ERROR}
-            />
-          ) : integration.ashby.step === STATE_ASHBY_DIALOG.FETCHING ? (
-            <IntegrationFetching
-              textCompany={'Ashby'}
-              slotIntegrationLogo={
-                <Image
-                  src={'/images/ats/ashby.svg'}
-                  width={50}
-                  height={50}
-                  alt=''
-                />
-              }
-              slotLottie={
-                <Stack
-                  height={'100px'}
-                  style={{ transform: 'rotate(270deg)' }}
-                  width={'100px'}
-                >
-                  <FetchingJobsLever />
-                </Stack>
-              }
-            />
-          ) : integration.ashby.step === STATE_ASHBY_DIALOG.LISTJOBS ? (
-            <Stack
-              justifyContent={'flex-start'}
-              height={'100%'}
-              overflow={'hidden'}
-            >
-              <AshbyAtsJob
-                textNumberOfJobs={
-                  <Typography variant='body1'>
-                    {selectedAshbyPostings.length == 0
-                      ? `Showing ${postings.length} Jobs from ashby`
-                      : `${selectedAshbyPostings.length} Jobs selected`}
-                  </Typography>
-                }
-                onClickImport={{
-                  onClick: () => {
-                    importAshby();
-                    posthog.capture('Asbhy Jobs successfully imported');
-                  },
-                }}
-                isImportDisable={selectedAshbyPostings.length === 0}
-                slotAtsCard={
-                  !initialFetch ? (
-                    postings.length > 0 ? (
-                      postings.map((post) => {
-                        return (
-                          <>
-                            <AtsCard
-                              isChecked={
-                                selectedAshbyPostings?.filter(
-                                  (p) => p.id === post.id,
-                                )?.length > 0
-                              }
-                              onClickCheck={{
-                                onClick: () => {
-                                  if (
-                                    selectedAshbyPostings?.some(
-                                      (p) => p.id === post.id,
-                                    )
-                                  ) {
-                                    // If the object is already in the array, remove it
-                                    setSelectedAshbyPostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id),
-                                    );
-                                  } else {
-                                    if (selectedAshbyPostings.length < 1) {
-                                      // If the object is not in the array, add it
-                                      setSelectedAshbyPostings((prev) => [
-                                        ...prev,
-                                        post,
-                                      ]);
-                                    } else {
-                                      toast.warning(
-                                        'You can import 1 job at a time',
-                                      );
-                                    }
-                                  }
-                                },
-                              }}
-                              propsTextColor={{
-                                style: {
-                                  color: '',
-                                },
-                              }}
-                              textRole={post.title}
-                              textStatus={'Live'}
-                              textWorktypeLocation={post.location}
-                            />
-                          </>
-                        );
-                      })
-                    ) : (
-                      <>
-                        <NoAtsResult />
-                      </>
-                    
-                    )
-                  ) : (
-                    <>
-                      <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" />
-                      <Skeleton className="w-full h-16 mb-2" />
-                    </>
-                  )
-                }
+            <div className='space-y-4'>
+              <Input
+                ref={apiRef}
+                onFocus={() => setError(false)}
+                className={error ? 'border-red-500' : ''}
+                placeholder='API key'
+                type='password'
               />
-            </Stack>
+              {error && (
+                <p className='text-red-500 text-sm'>Please enter an API key</p>
+              )}
+              <Button
+                variant='default'
+                disabled={loading}
+                onClick={submitApiKey}
+                className='w-full'
+              >
+                {loading ? 'Submitting...' : 'Submit'}
+              </Button>
+              {integration.ashby.step === STATE_ASHBY_DIALOG.ERROR && (
+                <p className='text-red-500 text-sm'>
+                  Invalid API key. Please try again.
+                </p>
+              )}
+            </div>
+          ) : integration.ashby.step === STATE_ASHBY_DIALOG.FETCHING ? (
+            <div className='flex flex-col items-center space-y-4'>
+              <Image
+                src={'/images/ats/ashby.svg'}
+                width={50}
+                height={50}
+                alt='Ashby logo'
+              />
+              <p>Fetching data from Ashby...</p>
+              <div className='h-[100px] w-[100px] transform rotate-270'>
+                <FetchingJobsLever />
+              </div>
+            </div>
+          ) : integration.ashby.step === STATE_ASHBY_DIALOG.LISTJOBS ? (
+            <div className='flex flex-col h-full overflow-hidden space-y-4'>
+              <p className='text-sm font-medium'>
+                {selectedAshbyPostings.length == 0
+                  ? `Showing ${postings.length} Jobs from Ashby`
+                  : `${selectedAshbyPostings.length} Jobs selected`}
+              </p>
+              <Button
+                variant='default'
+                disabled={selectedAshbyPostings.length === 0}
+                onClick={() => {
+                  importAshby();
+                  posthog.capture('Ashby Jobs successfully imported');
+                }}
+                className='w-full'
+              >
+                Import
+              </Button>
+              <div className='space-y-2 max-h-[400px] overflow-y-auto'>
+                {!initialFetch ? (
+                  postings.length > 0 ? (
+                    postings.map((post) => (
+                      <Card key={post.id}>
+                        <CardContent className='flex items-center justify-between p-4'>
+                          <div>
+                            <p className='font-medium'>{post.title}</p>
+                            <p className='text-sm text-gray-500'>
+                              {post.location}
+                            </p>
+                            <p className='text-sm text-gray-500'>Live</p>
+                          </div>
+                          <Checkbox
+                            checked={selectedAshbyPostings?.some(
+                              (p) => p.id === post.id,
+                            )}
+                            onCheckedChange={() => {
+                              if (
+                                selectedAshbyPostings?.some(
+                                  (p) => p.id === post.id,
+                                )
+                              ) {
+                                setSelectedAshbyPostings((prev) =>
+                                  prev.filter((p) => p.id !== post.id),
+                                );
+                              } else {
+                                if (selectedAshbyPostings.length < 1) {
+                                  setSelectedAshbyPostings((prev) => [
+                                    ...prev,
+                                    post,
+                                  ]);
+                                } else {
+                                  toast.warning(
+                                    'You can import 1 job at a time',
+                                  );
+                                }
+                              }
+                            }}
+                          />
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <NoAtsResult />
+                  )
+                ) : (
+                  <>
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='w-full h-16 mb-2' />
+                  </>
+                )}
+              </div>
+            </div>
           ) : integration.ashby.step === STATE_ASHBY_DIALOG.IMPORTING ? (
-            <LoadingJobsAts
-              textAtsCompany={'Ashby'}
-              textJobCount={
-                selectedAshbyPostings.length < 1
+            <div className='flex flex-col items-center space-y-4'>
+              <p>Importing from Ashby</p>
+              <p>
+                {selectedAshbyPostings.length < 1
                   ? `${selectedAshbyPostings.length} Job`
-                  : `${selectedAshbyPostings.length} Jobs`
-              }
-              slotLottie={<LoaderLever />}
-            />
-          ) : (
-            <LeverApiKey />
-          )
-        }
-        onClickClose={{
-          onClick: () => {
-            handleClose();
-          },
-        }}
-      />
+                  : `${selectedAshbyPostings.length} Jobs`}
+              </p>
+              <LoaderLever />
+            </div>
+          ) : null}
+        </div>
+      </DialogContent>
     </Dialog>
   );
 }

@@ -1,10 +1,4 @@
 import { type SessionsCombType } from '@aglint/shared-types';
-import { CandidateScheduleCard } from '@devlink/CandidateScheduleCard';
-import { DcPopup } from '@devlink/DcPopup';
-import { SelectedDateAndTime } from '@devlink/SelectedDateAndTime';
-import { SessionAndTime } from '@devlink/SessionAndTime';
-import { SessionInfo } from '@devlink/SessionInfo';
-import { Dialog, Stack, Typography } from '@mui/material';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
@@ -16,6 +10,7 @@ import React, {
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
@@ -26,6 +21,10 @@ import { SessionIcon } from '../../Common/ScheduleProgress/ScheduleProgressPillC
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
 } from '../calender';
+import { CandidateScheduleCard } from '../Components/CandidateScheduleCard';
+import { SelectedDateAndTime } from '../Components/SelectedDateAndTime';
+import { SessionAndTime } from '../Components/SessionAndTime';
+import { SessionInfo } from '../Components/SessionInfo';
 import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { dayJS, getDurationText } from '../utils';
 
@@ -54,11 +53,11 @@ const MultiDayError = () => {
 
 const MultiDayLoading = () => {
   return (
-    <Stack direction={'row'} justifyContent={'center'}>
-      <Stack width={'120px'}>
+    <div className={'flex justify-center'}>
+      <div className={'w-[120px]'}>
         <CandidateSlotLoad />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -69,7 +68,7 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
   return (
     <>
       <ScheduleCards rounds={props.rounds} />
-      <Stack direction={'row'} justifyContent={'center'}>
+      <div className={'flex justify-center'}>
         <UIButton
           variant='default'
           onClick={() => {
@@ -79,7 +78,7 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
         >
           Proceed
         </UIButton>
-      </Stack>
+      </div>
       <MultiDayConfirmation
         rounds={props.rounds}
         open={open}
@@ -127,42 +126,40 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   }, [props.rounds]);
 
   return (
-    <Dialog open={props.open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack gap={'10px'}>
-            <Stack>
-              {selectedDateAndSessions.map((item, index) => (
-                <>
-                  <Typography variant='subtitle1'>
-                    Day-{index + 1} -{' '}
-                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
-                    {item.date}
-                  </Typography>
-                </>
-              ))}
-            </Stack>
-            <Typography>
-              Please review and confirm your selected time slot before we
-              finalize your schedule. It’s important that your interview time
-              aligns with your availability.
-            </Typography>
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <UIButton variant='secondary' onClick={() => handleClose()}>
-              Cancel
-            </UIButton>
-            <UIButton variant='default' onClick={() => handleSubmit()}>
-              Confirm
-            </UIButton>
-          </>
-        }
-      />
-    </Dialog>
+    <UIDialog
+      title='Confirm your interview'
+      open={props.open}
+      onClose={() => handleClose()}
+      slotButtons={
+        <>
+          <UIButton variant='secondary' onClick={() => handleClose()}>
+            Cancel
+          </UIButton>
+          <UIButton variant='default' onClick={() => handleSubmit()}>
+            Confirm
+          </UIButton>
+        </>
+      }
+    >
+      <div className='gap-2'>
+        <div>
+          {selectedDateAndSessions.map((item, index) => (
+            <>
+              <p>
+                Day-{index + 1} -{' '}
+                {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
+                {item.date}
+              </p>
+            </>
+          ))}
+        </div>
+        <p>
+          Please review and confirm your selected time slot before we finalize
+          your schedule. It’s important that your interview time aligns with
+          your availability.
+        </p>
+      </div>
+    </UIDialog>
   );
 };
 
@@ -232,7 +229,7 @@ const ScheduleCard = (props: ScheduleCardProps) => {
   }, 0);
 
   return (
-    <Stack
+    <div
       style={{
         pointerEvents: enabled ? 'auto' : 'none',
         opacity: enabled ? 1 : 0.4,
@@ -244,18 +241,12 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         slotButton={
           enabled ? (
             isSelected ? (
-              <UIButton
-                variant='secondary'
-                onClick={() => setOpen(true)}
-                leftIcon={<Repeat />}
-              />
+              <UIButton onClick={() => setOpen(true)}>
+                <Repeat className='w-4 h-4' />
+              </UIButton>
             ) : (
-              <UIButton
-                leftIcon={<Plus size={'sm'} />}
-                onClick={() => setOpen(true)}
-                variant='outline'
-                size='sm'
-              >
+              <UIButton variant='outline' onClick={() => setOpen(true)}>
+                <Plus size={'sm'} />
                 Select Option
               </UIButton>
             )
@@ -276,21 +267,17 @@ const ScheduleCard = (props: ScheduleCardProps) => {
             <Sessions sessions={props.round.sessions} showBreak={false} />
           )
         }
-        onClickCard={{ onClick: () => setOpen(true) }}
+        onClickCard={() => setOpen(true)}
       />
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        sx={{ '& .MuiPaper-root': { maxWidth: 'none !important' } }}
-      >
+      <UIDialog open={open} onClose={() => setOpen(false)}>
         <CandidateInviteCalendar
           sessions={sessions}
           selections={selectedSlots}
           handleSelect={handleSelect}
           tz={timezone.tzCode}
         />
-      </Dialog>
-    </Stack>
+      </UIDialog>
+    </div>
   );
 };
 
@@ -377,7 +364,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
       slotInterviewtypeIcon={<Coffee size={'sm'} />}
-      iconName={''}
+      iconName={null}
     />
   );
 };

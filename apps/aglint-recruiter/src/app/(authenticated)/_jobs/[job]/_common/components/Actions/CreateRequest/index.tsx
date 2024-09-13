@@ -1,22 +1,20 @@
 import type { DatabaseTableInsert } from '@aglint/shared-types';
-import { TextField } from '@mui/material';
+import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
-import {
-  RangePicker,
-  RequestOption,
-} from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
+import { RequestOption } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
 import { ScheduleInterviewPop } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleInterviewPop';
 import MemberCard from '@/components/Common/MemberCard';
+import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useApplications, useJob } from '@/job/hooks';
 
-import { SessionList, type sessionType } from './SessionsList';
+import { SessionList, type SessionType } from './SessionsList';
 function CreateRequest({
   setRequest,
   priority,
@@ -31,8 +29,8 @@ function CreateRequest({
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
   note: string;
   setNote: Dispatch<SetStateAction<string>>;
-  setSelectedSession: Dispatch<SetStateAction<sessionType[]>>;
-  selectedSession: sessionType[];
+  setSelectedSession: Dispatch<SetStateAction<SessionType[]>>;
+  selectedSession: SessionType[];
 }) {
   const { data: members, status: membersStatus } = useMemberList();
 
@@ -72,7 +70,7 @@ function CreateRequest({
       setSelectedSession(
         interview_session
           .slice(0, 2)
-          .map((ele) => ({ id: ele.id, name: ele.name }) as sessionType),
+          .map((ele) => ({ id: ele.id, name: ele.name }) as SessionType),
       );
       setRequest((pre) => {
         const preRequest = { ...pre };
@@ -128,7 +126,7 @@ function CreateRequest({
                       name: ele.name,
                       type: ele.session_type,
                     })),
-                ) as sessionType[]
+                ) as SessionType[]
               }
             />
           </>
@@ -166,20 +164,25 @@ function CreateRequest({
         isRequestTypeVisible={true}
         textSelectedSchedule={`Selected Schedules`}
         slotPickDateInput={
-          <RangePicker dateRange={dateRange} setDateRange={setDateRange} />
+          <UIDateRangePicker
+            value={{
+              from: new Date(dateRange.start),
+              to: new Date(dateRange.end),
+            }}
+            onAccept={(date) => {
+              setDateRange({
+                start: dayjs(date.from).toISOString(),
+                end: dayjs(date.to).toISOString(),
+              });
+            }}
+          />
         }
         slotNotes={
-          <TextField
+          <Textarea
             value={note || ''}
-            onChange={(e) => {
-              setNote(e.target.value);
-            }}
+            onChange={(e) => setNote(e.target.value)}
             placeholder='Add note'
-            multiline
-            minRows={2}
-            maxRows={4}
-            variant='outlined'
-            fullWidth
+            className='min-h-[80px]'
           />
         }
       />

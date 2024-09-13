@@ -1,5 +1,5 @@
 import { JobDetails } from '@devlink2/JobDetails';
-import { CircularProgress, Stack } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 import Loader from '@/components/Common/Loader';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
@@ -23,9 +23,9 @@ export const ApplicationsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+    <div className='w-full h-screen flex items-center justify-center'>
       <Loader />
-    </Stack>
+    </div>
   );
 };
 

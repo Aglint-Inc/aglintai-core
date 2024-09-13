@@ -8,7 +8,6 @@ import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
 import { JobsBanner } from '@devlink3/JobsBanner';
 import { PipeLine } from '@devlink3/PipeLine';
 import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
-import { CircularProgress, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -53,9 +52,9 @@ export const JobDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+    <div className="w-full h-screen flex items-center justify-center">
       <Loader />
-    </Stack>
+    </div>
   );
 };
 
@@ -113,11 +112,11 @@ const Dashboard = () => {
             isJobRoleVisible={false}
             isBanner={banners.length !== 0}
             slotBanner={
-              <Stack gap={1}>
+              <div className="flex flex-col gap-1">
                 {banners.map((banner, i) => (
                   <Fragment key={i}>{banner}</Fragment>
                 ))}
-              </Stack>
+              </div>
             }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
@@ -360,8 +359,9 @@ const Schedules = () => {
     )
     .slice(0, 3)
     .map((sch, i) => (
-      <Stack
+      <div
         key={i}
+        className="cursor-pointer"
         onClick={() =>
           push(
             `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=job_details`,
@@ -400,12 +400,12 @@ const Schedules = () => {
             sch.candidates.last_name,
           )}
         />
-      </Stack>
+      </div>
     ));
   return (
-    <Stack width={'100%'} height={'100%'} gap={2}>
+    <div className="w-full h-full flex flex-col gap-2">
       {cards}
-    </Stack>
+    </div>
   );
 };
 
@@ -550,11 +550,7 @@ const useBanners = () => {
     banners.push(
       <BannerLoading
         slotLoader={
-          <CircularProgress
-            color='inherit'
-            size={'100%'}
-            sx={{ color: 'var(--neutral-6)' }}
-          />
+          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
         }
       />,
     );
@@ -787,7 +783,7 @@ const Banner = (props: BannerProps) => {
           color={'warning'}
           iconName={'Info'}
           actions={
-            <>
+            <div className="flex gap-2">
               <UIButton
                 variant='secondary'
                 size='sm'
@@ -803,7 +799,7 @@ const Banner = (props: BannerProps) => {
               >
                 {props.primary.title}
               </UIButton>
-            </>
+            </div>
           }
           title={props.title}
           description={props.description}

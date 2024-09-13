@@ -1,14 +1,14 @@
 /* eslint-disable security/detect-object-injection */
-import { RecentDeclineList } from '@devlink3/RecentDeclineList';
-import { RecentDeclines } from '@devlink3/RecentDeclines';
-import { RecentReschedule } from '@devlink3/RecentReschedule';
-import { RecentRescheduleList } from '@devlink3/RecentRescheduleList';
+
+
 import { Avatar, Skeleton } from '@mui/material';
 import dayjs from 'dayjs';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UITypography from '@/components/Common/UITypography';
 import {
   useCancelRescheduleReasons,
   useCancelRescheduleReasonsUsers,
@@ -125,9 +125,23 @@ const RecentRescheduleCancel = () => {
 
   return (
     <>
-      <RecentReschedule
-        slotRecentRescheduleList={
-          loading ? (
+      {/* Recent Reschedule Table */}
+
+      <div className='border border-gray-200 rounded-md h-[450px] overflow-hidden'>
+        <div className='p-3 bg-gray-100 border-b border-gray-200 flex justify-between items-center'>
+          <UITypography type='small' fontBold='normal' color='black'>
+            Recent Reschedule
+          </UITypography>
+          <div>
+            <FilterDropDownDash
+              itemList={itemList}
+              onChange={setType}
+              value={type}
+            />
+          </div>
+        </div>
+        <div className='flex flex-col'>
+          {loading ? (
             <RecentRescheduleListItem loading />
           ) : processedRescheduleData?.[type].length ? (
             processedRescheduleData?.[type]
@@ -153,48 +167,45 @@ const RecentRescheduleCancel = () => {
                 <p className='mt-2 text-sm text-gray-500'>No data available</p>
               </div>
             </div>
-          )
-        }
-        slotDropdown={
-          <FilterDropDownDash
-            itemList={itemList}
-            onChange={setType}
-            value={type}
-          />
-        }
-      />
-      <RecentDeclines
-        slotRecentDeclineList={
-          <>
-            {loading ? (
-              <RecentDeclineListItem loading />
-            ) : processedCancelData?.length ? (
-              processedCancelData.map((user) => {
-                return (
-                  <RecentDeclineListItem
-                    key={user.id}
-                    detail={{
-                      name: user.name,
-                      image: user.image,
-                      time: user.time,
-                      desc: user.desc,
-                    }}
-                  />
-                );
-              })
-            ) : (
-              <div className='h-[296px]'>
-                <div className='flex flex-col items-center justify-center h-full'>
-                  <BarChart2 className='w-12 h-12 text-gray-400' />
-                  <p className='mt-2 text-sm text-gray-500'>
-                    No data available
-                  </p>
-                </div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Decline Table */}
+
+      <div className='border border-gray-200 rounded-md h-[450px] overflow-hidden'>
+        <div className='p-3 bg-gray-100 border-b border-gray-200'>
+          <UITypography type='small' fontBold='normal' color='black'>
+            Recent Decline
+          </UITypography>
+        </div>
+        <div className='flex flex-col'>
+          {loading ? (
+            <RecentDeclineListItem loading />
+          ) : processedCancelData?.length ? (
+            processedCancelData.map((user) => {
+              return (
+                <RecentDeclineListItem
+                  key={user.id}
+                  detail={{
+                    name: user.name,
+                    image: user.image,
+                    time: user.time,
+                    desc: user.desc,
+                  }}
+                />
+              );
+            })
+          ) : (
+            <div className='h-[296px]'>
+              <div className='flex flex-col items-center justify-center h-full'>
+                <BarChart2 className='w-12 h-12 text-gray-400' />
+                <p className='mt-2 text-sm text-gray-500'>No data available</p>
               </div>
-            )}
-          </>
-        }
-      />
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 };
@@ -217,46 +228,61 @@ const RecentRescheduleListItem = ({
   const router = useRouter();
   if (loading)
     return (
-      <RecentRescheduleList
-        slotImage={
-          <Skeleton variant='circular' width={'100%'} height={'100%'} />
-        }
-        textName={
-          <Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />
-        }
-        textTime={
-          <Skeleton variant='text' width={'50px'} height={'var(--space-6)'} />
-        }
-        textDesc={
-          <Skeleton variant='text' width={'200px'} height={'var(--space-6)'} />
-        }
-      />
+  // Recent Reschedule List Skeleton
+  
+      <div className="flex items-center space-x-4 p-4">
+        <div className="flex-shrink-0">
+          <Skeleton className="rounded-full" width={40} height={40} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-12 mt-2" />
+          <Skeleton className="h-4 w-48 mt-2" />
+        </div>
+      </div>
     );
   return (
-    <RecentRescheduleList
-      slotImage={
+
+  // Recent Reschedule List
+
+  
+    <div
+      className='flex items-center space-x-4 p-4 cursor-pointer'
+      onClick={() => {
+        if (detail?.meet_id)
+          router.push(
+            `/scheduling/view?meeting_id=${detail?.meet_id}&tab=candidate_details`,
+          );
+      }}
+    >
+      <div className='flex-shrink-0'>
         <Avatar
           src={detail.image ? detail.image : undefined}
           alt={detail.name}
         />
-      }
-      onClickCandidate={{
-        onClick: () => {
-          if (detail?.meet_id)
-            router.push(
-              `/scheduling/view?meeting_id=${detail?.meet_id}&tab=candidate_details`,
-            );
-        },
-      }}
-      textName={detail.name}
-      textTime={dayjs(detail.time).fromNow()}
-      textDesc={detail.desc}
-      onClickView={{
-        onClick: () => {
-          router.push(`/scheduling/view?meeting_id=${detail.meet_id}`);
-        },
-      }}
-    />
+      </div>
+      <div className='flex-1 min-w-0'>
+        <p className='text-sm font-medium text-gray-900 truncate'>
+          {detail.name}
+        </p>
+        <p className='text-sm text-gray-500 truncate'>
+          {dayjs(detail.time).fromNow()}
+        </p>
+        <p className='text-sm text-gray-500 truncate'>{detail.desc}</p>
+      </div>
+      <div className='flex-shrink-0'>
+        <UIButton
+          size='sm'
+          variant='default'
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(`/scheduling/view?meeting_id=${detail.meet_id}`);
+          }}
+        >
+          View
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -274,32 +300,34 @@ const RecentDeclineListItem = ({
 }) => {
   if (loading)
     return (
-      <RecentDeclineList
-        slotImage={
-          <Skeleton variant='circular' width={'100%'} height={'100%'} />
-        }
-        textName={
-          <Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />
-        }
-        textTime={
-          <Skeleton variant='text' width={'50px'} height={'var(--space-6)'} />
-        }
-        textDesc={
-          <Skeleton variant='text' width={'200px'} height={'var(--space-6)'} />
-        }
-      />
+      <div className='flex items-center space-x-4 p-4'>
+        <div className='flex-shrink-0'>
+          <Skeleton className='rounded-full' width={'100%'} height={'100%'} />
+        </div>
+        <div className='flex-1 min-w-0'>
+          <Skeleton className='h-4 w-24' />
+          <Skeleton className='h-4 w-12' />
+          <Skeleton className='h-4 w-48' />
+        </div>
+      </div>
     );
   return (
-    <RecentDeclineList
-      slotImage={
+    <div className='flex items-center space-x-4 p-4'>
+      <div className='flex-shrink-0'>
         <Avatar
           src={detail.image ? detail.image : undefined}
           alt={detail.name}
         />
-      }
-      textName={detail.name}
-      textTime={dayjs(detail.time).fromNow()}
-      textDesc={detail.desc}
-    />
+      </div>
+      <div className='flex-1 min-w-0'>
+        <p className='text-sm font-medium text-gray-900 truncate'>
+          {detail.name}cvscsd
+        </p>
+        <p className='text-sm text-gray-500 truncate'>
+          {dayjs(detail.time).fromNow()}
+        </p>
+        <p className='text-sm text-gray-500 truncate'>{detail.desc}</p>
+      </div>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
 import {
-  type EmailTemplateAPi,
   type InterviewSessionTypeDB,
+  type TargetApiPayloadType,
 } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
@@ -12,7 +12,6 @@ import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
 import { useEffect, useState } from 'react';
 
-import axios from '@/client/axios';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDrawer from '@/components/Common/UIDrawer';
@@ -21,6 +20,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/queries/requests/types';
 import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
 import dayjs from '@/utils/dayjs';
+import { mailSender } from '@/utils/mailSender';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
@@ -105,13 +105,14 @@ function CandidateAvailability({
         id: candidateAvailabilityIdForReRequest,
       });
       try {
-        const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+        const payload: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
           {
             recruiter_user_id: recruiterUser.user_id,
             avail_req_id: candidateAvailabilityIdForReRequest,
           };
-        await axios.post(`/api/emails/availabilityReqResend_email_candidate`, {
-          ...payload,
+        mailSender({
+          target_api: 'availabilityReqResend_email_candidate',
+          payload: payload,
         });
       } catch (error) {
         toast.message('Failed to send email');
@@ -168,14 +169,15 @@ function CandidateAvailability({
           event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         },
       );
-      const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+      const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
         {
           organizer_user_id: recruiterUser.user_id,
           avail_req_id: result.id,
         };
 
-      await axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
-        ...payload,
+      mailSender({
+        target_api: 'sendAvailabilityRequest_email_applicant',
+        payload,
       });
       await reqProgressLogger({
         is_progress_step: false,
