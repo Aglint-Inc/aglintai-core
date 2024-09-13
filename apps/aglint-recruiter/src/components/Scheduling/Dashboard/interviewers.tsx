@@ -3,8 +3,8 @@ import Stack from '@mui/material/Stack';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
-import { InterviewersCardList } from '@/components/Interviewers/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/components/_common/InterviewersDash';
+import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
+import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,

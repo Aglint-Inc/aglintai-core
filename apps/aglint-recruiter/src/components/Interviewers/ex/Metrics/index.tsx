@@ -7,11 +7,11 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import Loader from '@/components/Common/Loader';
 import UITypography from '@/components/Common/UITypography';
 import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useAllDepartments } from '@/queries/departments';
 
-import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';
 import { InterviewerMetricList } from '../components/InterviewerMetricList';
 import { InterviewerMetrics } from '../components/InterviewerMetrics';
@@ -169,7 +169,10 @@ function Metrics() {
                       );
                     })
                   ) : (
-                   <GlobalEmpty iconSlot={<HardDrive className='text-gray-500'/>} text={'No Data Available'}/>
+                    <GlobalEmpty
+                      iconSlot={<HardDrive className='text-gray-500' />}
+                      text={'No Data Available'}
+                    />
                   )}
                 </ScrollArea>
               </CardContent>
