@@ -119,24 +119,17 @@ const PERMISSIONS: Permissions = {
     ['scheduling_module'],
   '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
   // request availability mail apis
-  '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduling_module'],
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
   // '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'], //
   '/api/scheduling/application/fetchfeedbackdetails': [
     'scheduling_module',
     'task_module',
   ],
-  '/api/emails/sendAvailReqReminder_email_applicant': [
-    'scheduling_module',
-    'task_module',
-  ],
+
   '/api/encryptData': ['integrations_module', 'manage_company'],
-  '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
-  '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
     'scheduling_module',
   ],
-  '/api/emails/confirmInterview_email_applicant': ['scheduling_module'],
   '/api/emails/preview': ['scheduling_module'],
   '/api/get_last_login': ['view_users'],
   '/api/setMembersWithRole': ['manage_users'],
