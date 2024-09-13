@@ -99,21 +99,23 @@ function MembersPopUps({
                   <div
                     key={member.user_id}
                     onClick={() => setSelectedMember(member)}
-                    className={`flex items-center p-2 rounded cursor-pointer ${
+                    className={`flex items-center p-2 cursor-pointer rounded ${
                       selectedMember?.user_id === member.user_id
                         ? 'bg-black/[0.08]'
-                        : 'hover:bg-gray-100'
+                        : ''
                     }`}
                   >
-                    <Avatar className='h-10 w-10 mr-3'>
+                    <Avatar className='mr-2'>
                       <AvatarImage
                         src={member.profile_image}
                         alt={`${member.first_name} ${member.last_name}`}
                       />
-                      <AvatarFallback>{member.first_name[0]}</AvatarFallback>
+                      <AvatarFallback>
+                        {`${member.first_name[0]}`}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className='font-medium'>
+                      <p className='font-semibold mb-1'>
                         {getFullName(member.first_name, member.last_name)}
                       </p>
                       <p className='text-sm text-gray-500'>
