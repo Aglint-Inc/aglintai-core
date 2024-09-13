@@ -1,118 +1,41 @@
-import { type DatabaseTable } from '@aglint/shared-types';
-import { useToast } from '@components/hooks/use-toast';
 import { Minus, Plus } from 'lucide-react';
-import React, { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
-import { supabase } from '@/utils/supabase/client';
 
-import { type useProgressModuleUsers } from '../../../../../../queries/hooks';
-import { TrainingDetailList } from './TrainingDetailList';
-import { TrainingStatus } from './TraniningStatus';
+import { useAlterCount } from '../../../../hooks/useAlterCount';
+import { useApproveUsers } from '../../../../hooks/useApproveUsers';
+import { type useProgressModuleUsers } from '../../../../hooks/useProgressModuleUsers';
+import { TrainingDetailList } from '../../../ui/TrainingDetailList';
+import { TrainingStatus } from '../../../ui/TraniningStatus';
 
 function CollapseTrainingProgress({
-  isCollapseOpen,
-  refetchTrainingProgress,
   shadow_to_complete,
   reverse_shadow_to_complete,
   module_realtion_id,
-  relationRefetch,
-  refetch,
   mutatedShadowProgress,
   shadowProgress,
   mutatedReverseShadowProgress,
   reverseShadowProgress,
 }: {
-  isCollapseOpen: boolean;
-  setIsCollapseOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchTrainingProgress: () => void;
-  relationRefetch: () => void;
   shadow_to_complete: number;
   reverse_shadow_to_complete: number;
   module_realtion_id: string;
-  refetch: () => void;
   mutatedShadowProgress: any[];
   shadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
   mutatedReverseShadowProgress: any[];
   reverseShadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
 }) {
-  const { toast } = useToast();
-  const { recruiterUser } = useAuthDetails();
-  const [isSaving, setIsSaving] = useState(false);
+  const { approveTrainingProgress } = useApproveUsers();
 
-  const approveTrainingProgress = async (id: string) => {
-    await supabase
-      .from('interview_training_progress')
-      .update({
-        is_approved: true,
-        approved_user_id: recruiterUser.user_id,
-      })
-      .eq('id', id);
-
-    await refetchTrainingProgress();
-    toast({
-      title: 'Approved',
-      description: 'Approved successfully.',
-    });
-  };
-
-  const alterCount = async ({
-    type,
-    count,
-    module_relation_id,
-  }: {
-    type: DatabaseTable['interview_session_relation']['training_type'];
-    count: number;
-    module_relation_id: string;
-  }) => {
-    try {
-      if (count === 0) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'Minimum count should be 1',
-        });
-        return;
-      }
-      setIsSaving(true);
-      if (type === 'shadow') {
-        await supabase
-          .from('interview_module_relation')
-          .update({
-            number_of_shadow: count,
-          })
-          .eq('id', module_relation_id);
-      } else {
-        await supabase
-          .from('interview_module_relation')
-          .update({
-            number_of_reverse_shadow: count,
-          })
-          .eq('id', module_relation_id);
-      }
-      await refetch();
-      await relationRefetch();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setTimeout(() => {
-        setIsSaving(false);
-      }, 1000); // added for refetching react query
-    }
-  };
+  const { alterCount, isSaving } = useAlterCount();
 
   return (
     <>
-      <div
-        className={`transition-all duration-300 ease-in-out ${
-          isCollapseOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-        } overflow-hidden ${!isSaving ? 'opacity-100' : 'opacity-50'}`}
-      >
+      <div className='w-full'>
         <div>
           <div className='flex flex-col gap-3 p-4 sm:p-5'>
             <div className='flex flex-col gap-4'>

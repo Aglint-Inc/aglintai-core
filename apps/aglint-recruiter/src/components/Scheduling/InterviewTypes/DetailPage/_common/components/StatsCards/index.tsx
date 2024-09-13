@@ -41,44 +41,28 @@ function StatsCards() {
               <span className='text-gray-600'>Applied</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>210</span>
-                <Progress
-                  value={100}
-                  className='w-[60px] bg-purple-100'
-                  indicatorClassName='bg-purple-500'
-                />
+                <Progress value={100} className='w-[60px] bg-purple-100' />
               </div>
             </div>
             <div className='flex justify-between items-center'>
               <span className='text-gray-600'>Screened</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>180</span>
-                <Progress
-                  value={86}
-                  className='w-[60px] bg-purple-100'
-                  indicatorClassName='bg-purple-500'
-                />
+                <Progress value={86} className='w-[60px] bg-purple-100' />
               </div>
             </div>
             <div className='flex justify-between items-center'>
               <span className='text-gray-600'>Interviewed</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>145</span>
-                <Progress
-                  value={69}
-                  className='w-[60px] bg-purple-100'
-                  indicatorClassName='bg-purple-500'
-                />
+                <Progress value={69} className='w-[60px] bg-purple-100' />
               </div>
             </div>
             <div className='flex justify-between items-center'>
               <span className='text-gray-600'>Offered</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>12</span>
-                <Progress
-                  value={6}
-                  className='w-[60px] bg-purple-100'
-                  indicatorClassName='bg-purple-500'
-                />
+                <Progress value={6} className='w-[60px] bg-purple-100' />
               </div>
             </div>
           </div>

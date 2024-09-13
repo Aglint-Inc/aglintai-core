@@ -9,6 +9,10 @@ export const API_PERMISSIONS: ApiPermissions = {
     selfScheduleInstruction: ['job_module'],
   },
   interview_pool: {
-    users: ['view_interview_types'],
+    module_and_users: ['view_interview_types'],
+    training_progress: ['view_interview_types'],
+    candidates: ['view_interview_types'],
+    feedbacks: ['view_interview_types'],
+    schedules: ['view_interview_types'],
   },
 };

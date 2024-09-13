@@ -1,7 +1,17 @@
-import { Avatar, AvatarFallback } from '@components/ui/avatar';
+import { type PauseJson } from '@aglint/shared-types';
 import { Card, CardContent } from '@components/ui/card';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { MemberListCardOption } from '@devlink2/MemberListCardOption';
+import { cn } from '@lib/utils';
 import { MoreVertical, PersonStanding } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
+import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -13,23 +23,18 @@ import {
   setSelUser,
   setTrainingStatus,
 } from '@/components/Scheduling/InterviewTypes/store';
+import ROUTES from '@/utils/routing/routes';
 
 import AddMemberDialog from '../../../dialogs/AddMemberDialog';
-import MuiAvatar from '@/components/Common/MuiAvatar';
-import { ModuleType } from '@/pages/api/scheduling/fetch_interview_module_by_id';
-import { useState } from 'react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@components/ui/popover';
-import { Button } from '@components/ui/button';
-import { MemberListCardOption } from '@devlink2/MemberListCardOption';
-import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
+import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
 import PauseDialog from '../../../dialogs/PauseDialog';
+import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
+import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
+import { getPauseMemberText } from '../../../utils/utils';
 
 function Interviewers() {
   const { data: editModule } = useModuleAndUsers();
+  const [search, setSearch] = useState('');
 
   const allUsers = editModule?.relations || [];
 
@@ -40,40 +45,44 @@ function Interviewers() {
     today: string;
     week: string;
     load: number;
-    rating: number;
     rel: ReturnType<typeof useModuleAndUsers>['data']['relations'][0];
   }[] = allUsers
-    .filter((rel) => rel.training_status === 'qualified' && !rel.is_archived)
+    .filter(
+      (rel) =>
+        rel.training_status === 'qualified' &&
+        !rel.is_archived &&
+        rel.full_name.toLowerCase().includes(search.toLowerCase()),
+    )
     .map((rel) => ({
       name: rel.full_name,
       image: rel.recruiter_user.profile_image,
       role: rel.recruiter_user.position,
       today: rel.textTodayInterview,
-      load: 0,
-      rating: 0,
+      load: rel.week_load,
       week: rel.textWeekInterview,
       rel,
     }));
-
-  console.log(filtererdUsers);
 
   const headers = {
     name: 'Name',
     today: 'Today',
     week: 'Week',
-    load: 'Load',
-    rating: 'Rating',
-    trainingStatus: 'Training Status',
+    load: 'Week Load',
+    actions: '',
   };
 
   return (
     <>
+      <DeleteMemberDialog />
       <AddMemberDialog />
       <PauseDialog />
+      <ResumeMemberDialog />
       <div className='flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
           className='max-w-sm bg-white'
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <UIButton
           variant='default'
@@ -91,10 +100,17 @@ function Interviewers() {
           <table className='w-full'>
             <thead>
               <tr className='border-b bg-gray-50'>
-                {Object.keys(headers).map((key) => (
+                {Object.keys(headers).map((key, ind) => (
                   <th
                     key={key}
-                    className='p-4 text-left text-sm font-medium text-gray-700'
+                    className={cn(
+                      'p-4 text-left text-sm font-medium text-gray-700',
+                      ind === Object.keys(headers).length - 1
+                        ? 'rounded-tr-lg'
+                        : ind === 0
+                          ? 'rounded-tl-lg'
+                          : '',
+                    )}
                   >
                     {headers[key]}
                   </th>
@@ -102,27 +118,49 @@ function Interviewers() {
               </tr>
             </thead>
             <tbody>
+              {filtererdUsers.length === 0 && (
+                <tr>
+                  <td colSpan={5} className='p-4'>
+                    No data found
+                  </td>
+                </tr>
+              )}
               {filtererdUsers.map((interviewer, index) => (
                 <tr
                   key={index}
                   className='border-b last:border-b-0 hover:bg-gray-50'
                 >
                   <td className='p-4'>
-                    <div className='flex items-center space-x-3'>
-                      <MuiAvatar
-                        src={interviewer.image}
-                        level={interviewer.name}
-                        variant='rounded-medium'
-                      />
-                      <div>
-                        <div className='font-medium text-gray-900'>
-                          {interviewer.name}
-                        </div>
-                        <div className='text-sm text-gray-500'>
-                          {interviewer.role}
+                    <Link
+                      href={ROUTES['/user/profile/[user_id]']({
+                        user_id: interviewer.rel.recruiter_user.user_id,
+                      })}
+                    >
+                      <div className='flex items-center space-x-3'>
+                        <MuiAvatar
+                          src={interviewer.image}
+                          level={interviewer.name}
+                          variant='rounded-medium'
+                        />
+                        <div>
+                          <div className='font-medium text-gray-900 flex flex-row gap-2'>
+                            {interviewer.name}
+                            {interviewer.rel.pause_json && (
+                              <UIBadge
+                                size='sm'
+                                color='warning'
+                                textBadge={getPauseMemberText(
+                                  interviewer.rel.pause_json as PauseJson,
+                                )}
+                              />
+                            )}
+                          </div>
+                          <div className='text-sm text-gray-500'>
+                            {interviewer.role}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </td>
                   <td className='p-4 text-gray-700'>{interviewer.today}</td>
                   <td className='p-4 text-gray-700'>{interviewer.week}</td>
@@ -135,21 +173,12 @@ function Interviewers() {
                             ? 'warning'
                             : 'success'
                       }
-                      textBadge={interviewer.load}
+                      textBadge={interviewer.load + '%'}
                     />
-                  </td>
-                  <td className='p-4'>
-                    <UIBadge color='neutral' textBadge={interviewer.rating} />
                   </td>
 
                   <td className='p-4'>
-                    <UIButton
-                      variant='ghost'
-                      size='sm'
-                      className='text-gray-500 hover:text-gray-700'
-                    >
-                      <ThreeDot user={interviewer.rel} />
-                    </UIButton>
+                    <ThreeDot user={interviewer.rel} />
                   </td>
                 </tr>
               ))}
@@ -173,9 +202,7 @@ const ThreeDot = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant='ghost' size='sm'>
-          <MoreVertical className='h-4 w-4' />
-        </Button>
+        <UIButton variant='secondary' size='sm' icon={<MoreVertical />} />
       </PopoverTrigger>
       <PopoverContent className='w-auto p-0 rounded-md relative'>
         <MemberListCardOption

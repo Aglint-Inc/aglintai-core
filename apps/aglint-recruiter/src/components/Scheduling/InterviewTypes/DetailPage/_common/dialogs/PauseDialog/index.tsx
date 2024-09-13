@@ -13,13 +13,13 @@ import UITypography from '@/components/Common/UITypography';
 import { supabase } from '@/utils/supabase/client';
 
 import { optionsPause } from '../../../../const';
-import { usePauseHandler } from '../../../../queries/hooks';
 import {
   setIsPauseDialogOpen,
   setPauseJson,
   setSelUser,
   useModulesStore,
 } from '../../../../store';
+import { usePauseHandler } from '../../hooks/usePauseHandler';
 import { type PauseType } from '../../types/type';
 
 function PauseDialog() {

@@ -83,7 +83,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
   '/api/scheduling/fetch_activities': ['authorized'],
   '/api/scheduling/get_interview_modules': ['scheduling_module'],
-  '/api/scheduling/fetch_interview_module_by_id': ['scheduling_module'],
   // scheduling application apis
   '/api/scheduling/application/cancelschedule': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagentwithouttaskid': [

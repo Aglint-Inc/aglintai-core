@@ -1,6 +1,7 @@
-import { Badge } from '@components/ui/badge';
 import { useEffect } from 'react';
 
+import Loader from '@/components/Common/Loader';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/utils/routing/routes';
@@ -17,7 +18,6 @@ export default function InterviewTypeDetail() {
   const {
     data: editModule,
     isLoading: fetchingModule,
-    isFetching,
     refetch,
   } = useModuleAndUsers();
 
@@ -46,38 +46,47 @@ export default function InterviewTypeDetail() {
   };
 
   return (
-    <div className='bg-gradient-to-b from-gray-50 to-white min-h-screen'>
-      <div className='container mx-auto p-6 '>
-        <nav className='flex items-center space-x-2 text-sm text-gray-600 mb-6'>
-          {breadcrum}
-        </nav>
+    <>
+      {fetchingModule ? (
+        <Loader />
+      ) : (
+        <div className='bg-gradient-to-b from-gray-50 to-white min-h-screen'>
+          <div className='container mx-auto p-6 '>
+            <nav className='flex items-center space-x-2 text-sm text-gray-600 mb-6'>
+              {breadcrum}
+            </nav>
 
-        <div className='flex justify-between items-center mb-6'>
-          <div>
-            <h1 className='text-3xl font-bold text-gray-900'>
-              DevOps Interview Pool
-            </h1>
-            <div className='flex items-center space-x-2 mt-2'>
-              <Badge variant='default' className='bg-blue-100 text-blue-800'>
-                Active
-              </Badge>
-              <span className='text-gray-500'>•</span>
-              <span className='text-gray-500'>Engineering Department</span>
+            <div className='flex justify-between items-center mb-6'>
+              <div>
+                <h1 className='text-3xl font-bold text-gray-900'>
+                  {editModule?.name}
+                </h1>
+                <div className='flex items-center space-x-2 mt-2'>
+                  <UIBadge
+                    textBadge={editModule.is_archived ? 'Archived' : 'Active'}
+                    color={editModule.is_archived ? 'error' : 'success'}
+                  />
+                  <span className='text-gray-500'>•</span>
+                  <span className='text-gray-500'>
+                    {editModule.department.name}
+                  </span>
+                </div>
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                {editModule?.is_archived && (
+                  <UIButton variant='secondary' onClick={unArcheive} size='sm'>
+                    Unarchive
+                  </UIButton>
+                )}
+                <DeleteModuleDialog editModule={editModule} />
+                <ArchiveModuleDialog />
+              </div>
             </div>
-          </div>
-          <div className='flex flex-row items-center space-x-2'>
-            {editModule?.is_archived && (
-              <UIButton variant='secondary' onClick={unArcheive} size='sm'>
-                Unarchive
-              </UIButton>
-            )}
-            <DeleteModuleDialog editModule={editModule} />
-            <ArchiveModuleDialog editModule={editModule} refetch={refetch} />
+            <StatsCards />
+            <InterviewDetailsTabs />
           </div>
         </div>
-        <StatsCards />
-        {fetchingModule || isFetching ? '' : <InterviewDetailsTabs />}
-      </div>
-    </div>
+      )}
+    </>
   );
 }

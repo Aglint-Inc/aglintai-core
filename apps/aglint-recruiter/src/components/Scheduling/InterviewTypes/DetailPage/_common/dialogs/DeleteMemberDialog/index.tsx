@@ -5,21 +5,23 @@ import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { useDeleteRelationHandler } from '../../../../queries/hooks';
 import {
   setIsDeleteMemberDialogOpen,
   setSelUser,
   useModulesStore,
 } from '../../../../store';
-import { type ModuleType } from '../../../../types';
+import { useDeleteRelationHandler } from '../../hooks/useDeleteRelationHandler';
+import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 
-function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
+function DeleteMemberDialog() {
   const isDeleteMemberDialogOpen = useModulesStore(
     (state) => state.isDeleteMemberDialogOpen,
   );
+  const utils = api.useUtils();
   const selUser = useModulesStore((state) => state.selUser);
   const [connectedJobs, setConnectedJobs] = useState<
     {
@@ -88,17 +90,20 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
     setIsSaving(false);
   };
 
-  const onClickRemove = async (selUser: ModuleType['relations'][0]) => {
+  const onClickRemove = async (
+    selUser: ReturnType<typeof useModuleAndUsers>['data']['relations'][0],
+  ) => {
     try {
       if (selUser.id && !isOngoingSchedules) {
         setIsSaving(true);
         await deleteRelationByUserId({
-          module_id: selUser.module_id,
           module_relation_id: selUser.id,
         });
         setIsDeleteMemberDialogOpen(false);
+        await utils.interview_pool.module_and_users.invalidate({
+          module_id: selUser.module_id,
+        });
       }
-      refetch();
     } catch (e) {
       toast.error('Failed to remove member.Please contact support');
     } finally {

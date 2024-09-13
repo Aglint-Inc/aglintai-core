@@ -13,10 +13,14 @@ import {
   setIsDeleteModuleDialogOpen,
   useModulesStore,
 } from '../../../../store';
-import { type ModuleType } from '../../../../types';
 import { deleteModuleById } from '../../../../utils';
+import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 
-function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
+function DeleteModuleDialog({
+  editModule,
+}: {
+  editModule: ReturnType<typeof useModuleAndUsers>['data'];
+}) {
   const router = useRouter();
   const isDeleteModuleDialogOpen = useModulesStore(
     (state) => state.isDeleteModuleDialogOpen,

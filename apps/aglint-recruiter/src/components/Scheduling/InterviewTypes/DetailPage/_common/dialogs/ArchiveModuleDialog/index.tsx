@@ -5,25 +5,23 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../../store';
-import { type ModuleType } from '../../../../types';
+import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 
-function ArchiveModuleDialog({
-  editModule,
-  refetch,
-}: {
-  editModule: ModuleType;
-  refetch: () => void;
-}) {
+function ArchiveModuleDialog() {
   const { toast } = useToast();
+  const utils = api.useUtils();
   const isArchiveDialogOpen = useModulesStore(
     (state) => state.isArchiveDialogOpen,
   );
   const [isFetching, setIsFetching] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+
+  const { data: editModule } = useModuleAndUsers();
 
   useEffect(() => {
     if (editModule?.id) fetchMeetings();
@@ -84,7 +82,9 @@ function ArchiveModuleDialog({
           })
           .eq('id', editModule.id);
         if (!error) {
-          refetch();
+          await utils.interview_pool.module_and_users.invalidate({
+            module_id: editModule.id,
+          });
           toast({
             title: 'Interview type archived successfully.',
           });

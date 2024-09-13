@@ -1,4 +1,3 @@
-
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import { Box, Stack } from '@mui/material';
 import { Calendar, Loader2 } from 'lucide-react';
@@ -7,7 +6,7 @@ import React, { useState } from 'react';
 import SearchField from '@/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/components/Common/ShowCode';
 
-import { type fetchModuleSchedules } from '../../InterviewTypes/queries/utils';
+import { type fetchModuleSchedules } from '../../InterviewTypes/DetailPage/_common/utils/utils';
 import ScheduleMeetingList from './ScheduleMeetingList';
 
 type tabs = 'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting';
@@ -94,10 +93,14 @@ function ModuleSchedules({
               }}
             >
               <Box maxWidth='sm' width='300px' p={2}>
-                <div className="flex flex-col items-center justify-center text-center">
-                  <Calendar className="w-12 h-12 text-gray-400 mb-2" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">No schedule found</h3>
-                  <p className="text-sm text-gray-500">There are no schedules available at the moment.</p>
+                <div className='flex flex-col items-center justify-center text-center'>
+                  <Calendar className='w-12 h-12 text-gray-400 mb-2' />
+                  <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                    No schedule found
+                  </h3>
+                  <p className='text-sm text-gray-500'>
+                    There are no schedules available at the moment.
+                  </p>
                 </div>
               </Box>
             </Box>

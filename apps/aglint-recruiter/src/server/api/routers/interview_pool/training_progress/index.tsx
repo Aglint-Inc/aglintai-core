@@ -1,0 +1,67 @@
+import { type DatabaseTable } from '@aglint/shared-types';
+import { z } from 'zod';
+
+import { privateProcedure, type PublicProcedure } from '@/server/api/trpc';
+
+export const trainingProgressSchema = z.object({
+  trainer_ids: z.array(z.string().uuid()),
+});
+
+const query = (p: PublicProcedure<typeof trainingProgressSchema>) => {
+  return fetchProgress(p);
+};
+
+export const trainingProgress = privateProcedure
+  .input(trainingProgressSchema)
+  .query(query);
+
+export const fetchProgress = async (
+  props: PublicProcedure<typeof trainingProgressSchema>,
+) => {
+  const {
+    ctx: { db },
+    input: { trainer_ids },
+  } = props;
+  const { data } = await db
+    .from('interview_training_progress')
+    .select(
+      '*,interview_session_relation(*,interview_session(id,name,session_type,interview_meeting(id,status)),interview_module_relation(id)),recruiter_user(first_name,last_name)',
+    )
+    .in('interview_session_relation.interview_module_relation_id', trainer_ids)
+    .eq('interview_session_relation.is_confirmed', true)
+    .order('created_at', { ascending: false })
+    .not('interview_session_relation', 'is', null)
+    .throwOnError();
+  const resRel = data
+    .filter(
+      (ses) =>
+        ses.interview_session_relation.interview_session.interview_meeting
+          .status === 'completed',
+    )
+    .map((sesRel) => {
+      const interview_session_relation: DatabaseTable['interview_session_relation'] =
+        {
+          feedback: sesRel.interview_session_relation.feedback,
+          accepted_status: sesRel.interview_session_relation.accepted_status,
+          id: sesRel.interview_session_relation.id,
+          interview_module_relation_id:
+            sesRel.interview_session_relation.interview_module_relation_id,
+          interviewer_type: sesRel.interview_session_relation.interviewer_type,
+          is_confirmed: sesRel.interview_session_relation.is_confirmed,
+          session_id: sesRel.interview_session_relation.session_id,
+          training_type: sesRel.interview_session_relation.training_type,
+          user_id: sesRel.interview_session_relation.user_id,
+        };
+      return {
+        ...sesRel,
+        interview_meeting:
+          sesRel.interview_session_relation.interview_session.interview_meeting,
+        interview_session_relation,
+        interview_module_relation:
+          sesRel.interview_session_relation.interview_module_relation,
+        interview_session: sesRel.interview_session_relation.interview_session,
+      };
+    });
+
+  return resRel;
+};

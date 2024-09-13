@@ -4,17 +4,19 @@ import { useState } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 
-import { usePauseHandler } from '../../../../queries/hooks';
 import { setIsResumeDialogOpen, useModulesStore } from '../../../../store';
+import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
+import { useResumeHandler } from '../../hooks/useResumeHandler';
 
-function ResumeMemberDialog({ editModule }: { editModule: any }) {
+function ResumeMemberDialog() {
   const isResumeDialogOpen = useModulesStore(
     (state) => state.isResumeDialogOpen,
   );
   const selUser = useModulesStore((state) => state.selUser);
   const [isSaving, setIsSaving] = useState(false);
+  const { data: editModule } = useModuleAndUsers();
 
-  const { resumeHandler } = usePauseHandler();
+  const { resumeHandler } = useResumeHandler();
 
   return (
     <UIDialog
@@ -43,6 +45,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
                 await resumeHandler({
                   module_id: editModule.id,
                   user_id: selUser.user_id,
+                  editModule,
                 });
                 setIsSaving(false);
                 setIsResumeDialogOpen(false);

@@ -4,20 +4,21 @@ import { useEffect, useState } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
+import { api } from '@/trpc/client';
 
 import MembersAutoComplete from '../../../../../Common/MembersTextField';
-import { useAddMemberHandler } from '../../../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
   setSelectedUsers,
   setTrainingStatus,
   useModulesStore,
 } from '../../../../store';
+import { useAddMemberHandler } from '../../hooks/useAddMemberHandler';
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
-import { api } from '@/trpc/client';
 
 function AddMemberDialog() {
   const { toast } = useToast();
+  const utils = api.useUtils();
   const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
@@ -49,7 +50,9 @@ function AddMemberDialog() {
       });
       setIsAddMemberDialogOpen(false);
       setSelectedUsers([]);
-      await api.useUtils().interview_pool.;
+      await utils.interview_pool.module_and_users.invalidate({
+        module_id: editModule.id,
+      });
     } catch {
       toast({
         variant: 'destructive',

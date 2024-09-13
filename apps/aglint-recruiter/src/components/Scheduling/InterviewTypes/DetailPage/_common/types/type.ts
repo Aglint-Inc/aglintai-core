@@ -23,3 +23,8 @@ export type ConnectedJob = {
   status: 'closed' | 'draft' | 'published';
   id: string;
 };
+
+export interface PillsTraining {
+  sessionType: 'shadow' | 'rshadow';
+  completed: boolean;
+}

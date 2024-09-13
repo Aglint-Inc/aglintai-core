@@ -3,13 +3,15 @@ import {
   type DatabaseTableInsert,
   type PauseJson,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import axios from 'axios';
 import _ from 'lodash';
 
 import { supabase } from '@/utils/supabase/client';
 
-import { schedulesSupabase } from '../../schedules-query';
-import { type MemberType, type StatusTraining } from '../types';
+import { schedulesSupabase } from '../../../../schedules-query';
+import { type MemberType, type StatusTraining } from '../../../types';
+import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
 
 export const fetchSchedulesCountByModule = async (module_id: string) => {
   const { data } = await supabase
@@ -218,7 +220,7 @@ export const addMemberbyUserIds = async ({
 };
 
 export const updateRelations = async (
-  archivedRelations: DatabaseTable['interview_module_relation'][],
+  archivedRelations: ReturnType<typeof useModuleAndUsers>['data']['relations'],
   training_status: DatabaseTable['interview_module_relation']['training_status'],
 ) => {
   const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
@@ -234,4 +236,14 @@ export const updateRelations = async (
     .from('interview_module_relation')
     .upsert(upsertRelations)
     .throwOnError();
+};
+
+export const getPauseMemberText = (
+  pause_json: DatabaseTable['interview_module_relation']['pause_json'],
+) => {
+  return !pause_json?.isManual
+    ? pause_json?.end_date
+      ? `Until ${dayjsLocal(pause_json.end_date).format('DD MMMM YYYY')}`
+      : '--'
+    : 'Indefinitely';
 };

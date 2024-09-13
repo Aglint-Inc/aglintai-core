@@ -12,7 +12,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 import { ShowCode } from '../Common/ShowCode';
 import { UIPageLayout } from '../Common/UIPageLayout';
 import SchedulingDashboard from './Dashboard';
-import { fetchInterviewModules } from './InterviewTypes/queries/utils';
+import { fetchInterviewModules } from './InterviewTypes/DetailPage/_common/utils/utils';
 import MySchedule from './MySchedules';
 import Schedules from './Schedules';
 import SeoSettings from './SEO/SeoSettings';

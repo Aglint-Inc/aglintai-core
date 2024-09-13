@@ -1,13 +1,18 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useRouter } from 'next/router';
+
+import ROUTES from '@/utils/routing/routes';
 
 import Candidates from './Candidates';
 import Feedback from './Feedback';
-import Instructions from './Instructions';
+import InstructionsComp from './Instructions';
 import Interviewers from './Interviewers';
 import Schedules from './Schedules';
 import Training from './Training';
 
 function InterviewDetailsTabs() {
+  const router = useRouter();
+  const type_id = router.query.type_id as string;
   const tabs = [
     {
       name: 'Interviewers',
@@ -37,16 +42,31 @@ function InterviewDetailsTabs() {
     {
       name: 'Instructions',
       value: 'instructions',
-      tabComp: <Instructions />,
+      tabComp: <InstructionsComp />,
     },
   ];
 
   return (
-    <Tabs defaultValue='interviewers' className='space-y-4'>
+    <Tabs
+      defaultValue='interviewers'
+      className='space-y-4'
+      value={router.query.tab as string}
+    >
       <TabsList>
         {tabs.map((tab) => (
           <>
-            <TabsTrigger key={tab.value} value={tab.value}>
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              onClick={() => {
+                router.replace({
+                  query: { tab: tab.value },
+                  pathname: ROUTES['/interview-pool/[type_id]']({
+                    type_id,
+                  }),
+                });
+              }}
+            >
               {tab.name}
             </TabsTrigger>
           </>
