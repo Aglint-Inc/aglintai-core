@@ -46,10 +46,12 @@ export const fetchUtil: FetchUtilType<
     };
 
   return {
-    company_id: recruiter_id,
-    job_id: candidateJob.public_jobs.id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: cand_email,
+    mail_data: {
+      company_id: recruiter_id,
+      job_id: candidateJob.public_jobs.id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: cand_email,
+    },
   };
 };

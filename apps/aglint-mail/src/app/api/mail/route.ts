@@ -23,35 +23,55 @@ export async function POST(req: Request) {
       fetchUtil: FetchUtilType<any>;
     };
 
-    const {
-      comp_email_placeholder,
-      company_id,
-      job_id,
-      react_email_placeholders,
-      recipient_email,
-      mail_attachments,
-    } = await fetchUtil(supabaseAdmin, parsed_body);
-
-    const { html, subject } = await sendMailFun({
-      supabaseAdmin,
-      comp_email_placeholder,
-      react_email_placeholders,
-      recipient_email,
-      company_id,
-      job_id,
-      api_target: target_api,
-      overridedMailSubBody: parsed_body.overridedMailSubBody,
-      is_preview: parsed_body.is_preview,
-      attachments: mail_attachments,
-    });
-
-    if (parsed_body.is_preview) {
-      return NextResponse.json(
-        { html, subject },
-        {
-          status: 200,
-        },
-      );
+    const fetched_data = await fetchUtil(supabaseAdmin, parsed_body);
+    if (!Array.isArray(fetched_data.mail_data)) {
+      const {
+        comp_email_placeholder,
+        company_id,
+        job_id,
+        react_email_placeholders,
+        recipient_email,
+        mail_attachments,
+      } = fetched_data.mail_data;
+      const { html, subject } = await sendMailFun({
+        supabaseAdmin,
+        comp_email_placeholder,
+        react_email_placeholders,
+        recipient_email,
+        company_id,
+        job_id,
+        api_target: target_api,
+        overridedMailSubBody: parsed_body.overridedMailSubBody,
+        is_preview: parsed_body.is_preview,
+        attachments: mail_attachments,
+      });
+      if (parsed_body.is_preview) {
+        return NextResponse.json(
+          { html, subject },
+          {
+            status: 200,
+          },
+        );
+      }
+    } else {
+      for (const {
+        company_id,
+        comp_email_placeholder,
+        react_email_placeholders,
+        recipient_email,
+        job_id,
+        mail_attachments,
+      } of fetched_data.mail_data) {
+        await sendMailFun({
+          supabaseAdmin,
+          comp_email_placeholder,
+          company_id,
+          react_email_placeholders,
+          recipient_email,
+          api_target: 'debrief_email_interviewer',
+          overridedMailSubBody: parsed_body.overridedMailSubBody,
+        });
+      }
     }
 
     return NextResponse.json('OK');

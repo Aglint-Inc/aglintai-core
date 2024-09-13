@@ -1,19 +1,15 @@
-import type {
-  EmailTemplateAPi,
-  SupabaseType,
-  TargetApiPayloadType,
-} from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function dbUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: TargetApiPayloadType<'availabilityReqResend_email_candidate'>,
-) {
+export const fetchUtil: FetchUtilType<
+  'availabilityReqResend_email_candidate'
+> = async (supabaseAdmin, req_body) => {
   const [avail_req_data] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs( job_title))',
+        'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs( id, job_title))',
       )
       .eq('id', req_body.avail_req_id),
   );
@@ -63,10 +59,13 @@ export async function dbUtil(
     };
 
   return {
-    company_id: recruiter_id,
-    application_id: avail_req_data.applications.id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: cand_email,
+    mail_data: {
+      company_id: recruiter_id,
+      application_id: avail_req_data.applications.id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: cand_email,
+      job_id: avail_req_data.applications.public_jobs.id,
+    },
   };
-}
+};
