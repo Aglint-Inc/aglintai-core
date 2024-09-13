@@ -1,11 +1,11 @@
 import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { numberToOrdinal } from '../../utils/email/common/functions';
+import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewEnd_email_rShadowTraineeForMeetingAttendence'
+> = async (supabaseAdmin, req_body) => {
   const training_ints = supabaseWrap(
     await supabaseAdmin
       .from('meeting_interviewers')
@@ -16,7 +16,9 @@ export async function fetchUtil(
   );
 
   if (training_ints.length === 0) {
-    return [];
+    return {
+      mail_data: [],
+    };
   }
   const [session_detail] = supabaseWrap(
     await supabaseAdmin
@@ -76,14 +78,18 @@ export async function fetchUtil(
       {
         companyLogo: job.recruiter_table.logo,
       };
+    const mail_data: FetchUtilResp<'interviewEnd_email_rShadowTraineeForMeetingAttendence'> =
+      {
+        company_id: candidate.recruiter_id,
+        comp_email_placeholder,
+        react_email_placeholders,
+        recipient_email: trainee.email,
+      };
 
-    return {
-      company_id: candidate.recruiter_id,
-      comp_email_placeholder,
-      react_email_placeholders,
-      recipient_email: trainee.email,
-    };
+    return mail_data;
   });
 
-  return mail_details;
-}
+  return {
+    mail_data: mail_details,
+  };
+};

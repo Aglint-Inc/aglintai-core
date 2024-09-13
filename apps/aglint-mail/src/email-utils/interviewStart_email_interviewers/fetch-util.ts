@@ -7,11 +7,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewStart_email_interviewers'
+> = async (supabaseAdmin, req_body) => {
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -105,9 +105,11 @@ export async function fetchUtil(
     };
 
   return {
-    comp_email_placeholder,
-    company_id: candidateJob.candidates.recruiter_id,
-    react_email_placeholders,
-    recipient_email: meeting_interviewer.email,
+    mail_data: {
+      comp_email_placeholder,
+      company_id: candidateJob.candidates.recruiter_id,
+      react_email_placeholders,
+      recipient_email: meeting_interviewer.email,
+    },
   };
-}
+};

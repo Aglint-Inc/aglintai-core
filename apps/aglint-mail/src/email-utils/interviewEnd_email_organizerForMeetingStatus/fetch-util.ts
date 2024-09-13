@@ -1,11 +1,11 @@
 import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewEnd_email_organizerForMeetingStatus'
+> = async (supabaseAdmin, req_body) => {
   const [data] = supabaseWrap(
     await supabaseAdmin
       .from('meeting_details')
@@ -48,9 +48,11 @@ export async function fetchUtil(
     };
 
   return {
-    company_id: candidate.recruiter_id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: organizer.email,
+    mail_data: {
+      company_id: candidate.recruiter_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: organizer.email,
+    },
   };
-}
+};

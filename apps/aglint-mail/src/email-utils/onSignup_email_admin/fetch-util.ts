@@ -1,10 +1,11 @@
 import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'onSignup_email_admin'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<'onSignup_email_admin'> = async (
+  supabaseAdmin,
+  req_body,
+) => {
   const [recruiterUser] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
@@ -36,9 +37,11 @@ export async function fetchUtil(
     };
 
   return {
-    company_id: recruiter.id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: recruiterUser.email,
+    mail_data: {
+      company_id: recruiter.id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: recruiterUser.email,
+    },
   };
-}
+};

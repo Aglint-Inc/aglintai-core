@@ -11,11 +11,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'rescheduleSelfSchedule_email_applicant'
+> = async (supabaseAdmin, req_body) => {
   const { self_schedule_link } = req_body;
 
   const int_sessions = supabaseWrap(
@@ -94,9 +94,11 @@ export async function fetchUtil(
     };
 
   return {
-    comp_email_placeholder,
-    company_id: recruiter_id,
-    react_email_placeholders,
-    recipient_email: cand_email,
+    mail_data: {
+      comp_email_placeholder,
+      company_id: recruiter_id,
+      react_email_placeholders,
+      recipient_email: cand_email,
+    },
   };
-}
+};

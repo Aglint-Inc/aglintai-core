@@ -1,10 +1,10 @@
 import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function dbUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'sendSelfScheduleRequest_email_applicant'
+> = async (supabaseAdmin, req_body) => {
   const fetchCandDetailsFromSchedule = async () => {
     const [filterJson] = supabaseWrap(
       await supabaseAdmin
@@ -82,10 +82,12 @@ export async function dbUtil(
     };
 
   return {
-    company_id: recruiter_id,
-    application_id: application_id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: cand_email,
+    mail_data: {
+      company_id: recruiter_id,
+      application_id: application_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: cand_email,
+    },
   };
-}
+};

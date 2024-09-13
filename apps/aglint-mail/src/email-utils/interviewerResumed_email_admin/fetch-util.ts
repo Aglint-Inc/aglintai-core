@@ -1,10 +1,15 @@
-import type { DatabaseTable, EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type {
+  DatabaseTable,
+  EmailTemplateAPi,
+  SupabaseType,
+} from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function dbFetch(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewerResumed_email_admin'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewerResumed_email_admin'
+> = async (supabaseAdmin, req_body) => {
+  //
   const [interview_module] = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
@@ -66,12 +71,14 @@ export async function dbFetch(
     };
 
   return {
-    company_id: interviewModule.recruiter_id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: admin.email,
+    mail_data: {
+      company_id: interviewModule.recruiter_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: admin.email,
+    },
   };
-}
+};
 
 const locationRecToStr = (location: DatabaseTable['office_locations']) => {
   return [

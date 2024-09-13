@@ -1,11 +1,11 @@
 import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { numberToOrdinal } from '../../utils/email/common/functions';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'interviewEnd_email_shadowTraineeForMeetingAttendence'
+> = async (supabaseAdmin, req_body) => {
   const training_ints = supabaseWrap(
     await supabaseAdmin
       .from('meeting_interviewers')
@@ -15,7 +15,9 @@ export async function fetchUtil(
     false,
   );
   if (training_ints.length === 0) {
-    return [];
+    return {
+      mail_data: [],
+    };
   }
   const [session_detail] = supabaseWrap(
     await supabaseAdmin
@@ -83,5 +85,7 @@ export async function fetchUtil(
     };
   });
 
-  return mail_details;
-}
+  return {
+    mail_data: mail_details,
+  };
+};

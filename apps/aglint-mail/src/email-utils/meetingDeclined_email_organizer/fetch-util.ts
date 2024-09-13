@@ -7,11 +7,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
+import { FetchUtilType } from '../../types/emailfetchUtil';
 
-export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
-  req_body: EmailTemplateAPi<'meetingDeclined_email_organizer'>['api_payload'],
-) {
+export const fetchUtil: FetchUtilType<
+  'meetingDeclined_email_organizer'
+> = async (supabaseAdmin, req_body) => {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -90,9 +90,11 @@ export async function fetchUtil(
     };
 
   return {
-    company_id: candidateJob.candidates.recruiter_id,
-    comp_email_placeholder,
-    react_email_placeholders,
-    recipient_email: organizer.email,
+    mail_data: {
+      company_id: candidateJob.candidates.recruiter_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email: organizer.email,
+    },
   };
-}
+};
