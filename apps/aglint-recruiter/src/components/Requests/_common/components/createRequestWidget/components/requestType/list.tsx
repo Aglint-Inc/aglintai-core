@@ -2,11 +2,10 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import { CommandItem, CommandList } from '@components/ui/command';
 import { CommandEmpty } from 'cmdk';
 import { Calendar } from 'lucide-react';
-import { type PropsWithChildren } from 'react';
 
+import { CONTAINER_HEIGHT } from '../../constants';
 import { useCreateRequestActions } from '../../hooks';
-
-const containerHeight = 200;
+import { RequestLayout } from '../common/requestLayout';
 
 export const List = () => {
   return <Content />;
@@ -40,10 +39,10 @@ const Content = () => {
   const { selectRequestType } = useCreateRequestActions();
   return (
     <CommandList
-      className={`w-full h-[${containerHeight}px] overflow-y-auto overflow-x-hidden`}
+      className={`w-full h-[${CONTAINER_HEIGHT}px] overflow-y-auto overflow-x-hidden`}
     >
       <CommandEmpty>
-        <Placeholder>No suggestions available.</Placeholder>
+        <RequestLayout>No suggestions available.</RequestLayout>
       </CommandEmpty>
       {requestTypes.map(({ id, label }) => (
         <CommandItem
@@ -58,15 +57,5 @@ const Content = () => {
         </CommandItem>
       ))}
     </CommandList>
-  );
-};
-
-const Placeholder = (props: PropsWithChildren) => {
-  return (
-    <div
-      className={`flex w-full h-[${containerHeight}px] items-center justify-center`}
-    >
-      {props.children}
-    </div>
   );
 };

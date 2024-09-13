@@ -37,7 +37,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
     .filter(Boolean)
     .map(({ first_name, last_name, user_id }, i) => ({
       id: user_id,
-      name: `${first_name ?? ''} ${last_name ?? ''}`,
+      label: `${first_name ?? ''} ${last_name ?? ''}`,
       cursor: cursor + i,
     }));
   const nextCursor =

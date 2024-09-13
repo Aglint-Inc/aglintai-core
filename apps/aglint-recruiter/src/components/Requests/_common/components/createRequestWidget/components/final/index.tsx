@@ -1,3 +1,5 @@
+import type { DatabaseTable, Type } from '@aglint/shared-types';
+import { Combobox } from '@components/combobox';
 import { Textarea } from '@components/ui/textarea';
 import type { DateRange as DateRangeType } from 'react-day-picker';
 
@@ -10,6 +12,7 @@ export const Final = () => {
   return (
     <div className='flex flex-col gap-4 m-1 justify-center items-center'>
       <Dates />
+      <Priority />
       <Notes />
     </div>
   );
@@ -46,3 +49,33 @@ const Notes = () => {
     />
   );
 };
+
+const Priority = () => {
+  const priority = useCreateRequest((state) => state.priority);
+  const { setPriority } = useCreateRequestActions();
+  return (
+    <Combobox
+      value={priority}
+      setValue={setPriority}
+      options={priorityOptions}
+      buttonPlaceholder='Select priority'
+      inputPlaceholder='Search priority'
+    />
+  );
+};
+
+const priorityOptions: Required<
+  Type<
+    Parameters<typeof Combobox>[0]['options'],
+    { value: DatabaseTable['request']['priority'] }
+  >[number]
+>[] = [
+  {
+    value: 'standard',
+    label: 'Standard request',
+  },
+  {
+    value: 'urgent',
+    label: 'Urgent request',
+  },
+];
