@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { DatabaseEnums } from '@aglint/shared-types';
 import { TargetApiSchema } from '@aglint/shared-types';
-import * as v from 'valibot';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 import type { FetchUtilType } from '../../../types/emailfetchUtil';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
@@ -18,8 +17,7 @@ export async function POST(req: Request) {
       throw new Error(`Invalid target_api: ${target_api}`);
     }
     //
-    const parsed_body = v.parse(schema, payload);
-
+    const parsed_body = schema.parse(payload);
     const { fetchUtil } = (await import(
       `../../../email-utils/${target_api}/fetch-util`
     )) as {
