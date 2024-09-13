@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { HistoryPill as HistoryPillDev } from '@devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { useInterviewTrainingProgress } from '@/queries/scheduling-dashboard';
 import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
@@ -117,7 +117,7 @@ const HistoryPills = ({
         index ===
         module.settings.noShadow + module.settings.noReverseShadow - 1;
       acc.push(
-        <HistoryPillDev
+        <HistoryPillShadcn
           key={index}
           isActive={isActive}
           isShadow={true}
@@ -139,7 +139,7 @@ const HistoryPills = ({
       index === module.settings.noShadow + module.settings.noReverseShadow - 1;
 
     acc.push(
-      <HistoryPillDev
+      <HistoryPillShadcn
         key={index}
         isActive={isActive}
         isShadow={false}
