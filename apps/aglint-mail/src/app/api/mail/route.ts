@@ -71,6 +71,8 @@ export async function POST(req: Request) {
           recipient_email,
           api_target: 'debrief_email_interviewer',
           overridedMailSubBody: parsed_body.overridedMailSubBody,
+          job_id,
+          attachments: mail_attachments,
         });
       }
     }
