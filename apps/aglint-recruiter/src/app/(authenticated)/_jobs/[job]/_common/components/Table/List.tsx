@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React, { useEffect, useRef } from 'react';
 
@@ -56,54 +55,44 @@ const List = ({
   if ((allRows ?? []).length === 0) return <EmptyList />;
 
   return (
-    <Stack
+    <div
       ref={parentRef}
-      style={{
-        height: 'calc(100vh - 134px)',
-        width: 'calc(100vw - 64px)',
-        overflowY: 'auto',
-      }}
+      className="h-[calc(100vh-134px)] w-[calc(100vw-64px)] overflow-y-auto"
     >
       {header}
-      <Stack
+      <div
+        className="w-full relative"
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
-          width: '100%',
-          position: 'relative',
         }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const isLoaderRow = virtualRow.index > allRows.length - 1;
           const application = allRows[virtualRow.index];
           return (
-            <Stack
+            <div
               key={virtualRow.index}
+              className="absolute top-0 left-0 w-full"
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start}px)`,
                 zIndex: count - virtualRow.index,
               }}
             >
-              <>
-                {isLoaderRow ? (
-                  hasNextPage ? (
-                    loader
-                  ) : (
-                    <></>
-                  )
+              {isLoaderRow ? (
+                hasNextPage ? (
+                  loader
                 ) : (
-                  <DNDCard application={application} />
-                )}
-              </>
-            </Stack>
+                  <></>
+                )
+              ) : (
+                <DNDCard application={application} />
+              )}
+            </div>
           );
         })}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 

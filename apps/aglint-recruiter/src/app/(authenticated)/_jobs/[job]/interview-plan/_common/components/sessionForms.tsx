@@ -4,7 +4,6 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
-import { Stack, Typography } from '@mui/material';
 import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, {
@@ -254,8 +253,8 @@ const SessionForms = ({
   const locationField = useMemo(
     () =>
       schedule_type.value === 'in_person_meeting' ? (
-        <Stack gap={1}>
-          <Typography>Address</Typography>
+        <div className='flex flex-col space-y-1'>
+          <span className='text-sm font-medium'>Address</span>
           <UITextArea
             name={'location'}
             rows={5}
@@ -266,7 +265,7 @@ const SessionForms = ({
               handleChange('location', value)
             }
           />
-        </Stack>
+        </div>
       ) : null,
     [location, schedule_type],
   );
@@ -283,13 +282,13 @@ const SessionForms = ({
         />
       }
       slotScheduleTypeDropdown={
-        <Stack gap={2}>
+        <div className='flex flex-col gap-2'>
           <ScheduleTypeField
             value={schedule_type.value}
             handleTypeChange={handleTypeChange}
           />
           {locationField}
-        </Stack>
+        </div>
       }
       slotInterviewMode={
         interview_module.value ? (
@@ -485,7 +484,7 @@ const Interview = ({
         }
         slotMemberCountDropdown={countField}
         slotInterviewersDropdown={
-          <Stack gap={1}>
+          <div className='flex flex-col gap-1'>
             {(currentQualifiedModuleMembers ?? []).length === 0 && (
               <Alert variant='error'>
                 <AlertCircle className='h-4 w-4' />
@@ -516,7 +515,7 @@ const Interview = ({
               moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
               handleMemberAdd={handleMemberAdd}
             />
-          </Stack>
+          </div>
         }
         isTrainingVisible={showTraining}
         slotInterviewersAvatarSelectionPill={<></>}

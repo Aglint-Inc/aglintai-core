@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { ApplicantsTable } from '@devlink2/ApplicantsTable';
-import { Stack } from '@mui/material';
 import { memo, useEffect, useMemo } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -61,13 +60,7 @@ export const Table = memo(() => {
       count={section_count[section]}
       loader={<Loader count={5}>{skeleton}</Loader>}
       header={
-        <Stack
-          style={{
-            zIndex: section_count[section] + 1,
-            position: 'sticky',
-            top: 0,
-          }}
-        >
+        <div className="sticky top-0" style={{ zIndex: section_count[section] + 1 }}>
           <ApplicantsTable
             isResumeMatchVisible={isScoringEnabled}
             isAllChecked={false}
@@ -77,9 +70,9 @@ export const Table = memo(() => {
             isDisqualifiedVisible={cascadeVisibilites.disqualified}
             isDragVisible={false}
             propsDrag={null}
-            onClickSelectAll={{ style: { display: 'none' } }}
+            onClickSelectAll={{ className: 'hidden' }}
           />
-        </Stack>
+        </div>
       }
     />
   );

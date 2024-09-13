@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTableInsert } from '@aglint/shared-types';
+import { AlertDialog, AlertDialogContent } from '@components/ui/alert-dialog';
 import { Checkbox } from '@components/ui/checkbox';
 import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
-import { Dialog, Stack } from '@mui/material';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -20,7 +20,7 @@ import { formatSessions } from '@/utils/formatSessions';
 import { capitalize } from '@/utils/text/textUtils';
 
 import CreateRequest from './CreateRequest';
-import type { sessionType } from './CreateRequest/SessionsList';
+import type { SessionType } from './CreateRequest/SessionsList';
 
 const MoveCandidate = () => {
   const { emailVisibilities } = useApplications();
@@ -44,9 +44,11 @@ const MoveCandidate = () => {
         onClickQualified={{ onClick: () => setActionPopup('qualified') }}
         onClickScreening={{ style: { display: 'none' } }}
       />
-      <Dialog open={!!actionPopup} onClose={() => resetActionPopup()}>
-        <MoveAction />
-      </Dialog>
+      <AlertDialog open={!!actionPopup} onOpenChange={() => resetActionPopup()}>
+        <AlertDialogContent>
+          <MoveAction />
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
@@ -84,17 +86,16 @@ const MoveCandidateNew = () => {
       title={title}
       slotBody={
         <div className='space-y-4'>
-            <UIAlert
-              color={'error'}
-              iconName={'CircleAlert'}
-              title={`You are about to ${description}`}
-              description={<li>All the schedules will be deleted</li>}
-            />
-          </div>
+          <UIAlert
+            color={'error'}
+            iconName={'CircleAlert'}
+            title={`You are about to ${description}`}
+            description={<li>All the schedules will be deleted</li>}
+          />
+        </div>
       }
       slotButtons={buttons}
     />
-    
   );
 };
 
@@ -110,7 +111,7 @@ const MoveCandidateInterview = () => {
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
-  const [selectedSession, setSelectedSession] = useState<sessionType[]>([]);
+  const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
   const buttonText = 'Request and Move';
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
@@ -141,7 +142,7 @@ const MoveCandidateInterview = () => {
     <ReusablePopup
       title={title}
       slotBody={
-        <Stack gap={2}>
+        <div className='flex flex-col gap-2'>
           {capitalize(description)}
           <CreateRequest
             setRequest={setRequest}
@@ -152,7 +153,7 @@ const MoveCandidateInterview = () => {
             note={note}
             setNote={setNote}
           />
-        </Stack>
+        </div>
       }
       slotButtons={buttons}
     />
@@ -173,7 +174,9 @@ const MoveCandidateQualified = () => {
   return (
     <ReusablePopup
       title={title}
-      slotBody={<Stack gap={2}>{capitalize(description)}</Stack>}
+      slotBody={
+        <div className='flex flex-col gap-2'>{capitalize(description)}</div>
+      }
       slotButtons={buttons}
     />
   );
@@ -195,7 +198,7 @@ const MoveCandidateDisqualified = () => {
       <ReusablePopup
         title={title}
         slotBody={
-          <Stack gap={1}>
+          <div className='flex flex-col gap-4'>
             <UIAlert
               color={'error'}
               iconName={'CircleAlert'}
@@ -209,14 +212,14 @@ const MoveCandidateDisqualified = () => {
                 </div>
               }
             />
-            <Stack direction={'row'} alignItems={'center'} gap={1}>
+            <div className='flex flex-row items-center gap-4'>
               <Checkbox
                 checked={checked}
                 onClick={() => setChecked((prev) => !prev)}
               />
               {capitalize(action)}
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         }
         slotButtons={buttons}
       />
@@ -253,7 +256,11 @@ const ReusablePopup = ({ title, slotBody, slotButtons }) => {
       <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
         <div className='flex justify-between items-center p-4 border-b border-gray-200'>
           <h2 className='font-semibold'>{title}</h2>
-          <UIButton onClick={() => resetActionPopup()} variant='ghost' size='sm'>
+          <UIButton
+            onClick={() => resetActionPopup()}
+            variant='ghost'
+            size='sm'
+          >
             <X className='w-4 h-4' />
           </UIButton>
         </div>

@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
@@ -27,9 +26,9 @@ const DraggableApplicationCard = (props: Props) => {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, []);
   return (
-    <Stack ref={dragRef as any}>
+    <div ref={dragRef as any}>
       <ApplicationCard {...props} />
-    </Stack>
+    </div>
   );
 };
 
