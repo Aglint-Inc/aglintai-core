@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
-import { FetchUtilType } from '../../../types/emailfetchUtil';
-import { DatabaseEnums, TargetApiSchema } from '@aglint/shared-types';
-import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+import type { DatabaseEnums } from '@aglint/shared-types';
+import { TargetApiSchema } from '@aglint/shared-types';
 import * as v from 'valibot';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import type { FetchUtilType } from '../../../types/emailfetchUtil';
+import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+
 export async function POST(req: Request) {
   const { target_api, payload } = await req.json();
 
@@ -63,6 +65,7 @@ export async function POST(req: Request) {
         job_id,
         mail_attachments,
       } of fetched_data.mail_data) {
+        // eslint-disable-next-line no-await-in-loop
         await sendMailFun({
           supabaseAdmin,
           comp_email_placeholder,
