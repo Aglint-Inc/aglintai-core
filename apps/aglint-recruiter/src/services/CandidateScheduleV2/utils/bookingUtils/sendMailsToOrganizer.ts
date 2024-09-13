@@ -1,5 +1,7 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 
+import { mailSender } from '@/utils/mailSender';
+
 import { type BookedMeetingDetails, type ScheduleDBDetails } from './types';
 
 export const sendMailsToOrganizer = async (

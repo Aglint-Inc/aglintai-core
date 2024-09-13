@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         recipient_email,
         mail_attachments,
       } = fetched_data.mail_data;
-      const { html, subject } = await sendMailFun({
+      const mailResp = await sendMailFun({
         supabaseAdmin,
         comp_email_placeholder,
         react_email_placeholders,
@@ -47,12 +47,9 @@ export async function POST(req: Request) {
         attachments: mail_attachments,
       });
       if (parsed_body.is_preview) {
-        return NextResponse.json(
-          { html, subject },
-          {
-            status: 200,
-          },
-        );
+        return NextResponse.json(mailResp, {
+          status: 200,
+        });
       }
     } else {
       for (const {
