@@ -20,7 +20,7 @@ export const Header = ({
     <>
       <Card className='mb-8' ref={userCardRef}>
         <CardContent className='p-6'>
-          <div className='flex items-center justify-between'>
+          <div className='flex justify-between'>
             <div className='flex items-center space-x-4'>
               <Avatar className='h-24 w-24'>
                 <AvatarImage src={avatar} alt={name} />
@@ -54,7 +54,7 @@ export const Header = ({
               </div>
             </div>
             <div className='flex flex-col items-end space-y-2'>
-              <UIButton>Schedule Interview</UIButton>
+              {/* <UIButton>Schedule Interview</UIButton> */}
               <UIButton
                 variant='outline'
                 onClick={() => {
