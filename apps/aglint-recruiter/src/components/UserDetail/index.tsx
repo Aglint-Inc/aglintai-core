@@ -5,17 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Loader from '../Common/Loader';
-import {
-  BreadCrumb,
-  Feedback,
-  Header,
-  KeyMatrics,
-  Qualifications,
-  RecentInterviews,
-  SideBar,
-  Top,
-  UpcomingInterview,
-} from './Components';
+import { BreadCrumb, SideBar, Top } from './components/Components';
+import { Feedback } from './components/FeedbackCard';
+import { Header } from './components/Header';
+import { KeyMatrics } from './components/KeyMatrix';
+import { Qualifications } from './components/Qualification';
+import { RecentInterviews } from './components/RecentInterviewCard';
+import { UpcomingInterview } from './components/UpcomingInterviews';
 import { EditUserDialog } from './Dialogs/EditUser';
 import { useInterviewer } from './hook';
 
@@ -61,8 +57,7 @@ export default function InterviewerDetailsPage() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(router.query.edit_enable || false);
 
-  const user_id = router.query.user_id as string;
-  const { data: interviewerDetails, isLoading } = useInterviewer({ user_id });
+  const { data: interviewerDetails, isLoading } = useInterviewer();
 
   if (isLoading)
     return (

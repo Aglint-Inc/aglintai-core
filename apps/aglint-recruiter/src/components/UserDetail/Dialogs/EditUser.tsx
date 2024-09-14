@@ -15,7 +15,7 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
   const { activeMembers } = useTeamMembers();
   const user_id = router.query.user_id as string;
   const { data: interviewerDetails } = useImrQuery({ user_id });
-  const { refetch: interviewerDetailsRefetch } = useInterviewer({ user_id });
+  const { refetch: interviewerDetailsRefetch } = useInterviewer();
 
   return (
     <>
