@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { JobsDashboard } from '@devlink/JobsDashboard';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -56,24 +55,30 @@ const DashboardComp = () => {
               ['manage_job'],
             )
           ) : (
-            <div className='h-full flex flex-row'>
-              <JobsDashboard
-                slotFilters={
-                  <FilterJobDashboard
-                    filterOptions={filterOptions}
-                    filterValues={filterValues}
-                    setFilterValues={setFilterValues}
-                    setSort={setSort}
-                    sortOptions={sortOptions}
-                    sortValue={sortValue}
-                    searchText={searchText}
-                    handlerFilter={setSearchText}
-                  />
-                }
-                slotAllJobs={<JobsList jobs={jobs} />}
-                slotSearchInputJob={manageJob && <AddJob />}
-                textJobsHeader={'Jobs'}
-              />
+            <div className='min-h-screen bg-gray-100'>
+              <div className='container mx-auto p-4'>
+                <h1 className='text-2xl font-bold mb-4'>Jobs</h1>
+                <div className='flex flex-col gap-4 mb-4'>
+                  <div className='flex justify-between items-center'>
+                    <div className='flex-grow'>
+                      <FilterJobDashboard
+                        filterOptions={filterOptions}
+                        filterValues={filterValues}
+                        setFilterValues={setFilterValues}
+                        setSort={setSort}
+                        sortOptions={sortOptions}
+                        sortValue={sortValue}
+                        searchText={searchText}
+                        handlerFilter={setSearchText}
+                      />
+                    </div>
+                    <div className='ml-4'>{manageJob && <AddJob />}</div>
+                  </div>
+                  <div className='overflow-x-auto bg-white rounded-lg shadow'>
+                    <JobsList jobs={jobs} />
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </>
@@ -88,7 +93,7 @@ export function AddJob() {
   const router = useRouter();
 
   return (
-    <div className='flex flex-row gap-1'>
+    <div className='flex flex-row items-center gap-1'>
       <Sync />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -130,10 +135,10 @@ const Sync = () => {
         size='sm'
         variant='secondary'
         onClick={handleSync}
-        className='w-auto'
+        className='w-auto flex items-center'
       >
         <RefreshCw className='w-4 h-4 mr-2' strokeWidth={1.5} />
-        Sync
+        <span className='flex-grow'>Sync</span>
       </Button>
     </OptimisticWrapper>
   );

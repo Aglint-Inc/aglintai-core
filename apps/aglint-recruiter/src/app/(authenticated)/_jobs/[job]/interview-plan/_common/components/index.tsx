@@ -11,14 +11,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import {
-  Collapse,
-  MenuItem,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Collapse, MenuItem, Stack, TextField, Tooltip } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
@@ -38,9 +31,9 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
+import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
@@ -125,57 +118,72 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <UIPageLayout
-        slotTopbarLeft={<BreadCrumbs />}
-        slotTopbarRight={<Settings />}
-        slotBody={
-          //cand and inter
-          <Stack className='p-4'>
-            <Tabs defaultValue='candidate'>
-              <TabsList>
-                <TabsTrigger value='internal'>Internal</TabsTrigger>
-                <TabsTrigger value='candidate'>Candidate</TabsTrigger>
-              </TabsList>
-              <TabsContent value='internal'>
-                <Stack gap={1} className='max-w-2xl my-8 mb-10 '>
-                  {data?.length ? (
-                    data.map((plan) => (
-                      <InterviewPlan
-                        key={plan.id}
-                        plan_id={plan.id}
-                        handleCreate={handleCreate}
-                        handleEdit={handleEdit}
-                      />
-                    ))
-                  ) : (
-                    <Typography>
-                      {`Create your interview stages for the job to ensure a structured
-                evaluation process. Add different interview types such as
-                "Initial Screening" or "Technical Interview." Use this template
-                each time you schedule interviews for candidates to maintain
-                consistency and efficiency.`}
-                    </Typography>
-                  )}
+      <div className='min-h-screen bg-gray-100'>
+        <div className='container mx-auto p-6'>
+          <div className='flex justify-between items-center mb-6'>
+            <div>
+              <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+              <BreadCrumbs />
+            </div>
+            <Settings />
+          </div>
 
-                  <AddStageComponent />
-                </Stack>
-              </TabsContent>
-              <TabsContent value='candidate'>
-                {/* job level interview plan */}
-                <ReorderableInterviewPlan
-                  jobId={data[0]?.job_id}
-                  applicationId={null}
-                />
-              </TabsContent>
-            </Tabs>
-          </Stack>
-        }
-      />
-      <InterviewDrawers
+          <div className='flex gap-6 mb-6'>
+            <div className='w-1/4'>
+              <JobsSideNavV2 />
+            </div>
+            <div className='w-3/4'>
+              <h2 className='text-xl font-bold mb-2'>Interview Plan</h2>
+              <p className='text-sm text-gray-600 mb-4'>
+                Update the interview plan details here. Changes will be saved
+                automatically.
+              </p>
+              <Tabs defaultValue='internal'>
+                <TabsList>
+                  <TabsTrigger value='internal'>Internal</TabsTrigger>
+                  <TabsTrigger value='candidate'>Candidate</TabsTrigger>
+                </TabsList>
+                <TabsContent value='internal'>
+                  <div className='max-w-2xl my-8 mb-10 space-y-4'>
+                    {data?.length ? (
+                      data.map((plan) => (
+                        <InterviewPlan
+                          key={plan.id}
+                          plan_id={plan.id}
+                          handleCreate={handleCreate}
+                          handleEdit={handleEdit}
+                        />
+                      ))
+                    ) : (
+                      <p className='text-gray-600'>
+                        Create your interview stages for the job to ensure a
+                        structured evaluation process. Add different interview
+                        types such as &quot;Initial Screening&quot; or
+                        &quot;Technical Interview.&quot; Use this template each
+                        time you schedule interviews for candidates to maintain
+                        consistency and efficiency.
+                      </p>
+                    )}
+
+                    <AddStageComponent />
+                  </div>
+                </TabsContent>
+                <TabsContent value='candidate'>
+                  <ReorderableInterviewPlan
+                    jobId={data[0]?.job_id}
+                    applicationId={null}
+                  />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <InterviewDrawers
         open={drawerModal}
         drawers={drawers}
         handleClose={handleDrawerClose}
-      />
+      /> */}
     </>
   );
 };

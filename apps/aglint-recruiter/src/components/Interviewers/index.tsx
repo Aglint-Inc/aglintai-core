@@ -17,6 +17,7 @@ import {
   GraduationCap,
   Layers,
   MapPin,
+  X,
 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
@@ -316,9 +317,7 @@ const Header = ({
 
   return (
     <>
-      <h1 className='text-3xl font-bold text-gray-900 mb-8'>
-        Interviewer Management
-      </h1>
+      <h1 className='text-3xl font-bold text-gray-900 mb-8'>Interviewers</h1>
       <div className='mb-6 flex justify-between items-center'>
         <UITextField
           placeholder='Search interviewers...'
@@ -329,8 +328,9 @@ const Header = ({
         />
         <div className='flex items-center gap-2'>
           {isFilterApplied ? (
-            <UIButton size='sm' onClick={resetAllFilter}>
-              Reset all
+            <UIButton variant='secondary' size='sm' onClick={resetAllFilter}>
+              <X className='h-3 w-3 mr-1' />
+              Clear
             </UIButton>
           ) : (
             <></>

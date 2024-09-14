@@ -178,8 +178,7 @@ export const API_PATHS = [
   '/api/sync/greenhouse/office_locations',
   '/api/sync/greenhouse/user',
   '/api/trpc/[trpc]',
-  '/api/emails/InterviewCancelReq_email_recruiter',
   '/api/emails/agent_email_candidate',
   '/api/emails/mail',
-  '/api/emails/preview',
-] as const;
+  '/api/emails/preview'
+] as const

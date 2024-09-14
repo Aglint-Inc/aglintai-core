@@ -15,7 +15,7 @@ function InterviewersPage() {
         title='Interviewers | Aglint AI'
         description='AI for People Products'
       />
-      <UIPageLayout
+      {/* <UIPageLayout
         slotTopbarLeft={
           <UITypography type='small' variant='p'>
             Interviewers
@@ -23,13 +23,14 @@ function InterviewersPage() {
         }
         slotTopbarRight={<></>}
         slotBody={<Interviewers />}
-      />
+      /> */}
       {/* ex page don't delete 🙏 */}
       {/* <UIPageLayout
         slotTopbarLeft={<Typography>{capitalizeAll(String(tab))}</Typography>}
         slotTopbarRight={<InterviewersTabs />}
         slotBody={<Interviewers />}
       /> */}
+      <Interviewers />
     </>
   );
 }

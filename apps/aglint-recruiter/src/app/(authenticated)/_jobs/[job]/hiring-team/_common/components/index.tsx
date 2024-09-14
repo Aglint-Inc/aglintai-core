@@ -7,8 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { JobDetailBlock } from '@devlink3/JobDetailBlock';
-import { CheckCircle, Loader2 } from 'lucide-react';
+import { CheckIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import {
   type Dispatch,
@@ -19,8 +18,8 @@ import {
 } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { JobNotFound } from '@/job/components/JobNotFound';
+import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import {
@@ -102,34 +101,52 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <UIPageLayout
-      slotTopbarLeft={<BreadCrumbs job={job} />}
-      slotBody={
-        <JobEditForm
-          fields={fields}
-          setFields={setFields}
-          setSaving={setSaving}
-        />
-      }
-      slotTopbarRight={<Settings />}
-      slotSaving={
-        <div
-          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'} flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-2 rounded-md`}
-        >
-          {saving ? (
-            <>
-              <Loader2 className='h-4 w-4 animate-spin text-green-600' />
-              <span>Saving changes...</span>
-            </>
-          ) : (
-            <>
-              <CheckCircle className='h-4 w-4 text-green-600' />
-              <span>Changes saved</span>
-            </>
-          )}
+    <div className='min-h-screen bg-gray-100'>
+      <div className='container mx-auto p-6'>
+        <div className='flex justify-between items-center mb-6'>
+          <div>
+            <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+            <BreadCrumbs job={job} />
+          </div>
+          <Settings />
         </div>
-      }
-    />
+
+        <div className='flex gap-6 mb-6'>
+          <div className='w-1/4'>
+            <JobsSideNavV2 />
+          </div>
+          <div className='w-3/4'>
+            <div
+              className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+            >
+              <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                {saving ? (
+                  <>
+                    <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
+                    <span>Saving changes...</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckIcon className='w-4 h-4 text-green-500' />
+                    <span>Changes saved</span>
+                  </>
+                )}
+              </div>
+            </div>
+            <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
+            <p className='text-sm text-gray-600 mb-4'>
+              Update the hiring team details here. Changes will be saved
+              automatically.
+            </p>
+            <JobEditForm
+              fields={fields}
+              setFields={setFields}
+              setSaving={setSaving}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -242,17 +259,12 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <JobDetailBlock
-      isJobDetailVisible={false}
-      slotJobForm={null}
-      isHiringTeamVisible={true}
-      slotHiringTeamForm={forms}
-      slotRichtext={null}
-      textDescription={null}
-      isCreate={false}
-      onClickCreate={null}
-      styleBorder={null}
-      slotRichtextWarning={null}
-    />
+    <div className='bg-white p-6 rounded-lg shadow-md'>
+      <p className='text-sm text-gray-600 mb-4'>
+        Update the hiring team details here. Changes will be saved
+        automatically.
+      </p>
+      <div className='grid grid-cols-2 gap-4'>{forms}</div>
+    </div>
   );
 };

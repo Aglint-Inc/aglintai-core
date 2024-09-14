@@ -1,7 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import { Badge } from '@components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,16 +16,19 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
-import { Checkbox } from '@components/ui/checkbox';
-import { Label } from '@components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@components/ui/popover';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { Textarea } from '@components/ui/textarea';
-import { Lightbulb, Loader2, RefreshCcw, Trash2, X } from 'lucide-react';
+import { Command } from 'cmdk';
+import {
+  Edit2,
+  Lightbulb,
+  Loader2,
+  PlusCircle,
+  RefreshCcw,
+  X,
+} from 'lucide-react';
+import { CircleDot } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
@@ -36,21 +44,14 @@ import {
 import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useTour } from '@/context/TourContext';
+import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { distributeScoreWeights } from '@/job/utils';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
-
-import { ScoreCard } from './ScoreCard';
-import { ScorePercentage } from './ScorePercentage';
-import { ScoreSetting } from './ScoreSetting';
-import { ScoreWeightage } from './ScoreWeightage';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -82,20 +83,40 @@ export const JobProfileScoreDashboard = () => {
 const ProfileScorePage = () => {
   return (
     <>
-      <UIPageLayout
-        slotTopbarLeft={<BreadCrumbs />}
-        slotTopbarRight={<Settings />}
-        slotBody={
-          <div className='flex'>
-            <div className='flex-1'>
-              <ProfileScore />
+      <div className='min-h-screen bg-gray-100'>
+        <div className='container mx-auto p-6'>
+          <div className='flex justify-between items-center mb-6'>
+            <div>
+              <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+              <BreadCrumbs />
             </div>
-            <div className='w-1/3'>
-              <ProfileScoreControls />
+            <Settings />
+          </div>
+
+          <div className='flex gap-6 mb-6'>
+            <div className='w-1/4'>
+              <JobsSideNavV2 />
+            </div>
+            <div className='w-3/4'>
+              <h2 className='text-xl font-bold mb-2'>Profile Scoring</h2>
+              <p className='text-sm text-gray-600 mb-4'>
+                Profile scoring helps evaluate candidates objectively, assigning
+                numerical values to their qualifications and experience to
+                streamline the hiring process and identify the best-fit
+                applicants efficiently.
+              </p>
+              <div className='flex'>
+                <div className='flex-1'>
+                  <ProfileScore />
+                </div>
+                <div className='w-1/3'>
+                  <ProfileScoreControls />
+                </div>
+              </div>
             </div>
           </div>
-        }
-      />
+        </div>
+      </div>
     </>
   );
 };
@@ -169,99 +190,284 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky top-0 right-0 min-h-[calc(100vh-60px)] shadow p-4 bg-neutral-100 ${
+      className={`sticky top-0 right-0 min-h-[calc(100vh-60px)] p-4 ${
         job.scoring_criteria_loading ? 'opacity-40 pointer-events-none' : ''
       }`}
     >
-      <ScoreWeightage
-        slotResetButton={
-          <Button color='neutral' size={'sm'} onClick={() => handleReset()}>
-            <RefreshCcw /> Reset
+      <div className='space-y-4'>
+        <div className='flex justify-end'>
+          <Button variant='outline' size='sm' onClick={() => handleReset()}>
+            <RefreshCcw className='mr-2 h-4 w-4' /> Reset
           </Button>
-        }
-        slotScoreWheel={
-          <>
-            <div className='flex flex-row w-4/5 justify-center items-center gap-10'>
-              <ScoreWheel
-                id={'ScoreWheelSetting'}
-                parameter_weights={weights}
-              />
-            </div>
-          </>
-        }
-        slotScorePercent={
-          <>
-            <ScorePercentage
-              bgColor="bg-[#30AABC]"
-              textTitle={'Experience'}
-              slotInputPercent={
-                <UITextField
-                  name='experience'
-                  type='number'
-                  width='80px'
-                  value={weights.experience}
-                  onChange={(e) => handleChange(e)}
-                  disabled={disabled.experience}
-                />
-              }
-            />
-            <ScorePercentage
-              bgColor="bg-[#886BD8]"
-              textTitle={'Skills'}
-              slotInputPercent={
-                <UITextField
-                  name='skills'
-                  type='number'
-                  width='80px'
-                  value={weights.skills}
-                  onChange={(e) => handleChange(e)}
-                  disabled={disabled.skills}
-                />
-              }
-            />
-            <ScorePercentage
-              bgColor="bg-[#5D7DF5]"
-              textTitle={'Education'}
-              slotInputPercent={
-                <UITextField
-                  name='education'
-                  type='number'
-                  width='80px'
-                  value={weights.education}
-                  onChange={(e) => handleChange(e)}
-                  disabled={disabled.education}
-                />
-              }
-            />
-          </>
-        }
-        slotBanner={<Tips />}
-      />
+        </div>
+        <div className='flex justify-center'>
+          <div className='flex flex-row w-4/5 justify-center items-center gap-10'>
+            <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
+          </div>
+        </div>
+        <div className='space-y-2'>
+          <Input
+            type='number'
+            name='experience'
+            value={weights.experience}
+            onChange={(e) => handleChange(e)}
+            disabled={disabled.experience}
+            className='w-20 bg-white'
+          />
+          <Input
+            type='number'
+            name='skills'
+            value={weights.skills}
+            onChange={(e) => handleChange(e)}
+            disabled={disabled.skills}
+            className='w-20 bg-white'
+          />
+          <Input
+            type='number'
+            name='education'
+            value={weights.education}
+            onChange={(e) => handleChange(e)}
+            disabled={disabled.education}
+            className='w-20 bg-white'
+          />
+        </div>
+        {/* <Tips /> */}
+      </div>
     </div>
   );
 };
 
 const ProfileScore = () => {
   const { job } = useJob();
+  const parameter_weights = job.parameter_weights as ScoreWheelParams;
+
   return (
-    <ScoreSetting
-      slotBanner={<Banners />}
-      slotScoreCardDetails={
-        job.scoring_criteria_loading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-[200px] w-full" />
-            <Skeleton className="h-[200px] w-full" />
-            <Skeleton className="h-[200px] w-full" />
-          </div>
-        ) : (
-          <>
-            <Section type='experience' />
-            <Section type='skills' />
-            <Section type='education' />
-          </>
-        )
-      }
-    />
+    <div className='space-y-4'>
+      <Banners />
+      {job.scoring_criteria_loading ? (
+        <div className='space-y-4'>
+          <Skeleton className='h-52 w-full' />
+        </div>
+      ) : (
+        <Card className='w-full'>
+          <CardContent className='pt-6'>
+            <Accordion type='single' defaultValue='experience' collapsible>
+              <AccordionItem value='experience'>
+                <AccordionTrigger>
+                  <SectionHeader
+                    type='experience'
+                    weight={parameter_weights.experience}
+                    color='#30aabc'
+                  />
+                </AccordionTrigger>
+                <AccordionContent>
+                  <SectionContent type='experience' />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value='skills'>
+                <AccordionTrigger>
+                  <SectionHeader
+                    type='skills'
+                    weight={parameter_weights.skills}
+                    color='#886bd8'
+                  />
+                </AccordionTrigger>
+                <AccordionContent>
+                  <SectionContent type='skills' />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value='education'>
+                <AccordionTrigger>
+                  <SectionHeader
+                    type='education'
+                    weight={parameter_weights.education}
+                    color='#5d7df5'
+                  />
+                </AccordionTrigger>
+                <AccordionContent>
+                  <SectionContent type='education' />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </CardContent>
+        </Card>
+      )}
+      {job.scoring_criteria_loading && (
+        <div>
+          <Loader2 className='h-4 w-4 animate-spin' />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
+  type,
+  weight,
+  color,
+}) => {
+  return (
+    <div className='flex items-center space-x-2'>
+      <CircleDot className='h-4 w-4' style={{ color }} />
+      <span className='font-medium'>{capitalize(type)}</span>
+      <span className='text-sm text-gray-500'>({weight}%)</span>
+    </div>
+  );
+};
+
+const SectionContent: FC<{ type: Sections }> = ({ type }) => {
+  const {
+    job: { draft },
+    handleJobUpdate,
+  } = useJob();
+  const { jd_json } = draft;
+  const section: keyof typeof jd_json =
+    type === 'experience'
+      ? 'rolesResponsibilities'
+      : type === 'education'
+        ? 'educations'
+        : 'skills';
+
+  const [newTags, setNewTags] = useState('');
+
+  const handleAddTags = () => {
+    if (newTags.trim() !== '') {
+      const tagsArray = newTags
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== '');
+      const newItems = tagsArray.map((tag) => ({
+        id: nanoid(),
+        field: tag,
+        isMustHave: false,
+      }));
+      handleJobUpdate({
+        draft: {
+          ...draft,
+          jd_json: {
+            ...jd_json,
+            [section]: [...jd_json[section], ...newItems],
+          },
+        },
+      });
+      setNewTags('');
+    }
+  };
+
+  const handleTagChange = (index: number, updatedItem: any) => {
+    const newSection = jd_json[section].map((item, i) =>
+      i === index ? updatedItem : item,
+    );
+    handleJobUpdate({
+      draft: {
+        ...draft,
+        jd_json: { ...jd_json, [section]: newSection },
+      },
+    });
+  };
+
+  const handleTagDelete = (index: number) => {
+    const newSection = jd_json[section].filter((_, i) => i !== index);
+    handleJobUpdate({
+      draft: {
+        ...draft,
+        jd_json: { ...jd_json, [section]: newSection },
+      },
+    });
+  };
+
+  return (
+    <div className='space-y-4'>
+      <div className='flex flex-wrap gap-2'>
+        {jd_json[section].map((item, index) => (
+          <Tag
+            key={item.id}
+            item={item}
+            onChange={(updatedItem) => handleTagChange(index, updatedItem)}
+            onDelete={() => handleTagDelete(index)}
+          />
+        ))}
+      </div>
+      <div className='flex items-center'>
+        <Input
+          placeholder={`Add new ${type} (comma-separated for multiple)`}
+          value={newTags}
+          onChange={(e) => setNewTags(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAddTags();
+            }
+          }}
+          className='flex-grow'
+        />
+        <Button
+          size='sm'
+          onClick={handleAddTags}
+          variant='outline'
+          className='ml-2'
+        >
+          <PlusCircle className='h-4 w-4 mr-1' />
+          Add
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+const Tag: FC<{
+  item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number];
+  onChange: (updatedItem: any) => void;
+  onDelete: () => void;
+}> = ({ item, onChange, onDelete }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState(item.field);
+
+  const handleSubmit = () => {
+    if (value.trim() !== '') {
+      onChange({ ...item, field: value.trim() });
+      setIsEditing(false);
+    }
+  };
+
+  return (
+    <div className='group relative inline-block'>
+      {isEditing ? (
+        <div className='flex items-center bg-white border rounded-md overflow-hidden'>
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={handleSubmit}
+            onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+            className='w-full h-8 p-1 text-sm border-none focus:ring-0'
+            autoFocus
+          />
+          <button
+            onClick={handleSubmit}
+            className='px-2 py-1 bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
+            title='Press Enter to save'
+          >
+            <Command className='h-4 w-4' />
+          </button>
+        </div>
+      ) : (
+        <div className='inline-flex items-center bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm'>
+          {item.field}
+          <button
+            onClick={() => setIsEditing(true)}
+            className='ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
+          >
+            <Edit2 className='h-4 w-4' />
+          </button>
+          <button
+            onClick={onDelete}
+            className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
+          >
+            <X className='h-4 w-4' />
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -304,252 +510,6 @@ const Banners = () => {
     );
   return <></>;
 };
-
-const Section: FC<{ type: Sections }> = ({ type }) => {
-  const {
-    job: { draft },
-    handleJobUpdate,
-  } = useJob();
-  const { jd_json } = draft;
-  const section: keyof typeof jd_json =
-    type === 'experience'
-      ? 'rolesResponsibilities'
-      : type === 'education'
-        ? 'educations'
-        : 'skills';
-  const handleDelete = (index: number) => {
-    const newSection = jd_json[section].filter((_e, i) => i !== index);
-    handleJobUpdate({
-      draft: { ...draft, jd_json: { ...jd_json, [section]: newSection } },
-    });
-  };
-  const handleEdit = (
-    index: number,
-    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
-  ) => {
-    if (
-      (jd_json?.[section] ?? []).find(
-        ({ field }, i) =>
-          (field ?? '').trim().toLowerCase() ===
-            (item?.field ?? '').trim().toLowerCase() && i !== index,
-      )
-    ) {
-      toast.error('Entry already present');
-      return;
-    }
-    const newSection = jd_json[section].reduce(
-      (acc, curr, i) => {
-        if (i === index) acc.push(item);
-        else acc.push(curr);
-        return acc;
-      },
-      [] as unknown as (typeof item)[],
-    );
-    handleJobUpdate({
-      draft: {
-        ...draft,
-        jd_json: { ...jd_json, [section]: newSection },
-      },
-    });
-  };
-  const handleCreate = (
-    item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
-  ) => {
-    if (
-      (jd_json?.[section] ?? []).find(
-        ({ field }) =>
-          (field ?? '').trim().toLowerCase() ===
-          (item?.field ?? '').trim().toLowerCase(),
-      )
-    ) {
-      toast.error('Entry already present');
-      return;
-    }
-    handleJobUpdate({
-      draft: {
-        ...draft,
-        jd_json: { ...jd_json, [section]: [...jd_json[section], item] },
-      },
-    });
-  };
-  const pills = jd_json[section].map((item, i) => (
-    <Pill
-      key={i}
-      type={type}
-      item={item}
-      handleSubmit={(e) => handleEdit(i, e)}
-      handleDelete={() => handleDelete(i)}
-    />
-  ));
-  return (
-    <ScoreCard
-      bgColor={
-        type === 'experience'
-          ? 'bg-[#30aabc]'
-          : type === 'education'
-          ? 'bg-[#5d7df5]'
-          : 'bg-[#886bd8]'
-      }
-      textHeading={capitalize(type)}
-    >
-      {pills}
-      <AddOption type={type} handleSubmit={(e) => handleCreate(e)} />
-    </ScoreCard>
-  );
-};
-
-const Pill: FC<{
-  type: Sections;
-  item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number];
-  handleSubmit: (
-    // eslint-disable-next-line no-unused-vars
-    _item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
-  ) => void;
-  handleDelete: () => void;
-}> = ({ item, handleSubmit, handleDelete }) => {
-  const ref = useRef();
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(item.field);
-  const [check, setCheck] = useState(item.isMustHave);
-  const onSubmit = () => {
-    if (value !== '') {
-      handleSubmit({ ...item, field: value, isMustHave: check });
-      setOpen(false);
-    }
-  };
-  const onDelete = () => {
-    handleDelete();
-    setOpen(false);
-  };
-  useEffect(() => {
-    setValue(item.field);
-    setCheck(item.isMustHave);
-  }, [...Object.values(item)]);
-  return (
-    <div ref={ref} className='relative'>
-      {item.isMustHave ? (
-        <Badge
-          variant='default'
-          className='cursor-pointer'
-          onClick={() => setOpen(true)}
-        >
-          {item.field}
-        </Badge>
-      ) : (
-        <Badge
-          variant='secondary'
-          className='cursor-pointer'
-          onClick={() => setOpen(true)}
-        >
-          {item.field}
-        </Badge>
-      )}
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <div className='sr-only'>Open popover</div>
-        </PopoverTrigger>
-        <PopoverContent className='w-80'>
-          <div className='space-y-4'>
-            <div className='flex items-center space-x-2'>
-              <Checkbox
-                id='must-have'
-                checked={check}
-                onCheckedChange={() => setCheck((prev) => !prev)}
-              />
-              <Label htmlFor='must-have'>Must Have</Label>
-            </div>
-            <Textarea
-              placeholder='Experience details'
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              className='min-h-[100px]'
-            />
-            <div className='flex justify-between'>
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={onDelete}
-                className='text-destructive'
-              >
-                <Trash2 className='mr-2 h-4 w-4' />
-                Delete
-              </Button>
-              <Button size='sm' onClick={onSubmit} disabled={!value}>
-                Update
-              </Button>
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-};
-
-const AddOption: FC<{
-  type: Sections;
-  handleSubmit: (
-    // eslint-disable-next-line no-unused-vars
-    _item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
-  ) => void;
-}> = ({ type, handleSubmit }) => {
-  const ref = useRef();
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const [check, setCheck] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
-    setTimeout(() => {
-      setValue('');
-      setCheck(false);
-    }, 400);
-  };
-  const onSubmit = () => {
-    if (value !== '') {
-      handleSubmit({ id: nanoid(), field: value, isMustHave: check });
-      handleClose();
-    }
-  };
-  return (
-    <div ref={ref} className='flex flex-col space-y-2'>
-      <Button size='sm' onClick={() => setOpen(true)}>
-        Add {capitalize(type)}
-      </Button>
-      <Popover open={open} onOpenChange={handleClose}>
-        <PopoverTrigger asChild>
-          <div /> {/* Empty div as trigger */}
-        </PopoverTrigger>
-        <PopoverContent className='w-auto p-0' side='bottom' align='start'>
-          <div className='p-4 space-y-4'>
-            <div className='flex items-center space-x-2'>
-              <Checkbox
-                id='must-have'
-                checked={check}
-                onCheckedChange={() => setCheck((prev) => !prev)}
-              />
-              <Label htmlFor='must-have'>Must Have</Label>
-            </div>
-            <Textarea
-              className={`w-full ${type === 'experience' ? 'w-[500px]' : 'w-[250px]'} min-h-[100px]`}
-              placeholder={`Type ${type} here`}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-            <div className='flex justify-between'>
-              <Button variant='outline' size='sm' onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button size='sm' disabled={!value} onClick={onSubmit}>
-                Update
-              </Button>
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-};
-
-//TODO: Experience form must be big
 
 const BreadCrumbs = () => {
   const { push } = useRouter();

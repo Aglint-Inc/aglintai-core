@@ -4,10 +4,7 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { BannerLoading } from '@devlink3/BannerLoading';
-import { JobDashboard as JobDashboardDev } from '@devlink3/JobDashboard';
-import { JobsBanner } from '@devlink3/JobsBanner';
 import { PipeLine } from '@devlink3/PipeLine';
-import { ScheduleCardSmall } from '@devlink3/ScheduleCardSmall';
 import dayjs from 'dayjs';
 import { Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -16,11 +13,8 @@ import React, { Fragment, useMemo } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import Loader from '@/components/Common/Loader';
-// import EmailTemplateIcon from '@/components/Common/ModuleIcons/emailTemplateIcon';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -52,7 +46,7 @@ export const JobDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className='w-full h-screen flex items-center justify-center'>
       <Loader />
     </div>
   );
@@ -99,96 +93,140 @@ const Dashboard = () => {
     push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
   };
 
-  const banners = useBanners();
-
   const [, setStorage] = useLocalStorage('scheduleFilterIds');
 
   return (
-    <>
-      <UIPageLayout
-        slotBody={
-          <JobDashboardDev
-            isJobStatsVisible={isScoringEnabled}
-            isJobRoleVisible={false}
-            isBanner={banners.length !== 0}
-            slotBanner={
-              <div className="flex flex-col gap-1">
-                {banners.map((banner, i) => (
-                  <Fragment key={i}>{banner}</Fragment>
-                ))}
+    <div className='min-h-screen bg-gray-100'>
+      <div className='container mx-auto p-6'>
+        <div className='flex justify-between items-center mb-6'>
+          <div>
+            <h1 className='text-3xl font-bold mb-2'>Job Analytics</h1>
+            <SharedBreadCrumbs />
+          </div>
+          <SharedActions />
+        </div>
+
+        <div className='flex flex-col gap-6 mb-6'>
+          <div className='container mx-auto'>
+            <div className='py-8 flex flex-col gap-4'>
+              {/* {banners.length > 0 && (
+                <div className='flex flex-col gap-1'>
+                  {banners.map((banner, i) => (
+                    <Fragment key={i}>{banner}</Fragment>
+                  ))}
+                </div>
+              )}
+
+              <div className='space-y-4'>
+                <Pipeline />
+              </div> */}
+
+              <div className='space-y-4  bg-white border rounded-lg p-4'>
+                <JobStats
+                  isScoringEnabled={isScoringEnabled}
+                  score_matches={score_matches}
+                  handleFilter={handleFilter}
+                />
               </div>
-            }
-            onClickTopMatch={{
-              style: { cursor: 'pointer' },
-              onClick: () => handleFilter('top_match'),
-            }}
-            textTopMatchPercentage={
-              score_matches?.top_match?.percentage ?? '---'
-            }
-            textTopMatchCount={score_matches?.top_match?.count ?? '---'}
-            onClickGoodMatch={{
-              style: { cursor: 'pointer' },
-              onClick: () => handleFilter('good_match'),
-            }}
-            textGoodMatchPercentage={
-              score_matches?.good_match?.percentage ?? '---'
-            }
-            textGoodMatchCount={score_matches?.good_match?.count ?? '---'}
-            onClickAverageMatch={{
-              style: { cursor: 'pointer' },
-              onClick: () => handleFilter('average_match'),
-            }}
-            textAverageMatchPercentage={
-              score_matches?.average_match?.percentage ?? '---'
-            }
-            textAveageMatchCount={score_matches?.average_match?.count ?? '---'}
-            onClickBelowAverage={{
-              style: { cursor: 'pointer' },
-              onClick: () => handleFilter('poor_match'),
-            }}
-            textBelowAveragePercentage={
-              score_matches?.poor_match?.percentage ?? '---'
-            }
-            textBelowAverageCount={score_matches?.poor_match?.count ?? '---'}
-            onClickNotaMatch={{
-              style: { cursor: 'pointer' },
-              onClick: () => handleFilter('not_a_match'),
-            }}
-            textNotAMatchPercentage={
-              score_matches?.not_a_match?.percentage ?? '---'
-            }
-            textNotAMatchCount={score_matches?.not_a_match?.count ?? '---'}
-            slotLocationGraphBlock={<Doughnut />}
-            slotExperienceGraph={<LineGraph />}
-            slotSkillGraphBlock={<Bars />}
-            slotPipeline={<Pipeline />}
-            slotModuleCard={<></>}
-            slotCardWithNumber={<TenureAndExpSummary />}
-            isViewScheduleVisible={schedule?.length > 3}
-            onClickViewSchedule={{
-              onClick: () => {
-                setStorage((prev) => ({
-                  ...prev,
-                  status: ['confirmed'],
-                  member: [],
-                  jobs: [job?.id],
-                }));
-                push(`/scheduling?tab=schedules`);
-              },
-            }}
-            slotScheduleCardSmall={<Schedules />}
-            onClickAssistant={{
-              onClick: () => push(`/jobs/${job.id}/agent`),
-            }}
-            slotJobRole={<Roles />}
-          />
-        }
-        slotTopbarLeft={<SharedBreadCrumbs />}
-        slotTopbarRight={<SharedActions />}
-      />
-    </>
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className='space-y-4'>
+                <Doughnut />
+                <Bars />
+              </div>
+
+              {/* Bottom Left */}
+              <div className='space-y-4'>
+                <LineGraph />
+                <TenureAndExpSummary />
+              </div>
+
+              {/* Bottom Right */}
+              <div className='space-y-4'>
+                <Schedules
+                  schedule={schedule}
+                  setStorage={setStorage}
+                  push={push}
+                  job={job}
+                />
+                {/* <Roles /> */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
+
+const JobStats = ({ isScoringEnabled, score_matches, handleFilter }) => (
+  <div className='flex space-x-12 overflow-x-auto'>
+    {isScoringEnabled && (
+      <>
+        <StatItem
+          label='Top Match'
+          percentage={score_matches?.top_match?.percentage ?? '---'}
+          count={score_matches?.top_match?.count ?? '---'}
+          onClick={() => handleFilter('top_match')}
+          color='bg-green-500'
+        />
+        <StatItem
+          label='Good Match'
+          percentage={score_matches?.good_match?.percentage ?? '---'}
+          count={score_matches?.good_match?.count ?? '---'}
+          onClick={() => handleFilter('good_match')}
+          color='bg-lime-500'
+        />
+        <StatItem
+          label='Average Match'
+          percentage={score_matches?.average_match?.percentage ?? '---'}
+          count={score_matches?.average_match?.count ?? '---'}
+          onClick={() => handleFilter('average_match')}
+          color='bg-yellow-500'
+        />
+        <StatItem
+          label='Below Average'
+          percentage={score_matches?.poor_match?.percentage ?? '---'}
+          count={score_matches?.poor_match?.count ?? '---'}
+          onClick={() => handleFilter('poor_match')}
+          color='bg-orange-500'
+        />
+        <StatItem
+          label='Not a Match'
+          percentage={score_matches?.not_a_match?.percentage ?? '---'}
+          count={score_matches?.not_a_match?.count ?? '---'}
+          onClick={() => handleFilter('not_a_match')}
+          color='bg-red-500'
+        />
+      </>
+    )}
+  </div>
+);
+
+const StatItem = ({ label, percentage, count, onClick, color }) => (
+  <div className='w-full max-w-4xl mx-auto p-4' onClick={onClick}>
+    <div className='flex flex-col sm:flex-row cursor-pointer hover:bg-gray-100 rounded-lg transition-colors duration-200'>
+      <div className='flex-1 p-2'>
+        <div className='text-sm font-medium mb-1' style={{ color: color }}>
+          {label}
+        </div>
+        <div className='text-2xl font-bold mb-2'>{percentage}</div>
+        <div className='h-2 w-full bg-gray-200 rounded-full overflow-hidden'>
+          <div
+            className={`h-full ${color}`}
+            style={{ width: `${parseFloat(percentage)}%` }}
+            role='progressbar'
+            aria-valuenow={parseFloat(percentage)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          ></div>
+        </div>
+        <div className='text-xs text-gray-500 mt-1'>({count})</div>
+      </div>
+    </div>
+  </div>
+);
 
 const Roles = () => {
   const { push } = useRouter();
@@ -309,49 +347,47 @@ const Pipeline = () => {
   };
   return (
     <>
-      <PipeLine
-        isLeft={false}
-        textCandidateCount={newSections.new.label}
-        textName={capitalize('new')}
-        onClickPipeline={{
-          onClick: () => handlClick('new'),
-        }}
-      />
-      <PipeLine
-        textCandidateCount={newSections.interview.label}
-        textName={capitalize('interview')}
-        onClickPipeline={{
-          onClick: () => handlClick('interview'),
-        }}
-      />
-      <PipeLine
-        textCandidateCount={newSections.qualified.label}
-        textName={capitalize('qualified')}
-        onClickPipeline={{
-          onClick: () => handlClick('qualified'),
-        }}
-      />
-      <PipeLine
-        isRight={false}
-        textCandidateCount={newSections.disqualified.label}
-        textName={capitalize('disqualified')}
-        onClickPipeline={{
-          onClick: () => handlClick('disqualified'),
-        }}
-      />
+      <div className='flex flex-row justify-between gap-1'>
+        <PipeLine
+          isLeft={false}
+          textCandidateCount={newSections.new.label}
+          textName={capitalize('new')}
+          onClickPipeline={{
+            onClick: () => handlClick('new'),
+          }}
+        />
+        <PipeLine
+          textCandidateCount={newSections.interview.label}
+          textName={capitalize('interview')}
+          onClickPipeline={{
+            onClick: () => handlClick('interview'),
+          }}
+        />
+        <PipeLine
+          textCandidateCount={newSections.qualified.label}
+          textName={capitalize('qualified')}
+          onClickPipeline={{
+            onClick: () => handlClick('qualified'),
+          }}
+        />
+        <PipeLine
+          isRight={false}
+          textCandidateCount={newSections.disqualified.label}
+          textName={capitalize('disqualified')}
+          onClickPipeline={{
+            onClick: () => handlClick('disqualified'),
+          }}
+        />
+      </div>
     </>
   );
 };
 
-const Schedules = () => {
-  const {
-    schedules: { data, status },
-  } = useJobDashboard();
-  const { push } = useRouter();
-  if (status === 'pending') return <Loader />;
-  if (status === 'error') return <>Error</>;
-  if (data.length === 0) return <NoDataAvailable />;
-  const cards = data
+const Schedules = ({ schedule, setStorage, push, job }) => {
+  if (schedule?.status === 'pending') return <Loader />;
+  if (schedule?.status === 'error') return <>Error</>;
+  if (schedule?.data.length === 0) return <NoDataAvailable />;
+  const cards = schedule?.data
     .sort(
       (a, b) =>
         (dayjs(a.interview_meeting.start_time) as any) -
@@ -361,52 +397,58 @@ const Schedules = () => {
     .map((sch, i) => (
       <div
         key={i}
-        className="cursor-pointer"
+        className='cursor-pointer'
         onClick={() =>
           push(
             `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=job_details`,
           )
         }
       >
-        <ScheduleCardSmall
-          slotCandidatePic={
-            <MuiAvatar
-              key={sch.candidates.id}
-              src={sch.candidates.avatar}
-              level={getFullName(
-                sch.candidates.first_name,
-                sch.candidates.last_name,
-              )}
-              height='28px'
-              width='28px'
-              fontSize='12px'
-            />
-          }
-          textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
-          textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
-          textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
-          textPlatformName={getScheduleType(
-            sch.interview_session.schedule_type,
-          )}
-          textScheduleName={sch.interview_session.name}
-          textTimeRange={`${dayjs(sch.interview_meeting.start_time).format(
-            'hh:mm A',
-          )} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}`}
-          slotPlatformLogo={
-            <IconScheduleType type={sch.interview_session.schedule_type} />
-          }
-          textCandidateName={getFullName(
-            sch.candidates.first_name,
-            sch.candidates.last_name,
-          )}
-        />
+        <Card className='w-full'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>
+              {dayjs(sch.interview_meeting.end_time).format('DD MMM')}
+            </CardTitle>
+            <Avatar className='h-7 w-7'>
+              <AvatarImage
+                src={sch.candidates.avatar}
+                alt={getFullName(
+                  sch.candidates.first_name,
+                  sch.candidates.last_name,
+                )}
+              />
+              <AvatarFallback>
+                {getFullName(
+                  sch.candidates.first_name,
+                  sch.candidates.last_name,
+                ).charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold'>
+              {dayjs(sch.interview_meeting.end_time).format('dddd')}
+            </div>
+            <p className='text-xs text-muted-foreground'>
+              {getScheduleType(sch.interview_session.schedule_type)}
+            </p>
+            <div className='mt-4 flex items-center'>
+              <IconScheduleType type={sch.interview_session.schedule_type} />
+              <span className='ml-2 text-sm font-medium'>
+                {sch.interview_session.name}
+              </span>
+            </div>
+            <div className='mt-2 text-xs text-muted-foreground'>
+              {`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}`}
+            </div>
+            <div className='mt-4 text-sm font-medium'>
+              {getFullName(sch.candidates.first_name, sch.candidates.last_name)}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     ));
-  return (
-    <div className="w-full h-full flex flex-col gap-2">
-      {cards}
-    </div>
-  );
+  return <div className='w-full h-full flex flex-col gap-2'>{cards}</div>;
 };
 
 const useBanners = () => {
@@ -416,8 +458,6 @@ const useBanners = () => {
     useJobDashboard();
 
   const banners: React.JSX.Element[] = [];
-  if (job.status === 'draft') banners.push(<JobsBanner />);
-
   if (isInterviewPlanDisabled)
     banners.push(
       <>
@@ -550,7 +590,7 @@ const useBanners = () => {
     banners.push(
       <BannerLoading
         slotLoader={
-          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
+          <div className='animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900'></div>
         }
       />,
     );
@@ -664,7 +704,9 @@ const Doughnut = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Location Distribution</CardTitle>
+        <CardTitle className='text-xl font-semibold'>
+          Location Distribution
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue='city'>
@@ -701,7 +743,9 @@ const LineGraph = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Experience and Tenure</CardTitle>
+        <CardTitle className='text-xl font-semibold'>
+          Experience and Tenure
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue='experience'>
@@ -732,7 +776,7 @@ const Bars = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Skills</CardTitle>
+        <CardTitle className='text-xl font-semibold'>Skills</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue='top_skills'>
@@ -783,7 +827,7 @@ const Banner = (props: BannerProps) => {
           color={'warning'}
           iconName={'Info'}
           actions={
-            <div className="flex gap-2">
+            <div className='flex gap-2'>
               <UIButton
                 variant='secondary'
                 size='sm'
