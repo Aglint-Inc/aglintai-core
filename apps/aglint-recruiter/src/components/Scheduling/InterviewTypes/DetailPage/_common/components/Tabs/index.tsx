@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 
 import ROUTES from '@/utils/routing/routes';
 
+import { usePoolCandidates } from '../../hooks/useCandidateModule';
+import { usePoolFeedbacks } from '../../hooks/usePoolFeedback';
+import { usePoolSchedules } from '../../hooks/useSchedulesPool';
 import Candidates from './Candidates';
 import Feedback from './Feedback';
 import InstructionsComp from './Instructions';
@@ -45,6 +48,12 @@ function InterviewDetailsTabs() {
       tabComp: <InstructionsComp />,
     },
   ];
+
+  usePoolSchedules({
+    filters: ['confirmed', 'completed', 'cancelled'],
+  });
+  usePoolCandidates();
+  usePoolFeedbacks();
 
   return (
     <Tabs
