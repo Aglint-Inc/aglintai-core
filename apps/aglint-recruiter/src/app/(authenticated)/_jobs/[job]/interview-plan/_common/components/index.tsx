@@ -133,9 +133,9 @@ const InterviewPlanPage = () => {
               <JobsSideNavV2 />
             </div>
             <div className='w-3/4'>
-              <h2 className='text-xl font-bold mb-2'>Interview Plan</h2>
+              <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
               <p className='text-sm text-gray-600 mb-4'>
-                Update the interview plan details here. Changes will be saved
+                Update the hiring team details here. Changes will be saved
                 automatically.
               </p>
               <Tabs defaultValue='internal'>
@@ -179,11 +179,11 @@ const InterviewPlanPage = () => {
           </div>
         </div>
       </div>
-      {/* <InterviewDrawers
+      <InterviewDrawers
         open={drawerModal}
         drawers={drawers}
         handleClose={handleDrawerClose}
-      /> */}
+      />
     </>
   );
 };

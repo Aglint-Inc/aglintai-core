@@ -1,6 +1,5 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import {
   Table,
   TableBody,
@@ -9,22 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Badge } from '@components/ui/badge';
-import { Button } from '@components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import {
-  AlertCircle,
-  Pin,
-  MapPin,
-  Briefcase,
-  Clock,
-  Building2,
-} from 'lucide-react';
+import { AlertCircle, Briefcase, Clock, MapPin, Pin } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React from 'react';
 
 import EmptyState from '@/components/Common/EmptyStates/EmptyStates';
 import { useJobs } from '@/jobs/hooks';

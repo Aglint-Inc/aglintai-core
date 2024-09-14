@@ -1,6 +1,4 @@
 import Seo from '@/components/Common/Seo';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import UITypography from '@/components/Common/UITypography';
 import Interviewers from '@/components/Interviewers';
 // import { useRouter } from 'next/router';
 // import Interviewers from '@/components/Interviewers';

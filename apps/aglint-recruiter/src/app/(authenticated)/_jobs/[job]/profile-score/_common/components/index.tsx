@@ -16,7 +16,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { Command } from 'cmdk';
@@ -110,6 +110,7 @@ const ProfileScorePage = () => {
                   <ProfileScore />
                 </div>
                 <div className='w-1/3'>
+                  <Tips />
                   <ProfileScoreControls />
                 </div>
               </div>
@@ -417,6 +418,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
 
 const Tag: FC<{
   item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number];
+  // eslint-disable-next-line no-unused-vars
   onChange: (updatedItem: any) => void;
   onDelete: () => void;
 }> = ({ item, onChange, onDelete }) => {
@@ -440,7 +442,6 @@ const Tag: FC<{
             onBlur={handleSubmit}
             onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
             className='w-full h-8 p-1 text-sm border-none focus:ring-0'
-            autoFocus
           />
           <button
             onClick={handleSubmit}

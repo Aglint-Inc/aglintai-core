@@ -1,12 +1,14 @@
+import { ScrollArea } from '@components/ui/scroll-area';
 import React, { useCallback, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { useApplications } from '@/job/hooks';
 import { type Application } from '@/types/applications.types';
-import { EmptyList } from '../Table/Common/EmptyList';
+
 import { Loader } from '../CandidateDrawer/Common/Loader';
-import { ScrollArea } from '@components/ui/scroll-area';
 import DNDCard from '../Table/CardNew/DNDCard';
+import { EmptyList } from '../Table/Common/EmptyList';
 
 const ApplicationsTable: React.FC = () => {
   const {
