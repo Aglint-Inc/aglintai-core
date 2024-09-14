@@ -1,6 +1,7 @@
 import { createTRPCRouter } from '../../trpc';
 import { candidatesModule } from './candidates';
 import { feedbackPool } from './feedback';
+import { interviewPools } from './interview_types';
 import { interviewPoolUsers } from './module_and_users';
 import { schedulesPool } from './schedules';
 import { trainingProgress } from './training_progress';
@@ -11,4 +12,5 @@ export const interviewPool = createTRPCRouter({
   candidates: candidatesModule,
   feedbacks: feedbackPool,
   schedules: schedulesPool,
+  interview_pool: interviewPools,
 });

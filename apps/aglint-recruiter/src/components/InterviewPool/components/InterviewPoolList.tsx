@@ -18,19 +18,32 @@ import {
 } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { useAllDepartments } from '@/queries/departments';
 
-export const InterviewPoolList = ({ type }) => {
-  const handleInterviewTypeClick = (id: number) => {
+import { type useAllInterviewModulesType } from '../hook';
+
+export const InterviewPoolList = ({
+  interviewType,
+}: {
+  interviewType: useAllInterviewModulesType[number];
+}) => {
+  const { data: departments } = useAllDepartments();
+  const handleInterviewTypeClick = (id: string) => {
     console.log(id);
   };
+
+  const department = departments?.find(
+    (dep) => dep.id === interviewType.department_id,
+  ).name;
+
   return (
     <TableRow
-      key={type.id}
+      key={interviewType.id}
       className='cursor-pointer hover:bg-gray-50'
-      onClick={() => handleInterviewTypeClick(type.id)}
+      onClick={() => handleInterviewTypeClick(interviewType.id)}
     >
-      <TableCell className='font-medium'>{type.name}</TableCell>
-      <TableCell>{type.department}</TableCell>
+      <TableCell className='font-medium'>{interviewType.name}</TableCell>
+      <TableCell>{department}</TableCell>
       <TableCell>
         <div className='flex space-x-2'>
           <TooltipProvider>
@@ -41,7 +54,7 @@ export const InterviewPoolList = ({ type }) => {
                   className='bg-green-100 text-green-800'
                 >
                   <CheckCircle className='h-3 w-3 mr-1' />
-                  {type.monthlySchedules.completed}
+                  {interviewType.completed_meeting_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -57,7 +70,7 @@ export const InterviewPoolList = ({ type }) => {
                   className='bg-blue-100 text-blue-800'
                 >
                   <Calendar className='h-3 w-3 mr-1' />
-                  {type.monthlySchedules.scheduled}
+                  {interviewType.upcoming_meeting_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -70,7 +83,7 @@ export const InterviewPoolList = ({ type }) => {
               <TooltipTrigger>
                 <Badge variant='secondary' className='bg-red-100 text-red-800'>
                   <XCircle className='h-3 w-3 mr-1' />
-                  {type.monthlySchedules.cancelled}
+                  {interviewType.upcoming_meeting_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -88,8 +101,7 @@ export const InterviewPoolList = ({ type }) => {
                 variant='outline'
                 className='bg-purple-50 text-purple-800 border-purple-200'
               >
-                <Clock className='h-3 w-3 mr-1' />
-                {type.avgDuration} min
+                <Clock className='h-3 w-3 mr-1' />- min
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -106,8 +118,7 @@ export const InterviewPoolList = ({ type }) => {
                 variant='outline'
                 className='bg-orange-50 text-orange-800 border-orange-200'
               >
-                <Users className='h-3 w-3 mr-1' />
-                {type.candidatesPerWeek}
+                <Users className='h-3 w-3 mr-1' />-
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -125,7 +136,7 @@ export const InterviewPoolList = ({ type }) => {
                 className='bg-teal-50 text-teal-800 border-teal-200'
               >
                 <Calendar className='h-3 w-3 mr-1' />
-                {type.upcomingSlots}
+                {interviewType.upcoming_meeting_count}
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -142,8 +153,7 @@ export const InterviewPoolList = ({ type }) => {
                 variant='outline'
                 className='bg-yellow-50 text-yellow-800 border-yellow-200'
               >
-                <Star className='h-3 w-3 mr-1' />
-                {type.passRate}%
+                <Star className='h-3 w-3 mr-1' />- %
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -160,8 +170,7 @@ export const InterviewPoolList = ({ type }) => {
                 variant='outline'
                 className='bg-indigo-50 text-indigo-800 border-indigo-200'
               >
-                <Briefcase className='h-3 w-3 mr-1' />
-                {type.openPositions}
+                <Briefcase className='h-3 w-3 mr-1' />-
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
