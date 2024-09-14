@@ -1,7 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
-import { MoreVertical, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { useState } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -92,16 +91,7 @@ function Feedback() {
                         </div>
                       </td>
                       <td className='p-4 text-gray-700'>
-                        {feedback.recommendation || '--'}
-                      </td>
-                      <td className='p-4'>
-                        <Button
-                          variant='ghost'
-                          size='sm'
-                          className='text-gray-500 hover:text-gray-700'
-                        >
-                          <MoreVertical className='h-4 w-4' />
-                        </Button>
+                        {feedback.objective || '--'}
                       </td>
                     </tr>
                   ))}

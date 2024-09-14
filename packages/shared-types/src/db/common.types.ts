@@ -1,5 +1,5 @@
 import { Database, Tables } from "./schema.types";
-import { Custom } from "./utils.types";
+import { Custom, Type } from "./utils.types";
 
 export type CustomMembersMeta = {
   [id in
@@ -84,3 +84,18 @@ export type CustomApplicationStatus =
   | "interview"
   | "qualified"
   | "disqualified";
+
+export type CustomInterviewSessionCancelRow = Type<
+  Database["public"]["Tables"]["interview_session_cancel"]["Row"],
+  {
+    other_details: {
+      dateRange?: { start: string; end: string };
+      note?: string;
+    };
+  }
+>;
+
+export type CustomFeedback = {
+  recommendation: number;
+  objective: string;
+} | null;
