@@ -7,8 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { SavedChanges } from '@devlink/SavedChanges';
-import { JobDetailBlock } from '@devlink3/JobDetailBlock';
+import { AlertTriangle, CheckIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import {
   type Dispatch,
@@ -19,9 +18,8 @@ import {
 } from 'react';
 
 import Loader from '@/components/Common/Loader';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import { WarningSvg } from '@/components/Common/warningSvg';
 import { JobNotFound } from '@/job/components/JobNotFound';
+import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { validateDescription } from '@/job/utils';
@@ -130,30 +128,53 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <UIPageLayout
-      slotTopbarLeft={<BreadCrumbs job={job} />}
-      slotTopbarRight={<Settings />}
-      slotBody={
-        <JobEditForm
-          fields={fields}
-          setFields={setFields}
-          setSaving={setSaving}
-        />
-      }
-      slotSaving={
-        <div
-          className={`flex flex-col transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <SavedChanges
-            isSaving={saving}
-            isSaved={!saving}
-            slotLoaderIcon={
-              <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
-            }
-          />
+    <div className='min-h-screen bg-gray-100'>
+      <div className='container mx-auto p-6'>
+        <div className='flex justify-between items-center mb-6'>
+          <div>
+            <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+            <BreadCrumbs job={job} />
+          </div>
+          <Settings />
         </div>
-      }
-    />
+
+        <div className='flex gap-6 mb-6'>
+          <div className='w-1/4'>
+            <JobsSideNavV2 />
+          </div>
+          <div className='w-3/4'>
+            <h2 className='text-xl font-bold mb-2'>Job Details</h2>
+            <p className='text-sm text-gray-600 mb-4'>
+              Update the job details here; changes will be saved automatically.
+              Publish to make the updates live.
+            </p>
+            <JobEditForm
+              fields={fields}
+              setFields={setFields}
+              setSaving={setSaving}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+        >
+          <div className='flex items-center space-x-2 text-sm text-gray-600'>
+            {saving ? (
+              <>
+                <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
+                <span>Saving changes...</span>
+              </>
+            ) : (
+              <>
+                <CheckIcon className='w-4 h-4 text-green-500' />
+                <span>Changes saved</span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -272,32 +293,23 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <JobDetailBlock
-      isJobDetailVisible={true}
-      slotJobForm={forms}
-      isHiringTeamVisible={false}
-      slotHiringTeamForm={null}
-      slotRichtext={description}
-      textDescription={
-        'Update the job details here; changes will be saved automatically. Publish to make the updates live.'
-      }
-      isCreate={false}
-      onClickCreate={null}
-      styleBorder={{
-        style: {
-          borderColor: fields.description.error.value
-            ? 'var(--error-a6)'
-            : 'var(--neutral-a6)',
-        },
-      }}
-      slotRichtextWarning={
-        fields.description.error.value && (
-          <div className='flex items-center flex-row text-error-600'>
-            <WarningSvg />
-            <span>{fields.description.error.helper}</span>
-          </div>
-        )
-      }
-    />
+    <div className='bg-white p-6 rounded-lg shadow-md'>
+      <p className='text-sm text-gray-600 mb-4'>
+        Update the job details here; changes will be saved automatically.
+        Publish to make the updates live.
+      </p>
+      <div className='grid grid-cols-2 gap-4 mb-6'>{forms}</div>
+      <div
+        className={`border rounded-md p-4 ${fields.description.error.value ? 'border-red-500' : 'border-gray-300'}`}
+      >
+        {description}
+      </div>
+      {fields.description.error.value && (
+        <div className='flex items-center text-red-600 mt-2'>
+          <AlertTriangle className='w-4 h-4 mr-2' />
+          <span>{fields.description.error.helper}</span>
+        </div>
+      )}
+    </div>
   );
 };

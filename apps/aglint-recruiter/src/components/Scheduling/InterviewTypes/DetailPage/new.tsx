@@ -1,3 +1,9 @@
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { MoreVertical } from 'lucide-react';
 import { useEffect } from 'react';
 
 import Loader from '@/components/Common/Loader';
@@ -7,6 +13,7 @@ import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
+import { setIsArchiveDialogOpen } from '../store';
 import { unArchiveModuleById } from '../utils';
 import StatsCards from './_common/components/StatsCards';
 import InterviewDetailsTabs from './_common/components/Tabs';
@@ -73,11 +80,31 @@ export default function InterviewTypeDetail() {
                 </div>
               </div>
               <div className='flex flex-row items-center space-x-2'>
-                {editModule?.is_archived && (
-                  <UIButton variant='secondary' onClick={unArcheive} size='sm'>
-                    Unarchive
-                  </UIButton>
-                )}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <UIButton
+                      variant='outline'
+                      size='sm'
+                      icon={<MoreVertical className='h-4 w-4' />}
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent className='p-0 w-auto'>
+                    {
+                      <UIButton
+                        variant='ghost'
+                        onClick={() => {
+                          editModule?.is_archived
+                            ? unArcheive()
+                            : setIsArchiveDialogOpen(true);
+                        }}
+                        size='sm'
+                      >
+                        {editModule?.is_archived ? 'Unarchive' : 'Archive'}
+                      </UIButton>
+                    }
+                  </PopoverContent>
+                </Popover>
+
                 <DeleteModuleDialog editModule={editModule} />
                 <ArchiveModuleDialog />
               </div>

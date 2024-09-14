@@ -1,6 +1,4 @@
 import Seo from '@/components/Common/Seo';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import UITypography from '@/components/Common/UITypography';
 import Interviewers from '@/components/Interviewers';
 // import { useRouter } from 'next/router';
 // import Interviewers from '@/components/Interviewers';
@@ -15,7 +13,7 @@ function InterviewersPage() {
         title='Interviewers | Aglint AI'
         description='AI for People Products'
       />
-      <UIPageLayout
+      {/* <UIPageLayout
         slotTopbarLeft={
           <UITypography type='small' variant='p'>
             Interviewers
@@ -23,13 +21,14 @@ function InterviewersPage() {
         }
         slotTopbarRight={<></>}
         slotBody={<Interviewers />}
-      />
+      /> */}
       {/* ex page don't delete 🙏 */}
       {/* <UIPageLayout
         slotTopbarLeft={<Typography>{capitalizeAll(String(tab))}</Typography>}
         slotTopbarRight={<InterviewersTabs />}
         slotBody={<Interviewers />}
       /> */}
+      <Interviewers />
     </>
   );
 }

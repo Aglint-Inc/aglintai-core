@@ -1,13 +1,7 @@
+import { CustomInterviewSessionCancelRow } from "../common.types";
 import type { TableType } from "./index.types";
 
 export type CustomInterviewSessionCancel = TableType<
   "interview_session_cancel",
-  {
-    other_details: CustomOtherDetails;
-  }
+  CustomInterviewSessionCancelRow
 >;
-
-type CustomOtherDetails = {
-  dateRange?: { start: string; end: string };
-  note?: string;
-};

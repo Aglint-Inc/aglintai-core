@@ -134,7 +134,7 @@ const JobWorkflows = () => {
       const loading = getLoadingState(workflow.id);
       return (
         <OptimisticWrapper key={workflow.id} loading={loading}>
-          <div className='p-2 bg-gray-50'>
+          <div className='p-2'>
             <Card key={workflow.id} className='group relative'>
               <CardHeader className='p-3 pb-0 flex justify-between items-start'>
                 <CardTitle className='text-base w-full'>
