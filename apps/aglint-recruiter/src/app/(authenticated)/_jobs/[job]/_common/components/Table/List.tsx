@@ -57,11 +57,11 @@ const List = ({
   return (
     <div
       ref={parentRef}
-      className="h-[calc(100vh-134px)] w-[calc(100vw-64px)] overflow-y-auto"
+      className='h-[calc(100vh-300px)] w-[calc(100vw-64px)] overflow-y-auto'
     >
       {header}
       <div
-        className="w-full relative"
+        className='w-full relative'
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
         }}
@@ -72,7 +72,7 @@ const List = ({
           return (
             <div
               key={virtualRow.index}
-              className="absolute top-0 left-0 w-full"
+              className='absolute top-0 left-0 w-full'
               style={{
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start}px)`,
