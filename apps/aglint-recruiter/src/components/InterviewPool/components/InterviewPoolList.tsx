@@ -16,6 +16,7 @@ import {
   Users,
   XCircle,
 } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useAllDepartments } from '@/queries/departments';
@@ -27,10 +28,8 @@ export const InterviewPoolList = ({
 }: {
   interviewType: useAllInterviewModulesType[number];
 }) => {
+  const router = useRouter();
   const { data: departments } = useAllDepartments();
-  const handleInterviewTypeClick = (id: string) => {
-    console.log(id);
-  };
 
   const department = departments?.find(
     (dep) => dep.id === interviewType.department_id,
@@ -40,7 +39,9 @@ export const InterviewPoolList = ({
     <TableRow
       key={interviewType.id}
       className='cursor-pointer hover:bg-gray-50'
-      onClick={() => handleInterviewTypeClick(interviewType.id)}
+      onClick={() => {
+        router.push(`/interview-pool/${interviewType.id}`);
+      }}
     >
       <TableCell className='font-medium'>{interviewType.name}</TableCell>
       <TableCell>{department}</TableCell>
@@ -54,7 +55,7 @@ export const InterviewPoolList = ({
                   className='bg-green-100 text-green-800'
                 >
                   <CheckCircle className='h-3 w-3 mr-1' />
-                  {interviewType.completed_meeting_count}
+                  {interviewType.this_month_completed_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -70,7 +71,7 @@ export const InterviewPoolList = ({
                   className='bg-blue-100 text-blue-800'
                 >
                   <Calendar className='h-3 w-3 mr-1' />
-                  {interviewType.upcoming_meeting_count}
+                  {interviewType.this_month_scheduled_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -83,7 +84,7 @@ export const InterviewPoolList = ({
               <TooltipTrigger>
                 <Badge variant='secondary' className='bg-red-100 text-red-800'>
                   <XCircle className='h-3 w-3 mr-1' />
-                  {interviewType.upcoming_meeting_count}
+                  {interviewType.this_month_cancelled_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -99,9 +100,10 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-purple-50 text-purple-800 border-purple-200'
+                className='bg-purple-50 text-purple-800 border-purple-200 justify-center w-[80px]'
               >
-                <Clock className='h-3 w-3 mr-1' />- min
+                <Clock className='h-3 w-3 mr-1' />
+                {interviewType.average_meeting_duration} min
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -151,9 +153,10 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-yellow-50 text-yellow-800 border-yellow-200'
+                className='bg-yellow-50 text-yellow-800 border-yellow-200 flex items-center justify-center  w-[70px]'
               >
-                <Star className='h-3 w-3 mr-1' />- %
+                <Star className='h-3 w-3 mr-1' />
+                <span>{interviewType.passed_rate} %</span>
               </Badge>
             </TooltipTrigger>
             <TooltipContent>

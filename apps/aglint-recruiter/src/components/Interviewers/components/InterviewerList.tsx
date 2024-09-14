@@ -10,6 +10,7 @@ import {
   Layers,
   MapPin,
 } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 import UITypography from '@/components/Common/UITypography';
 
@@ -31,11 +32,11 @@ export const InterviewerList = ({
   const isQualifed = interviewer.qualified_types?.length !== 0;
   const qualified_first = interviewer.qualified_types?.slice(0, 2);
   const qualified_second = interviewer.qualified_types?.slice(2);
+
+  const router = useRouter();
   return (
     <TableRow
-      onClick={() =>
-        window.open(`/user/profile/${interviewer.user_id}`, '_target')
-      }
+      onClick={() => router.push(`/user/profile/${interviewer.user_id}`)}
       className='cursor-pointer'
     >
       <TableCell>
