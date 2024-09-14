@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { InterviewTypes } from '@/components/Scheduling/InterviewTypes';
+import InterviewTypesPage from '@/components/InterviewPool';
+
+// import { InterviewTypes } from '@/components/Scheduling/InterviewTypes';
 
 function InterviewTypesPages() {
   return (
     <>
-      <InterviewTypes />
+      {/* <InterviewTypes /> */}
+      <InterviewTypesPage />
     </>
   );
 }
