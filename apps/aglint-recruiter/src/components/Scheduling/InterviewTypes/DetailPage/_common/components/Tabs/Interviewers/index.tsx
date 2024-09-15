@@ -1,13 +1,15 @@
 import { type PauseJson } from '@aglint/shared-types';
 import { Card, CardContent } from '@components/ui/card';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@components/ui/popover';
-import { MemberListCardOption } from '@devlink2/MemberListCardOption';
-import { cn } from '@lib/utils';
-import { MoreVertical, PersonStanding } from 'lucide-react';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table';
+import { PersonStanding } from 'lucide-react';
+import { Pause, Play, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -63,21 +65,13 @@ function Interviewers() {
       rel,
     }));
 
-  const headers = {
-    name: 'Name',
-    today: 'Today',
-    week: 'Week',
-    load: 'Week Load',
-    actions: '',
-  };
-
   return (
     <>
       <DeleteMemberDialog />
       <AddMemberDialog />
       <PauseDialog />
       <ResumeMemberDialog />
-      <div className='flex justify-between'>
+      <div className='flex justify-between mb-4'>
         <UITextField
           placeholder='Search interviewers...'
           className='max-w-sm bg-white'
@@ -97,92 +91,121 @@ function Interviewers() {
       </div>
       <Card>
         <CardContent className='p-0'>
-          <table className='w-full'>
-            <thead>
-              <tr className='border-b bg-gray-50'>
-                {Object.keys(headers).map((key, ind) => (
-                  <th
-                    key={key}
-                    className={cn(
-                      'p-4 text-left text-sm font-medium text-gray-700',
-                      ind === Object.keys(headers).length - 1
-                        ? 'rounded-tr-lg'
-                        : ind === 0
-                          ? 'rounded-tl-lg'
-                          : '',
-                    )}
-                  >
-                    {headers[key]}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtererdUsers.length === 0 && (
-                <tr>
-                  <td colSpan={5} className='p-4'>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className='w-4/12'>Name</TableHead>
+                <TableHead className='w-2/12'>Today</TableHead>
+                <TableHead className='w-2/12'>Week</TableHead>
+                <TableHead className='w-2/12'>Week Load</TableHead>
+                <TableHead className='w-2/12'></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtererdUsers.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className='text-center'>
                     No data found
-                  </td>
-                </tr>
-              )}
-              {filtererdUsers.map((interviewer, index) => (
-                <tr
-                  key={index}
-                  className='border-b last:border-b-0 hover:bg-gray-50'
-                >
-                  <td className='p-4'>
-                    <Link
-                      href={ROUTES['/user/profile/[user_id]']({
-                        user_id: interviewer.rel.recruiter_user.user_id,
-                      })}
-                    >
-                      <div className='flex items-center space-x-3'>
-                        <MuiAvatar
-                          src={interviewer.image}
-                          level={interviewer.name}
-                        />
-                        <div>
-                          <div className='font-medium text-gray-900 flex flex-row gap-2'>
-                            {interviewer.name}
-                            {interviewer.rel.pause_json && (
-                              <UIBadge
-                                size='sm'
-                                color='warning'
-                                textBadge={getPauseMemberText(
-                                  interviewer.rel.pause_json as PauseJson,
-                                )}
-                              />
-                            )}
-                          </div>
-                          <div className='text-sm text-gray-500'>
-                            {interviewer.role}
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filtererdUsers.map((interviewer) => (
+                  <TableRow
+                    key={interviewer.rel.recruiter_user.user_id}
+                    className='group'
+                  >
+                    <TableCell className='w-4/12'>
+                      <Link
+                        href={ROUTES['/user/profile/[user_id]']({
+                          user_id: interviewer.rel.recruiter_user.user_id,
+                        })}
+                      >
+                        <div className='flex items-center space-x-3'>
+                          <MuiAvatar
+                            src={interviewer.image}
+                            level={interviewer.name}
+                          />
+                          <div>
+                            <div className='font-medium text-gray-900 flex flex-row gap-2'>
+                              {interviewer.name}
+                              {interviewer.rel.pause_json && (
+                                <UIBadge
+                                  size='sm'
+                                  color='warning'
+                                  textBadge={getPauseMemberText(
+                                    interviewer.rel.pause_json as PauseJson,
+                                  )}
+                                />
+                              )}
+                            </div>
+                            <div className='text-sm text-gray-500'>
+                              {interviewer.role}
+                            </div>
                           </div>
                         </div>
+                      </Link>
+                    </TableCell>
+                    <TableCell className='w-2/12'>
+                      {interviewer.today}
+                    </TableCell>
+                    <TableCell className='w-2/12'>{interviewer.week}</TableCell>
+                    <TableCell className='w-2/12'>
+                      <UIBadge
+                        color={
+                          interviewer.load > 50
+                            ? 'error'
+                            : interviewer.load > 25
+                              ? 'warning'
+                              : 'success'
+                        }
+                        textBadge={interviewer.load + '%'}
+                      />
+                    </TableCell>
+                    <TableCell className='w-2/12'>
+                      <div className='invisible group-hover:visible flex space-x-2'>
+                        <UIButton
+                          variant='ghost'
+                          size='sm'
+                          onClick={() => {
+                            setSelUser(interviewer.rel);
+                            setIsDeleteMemberDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className='h-4 w-4 mr-2' />
+                          Remove
+                        </UIButton>
+                        {interviewer.rel.pause_json ? (
+                          <UIButton
+                            variant='ghost'
+                            size='sm'
+                            onClick={() => {
+                              setSelUser(interviewer.rel);
+                              setIsResumeDialogOpen(true);
+                            }}
+                          >
+                            <Play className='h-4 w-4 mr-2' />
+                            Resume
+                          </UIButton>
+                        ) : (
+                          <UIButton
+                            variant='ghost'
+                            size='sm'
+                            onClick={() => {
+                              setSelUser(interviewer.rel);
+                              setIsPauseDialogOpen(true);
+                            }}
+                          >
+                            <Pause className='h-4 w-4 mr-2' />
+                            Pause
+                          </UIButton>
+                        )}
                       </div>
-                    </Link>
-                  </td>
-                  <td className='p-4 text-gray-700'>{interviewer.today}</td>
-                  <td className='p-4 text-gray-700'>{interviewer.week}</td>
-                  <td className='p-4'>
-                    <UIBadge
-                      color={
-                        interviewer.load > 50
-                          ? 'error'
-                          : interviewer.load > 25
-                            ? 'warning'
-                            : 'success'
-                      }
-                      textBadge={interviewer.load + '%'}
-                    />
-                  </td>
-
-                  <td className='p-4'>
-                    <ThreeDot user={interviewer.rel} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </>
@@ -190,47 +213,3 @@ function Interviewers() {
 }
 
 export default Interviewers;
-
-const ThreeDot = ({
-  user,
-}: {
-  user: ReturnType<typeof useModuleAndUsers>['data']['relations'][0];
-}) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <UIButton variant='secondary' size='sm' icon={<MoreVertical />} />
-      </PopoverTrigger>
-      <PopoverContent className='w-auto p-0 rounded-md relative'>
-        <MemberListCardOption
-          isMoveToQualifierVisible={false}
-          isPauseVisible={!user.pause_json}
-          isResumeVisible={Boolean(user.pause_json)}
-          onClickRemoveModule={{
-            onClick: () => {
-              setSelUser(user);
-              setIsDeleteMemberDialogOpen(true);
-              setOpen(false);
-            },
-          }}
-          onClickResumeInterview={{
-            onClick: () => {
-              setSelUser(user);
-              setIsResumeDialogOpen(true);
-              setOpen(false);
-            },
-          }}
-          onClickPauseInterview={{
-            onClick: () => {
-              setSelUser(user);
-              setIsPauseDialogOpen(true);
-              setOpen(false);
-            },
-          }}
-        />
-      </PopoverContent>
-    </Popover>
-  );
-};

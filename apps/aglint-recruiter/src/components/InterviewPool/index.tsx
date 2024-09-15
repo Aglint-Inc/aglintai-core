@@ -69,7 +69,7 @@ export default function InterviewTypesPage() {
     <div className='min-h-screen bg-gray-100 py-8'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <h1 className='text-3xl font-bold text-gray-900 mb-8'>
-          Interview Types
+          Interview Pool
         </h1>
         <Card className='w-full'>
           <CardContent className='p-6'>
