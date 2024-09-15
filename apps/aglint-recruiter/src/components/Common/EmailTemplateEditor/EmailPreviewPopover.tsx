@@ -1,7 +1,7 @@
 import { Alert, AlertTitle } from '@components/ui/alert';
 import { Dialog, DialogContent, DialogHeader } from '@components/ui/dialog';
-import { DialogClose, DialogTitle } from '@radix-ui/react-dialog';
-import { AlertCircle, Loader2, X } from 'lucide-react';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { AlertCircle, Loader2 } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
 interface Prop {

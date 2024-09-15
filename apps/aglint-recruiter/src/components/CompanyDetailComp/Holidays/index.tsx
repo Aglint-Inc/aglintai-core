@@ -26,7 +26,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { cloneDeep } from 'lodash';
-import { Calendar as CalendarIcon, PlusIcon } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
