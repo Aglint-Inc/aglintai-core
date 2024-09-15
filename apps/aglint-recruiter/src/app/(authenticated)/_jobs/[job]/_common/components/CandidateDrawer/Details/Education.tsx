@@ -1,32 +1,81 @@
 /* eslint-disable security/detect-object-injection */
-import { Skeleton } from '@components/ui/skeleton';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion'; // Import shadcn Collapsible
+import { Skeleton } from '@components/ui/skeleton'; // shadcn Skeleton
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table'; // shadcn Table components
 import { GraduationCap, School } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useApplication } from '@/context/ApplicationContext';
 
 const Education = () => {
+  const {
+    details: { data },
+  } = useApplication();
+
+  const schoolLogos = getSchoolLogos(data);
+
   return (
-    <>
-      <div className='flex items-center space-x-4'>
-        <GraduationCap className='w-4 h-4' />
-        <h3 className='text-lg font-semibold'>Education</h3>
-      </div>
-      <div className='mt-4'>
-        <Content />
-      </div>
-    </>
+    <Accordion type='single' collapsible>
+      <AccordionItem value='education'>
+        <AccordionTrigger>
+          <div className='flex items-center justify-between w-full'>
+            <div className='flex items-center space-x-2'>
+              <GraduationCap size={16} />
+              <span className='font-medium'>Education</span>
+            </div>
+            {schoolLogos.length > 0 && (
+              <div className='flex space-x-1'>{schoolLogos}</div>
+            )}
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <Content />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
 export { Education };
 
+const getSchoolLogos = (data) => {
+  if (!data?.resume_json?.schools) return [];
+  const schools = data.resume_json.schools.slice(0, 3); // Get top 3 schools
+  return schools.map((i) => <div key={i}>TBD</div>);
+};
+
 const Content = () => {
   const {
     details: { data, status },
   } = useApplication();
-  if (status === 'pending') return <Skeleton />;
+
+  if (status === 'pending')
+    return (
+      // Updated loading state with shadcn Skeleton
+      <div className='space-y-4'>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className='p-4 border rounded-md'>
+            <Skeleton className='h-6 w-1/3 mb-2' />
+            <Skeleton className='h-4 w-1/2 mb-1' />
+            <Skeleton className='h-4 w-1/4' />
+          </div>
+        ))}
+      </div>
+    );
+
   if (
     !(
       (data?.resume_json?.schools ?? []).length &&
@@ -34,11 +83,12 @@ const Content = () => {
     )
   )
     return (
-      <GlobalEmpty
-        iconSlot={<School className='text-gray-500' />}
-        text={'No education found'}
-      />
+      <div className='flex flex-col items-center justify-center p-4'>
+        <School className='text-gray-500 w-12 h-12 mb-2' />
+        <p className='text-gray-600 text-sm'>No education found</p>
+      </div>
     );
+
   return <Schools />;
 };
 
@@ -53,29 +103,99 @@ const Schools = () => {
       },
     },
   } = useApplication();
-  return schools.map(({ institution, start, end, degree }, i) => (
-    <div key={i} className='flex items-center space-x-4 mb-4'>
-      <div className='flex-shrink-0'>{/* Placeholder for school icon */}</div>
-      <div className='flex-grow'>
-        <h4 className='text-lg font-semibold'>{degree}</h4>
-        <p className='text-sm text-gray-600'>{institution}</p>
-        <p className='text-xs text-gray-500'>
-          {timeRange(timeFormat(start), timeFormat(end))}
-        </p>
-      </div>
-      <div className='flex-shrink-0'>
-        {relevance && relevance[i] === 'high' ? (
-          <Image
-            src='/images/badges/knowledgable.svg'
-            width={16}
-            height={16}
-            alt='Knowledgeable badge'
-            className='w-4 h-4'
-          />
-        ) : null}
-      </div>
-    </div>
-  ));
+
+  // Combine schools with their relevance
+  const schoolsWithRelevance = schools.map((school, i) => ({
+    ...school,
+    relevance: relevance[i] || 'low', // Default to 'low' if not specified
+  }));
+
+  // Sort schools with 'high' relevance first
+  schoolsWithRelevance.sort((a, b) => {
+    if (a.relevance === b.relevance) return 0;
+    return a.relevance === 'high' ? -1 : 1;
+  });
+
+  // List of conjunctions to exclude from capitalization
+  const conjunctions = [
+    'and',
+    'or',
+    'but',
+    'nor',
+    'so',
+    'for',
+    'yet',
+    'the',
+    'in',
+    'of',
+  ];
+
+  // State to control the collapsible
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Determine the items to display
+  const itemsToShow = isExpanded
+    ? schoolsWithRelevance
+    : schoolsWithRelevance.slice(0, 3);
+
+  return (
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className='w-1/4'>Institution</TableHead>
+            <TableHead className='w-1/2'>Degree</TableHead>
+            <TableHead className='w-1/4'>Duration</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {itemsToShow.map(({ institution, degree, start, end }, i) => (
+            <TableRow key={i}>
+              <TableCell className='flex items-center space-x-2 w-1/4'>
+                <Image
+                  src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
+                  alt={`${institution} logo`}
+                  width={24}
+                  height={24}
+                  className='rounded-full'
+                />
+                <span>{capitalize(institution, conjunctions)}</span>
+              </TableCell>
+              <TableCell className='w-1/2'>
+                {capitalize(degree, conjunctions)}
+              </TableCell>
+              <TableCell className='w-1/4'>
+                {calculateDuration(start, end)} (
+                {timeRange(timeFormat(start), timeFormat(end))})
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {schoolsWithRelevance.length > 3 && (
+        <div className='mt-2'>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className='text-blue-500 hover:underline'
+          >
+            {isExpanded ? 'Show Less' : 'Show More'}
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
+
+// Helper function to capitalize words excluding conjunctions
+const capitalize = (text: string, conjunctions: string[]) => {
+  return text
+    .split(' ')
+    .map((word) =>
+      conjunctions.includes(word.toLowerCase())
+        ? word.toLowerCase()
+        : word.charAt(0).toUpperCase() + word.slice(1),
+    )
+    .join(' ');
 };
 
 const timeRange = (startDate: string, endDate: string) => {
@@ -99,4 +219,34 @@ const timeFormat = (
     else return null;
   } else if (isEndDate) return 'Present';
   else return null;
+};
+
+// New function to calculate duration
+const calculateDuration = (start, end) => {
+  if (!start) return '';
+
+  const startDate = new Date(start.year || 0, (start.month || 1) - 1);
+  const endDate = end
+    ? new Date(end.year || 0, (end.month || 1) - 1)
+    : new Date(); // If end date is not provided, use current date
+
+  let totalMonths =
+    (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+    (endDate.getMonth() - startDate.getMonth());
+
+  // Ensure totalMonths is not negative
+  if (totalMonths < 0) totalMonths = 0;
+
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  let duration = '';
+  if (years > 0) {
+    duration += `${years} year${years > 1 ? 's' : ''}`;
+  }
+  if (months > 0) {
+    if (duration) duration += ' ';
+    duration += `${months} month${months > 1 ? 's' : ''}`;
+  }
+  return duration || 'Less than a month';
 };

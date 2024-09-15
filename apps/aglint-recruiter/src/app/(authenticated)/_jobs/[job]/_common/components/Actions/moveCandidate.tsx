@@ -45,7 +45,7 @@ const MoveCandidate = () => {
         onClickScreening={{ style: { display: 'none' } }}
       />
       <AlertDialog open={!!actionPopup} onOpenChange={() => resetActionPopup()}>
-        <AlertDialogContent>
+        <AlertDialogContent className='p-0'>
           <MoveAction />
         </AlertDialogContent>
       </AlertDialog>
@@ -248,12 +248,11 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
   const action = `Send ${actionPopup} email${count === 1 ? '' : 's'} to ${count} candidate${count === 1 ? '' : 's'}`;
   return { title, description, buttons, action, count };
 }
-
 const ReusablePopup = ({ title, slotBody, slotButtons }) => {
   const { resetActionPopup } = useApplicationsActions();
   return (
-    <div className='flex items-center justify-center w-[500px]'>
-      <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
+    <div className='flex items-center mx-autojustify-center mx-auto w-[500px]'>
+      <div className='w-full max-w-lg'>
         <div className='flex justify-between items-center p-4 border-b border-gray-200'>
           <h2 className='font-semibold'>{title}</h2>
           <UIButton

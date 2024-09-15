@@ -16,10 +16,13 @@ export const AnalysisItem = ({
   const {
     details: { data, status },
   } = useApplication();
+
   if (status === 'pending') return <>Loading...</>;
+
   const scores = data?.score_json?.scores;
   const reasoning = data?.score_json?.reasoning;
   const reasoningType = getSafeReasoningType(type);
+
   if (
     !(
       scores &&
@@ -29,14 +32,26 @@ export const AnalysisItem = ({
     )
   )
     return <></>;
+
   const tier = getScoreTier(scores[type]);
+
   return (
-    <div className={`p-4 border rounded-md ${tier === 'High' ? 'bg-green-100' : tier === 'Medium' ? 'bg-yellow-100' : 'bg-red-100'}`}>
-      <h3 className="text-lg font-semibold">{capitalizeAll(type)}</h3>
-      <p className="mt-2">{reasoning[reasoningType]}</p>
-      <Badge className={`inline-block mt-2 px-2 py-1 text-sm font-medium rounded ${tier === 'High' ? 'bg-green-200 text-green-800' : tier === 'Medium' ? 'bg-yellow-200 text-yellow-800' : 'bg-red-200 text-red-800'}`}>
-        {`${tier} - ${scores[type]}`}
-      </Badge>
+    <div className='p-4 border rounded-md'>
+      <h3 className='text-lg font-semibold mb-2'>{capitalizeAll(type)}</h3>
+      <p className='text-sm text-gray-700'>{reasoning[reasoningType]}</p>
+      <div className='mt-2'>
+        <Badge
+          variant={
+            tier.toLowerCase() as
+              | 'default'
+              | 'destructive'
+              | 'secondary'
+              | 'outline'
+          }
+        >
+          {`${tier} - ${scores[type]}`}
+        </Badge>
+      </div>
     </div>
   );
 };

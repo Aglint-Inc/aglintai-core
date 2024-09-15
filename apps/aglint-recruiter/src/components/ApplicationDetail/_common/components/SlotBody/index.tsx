@@ -1,6 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import Loader from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
 import { Activity } from '@/job/components/CandidateDrawer/Activity';
 import { Details } from '@/job/components/CandidateDrawer/Details';
@@ -10,7 +11,6 @@ import CandidateInfo from '../CandidateInfo';
 import Requests from '../Requests';
 import Tabs, { type TabsType } from '../Tabs';
 import InterviewTabContent from './InterviewTabContent';
-import { ApplicationDetail } from './InterviewTabContent/_common/components/ui/ApplicationDetail';
 
 function SlotBody() {
   const router = useRouter();
@@ -22,44 +22,54 @@ function SlotBody() {
 
   if (isLoadingDetail) {
     return (
-      <>
-        <Loader />
-      </>
+      <div className='flex items-center justify-center h-full'>
+        <Loader2 className='w-8 h-8 animate-spin text-gray-500' />
+        <span className='sr-only'>Loading...</span>
+      </div>
     );
   }
 
+  const renderTabContent = () => {
+    switch (tab) {
+      case 'interview':
+        return <InterviewTabContent />;
+      case 'resume':
+        return <Resume />;
+      case 'scoring':
+        return <Details />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <>
-      <ApplicationDetail
-        slotTabBody={
-          <div className='h-full'>
-            {tab === 'interview' ? (
-              <div className='max-w-[1400px] p-4'>
-                <InterviewTabContent />
-              </div>
-            ) : tab === 'activity' ? (
-              <div className='max-w-[600px] p-4'>
-                <Activity />
-              </div>
-            ) : tab === 'resume' ? (
-              <div className='max-w-[900px] p-4'>
-                <Resume />
-              </div>
-            ) : tab === 'scoring' ? (
-              <div className='p-4'>
-                <Details />
-              </div>
-            ) : tab === 'requests' ? (
+    <div className='flex'>
+      <div className='w-8/12 flex flex-col gap-4 pr-6'>
+        <CandidateInfo />
+        <Tabs />
+        {renderTabContent()}
+      </div>
+      <div className='w-4/12'>
+        <div className='flex flex-col space-y-4'>
+          <Card>
+            <CardHeader>
+              <CardTitle>Requests</CardTitle>
+            </CardHeader>
+            <CardContent>
               <Requests />
-            ) : (
-              ''
-            )}
-          </div>
-        }
-        slotApplicantInfoBox={<CandidateInfo />}
-        slotTab={<Tabs />}
-      />
-    </>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Activity />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }
 

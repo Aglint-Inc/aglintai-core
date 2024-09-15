@@ -1,60 +1,39 @@
 /* eslint-disable security/detect-object-injection */
-import { CandidateDetail } from '@devlink/CandidateDetail';
-import { Brain, ChartBar } from 'lucide-react';
-import { type PropsWithChildren, type ReactNode, useMemo } from 'react';
-
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { useApplication } from '@/context/ApplicationContext';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion';
+import { Brain } from 'lucide-react';
 
 import { Badge } from './Badge';
 import { Education } from './Education';
 import { Experience } from './Experience';
 import { Skills } from './Skills';
 
-export const Analysis = (props: PropsWithChildren<{ score?: ReactNode }>) => {
-  const {
-    details: { data, status },
-  } = useApplication();
-  const scores = data?.score_json?.scores;
-  const reasoning = data?.score_json?.reasoning;
-  const isEmpty = useMemo(
-    () =>
-      !!(
-        status === 'success' &&
-        (!scores ||
-          !reasoning ||
-          Object.keys(scores ?? {}).filter((key) => {
-            const safeKey = key as keyof typeof scores;
-            switch (safeKey) {
-              case 'skills':
-                return safeKey in reasoning && reasoning?.[safeKey];
-              case 'experience':
-                return 'positions' in reasoning && reasoning?.['positions'];
-              case 'education':
-                return 'schools' in reasoning && reasoning?.['schools'];
-            }
-          }).length === 0)
-      ),
-    [status, scores, reasoning],
-  );
+export const Analysis = () => {
   return (
-    <CandidateDetail
-      slotBadge={props.score ?? <Badge />}
-      slotBody={
-        isEmpty ? (
-          <GlobalEmpty iconSlot={<ChartBar className='text-gray-500'/>} text={'No analysis found'}/>
-        ) : (
-          (props.children ?? (
-            <>
-              <Education />
-              <Skills />
-              <Experience />
-            </>
-          ))
-        )
-      }
-      slotIcon={<Brain size={16} />}
-      textTitle={'Analysis'}
-    />
+    <Accordion type='single' collapsible>
+      <AccordionItem value='analysis'>
+        <AccordionTrigger>
+          <div className='flex items-center justify-between w-full'>
+            <div className='flex items-center space-x-2'>
+              <Brain size={16} />
+              <span className='font-medium'>Analysis</span>
+            </div>
+            {/* Added summary badge */}
+            <Badge />
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className='space-y-4'>
+            <Education />
+            <Skills />
+            <Experience />
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };

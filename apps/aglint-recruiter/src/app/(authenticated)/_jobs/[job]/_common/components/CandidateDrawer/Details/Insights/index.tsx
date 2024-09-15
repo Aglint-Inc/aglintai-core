@@ -1,19 +1,35 @@
-import { type PropsWithChildren } from 'react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion';
+import { Lightbulb } from 'lucide-react';
 
 import { Badges } from './Badges';
 import { Overview } from './Overview';
 
-const Insights = (props: PropsWithChildren) => {
+export const Insights = () => {
   return (
-    <div className='flex flex-col space-y-1'>
-      {props.children ?? (
-        <>
-          <Badges />
-          <Overview />
-        </>
-      )}
-    </div>
+    <Accordion type='single' collapsible>
+      <AccordionItem value='insights'>
+        <AccordionTrigger>
+          <div className='flex items-center justify-between w-full'>
+            <div className='flex items-center space-x-2'>
+              <Lightbulb size={16} />
+              <span className='font-medium'>Insights</span>
+            </div>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className='space-y-4'>
+            <Overview />
+            <Badges />
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
-export { Insights };
+export default Insights;

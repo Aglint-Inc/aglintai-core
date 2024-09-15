@@ -55,28 +55,28 @@ function Tabs() {
       textLabel: 'Interview',
       isVisible: true,
     },
-    {
-      tab: 'requests',
-      onClick: () => {
-        router.push({
-          query: { tab: 'requests' },
-          pathname: `/jobs/${job_id}/application/${application_id}`,
-        });
-      },
-      textLabel: 'Requests',
-      isVisible: true,
-    },
-    {
-      tab: 'activity',
-      onClick: () => {
-        router.push({
-          query: { tab: 'activity' },
-          pathname: `/jobs/${job_id}/application/${application_id}`,
-        });
-      },
-      textLabel: 'Activity',
-      isVisible: true,
-    },
+    // {
+    //   tab: 'requests',
+    //   onClick: () => {
+    //     router.push({
+    //       query: { tab: 'requests' },
+    //       pathname: `/jobs/${job_id}/application/${application_id}`,
+    //     });
+    //   },
+    //   textLabel: 'Requests',
+    //   isVisible: true,
+    // },
+    // {
+    //   tab: 'activity',
+    //   onClick: () => {
+    //     router.push({
+    //       query: { tab: 'activity' },
+    //       pathname: `/jobs/${job_id}/application/${application_id}`,
+    //     });
+    //   },
+    //   textLabel: 'Activity',
+    //   isVisible: true,
+    // },
   ];
 
   const sections = allTabs

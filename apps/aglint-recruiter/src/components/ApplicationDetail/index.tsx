@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 
 import { Application } from '@/context/ApplicationContext';
 
-import { UIPageLayout } from '../Common/UIPageLayout';
 import BreadCrumb from './_common/components/BreadCrumb';
 import SlotBody from './_common/components/SlotBody';
 
@@ -14,11 +13,17 @@ function ApplicationDetailComp() {
   return (
     <>
       <Application application_id={application_id} job_id={job_id}>
-        <UIPageLayout
-          slotTopbarLeft={<BreadCrumb />}
-          slotBody={<SlotBody />}
-          slotTopbarRight={<></>}
-        />
+        <div className='min-h-screen bg-gray-100'>
+          <div className='container mx-auto p-6'>
+            <div className='flex justify-between items-center mb-6'>
+              <div>
+                <h1 className='text-3xl font-bold mb-2'>Application Details</h1>
+                <BreadCrumb />
+              </div>
+            </div>
+            <SlotBody />
+          </div>
+        </div>
       </Application>
     </>
   );

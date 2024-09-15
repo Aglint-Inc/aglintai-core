@@ -1,16 +1,36 @@
+import { Badge as UIBadge } from '@components/ui/badge';
+
 import { useApplication } from '@/context/ApplicationContext';
-import { ResumeScore } from '@/job/components/Common/ResumeScoreNew';
 
 export const Badge = () => {
   const {
     meta: { data, status },
   } = useApplication();
-  if (status === 'pending') return <>Loading score...</>;
-  if (data?.processing_status !== 'success') return <></>;
+
+  if (status === 'pending') return null;
+  if (data?.processing_status !== 'success' || data?.resume_score === undefined)
+    return null;
+
+  const tier = getScoreTier(data.resume_score); // You may need to implement getScoreTier
+
   return (
-    <ResumeScore
-      resume_processing_state='processed'
-      resume_score={data.resume_score}
-    />
+    <UIBadge
+      variant={
+        tier.toLowerCase() as
+          | 'default'
+          | 'destructive'
+          | 'secondary'
+          | 'outline'
+      }
+    >
+      {`Score: ${data.resume_score}`}
+    </UIBadge>
   );
+};
+
+// Helper function to determine the tier based on the score
+const getScoreTier = (score: number) => {
+  if (score >= 80) return 'High';
+  if (score >= 50) return 'Medium';
+  return 'Low';
 };

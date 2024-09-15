@@ -3,33 +3,38 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { CircularProgress, Dialog } from '@mui/material';
 import {
   BarChart,
   Calendar,
   FileText,
+  Loader2,
   MoreHorizontal,
   RefreshCw,
   UserPlus,
   Workflow,
-  X,
   XCircle,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
-import { ScoreSetting } from '@/job/profile-score/components/ScoreSetting';
 import { useJobs } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
@@ -95,22 +100,16 @@ const Score = () => {
   const { applicationScoringPollEnabled, job, total } = useJob();
   if (!applicationScoringPollEnabled) return null;
   return (
-    <ScoreSetting
-      textScoreCount={`${
-        job?.processing_count.processed +
-        job?.processing_count.unavailable +
-        job?.processing_count.unparsable
-      }/${total ?? '---'}`}
-      slotScoringLoader={
-        <div className='w-3 aspect-square'>
-          <CircularProgress
-            color='inherit'
-            size={'100%'}
-            className='text-white'
-          />
-        </div>
-      }
-    />
+    <div className='flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-2 rounded-md'>
+      <Loader2 className='w-4 h-4 animate-spin' />
+      <span className='text-sm font-medium'>
+        Application scoring in progress:{' '}
+        {job?.processing_count.processed +
+          job?.processing_count.unavailable +
+          job?.processing_count.unparsable}
+        /{total ?? '---'}
+      </span>
+    </div>
   );
 };
 
@@ -257,46 +256,40 @@ const Close = () => {
   const [value, setValue] = useState('');
   const job_title = job?.job_title ?? '';
   return (
-    <Dialog open={modal} onClose={() => handleCloseModal()}>
-      <div className='shadow-md p-4 rounded-lg bg-white w-[500px] relative'>
-        <button
-          className='absolute p-1 top-0 right-0 m-4 hover:bg-gray-50 rounded-md'
-          onClick={() => handleCloseModal()}
-        >
-          <X className='h-3 w-3 ' />
-        </button>
-        <h2 className='text-lg font-semibold mb-2'>
-          {isDelete ? 'Delete' : 'Close'} This Job
-        </h2>
-        <p className='text-sm text-gray-600 mb-2'>
-          {isDelete
-            ? 'Deleting this job will permanently remove all related data and make the job inaccessible. Candidate data will remain unaffected.'
-            : 'Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.'}
-        </p>
-        <p className='mb-2'>
-          Confirm by typing the job title{' '}
-          <span style={{ color: 'red' }}>{job_title.trim()}</span> below.
-        </p>
-        <div className='mb-4'>
-          <UITextField
+    <Dialog open={modal} onOpenChange={handleCloseModal}>
+      <DialogContent className='sm:max-w-[500px]'>
+        <DialogHeader>
+          <DialogTitle>{isDelete ? 'Delete' : 'Close'} This Job</DialogTitle>
+          <DialogDescription>
+            {isDelete
+              ? 'Deleting this job will permanently remove all related data and make the job inaccessible. Candidate data will remain unaffected.'
+              : 'Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.'}
+          </DialogDescription>
+        </DialogHeader>
+        <div className='py-4'>
+          <p className='mb-2'>
+            Confirm by typing the job title{' '}
+            <span className='text-red-500'>{job_title.trim()}</span> below.
+          </p>
+          <Input
             placeholder={job_title.trim()}
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            className='mb-4'
           />
         </div>
-        <div className='flex justify-end gap-2'>
-          <UIButton variant='secondary' onClick={() => handleCloseModal()}>
+        <DialogFooter>
+          <Button variant='outline' onClick={handleCloseModal}>
             Cancel
-          </UIButton>
-          <UIButton
+          </Button>
+          <Button
             onClick={handleModalSubmit}
-            variant='default'
             disabled={job_title.trim() !== value.trim()}
           >
             {isDelete ? 'Delete Job' : 'Close Job'}
-          </UIButton>
-        </div>
-      </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };
