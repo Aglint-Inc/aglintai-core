@@ -15,20 +15,22 @@ export default function InterviewDashboard() {
 
   return (
     <div className='flex'>
-      <InterviewDashboardSideNav
-        activeTab={activeTab}
-        setActiveTab={(tab) => {
-          setActiveTab(tab);
-          const url = new URL(window.location.href);
-          url.searchParams.set('tab', tab);
-          window.history.pushState({}, '', url);
-        }}
-      />
-      <div className='flex-grow flex flex-col'>
+      <div className='w-4/12 mr-6'>
+        <InterviewDashboardSideNav
+          activeTab={activeTab}
+          setActiveTab={(tab) => {
+            setActiveTab(tab);
+            const url = new URL(window.location.href);
+            url.searchParams.set('tab', tab);
+            window.history.pushState({}, '', url);
+          }}
+        />
+      </div>
+      <div className='w-8/12 flex flex-col'>
         <div className='p-6'>
           <DashboardDataFilter />
         </div>
-        <div className='flex-grow p-6'>
+        <div className='flex-grow py-6'>
           {activeTab === 'interviewMetrics' && <InterviewCount />}
           {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
           {activeTab === 'trainingMetrics' && <TrainingDashboard />}

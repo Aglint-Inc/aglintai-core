@@ -31,7 +31,7 @@ const coordinators = [
 
 export default function CoordinatorStatsTable() {
   return (
-    <Card className='w-full max-w-4xl mx-auto'>
+    <Card>
       <CardHeader>
         <CardTitle className='text-md font-semibold'>
           Coordinator Statistics

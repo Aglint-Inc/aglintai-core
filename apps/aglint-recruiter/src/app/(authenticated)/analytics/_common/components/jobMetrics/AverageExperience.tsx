@@ -7,7 +7,7 @@ import { useCandidateExp } from '../../hook/job/jobMatrix';
 export default function AverageExperience() {
   const { data, isFetching } = useCandidateExp();
   return (
-    <Card className='w-full max-w-sm mx-auto'>
+    <Card>
       <CardHeader>
         <CardTitle className='text-md font-semibold'>
           Average Experience

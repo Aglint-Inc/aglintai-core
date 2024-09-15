@@ -1,5 +1,12 @@
 import { Button } from '@components/ui/button';
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -228,222 +235,238 @@ export default function Checklist() {
   };
 
   return (
-    <div className='container mx-auto p-4'>
-      <h1 className='text-md font-semibold mb-4'>Coordinator Checklist</h1>
-      <div className='mb-4'>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline'>Toggle Columns</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {Object.keys(checklistData[0]).map((key) => (
-              <DropdownMenuCheckboxItem
-                key={key}
-                checked={visibleColumns.includes(key)}
-                onCheckedChange={() => toggleColumn(key)}
-              >
-                {key}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className='overflow-x-auto'>
-        <div className='w-max min-w-full'>
-          <Table>
-            <ScrollArea className='h-[calc(100vh-10rem)]'>
-              <TableHeader>
-                <TableRow>
-                  {visibleColumns.includes('coordinator') && (
-                    <TableHead className='w-[150px]'>Coordinator</TableHead>
-                  )}
-                  {visibleColumns.includes('candidateName') && (
-                    <TableHead className='w-[150px]'>Candidate Name</TableHead>
-                  )}
-                  {visibleColumns.includes('recruiter') && (
-                    <TableHead className='w-[150px]'>Recruiter</TableHead>
-                  )}
-                  {visibleColumns.includes('interviewType') && (
-                    <TableHead className='w-[150px]'>Interview Type</TableHead>
-                  )}
-                  {visibleColumns.includes('schedulingRequestReceived') && (
-                    <TableHead className='w-[100px]'>
-                      Scheduling Request
-                    </TableHead>
-                  )}
-                  {visibleColumns.includes('availRequestSent') && (
-                    <TableHead className='w-[100px]'>Avail Request</TableHead>
-                  )}
-                  {visibleColumns.includes('followUps') && (
-                    <TableHead className='w-[200px]'>Follow Ups</TableHead>
-                  )}
-                  {visibleColumns.includes('noResponseSentBackToRecruiter') && (
-                    <TableHead className='w-[100px]'>No Response</TableHead>
-                  )}
-                  {visibleColumns.includes('availReceived') && (
-                    <TableHead className='w-[100px]'>Avail Received</TableHead>
-                  )}
-                  {visibleColumns.includes('dateInterviewScheduled') && (
-                    <TableHead className='w-[150px]'>Interview Date</TableHead>
-                  )}
-                  {visibleColumns.includes('confirmationSent') && (
-                    <TableHead className='w-[100px]'>Confirmation</TableHead>
-                  )}
-                  {visibleColumns.includes(
-                    'candidateReminderEmailScheduled',
-                  ) && <TableHead className='w-[100px]'>Reminder</TableHead>}
-                  {visibleColumns.includes('debriefScheduled') && (
-                    <TableHead className='w-[100px]'>Debrief</TableHead>
-                  )}
-                  {visibleColumns.includes('rescheduled') && (
-                    <TableHead className='w-[100px]'>Rescheduled</TableHead>
-                  )}
-                  {visibleColumns.includes('candidateStatus') && (
-                    <TableHead className='w-[150px]'>
-                      Candidate Status
-                    </TableHead>
-                  )}
-                  {visibleColumns.includes('recLeadTimeToSchedule') && (
-                    <TableHead className='w-[100px]'>Lead Time</TableHead>
-                  )}
-                  {visibleColumns.includes('daysToSchedule') && (
-                    <TableHead className='w-[100px]'>
-                      Days to Schedule
-                    </TableHead>
-                  )}
-                  {visibleColumns.includes('daysToInterview') && (
-                    <TableHead className='w-[100px]'>
-                      Days to Interview
-                    </TableHead>
-                  )}
-                  {visibleColumns.includes('weeklyCalculation') && (
-                    <TableHead className='w-[150px]'>
-                      Weekly Calculation
-                    </TableHead>
-                  )}
-                  {visibleColumns.includes('daysToDebrief') && (
-                    <TableHead className='w-[100px]'>Days to Debrief</TableHead>
-                  )}
-                  {visibleColumns.includes('notes') && (
-                    <TableHead className='w-[200px]'>Notes</TableHead>
-                  )}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {checklistData.map((item) => (
-                  <TableRow key={item.id}>
+    <Card className='w-full'>
+      <CardHeader>
+        <CardTitle>Coordinator Checklist</CardTitle>
+        <CardDescription>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline'>Toggle Columns</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {Object.keys(checklistData[0]).map((key) => (
+                <DropdownMenuCheckboxItem
+                  key={key}
+                  checked={visibleColumns.includes(key)}
+                  onCheckedChange={() => toggleColumn(key)}
+                >
+                  {key}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className='overflow-x-auto'>
+          <div className='w-max min-w-full'>
+            <Table>
+              <ScrollArea className='h-[calc(100vh-15rem)]'>
+                <TableHeader>
+                  <TableRow>
                     {visibleColumns.includes('coordinator') && (
-                      <TableCell>{item.coordinator}</TableCell>
+                      <TableHead className='w-[150px]'>Coordinator</TableHead>
                     )}
                     {visibleColumns.includes('candidateName') && (
-                      <TableCell>{item.candidateName}</TableCell>
+                      <TableHead className='w-[150px]'>
+                        Candidate Name
+                      </TableHead>
                     )}
                     {visibleColumns.includes('recruiter') && (
-                      <TableCell>{item.recruiter}</TableCell>
+                      <TableHead className='w-[150px]'>Recruiter</TableHead>
                     )}
                     {visibleColumns.includes('interviewType') && (
-                      <TableCell>{item.interviewType}</TableCell>
+                      <TableHead className='w-[150px]'>
+                        Interview Type
+                      </TableHead>
                     )}
                     {visibleColumns.includes('schedulingRequestReceived') && (
-                      <TableCell>
-                        {item.schedulingRequestReceived ? (
-                          <CheckIcon />
-                        ) : (
-                          <XIcon />
-                        )}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>
+                        Scheduling Request
+                      </TableHead>
                     )}
                     {visibleColumns.includes('availRequestSent') && (
-                      <TableCell>
-                        {item.availRequestSent ? <CheckIcon /> : <XIcon />}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>Avail Request</TableHead>
                     )}
                     {visibleColumns.includes('followUps') && (
-                      <TableCell>
-                        <div className='flex space-x-2'>
-                          {item.followUps.map((followUp, index) => (
-                            <span key={index}>
-                              {followUp ? <CheckIcon /> : <XIcon />}
-                            </span>
-                          ))}
-                        </div>
-                      </TableCell>
+                      <TableHead className='w-[200px]'>Follow Ups</TableHead>
                     )}
                     {visibleColumns.includes(
                       'noResponseSentBackToRecruiter',
                     ) && (
-                      <TableCell>
-                        {item.noResponseSentBackToRecruiter ? (
-                          <CheckIcon />
-                        ) : (
-                          <XIcon />
-                        )}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>No Response</TableHead>
                     )}
                     {visibleColumns.includes('availReceived') && (
-                      <TableCell>
-                        {item.availReceived ? <CheckIcon /> : <XIcon />}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>
+                        Avail Received
+                      </TableHead>
                     )}
                     {visibleColumns.includes('dateInterviewScheduled') && (
-                      <TableCell>
-                        {item.dateInterviewScheduled || 'Not scheduled'}
-                      </TableCell>
+                      <TableHead className='w-[150px]'>
+                        Interview Date
+                      </TableHead>
                     )}
                     {visibleColumns.includes('confirmationSent') && (
-                      <TableCell>
-                        {item.confirmationSent ? <CheckIcon /> : <XIcon />}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>Confirmation</TableHead>
                     )}
                     {visibleColumns.includes(
                       'candidateReminderEmailScheduled',
-                    ) && (
-                      <TableCell>
-                        {item.candidateReminderEmailScheduled ? (
-                          <CheckIcon />
-                        ) : (
-                          <XIcon />
-                        )}
-                      </TableCell>
-                    )}
+                    ) && <TableHead className='w-[100px]'>Reminder</TableHead>}
                     {visibleColumns.includes('debriefScheduled') && (
-                      <TableCell>
-                        {item.debriefScheduled ? <CheckIcon /> : <XIcon />}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>Debrief</TableHead>
                     )}
                     {visibleColumns.includes('rescheduled') && (
-                      <TableCell>
-                        {item.rescheduled ? <CheckIcon /> : <XIcon />}
-                      </TableCell>
+                      <TableHead className='w-[100px]'>Rescheduled</TableHead>
                     )}
                     {visibleColumns.includes('candidateStatus') && (
-                      <TableCell>{item.candidateStatus}</TableCell>
+                      <TableHead className='w-[150px]'>
+                        Candidate Status
+                      </TableHead>
                     )}
                     {visibleColumns.includes('recLeadTimeToSchedule') && (
-                      <TableCell>{item.recLeadTimeToSchedule}</TableCell>
+                      <TableHead className='w-[100px]'>Lead Time</TableHead>
                     )}
                     {visibleColumns.includes('daysToSchedule') && (
-                      <TableCell>{item.daysToSchedule || 'N/A'}</TableCell>
+                      <TableHead className='w-[100px]'>
+                        Days to Schedule
+                      </TableHead>
                     )}
                     {visibleColumns.includes('daysToInterview') && (
-                      <TableCell>{item.daysToInterview || 'N/A'}</TableCell>
+                      <TableHead className='w-[100px]'>
+                        Days to Interview
+                      </TableHead>
                     )}
                     {visibleColumns.includes('weeklyCalculation') && (
-                      <TableCell>{item.weeklyCalculation}</TableCell>
+                      <TableHead className='w-[150px]'>
+                        Weekly Calculation
+                      </TableHead>
                     )}
                     {visibleColumns.includes('daysToDebrief') && (
-                      <TableCell>{item.daysToDebrief || 'N/A'}</TableCell>
+                      <TableHead className='w-[100px]'>
+                        Days to Debrief
+                      </TableHead>
                     )}
                     {visibleColumns.includes('notes') && (
-                      <TableCell>{item.notes}</TableCell>
+                      <TableHead className='w-[200px]'>Notes</TableHead>
                     )}
                   </TableRow>
-                ))}
-              </TableBody>
-            </ScrollArea>
-          </Table>
+                </TableHeader>
+                <TableBody>
+                  {checklistData.map((item) => (
+                    <TableRow key={item.id}>
+                      {visibleColumns.includes('coordinator') && (
+                        <TableCell>{item.coordinator}</TableCell>
+                      )}
+                      {visibleColumns.includes('candidateName') && (
+                        <TableCell>{item.candidateName}</TableCell>
+                      )}
+                      {visibleColumns.includes('recruiter') && (
+                        <TableCell>{item.recruiter}</TableCell>
+                      )}
+                      {visibleColumns.includes('interviewType') && (
+                        <TableCell>{item.interviewType}</TableCell>
+                      )}
+                      {visibleColumns.includes('schedulingRequestReceived') && (
+                        <TableCell>
+                          {item.schedulingRequestReceived ? (
+                            <CheckIcon />
+                          ) : (
+                            <XIcon />
+                          )}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('availRequestSent') && (
+                        <TableCell>
+                          {item.availRequestSent ? <CheckIcon /> : <XIcon />}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('followUps') && (
+                        <TableCell>
+                          <div className='flex space-x-2'>
+                            {item.followUps.map((followUp, index) => (
+                              <span key={index}>
+                                {followUp ? <CheckIcon /> : <XIcon />}
+                              </span>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes(
+                        'noResponseSentBackToRecruiter',
+                      ) && (
+                        <TableCell>
+                          {item.noResponseSentBackToRecruiter ? (
+                            <CheckIcon />
+                          ) : (
+                            <XIcon />
+                          )}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('availReceived') && (
+                        <TableCell>
+                          {item.availReceived ? <CheckIcon /> : <XIcon />}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('dateInterviewScheduled') && (
+                        <TableCell>
+                          {item.dateInterviewScheduled || 'Not scheduled'}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('confirmationSent') && (
+                        <TableCell>
+                          {item.confirmationSent ? <CheckIcon /> : <XIcon />}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes(
+                        'candidateReminderEmailScheduled',
+                      ) && (
+                        <TableCell>
+                          {item.candidateReminderEmailScheduled ? (
+                            <CheckIcon />
+                          ) : (
+                            <XIcon />
+                          )}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('debriefScheduled') && (
+                        <TableCell>
+                          {item.debriefScheduled ? <CheckIcon /> : <XIcon />}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('rescheduled') && (
+                        <TableCell>
+                          {item.rescheduled ? <CheckIcon /> : <XIcon />}
+                        </TableCell>
+                      )}
+                      {visibleColumns.includes('candidateStatus') && (
+                        <TableCell>{item.candidateStatus}</TableCell>
+                      )}
+                      {visibleColumns.includes('recLeadTimeToSchedule') && (
+                        <TableCell>{item.recLeadTimeToSchedule}</TableCell>
+                      )}
+                      {visibleColumns.includes('daysToSchedule') && (
+                        <TableCell>{item.daysToSchedule || 'N/A'}</TableCell>
+                      )}
+                      {visibleColumns.includes('daysToInterview') && (
+                        <TableCell>{item.daysToInterview || 'N/A'}</TableCell>
+                      )}
+                      {visibleColumns.includes('weeklyCalculation') && (
+                        <TableCell>{item.weeklyCalculation}</TableCell>
+                      )}
+                      {visibleColumns.includes('daysToDebrief') && (
+                        <TableCell>{item.daysToDebrief || 'N/A'}</TableCell>
+                      )}
+                      {visibleColumns.includes('notes') && (
+                        <TableCell>{item.notes}</TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </ScrollArea>
+            </Table>
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

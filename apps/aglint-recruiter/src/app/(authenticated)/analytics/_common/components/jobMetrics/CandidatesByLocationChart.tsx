@@ -5,12 +5,11 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 import { useJobLocations } from '../../hook/job/jobMatrix';
 
-
 export default function CandidatesByLocationChart() {
   const { data, view, setView } = useJobLocations();
 
   return (
-    <Card className='w-full max-w-3xl mx-auto'>
+    <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle className='text-md font-semibold'>Candidates By</CardTitle>
         <div className='flex space-x-2'>

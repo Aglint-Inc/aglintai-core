@@ -27,7 +27,7 @@ const modules = [
 
 export default function InterviewModulesTable() {
   return (
-    <Card className='w-full max-w-4xl mx-auto'>
+    <Card>
       <CardHeader>
         <CardTitle className='text-2xl font-bold'>Interview Modules</CardTitle>
       </CardHeader>

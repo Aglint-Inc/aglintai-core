@@ -12,7 +12,7 @@ const Analytics = () => {
   const activeTab = useSearchParams().get('tab');
 
   return (
-    <div className='flex-grow p-6'>
+    <div className='flex flex-col gap-6'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
       {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
       {/* {activeTab === 'trainingMetrics' && <TrainingDashboard />} */}

@@ -17,7 +17,7 @@ export default function DeclineLeadTimeChart() {
   const data = useDeclineCount();
   const averageLeadTime = data.average || 0;
   return (
-    <Card className='w-full max-w-2xl mx-auto'>
+    <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <div>
           <CardTitle className='text-md font-semibold'>

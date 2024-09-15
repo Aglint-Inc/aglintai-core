@@ -1,5 +1,4 @@
 import { Button } from '@components/ui/button';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import {
   Briefcase,
@@ -18,7 +17,6 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Component({
-  className,
   activeTab,
   setActiveTab,
 }: SidebarProps) {
@@ -61,30 +59,21 @@ export default function Component({
   ];
 
   return (
-    <div className={cn('pb-12 w-64', className)}>
-      <div className='space-y-4 py-4'>
-        <div className='px-3 py-2'>
-          <div className='space-y-1'>
-            <ScrollArea className='h-[calc(100vh-8rem)] px-2'>
-              {navItems.map((item) => (
-                <Button
-                  key={item.value}
-                  variant={activeTab === item.value ? 'secondary' : 'ghost'}
-                  size='sm'
-                  onClick={() => setActiveTab(item.value)}
-                  className={cn(
-                    'w-full justify-start',
-                    activeTab === item.value ? 'bg-muted hover:bg-muted' : '',
-                  )}
-                >
-                  <item.icon className='mr-2 h-4 w-4' />
-                  {item.title}
-                </Button>
-              ))}
-            </ScrollArea>
-          </div>
-        </div>
-      </div>
+    <div className='space-y-1'>
+      {navItems.map((item) => (
+        <Button
+          key={item.value}
+          variant={activeTab === item.value ? 'secondary' : 'ghost'}
+          onClick={() => setActiveTab(item.value)}
+          className={cn(
+            'w-full justify-start',
+            activeTab === item.value ? 'bg-muted hover:bg-muted' : '',
+          )}
+        >
+          <item.icon className='mr-2 h-4 w-4' />
+          {item.title}
+        </Button>
+      ))}
     </div>
   );
 }
