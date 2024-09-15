@@ -45,7 +45,7 @@ import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useTour } from '@/context/TourContext';
+import { TourProvider, useTour } from '@/context/TourContext';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -61,8 +61,11 @@ export const JobProfileScoreDashboard = () => {
 
   return jobLoad ? (
     job && isScoringEnabled && job?.status !== 'closed' ? (
-      <ProfileScorePage />
+      <TourProvider>
+        <ProfileScorePage />
+      </TourProvider>
     ) : (
+      // TODO: When we move to app router, we should move to separate component
       <div className='flex items-center justify-center h-screen'>
         <div className='text-center'>
           <h1 className='text-2xl font-bold mb-4'>Job Not Found</h1>
@@ -74,8 +77,33 @@ export const JobProfileScoreDashboard = () => {
       </div>
     )
   ) : (
-    <div className='flex items-center justify-center h-screen'>
-      <Loader2 className='h-32 w-32 animate-spin text-gray-900' />
+    // TODO: When we move to app router, we should move to separate skeleton component
+    <div className='container mx-auto p-6 flex flex-col space-y-6'>
+      <div className='flex justify-between items-center'>
+        <div className='space-y-2'>
+          <Skeleton className='h-8 w-64' />
+          <Skeleton className='h-4 w-32' />
+        </div>
+        <Skeleton className='h-10 w-10 rounded-full' />
+      </div>
+      <div className='flex gap-6'>
+        <div className='w-1/4'>
+          <Skeleton className='h-[calc(100vh-200px)] w-full' />
+        </div>
+        <div className='w-3/4 space-y-4'>
+          <Skeleton className='h-6 w-48' />
+          <Skeleton className='h-4 w-full' />
+          <div className='flex gap-6'>
+            <div className='flex-1'>
+              <Skeleton className='h-64 w-full' />
+            </div>
+            <div className='w-1/3 space-y-4'>
+              <Skeleton className='h-40 w-full' />
+              <Skeleton className='h-40 w-full' />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -83,11 +111,11 @@ export const JobProfileScoreDashboard = () => {
 const ProfileScorePage = () => {
   return (
     <>
-      <div className='min-h-screen bg-gray-100'>
-        <div className='container mx-auto p-6'>
+      <div className='min-h-screen'>
+        <div className='container mx-auto'>
           <div className='flex justify-between items-center mb-6'>
             <div>
-              <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             <Settings />

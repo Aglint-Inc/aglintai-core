@@ -13,11 +13,11 @@ function ApplicationDetailComp() {
   return (
     <>
       <Application application_id={application_id} job_id={job_id}>
-        <div className='min-h-screen bg-gray-100'>
-          <div className='container mx-auto p-6'>
+        <div className='min-h-screen'>
+          <div className='container mx-auto'>
             <div className='flex justify-between items-center mb-6'>
               <div>
-                <h1 className='text-3xl font-bold mb-2'>Application Details</h1>
+                <h1 className='text-2xl font-bold mb-2'>Application Details</h1>
                 <BreadCrumb />
               </div>
             </div>

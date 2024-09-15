@@ -6,11 +6,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { Skeleton } from '@components/ui/skeleton';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJobs } from '@/jobs/hooks';
@@ -43,7 +43,22 @@ const DashboardComp = () => {
   return (
     <div className='h-full w-full'>
       {!initialLoad ? (
-        <Loader />
+        <div className='container mx-auto space-y-4'>
+          <div className='flex justify-between items-center'>
+            <div className='space-y-2'>
+              <Skeleton className='h-8 w-[200px]' />
+              <Skeleton className='h-4 w-[300px]' />
+            </div>
+            <Skeleton className='h-10 w-[100px]' />
+          </div>
+          <div className='space-y-2'>
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-full' />
+          </div>
+        </div>
       ) : (
         <>
           {data?.length === 0 ? (
@@ -55,8 +70,8 @@ const DashboardComp = () => {
               ['manage_job'],
             )
           ) : (
-            <div className='min-h-screen bg-gray-100'>
-              <div className='container mx-auto p-4'>
+            <div className='min-h-screen'>
+              <div className='container mx-auto'>
                 <h1 className='text-2xl font-bold mb-4'>Jobs</h1>
                 <div className='flex flex-col gap-4 mb-4'>
                   <div className='flex justify-between items-center'>

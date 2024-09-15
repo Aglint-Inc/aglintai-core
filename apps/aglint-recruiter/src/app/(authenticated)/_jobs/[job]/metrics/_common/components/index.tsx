@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -32,8 +33,43 @@ export const JobDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='w-full h-screen flex items-center justify-center'>
-      <Loader />
+    <div className='container mx-auto'>
+      <div className='space-y-6 w-full'>
+        <div className='space-y-2'>
+          <Skeleton className='h-8 w-[200px]' />
+          <Skeleton className='h-4 w-[300px]' />
+        </div>
+        <div className='grid grid-cols-4 gap-4'>
+          {[...Array(4)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader className='space-y-2'>
+                <Skeleton className='h-4 w-1/2' />
+                <Skeleton className='h-8 w-3/4' />
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+        <div className='grid grid-cols-2 gap-4'>
+          {[...Array(2)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Skeleton className='h-6 w-1/3' />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className='h-[200px] w-full' />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Card>
+          <CardHeader>
+            <Skeleton className='h-6 w-1/4' />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className='h-[300px] w-full' />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
@@ -82,19 +118,19 @@ const Dashboard = () => {
   // const [, setStorage] = useLocalStorage('scheduleFilterIds');
 
   return (
-    <div className='min-h-screen bg-gray-100'>
-      <div className='container mx-auto p-6'>
+    <div className='min-h-screen'>
+      <div className='container mx-auto'>
         <div className='flex justify-between items-center mb-6'>
           <div>
-            <h1 className='text-3xl font-bold mb-2'>Job Analytics</h1>
+            <h1 className='text-2xl font-bold mb-2'>Job Analytics</h1>
             <SharedBreadCrumbs />
           </div>
           <SharedActions />
         </div>
 
         <div className='flex flex-col gap-6 mb-6'>
-          <div className='container mx-auto'>
-            <div className='py-8 flex flex-col gap-4'>
+          <div>
+            <div className='py-4 flex flex-col gap-4'>
               {/* {banners.length > 0 && (
                 <div className='flex flex-col gap-1'>
                   {banners.map((banner, i) => (

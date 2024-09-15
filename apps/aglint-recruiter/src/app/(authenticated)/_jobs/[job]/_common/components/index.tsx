@@ -1,6 +1,6 @@
 import { ScrollArea } from '@components/ui/scroll-area';
+import { Skeleton } from '@components/ui/skeleton';
 
-import Loader from '@/components/Common/Loader';
 import { useApplicationsChecklist, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
@@ -21,8 +21,34 @@ export const ApplicationsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='w-full h-screen flex items-center justify-center'>
-      <Loader />
+    <div className='container mx-auto p-8 space-y-6'>
+      <div className='flex justify-between items-center mb-6'>
+        <div className='space-y-2'>
+          <Skeleton className='h-8 w-48' />
+          <Skeleton className='h-4 w-64' />
+        </div>
+        <Skeleton className='h-10 w-24' />
+      </div>
+      <div className='bg-white rounded-lg shadow p-4 space-y-4'>
+        <div className='flex space-x-2'>
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className='h-8 w-24' />
+          ))}
+        </div>
+        <div className='flex justify-between items-center'>
+          <div className='flex space-x-2'>
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className='h-8 w-24' />
+            ))}
+          </div>
+          <Skeleton className='h-8 w-24' />
+        </div>
+        <div className='space-y-2'>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <Skeleton key={i} className='h-12 w-full' />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -31,11 +57,11 @@ const ApplicationsComponent = () => {
   const checklist = useApplicationsChecklist();
   return (
     <DNDProvider>
-      <div className='min-h-screen bg-gray-100'>
-        <div className='container mx-auto p-6'>
+      <div className='min-h-screen'>
+        <div className='container mx-auto'>
           <div className='flex justify-between items-center mb-6'>
             <div>
-              <h1 className='text-3xl font-bold mb-2'>Job Details</h1>
+              <h1 className='text-2xl font-bold mb-2'>Job Details</h1>
               <SharedBreadCrumbs />
             </div>
             <SharedActions />

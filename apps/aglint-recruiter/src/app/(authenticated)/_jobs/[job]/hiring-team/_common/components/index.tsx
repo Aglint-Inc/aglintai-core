@@ -101,11 +101,11 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <div className='min-h-screen bg-gray-100'>
-      <div className='container mx-auto p-6'>
+    <div className='min-h-screen'>
+      <div className='container mx-auto'>
         <div className='flex justify-between items-center mb-6'>
           <div>
-            <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+            <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
             <BreadCrumbs job={job} />
           </div>
           <Settings />
@@ -116,28 +116,32 @@ const JobEdit = () => {
             <JobsSideNavV2 />
           </div>
           <div className='w-3/4'>
-            <div
-              className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
-            >
-              <div className='flex items-center space-x-2 text-sm text-gray-600'>
-                {saving ? (
-                  <>
-                    <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
-                    <span>Saving changes...</span>
-                  </>
-                ) : (
-                  <>
-                    <CheckIcon className='w-4 h-4 text-green-500' />
-                    <span>Changes saved</span>
-                  </>
-                )}
+            <div className='flex flex-row justify-between'>
+              <div className='flex flex-col gap-2'>
+                <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
+                <p className='text-sm text-gray-600 mb-4'>
+                  Update the hiring team details here. Changes will be saved
+                  automatically.
+                </p>
+              </div>
+              <div
+                className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                  {saving ? (
+                    <>
+                      <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
+                      <span>Saving changes...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckIcon className='w-4 h-4 text-green-500' />
+                      <span>Changes saved</span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-            <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
-            <p className='text-sm text-gray-600 mb-4'>
-              Update the hiring team details here. Changes will be saved
-              automatically.
-            </p>
             <JobEditForm
               fields={fields}
               setFields={setFields}

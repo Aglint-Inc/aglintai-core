@@ -25,11 +25,11 @@ export const JobWorkflowDashboard = () => {
 
   return jobLoad ? (
     job && job?.status !== 'closed' ? (
-      <div className='min-h-screen bg-gray-100'>
-        <div className='container mx-auto p-6'>
+      <div className='min-h-screen'>
+        <div className='container mx-auto'>
           <div className='flex justify-between items-center mb-6'>
             <div>
-              <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             <Actions />
@@ -96,7 +96,11 @@ const Actions = () => {
     <>
       <div className='flex justify-between items-center gap-2'>
         {manageJob && (
-          <Button onClick={() => setPopup({ open: true })} size='sm'>
+          <Button
+            variant='outline'
+            onClick={() => setPopup({ open: true })}
+            size='sm'
+          >
             <Zap className='mr-2 h-4 w-4' />
             Add
           </Button>

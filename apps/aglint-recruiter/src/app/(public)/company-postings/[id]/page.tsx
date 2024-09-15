@@ -1,5 +1,4 @@
 'use client';
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -35,23 +34,23 @@ function JobPost({ params: { id } }: { params: { id: string } }) {
   }, []);
 
   return (
-    <Stack height={'100vh'}>
+    <div className='h-screen'>
       <SeoPro
         title={recruiter?.name || 'Company | Aglint AI'}
         description='AI for People Products'
       />
       {loading ? (
-        <Stack height='100vh' justifyContent='center' alignItems='center'>
+        <div className='h-screen flex justify-center items-center'>
           <Loader />
-        </Stack>
+        </div>
       ) : valid ? (
         <CompanyJobPost recruiter={recruiter} jobs={jobs} />
       ) : (
-        <Stack height='100vh' justifyContent='center' alignItems='center'>
+        <div className='h-screen flex justify-center items-center'>
           <JobNotFound />
-        </Stack>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }
 

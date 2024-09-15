@@ -1,9 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { SheetContent, SheetTrigger } from '@components/ui/sheet';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@components/ui/dialog';
 import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
-import { FileQuestion, Sheet } from 'lucide-react';
+import { FileQuestion } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -44,11 +50,11 @@ const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
     interviewModules: { data },
   } = useJobInterviewPlan();
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Dialog>
+      <DialogTrigger asChild>
         <Button onClick={() => handleClose()}>Close</Button>
-      </SheetTrigger>
-      <SheetContent side='right'>
+      </DialogTrigger>
+      <DialogContent className='sm:max-w-[425px]'>
         {data.length ? (
           <InterviewSideDrawer
             drawers={drawers}
@@ -59,10 +65,12 @@ const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
             <div className='mb-2'>
               <FileQuestion size={80} />
             </div>
-            <h3 className='text-lg font-semibold mb-2'>No Interview Plan</h3>
-            <p className='text-sm text-gray-600 mb-4'>
+            <DialogTitle className='text-lg font-semibold mb-2'>
+              No Interview Plan
+            </DialogTitle>
+            <DialogDescription className='text-sm text-gray-600 mb-4'>
               Create an interview plan to get started
-            </p>
+            </DialogDescription>
             <Button
               onClick={() => push('/scheduling?tab=interviewtypes')}
               className='bg-primary text-white hover:bg-primary-dark'
@@ -71,8 +79,8 @@ const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
             </Button>
           </div>
         )}
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { Edit } from 'lucide-react';
 import { useRouter } from 'next/router';
 
@@ -22,7 +21,7 @@ function ButtonGroupRight({
 
   const interview_meeting = currentSession.interview_meeting;
   return (
-    <Stack direction={'row'} spacing={'var(--space-2)'}>
+    <div className='flex gap-2'>
       {isViewDetailVisible &&
         (interview_meeting?.status === 'completed' ||
           interview_meeting?.status === 'confirmed' ||
@@ -58,7 +57,7 @@ function ButtonGroupRight({
             }}
           />
         )}
-    </Stack>
+    </div>
   );
 }
 

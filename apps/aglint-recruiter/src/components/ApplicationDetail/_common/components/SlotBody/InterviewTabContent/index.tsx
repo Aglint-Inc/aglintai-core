@@ -1,6 +1,5 @@
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Stack } from '@mui/material';
 import { ExternalLink } from 'lucide-react';
 
 import Loader from '@/components/Common/Loader';
@@ -26,16 +25,16 @@ function InterviewTabContent() {
 
   if (isLoadingSession || isLoadingDetail)
     return (
-      <Stack height={'50vh'}>
+      <div className='h-[50vh] flex items-center justify-center'>
         <Loader />
-      </Stack>
+      </div>
     );
 
   if (stages.length === 0)
     return (
-      <Stack padding={'var(--space-4)'}>
+      <div className='p-4'>
         <ActionEmptyState />
-      </Stack>
+      </div>
     );
 
   return (

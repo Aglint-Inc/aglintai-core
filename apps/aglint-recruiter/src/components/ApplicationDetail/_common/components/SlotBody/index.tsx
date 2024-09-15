@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Skeleton } from '@components/ui/skeleton';
 import { useRouter } from 'next/router';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -22,10 +22,45 @@ function SlotBody() {
 
   if (isLoadingDetail) {
     return (
-      <div className='flex items-center justify-center h-full'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-500' />
-        <span className='sr-only'>Loading...</span>
-      </div>
+      <Card className='container mx-auto'>
+        <CardContent className='p-6'>
+          <div className='flex space-x-6'>
+            <div className='w-8/12 space-y-4'>
+              <Skeleton className='h-24 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-64 w-full' />
+            </div>
+            <div className='w-4/12 space-y-4'>
+              <Card>
+                <CardHeader>
+                  <Skeleton className='h-6 w-24' />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className='h-32 w-full' />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Skeleton className='h-6 w-24' />
+                </CardHeader>
+                <CardContent>
+                  <div className='space-y-2'>
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className='flex items-center space-x-2'>
+                        <Skeleton className='h-8 w-8 rounded-full' />
+                        <div className='space-y-1 flex-1'>
+                          <Skeleton className='h-4 w-full' />
+                          <Skeleton className='h-3 w-3/4' />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

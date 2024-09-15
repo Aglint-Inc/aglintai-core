@@ -118,11 +118,11 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='min-h-screen bg-gray-100'>
-        <div className='container mx-auto p-6'>
+      <div className='min-h-screen'>
+        <div className='container mx-auto'>
           <div className='flex justify-between items-center mb-6'>
             <div>
-              <h1 className='text-3xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             <Settings />
@@ -133,11 +133,15 @@ const InterviewPlanPage = () => {
               <JobsSideNavV2 />
             </div>
             <div className='w-3/4'>
-              <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
-              <p className='text-sm text-gray-600 mb-4'>
-                Update the hiring team details here. Changes will be saved
-                automatically.
-              </p>
+              <div className='flex flex-row justify-between'>
+                <div className='flex flex-col gap-2'>
+                  <h2 className='text-xl font-bold mb-2'>Interview Plan</h2>
+                  <p className='text-sm text-gray-600 mb-4'>
+                    Update the hiring team details here. Changes will be saved
+                    automatically.
+                  </p>
+                </div>
+              </div>
               <Tabs defaultValue='internal'>
                 <TabsList>
                   <TabsTrigger value='internal'>Internal</TabsTrigger>

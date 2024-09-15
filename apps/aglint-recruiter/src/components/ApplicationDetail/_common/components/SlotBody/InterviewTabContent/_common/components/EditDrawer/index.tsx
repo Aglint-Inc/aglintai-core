@@ -1,5 +1,4 @@
 import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
-import { Stack } from '@mui/material';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
@@ -59,7 +58,7 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
         </>
       }
     >
-      <Stack>
+      <div>
         {editSession &&
         editSession.interview_session.session_type !== 'debrief' ? (
           <SidedrawerBodySession
@@ -106,7 +105,7 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
         ) : (
           editSession && <DebriedForm />
         )}
-      </Stack>
+      </div>
     </UIDrawer>
   );
 }
