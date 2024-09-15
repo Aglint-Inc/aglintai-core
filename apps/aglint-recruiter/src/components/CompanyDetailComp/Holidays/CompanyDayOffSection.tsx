@@ -77,7 +77,9 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
         <Button variant='outline' onClick={openCompany}>
           Learn How
         </Button>
-        <Button onClick={openAddCompany}>Add Day Off</Button>
+        <Button variant='outline' size='sm' onClick={openAddCompany}>
+          Add Day Off
+        </Button>
       </div>
 
       <div className='space-y-2'>

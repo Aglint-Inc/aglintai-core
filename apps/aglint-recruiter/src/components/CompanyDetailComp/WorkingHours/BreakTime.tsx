@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -46,6 +52,9 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
     <Card className='relative group'>
       <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Break Time</CardTitle>
+        <CardDescription className='text-sm text-gray-500'>
+          Set the default break time for your company&apos;s working hours.
+        </CardDescription>
         <Popover>
           <PopoverTrigger asChild>
             <Button

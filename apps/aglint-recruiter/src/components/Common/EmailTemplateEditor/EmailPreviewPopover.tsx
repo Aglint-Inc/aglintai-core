@@ -1,21 +1,19 @@
 import { Alert, AlertTitle } from '@components/ui/alert';
-import { Button } from '@components/ui/button';
-import { Dialog, DialogContent } from '@components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader } from '@components/ui/dialog';
+import { DialogClose, DialogTitle } from '@radix-ui/react-dialog';
 import { AlertCircle, Loader2, X } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import { PreviewEmail } from './PreviewEmail';
-
 interface Prop {
-  Loading: boolean;
+  isLoading: boolean;
   anchorEl: HTMLButtonElement;
   setAnchorEl: Dispatch<SetStateAction<HTMLButtonElement>>;
-  setHtml: any;
-  isHtml: any;
+  setHtml: Dispatch<SetStateAction<string | null>>;
+  isHtml: string | null;
 }
 
 export default function EmailPreviewPopover({
-  Loading,
+  isLoading,
   anchorEl,
   setAnchorEl,
   setHtml,
@@ -26,44 +24,34 @@ export default function EmailPreviewPopover({
     setAnchorEl(null);
     setHtml(null);
   };
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className='w-auto max-w-none p-0'>
-        <PreviewEmail
-          slotContent={
-            Loading ? (
-              <div className='flex items-center justify-center h-[800px]'>
-                <Loader2 className='h-8 w-8 animate-spin' />
-              </div>
-            ) : (
-              <>
-                <div className='flex items-center bg-[#f1f0ef] pt-4 pb-2'>
-                  <div>
-                    <Alert>
-                      <AlertCircle className='h-4 w-4' />
-                      <AlertTitle>
-                        This email contains sample data for preview purposes
-                        only.
-                      </AlertTitle>
-                    </Alert>
-                  </div>
-                </div>
-                <div className='h-full'>
-                  <iframe
-                    className='h-full w-full'
-                    srcDoc={isHtml}
-                    title='Preview Email'
-                  />
-                </div>
-              </>
-            )
-          }
-          slotClose={
-            <Button variant='ghost' size='sm' onClick={handleClose}>
-              <X className='h-4 w-4' />
-            </Button>
-          }
-        />
+      <DialogContent className='w-full max-w-[700px]'>
+        <DialogHeader>
+          <DialogTitle>Email Preview</DialogTitle>
+        </DialogHeader>
+        <div className='h-[80vh]'>
+          {isLoading ? (
+            <div className='flex items-center justify-center h-full'>
+              <Loader2 className='h-8 w-8 animate-spin' />
+            </div>
+          ) : (
+            <>
+              <Alert className='mb-4'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertTitle>
+                  This email contains sample data for preview purposes only.
+                </AlertTitle>
+              </Alert>
+              <iframe
+                className='w-full h-[calc(100%-4rem)]'
+                srcDoc={isHtml}
+                title='Preview Email'
+              />
+            </>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

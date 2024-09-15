@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -72,6 +78,9 @@ const WorkTime: FC<WorkTimeProps> = ({
     <Card className='relative group'>
       <CardHeader>
         <CardTitle className='text-lg font-semibold'>Working Hours</CardTitle>
+        <CardDescription className='text-sm text-gray-500'>
+          Set your company&apos;s operational hours for each day of the week.
+        </CardDescription>
         <Popover>
           <PopoverTrigger asChild>
             <Button

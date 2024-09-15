@@ -114,12 +114,8 @@ function Holidays() {
               List company holidays to exclude them from scheduling.
             </p>
           </div>
-          <Button
-            variant='default'
-            size='sm'
-            onClick={() => setDaysOffOpen(true)}
-          >
-            <PlusIcon className='mr-2 h-4 w-4' /> Add Day Off
+          <Button variant='outline' onClick={() => setDaysOffOpen(true)}>
+            Add Day Off
           </Button>
         </div>
         <div className='mt-6 overflow-x-auto border bg-white rounded-lg'>

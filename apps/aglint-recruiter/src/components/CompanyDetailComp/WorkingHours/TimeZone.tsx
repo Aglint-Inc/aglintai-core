@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -48,6 +54,9 @@ const TimeZone: FC<TimeZoneProps> = ({
     <Card className='relative group'>
       <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Time Zone</CardTitle>
+        <CardDescription className='text-sm text-gray-500'>
+          Set the default time zone for your company.
+        </CardDescription>
         <Popover>
           <PopoverTrigger asChild>
             <Button
