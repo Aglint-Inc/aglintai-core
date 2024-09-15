@@ -454,7 +454,7 @@ function SchedulerEmailTemps({ setSaving }) {
         setAnchorEl={setAnchorEl}
         setHtml={setHtml}
         isHtml={isHtml}
-        Loading={popOverLoading}
+        isLoading={popOverLoading}
       />
     </div>
   );
