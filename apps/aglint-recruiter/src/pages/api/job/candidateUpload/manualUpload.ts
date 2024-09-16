@@ -14,7 +14,7 @@ import {
   uploadResume,
   verifyAndCreateCandidate,
 } from '@/apiUtils/job/candidateUpload/utils';
-import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const config = {
   api: {
@@ -42,9 +42,10 @@ const handler = async (
       [key]: decodeURIComponent(value as string),
     })),
   ) as ManualUploadApi['request']['params'];
-  const supabase = createClient();
+
+  // const supabase = createClient();
   const { confirmation, error } = await verifyAndCreateCandidate(
-    supabase,
+    supabaseAdmin,
     {
       email,
       recruiter_id,
@@ -56,10 +57,10 @@ const handler = async (
     job_id,
   )
     .then(({ candidate: { id: candidate_id }, duplicate }) =>
-      uploadResume(supabase, readStream, contentType)
+      uploadResume(supabaseAdmin, readStream, contentType)
         .then(({ file_url, candidate_file_id }) =>
           createFile(
-            supabase,
+            supabaseAdmin,
             candidate_id,
             file_url,
             candidate_file_id,
@@ -67,7 +68,7 @@ const handler = async (
           )
             .then(() =>
               createApplication(
-                supabase,
+                supabaseAdmin,
                 job_id,
                 recruiter_id,
                 candidate_id,
@@ -80,9 +81,9 @@ const handler = async (
                 }))
                 .catch((e: PostgrestError): ManualUploadApi['response'] => {
                   Promise.allSettled([
-                    deleteFile(supabase, candidate_file_id),
-                    deleteResume(supabase, candidate_file_id, contentType),
-                    deleteCandidate(supabase, candidate_id),
+                    deleteFile(supabaseAdmin, candidate_file_id),
+                    deleteResume(supabaseAdmin, candidate_file_id, contentType),
+                    deleteCandidate(supabaseAdmin, candidate_id),
                   ]);
                   return {
                     confirmation: false,
@@ -92,8 +93,8 @@ const handler = async (
             )
             .catch((e: PostgrestError): ManualUploadApi['response'] => {
               Promise.allSettled([
-                deleteResume(supabase, candidate_file_id, contentType),
-                deleteCandidate(supabase, candidate_id),
+                deleteResume(supabaseAdmin, candidate_file_id, contentType),
+                deleteCandidate(supabaseAdmin, candidate_id),
               ]);
               return {
                 confirmation: false,
@@ -102,17 +103,19 @@ const handler = async (
             }),
         )
         .catch((e: PostgrestError): ManualUploadApi['response'] => {
-          if (duplicate) deleteCandidate(supabase, candidate_id);
+          if (duplicate) deleteCandidate(supabaseAdmin, candidate_id);
           return {
             confirmation: false,
             error: e.message,
           };
         }),
     )
-    .catch((e: PostgrestError): ManualUploadApi['response'] => ({
-      confirmation: false,
-      error: e.message,
-    }));
+    .catch((e: PostgrestError): ManualUploadApi['response'] => {
+      return {
+        confirmation: false,
+        error: e.message,
+      };
+    });
   res.status(200).json({ confirmation, error });
   return;
 };

@@ -18,53 +18,68 @@ export const settingSubNavItem = {
   PORTAL_SETTINGS: 'portalSetttings',
 };
 
-export const settingsItems: {
-  label: string;
-  value: string;
-  permission?: permissionsEnum | 'authorized';
-  icon: string;
-}[] = [
-  {
-    label: 'Company Details',
-    value: settingSubNavItem['COMPANYINFO'],
-    icon: 'Building',
-  },
-  {
-    label: 'Working Hours',
-    value: settingSubNavItem['WORKINGHOURS'],
-    icon: 'Clock',
-  },
-  { label: 'Holidays', value: settingSubNavItem['HOLIDAYS'], icon: 'Calendar' },
-  {
-    label: 'User',
-    value: settingSubNavItem['USERS'],
-    permission: 'view_users',
-    icon: 'Users',
-  },
-  {
-    label: 'Roles',
-    value: settingSubNavItem['ROLES'],
-    permission: 'view_roles',
-    icon: 'Shield',
-  },
-  {
-    label: 'Templates',
-    value: settingSubNavItem['EMAILTEMPLATE'],
-    icon: 'FileText',
-  },
-  {
-    label: 'Scheduling',
-    value: settingSubNavItem['SCHEDULING'],
-    icon: 'CalendarDays',
-  },
-  {
-    label: 'Reasons',
-    value: settingSubNavItem['SCHEDULING_REASONS'],
-    icon: 'List',
-  },
-  {
-    label: 'Candidate Portal',
-    value: settingSubNavItem['PORTAL_SETTINGS'],
-    icon: 'Globe',
-  },
-];
+export const settingsItems = (show: boolean) =>
+  [
+    {
+      label: 'Company Details',
+      value: settingSubNavItem['COMPANYINFO'],
+      icon: 'Building',
+      show: true,
+    },
+    {
+      label: 'Working Hours',
+      value: settingSubNavItem['WORKINGHOURS'],
+      icon: 'Clock',
+      show: true,
+    },
+    {
+      label: 'Holidays',
+      value: settingSubNavItem['HOLIDAYS'],
+      icon: 'Calendar',
+      show: true,
+    },
+    {
+      label: 'User',
+      value: settingSubNavItem['USERS'],
+      permission: 'view_users',
+      icon: 'Users',
+      show: true,
+    },
+    {
+      label: 'Roles',
+      value: settingSubNavItem['ROLES'],
+      permission: 'view_roles',
+      icon: 'Shield',
+      show: show,
+    },
+    {
+      label: 'Templates',
+      value: settingSubNavItem['EMAILTEMPLATE'],
+      icon: 'FileText',
+      show: show,
+    },
+    {
+      label: 'Scheduling',
+      value: settingSubNavItem['SCHEDULING'],
+      icon: 'CalendarDays',
+      show: show,
+    },
+    {
+      label: 'Reasons',
+      value: settingSubNavItem['SCHEDULING_REASONS'],
+      icon: 'List',
+      show: show,
+    },
+    {
+      label: 'Candidate Portal',
+      value: settingSubNavItem['PORTAL_SETTINGS'],
+      icon: 'Globe',
+      show: show,
+    },
+  ] as {
+    label: string;
+    value: string;
+    permission?: permissionsEnum | 'authorized';
+    icon: string;
+    show: boolean;
+  }[];

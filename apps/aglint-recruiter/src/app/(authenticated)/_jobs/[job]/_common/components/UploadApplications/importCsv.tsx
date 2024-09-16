@@ -70,14 +70,18 @@ export const ImportCsv: React.FC = () => {
     return requiredHeaders.every((header) => headers.includes(header));
   };
 
-  const handleImport = () => {
-    const formattedCandidates = candidates.map((candidate) => ({
-      ...candidate,
-      linkedin: candidate.linkedin || '',
-      file_url: candidate.file_url || '',
-    }));
-    handleUploadCsv({ candidates: formattedCandidates });
-    setImportPopup(false);
+  const handleImport = async () => {
+    try {
+      const formattedCandidates = candidates.map((candidate) => ({
+        ...candidate,
+        linkedin: candidate.linkedin || '',
+        file_url: candidate.file_url || '',
+      }));
+      await handleUploadCsv({ candidates: formattedCandidates });
+      setImportPopup(false);
+    } catch {
+      //
+    }
   };
 
   return (

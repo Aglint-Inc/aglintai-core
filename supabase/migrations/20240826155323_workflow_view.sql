@@ -1,4 +1,4 @@
-alter table "public"."request_progress" add column "target_api" email_slack_types
+alter table "public"."request_progress" add column "target_api" email_slack_types;
 
 create or replace view "public"."workflow_view" as  SELECT workflow.id,
     workflow.created_at,

@@ -30,6 +30,16 @@ import {
   updateJoinedStatus,
 } from './utils';
 
+type Features =
+  | 'SCORING'
+  | 'INTEGRATIONS'
+  | 'ROLES'
+  | 'REQUESTS'
+  | 'WORKFLOW'
+  | 'INTEGRATIONS'
+  | 'SCHEDULING'
+  | 'ANALYTICS'
+  | 'CANDIDATE_PORTAL';
 export interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
@@ -46,6 +56,7 @@ export interface ContextValue {
   handleLogout: () => Promise<void>;
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
+  isShowFeature: (feature: Features) => boolean;
 }
 
 const defaultProvider: ContextValue = {
@@ -62,6 +73,7 @@ const defaultProvider: ContextValue = {
   recruiterUser: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setRecruiterUser: () => {},
+  isShowFeature: () => false,
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -163,6 +175,19 @@ const AuthProvider = ({ children }) => {
     }
   }, [router.isReady, loading]);
 
+  const isShowFeature = (feature: Features) => {
+    const recruiterPref: Record<Features, boolean> = {
+      SCORING: recruiter.recruiter_preferences.scoring,
+      INTEGRATIONS: recruiter.recruiter_preferences.integrations,
+      ROLES: recruiter.recruiter_preferences.roles,
+      REQUESTS: recruiter.recruiter_preferences.request,
+      WORKFLOW: recruiter.recruiter_preferences.workflow,
+      SCHEDULING: recruiter.recruiter_preferences.scheduling,
+      ANALYTICS: recruiter.recruiter_preferences.analytics,
+      CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
+    };
+    return recruiterPref[feature];
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -176,6 +201,7 @@ const AuthProvider = ({ children }) => {
         handleLogout,
         recruiterUser,
         setRecruiterUser,
+        isShowFeature,
       }}
     >
       {loading ? <AuthLoader /> : children}

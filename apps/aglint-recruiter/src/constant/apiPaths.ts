@@ -50,7 +50,6 @@ export const API_PATHS = [
   '/api/greenhouse/saveResume',
   '/api/interviewChatOpenAi',
   '/api/interview_feedback',
-  '/api/interview_feedback',
   '/api/interviewers/getAllInterviewers',
   '/api/interviewers',
   '/api/invite_user',
@@ -84,7 +83,6 @@ export const API_PATHS = [
   '/api/scheduling/application/debrief-add-users',
   '/api/scheduling/application/fetchInterviewSessionByRequest',
   '/api/scheduling/application/fetchfeedbackdetails',
-  '/api/scheduling/application/fetchfeedbackdetails',
   '/api/scheduling/application/fetchinterviewstages',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/openselfscheduling',
@@ -106,7 +104,6 @@ export const API_PATHS = [
   '/api/scheduling/get_interview_modules',
   '/api/scheduling/get_interview_plans',
   '/api/scheduling/get_interview_training_progress',
-  '/api/scheduling/get_interviewer_and_modules',
   '/api/scheduling/get_interviewer_and_modules',
   '/api/scheduling/google-consent',
   '/api/scheduling/invite',
@@ -164,7 +161,6 @@ export const API_PATHS = [
   '/api/automation/update_request',
   '/api/automation/update_user_to_active',
   '/api/automation/update_users_name',
-  '/api/automation/update_users_name',
   '/api/automation/workflow_connect_to_jobs',
   '/api/candidate_portal/get_email',
   '/api/candidate_portal/get_interviews',
@@ -182,8 +178,7 @@ export const API_PATHS = [
   '/api/sync/greenhouse/office_locations',
   '/api/sync/greenhouse/user',
   '/api/trpc/[trpc]',
-  '/api/emails/InterviewCancelReq_email_recruiter',
   '/api/emails/agent_email_candidate',
   '/api/emails/mail',
-  '/api/emails/preview',
-] as const;
+  '/api/emails/preview'
+] as const

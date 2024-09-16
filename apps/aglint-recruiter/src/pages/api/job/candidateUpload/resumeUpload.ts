@@ -14,7 +14,7 @@ import {
   deleteResume,
   getFiles,
 } from '@/apiUtils/job/candidateUpload/utils';
-import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const config = {
   api: {
@@ -33,13 +33,12 @@ const handler = async (
       [key]: decodeURIComponent(value as string),
     })),
   ) as ResumeUploadApi['request']['params'];
-  const supabase = createClient();
 
   const promises = files.map((file) => {
     const candidate_id = uuidv4();
     const contentType = file.contentType;
     return createAndUploadCandidate(
-      supabase,
+      supabaseAdmin,
       {
         id: candidate_id,
         email: candidate_id,
@@ -51,7 +50,7 @@ const handler = async (
     )
       .then(({ file_url, candidate_file_id }) =>
         createFile(
-          supabase,
+          supabaseAdmin,
           candidate_id,
           file_url,
           candidate_file_id,
@@ -59,7 +58,7 @@ const handler = async (
         )
           .then(() =>
             createApplication(
-              supabase,
+              supabaseAdmin,
               job_id,
               recruiter_id,
               candidate_id,
@@ -73,9 +72,9 @@ const handler = async (
               .catch(
                 (e: PostgrestError): ResumeUploadApi['response'][number] => {
                   Promise.allSettled([
-                    deleteFile(supabase, candidate_file_id),
-                    deleteResume(supabase, candidate_file_id, contentType),
-                    deleteCandidate(supabase, candidate_id),
+                    deleteFile(supabaseAdmin, candidate_file_id),
+                    deleteResume(supabaseAdmin, candidate_file_id, contentType),
+                    deleteCandidate(supabaseAdmin, candidate_id),
                   ]);
                   return {
                     confirmation: false,
@@ -86,8 +85,8 @@ const handler = async (
           )
           .catch((e: PostgrestError): ResumeUploadApi['response'][number] => {
             Promise.allSettled([
-              deleteResume(supabase, candidate_file_id, contentType),
-              deleteCandidate(supabase, candidate_id),
+              deleteResume(supabaseAdmin, candidate_file_id, contentType),
+              deleteCandidate(supabaseAdmin, candidate_id),
             ]);
             return {
               confirmation: false,
