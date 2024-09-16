@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@components/ui/accordion';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -501,34 +501,53 @@ const Banners = () => {
   if (status.description_error)
     return (
       <Alert variant='error'>
-        <AlertTitle>Job description is unavailable</AlertTitle>
         <AlertDescription>
-          <Button onClick={() => push(`/jobs/${job.id}/edit`)}>View</Button>
+          <div className='flex items-center justify-between'>
+            <p className='mr-4'>Job description is unavailable</p>
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={() => push(`/jobs/${job.id}/edit`)}
+            >
+              View
+            </Button>
+          </div>
         </AlertDescription>
       </Alert>
     );
   if (status.jd_json_error)
     return (
-      <Alert>
-        <AlertTitle className='mb-4'>
-          No profile score criterias set.
-        </AlertTitle>
+      <Alert variant='warning'>
         <AlertDescription>
-          <Button onClick={() => handleRegenerateJd(job)}>Generate</Button>
+          <div className='flex items-center justify-between'>
+            <p className='mr-4'>No profile score criterias set.</p>
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={() => handleRegenerateJd(job)}
+            >
+              Generate
+            </Button>
+          </div>
         </AlertDescription>
       </Alert>
     );
   if (status.description_changed && !status.scoring_criteria_changed)
     return (
-      <Alert>
-        <AlertTitle>Job description has changed.</AlertTitle>
+      <Alert variant='warning'>
         <AlertDescription>
-          Regenerate to update scoring criteria.
-          <div className='mt-2'>
-            <Button variant='outline' className='mr-2'>
-              Ignore
+          <div className='flex items-center justify-between'>
+            <p className='mr-4'>
+              Job description has changed. Regenerate to update scoring
+              criteria.
+            </p>
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={() => handleRegenerateJd(job)}
+            >
+              Regenerate
             </Button>
-            <Button onClick={() => handleRegenerateJd(job)}>Regenerate</Button>
           </div>
         </AlertDescription>
       </Alert>

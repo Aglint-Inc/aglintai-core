@@ -14,15 +14,15 @@ import { Skills } from './Skills';
 
 export const Analysis = () => {
   return (
-    <Accordion type='single' collapsible>
+    <Accordion type='single' defaultValue='analysis' collapsible>
       <AccordionItem value='analysis'>
-        <AccordionTrigger>
+        <AccordionTrigger className='hover:no-underline'>
           <div className='flex items-center justify-between w-full'>
             <div className='flex items-center space-x-2'>
               <Brain size={16} />
               <span className='font-medium'>Analysis</span>
             </div>
-            {/* Added summary badge */}
+
             <Badge />
           </div>
         </AccordionTrigger>

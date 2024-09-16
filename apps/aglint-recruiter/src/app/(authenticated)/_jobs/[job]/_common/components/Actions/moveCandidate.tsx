@@ -100,7 +100,7 @@ const MoveCandidateNew = () => {
 };
 
 const MoveCandidateInterview = () => {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, isShowFeature } = useAuthDetails();
   const {
     handleMoveApplicationToInterview,
     sectionApplication: { data },
@@ -112,7 +112,7 @@ const MoveCandidateInterview = () => {
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
   const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
-  const buttonText = 'Request and Move';
+  const buttonText = isShowFeature('SCHEDULING') ? 'Request and Move' : 'Move';
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
       requests: checklist.map((application_id) => {
@@ -137,22 +137,25 @@ const MoveCandidateInterview = () => {
     });
     resetActionPopup();
   }, buttonText);
-
+  const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
   return (
     <ReusablePopup
       title={title}
       slotBody={
         <div className='flex flex-col gap-2'>
           {capitalize(description)}
-          <CreateRequest
-            setRequest={setRequest}
-            setSelectedSession={setSelectedSession}
-            selectedSession={selectedSession}
-            setPriority={setPriority}
-            priority={priority}
-            note={note}
-            setNote={setNote}
-          />
+
+          <div className={hideRequestBox}>
+            <CreateRequest
+              setRequest={setRequest}
+              setSelectedSession={setSelectedSession}
+              selectedSession={selectedSession}
+              setPriority={setPriority}
+              priority={priority}
+              note={note}
+              setNote={setNote}
+            />
+          </div>
         </div>
       }
       slotButtons={buttons}

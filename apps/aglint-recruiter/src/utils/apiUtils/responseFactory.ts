@@ -94,7 +94,6 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
 
     return res.status(status).send(status === 200 ? data : { error });
   }
-
   const requesterDetails = {
     user_id: req.headers['x-requester-id'] as string,
     role: req.headers['x-requester-role'] as string,
@@ -190,18 +189,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
         logger,
       });
     } catch (e) {
-      //for already exist job
-      if (e.message == '23505') {
-        return getResponse({ error: 'Job already exists.' }, 500);
-      }
-      return getResponse(
-        {
-          error:
-            'Import failed. Please try again later or contact support for assistance.',
-          logger,
-        },
-        500,
-      );
+      return getResponse({ error: e.message, logger }, 500);
     }
   }
   return apiMethodHandler;

@@ -37,7 +37,7 @@ const Education = () => {
               <span className='font-medium'>Education</span>
             </div>
             {schoolLogos.length > 0 && (
-              <div className='flex space-x-1'>{schoolLogos}</div>
+              <div className='flex space-x-1'>{schoolLogos} </div>
             )}
           </div>
         </AccordionTrigger>
@@ -54,7 +54,14 @@ export { Education };
 const getSchoolLogos = (data) => {
   if (!data?.resume_json?.schools) return [];
   const schools = data.resume_json.schools.slice(0, 3); // Get top 3 schools
-  return schools.map((i) => <div key={i}>TBD</div>);
+  return schools.map((school, i) => (
+    <ImageWithFallback
+      key={i}
+      src={`https://logo.clearbit.com/${school.institution?.toLowerCase().replace(/\s+/g, '')}.com`}
+      alt={`${school?.institution || 'Company'} logo`}
+      fallbackSrc={'/images/logo/education.png'}
+    />
+  ));
 };
 
 const Content = () => {
@@ -152,12 +159,10 @@ const Schools = () => {
           {itemsToShow.map(({ institution, degree, start, end }, i) => (
             <TableRow key={i}>
               <TableCell className='flex items-center space-x-2 w-1/4'>
-                <Image
+                <ImageWithFallback
                   src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${institution} logo`}
-                  width={24}
-                  height={24}
-                  className='rounded-full'
+                  fallbackSrc={'/images/logo/education.png'}
                 />
                 <span>{capitalize(institution, conjunctions)}</span>
               </TableCell>
@@ -249,4 +254,19 @@ const calculateDuration = (start, end) => {
     duration += `${months} month${months > 1 ? 's' : ''}`;
   }
   return duration || 'Less than a month';
+};
+
+const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      width={24}
+      height={24}
+      onError={() => setImgSrc(fallbackSrc)}
+      className='rounded-full'
+    />
+  );
 };

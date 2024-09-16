@@ -4,16 +4,16 @@ import {
   type RecruiterUserType,
   type SocialsType,
 } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
 import { Loader2 } from 'lucide-react';
 import posthog from 'posthog-js';
 import {
   createContext,
   type Dispatch,
   type SetStateAction,
+  useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -108,7 +108,7 @@ const AuthProvider = ({ children }) => {
         return;
       }
 
-      if (router.pathName !== ROUTES['/loading']() && data?.session?.user?.id) {
+      if (data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
@@ -175,19 +175,25 @@ const AuthProvider = ({ children }) => {
     }
   }, [router.isReady, loading]);
 
-  const isShowFeature = (feature: Features) => {
-    const recruiterPref: Record<Features, boolean> = {
-      SCORING: recruiter.recruiter_preferences.scoring,
-      INTEGRATIONS: recruiter.recruiter_preferences.integrations,
-      ROLES: recruiter.recruiter_preferences.roles,
-      REQUESTS: recruiter.recruiter_preferences.request,
-      WORKFLOW: recruiter.recruiter_preferences.workflow,
-      SCHEDULING: recruiter.recruiter_preferences.scheduling,
-      ANALYTICS: recruiter.recruiter_preferences.analytics,
-      CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
-    };
-    return recruiterPref[feature];
-  };
+  const isShowFeature = useCallback(
+    (feature: Features) => {
+      if (recruiter?.recruiter_preferences) {
+        const recruiterPref: Record<Features, boolean> = {
+          SCORING: recruiter.recruiter_preferences.scoring,
+          INTEGRATIONS: recruiter.recruiter_preferences.integrations,
+          ROLES: recruiter.recruiter_preferences.roles,
+          REQUESTS: recruiter.recruiter_preferences.request,
+          WORKFLOW: recruiter.recruiter_preferences.workflow,
+          SCHEDULING: recruiter.recruiter_preferences.scheduling,
+          ANALYTICS: recruiter.recruiter_preferences.analytics,
+          CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
+        };
+        return recruiterPref[feature];
+      }
+      return false;
+    },
+    [recruiter?.recruiter_preferences],
+  );
   return (
     <AuthContext.Provider
       value={{

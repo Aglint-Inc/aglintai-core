@@ -148,9 +148,7 @@ const jobs = {
   '/jobs/new': () => pageRouteBuilder([jobs['/jobs'](), 'new']),
   ...jobsById,
 } as const;
-const loading = {
-  '/loading': () => pageRouteBuilder([ROUTES.app(), 'loading']),
-} as const;
+
 const login = {
   '/login': () => pageRouteBuilder([ROUTES.app(), 'login']),
 } as const;
@@ -303,7 +301,6 @@ const ROUTES = {
   ...jobPost,
   ...jobPostAssistant,
   ...jobs,
-  ...loading,
   ...login,
   ...notifications,
   ...previewAssessment,
