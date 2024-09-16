@@ -1,6 +1,6 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { cn } from '@lib/utils';
-import { Bookmark, Star } from 'lucide-react';
+import { Bookmark, GripVertical, Star } from 'lucide-react';
 
 import StageProgress from '@/components/Scheduling/Common/StageProgress';
 import { type Application } from '@/types/applications.types';
@@ -31,11 +31,19 @@ export function TableRow({
   return (
     <div
       className={cn(
-        'flex items-center px-4 py-3 text-sm border-b border-gray-200 hover:bg-gray-50 cursor-pointer w-full',
+        'flex items-center px-4 py-3 text-sm border-b border-gray-200 hover:bg-gray-50 cursor-pointer w-full group',
         isChecked && 'bg-blue-50',
       )}
       onClick={onClickCandidate}
     >
+      <div
+        className='w-4 flex-shrink-0 mr-2 opacity-0 group-hover:opacity-100 transition-opacity'
+        aria-hidden='true'
+      >
+        <GripVertical
+          className={cn('w-4 h-4 text-gray-400', isChecked && 'opacity-100')}
+        />
+      </div>
       <div
         className='w-10 flex-shrink-0 mr-4'
         onClick={(e) => {

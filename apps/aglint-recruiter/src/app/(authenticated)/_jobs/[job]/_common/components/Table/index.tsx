@@ -9,7 +9,6 @@ import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';
 import List from './List';
 import { TableHeader } from './TableHeader';
-import { NewTable } from './NewTable';
 
 export const Table = memo(() => {
   const {

@@ -68,11 +68,11 @@ export default function InterviewerDetailsPage() {
 
   const interviewer = null;
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div className='min-h-screen'>
       <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
 
-      <div className='max-w-7xl px-4 sm:px-6 lg:px-8 py-8'>
+      <div className='container mx-auto py-8'>
         <div className='sticky top-8'>
           <BreadCrumb name={interviewerDetails?.first_name} />
           <Header

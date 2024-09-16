@@ -171,7 +171,7 @@ const Sync = () => {
   const { handleJobsSync } = useJobs();
   const [load, setLoad] = useState(false);
 
-  if (!recruiter?.recruiter_preferences?.greenhouse) return null;
+  if (recruiter?.recruiter_preferences?.ats !== 'Greenhouse') return null;
 
   const handleSync = async () => {
     if (load) return;
