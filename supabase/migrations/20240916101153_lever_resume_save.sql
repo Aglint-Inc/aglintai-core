@@ -8,12 +8,18 @@ DECLARE
     request_results JSONB;
     function_url TEXT;
 BEGIN
+
     FOR rec_id IN 
         SELECT recruiter_id 
         FROM integrations 
         JOIN recruiter ON recruiter.id = integrations.recruiter_id 
         WHERE integrations.lever_key IS NOT NULL
     LOOP
+        SELECT decrypted_secret 
+        INTO function_url
+        FROM vault.decrypted_secrets 
+        WHERE name = 'APP_URL';
+
         FOR app_id IN 
             SELECT applications.id 
             FROM applications 
@@ -22,11 +28,6 @@ BEGIN
             AND applications.is_resume_fetching = TRUE 
             AND applications.processing_status <> 'failed' LIMIT 10
         LOOP
-        SELECT decrypted_secret 
-        INTO function_url
-        FROM vault.decrypted_secrets 
-        WHERE name = 'APP_URL';
-           
             request_results := net.http_post(
                 url := concat(function_url,'/api/lever/saveResume' ),
                 body := jsonb_build_object('application_id', app_id),
