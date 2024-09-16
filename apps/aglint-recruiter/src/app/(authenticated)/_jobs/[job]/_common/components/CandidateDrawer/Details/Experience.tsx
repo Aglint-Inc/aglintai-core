@@ -59,24 +59,9 @@ const getCompanyLogos = (data) => {
       key={i}
       src={`https://logo.clearbit.com/${position.org.toLowerCase().replace(/\s+/g, '')}.com`}
       alt={`${position.org || 'Company'} logo`}
-      fallbackSrc={'/images/company.png'}
+      fallbackSrc={'/images/logo/company.png'}
     />
   ));
-};
-
-const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
-  const [imgSrc, setImgSrc] = useState(src);
-
-  return (
-    <Image
-      src={imgSrc}
-      alt={alt}
-      width={24}
-      height={24}
-      onError={() => setImgSrc(fallbackSrc)}
-      className='rounded-full'
-    />
-  );
 };
 
 const Content = () => {
@@ -175,7 +160,7 @@ const Experiences = () => {
                   key={i}
                   src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${org || 'Company'} logo`}
-                  fallbackSrc={'/images/company.png'}
+                  fallbackSrc={'/images/logo/company.png'}
                 />
                 <span>{capitalize(org, conjunctions)}</span>
               </TableCell>
@@ -267,4 +252,19 @@ const calculateDuration = (start, end) => {
     duration += `${months} month${months > 1 ? 's' : ''}`;
   }
   return duration || 'Less than a month';
+};
+
+const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      width={24}
+      height={24}
+      onError={() => setImgSrc(fallbackSrc)}
+      className='rounded-full'
+    />
+  );
 };
