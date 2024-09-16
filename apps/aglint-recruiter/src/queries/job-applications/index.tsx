@@ -225,7 +225,7 @@ const getApplications = async ({
       );
     else
       query.order(type === 'resume_match' ? 'application_match' : type, {
-        ascending: type === 'resume_match' ? (order = 'desc') : order === 'asc',
+        ascending: type === 'resume_match' ? order === 'desc' : order === 'asc',
         nullsFirst: false,
       });
   }
