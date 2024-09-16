@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     //
     const parsed_body = schema.parse(payload);
     const { fetchUtil } = (await import(
-      `../../../email-utils/${target_api}/fetch-util`
+      `../../../email-utils/${target_api as string}/fetch-util`
     )) as {
       fetchUtil: FetchUtilType<any>;
     };

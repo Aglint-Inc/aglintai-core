@@ -21,10 +21,10 @@ const slackRoutes = express.Router();
 //   `/${slackEndPoints.interviewStart_slack_interviewers}`,
 //   interviewReminder
 // );
-slackRoutes.post(
-  `/${slackEndPoints.interviewEnd_slack_interviewerForFeedback}`,
-  feedback
-);
+// slackRoutes.post(
+//   `/${slackEndPoints.interviewEnd_slack_interviewerForFeedback}`,
+//   feedback
+// );
 
 slackRoutes.post(
   `/${slackEndPoints.interviewEnd_slack_shadowTraineeForMeetingAttendence}`,
