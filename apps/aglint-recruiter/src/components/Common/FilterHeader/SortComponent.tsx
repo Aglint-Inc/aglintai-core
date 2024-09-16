@@ -11,7 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
+  ChevronDown,
+} from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -40,7 +44,9 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
       ? sortOptions.order
       : sortOptions.order.map((item) => ({ id: item, label: item }))
   ) as { id: string; label: string }[];
-
+  const selectedSort = orderOptionList.find(
+    (item) => item.id === selected.order,
+  );
   return (
     <div className='flex flex-row items-center gap-1'>
       <p className='text-muted-foreground text-sm'>Sort by</p>
@@ -62,12 +68,14 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
               }}
             />
             <SortOptionsDropDown
-              icon={<OrderIcon order={selected.order} />}
-              itemList={orderOptionList}
-              selectedItem={
-                orderOptionList.find((item) => item.id === selected.order)
-                  ?.id || ''
+              icon={
+                <div className='flex row gap-2 items-center'>
+                  <OrderIcon order={selected.order} />
+                  {capitalizeFirstLetter(selectedSort.label)}
+                </div>
               }
+              itemList={orderOptionList}
+              selectedItem={selectedSort?.id || ''}
               setSelectedItem={(values) => {
                 setOrder({ order: values });
               }}
@@ -111,10 +119,10 @@ export default SortComponent;
 
 const OrderIcon = ({ order }: { order: string }) => {
   if (order === 'descending' || order === 'desc') {
-    return <ChevronDown className='h-4 w-4' />;
+    return <ArrowDownWideNarrow className='h-4 w-4' />;
   } else if (order === 'ascending' || order === 'asc') {
-    return <ChevronUp className='h-4 w-4' />;
+    return <ArrowUpNarrowWide className='h-4 w-4' />;
   } else {
-    return <ArrowUpDown className='h-4 w-4' />;
+    return <ArrowUpNarrowWide className='h-4 w-4' />;
   }
 };

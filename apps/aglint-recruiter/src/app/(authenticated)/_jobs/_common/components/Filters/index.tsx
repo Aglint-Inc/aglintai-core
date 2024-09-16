@@ -62,10 +62,10 @@ function FilterJobDashboard({
             // iconname: '',
             options: filterOptions.status,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 status: val,
-              });
+              }));
             },
             value: filterValues.status,
           },
@@ -75,10 +75,10 @@ function FilterJobDashboard({
             // iconname: 'apartment',
             options: filterOptions.department,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 department: val,
-              });
+              }));
             },
             value: filterValues.department,
           },
@@ -88,10 +88,10 @@ function FilterJobDashboard({
             // iconname: 'work',
             options: filterOptions.type,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 type: val,
-              });
+              }));
             },
             value: filterValues.type,
           },
@@ -103,10 +103,10 @@ function FilterJobDashboard({
                   // iconname: 'person',
                   options: filterOptions.hiringManager,
                   setValue: (val) => {
-                    setFilterValues({
-                      ...filterValues,
+                    setFilterValues((pre) => ({
+                      ...pre,
                       hiringManager: val,
-                    });
+                    }));
                   },
                   value: filterValues.hiringManager,
                 },
@@ -116,10 +116,10 @@ function FilterJobDashboard({
                   // iconname: 'person',
                   options: filterOptions.recruiter,
                   setValue: (val) => {
-                    setFilterValues({
-                      ...filterValues,
+                    setFilterValues((pre) => ({
+                      ...pre,
                       recruiter: val,
-                    });
+                    }));
                   },
                   value: filterValues.recruiter,
                 },
