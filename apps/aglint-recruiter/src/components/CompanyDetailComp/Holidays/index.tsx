@@ -106,10 +106,10 @@ function Holidays() {
 
   return (
     <>
-      <div className='px-4 py-8'>
-        <div className='flex justify-between items-start mb-6'>
+      <div className='flex flex-col gap-4 mb-8'>
+        <div className='flex justify-between items-start'>
           <div>
-            <h1 className='text-lg font-semibold mb-2'>Standard Days Off</h1>
+            <h2 className='text-xl font-bold mb-2'>Standard Days Off</h2>
             <p className='text-gray-600'>
               List company holidays to exclude them from scheduling.
             </p>
@@ -118,7 +118,7 @@ function Holidays() {
             Add Day Off
           </Button>
         </div>
-        <div className='mt-6 overflow-x-auto border bg-white rounded-lg'>
+        <div className='overflow-x-auto border bg-white rounded-lg'>
           <Table>
             <TableHeader className='bg-gray-100'>
               <TableRow>
