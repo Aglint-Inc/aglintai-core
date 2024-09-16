@@ -47,7 +47,7 @@ const CompanyInfoComp = () => {
   const isFormDisabled = !checkPermissions(['manage_company']);
 
   return (
-    <div className='w-[860px] mx-auto'>
+    <div>
       <div className='flex flex-col gap-4 mb-8'>
         <Card>
           <CardHeader className='relative'>

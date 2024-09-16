@@ -239,7 +239,7 @@ function SchedulerEmailTemps({ setSaving }) {
 
   return (
     <div className='flex flex-col h-screen'>
-      <div className='p-4'>
+      <div className='py-4'>
         {isEditorLoad ? (
           <div className='flex items-center justify-center h-[calc(100vh-48px)]'>
             <div className='space-y-2'>

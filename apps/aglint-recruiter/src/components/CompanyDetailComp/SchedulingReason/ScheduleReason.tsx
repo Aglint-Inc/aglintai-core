@@ -46,7 +46,7 @@ export function ScheduleReason({
   sections,
 }: ScheduleReasonProps) {
   return (
-    <div className='w-full p-6'>
+    <div className='w-full py-6'>
       {isMainHeadingVisible && (
         <div className='mb-6'>
           <h2 className='text-lg font-bold mb-2'>{textMainHeading}</h2>

@@ -56,7 +56,7 @@ function RolesAndPermissionsComponent() {
           updateRoles={handelUpdateRole}
         />
       ) : (
-        <div className='w-[960px] mx-auto px-4 py-8'>
+        <div className=''>
           <h1 className='text-lg font-semibold mb-4'>Roles & Permissions</h1>
           <p className='text-gray-600 mb-6'>
             Customize permissions for each role and control access by enabling

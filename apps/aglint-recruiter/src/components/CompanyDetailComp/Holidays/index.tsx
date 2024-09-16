@@ -106,7 +106,7 @@ function Holidays() {
 
   return (
     <>
-      <div className='w-[960px] mx-auto px-4 py-8'>
+      <div className='px-4 py-8'>
         <div className='flex justify-between items-start mb-6'>
           <div>
             <h1 className='text-lg font-semibold mb-2'>Standard Days Off</h1>

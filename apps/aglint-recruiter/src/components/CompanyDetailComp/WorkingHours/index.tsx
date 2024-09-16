@@ -56,7 +56,7 @@ export default function WorkingHour({
     }
   };
   return (
-    <div className='flex flex-col w-[660px] gap-4 mx-auto mb-8'>
+    <div className='flex flex-col gap-4 mb-8'>
       <TimeZone
         timeZone={initialData?.timeZone?.label}
         selectedTimeZone={selectedTimeZone}
