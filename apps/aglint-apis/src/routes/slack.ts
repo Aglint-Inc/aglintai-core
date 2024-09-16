@@ -26,27 +26,27 @@ const slackRoutes = express.Router();
 //   feedback
 // );
 
-slackRoutes.post(
-  `/${slackEndPoints.interviewEnd_slack_shadowTraineeForMeetingAttendence}`,
-  onShadowCompleteTrainee
-);
-slackRoutes.post(
-  `/${slackEndPoints.interviewEnd_slack_rShadowTraineeForMeetingAttendence}`,
-  onRShadowCompleteTrainee
-);
-slackRoutes.post(
-  `/${slackEndPoints.onQualified_slack_trainee}`,
-  onQualifiedTrainee
-);
-slackRoutes.post(
-  `/${slackEndPoints.onTrainingComplete_slack_approverForTraineeMeetingQualification}`,
-  onQualifiedApprover
-);
+// slackRoutes.post(
+//   `/${slackEndPoints.interviewEnd_slack_shadowTraineeForMeetingAttendence}`,
+//   onShadowCompleteTrainee
+// // );
+// slackRoutes.post(
+//   `/${slackEndPoints.interviewEnd_slack_rShadowTraineeForMeetingAttendence}`,
+//   onRShadowCompleteTrainee
+// );
+// slackRoutes.post(
+//   `/${slackEndPoints.onQualified_slack_trainee}`,
+//   onQualifiedTrainee
+// );
+// slackRoutes.post(
+//   `/${slackEndPoints.onTrainingComplete_slack_approverForTraineeMeetingQualification}`,
+//   onQualifiedApprover
+// );
 
-slackRoutes.post(
-  `/${slackEndPoints.interviewEnd_slack_organizerForMeetingStatus}`,
-  getMeetingStatusOrganizer
-);
+// slackRoutes.post(
+//   `/${slackEndPoints.interviewEnd_slack_organizerForMeetingStatus}`,
+//   getMeetingStatusOrganizer
+// );
 
 slackRoutes.post(
   `/${slackEndPoints.onRequestCancel_slack_interviewersOrganizer}`,
