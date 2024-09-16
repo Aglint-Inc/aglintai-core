@@ -33,7 +33,11 @@ const Skills = () => {
             {highRelevanceSkills.length > 0 && (
               <div className='flex space-x-1'>
                 {highRelevanceSkills.map((skill, index) => (
-                  <UIBadge key={index} textBadge={skill} color='purple' />
+                  <UIBadge
+                    key={index}
+                    className='text-xs font-medium px-2 py-1 rounded-full bg-purple-200 text-purple-600'
+                    textBadge={skill}
+                  />
                 ))}
               </div>
             )}
