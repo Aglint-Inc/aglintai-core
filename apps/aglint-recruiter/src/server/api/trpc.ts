@@ -107,19 +107,19 @@ const atsMiddleware = t.middleware(async ({ next, ctx, input }) => {
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Invalid payload',
     });
-  const ats = (
+  const { ats } = (
     await ctx.adminDb
       .from('recruiter_preferences')
-      .select('greenhouse')
+      .select('ats')
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
-  ).data.greenhouse;
-  // if (ats === 'Aglint')
-  //   throw new TRPCError({
-  //     code: 'FORBIDDEN',
-  //     message: 'Not supported',
-  //   });
+  ).data;
+  if (ats === 'Aglint')
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Not supported',
+    });
   return await next({
     ctx: {
       ...ctx,
@@ -131,9 +131,8 @@ const atsMiddleware = t.middleware(async ({ next, ctx, input }) => {
 const greenhouseMiddleware = t.middleware(async ({ next, ctx, input }) => {
   const recruiter_id = (input as any)
     .recruiter_id as DatabaseTable['recruiter']['id'];
-  const ats = (ctx as any)
-    .ats as DatabaseTable['recruiter_preferences']['greenhouse'];
-  if (!recruiter_id /*|| ats !== 'Greenhouse'*/)
+  const ats = (ctx as any).ats as DatabaseTable['recruiter_preferences']['ats'];
+  if (!recruiter_id || ats !== 'Greenhouse')
     throw new TRPCError({
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Invalid payload',
@@ -165,9 +164,8 @@ const greenhouseMiddleware = t.middleware(async ({ next, ctx, input }) => {
 const leverMiddleware = t.middleware(async ({ next, ctx, input }) => {
   const recruiter_id = (input as any)
     .recruiter_id as DatabaseTable['recruiter']['id'];
-  const ats = (ctx as any)
-    .ats as DatabaseTable['recruiter_preferences']['greenhouse'];
-  if (!recruiter_id /*|| ats !== 'Lever'*/)
+  const ats = (ctx as any).ats as DatabaseTable['recruiter_preferences']['ats'];
+  if (!recruiter_id || ats !== 'Lever')
     throw new TRPCError({
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Invalid payload',
@@ -198,9 +196,8 @@ const leverMiddleware = t.middleware(async ({ next, ctx, input }) => {
 const ashbyMiddleware = t.middleware(async ({ next, ctx, input }) => {
   const recruiter_id = (input as any)
     .recruiter_id as DatabaseTable['recruiter']['id'];
-  const ats = (ctx as any)
-    .ats as DatabaseTable['recruiter_preferences']['greenhouse'];
-  if (!recruiter_id /*|| ats !== 'Ashby'*/)
+  const ats = (ctx as any).ats as DatabaseTable['recruiter_preferences']['ats'];
+  if (!recruiter_id || ats !== 'Ashby')
     throw new TRPCError({
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Invalid payload',

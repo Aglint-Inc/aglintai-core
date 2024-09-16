@@ -40,7 +40,7 @@ const InterviewTab = () => {
   return (
     <UIPageLayout
       slotTopbarRight={
-        recruiter?.recruiter_preferences?.greenhouse ? (
+        recruiter?.recruiter_preferences?.ats === 'Greenhouse' ? (
           <></>
         ) : (
           <UIButton
