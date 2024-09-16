@@ -57,6 +57,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .insert(dbJob)
           .select();
 
+        if (error?.code == '23505') throw new Error(error.code);
+
         if (!error) {
           await createJobApplications({
             apiKey: decrypt(integration.lever_key, process.env.ENCRYPTION_KEY),

@@ -94,6 +94,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
 
     return res.status(status).send(status === 200 ? data : { error });
   }
+
   const requesterDetails = {
     user_id: req.headers['x-requester-id'] as string,
     role: req.headers['x-requester-role'] as string,
@@ -189,6 +190,10 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
         logger,
       });
     } catch (e) {
+      //for already exist job
+      if (e.message == '23505') {
+        return getResponse({ error: '23505' }, 500);
+      }
       return getResponse({ error: e.message, logger }, 500);
     }
   }
