@@ -56,7 +56,7 @@ function LocationCard({
 
   return (
     <Card
-      className='p-4 h-full relative border-none'
+      className='p-4 h-full relative border-none shadow-none'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
