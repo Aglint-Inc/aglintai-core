@@ -32,7 +32,11 @@ const JobCreateComponent = () => {
         <Loader2 className='animate-spin' />
       </div>
     );
-  return <JobCreate />;
+  return (
+    <div className='container'>
+      <JobCreate />;
+    </div>
+  );
 };
 
 const JobCreate = () => {
@@ -210,9 +214,9 @@ const JobCreateForm = ({
       />
       <Dialog open={modal} onOpenChange={setModal}>
         <DialogContent>
-          <div className='flex items-center justify-center'>
+          <div className='flex min-h-[200px] items-center justify-center'>
             <Loader2 className='animate-spin' />
-            <span className='ml-2'>Creating job...</span>
+            <span className='ml-2'>Please wait job is creating...</span>
           </div>
         </DialogContent>
       </Dialog>
