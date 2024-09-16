@@ -79,26 +79,30 @@ const CompanyInfoComp = () => {
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-4 mb-2'>
                 <div className='h-[50px] w-[50px] flex items-center justify-center border border-gray-200 rounded-md'>
-                  <Image
-                    src={recruiter.logo}
-                    alt={recruiter.name}
-                    width={50}
-                    height={50}
-                    className='rounded-md'
-                  />
+                  {recruiter.logo && (
+                    <Image
+                      src={recruiter.logo}
+                      alt={recruiter.name}
+                      width={50}
+                      height={50}
+                      className='rounded-md'
+                    />
+                  )}
                 </div>
                 <div>
                   {recruiter.name}
                   <div className='flex flex-row gap-4'>
                     <div className='flex items-center space-x-2'>
                       <Globe className='h-4 w-4 text-gray-500' />
-                      <Link
-                        href={recruiter.company_website}
-                        target='_blank'
-                        className='text-gray-600 hover:underline'
-                      >
-                        {new URL(recruiter.company_website).hostname}
-                      </Link>
+                      {recruiter.company_website && (
+                        <Link
+                          href={recruiter.company_website}
+                          target='_blank'
+                          className='text-gray-600 hover:underline'
+                        >
+                          {new URL(recruiter.company_website)?.hostname}
+                        </Link>
+                      )}
                     </div>
                     <div className='flex items-center space-x-2'>
                       <Building2 className='h-4 w-4 text-gray-500' />
