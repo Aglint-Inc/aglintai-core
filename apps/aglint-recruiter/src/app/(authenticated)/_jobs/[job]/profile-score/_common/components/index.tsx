@@ -19,16 +19,15 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { Command } from 'cmdk';
 import {
+  Check,
+  CircleDot,
   Edit2,
   Lightbulb,
-  Loader2,
   PlusCircle,
   RefreshCcw,
   X,
 } from 'lucide-react';
-import { CircleDot } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
@@ -44,6 +43,7 @@ import {
 import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TourProvider, useTour } from '@/context/TourContext';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
@@ -271,14 +271,14 @@ const ProfileScore = () => {
   const parameter_weights = job.parameter_weights as ScoreWheelParams;
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4 mr-4'>
       <Banners />
       {job.scoring_criteria_loading ? (
         <div className='space-y-4'>
-          <Skeleton className='h-52 w-full' />
+          <LoaadingSkeleton />
         </div>
       ) : (
-        <Card className='w-full'>
+        <Card className='w-full '>
           <CardContent className='pt-6'>
             <Accordion type='single' defaultValue='experience' collapsible>
               <AccordionItem value='experience'>
@@ -320,11 +320,6 @@ const ProfileScore = () => {
             </Accordion>
           </CardContent>
         </Card>
-      )}
-      {job.scoring_criteria_loading && (
-        <div>
-          <Loader2 className='h-4 w-4 animate-spin' />
-        </div>
       )}
     </div>
   );
@@ -417,7 +412,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
           />
         ))}
       </div>
-      <div className='flex items-center'>
+      <div className='flex items-center pl-2'>
         <Input
           placeholder={`Add new ${type} (comma-separated for multiple)`}
           value={newTags}
@@ -428,7 +423,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
               handleAddTags();
             }
           }}
-          className='flex-grow'
+          className='flex-grow p-1 pl-3 h-fit'
         />
         <Button
           size='sm'
@@ -469,15 +464,15 @@ const Tag: FC<{
             onChange={(e) => setValue(e.target.value)}
             onBlur={handleSubmit}
             onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-            className='w-full h-8 p-1 text-sm border-none focus:ring-0'
+            className='w-[200px] h-8 p-1 text-sm border-none focus:outline-none focus-visible:ring-0 pl-3'
           />
-          <button
+          <UIButton
             onClick={handleSubmit}
-            className='px-2 py-1 bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
+            className='px-2 py-1  bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
             title='Press Enter to save'
-          >
-            <Command className='h-4 w-4' />
-          </button>
+            icon={<Check />}
+            size='sm'
+          />
         </div>
       ) : (
         <div className='inline-flex items-center bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm'>
@@ -516,7 +511,9 @@ const Banners = () => {
   if (status.jd_json_error)
     return (
       <Alert>
-        <AlertTitle>No profile score criterias set.</AlertTitle>
+        <AlertTitle className='mb-4'>
+          No profile score criterias set.
+        </AlertTitle>
         <AlertDescription>
           <Button onClick={() => handleRegenerateJd(job)}>Generate</Button>
         </AlertDescription>
@@ -616,5 +613,48 @@ const Tips = () => {
         </div>
       )}
     </>
+  );
+};
+
+const LoaadingSkeleton = () => {
+  return (
+    <div className='w-full  p-4 bg-white rounded-lg shadow'>
+      <div className='flex items-center justify-between mb-4'>
+        <div className='flex items-center space-x-2'>
+          <Skeleton className='h-4 w-4 rounded-full' />
+          <Skeleton className='h-6 w-24' />
+        </div>
+        <Skeleton className='h-6 w-12' />
+      </div>
+      <div className='space-y-3'>
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className='h-8 w-full' />
+        ))}
+      </div>
+      <div className='flex items-center justify-between my-4'>
+        <div className='flex items-center space-x-2'>
+          <Skeleton className='h-4 w-4 rounded-full' />
+          <Skeleton className='h-6 w-24' />
+        </div>
+        <Skeleton className='h-6 w-12' />
+      </div>
+      <div className='space-y-3'>
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className='h-8 w-full' />
+        ))}
+      </div>
+      <div className='flex items-center justify-between my-4'>
+        <div className='flex items-center space-x-2'>
+          <Skeleton className='h-4 w-4 rounded-full' />
+          <Skeleton className='h-6 w-24' />
+        </div>
+        <Skeleton className='h-6 w-12' />
+      </div>
+      <div className='space-y-3'>
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className='h-8 w-full' />
+        ))}
+      </div>
+    </div>
   );
 };
