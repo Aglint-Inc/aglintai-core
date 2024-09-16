@@ -19,8 +19,14 @@ import {
 import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import {
   BarChart,
   Calendar,
+  Clock,
   FileText,
   Loader2,
   MoreHorizontal,
@@ -83,9 +89,16 @@ const Sync = () => {
   const date = dayjsLocal(job?.remote_sync_time ?? new Date()).fromNow();
   return (
     <div className='flex flex-row gap-1'>
-      <div className='flex-shrink-0 flex items-center'>
-        <p className='text-neutral-500 text-sm'>{`Last synced ${date}`}</p>
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className='flex-shrink-0 flex items-center'>
+            <Clock className='w-4 h-4 text-neutral-500 mr-1' />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className='text-sm'>{`Last synced ${date}`}</p>
+        </TooltipContent>
+      </Tooltip>
 
       <OptimisticWrapper loading={load}>
         <Button
