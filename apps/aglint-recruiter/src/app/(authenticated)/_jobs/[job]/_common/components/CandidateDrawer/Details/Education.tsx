@@ -37,7 +37,7 @@ const Education = () => {
               <span className='font-medium'>Education</span>
             </div>
             {schoolLogos.length > 0 && (
-              <div className='flex space-x-1'>{schoolLogos}</div>
+              <div className='flex space-x-1'>{schoolLogos} </div>
             )}
           </div>
         </AccordionTrigger>
@@ -54,7 +54,14 @@ export { Education };
 const getSchoolLogos = (data) => {
   if (!data?.resume_json?.schools) return [];
   const schools = data.resume_json.schools.slice(0, 3); // Get top 3 schools
-  return schools.map((i) => <div key={i}>TBD</div>);
+  return schools.map((school, i) => (
+    <ImageWithFallback
+      key={i}
+      src={`https://logo.clearbit.com/${school.institution?.toLowerCase().replace(/\s+/g, '')}.com`}
+      alt={`${school?.institution || 'Company'} logo`}
+      fallbackSrc={'/images/logo/education.png'}
+    />
+  ));
 };
 
 const Content = () => {
