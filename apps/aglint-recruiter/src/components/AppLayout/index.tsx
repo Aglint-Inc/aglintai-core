@@ -145,7 +145,7 @@ export default function AppLayout({ children, appRouter = false }) {
           </nav>
         )}
         <main
-          className={`flex-1 overflow-auto ${isHorizontalNav ? 'mt-16' : ''}`}
+          className={`flex-1 overflow-auto ${isHorizontalNav ? 'mt-8' : ''}`}
         >
           {appRouter ||
           checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
