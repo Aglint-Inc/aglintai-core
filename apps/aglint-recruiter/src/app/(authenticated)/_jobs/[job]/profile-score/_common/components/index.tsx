@@ -19,16 +19,15 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import { Command } from 'cmdk';
 import {
+  Check,
+  CircleDot,
   Edit2,
   Lightbulb,
-  Loader2,
   PlusCircle,
   RefreshCcw,
   X,
 } from 'lucide-react';
-import { CircleDot } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
@@ -44,6 +43,7 @@ import {
 import ScoreWheel, {
   type ScoreWheelParams,
 } from '@/components/Common/ScoreWheel';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TourProvider, useTour } from '@/context/TourContext';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
@@ -134,12 +134,12 @@ const ProfileScorePage = () => {
                 applicants efficiently.
               </p>
               <div className='flex'>
-                <div className='flex-1'>
+                <div className='flex-1 mr-4'>
                   <ProfileScore />
                 </div>
                 <div className='w-1/3'>
-                  <Tips />
                   <ProfileScoreControls />
+                  <Tips />
                 </div>
               </div>
             </div>
@@ -219,22 +219,17 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky top-0 right-0 min-h-[calc(100vh-60px)] p-4 ${
+      className={`sticky top-0 right-0 p-4 ${
         job.scoring_criteria_loading ? 'opacity-40 pointer-events-none' : ''
       }`}
     >
       <div className='space-y-4'>
-        <div className='flex justify-end'>
-          <Button variant='outline' size='sm' onClick={() => handleReset()}>
-            <RefreshCcw className='mr-2 h-4 w-4' /> Reset
-          </Button>
-        </div>
         <div className='flex justify-center'>
           <div className='flex flex-row w-4/5 justify-center items-center gap-10'>
             <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
           </div>
         </div>
-        <div className='space-y-2'>
+        <div className='flex flex-row space-x-2 justify-center'>
           <Input
             type='number'
             name='experience'
@@ -260,7 +255,11 @@ const ProfileScoreControls = () => {
             className='w-20 bg-white'
           />
         </div>
-        {/* <Tips /> */}
+        <div className='flex justify-end'>
+          <Button variant='outline' size='sm' onClick={() => handleReset()}>
+            <RefreshCcw className='mr-2 h-4 w-4' /> Reset
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -271,14 +270,14 @@ const ProfileScore = () => {
   const parameter_weights = job.parameter_weights as ScoreWheelParams;
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4 mr-4'>
       <Banners />
       {job.scoring_criteria_loading ? (
         <div className='space-y-4'>
-          <Skeleton className='h-52 w-full' />
+          <LoaadingSkeleton />
         </div>
       ) : (
-        <Card className='w-full'>
+        <Card className='w-full '>
           <CardContent className='pt-6'>
             <Accordion type='single' defaultValue='experience' collapsible>
               <AccordionItem value='experience'>
@@ -320,11 +319,6 @@ const ProfileScore = () => {
             </Accordion>
           </CardContent>
         </Card>
-      )}
-      {job.scoring_criteria_loading && (
-        <div>
-          <Loader2 className='h-4 w-4 animate-spin' />
-        </div>
       )}
     </div>
   );
@@ -417,7 +411,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
           />
         ))}
       </div>
-      <div className='flex items-center'>
+      <div className='flex items-center pl-2'>
         <Input
           placeholder={`Add new ${type} (comma-separated for multiple)`}
           value={newTags}
@@ -428,7 +422,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
               handleAddTags();
             }
           }}
-          className='flex-grow'
+          className='flex-grow p-1 pl-3 h-fit'
         />
         <Button
           size='sm'
@@ -469,15 +463,15 @@ const Tag: FC<{
             onChange={(e) => setValue(e.target.value)}
             onBlur={handleSubmit}
             onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-            className='w-full h-8 p-1 text-sm border-none focus:ring-0'
+            className='w-[200px] h-8 p-1 text-sm border-none focus:outline-none focus-visible:ring-0 pl-3'
           />
-          <button
+          <UIButton
             onClick={handleSubmit}
-            className='px-2 py-1 bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
+            className='px-2 py-1  bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
             title='Press Enter to save'
-          >
-            <Command className='h-4 w-4' />
-          </button>
+            icon={<Check />}
+            size='sm'
+          />
         </div>
       ) : (
         <div className='inline-flex items-center bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm'>
@@ -516,7 +510,9 @@ const Banners = () => {
   if (status.jd_json_error)
     return (
       <Alert>
-        <AlertTitle>No profile score criterias set.</AlertTitle>
+        <AlertTitle className='mb-4'>
+          No profile score criterias set.
+        </AlertTitle>
         <AlertDescription>
           <Button onClick={() => handleRegenerateJd(job)}>Generate</Button>
         </AlertDescription>
@@ -583,16 +579,6 @@ const Tips = () => {
   }, [handleCreateTourLog, firstVisit]);
   return (
     <>
-      <div className='bg-white rounded-md flex flex-col gap-1 p-3'>
-        <p className='text-info font-semibold text-sm'>How It Works</p>
-        <p className='text-sm text-muted-foreground'>
-          Adjust the weightage for Experience, Skills, and Education to
-          customize the profile score. The total must equal 100%. Use the input
-          fields to set percentages. Click &quot;Reset&quot; to restore default
-          settings.
-        </p>
-      </div>
-
       {firstVisit && (
         <div className='mt-4'>
           <div className='bg-purple-100 p-4 rounded-md flex items-start space-x-4'>
@@ -606,15 +592,69 @@ const Tips = () => {
                 the role you are hiring for by adjusting the weightages.
               </p>
             </div>
-            <button
+            <Button
+              variant='outline'
+              size='sm'
               onClick={handleTip}
-              className='text-purple-500 hover:text-purple-700 focus:outline-none'
+              className='text-purple-500 hover:text-purple-700'
             >
-              <X className='w-5 h-5' />
-            </button>
+              <X className='h-4 w-4' />
+            </Button>
           </div>
         </div>
       )}
+      <div className='flex flex-col gap-1 p-4 mx-4 mt-8 border rounded-md'>
+        <p className='text-info font-semibold text-sm'>How It Works</p>
+        <p className='text-sm text-muted-foreground'>
+          Adjust the weightage for Experience, Skills, and Education to
+          customize the profile score. The total must equal 100%. Use the input
+          fields to set percentages. Click &quot;Reset&quot; to restore default
+          settings.
+        </p>
+      </div>
     </>
+  );
+};
+
+const LoaadingSkeleton = () => {
+  return (
+    <div className='w-full  p-4 bg-white rounded-lg shadow'>
+      <div className='flex items-center justify-between mb-4'>
+        <div className='flex items-center space-x-2'>
+          <Skeleton className='h-4 w-4 rounded-full' />
+          <Skeleton className='h-6 w-24' />
+        </div>
+        <Skeleton className='h-6 w-12' />
+      </div>
+      <div className='space-y-3'>
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className='h-8 w-full' />
+        ))}
+      </div>
+      <div className='flex items-center justify-between my-4'>
+        <div className='flex items-center space-x-2'>
+          <Skeleton className='h-4 w-4 rounded-full' />
+          <Skeleton className='h-6 w-24' />
+        </div>
+        <Skeleton className='h-6 w-12' />
+      </div>
+      <div className='space-y-3'>
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className='h-8 w-full' />
+        ))}
+      </div>
+      <div className='flex items-center justify-between my-4'>
+        <div className='flex items-center space-x-2'>
+          <Skeleton className='h-4 w-4 rounded-full' />
+          <Skeleton className='h-6 w-24' />
+        </div>
+        <Skeleton className='h-6 w-12' />
+      </div>
+      <div className='space-y-3'>
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className='h-8 w-full' />
+        ))}
+      </div>
+    </div>
   );
 };
