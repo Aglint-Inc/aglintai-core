@@ -137,8 +137,7 @@ const AddMember = ({
         // eslint-disable-next-line security/detect-unsafe-regex
         /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
       temp = { ...temp, linked_in: !linkedInURLPattern.test(form.linked_in) };
-    } else {
-      flag = true;
+      flag = !linkedInURLPattern.test(form.linked_in);
     }
 
     if (!form.department_id) {
