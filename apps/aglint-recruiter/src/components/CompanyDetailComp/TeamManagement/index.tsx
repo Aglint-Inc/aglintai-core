@@ -12,7 +12,6 @@ import { useQuery } from '@tanstack/react-query';
 import {
   Building,
   CircleDot,
-  CirclePlus,
   Locate,
   RefreshCw,
   RotateCcw,
@@ -121,12 +120,14 @@ const TeamManagement = () => {
     setSearchText(value);
     startTransition(() => {
       if (value) {
-        const filtered = members.filter(
-          (member) =>
-            member.first_name.toLowerCase().includes(value.toLowerCase()) ||
-            member.position.toLowerCase().includes(value.toLowerCase()) ||
-            member.email.toLowerCase().includes(value.toLowerCase()),
-        );
+        const filtered = members.filter((member) => {
+          const { first_name, position, email } = member;
+          return (
+            first_name?.toLowerCase().includes(value.toLowerCase()) ||
+            position?.toLowerCase().includes(value.toLowerCase()) ||
+            email?.toLowerCase().includes(value.toLowerCase())
+          );
+        });
         setFilteredMembers(filtered);
       } else {
         setFilteredMembers(members);
@@ -199,12 +200,6 @@ const TeamManagement = () => {
                 />
               </div>
               <div className='flex flex-wrap gap-2'>
-                {isResetAllVisible && (
-                  <Button variant='ghost' onClick={resetAllFilter} size='sm'>
-                    <RotateCcw className='mr-2 h-4 w-4' />
-                    Reset All
-                  </Button>
-                )}
                 <FilterDropDown
                   icon={<CircleDot size={12} />}
                   itemList={uniqueStatus}
@@ -233,6 +228,12 @@ const TeamManagement = () => {
                   setSelectedItems={setSelectedLocations}
                   title={'Location'}
                 />
+                {isResetAllVisible && (
+                  <Button variant='ghost' onClick={resetAllFilter} size='sm'>
+                    <RotateCcw className='mr-2 h-4 w-4' />
+                    Reset All
+                  </Button>
+                )}
               </div>
             </div>
             {canManage &&
@@ -250,14 +251,13 @@ const TeamManagement = () => {
                 </div>
               ) : (
                 <Button
-                  variant='ghost'
+                  variant='outline'
                   size='sm'
                   onClick={() => {
                     setOpen(true);
                   }}
                   className='flex items-center'
                 >
-                  <CirclePlus className='mr-2 h-4 w-4' />
                   Invite Member
                 </Button>
               ))}

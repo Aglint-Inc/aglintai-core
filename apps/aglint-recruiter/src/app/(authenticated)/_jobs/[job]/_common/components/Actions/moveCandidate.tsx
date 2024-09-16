@@ -100,7 +100,7 @@ const MoveCandidateNew = () => {
 };
 
 const MoveCandidateInterview = () => {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, isShowFeature } = useAuthDetails();
   const {
     handleMoveApplicationToInterview,
     sectionApplication: { data },
@@ -112,7 +112,7 @@ const MoveCandidateInterview = () => {
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
   const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
-  const buttonText = 'Request and Move';
+  const buttonText = isShowFeature('SCHEDULING') ? 'Request and Move' : 'Move';
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
       requests: checklist.map((application_id) => {
@@ -137,7 +137,6 @@ const MoveCandidateInterview = () => {
     });
     resetActionPopup();
   }, buttonText);
-  const { isShowFeature } = useAuthDetails();
   const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
   return (
     <ReusablePopup

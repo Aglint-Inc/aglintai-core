@@ -1,22 +1,22 @@
-import { Badge } from '@components/ui/badge';
 import { cn } from '@lib/utils'; // Assuming you have a utility function for class merging
+
+import { UIBadge } from '@/components/Common/UIBadge';
 
 export const ScoreTag = ({ score }: { score: number }) => {
   const { text, bgColor, textColor } = getResumeScore(score);
   return (
-    <Badge
+    <UIBadge
       className={cn(
         'text-xs font-medium px-2 py-1 rounded-full',
         bgColor,
         textColor,
       )}
-    >
-      {`${text} - ${score}%`}
-    </Badge>
+      textBadge={`${text} - ${score}%`}
+    />
   );
 };
 
-const getResumeScore = (
+export const getResumeScore = (
   score: number,
 ): { text: string; bgColor: string; textColor: string } => {
   if (score >= 80)

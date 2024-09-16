@@ -12,6 +12,7 @@ import { BarChart, Calendar, FileText, UserPlus, Workflow } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
@@ -28,35 +29,37 @@ const JobsSideNavV2 = () => {
     router.push(ROUTES[route]({ job: job?.id }));
   };
 
+  const currentTab = router.pathname.split('/').filter((job) => job)[2];
+
   const navItems = [
     {
       icon: <FileText className='w-5 h-5' />,
       label: 'Job Details',
-      route: '/jobs/[job]/job-details',
+      route: 'job-details',
       show: true,
     },
     {
       icon: <BarChart className='w-5 h-5' />,
       label: 'Profile Score',
-      route: '/jobs/[job]/profile-score',
+      route: 'profile-score',
       show: isScoringEnabled,
     },
     {
       icon: <UserPlus className='w-5 h-5' />,
       label: 'Hiring Team',
-      route: '/jobs/[job]/hiring-team',
+      route: 'hiring-team',
       show: true,
     },
     {
       icon: <Calendar className='w-5 h-5' />,
       label: 'Interview Plan',
-      route: '/jobs/[job]/interview-plan',
+      route: 'interview-plan',
       show: isShowFeature('SCHEDULING'),
     },
     {
       icon: <Workflow className='w-5 h-5' />,
       label: 'Workflows',
-      route: '/jobs/[job]/workflows',
+      route: 'workflows',
       show: isShowFeature('WORKFLOW'),
     },
   ];
@@ -75,15 +78,15 @@ const JobsSideNavV2 = () => {
         {navItems.map(
           (item, index) =>
             item.show && (
-              <Button
+              <UIButton
                 key={index}
-                variant='ghost'
+                variant={currentTab === item.route ? 'secondary' : 'ghost'}
                 className='w-full justify-start'
-                onClick={() => handlePush(item.route)}
+                onClick={() => handlePush(`/jobs/[job]/${item.route}`)}
               >
                 {item.icon}
                 <span className='ml-2'>{item.label}</span>
-              </Button>
+              </UIButton>
             ),
         )}
       </nav>

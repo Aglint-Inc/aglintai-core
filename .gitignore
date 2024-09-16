@@ -39,6 +39,7 @@ yarn-error.log*
 *.pem
 
 /packages/aglint-ui/*
+apps/aglint-recruiter/script/*.js
 apps/aglint-recruiter/. cursorrules
 
 apps/aglint-recruiter/.cursorignore
