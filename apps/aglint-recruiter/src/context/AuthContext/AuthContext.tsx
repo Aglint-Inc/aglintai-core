@@ -108,7 +108,7 @@ const AuthProvider = ({ children }) => {
         return;
       }
 
-      if (router.pathName !== ROUTES['/loading']() && data?.session?.user?.id) {
+      if (data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
