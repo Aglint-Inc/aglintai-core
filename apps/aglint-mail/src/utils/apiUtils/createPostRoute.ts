@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export const createPostRoute = (schema: any, func: any) => {
   const POST = async (req: Request) => {
     try {
-      const { payload } = await req.json();
+      const payload = await req.json();
       let parsed_body;
       if (schema) {
         parsed_body = schema.parse(payload);
