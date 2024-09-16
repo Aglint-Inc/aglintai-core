@@ -43,7 +43,7 @@ export const UploadApplications = ({
             <TabsTrigger value='csv'>CSV</TabsTrigger>
             <TabsTrigger value='resume'>Resume</TabsTrigger>
           </TabsList>
-          <div className='p-4'>
+          <div className='p-0'>
             <TabsContent value='manual'>
               <ImportManual />
             </TabsContent>
