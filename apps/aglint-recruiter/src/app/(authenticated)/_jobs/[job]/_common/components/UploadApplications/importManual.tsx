@@ -61,19 +61,23 @@ export const ImportManual = () => {
     return isValid;
   };
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      handleUploadApplication({
-        candidate: {
-          first_name: applicant.first_name.value as string,
-          last_name: applicant.last_name.value as string,
-          email: applicant.email.value as string,
-          phone: applicant.phone.value as string,
-          linkedin: applicant.linkedin.value as string,
-        },
-        file: applicant.resume.value as File,
-      });
-      setImportPopup(false);
+  const handleSubmit = async () => {
+    try {
+      if (validateForm()) {
+        await handleUploadApplication({
+          candidate: {
+            first_name: applicant.first_name.value as string,
+            last_name: applicant.last_name.value as string,
+            email: applicant.email.value as string,
+            phone: applicant.phone.value as string,
+            linkedin: applicant.linkedin.value as string,
+          },
+          file: applicant.resume.value as File,
+        });
+        setImportPopup(false);
+      }
+    } catch {
+      //
     }
   };
 
