@@ -67,25 +67,21 @@ const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
   if (job?.posted_by !== 'Greenhouse') return null;
-  const time = dayjsLocal().diff(
-    dayjsLocal(job?.remote_sync_time ?? new Date()),
-    'minutes',
-  );
+  // const time = dayjsLocal().diff(
+  //   dayjsLocal(job?.remote_sync_time ?? new Date()),
+  //   'minutes',
+  // );
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
     await handleJobSync();
     setLoad(false);
   };
-
+  const date = dayjsLocal(job?.remote_sync_time ?? new Date()).fromNow();
   return (
     <div className='flex flex-row gap-1'>
       <div className='flex-shrink-0 flex items-center'>
-        <p className='text-neutral-500 text-sm'>
-          {time
-            ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
-            : 'Last synced few seconds ago'}
-        </p>
+        <p className='text-neutral-500 text-sm'>{`Last synced ${date}`}</p>
       </div>
 
       <OptimisticWrapper loading={load}>
