@@ -81,7 +81,6 @@ export const ImportCsv: React.FC = () => {
           avatar: candidate.avatar,
         };
       });
-      console.log(formattedCandidates);
       await handleUploadCsv({ candidates: formattedCandidates });
       setImportPopup(false);
     } catch {
