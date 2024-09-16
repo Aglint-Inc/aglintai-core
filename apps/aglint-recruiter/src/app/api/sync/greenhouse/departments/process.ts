@@ -2,11 +2,15 @@ import { type DatabaseTableInsert } from '@aglint/shared-types';
 
 import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
-export async function syncDepartments(
-  supabaseAdmin: SupabaseClientType,
-  recruiter_id: string,
-  decryptKey: string,
-) {
+export async function syncDepartments({
+  supabaseAdmin,
+  recruiter_id,
+  decryptKey,
+}: {
+  supabaseAdmin: SupabaseClientType;
+  recruiter_id: string;
+  decryptKey: string;
+}) {
   const departments = await getGreenhouseDepartments(decryptKey);
   return await mapSaveDepartments(supabaseAdmin, departments, recruiter_id);
 }
