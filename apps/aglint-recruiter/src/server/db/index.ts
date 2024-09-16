@@ -1,14 +1,32 @@
-import { type DB } from '@aglint/shared-types';
+import type { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
+import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { cookies } from 'next/headers';
 
-export function createPrivateClient(
-  options: Parameters<typeof createServerClient>[2],
-) {
+export function createPrivateClient() {
+  const cookieStore = cookies();
   return createServerClient<DB>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    options,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, { ...(options as ResponseCookie) }),
+            );
+          } catch {
+            // The `setAll` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+      },
+    },
   );
 }
 

@@ -1,5 +1,5 @@
 import { createHydrationHelpers } from '@trpc/react-query/rsc';
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { cache } from 'react';
 
 import { type AppRouter, createCaller } from '../server/api/root';
@@ -13,10 +13,8 @@ import { createQueryClient } from './query-client';
 const createContext = cache(() => {
   const heads = new Headers(headers());
   heads.set('x-trpc-source', 'rsc');
-  const cooks = cookies();
   return createTRPCContext({
     headers: heads,
-    cookies: cooks,
   });
 });
 

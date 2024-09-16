@@ -11,7 +11,7 @@ import {
   bulkCreateFiles,
 } from '@/apiUtils/job/candidateUpload/utils';
 import { type CandidateFilesBulkCreateAction } from '@/context/CandidatesContext/types';
-import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (
   req: NextApiRequest,
@@ -19,7 +19,6 @@ const handler = async (
 ) => {
   const { job_id, recruiter_id, candidates } =
     req.body as CsvUploadApi['request'];
-  const supabase = createClient();
 
   const candidateFileMap = new Map();
 
@@ -30,7 +29,7 @@ const handler = async (
   });
 
   const { confirmation, error } = await bulkCreateCandidate(
-    supabase,
+    supabaseAdmin,
     safeCandidates,
   )
     .then((candidatesData) => {
@@ -40,7 +39,7 @@ const handler = async (
         file_url: candidateFileMap.get(id),
         type: 'resume' as CandidateFilesBulkCreateAction['request']['inputData'][number]['type'],
       }));
-      return bulkCreateFiles(supabase, safeFiles)
+      return bulkCreateFiles(supabaseAdmin, safeFiles)
         .then((filesData) => {
           const safeApplications: Parameters<typeof bulkCreateApplications>[1] =
             filesData.map(({ candidate_id, id: candidate_file_id }) => ({
@@ -51,7 +50,7 @@ const handler = async (
               source: 'csv_upload',
               recruiter_id,
             }));
-          return bulkCreateApplications(supabase, safeApplications)
+          return bulkCreateApplications(supabaseAdmin, safeApplications)
             .then((): CsvUploadApi['response'] => ({
               confirmation: true,
               error: null,

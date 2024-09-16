@@ -1,8 +1,19 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 
 import { appRouter } from '@/server/api/root';
 import { createTRPCContext } from '@/server/api/trpc';
+
+/**
+ * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
+ * handling a HTTP request (e.g. when you make requests from Client Components).
+ */
+const createContext = async () => {
+  const heads = headers();
+  return createTRPCContext({
+    headers: heads,
+  });
+};
 
 const handler = (req: Request) =>
   fetchRequestHandler({
@@ -10,11 +21,7 @@ const handler = (req: Request) =>
     req,
     router: appRouter,
     allowMethodOverride: true,
-    createContext: () =>
-      createTRPCContext({
-        headers: headers(),
-        cookies: cookies(),
-      }),
+    createContext: () => createContext(),
     onError:
       process.env.NODE_ENV === 'development'
         ? ({ path, error }) => {

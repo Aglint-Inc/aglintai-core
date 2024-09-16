@@ -223,13 +223,13 @@ const useJobContext = () => {
     await handleGenerateJd(job.id, true);
   };
 
-  const { mutate: handleUploadApplication } = useUploadApplication({
+  const { mutateAsync: handleUploadApplication } = useUploadApplication({
     job_id,
   });
-  const { mutate: handleUploadResume } = useUploadResume({
+  const { mutateAsync: handleUploadResume } = useUploadResume({
     job_id,
   });
-  const { mutate: handleUploadCsv } = useUploadCsv({
+  const { mutateAsync: handleUploadCsv } = useUploadCsv({
     job_id,
   });
 
