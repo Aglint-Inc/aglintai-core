@@ -21,6 +21,7 @@ type Candidate = {
   phone: string;
   linkedin: string;
   file_url: string;
+  avatar: string;
 };
 
 export const ImportCsv: React.FC = () => {
@@ -72,11 +73,15 @@ export const ImportCsv: React.FC = () => {
 
   const handleImport = async () => {
     try {
-      const formattedCandidates = candidates.map((candidate) => ({
-        ...candidate,
-        linkedin: candidate.linkedin || '',
-        file_url: candidate.file_url || '',
-      }));
+      const formattedCandidates = candidates.map((candidate) => {
+        return {
+          ...candidate,
+          linkedin: candidate.linkedin || '',
+          file_url: candidate.file_url,
+          avatar: candidate.avatar,
+        };
+      });
+      console.log(formattedCandidates);
       await handleUploadCsv({ candidates: formattedCandidates });
       setImportPopup(false);
     } catch {
@@ -90,6 +95,35 @@ export const ImportCsv: React.FC = () => {
         {isLoading ? (
           <div className='flex justify-center items-center w-full h-full'>
             <p className='text-gray-500'>Loading...</p>
+          </div>
+        ) : candidates.length ? (
+          <div className='flex flex-col gap-2'>
+            <CandidatesListTable candidates={candidates} />
+            <div className='flex justify-between items-center overflow-hidden'>
+              <label
+                htmlFor='file-upload'
+                className='flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer'
+              >
+                <Upload className='w-5 h-5 mr-2 text-gray-400' />
+                Re-Upload
+                <input
+                  id='file-upload'
+                  type='file'
+                  className='hidden'
+                  accept='.csv'
+                  onChange={(event) =>
+                    handleFileUpload(
+                      (
+                        event.target as React.ChangeEvent<HTMLInputElement>['target']
+                      ).files[0],
+                    )
+                  }
+                />
+              </label>
+              {candidates.length > 0 && (
+                <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
+              )}
+            </div>
           </div>
         ) : (
           <div className='space-y-6 h-full flex flex-col'>
@@ -124,21 +158,14 @@ export const ImportCsv: React.FC = () => {
                   handleFileUpload(file);
                 }}
               >
-                {candidates.length > 0 ? (
-                  <CandidatesListTable candidates={candidates} />
-                ) : (
-                  <div className='border border-dashed border-gray-300 p-6 text-center rounded-lg'>
-                    <FileText className='w-12 h-12 text-gray-400 mx-auto mb-4' />
-                    <p className='text-gray-500'>
-                      Upload a CSV file to import candidates
-                    </p>
-                  </div>
-                )}
+                <div className='border border-dashed border-gray-300 p-6 text-center rounded-lg'>
+                  <FileText className='w-12 h-12 text-gray-400 mx-auto mb-4' />
+                  <p className='text-gray-500'>
+                    Upload a CSV file to import candidates
+                  </p>
+                </div>
               </FileUploader>
             </div>
-            {candidates.length > 0 && (
-              <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
-            )}
           </div>
         )}
       </div>
@@ -158,7 +185,7 @@ export const ImportCsv: React.FC = () => {
 const CandidatesListTable: React.FC<{ candidates: Candidate[] }> = ({
   candidates,
 }) => (
-  <div className='overflow-auto max-h-[300px]'>
+  <div className='overflow-auto max-h-[330px]'>
     <Table>
       <TableHeader>
         <TableRow>
