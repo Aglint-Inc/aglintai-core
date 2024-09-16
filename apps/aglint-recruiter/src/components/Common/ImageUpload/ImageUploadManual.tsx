@@ -1,12 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Button } from '@components/ui/button';
 import {
   Building2,
   Loader2,
-  RotateCw,
   Trash2,
   Upload,
-  UserCircle,
+  UserCircle
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -72,7 +70,6 @@ function ImageUploadManual({
             <Loader2 className='w-6 h-6 text-white animate-spin' />
           </div>
         )}
-
         <div className='absolute inset-0 flex items-center justify-center z-1'>
           {!initImage ? (
             <FileUploader
@@ -80,40 +77,25 @@ function ImageUploadManual({
               name='file'
               types={['PNG', 'JPEG', 'JPG']}
             >
-              <Button
-                variant='ghost'
-                className={`transition-opacity duration-500 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
-              >
-                <Upload className='w-6 h-6' />
-              </Button>
+              <Upload
+                className={`w-5 h-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
+              />
             </FileUploader>
           ) : (
             <div
               className={`flex items-center justify-center w-full h-full rounded-lg transition-all duration-500 ${isStackHovered ? 'bg-neutral-200 bg-opacity-50' : ''}`}
             >
               {initImage && isStackHovered && (
-                <div className='flex bg-black bg-opacity-70 rounded-lg'>
-                  <FileUploader
-                    handleChange={onImageChange}
-                    name='file'
-                    types={['PNG', 'JPEG', 'JPG']}
-                  >
-                    <Button variant='ghost' className='text-white'>
-                      <RotateCw className='w-4 h-4' />
-                    </Button>
-                  </FileUploader>
-                  <Button
-                    variant='ghost'
-                    className='text-white'
+                <div className='flex  bg-opacity-70 rounded-lg'>
+                  <Trash2
                     onClick={(e) => {
                       e.stopPropagation();
                       setInitImage(null);
                       imageFile.current = null;
                       if (setChanges) setChanges();
                     }}
-                  >
-                    <Trash2 className='w-4 h-4' />
-                  </Button>
+                    className='w-5 h-5'
+                  />
                 </div>
               )}
             </div>

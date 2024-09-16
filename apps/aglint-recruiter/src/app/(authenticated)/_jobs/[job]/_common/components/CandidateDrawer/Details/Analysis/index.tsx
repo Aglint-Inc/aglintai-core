@@ -14,7 +14,7 @@ import { Skills } from './Skills';
 
 export const Analysis = () => {
   return (
-    <Accordion type='single' collapsible>
+    <Accordion type='single' defaultValue='analysis' collapsible>
       <AccordionItem value='analysis'>
         <AccordionTrigger>
           <div className='flex items-center justify-between w-full'>

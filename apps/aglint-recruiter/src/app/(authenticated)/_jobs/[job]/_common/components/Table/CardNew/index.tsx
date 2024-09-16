@@ -1,10 +1,8 @@
 import OptimisticWrapper from '@components/loadingWapper';
-import { CandidateListItem } from '@devlink2/CandidateListItem';
-import { Bookmark, Star } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
-import StageProgress from '@/components/Scheduling/Common/StageProgress';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import {
@@ -12,12 +10,10 @@ import {
   useApplicationsActions,
   useApplicationsChecklist,
 } from '@/job/hooks';
-import { formatTimeStamp } from '@/job/utils/formatTimeStamp';
 import { type Application } from '@/types/applications.types';
 import ROUTES from '@/utils/routing/routes';
-import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { ResumeScore } from '../../Common/ResumeScoreNew';
+import { TableRow } from '../TableRow';
 
 const ApplicationCard = memo(
   ({ application }: { application: Application }) => {
@@ -34,16 +30,15 @@ const ApplicationCard = memo(
 
     const checklist = useApplicationsChecklist();
     const { setChecklist } = useApplicationsActions();
-
     const { isScoringEnabled } = useRolesAndPermissions();
+    const { pressed: shift } = useKeyPress('Shift');
+
+    const { isShowFeature } = useAuthDetails();
 
     const isChecked = useMemo(
       () => checklist.includes(application.id),
       [application, checklist],
     );
-
-    const isSelected = false;
-    const { pressed: shift } = useKeyPress('Shift');
 
     const handleCheck = useCallback(() => {
       if (isChecked)
@@ -69,20 +64,6 @@ const ApplicationCard = memo(
       }
     }, [checklist, isChecked, application, shift, pages, setChecklist]);
 
-    const location = useMemo(
-      () =>
-        [application.city, application.country]
-          .filter(Boolean)
-          .join(', ')
-          .trim(),
-      [application.city, application.country],
-    );
-
-    const appliedDate = useMemo(
-      () => formatTimeStamp(application.applied_at),
-      [application.applied_at],
-    );
-
     const checkEnabled = useMemo(
       () =>
         (application?.resume_processing_state === 'processed' ||
@@ -96,74 +77,36 @@ const ApplicationCard = memo(
       [applicationMutations, application.id],
     );
 
+    const handleClickCandidate = () => {
+      router.push(
+        `${ROUTES['/jobs/[job]/application/[application_id]']({
+          application_id: application.id,
+          job: application.job_id,
+        })}${
+          application.status === 'interview' && isShowFeature('SCHEDULING')
+            ? `?tab=interview`
+            : `?tab=scoring`
+        }`,
+      );
+    };
+
     return (
       <OptimisticWrapper loading={applicationLoading}>
-        <CandidateListItem
-          isResumeMatchVisible={isScoringEnabled}
-          onClickCandidate={{
-            onClick: () => {
-              router.push(
-                `${ROUTES['/jobs/[job]/application/[application_id]']({
-                  application_id: application.id,
-                  job: application.job_id,
-                })}${
-                  application.status === 'interview'
-                    ? `?tab=interview`
-                    : `?tab=resume`
-                }`,
-              );
-            },
-          }}
-          isHighlighted={isSelected || isChecked}
-          highlightType={isSelected ? 'highlighted' : 'checked'}
-          slotBookmark={<Banners application={application} />}
-          isDragVisible={isChecked}
-          onClickSelect={{
-            onClick: checkEnabled ? () => handleCheck() : undefined,
-            style: {
-              opacity: checkEnabled ? 100 : 0,
-            },
-          }}
+        <TableRow
+          application={application}
           isChecked={isChecked}
-          slotProfileImage={<></>}
-          name={capitalizeAll(application.name)}
-          jobTitle={application.current_job_title || '---'}
-          location={location || '---'}
-          slotResumeScore={
-            status === 'draft' ? (
-              <>---</>
-            ) : (
-              <ResumeScore
-                resume_processing_state={application.resume_processing_state}
-                resume_score={application.resume_score}
-              />
-            )
-          }
-          isScreeningVisible={false}
-          isAssessmentVisible={false}
+          onCheck={handleCheck}
+          onClickCandidate={handleClickCandidate}
+          isResumeMatchVisible={isScoringEnabled}
           isInterviewVisible={cascadeVisibilites.interview}
-          isDisqualifiedVisible={cascadeVisibilites.disqualified}
-          slotScreening={<>---</>}
-          slotAssessmentScore={<>---</>}
-          slotInterviewPipline={
-            <StageProgress interview_plans={application.interview_plans} />
-          }
-          slotDisqualified={<>---</>}
-          appliedDate={appliedDate}
+          checkEnabled={checkEnabled}
+          status={status}
         />
       </OptimisticWrapper>
     );
   },
 );
+
 ApplicationCard.displayName = 'ApplicationCard';
 
 export default ApplicationCard;
-
-const Banners = ({ application }: { application: Application }) => {
-  return (
-    <div className='flex flex-row items-center gap-1'>
-      {application?.bookmarked && <Bookmark className='w-4 h-4' />}
-      {application?.is_new && <Star className='w-4 h-4' />}
-    </div>
-  );
-};

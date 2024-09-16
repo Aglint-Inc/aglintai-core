@@ -152,12 +152,10 @@ const Schools = () => {
           {itemsToShow.map(({ institution, degree, start, end }, i) => (
             <TableRow key={i}>
               <TableCell className='flex items-center space-x-2 w-1/4'>
-                <Image
+                <ImageWithFallback
                   src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${institution} logo`}
-                  width={24}
-                  height={24}
-                  className='rounded-full'
+                  fallbackSrc={'/images/logo/education.png'}
                 />
                 <span>{capitalize(institution, conjunctions)}</span>
               </TableCell>
@@ -249,4 +247,19 @@ const calculateDuration = (start, end) => {
     duration += `${months} month${months > 1 ? 's' : ''}`;
   }
   return duration || 'Less than a month';
+};
+
+const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      width={24}
+      height={24}
+      onError={() => setImgSrc(fallbackSrc)}
+      className='rounded-full'
+    />
+  );
 };
