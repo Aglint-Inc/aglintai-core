@@ -13,10 +13,10 @@ import {slackEndPoints} from 'src/types/slack/routes.types';
 
 const slackRoutes = express.Router();
 
-slackRoutes.post(
-  `/${slackEndPoints.candidateBook_slack_interviewerForConfirmation}`,
-  notifyInterviewConfirmation
-);
+// slackRoutes.post(
+//   `/${slackEndPoints.candidateBook_slack_interviewerForConfirmation}`,
+//   notifyInterviewConfirmation
+// );
 slackRoutes.post(
   `/${slackEndPoints.interviewStart_slack_interviewers}`,
   interviewReminder
