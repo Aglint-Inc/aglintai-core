@@ -33,32 +33,34 @@ function VerticalNav() {
     }
     router.push({ pathname: ROUTES['/company'](), query });
   };
-
+  const { isShowFeature } = useAuthDetails();
   return (
     <div className='space-y-1'>
       <nav className='flex flex-col'>
-        {settingsItems.map((item, i) => {
-          // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-          const Icon = item.icon ? require('lucide-react')[item.icon] : null;
-          const NavButton = (
-            <Button
-              key={i}
-              variant='ghost'
-              className={cn(
-                'justify-start',
-                router.query.tab === item.value && 'bg-muted',
-              )}
-              onClick={() => handleNavClick(item.value)}
-            >
-              {Icon && <Icon className='mr-2 h-4 w-4' />}
-              {item.label}
-            </Button>
-          );
+        {settingsItems(isShowFeature('SCHEDULING'))
+          .filter((ele) => ele.show)
+          .map((item, i) => {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+            const Icon = item.icon ? require('lucide-react')[item.icon] : null;
+            const NavButton = (
+              <Button
+                key={i}
+                variant='ghost'
+                className={cn(
+                  'justify-start',
+                  router.query.tab === item.value && 'bg-muted',
+                )}
+                onClick={() => handleNavClick(item.value)}
+              >
+                {Icon && <Icon className='mr-2 h-4 w-4' />}
+                {item.label}
+              </Button>
+            );
 
-          return item?.permission
-            ? ifAllowed(NavButton, [item.permission])
-            : NavButton;
-        })}
+            return item?.permission
+              ? ifAllowed(NavButton, [item.permission])
+              : NavButton;
+          })}
       </nav>
     </div>
   );
