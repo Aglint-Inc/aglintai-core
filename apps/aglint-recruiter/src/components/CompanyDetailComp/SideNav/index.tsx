@@ -35,13 +35,7 @@ function VerticalNav() {
   };
 
   return (
-    <div className=' space-y-1 p-6'>
-      <div className='mb-4'>
-        <h2 className='text-mg font-semibold mb-2'>Settings</h2>
-        <p className='text-sm text-gray-600'>
-          All the settings for your admin.
-        </p>
-      </div>
+    <div className='space-y-1'>
       <nav className='flex flex-col'>
         {settingsItems.map((item, i) => {
           // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires

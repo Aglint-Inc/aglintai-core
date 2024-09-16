@@ -9,7 +9,7 @@ import {
 import defaultCompanyLogo from '@public/images/default-company-logo.svg';
 import defaultProfileImage from '@public/images/default-user-profile.svg';
 import { useQueryClient } from '@tanstack/react-query';
-import { LogOut } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -71,6 +71,12 @@ export default function AppLayout({ children, appRouter = false }) {
             </div>
           </div>
           <div className='flex items-center space-x-4'>
+            <Button variant='ghost' asChild>
+              <Link href='/company?tab=company-info'>
+                <Settings className='w-5 h-5 mr-2' strokeWidth={1.5} />
+                Settings
+              </Link>
+            </Button>
             <Button variant='link' onClick={handleSignOut} asChild>
               <Link href='#'>
                 <LogOut className='w-5 h-5 mr-2' strokeWidth={1.5} />

@@ -160,7 +160,7 @@ const TeamManagement = () => {
   }, [filteredMembers.length]);
   return (
     <>
-      <div className='w-[960px] mx-auto px-4 py-8'>
+      <div className=''>
         <h1 className='text-lg font-semibold mb-4'>Manage User</h1>
         <p className='text-gray-600 mb-6'>
           Invite your hiring team members and manage their roles and profile
