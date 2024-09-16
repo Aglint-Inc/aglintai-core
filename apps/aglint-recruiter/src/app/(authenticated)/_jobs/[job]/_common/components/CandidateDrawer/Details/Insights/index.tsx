@@ -11,7 +11,7 @@ import { Overview } from './Overview';
 
 export const Insights = () => {
   return (
-    <Accordion type='single' collapsible>
+    <Accordion type='single' defaultValue='insights' collapsible>
       <AccordionItem value='insights'>
         <AccordionTrigger>
           <div className='flex items-center justify-between w-full'>

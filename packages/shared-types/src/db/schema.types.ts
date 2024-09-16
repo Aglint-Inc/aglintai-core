@@ -2949,10 +2949,10 @@ export type Database = {
         Row: {
           about: string | null
           analytics: boolean
+          ats: string
           banner_image: string | null
           candidate_portal: boolean
           company_images: string[] | null
-          greenhouse: boolean
           greetings: string | null
           integrations: boolean
           recruiter_id: string
@@ -2965,10 +2965,10 @@ export type Database = {
         Insert: {
           about?: string | null
           analytics?: boolean
+          ats?: string
           banner_image?: string | null
           candidate_portal?: boolean
           company_images?: string[] | null
-          greenhouse?: boolean
           greetings?: string | null
           integrations?: boolean
           recruiter_id: string
@@ -2981,10 +2981,10 @@ export type Database = {
         Update: {
           about?: string | null
           analytics?: boolean
+          ats?: string
           banner_image?: string | null
           candidate_portal?: boolean
           company_images?: string[] | null
-          greenhouse?: boolean
           greetings?: string | null
           integrations?: boolean
           recruiter_id?: string
@@ -6851,4 +6851,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-
