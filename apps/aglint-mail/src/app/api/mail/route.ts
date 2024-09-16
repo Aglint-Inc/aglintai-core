@@ -7,7 +7,6 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 
 export async function POST(req: Request) {
   const { target_api, payload } = await req.json();
-
   const supabaseAdmin = getSupabaseServer();
 
   try {
