@@ -29,6 +29,7 @@ import { cloneDeep } from 'lodash';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
@@ -263,15 +264,15 @@ function Holidays() {
             )}
           </div>
           <div className='mt-4 flex justify-end space-x-2'>
-            <Button
+            <UIButton
               variant='outline'
               onClick={() => {
                 setDaysOffOpen(false);
               }}
             >
               Cancel
-            </Button>
-            <Button
+            </UIButton>
+            <UIButton
               onClick={() => {
                 if (!eventRef.current.value) {
                   toast.message('Please enter event name.');
@@ -302,18 +303,13 @@ function Holidays() {
                 } as holidayType;
 
                 handleAddDayOff(newDayoff);
-                toast.success(
-                  `Holiday added on ${dayjs(selectedDate).format(
-                    'DD-MMM-YYYY',
-                  )} ${
-                    eventRef.current.value ? 'for' : ''
-                  } ${eventRef.current.value}`,
-                );
+
                 setSelectedDate(null);
               }}
+              isLoading={isSaving === 'saving'}
             >
               {isSaving === 'saving' ? 'Adding...' : 'Add'}
-            </Button>
+            </UIButton>
           </div>
         </DialogContent>
       </Dialog>
