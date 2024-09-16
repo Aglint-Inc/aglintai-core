@@ -52,14 +52,14 @@ export default function AppLayout({ children, appRouter = false }) {
   return (
     <div className='flex flex-col'>
       {isHorizontalNav && (
-        <nav className='flex items-center justify-between w-full h-16 p-2 bg-white border-b sticky top-0 z-50'>
+        <nav className='flex items-center justify-between w-full p-2 bg-white border-b sticky top-0 z-50'>
           <div className='flex items-center space-x-4'>
             <Link href='/'>
               <Image
                 src={logo || defaultCompanyLogo}
                 alt={name}
-                width={40}
-                height={40}
+                width={32}
+                height={32}
                 className='rounded-sm'
                 style={{ objectFit: 'contain' }}
               />
@@ -70,17 +70,34 @@ export default function AppLayout({ children, appRouter = false }) {
               </Button>
             </div>
           </div>
-          <div className='flex items-center space-x-4'>
+          <div className='flex items-center'>
             <Button variant='ghost' asChild>
               <Link href='/company?tab=company-info'>
                 <Settings className='w-5 h-5 mr-2' strokeWidth={1.5} />
                 Settings
               </Link>
             </Button>
+            <Button variant='link' asChild>
+              <Link
+                href={
+                  ROUTES['/user/profile/[user_id]']({
+                    user_id: recruiterUser?.user_id,
+                  }) + '?profile=true'
+                }
+              >
+                <Image
+                  src={userDetails?.profile_image || defaultProfileImage}
+                  alt={recruiterUser?.first_name || 'User'}
+                  width={32}
+                  height={32}
+                  className='rounded-full'
+                  style={{ objectFit: 'cover' }}
+                />
+              </Link>
+            </Button>
             <Button variant='link' onClick={handleSignOut} asChild>
               <Link href='#'>
                 <LogOut className='w-5 h-5 mr-2' strokeWidth={1.5} />
-                Logout
               </Link>
             </Button>
           </div>

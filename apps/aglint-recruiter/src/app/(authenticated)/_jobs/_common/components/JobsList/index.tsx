@@ -73,9 +73,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
             <TableCell className='font-medium'>
               <div className='flex flex-col'>
                 <div className='flex items-center space-x-2'>
-                  <Briefcase className='h-4 w-4 text-gray-400' />
+                  {getAtsBadge(job.posted_by) || (
+                    <Briefcase className='h-5 w-5 text-gray-400 px-1' />
+                  )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
-                  {getAtsBadge(job.posted_by)}
                 </div>
                 {/* <div className='flex items-center space-x-2 mt-1'>
                   <Building2 className='h-4 w-4 text-gray-400' />
@@ -179,7 +180,7 @@ const getAtsBadge = (postedBy: string) => {
       alt={`${postedBy} ATS`}
       width={20}
       height={20}
-      className='w-5 h-5 object-contain ml-2'
+      className='w-5 h-5 object-contain'
     />
   ) : null;
 };
