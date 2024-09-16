@@ -235,5 +235,15 @@ export const PATHS = [
   '/api/trpc/[trpc]',
   '/api/emails/agent_email_candidate',
   '/api/emails/mail',
-  '/api/emails/preview'
+  '/api/emails/preview',
+  '/api/emails/slack/candidateBook_slack_interviewerForConfirmation',
+  '/api/emails/slack/interaction',
+  '/api/emails/slack/interviewEnd_slack_interviewerForFeedback',
+  '/api/emails/slack/interviewEnd_slack_organizerForMeetingStatus',
+  '/api/emails/slack/interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+  '/api/emails/slack/interviewEnd_slack_shadowTraineeForMeetingAttendence',
+  '/api/emails/slack/interviewStart_slack_interviewers',
+  '/api/emails/slack/onQualified_slack_trainee',
+  '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
 ] as const

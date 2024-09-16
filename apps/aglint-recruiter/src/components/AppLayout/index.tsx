@@ -45,7 +45,7 @@ export default function AppLayout({ children, appRouter = false }) {
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col h-full'>
       {isHorizontalNav && (
         <nav className='flex items-center justify-between w-full p-2 bg-white border-b sticky top-0 z-50'>
           <div className='flex items-center space-x-4'>
@@ -100,7 +100,7 @@ export default function AppLayout({ children, appRouter = false }) {
       )}
       <div className='flex flex-1 bg-gray-50'>
         {!isHorizontalNav && (
-          <nav className='flex flex-col justify-between w-16 border-r bg-white'>
+          <nav className='flex flex-col justify-between w-16 border-r bg-white h-[100vh]'>
             <div className='flex flex-col items-center py-3 flex-grow'>
               <Button variant='ghost' className='mt-4' asChild>
                 <Link href='/'>

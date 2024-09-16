@@ -10,8 +10,6 @@ import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 import { companyType } from '@/utils/userRoles';
 
-import { server_getUserRoleAndId } from '../reset_password';
-
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
 export default async function handler(
   req: NextApiRequest,
@@ -21,21 +19,16 @@ export default async function handler(
   const requestHandler = apiRequestHandlerFactory<InviteUserAPIType>(req, res);
   requestHandler(
     'POST',
-    async ({ body }) => {
+    async ({ body, requesterDetails: { user_id } }) => {
       const { users, recruiter_id } = body;
-      const {
-        // role,
-        user_id: id,
-      } = await server_getUserRoleAndId();
-      // if (role === 'admin') {
-      const user_id: string = null;
+
       try {
         for (const user of users) {
           const recUser = await registerMember(
             supabaseAdmin,
             user,
             recruiter_id,
-            id,
+            user_id,
           );
           checkCalendarStatus(recUser.user_id);
           const { error: resetEmail } =

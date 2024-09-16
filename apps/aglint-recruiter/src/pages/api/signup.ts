@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,7 +51,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .single()
       .throwOnError();
 
-    await sleep(3000);
+    await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/pre-seed`, {
+      record: rec,
+    });
 
     const { data: rol } = await supabase
       .from('roles')
@@ -88,7 +91,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

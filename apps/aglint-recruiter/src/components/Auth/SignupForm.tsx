@@ -110,7 +110,7 @@ export default function SignUpForm() {
             description:
               'Account created successfully. Please check your email to verify your account.',
           });
-          router.push(ROUTES['/loading']());
+          router.push(ROUTES['/jobs']());
         } else {
           toast({
             variant: 'destructive',

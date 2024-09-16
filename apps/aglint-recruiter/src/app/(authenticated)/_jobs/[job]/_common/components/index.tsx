@@ -61,7 +61,7 @@ const ApplicationsComponent = () => {
         <div className='container mx-auto'>
           <div className='flex justify-between items-center mb-6'>
             <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Details</h1>
+              <h1 className='text-2xl font-bold mb-2'>Job Details </h1>
               <SharedBreadCrumbs />
             </div>
             <SharedActions />

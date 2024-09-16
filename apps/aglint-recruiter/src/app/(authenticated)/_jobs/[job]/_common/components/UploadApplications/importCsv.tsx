@@ -1,5 +1,4 @@
 import { useToast } from '@components/hooks/use-toast';
-import { Button } from '@components/ui/button';
 import {
   Table,
   TableBody,
@@ -10,7 +9,9 @@ import {
 } from '@components/ui/table';
 import { FileText, Upload } from 'lucide-react';
 import React, { useState } from 'react';
+import { FileUploader } from 'react-drag-drop-files';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 
 type Candidate = {
@@ -29,8 +30,7 @@ export const ImportCsv: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleFileUpload = (file: File) => {
     if (!file) return;
 
     setIsLoading(true);
@@ -105,34 +105,51 @@ export const ImportCsv: React.FC = () => {
                   type='file'
                   className='hidden'
                   accept='.csv'
-                  onChange={handleFileUpload}
+                  onChange={(event) =>
+                    handleFileUpload(
+                      (
+                        event.target as React.ChangeEvent<HTMLInputElement>['target']
+                      ).files[0],
+                    )
+                  }
                 />
               </label>
             </div>
-            <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
-            {/* <div className='flex-grow overflow-auto'>
-              {candidates.length > 0 ? (
-                <CandidatesListTable candidates={candidates} />
-              ) : (
-                <div className='border border-dashed border-gray-300 p-6 text-center rounded-lg'>
-                  <FileText className='w-12 h-12 text-gray-400 mx-auto mb-4' />
-                  <p className='text-gray-500'>
-                    Upload a CSV file to import candidates
-                  </p>
-                </div>
-              )}
-            </div> */}
+            <div className='text-sm text-gray-600 text-center'>or</div>
+            <div className='flex-grow overflow-auto'>
+              <FileUploader
+                handleChange={(
+                  file: React.ChangeEvent<HTMLInputElement>['target']['files'][number],
+                ) => {
+                  handleFileUpload(file);
+                }}
+              >
+                {candidates.length > 0 ? (
+                  <CandidatesListTable candidates={candidates} />
+                ) : (
+                  <div className='border border-dashed border-gray-300 p-6 text-center rounded-lg'>
+                    <FileText className='w-12 h-12 text-gray-400 mx-auto mb-4' />
+                    <p className='text-gray-500'>
+                      Upload a CSV file to import candidates
+                    </p>
+                  </div>
+                )}
+              </FileUploader>
+            </div>
+            {candidates.length > 0 && (
+              <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
+            )}
           </div>
         )}
       </div>
       <div className='p-4'>
-        <Button
+        <UIButton
           onClick={handleImport}
           disabled={candidates.length === 0}
           className='w-full'
         >
           Import
-        </Button>
+        </UIButton>
       </div>
     </div>
   );
