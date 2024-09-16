@@ -53,6 +53,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
     "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
     'camelcase': 'off',
   },
 };

@@ -137,22 +137,26 @@ const MoveCandidateInterview = () => {
     });
     resetActionPopup();
   }, buttonText);
-
+  const { isShowFeature } = useAuthDetails();
+  const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
   return (
     <ReusablePopup
       title={title}
       slotBody={
         <div className='flex flex-col gap-2'>
           {capitalize(description)}
-          <CreateRequest
-            setRequest={setRequest}
-            setSelectedSession={setSelectedSession}
-            selectedSession={selectedSession}
-            setPriority={setPriority}
-            priority={priority}
-            note={note}
-            setNote={setNote}
-          />
+
+          <div className={hideRequestBox}>
+            <CreateRequest
+              setRequest={setRequest}
+              setSelectedSession={setSelectedSession}
+              selectedSession={selectedSession}
+              setPriority={setPriority}
+              priority={priority}
+              note={note}
+              setNote={setNote}
+            />
+          </div>
         </div>
       }
       slotButtons={buttons}

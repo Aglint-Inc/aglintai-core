@@ -153,7 +153,7 @@ export default FilterJobDashboard;
 export const useJobFilterAndSort = (jobs: Job[]) => {
   const {
     recruiter: {
-      recruiter_preferences: { greenhouse },
+      recruiter_preferences: { ats },
     },
   } = useAuthDetails();
   const { members } = useAllMembers();
@@ -372,13 +372,13 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
 
   const safeOptions = useMemo(
     () =>
-      greenhouse
+      ats === 'Greenhouse'
         ? {
             ...sortOptions,
             options: sortOptions.options.filter((type) => type !== 'status'),
           }
         : sortOptions,
-    [greenhouse, sortOptions],
+    [ats, sortOptions],
   );
 
   return {

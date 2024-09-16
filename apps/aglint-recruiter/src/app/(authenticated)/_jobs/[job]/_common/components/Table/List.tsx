@@ -10,7 +10,6 @@ const List = ({
   applications,
   header,
   loader,
-  count,
 }: {
   applications: ReturnType<typeof useApplications>['sectionApplication'];
   header: React.JSX.Element;
@@ -26,7 +25,7 @@ const List = ({
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? allRows.length + 1 : allRows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 41,
+    estimateSize: () => 68,
     overscan: 5,
   });
 
@@ -55,10 +54,7 @@ const List = ({
   if ((allRows ?? []).length === 0) return <EmptyList />;
 
   return (
-    <div
-      ref={parentRef}
-      className='h-[calc(100vh-300px)] w-[calc(100vw-64px)] overflow-y-auto'
-    >
+    <div ref={parentRef} className='h-[calc(100vh-300px)] overflow-y-auto'>
       {header}
       <div
         className='w-full relative'
@@ -76,7 +72,7 @@ const List = ({
               style={{
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start}px)`,
-                zIndex: count - virtualRow.index,
+                // zIndex: count - virtualRow.index,
               }}
             >
               {isLoaderRow ? (

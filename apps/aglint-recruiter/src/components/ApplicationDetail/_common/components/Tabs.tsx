@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { UITab, UITabWrapper } from '@/components/Common/UITab';
 import { useApplication } from '@/context/ApplicationContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 
@@ -18,10 +19,22 @@ function Tabs() {
   const tab = router.query.tab as TabsType;
 
   const { isScoringEnabled } = useRolesAndPermissions();
+  const { isShowFeature } = useAuthDetails();
 
   const { job_id, application_id } = useApplication();
 
   const allTabs = [
+    {
+      tab: 'scoring',
+      onClick: () => {
+        router.push({
+          query: { tab: 'scoring' },
+          pathname: `/jobs/${job_id}/application/${application_id}`,
+        });
+      },
+      textLabel: 'Scoring',
+      isVisible: isScoringEnabled,
+    },
     {
       tab: 'resume',
       onClick: () => {
@@ -34,27 +47,16 @@ function Tabs() {
       isVisible: true,
     },
     {
-      tab: 'scoring',
+      tab: 'interview',
       onClick: () => {
         router.push({
-          query: { tab: 'scoring' },
+          query: { tab: 'interview' },
           pathname: `/jobs/${job_id}/application/${application_id}`,
         });
       },
-      textLabel: 'Scoring',
-      isVisible: isScoringEnabled,
+      textLabel: 'Interview',
+      isVisible: isShowFeature('SCHEDULING'),
     },
-    // {
-    //   tab: 'interview',
-    //   onClick: () => {
-    //     router.push({
-    //       query: { tab: 'interview' },
-    //       pathname: `/jobs/${job_id}/application/${application_id}`,
-    //     });
-    //   },
-    //   textLabel: 'Interview',
-    //   isVisible: true,
-    // },
     // {
     //   tab: 'requests',
     //   onClick: () => {
