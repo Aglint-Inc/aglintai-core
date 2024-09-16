@@ -17,10 +17,10 @@ const slackRoutes = express.Router();
 //   `/${slackEndPoints.candidateBook_slack_interviewerForConfirmation}`,
 //   notifyInterviewConfirmation
 // );
-slackRoutes.post(
-  `/${slackEndPoints.interviewStart_slack_interviewers}`,
-  interviewReminder
-);
+// slackRoutes.post(
+//   `/${slackEndPoints.interviewStart_slack_interviewers}`,
+//   interviewReminder
+// );
 slackRoutes.post(
   `/${slackEndPoints.interviewEnd_slack_interviewerForFeedback}`,
   feedback
