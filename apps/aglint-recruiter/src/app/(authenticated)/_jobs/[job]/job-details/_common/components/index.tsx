@@ -20,7 +20,7 @@ import {
 
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
+// import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { validateDescription } from '@/job/utils';
 import {
@@ -162,7 +162,7 @@ const JobEdit = () => {
             <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
             <BreadCrumbs job={job} />
           </div>
-          <Settings />
+          {/* <Settings /> */}
         </div>
 
         <div className='flex gap-6 mb-6'>
@@ -170,34 +170,37 @@ const JobEdit = () => {
             <JobsSideNavV2 />
           </div>
           <div className='w-3/4'>
-            <h2 className='text-xl font-bold mb-2'>Job Details</h2>
-            <p className='text-sm text-gray-600 mb-4'>
-              Update the job details here; changes will be saved automatically.
-              Publish to make the updates live.
-            </p>
+            <div className='flex flex-row justify-between'>
+              <div>
+                <h2 className='text-xl font-bold mb-2'>Job Details</h2>
+                <p className='text-sm text-gray-600 mb-4'>
+                  Update the job details here; changes will be saved
+                  automatically. Publish to make the updates live.
+                </p>
+              </div>
+              <div
+                className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                  {saving ? (
+                    <>
+                      <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
+                      <span>Saving changes...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckIcon className='w-4 h-4 text-green-500' />
+                      <span>Changes saved</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
             <JobEditForm
               fields={fields}
               setFields={setFields}
               setSaving={setSaving}
             />
-          </div>
-        </div>
-
-        <div
-          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className='flex items-center space-x-2 text-sm text-gray-600'>
-            {saving ? (
-              <>
-                <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
-                <span>Saving changes...</span>
-              </>
-            ) : (
-              <>
-                <CheckIcon className='w-4 h-4 text-green-500' />
-                <span>Changes saved</span>
-              </>
-            )}
           </div>
         </div>
       </div>

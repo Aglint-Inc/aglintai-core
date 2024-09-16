@@ -103,9 +103,9 @@ const SchedulingReasons = () => {
   };
 
   return (
-    <div className='w-[660px] mx-auto'>
+    <div>
       <Tabs value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
-        <TabsList className='ml-4'>
+        <TabsList className=''>
           {(
             Object.keys(
               reason,

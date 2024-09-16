@@ -34,9 +34,13 @@ export const ImportResume = () => {
     setSelectedFiles((files) => files.filter((_, i) => i !== index));
   };
 
-  const handleFileUpload = () => {
-    handleUploadResume({ files: selectedFiles });
-    setImportPopup(false);
+  const handleFileUpload = async () => {
+    try {
+      await handleUploadResume({ files: selectedFiles });
+      setImportPopup(false);
+    } catch {
+      //
+    }
   };
 
   const formatFileSize = (bytes) => {

@@ -9,8 +9,6 @@
 import type { RecursiveRequired } from '@aglint/shared-types';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
-import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import superjson from 'superjson';
 import { type z, ZodError } from 'zod';
 
@@ -18,10 +16,6 @@ import { createPrivateClient, createPublicClient } from '../db';
 import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
 import { authorize } from '../utils';
 
-type CreateContextOptions = {
-  headers: Headers;
-  cookies: ReadonlyRequestCookies;
-};
 /**
  * 1. CONTEXT
  *
@@ -34,7 +28,7 @@ type CreateContextOptions = {
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: CreateContextOptions) => {
+export const createTRPCContext = async (opts: { headers: Headers }) => {
   const adminDb = createPublicClient();
   return { ...opts, adminDb };
 };
@@ -104,20 +98,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
-  const db = createPrivateClient({
-    cookies: {
-      getAll: () => ctx.cookies.getAll(),
-      setAll: (cookiesToSet) => {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            ctx.cookies.set(name, value, options as unknown as ResponseCookie),
-          );
-        } catch {
-          //
-        }
-      },
-    },
-  });
+  const db = createPrivateClient();
 
   const {
     data: { user },

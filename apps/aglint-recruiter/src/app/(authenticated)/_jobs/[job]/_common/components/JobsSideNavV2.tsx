@@ -19,6 +19,7 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
@@ -29,7 +30,7 @@ const JobsSideNavV2 = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
   const [isCloseJobDialogOpen, setIsCloseJobDialogOpen] = useState(false);
   const [confirmText, setConfirmText] = useState('');
-
+  const { isShowFeature } = useAuthDetails();
   const handlePush = (route: string) => {
     router.push(ROUTES[route]({ job: job?.id }));
   };
@@ -51,19 +52,19 @@ const JobsSideNavV2 = () => {
       icon: <UserPlus className='w-5 h-5' />,
       label: 'Hiring Team',
       route: '/jobs/[job]/hiring-team',
-      show: true,
+      show: isShowFeature('SCHEDULING'),
     },
     {
       icon: <Calendar className='w-5 h-5' />,
       label: 'Interview Plan',
       route: '/jobs/[job]/interview-plan',
-      show: true,
+      show: isShowFeature('SCHEDULING'),
     },
     {
       icon: <Workflow className='w-5 h-5' />,
       label: 'Workflows',
       route: '/jobs/[job]/workflows',
-      show: true,
+      show: isShowFeature('WORKFLOW'),
     },
   ];
 

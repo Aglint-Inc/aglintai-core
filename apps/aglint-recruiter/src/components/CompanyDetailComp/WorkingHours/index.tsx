@@ -56,23 +56,31 @@ export default function WorkingHour({
     }
   };
   return (
-    <div className='flex flex-col w-[660px] gap-4 mx-auto mb-8'>
-      <TimeZone
-        timeZone={initialData?.timeZone?.label}
-        selectedTimeZone={selectedTimeZone}
-        setSelectedTimeZone={setSelectedTimeZone}
-        handleUpdate={handleUpdate}
-      />
-      <WorkTime
-        workingHours={workingHours}
-        setWorkingHours={setWorkingHours}
-        handleUpdate={handleUpdate}
-      />
-      <BreakTimeCard
-        breaktime={selectedHourBreak}
-        setSelectedHourBreak={setSelectedHourBreak}
-        handleUpdate={handleUpdate}
-      />
+    <div className='flex flex-col gap-4 mb-8'>
+      <div className='flex flex-col'>
+        <h2 className='text-xl font-bold mb-2'>Working Hours</h2>
+        <p className='text-gray-600'>
+          List company holidays to exclude them from scheduling.
+        </p>
+      </div>
+      <div className='flex flex-col gap-2'>
+        <TimeZone
+          timeZone={initialData?.timeZone?.label}
+          selectedTimeZone={selectedTimeZone}
+          setSelectedTimeZone={setSelectedTimeZone}
+          handleUpdate={handleUpdate}
+        />
+        <WorkTime
+          workingHours={workingHours}
+          setWorkingHours={setWorkingHours}
+          handleUpdate={handleUpdate}
+        />
+        <BreakTimeCard
+          breaktime={selectedHourBreak}
+          setSelectedHourBreak={setSelectedHourBreak}
+          handleUpdate={handleUpdate}
+        />
+      </div>
     </div>
   );
 }

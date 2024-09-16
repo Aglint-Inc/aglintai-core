@@ -31,6 +31,7 @@ import { useAllMembers } from '@/queries/members';
 import dayjs from '@/utils/dayjs';
 
 import SearchField from '../../Common/SearchField/SearchField';
+import AddMember from './AddMemberDialog';
 import FilterDropDown from './FilterDropDown';
 import Member from './MemberList';
 
@@ -158,10 +159,19 @@ const TeamManagement = () => {
   useEffect(() => {
     if (filteredMembers.length) setIsInitialLoading(false);
   }, [filteredMembers.length]);
+  const [open, setOpen] = useState(false);
   return (
     <>
-      <div className='w-[960px] mx-auto px-4 py-8'>
-        <h1 className='text-lg font-semibold mb-4'>Manage User</h1>
+      <AddMember
+        memberList={[]}
+        menu='addMember'
+        onClose={() => setOpen(false)}
+        open={open}
+        defaultRole={{ role: 'Hiring Manager', role_id: '2' }}
+        pendingList={[]}
+      />
+      <div className='flex flex-col'>
+        <h2 className='text-xl font-bold mb-2'>Manage User</h2>
         <p className='text-gray-600 mb-6'>
           Invite your hiring team members and manage their roles and profile
           details in one place. Assign roles such as interviewer, hiring
@@ -177,7 +187,7 @@ const TeamManagement = () => {
           </AlertDescription>
         </Alert> */}
 
-        <div className='mt-6 space-y-4'>
+        <div className='space-y-4'>
           <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0'>
             <div className='flex flex-row gap-2'>
               <div className='w-full sm:w-auto'>
@@ -243,7 +253,7 @@ const TeamManagement = () => {
                   variant='ghost'
                   size='sm'
                   onClick={() => {
-                    // TBD Create a common dialoge for add and edit and use the same for add.
+                    setOpen(true);
                   }}
                   className='flex items-center'
                 >

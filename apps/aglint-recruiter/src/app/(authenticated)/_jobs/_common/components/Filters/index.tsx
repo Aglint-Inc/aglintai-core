@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
@@ -48,10 +47,11 @@ function FilterJobDashboard({
   // eslint-disable-next-line no-unused-vars
   handlerFilter: (value: string) => void;
 }) {
+  const { isShowFeature } = useAuthDetails();
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
   return (
-    <Stack width={'100%'}>
+    <div className='flex col w-full'>
       <FilterHeader
         isResetAll={!isResetAll}
         filters={[
@@ -61,10 +61,10 @@ function FilterJobDashboard({
             // iconname: '',
             options: filterOptions.status,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 status: val,
-              });
+              }));
             },
             value: filterValues.status,
           },
@@ -74,10 +74,10 @@ function FilterJobDashboard({
             // iconname: 'apartment',
             options: filterOptions.department,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 department: val,
-              });
+              }));
             },
             value: filterValues.department,
           },
@@ -87,39 +87,43 @@ function FilterJobDashboard({
             // iconname: 'work',
             options: filterOptions.type,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 type: val,
-              });
+              }));
             },
             value: filterValues.type,
           },
-          {
-            type: 'filter',
-            name: 'hiring manager',
-            // iconname: 'person',
-            options: filterOptions.hiringManager,
-            setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
-                hiringManager: val,
-              });
-            },
-            value: filterValues.hiringManager,
-          },
-          {
-            type: 'filter',
-            name: 'recruiter',
-            // iconname: 'person',
-            options: filterOptions.recruiter,
-            setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
-                recruiter: val,
-              });
-            },
-            value: filterValues.recruiter,
-          },
+          ...(isShowFeature('SCHEDULING')
+            ? [
+                {
+                  type: 'filter',
+                  name: 'hiring manager',
+                  // iconname: 'person',
+                  options: filterOptions.hiringManager,
+                  setValue: (val) => {
+                    setFilterValues({
+                      ...filterValues,
+                      hiringManager: val,
+                    });
+                  },
+                  value: filterValues.hiringManager,
+                },
+                {
+                  type: 'filter',
+                  name: 'recruiter',
+                  // iconname: 'person',
+                  options: filterOptions.recruiter,
+                  setValue: (val) => {
+                    setFilterValues({
+                      ...filterValues,
+                      recruiter: val,
+                    });
+                  },
+                  value: filterValues.recruiter,
+                },
+              ]
+            : ([] as any)),
         ]}
         sort={{
           selected: sortValue,
@@ -140,7 +144,7 @@ function FilterJobDashboard({
           placeholder: 'Search jobs',
         }}
       />
-    </Stack>
+    </div>
   );
 }
 

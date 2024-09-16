@@ -1,9 +1,8 @@
 import { Button } from '@components/ui/button';
-import { RefreshCw, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import SearchField from '../SearchField/SearchField';
-import { ShowCode } from '../ShowCode';
 import DateRangeSelector from './DateRangeSelector';
 import { FiltersComponent, type FilterTypes } from './FilterComponents';
 import SortComponent, { type sortComponentType } from './SortComponent';
@@ -19,11 +18,10 @@ export default function FilterHeader({
   setShowFilters = (x) => {
     x;
   },
-  layoutMode = 'right-align',
 }: FilterHeaderType) {
   handelResetAll =
     handelResetAll ||
-    (() => {
+    function () {
       filters.forEach((filter) => {
         switch (filter.type) {
           case 'filter':
@@ -37,7 +35,7 @@ export default function FilterHeader({
           }
         }
       });
-    });
+    };
   const isFiltersActive = filters.some((filter) => {
     switch (filter.type) {
       case 'filter': {
@@ -61,86 +59,45 @@ export default function FilterHeader({
   }, [debouncedSearch]);
 
   return (
-    <ShowCode>
-      <ShowCode.When isTrue={layoutMode === 'left-align'}>
-        <div className='flex justify-end items-center w-full'>
-          <div className='flex justify-end flex-row space-x-1'>
-            {Boolean(sort) && <SortComponent {...sort} />}
-            <div className='flex flex-row gap-2 items-center'>
-              <div className='flex flex-row gap-1'>
-                {isResetAll && isFiltersActive && (
-                  <Button
-                    variant='ghost'
-                    disabled={!isFiltersActive}
-                    size='sm'
-                    onClick={handelResetAll}
-                  >
-                    <RefreshCw className='mr-2 h-4 w-4' />
-                    Reset All
-                  </Button>
-                )}
-                <FiltersComponent
-                  filters={filters}
-                  showFilters={showFiltersByDefault}
-                  setShowFilters={setShowFilters}
-                />
-                {Boolean(dateRangeSelector) && (
-                  <DateRangeSelector {...dateRangeSelector} />
-                )}
-              </div>
-            </div>
-            {Boolean(search) && (
-              <SearchField
-                value={debouncedSearch}
-                onChange={(e) => setDebouncedSearch(e.target.value)}
-                onClear={() => setDebouncedSearch('')}
-                placeholder={search.placeholder}
+    <div className='flex flex-row justify-between items-center w-full'>
+      <div className='flex flex-row space-x-2'>
+        {Boolean(search) && (
+          <SearchField
+            value={debouncedSearch}
+            onChange={(e) => setDebouncedSearch(e.target.value)}
+            onClear={() => setDebouncedSearch('')}
+            placeholder={search.placeholder}
+            height='h-9'
+          />
+        )}
+        <div className='flex flex-row justify-between flex-grow'>
+          <div className='flex flex-row gap-2 items-center'>
+            <div className='flex flex-row gap-2'>
+              <FiltersComponent
+                filters={filters}
+                showFilters={showFiltersByDefault}
+                setShowFilters={setShowFilters}
               />
-            )}
-          </div>
-        </div>
-      </ShowCode.When>
-      <ShowCode.When isTrue={layoutMode === 'right-align'}>
-        <div className='flex flex-row justify-between items-center w-full'>
-          <div className='flex flex-row space-x-2'>
-            {Boolean(search) && (
-              <SearchField
-                value={debouncedSearch}
-                onChange={(e) => setDebouncedSearch(e.target.value)}
-                onClear={() => setDebouncedSearch('')}
-                placeholder={search.placeholder}
-              />
-            )}
-            <div className='flex flex-row justify-between flex-grow'>
-              <div className='flex flex-row gap-2 items-center'>
-                <div className='flex flex-row gap-2'>
-                  <FiltersComponent
-                    filters={filters}
-                    showFilters={showFiltersByDefault}
-                    setShowFilters={setShowFilters}
-                  />
-                  {Boolean(dateRangeSelector) && (
-                    <DateRangeSelector {...dateRangeSelector} />
-                  )}
-                  {isResetAll && isFiltersActive && (
-                    <Button
-                      variant='ghost'
-                      disabled={!isFiltersActive}
-                      size='sm'
-                      onClick={handelResetAll}
-                    >
-                      <RotateCcw className='mr-2 h-4 w-4' />
-                      Reset All
-                    </Button>
-                  )}
-                </div>
-              </div>
+              {Boolean(dateRangeSelector) && (
+                <DateRangeSelector {...dateRangeSelector} />
+              )}
+              {isResetAll && isFiltersActive && (
+                <Button
+                  variant='ghost'
+                  disabled={!isFiltersActive}
+                  size='md'
+                  onClick={handelResetAll}
+                >
+                  <RotateCcw className='mr-2 h-4 w-4' />
+                  Reset All
+                </Button>
+              )}
             </div>
           </div>
-          {Boolean(sort) && <SortComponent {...sort} />}
         </div>
-      </ShowCode.When>
-    </ShowCode>
+      </div>
+      {Boolean(sort) && <SortComponent {...sort} />}
+    </div>
   );
 }
 
@@ -165,5 +122,4 @@ export type FilterHeaderType = {
     setValue: (x: any) => void;
     disablePast?: boolean;
   };
-  layoutMode?: 'left-align' | 'right-align';
 };

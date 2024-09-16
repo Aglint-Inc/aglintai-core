@@ -215,7 +215,7 @@ function SchedulingSettings({ updateSettings }) {
   }, [recruiter?.scheduling_settings]);
 
   return (
-    <div className='flex flex-col w-[660px] mx-auto space-y-4'>
+    <div className='flex flex-col space-y-4'>
       {dailyLmit.type && weeklyLmit.type && (
         <Card>
           <CardHeader>

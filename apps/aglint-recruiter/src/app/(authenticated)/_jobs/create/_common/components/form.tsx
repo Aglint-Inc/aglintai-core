@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-object-injection */
-import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -16,7 +14,6 @@ import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useJobDashboard } from '@/job/hooks';
 import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
@@ -353,30 +350,14 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobWorkPlace.displayName = 'JobWorkPlace';
 
 const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { toast } = useToast();
-  const { job } = useJobDashboard();
-  const disable = job?.scoring_criteria_loading;
-  const handleToast = () => {
-    if (disable)
-      toast({
-        variant: 'destructive',
-        title:
-          'This job description is currently being used for another task. Please wait.',
-      });
-  };
   return (
-    <div onClick={() => handleToast()} className='w-full'>
-      <div
-        className={cn(
-          'w-full',
-          job?.scoring_criteria_loading && 'opacity-40 pointer-events-none',
-        )}
-      >
+    <div className='w-full'>
+      <div className={cn('w-full')}>
         <TipTapAIEditor
           initialValue={value.value as string}
           handleChange={(e) => onChange(name, e)}
           placeholder='Enter job description'
-          disabled={disable}
+          disabled={false}
         />
       </div>
     </div>
