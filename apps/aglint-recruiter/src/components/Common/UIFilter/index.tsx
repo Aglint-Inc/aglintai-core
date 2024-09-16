@@ -24,7 +24,7 @@ export type dynamicOptionsTypes =
     }[];
 
 interface ButtonFilterInterface {
-  isActive: boolean;
+  isActive?: boolean;
   isDotVisible: boolean;
   textLabel: string;
   slotLeftIcon?: React.ReactNode;
@@ -39,7 +39,7 @@ interface ButtonFilterInterface {
 
 export default function UIFilter({
   textLabel,
-  isActive,
+  isActive = false,
   isDotVisible,
   slotLeftIcon,
   slotRightIcon,

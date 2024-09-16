@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
@@ -52,7 +51,7 @@ function FilterJobDashboard({
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
   return (
-    <Stack width={'100%'}>
+    <div className='flex col w-full'>
       <FilterHeader
         isResetAll={!isResetAll}
         filters={[
@@ -62,10 +61,10 @@ function FilterJobDashboard({
             // iconname: '',
             options: filterOptions.status,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 status: val,
-              });
+              }));
             },
             value: filterValues.status,
           },
@@ -75,10 +74,10 @@ function FilterJobDashboard({
             // iconname: 'apartment',
             options: filterOptions.department,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 department: val,
-              });
+              }));
             },
             value: filterValues.department,
           },
@@ -88,10 +87,10 @@ function FilterJobDashboard({
             // iconname: 'work',
             options: filterOptions.type,
             setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
+              setFilterValues((pre) => ({
+                ...pre,
                 type: val,
-              });
+              }));
             },
             value: filterValues.type,
           },
@@ -145,7 +144,7 @@ function FilterJobDashboard({
           placeholder: 'Search jobs',
         }}
       />
-    </Stack>
+    </div>
   );
 }
 
