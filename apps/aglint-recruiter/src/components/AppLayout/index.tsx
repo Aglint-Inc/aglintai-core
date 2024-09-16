@@ -52,7 +52,7 @@ export default function AppLayout({ children, appRouter = false }) {
   return (
     <div className='flex flex-col'>
       {isHorizontalNav && (
-        <nav className='flex items-center justify-between w-full h-16 p-4 bg-white border-b sticky top-0 z-50'>
+        <nav className='flex items-center justify-between w-full h-16 p-2 bg-white border-b sticky top-0 z-50'>
           <div className='flex items-center space-x-4'>
             <Link href='/'>
               <Image
