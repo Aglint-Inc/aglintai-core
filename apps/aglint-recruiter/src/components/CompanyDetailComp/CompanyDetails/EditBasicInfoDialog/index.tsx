@@ -10,7 +10,7 @@ import {
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import _ from 'lodash';
-import { AlertCircle, Upload } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -201,17 +201,7 @@ const EditBasicInfoDialog = ({
               {!isFormDisabled && (
                 <>
                   <div className='flex flex-col items-start'>
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={() => {
-                        document.getElementById('image-upload').click();
-                      }}
-                      className='flex items-center gap-2 p-0 hover:bg-transparent hover:text-gray-600 h-auto'
-                    >
-                      <Upload className='h-4 w-4' />
-                      Update Logo
-                    </Button>
+                    <Label htmlFor='company-name'>Update Logo</Label>
                     <p className='text-xs text-muted-foreground mt-1 max-w-[350px]'>
                       The file shouldn&apos;t exceed the maximum allowed size.
                       Please ensure that the file size is less than 5 MB
