@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
@@ -52,7 +51,7 @@ function FilterJobDashboard({
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
   return (
-    <Stack width={'100%'}>
+    <div className='flex col w-full'>
       <FilterHeader
         isResetAll={!isResetAll}
         filters={[
@@ -145,7 +144,7 @@ function FilterJobDashboard({
           placeholder: 'Search jobs',
         }}
       />
-    </Stack>
+    </div>
   );
 }
 
