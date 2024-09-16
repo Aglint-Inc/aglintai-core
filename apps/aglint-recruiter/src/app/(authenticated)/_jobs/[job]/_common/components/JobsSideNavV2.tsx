@@ -45,7 +45,7 @@ const JobsSideNavV2 = () => {
       icon: <UserPlus className='w-5 h-5' />,
       label: 'Hiring Team',
       route: '/jobs/[job]/hiring-team',
-      show: isShowFeature('SCHEDULING'),
+      show: true,
     },
     {
       icon: <Calendar className='w-5 h-5' />,
