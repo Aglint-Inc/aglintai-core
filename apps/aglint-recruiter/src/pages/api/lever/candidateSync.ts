@@ -1,9 +1,13 @@
 /* eslint-disable no-console */
-import { type DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import { processEmailsInBatches } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/utils';
+import { type LeverApplication } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/applications';
 import {
   extractLinkedInURL,
   splitFullName,
@@ -14,7 +18,7 @@ import { decrypt } from '../decryptApiKey';
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;
-  let previousApplications = [];
+  let previousApplications: DatabaseTable['applications'][] = [];
 
   if (!jobId) {
     console.log('No job id found');
@@ -55,13 +59,12 @@ export default async function handler(req, res) {
 
   const leverApplications = await fetchAllOpporunities(apiKey, ats_job_id);
 
-  const newApplications = [];
+  const newApplications: LeverApplication[] = [];
   leverApplications.forEach(async (appi) => {
     // Check if app.id does not exist in previousApplications
 
     const isNew =
-      previousApplications?.filter((p) => p.opportunity_id === appi.id)
-        .length === 0;
+      previousApplications?.filter((p) => p.remote_id === appi.id).length === 0;
 
     if (isNew) {
       // Push the new application to the newApplications array
@@ -85,6 +88,7 @@ export default async function handler(req, res) {
       job_id: jobId,
       application_id: uuidv4(), //our job application id
       id: cand.id, //lever opportunity id
+      ref: cand,
     };
   });
   // for creating lever job reference
@@ -144,6 +148,8 @@ export default async function handler(req, res) {
         job_id: jobId,
         id: ref.application_id,
         source: 'lever',
+        remote_id: ref.id,
+        remote_data: ref.ref,
       } as DatabaseTableInsert['applications'];
     });
 
@@ -194,5 +200,5 @@ const fetchAllOpporunities = async (apiKey, postingId) => {
       hasMore = false; // Exit the loop in case of an error
     }
   }
-  return allJobs;
+  return allJobs as LeverApplication[];
 };
