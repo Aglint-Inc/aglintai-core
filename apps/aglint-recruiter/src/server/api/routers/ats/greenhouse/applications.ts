@@ -2,10 +2,7 @@ import type { ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
 import { syncGreenhouseApplication } from '@/api/sync/greenhouse/applications/process';
-import {
-  type GreenhouseProcedure,
-  greenhouseProcedure,
-} from '@/server/api/trpc';
+import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
 
 type Params = Pick<
   Parameters<typeof syncGreenhouseApplication>[0],
@@ -17,7 +14,10 @@ const schema = z.object({
   recruiter_id: z.string().uuid(),
 }) satisfies ZodTypeToSchema<Params>;
 
-const mutation = async ({ ctx, input }: GreenhouseProcedure<typeof schema>) => {
+export const greenhouseJobMutation = async ({
+  ctx,
+  input,
+}: ATSProcedure<typeof schema>) => {
   const { remote_id, remote_sync_time } = (
     await ctx.adminDb
       .from('public_jobs')
@@ -36,6 +36,6 @@ const mutation = async ({ ctx, input }: GreenhouseProcedure<typeof schema>) => {
   });
 };
 
-export const applications = greenhouseProcedure
+export const applications = atsProcedure
   .input(schema)
-  .mutation(mutation);
+  .mutation(greenhouseJobMutation);
