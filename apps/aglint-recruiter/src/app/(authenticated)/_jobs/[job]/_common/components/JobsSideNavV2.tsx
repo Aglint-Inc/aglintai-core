@@ -8,14 +8,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import {
-  BarChart,
-  Calendar,
-  FileText,
-  UserPlus,
-  Workflow,
-  XCircle,
-} from 'lucide-react';
+import { BarChart, Calendar, FileText, UserPlus, Workflow } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -52,7 +45,7 @@ const JobsSideNavV2 = () => {
       icon: <UserPlus className='w-5 h-5' />,
       label: 'Hiring Team',
       route: '/jobs/[job]/hiring-team',
-      show: isShowFeature('SCHEDULING'),
+      show: true,
     },
     {
       icon: <Calendar className='w-5 h-5' />,

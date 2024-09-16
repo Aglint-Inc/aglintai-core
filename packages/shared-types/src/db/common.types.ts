@@ -29,9 +29,11 @@ export type CustomJobParamters = Custom<
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
     draft: CustomDraft;
-    posted_by: "Greenhouse" | "Aglint" | "Lever" | "Ashby";
+    posted_by: ATSIntegrations;
   }
 >;
+
+export type ATSIntegrations = "Greenhouse" | "Aglint" | "Lever" | "Ashby";
 
 type CustomParameterWeights = {
   skills: number;

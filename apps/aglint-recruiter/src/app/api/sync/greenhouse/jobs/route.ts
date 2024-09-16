@@ -15,12 +15,12 @@ export function POST(request: NextRequest) {
       const { recruiter_id, key, last_sync } = body;
       const supabaseAdmin = getSupabaseServer();
       const decryptKey = await getDecryptKey(key);
-      await syncGreenhouseJob(
+      await syncGreenhouseJob({
         supabaseAdmin,
         decryptKey,
         recruiter_id,
         last_sync,
-      );
+      });
       return { success: true };
     },
     ['recruiter_id', 'key'],

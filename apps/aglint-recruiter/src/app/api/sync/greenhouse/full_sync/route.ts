@@ -4,7 +4,7 @@ import { routeHandlerFactory } from '@/utils/apiUtils/responseFactoryPro';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { runFullSync } from '../full_db/process';
-import { getGreenhouseKey } from '../util';
+import { getDecryptKey, getGreenhouseKey } from '../util';
 import { type GreenHouseFullSyncAPI } from './type';
 
 export function POST(request: NextRequest) {
@@ -15,7 +15,8 @@ export function POST(request: NextRequest) {
       const { syncData } = body;
       const supabaseAdmin = getSupabaseServer();
       const key = await getGreenhouseKey(supabaseAdmin, recruiter_id);
-      await runFullSync(supabaseAdmin, recruiter_id, syncData, key);
+      const decryptKey = await getDecryptKey(key);
+      await runFullSync({ supabaseAdmin, recruiter_id, syncData, decryptKey });
       return { success: true };
     },
     ['syncData'],
