@@ -151,6 +151,7 @@ export default async function handler(req, res) {
         remote_id: ref.id,
         remote_data: ref.ref,
         recruiter_id,
+        is_resume_fetching: true,
       } as DatabaseTableInsert['applications'];
     });
 

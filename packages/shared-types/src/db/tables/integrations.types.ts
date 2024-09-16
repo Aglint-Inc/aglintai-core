@@ -6,6 +6,20 @@ export type CustomIntegrations = TableType<
 >;
 
 type CustomGreenhouseMetadata = {
-  options: Record<string, boolean>;
-  last_sync: Record<string, string>;
+  options: Partial<{
+    jobs: boolean;
+    users: boolean;
+    task_sync: boolean;
+    candidates: boolean;
+    departments: boolean;
+    applications: boolean;
+    interview_stages: boolean;
+    office_locations: boolean;
+  }>;
+  last_sync: Partial<{
+    full: string;
+    jobs: string;
+    users: string;
+    full_sync: string;
+  }>;
 };

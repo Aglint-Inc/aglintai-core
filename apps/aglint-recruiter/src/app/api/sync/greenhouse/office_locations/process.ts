@@ -3,11 +3,15 @@ import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { searchExactLocation } from '@/utils/externalApi/google/geoLocation';
 import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
-export async function syncOfficeLocations(
-  supabaseAdmin: SupabaseClientType,
-  recruiter_id: string,
-  decryptKey: string,
-) {
+export async function syncOfficeLocations({
+  supabaseAdmin,
+  recruiter_id,
+  decryptKey,
+}: {
+  supabaseAdmin: SupabaseClientType;
+  recruiter_id: string;
+  decryptKey: string;
+}) {
   const office_locations = await getGreenhouseOfficeLocations(decryptKey);
   return await saveOfficeLocations(
     supabaseAdmin,

@@ -7,12 +7,17 @@ import { getDepartment } from '../departments/process';
 import { getOfficeLocations } from '../office_locations/process';
 import { setLastSync } from '../util';
 
-export async function syncUsers(
-  supabaseAdmin: SupabaseType,
-  recruiter_id: string,
-  decryptKey: string,
-  last_sync: string,
-) {
+export async function syncUsers({
+  supabaseAdmin,
+  recruiter_id,
+  decryptKey,
+  last_sync,
+}: {
+  supabaseAdmin: SupabaseType;
+  recruiter_id: string;
+  decryptKey: string;
+  last_sync: string;
+}) {
   const users = await getGreenhouseUsers(decryptKey, last_sync);
   const updatedUsers = last_sync
     ? await getGreenhouseUpdatedUsers(decryptKey, last_sync)

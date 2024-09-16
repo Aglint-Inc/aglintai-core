@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { ApplicantsTable } from '@devlink2/ApplicantsTable';
 import { memo, useEffect, useMemo } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -9,6 +8,8 @@ import { useApplications } from '@/job/hooks';
 import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';
 import List from './List';
+import { TableHeader } from './TableHeader';
+import { NewTable } from './NewTable';
 
 export const Table = memo(() => {
   const {
@@ -54,23 +55,21 @@ export const Table = memo(() => {
     return <Loader count={8}>{skeleton}</Loader>;
 
   return (
+    // <NewTable />
     <List
       key={section}
       applications={sectionApplication}
       count={section_count[section]}
       loader={<Loader count={5}>{skeleton}</Loader>}
       header={
-        <div className="sticky top-0" style={{ zIndex: section_count[section] + 1 }}>
-          <ApplicantsTable
-            isResumeMatchVisible={isScoringEnabled}
+        <div className='sticky top-0' style={{ zIndex: 1 }}>
+          <TableHeader
             isAllChecked={false}
-            isScreeningVisible={false}
-            isAssessmentVisible={false}
+            onSelectAll={() => {
+              /* Implement select all logic */
+            }}
+            isResumeMatchVisible={isScoringEnabled}
             isInterviewVisible={cascadeVisibilites.interview}
-            isDisqualifiedVisible={cascadeVisibilites.disqualified}
-            isDragVisible={false}
-            propsDrag={null}
-            onClickSelectAll={{ className: 'hidden' }}
           />
         </div>
       }

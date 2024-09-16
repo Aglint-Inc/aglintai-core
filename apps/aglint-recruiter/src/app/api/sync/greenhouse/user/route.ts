@@ -17,7 +17,7 @@ export function POST(request: NextRequest) {
     async ({ body }) => {
       const { recruiter_id, key, last_sync } = body;
       const decryptKey = await getDecryptKey(key);
-      await syncUsers(supabaseAdmin, recruiter_id, decryptKey, last_sync);
+      await syncUsers({ supabaseAdmin, recruiter_id, decryptKey, last_sync });
       return { success: true };
     },
     ['recruiter_id', 'key'],

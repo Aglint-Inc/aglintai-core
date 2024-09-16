@@ -17,7 +17,7 @@ export function POST(request: NextRequest) {
       const supabaseAdmin = getSupabaseServer();
       // const lastSync =
       //   lastSync || (await getLastSync(recruiter_id)).departments;
-      await syncDepartments(supabaseAdmin, recruiter_id, decryptKey);
+      await syncDepartments({ supabaseAdmin, recruiter_id, decryptKey });
       return { success: true };
     },
     ['recruiter_id', 'key'],
