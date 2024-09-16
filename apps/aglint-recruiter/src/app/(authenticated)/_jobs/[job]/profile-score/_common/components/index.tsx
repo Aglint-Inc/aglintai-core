@@ -134,12 +134,12 @@ const ProfileScorePage = () => {
                 applicants efficiently.
               </p>
               <div className='flex'>
-                <div className='flex-1'>
+                <div className='flex-1 mr-4'>
                   <ProfileScore />
                 </div>
                 <div className='w-1/3'>
-                  <Tips />
                   <ProfileScoreControls />
+                  <Tips />
                 </div>
               </div>
             </div>
@@ -219,22 +219,17 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky top-0 right-0 min-h-[calc(100vh-60px)] p-4 ${
+      className={`sticky top-0 right-0 p-4 ${
         job.scoring_criteria_loading ? 'opacity-40 pointer-events-none' : ''
       }`}
     >
       <div className='space-y-4'>
-        <div className='flex justify-end'>
-          <Button variant='outline' size='sm' onClick={() => handleReset()}>
-            <RefreshCcw className='mr-2 h-4 w-4' /> Reset
-          </Button>
-        </div>
         <div className='flex justify-center'>
           <div className='flex flex-row w-4/5 justify-center items-center gap-10'>
             <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
           </div>
         </div>
-        <div className='space-y-2'>
+        <div className='flex flex-row space-x-2 justify-center'>
           <Input
             type='number'
             name='experience'
@@ -260,7 +255,11 @@ const ProfileScoreControls = () => {
             className='w-20 bg-white'
           />
         </div>
-        {/* <Tips /> */}
+        <div className='flex justify-end'>
+          <Button variant='outline' size='sm' onClick={() => handleReset()}>
+            <RefreshCcw className='mr-2 h-4 w-4' /> Reset
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -583,16 +582,6 @@ const Tips = () => {
   }, [handleCreateTourLog, firstVisit]);
   return (
     <>
-      <div className='bg-white rounded-md flex flex-col gap-1 p-3'>
-        <p className='text-info font-semibold text-sm'>How It Works</p>
-        <p className='text-sm text-muted-foreground'>
-          Adjust the weightage for Experience, Skills, and Education to
-          customize the profile score. The total must equal 100%. Use the input
-          fields to set percentages. Click &quot;Reset&quot; to restore default
-          settings.
-        </p>
-      </div>
-
       {firstVisit && (
         <div className='mt-4'>
           <div className='bg-purple-100 p-4 rounded-md flex items-start space-x-4'>
@@ -606,15 +595,26 @@ const Tips = () => {
                 the role you are hiring for by adjusting the weightages.
               </p>
             </div>
-            <button
+            <Button
+              variant='outline'
+              size='sm'
               onClick={handleTip}
-              className='text-purple-500 hover:text-purple-700 focus:outline-none'
+              className='text-purple-500 hover:text-purple-700'
             >
-              <X className='w-5 h-5' />
-            </button>
+              <X className='h-4 w-4' />
+            </Button>
           </div>
         </div>
       )}
+      <div className='flex flex-col gap-1 p-4 mx-4 mt-8 border rounded-md'>
+        <p className='text-info font-semibold text-sm'>How It Works</p>
+        <p className='text-sm text-muted-foreground'>
+          Adjust the weightage for Experience, Skills, and Education to
+          customize the profile score. The total must equal 100%. Use the input
+          fields to set percentages. Click &quot;Reset&quot; to restore default
+          settings.
+        </p>
+      </div>
     </>
   );
 };
