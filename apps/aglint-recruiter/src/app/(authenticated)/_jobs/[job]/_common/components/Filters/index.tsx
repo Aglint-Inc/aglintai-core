@@ -5,12 +5,14 @@ import {
   arrayToNestedObject,
   nestedObjectToArray,
 } from '@/components/Common/FilterHeader/utils';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useApplications, useJob } from '@/job/hooks';
 import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { capitalize } from '@/utils/text/textUtils';
 
 const Filters = () => {
+  const { isShowFeature } = useAuthDetails();
   const {
     interviewPlans: { data: interviewPlans },
   } = useJob();
@@ -156,10 +158,9 @@ const Filters = () => {
     <FilterHeader
       filters={[
         bookmarkedButton,
-        badgesFilter,
         resumeMatchFilter,
         Locations,
-        InterviewPlan,
+        ...(isShowFeature('SCHEDULING') ? [badgesFilter, InterviewPlan] : []),
       ].filter(Boolean)}
       sort={safeSort}
       isResetAll={true}
