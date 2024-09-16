@@ -99,7 +99,8 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
-const atsMiddleware = t.middleware(async ({ next, ctx, input }) => {
+const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
+  const input = await getRawInput();
   const recruiter_id = (input as any)
     .recruiter_id as DatabaseTable['recruiter']['id'];
   if (!recruiter_id)
@@ -120,106 +121,42 @@ const atsMiddleware = t.middleware(async ({ next, ctx, input }) => {
       code: 'FORBIDDEN',
       message: 'Not supported',
     });
-  return await next({
-    ctx: {
-      ...ctx,
-      ats,
-    },
-  });
-});
-
-const greenhouseMiddleware = t.middleware(async ({ next, ctx, input }) => {
-  const recruiter_id = (input as any)
-    .recruiter_id as DatabaseTable['recruiter']['id'];
-  const ats = (ctx as any).ats as DatabaseTable['recruiter_preferences']['ats'];
-  if (!recruiter_id || ats !== 'Greenhouse')
-    throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
-      message: 'Invalid payload',
-    });
-  const { greenhouse_key, greenhouse_metadata } = (
+  let decryptKey: string;
+  const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } = (
     await ctx.adminDb
       .from('integrations')
-      .select('greenhouse_key, greenhouse_metadata')
+      .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
   ).data;
-  if (!greenhouse_key)
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Missing greenhouse key',
-    });
-  const decryptKey = await getDecryptKey(greenhouse_key);
+  if (ats === 'Greenhouse') {
+    if (!greenhouse_key)
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Missing greenhouse key',
+      });
+    decryptKey = getDecryptKey(greenhouse_key);
+  } else if (ats === 'Lever') {
+    if (!lever_key)
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Missing lever key',
+      });
+    decryptKey = getDecryptKey(lever_key);
+  } else if (ats === 'Ashby') {
+    if (!ashby_key)
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Missing ashby key',
+      });
+    decryptKey = getDecryptKey(ashby_key);
+  }
   return await next({
     ctx: {
       ...ctx,
       ats,
       greenhouse_metadata,
-      decryptKey,
-    },
-  });
-});
-
-const leverMiddleware = t.middleware(async ({ next, ctx, input }) => {
-  const recruiter_id = (input as any)
-    .recruiter_id as DatabaseTable['recruiter']['id'];
-  const ats = (ctx as any).ats as DatabaseTable['recruiter_preferences']['ats'];
-  if (!recruiter_id || ats !== 'Lever')
-    throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
-      message: 'Invalid payload',
-    });
-  const { lever_key } = (
-    await ctx.adminDb
-      .from('integrations')
-      .select('lever_key')
-      .eq('recruiter_id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!lever_key)
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Missing lever key',
-    });
-  const decryptKey = await getDecryptKey(lever_key);
-  return await next({
-    ctx: {
-      ...ctx,
-      ats,
-      decryptKey,
-    },
-  });
-});
-
-const ashbyMiddleware = t.middleware(async ({ next, ctx, input }) => {
-  const recruiter_id = (input as any)
-    .recruiter_id as DatabaseTable['recruiter']['id'];
-  const ats = (ctx as any).ats as DatabaseTable['recruiter_preferences']['ats'];
-  if (!recruiter_id || ats !== 'Ashby')
-    throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
-      message: 'Invalid payload',
-    });
-  const { ashby_key } = (
-    await ctx.adminDb
-      .from('integrations')
-      .select('ashby_key')
-      .eq('recruiter_id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!ashby_key)
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Missing ashby key',
-    });
-  const decryptKey = await getDecryptKey(ashby_key);
-  return await next({
-    ctx: {
-      ...ctx,
-      ats,
       decryptKey,
     },
   });
@@ -285,23 +222,10 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 export type PublicProcedure<T> = Procedure<T, typeof publicProcedure>;
 
-export const greenhouseProcedure = t.procedure
+export const atsProcedure = t.procedure
   .use(timingMiddleware)
-  .use(atsMiddleware)
-  .use(greenhouseMiddleware);
-export type GreenhouseProcedure<T> = Procedure<T, typeof greenhouseProcedure>;
-
-export const leverProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(atsMiddleware)
-  .use(leverMiddleware);
-export type LeverProcedure<T> = Procedure<T, typeof leverProcedure>;
-
-export const ashbyProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(atsMiddleware)
-  .use(ashbyMiddleware);
-export type AshbyProcedure<T> = Procedure<T, typeof ashbyProcedure>;
+  .use(atsMiddleware);
+export type ATSProcedure<T> = Procedure<T, typeof atsProcedure>;
 
 /**
  * Private (authenticated) procedure

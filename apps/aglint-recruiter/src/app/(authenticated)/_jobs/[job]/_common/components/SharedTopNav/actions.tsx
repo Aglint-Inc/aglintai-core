@@ -66,11 +66,7 @@ export const SharedActions = () => {
 const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (job?.posted_by !== 'Greenhouse') return null;
-  // const time = dayjsLocal().diff(
-  //   dayjsLocal(job?.remote_sync_time ?? new Date()),
-  //   'minutes',
-  // );
+  if (job.posted_by === 'Aglint') return null;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
