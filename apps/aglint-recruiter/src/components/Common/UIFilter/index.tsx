@@ -33,6 +33,8 @@ interface ButtonFilterInterface {
   showCaret?: boolean;
   caretPosition?: 'left' | 'right';
   resetFilter?: () => void;
+  onClick?: () => void;
+  type?: 'popover' | 'button';
 }
 
 export default function UIFilter({
@@ -45,6 +47,8 @@ export default function UIFilter({
   showCaret = false,
   caretPosition = 'right',
   resetFilter,
+  onClick,
+  type = 'popover',
 }: ButtonFilterInterface) {
   const [caret, setCaret] = React.useState<boolean>(false);
   const Caret = showCaret ? (
@@ -63,7 +67,7 @@ export default function UIFilter({
       }}
     >
       <PopoverTrigger asChild>
-        <Button variant='outline' className='relative'>
+        <Button variant='outline' className='relative' onClick={onClick}>
           <div className='flex row gap-2 items-center'>
             {caretPosition === 'left' && Caret}
             {slotLeftIcon ? slotLeftIcon : false}
@@ -76,16 +80,18 @@ export default function UIFilter({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='p-1 w-max'>
-        {options}
-        <Button
-          variant='ghost'
-          className='gap-1 justify-start'
-          onClick={resetFilter}
-        >
-          <Repeat size={15} /> <p>Reset</p>
-        </Button>
-      </PopoverContent>
+      {type == 'popover' && (
+        <PopoverContent className='p-1 w-max'>
+          {options}
+          <Button
+            variant='ghost'
+            className='gap-1 justify-start'
+            onClick={resetFilter}
+          >
+            <Repeat size={15} /> <p>Reset</p>
+          </Button>
+        </PopoverContent>
+      )}
     </Popover>
   );
 }

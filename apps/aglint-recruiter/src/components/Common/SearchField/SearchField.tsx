@@ -11,6 +11,7 @@ interface SearchFieldProps {
   onClear: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  height?: string;
   placeholder?: string;
   isFullWidth?: boolean;
 }
@@ -21,6 +22,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
   onClear,
   onFocus,
   onBlur,
+  height,
   placeholder = '',
   isFullWidth = false,
 }) => {
@@ -29,7 +31,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
       <UITextField
         fieldSize={'medium'}
         type='text'
-        className='pr-10'
+        className={`pr-10 ${height || ''}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

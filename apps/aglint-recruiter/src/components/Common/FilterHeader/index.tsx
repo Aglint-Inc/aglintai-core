@@ -95,6 +95,7 @@ export default function FilterHeader({
                 onChange={(e) => setDebouncedSearch(e.target.value)}
                 onClear={() => setDebouncedSearch('')}
                 placeholder={search.placeholder}
+                height='h-9'
               />
             )}
           </div>
@@ -109,6 +110,7 @@ export default function FilterHeader({
                 onChange={(e) => setDebouncedSearch(e.target.value)}
                 onClear={() => setDebouncedSearch('')}
                 placeholder={search.placeholder}
+                height='h-9'
               />
             )}
             <div className='flex flex-row justify-between flex-grow'>
