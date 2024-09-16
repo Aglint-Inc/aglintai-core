@@ -24,7 +24,7 @@ function UIDialog({
   isPrimaryActionLoading = false,
 }: {
   slotButtons?: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
   onClose?: () => void;
   onClickPrimary?: () => void;
   onClickSecondary?: () => void;
