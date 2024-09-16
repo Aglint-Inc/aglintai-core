@@ -25,16 +25,11 @@ import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks'
 import SideNavbar from './SideNavbar';
 
 // Add this constant at the top of the file, outside the component
-const HORIZONTAL_NAV_COMPANIES = [
-  'Aglint Inc',
-  'SpecificCompany2',
-  'SpecificCompany3',
-];
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
   const { handleLogout } = useAuthDetails();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiterUser, isShowFeature } = useAuthDetails();
   const queryClient = useQueryClient();
   const router = useRouterPro();
   const logo = recruiter?.logo;
@@ -47,7 +42,7 @@ export default function AppLayout({ children, appRouter = false }) {
     handleLogout();
   };
 
-  const isHorizontalNav = HORIZONTAL_NAV_COMPANIES.includes(name);
+  const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
     <div className='flex flex-col'>

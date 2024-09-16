@@ -110,7 +110,7 @@ export const ImportCsv: React.FC = () => {
               </label>
             </div>
             <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
-            <div className='flex-grow overflow-auto'>
+            {/* <div className='flex-grow overflow-auto'>
               {candidates.length > 0 ? (
                 <CandidatesListTable candidates={candidates} />
               ) : (
@@ -121,7 +121,7 @@ export const ImportCsv: React.FC = () => {
                   </p>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         )}
       </div>
