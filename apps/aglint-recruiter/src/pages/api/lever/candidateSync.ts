@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     .select(
       '*,company:recruiter!public_jobs_recruiter_id_fkey(integrations(*))',
     )
-    .eq('public_job_id', jobId)
+    .eq('id', jobId)
     .single()
     .throwOnError();
 
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
   const { data: app } = await supabaseAdmin
     .from('applications')
     .select('*')
-    .eq('public_job_id', jobId)
+    .eq('job_id', jobId)
     .throwOnError();
 
   previousApplications = app;

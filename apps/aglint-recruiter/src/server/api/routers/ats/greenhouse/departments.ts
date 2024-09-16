@@ -2,10 +2,7 @@ import type { ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
 import { syncDepartments } from '@/api/sync/greenhouse/departments/process';
-import {
-  type GreenhouseProcedure,
-  greenhouseProcedure,
-} from '@/server/api/trpc';
+import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
 
 type Params = Pick<Parameters<typeof syncDepartments>[0], 'recruiter_id'>;
 
@@ -14,7 +11,7 @@ const schema = z.object({
   recruiter_id: z.string().uuid(),
 }) satisfies ZodTypeToSchema<Params>;
 
-const mutation = async ({ ctx, input }: GreenhouseProcedure<typeof schema>) => {
+const mutation = async ({ ctx, input }: ATSProcedure<typeof schema>) => {
   return await syncDepartments({
     decryptKey: ctx.decryptKey,
     recruiter_id: input.recruiter_id,
@@ -22,4 +19,4 @@ const mutation = async ({ ctx, input }: GreenhouseProcedure<typeof schema>) => {
   });
 };
 
-export const departments = greenhouseProcedure.input(schema).mutation(mutation);
+export const departments = atsProcedure.input(schema).mutation(mutation);

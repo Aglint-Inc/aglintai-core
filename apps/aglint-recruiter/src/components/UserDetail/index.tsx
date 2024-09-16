@@ -2,6 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Loader from '../Common/Loader';
@@ -19,6 +20,7 @@ export default function InterviewerDetailsPage() {
   //scrolling-------------------
   const [activeSection, setActiveSection] = useState('overview');
   const [isTopBarVisible, setIsTopBarVisible] = useState(false);
+  const { isShowFeature } = useAuthDetails();
   const sectionRefs = {
     overview: useRef(null),
     qualifications: useRef(null),
@@ -71,7 +73,6 @@ export default function InterviewerDetailsPage() {
     <div className='min-h-screen'>
       <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
-
       <div className='container mx-auto py-8'>
         <div className='sticky top-8'>
           <BreadCrumb name={interviewerDetails?.first_name} />
@@ -91,65 +92,66 @@ export default function InterviewerDetailsPage() {
             userCardRef={userCardRef}
           />
         </div>
+        {isShowFeature('SCHEDULING') && (
+          <div className='flex gap-8'>
+            <SideBar
+              activeSection={activeSection}
+              scrollToSection={scrollToSection}
+            />
+            <main className='flex-1 space-y-6'>
+              <section ref={sectionRefs.overview}>
+                <KeyMatrics
+                  declineCount={interviewerDetails.meeting_count.cancelled}
+                  completedCount={interviewerDetails.meeting_count.completed}
+                  upcomingCount={interviewerDetails.meeting_count.upcoming}
+                  totalHour={interviewerDetails.meeting_count.completed_hour}
+                />
+              </section>
 
-        <div className='flex gap-8'>
-          <SideBar
-            activeSection={activeSection}
-            scrollToSection={scrollToSection}
-          />
-          <main className='flex-1 space-y-6'>
-            <section ref={sectionRefs.overview}>
-              <KeyMatrics
-                declineCount={interviewerDetails.meeting_count.cancelled}
-                completedCount={interviewerDetails.meeting_count.completed}
-                upcomingCount={interviewerDetails.meeting_count.upcoming}
-                totalHour={interviewerDetails.meeting_count.completed_hour}
-              />
-            </section>
+              <section ref={sectionRefs.qualifications}>
+                <Qualifications
+                  interview_types={interviewerDetails.interview_type}
+                />
+              </section>
 
-            <section ref={sectionRefs.qualifications}>
-              <Qualifications
-                interview_types={interviewerDetails.interview_type}
-              />
-            </section>
+              <section ref={sectionRefs.upcomingInterviews}>
+                <UpcomingInterview
+                  interviews={interviewerDetails.all_meetings.filter(
+                    (meeting) => meeting.status === 'confirmed',
+                  )}
+                />
+              </section>
 
-            <section ref={sectionRefs.upcomingInterviews}>
-              <UpcomingInterview
-                interviews={interviewerDetails.all_meetings.filter(
-                  (meeting) => meeting.status === 'confirmed',
-                )}
-              />
-            </section>
+              <section ref={sectionRefs.recentInterviews}>
+                <RecentInterviews
+                  interviews={interviewerDetails.all_meetings.filter(
+                    (meeting) => meeting.status === 'completed',
+                  )}
+                />
+              </section>
+              <section ref={sectionRefs.interviewFeedback}>
+                <Feedback feedbacks={interviewerDetails.feedbacks} />
+              </section>
 
-            <section ref={sectionRefs.recentInterviews}>
-              <RecentInterviews
-                interviews={interviewerDetails.all_meetings.filter(
-                  (meeting) => meeting.status === 'completed',
-                )}
-              />
-            </section>
-            <section ref={sectionRefs.interviewFeedback}>
-              <Feedback feedbacks={interviewerDetails.feedbacks} />
-            </section>
+              {/* 
+          <section ref={sectionRefs.performance}>
+            <Performance interviewer={interviewer} />
+          </section> */}
 
-            {/* 
-            <section ref={sectionRefs.performance}>
-              <Performance interviewer={interviewer} />
-            </section> */}
+              {/* <section ref={sectionRefs.availability}>
+            <Availability interviewer={interviewer} />
+          </section> */}
 
-            {/* <section ref={sectionRefs.availability}>
-              <Availability interviewer={interviewer} />
-            </section> */}
+              {/* <section ref={sectionRefs.pendingActions}>
+            <PendingActions interviewer={interviewer} />
+          </section> */}
 
-            {/* <section ref={sectionRefs.pendingActions}>
-              <PendingActions interviewer={interviewer} />
-            </section> */}
-
-            {/* <section ref={sectionRefs.recentActivity}>
-              <RecentActivity interviewer={interviewer} />
-            </section> */}
-          </main>
-        </div>
+              {/* <section ref={sectionRefs.recentActivity}>
+            <RecentActivity interviewer={interviewer} />
+          </section> */}
+            </main>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ export const AnalysisItem = ({
   const tier = getScoreTier(scores[type]);
 
   return (
-    <div className='p-4 border rounded-md'>
+    <div className='p-4'>
       <h3 className='text-lg font-semibold mb-2'>{capitalizeAll(type)}</h3>
       <p className='text-sm text-gray-700'>{reasoning[reasoningType]}</p>
       <div className='mt-2'>

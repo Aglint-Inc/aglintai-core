@@ -19,8 +19,14 @@ import {
 import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import {
   BarChart,
   Calendar,
+  Clock,
   FileText,
   Loader2,
   MoreHorizontal,
@@ -35,6 +41,7 @@ import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
 import { UIButton } from '@/components/Common/UIButton';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
 import { useJobs } from '@/jobs/hooks';
@@ -64,13 +71,15 @@ export const SharedActions = () => {
 };
 
 const Sync = () => {
+  const {
+    recruiter: {
+      recruiter_preferences: { ats },
+    },
+  } = useAuthDetails();
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (job?.posted_by !== 'Greenhouse') return null;
-  // const time = dayjsLocal().diff(
-  //   dayjsLocal(job?.remote_sync_time ?? new Date()),
-  //   'minutes',
-  // );
+  if (job.posted_by === 'Aglint' || ats === 'Aglint' || ats !== job.posted_by)
+    return null;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
@@ -80,9 +89,16 @@ const Sync = () => {
   const date = dayjsLocal(job?.remote_sync_time ?? new Date()).fromNow();
   return (
     <div className='flex flex-row gap-1'>
-      <div className='flex-shrink-0 flex items-center'>
-        <p className='text-neutral-500 text-sm'>{`Last synced ${date}`}</p>
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className='flex-shrink-0 flex items-center'>
+            <Clock className='w-4 h-4 text-neutral-500 mr-1' />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className='text-sm'>{`Last synced ${date}`}</p>
+        </TooltipContent>
+      </Tooltip>
 
       <OptimisticWrapper loading={load}>
         <Button

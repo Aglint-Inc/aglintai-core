@@ -21,35 +21,37 @@ export const ApplicationsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='container mx-auto p-8 space-y-6'>
-      <div className='flex justify-between items-center mb-6'>
-        <div className='space-y-2'>
-          <Skeleton className='h-8 w-48' />
-          <Skeleton className='h-4 w-64' />
+     <div className='min-h-screen'>
+      <div className='container mx-auto p-8 space-y-6'>
+        <div className='flex justify-between items-center mb-6'>
+          <div className='space-y-2'>
+            <Skeleton className='h-8 w-48' />
+            <Skeleton className='h-4 w-64' />
+          </div>
+          <Skeleton className='h-10 w-24' />
         </div>
-        <Skeleton className='h-10 w-24' />
-      </div>
-      <div className='bg-white rounded-lg shadow p-4 space-y-4'>
-        <div className='flex space-x-2'>
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className='h-8 w-24' />
-          ))}
-        </div>
-        <div className='flex justify-between items-center'>
+        <div className='bg-white rounded-lg shadow p-4 space-y-4'>
           <div className='flex space-x-2'>
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3, 4].map((i) => (
               <Skeleton key={i} className='h-8 w-24' />
             ))}
           </div>
-          <Skeleton className='h-8 w-24' />
-        </div>
-        <div className='space-y-2'>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <Skeleton key={i} className='h-12 w-full' />
-          ))}
+          <div className='flex justify-between items-center'>
+            <div className='flex space-x-2'>
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className='h-8 w-24' />
+              ))}
+            </div>
+            <Skeleton className='h-8 w-24' />
+          </div>
+          <div className='space-y-2'>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Skeleton key={i} className='h-12 w-full' />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+     </div>
   );
 };
 

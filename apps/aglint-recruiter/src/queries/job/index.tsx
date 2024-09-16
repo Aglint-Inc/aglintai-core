@@ -3,15 +3,13 @@ import {
   type QueryClient,
   type QueryFilters,
   queryOptions,
-  useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
 import { useCallback } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
-import { syncGreenhouseJob } from '@/utils/jobs.api';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -81,14 +79,14 @@ export const jobQueries = {
 };
 
 export const useJobSync = () => {
-  const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({ id }: { id: string }) => {
-      await syncGreenhouseJob(id, recruiter_id);
-      await jobQueries.refresh({ id, queryClient });
+  return api.ats.sync.job.useMutation({
+    onSuccess: (_, data) => {
+      if (data) {
+        toast.success('Synced successfully');
+        jobQueries.refresh({ id: data.job_id, queryClient });
+      }
     },
-    onSuccess: () => toast.success('Synced successfully'),
     onError: () => toast.error('Synced failed'),
   });
 };
