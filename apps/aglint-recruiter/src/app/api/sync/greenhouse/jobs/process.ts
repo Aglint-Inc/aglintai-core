@@ -16,14 +16,19 @@ import {
 // eslint-disable-next-line no-unused-vars
 const _MAX_EMAILS_PER_BATCH = 100;
 
-export async function syncGreenhouseJob(
-  supabaseAdmin: SupabaseClientType,
-  key: string,
-  recruiter_id: string,
-  last_sync?: string,
-) {
-  const job_posts = await getGreenhouseJobs(key, last_sync);
-  return mapSaveJobs(supabaseAdmin, key, job_posts, recruiter_id);
+export async function syncGreenhouseJob({
+  decryptKey,
+  recruiter_id,
+  supabaseAdmin,
+  last_sync,
+}: {
+  supabaseAdmin: SupabaseClientType;
+  decryptKey: string;
+  recruiter_id: string;
+  last_sync?: string;
+}) {
+  const job_posts = await getGreenhouseJobs(decryptKey, last_sync);
+  return mapSaveJobs(supabaseAdmin, decryptKey, job_posts, recruiter_id);
 }
 
 export async function mapSaveJobs(

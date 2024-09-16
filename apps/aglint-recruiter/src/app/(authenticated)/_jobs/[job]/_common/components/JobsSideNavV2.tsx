@@ -8,14 +8,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import {
-  BarChart,
-  Calendar,
-  FileText,
-  UserPlus,
-  Workflow,
-  XCircle,
-} from 'lucide-react';
+import { BarChart, Calendar, FileText, UserPlus, Workflow } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -52,7 +45,7 @@ const JobsSideNavV2 = () => {
       icon: <UserPlus className='w-5 h-5' />,
       label: 'Hiring Team',
       route: '/jobs/[job]/hiring-team',
-      show: isShowFeature('SCHEDULING'),
+      show: true,
     },
     {
       icon: <Calendar className='w-5 h-5' />,
@@ -78,7 +71,7 @@ const JobsSideNavV2 = () => {
 
   return (
     <>
-      <nav className='p-4 w-64 space-y-2'>
+      <nav className='py-4 space-y-2'>
         {navItems.map(
           (item, index) =>
             item.show && (
@@ -93,17 +86,27 @@ const JobsSideNavV2 = () => {
               </Button>
             ),
         )}
-        {manageJob && (
+      </nav>
+
+      {manageJob && (
+        <div className='p-4 border rounded-md mt-12 max-w-60'>
+          <h4 className='text-sm font-semibold mb-1'>
+            {job?.status !== 'published' ? 'Delete' : 'Close'} Job
+          </h4>
+          <p className='text-xs text-muted-foreground mb-2'>
+            {job?.status !== 'published'
+              ? 'Permanently remove this job and all related data.'
+              : 'Stop all activities and remove the job from the company page.'}
+          </p>
           <Button
-            variant='destructive'
-            className='w-full justify-start mt-4'
+            variant='link'
+            className='text-destructive p-0 h-auto'
             onClick={() => setIsCloseJobDialogOpen(true)}
           >
-            <XCircle className='mr-2 h-5 w-5' />
             <span>{job?.status !== 'published' ? 'Delete' : 'Close'} Job</span>
           </Button>
-        )}
-      </nav>
+        </div>
+      )}
 
       <Dialog
         open={isCloseJobDialogOpen}

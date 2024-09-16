@@ -11,18 +11,25 @@ import {
 
 const MAX_EMAILS_PER_BATCH = 100;
 
-export async function syncGreenhouseApplication(
-  supabaseAdmin: SupabaseClientType,
-  key: string,
-  job_id: string,
-  remote_id: number,
-  recruiter_id: string,
-  last_sync?: string,
-) {
+export async function syncGreenhouseApplication({
+  supabaseAdmin,
+  decryptKey,
+  job_id,
+  remote_id,
+  recruiter_id,
+  last_sync,
+}: {
+  supabaseAdmin: SupabaseClientType;
+  decryptKey: string;
+  job_id: string;
+  remote_id: number;
+  recruiter_id: string;
+  last_sync?: string;
+}) {
   return syncJobApplications(
     supabaseAdmin,
     { job_id, remote_id, recruiter_id, last_sync },
-    key,
+    decryptKey,
   );
 }
 
