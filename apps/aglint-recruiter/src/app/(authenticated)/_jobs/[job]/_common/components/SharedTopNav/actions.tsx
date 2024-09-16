@@ -29,10 +29,12 @@ import {
   Workflow,
   XCircle,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
 import { useJobs } from '@/jobs/hooks';
@@ -50,7 +52,12 @@ export const SharedActions = () => {
         <Add />
         <Publish />
         <Switcher />
-        <Dropdown />
+        {/* <Dropdown /> */}
+        <Link href={`/jobs/${value.job.id}/job-details`}>
+          <UIButton variant='outline' size='sm'>
+            Edit
+          </UIButton>
+        </Link>
       </div>
     </SettingsContext.Provider>
   );
@@ -60,25 +67,21 @@ const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
   if (job?.posted_by !== 'Greenhouse') return null;
-  const time = dayjsLocal().diff(
-    dayjsLocal(job?.remote_sync_time ?? new Date()),
-    'minutes',
-  );
+  // const time = dayjsLocal().diff(
+  //   dayjsLocal(job?.remote_sync_time ?? new Date()),
+  //   'minutes',
+  // );
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
     await handleJobSync();
     setLoad(false);
   };
-
+  const date = dayjsLocal(job?.remote_sync_time ?? new Date()).fromNow();
   return (
     <div className='flex flex-row gap-1'>
       <div className='flex-shrink-0 flex items-center'>
-        <p className='text-neutral-500 text-sm'>
-          {time
-            ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
-            : 'Last synced few seconds ago'}
-        </p>
+        <p className='text-neutral-500 text-sm'>{`Last synced ${date}`}</p>
       </div>
 
       <OptimisticWrapper loading={load}>
