@@ -309,6 +309,7 @@ function Holidays() {
                     eventRef.current.value ? 'for' : ''
                   } ${eventRef.current.value}`,
                 );
+                setSelectedDate(null);
               }}
             >
               {isSaving === 'saving' ? 'Adding...' : 'Add'}
