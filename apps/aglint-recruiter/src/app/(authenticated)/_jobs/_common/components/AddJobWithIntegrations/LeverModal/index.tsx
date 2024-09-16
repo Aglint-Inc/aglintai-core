@@ -92,10 +92,7 @@ export default function LeverModalComp() {
       });
       router.push(ROUTES['/jobs/[job]']({ job: response.public_job_id }));
     } catch (error) {
-      if (error.message == '23505') toast.error('Job already exists.');
-      toast.error(
-        'Import failed. Please try again later or contact support for assistance.',
-      );
+      toast.error(error.message);
       handleClose();
     }
   };

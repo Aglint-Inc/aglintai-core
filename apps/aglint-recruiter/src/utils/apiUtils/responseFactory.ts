@@ -192,9 +192,16 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
     } catch (e) {
       //for already exist job
       if (e.message == '23505') {
-        return getResponse({ error: '23505' }, 500);
+        return getResponse({ error: 'Job already exists.' }, 500);
       }
-      return getResponse({ error: e.message, logger }, 500);
+      return getResponse(
+        {
+          error:
+            'Import failed. Please try again later or contact support for assistance.',
+          logger,
+        },
+        500,
+      );
     }
   }
   return apiMethodHandler;
