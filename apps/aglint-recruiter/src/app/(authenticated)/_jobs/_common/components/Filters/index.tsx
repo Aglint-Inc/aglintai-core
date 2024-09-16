@@ -103,10 +103,10 @@ function FilterJobDashboard({
                   // iconname: 'person',
                   options: filterOptions.hiringManager,
                   setValue: (val) => {
-                    setFilterValues((pre) => ({
-                      ...pre,
+                    setFilterValues({
+                      ...filterValues,
                       hiringManager: val,
-                    }));
+                    });
                   },
                   value: filterValues.hiringManager,
                 },
@@ -116,10 +116,10 @@ function FilterJobDashboard({
                   // iconname: 'person',
                   options: filterOptions.recruiter,
                   setValue: (val) => {
-                    setFilterValues((pre) => ({
-                      ...pre,
+                    setFilterValues({
+                      ...filterValues,
                       recruiter: val,
-                    }));
+                    });
                   },
                   value: filterValues.recruiter,
                 },

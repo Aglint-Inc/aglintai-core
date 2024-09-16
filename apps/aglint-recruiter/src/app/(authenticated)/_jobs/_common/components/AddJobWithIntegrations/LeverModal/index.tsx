@@ -1,7 +1,5 @@
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
-import { Checkbox } from '@components/ui/checkbox';
-import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
@@ -13,6 +11,8 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
 import axios from '@/client/axios';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
@@ -92,9 +92,7 @@ export default function LeverModalComp() {
       });
       router.push(ROUTES['/jobs/[job]']({ job: response.public_job_id }));
     } catch (error) {
-      toast.error(
-        'Import failed. Please try again later or contact support for assistance.',
-      );
+      toast.error(error.message);
       handleClose();
     }
   };
@@ -159,102 +157,113 @@ export default function LeverModalComp() {
   };
 
   return (
-    <Dialog open={integration.lever.open} onOpenChange={handleClose}>
-      <DialogContent className='sm:max-w-[425px]'>
-        <div className='flex flex-col space-y-4'>
-          <div className='flex justify-center'>
+    <UIDialog
+      open={integration.lever.open}
+      onClose={handleClose}
+      slotButtons={<></>}
+      title={
+        <Image
+          src={'/images/ats/lever.png'}
+          width={80}
+          height={20}
+          alt='Lever logo'
+        />
+      }
+    >
+      <div className='flex flex-col space-y-4'>
+        {integration.lever.step === STATE_LEVER_DIALOG.API ||
+        integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
+          <div className='space-y-4'>
+            <Input
+              ref={apiRef}
+              type='password'
+              placeholder='API key'
+              className={error ? 'border-red-500' : ''}
+            />
+            {error && (
+              <p className='text-red-500 text-sm'>Please enter an API key</p>
+            )}
+            <Button
+              variant='default'
+              disabled={loading}
+              onClick={submitApiKey}
+              className='w-full'
+            >
+              {loading ? 'Submitting...' : 'Submit'}
+            </Button>
+            {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
+              <p className='text-red-500 text-sm'>
+                Invalid API key. Please try again.
+              </p>
+            )}
+            <Button
+              variant='outline'
+              onClick={() =>
+                window.open(
+                  'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
+                  '_blank',
+                )
+              }
+              className='w-full'
+            >
+              Support
+            </Button>
+          </div>
+        ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
+          <div className='flex flex-col items-center space-y-4'>
             <Image
-              src={'/images/ats/lever.png'}
-              width={120}
-              height={34}
+              src={'/images/ats/leverbig.svg'}
+              width={50}
+              height={50}
               alt='Lever logo'
             />
+            <p>Fetching data from Lever...</p>
+            <div className='h-[100px] w-[100px] transform rotate-270'>
+              <FetchingJobsLever />
+            </div>
           </div>
+        ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
+          <div className='flex flex-col h-full overflow-hidden space-y-4'>
+            <Tabs value={leverFilter} onValueChange={setLeverFilter}>
+              <TabsList className='grid w-full grid-cols-4'>
+                <TabsTrigger value='all'>All</TabsTrigger>
+                <TabsTrigger value='published'>Published</TabsTrigger>
+                <TabsTrigger value='internal'>Internal</TabsTrigger>
+                <TabsTrigger value='closed'>Closed</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <Button
+              variant='default'
+              disabled={!selectedLeverPostings}
+              onClick={() => {
+                importLever();
+                posthog.capture('Lever Jobs successfully imported');
+              }}
+              className='w-full'
+            >
+              Import
+            </Button>
 
-          {integration.lever.step === STATE_LEVER_DIALOG.API ||
-          integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
-            <div className='space-y-4'>
-              <Input
-                ref={apiRef}
-                type='password'
-                placeholder='API key'
-                className={error ? 'border-red-500' : ''}
-              />
-              {error && (
-                <p className='text-red-500 text-sm'>Please enter an API key</p>
-              )}
-              <Button
-                variant='default'
-                disabled={loading}
-                onClick={submitApiKey}
-                className='w-full'
-              >
-                {loading ? 'Submitting...' : 'Submit'}
-              </Button>
-              {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
-                <p className='text-red-500 text-sm'>
-                  Invalid API key. Please try again.
-                </p>
-              )}
-              <Button
-                variant='outline'
-                onClick={() =>
-                  window.open(
-                    'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
-                    '_blank',
-                  )
-                }
-                className='w-full'
-              >
-                Support
-              </Button>
-            </div>
-          ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
-            <div className='flex flex-col items-center space-y-4'>
-              <Image
-                src={'/images/ats/leverbig.svg'}
-                width={50}
-                height={50}
-                alt='Lever logo'
-              />
-              <p>Fetching data from Lever...</p>
-              <div className='h-[100px] w-[100px] transform rotate-270'>
-                <FetchingJobsLever />
-              </div>
-            </div>
-          ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-            <div className='flex flex-col h-full overflow-hidden space-y-4'>
-              <Tabs value={leverFilter} onValueChange={setLeverFilter}>
-                <TabsList className='grid w-full grid-cols-4'>
-                  <TabsTrigger value='all'>All</TabsTrigger>
-                  <TabsTrigger value='published'>Published</TabsTrigger>
-                  <TabsTrigger value='internal'>Internal</TabsTrigger>
-                  <TabsTrigger value='closed'>Closed</TabsTrigger>
-                </TabsList>
-              </Tabs>
-              <Button
-                variant='default'
-                disabled={!selectedLeverPostings}
-                onClick={() => {
-                  importLever();
-                  posthog.capture('Lever Jobs successfully imported');
-                }}
-                className='w-full'
-              >
-                Import
-              </Button>
-              <div className='space-y-2 max-h-[400px] overflow-y-auto'>
-                {!initialFetch ? (
-                  leverPostings.filter(
-                    (job) => leverFilter === 'all' || job.state === leverFilter,
-                  ).length > 0 ? (
-                    leverPostings
+            <div className='space-y-2 max-h-[400px] overflow-y-auto'>
+              {!initialFetch ? (
+                leverPostings.filter(
+                  (job) => leverFilter === 'all' || job.state === leverFilter,
+                ).length > 0 ? (
+                  <>
+                    <UITypography type='small' variant='p'>
+                      Select only one job to import
+                    </UITypography>
+                    {leverPostings
                       .filter(
                         (job) =>
                           leverFilter === 'all' || job.state === leverFilter,
                       )
                       .map((post) => (
-                        <Card key={post.id}>
+                        <Card
+                          key={post.id}
+                          onClick={() => setSelectedLeverPostings(post)}
+                          className='cursor-pointer hover:bg-gray-50'
+                        >
                           <CardContent className='flex items-center justify-between p-4'>
                             <div>
                               <p className='font-medium'>{post.text}</p>
@@ -267,39 +276,43 @@ export default function LeverModalComp() {
                                 {post.state}
                               </p>
                             </div>
-                            <Checkbox
-                              checked={selectedLeverPostings?.id === post.id}
-                              onCheckedChange={() =>
-                                setSelectedLeverPostings(post)
-                              }
-                            />
+
+                            <div className='flex items-center'>
+                              <input
+                                type='radio'
+                                name='option'
+                                id='option1'
+                                className='h-4 w-4 text-red-600 accent-neutral-700 focus:accent-neutral-600'
+                                checked={selectedLeverPostings?.id === post.id}
+                              />
+                            </div>
                           </CardContent>
                         </Card>
-                      ))
-                  ) : (
-                    <NoAtsResult />
-                  )
-                ) : (
-                  <>
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
+                      ))}
                   </>
-                )}
-              </div>
+                ) : (
+                  <NoAtsResult />
+                )
+              ) : (
+                <>
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='w-full h-16 mb-2' />
+                </>
+              )}
             </div>
-          ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
-            <div className='flex flex-col items-center space-y-4'>
-              <p>Importing from Lever</p>
-              <p>{selectedLeverPostings ? '1 Job' : '0 Jobs'}</p>
-              <LoaderLever />
-            </div>
-          ) : null}
-        </div>
-      </DialogContent>
-    </Dialog>
+          </div>
+        ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
+          <div className='flex flex-col items-center space-y-4'>
+            <p>Importing from Lever</p>
+            <p>{selectedLeverPostings ? '1 Job' : '0 Jobs'}</p>
+            <LoaderLever />
+          </div>
+        ) : null}
+      </div>
+    </UIDialog>
   );
 }

@@ -18,7 +18,7 @@ import { emailTempKeys } from './utils';
 
 const SettingsSubNavItem: React.FC = () => {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, isShowFeature } = useAuthDetails();
   const emailTemplates = useQuery(
     emailTemplateQueries.emailTemplates(recruiter.id),
   );
@@ -43,7 +43,7 @@ const SettingsSubNavItem: React.FC = () => {
   return (
     <NavigationMenu orientation='vertical' className='max-w-[200px]'>
       <NavigationMenuList className='flex-col items-start space-y-1'>
-        {settingsItems.map((item, i) => {
+        {settingsItems(isShowFeature('SCHEDULING')).map((item, i) => {
           const navItem = (
             <NavigationMenuItem key={i}>
               <Button

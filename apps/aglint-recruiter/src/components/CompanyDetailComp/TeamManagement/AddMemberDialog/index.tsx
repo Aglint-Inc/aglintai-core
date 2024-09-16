@@ -6,7 +6,6 @@ import {
 import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import {
   Select,
@@ -15,16 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@components/ui/sheet';
 import { Loader2 } from 'lucide-react';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
+import UIDrawer from '@/components/Common/UIDrawer';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllMembers } from '@/queries/members';
@@ -237,265 +232,262 @@ const AddMember = ({
   );
 
   return (
-    <Sheet open={open} onOpenChange={onClose}>
-      <SheetContent side='right' className='w-[600px] sm:w-[540px]'>
-        <SheetHeader>
-          <SheetTitle>
-            {menu === 'addMember' ? 'Add Member' : 'Pending Invites'}
-          </SheetTitle>
-        </SheetHeader>
-        <div className='mt-4 space-y-4'>
-          {menu === 'addMember' ? (
-            <>
-              <form className='space-y-4'>
-                <div className='grid grid-cols-2 gap-4'>
-                  <Input
-                    value={form.first_name || ''}
-                    name='first_name'
-                    placeholder='First Name'
-                    onChange={(e) =>
-                      setForm({ ...form, first_name: e.target.value })
-                    }
-                    className={formError.first_name ? 'border-red-500' : ''}
-                  />
-                  <Input
-                    value={form.last_name || ''}
-                    name='last_name'
-                    placeholder='Last Name'
-                    onChange={(e) =>
-                      setForm({ ...form, last_name: e.target.value })
-                    }
-                  />
-                </div>
+    <UIDrawer
+      open={open}
+      onClose={onClose}
+      title={menu === 'addMember' ? 'Add Member' : 'Pending Invites'}
+      size='sm'
+    >
+      <div className='mt-4 space-y-4 p-4'>
+        {menu === 'addMember' ? (
+          <>
+            <form className='space-y-4'>
+              <div className='grid grid-cols-2 gap-4'>
                 <Input
-                  value={form.email || ''}
-                  name='email'
-                  placeholder='Email'
+                  value={form.first_name || ''}
+                  name='first_name'
+                  placeholder='First Name'
                   onChange={(e) =>
-                    setForm({ ...form, email: e.target.value.trim() })
+                    setForm({ ...form, first_name: e.target.value })
                   }
-                  className={formError.email ? 'border-red-500' : ''}
+                  className={formError.first_name ? 'border-red-500' : ''}
                 />
                 <Input
-                  value={form.linked_in || ''}
-                  name='LinkedIn'
-                  placeholder='Enter linkedin URL'
+                  value={form.last_name || ''}
+                  name='last_name'
+                  placeholder='Last Name'
                   onChange={(e) =>
-                    setForm({ ...form, linked_in: e.target.value.trim() })
+                    setForm({ ...form, last_name: e.target.value })
                   }
-                  className={formError.linked_in ? 'border-red-500' : ''}
                 />
-                <div className='grid grid-cols-2 gap-4'>
-                  <Input
-                    value={form.position || ''}
-                    name='title'
-                    placeholder='Enter title'
-                    onChange={(e) =>
-                      setForm({ ...form, position: e.target.value })
-                    }
-                    className={formError.position ? 'border-red-500' : ''}
-                  />
-                  <Select
-                    value={form.employment || ''}
-                    onValueChange={(value) =>
-                      setForm({
-                        ...form,
-                        employment: value as employmentTypeEnum,
-                      })
-                    }
-                  >
-                    <SelectTrigger
-                      className={formError.employment ? 'border-red-500' : ''}
-                    >
-                      <SelectValue placeholder='Select Employment Type' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {['contractor', 'fulltime', 'parttime'].map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {capitalizeFirstLetter(option)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className='grid grid-cols-2 gap-4'>
-                  <Select
-                    value={form.location_id?.toString()}
-                    onValueChange={(value) =>
-                      setForm({ ...form, location_id: Number(value) })
-                    }
-                  >
-                    <SelectTrigger
-                      className={formError.location ? 'border-red-500' : ''}
-                    >
-                      <SelectValue placeholder='Choose Location' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {locations.map((loc) => (
-                        <SelectItem key={loc.id} value={loc.id.toString()}>
-                          {capitalizeFirstLetter(
-                            `${loc.city}, ${loc.region}, ${loc.country}`,
-                          )}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select
-                    value={form.department_id?.toString()}
-                    onValueChange={(value) =>
-                      setForm({ ...form, department_id: Number(value) })
-                    }
-                  >
-                    <SelectTrigger
-                      className={formError.department ? 'border-red-500' : ''}
-                    >
-                      <SelectValue placeholder='Select Department' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {departments.map((dep) => (
-                        <SelectItem key={dep.id} value={dep.id.toString()}>
-                          {capitalizeFirstLetter(dep.name)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className='grid grid-cols-2 gap-4'>
-                  <Select
-                    value={form.role_id?.toString()}
-                    onValueChange={(value) =>
-                      setForm({
-                        ...form,
-                        role_id: value,
-                        role: roleOptions.find((op) => op.id === value)?.name,
-                      })
-                    }
-                  >
-                    <SelectTrigger
-                      className={formError.role ? 'border-red-500' : ''}
-                    >
-                      <SelectValue placeholder='Choose Role' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {roleOptions.map((op) => (
-                        <SelectItem key={op.id} value={op.id.toString()}>
-                          {capitalizeFirstLetter(op.name)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {form.role !== 'admin' && (
-                    <Select
-                      value={form.manager_id || ''}
-                      onValueChange={(value) =>
-                        setForm({ ...form, manager_id: value })
-                      }
-                    >
-                      <SelectTrigger
-                        className={formError.manager ? 'border-red-500' : ''}
-                      >
-                        <SelectValue placeholder='Select Manager' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {memberList.map((member) => (
-                          <SelectItem key={member.id} value={member.id}>
-                            {member.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                </div>
-              </form>
-              <div className='flex space-x-2'>
-                <Button variant='outline' className='w-full' onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button
-                  variant='default'
-                  className='w-full'
-                  disabled={isSubmittable}
-                  onClick={() => {
-                    setIsDisable(true);
-                    if (checkValidation()) {
-                      inviteUser();
-                    }
-                  }}
-                >
-                  Invite
-                </Button>
               </div>
-              {isDisable && (
-                <div className='flex justify-center items-center'>
-                  <Loader2 className='w-6 h-6 animate-spin text-primary' />
-                </div>
-              )}
-            </>
-          ) : menu === 'pendingMember' ? (
-            <div className='space-y-4'>
-              <p className='text-sm text-gray-500'>
-                You currently have {converter.toWords(pendingList?.length)}{' '}
-                pending invites awaiting your response.
-              </p>
-              {pendingList.map((member) => (
-                <Alert
-                  key={member.user_id}
-                  className='flex items-center justify-between'
+              <Input
+                value={form.email || ''}
+                name='email'
+                placeholder='Email'
+                onChange={(e) =>
+                  setForm({ ...form, email: e.target.value.trim() })
+                }
+                className={formError.email ? 'border-red-500' : ''}
+              />
+              <Input
+                value={form.linked_in || ''}
+                name='LinkedIn'
+                placeholder='Enter linkedin URL'
+                onChange={(e) =>
+                  setForm({ ...form, linked_in: e.target.value.trim() })
+                }
+                className={formError.linked_in ? 'border-red-500' : ''}
+              />
+              <div className='grid grid-cols-2 gap-4'>
+                <Input
+                  value={form.position || ''}
+                  name='title'
+                  placeholder='Enter title'
+                  onChange={(e) =>
+                    setForm({ ...form, position: e.target.value })
+                  }
+                  className={formError.position ? 'border-red-500' : ''}
+                />
+                <Select
+                  value={form.employment || ''}
+                  onValueChange={(value) =>
+                    setForm({
+                      ...form,
+                      employment: value as employmentTypeEnum,
+                    })
+                  }
                 >
-                  <div className='flex items-center space-x-4'>
-                    <Avatar>
-                      <AvatarImage
-                        src={member.profile_image}
-                        alt={getFullName(member.first_name, member.last_name)}
-                      />
-                      <AvatarFallback>
-                        {getFullName(
-                          member.first_name,
-                          member.last_name,
-                        ).charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <AlertTitle>
-                        {member.first_name + ' ' + member.last_name}
-                      </AlertTitle>
-                      <AlertDescription>{member.email}</AlertDescription>
-                    </div>
-                  </div>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      setResendDisable(member.user_id);
-                      reinviteUser(member.email, recruiterUser.user_id).then(
-                        ({ error, emailSend }) => {
-                          setResendDisable(null);
-                          if (!error && emailSend) {
-                            toast({
-                              variant: 'default',
-                              title: 'Invite sent successfully.',
-                            });
-                          } else {
-                            toast({
-                              variant: 'destructive',
-                              title: 'Failed to resend invite',
-                              description: error,
-                            });
-                          }
-                        },
-                      );
-                    }}
-                    disabled={isResendDisable === member.user_id}
+                  <SelectTrigger
+                    className={formError.employment ? 'border-red-500' : ''}
                   >
-                    Resend
-                  </Button>
-                </Alert>
-              ))}
+                    <SelectValue placeholder='Select Employment Type' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {['contractor', 'fulltime', 'parttime'].map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {capitalizeFirstLetter(option)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className='grid grid-cols-2 gap-4'>
+                <Select
+                  value={form.location_id?.toString()}
+                  onValueChange={(value) =>
+                    setForm({ ...form, location_id: Number(value) })
+                  }
+                >
+                  <SelectTrigger
+                    className={formError.location ? 'border-red-500' : ''}
+                  >
+                    <SelectValue placeholder='Choose Location' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {locations.map((loc) => (
+                      <SelectItem key={loc.id} value={loc.id.toString()}>
+                        {capitalizeFirstLetter(
+                          `${loc.city}, ${loc.region}, ${loc.country}`,
+                        )}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={form.department_id?.toString()}
+                  onValueChange={(value) =>
+                    setForm({ ...form, department_id: Number(value) })
+                  }
+                >
+                  <SelectTrigger
+                    className={formError.department ? 'border-red-500' : ''}
+                  >
+                    <SelectValue placeholder='Select Department' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {departments.map((dep) => (
+                      <SelectItem key={dep.id} value={dep.id.toString()}>
+                        {capitalizeFirstLetter(dep.name)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className='grid grid-cols-2 gap-4'>
+                <Select
+                  value={form.role_id?.toString()}
+                  onValueChange={(value) =>
+                    setForm({
+                      ...form,
+                      role_id: value,
+                      role: roleOptions.find((op) => op.id === value)?.name,
+                    })
+                  }
+                >
+                  <SelectTrigger
+                    className={formError.role ? 'border-red-500' : ''}
+                  >
+                    <SelectValue placeholder='Choose Role' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roleOptions.map((op) => (
+                      <SelectItem key={op.id} value={op.id.toString()}>
+                        {capitalizeFirstLetter(op.name)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {form.role !== 'admin' && (
+                  <Select
+                    value={form.manager_id || ''}
+                    onValueChange={(value) =>
+                      setForm({ ...form, manager_id: value })
+                    }
+                  >
+                    <SelectTrigger
+                      className={formError.manager ? 'border-red-500' : ''}
+                    >
+                      <SelectValue placeholder='Select Manager' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {memberList.map((member) => (
+                        <SelectItem key={member.id} value={member.id}>
+                          {member.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+            </form>
+            <div className='flex space-x-2'>
+              <UIButton variant='outline' className='w-full' onClick={onClose}>
+                Cancel
+              </UIButton>
+              <UIButton
+                variant='default'
+                className='w-full'
+                disabled={isSubmittable}
+                onClick={() => {
+                  setIsDisable(true);
+                  if (checkValidation()) {
+                    inviteUser();
+                  }
+                }}
+              >
+                Invite
+              </UIButton>
             </div>
-          ) : null}
-        </div>
-      </SheetContent>
-    </Sheet>
+            {isDisable && (
+              <div className='flex justify-center items-center'>
+                <Loader2 className='w-6 h-6 animate-spin text-primary' />
+              </div>
+            )}
+          </>
+        ) : menu === 'pendingMember' ? (
+          <div className='space-y-4'>
+            <p className='text-sm text-gray-500'>
+              You currently have {converter.toWords(pendingList?.length)}{' '}
+              pending invites awaiting your response.
+            </p>
+            {pendingList.map((member) => (
+              <Alert
+                key={member.user_id}
+                className='flex items-center justify-between'
+              >
+                <div className='flex items-center space-x-4'>
+                  <Avatar>
+                    <AvatarImage
+                      src={member.profile_image}
+                      alt={getFullName(member.first_name, member.last_name)}
+                    />
+                    <AvatarFallback>
+                      {getFullName(member.first_name, member.last_name).charAt(
+                        0,
+                      )}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <AlertTitle>
+                      {member.first_name + ' ' + member.last_name}
+                    </AlertTitle>
+                    <AlertDescription>{member.email}</AlertDescription>
+                  </div>
+                </div>
+                <UIButton
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    setResendDisable(member.user_id);
+                    reinviteUser(member.email, recruiterUser.user_id).then(
+                      ({ error, emailSend }) => {
+                        setResendDisable(null);
+                        if (!error && emailSend) {
+                          toast({
+                            variant: 'default',
+                            title: 'Invite sent successfully.',
+                          });
+                        } else {
+                          toast({
+                            variant: 'destructive',
+                            title: 'Failed to resend invite',
+                            description: error,
+                          });
+                        }
+                      },
+                    );
+                  }}
+                  disabled={isResendDisable === member.user_id}
+                >
+                  Resend
+                </UIButton>
+              </Alert>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </UIDrawer>
   );
 };
 

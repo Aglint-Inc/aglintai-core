@@ -1,5 +1,3 @@
-import { User } from 'lucide-react';
-
 import { useApplication } from '@/context/ApplicationContext';
 
 import { ApplicantInfoBox } from './SlotBody/InterviewTabContent/_common/components/ui/ApplicationInfo';
@@ -18,11 +16,9 @@ function CandidateInfo() {
         <>
           <ApplicantInfoBox
             isDepartmentVisible={false}
-            textName={applicationDetail.name}
             textEmail={applicationDetail.email}
             isRoleVisible={Boolean(applicationDetail.current_job_title)}
             textRole={applicationDetail.current_job_title || '--'}
-            slotImage={<User size={20} />}
             isLinkedInVisible={!!resume.resume_json?.basics.linkedIn}
             onClickLinkedIn={() => {
               window.open(
@@ -33,7 +29,6 @@ function CandidateInfo() {
             textLocation={applicationDetail.city || '--'}
             textDepartment={'--'}
             textPhone={applicationDetail.phone || '--'}
-            textTimeZone={applicationDetail.timezone || '--'}
           />
         </>
       )}

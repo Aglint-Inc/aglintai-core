@@ -2948,7 +2948,9 @@ export type Database = {
       recruiter_preferences: {
         Row: {
           about: string | null
+          analytics: boolean
           banner_image: string | null
+          candidate_portal: boolean
           company_images: string[] | null
           greenhouse: boolean
           greetings: string | null
@@ -2962,7 +2964,9 @@ export type Database = {
         }
         Insert: {
           about?: string | null
+          analytics?: boolean
           banner_image?: string | null
+          candidate_portal?: boolean
           company_images?: string[] | null
           greenhouse?: boolean
           greetings?: string | null
@@ -2976,7 +2980,9 @@ export type Database = {
         }
         Update: {
           about?: string | null
+          analytics?: boolean
           banner_image?: string | null
+          candidate_portal?: boolean
           company_images?: string[] | null
           greenhouse?: boolean
           greetings?: string | null
