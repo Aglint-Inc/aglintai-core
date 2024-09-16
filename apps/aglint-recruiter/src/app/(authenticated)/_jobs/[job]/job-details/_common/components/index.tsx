@@ -20,7 +20,7 @@ import {
 
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
+// import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { validateDescription } from '@/job/utils';
 import {
@@ -162,7 +162,7 @@ const JobEdit = () => {
             <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
             <BreadCrumbs job={job} />
           </div>
-          <Settings />
+          {/* <Settings /> */}
         </div>
 
         <div className='flex gap-6 mb-6'>

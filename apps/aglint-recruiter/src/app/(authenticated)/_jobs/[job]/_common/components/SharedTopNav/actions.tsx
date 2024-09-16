@@ -29,10 +29,12 @@ import {
   Workflow,
   XCircle,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
 import { useJobs } from '@/jobs/hooks';
@@ -50,7 +52,12 @@ export const SharedActions = () => {
         <Add />
         <Publish />
         <Switcher />
-        <Dropdown />
+        {/* <Dropdown /> */}
+        <Link href={`/jobs/${value.job.id}/job-details`}>
+          <UIButton variant='outline' size='sm'>
+            Edit
+          </UIButton>
+        </Link>
       </div>
     </SettingsContext.Provider>
   );
