@@ -358,3 +358,39 @@ export const interviewEndEmailOrganizerForMeetingStatusSchema = z.object({
     })
   ),
 });
+
+export const candidateBookSlackInterviewerForConfirmationSchema = z.object({
+  session_id: z.string(),
+  application_id: z.string(),
+  request_id: z.string(),
+});
+
+export const interviewStartSlackInterviewersSchema = z.object({
+  session_id: z.string(),
+  recruiter_user_id: z.string(),
+  application_id: z.string(),
+});
+
+export const onTrainingCompleteSlackApproverForTraineeMeetingQualificationSchema =
+  z.object({
+    session_relation_id: z.string(),
+  });
+
+export const onQualifiedSlackTraineeSchema = z.object({
+  interview_module_relation_id: z.string(),
+  approver_id: z.string(),
+});
+
+export const interviewEndSlackRShadowTraineeForMeetingAttendenceSchema =
+  z.object({
+    session_id: z.string(),
+  });
+
+export const interviewEndSlackShadowTraineeForMeetingAttendenceSchema =
+  z.object({
+    session_id: z.string(),
+  });
+
+export const interviewEndSlackOrganizerForMeetingStatusSchema = z.object({
+  session_id: z.string(),
+});

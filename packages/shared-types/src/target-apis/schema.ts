@@ -26,6 +26,10 @@ import {
   onQualifiedEmailTraineeSchema,
   onQualifiedEmailApproverSchema,
   interviewEndEmailOrganizerForMeetingStatusSchema,
+  candidateBookSlackInterviewerForConfirmationSchema,
+  interviewEndSlackRShadowTraineeForMeetingAttendenceSchema,
+  interviewEndSlackShadowTraineeForMeetingAttendenceSchema,
+  onTrainingCompleteSlackApproverForTraineeMeetingQualificationSchema,
 } from '../aglint-mail/api_schema';
 export const TargetApiSchema = {
   debrief_email_interviewer: debriefEmailInterviewerSchema,
@@ -96,4 +100,16 @@ export const TargetApiSchema = {
 
   interviewEnd_slack_interviewerForFeedback:
     interviewEndEmailInterviewerForFeedbackSchema,
+  candidateBook_slack_interviewerForConfirmation:
+    candidateBookSlackInterviewerForConfirmationSchema,
+  interviewStart_slack_interviewers: interviewStartEmailInterviewersSchema,
+  onTrainingComplete_slack_approverForTraineeMeetingQualification:
+    onTrainingCompleteSlackApproverForTraineeMeetingQualificationSchema,
+  onQualified_slack_trainee: onQualifiedEmailTraineeSchema,
+  interviewEnd_slack_rShadowTraineeForMeetingAttendence:
+    interviewEndSlackRShadowTraineeForMeetingAttendenceSchema,
+  interviewEnd_slack_shadowTraineeForMeetingAttendence:
+    interviewEndSlackShadowTraineeForMeetingAttendenceSchema,
+  interviewEnd_slack_organizerForMeetingStatus:
+    interviewEndEmailOrganizerForMeetingStatusSchema,
 } as const;
