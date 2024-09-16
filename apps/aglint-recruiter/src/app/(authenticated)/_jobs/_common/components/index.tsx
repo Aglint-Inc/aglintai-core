@@ -47,20 +47,22 @@ const DashboardComp = () => {
   return (
     <div className='h-full w-full'>
       {!initialLoad ? (
-        <div className='container mx-auto space-y-4'>
-          <div className='flex justify-between items-center'>
-            <div className='space-y-2'>
-              <Skeleton className='h-8 w-[200px]' />
-              <Skeleton className='h-4 w-[300px]' />
+        <div className='min-h-screen'>
+          <div className='container mx-auto space-y-4'>
+            <div className='flex justify-between items-center'>
+              <div className='space-y-2'>
+                <Skeleton className='h-8 w-[200px]' />
+                <Skeleton className='h-4 w-[300px]' />
+              </div>
+              <Skeleton className='h-10 w-[100px]' />
             </div>
-            <Skeleton className='h-10 w-[100px]' />
-          </div>
-          <div className='space-y-2'>
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
+            <div className='space-y-2'>
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+            </div>
           </div>
         </div>
       ) : (
@@ -171,7 +173,7 @@ const Sync = () => {
   const { handleJobsSync } = useJobs();
   const [load, setLoad] = useState(false);
 
-  if (recruiter?.recruiter_preferences?.ats !== 'Greenhouse') return null;
+  if (recruiter.recruiter_preferences.ats === 'Aglint') return null;
 
   const handleSync = async () => {
     if (load) return;

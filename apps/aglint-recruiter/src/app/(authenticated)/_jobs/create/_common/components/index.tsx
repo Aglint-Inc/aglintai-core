@@ -1,4 +1,12 @@
 /* eslint-disable security/detect-object-injection */
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { AlertTriangle, Loader2 } from 'lucide-react';
@@ -41,7 +49,6 @@ const JobCreateComponent = () => {
 
 const JobCreate = () => {
   const { recruiter } = useAuthDetails();
-  const { push } = useRouter();
   const initialCompany = recruiter?.name ?? '';
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
@@ -114,12 +121,25 @@ const JobCreate = () => {
   });
 
   return (
-    <div className='p-4'>
+    <div className='p-4 max-w-2xl mx-auto'>
       <div className='flex items-center mb-4'>
-        <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
+        {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
           Back
-        </Button>
-        <h1 className='ml-4 text-2xl font-bold'>Create Job</h1>
+          </Button> */}
+        <div className='flex flex-col items-center space-x-2'>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href='/jobs'>Jobs</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Create</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <h1 className='ml-4 text-2xl font-bold mt-4'>Create Job</h1>
+        </div>
       </div>
       <JobCreateForm fields={fields} setFields={setFields} />
     </div>
@@ -246,35 +266,47 @@ const JobForms = ({
   const forms = (
     <div className='space-y-4'>
       {job_title}
-      {job_type}
-      {workplace_type}
-      {department_id}
-      {location_id}
+      <div className='grid grid-cols-2 gap-4'>
+        <div>{job_type}</div>
+        <div>{workplace_type}</div>
+        <div>{department_id}</div>
+        <div>{location_id}</div>
+      </div>
     </div>
   );
 
   const roleForms = (
-    <div className='space-y-4'>
-      {hiring_manager}
-      {recruiter}
-      {recruiting_coordinator}
-      {sourcer}
+    <div className='grid grid-cols-2 gap-4'>
+      <div>{hiring_manager}</div>
+      <div>{recruiter}</div>
+      <div>{recruiting_coordinator}</div>
+      <div>{sourcer}</div>
     </div>
   );
 
   return (
     <div className='space-y-6'>
-      <div className='p-4 border rounded-md'>
+      <div className='p-4 border bg-white bg-white rounded-md'>
         <h2 className='text-lg font-semibold mb-4'>Job Details</h2>
+        <div className='text-sm text-gray-500'>
+          Add job details to help candidates understand the role and apply.
+        </div>
         {forms}
       </div>
-      <div className='p-4 border rounded-md'>
+      <div className='p-4 border bg-white rounded-md'>
         <h2 className='text-lg font-semibold mb-4'>Hiring Team</h2>
+        <div className='text-sm text-gray-500'>
+          Add the hiring team so they can manage the job.
+        </div>
         {roleForms}
       </div>
-      <div className='p-4 border rounded-md'>
+      <div className='p-4 border bg-white rounded-md'>
         <h2 className='text-lg font-semibold mb-4'>Job Description</h2>
-        {description}
+        <div className='text-sm text-gray-500'>
+          Add a detailed job description to help candidates understand the role
+          and apply.
+        </div>
+        <div className='mt-4 border rounded-md p-4'>{description}</div>
         {fields.description.error.value && (
           <div className='flex items-center text-red-500 mt-2'>
             <AlertTriangle className='mr-2' />

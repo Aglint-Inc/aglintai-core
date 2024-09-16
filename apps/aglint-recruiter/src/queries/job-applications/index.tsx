@@ -224,8 +224,8 @@ const getApplications = async ({
         query.order(type, { ascending: order === 'asc' }),
       );
     else
-      query.order(type, {
-        ascending: order === 'asc',
+      query.order(type === 'resume_match' ? 'application_match' : type, {
+        ascending: type === 'resume_match' ? order === 'desc' : order === 'asc',
         nullsFirst: false,
       });
   }

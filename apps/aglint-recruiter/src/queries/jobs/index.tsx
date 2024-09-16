@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEqual } from 'lodash';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { syncGreenhouseJobs } from '@/utils/jobs.api';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -22,15 +22,13 @@ export const useJobsRead = (manageJob = false) => {
 };
 
 export const useJobsSync = () => {
-  const { recruiter_id } = useAuthDetails();
   const { queryKey } = jobsQueryKeys.jobs();
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async () => {
-      await syncGreenhouseJobs(recruiter_id);
+  return api.ats.sync.jobs.useMutation({
+    onSuccess: () => {
+      toast.success('Synced successfully');
       queryClient.invalidateQueries({ queryKey });
     },
-    onSuccess: () => toast.success('Synced successfully'),
     onError: () => toast.error('Synced failed'),
   });
 };

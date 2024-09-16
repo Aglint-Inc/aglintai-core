@@ -48,7 +48,7 @@ const CompanyInfoComp = () => {
 
   return (
     <div>
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-6'>
         <div>
           <h2 className='text-xl font-bold mb-2'>Company Information</h2>
           <p className='text-sm text-gray-600'>
