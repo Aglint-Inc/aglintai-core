@@ -79,6 +79,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'gwlinbuxtrnvwvyyhaht.supabase.co',
+      },
+      {
+        protocol: 'https',
         hostname: 'logo.clearbit.com',
       },
     ],
