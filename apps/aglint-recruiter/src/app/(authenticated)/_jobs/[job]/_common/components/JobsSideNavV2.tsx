@@ -8,14 +8,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import {
-  BarChart,
-  Calendar,
-  FileText,
-  UserPlus,
-  Workflow,
-  XCircle,
-} from 'lucide-react';
+import { BarChart, Calendar, FileText, UserPlus, Workflow } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
