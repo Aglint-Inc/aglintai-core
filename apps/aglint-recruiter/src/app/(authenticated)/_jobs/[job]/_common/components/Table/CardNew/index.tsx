@@ -2,6 +2,7 @@ import OptimisticWrapper from '@components/loadingWapper';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import {
@@ -31,6 +32,8 @@ const ApplicationCard = memo(
     const { setChecklist } = useApplicationsActions();
     const { isScoringEnabled } = useRolesAndPermissions();
     const { pressed: shift } = useKeyPress('Shift');
+
+    const { isShowFeature } = useAuthDetails();
 
     const isChecked = useMemo(
       () => checklist.includes(application.id),
@@ -80,7 +83,9 @@ const ApplicationCard = memo(
           application_id: application.id,
           job: application.job_id,
         })}${
-          application.status === 'interview' ? `?tab=interview` : `?tab=resume`
+          application.status === 'interview' && isShowFeature('SCHEDULING')
+            ? `?tab=interview`
+            : `?tab=scoring`
         }`,
       );
     };
