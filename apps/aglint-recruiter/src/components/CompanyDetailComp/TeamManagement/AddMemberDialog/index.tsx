@@ -19,7 +19,7 @@ import converter from 'number-to-words';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UIDrawer from '@/components/Common/UIDrawer';
+import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllMembers } from '@/queries/members';
@@ -54,6 +54,19 @@ const AddMember = ({
   const { data: locations } = useAllOfficeLocations();
   const { data: departments } = useAllDepartments();
   const { refetchMembers } = useAllMembers();
+  const initform = {
+    first_name: null,
+    last_name: null,
+    email: null,
+    linked_in: null,
+    employment: null,
+    location_id: null,
+    position: null,
+    department_id: null,
+    role_id: defaultRole?.role_id ? defaultRole.role_id : null,
+    role: defaultRole?.role ? defaultRole.role : null,
+    manager_id: null,
+  };
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
@@ -66,19 +79,7 @@ const AddMember = ({
     role: string;
     role_id: string;
     manager_id: string;
-  }>({
-    first_name: null,
-    last_name: null,
-    email: null,
-    linked_in: null,
-    employment: null,
-    location_id: null,
-    position: null,
-    department_id: null,
-    role_id: defaultRole?.role_id ? defaultRole.role_id : null,
-    role: defaultRole?.role ? defaultRole.role : null,
-    manager_id: null,
-  });
+  }>(initform);
 
   const [formError, setFormError] = useState<{
     first_name: boolean;
@@ -232,13 +233,17 @@ const AddMember = ({
   );
 
   return (
-    <UIDrawer
+    <UIDialog
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        setForm(initform);
+      }}
       title={menu === 'addMember' ? 'Add Member' : 'Pending Invites'}
-      size='sm'
+      size='lg'
+      slotButtons={<></>}
     >
-      <div className='mt-4 space-y-4 p-4'>
+      <div className='mt-4 space-y-4 '>
         {menu === 'addMember' ? (
           <>
             <form className='space-y-4'>
@@ -391,11 +396,15 @@ const AddMember = ({
                       <SelectValue placeholder='Select Manager' />
                     </SelectTrigger>
                     <SelectContent>
-                      {memberList.map((member) => (
-                        <SelectItem key={member.id} value={member.id}>
-                          {member.name}
-                        </SelectItem>
-                      ))}
+                      {memberList.length ? (
+                        memberList.map((member) => (
+                          <SelectItem key={member.id} value={member.id}>
+                            {member.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <div className='p-3 text-center'>No Managers</div>
+                      )}
                     </SelectContent>
                   </Select>
                 )}
@@ -487,7 +496,7 @@ const AddMember = ({
           </div>
         ) : null}
       </div>
-    </UIDrawer>
+    </UIDialog>
   );
 };
 

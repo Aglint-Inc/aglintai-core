@@ -8,17 +8,11 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import {
-  BarChart,
-  Calendar,
-  FileText,
-  UserPlus,
-  Workflow,
-  XCircle,
-} from 'lucide-react';
+import { BarChart, Calendar, FileText, UserPlus, Workflow } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
@@ -35,35 +29,37 @@ const JobsSideNavV2 = () => {
     router.push(ROUTES[route]({ job: job?.id }));
   };
 
+  const currentTab = router.pathname.split('/').filter((job) => job)[2];
+
   const navItems = [
     {
       icon: <FileText className='w-5 h-5' />,
       label: 'Job Details',
-      route: '/jobs/[job]/job-details',
+      route: 'job-details',
       show: true,
     },
     {
       icon: <BarChart className='w-5 h-5' />,
       label: 'Profile Score',
-      route: '/jobs/[job]/profile-score',
+      route: 'profile-score',
       show: isScoringEnabled,
     },
     {
       icon: <UserPlus className='w-5 h-5' />,
       label: 'Hiring Team',
-      route: '/jobs/[job]/hiring-team',
-      show: isShowFeature('SCHEDULING'),
+      route: 'hiring-team',
+      show: true,
     },
     {
       icon: <Calendar className='w-5 h-5' />,
       label: 'Interview Plan',
-      route: '/jobs/[job]/interview-plan',
+      route: 'interview-plan',
       show: isShowFeature('SCHEDULING'),
     },
     {
       icon: <Workflow className='w-5 h-5' />,
       label: 'Workflows',
-      route: '/jobs/[job]/workflows',
+      route: 'workflows',
       show: isShowFeature('WORKFLOW'),
     },
   ];
@@ -78,32 +74,42 @@ const JobsSideNavV2 = () => {
 
   return (
     <>
-      <nav className='p-4 w-64 space-y-2'>
+      <nav className='py-4 space-y-2'>
         {navItems.map(
           (item, index) =>
             item.show && (
-              <Button
+              <UIButton
                 key={index}
-                variant='ghost'
+                variant={currentTab === item.route ? 'secondary' : 'ghost'}
                 className='w-full justify-start'
-                onClick={() => handlePush(item.route)}
+                onClick={() => handlePush(`/jobs/[job]/${item.route}`)}
               >
                 {item.icon}
                 <span className='ml-2'>{item.label}</span>
-              </Button>
+              </UIButton>
             ),
         )}
-        {manageJob && (
+      </nav>
+
+      {manageJob && (
+        <div className='p-4 border rounded-md mt-12 max-w-60'>
+          <h4 className='text-sm font-semibold mb-1'>
+            {job?.status !== 'published' ? 'Delete' : 'Close'} Job
+          </h4>
+          <p className='text-xs text-muted-foreground mb-2'>
+            {job?.status !== 'published'
+              ? 'Permanently remove this job and all related data.'
+              : 'Stop all activities and remove the job from the company page.'}
+          </p>
           <Button
-            variant='destructive'
-            className='w-full justify-start mt-4'
+            variant='link'
+            className='text-destructive p-0 h-auto'
             onClick={() => setIsCloseJobDialogOpen(true)}
           >
-            <XCircle className='mr-2 h-5 w-5' />
             <span>{job?.status !== 'published' ? 'Delete' : 'Close'} Job</span>
           </Button>
-        )}
-      </nav>
+        </div>
+      )}
 
       <Dialog
         open={isCloseJobDialogOpen}
