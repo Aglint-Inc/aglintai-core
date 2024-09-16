@@ -57,7 +57,7 @@ const handleInteraction = async (payload: any) => {
   }
 };
 
-export const route = createPostRoute(null, handleInteraction);
+export const POST = createPostRoute(null, handleInteraction);
 
 const meeting_status_organizer_accept = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;

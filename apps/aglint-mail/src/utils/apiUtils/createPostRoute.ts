@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export const createPostRoute = (schema: any, func: any) => {
-  const Post = async (req: Request) => {
+  const POST = async (req: Request) => {
     try {
       const { payload } = await req.json();
       let parsed_body;
@@ -18,5 +18,5 @@ export const createPostRoute = (schema: any, func: any) => {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
   };
-  return Post;
+  return POST;
 };
