@@ -4,7 +4,7 @@ export const createPostRoute = (schema: any, func: any) => {
   const Post = async (req: Request) => {
     try {
       const { payload } = await req.json();
-      let parsed_body = schema.parse(payload);
+      let parsed_body;
       if (schema) {
         parsed_body = schema.parse(payload);
       } else {
@@ -18,6 +18,5 @@ export const createPostRoute = (schema: any, func: any) => {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
   };
-
   return Post;
 };
