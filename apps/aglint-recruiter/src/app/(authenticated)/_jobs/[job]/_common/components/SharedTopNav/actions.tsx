@@ -35,6 +35,7 @@ import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
 import { UIButton } from '@/components/Common/UIButton';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJob } from '@/job/hooks';
 import { useJobs } from '@/jobs/hooks';
@@ -64,9 +65,15 @@ export const SharedActions = () => {
 };
 
 const Sync = () => {
+  const {
+    recruiter: {
+      recruiter_preferences: { ats },
+    },
+  } = useAuthDetails();
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (job.posted_by === 'Aglint') return null;
+  if (job.posted_by === 'Aglint' || ats === 'Aglint' || ats !== job.posted_by)
+    return null;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
