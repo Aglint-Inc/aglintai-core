@@ -3,6 +3,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { useRouter } from 'next/router';
 
 import { useApplication } from '@/context/ApplicationContext';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { Activity } from '@/job/components/CandidateDrawer/Activity';
 import { Details } from '@/job/components/CandidateDrawer/Details';
 import { Resume } from '@/job/components/CandidateDrawer/Resume';
@@ -15,7 +16,7 @@ import InterviewTabContent from './InterviewTabContent';
 function SlotBody() {
   const router = useRouter();
   const tab = router.query.tab as TabsType;
-
+  const { isShowFeature } = useAuthDetails();
   const {
     meta: { isLoading: isLoadingDetail },
   } = useApplication();
@@ -87,14 +88,16 @@ function SlotBody() {
       <div className='w-4/12'>
         <div className='flex flex-col space-y-4'>
           {/* <InsightCard /> */}
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-lg'>Requests</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Requests />
-            </CardContent>
-          </Card>
+          {isShowFeature('SCHEDULING') ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className='text-lg'>Requests</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Requests />
+              </CardContent>
+            </Card>
+          ) : null}
           <Card>
             <CardHeader>
               <CardTitle className='text-lg'>Activity</CardTitle>

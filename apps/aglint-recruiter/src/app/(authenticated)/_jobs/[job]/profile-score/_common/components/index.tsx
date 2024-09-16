@@ -47,7 +47,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TourProvider, useTour } from '@/context/TourContext';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
+// import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { distributeScoreWeights } from '@/job/utils';
 import ROUTES from '@/utils/routing/routes';
@@ -118,7 +118,7 @@ const ProfileScorePage = () => {
               <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
               <BreadCrumbs />
             </div>
-            <Settings />
+            {/* <Settings /> */}
           </div>
 
           <div className='flex gap-6 mb-6'>
