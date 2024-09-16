@@ -34,26 +34,6 @@ const CompanyDetailComp = () => {
             <SettingsSubNabItem />
           </div>
           <div className='w-3/4'>
-            <h2 className='text-xl font-bold mb-2'>
-              {tab === settingSubNavItem['COMPANYINFO'] &&
-                'Company Information'}
-              {tab === settingSubNavItem['WORKINGHOURS'] && 'Working Hours'}
-              {tab === settingSubNavItem['USERS'] && 'Team Management'}
-              {tab === settingSubNavItem['ROLES'] && 'Roles and Permissions'}
-              {tab === settingSubNavItem['SCHEDULING_REASONS'] &&
-                'Scheduling Reasons'}
-              {tab === settingSubNavItem.HOLIDAYS && 'Holidays'}
-              {tab === settingSubNavItem.SCHEDULING && 'Scheduling Settings'}
-              {tab === settingSubNavItem.PORTAL_SETTINGS && 'Portal Settings'}
-              {(tab === settingSubNavItem.EMAILTEMPLATE ||
-                tab === settingSubNavItem.SLACKTEMPLATE ||
-                tab === settingSubNavItem.AGENTTEMPLATE ||
-                tab === settingSubNavItem.CALENDERTEMPLATE) &&
-                'Email Templates'}
-            </h2>
-            <p className='text-sm text-gray-600 mb-4'>
-              Update the settings here; changes will be saved automatically.
-            </p>
             {tab === settingSubNavItem['COMPANYINFO'] && <CompanyInfoComp />}
             {tab === settingSubNavItem['USERS'] && <TeamManagement />}
             {tab === settingSubNavItem['ROLES'] && (
