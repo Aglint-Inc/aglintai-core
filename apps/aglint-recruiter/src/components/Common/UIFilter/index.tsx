@@ -81,11 +81,11 @@ export default function UIFilter({
         </Button>
       </PopoverTrigger>
       {type == 'popover' && (
-        <PopoverContent className='p-1 w-max'>
+        <PopoverContent className='p-0 w-max'>
           {options}
           <Button
             variant='ghost'
-            className='gap-1 justify-start'
+            className='gap-1 justify-start w-full hover:rounded-t-none'
             onClick={resetFilter}
           >
             <Repeat size={15} /> <p>Reset</p>
@@ -197,10 +197,15 @@ export function FilterOptions({
       className={`max-h-[280px] flex flex-col gap-1 min-w-56 ${separator && 'border-l'} border-b`}
     >
       {sectionHeading && (
-        <div className='px-2 border-b flex flex-row justify-between items-center'>
+        <div className='px-2 py-1  border-b flex flex-row justify-between items-center'>
           <Label className='font-bold text-base'>{sectionHeading}</Label>
           <div className='flex row items-center'>
-            <Button variant='ghost' className='px-3' onClick={setSearchOp}>
+            <Button
+              variant='ghost'
+              className='px-3'
+              size='sm'
+              onClick={setSearchOp}
+            >
               <Search size={14} />
             </Button>
             {/* <Button variant='ghost' className='px-3' onClick={sectionReset}>
@@ -220,10 +225,10 @@ export function FilterOptions({
           />
         </div>
       )}
-      <div className='max-h-[300px] overflow-auto'>
+      <div className='max-h-[300px] p-1 overflow-auto'>
         {filtered.length > 0 ? (
           filtered.map((optionList, i) => (
-            <div key={`OPS_${i}`}>
+            <div key={`OPS_${optionList.header}${i}`}>
               {Boolean(optionList.header) && (
                 <div className='pl-2 pt-1'>
                   <Label className='font-bold'>{optionList.header}</Label>
@@ -273,7 +278,11 @@ function FilterSubOptions({
     return filtered.map((option) => (
       <div
         key={option.id}
-        className='flex items-center space-x-2 group hover:bg-muted p-2 rounded-md transition-colors'
+        className='flex items-center space-x-2 group hover:bg-muted p-2 rounded-md transition-colors cursor-pointer'
+        onClick={(e) => {
+          e.preventDefault();
+          setSelectedItems(option.id, path);
+        }}
       >
         <Checkbox
           id='terms'
@@ -287,7 +296,6 @@ function FilterSubOptions({
                   : false
               : selectedItems.includes(option.id)
           }
-          onCheckedChange={() => setSelectedItems(option.id, path)}
         />
         <label
           htmlFor='terms'
@@ -310,11 +318,7 @@ function FilterSubOptions({
               key={option.id}
               className='flex items-center space-x-2 hover:bg-muted p-2 rounded-md transition-colors w-full'
             >
-              <RadioGroupItem
-                value={option.id}
-                id={option.id}
-                // className='group-hover:border-primary'
-              />
+              <RadioGroupItem value={option.id} id={option.id} />
               <Label htmlFor={option.id} className='w-full cursor-pointer'>
                 {option.label}
               </Label>
