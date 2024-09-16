@@ -44,17 +44,17 @@ function Tabs() {
       textLabel: 'Scoring',
       isVisible: isScoringEnabled,
     },
-    {
-      tab: 'interview',
-      onClick: () => {
-        router.push({
-          query: { tab: 'interview' },
-          pathname: `/jobs/${job_id}/application/${application_id}`,
-        });
-      },
-      textLabel: 'Interview',
-      isVisible: true,
-    },
+    // {
+    //   tab: 'interview',
+    //   onClick: () => {
+    //     router.push({
+    //       query: { tab: 'interview' },
+    //       pathname: `/jobs/${job_id}/application/${application_id}`,
+    //     });
+    //   },
+    //   textLabel: 'Interview',
+    //   isVisible: true,
+    // },
     // {
     //   tab: 'requests',
     //   onClick: () => {

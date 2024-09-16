@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useApplication } from '@/context/ApplicationContext';
 import { Activity } from '@/job/components/CandidateDrawer/Activity';
 import { Details } from '@/job/components/CandidateDrawer/Details';
+import { InsightCard } from '@/job/components/CandidateDrawer/Details/Insights/InsightCard';
 import { Resume } from '@/job/components/CandidateDrawer/Resume';
 
 import CandidateInfo from '../CandidateInfo';
@@ -86,9 +87,10 @@ function SlotBody() {
       </div>
       <div className='w-4/12'>
         <div className='flex flex-col space-y-4'>
+          <InsightCard />
           <Card>
             <CardHeader>
-              <CardTitle>Requests</CardTitle>
+              <CardTitle className='text-lg'>Requests</CardTitle>
             </CardHeader>
             <CardContent>
               <Requests />
@@ -96,7 +98,7 @@ function SlotBody() {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Activity</CardTitle>
+              <CardTitle className='text-lg'>Activity</CardTitle>
             </CardHeader>
             <CardContent>
               <Activity />
