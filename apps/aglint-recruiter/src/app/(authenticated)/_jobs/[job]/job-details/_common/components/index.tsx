@@ -44,31 +44,33 @@ export const JobDetailsDashboard = () => {
     )
   ) : (
     // TODO: When we move to app router, we should move to separate skeleton component
-    <div className='container mx-auto p-6 flex flex-col space-y-6'>
-      <div className='flex justify-between items-center mb-6'>
-        <div className='space-y-2'>
-          <Skeleton className='h-8 w-64' />
-          <Skeleton className='h-4 w-32' />
+    <div className='min-h-screen'>
+      <div className='container mx-auto p-6 flex flex-col space-y-6'>
+        <div className='flex justify-between items-center mb-6'>
+          <div className='space-y-2'>
+            <Skeleton className='h-8 w-64' />
+            <Skeleton className='h-4 w-32' />
+          </div>
+          <div className='flex space-x-4'>
+            <Skeleton className='h-10 w-10' />
+            <Skeleton className='h-10 w-10' />
+            <Skeleton className='h-10 w-10' />
+          </div>
         </div>
-        <div className='flex space-x-4'>
-          <Skeleton className='h-10 w-10' />
-          <Skeleton className='h-10 w-10' />
-          <Skeleton className='h-10 w-10' />
-        </div>
-      </div>
-      <div className='flex gap-6'>
-        <div className='w-1/4'>
-          <Skeleton className='h-[calc(100vh-200px)] w-full' />
-        </div>
-        <div className='w-3/4 space-y-4'>
-          <Skeleton className='h-6 w-48' />
-          <Skeleton className='h-4 w-full' />
-          <div className='space-y-4'>
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-40 w-full' />
+        <div className='flex gap-6'>
+          <div className='w-1/4'>
+            <Skeleton className='h-[calc(100vh-200px)] w-full' />
+          </div>
+          <div className='w-3/4 space-y-4'>
+            <Skeleton className='h-6 w-48' />
+            <Skeleton className='h-4 w-full' />
+            <div className='space-y-4'>
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-40 w-full' />
+            </div>
           </div>
         </div>
       </div>
