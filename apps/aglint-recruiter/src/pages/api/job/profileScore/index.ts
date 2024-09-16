@@ -7,7 +7,7 @@ import OpenAI from 'openai';
 import { type ChatCompletionMessageParam } from 'openai/resources';
 
 import { distributeScoreWeights } from '@/job/utils';
-import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -24,16 +24,15 @@ const handler = async (
   res: NextApiResponse<JobProfileScoreApi['response']>,
 ) => {
   // eslint-disable-next-line no-unused-vars
-  const supabase = createClient();
   const { job_id, regenerate = false } =
     req.body as JobProfileScoreApi['request'];
-  const { data: job } = await supabase
+  const { data: job } = await supabaseAdmin
     .from('public_jobs')
     .select('description, draft, job_title')
     .eq('id', job_id)
     .single();
   if ((job?.draft?.description ?? '').length < 100) {
-    await supabase
+    await supabaseAdmin
       .from('public_jobs')
       .update({ scoring_criteria_loading: false })
       .eq('id', job_id);
@@ -46,7 +45,7 @@ const handler = async (
     }, 250000);
   });
   try {
-    await supabase
+    await supabaseAdmin
       .from('public_jobs')
       .update({ scoring_criteria_loading: true })
       .eq('id', job_id)
@@ -75,11 +74,11 @@ Job description: ${(job.draft as any).description}`,
       parameter_weights: weights,
     };
     if (regenerate) delete payload.jd_json;
-    await supabase.from('public_jobs').update(payload).eq('id', job_id);
+    await supabaseAdmin.from('public_jobs').update(payload).eq('id', job_id);
     res.status(200).send();
     return;
   } catch (e) {
-    await supabase
+    await supabaseAdmin
       .from('public_jobs')
       .update({ scoring_criteria_loading: false })
       .eq('id', job_id);

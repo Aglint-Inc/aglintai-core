@@ -8,15 +8,19 @@ import {
 } from '@components/ui/dropdown-menu';
 import { Skeleton } from '@components/ui/skeleton';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useJobs } from '@/jobs/hooks';
+import { useIntegrations, useIntegrationStore, useJobs } from '@/jobs/hooks';
+import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 
+import { STATE_LEVER_DIALOG } from '../constants';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
@@ -106,9 +110,15 @@ export default DashboardComp;
 
 export function AddJob() {
   const router = useRouter();
+  const useSetIntegrations = () =>
+    useIntegrationStore((state) => state.actions);
+  const integration = useIntegrations();
+  const { setIntegration } = useSetIntegrations();
+  const { data: integrations } = useAllIntegrations();
 
   return (
     <div className='flex flex-row items-center gap-1'>
+      <LeverModalComp />
       <Sync />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -120,9 +130,35 @@ export function AddJob() {
         <DropdownMenuContent align='end' className='w-56'>
           <DropdownMenuItem
             onSelect={() => router.push(ROUTES['/jobs/create']())}
+            className='cursor-pointer'
           >
             <PlusCircle className='mr-2 h-4 w-4' />
             <span>Create Job</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={() => {
+              if (!integrations.lever_key) {
+                setIntegration({
+                  ...integration,
+                  lever: { open: true, step: STATE_LEVER_DIALOG.API },
+                });
+              } else {
+                setIntegration({
+                  ...integration,
+                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+                });
+              }
+            }}
+            className='cursor-pointer'
+          >
+            <Image
+              src={'/images/ats/lever-job-badge.svg'}
+              alt='Lever Job Badge'
+              className='mr-2 h-4 w-4'
+              width={10}
+              height={10}
+            />
+            <span>Add Lever Job</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
