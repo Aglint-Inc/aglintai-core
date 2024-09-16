@@ -1,6 +1,5 @@
-import { DB } from '@aglint/shared-types';
+import type { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
