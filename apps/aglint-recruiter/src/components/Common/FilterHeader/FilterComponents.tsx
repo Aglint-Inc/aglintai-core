@@ -413,7 +413,7 @@ function NestedFilterComponent({
                     optionList={optionList}
                     selectedItems={selectedItems?.[String(section)] || []}
                     searchFilter={searchEnabled}
-                    searchPlaceholder={section[i]}
+                    searchPlaceholder={section}
                     setSearchOp={() => {
                       if (searchEnabled) {
                         setSearch(search.filter((item) => item !== i));
