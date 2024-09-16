@@ -394,3 +394,9 @@ export const interviewEndSlackShadowTraineeForMeetingAttendenceSchema =
 export const interviewEndSlackOrganizerForMeetingStatusSchema = z.object({
   session_id: z.string(),
 });
+
+export const onRequestCancelSlackInterviewersOrganizerSchema = z.object({
+  session_ids: z.array(z.string()),
+  request_id: z.string(),
+  event_run_id: z.number(),
+});
