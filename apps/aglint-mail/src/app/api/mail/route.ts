@@ -7,7 +7,6 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 
 export async function POST(req: Request) {
   const { target_api, payload } = await req.json();
-
   const supabaseAdmin = getSupabaseServer();
 
   try {
@@ -19,7 +18,7 @@ export async function POST(req: Request) {
     //
     const parsed_body = schema.parse(payload);
     const { fetchUtil } = (await import(
-      `../../../email-utils/${target_api}/fetch-util`
+      `../../../email-utils/${target_api as string}/fetch-util`
     )) as {
       fetchUtil: FetchUtilType<any>;
     };

@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     } else if (meta.target_api.split('_').find((s) => s === 'slack')) {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
+        `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/slack/${meta.target_api}`,
         {
           ...meta,
         },

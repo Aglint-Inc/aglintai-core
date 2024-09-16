@@ -5,7 +5,6 @@ import cors from 'cors';
 import phoneAgentRoutes, {mountScheduleAgentWs} from './routes/scheduleAgent';
 import screenignAgentRouter from './routes/screeningAgent';
 
-import slackRoutes from './routes/slack';
 import errorHandler from './middlewares/errorHandler';
 import emailAgentRouter from './routes/emailAgent';
 import retellRoutes from './routes/retell';
@@ -44,7 +43,6 @@ app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
-app.use('/api/slack', slackRoutes);
 app.get('/redis', async (req, res) => {
   console.time('verify-redis');
   await redisClient.set('foo', 'bar');

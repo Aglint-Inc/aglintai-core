@@ -55,13 +55,11 @@ const getCompanyLogos = (data) => {
   if (!data?.resume_json?.positions) return [];
   const positions = data.resume_json.positions.slice(0, 3); // Get top 3 positions
   return positions.map((position, i) => (
-    <Image
+    <ImageWithFallback
       key={i}
-      src={`https://logo.clearbit.com/${position.org ? position.org.trim().toLowerCase() : ''}`}
+      src={`https://logo.clearbit.com/${position.org.toLowerCase().replace(/\s+/g, '')}.com`}
       alt={`${position.org || 'Company'} logo`}
-      width={24}
-      height={24}
-      className='rounded-full'
+      fallbackSrc={'/images/logo/company.png'}
     />
   ));
 };
@@ -158,12 +156,11 @@ const Experiences = () => {
           {itemsToShow.map(({ org, title, start, end }, i) => (
             <TableRow key={i}>
               <TableCell className='flex items-center space-x-2 w-1/4'>
-                <Image
+                <ImageWithFallback
+                  key={i}
                   src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
-                  alt={`${org} logo`}
-                  width={24}
-                  height={24}
-                  className='rounded-full'
+                  alt={`${org || 'Company'} logo`}
+                  fallbackSrc={'/images/logo/company.png'}
                 />
                 <span>{capitalize(org, conjunctions)}</span>
               </TableCell>
@@ -255,4 +252,19 @@ const calculateDuration = (start, end) => {
     duration += `${months} month${months > 1 ? 's' : ''}`;
   }
   return duration || 'Less than a month';
+};
+
+const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      width={24}
+      height={24}
+      onError={() => setImgSrc(fallbackSrc)}
+      className='rounded-full'
+    />
+  );
 };

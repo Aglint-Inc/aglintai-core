@@ -3,11 +3,10 @@ import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import LoaderLever from '@public/lottie/AddJobWithIntegrations';
-import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
+import { capitalize } from 'lodash';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -135,7 +134,6 @@ export default function LeverModalComp() {
           setRecruiter(responseRec.data[0]);
           setLeverPostings(response.data.data);
           setInitialFetch(false);
-          posthog.capture('Lever Data Fetched');
           setTimeout(() => {
             setIntegration({
               lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
@@ -217,9 +215,11 @@ export default function LeverModalComp() {
               height={50}
               alt='Lever logo'
             />
-            <p>Fetching data from Lever...</p>
-            <div className='h-[100px] w-[100px] transform rotate-270'>
-              <FetchingJobsLever />
+            <p className='text-sm text-gray-600 mb-2'>
+              Fetching data from Lever...
+            </p>
+            <div className='flex justify-center items-center h-24 w-24'>
+              <Loader2 className='h-12 w-12 animate-spin text-gray-500' />
             </div>
           </div>
         ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
@@ -232,18 +232,6 @@ export default function LeverModalComp() {
                 <TabsTrigger value='closed'>Closed</TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button
-              variant='default'
-              disabled={!selectedLeverPostings}
-              onClick={() => {
-                importLever();
-                posthog.capture('Lever Jobs successfully imported');
-              }}
-              className='w-full'
-            >
-              Import
-            </Button>
-
             <div className='space-y-2 max-h-[400px] overflow-y-auto'>
               {!initialFetch ? (
                 leverPostings.filter(
@@ -251,7 +239,7 @@ export default function LeverModalComp() {
                 ).length > 0 ? (
                   <>
                     <UITypography type='small' variant='p'>
-                      Select only one job to import
+                      Select a job to import
                     </UITypography>
                     {leverPostings
                       .filter(
@@ -273,7 +261,7 @@ export default function LeverModalComp() {
                               <p
                                 className={`text-sm ${getLeverStatusColorClass(post.state)}`}
                               >
-                                {post.state}
+                                {capitalize(post.state)}
                               </p>
                             </div>
 
@@ -304,12 +292,21 @@ export default function LeverModalComp() {
                 </>
               )}
             </div>
+            <Button
+              variant='default'
+              disabled={!selectedLeverPostings}
+              onClick={() => {
+                importLever();
+              }}
+              className='w-full'
+            >
+              Import
+            </Button>
           </div>
         ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
-          <div className='flex flex-col items-center space-y-4'>
-            <p>Importing from Lever</p>
-            <p>{selectedLeverPostings ? '1 Job' : '0 Jobs'}</p>
-            <LoaderLever />
+          <div className='flex flex-col items-center justify-center space-y-4 h-[508px]'>
+            <Loader2 className='w-8 h-8 animate-spin text-gray-500' />
+            <p className='text-gray-600'>Importing from Lever</p>
           </div>
         ) : null}
       </div>
