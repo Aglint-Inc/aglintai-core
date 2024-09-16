@@ -157,7 +157,7 @@ const Filters = () => {
   return (
     <FilterHeader
       filters={[
-        bookmarkedButton,
+        ...(isShowFeature('SCHEDULING') ? [bookmarkedButton] : []),
         resumeMatchFilter,
         Locations,
         ...(isShowFeature('SCHEDULING') ? [badgesFilter, InterviewPlan] : []),
