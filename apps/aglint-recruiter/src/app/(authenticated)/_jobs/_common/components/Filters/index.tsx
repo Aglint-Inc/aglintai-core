@@ -48,6 +48,7 @@ function FilterJobDashboard({
   // eslint-disable-next-line no-unused-vars
   handlerFilter: (value: string) => void;
 }) {
+  const { isShowFeature } = useAuthDetails();
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
   return (
@@ -94,32 +95,36 @@ function FilterJobDashboard({
             },
             value: filterValues.type,
           },
-          {
-            type: 'filter',
-            name: 'hiring manager',
-            // iconname: 'person',
-            options: filterOptions.hiringManager,
-            setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
-                hiringManager: val,
-              });
-            },
-            value: filterValues.hiringManager,
-          },
-          {
-            type: 'filter',
-            name: 'recruiter',
-            // iconname: 'person',
-            options: filterOptions.recruiter,
-            setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
-                recruiter: val,
-              });
-            },
-            value: filterValues.recruiter,
-          },
+          ...(isShowFeature('SCHEDULING')
+            ? [
+                {
+                  type: 'filter',
+                  name: 'hiring manager',
+                  // iconname: 'person',
+                  options: filterOptions.hiringManager,
+                  setValue: (val) => {
+                    setFilterValues({
+                      ...filterValues,
+                      hiringManager: val,
+                    });
+                  },
+                  value: filterValues.hiringManager,
+                },
+                {
+                  type: 'filter',
+                  name: 'recruiter',
+                  // iconname: 'person',
+                  options: filterOptions.recruiter,
+                  setValue: (val) => {
+                    setFilterValues({
+                      ...filterValues,
+                      recruiter: val,
+                    });
+                  },
+                  value: filterValues.recruiter,
+                },
+              ]
+            : ([] as any)),
         ]}
         sort={{
           selected: sortValue,

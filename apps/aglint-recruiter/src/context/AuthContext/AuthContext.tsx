@@ -37,7 +37,9 @@ type Features =
   | 'REQUESTS'
   | 'WORKFLOW'
   | 'INTEGRATIONS'
-  | 'SCHEDULING';
+  | 'SCHEDULING'
+  | 'ANALYTICS'
+  | 'CANDIDATE_PORTAL';
 export interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
@@ -181,6 +183,8 @@ const AuthProvider = ({ children }) => {
       REQUESTS: recruiter.recruiter_preferences.request,
       WORKFLOW: recruiter.recruiter_preferences.workflow,
       SCHEDULING: recruiter.recruiter_preferences.scheduling,
+      ANALYTICS: recruiter.recruiter_preferences.analytics,
+      CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
     };
     return recruiterPref[feature];
   };

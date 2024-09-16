@@ -1,7 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
 import { AddFilter } from '@devlink2/AddFilter';
-import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { List, ListItemButton, Popover, Stack } from '@mui/material';
 import React, { memo, type ReactNode } from 'react';
 
@@ -172,7 +171,7 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
     }
     case 'button':
       return (
-        <ButtonFilter
+        <UIFilter
           key={index}
           isActive={filter.isActive}
           isDotVisible={false}
@@ -182,7 +181,9 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
             </div>
           }
           textLabel={capitalizeFirstLetter(filter.name || '')}
-          onClickStatus={{ onClick: () => filter.onClick() }}
+          onClick={() => filter.onClick()}
+          options={<></>}
+          type='button'
         />
       );
   }
