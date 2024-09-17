@@ -99,7 +99,7 @@ const WorkflowActionDialog = () => {
   const { mutateAsync } =
     api.textTransform.selfScheduleInstruction.useMutation();
   let isDialogEdit = true;
-  if (selectedActionsDetails.id.length === 0) {
+  if (selectedActionsDetails?.id && selectedActionsDetails.id.length === 0) {
     isDialogEdit = false;
   }
   const handleSaveScheduleAction = async (

@@ -1,7 +1,6 @@
-import { onInsertCandidateRequestAvailability } from './trigger-funcs/onInsertCandidateRequestAvailability';
-import { onInsertInterviewFilterJson } from './trigger-funcs/onInsertInterviewFilterJson';
 import { onInsertInterviewSessionCancel } from './trigger-funcs/onInsertInterviewSessionCancel';
 import { onInsertRequest } from './trigger-funcs/onInsertRequest';
+import { onInsertRequestProgress } from './trigger-funcs/onInsertRequestProgress';
 import { onInsertWorkflowActionLogs } from './trigger-funcs/onInsertWorkflowActionLogs';
 import { onUpdateCandidateRequestAvailability } from './trigger-funcs/onUpdateCandidateRequestAvailability';
 import { onUpdateInterviewFilterJson } from './trigger-funcs/onUpdateInterviewFilterJson';
@@ -13,9 +12,8 @@ import { onUpdateIntSesnCancel } from './trigger-funcs/onUpdateIntSesnCancel';
 type DBEvents = 'UPDATE' | 'INSERT' | 'DELETE';
 export const db_event_triggers: Record<`${DBEvents}_${string}`, any> = {
   UPDATE_interview_meeting: onUpdateInterviewMeeting,
-  INSERT_interview_filter_json: onInsertInterviewFilterJson,
   UPDATE_interview_filter_json: onUpdateInterviewFilterJson,
-  INSERT_candidate_request_availability: onInsertCandidateRequestAvailability,
+  INSERT_request_progress: onInsertRequestProgress,
   UPDATE_candidate_request_availability: onUpdateCandidateRequestAvailability,
   UPDATE_interview_module_relation: onUpdateInterviewModuleRelation,
   UPDATE_interview_training_progress: onUpdateInterviewTrainingProgress,
