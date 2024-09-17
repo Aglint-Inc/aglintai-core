@@ -24,12 +24,14 @@ const Requests = () => {
     requests: { data: requestList, isPlaceholderData, isFetched },
     filters,
   } = useRequests();
+  const { recruiterUser, isShowFeature } = useAuthDetails();
   const [openChat, setOpenChat] = useState(
-    localStorage.getItem('openChat') === 'true' ? true : false,
+    localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+      ? true
+      : false,
   );
   const [view, setView] = useState<'list' | 'kanban'>('list');
 
-  const { recruiterUser } = useAuthDetails();
   const { data: requestCount } = useRequestCount();
 
   const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
@@ -62,29 +64,37 @@ const Requests = () => {
     ) || 0;
 
   useEffect(() => {
-    setOpenChat(localStorage.getItem('openChat') === 'true' ? true : false);
+    setOpenChat(
+      localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+        ? true
+        : false,
+    );
   }, [localStorage.getItem('openChat')]);
 
   return (
     <div className='flex h-screen overflow-hidden bg-gray-50'>
       {/* Dock to Right Button */}
-      <div className='fixed left-[80px] top-4 z-50'>
-        <Button
-          variant='ghost'
-          size='sm'
-          onClick={() => {
-            const newOpenChat = !openChat;
-            localStorage.setItem('openChat', newOpenChat.toString());
-            setOpenChat(newOpenChat);
-          }}
-        >
-          {openChat ? (
-            <PanelLeftClose className='h-6 w-6 text-gray-500' />
-          ) : (
-            <PanelLeftOpen className='h-6 w-6 text-gray-500' />
-          )}
-        </Button>
-      </div>
+      {isShowFeature('AGENT') ? (
+        <div className='fixed left-[80px] top-4 z-50'>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => {
+              const newOpenChat = !openChat;
+              localStorage.setItem('openChat', newOpenChat.toString());
+              setOpenChat(newOpenChat);
+            }}
+          >
+            {openChat ? (
+              <PanelLeftClose className='h-6 w-6 text-gray-500' />
+            ) : (
+              <PanelLeftOpen className='h-6 w-6 text-gray-500' />
+            )}
+          </Button>
+        </div>
+      ) : (
+        <></>
+      )}
 
       {/* AgentIEditorProvider Section */}
       <AgentIEditorProvider>

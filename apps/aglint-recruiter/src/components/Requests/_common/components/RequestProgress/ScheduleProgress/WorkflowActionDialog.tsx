@@ -37,8 +37,9 @@ const WorkflowActionDialog = () => {
   const {
     reqTriggerActionsMap,
     companyEmailTemplatesMp,
-    editTrigger,
+    triggerDetails,
     setShowEditDialog,
+    setTriggerDetails,
   } = useRequestProgressProvider();
 
   const {
@@ -50,10 +51,11 @@ const WorkflowActionDialog = () => {
     setTiptapLoadStatus,
   } = useSelectedActionsDetails();
 
-  const [isAddingAction, setIsAddingAction] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const handleChangeSelectedAction = (
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
+    const editTrigger = triggerDetails.trigger;
     setTiptapLoadStatus({ email: true, agent: true });
     if (
       get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
@@ -96,7 +98,10 @@ const WorkflowActionDialog = () => {
   };
   const { mutateAsync } =
     api.textTransform.selfScheduleInstruction.useMutation();
-
+  let isDialogEdit = false;
+  if (selectedActionsDetails?.id && selectedActionsDetails.id.length > 0) {
+    isDialogEdit = true;
+  }
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
@@ -112,7 +117,7 @@ const WorkflowActionDialog = () => {
         });
         return;
       }
-      setIsAddingAction(true);
+      setIsSaving(true);
       if (agentInstructions.length > 0) {
         const availabilityResp = await mutateAsync({
           instruction: agentInstructions,
@@ -133,6 +138,8 @@ const WorkflowActionDialog = () => {
         wActions: [wAction],
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
+        interval: triggerDetails.interval,
+        workflow_id: selectedActionsDetails.workflow_id,
       });
       await request_workflow.refetch();
       setShowEditDialog(false);
@@ -142,10 +149,9 @@ const WorkflowActionDialog = () => {
         variant: 'destructive',
       });
     } finally {
-      setIsAddingAction(false);
+      setIsSaving(false);
     }
   };
-
   return (
     <Card className='border-0 shadow-none'>
       <CardHeader>
@@ -163,11 +169,31 @@ const WorkflowActionDialog = () => {
               handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
-            menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({
-              name: action.name,
-              value: action.value.target_api,
-            }))}
+            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.trigger].map(
+              (action) => ({
+                name: action.name,
+                value: action.value.target_api,
+              }),
+            )}
           />
+          {(triggerDetails.trigger === 'sendAvailReqReminder' ||
+            triggerDetails.trigger === 'selfScheduleReminder') && (
+            <UISelectDropDown
+              label='Remind After'
+              value={String(triggerDetails.interval)}
+              onValueChange={(value) => {
+                setTriggerDetails({
+                  trigger: triggerDetails.trigger,
+                  interval: Number(value),
+                });
+              }}
+              menuOptions={[
+                { name: '1 day', value: String(24 * 60) },
+                { name: '2 day', value: String(48 * 60) },
+                { name: '3 day', value: String(72 * 60) },
+              ]}
+            />
+          )}
           <TargetAPIBody action={selectedActionsDetails} />
         </div>
       </CardContent>
@@ -186,7 +212,11 @@ const WorkflowActionDialog = () => {
             });
           }}
         >
-          {isAddingAction ? 'Adding...' : 'Add Action'}
+          {isDialogEdit ? (
+            <>{isSaving ? 'Saving...' : 'Save Action'}</>
+          ) : (
+            <>{isSaving ? 'Adding...' : 'Add Action'}</>
+          )}
         </Button>
       </CardFooter>
     </Card>

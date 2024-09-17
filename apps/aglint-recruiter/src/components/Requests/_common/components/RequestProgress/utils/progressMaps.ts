@@ -14,7 +14,8 @@ export const apiTargetToEvents: ApiTargetToEvents = {
     'REPLACE_ALTERNATIVE_INTERVIEWER',
   candidateBook_slack_interviewerForConfirmation:
     'SEND_INTERVIEWER_ATTENDANCE_RSVP',
-  sendAvailReqReminder_email_applicant: 'REQ_AVAIL_FIRST_FOLLOWUP',
+  sendAvailReqReminder_email_applicant:
+    'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
   onRequestSchedule_emailLink_sendSelfSchedulingLink: 'SELF_SCHEDULE_LINK',
   selfScheduleReminder_email_applicant: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
   onRequestCancel_agent_cancelEvents: 'CANCEL_INTERVIEW_MEETINGS',

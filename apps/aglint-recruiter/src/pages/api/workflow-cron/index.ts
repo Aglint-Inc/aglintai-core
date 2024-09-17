@@ -40,6 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meta.target_api.startsWith('onRequestSchedule') ||
       meta.target_api.startsWith('onRequestReschedule')
     ) {
+      console.log('dnkjnwejkf');
       await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,
         {

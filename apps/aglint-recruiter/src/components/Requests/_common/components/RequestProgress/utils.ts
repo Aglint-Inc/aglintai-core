@@ -1,62 +1,63 @@
-import {
-  type DatabaseEnums,
-  type DatabaseTable,
-  type DatabaseTableInsert,
-} from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/utils/supabase/client';
-
-const triggerinterval: Partial<
-  Record<DatabaseEnums['workflow_trigger'], number>
-> = {
-  sendAvailReqReminder: 24 * 60,
-  selfScheduleReminder: 24 * 60,
-};
+import { TRIGGER_PAYLOAD } from '@/workflows/constants';
 
 export const createRequestWorkflowAction = async ({
   wActions,
   request_id,
   recruiter_id,
+  interval,
+  workflow_id,
 }: {
   wActions: DatabaseTableInsert['workflow_action'][];
   request_id: string;
   recruiter_id: string;
+  interval: number;
+  workflow_id?: string;
 }) => {
   const trigger = wActions[0].target_api.split('_')[0] as any;
-  let interval = 0;
-  if (triggerinterval[trigger]) {
-    interval = triggerinterval[trigger];
-  }
-  let wTrigger: DatabaseTable['workflow'];
-  [wTrigger] = supabaseWrap(
-    await supabase
-      .from('workflow')
-      .select()
-      .eq('request_id', request_id)
-      .eq('trigger', trigger),
-    false,
-  );
-  if (!wTrigger) {
-    [wTrigger] = supabaseWrap(
+  const phase = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger).phase[0];
+  if (workflow_id) {
+    supabaseWrap(
+      await supabase
+        .from('workflow')
+        .update({
+          interval: interval,
+        })
+        .eq('id', workflow_id),
+      false,
+    );
+  } else {
+    supabaseWrap(
+      await supabase
+        .from('workflow')
+        .delete()
+        .eq('request_id', request_id)
+        .eq('trigger', trigger),
+    );
+    const [wTrigger] = supabaseWrap(
       await supabase
         .from('workflow')
         .insert({
           request_id: request_id,
           trigger: trigger,
-          phase: 'after',
+          phase: phase,
           recruiter_id: recruiter_id,
           interval: interval,
           workflow_type: 'job',
         })
         .select(),
     );
+    workflow_id = wTrigger.id;
   }
+
   supabaseWrap(
     await supabase
       .from('workflow_action')
       .delete()
-      .eq('workflow_id', wTrigger.id),
+      .eq('workflow_id', workflow_id),
   );
   supabaseWrap(
     await supabase
@@ -65,7 +66,7 @@ export const createRequestWorkflowAction = async ({
         wActions.map((action) => {
           return {
             ...action,
-            workflow_id: wTrigger.id,
+            workflow_id: workflow_id,
           };
         }),
       )

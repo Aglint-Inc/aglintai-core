@@ -159,6 +159,7 @@ export const PATHS = [
   '/interviewers',
   '/jobs/create',
   '/jobs',
+  '/jobs/[job]/candidate-plan',
   '/jobs/[job]/email-templates',
   '/jobs/[job]/hiring-team',
   '/jobs/[job]',
