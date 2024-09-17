@@ -13,7 +13,7 @@ export default function Document() {
         />
         <meta name='author' content='Aglint' />
       </Head>
-      <body className='icons-hidden'>
+      <body>
         <Main />
         <NextScript />
       </body>

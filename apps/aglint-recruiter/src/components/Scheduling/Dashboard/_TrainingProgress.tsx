@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Avatar } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
@@ -17,9 +18,9 @@ const TrainingProgress = () => {
   const { push } = useRouter();
   const { data } = useInterviewTrainingProgress();
   return (
-    <div className='w-full'>
-      <div className='mb-4 flex items-center justify-between'>
-        <h2 className='text-xl font-semibold'>Training Progress</h2>
+    <Card className='w-full'>
+      <CardHeader className='flex flex-row items-center justify-between'>
+        <CardTitle>Training Progress</CardTitle>
         {!!data && data.length !== 0 && (
           <Link
             href={`${ROUTES['/scheduling']()}?tab=interviewtypes`}
@@ -31,11 +32,11 @@ const TrainingProgress = () => {
             View All Interviewers
           </Link>
         )}
-      </div>
-      <div className='rounded-lg bg-white p-4 shadow'>
+      </CardHeader>
+      <CardContent>
         <TrainingProgressComponent />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

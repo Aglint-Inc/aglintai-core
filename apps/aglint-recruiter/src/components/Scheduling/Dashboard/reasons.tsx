@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BarElement,
@@ -19,10 +19,8 @@ export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle>Reasons</CardTitle>
-      </CardHeader>
-      <CardContent>
         <Tabs
           value={reasonsType}
           onValueChange={(value) =>
@@ -33,13 +31,11 @@ export const Reasons = memo(() => {
             <TabsTrigger value='reschedule'>Reschedule</TabsTrigger>
             <TabsTrigger value='declined'>Declined</TabsTrigger>
           </TabsList>
-          <TabsContent value='reschedule'>
-            <Container />
-          </TabsContent>
-          <TabsContent value='declined'>
-            <Container />
-          </TabsContent>
         </Tabs>
+      </CardHeader>
+      <CardContent>
+        {reasonsType === 'declined' && <Container />}
+        {reasonsType === 'reschedule' && <Container />}
       </CardContent>
     </Card>
   );
@@ -150,7 +146,7 @@ const Meta = memo(({ data }: Props) => {
   //   return acc;
   // }, 0);
   return (
-    <div className='flex max-h-[48px] w-full flex-col gap-1 overflow-scroll'>
+    <div className='flex max-h-[48px] w-full flex-col gap-1'>
       {data.map(({ color, name }, i) => {
         return (
           <div className='flex flex-row items-center gap-1' key={i}>

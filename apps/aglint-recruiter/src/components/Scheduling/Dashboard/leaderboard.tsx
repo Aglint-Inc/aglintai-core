@@ -1,7 +1,6 @@
-import { AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Card } from '@components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Card, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import Avatar from '@mui/material/Avatar';
 import { memo } from 'react';
 
 import {
@@ -18,8 +17,8 @@ const LIMIT = 5;
 export const Leaderboard = memo(() => {
   return (
     <Card className='p-4'>
-      <div className='mb-4 flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Leaderboard</h3>
+      <div className='mb-4 flex w-full flex-row items-center justify-between'>
+        <CardTitle>Leaderboard</CardTitle>
         <Dropdown />
       </div>
       <Container />
@@ -57,7 +56,7 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <div className="flex flex-col">
+      <div className='flex flex-col'>
         <Empty />
       </div>
     );
@@ -78,7 +77,7 @@ const List = memo(({ data }: Props) => {
         ) => (
           <Card
             key={user_id}
-            className='cursor-pointer p-4 hover:bg-neutral-100'
+            className='cursor-pointer border-none p-4 shadow-none hover:bg-neutral-100'
           >
             <div className='flex items-center space-x-4'>
               <div className='flex-shrink-0'>

@@ -1,8 +1,7 @@
 'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface CompletedInterviewsProps {
   as?: React.ElementType;
@@ -38,40 +37,35 @@ export function CompletedInterviewsNew({
         ? 'quater'
         : '';
   return (
-    <div className='flex flex-col p-4 space-y-4 rounded-lg bg-white border-[1px]'>
-      <div className='flex justify-between items-center'>
-        <UITypography variant='p' type='small'>
-          Completed Interviews
-        </UITypography>
-        <div className='flex space-x-2'>
-          <Tabs defaultValue={value} value={value} className='h-[30px]'>
-            <TabsList className='p-0 px-2 h-[30px]'>
-              <TabsTrigger
-                value='month'
-                onClick={onClickLastMonth}
-                className='p-0 px-2 text-[12px]'
-              >
-                {textMonth}
-              </TabsTrigger>
-              <TabsTrigger
-                value='quater'
-                onClick={onClickLastQuarter}
-                className='p-0 px-2 text-[12px]'
-              >
-                {textLastQuarter}
-              </TabsTrigger>
-              <TabsTrigger
-                value='day'
-                onClick={onClickLastDays}
-                className='p-0 px-2 text-[12px]'
-              >
-                {textLastDays}
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      </div>
-      <div>{slotGraph}</div>
-    </div>
+    <Card>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+        <CardTitle>Completed Interviews</CardTitle>
+        <Tabs defaultValue={value} value={value} className='h-[30px]'>
+          <TabsList className='h-[30px] p-0 px-2'>
+            <TabsTrigger
+              value='month'
+              onClick={onClickLastMonth}
+              className='p-0 px-2 text-[12px]'
+            >
+              {textMonth}
+            </TabsTrigger>
+            <TabsTrigger
+              value='quater'
+              onClick={onClickLastQuarter}
+              className='p-0 px-2 text-[12px]'
+            >
+              {textLastQuarter}
+            </TabsTrigger>
+            <TabsTrigger
+              value='day'
+              onClick={onClickLastDays}
+              className='p-0 px-2 text-[12px]'
+            >
+              {textLastDays}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+    </Card>
   );
 }
