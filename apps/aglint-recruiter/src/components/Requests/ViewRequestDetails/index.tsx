@@ -19,10 +19,10 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import SideDrawerEdit from 'src/app/(authenticated)/_jobs/[application]/_common/components/EditDrawer';
+import CollapseContent from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewStage/IndividualSession/Collapse';
+import { useEditSession } from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewTab/hooks/useEditSession';
 
-import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
-import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
-import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';

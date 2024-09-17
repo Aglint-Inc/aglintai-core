@@ -5,7 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Stack, Typography } from '@mui/material';
 import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -63,19 +62,17 @@ function MembersAutoComplete({
           return (
             <div
               key={user.user_id}
-              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${
-                pillColor ? `bg-[${pillColor}]` : 'bg-neutral-3'
-              }`}
+              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${pillColor ? `bg-${pillColor}` : 'bg-neutral-300'
+                }`}
             >
-              <Avatar className='h-5 w-5 text-xs'>
-                <AvatarImage
-                  src={user.profile_image}
-                  alt={getFullName(user?.first_name, user?.last_name)}
-                />
-                <AvatarFallback>
-                  {getFullName(user?.first_name, user?.last_name).charAt(0)}
-                </AvatarFallback>
-              </Avatar>
+              <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    height='24px'
+                    width='24px'
+                    fontSize='12px'
+                  />
+              
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
               <button
                 onClick={() => {
@@ -147,19 +144,20 @@ function MembersAutoComplete({
                     width='24px'
                     fontSize='12px'
                   />
-                  <div className='flex flex-row items-center justify-between'>
-                    <span
-                      className="text-base"
-                      // ... other props
+                  <div
+                    className='pl-2 flex flex-row justify-between w-full items-center'
+                  >
+                    <div
+                      className='one-line-clamp text-sm'
                     >
                       {getFullName(option.first_name, option.last_name)}
-                    </span>
-                    <span
-                      className="text-xs text-gray-500"
-                      // ... other props
+                    </div>
+                    <div
+                      className='text-xs text-gray-500'
+                      style={{ textTransform: 'capitalize' }}
                     >
                       {option.position || ''}
-                    </span>
+                    </div>
                   </div>
                 </div>
               );

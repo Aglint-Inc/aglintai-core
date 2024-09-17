@@ -571,6 +571,7 @@ export const ScheduleTypeField = ({
   };
   return (
     <UISelectDropDown
+      label='Schedule type'
       onValueChange={(value) => {
         const schedule = options.find((m) => m.value === value);
         if (schedule) handleTypeChange(schedule.value);
