@@ -1,4 +1,3 @@
-import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
@@ -8,7 +7,7 @@ import {
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
 import { BarChart2, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { useInterviewConversion } from '@/queries/scheduling-dashboard';
@@ -86,7 +85,12 @@ const InterviewConversionComponent = ({
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
 const LineChart = ({ interviewConversion, type }: InterviewConversionProps) => {
-  const matches = useMediaQuery('(min-width:1920px)');
+  const matches = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1920px)').matches;
+    }
+    return false;
+  }, []);
   const { names, counts, pointBackgroundColor } = interviewConversion.reduce(
     (acc, { timeline, count }) => {
       acc.names.push(timeline);

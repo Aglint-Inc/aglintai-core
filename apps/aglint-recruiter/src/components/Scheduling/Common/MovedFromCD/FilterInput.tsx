@@ -32,8 +32,7 @@ const FilterInput = ({
     type === 'number' && setInput(0);
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

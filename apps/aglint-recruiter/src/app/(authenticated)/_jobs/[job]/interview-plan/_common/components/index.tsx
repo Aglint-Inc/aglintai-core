@@ -607,7 +607,6 @@ const InterviewSession = ({
   });
   drag(drop(ref));
 
-  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
     <div

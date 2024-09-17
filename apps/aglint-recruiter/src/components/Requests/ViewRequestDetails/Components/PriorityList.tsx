@@ -19,12 +19,10 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
   const { query } = useRouter();
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   return (
     <>

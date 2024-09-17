@@ -1,9 +1,9 @@
 import {
-  styled,
   Tooltip,
-  tooltipClasses,
-  type TooltipProps,
-} from '@mui/material';
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 
 import { UIBadge } from '@/components/Common/UIBadge';
 import { type StageWithSessions } from '@/queries/application';
@@ -27,18 +27,6 @@ function BadgesRight({
       (user) => user.interview_session_relation.is_confirmed,
     );
   }
-
-  const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(() => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: 'bg-neutral-700',
-      border: '1px solid border-neutral-300',
-      color: 'text-neutral-50',
-      fontSize: 'text-xs',
-      fontWeight: '400',
-    },
-  }));
 
   const rescheduleRequests = cancelReasons.filter(
     (reason) => reason.interview_session_cancel.type === 'reschedule',
@@ -74,82 +62,48 @@ function BadgesRight({
               />
             )}
             {pausedUser.length > 0 && (
-              <LightTooltip
-                enterDelay={100}
-                enterNextDelay={100}
-                PopperProps={{
-                  style: {
-                    marginTop: '0px', // Adjust this value to reduce the top margin
-                  },
-                }}
-                sx={{
-                  '& .MuiTooltip-tooltip': {
-                    padding: '0px 10px',
-                    fontSize: '5px',
-                  },
-                }}
-                placement='left'
-                title={
-                  <>
-                    <span
-                      style={{
-                        fontSize: 'text-xs',
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: `${pausedUser.length} Interviewer${pausedUser.length > 1 ? 's' : ''} paused`,
-                      }}
-                    ></span>
-                  </>
-                }
-              >
-                <div className='flex flex-col'>
-                  <UIBadge
-                    size={'sm'}
-                    iconName={'Info'}
-                    color={'warning'}
-                    textBadge={pausedUser.length}
-                  />
-                </div>
-              </LightTooltip>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className='flex flex-col'>
+                      <UIBadge
+                        size={'sm'}
+                        iconName={'Info'}
+                        color={'warning'}
+                        textBadge={pausedUser.length}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side='left'
+                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-neutral-50'
+                  >
+                    {`${pausedUser.length} Interviewer${pausedUser.length > 1 ? 's' : ''} paused`}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
             {allUsers.length === 0 && (
-              <LightTooltip
-                enterDelay={100}
-                enterNextDelay={100}
-                PopperProps={{
-                  style: {
-                    marginTop: '0px', // Adjust this value to reduce the top margin
-                  },
-                }}
-                sx={{
-                  '& .MuiTooltip-tooltip': {
-                    padding: '0px 10px',
-                    fontSize: '5px',
-                  },
-                }}
-                placement='left'
-                title={
-                  <>
-                    <span
-                      style={{
-                        fontSize: 'text-xs',
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: `No interviewers assigned`,
-                      }}
-                    ></span>
-                  </>
-                }
-              >
-                <div className='flex flex-col'>
-                  <UIBadge
-                    size={'sm'}
-                    iconName={'CircleAlert'}
-                    color={'error'}
-                    textBadge={1}
-                  />
-                </div>
-              </LightTooltip>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className='flex flex-col'>
+                      <UIBadge
+                        size={'sm'}
+                        iconName={'CircleAlert'}
+                        color={'error'}
+                        textBadge={1}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side='left'
+                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-neutral-50'
+                  >
+                    No interviewers assigned
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </>
         )}
