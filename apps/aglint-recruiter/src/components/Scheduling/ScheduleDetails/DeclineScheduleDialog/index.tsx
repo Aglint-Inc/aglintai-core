@@ -3,11 +3,11 @@ import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tab
 import { useToast } from '@components/hooks/use-toast';
 import { Label } from '@components/ui/label';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { Textarea } from '@components/ui/textarea';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
@@ -159,11 +159,12 @@ function DeclineScheduleDialog({
           </div>
 
           <Label className='text-base font-medium'>Additional Notes</Label>
-          <Textarea
+          <UITextArea
             value={notes}
             placeholder='Add additional notes.'
-            onChange={(e) => setNotes(e.target.value)}
-            className='min-h-[80px]'
+            onChange={(e) => {
+              setNotes(e.target.value);
+            }}
           />
         </div>
       </UIDialog>

@@ -11,7 +11,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Collapse, MenuItem, TextField, Tooltip } from '@mui/material';
+import { Collapse, Tooltip } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
@@ -31,6 +31,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
@@ -645,10 +646,10 @@ const InterviewSession = ({
             slotBreakCard={
               <InterviewBreak
                 value={session.break_duration}
-                handleEdit={(e) =>
+                handleEdit={(value:string) =>
                   handleUpdateSession({
                     session_id: session.id,
-                    session: { break_duration: +e.target.value },
+                    session: { break_duration: parseInt(value)},
                   })
                 }
                 handleDelete={() =>
@@ -850,7 +851,7 @@ const InterviewBreak = ({
   manageJob,
 }: {
   value: number;
-  handleEdit: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  handleEdit: (_value: string) => void;
   handleDelete: () => void;
   manageJob: boolean;
 }) => {
@@ -869,26 +870,12 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <TextField
-          select
-          fullWidth
-          value={value}
-          onChange={handleEdit}
-          sx={{
-            ml: 'space-x-2',
-            width: '120px',
-            '& .MuiOutlinedInput-root': {
-              padding: '0px',
-              paddingLeft: 'pl-2',
-            },
-          }}
-        >
-          {breakDurations.map((item) => (
-            <MenuItem key={item} value={item}>
-              {getBreakLabel(item)}
-            </MenuItem>
-          ))}
-        </TextField>
+        <UISelectDropDown fieldSize='small' value={value.toString()} onValueChange={handleEdit} menuOptions={breakDurations.map((item) => (
+          {
+            name: getBreakLabel(item),
+            value: item.toString()
+          }
+        ))} />
       }
     />
   );
