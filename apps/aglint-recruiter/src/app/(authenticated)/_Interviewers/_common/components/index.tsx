@@ -10,9 +10,9 @@ import { useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
 
-import { useAllInterviewers } from './_hook';
-import { Header } from './components/Header';
-import { InterviewerList } from './components/InterviewerList';
+import { useAllInterviewers } from '../hooks/useAllInterviewers';
+import { Header } from './Header';
+import { InterviewerList } from './InterviewerList';
 
 function Interviewers() {
   const { data: interviewers, isLoading } = useAllInterviewers();
