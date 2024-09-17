@@ -2,11 +2,12 @@ import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { useToast } from '@components/hooks/use-toast';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
@@ -166,10 +167,8 @@ function DeclineScheduleDialog({
           </Stack>
 
           <Typography variant='body1'>Additional Notes</Typography>
-          <TextField
-            multiline
+          <UITextArea
             value={notes}
-            minRows={3}
             placeholder='Add additional notes.'
             onChange={(e) => {
               setNotes(e.target.value);

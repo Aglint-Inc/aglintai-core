@@ -1,10 +1,11 @@
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { X } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
 import toast from '@/utils/toast';
@@ -134,10 +135,9 @@ function CancelScheduleDialog({
               </Stack>
 
               <Typography variant='body1'>Additional Notes</Typography>
-              <TextField
-                multiline
+              Dheeraj
+              <UITextArea
                 value={notes}
-                minRows={3}
                 placeholder='Add additional notes.'
                 onChange={(e) => {
                   setNotes(e.target.value);

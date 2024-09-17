@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { cn } from '@lib/utils';
-import { Stack, TextField } from '@mui/material';
+import { Stack } from '@mui/material';
 import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -20,6 +20,7 @@ import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useApplication } from '@/context/ApplicationContext';
@@ -212,17 +213,12 @@ function DialogSchedule() {
               </>
             }
             slotNotes={
-              <TextField
+              <UITextField
                 value={note || ''}
                 onChange={(e) => {
                   setNote(e.target.value);
                 }}
                 placeholder='Add note'
-                multiline // Enables textarea behavior
-                minRows={2} // Minimum number of rows
-                maxRows={4} // Maximum number of rows
-                variant='outlined' // Uses the outlined variant
-                fullWidth // Takes full width of the container
               />
             }
             slotAssignedInput={
