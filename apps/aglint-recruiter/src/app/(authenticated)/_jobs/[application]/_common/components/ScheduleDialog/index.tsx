@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
