@@ -1,7 +1,8 @@
-import { MemberListCardOption } from '@devlink2/MemberListCardOption';
+
 import { Popover } from '@mui/material';
 import { EllipsisVertical } from 'lucide-react';
 import { useState } from 'react';
+import { MemberListCardOption } from 'src/app/(authenticated)/_interview-pool/[pool]/_common/components/Tabs/Training/IndividualRow/MemberListCardOption';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -54,6 +55,7 @@ const ThreeDot = ({
         }}
       >
         <MemberListCardOption
+        onClickMoveToQualifier={null}
           isMoveToQualifierVisible={false}
           isPauseVisible={!pause_json}
           isRemoveVisible={true}
