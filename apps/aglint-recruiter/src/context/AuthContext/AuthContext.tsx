@@ -40,7 +40,8 @@ type Features =
   | 'INTEGRATIONS'
   | 'SCHEDULING'
   | 'ANALYTICS'
-  | 'CANDIDATE_PORTAL';
+  | 'CANDIDATE_PORTAL'
+  |'REPORTS'|'AGENT'|'THEMES'
 export interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
@@ -190,6 +191,9 @@ const AuthProvider = ({ children }) => {
           SCHEDULING: recruiter.recruiter_preferences.scheduling,
           ANALYTICS: recruiter.recruiter_preferences.analytics,
           CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
+          AGENT: recruiter.recruiter_preferences.agent,
+          REPORTS: recruiter.recruiter_preferences.reports,
+          THEMES: recruiter.recruiter_preferences.themes,
         };
         return recruiterPref[feature];
       }
