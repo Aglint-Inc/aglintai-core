@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
+import { RangePicker } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
 
-import { RangePicker } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useSelfSchedulingDrawer } from '../../../hooks/hooks';

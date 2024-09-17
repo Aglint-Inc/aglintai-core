@@ -32,7 +32,7 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[job]': ['job_module'],
-  '/jobs/[job]/application/[application_id]': ['job_module'],
+  '/jobs/[job]/[application]': ['job_module'],
   '/jobs/[job]/metrics': ['job_module'],
   '/jobs/[job]/email-templates': ['job_module', 'manage_job'],
   '/jobs/[job]/hiring-team': ['job_module', 'manage_job'],
