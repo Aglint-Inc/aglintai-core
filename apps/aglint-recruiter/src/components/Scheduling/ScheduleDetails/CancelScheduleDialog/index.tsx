@@ -8,12 +8,12 @@ import {
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { Textarea } from '@components/ui/textarea';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
 import toast from '@/utils/toast';
@@ -114,13 +114,13 @@ function CancelScheduleDialog({
             <Label htmlFor='notes' className='text-base font-medium'>
               Additional Notes
             </Label>
-            <Textarea
-              id='notes'
-              value={notes}
-              placeholder='Add additional notes.'
-              onChange={(e) => setNotes(e.target.value)}
-              className='min-h-[80px]'
-            />
+            <UITextArea
+                value={notes}
+                placeholder='Add additional notes.'
+                onChange={(e) => {
+                  setNotes(e.target.value);
+                }}
+              />
           </div>
         </div>
         <DialogFooter>
