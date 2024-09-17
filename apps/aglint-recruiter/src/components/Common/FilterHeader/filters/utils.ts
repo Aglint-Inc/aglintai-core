@@ -1,4 +1,4 @@
-export type nestedType<T> = { [key: string]: nestedType<T> } | T;
+import { type nestedType } from './sharedTypes';
 
 type nestedOptionMapperType = nestedType<
   string[] | { id: string; label: string }[]
