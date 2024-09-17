@@ -14,7 +14,7 @@ export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({
 }) => {
   try {
     const resp = await axios.post(
-      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/mail`,
+      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/mail/${target_api}`,
       {
         target_api: target_api,
         payload: payload,
