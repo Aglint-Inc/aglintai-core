@@ -1,4 +1,3 @@
-import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -10,14 +9,13 @@ import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
-import { getBreakLabel } from '@/utils/getBreakLabel';
-import { sessionDurations } from '@/utils/scheduling/const';
 
 import {
   setDebriefMembers,
   setEditSession,
   useEditSessionDrawerStore,
 } from '../../../stores/editSessionDrawer';
+import SessionDuration from '../DurationDropdown';
 
 function DebriedForm() {
   const { recruiter } = useAuthDetails();
@@ -83,28 +81,7 @@ function DebriedForm() {
           />
         </div>
         <div>
-          <TextField
-            fullWidth
-            select
-            value={editSession.interview_session.session_duration}
-          >
-            {sessionDurations?.map((ses) => (
-              <MenuItem
-                value={ses}
-                key={ses}
-                onClick={() =>
-                  setEditSession({
-                    interview_session: {
-                      ...editSession.interview_session,
-                      session_duration: ses,
-                    },
-                  })
-                }
-              >
-                {getBreakLabel(ses)}
-              </MenuItem>
-            ))}
-          </TextField>
+          <SessionDuration /> 
         </div>
         <div>
           <ScheduleTypeField
