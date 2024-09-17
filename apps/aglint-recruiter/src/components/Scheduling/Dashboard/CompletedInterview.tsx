@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -18,7 +17,7 @@ const CompletedInterviewBarChart = () => {
   return (
     <CompletedInterviewsNew
       slotGraph={
-        <Stack height={'330px'}>
+        <div className='h-[330px]'>
           {Object.keys(completedInterviewsData || {}).length ? (
             <BarChart
               skills={Object.entries(completedInterviewsData || {}).map(
@@ -37,7 +36,7 @@ const CompletedInterviewBarChart = () => {
               </div>
             </div>
           )}
-        </Stack>
+        </div>
       }
       onClickLastDays={() => {
         setFilterDuration(1);

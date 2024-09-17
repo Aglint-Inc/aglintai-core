@@ -11,7 +11,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Collapse, MenuItem, TextField, Tooltip } from '@mui/material';
+import { Collapse, Tooltip } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
@@ -31,6 +31,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
@@ -206,7 +207,7 @@ const AddStageComponent = () => {
   return (
     <>
       {form && (
-        <div className='flex w-full flex-row items-center gap-2 bg-[var(--neutral-2)] p-4'>
+        <div className='flex w-full flex-row items-center gap-2 bg-neutral-100 p-4'>
           {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
@@ -619,7 +620,7 @@ const InterviewSession = ({
             textModuleName={
               <div className='flex flex-row gap-3'>
                 <>{session.name}</>
-                <div className='font-normal text-[var(--font-size-1)] text-[var(--neutral-9)]'>
+                <div className='font-normal text-sm text-neutral-500'>
                   {getSessionType(session.session_type)}
                 </div>
               </div>
@@ -645,10 +646,10 @@ const InterviewSession = ({
             slotBreakCard={
               <InterviewBreak
                 value={session.break_duration}
-                handleEdit={(e) =>
+                handleEdit={(value:string) =>
                   handleUpdateSession({
                     session_id: session.id,
-                    session: { break_duration: +e.target.value },
+                    session: { break_duration: parseInt(value)},
                   })
                 }
                 handleDelete={() =>
@@ -850,7 +851,7 @@ const InterviewBreak = ({
   manageJob,
 }: {
   value: number;
-  handleEdit: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  handleEdit: (_value: string) => void;
   handleDelete: () => void;
   manageJob: boolean;
 }) => {
@@ -869,26 +870,12 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <TextField
-          select
-          fullWidth
-          value={value}
-          onChange={handleEdit}
-          sx={{
-            ml: 'var(--space-2)',
-            width: '120px',
-            '& .MuiOutlinedInput-root': {
-              padding: '0px',
-              paddingLeft: 'var(--space-2)',
-            },
-          }}
-        >
-          {breakDurations.map((item) => (
-            <MenuItem key={item} value={item}>
-              {getBreakLabel(item)}
-            </MenuItem>
-          ))}
-        </TextField>
+        <UISelectDropDown fieldSize='small' value={value.toString()} onValueChange={handleEdit} menuOptions={breakDurations.map((item) => (
+          {
+            name: getBreakLabel(item),
+            value: item.toString()
+          }
+        ))} />
       }
     />
   );

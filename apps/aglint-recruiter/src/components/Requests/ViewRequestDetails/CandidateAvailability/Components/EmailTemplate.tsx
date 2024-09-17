@@ -1,7 +1,6 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { Stack } from '@mui/material';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -83,20 +82,20 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
         slotEmail={
           <ShowCode>
             <ShowCode.When isTrue={fetching}>
-              <Stack height={'100vh'} width={'100%'}>
+              <div className='h-screen w-full'>
                 <Loader />
-              </Stack>
+              </div>
             </ShowCode.When>
             <ShowCode.Else>
-              <Stack>
+              <div className='flex flex-col'>
                 <iframe
-                  // width={'600px'}
-                  height={'820px'}
-                  color='white'
-                  srcDoc={emailData?.html}
-                  title='Preview Email'
+                  src={emailData?.html}
+                  width='100%'
+                  height='600px'
+                  style={{ border: 'none' }}
+                  title='Email Preview'
                 />
-              </Stack>
+              </div>
             </ShowCode.Else>
           </ShowCode>
         }

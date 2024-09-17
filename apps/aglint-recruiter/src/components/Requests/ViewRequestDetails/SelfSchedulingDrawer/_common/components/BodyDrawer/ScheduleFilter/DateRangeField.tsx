@@ -7,7 +7,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
 import React from 'react';
@@ -33,8 +32,8 @@ function DateRangeField() {
   }>(null);
 
   return (
-    <Stack spacing={0.5}>
-      <Typography variant='body1'>Preferred Date Ranges</Typography>
+    <div className='flex flex-col space-y-0.5'>
+      <span className='text-base font-medium'>Preferred Date Ranges</span>
       <TimeRangeSelector
         slotButton={
           <UIButton
@@ -109,7 +108,7 @@ function DateRangeField() {
         }
         isMultiDay={false}
         slotTimeinputs={
-          <Stack direction={'row'} spacing={2}>
+          <div className='flex flex-row space-x-2'>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -188,11 +187,11 @@ function DateRangeField() {
                 </PopoverContent>
               </Popover>
             </div>
-          </Stack>
+          </div>
         }
         textDay={'Day'}
       />
-    </Stack>
+    </div>
   );
 }
 

@@ -1,4 +1,3 @@
-import { Stack } from '@mui/system';
 import { forwardRef, type Ref } from 'react';
 
 import { type Application } from '@/types/applications.types';
@@ -28,11 +27,11 @@ const StageProgress = forwardRef(
       ),
     );
     return (
-      <Stack ref={ref}>
+      <div ref={ref} className='flex flex-col'>
         <div className={'flex flex-row flex-nowrap gap-2'}>
           {pills.length ? pills : '---'}
         </div>
-      </Stack>
+      </div>
     );
   },
 );

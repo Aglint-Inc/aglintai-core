@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
@@ -51,9 +50,9 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <Stack>
+      <div className='flex flex-col'>
         <Empty />
-      </Stack>
+      </div>
     );
 
   return <List data={data} />;

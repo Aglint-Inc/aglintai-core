@@ -101,13 +101,7 @@ function FilterCreatedBy() {
             },
           }}
           textLabel={'Created by'}
-          slotRightIcon={
-            <ChevronDown
-              size={16}
-              color={'var(--neutral-2)'}
-              className='transition-transform duration-200 ease-in-out'
-            />
-          }
+          slotRightIcon={<ChevronDown size={16} className='text-neutral-100' />}
         />
       </PopoverTrigger>
       <PopoverContent className='w-[300px] p-0' align='start'>

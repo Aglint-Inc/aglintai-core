@@ -2,7 +2,6 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -163,33 +162,15 @@ export const ConfirmedInvitePage = (
   return (
     <>
       {!loading && (
-        <Stack
-          sx={{
-            backgroundColor: 'var(--sand-3)',
-            width: '100%',
-            minHeight: '100vh',
-            overflow: 'auto',
-            paddingBottom: '24px',
-          }}
-        >
-          <Stack
-            sx={{
-              backgroundColor: 'white',
-              maxWidth: '760px',
-              width: '100%',
-              marginInline: 'auto',
-              marginTop: '10px',
-              zIndex: '10',
-              transform: 'translateY(50px)',
-            }}
-          >
+        <div className='h-full w-full bg-white p-4'>
+          <div className='mx-auto w-full max-w-[600px]'>
             {cancelReschedulingDetails?.all && (
               <UIAlert
                 iconName='Info'
                 color={'info'}
                 description={
                   <>
-                    <Typography>
+                    <span className='text-sm'>
                       {'Request to '}
                       {capitalizeFirstLetter(
                         cancelReschedulingDetails.type == 'declined'
@@ -200,26 +181,24 @@ export const ConfirmedInvitePage = (
                       {cancelReschedulingDetails.type == 'reschedule' &&
                         ` from ${dayjsLocal(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjsLocal(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
                       {' received,'} and under review.
-                    </Typography>
+                    </span>
                     {reasons.length && (
-                      <Typography>
-                        <span style={{ fontWeight: '500' }}>Reason: </span>
+                      <p className='text-sm'>
+                        <span className='font-medium'>Reason: </span>
                         {reasons.join(', ')}
-                      </Typography>
+                      </p>
                     )}
                     {cancelReschedulingDetails.other_details?.note && (
-                      <Typography>
-                        <span style={{ fontWeight: '500' }}>
-                          Additional Notes:{' '}
-                        </span>
+                      <p className='text-sm'>
+                        <span className='font-medium'>Additional Notes: </span>
                         {cancelReschedulingDetails.other_details.note}
-                      </Typography>
+                      </p>
                     )}
                   </>
                 }
               />
             )}
-          </Stack>
+          </div>
           <InterviewConfirmed
             slotCompanyLogo={
               <Logo companyName={recruiter.name} logo={recruiter.logo} />
@@ -236,7 +215,7 @@ export const ConfirmedInvitePage = (
             }
             textMailSent={candidate.email}
             slotButton={
-              <Stack direction={'row'} gap={2}>
+              <div className='flex flex-row gap-2'>
                 {(!cancelReschedulingDetails ||
                   cancelReschedulingDetails.all == false) && (
                   <div className='flex gap-2'>
@@ -259,7 +238,7 @@ export const ConfirmedInvitePage = (
                     </UIButton>
                   </div>
                 )}
-              </Stack>
+              </div>
             }
           />
           {Boolean(cancelReschedule) && (
@@ -285,7 +264,7 @@ export const ConfirmedInvitePage = (
             />
           )}
           <Footer brand={true} />
-        </Stack>
+        </div>
       )}
     </>
   );
@@ -391,8 +370,8 @@ const ConfirmedScheduleCard = (
 
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
-    <Stack height={'60px'}>
+    <div className='h-[60px]'>
       <CompanyLogo companyName={companyName} companyLogo={logo} />
-    </Stack>
+    </div>
   );
 };

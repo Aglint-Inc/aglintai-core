@@ -71,14 +71,14 @@ export default function InterviewTypeDistribution() {
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={150}
-              fill='hsl(var(--chart-1))'
+              fill='text-blue-500'
               dataKey='value'
               innerRadius={90}
             >
               {data.map((_entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={`hsl(var(--chart-${index + 1}))`}
+                  fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                 />
               ))}
             </Pie>

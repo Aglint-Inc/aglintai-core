@@ -2,7 +2,6 @@ import { AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
 import {
@@ -58,9 +57,9 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <Stack>
+      <div className="flex flex-col">
         <Empty />
-      </Stack>
+      </div>
     );
 
   return <List data={data.slice(0, LIMIT + 1)} />;

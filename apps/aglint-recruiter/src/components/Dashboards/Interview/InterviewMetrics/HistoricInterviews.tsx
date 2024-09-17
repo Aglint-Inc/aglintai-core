@@ -48,7 +48,7 @@ export default function HistoricInterviews() {
                   dataKey={name}
                   name={capitalizeFirstLetter(name)}
                   stackId={'a'}
-                  fill={`hsl(var(--chart-${index + 1}))`}
+                  fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                 />
               ) : null,
             )}

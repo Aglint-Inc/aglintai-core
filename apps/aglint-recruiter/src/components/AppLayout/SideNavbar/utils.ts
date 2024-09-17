@@ -39,7 +39,7 @@ export const navList: {
       '/jobs/[job]/profile-score',
       '/jobs/[job]/workflows',
       '/jobs/[job]/metrics',
-      '/jobs/[job]/application/[application_id]',
+      '/jobs/[job]/[application]',
     ],
   },
   {

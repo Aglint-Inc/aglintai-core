@@ -4,7 +4,6 @@ import { Card } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
@@ -15,7 +14,6 @@ import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/C
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
-import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import { InterviewLoadCard } from '../_common/InterviewLoadCard';
@@ -185,25 +183,15 @@ function Availibility({
   }, []);
 
   return (
-    <Stack
-      overflow={'hidden'}
-      padding={2}
-      spacing={2}
-      bgcolor={'white'}
-      width={'900px'}
-      gap={1}
+    <div
+      className='flex h-full flex-col justify-between overflow-hidden'
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <Stack bgcolor={'white'}>
-        <Stack
-          direction={'row'}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          spacing={1}
-        >
+      <div className='bg-white'>
+        <div className='flex flex-row items-center justify-between p-2'>
           <p className='font-semibold'>Time Zone</p>
-          <Stack width={'47px'} height={'32px'}>
+          <div className='h-[32px] w-[47px]'>
             {isHover && (
               <UIButton
                 onClick={() => setEditDrawer(true)}
@@ -213,10 +201,10 @@ function Availibility({
                 Edit
               </UIButton>
             )}
-          </Stack>
-        </Stack>
-        <Typography>{selectedTimeZone?.label}</Typography>
-      </Stack>
+          </div>
+        </div>
+        <span className='text-sm text-gray-900'>{selectedTimeZone?.label}</span>
+      </div>
       <div className='flex w-[600px] flex-col space-y-2'>
         <Card className='grid grid-cols-3 gap-3 border-none shadow-none'>
           <>
@@ -345,58 +333,16 @@ function Availibility({
             </>
           }
         >
-          <Stack padding={'16px'}>
+          <div className='p-4'>
             <ScheduleSettings
               slotDayOff={<></>}
-              slotTimeZoneInput={
-                <Stack
-                  spacing={'var(--space-2)'}
-                  width={420}
-                  flexDirection={'column-reverse'}
-                  gap={'var(--space-2)'}
-                >
-                  <Autocomplete
-                    disabled={isTimeZone}
-                    disableClearable
-                    options={timeZone}
-                    value={selectedTimeZone}
-                    onChange={(_event, value) => {
-                      if (value) {
-                        setSelectedTimeZone(value);
-                      }
-                    }}
-                    autoComplete={false}
-                    getOptionLabel={(option) => option.label}
-                    renderOption={(props, option) => {
-                      return (
-                        <li {...props}>
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            {option.label}
-                          </Typography>
-                        </li>
-                      );
-                    }}
-                    renderInput={(params) => {
-                      return (
-                        <TextField
-                          {...params}
-                          label=''
-                          placeholder='Ex. Healthcare'
-                        />
-                      );
-                    }}
-                  />
-                </Stack>
-              }
+              slotTimeZoneInput={<>{/* // Autocomplete was here */}</>}
               isKeywordVisible={false}
               isCompanyLevelVisible={false}
               slotKeywordCard={<></>}
               slotDailyLimit={
                 <>
-                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                  <div className='flex flex-row items-center space-x-3'>
                     <MuiNumberfield
                       isMarginTop={false}
                       handleSelect={(value) => handleDailyValue(+value)}
@@ -419,12 +365,12 @@ function Availibility({
                         </div>
                       ))}
                     </RadioGroup>
-                  </Stack>
+                  </div>
                 </>
               }
               slotWeeklyLimit={
                 <>
-                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                  <div className='flex flex-row items-center space-x-3'>
                     {' '}
                     <MuiNumberfield
                       handleSelect={(value) => handleWeeklyValue(+value)}
@@ -451,7 +397,7 @@ function Availibility({
                         );
                       })}
                     </RadioGroup>
-                  </Stack>
+                  </div>
                 </>
               }
               slotWorkingHourDay={
@@ -524,10 +470,10 @@ function Availibility({
               }
               isCompanyDaysOffVisible={false}
             />
-          </Stack>
+          </div>
         </UIDrawer>
       </>
-    </Stack>
+    </div>
   );
 }
 

@@ -92,7 +92,7 @@ const ScoreWheel = ({
         className='flex w-4/5 items-center justify-center rounded-full text-center'
         style={{
           aspectRatio: '1',
-          backgroundColor: 'var(--white)',
+          backgroundColor: 'bg-white',
           color:
             isSettings &&
             (hoverKey === null || hoverKey === 'unused') &&

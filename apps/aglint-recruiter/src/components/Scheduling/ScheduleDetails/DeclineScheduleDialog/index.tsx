@@ -1,12 +1,13 @@
 import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { useToast } from '@components/hooks/use-toast';
+import { Label } from '@components/ui/label';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { Stack, TextField, Typography } from '@mui/material';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
@@ -130,52 +131,42 @@ function DeclineScheduleDialog({
           </>
         }
       >
-        <Stack spacing={2} width={'100%'}>
-          <Typography variant='body1'>
-            Please provide a reason for declineing and any additional notes.
-          </Typography>
-          <Stack spacing={1}>
+        <div className='w-full space-y-2'>
+          <p className='text-base'>
+            Please provide a reason for declining and any additional notes.
+          </p>
+          <div className='space-y-1'>
             {reasons.map((rea) => {
               return (
-                <Stack
-                  direction={'row'}
+                <div
                   key={rea}
+                  className='flex cursor-pointer items-center space-x-1'
                   onClick={() => {
                     setReason(rea);
                   }}
-                  alignItems={'center'}
-                  spacing={1}
                 >
                   <RadioGroupItem
                     value={rea}
                     checked={rea === reason}
                     id={`radio-${rea}`}
                   />
-                  <Typography
-                    variant='body1'
-                    color={'var(--neutral-12)'}
-                    sx={{
-                      cursor: 'pointer',
-                    }}
-                  >
+                  <span className='cursor-pointer text-base text-neutral-800'>
                     {rea}
-                  </Typography>
-                </Stack>
+                  </span>
+                </div>
               );
             })}
-          </Stack>
+          </div>
 
-          <Typography variant='body1'>Additional Notes</Typography>
-          <TextField
-            multiline
+          <Label className='text-base font-medium'>Additional Notes</Label>
+          <UITextArea
             value={notes}
-            minRows={3}
             placeholder='Add additional notes.'
             onChange={(e) => {
               setNotes(e.target.value);
             }}
           />
-        </Stack>
+        </div>
       </UIDialog>
     </>
   );

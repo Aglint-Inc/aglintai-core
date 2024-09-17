@@ -49,7 +49,7 @@ function FilterDepartment() {
     item: ReturnType<typeof useAllDepartments>['data'][0],
   ) => {
     return (
-      <div className='hover:bg-neutral-2 mt-0 flex items-center space-x-1 rounded-[var(--radius-2)] p-[var(--space-2)_var(--space-3)]'>
+      <div className='hover:bg-neutral-100 mt-0 flex items-center space-x-1 rounded-md p-2 px-3'>
         <Checkbox
           checked={!!departments.find((id) => id === item.id)}
           onCheckedChange={() => handleFilterClick(item)}
@@ -82,7 +82,6 @@ function FilterDepartment() {
         slotRightIcon={
           <ChevronDown
             size={16}
-            color={'var(--neutral-2)'}
             className={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
           />
         }
@@ -105,7 +104,6 @@ function FilterDepartment() {
             slotRightIcon={
               <ChevronDown
                 size={16}
-                color={'var(--neutral-2)'}
                 className={open ? 'rotate-180 transform' : ''}
               />
             }

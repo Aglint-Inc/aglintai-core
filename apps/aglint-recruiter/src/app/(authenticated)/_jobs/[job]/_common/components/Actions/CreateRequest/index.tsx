@@ -3,9 +3,9 @@ import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { ScheduleInterviewPop } from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewTab/ScheduleInterviewPop';
+import { RequestOption } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
 
-import { RequestOption } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
-import { ScheduleInterviewPop } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleInterviewPop';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';

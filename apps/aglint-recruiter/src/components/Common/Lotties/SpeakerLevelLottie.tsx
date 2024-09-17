@@ -18,7 +18,7 @@ function SpeakerLevelLottie({ children, speaking }) {
 
         <div className='absolute z-[3]'>{children}</div>
         <div
-          className={`absolute z-[2] rounded-full border border-green-300 bg-[var(--neutral-1)] ${
+          className={`absolute z-[2] rounded-full border border-green-300 bg-neutral-50 ${
             speaking ? 'blink-layer' : ''
           }`}
         ></div>

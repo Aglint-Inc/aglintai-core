@@ -63,7 +63,7 @@ function Instructions({
             interview, including dos and don’ts, and a clear guideline.
           </UITypography>
 
-          <div className='h-[500px] max-w-[800px] overflow-auto rounded-[var(--radius-2)] border border-neutral-600'>
+          <div className='h-[500px] max-w-[800px] overflow-auto rounded-md border border-neutral-600'>
             <TipTapAIEditor
               enablAI={false}
               placeholder={'Instructions'}

@@ -43,7 +43,7 @@ export default function EmailTemplateEditForm({
     : ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
 
   return (
-    <div className='space-y-[var(--space-5)]'>
+    <div className='space-y-5'>
       {showSender && (
         <div className='space-y-2'>
           <UITypography type='small' fontBold='normal'>
@@ -64,7 +64,7 @@ export default function EmailTemplateEditForm({
             </SelectTrigger>
             <SelectContent>
               {options.length === 0 ? (
-                <div className='cursor-default px-2 py-1 italic text-[var(--neutral-9)]'>
+                <div className='cursor-default px-2 py-1 italic text-neutral-500'>
                   No options available
                 </div>
               ) : (
@@ -86,7 +86,7 @@ export default function EmailTemplateEditForm({
           <UITypography type='small' fontBold='normal'>
             Subject
           </UITypography>
-          <div className='mt-2 rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
+          <div className='mt-2 rounded-md border border-neutral-300'>
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
@@ -109,7 +109,7 @@ export default function EmailTemplateEditForm({
         <UITypography type='small' fontBold='normal'>
           Message
         </UITypography>
-        <div className='mt-2 rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
+        <div className='mt-2 rounded-md border border-neutral-300'>
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}

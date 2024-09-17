@@ -212,7 +212,7 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
-            className='w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
         </div>
       ) : null,
@@ -439,7 +439,7 @@ const InterviewersField = ({
   return (
     <MembersAutoComplete
       maxWidth='468px'
-      pillColor='var(--neutral-3)'
+      pillColor='bg-neutral-200'
       renderUsers={options}
       selectedUsers={value.map((m) => ({
         user_id: m.user_id,
