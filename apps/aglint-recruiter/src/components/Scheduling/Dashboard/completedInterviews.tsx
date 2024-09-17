@@ -12,10 +12,7 @@ import { Loader2 } from 'lucide-react';
 import { memo, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import {
-  type SchedulingAnalyticsContextType,
-  useSchedulingAnalytics,
-} from '@/context/SchedulingAnalytics';
+import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
@@ -102,12 +99,18 @@ const GraphContainer = memo(
 
 GraphContainer.displayName = 'GraphContainer';
 
-type BarChartProps = Pick<
-  SchedulingAnalyticsContextType['completed_interviews'],
-  'data'
-> &
-  Pick<SchedulingAnalyticsContextType, 'completedInterviewType'>;
-
+// type BarChartProps = Pick<
+//   SchedulingAnalyticsContextType['completed_interviews'],
+//   'data'
+// > &
+//   Pick<SchedulingAnalyticsContextType, 'completedInterviewType'>;
+type BarChartProps = {
+  data: {
+    date?: string;
+    count?: number;
+  }[];
+  completedInterviewType: string;
+};
 const BarChart = memo(({ data, completedInterviewType }: BarChartProps) => {
   const getLabel = useCallback(
     (label: string) => {

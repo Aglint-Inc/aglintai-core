@@ -170,3 +170,11 @@ const HistoryPills = ({
     </>
   );
 };
+
+export function getInitials(firstName, lastName) {
+  if (!firstName) return '';
+  if (!lastName) {
+    return firstName.substring(0, 2).toUpperCase();
+  }
+  return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
+}

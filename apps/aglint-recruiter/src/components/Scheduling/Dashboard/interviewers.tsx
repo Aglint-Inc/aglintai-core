@@ -14,11 +14,18 @@ const LIMIT = 4;
 
 export const Interviewers = memo(() => {
   const { interviewersType, setInterviewersType } = useSchedulingAnalytics();
+
+  const handleTabChange = (value: string) => {
+    if (value === 'training' || value === 'qualified') {
+      setInterviewersType(value);
+    }
+  };
+
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle>Interviewers</CardTitle>
-        <Tabs value={interviewersType} onValueChange={setInterviewersType}>
+        <Tabs value={interviewersType} onValueChange={handleTabChange}>
           <TabsList>
             <TabsTrigger value='qualified'>Qualified</TabsTrigger>
             <TabsTrigger value='training'>Trainee</TabsTrigger>

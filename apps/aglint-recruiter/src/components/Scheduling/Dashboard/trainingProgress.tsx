@@ -62,10 +62,7 @@ const Containter = () => {
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0)
-    return (
-        <Empty />
-    );
+  if (data.length === 0) return <Empty />;
 
   return <List data={data} />;
 };
@@ -77,7 +74,7 @@ const List = memo(({ data }: Props) => {
         <div key={data.user_id} className='cursor-pointer hover:bg-neutral-200'>
           <div className='flex items-center space-x-4 p-4'>
             <Avatar>
-              <AvatarImage src={data.profile_image} alt={data.name} />
+              <AvatarImage src={''} alt={data.name} />
               <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className='flex-1'>

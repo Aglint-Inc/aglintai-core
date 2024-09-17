@@ -232,7 +232,7 @@ const RecentRescheduleListItem = ({
 
       <div className='flex items-center space-x-4 p-4'>
         <div className='flex-shrink-0'>
-          <Skeleton className='rounded-full' width={40} height={40} />
+          <Skeleton className='h-[40px] w-[40px] rounded-full' />
         </div>
         <div className='min-w-0 flex-1'>
           <Skeleton className='h-4 w-24' />
@@ -254,10 +254,13 @@ const RecentRescheduleListItem = ({
       }}
     >
       <div className='flex-shrink-0'>
-        <Avatar
-          src={detail.image ? detail.image : undefined}
-          alt={detail.name}
-        />
+        <Avatar>
+          <AvatarImage
+            src={detail.image ? detail.image : undefined}
+            alt={detail.name}
+          />
+          <AvatarFallback>{detail.name.charAt(0)}</AvatarFallback>
+        </Avatar>
       </div>
       <div className='min-w-0 flex-1'>
         <p className='truncate text-sm font-medium text-gray-900'>
