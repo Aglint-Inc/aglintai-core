@@ -33,7 +33,7 @@ import {
 import { Loader } from '@/components/Common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
+import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
 // import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {
@@ -111,9 +111,9 @@ function CalendarComp({
   };
 
   return (
-    <div className='p-2 space-y-2'>
+    <div className='space-y-2 p-2'>
       {isLoading ? (
-        <div className='w-[900px] flex items-center justify-center'>
+        <div className='flex w-[900px] items-center justify-center'>
           <Loader />
         </div>
       ) : (

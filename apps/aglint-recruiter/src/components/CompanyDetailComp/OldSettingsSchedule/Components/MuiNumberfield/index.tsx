@@ -1,4 +1,3 @@
-import { FormControl } from '@mui/material';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -47,14 +46,15 @@ function MuiNumberfield({
   );
 
   return (
-    <FormControl sx={{ marginTop: isMarginTop ? '12px !important' : '' }}>
+    <div className={`${isMarginTop ? 'mt-3' : ''}`}>
       <UITextField
         disabled={isDisable}
         value={Number(tempValue).toString()}
         onChange={handlerMinMax}
         type='number'
+        className='w-full'
       />
-    </FormControl>
+    </div>
   );
 }
 

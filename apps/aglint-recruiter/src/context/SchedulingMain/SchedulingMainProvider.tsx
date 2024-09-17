@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {

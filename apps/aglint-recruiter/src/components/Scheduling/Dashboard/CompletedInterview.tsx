@@ -1,4 +1,3 @@
-import { CompletedInterviews } from '@devlink3/CompletedInterviews';
 import { BarChart2 } from 'lucide-react';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -7,6 +6,8 @@ import type { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCompletedInterviewDetails } from '@/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
+import { CompletedInterviewsNew } from './_common/CompletedInterviews';
+
 const CompletedInterviewBarChart = () => {
   const {
     data: completedInterviewsData,
@@ -14,7 +15,7 @@ const CompletedInterviewBarChart = () => {
     setFilterDuration,
   } = useCompletedInterviewDetails();
   return (
-    <CompletedInterviews
+    <CompletedInterviewsNew
       slotGraph={
         <div className='h-[330px]'>
           {Object.keys(completedInterviewsData || {}).length ? (
@@ -37,12 +38,10 @@ const CompletedInterviewBarChart = () => {
           )}
         </div>
       }
-      onClickLastDays={{
-        onClick: () => {
-          setFilterDuration(1);
-        },
+      onClickLastDays={() => {
+        setFilterDuration(1);
       }}
-      onClickLastMonth={{ onClick: () => setFilterDuration(8) }}
+      onClickLastMonth={() => setFilterDuration(8)}
       isLastDaysActive={type == 'week'}
       isLastMonthsActive={type == 'month'}
     />

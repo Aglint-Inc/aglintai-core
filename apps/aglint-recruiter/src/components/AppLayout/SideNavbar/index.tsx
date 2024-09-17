@@ -20,6 +20,7 @@ import {
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
@@ -31,7 +32,7 @@ function SideNavbar() {
   const pathName = router.pathName;
   const { checkPermissions } = useRolesAndPermissions();
   const { toast } = useToast();
-
+  const { isShowFeature } = useAuthDetails();
   useEffect(() => {
     const tempR = navList.find((item) => {
       return pathName?.includes(item.route.split('?')[0]);
@@ -53,16 +54,22 @@ function SideNavbar() {
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,
         )
-        .filter((item) => item.isVisible)
         .map((item) => {
-          return (
+          const isVisible =
+            item.text === 'Analytics'
+              ? isShowFeature('ANALYTICS') && item.isVisible
+              : item.text === 'Workflows'
+                ? isShowFeature('WORKFLOW') && item.isVisible
+                : item.isVisible;
+
+          return isVisible ? (
             <LinkComp
               module={item.text}
               key={item.text}
               path={item.route}
               active={item.active}
             />
-          );
+          ) : null;
         })}
     </div>
   );

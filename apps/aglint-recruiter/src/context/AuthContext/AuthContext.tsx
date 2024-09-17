@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import type { GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
 import ROUTES from '@/utils/routing/routes';
@@ -37,11 +38,12 @@ type Features =
   | 'ROLES'
   | 'REQUESTS'
   | 'WORKFLOW'
-  | 'INTEGRATIONS'
   | 'SCHEDULING'
   | 'ANALYTICS'
   | 'CANDIDATE_PORTAL'
-  |'REPORTS'|'AGENT'|'THEMES'
+  | 'REPORTS'
+  | 'AGENT'
+  | 'THEMES';
 export interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
@@ -227,7 +229,7 @@ export { AuthContext, AuthProvider };
 const AuthLoader = () => {
   return (
     <div className='flex h-screen w-full items-center justify-center'>
-      <Loader2 className='animate-spin' />
+      <Loader />
     </div>
   );
 };

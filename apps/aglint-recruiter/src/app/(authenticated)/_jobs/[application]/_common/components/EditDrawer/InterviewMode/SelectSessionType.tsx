@@ -5,7 +5,10 @@ import {
   PanelIcon,
 } from '@/job/interview-plan/components/sessionForms';
 
-import { setEditSession, useEditSessionDrawerStore } from '../../../stores/editSessionDrawer';
+import {
+  setEditSession,
+  useEditSessionDrawerStore,
+} from '../../../stores/editSessionDrawer';
 
 function SelectSessionType() {
   const { editSession } = useEditSessionDrawerStore((state) => ({

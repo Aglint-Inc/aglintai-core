@@ -1,4 +1,4 @@
-import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
+import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
 
 export type Modes = 'list' | 'calendar';
 export type Types = 'day' | 'week' | 'month';

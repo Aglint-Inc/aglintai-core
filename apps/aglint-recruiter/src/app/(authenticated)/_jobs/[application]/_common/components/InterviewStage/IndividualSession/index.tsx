@@ -3,11 +3,11 @@
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
-import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { type StageWithSessions } from '@/queries/application';
 import { useAllIntegrations } from '@/queries/intergrations';
@@ -19,7 +19,6 @@ import RequestStatusUnconfirmed from '../RequestStatusUnconfirmed';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
-
 
 function ScheduleIndividualCard({
   session,

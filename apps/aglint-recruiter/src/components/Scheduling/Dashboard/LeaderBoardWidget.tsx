@@ -71,7 +71,7 @@ const LeaderBoardWidgetComponent = ({
           }}
           className='cursor-pointer rounded-md'
         >
-          <Link href={`/user/profile/${item.user_id}`}>
+          <Link href={`/user/${item.user_id}`}>
             <Card className='p-4 transition-colors duration-200 hover:bg-neutral-100'>
               <div className='flex items-center space-x-4'>
                 <Avatar>
@@ -85,7 +85,7 @@ const LeaderBoardWidgetComponent = ({
                 </Avatar>
                 <div className='flex-grow'>
                   <Link
-                    href={`/user/profile/${item.user_id}`}
+                    href={`/user/${item.user_id}`}
                     className='text-sm font-medium hover:underline'
                   >
                     {capitalizeAll(

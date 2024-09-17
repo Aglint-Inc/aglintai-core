@@ -29,9 +29,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
         <div
           className='mt-2 block overflow-hidden'
           style={{
-            backgroundColor: isActive
-              ? 'bg-blue-500'
-              : 'bg-blue-500',
+            backgroundColor: isActive ? 'bg-blue-500' : 'bg-blue-500',
             borderRadius: '100px',
             height: '10px',
             width: '10px',

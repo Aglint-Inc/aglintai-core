@@ -1,8 +1,8 @@
+import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
-import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { InterviewMode } from '@/job/interview-plan/components/_common/InterviewMode';
 import { useInterviewModules } from '@/queries/interview-modules';

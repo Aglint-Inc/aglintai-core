@@ -21,7 +21,12 @@ export function InterviewMode({
   return (
     <div className={cn('rounded-lg')}>
       <div className={cn('mb-4')}>
-        <UITypography type='small' variant='p' fontBold='normal' className='pb-1'>
+        <UITypography
+          type='small'
+          variant='p'
+          fontBold='normal'
+          className='pb-1'
+        >
           Interview Mode
         </UITypography>
         <div className={cn('flex flex-col')}>{slotInterviewModePill}</div>
@@ -43,7 +48,7 @@ export function InterviewMode({
           </div>
         )}
         {isPanel && (
-          <div className='flex flex-row mt-2 space-x-2 items-center'> 
+          <div className='mt-2 flex flex-row items-center space-x-2'>
             <div>{'Include'}</div>
             <div>
               {slotMemberCountDropdown ?? (
@@ -53,10 +58,10 @@ export function InterviewMode({
               )}
             </div>
             <div>{'of selected members'}</div>
-         </div>
+          </div>
         )}
         {isIndividual && (
-          <div className={cn('mt-2 text-gray-600 text-sm')}>
+          <div className={cn('mt-2 text-sm text-gray-600')}>
             {'One chosen member will serve as the interviewer.'}
           </div>
         )}
@@ -65,7 +70,9 @@ export function InterviewMode({
         <div className={cn('mb-4')}>
           <div className={cn('flex items-center space-x-2')}>
             <div>{slotToggle}</div>
-            <UITypography fontBold='default' type='small'>{textToggleLabel}</UITypography>
+            <UITypography fontBold='default' type='small'>
+              {textToggleLabel}
+            </UITypography>
           </div>
           {isTraining && (
             <div className={cn('mt-2')}>

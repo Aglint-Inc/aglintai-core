@@ -13,7 +13,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/members';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRequests } from '@/context/RequestsContext';

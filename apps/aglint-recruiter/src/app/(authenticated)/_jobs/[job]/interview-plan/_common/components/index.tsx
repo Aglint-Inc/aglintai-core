@@ -10,8 +10,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Collapse, Tooltip } from '@mui/material';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
@@ -430,20 +435,22 @@ const InterviewPlan = ({
             </div>
           }
           slotInterviewPlanDetail={
-            <Collapse in={expanded} timeout='auto' unmountOnExit>
-              <div className='pt-2'>
-                {sessionsCount ? (
-                  <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-                ) : (
-                  <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
-                    <Kanban className='mb-4 h-4 w-4 text-gray-400' />
-                    <p className='mb-4 text-gray-500'>
-                      No interview plan found
-                    </p>
-                  </div>
-                )}
-              </div>
-            </Collapse>
+            <Collapsible open={expanded}>
+              <CollapsibleContent>
+                <div className='pt-2'>
+                  {sessionsCount ? (
+                    <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
+                  ) : (
+                    <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
+                      <Kanban className='mb-4 h-4 w-4 text-gray-400' />
+                      <p className='mb-4 text-gray-500'>
+                        No interview plan found
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           }
         />
       </OptimisticWrapper>
@@ -600,7 +607,6 @@ const InterviewSession = ({
   });
   drag(drop(ref));
 
-  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
     <div
@@ -620,7 +626,7 @@ const InterviewSession = ({
             textModuleName={
               <div className='flex flex-row gap-3'>
                 <>{session.name}</>
-                <div className='font-normal text-sm text-neutral-500'>
+                <div className='text-sm font-normal text-neutral-500'>
                   {getSessionType(session.session_type)}
                 </div>
               </div>
@@ -646,10 +652,10 @@ const InterviewSession = ({
             slotBreakCard={
               <InterviewBreak
                 value={session.break_duration}
-                handleEdit={(value:string) =>
+                handleEdit={(value: string) =>
                   handleUpdateSession({
                     session_id: session.id,
-                    session: { break_duration: parseInt(value)},
+                    session: { break_duration: parseInt(value) },
                   })
                 }
                 handleDelete={() =>
@@ -665,22 +671,29 @@ const InterviewSession = ({
             isAddCardVisible={hover}
             slotAddScheduleCard={
               <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
-                <Tooltip
-                  open={tooltipOpen}
-                  onOpen={() => setTooltipOpen(true)}
-                  onClose={() => setTooltipOpen(false)}
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        marginTop: '0px !important',
-                        padding: 0,
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        boxShadow: 'none',
-                      },
-                    },
-                  }}
-                  title={
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <div
+                        className={
+                          'relative flex h-6 items-center justify-center'
+                        }
+                      >
+                        <div className='w-full' />
+                        <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
+                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
+                          <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
+                            <Plus size={10} color='white' />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side='top'
+                    align='center'
+                    className='border-none bg-transparent p-0 shadow-none'
+                  >
                     <AddScheduleOption
                       isBreakVisibe={
                         !lastSession && session.break_duration === 0
@@ -688,13 +701,11 @@ const InterviewSession = ({
                       onClickAddSession={{
                         onClick: () => {
                           handleCreate('session');
-                          setTooltipOpen(false);
                         },
                       }}
                       onClickAddDebriefSession={{
                         onClick: () => {
                           handleCreate('debrief');
-                          setTooltipOpen(false);
                         },
                       }}
                       onClickAddBreak={{
@@ -703,27 +714,10 @@ const InterviewSession = ({
                             session: { break_duration: 30 },
                             session_id: session.id,
                           });
-                          setTooltipOpen(false);
                         },
                       }}
                     />
-                  }
-                >
-                  <div>
-                    <div
-                      className={
-                        'relative flex h-6 items-center justify-center'
-                      }
-                    >
-                      <div className='w-full' />
-                      <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
-                        <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
-                        <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
-                          <Plus size={10} color='white' />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  </TooltipContent>
                 </Tooltip>
               </div>
             }
@@ -870,12 +864,15 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <UISelectDropDown fieldSize='small' value={value.toString()} onValueChange={handleEdit} menuOptions={breakDurations.map((item) => (
-          {
+        <UISelectDropDown
+          fieldSize='small'
+          value={value.toString()}
+          onValueChange={handleEdit}
+          menuOptions={breakDurations.map((item) => ({
             name: getBreakLabel(item),
-            value: item.toString()
-          }
-        ))} />
+            value: item.toString(),
+          }))}
+        />
       }
     />
   );

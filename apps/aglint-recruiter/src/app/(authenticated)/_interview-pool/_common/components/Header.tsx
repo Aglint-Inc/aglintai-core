@@ -42,7 +42,7 @@ export const Header = ({
         />
         <div className='flex items-center gap-2'>
           {isFilterApplied ? (
-            <UIButton size='sm' onClick={resetAllFilter}>
+            <UIButton variant='ghost' size='sm' onClick={resetAllFilter}>
               Reset all
             </UIButton>
           ) : (

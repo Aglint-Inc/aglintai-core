@@ -20,7 +20,7 @@ function Requests() {
         requests?.map((req) => (
           <div
             key={req.id}
-            className='cursor-pointer hover:bg-gray-100 px-4 py-2 rounded-lg'
+            className='cursor-pointer rounded-lg px-4 py-2 hover:bg-gray-100'
             onClick={() => {
               router.push(
                 ROUTES['/requests/[id]']({

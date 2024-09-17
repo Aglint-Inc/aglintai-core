@@ -4,7 +4,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { MemberListCardOption } from '@devlink2/MemberListCardOption';
 import { ChevronDown, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,6 +25,7 @@ import {
 import { type PillsTraining } from '../../../../types/type';
 import { getPauseMemberText } from '../../../../utils/utils';
 import CollapseTrainingProgress from './Collapse';
+import { MemberListCardOption } from './MemberListCardOption';
 
 function IndividualRow({
   relation,
@@ -70,7 +70,7 @@ function IndividualRow({
       >
         <td className='p-4'>
           <Link
-            href={ROUTES['/user/profile/[user_id]']({
+            href={ROUTES['/user/[user]']({
               user_id: relation.recruiter_user.user_id,
             })}
           >

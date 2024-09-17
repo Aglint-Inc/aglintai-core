@@ -1,7 +1,7 @@
 import _ from 'lodash';
+import { schedulesSupabase } from 'src/app/_common/utils/schedules-query';
 import { z } from 'zod';
 
-import { schedulesSupabase } from '@/components/Scheduling/schedules-query';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 
 const schedulesPoolSchema = z.object({

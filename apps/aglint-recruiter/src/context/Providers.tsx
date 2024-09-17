@@ -1,7 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { PostHogProvider } from 'posthog-js/react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
-import Theme from '../context/Theme/Theme';
 import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 import AppLayout from '../components/AppLayout';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
@@ -41,18 +40,16 @@ export const PrivateProviders = ({
 export const PublicProviders = ({ children }: PropsWithChildren) => {
   return (
     <Suspense>
-      <Theme>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='light'
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <Toaster />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-          <Toaster />
-        </ThemeProvider>
-      </Theme>
+      <ThemeProvider
+        attribute='class'
+        defaultTheme='light'
+        enableSystem={false}
+        disableTransitionOnChange
+      >
+        <Toaster />
+        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster />
+      </ThemeProvider>
     </Suspense>
   );
 };

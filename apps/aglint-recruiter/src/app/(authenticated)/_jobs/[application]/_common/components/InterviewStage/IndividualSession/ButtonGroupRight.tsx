@@ -6,7 +6,6 @@ import { type StageWithSessions } from '@/queries/application';
 
 import { useEditSession } from '../../InterviewTab/hooks/useEditSession';
 
-
 function ButtonGroupRight({
   currentSession,
   isEditIconVisible,

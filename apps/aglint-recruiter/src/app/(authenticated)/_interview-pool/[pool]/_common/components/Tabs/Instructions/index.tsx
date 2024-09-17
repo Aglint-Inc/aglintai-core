@@ -1,7 +1,7 @@
 import { toast } from '@components/hooks/use-toast';
 import { useState } from 'react';
+import Instructions from 'src/app/_common/components/Instructions';
 
-import Instructions from '@/components/Scheduling/ScheduleDetails/Instructions';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 

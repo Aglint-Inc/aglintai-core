@@ -183,7 +183,7 @@ export default function ViewRequestDetails() {
                   Assigned to:
                 </h3>
                 <Link
-                  href={ROUTES['/user/profile/[user_id]']({
+                  href={ROUTES['/user/[user]']({
                     user_id: selectedMember?.user_id,
                   })}
                   className='flex flex-row items-center gap-2'

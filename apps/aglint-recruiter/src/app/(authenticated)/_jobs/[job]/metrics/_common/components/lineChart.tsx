@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 
-import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
@@ -22,7 +21,12 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 const LineChart: React.FC<{
   experience: { [id: number]: number };
 }> = ({ experience }) => {
-  const matches = useMediaQuery('(min-width:1920px)');
+  const matches = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1920px)').matches;
+    }
+    return false;
+  }, []);
   const { names, counts, pointBackgroundColor } = Object.entries(
     experience,
   ).reduce(
