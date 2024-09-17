@@ -1,5 +1,5 @@
+import { Label } from '@components/ui/label';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { X } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
@@ -98,42 +98,39 @@ function CancelScheduleDialog({
             </UIButton>
           </div>
           <div className='p-4'>
-            <Stack spacing={2} width={'100%'}>
-              <Typography variant='body1'>
+            <div className='w-full space-y-2'>
+              <p className='text-base'>
                 Please provide a reason for canceling and any additional notes.
-              </Typography>
-              <Stack spacing={1}>
+              </p>
+              <div className='space-y-1'>
                 {reasons.map((rea) => {
                   return (
-                    <Stack
-                      direction={'row'}
+                    <div
                       key={rea}
+                      className='flex cursor-pointer items-center space-x-2'
                       onClick={() => {
                         setReason(rea);
                       }}
-                      alignItems={'center'}
-                      spacing={1}
                     >
                       <RadioGroupItem
                         value={rea}
                         checked={rea === reason}
                         id={`radio-${rea}`}
                       />
-                      <Typography
-                        variant='body1'
-                        color={'var(--neutral-12)'}
+                      <span
+                        className='text-base text-neutral-800'
                         sx={{
                           cursor: 'pointer',
                         }}
                       >
                         {rea}
-                      </Typography>
-                    </Stack>
+                      </span>
+                    </div>
                   );
                 })}
-              </Stack>
+              </div>
 
-              <Typography variant='body1'>Additional Notes</Typography>
+              <Label className='text-base font-medium'>Additional Notes</Label>
               <TextField
                 multiline
                 value={notes}
@@ -143,7 +140,7 @@ function CancelScheduleDialog({
                   setNotes(e.target.value);
                 }}
               />
-            </Stack>
+            </div>
           </div>
           <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
             <UIButton

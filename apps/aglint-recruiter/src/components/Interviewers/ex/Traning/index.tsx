@@ -1,4 +1,4 @@
-import { Avatar, Stack } from '@mui/material';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { HardDrive } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -52,24 +52,13 @@ function TrainingProgress() {
       }))
     : [];
 
-  if (isLoading)
-    return (
-      <Stack
-        height={'100%'}
-        width={'100%'}
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
-        <Loader />
-      </Stack>
-    );
+  if (isLoading) return <Loader />;
 
   return (
     <>
       <InterviewerTraining
         slotFilter={
-          <Stack direction={'row'} gap={1}>
+          <div className='flex flex-row gap-1'>
             <Filter
               itemList={JobsList?.length ? JobsList : []}
               title='Jobs'
@@ -88,7 +77,7 @@ function TrainingProgress() {
               setSelectedItems={setLocations}
               selectedItems={selectedLocations}
             />
-          </Stack>
+          </div>
         }
         textDateRange={<></>}
         slotInterviewerTrainnigList={
@@ -101,11 +90,12 @@ function TrainingProgress() {
                   textRole={interviewer.position}
                   slotTrainingProgress={<Pills {...interviewer} />}
                   slotImage={
-                    <Avatar
-                      // src={interviewer.}
-                      style={{ width: '32px', height: '32px' }}
-                      alt={interviewer.name}
-                    />
+                    <Avatar className='h-8 w-8' alt={interviewer.name}>
+                      <AvatarImage src={interviewer.avatar_url} />
+                      <AvatarFallback>
+                        {interviewer.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
                   }
                 />
               </>

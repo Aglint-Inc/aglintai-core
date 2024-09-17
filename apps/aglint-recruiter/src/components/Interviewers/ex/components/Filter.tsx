@@ -1,7 +1,6 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Popover, Stack, Typography } from '@mui/material';
 import { ChevronDown, ChevronUp, Plus } from 'lucide-react';
 import React from 'react';
 
@@ -38,7 +37,7 @@ export const Filter = ({
 
   return (
     <>
-      <Stack minWidth={'100px'}>
+      <div className='flex min-w-[100px] flex-col'>
         <ButtonFilter
           isActive={Boolean(selectedItems.length)}
           isDotVisible={isSingle ? false : Boolean(selectedItems.length)}
@@ -51,12 +50,12 @@ export const Filter = ({
               : title
           }
           slotRightIcon={
-            <Stack>
+            <div className='flex flex-col'>
               {anchorEl ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </Stack>
+            </div>
           }
         />
-      </Stack>
+      </div>
 
       <Popover
         id={id}
@@ -76,24 +75,13 @@ export const Filter = ({
             itemList?.length ? (
               itemList?.map((item, i) => {
                 return (
-                  <Stack
+                  <div
                     key={i}
-                    direction={'row'}
-                    sx={{
-                      alignItems: 'center',
-                      userSelect: 'none',
-                      backgroundColor: isSingle
-                        ? selectedItems === item.value
-                          ? 'var(--neutral-2)'
-                          : ''
-                        : '',
-                      ':hover': { bgcolor: 'var(--neutral-2)' },
-                      borderRadius: 'var(--radius-2)',
-                      cursor: 'pointer',
-                      minWidth: '120px',
-                    }}
-                    spacing={1}
-                    padding={'var(--space-2) var(--space-2)'}
+                    className={`flex min-w-[120px] cursor-pointer select-none flex-col items-center rounded-md p-2 ${
+                      isSingle && selectedItems === item.value
+                        ? 'bg-neutral-100'
+                        : ''
+                    } hover:bg-neutral-100`}
                     onClick={() => {
                       if (isSingle) setSelectedItems(item.value);
                       else
@@ -107,8 +95,10 @@ export const Filter = ({
                     {!isSingle && (
                       <Checkbox checked={selectedItems.includes(item.value)} />
                     )}
-                    <Typography>{capitalizeFirstLetter(item.name)}</Typography>
-                  </Stack>
+                    <span className='text-sm'>
+                      {capitalizeFirstLetter(item.name)}
+                    </span>
+                  </div>
                 );
               })
             ) : (

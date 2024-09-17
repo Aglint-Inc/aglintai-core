@@ -1,8 +1,8 @@
 import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { useToast } from '@components/hooks/use-toast';
+import { Label } from '@components/ui/label';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import { Stack, TextField, Typography } from '@mui/material';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -130,42 +130,39 @@ function DeclineScheduleDialog({
           </>
         }
       >
-        <Stack spacing={2} width={'100%'}>
-          <Typography variant='body1'>
-            Please provide a reason for declineing and any additional notes.
-          </Typography>
-          <Stack spacing={1}>
+        <div className='w-full space-y-2'>
+          <p className='text-base'>
+            Please provide a reason for declining and any additional notes.
+          </p>
+          <div className='space-y-1'>
             {reasons.map((rea) => {
               return (
-                <Stack
-                  direction={'row'}
+                <div
                   key={rea}
+                  className='flex cursor-pointer items-center space-x-1'
                   onClick={() => {
                     setReason(rea);
                   }}
-                  alignItems={'center'}
-                  spacing={1}
                 >
                   <RadioGroupItem
                     value={rea}
                     checked={rea === reason}
                     id={`radio-${rea}`}
                   />
-                  <Typography
-                    variant='body1'
-                    color={'var(--neutral-12)'}
+                  <span
+                    className='text-base text-neutral-800'
                     sx={{
                       cursor: 'pointer',
                     }}
                   >
                     {rea}
-                  </Typography>
-                </Stack>
+                  </span>
+                </div>
               );
             })}
-          </Stack>
+          </div>
 
-          <Typography variant='body1'>Additional Notes</Typography>
+          <Label className='text-base font-medium'>Additional Notes</Label>
           <TextField
             multiline
             value={notes}
@@ -175,7 +172,7 @@ function DeclineScheduleDialog({
               setNotes(e.target.value);
             }}
           />
-        </Stack>
+        </div>
       </UIDialog>
     </>
   );

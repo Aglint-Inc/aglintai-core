@@ -89,8 +89,8 @@ function FilterChip({
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
-            borderRadius: 'var(--radius-4)',
-            borderColor: 'var(--neutral-6)',
+            borderRadius: 'rounded-xl',
+            borderColor: 'border-neutral-300',
             minWidth: '176px',
           },
         }}
@@ -124,11 +124,11 @@ function FilterChip({
                         direction={'row'}
                         sx={{
                           alignItems: 'center',
-                          ':hover': { bgcolor: 'var(--neutral-2)' },
-                          borderRadius: 'var(--radius-2)',
+                          'hover:bg-neutral-100',
+                          borderRadius: 'rounded-md',
+                          className: 'p-2 px-3',
                         }}
                         spacing={1}
-                        padding={'var(--space-2) var(--space-3)'}
                         marginTop={'0px !important'}
                       >
                         <Checkbox

@@ -1,6 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import { Avatar, Stack } from '@mui/material';
 import { HardDrive, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -102,15 +102,9 @@ function InterviewerLoad() {
 
   if (isLoading)
     return (
-      <Stack
-        height={'100%'}
-        width={'100%'}
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
+      <div className='flex h-full flex-col'>
         <Loader />
-      </Stack>
+      </div>
     );
 
   const sortedByCount = interviewers?.length
@@ -132,7 +126,7 @@ function InterviewerLoad() {
           setDayCount((pre) => pre + 1);
         }}
         slotFilter={
-          <Stack direction={'row'} gap={1}>
+          <div className='flex flex-row gap-1'>
             <Filter
               itemList={JobsList?.length ? JobsList : []}
               title='Jobs'
@@ -174,7 +168,7 @@ function InterviewerLoad() {
                 Reset All
               </Button>
             )}
-          </Stack>
+          </div>
         }
         slotInterviewWorkloadList={
           sortedByCount?.length ? (
@@ -186,12 +180,12 @@ function InterviewerLoad() {
               />
             ))
           ) : (
-            <Stack padding={'16px'} bgcolor={'white'}>
+            <div className='bg-white p-4'>
               <GlobalEmpty
                 iconSlot={<HardDrive />}
                 text={'No Data Available'}
               />
-            </Stack>
+            </div>
           )
         }
       />
@@ -235,11 +229,14 @@ const InterviewerCard = ({
           <Avatar
             src={interviewer.profile_image}
             alt={interviewer.first_name}
-            style={{
-              width: '32px',
-              height: '32px',
-            }}
-          />
+            className='h-8 w-8'
+          >
+            <AvatarImage
+              src={interviewer.profile_image}
+              alt={interviewer.first_name}
+            />
+            <AvatarFallback>{interviewer.first_name[0]}</AvatarFallback>
+          </Avatar>
         }
         slotWorkloadGraph={
           <LineGraph lineData={resultArray} maxMeetingCount={maxMeetingCount} />

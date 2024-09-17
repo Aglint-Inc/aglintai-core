@@ -1,7 +1,6 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { ButtonFilter } from '@devlink2/ButtonFilter';
 import { FilterDropdown } from '@devlink2/FilterDropdown';
-import { Popover, Stack, Typography } from '@mui/material';
 import { ChevronDown, Info } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
@@ -41,18 +40,18 @@ function FilterDropDown({
       <ButtonFilter
         isActive={Boolean(selectedItems.length)}
         isDotVisible={Boolean(selectedItems.length)}
-        slotLeftIcon={<Stack>{icon}</Stack>}
+        slotLeftIcon={<div className='flex flex-col'>{icon}</div>}
         onClickStatus={{
           onClick: handleClick,
         }}
         textLabel={title}
         slotRightIcon={
-          <Stack>
+          <div className='flex flex-col'>
             <ChevronDown
               size={20}
               className={`${anchorEl ? 'rotate-180' : ''}`}
             />
-          </Stack>
+          </div>
         }
       />
 
@@ -74,17 +73,9 @@ function FilterDropDown({
             itemList.length ? (
               itemList?.map((item, i) => {
                 return (
-                  <Stack
+                  <div
                     key={i}
-                    direction={'row'}
-                    sx={{
-                      alignItems: 'center',
-                      ':hover': { bgcolor: 'var(--neutral-2)' },
-                      borderRadius: 'var(--radius-2)',
-                      cursor: 'pointer',
-                    }}
-                    spacing={1}
-                    padding={'var(--space-2) var(--space-3)'}
+                    className='flex cursor-pointer flex-col items-center rounded-md p-2 px-3 hover:bg-neutral-100'
                   >
                     <Checkbox
                       checked={selectedItems.includes(item)}
@@ -100,7 +91,8 @@ function FilterDropDown({
                         }
                       }}
                     />
-                    <Typography
+                    <span
+                      className='cursor-pointer text-sm'
                       onClick={() => {
                         if (selectedItems.includes(item)) {
                           setSelectedItems((ele: ItemType[]) =>
@@ -114,8 +106,8 @@ function FilterDropDown({
                       }}
                     >
                       {capitalizeFirstLetter(item)}
-                    </Typography>
-                  </Stack>
+                    </span>
+                  </div>
                 );
               })
             ) : (

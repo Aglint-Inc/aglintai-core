@@ -1,7 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { Stack } from '@mui/material';
 import React from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
