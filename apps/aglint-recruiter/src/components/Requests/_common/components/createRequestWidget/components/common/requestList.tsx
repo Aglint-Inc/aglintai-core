@@ -1,7 +1,7 @@
 import { CommandItem, CommandList } from '@components/ui/command';
 import type {
   InfiniteData,
-  UseSuspenseInfiniteQueryResult,
+  UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { TRPCClientErrorLike } from '@trpc/client';
@@ -15,10 +15,7 @@ import { RequestLayout } from './requestLayout';
 type Props = {
   icon: ReactNode;
   onSelect: (_x: { id: string; label: string }) => void;
-} & UseSuspenseInfiniteQueryResult<
-  InfiniteData<any>,
-  TRPCClientErrorLike<any>
-> &
+} & UseInfiniteQueryResult<InfiniteData<any>, TRPCClientErrorLike<any>> &
   TRPCHookResult;
 const Component = (props: Props) => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = props;

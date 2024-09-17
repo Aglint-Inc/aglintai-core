@@ -1,15 +1,14 @@
 import { Briefcase } from 'lucide-react';
 
 import { useCreateRequestActions, useCreateRequestJobs } from '../../hooks';
-import { RequestBoundaries } from '../common/requestBoundaries';
+import { ErrorFallback, SuspenseFallback } from '../common/requestBoundaries';
 import { RequestList } from '../common/requestList';
 
 export const List = () => {
-  return (
-    <RequestBoundaries>
-      <Content />
-    </RequestBoundaries>
-  );
+  const { status } = useCreateRequestJobs();
+  if (status === 'error') return <ErrorFallback />;
+  if (status === 'pending') return <SuspenseFallback />;
+  return <Content />;
 };
 
 const Content = () => {

@@ -8,10 +8,22 @@ type Props = {
   suspenseFallback?: ReactNode;
 };
 
+export const ErrorFallback = () => (
+  <RequestLayout>
+    <>Oops, something went wrong</>
+  </RequestLayout>
+);
+
+export const SuspenseFallback = () => (
+  <RequestLayout>
+    <>Loading...</>
+  </RequestLayout>
+);
+
 export const RequestBoundaries = ({
   children = <></>,
-  errorFallback = <>Oops, something went wrong</>,
-  suspenseFallback = <>Loading...</>,
+  errorFallback = <ErrorFallback />,
+  suspenseFallback = <SuspenseFallback />,
 }: PropsWithChildren<Props>) => {
   return (
     <ErrorBoundary fallback={<RequestLayout>{errorFallback}</RequestLayout>}>
