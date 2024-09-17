@@ -43,6 +43,7 @@ function Progress() {
               <StageIcon
                 isNotScheduled={isNotScheduled}
                 isCompleted={isCompleted}
+                size={14}
               />
             }
             onClickTab={() => {
