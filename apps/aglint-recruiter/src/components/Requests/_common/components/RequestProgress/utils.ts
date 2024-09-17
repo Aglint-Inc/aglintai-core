@@ -30,6 +30,13 @@ export const createRequestWorkflowAction = async ({
       false,
     );
   } else {
+    supabaseWrap(
+      await supabase
+        .from('workflow')
+        .delete()
+        .eq('request_id', request_id)
+        .eq('trigger', trigger),
+    );
     const [wTrigger] = supabaseWrap(
       await supabase
         .from('workflow')

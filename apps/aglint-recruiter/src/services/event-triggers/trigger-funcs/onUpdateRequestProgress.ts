@@ -1,5 +1,5 @@
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
   dayjsLocal,
@@ -8,24 +8,30 @@ import {
 } from '@aglint/shared-utils';
 import { getWActions } from '../utils/w_actions';
 
-export const onInsertRequestProgress = async ({
+export const onUpdateRequestProgress = async ({
   new_data,
+  old_data,
 }: {
   new_data: DatabaseTable['request_progress'];
+  old_data: DatabaseTable['request_progress'];
 }) => {
   await updateRequestStatus({ new_data });
   if (
     new_data.event_type === 'SELF_SCHEDULE_LINK' &&
-    new_data.status === 'completed'
+    new_data.is_progress_step === false &&
+    new_data.status === 'completed' &&
+    old_data.status !== 'completed'
   ) {
+    console.log('lol run_id', 'lol');
     await selfScheduleReminder({ new_data });
   }
-  if (
-    new_data.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
-    new_data.status === 'completed'
-  ) {
-    await availReminder({ new_data });
-  }
+  // if (
+  //   new_data.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
+  //   new_data.is_progress_step === false &&
+  //   new_data.status === 'completed'
+  // ) {
+  //   await availReminder({ new_data });
+  // }
 };
 
 const updateRequestStatus = async ({
@@ -45,7 +51,7 @@ const updateRequestStatus = async ({
   }
 };
 
-const selfScheduleReminder = async ({
+export const selfScheduleReminder = async ({
   new_data,
 }: {
   new_data: DatabaseTable['request_progress'];
@@ -92,20 +98,25 @@ const selfScheduleReminder = async ({
     await reqProgressLogger({
       is_progress_step: false,
       status: 'completed',
-      meta: {
-        workflow_action_id: schedule_reminder_action.id,
-        event_run_id: run_id,
-        scheduled_time: dayjsLocal()
-          .add(schedule_reminder_action.workflow.interval, 'minutes')
-          .toISOString(),
-      },
+      meta: null,
     });
+    // await reqProgressLogger({
+    //   is_progress_step: true,
+    //   status: 'completed',
+    //   meta: {
+    //     workflow_action_id: schedule_reminder_action.id,
+    //     event_run_id: run_id,
+    //     scheduled_time: dayjsLocal()
+    //       .add(schedule_reminder_action.workflow.interval, 'minutes')
+    //       .toISOString(),
+    //   },
+    // });
   } catch (e) {
     console.error('Failed selfScheduleReminder', e);
   }
 };
 
-const availReminder = async ({
+export const availReminder = async ({
   new_data,
 }: {
   new_data: DatabaseTable['request_progress'];
@@ -152,6 +163,17 @@ const availReminder = async ({
 
     await reqProgressLogger({
       is_progress_step: false,
+      status: 'completed',
+      meta: {
+        workflow_action_id: avail_reminder_action.id,
+        event_run_id: run_id,
+        scheduled_time: dayjsLocal()
+          .add(avail_reminder_action.workflow.interval, 'minutes')
+          .toISOString(),
+      },
+    });
+    await reqProgressLogger({
+      is_progress_step: true,
       status: 'completed',
       meta: {
         workflow_action_id: avail_reminder_action.id,

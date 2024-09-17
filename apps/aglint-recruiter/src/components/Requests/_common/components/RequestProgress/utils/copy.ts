@@ -42,32 +42,7 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'The candidate will confirm the slot.',
     error: 'There was an error with the candidate confirming the slot.',
   },
-  REQ_AVAIL_FIRST_FOLLOWUP: {
-    past: 'The first follow-up for availability was sent.',
-    present: 'Sending the first follow-up for availability.',
-    future: 'The first follow-up for availability will be sent.',
-    error: 'There was an error sending the first follow-up for availability.',
-  },
-  REQ_AVAIL_SECOND_FOLLOWUP: {
-    past: 'The second follow-up for availability was sent.',
-    present: 'Sending the second follow-up for availability.',
-    future: 'The second follow-up for availability will be sent.',
-    error: 'There was an error sending the second follow-up for availability.',
-  },
-  SELF_SCHEDULE_FIRST_FOLLOWUP: {
-    past: 'The first follow-up for self-scheduling was sent.',
-    present: 'Sending the first follow-up for self-scheduling.',
-    future: 'The first follow-up for self-scheduling will be sent.',
-    error:
-      'There was an error sending the first follow-up for self-scheduling.',
-  },
-  SELF_SCHEDULE_SEC_FOLLOWUP: {
-    past: 'The second follow-up for self-scheduling was sent.',
-    present: 'Sending the second follow-up for self-scheduling.',
-    future: 'The second follow-up for self-scheduling will be sent.',
-    error:
-      'There was an error sending the second follow-up for self-scheduling.',
-  },
+
   SELF_SCHEDULE_CANCEL: {
     past: 'The self-scheduling was cancelled.',
     present: 'Cancelling the self-scheduling.',

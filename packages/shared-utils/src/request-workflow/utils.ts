@@ -46,7 +46,7 @@ export const createRequestProgressLogger = ({
     const [rec] = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
-        .upsert({
+        .insert({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
