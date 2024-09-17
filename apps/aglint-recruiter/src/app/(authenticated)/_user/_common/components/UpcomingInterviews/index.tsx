@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { type InterviewerDetailType } from '../hook';
+import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 
-export const RecentInterviews = ({
+export const UpcomingInterview = ({
   interviews,
 }: {
   interviews: InterviewerDetailType['all_meetings'];
@@ -15,7 +15,7 @@ export const RecentInterviews = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Interviews</CardTitle>
+        <CardTitle>Upcoming Interviews</CardTitle>
       </CardHeader>
       <CardContent>
         {interviews?.length > 0 ? (
@@ -53,7 +53,7 @@ export const RecentInterviews = ({
           </div>
         ) : (
           <div className='flex h-[100px] w-full items-center justify-center'>
-            No recent
+            No Upcoming
           </div>
         )}
       </CardContent>

@@ -91,7 +91,7 @@ function Overview() {
               </Avatar>
               <div>
                 <Link
-                  href={`/user/profile/${schedule.organizer.user_id}`}
+                  href={`/user/${schedule.organizer.user_id}`}
                   className='font-medium'
                 >
                   {getFullName(

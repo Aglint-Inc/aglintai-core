@@ -37,7 +37,6 @@ type Features =
   | 'ROLES'
   | 'REQUESTS'
   | 'WORKFLOW'
-  | 'INTEGRATIONS'
   | 'SCHEDULING'
   | 'ANALYTICS'
   | 'CANDIDATE_PORTAL'

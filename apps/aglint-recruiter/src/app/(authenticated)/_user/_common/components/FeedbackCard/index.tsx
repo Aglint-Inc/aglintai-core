@@ -1,7 +1,7 @@
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 
-import { type InterviewerDetailType } from '../hook';
+import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 
 export const Feedback = ({
   feedbacks,

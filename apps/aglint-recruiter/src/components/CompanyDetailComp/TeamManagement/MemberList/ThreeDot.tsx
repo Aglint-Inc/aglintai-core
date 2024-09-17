@@ -29,7 +29,7 @@ export const UserListThreeDot = ({ member }) => {
   const handleAction = (action) => {
     switch (action) {
       case 'edit':
-        router.push(`/user/profile/${member.user_id}?edit_enable=true`);
+        router.push(`/user/${member.user_id}?edit_enable=true`);
         break;
       case 'resend':
         reinviteUser(member.email, recruiterUser.user_id).then(

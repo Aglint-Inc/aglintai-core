@@ -59,7 +59,7 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['manage_interviewers'],
-    active: ['/interviewers', '/user/profile/[user_id]'],
+    active: ['/interviewers', '/user/[user]'],
   },
   {
     text: 'Interview Pools',

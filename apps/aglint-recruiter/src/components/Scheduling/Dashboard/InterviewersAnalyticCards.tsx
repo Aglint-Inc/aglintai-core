@@ -64,7 +64,7 @@ const InterviewersAnalyticCards = () => {
             <div
               key={item.id}
               className='cursor-pointer'
-              onClick={() => router.push(`/user/profile/${item.id}`)}
+              onClick={() => router.push(`/user/${item.id}`)}
             >
               <InterviewersCardList
                 textName={item.name}

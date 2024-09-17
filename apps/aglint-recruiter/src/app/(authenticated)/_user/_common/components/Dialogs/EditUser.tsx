@@ -6,14 +6,14 @@ import EditMember from '@/components/CompanyDetailComp/TeamManagement/EditMember
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 
-import { useInterviewer } from '../hook';
+import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditProfileDialog } from './EditProfileDialog';
 
 export const EditUserDialog = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
-  const user_id = router.query.user_id as string;
+  const user_id = router.query.user as string;
   const { refetch: interviewerDetailsRefetch } = useInterviewer();
 
   const { data: members } = useMemberList();

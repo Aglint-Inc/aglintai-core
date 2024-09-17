@@ -1,24 +1,23 @@
 import React from 'react';
+import Page from 'src/app/(authenticated)/_user/page';
 
 import Seo from '@/components/Common/Seo';
-import InterviewerDetailsPage from '@/components/UserDetail';
 import { InterviewerContextProvider } from '@/context/InterviewerContext/InterviewerContext';
 
-function UserProfilePage() {
+function User() {
   return (
     <>
       <Seo
         title={`Interviewer - Scheduling | Aglint AI`}
         description='AI for People Products'
       />
-      {/* <Interviewer /> */}
-      <InterviewerDetailsPage />
+      <Page />
     </>
   );
 }
 
-UserProfilePage.privateProvider = function privateProvider(page) {
+User.privateProvider = function privateProvider(page) {
   return <InterviewerContextProvider>{page}</InterviewerContextProvider>;
 };
 
-export default UserProfilePage;
+export default User;

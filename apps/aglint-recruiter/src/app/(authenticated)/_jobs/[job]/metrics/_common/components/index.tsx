@@ -286,7 +286,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 //                 </Avatar>
 //                 <div className='flex flex-col'>
 //                   <Link
-//                     href={`/user/profile/${user.user_id}`}
+//                     href={`/user/${user.user_id}`}
 //                     className='font-medium hover:underline'
 //                   >
 //                     {name}
@@ -336,7 +336,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 //             className='flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
 //             onClick={() =>
 //               push(
-//                 `/user/profile/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
+//                 `/user/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
 //               )
 //             }
 //           >
