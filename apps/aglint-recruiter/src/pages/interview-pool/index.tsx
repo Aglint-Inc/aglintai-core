@@ -1,13 +1,9 @@
 import React from 'react';
-
-import InterviewTypesPage from '@/components/InterviewPool';
-
-// import { InterviewTypes } from '@/components/Scheduling/InterviewTypes';
+import InterviewTypesPage from 'src/app/(authenticated)/_interview-pool';
 
 function InterviewTypesPages() {
   return (
     <>
-      {/* <InterviewTypes /> */}
       <InterviewTypesPage />
     </>
   );

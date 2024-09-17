@@ -111,9 +111,9 @@ function CalendarComp({
   };
 
   return (
-    <div className='h-[624px] w-[900px] space-y-2 p-2'>
+    <div className='p-2 space-y-2'>
       {isLoading ? (
-        <div className='flex h-[400px] w-[900px] items-center justify-center'>
+        <div className='w-[900px] flex items-center justify-center'>
           <Loader />
         </div>
       ) : (

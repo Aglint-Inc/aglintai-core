@@ -193,7 +193,7 @@ const resetPassword = {
 
 const interviewTypes = {
   '/interview-pool': () => pageRouteBuilder([ROUTES.app(), 'interview-pool']),
-  '/interview-pool/[type_id]': ({ type_id }: { type_id: string }) =>
+  '/interview-pool/[pool]': ({ type_id }: { type_id: string }) =>
     pageRouteBuilder([interviewTypes['/interview-pool'](), type_id]),
 } as const;
 
