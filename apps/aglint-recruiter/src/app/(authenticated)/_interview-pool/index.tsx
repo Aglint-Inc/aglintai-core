@@ -67,21 +67,20 @@ export default function InterviewTypesPage() {
     : archiveFiltered;
 
   return (
-    <div className='min-h-screen py-8'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div className='container mx-auto w-full'>
+      <div className=''>
         <h1 className='mb-8 text-3xl font-bold text-gray-900'>
           Interview Pool
         </h1>
+        <Header
+          searchText={searchText}
+          setSearchText={setSearchText}
+          isFilterApplied={isFilterApplied}
+          selectedDepartments={selectedDepartments}
+          setDepartments={setDepartments}
+        />
         <Card className='w-full'>
           <CardContent className='p-6'>
-            <Header
-              searchText={searchText}
-              setSearchText={setSearchText}
-              isFilterApplied={isFilterApplied}
-              selectedDepartments={selectedDepartments}
-              setDepartments={setDepartments}
-            />
-
             <Tabs
               value={activeTab}
               onValueChange={handleTabChange}

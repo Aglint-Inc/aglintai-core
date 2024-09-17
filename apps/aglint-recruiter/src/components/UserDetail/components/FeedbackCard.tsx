@@ -1,5 +1,6 @@
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { MessageSquareOff } from 'lucide-react';
 
 import { type InterviewerDetailType } from '../hook';
 
@@ -11,7 +12,7 @@ export const Feedback = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Interview Feedback Provided</CardTitle>
+        <CardTitle className='text-xl'>Interview Feedback Provided</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>
@@ -29,8 +30,9 @@ export const Feedback = ({
               </div>
             ))
           ) : (
-            <div className='flex h-[100px] w-full items-center justify-center'>
-              No feedback available
+            <div className='flex h-[100px] w-full flex-col items-center justify-center space-y-2 text-gray-500'>
+              <MessageSquareOff className='h-8 w-8' />
+              <p>No feedback available</p>
             </div>
           )}
         </div>

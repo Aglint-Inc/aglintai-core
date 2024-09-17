@@ -11,7 +11,7 @@ export const KeyMatrics = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Key Metrics</CardTitle>
+        <CardTitle className='text-xl'>Key Metrics</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>

@@ -52,9 +52,7 @@ export const Header = ({
 
   return (
     <>
-      <h1 className='mb-8 text-3xl font-bold text-gray-900'>
-        Interviewer Management
-      </h1>
+      <h1 className='mb-8 text-3xl font-bold text-gray-900'>Interviewers</h1>
       <div className='mb-6 flex items-center justify-between'>
         <UITextField
           placeholder='Search interviewers...'

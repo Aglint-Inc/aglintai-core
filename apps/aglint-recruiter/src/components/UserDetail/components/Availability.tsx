@@ -8,7 +8,9 @@ export const Availability = ({ interviewer }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Availability & AI Instructions</CardTitle>
+        <CardTitle className='text-xl'>
+          Availability & AI Instructions
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>

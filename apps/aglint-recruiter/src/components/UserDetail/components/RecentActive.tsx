@@ -5,7 +5,7 @@ export const RecentActivity = ({ interviewer }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Activity</CardTitle>
+        <CardTitle className='text-xl'>Recent Activity</CardTitle>
       </CardHeader>
       <CardContent>
         <ul className='space-y-4'>
