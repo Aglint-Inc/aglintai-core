@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
 import { UISwitch } from '@/components/Common/UISwitch';
@@ -110,7 +109,7 @@ function ToogleList() {
               <SchedulerConflictCard
                 key={index}
                 slotCountText={
-                  <Stack direction={'row'} gap={1} alignItems={'center'}>
+                  <div className='flex items-center space-x-2'>
                     <p
                       className={`text-lg font-semibold ${enabled ? `text-${color}` : `text-${disableColor}`}`}
                     >
@@ -119,7 +118,7 @@ function ToogleList() {
                     <p className={`text-${enabled ? color : disableColor}`}>
                       {heading}
                     </p>
-                  </Stack>
+                  </div>
                 }
                 slotToggleWithText={
                   <div className='flex items-center space-x-2'>

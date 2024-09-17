@@ -1,4 +1,8 @@
-import { Popover } from '@mui/material';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import { isNumber } from 'lodash';
 import { useState } from 'react';
 
@@ -40,35 +44,26 @@ const FilterInput = ({
   return (
     <>
       <div style={{ position: 'relative' }}>
-        <Popover
-          disableAutoFocus
-          id='filter-input'
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClosePop}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          transformOrigin={{ vertical: -14, horizontal: 0 }}
-          slotProps={{
-            paper: {
-              style: {
-                border: 'none',
-                borderRadius: 'rounded-xl',
-                boxShadow: 'shadow-md',
-              },
-            },
-          }}
-        >
-          {String(input).length > 0 && (
-            <AddPreference
-              textPreference={input}
-              onClickAddPreference={{
-                onClick: handleSubmit,
-              }}
-            />
-          )}
+        <Popover>
+          <PopoverTrigger asChild>
+            <div />{' '}
+            {/* Empty div as trigger, actual trigger is the UITextField */}
+          </PopoverTrigger>
+          <PopoverContent
+            className='rounded-xl p-0 shadow-md'
+            align='start'
+            side='bottom'
+            sideOffset={5}
+          >
+            {String(input).length > 0 && (
+              <AddPreference
+                textPreference={input}
+                onClickAddPreference={{
+                  onClick: handleSubmit,
+                }}
+              />
+            )}
+          </PopoverContent>
         </Popover>
         <UITextField
           value={input ?? ''}
