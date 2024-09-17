@@ -139,19 +139,19 @@ export default function ReorderableInterviewPlan({
   }, [data]);
 
   if (isLoading) {
-    return <><Skeleton style={{
-      width: '100%',
-      height: '20px',
-    }}/><Skeleton style={{
-      width: '100%',
-      height: '20px',
-    }}/><Skeleton style={{
-      width: '100%',
-      height: '20px',
-    }}/><Skeleton style={{
-      width: '100%',
-      height: '20px',
-    }}/></>;
+    return (
+      <>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Skeleton
+            key={index}
+            style={{
+              width: '100%',
+              height: '20px',
+            }}
+          />
+        ))}
+      </>
+    );
   }
 
   const handleEdit = (id: number) => {
