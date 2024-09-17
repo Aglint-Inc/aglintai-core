@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
-import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
@@ -11,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
   Tooltip,
   TooltipContent,
@@ -146,43 +144,30 @@ const InterviewPlanPage = () => {
                   </p>
                 </div>
               </div>
-              <Tabs defaultValue='internal'>
-                <TabsList>
-                  <TabsTrigger value='internal'>Internal</TabsTrigger>
-                  <TabsTrigger value='candidate'>Candidate</TabsTrigger>
-                </TabsList>
-                <TabsContent value='internal'>
-                  <div className='my-8 mb-10 max-w-2xl space-y-4'>
-                    {data?.length ? (
-                      data.map((plan) => (
-                        <InterviewPlan
-                          key={plan.id}
-                          plan_id={plan.id}
-                          handleCreate={handleCreate}
-                          handleEdit={handleEdit}
-                        />
-                      ))
-                    ) : (
-                      <p className='text-gray-600'>
-                        Create your interview stages for the job to ensure a
-                        structured evaluation process. Add different interview
-                        types such as &quot;Initial Screening&quot; or
-                        &quot;Technical Interview.&quot; Use this template each
-                        time you schedule interviews for candidates to maintain
-                        consistency and efficiency.
-                      </p>
-                    )}
 
-                    <AddStageComponent />
-                  </div>
-                </TabsContent>
-                <TabsContent value='candidate'>
-                  <ReorderableInterviewPlan
-                    jobId={data[0]?.job_id}
-                    applicationId={null}
-                  />
-                </TabsContent>
-              </Tabs>
+              <div className='my-4 mb-10 max-w-2xl space-y-4'>
+                {data?.length ? (
+                  data.map((plan) => (
+                    <InterviewPlan
+                      key={plan.id}
+                      plan_id={plan.id}
+                      handleCreate={handleCreate}
+                      handleEdit={handleEdit}
+                    />
+                  ))
+                ) : (
+                  <p className='text-gray-600'>
+                    Create your interview stages for the job to ensure a
+                    structured evaluation process. Add different interview types
+                    such as &quot;Initial Screening&quot; or &quot;Technical
+                    Interview.&quot; Use this template each time you schedule
+                    interviews for candidates to maintain consistency and
+                    efficiency.
+                  </p>
+                )}
+
+                <AddStageComponent />
+              </div>
             </div>
           </div>
         </div>
@@ -606,7 +591,6 @@ const InterviewSession = ({
     }),
   });
   drag(drop(ref));
-
 
   return (
     <div
