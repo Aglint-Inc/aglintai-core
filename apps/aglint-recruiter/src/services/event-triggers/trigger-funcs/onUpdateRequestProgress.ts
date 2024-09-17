@@ -1,11 +1,13 @@
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
   dayjsLocal,
-  ProgressLoggerType,
+  type ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
+
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
 import { getWActions } from '../utils/w_actions';
 
 export const onUpdateRequestProgress = async ({
@@ -22,16 +24,15 @@ export const onUpdateRequestProgress = async ({
     new_data.status === 'completed' &&
     old_data.status !== 'completed'
   ) {
-    console.log('lol run_id', 'lol');
-    // await selfScheduleReminder({ new_data });
+    await selfScheduleReminder({ new_data });
   }
-  // if (
-  //   new_data.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
-  //   new_data.is_progress_step === false &&
-  //   new_data.status === 'completed'
-  // ) {
-  //   await availReminder({ new_data });
-  // }
+  if (
+    new_data.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
+    new_data.is_progress_step === false &&
+    new_data.status === 'completed'
+  ) {
+    await availReminder({ new_data });
+  }
 };
 
 const updateRequestStatus = async ({
@@ -100,17 +101,17 @@ export const selfScheduleReminder = async ({
       status: 'completed',
       meta: null,
     });
-    // await reqProgressLogger({
-    //   is_progress_step: true,
-    //   status: 'completed',
-    //   meta: {
-    //     workflow_action_id: schedule_reminder_action.id,
-    //     event_run_id: run_id,
-    //     scheduled_time: dayjsLocal()
-    //       .add(schedule_reminder_action.workflow.interval, 'minutes')
-    //       .toISOString(),
-    //   },
-    // });
+    await reqProgressLogger({
+      is_progress_step: true,
+      status: 'completed',
+      meta: {
+        workflow_action_id: schedule_reminder_action.id,
+        event_run_id: run_id,
+        scheduled_time: dayjsLocal()
+          .add(schedule_reminder_action.workflow.interval, 'minutes')
+          .toISOString(),
+      },
+    });
   } catch (e) {
     console.error('Failed selfScheduleReminder', e);
   }

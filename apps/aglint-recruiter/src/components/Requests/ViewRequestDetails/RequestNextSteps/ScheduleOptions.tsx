@@ -28,7 +28,6 @@ const ScheduleOptions = () => {
   const addedWorkflow = request_workflow.data.find(
     (w) => w.trigger === 'onRequestSchedule',
   );
-  console.log('nqjwk', request_workflow.data);
   let scheduleWorkflowAction: DatabaseTable['workflow_action'] = null;
   if (addedWorkflow && addedWorkflow.workflow_action.length > 0) {
     scheduleWorkflowAction = addedWorkflow.workflow_action[0];

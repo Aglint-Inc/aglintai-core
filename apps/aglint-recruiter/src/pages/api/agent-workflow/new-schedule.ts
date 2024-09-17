@@ -28,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       request_id,
     } = v.parse(candidate_new_schedule_schema, req.body);
-    console.log('fnewkjfnewkjn');
     const eventAction = apiTargetToEvents[target_api];
 
     const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
