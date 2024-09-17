@@ -10,7 +10,7 @@ import {
 import React from 'react';
 
 export function ApplicantInfoBox({
-  onClickLinkedIn = {},
+  onClickLinkedIn = () => {},
   isLinkedInVisible = true,
   textDepartment = 'Engineering',
   textLocation = 'San Francisco, California',
@@ -44,7 +44,7 @@ export function ApplicantInfoBox({
       {isLinkedInVisible && (
         <div
           className='col-span-1 flex cursor-pointer items-center'
-          {...onClickLinkedIn}
+          onClick={onClickLinkedIn}
         >
           <LinkedinIcon className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
@@ -62,13 +62,7 @@ export function ApplicantInfoBox({
           <dd className='truncate'>{textLocation}</dd>
         </div>
       </div>
-      {/* <div className='flex items-center col-span-2'>
-        <Globe className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
-        <div>
-          <dt className='sr-only'>Time Zone</dt>
-          <dd className='truncate'>{textTimeZone}</dd>
-        </div>
-      </div> */}
+     
 
       {/* Contact Information */}
       <div className='col-span-2 flex items-center'>
