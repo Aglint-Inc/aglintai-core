@@ -1,5 +1,4 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
 import {
   BarElement,
   CategoryScale,
@@ -16,12 +15,16 @@ import {
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 
+import { NewInterviewDetail } from './_common/NewInterviewDetail';
+
 export const DeclineRequests = memo(() => (
-  <NewInterviewDetail
-    textHeading={'Decline Requests'}
-    slotDropdownButton={<></>}
-    slotInterviewDetailPill={<Container />}
-  />
+  <>
+    <NewInterviewDetail
+      textHeading={'Decline Requests'}
+      slotDropdownButton={<></>}
+      slotInterviewDetailPill={<Container />}
+    />
+  </>
 ));
 DeclineRequests.displayName = 'DeclineRequests';
 

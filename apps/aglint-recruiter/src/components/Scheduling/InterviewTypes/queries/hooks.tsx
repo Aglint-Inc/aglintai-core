@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import {
   fetchModuleSchedules,
   fetchProgress,
-} from '../DetailPage/_common/utils/utils';
+} from '../../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import { QueryKeysInteviewModules } from './type';
 
 export const useAllSchedulesByModuleId = ({

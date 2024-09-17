@@ -1,4 +1,3 @@
-import { SchedulerConflictCard } from '@devlink3/SchedulerConflictCard';
 import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -8,6 +7,7 @@ import {
   setLocalFilters,
   useSelfSchedulingFlowStore,
 } from '../../../store/store';
+import { SchedulerConflictCard } from './SchedulerConflictCard';
 import { filterSchedulingOptionsArray } from './utils';
 
 type AvailabilityType =
@@ -93,8 +93,8 @@ function ToogleList() {
     },
   ];
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-2 gap-2">
+    <div className='flex flex-col'>
+      <div className='grid grid-cols-2 gap-2'>
         {availabilityCards.map((availableData, index) => {
           const {
             color,

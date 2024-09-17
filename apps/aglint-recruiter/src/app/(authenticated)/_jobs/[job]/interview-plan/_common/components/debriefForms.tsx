@@ -212,7 +212,7 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
-            className='w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
         </div>
       ) : null,

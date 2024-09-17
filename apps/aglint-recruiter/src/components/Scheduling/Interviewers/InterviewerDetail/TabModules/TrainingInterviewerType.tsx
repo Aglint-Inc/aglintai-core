@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import CollapseTrainingProgress from 'src/app/(authenticated)/_interview-pool/[pool]/_common/components/Tabs/Training/IndividualRow/Collapse';
+import { type PillsTraining } from 'src/app/(authenticated)/_interview-pool/[pool]/_common/types/type';
 
-import CollapseTrainingProgress from '@/components/Scheduling/InterviewTypes/DetailPage/_common/components/Tabs/Training/IndividualRow/Collapse';
-import { type PillsTraining } from '@/components/Scheduling/InterviewTypes/DetailPage/_common/types/type';
 import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 

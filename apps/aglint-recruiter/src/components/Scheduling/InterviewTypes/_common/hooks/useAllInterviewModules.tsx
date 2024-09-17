@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
-import { fetchInterviewModules } from '../../DetailPage/_common/utils/utils';
+import { fetchInterviewModules } from '../../../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import { QueryKeysInteviewModules } from '../../queries/type';
 
 export const useAllInterviewModules = () => {

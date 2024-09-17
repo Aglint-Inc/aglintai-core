@@ -1,14 +1,12 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { TimeRangeSelector } from '@devlink3/TimeRangeSelector';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
 import React from 'react';
@@ -21,6 +19,7 @@ import {
   setLocalFilters,
   useSelfSchedulingFlowStore,
 } from '../../../store/store';
+import { TimeRangeSelector } from './TimeRangeSelector';
 
 function DateRangeField() {
   const localFilters = useSelfSchedulingFlowStore(
@@ -107,7 +106,6 @@ function DateRangeField() {
             </div>
           )
         }
-        slotCheckbox={<Checkbox />}
         isMultiDay={false}
         slotTimeinputs={
           <div className='flex flex-row space-x-2'>

@@ -1,7 +1,7 @@
 import type { PauseJson } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 
-import type { PauseType } from './DetailPage/_common/types/type';
+import type { PauseType } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/types/type';
 
 export const optionsPause: {
   label: string;

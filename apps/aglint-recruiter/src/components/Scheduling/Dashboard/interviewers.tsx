@@ -2,13 +2,14 @@ import { Skeleton } from '@components/ui/skeleton';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
-import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 import { capitalizeAll } from '@/utils/text/textUtils';
+
+import { InterviewersCardList } from './_common/InterviewersCardList';
+import { InterviewersDash } from './_common/InterviewersDash';
 
 const LIMIT = 4;
 
