@@ -2,103 +2,17 @@ import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { ChevronDown, ChevronUp, Repeat, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import React from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-export type dynamicOptionsTypes =
-  | string[]
-  | { id: string; label: string }[]
-  | { header: string; options: { id: string; label: string }[] }[]
-  | {
-      header: string;
-      path: string[];
-      options: { id: string; label: string }[];
-    }[];
-
-interface FilterButtonInterface {
-  isActive?: boolean;
-  isDotVisible: boolean;
-  textLabel: string;
-  slotLeftIcon?: React.ReactNode;
-  slotRightIcon?: React.ReactNode;
-  options: React.ReactNode;
-  showCaret?: boolean;
-  caretPosition?: 'left' | 'right';
-  resetFilter?: () => void;
-  onClick?: () => void;
-  type?: 'popover' | 'button';
-}
-
-export default function UIFilter({
-  textLabel,
-  isActive = false,
-  isDotVisible,
-  slotLeftIcon,
-  slotRightIcon,
-  options,
-  showCaret = false,
-  caretPosition = 'right',
-  resetFilter,
-  onClick,
-  type = 'popover',
-}: FilterButtonInterface) {
-  const [caret, setCaret] = React.useState<boolean>(false);
-  const Caret = showCaret ? (
-    caret ? (
-      <ChevronUp size={16} />
-    ) : (
-      <ChevronDown size={16} />
-    )
-  ) : (
-    <></>
-  );
-  return (
-    <Popover
-      onOpenChange={() => {
-        showCaret && setCaret(!caret);
-      }}
-    >
-      <PopoverTrigger asChild>
-        <Button variant='outline' className='relative' onClick={onClick}>
-          <div className='row flex items-center gap-2'>
-            {caretPosition === 'left' && Caret}
-            {slotLeftIcon ? slotLeftIcon : false}
-            {textLabel}
-            {slotRightIcon ? slotRightIcon : false}
-            {caretPosition === 'right' && Caret}
-          </div>
-          {isDotVisible && isActive && (
-            <span className='absolute right-1 top-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white' />
-          )}
-        </Button>
-      </PopoverTrigger>
-      {type == 'popover' && (
-        <PopoverContent className='w-max p-0'>
-          {options}
-          <Button
-            variant='ghost'
-            className='w-full justify-start gap-1 hover:rounded-t-none'
-            onClick={resetFilter}
-          >
-            <Repeat size={15} /> <p>Reset</p>
-          </Button>
-        </PopoverContent>
-      )}
-    </Popover>
-  );
-}
+import { type dynamicOptionsTypes } from '../sharedTypes';
 
 type FilterOptionsType = {
   selectedItems: string[];
-  searchFilter: boolean;
+  filterSearch?: boolean;
   searchPlaceholder?: string;
   multiSelect?: boolean;
   separator?: boolean;
@@ -115,7 +29,7 @@ type FilterOptionsType = {
   | {
       // eslint-disable-next-line no-unused-vars
       setSelectedItems: (options: string, path: string[]) => void;
-      nested: true;
+      nested?: true;
       optionList: {
         header: string;
         path: string[];
@@ -131,7 +45,7 @@ type FilterOptionsType = {
 export function FilterOptions({
   selectedItems,
   optionList,
-  searchFilter,
+  filterSearch = false,
   searchPlaceholder,
   setSelectedItems,
   nested = false,
@@ -183,7 +97,7 @@ export function FilterOptions({
       ? filteredOptions
           ?.map((optionList) => {
             let filteredOp = optionList.options;
-            if (searchFilter) {
+            if (filterSearch) {
               filteredOp = optionList.options.filter((item) =>
                 item.label.toLowerCase().includes(search.toLowerCase()),
               );
@@ -194,12 +108,12 @@ export function FilterOptions({
       : [];
   return (
     <div
-      className={`flex max-h-[280px] min-w-56 flex-col gap-1 ${separator && 'border-l'} border-b`}
+      className={`max-h-[280px] flex flex-col gap-1 min-w-56 ${separator && 'border-l'} border-b`}
     >
       {sectionHeading && (
-        <div className='flex flex-row items-center justify-between border-b px-2 py-1'>
-          <Label className='text-base font-bold'>{sectionHeading}</Label>
-          <div className='row flex items-center'>
+        <div className='px-2 py-1  border-b flex flex-row justify-between items-center'>
+          <Label className='font-bold text-base'>{sectionHeading}</Label>
+          <div className='flex row items-center'>
             <Button
               variant='ghost'
               className='px-3'
@@ -214,10 +128,10 @@ export function FilterOptions({
           </div>
         </div>
       )}
-      {Boolean(searchFilter) && (
-        <div className='w-full p-1'>
+      {Boolean(filterSearch) && (
+        <div className='w-full p-1 '>
           <Input
-            className='w-full rounded border p-1 pl-2 transition-colors duration-200'
+            className='w-full border rounded p-1 pl-2 transition-colors duration-200'
             type='text'
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -225,7 +139,7 @@ export function FilterOptions({
           />
         </div>
       )}
-      <div className='max-h-[300px] overflow-auto p-1'>
+      <div className='max-h-[300px] p-1 overflow-auto'>
         {filtered.length > 0 ? (
           filtered.map((optionList, i) => (
             <div key={`OPS_${optionList.header}${i}`}>
@@ -245,7 +159,7 @@ export function FilterOptions({
             </div>
           ))
         ) : (
-          <div className='flex h-[150px] flex-col items-center justify-center'>
+          <div className='flex flex-col items-center justify-center h-[150px]'>
             <p className='text-sm text-gray-500'>
               No {sectionHeading || 'Options'} found
             </p>
@@ -278,7 +192,7 @@ function FilterSubOptions({
     return filtered.map((option) => (
       <div
         key={option.id}
-        className='group flex cursor-pointer items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted'
+        className='flex items-center space-x-2 group hover:bg-muted p-2 rounded-md transition-colors cursor-pointer'
         onClick={(e) => {
           e.preventDefault();
           setSelectedItems(option.id, path);
@@ -299,7 +213,7 @@ function FilterSubOptions({
         />
         <label
           htmlFor='terms'
-          className='cursor-pointer text-sm font-medium leading-none group-hover:text-primary peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 group-hover:text-primary cursor-pointer'
         >
           {option.label}
         </label>
@@ -310,13 +224,13 @@ function FilterSubOptions({
       <RadioGroup
         value={selectedItems[0]}
         onValueChange={(id) => setSelectedItems(id, path)}
-        className='group flex flex-col gap-2'
+        className='flex group flex-col gap-2 '
       >
         {filtered.map((option) => {
           return (
             <div
               key={option.id}
-              className='flex w-full items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted'
+              className='flex items-center space-x-2 hover:bg-muted p-2 rounded-md transition-colors w-full'
             >
               <RadioGroupItem value={option.id} id={option.id} />
               <Label htmlFor={option.id} className='w-full cursor-pointer'>

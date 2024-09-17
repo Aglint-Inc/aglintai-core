@@ -4,7 +4,7 @@ import FilterHeader from '@/components/Common/FilterHeader';
 import {
   arrayToNestedObject,
   nestedObjectToArray,
-} from '@/components/Common/FilterHeader/utils';
+} from '@/components/Common/FilterHeader/filters/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useApplications, useJob } from '@/job/hooks';

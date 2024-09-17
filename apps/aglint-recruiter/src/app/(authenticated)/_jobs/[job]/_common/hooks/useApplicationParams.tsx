@@ -3,7 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import type { nestedObjectToArray } from '@/components/Common/FilterHeader/utils';
+import type { nestedObjectToArray } from '@/components/Common/FilterHeader/filters/utils';
 import ROUTES from '@/utils/routing/routes';
 
 import { useApplicationsActions } from './useApplicationsActions';
