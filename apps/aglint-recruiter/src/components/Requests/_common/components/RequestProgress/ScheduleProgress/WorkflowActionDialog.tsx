@@ -39,6 +39,7 @@ const WorkflowActionDialog = () => {
     companyEmailTemplatesMp,
     triggerDetails,
     setShowEditDialog,
+    setTriggerDetails,
   } = useRequestProgressProvider();
 
   const {
@@ -165,13 +166,31 @@ const WorkflowActionDialog = () => {
               handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
-            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.interval].map(
+            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.trigger].map(
               (action) => ({
                 name: action.name,
                 value: action.value.target_api,
               }),
             )}
           />
+          {(triggerDetails.trigger === 'sendAvailReqReminder' ||
+            triggerDetails.trigger === 'selfScheduleReminder') && (
+            <UISelectDropDown
+              label='Remind After'
+              value={String(triggerDetails.interval)}
+              onValueChange={(value) => {
+                setTriggerDetails({
+                  trigger: triggerDetails.trigger,
+                  interval: Number(value),
+                });
+              }}
+              menuOptions={[
+                { name: '1 day', value: String(24 * 60) },
+                { name: '2 day', value: String(48 * 60) },
+                { name: '3 day', value: String(72 * 60) },
+              ]}
+            />
+          )}
           <TargetAPIBody action={selectedActionsDetails} />
         </div>
       </CardContent>

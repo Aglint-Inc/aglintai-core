@@ -115,7 +115,7 @@ const AvailabilityFlowMenus = ({
                   onClick={() => {
                     setTriggerDetails({
                       trigger: 'sendAvailReqReminder',
-                      interval: 0,
+                      interval: 24 * 60,
                     });
                     setShowEditDialog(true);
                   }}

@@ -85,7 +85,12 @@ const EventNode = ({
                   size='sm'
                   onClick={() => {
                     let interval = 0;
-                    if (defaultTriggerDurations[currEventTrigger]) {
+                    const trigger_info = request_workflow.data.find(
+                      (rw) => rw.trigger === currEventTrigger,
+                    );
+                    if (trigger_info) {
+                      interval = trigger_info.interval;
+                    } else if (defaultTriggerDurations[currEventTrigger]) {
                       interval = defaultTriggerDurations[currEventTrigger];
                     }
                     setTriggerDetails({
