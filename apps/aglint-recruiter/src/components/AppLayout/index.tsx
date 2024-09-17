@@ -7,9 +7,7 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import defaultCompanyLogo from '@public/images/default-company-logo.svg';
-import defaultProfileImage from '@public/images/default-user-profile.svg';
-import { useQueryClient } from '@tanstack/react-query';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -20,27 +18,19 @@ import NotFoundPage from '@/pages/404';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 
-// import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
+import defaultProfileImage from '../../../public/images/default-user-profile.svg';
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
 
-// Add this constant at the top of the file, outside the component
-
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
-  const { handleLogout } = useAuthDetails();
-  const { recruiter, recruiterUser, isShowFeature } = useAuthDetails();
-  const queryClient = useQueryClient();
+  const { recruiter, recruiterUser, isShowFeature, handleLogout } =
+    useAuthDetails();
   const router = useRouterPro();
   const logo = recruiter?.logo;
   const name = recruiter?.name;
 
   const { data: userDetails } = useImrQuery({ user_id: recruiterUser.user_id });
-
-  const handleSignOut = () => {
-    queryClient.removeQueries();
-    handleLogout();
-  };
 
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
@@ -72,6 +62,7 @@ export default function AppLayout({ children, appRouter = false }) {
                 Settings
               </Link>
             </Button>
+
             <Button variant='link' asChild>
               <Link
                 href={
@@ -80,17 +71,22 @@ export default function AppLayout({ children, appRouter = false }) {
                   }) + '?profile=true'
                 }
               >
-                <Image
-                  src={userDetails?.profile_image || defaultProfileImage}
-                  alt={recruiterUser?.first_name || 'User'}
-                  width={32}
-                  height={32}
-                  className='rounded-full'
-                  style={{ objectFit: 'cover' }}
-                />
+                {recruiterUser?.profile_image ? (
+                  <Image
+                    src={recruiterUser?.profile_image}
+                    alt={recruiterUser?.first_name || 'User'}
+                    width={32}
+                    height={32}
+                    className='rounded-full'
+                    style={{ objectFit: 'cover' }}
+                  />
+                ) : (
+                  <User className='h-5 w-5' strokeWidth={1.5} />
+                )}
               </Link>
             </Button>
-            <Button variant='link' onClick={handleSignOut} asChild>
+
+            <Button variant='link' onClick={handleLogout} asChild>
               <Link href='#'>
                 <LogOut className='mr-2 h-5 w-5' strokeWidth={1.5} />
               </Link>
@@ -145,7 +141,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='outline' onClick={handleSignOut}>
+                  <Button variant='outline' onClick={handleLogout}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
