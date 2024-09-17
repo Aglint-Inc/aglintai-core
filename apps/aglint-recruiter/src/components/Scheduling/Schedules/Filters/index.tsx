@@ -1,6 +1,5 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
 import { useState } from 'react';
 
 import FilterHeader from '@/components/Common/FilterHeader';
@@ -62,7 +61,7 @@ function Filters() {
 
   const { jobs } = useJobs();
   return (
-    <Stack direction={'row'} spacing={'var(--space-3)'}>
+    <div className='flex flex-row space-x-3'>
       <FilterHeader
         search={{
           value: searchText,
@@ -168,7 +167,7 @@ function Filters() {
           },
         ]}
       />
-    </Stack>
+    </div>
   );
 }
 

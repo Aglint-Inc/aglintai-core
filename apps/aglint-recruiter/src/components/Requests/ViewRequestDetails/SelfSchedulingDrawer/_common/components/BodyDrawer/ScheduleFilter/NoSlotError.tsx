@@ -1,5 +1,3 @@
-import { Stack } from '@mui/material';
-
 import { UIAlert } from '@/components/Common/UIAlert';
 
 import { useSelfSchedulingFlowStore } from '../../../store/store';
@@ -20,7 +18,7 @@ function NoSlotError({
   }));
 
   return (
-    <Stack padding={'var(--space-4)'}>
+    <div className='p-4'>
       <UIAlert
         color={'error'}
         title={'No available times found with the current settings.'}
@@ -32,7 +30,7 @@ function NoSlotError({
                       Change the interviewer by editing the interview plan.
                       Extend the date range for the interviewer.`}
       />
-    </Stack>
+    </div>
   );
 }
 

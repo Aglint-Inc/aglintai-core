@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { Stack } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 
@@ -57,18 +56,12 @@ const TrainingStatusComponent = () => {
   const rows = data
     .slice(0, LIMIT)
     .map(({ id, name, training_status_count: { qualified, training } }) => (
-      <Stack
+      <div
         key={id}
         onClick={() =>
           router.push(`${ROUTES['/interview-pool/[type_id]']({ type_id: id })}`)
         }
-        sx={{
-          cursor: 'pointer',
-          ': hover': {
-            backgroundColor: 'var(--neutral-3)',
-          },
-        }}
-        // scheduling/module/members/0f337bba-fd0b-41ed-b356-408d9c4a8b5c
+        className='cursor-pointer hover:bg-neutral-100'
       >
         <div className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'>
           <div className='p-2 px-4'>
@@ -81,7 +74,7 @@ const TrainingStatusComponent = () => {
             <span>{training}</span>
           </div>
         </div>
-      </Stack>
+      </div>
     ));
   return <>{rows}</>;
 };

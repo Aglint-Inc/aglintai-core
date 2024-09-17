@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
@@ -10,8 +11,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { FeedbackCard } from '@devlink3/FeedbackCard';
-import { RoundedNumber } from '@devlink3/RoundedNumber';
 import {
   Calendar,
   Circle,
@@ -30,7 +29,6 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
-import Avatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
@@ -568,140 +566,27 @@ function FeedbackCardDetails({
   handelFeedbackRequest?: any;
 }) {
   return (
-    <FeedbackCard
-      slotImage={
-        <Avatar
-          src={int.profile_image}
-          level={getFullName(int.first_name, int.last_name)}
-        />
-      }
-      textName={getFullName(int.first_name, int.last_name)}
-      textRole={int.position}
-      slotButton={
-        <ShowCode>
-          <ShowCode.When isTrue={isFeedBackEnabled && isAdmin}>
-            <ShowCode>
-              <ShowCode.When isTrue={Boolean(int.user_id === user_id)}>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    if (isFeedBackEnabled) {
-                      setSelectedInterviewer({
-                        index,
-                        interviewer: int,
-                      });
-                    }
-                  }}
-                >
-                  {int.feedback && int.feedback?.recommendation ? (
-                    <>
-                      <Edit className='mr-2 h-4 w-4' />
-                      Edit Feedback
-                    </>
-                  ) : (
-                    <>
-                      <Plus className='mr-2 h-4 w-4' />
-                      Add Feedback
-                    </>
-                  )}
-                </Button>
-              </ShowCode.When>
-              <ShowCode>
-                <ShowCode.When isTrue={true}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant='outline' size='sm'>
-                        Re-request Feedback
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side='bottom' align='end'>
-                      <div className='flex flex-col space-y-2'>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={(e) => {
-                            handelFeedbackRequest({
-                              e,
-                              session_id: int.session.id,
-                              relation_id: int.relation_id,
-                              recruiter_user_id: int.user_id,
-                              tool: 'slack',
-                            });
-                          }}
-                        >
-                          <MessageSquare className='mr-2 h-4 w-4' />
-                          Slack
-                        </Button>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={(e) => {
-                            handelFeedbackRequest({
-                              e,
-                              session_id: int.session.id,
-                              relation_id: int.relation_id,
-                              recruiter_user_id: int.user_id,
-                              tool: 'email',
-                            });
-                          }}
-                        >
-                          <Mail className='mr-2 h-4 w-4' />
-                          Email
-                        </Button>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant='outline' size='sm'>
-                        Request Feedback
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side='bottom' align='end'>
-                      <div className='flex flex-col space-y-2'>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={(e) => {
-                            handelFeedbackRequest({
-                              e,
-                              session_id: int.session.id,
-                              relation_id: int.relation_id,
-                              recruiter_user_id: int.user_id,
-                              tool: 'slack',
-                            });
-                          }}
-                        >
-                          <MessageSquare className='mr-2 h-4 w-4' />
-                          Slack
-                        </Button>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={(e) => {
-                            handelFeedbackRequest({
-                              e,
-                              session_id: int.session.id,
-                              relation_id: int.relation_id,
-                              recruiter_user_id: int.user_id,
-                              tool: 'email',
-                            });
-                          }}
-                        >
-                          <Mail className='mr-2 h-4 w-4' />
-                          Email
-                        </Button>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </ShowCode.Else>
-              </ShowCode>
-            </ShowCode>
-          </ShowCode.When>
-          <ShowCode.Else>
+    <Card className='w-full'>
+      <CardHeader className='flex items-center space-x-4'>
+        <Avatar className='h-10 w-10'>
+          <AvatarImage
+            src={int.profile_image}
+            alt={getFullName(int.first_name, int.last_name)}
+          />
+          <AvatarFallback>
+            {getFullName(int.first_name, int.last_name).charAt(0)}
+          </AvatarFallback>
+        </Avatar>
+        <div>
+          <h3 className='font-semibold'>
+            {getFullName(int.first_name, int.last_name)}
+          </h3>
+          <p className='text-sm text-muted-foreground'>{int.position}</p>
+        </div>
+      </CardHeader>
+      <CardContent className='space-y-4'>
+        {isFeedBackEnabled && isAdmin ? (
+          int.user_id === user_id ? (
             <Button
               variant='outline'
               size='sm'
@@ -714,7 +599,7 @@ function FeedbackCardDetails({
                 }
               }}
             >
-              {int.feedback && int.feedback?.objective ? (
+              {int.feedback && int.feedback?.recommendation ? (
                 <>
                   <Edit className='mr-2 h-4 w-4' />
                   Edit Feedback
@@ -726,36 +611,99 @@ function FeedbackCardDetails({
                 </>
               )}
             </Button>
-          </ShowCode.Else>
-        </ShowCode>
-      }
-      slotDesc={
-        <div className='flex flex-col space-y-2.5'>
-          <div className='flex items-center space-x-2.5'>
-            <ShowCode>
-              <ShowCode.When isTrue={!!int.feedback?.recommendation}>
-                <div className='flex flex-col space-y-2.5'>
-                  <div className='flex items-center space-x-2.5'>
-                    <Star className='h-7 w-7' />
-                    <span>
-                      Recommendation Level : {int.feedback?.recommendation}
-                    </span>
-                  </div>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: int.feedback?.objective,
+          ) : (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant='outline' size='sm'>
+                  Re-request Feedback
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side='bottom' align='end'>
+                <div className='flex flex-col space-y-2'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={(e) => {
+                      handelFeedbackRequest({
+                        e,
+                        session_id: int.session.id,
+                        relation_id: int.relation_id,
+                        recruiter_user_id: int.user_id,
+                        tool: 'slack',
+                      });
                     }}
-                  ></div>
+                  >
+                    <MessageSquare className='mr-2 h-4 w-4' />
+                    Slack
+                  </Button>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={(e) => {
+                      handelFeedbackRequest({
+                        e,
+                        session_id: int.session.id,
+                        relation_id: int.relation_id,
+                        recruiter_user_id: int.user_id,
+                        tool: 'email',
+                      });
+                    }}
+                  >
+                    <Mail className='mr-2 h-4 w-4' />
+                    Email
+                  </Button>
                 </div>
-              </ShowCode.When>
-              <ShowCode.Else>
-                <span>Not Submitted Feedback</span>
-              </ShowCode.Else>
-            </ShowCode>
-          </div>
+              </TooltipContent>
+            </Tooltip>
+          )
+        ) : (
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => {
+              if (isFeedBackEnabled) {
+                setSelectedInterviewer({
+                  index,
+                  interviewer: int,
+                });
+              }
+            }}
+          >
+            {int.feedback && int.feedback?.objective ? (
+              <>
+                <Edit className='mr-2 h-4 w-4' />
+                Edit Feedback
+              </>
+            ) : (
+              <>
+                <Plus className='mr-2 h-4 w-4' />
+                Add Feedback
+              </>
+            )}
+          </Button>
+        )}
+        <div className='space-y-2.5'>
+          {int.feedback?.recommendation ? (
+            <>
+              <div className='flex items-center space-x-2.5'>
+                <Star className='h-7 w-7 text-yellow-400' />
+                <span>Recommendation Level: {int.feedback.recommendation}</span>
+              </div>
+              <div
+                className='prose prose-sm'
+                dangerouslySetInnerHTML={{
+                  __html: int.feedback.objective,
+                }}
+              />
+            </>
+          ) : (
+            <span className='text-muted-foreground'>
+              Not Submitted Feedback
+            </span>
+          )}
         </div>
-      }
-    />
+      </CardContent>
+    </Card>
   );
 }
 
@@ -803,23 +751,26 @@ const FeedbackForm = ({
                     .fill(1)
                     .map((_, i) => {
                       return (
-                        <RoundedNumber
+                        <Button
                           key={i}
-                          textNumber={i + 1}
-                          isActive={
+                          variant='ghost'
+                          size='sm'
+                          className={`w-8 h-8 rounded-full ${
                             (interviewer.feedback?.recommendation || 0) > i
-                          }
-                          onClickRound={{
-                            onClick: () => {
-                              const temp = { ...interviewer };
-                              temp.feedback = {
-                                ...temp.feedback,
-                                recommendation: i + 1,
-                              };
-                              setInterviewer(temp);
-                            },
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-secondary text-secondary-foreground'
+                          }`}
+                          onClick={() => {
+                            const temp = { ...interviewer };
+                            temp.feedback = {
+                              ...temp.feedback,
+                              recommendation: i + 1,
+                            };
+                            setInterviewer(temp);
                           }}
-                        />
+                        >
+                          {i + 1}
+                        </Button>
                       );
                     })}
                 </div>

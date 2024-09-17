@@ -10,7 +10,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { AllInterviewers } from '@devlink2/AllInterviewers';
-import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -76,7 +75,7 @@ const InterviewTab = () => {
             <Loader />
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
-            <Stack position={'relative'}>
+            <div className='relative'>
               <Filters
                 setFilteredInterviewer={setFilteredInterviewer}
                 interviewers={interviewers}
@@ -255,7 +254,7 @@ const InterviewTab = () => {
                   </p>
                 </div>
               )}
-            </Stack>
+            </div>
           </ShowCode.When>
         </ShowCode>
       }

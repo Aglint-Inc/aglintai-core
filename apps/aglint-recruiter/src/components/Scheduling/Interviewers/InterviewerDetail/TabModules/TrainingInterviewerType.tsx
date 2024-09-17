@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -81,12 +80,7 @@ function TrainingInterviewerType({
         isTrainingProgressDetailVisible={true}
         isTrainingCompletedVisible={false}
         slotProgressBar={
-          <Stack
-            direction={'row'}
-            overflow={'hidden'}
-            borderRadius={'var(--radius-2)'}
-            spacing={'2px'}
-          >
+          <div className='flex flex-row overflow-hidden border-radius-2'>
             {pills.map((pill, i) => (
               <HistoryPillShadcn
                 key={i}
@@ -95,7 +89,7 @@ function TrainingInterviewerType({
                 isActive={pill.completed}
               />
             ))}
-          </Stack>
+          </div>
         }
         slotTrainingProgressDetail={
           <CollapseTrainingProgress

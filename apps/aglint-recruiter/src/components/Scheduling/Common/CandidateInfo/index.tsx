@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 
 import { Application } from '@/context/ApplicationContext';
 import { Body } from '@/job/components/CandidateDrawer/Body';
@@ -8,7 +7,7 @@ import { Info, TopBar } from '@/job/components/CandidateDrawer/TopBar';
 
 function CandidateInfo({ application_id, job_id }) {
   return (
-    <Stack spacing={'var(--space-4)'} padding={'var(--space-4)'}>
+    <div className='flex flex-col space-y-4 p-4'>
       <Application application_id={application_id} job_id={job_id}>
         <Body
           topBar={
@@ -20,7 +19,7 @@ function CandidateInfo({ application_id, job_id }) {
           details={<Details />}
         />
       </Application>
-    </Stack>
+    </div>
   );
 }
 

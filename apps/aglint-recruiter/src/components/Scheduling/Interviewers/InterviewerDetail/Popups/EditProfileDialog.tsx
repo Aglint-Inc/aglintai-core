@@ -1,16 +1,14 @@
-
-import { UserDetails } from '@devlink/UserDetails';
 import {
-  Autocomplete,
   Dialog,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { X } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import { ProfileForms } from '@/components/Profile/ProfileForms';
 import {
@@ -24,7 +22,6 @@ import {
 } from '@/components/Profile/util';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
-import timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 const initialFormValues: FormValues = {
@@ -199,16 +196,14 @@ export const EditProfileDialog = ({
       setLoading(false);
     }
   }
+
   return (
-    <Dialog
-      open={isOpen}
-      onClose={() => {
-        // setProfile(structuredClone(initialProfileFormFields));
-        setIsOpen(false);
-      }}
-    >
-      <UserDetails
-        slotClose={
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>
+          <DialogTitle className='text-2xl font-semibold'>
+            Edit Profile
+          </DialogTitle>
           <UIButton
             variant='ghost'
             size='sm'
@@ -219,39 +214,8 @@ export const EditProfileDialog = ({
           >
             <X className='h-4 w-4' />
           </UIButton>
-        }
-        slotButton={
-          <>
-            <UIButton
-              variant='secondary'
-              onClick={() => {
-                setProfile(structuredClone(initialProfileFormFields));
-                setIsOpen(false);
-              }}
-            >
-              Cancel
-            </UIButton>
-            <UIButton
-              variant='default'
-              isLoading={Loading}
-              onClick={() => {
-                if (!Loading) {
-                  onUpdateSubmit();
-                }
-              }}
-            >
-              Update
-            </UIButton>
-          </>
-        }
-        isWarningVisible={isError}
-        slotWarning={
-          <Typography variant='caption' color='error'>
-            The file you uploaded exceeds the maximum allowed size. Please
-            ensure that the file size is less than 5 MB
-          </Typography>
-        }
-        slotUserImage={
+        </DialogHeader>
+        <div className='space-y-4'>
           <ImageUploadManual
             image={recruiterUser.profile_image}
             size={64}
@@ -260,54 +224,58 @@ export const EditProfileDialog = ({
               setIsImageChanged(true);
             }}
           />
-        }
-        slotUserForm={
-          // <></>
-          <>
-            <ProfileForms
-              profile={profile}
-              setProfile={setProfile}
-              setChanges={() => setProfileChange(true)}
-            />
-            <Stack>
-              <Typography paddingBottom={1}>Time Zone</Typography>
 
-              <Autocomplete
-                disableClearable
-                fullWidth
-                options={timeZone}
-                value={selectedTimeZone}
-                onChange={(_event, value) => {
-                  if (value) {
-                    setSelectedTimeZone(value);
-                    setProfileChange(true);
-                  }
-                }}
-                autoComplete={false}
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props}>
-                      <Typography variant='body1' color={'var(--neutral-12)'}>
-                        {option.label}
-                      </Typography>
-                    </li>
-                  );
-                }}
-                renderInput={(params) => {
-                  return <TextField {...params} placeholder='Ex. Healthcare' />;
-                }}
-              />
-            </Stack>
-          </>
-        }
-        slotUserInfoBtn={<></>}
-        onClickProfilePhotoChange={{
-          onClick: () => {
-            document.getElementById('image-upload').click();
-          },
-        }}
-      />
+          {isError && (
+            <p className='text-sm text-red-500'>
+              The file you uploaded exceeds the maximum allowed size. Please
+              ensure that the file size is less than 5 MB
+            </p>
+          )}
+
+          <ProfileForms
+            profile={profile}
+            setProfile={setProfile}
+            setChanges={() => setProfileChange(true)}
+          />
+
+          <div className='space-y-2'>
+            <p className='text-sm font-medium'>Time Zone</p>
+            <TimezonePicker
+              // @ts-ignore
+              value={selectedTimeZone}
+              onChange={(value) => {
+                if (value) {
+                  setSelectedTimeZone(value);
+                }
+              }}
+              width='420'
+            />
+          </div>
+        </div>
+
+        <div className='flex justify-end space-x-2'>
+          <UIButton
+            variant='secondary'
+            onClick={() => {
+              setProfile(structuredClone(initialProfileFormFields));
+              setIsOpen(false);
+            }}
+          >
+            Cancel
+          </UIButton>
+          <UIButton
+            variant='default'
+            isLoading={Loading}
+            onClick={() => {
+              if (!Loading) {
+                onUpdateSubmit();
+              }
+            }}
+          >
+            Update
+          </UIButton>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 };

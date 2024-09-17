@@ -3,6 +3,7 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import { Card, CardContent, CardFooter, CardHeader } from '@components/ui/card';
@@ -14,31 +15,24 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { DayOff } from '@devlink2/DayOff';
 import { cn } from '@lib/utils';
-import {
-  Alert,
-  Autocomplete,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
 import { format } from 'date-fns';
 import { capitalize, cloneDeep } from 'lodash';
-import { BookKey, Calendar as CalendarIcon } from 'lucide-react';
+import { BookKey, Calendar as CalendarIcon, X } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import Chip from '@/components/Common/AddChip/Chip';
+import TimezonePicker from '@/components/Common/TimezonePicker';
 import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
 import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import FilterInput from '@/components/Scheduling/Common/MovedFromCD/FilterInput';
-import timeZones from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 import { ScheduleSettings } from '../_common/ScheduleSettings';
 import { useImrQuery } from '../hooks';
+
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
   value: number;
@@ -47,6 +41,7 @@ type interviewLoadType = {
 
 let schedulingSettingObj = {};
 let changeValue = null;
+
 function InterviewerLevelSettings({
   updateSettings,
   initialData,
@@ -243,171 +238,133 @@ function InterviewerLevelSettings({
   const router = useRouter();
   const { refetch } = useImrQuery({ user_id: router.query.id as string });
   return (
-    <Stack overflow={'hidden'}>
+    <div className='overflow-hidden'>
       {isAvailability ? (
         <ScheduleSettings
           slotTimeZoneInput={
-            <Stack
-              spacing={'var(--space-2)'}
-              width={420}
-              flexDirection={'column-reverse'}
-              gap={'var(--space-2)'}
-            >
-              <Autocomplete
-                disabled={isTimeZone}
-                disableClearable
-                options={timeZones}
-                value={selectedTimeZone}
-                onChange={(_event, value) => {
+            <div className='space-y-2 w-[420px] flex flex-col-reverse'>
+              <TimezonePicker
+                value={selectedTimeZone?.tzCode}
+                onChange={(value) => {
                   if (value) {
                     setSelectedTimeZone(value);
                   }
                 }}
-                autoComplete={false}
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props}>
-                      <Typography variant='body1' color={'var(--neutral-12)'}>
-                        {option.label}
-                      </Typography>
-                    </li>
-                  );
-                }}
-                renderInput={(params) => {
-                  return (
-                    <TextField
-                      {...params}
-                      label=''
-                      placeholder='Ex. Healthcare'
-                    />
-                  );
-                }}
+                width='420'
               />
-            </Stack>
+            </div>
           }
           isKeywordVisible={false}
           isCompanyLevelVisible={false}
           slotKeywordCard={<></>}
           slotDailyLimit={
-            <>
-              <Stack spacing={3}>
-                <MuiNumberfield
-                  handleSelect={(value) => handleDailyValue(+value)}
-                  value={dailyLmit.value}
-                  max={dailyLmit.max}
-                />
-                <RadioGroup
-                  defaultValue={dailyLmit.type}
-                  onChange={(e) =>
-                    handleType(
-                      (e.target as HTMLInputElement).value as
-                        | 'Interviews'
-                        | 'Hours',
-                    )
-                  }
-                  className='flex flex-row'
-                >
-                  {['Interviews', 'Hours'].map((ele) => (
-                    <div key={ele} className='flex items-center space-x-2'>
-                      <RadioGroupItem value={ele} id={`radio-${ele}`} />
-                      <Label htmlFor={`radio-${ele}`}>
-                        {capitalize(ele.replaceAll('_', ' '))}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </Stack>
-            </>
+            <div className='space-y-3'>
+              <MuiNumberfield
+                handleSelect={(value) => handleDailyValue(+value)}
+                value={dailyLmit.value}
+                max={dailyLmit.max}
+              />
+              <RadioGroup
+                defaultValue={dailyLmit.type}
+                onValueChange={(value) =>
+                  handleType(value as 'Interviews' | 'Hours')
+                }
+                className='flex flex-row'
+              >
+                {['Interviews', 'Hours'].map((ele) => (
+                  <div key={ele} className='flex items-center space-x-2'>
+                    <RadioGroupItem value={ele} id={`radio-${ele}`} />
+                    <Label htmlFor={`radio-${ele}`}>
+                      {capitalize(ele.replaceAll('_', ' '))}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
           }
           slotWeeklyLimit={
-            <>
-              <Stack spacing={3}>
-                <MuiNumberfield
-                  handleSelect={(value) => handleWeeklyValue(+value)}
-                  value={weeklyLmit.value}
-                  max={weeklyLmit.max}
-                />
-                <RadioGroup
-                  defaultValue={weeklyLmit.type}
-                  onChange={(e) =>
-                    handleType(
-                      (e.target as HTMLInputElement).value as
-                        | 'Interviews'
-                        | 'Hours',
-                    )
-                  }
-                  className='flex flex-row'
-                >
-                  {['Interviews', 'Hours'].map((ele) => (
-                    <div key={ele} className='flex items-center space-x-2'>
-                      <RadioGroupItem value={ele} id={`radio-weekly-${ele}`} />
-                      <Label htmlFor={`radio-weekly-${ele}`}>
-                        {capitalize(ele.replaceAll('_', ' '))}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </Stack>
-            </>
+            <div className='space-y-3'>
+              <MuiNumberfield
+                handleSelect={(value) => handleWeeklyValue(+value)}
+                value={weeklyLmit.value}
+                max={weeklyLmit.max}
+              />
+              <RadioGroup
+                defaultValue={weeklyLmit.type}
+                onValueChange={(value) =>
+                  handleType(value as 'Interviews' | 'Hours')
+                }
+                className='flex flex-row'
+              >
+                {['Interviews', 'Hours'].map((ele) => (
+                  <div key={ele} className='flex items-center space-x-2'>
+                    <RadioGroupItem value={ele} id={`radio-weekly-${ele}`} />
+                    <Label htmlFor={`radio-weekly-${ele}`}>
+                      {capitalize(ele.replaceAll('_', ' '))}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
           }
           slotWorkingHourDay={
             <>
               {!!workingHours.length &&
                 workingHours.map((day, i) => {
                   return (
-                    <>
-                      <div className='flex items-center justify-between p-4 border rounded-lg shadow-sm'>
-                        <div className='flex items-center space-x-2'>
-                          <Checkbox
-                            id={`checkbox-${day.day}`}
-                            checked={day.isWorkDay}
-                            onCheckedChange={() => {
-                              setWorkingHours((pre) => {
-                                const data = [...pre];
-                                data[i].isWorkDay = !data[i].isWorkDay;
-                                return data;
-                              });
-                            }}
-                          />
-                          <Label
-                            htmlFor={`checkbox-${day.day}`}
-                            className='text-sm font-medium'
-                          >
-                            {capitalize(day.day)}
-                          </Label>
-                        </div>
-                        <div className='flex items-center space-x-2'>
-                          <SelectTime
-                            value={dayjsLocal()
-                              .set(
-                                'hour',
-                                parseInt(day.timeRange.startTime.split(':')[0]),
-                              )
-                              .set(
-                                'minute',
-                                parseInt(day.timeRange.startTime.split(':')[1]),
-                              )}
-                            onSelect={selectStartTime}
-                            i={i}
-                          />
-                          <span className='text-sm text-gray-500'>to</span>
-                          <SelectTime
-                            value={dayjsLocal()
-                              .set(
-                                'hour',
-                                parseInt(day.timeRange.endTime.split(':')[0]),
-                              )
-                              .set(
-                                'minute',
-                                parseInt(day.timeRange.endTime.split(':')[1]),
-                              )}
-                            onSelect={selectEndTime}
-                            i={i}
-                          />
-                        </div>
+                    <div
+                      key={day.day}
+                      className='flex items-center justify-between p-4 border rounded-lg shadow-sm'
+                    >
+                      <div className='flex items-center space-x-2'>
+                        <Checkbox
+                          id={`checkbox-${day.day}`}
+                          checked={day.isWorkDay}
+                          onCheckedChange={() => {
+                            setWorkingHours((pre) => {
+                              const data = [...pre];
+                              data[i].isWorkDay = !data[i].isWorkDay;
+                              return data;
+                            });
+                          }}
+                        />
+                        <Label
+                          htmlFor={`checkbox-${day.day}`}
+                          className='text-sm font-medium'
+                        >
+                          {capitalize(day.day)}
+                        </Label>
                       </div>
-                    </>
+                      <div className='flex items-center space-x-2'>
+                        <SelectTime
+                          value={dayjsLocal()
+                            .set(
+                              'hour',
+                              parseInt(day.timeRange.startTime.split(':')[0]),
+                            )
+                            .set(
+                              'minute',
+                              parseInt(day.timeRange.startTime.split(':')[1]),
+                            )}
+                          onSelect={selectStartTime}
+                          i={i}
+                        />
+                        <span className='text-sm text-gray-500'>to</span>
+                        <SelectTime
+                          value={dayjsLocal()
+                            .set(
+                              'hour',
+                              parseInt(day.timeRange.endTime.split(':')[0]),
+                            )
+                            .set(
+                              'minute',
+                              parseInt(day.timeRange.endTime.split(':')[1]),
+                            )}
+                          onSelect={selectEndTime}
+                          i={i}
+                        />
+                      </div>
+                    </div>
                   );
                 })}
             </>
@@ -420,13 +377,20 @@ function InterviewerLevelSettings({
             <>
               {daysOff.map((item, i) => {
                 return (
-                  <DayOff
-                    onClickRemove={{
-                      onClick: () => removeDayOff(item.date),
-                    }}
+                  <div
                     key={i}
-                    textDate={item.date}
-                  />
+                    className='flex items-center justify-between p-2 bg-gray-100 rounded-md mb-2'
+                  >
+                    <span className='text-sm font-medium'>{item.date}</span>
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={() => removeDayOff(item.date)}
+                      className='text-red-500 hover:text-red-700'
+                    >
+                      <X className='h-4 w-4' />
+                    </Button>
+                  </div>
                 );
               })}
               <Popover>
@@ -468,8 +432,8 @@ function InterviewerLevelSettings({
                 <h3 className='text-lg font-semibold'>Keywords</h3>
               </div>
               <p>
-                Use keywords to mark events on interviewers’ calendars that can
-                be overridden for interview scheduling.
+                Use keywords to mark events on interviewers&apos; calendars that
+                can be overridden for interview scheduling.
               </p>
             </div>
             {[
@@ -514,10 +478,10 @@ function InterviewerLevelSettings({
                   <CardContent>
                     <div className='flex flex-wrap gap-2'>
                       {keywords.length === 0 ? (
-                        <Alert severity='info' icon={false}>
-                          <Typography>
+                        <Alert variant='info'>
+                          <AlertDescription>
                             No {title.toLowerCase()} keywords added.
-                          </Typography>
+                          </AlertDescription>
                         </Alert>
                       ) : (
                         <>
@@ -576,7 +540,7 @@ function InterviewerLevelSettings({
           </div>
         </div>
       )}
-    </Stack>
+    </div>
   );
 }
 

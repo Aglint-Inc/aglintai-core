@@ -1,7 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { NewTabPill } from '@devlink3/NewTabPill';
+import { Button } from '@components/ui/button';
 import { ScheduleDetailTabs } from '@devlink3/ScheduleDetailTabs';
-import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -93,34 +92,33 @@ function DetailsOverview({
   // if logged in user is interviewer session relation will be there or else null
 
   return (
-    <Stack pb={'var(--space-8)'}>
+    <div className='flex flex-col pb-8'>
       <ScheduleDetailTabs
         slotScheduleTabOverview={
-          <Stack spacing={'var(--space-2)'}>
+          <div className='flex flex-col space-y-2'>
             <Banners
               sessionRelation={sessionRelation}
               refetch={refetch}
               setIsDeclineOpen={setIsDeclineOpen}
             />
             <Overview />
-          </Stack>
+          </div>
         }
         slotDarkPills={viewScheduleTabs
           .filter((item) => !item.hide)
           .map((item, i: number) => {
             return (
-              <NewTabPill
-                textLabel={item.name}
+              <Button
                 key={i}
-                isPillActive={router.query.tab === item.tab}
-                onClickPill={{
-                  onClick: () => {
-                    router.replace(
-                      `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${item.tab}`,
-                    );
-                  },
+                variant={router.query.tab === item.tab ? 'default' : 'outline'}
+                onClick={() => {
+                  router.replace(
+                    `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${item.tab}`,
+                  );
                 }}
-              />
+              >
+                {item.name}
+              </Button>
             );
           })}
         slotTabContent={
@@ -145,7 +143,7 @@ function DetailsOverview({
                 schedule.interview_session.session_type !== 'debrief'
               }
             >
-              <Stack>
+              <div className='flex flex-col'>
                 {schedule?.interview_meeting?.status === 'completed' ? (
                   <FeedbackWindow
                     interview_sessions={[
@@ -169,22 +167,16 @@ function DetailsOverview({
                     }}
                   />
                 ) : (
-                  <Stack
-                    direction={'row'}
-                    width={'100%'}
-                    height={'200px'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                  >
+                  <div className='flex flex-row w-full h-[200px] justify-center items-center'>
                     <GlobalEmpty
                       text={
                         'Feedback will be enabled once the interview is completed'
                       }
                       iconSlot={<MessageCircle className='text-gray-500' />}
                     />
-                  </Stack>
+                  </div>
                 )}
-              </Stack>
+              </div>
             </ShowCode.When>
             <ShowCode.When
               isTrue={router.query.tab === 'job_details' || !router.query.tab}
@@ -219,7 +211,7 @@ function DetailsOverview({
           application_log_id={null}
         />
       </>
-    </Stack>
+    </div>
   );
 }
 

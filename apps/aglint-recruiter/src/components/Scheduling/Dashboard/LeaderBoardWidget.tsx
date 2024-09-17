@@ -1,8 +1,8 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Skeleton } from '@components/ui/skeleton';
 import { LeaderBoard } from '@devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
-import { Avatar, Stack } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -64,14 +64,12 @@ const LeaderBoardWidgetComponent = ({
   return (
     <>
       {interviewLeaderboard.map((item, index) => (
-        <Stack
+        <div
           key={item.user_id}
           onClick={() => {
             router.push(`scheduling/interviewer/${item.user_id}?tab=overview`);
           }}
-          sx={{
-            borderRadius: '4px',
-          }}
+          className='rounded-md cursor-pointer'
         >
           <Link href={`/user/profile/${item.user_id}`}>
             <LeaderBoardCard
@@ -83,16 +81,21 @@ const LeaderBoardWidgetComponent = ({
               }
               textRole={item.user_position}
               slotImage={
-                <Avatar
-                  src={item.profile_image}
-                  alt={getFullName(item.first_name, item.last_name)}
-                />
+                <Avatar>
+                  <AvatarImage
+                    src={item.profile_image}
+                    alt={getFullName(item.first_name, item.last_name)}
+                  />
+                  <AvatarFallback>
+                    {(item.first_name?.[0] || '') + (item.last_name?.[0] || '')}
+                  </AvatarFallback>
+                </Avatar>
               }
               noInterview={item.interviews}
               noHours={(item.duration / 60).toFixed(1)}
             />
           </Link>
-        </Stack>
+        </div>
       ))}
     </>
   );

@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -46,47 +45,33 @@ const InterviewersAnalyticCards = () => {
             <InterviewersCardList
               key={index}
               textName={
-                <Skeleton
-                  variant='text'
-                  width={'100px'}
-                  height={'var(--space-6)'}
-                />
+                <div className="h-6 w-24 bg-gray-200 animate-pulse rounded" />
               }
               textCompleted={
-                <Skeleton
-                  variant='text'
-                  width={'var(--space-5)'}
-                  height={'var(--space-6)'}
-                />
+                <div className="h-6 w-5 bg-gray-200 animate-pulse rounded" />
               }
               textUpcoming={
-                <Skeleton
-                  variant='text'
-                  width={'var(--space-5)'}
-                  height={'var(--space-6)'}
-                />
+                <div className="h-6 w-5 bg-gray-200 animate-pulse rounded" />
               }
               textDeclined={
-                <Skeleton
-                  variant='text'
-                  width={'var(--space-5)'}
-                  height={'var(--space-6)'}
-                />
+                <div className="h-6 w-5 bg-gray-200 animate-pulse rounded" />
               }
             />
           ))
         ) : interviewersData.length ? (
           interviewersData?.map((item) => (
-            // eslint-disable-next-line react/jsx-key
-            <Stack onClick={() => router.push(`/user/profile/${item.id}`)}>
+            <div
+              key={item.id}
+              className="cursor-pointer"
+              onClick={() => router.push(`/user/profile/${item.id}`)}
+            >
               <InterviewersCardList
-                key={item.id}
                 textName={item.name}
                 textCompleted={item.status['completed'] || 0}
                 textUpcoming={item.status['confirmed'] || 0}
                 textDeclined={item.status['cancelled'] || 0}
               />
-            </Stack>
+            </div>
           ))
         ) : (
           <div className='h-[296px]'>

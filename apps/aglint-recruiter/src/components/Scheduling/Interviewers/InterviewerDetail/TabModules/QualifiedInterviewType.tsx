@@ -1,4 +1,4 @@
-import { Collapse, Stack, Typography } from '@mui/material';
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -31,13 +31,13 @@ function QualifiedInterviewTypeCard({
         isTrainingProgessVisible={true}
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
-          <Collapse in={collapseOpen}>
-            <Stack pb={'var(--space-5)'} pl={'var(--space-3)'}>
-              <Typography variant='body1'>
-                {relation.module_description}
-              </Typography>
-            </Stack>
-          </Collapse>
+          <Collapsible open={collapseOpen} onOpenChange={setCollapseOpen}>
+            <CollapsibleContent>
+              <div className='pb-5 pl-3'>
+                <p className='text-sm'>{relation.module_description}</p>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         }
         key={relation.module_id}
         textName={relation.module_name}

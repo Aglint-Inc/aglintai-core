@@ -1,5 +1,4 @@
 import { CardContent } from '@components/ui/card';
-import { Stack } from '@mui/material';
 import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
@@ -74,7 +73,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   iconSlot={<School className='text-gray-500' />}
                 />
               )}
-              <Stack direction={'row'} pt={'var(--space-2)'}>
+              <div className='flex flex-row pt-2'>
                 <UIButton
                   size='sm'
                   variant='secondary'
@@ -86,7 +85,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                 >
                   Add
                 </UIButton>
-              </Stack>
+              </div>
             </>
           ) : (
             <Loader />
@@ -113,7 +112,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   iconSlot={<School className='text-gray-500' />}
                 />
               )}
-              <Stack direction={'row'} pt={'var(--space-2)'}>
+              <div className='flex flex-row pt-2'>
                 <UIButton
                   size='sm'
                   variant='secondary'
@@ -125,7 +124,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                 >
                   Add
                 </UIButton>
-              </Stack>
+              </div>
             </>
           ) : (
             <Loader />

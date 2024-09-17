@@ -1,6 +1,5 @@
 // import Feedback from './Feedback';
 import { Skeleton } from '@components/ui/skeleton';
-import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -115,10 +114,10 @@ function SchedulingViewComp() {
           )
         }
         slotBody={
-          <Stack height={'calc(100vh - 48px)'} overflow={'hidden'}>
+          <div className="h-[calc(100vh-48px)] overflow-hidden">
             {!isLoading ? (
-              <Stack direction={'row'} justifyContent={'space-between'}>
-                <Stack height={'100vh'} overflow={'auto'} width={'100%'}>
+              <div className="flex justify-between">
+                <div className="h-screen overflow-auto w-full">
                   {data?.schedule_data ? (
                     <DetailsOverview
                       data={data}
@@ -128,28 +127,21 @@ function SchedulingViewComp() {
                       viewScheduleTabs={viewScheduleTabs}
                     />
                   ) : (
-                    <Stack padding={2}>
+                    <div className="p-2">
                       <UIAlert
                         title={'Meeting Not Found'}
                         iconName={'Calendar'}
                       />
-                    </Stack>
+                    </div>
                   )}
-                </Stack>
+                </div>
 
                 {checkPermissions(['scheduling_actions']) && (
-                  <Stack
-                    height={'calc(100vh - 48px)'}
-                    minWidth={'400px'}
-                    overflow={'auto'}
-                    p={'var(--space-4)'}
-                    sx={{
-                      borderLeft: '1px solid',
-                      borderColor: 'var(--neutral-6)',
-                    }}
+                  <div
+                    className="h-[calc(100vh-48px)] min-w-[400px] overflow-auto p-[var(--space-4)] border-l border-[var(--neutral-6)]"
                   >
-                    <Stack mb={2} direction={'column'} spacing={1}>
-                      <Typography fontWeight={500}>Job</Typography>
+                    <div className="mb-2 flex flex-col space-y-1">
+                      <p className="font-medium">Job</p>
                       <WorkflowConnectedCard
                         isLinkOffVisible={false}
                         textRoleCategory={
@@ -170,15 +162,15 @@ function SchedulingViewComp() {
                         }}
                         // textRoleCategory={job.}
                       />
-                    </Stack>
+                    </div>
                     <Requests session_id={schedule?.interview_session?.id} />
-                  </Stack>
+                  </div>
                 )}
-              </Stack>
+              </div>
             ) : (
               <Loader />
             )}
-          </Stack>
+          </div>
         }
         slotTopbarRight={
           <ButtonGroup

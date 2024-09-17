@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
@@ -130,13 +129,13 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
             interview type
           </p>
           {isFetching ? (
-            <Stack>
+            <div className='flex flex-col space-y-2'>
               <Skeleton className='w-full h-3 mb-2' />
               <Skeleton className='w-full h-3 mb-2' />
               <Skeleton className='w-3/4 h-3' />
-            </Stack>
+            </div>
           ) : (
-            <Stack spacing={'var(--space-2)'}>
+            <div className='flex flex-col space-y-2'>
               {isOngoingSchedules ? (
                 <UIAlert
                   type='small'
@@ -153,11 +152,7 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
                       iconName={'TriangleAlert'}
                       title={`Here is a list of job's interview plan that will be impacted:`}
                       actions={
-                        <Stack
-                          display={'flex'}
-                          flexDirection={'column'}
-                          spacing={'var(--space-2)'}
-                        >
+                        <div className='flex flex-col space-y-2'>
                           <p className='text-sm text-muted-foreground'>
                             {connectedJobs
                               .flatMap((job) => job.job_title)
@@ -167,7 +162,7 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
                             If user exist in previous scheduled interviews, the
                             user will be removed from those schedules.
                           </p>
-                        </Stack>
+                        </div>
                       }
                     />
                   ) : (
@@ -180,7 +175,7 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
                   )}
                 </>
               )}
-            </Stack>
+            </div>
           )}
         </>
       </UIDialog>
