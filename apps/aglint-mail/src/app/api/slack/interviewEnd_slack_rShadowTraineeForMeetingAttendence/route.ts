@@ -28,7 +28,7 @@ const func = async (
   );
 
   if (training_ints.length === 0) {
-    return null;
+    return 'ok';
   }
   const [session_detail] = supabaseWrap(
     await supabaseAdmin
@@ -111,6 +111,7 @@ const func = async (
       ],
     });
   }
+  return 'ok';
 };
 
 export const POST = createPostRoute(

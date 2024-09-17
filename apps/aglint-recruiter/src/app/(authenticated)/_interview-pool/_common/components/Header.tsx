@@ -1,13 +1,14 @@
 import { Plus } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
+import CreateModuleDialog from 'src/app/(authenticated)/_interview-pool/_common/CreateModuleDialog';
 
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
-import CreateModuleDialog from '@/components/Scheduling/InterviewTypes/CreateModuleDialog';
-import { setIsCreateDialogOpen } from '@/components/Scheduling/InterviewTypes/store';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useAllDepartments } from '@/queries/departments';
+
+import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
 
 export const Header = ({
   isFilterApplied,

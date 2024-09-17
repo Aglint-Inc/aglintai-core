@@ -9,14 +9,14 @@ import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
 import { supabase } from '@/utils/supabase/client';
 
-import { optionsPause } from '../../../../../../../components/Scheduling/InterviewTypes/const';
+import { optionsPause } from '../../../../_common/constants/const';
+import { usePauseHandler } from '../../hooks/usePauseHandler';
 import {
   setIsPauseDialogOpen,
   setPauseJson,
   setSelUser,
   useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
-import { usePauseHandler } from '../../hooks/usePauseHandler';
+} from '../../stores/store';
 import { type PauseType } from '../../types/type';
 
 function PauseDialog() {
@@ -148,7 +148,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <UITypography type='small' className="text-neutral-800">
+              <UITypography type='small' className='text-neutral-800'>
                 {option.label}
               </UITypography>
               {option.description && (
@@ -159,35 +159,35 @@ function PauseDialog() {
           {selectedType === 'custom' && (
             <div className='flex w-full space-x-1'>
               <UIDatePicker
-              value={new Date(pause_json?.start_date)}
-              onAccept={(newValue) => {
-                if (dayjs(newValue).toISOString() < pause_json?.end_date) {
-                  setPauseJson({
-                    ...pause_json,
-                    start_date: dayjs(newValue).toISOString(),
-                  });
-                } else {
-                  setPauseJson({
-                    ...pause_json,
-                    start_date: dayjs(newValue).toISOString(),
-                    end_date: null,
-                  });
-                }
-              }}
-              minDate={new Date(currentDate.toISOString())}
+                value={new Date(pause_json?.start_date)}
+                onAccept={(newValue) => {
+                  if (dayjs(newValue).toISOString() < pause_json?.end_date) {
+                    setPauseJson({
+                      ...pause_json,
+                      start_date: dayjs(newValue).toISOString(),
+                    });
+                  } else {
+                    setPauseJson({
+                      ...pause_json,
+                      start_date: dayjs(newValue).toISOString(),
+                      end_date: null,
+                    });
+                  }
+                }}
+                minDate={new Date(currentDate.toISOString())}
               />
-             <UIDatePicker
-             value={new Date(pause_json?.end_date)}
-             onAccept={(newValue) => {
-               if (dayjs(newValue).toISOString() > pause_json?.start_date) {
-                 setPauseJson({
-                   ...pause_json,
-                   end_date: dayjs(newValue).toISOString(),
-                 });
-               }
-             }}
-             minDate={new Date(pause_json?.start_date)}
-             />
+              <UIDatePicker
+                value={new Date(pause_json?.end_date)}
+                onAccept={(newValue) => {
+                  if (dayjs(newValue).toISOString() > pause_json?.start_date) {
+                    setPauseJson({
+                      ...pause_json,
+                      end_date: dayjs(newValue).toISOString(),
+                    });
+                  }
+                }}
+                minDate={new Date(pause_json?.start_date)}
+              />
             </div>
           )}
         </div>

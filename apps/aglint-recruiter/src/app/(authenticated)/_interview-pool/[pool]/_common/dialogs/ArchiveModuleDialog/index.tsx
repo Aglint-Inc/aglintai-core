@@ -8,11 +8,8 @@ import UIDialog from '@/components/Common/UIDialog';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
-import {
-  setIsArchiveDialogOpen,
-  useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
+import { setIsArchiveDialogOpen, useModulesStore } from '../../stores/store';
 
 function ArchiveModuleDialog() {
   const { toast } = useToast();

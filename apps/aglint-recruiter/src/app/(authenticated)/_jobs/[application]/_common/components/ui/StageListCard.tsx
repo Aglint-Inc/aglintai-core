@@ -42,12 +42,14 @@ export function StageListCard({
           },
         )}
       >
-        <UITypography  className='font-semibold capitalize text-sm'>
+        <UITypography className='text-sm font-semibold capitalize'>
           {textStageName}
         </UITypography>
         <div className='flex flex-row items-center gap-2'>
           {slotIcon}
-          <UITypography variant='small' className='capitalize text-sm'>{textProgress}</UITypography>
+          <UITypography variant='small' className='text-sm capitalize'>
+            {textProgress}
+          </UITypography>
         </div>
       </div>
       {isActive && (

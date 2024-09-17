@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../../supabase/supabaseAdmin';
+import { getSupabaseServer } from '../../supabase/supabaseAdmin';
 import type { PortalPayload } from '../types/portalMessage';
 
 export default async function sendMessageToCandidatePortal({
@@ -11,6 +11,7 @@ export default async function sendMessageToCandidatePortal({
   subject: string;
 }) {
   try {
+    const supabaseAdmin = getSupabaseServer();
     const { data, error } = await supabaseAdmin
       .from('applications')
       .select()
@@ -35,6 +36,6 @@ export default async function sendMessageToCandidatePortal({
       }
     }
   } catch (error) {
-    // console.log('portal message sending failed ', error.message);
+    console.error('portal message sending failed ', error.message);
   }
 }

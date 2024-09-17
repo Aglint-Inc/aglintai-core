@@ -54,11 +54,11 @@ export function MyScheduleSubCard({
   isAvatarWithNameVisible,
 }: MeetingSlotProps) {
   return (
-    <div className='relative w-full h-full rounded-lg' style={bgColorProps}>
-      <div className='flex flex-col justify-start items-stretch w-full h-full p-4 border-[1px] rounded-lg bg-white'>
-        <div className='relative z-1 flex justify-between items-start gap-2'>
-          <div className='flex justify-start items-start gap-5'>
-            <div className='flex flex-col min-w-[148px] gap-2'>
+    <div className='relative h-full w-full rounded-lg' style={bgColorProps}>
+      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white p-4'>
+        <div className='z-1 relative flex items-start justify-between gap-2'>
+          <div className='flex items-start justify-start gap-5'>
+            <div className='flex min-w-[148px] flex-col gap-2'>
               {isTimeVisible && (
                 <div>
                   <UITypography variant='p' type='small'>
@@ -69,19 +69,19 @@ export function MyScheduleSubCard({
               <div>{slotStatus}</div>
             </div>
             <div className='flex flex-col gap-2'>
-              <div className='flex justify-start items-center gap-1'>
+              <div className='flex items-center justify-start gap-1'>
                 {isOnetoOneVisible && (
-                  <div className='flex justify-center items-center'>
+                  <div className='flex items-center justify-center'>
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
                 {isPanelIconVisible && (
-                  <div className='flex justify-center items-center'>
+                  <div className='flex items-center justify-center'>
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
                 {isDebriefIconVisible && (
-                  <div className='flex justify-center items-center'>
+                  <div className='flex items-center justify-center'>
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
@@ -91,7 +91,7 @@ export function MyScheduleSubCard({
               </div>
               {isPhoneCallVisible && (
                 <div className='flex items-center gap-1'>
-                  <div className='flex justify-center items-center'>
+                  <div className='flex items-center justify-center'>
                     {/* Add your SVG or icon here */}
                   </div>
                   <div>Phone Call</div>
@@ -108,7 +108,7 @@ export function MyScheduleSubCard({
                 )}
                 {isDurationVisible && (
                   <div className='flex items-center gap-1'>
-                    <div className='flex justify-center items-center'>
+                    <div className='flex items-center justify-center'>
                       {/* Add your SVG or icon here */}
                     </div>
                     <UITypography variant='p' type='small'>
@@ -119,7 +119,7 @@ export function MyScheduleSubCard({
               </div>
               {isLocationVisible && (
                 <div className='flex items-center gap-1'>
-                  <div className='flex justify-center items-center'>
+                  <div className='flex items-center justify-center'>
                     <MapPin size={14} />
                   </div>
                   <div>{textLocation}</div>
@@ -127,7 +127,7 @@ export function MyScheduleSubCard({
               )}
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
-                  <div className='flex justify-center items-center'>
+                  <div className='flex items-center justify-center'>
                     <Briefcase size={14} />
                   </div>
                   <UITypography variant='p' type='small'>
@@ -140,7 +140,7 @@ export function MyScheduleSubCard({
           </div>
           {isDropdownIconVisible && (
             <div
-              className='flex justify-center items-center w-6 h-6 rounded cursor-pointer hover:bg-neutral-300'
+              className='flex h-6 w-6 cursor-pointer items-center justify-center rounded hover:bg-neutral-300'
               onClick={onClickDropdownIocn}
             >
               <ChevronDown size={14} />
@@ -148,7 +148,7 @@ export function MyScheduleSubCard({
           )}
         </div>
         {isMembersListVisible && (
-          <div className='flex flex-col gap-2 mt-2'>{slotMembersList}</div>
+          <div className='mt-2 flex flex-col gap-2'>{slotMembersList}</div>
         )}
       </div>
     </div>

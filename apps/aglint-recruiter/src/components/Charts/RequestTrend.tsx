@@ -263,7 +263,9 @@ export function RequestTrend() {
             />
             <Bar
               dataKey={activeChart}
-              fill={activeChart === 'desktop' ? 'text-blue-500' : 'text-green-500'}
+              fill={
+                activeChart === 'desktop' ? 'text-blue-500' : 'text-green-500'
+              }
             />
           </BarChart>
         </ChartContainer>

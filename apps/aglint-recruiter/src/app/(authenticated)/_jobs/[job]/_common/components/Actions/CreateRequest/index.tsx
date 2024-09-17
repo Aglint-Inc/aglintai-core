@@ -3,13 +3,13 @@ import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type MemberType } from 'src/app/_common/types/member';
 import { ScheduleInterviewPop } from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewTab/ScheduleInterviewPop';
 import { RequestOption } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
 
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useApplications, useJob } from '@/job/hooks';

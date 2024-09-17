@@ -57,7 +57,6 @@ export type LinkProps =
       module: 'Interview Pools';
       path: Path<'/interview-pool'>;
     }
-
   | {
       module: 'Interviewers';
       path: Path<'/interviewers'>;

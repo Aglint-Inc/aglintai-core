@@ -620,7 +620,7 @@ const InterviewSession = ({
             textModuleName={
               <div className='flex flex-row gap-3'>
                 <>{session.name}</>
-                <div className='font-normal text-sm text-neutral-500'>
+                <div className='text-sm font-normal text-neutral-500'>
                   {getSessionType(session.session_type)}
                 </div>
               </div>
@@ -646,10 +646,10 @@ const InterviewSession = ({
             slotBreakCard={
               <InterviewBreak
                 value={session.break_duration}
-                handleEdit={(value:string) =>
+                handleEdit={(value: string) =>
                   handleUpdateSession({
                     session_id: session.id,
-                    session: { break_duration: parseInt(value)},
+                    session: { break_duration: parseInt(value) },
                   })
                 }
                 handleDelete={() =>
@@ -870,12 +870,15 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <UISelectDropDown fieldSize='small' value={value.toString()} onValueChange={handleEdit} menuOptions={breakDurations.map((item) => (
-          {
+        <UISelectDropDown
+          fieldSize='small'
+          value={value.toString()}
+          onValueChange={handleEdit}
+          menuOptions={breakDurations.map((item) => ({
             name: getBreakLabel(item),
-            value: item.toString()
-          }
-        ))} />
+            value: item.toString(),
+          }))}
+        />
       }
     />
   );

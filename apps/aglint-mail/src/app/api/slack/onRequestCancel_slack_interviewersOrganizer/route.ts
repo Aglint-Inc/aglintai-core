@@ -149,6 +149,7 @@ const func = async (
       .eq('id', request_id)
       .select(),
   );
+  return 'ok';
 };
 
 export const POST = createPostRoute(

@@ -1,4 +1,4 @@
-import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
+import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 
 import {
   setLocalFilters,

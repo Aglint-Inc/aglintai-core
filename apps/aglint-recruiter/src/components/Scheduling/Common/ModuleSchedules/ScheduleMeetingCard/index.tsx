@@ -3,10 +3,10 @@ import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
+import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
-import { MembersList } from '@/components/Scheduling/_common/components/MembersList';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 

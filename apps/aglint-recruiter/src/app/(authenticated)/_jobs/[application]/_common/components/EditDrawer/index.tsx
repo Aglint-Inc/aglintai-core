@@ -4,7 +4,10 @@ import UITextField from '@/components/Common/UITextField';
 import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 
 import { useEditSession } from '../../hooks/useEditSession';
-import { setEditSession, useEditSessionDrawerStore } from '../../stores/editSessionDrawer';
+import {
+  setEditSession,
+  useEditSessionDrawerStore,
+} from '../../stores/editSessionDrawer';
 import DebriedForm from './DebriefFrom';
 import SessionDuration from './DurationDropdown';
 import InterviewModeComp from './InterviewMode';
@@ -83,20 +86,20 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
                 }
               />
             </div>
-              <SessionDuration />
-              <ModuleDropdown />
-              <ScheduleTypeField
-                value={editSession.interview_session.schedule_type}
-                handleTypeChange={(value) => {
-                  setEditSession({
-                    interview_session: {
-                      ...editSession.interview_session,
-                      schedule_type: value,
-                    },
-                  });
-                }}
-              />
-              <InterviewModeComp />
+            <SessionDuration />
+            <ModuleDropdown />
+            <ScheduleTypeField
+              value={editSession.interview_session.schedule_type}
+              handleTypeChange={(value) => {
+                setEditSession({
+                  interview_session: {
+                    ...editSession.interview_session,
+                    schedule_type: value,
+                  },
+                });
+              }}
+            />
+            <InterviewModeComp />
           </div>
         ) : (
           editSession && <DebriedForm />

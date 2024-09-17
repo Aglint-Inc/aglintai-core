@@ -41,7 +41,9 @@ type Features =
   | 'SCHEDULING'
   | 'ANALYTICS'
   | 'CANDIDATE_PORTAL'
-  |'REPORTS'|'AGENT'|'THEMES'
+  | 'REPORTS'
+  | 'AGENT'
+  | 'THEMES';
 export interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];

@@ -19,16 +19,16 @@ export function NewInterviewDetail({
   return (
     <div
       className={cn(
-        'flex h-full flex-col justify-start items-start rounded-lg bg-white border-[1px]',
+        'flex h-full flex-col items-start justify-start rounded-lg border-[1px] bg-white',
       )}
     >
-      <div className='flex w-full h-10 px-4 py-2 justify-between items-center'>
+      <div className='flex h-10 w-full items-center justify-between px-4 py-2'>
         <UITypography variant='p' type='small'>
           {textHeading}
         </UITypography>
         <div>{slotDropdownButton}</div>
       </div>
-      <div className='flex overflow-auto w-full h-full p-4 flex-col gap-5 '>
+      <div className='flex h-full w-full flex-col gap-5 overflow-auto p-4'>
         {slotInterviewDetailPill}
       </div>
     </div>

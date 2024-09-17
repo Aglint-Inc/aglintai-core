@@ -59,10 +59,10 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex flex-col w-full p-4 border border-neutral-300 rounded-lg bg-white'>
-      <div className='flex justify-start items-center gap-4'>
+    <div className='flex w-full flex-col rounded-lg border border-neutral-300 bg-white p-4'>
+      <div className='flex items-center justify-start gap-4'>
         {isDateCardVisible && (
-          <div className='flex flex-col items-center justify-center w-24 h-24 rounded-md bg-neutral-200'>
+          <div className='flex h-24 w-24 flex-col items-center justify-center rounded-md bg-neutral-200'>
             <UITypography variant='p' type='small'>
               {textMonth}
             </UITypography>
@@ -114,8 +114,8 @@ export function NewScheduleDetail({
           </div>
         </div>
       </div>
-      <div className='flex w-full h-full justify-start items-stretch'>
-        <div className='flex flex-col w-2/3 h-full pr-4 gap-4'>
+      <div className='flex h-full w-full items-stretch justify-start'>
+        <div className='flex h-full w-2/3 flex-col gap-4 pr-4'>
           <div className='flex flex-col gap-2'>
             <UITypography variant='p' type='small'>
               Candidate
@@ -136,7 +136,7 @@ export function NewScheduleDetail({
             {isInterviewerButtonVisible && <div>{slotInterviewerButton}</div>}
           </div>
         </div>
-        <div className='flex flex-col w-1/3 pl-6 gap-4 border-l border-neutral-300'>
+        <div className='flex w-1/3 flex-col gap-4 border-l border-neutral-300 pl-6'>
           <div className='flex flex-col gap-2'>
             <UITypography variant='p' type='small'>
               Organizer

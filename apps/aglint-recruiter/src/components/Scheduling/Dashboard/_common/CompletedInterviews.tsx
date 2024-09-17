@@ -1,5 +1,5 @@
 'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Card, CardHeader, CardTitle } from '@components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import React from 'react';
 
@@ -18,7 +18,6 @@ interface CompletedInterviewsProps {
 }
 
 export function CompletedInterviewsNew({
-  slotGraph,
   textMonth = 'Last 8 months',
   textLastDays = 'Last 30 days',
   onClickLastMonth,

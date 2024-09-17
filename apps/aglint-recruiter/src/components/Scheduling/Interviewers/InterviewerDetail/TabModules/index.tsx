@@ -1,12 +1,12 @@
 import { CardContent } from '@components/ui/card';
 import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
+import { useAllInterviewModules } from 'src/app/(authenticated)/_interview-pool/_common/hooks';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
-import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';

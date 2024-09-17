@@ -4,12 +4,14 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { type StageWithSessions } from '@/queries/application';
 import { supabase } from '@/utils/supabase/client';
 
-import { setIsScheduleOpen, setSelectedSessionIds, useApplicationDetailStore } from '../../../stores/applicationDetail';
+import {
+  setIsScheduleOpen,
+  setSelectedSessionIds,
+  useApplicationDetailStore,
+} from '../../../stores/applicationDetail';
 import { ApplicantDetailStage } from '../../ui/ApplicationDetailStage';
 import BreakCard from '../../ui/BreakCard';
 import ScheduleIndividualCard from '../IndividualSession';
-
-
 
 function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
   const router = useRouterPro();

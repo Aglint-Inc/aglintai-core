@@ -9,13 +9,13 @@ import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { useDeleteRelationHandler } from '../../hooks/useDeleteRelationHandler';
+import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsDeleteMemberDialogOpen,
   setSelUser,
   useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
-import { useDeleteRelationHandler } from '../../hooks/useDeleteRelationHandler';
-import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
+} from '../../stores/store';
 
 function DeleteMemberDialog() {
   const isDeleteMemberDialogOpen = useModulesStore(

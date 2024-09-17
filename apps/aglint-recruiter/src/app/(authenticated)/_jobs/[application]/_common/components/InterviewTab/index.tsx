@@ -1,4 +1,3 @@
-
 import { Loader } from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
@@ -36,9 +35,9 @@ function InterviewTabContent() {
     <>
       <SideDrawerEdit refetch={refetch} />
       <InterviewStage
-            slotInterviewStage={<StageSessions />}
-            slotPipelineTab={<Progress />}
-          />
+        slotInterviewStage={<StageSessions />}
+        slotPipelineTab={<Progress />}
+      />
       <DialogSchedule />
     </>
   );
