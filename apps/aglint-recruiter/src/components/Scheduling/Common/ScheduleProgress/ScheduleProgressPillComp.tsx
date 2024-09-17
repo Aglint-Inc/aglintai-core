@@ -13,7 +13,6 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/ScheduleProgressPill';
-import { StatusBadge } from '@devlink2/StatusBadge';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import {
@@ -30,6 +29,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
+import { StatusBadge } from './StatusBadge';
 
 type Enums = DB['public']['Enums'];
 

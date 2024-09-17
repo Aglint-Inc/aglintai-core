@@ -273,10 +273,12 @@ type SessionsProps = Pick<ScheduleCardProps['round'], 'sessions'> & {
 const Sessions = (props: SessionsProps) => {
   const sessions = props.sessions.reduce((acc, curr) => {
     acc.push(
-      <SessionCard
-        key={curr.interview_session.id + curr.interview_session.id}
-        session={curr}
-      />,
+      <>
+        <SessionCard
+          key={curr.interview_session.id + curr.interview_session.id}
+          session={curr}
+        />
+      </>,
     );
     if (curr.interview_session.break_duration !== 0 && props.showBreak)
       acc.push(

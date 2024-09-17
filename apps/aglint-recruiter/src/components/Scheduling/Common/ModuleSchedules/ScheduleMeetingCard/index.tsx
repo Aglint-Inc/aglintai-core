@@ -1,6 +1,5 @@
-import { MembersList } from '@devlink3/MembersList';
 import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
-import { Collapse, Stack, Typography } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -8,6 +7,7 @@ import { useState } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
+import { MembersList } from '@/components/Scheduling/_common/components/MembersList';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -61,9 +61,7 @@ function ScheduleMeetingCard({
                       meetingDetails.applications.candidates.last_name,
                     )}
                     isDesignationVisible={true}
-                    textDesignation={
-                      <Typography variant='caption'>{'Candidate'}</Typography>
-                    }
+                    textDesignation={'Candidate'}
                     textTime={null}
                   />
                   {interviewers.map((user) => {

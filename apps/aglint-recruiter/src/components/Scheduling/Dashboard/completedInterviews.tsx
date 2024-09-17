@@ -1,5 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { CompletedInterviews as CompletedInterviewsDev } from '@devlink3/CompletedInterviews';
+// import { CompletedInterviews as CompletedInterviewsDev } from '@devlink3/CompletedInterviews';
 import {
   BarElement,
   CategoryScale,
@@ -16,19 +16,19 @@ import {
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 
+import { CompletedInterviewsNew } from './_common/CompletedInterviews';
+
 export const CompletedInterviews = memo(() => {
   const { completedInterviewType, setCompletedInterviewType } =
     useSchedulingAnalytics();
   return (
-    <CompletedInterviewsDev
+    <CompletedInterviewsNew
       isLastDaysActive={completedInterviewType === 'month'}
       isLastQuarterActive={completedInterviewType === 'quarter'}
       isLastMonthsActive={completedInterviewType === 'year'}
-      onClickLastDays={{ onClick: () => setCompletedInterviewType('month') }}
-      onClickLastQuarter={{
-        onClick: () => setCompletedInterviewType('quarter'),
-      }}
-      onClickLastMonth={{ onClick: () => setCompletedInterviewType('year') }}
+      onClickLastDays={() => setCompletedInterviewType('month')}
+      onClickLastQuarter={() => setCompletedInterviewType('quarter')}
+      onClickLastMonth={() => setCompletedInterviewType('year')}
       textLastDays={'Last Month'}
       textLastQuarter={'Last Quarter'}
       textMonth={'Last Year'}
