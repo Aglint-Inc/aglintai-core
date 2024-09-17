@@ -51,7 +51,7 @@ const WorkflowActionDialog = () => {
     setTiptapLoadStatus,
   } = useSelectedActionsDetails();
 
-  const [isAddingAction, setIsAddingAction] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const handleChangeSelectedAction = (
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
@@ -98,7 +98,10 @@ const WorkflowActionDialog = () => {
   };
   const { mutateAsync } =
     api.textTransform.selfScheduleInstruction.useMutation();
-
+  let isDialogEdit = true;
+  if (selectedActionsDetails.id.length === 0) {
+    isDialogEdit = false;
+  }
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
@@ -114,7 +117,7 @@ const WorkflowActionDialog = () => {
         });
         return;
       }
-      setIsAddingAction(true);
+      setIsSaving(true);
       if (agentInstructions.length > 0) {
         const availabilityResp = await mutateAsync({
           instruction: agentInstructions,
@@ -136,6 +139,7 @@ const WorkflowActionDialog = () => {
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
         interval: triggerDetails.interval,
+        workflow_id: selectedActionsDetails.workflow_id,
       });
       await request_workflow.refetch();
       setShowEditDialog(false);
@@ -145,10 +149,9 @@ const WorkflowActionDialog = () => {
         variant: 'destructive',
       });
     } finally {
-      setIsAddingAction(false);
+      setIsSaving(false);
     }
   };
-
   return (
     <Card className='border-0 shadow-none'>
       <CardHeader>
@@ -209,7 +212,11 @@ const WorkflowActionDialog = () => {
             });
           }}
         >
-          {isAddingAction ? 'Adding...' : 'Add Action'}
+          {isDialogEdit ? (
+            <>{isSaving ? 'Saving...' : 'Save Action'}</>
+          ) : (
+            <>{isSaving ? 'Adding...' : 'Add Action'}</>
+          )}
         </Button>
       </CardFooter>
     </Card>

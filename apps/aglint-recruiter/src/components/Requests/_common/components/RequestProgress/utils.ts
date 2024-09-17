@@ -1,7 +1,4 @@
-import {
-  type DatabaseTable,
-  type DatabaseTableInsert,
-} from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/utils/supabase/client';
@@ -12,25 +9,28 @@ export const createRequestWorkflowAction = async ({
   request_id,
   recruiter_id,
   interval,
+  workflow_id,
 }: {
   wActions: DatabaseTableInsert['workflow_action'][];
   request_id: string;
   recruiter_id: string;
   interval: number;
+  workflow_id?: string;
 }) => {
   const trigger = wActions[0].target_api.split('_')[0] as any;
   const phase = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger).phase[0];
-  let wTrigger: DatabaseTable['workflow'];
-  [wTrigger] = supabaseWrap(
-    await supabase
-      .from('workflow')
-      .select()
-      .eq('request_id', request_id)
-      .eq('trigger', trigger),
-    false,
-  );
-  if (!wTrigger) {
-    [wTrigger] = supabaseWrap(
+  if (workflow_id) {
+    supabaseWrap(
+      await supabase
+        .from('workflow')
+        .update({
+          interval: interval,
+        })
+        .eq('id', workflow_id),
+      false,
+    );
+  } else {
+    const [wTrigger] = supabaseWrap(
       await supabase
         .from('workflow')
         .insert({
@@ -43,12 +43,14 @@ export const createRequestWorkflowAction = async ({
         })
         .select(),
     );
+    workflow_id = wTrigger.id;
   }
+
   supabaseWrap(
     await supabase
       .from('workflow_action')
       .delete()
-      .eq('workflow_id', wTrigger.id),
+      .eq('workflow_id', workflow_id),
   );
   supabaseWrap(
     await supabase
@@ -57,7 +59,7 @@ export const createRequestWorkflowAction = async ({
         wActions.map((action) => {
           return {
             ...action,
-            workflow_id: wTrigger.id,
+            workflow_id: workflow_id,
           };
         }),
       )
