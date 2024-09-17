@@ -2,8 +2,8 @@
 import { Application } from '@/context/ApplicationContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
-import SlotBody from './_common/components/AllTabs';
-import BreadCrumb from './_common/components/BreadCrumb';
+import SlotBody from './AllTabs';
+import BreadCrumb from './BreadCrumb';
 
 function ApplicationDetailComp() {
   const router = useRouterPro();

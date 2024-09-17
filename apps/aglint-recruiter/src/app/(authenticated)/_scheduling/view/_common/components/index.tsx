@@ -7,12 +7,12 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
-import Banners from './_common/components/Banners';
-import ButtonGroup from './_common/components/ButtonGroup';
-import Requests from './_common/components/Requests';
-import ScheduleDetailsTabs from './_common/components/Tabs';
-import { useScheduleDetails } from './_common/hooks/useScheduleDetails';
-import { setSessionUser } from './_common/stores';
+import { useScheduleDetails } from '../hooks/useScheduleDetails';
+import { setSessionUser } from '../stores';
+import Banners from './Banners';
+import ButtonGroup from './ButtonGroup';
+import Requests from './Requests';
+import ScheduleDetailsTabs from './Tabs';
 
 function SchedulingViewComp() {
   const { recruiterUser } = useAuthDetails();

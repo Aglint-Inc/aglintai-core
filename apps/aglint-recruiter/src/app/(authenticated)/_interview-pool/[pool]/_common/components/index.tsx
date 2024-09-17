@@ -13,13 +13,13 @@ import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
-import StatsCards from './_common/components/StatsCards';
-import InterviewDetailsTabs from './_common/components/Tabs';
-import ArchiveModuleDialog from './_common/dialogs/ArchiveModuleDialog';
-import DeleteModuleDialog from './_common/dialogs/DeleteModuleDialog';
-import { useModuleAndUsers } from './_common/hooks/useModuleAndUsers';
-import { setIsArchiveDialogOpen } from './_common/stores/store';
-import { unArchiveModuleById } from './_common/utils/pool';
+import ArchiveModuleDialog from '../dialogs/ArchiveModuleDialog';
+import DeleteModuleDialog from '../dialogs/DeleteModuleDialog';
+import { useModuleAndUsers } from '../hooks/useModuleAndUsers';
+import { setIsArchiveDialogOpen } from '../stores/store';
+import { unArchiveModuleById } from '../utils/pool';
+import StatsCards from './StatsCards';
+import InterviewDetailsTabs from './Tabs';
 
 export default function InterviewTypeDetail() {
   const {

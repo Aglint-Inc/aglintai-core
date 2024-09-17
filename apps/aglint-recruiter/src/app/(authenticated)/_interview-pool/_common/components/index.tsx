@@ -13,9 +13,9 @@ import { useState } from 'react';
 import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
-import { Header } from './_common/components/Header';
-import { InterviewPoolList } from './_common/components/InterviewPoolList';
-import { useAllInterviewModules } from './_common/hooks';
+import { useAllInterviewModules } from '../hooks';
+import { Header } from './Header';
+import { InterviewPoolList } from './InterviewPoolList';
 
 export default function InterviewTypesPage() {
   const [searchText, setSearchText] = useState('');
