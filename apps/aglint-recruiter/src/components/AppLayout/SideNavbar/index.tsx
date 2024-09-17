@@ -60,7 +60,9 @@ function SideNavbar() {
               ? isShowFeature('ANALYTICS') && item.isVisible
               : item.text === 'Workflows'
                 ? isShowFeature('WORKFLOW') && item.isVisible
-                : item.isVisible;
+                : item.text === 'Integrations'
+                  ? isShowFeature('INTEGRATIONS') && item.isVisible
+                  : item.isVisible;
 
           return isVisible ? (
             <LinkComp
