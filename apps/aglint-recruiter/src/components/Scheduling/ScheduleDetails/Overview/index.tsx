@@ -10,9 +10,9 @@ import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
+import { MeetingStatusBadge } from '../../../../app/_common/components/MeetingStatusBadge';
 import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import IconSessionType from '../../../Common/Icons/IconSessionType';
-import { MeetingStatusBadge } from '../../_common/components/MeetingStatusBadge';
 import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
