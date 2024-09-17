@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { supabase } from '@/utils/supabase/client';
 
-import { schedulesSupabase } from '../schedules-query';
+import { schedulesSupabase } from '../../../app/_common/utils/schedules-query';
 
 export const useAllSchedulesByUserId = ({
   filter,

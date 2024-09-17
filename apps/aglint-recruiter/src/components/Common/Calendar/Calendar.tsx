@@ -33,7 +33,7 @@ import {
 import { Loader } from '@/components/Common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
+import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
 // import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {

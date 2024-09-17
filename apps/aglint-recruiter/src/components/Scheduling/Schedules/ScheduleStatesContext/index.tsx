@@ -10,7 +10,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import {
   type SchedulesSupabase,
   schedulesSupabase,
-} from '../../schedules-query';
+} from '../../../../app/_common/utils/schedules-query';
 import { initialFilterState, type ScheduleFilerType } from './constant';
 
 export type AssignerType = RecruiterUserType & {

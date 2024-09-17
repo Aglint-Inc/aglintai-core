@@ -10,10 +10,10 @@ import { useEffect, useState } from 'react';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/queries/intergrations';
 
+import { transformDataSchedules } from '../../../app/_common/utils/schedules-query';
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
-import { transformDataSchedules } from '../schedules-query';
 import { InterviewMemberSide } from './InterviewMemberSide';
 import { NewMyScheduleCard } from './NewMyScheduleCard';
 import { fetchSchedulesCountByUserId, useAllSchedulesByUserId } from './query';
