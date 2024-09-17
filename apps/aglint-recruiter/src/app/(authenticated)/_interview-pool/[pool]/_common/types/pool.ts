@@ -1,10 +1,9 @@
 import { type DB, type PauseJson } from '@aglint/shared-types';
 
-import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
+import { type MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
 
-import { type useModuleAndUsers } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/hooks/useModuleAndUsers';
-import { type fetchInterviewModules } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
-import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
+import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
+import { type fetchInterviewModules } from '../utils/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -35,4 +34,3 @@ export type StatusTraining = DB['public']['Enums']['status_training'];
 
 export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
 
-export type MemberType = CompanyMembersAPI[number];

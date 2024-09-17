@@ -10,15 +10,11 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UITextField from '@/components/Common/UITextField';
 import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
-import {
-  setIsModuleSettingsDialogOpen,
-  setLocalModule,
-  useModulesStore,
-} from '@/components/Scheduling/InterviewTypes/store';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
+import { setIsModuleSettingsDialogOpen, setLocalModule, useModulesStore } from '../../../stores/store';
 
 function TrainingSettingDrawer(
   props: ReturnType<typeof useEnableDisableTraining>,

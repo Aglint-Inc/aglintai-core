@@ -10,7 +10,7 @@ import {
   setIsModuleSettingsDialogOpen,
   setLocalModule,
   useModulesStore,
-} from '../../../../../../components/Scheduling/InterviewTypes/store';
+} from '../stores/store';
 import { useModuleAndUsers } from './useModuleAndUsers';
 
 export const useEnableDisableTraining = () => {

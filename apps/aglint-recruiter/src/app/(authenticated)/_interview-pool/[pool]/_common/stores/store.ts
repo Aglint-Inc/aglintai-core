@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { type SchedulingSlice } from './types';
+import { type SchedulingSlice } from '../types/pool';
 
 export const initialStateSchedulingStore: SchedulingSlice = {
   isCreateDialogOpen: null,

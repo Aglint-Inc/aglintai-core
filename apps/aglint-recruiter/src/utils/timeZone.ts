@@ -1,3 +1,5 @@
+export type TimezoneObj = (typeof timeZone)[number];
+
 export const timeZone = [
   {
     label: 'Pacific/Midway (GMT-11:00)',

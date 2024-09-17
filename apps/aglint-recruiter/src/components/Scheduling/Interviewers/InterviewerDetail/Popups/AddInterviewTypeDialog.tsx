@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useAllInterviewModules } from 'src/app/(authenticated)/_interview-pool/_common/hooks';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { supabase } from '@/utils/supabase/client';
 
 import { useModuleRelations } from '../hooks';

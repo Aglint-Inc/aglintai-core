@@ -9,7 +9,7 @@ import { supabase } from '@/utils/supabase/client';
 import {
   setIsMovedToQualifiedDialogOpen,
   useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
+} from '../../stores/store';
 
 function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
   const { toast } = useToast();
