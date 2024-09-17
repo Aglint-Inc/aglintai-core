@@ -1,22 +1,22 @@
+import { Card } from '@components/ui/card';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
-import { type ScheduleDetailsType } from '../hooks';
+import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 
-function JobDetails({
-  schedule,
-}: {
-  schedule: ScheduleDetailsType['schedule_data'];
-}) {
+function JobDetails() {
+  const {
+    data: { schedule_data: schedule },
+  } = useScheduleDetails();
   const editor = useEditor({
     editable: false,
     content: schedule?.job.description,
     extensions: [StarterKit],
   });
   return (
-    <div className='max-w-[800px] p-5'>
+    <Card className='p-4'>
       <EditorContent editor={editor} />
-    </div>
+    </Card>
   );
 }
 

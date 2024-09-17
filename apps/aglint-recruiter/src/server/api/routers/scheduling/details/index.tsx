@@ -1,38 +1,24 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { type MemberType } from 'src/app/_common/types/member';
+import { z } from 'zod';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
-import { supabase } from '@/utils/supabase/client';
 
-export const useScheduleDetails = () => {
-  const queryClient = useQueryClient();
-  const router = useRouter();
-  const query = useQuery({
-    queryKey: ['schedule_details', router?.query?.meeting_id],
-    queryFn: async () => await getSchedule(router?.query?.meeting_id as string),
-    enabled: !!router?.query?.meeting_id,
-  });
-  const refetch = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['schedule_details', router?.query?.meeting_id],
-    });
-  };
-  return { ...query, refetch };
-};
+export const scheduleDetailsSchema = z.object({
+  meeting_id: z.string().uuid(),
+});
 
-export type ScheduleDetailsType = Awaited<ReturnType<typeof getSchedule>>;
-
-async function getSchedule(meeting_id: string) {
-  const { data: res } = await supabase
+const query = async ({
+  ctx: { db },
+  input: { meeting_id },
+}: PrivateProcedure<typeof scheduleDetailsSchema>) => {
+  const { data: res } = await db
     .from('interview_meeting')
     .select(
       `*,organizer:recruiter_user(*),interview_session(*,${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})),applications(*,public_jobs(id,job_title,description,departments(name),office_locations(country,city),hir_man:recruiter_user!public_jobs_hiring_manager_fkey(*),rec:recruiter_user!public_jobs_recruiter_fkey(*),rec_cor:recruiter_user!public_jobs_recruiting_coordinator_fkey(*)),candidates(*))`,
     )
     .eq('id', meeting_id)
-    .single();
+    .single()
+    .throwOnError();
 
   return {
     schedule_data: {
@@ -97,48 +83,8 @@ async function getSchedule(meeting_id: string) {
       },
     ),
   };
-}
-
-export const useModuleDetails = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['module_details'],
-    queryFn: () => getModule(router?.query?.module_id as string),
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({ queryKey: ['module_details'] });
-  return { ...query, refetch };
 };
 
-async function getModule(module_id: string) {
-  const { data, error } = await supabase
-    .from('interview_module')
-    .select()
-    .eq('id', module_id)
-    .single();
-  if (!error) {
-    return data;
-  }
-  if (error) throw Error(error.message);
-}
-
-export const useAllInterviewersDetails = () => {
-  const { recruiter_id } = useAuthDetails();
-  const query = useQuery({
-    queryKey: [`InterviewModulesDetails_${recruiter_id}`],
-    queryFn: () => {
-      return axios
-        .post('/api/scheduling/fetchUserDetails', {
-          recruiter_id,
-        })
-        .then((data) => {
-          const temp = data.data as unknown as MemberType[];
-          return temp;
-        });
-    },
-    enabled: Boolean(recruiter_id),
-    refetchOnWindowFocus: false,
-  });
-  return query;
-};
+export const scheduleDetails = privateProcedure
+  .input(scheduleDetailsSchema)
+  .query(query);

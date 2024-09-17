@@ -34,10 +34,12 @@ import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
 import { getFullName } from '@/utils/jsonResume';
 import toast from '@/utils/toast';
 
+import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 import {
   re_mapper,
   saveInterviewerFeedback,
@@ -77,18 +79,30 @@ type FeedbackWindowInterviewersType = {
   }[];
 };
 
-const FeedbackWindow = ({
-  interview_sessions,
-  candidate,
-}: {
-  interview_sessions: FeedbackWindowInterviewersType[string][number]['session'][];
-  candidate: {
-    name: string;
-    email: string;
-    job_id: string;
-    application_id: string;
+const FeedbackWindow = () => {
+  const {
+    data: { schedule_data: schedule },
+  } = useScheduleDetails();
+
+  const interview_sessions = [
+    {
+      id: schedule?.interview_session.id,
+      title: schedule?.interview_session.name,
+      created_at: schedule?.interview_session.created_at,
+      time: {
+        start: schedule?.interview_meeting.start_time,
+        end: schedule?.interview_meeting.end_time,
+      },
+      status: schedule?.interview_meeting.status,
+      session_type: schedule?.interview_session.session_type,
+    },
+  ];
+  const candidate = {
+    email: schedule?.candidates.email,
+    name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+    job_id: schedule?.job?.id,
+    application_id: schedule?.application_id,
   };
-}) => {
   const {
     data: relationsData,
     isLoading,
@@ -297,11 +311,11 @@ const AdminFeedback = ({
   interviewers.forEach((item) => {
     sessions[item.session.id] = [...(sessions[item.session.id] || []), item];
   });
-  const router = useRouter();
+  const router = useRouterPro();
   return (
     <>
       <div className='flex flex-col space-y-2 p-2'>
-        {router.pathname !== '/scheduling/view'
+        {router.pathName !== '/scheduling/view'
           ? Object.keys(sessions)
               .map((key) => {
                 const session = sessions[key] || [];

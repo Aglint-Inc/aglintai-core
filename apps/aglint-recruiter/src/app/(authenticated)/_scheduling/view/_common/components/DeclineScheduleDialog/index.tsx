@@ -1,9 +1,8 @@
-import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { useToast } from '@components/hooks/use-toast';
 import { Label } from '@components/ui/label';
 import { RadioGroupItem } from '@components/ui/radio-group';
-import React, { type Dispatch, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -12,21 +11,16 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
 
-import { type ScheduleDetailsType } from '../hooks';
+import { useScheduleDetails } from '../../hooks/useScheduleDetails';
+import { setIsDeclineDialogOpen, useScheduleDetailsStore } from '../../stores';
 
-function DeclineScheduleDialog({
-  isDeclineOpen,
-  setIsDeclineOpen,
-  sessionRelation,
-  schedule,
-  refetch,
-}: {
-  isDeclineOpen: boolean;
-  setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
-  sessionRelation: InterviewSessionRelationTypeDB;
-  schedule: ScheduleDetailsType['schedule_data'];
-  refetch: () => void;
-}) {
+function DeclineScheduleDialog() {
+  const {
+    data: { schedule_data: schedule },
+    refetch,
+  } = useScheduleDetails();
+
+  const { sessionUser, isDeclineDialogOpen } = useScheduleDetailsStore();
   const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
 
@@ -43,6 +37,8 @@ function DeclineScheduleDialog({
   useEffect(() => {
     setReason(reasons[0]);
   }, []);
+
+  const sessionRelation = sessionUser?.interview_session_relation;
 
   const onClickConfirm = async () => {
     try {
@@ -98,17 +94,17 @@ function DeclineScheduleDialog({
         description: 'Unable to save cancel reason',
       });
     } finally {
-      setIsDeclineOpen(false);
+      setIsDeclineDialogOpen(false);
     }
   };
 
   return (
     <>
       <UIDialog
-        open={isDeclineOpen}
+        open={isDeclineDialogOpen}
         title='Decline Schedule'
         onClose={() => {
-          setIsDeclineOpen(false);
+          setIsDeclineDialogOpen(false);
         }}
         slotButtons={
           <>
@@ -116,7 +112,7 @@ function DeclineScheduleDialog({
               size='sm'
               variant='secondary'
               onClick={() => {
-                setIsDeclineOpen(false);
+                setIsDeclineDialogOpen(false);
               }}
             >
               Cancel
