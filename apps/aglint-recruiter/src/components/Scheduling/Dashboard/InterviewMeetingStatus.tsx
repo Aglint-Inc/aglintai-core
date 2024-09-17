@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-object-injection */
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
 import { Stack } from '@mui/material';
 import {
   BarElement,
@@ -14,6 +12,7 @@ import { Bar } from 'react-chartjs-2';
 
 import { useInterviewMeetingStatus } from '@/queries/scheduling-dashboard';
 
+import { NewInterviewDetail } from './_common/NewInterviewDetail';
 import { interviewMeetingTimeFormat } from './utils';
 
 type MeetingStatusObjType = ReturnType<

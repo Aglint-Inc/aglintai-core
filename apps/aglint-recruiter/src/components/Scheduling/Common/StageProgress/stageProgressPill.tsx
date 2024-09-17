@@ -1,8 +1,8 @@
-import { StagePipelineSmall } from '@devlink3/StagePipelineSmall';
 import { Stack } from '@mui/material';
 import { forwardRef, memo, type Ref } from 'react';
 
 import type { StageProgressProps } from '.';
+import { StagePipelineSmall } from './StagePipelineSmall';
 
 export type StageProgressPillProps = {
   pillProps: ReturnType<typeof getPlanPillProps>[number];
