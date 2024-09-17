@@ -1,4 +1,3 @@
-export { useApplicationsParams } from './useApplicationParams';
 export { useApplications } from './useApplications';
 export { useApplicationsActions } from './useApplicationsActions';
 export { useApplicationsStore } from './useApplicationsStore';
@@ -9,3 +8,4 @@ export { useJobDashboardActions } from './useJobDashboardActions';
 export { useJobDashboardStore } from './useJobDashboardStore';
 export { useJobFilterBadges } from './useJobFilterBadges';
 export { useJobFilterLocations } from './useJobFilterLocations';
+export { useJobParams } from './useJobParams';

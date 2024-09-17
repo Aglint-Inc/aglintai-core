@@ -12,8 +12,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
-import { useApplicationsParams, useJob, useJobDashboard } from '@/job/hooks';
-import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import { useJob, useJobDashboard, useJobParams } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
 import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
@@ -106,12 +105,12 @@ const Dashboard = () => {
   } = useJobDashboard();
   const { push } = useRouter();
 
-  const { getParams } = useApplicationsParams();
+  const { getParams } = useJobParams();
 
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   const handleFilter = (
-    resume_match: ApplicationsParams['filters']['resume_match'][number],
+    resume_match: Parameters<typeof getParams>[0]['resume_match'][number],
   ) => {
     const params = getParams({ resume_match: [resume_match] });
     push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
@@ -350,7 +349,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 
 // const Pipeline = () => {
 //   const { job } = useJobDashboard();
-//   const { getParams } = useApplicationsParams();
+//   const { getParams } = useJobParams();
 //   const { push } = useRouter();
 //   const newSections = Object.entries(job?.section_count ?? {}).reduce(
 //     (acc, [key, value]) => {

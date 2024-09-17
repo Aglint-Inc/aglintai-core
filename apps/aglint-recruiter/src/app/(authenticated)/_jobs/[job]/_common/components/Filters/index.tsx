@@ -12,8 +12,8 @@ import {
   useJob,
   useJobFilterBadges,
   useJobFilterLocations,
+  type useJobParams,
 } from '@/job/hooks';
-import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { capitalize } from '@/utils/text/textUtils';
 
 const Filters = () => {
@@ -182,7 +182,9 @@ const Filters = () => {
 
 export default Filters;
 
-const badgesTypes: ApplicationsParams['filters']['badges'] = [
+type JobParams = ReturnType<typeof useJobParams>;
+
+const badgesTypes: JobParams['filters']['badges'] = [
   'careerGrowth',
   'jobStability',
   'leadership',
@@ -211,7 +213,7 @@ function badgeLabel(key: (typeof badgesTypes)[number]) {
   }
 }
 
-const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
+const resumeScoreTypes: JobParams['filters']['resume_match'] = [
   'top_match',
   'good_match',
   'average_match',
@@ -220,7 +222,7 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
   'unknown_match',
 ];
 
-// const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
+// const scheduleStatus: JobParams['filters']['schedule_status'] = [
 //   'cancelled',
 //   'completed',
 //   'confirmed',
@@ -229,7 +231,7 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
 //   'waiting',
 // ];
 
-const sortTypes: ApplicationsParams['filters']['type'][] = [
+const sortTypes: JobParams['filters']['type'][] = [
   'latest_activity',
   'resume_match',
   'applied_at',

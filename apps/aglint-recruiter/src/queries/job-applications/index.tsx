@@ -17,7 +17,7 @@ import {
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import type { useJobParams } from '@/job/hooks';
 import { type Application } from '@/types/applications.types';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
@@ -121,7 +121,7 @@ type ApplicationsAllQueryPrerequistes = {
 };
 
 type Params = ApplicationsAllQueryPrerequistes &
-  Omit<ApplicationsParams['filters'], 'section'> & {
+  Omit<JobParams['filters'], 'section'> & {
     status: Application['status'];
   };
 
@@ -237,9 +237,11 @@ const getApplications = async ({
   return applications;
 };
 
+type JobParams = ReturnType<typeof useJobParams>;
+
 export const BADGE_CONSTANTS: {
   // eslint-disable-next-line no-unused-vars
-  [_id in ApplicationsParams['filters']['badges'][number]]: number;
+  [_id in JobParams['filters']['badges'][number]]: number;
 } = {
   careerGrowth: 89,
   jobStability: 89,

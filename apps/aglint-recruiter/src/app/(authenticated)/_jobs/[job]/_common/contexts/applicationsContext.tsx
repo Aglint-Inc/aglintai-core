@@ -6,10 +6,10 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 import { CASCADE_VISIBILITIES, EMAIL_VISIBILITIES } from '@/job/constants';
-import { useApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { useApplicationsActions } from '@/job/hooks/useApplicationsActions';
 import { useApplicationsStore } from '@/job/hooks/useApplicationsStore';
 import { useJob } from '@/job/hooks/useJob';
+import { useJobParams } from '@/job/hooks/useJobParams';
 import {
   applicationsQueries,
   useDeleteApplication,
@@ -33,7 +33,7 @@ const useApplicationsContext = () => {
 
   const checklist = useApplicationsStore((state) => state.checklist);
 
-  const { filters, section, setFilters, setSection } = useApplicationsParams();
+  const { filters, section, setFilters, setSection } = useJobParams();
 
   const [params, setParams] = useState(filters);
   const ref = useRef(true);

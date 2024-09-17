@@ -10,7 +10,6 @@ import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 type Application = DatabaseView['application_view'];
 
 type Params = {
-  recruiter_id: DatabaseTable['recruiter']['id'];
   job_id: DatabaseTable['public_jobs']['id'];
   status: Application['status'];
   bookmarked: boolean;
@@ -29,7 +28,6 @@ type Params = {
 };
 
 export const schema = z.object({
-  recruiter_id: z.string().uuid(),
   job_id: z.string().uuid(),
   status: z.enum(['new', 'interview', 'qualified', 'disqualified']),
   bookmarked: z.boolean(),

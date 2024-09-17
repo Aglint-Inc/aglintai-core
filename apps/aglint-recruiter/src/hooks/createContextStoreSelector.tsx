@@ -24,6 +24,18 @@ export function createContextStoreSelector<T>(
   };
 }
 
+export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
+  state: T,
+) => {
+  function get(): T;
+  function get<U extends keyof T>(_key: U): T[U];
+  function get<U extends keyof T>(key?: U) {
+    if (key) return structuredClone(state[key]);
+    return structuredClone(state);
+  }
+  return get;
+};
+
 export type CreateContextStore<
   T extends Record<string, any>,
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-empty-object-type
