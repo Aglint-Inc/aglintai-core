@@ -3,7 +3,7 @@ import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
@@ -146,23 +146,23 @@ function InterviewerDetailOverview({
   isUpcomingVisible = true,
 }) {
   return (
-    <div className='flex flex-col w-[900px] p-4 space-y-6'>
+    <div className='flex w-[900px] flex-col space-y-6 p-4'>
       {isUpcomingVisible && (
         <div>
-          <UITypography variant='p' type='small' className='font-semibold mb-2'>
+          <UITypography variant='p' type='small' className='mb-2 font-semibold'>
             {textHeader1}
           </UITypography>
-          <CardContent className=' p-0 flex flex-col space-y-2'>
+          <CardContent className='flex flex-col space-y-2 p-0'>
             {slotUpcomingSchedule}
           </CardContent>
         </div>
       )}
       {isTrainingVisible && (
         <div>
-          <UITypography variant='p' type='small' className='font-semibold mb-2'>
+          <UITypography variant='p' type='small' className='mb-2 font-semibold'>
             {textHeader2}
           </UITypography>
-          <CardContent className='p-0 flex flex-col space-y-4'>
+          <CardContent className='flex flex-col space-y-4 p-0'>
             {slotTrainingModules}
           </CardContent>
         </div>

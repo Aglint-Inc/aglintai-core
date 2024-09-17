@@ -222,7 +222,7 @@ export { AuthContext, AuthProvider };
 
 const AuthLoader = () => {
   return (
-    <div className='flex h-screen items-center justify-center w-full'>
+    <div className='flex h-screen w-full items-center justify-center'>
       <Loader2 className='animate-spin' />
     </div>
   );

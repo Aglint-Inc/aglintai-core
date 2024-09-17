@@ -94,7 +94,7 @@ function CreateModuleDialog() {
             Create a new interview type by specifying the name, department, and
             objective, and indicate if training is required.
           </p>
-          <div className='space-y-4 w-full'>
+          <div className='w-full space-y-4'>
             <UITextField
               id='name'
               placeholder='Ex: Initial Screening'
@@ -159,7 +159,7 @@ function CreateModuleDialog() {
                 Requires Training
               </Label>
             </div>
-            <p className='text-sm text-gray-500 ml-6'>
+            <p className='ml-6 text-sm text-gray-500'>
               Select if the interviewer requires training before conducting this
               interview
             </p>

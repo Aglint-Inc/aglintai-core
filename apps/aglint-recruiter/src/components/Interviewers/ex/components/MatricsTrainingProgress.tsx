@@ -1,11 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
-import { TrainingProgressList } from '@devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
 import { HardDrive } from 'lucide-react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { memo, useMemo } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
@@ -18,23 +14,26 @@ import { useTrainingProgress, type useTrainingProgressType } from '../Hook';
 const LIMIT = 4;
 
 export const TrainingProgress = memo(() => {
-  const { push } = useRouter();
-  //   const {
-  //     training_progress: { data },
-  //   } = useSchedulingAnalytics();
-
   const { data } = useTrainingProgress({});
   return (
-    <Stack width={'100%'}>
-      <TrainingProgressDev
-        onClickViewAllInterviewers={{
-          onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-        }}
-        isViewAllVisible={(data ?? []).length > LIMIT}
-        // slotTrainingProgressList={<>hellow</>}
-        slotTrainingProgressList={<Containter />}
-      />
-    </Stack>
+    <div className='w-full'>
+      <div className='w-full'>
+        <div className='mb-4 flex items-center justify-between'>
+          <h2 className='text-xl font-semibold'>Training Progress</h2>
+          {(data ?? []).length > LIMIT && (
+            <Link
+              href={`${ROUTES['/scheduling']()}?tab=interviewtypes`}
+              className='text-blue-600 transition-colors hover:text-blue-800'
+            >
+              View All Interviewers
+            </Link>
+          )}
+        </div>
+        <div className='rounded-lg bg-white p-4 shadow'>
+          <Containter />
+        </div>
+      </div>
+    </div>
   );
 });
 TrainingProgress.displayName = 'TrainingProgress';
@@ -47,11 +46,7 @@ const Containter = () => {
   if (status === 'error') return <>Error</>;
 
   if (data.length === 0)
-    return (
-      <Stack>
-        <GlobalEmpty iconSlot={<HardDrive />} text={'No Data Available'} />
-      </Stack>
-    );
+    return <GlobalEmpty iconSlot={<HardDrive />} text={'No Data Available'} />;
 
   return <List data={data} />;
 };
@@ -60,23 +55,21 @@ const List = memo(({ data }: { data: useTrainingProgressType }) => {
   return (
     <>
       {(data ?? []).map((data) => (
-        <Stack
+        <div
           key={data.user_id}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
+          className='cursor-pointer rounded-lg p-4 transition-colors duration-200 hover:bg-neutral-100'
         >
-          <TrainingProgressList
-            slotHistoryPill={<Pills {...data} />}
-            slotInterviewerImage={<Avatar alt={data.name} />}
-            textInterviewModule={''}
-            textName={capitalizeAll(data.name)}
-            textRole={data.position}
-          />
-        </Stack>
+          <div className='flex items-center space-x-4'>
+            <Avatar alt={data.name} />
+            <div className='flex-grow'>
+              <h3 className='font-medium'>{capitalizeAll(data.name)}</h3>
+              <p className='text-sm text-gray-500'>{data.position}</p>
+            </div>
+            <div className='flex-shrink-0'>
+              <Pills {...data} />
+            </div>
+          </div>
+        </div>
       ))}
     </>
   );
@@ -144,7 +137,7 @@ Pills.displayName = 'Pills';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => <TrainingProgressLoader key={i} slotSkeleton={<Skeleton />} />,
+    (_, i) => <Skeleton key={i} />,
   );
 });
 Loader.displayName = 'Loader';

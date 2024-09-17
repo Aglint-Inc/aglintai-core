@@ -7,7 +7,7 @@ export const ScoreTag = ({ score }: { score: number }) => {
   return (
     <UIBadge
       className={cn(
-        'text-xs font-medium px-2 py-1 rounded-full',
+        'rounded-full px-2 py-1 text-xs font-medium',
         bgColor,
         textColor,
       )}

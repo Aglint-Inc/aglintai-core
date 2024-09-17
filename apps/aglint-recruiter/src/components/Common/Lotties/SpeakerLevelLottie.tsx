@@ -3,9 +3,9 @@
 function SpeakerLevelLottie({ children, speaking }) {
   return (
     <div>
-      <div className='relative flex justify-center items-center rounded-[10px] md:rounded-full h-[80px] w-[80px] md:h-[140px] md:w-[140px]'>
+      <div className='relative flex h-[80px] w-[80px] items-center justify-center rounded-[10px] md:h-[140px] md:w-[140px] md:rounded-full'>
         <div
-          className={`absolute flex justify-center items-center rounded-full bg-green-200 border-[15px] border-green-100 ${
+          className={`absolute flex items-center justify-center rounded-full border-[15px] border-green-100 bg-green-200 ${
             speaking ? 'wave1' : ''
           }`}
           style={{

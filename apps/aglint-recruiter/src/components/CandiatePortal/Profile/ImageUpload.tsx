@@ -34,9 +34,9 @@ function ImageUploadManual({
   }
 
   return (
-    <div className='flex items-end gap-4 relative mb-2 rounded-lg border border-gray-200'>
+    <div className='relative mb-2 flex items-end gap-4 rounded-lg border border-gray-200'>
       <div className='relative'>
-        <Avatar className={`w-${size} h-${size} rounded-lg overflow-hidden`}>
+        <Avatar className={`w-${size} h-${size} overflow-hidden rounded-lg`}>
           <AvatarImage
             src={initImage || '/images/emptyProfile.jpg'}
             alt='Profile'
@@ -44,8 +44,8 @@ function ImageUploadManual({
           <AvatarFallback>Profile</AvatarFallback>
         </Avatar>
         {loading && (
-          <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg'>
-            <Loader2 className='w-8 h-8 animate-spin text-white' />
+          <div className='absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-50'>
+            <Loader2 className='h-8 w-8 animate-spin text-white' />
           </div>
         )}
       </div>

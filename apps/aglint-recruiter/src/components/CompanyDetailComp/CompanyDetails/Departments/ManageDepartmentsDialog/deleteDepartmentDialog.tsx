@@ -9,7 +9,7 @@ import {
 } from '@components/ui/dialog';
 import { useQuery } from '@tanstack/react-query';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -43,7 +43,7 @@ function DeleteDepartmentsDialog({
           </div>
         ) : isBothEmpty ? (
           <div
-            className='bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4'
+            className='border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700'
             role='alert'
           >
             <p className='font-bold'>Warning</p>
@@ -54,7 +54,7 @@ function DeleteDepartmentsDialog({
           </div>
         ) : (
           <div
-            className='bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4'
+            className='border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700'
             role='alert'
           >
             <p className='font-bold'>Warning</p>
@@ -73,7 +73,7 @@ function DeleteDepartmentsDialog({
                 : ''}
               first:
             </p>
-            <ul className='list-disc list-inside mt-2'>
+            <ul className='mt-2 list-inside list-disc'>
               {!isUserEmpty && (
                 <li>
                   <span className='font-medium'>

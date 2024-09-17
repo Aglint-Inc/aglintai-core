@@ -21,7 +21,7 @@ export function InterviewersDash({
       : '';
   return (
     <Card className='h-[420px] overflow-hidden'>
-      <CardHeader className='flex flex-row  justify-between items-center p-0 px-3 py-1 bg-neutral-100 border-b'>
+      <CardHeader className='flex flex-row items-center justify-between border-b bg-neutral-100 p-0 px-3 py-1'>
         <UITypography variant='p' type='small'>
           Interviewers
         </UITypography>
@@ -53,7 +53,7 @@ export function InterviewersDash({
         </div>
       </CardHeader>
       <CardContent className='p-0'>
-        <div className='grid grid-cols-[40%_20%_20%_20%]  items-center px-4 py-2 border-b'>
+        <div className='grid grid-cols-[40%_20%_20%_20%] items-center border-b px-4 py-2'>
           <UITypography variant='p' type='small' className='text-neutral-500'>
             Name
           </UITypography>

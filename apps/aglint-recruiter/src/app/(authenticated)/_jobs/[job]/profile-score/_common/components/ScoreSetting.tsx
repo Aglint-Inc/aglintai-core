@@ -5,24 +5,22 @@ interface ScoreSettingProps {
   slotScoringLoader?: React.ReactNode;
 }
 
-export function ScoreSetting({ 
-  slotBanner, 
+export function ScoreSetting({
+  slotBanner,
   slotScoreCardDetails,
   textScoreCount,
-  slotScoringLoader
+  slotScoringLoader,
 }: ScoreSettingProps) {
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       {slotBanner}
       {textScoreCount && (
-        <div className="flex items-center space-x-2">
+        <div className='flex items-center space-x-2'>
           <span>{textScoreCount}</span>
           {slotScoringLoader}
         </div>
       )}
-      <div className="space-y-4">
-        {slotScoreCardDetails}
-      </div>
+      <div className='space-y-4'>{slotScoreCardDetails}</div>
     </div>
   );
 }

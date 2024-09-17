@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function NextInterviewBlock() {
   return (
-    <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
+    <Card className='mb-4 border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
       <CardHeader>
         <CardTitle className='text-lg font-semibold'>
           Your next interview
@@ -13,9 +13,9 @@ export default function NextInterviewBlock() {
         <p className='text-sm text-gray-500'>Mon, Aug 21</p>
       </CardHeader>
       <CardContent>
-        <div className='bg-gray-100 p-4 rounded-md mb-4'>
-          <div className='flex items-center mb-2'>
-            <div className='bg-gray-300 text-gray-600 font-semibold p-2 rounded mr-3'>
+        <div className='mb-4 rounded-md bg-gray-100 p-4'>
+          <div className='mb-2 flex items-center'>
+            <div className='mr-3 rounded bg-gray-300 p-2 font-semibold text-gray-600'>
               Aug
               <br />
               21
@@ -25,16 +25,16 @@ export default function NextInterviewBlock() {
               <p className='text-sm text-gray-600'>Recruiter initial call</p>
             </div>
           </div>
-          <div className='flex items-center text-sm text-gray-600 mb-3'>
-            <UserIcon className='w-4 h-4 mr-2' />
+          <div className='mb-3 flex items-center text-sm text-gray-600'>
+            <UserIcon className='mr-2 h-4 w-4' />
             <span>Jane M</span>
-            <ExternalLinkIcon className='w-4 h-4 ml-2' />
+            <ExternalLinkIcon className='ml-2 h-4 w-4' />
           </div>
           <Button variant='outline' className='w-full'>
             Join meeting
           </Button>
         </div>
-        <Link href='#' className='text-blue-600 text-sm'>
+        <Link href='#' className='text-sm text-blue-600'>
           See all 3 upcoming interviews
         </Link>
       </CardContent>

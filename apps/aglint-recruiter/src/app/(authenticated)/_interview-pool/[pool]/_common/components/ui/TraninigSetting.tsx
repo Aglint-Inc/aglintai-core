@@ -23,8 +23,8 @@ export function TrainingSetting({
   isApprovalVisible = true,
 }: TrainingSettingProps) {
   return (
-    <Card className='p-4 flex flex-col'>
-      <div className='flex justify-between items-start p-0'>
+    <Card className='flex flex-col p-4'>
+      <div className='flex items-start justify-between p-0'>
         <div className='flex flex-col gap-1'>
           <p>{textHeading}</p>
           {isDisable && (

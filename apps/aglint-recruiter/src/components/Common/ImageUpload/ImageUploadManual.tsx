@@ -1,11 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import {
-  Building2,
-  Loader2,
-  Trash2,
-  Upload,
-  UserCircle
-} from 'lucide-react';
+import { Building2, Loader2, Trash2, Upload, UserCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -58,19 +52,19 @@ function ImageUploadManual({
           />
           <AvatarFallback>
             {router.route.includes(ROUTES['/profile']()) ? (
-              <UserCircle className='w-6 h-6 text-neutral-600' />
+              <UserCircle className='h-6 w-6 text-neutral-600' />
             ) : (
-              <Building2 className='w-6 h-6 text-neutral-600' />
+              <Building2 className='h-6 w-6 text-neutral-600' />
             )}
           </AvatarFallback>
         </Avatar>
 
         {loading && (
-          <div className='absolute inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50 rounded-lg'>
-            <Loader2 className='w-6 h-6 text-white animate-spin' />
+          <div className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black bg-opacity-50'>
+            <Loader2 className='h-6 w-6 animate-spin text-white' />
           </div>
         )}
-        <div className='absolute inset-0 flex items-center justify-center z-1'>
+        <div className='z-1 absolute inset-0 flex items-center justify-center'>
           {!initImage ? (
             <FileUploader
               handleChange={onImageChange}
@@ -78,15 +72,15 @@ function ImageUploadManual({
               types={['PNG', 'JPEG', 'JPG']}
             >
               <Upload
-                className={`w-5 h-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
+                className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
               />
             </FileUploader>
           ) : (
             <div
-              className={`flex items-center justify-center w-full h-full rounded-lg transition-all duration-500 ${isStackHovered ? 'bg-neutral-200 bg-opacity-50' : ''}`}
+              className={`flex h-full w-full items-center justify-center rounded-lg transition-all duration-500 ${isStackHovered ? 'bg-neutral-200 bg-opacity-50' : ''}`}
             >
               {initImage && isStackHovered && (
-                <div className='flex  bg-opacity-70 rounded-lg'>
+                <div className='flex rounded-lg bg-opacity-70'>
                   <Trash2
                     onClick={(e) => {
                       e.stopPropagation();
@@ -94,7 +88,7 @@ function ImageUploadManual({
                       imageFile.current = null;
                       if (setChanges) setChanges();
                     }}
-                    className='w-5 h-5'
+                    className='h-5 w-5'
                   />
                 </div>
               )}

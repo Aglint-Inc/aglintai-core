@@ -15,6 +15,7 @@ import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -22,7 +23,6 @@ import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
-import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
@@ -102,7 +102,7 @@ const InterviewTab = () => {
                               return (
                                 <Card
                                   key={member.user_id}
-                                  className='cursor-pointer hover:shadow-md transition-shadow'
+                                  className='cursor-pointer transition-shadow hover:shadow-md'
                                   onClick={() => {
                                     router.push(
                                       ROUTES['/user/profile/[user_id]']({
@@ -169,7 +169,7 @@ const InterviewTab = () => {
                                         </Badge>
                                       )}
                                       <div>
-                                        <h4 className='font-semibold mb-2'>
+                                        <h4 className='mb-2 font-semibold'>
                                           Interview Modules
                                         </h4>
                                         <div className='flex flex-wrap gap-2'>
@@ -196,7 +196,7 @@ const InterviewTab = () => {
                                         </div>
                                       </div>
                                       <div>
-                                        <h4 className='font-semibold mb-2'>
+                                        <h4 className='mb-2 font-semibold'>
                                           Modules in Training
                                         </h4>
                                         <div className='flex flex-wrap gap-2'>
@@ -247,8 +247,8 @@ const InterviewTab = () => {
                   />
                 </>
               ) : (
-                <div className='flex flex-col items-center justify-center h-64 text-center'>
-                  <Search className='w-12 h-12 text-muted-foreground mb-2' />
+                <div className='flex h-64 flex-col items-center justify-center text-center'>
+                  <Search className='mb-2 h-12 w-12 text-muted-foreground' />
                   <p className='text-sm text-muted-foreground'>
                     No interviewers found
                   </p>

@@ -6,10 +6,10 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ brand = false }) => {
   return (
-    <footer className='py-4 flex justify-center items-center'>
+    <footer className='flex items-center justify-center py-4'>
       {brand ? (
         <div className='flex items-center justify-center'>
-          <p className='text-sm text-neutral-600 flex items-center'>
+          <p className='flex items-center text-sm text-neutral-600'>
             Powered by
             <svg
               className='ml-1 mr-2'

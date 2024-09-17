@@ -30,9 +30,9 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
 
     return (
       <Card className='mt-4'>
-        <CardContent className='p-4 space-y-4'>
+        <CardContent className='space-y-4 p-4'>
           <div className='flex items-center space-x-2'>
-            <CalendarIcon className='w-5 h-5 text-muted-foreground' />
+            <CalendarIcon className='h-5 w-5 text-muted-foreground' />
             <span className='text-sm'>
               {`${dayjsLocal(rescheduleDetails.other_details?.dateRange?.start).format('DD MMMM, YYYY')} - ${dayjsLocal(rescheduleDetails.other_details?.dateRange?.end).format('DD MMMM, YYYY')}`}
             </span>

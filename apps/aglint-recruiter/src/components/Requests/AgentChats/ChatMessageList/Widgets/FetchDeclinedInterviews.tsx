@@ -33,7 +33,7 @@ function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
   });
 
   return (
-    <div className='space-y-2 w-full'>
+    <div className='w-full space-y-2'>
       {selPayload?.length > 0 ? (
         <ScheduleList schedules={uiSchedules} />
       ) : (

@@ -11,9 +11,6 @@ import {
 } from '@components/ui/alert-dialog';
 import { Label } from '@components/ui/label';
 import { Skeleton } from '@components/ui/skeleton';
-import { LearnHowAshby } from '@devlink3/LearnHowAshby';
-import { LearnHowGreenhouse } from '@devlink3/LearnHowGreenhouse';
-import { LearnHowLever } from '@devlink3/LearnHowLever';
 import { type ReactNode } from 'react';
 
 import { ShowCode } from '../../Common/ShowCode';
@@ -80,7 +77,7 @@ function ATSPopUps({
             <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleAction}
-              className='bg-red-600 hover:bg-red-700 font-bold'
+              className='bg-red-600 font-bold hover:bg-red-700'
             >
               Disconnect
             </AlertDialogAction>
@@ -96,7 +93,7 @@ function ATSPopUps({
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>
             <div className='flex flex-col items-center justify-center space-y-2'>
-              <Skeleton className='w-8 h-8' />
+              <Skeleton className='h-8 w-8' />
               <p className='text-sm'>
                 {reason?.startsWith('connect') ? 'Connecting' : 'Reconnecting'}{' '}
                 to {atsName}
@@ -111,7 +108,7 @@ function ATSPopUps({
             }
           >
             <ShowCode>
-              <ShowCode.When isTrue={reason === 'learn_how_greenhouse'}>
+              {/* <ShowCode.When isTrue={reason === 'learn_how_greenhouse'}>
                 <LearnHowGreenhouse onClickClose={{ onClick: close }} />
               </ShowCode.When>
               <ShowCode.When isTrue={reason === 'learn_how_ashby'}>
@@ -119,7 +116,7 @@ function ATSPopUps({
               </ShowCode.When>
               <ShowCode.When isTrue={reason === 'learn_how_lever'}>
                 <LearnHowLever onClickClose={{ onClick: close }} />
-              </ShowCode.When>
+              </ShowCode.When> */}
             </ShowCode>
           </ShowCode.When>
           <ShowCode.Else>

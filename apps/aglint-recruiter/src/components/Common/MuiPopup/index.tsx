@@ -19,8 +19,8 @@ function CustomDialog({ children, trigger, open, onOpenChange }: DialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogPortal>
-        <DialogContent className='bg-transparent border-none p-0'>
-          <div className='bg-white rounded-md shadow-lg'>{children}</div>
+        <DialogContent className='border-none bg-transparent p-0'>
+          <div className='rounded-md bg-white shadow-lg'>{children}</div>
         </DialogContent>
       </DialogPortal>
     </Dialog>

@@ -4,7 +4,7 @@ import React from 'react';
 
 const InterviewProgressSkeleton = () => {
   return (
-    <div className='w-full max-w-3xl mx-auto flex flex-col gap-4 pb-2'>
+    <div className='mx-auto flex w-full max-w-3xl flex-col gap-4 pb-2'>
       {/* Title Skeleton */}
       <Skeleton className='h-6 w-32' />
 
@@ -26,7 +26,7 @@ const InterviewProgressCardSkeleton = () => {
         style={{ gridTemplateRows: 'max-content 1fr' }}
       >
         <Skeleton
-          className='block mt-2'
+          className='mt-2 block'
           style={{
             borderRadius: '100px',
             height: '10px',
@@ -41,7 +41,7 @@ const InterviewProgressCardSkeleton = () => {
           }}
         />
       </div>
-      <Card className='w-full mb-3'>
+      <Card className='mb-3 w-full'>
         <CardContent className='p-4'>
           <div className='space-y-2'>
             <Skeleton className='h-4 w-1/4' />

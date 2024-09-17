@@ -10,16 +10,16 @@ export function AddCommandInput({
   slotInputCommand,
 }) {
   return (
-    <Card className='p-5 border border-gray-200 rounded-lg shadow-md'>
+    <Card className='rounded-lg border border-gray-200 p-5 shadow-md'>
       <div className='flex items-start gap-3'>
         input
-        <div className='w-full min-h-[40px]'>{slotInputCommand}</div>
+        <div className='min-h-[40px] w-full'>{slotInputCommand}</div>
       </div>
-      <div className='flex justify-between mt-5'>
+      <div className='mt-5 flex justify-between'>
         <div>
           {isDeleteVisible && (
             <button
-              className='flex items-center gap-2.5 text-red-600 hover:opacity-60 transition-opacity duration-200'
+              className='flex items-center gap-2.5 text-red-600 transition-opacity duration-200 hover:opacity-60'
               onClick={onClickDelete}
             >
               <span>Delete Command</span>
@@ -28,7 +28,7 @@ export function AddCommandInput({
         </div>
         <div className='flex items-center gap-4'>
           <button
-            className='text-gray-600 hover:opacity-70 transition-opacity duration-200'
+            className='text-gray-600 transition-opacity duration-200 hover:opacity-70'
             onClick={onClickCancel}
           >
             Cancel

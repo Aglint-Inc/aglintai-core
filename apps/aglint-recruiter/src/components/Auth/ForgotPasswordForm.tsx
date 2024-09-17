@@ -58,7 +58,7 @@ export default function ForgotPasswordForm() {
   return (
     <Card className='w-[400px] border-border'>
       <CardHeader>
-        <h2 className='text-2xl font-bold text-center'>Forgot Password</h2>
+        <h2 className='text-center text-2xl font-bold'>Forgot Password</h2>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
@@ -90,7 +90,7 @@ export default function ForgotPasswordForm() {
         </form>
       </CardContent>
       <CardFooter className='flex flex-col space-y-4'>
-        <div className='text-sm text-center'>
+        <div className='text-center text-sm'>
           Remember your password?{' '}
           <a href='/login' className='text-blue-500 hover:underline'>
             Login

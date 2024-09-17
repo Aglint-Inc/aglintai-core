@@ -3,7 +3,7 @@ import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
 
@@ -25,8 +25,8 @@ function Schedules() {
       ) : allSchedules.length === 0 ? (
         <div className='w-[820px]'>
           <div className='flex flex-col items-center justify-center p-8 text-center'>
-            <Calendar className='w-12 h-12 text-muted-foreground mb-2' />
-            <h3 className='text-lg font-medium text-foreground mb-1'>
+            <Calendar className='mb-2 h-12 w-12 text-muted-foreground' />
+            <h3 className='mb-1 text-lg font-medium text-foreground'>
               No schedule found
             </h3>
             <p className='text-sm text-muted-foreground'>

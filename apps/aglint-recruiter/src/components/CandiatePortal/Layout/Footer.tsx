@@ -11,19 +11,19 @@ const footerLinks = [
 export function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className='py-6 mt-12'>
+    <footer className='mt-12 py-6'>
       <div className='container mx-auto px-4'>
-        <div className='flex flex-wrap justify-center mb-4'>
+        <div className='mb-4 flex flex-wrap justify-center'>
           {footerLinks.map((link, index) => (
             <React.Fragment key={link.href}>
               <Link
                 href={link.href}
-                className='text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-200 text-xs'
+                className='text-xs text-gray-700 transition-colors duration-200 hover:text-primary dark:text-gray-300'
               >
                 {link.label}
               </Link>
               {index < footerLinks.length - 1 && (
-                <span className='mx-2 text-gray-700 dark:text-gray-300 text-xs'>
+                <span className='mx-2 text-xs text-gray-700 dark:text-gray-300'>
                   |
                 </span>
               )}

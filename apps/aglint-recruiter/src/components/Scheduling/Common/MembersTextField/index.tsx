@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PanelMemberPill } from '@devlink2/PanelMemberPill';
 import { Stack, Typography } from '@mui/material';
-import { AlertCircle, Check } from 'lucide-react';
+import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
@@ -57,48 +57,49 @@ function MembersAutoComplete({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
-    <div className='flex flex-col w-full gap-2'>
-      <div className='flex flex-row gap-2 flex-wrap'>
+    <div className='flex w-full flex-col gap-2'>
+      <div className='flex flex-row flex-wrap gap-2'>
         {selectedUsers.map((user) => {
           return (
-            <PanelMemberPill
+            <div
               key={user.user_id}
-              propsBgColor={{
-                style: {
-                  background: pillColor ? pillColor : 'var(--neutral-3)',
-                  textTransform: 'capitalize',
-                },
-              }}
-              onClickClose={{
-                onClick: () => {
+              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${
+                pillColor ? `bg-[${pillColor}]` : 'bg-neutral-3'
+              }`}
+            >
+              <Avatar className='h-5 w-5 text-xs'>
+                <AvatarImage
+                  src={user.profile_image}
+                  alt={getFullName(user?.first_name, user?.last_name)}
+                />
+                <AvatarFallback>
+                  {getFullName(user?.first_name, user?.last_name).charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <span>{getFullName(user?.first_name, user?.last_name)}</span>
+              <button
+                onClick={() => {
                   setSelectedUsers(
                     selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
-                },
-              }}
-              slotImage={
-                <MuiAvatar
-                  src={user.profile_image}
-                  level={getFullName(user?.first_name, user?.last_name)}
-                  height='20px'
-                  width='20px'
-                  fontSize='12px'
-                />
-              }
-              textMemberName={getFullName(user?.first_name, user?.last_name)}
-            />
+                }}
+                className='ml-1 text-gray-500 hover:text-gray-700'
+              >
+                <X size={12} />
+              </button>
+            </div>
           );
         })}
       </div>
 
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger onClick={() => setIsPopoverOpen(true)}>
-          <button className='border px-4 py-2 rounded w-full text-left'>
+          <button className='w-full rounded border px-4 py-2 text-left'>
             {placeholder}
           </button>
         </PopoverTrigger>
         <PopoverContent
-          className='z-[2000] p-0 w-full min-w-full'
+          className='z-[2000] w-full min-w-full p-0'
           style={{
             width: maxWidth,
             maxHeight: '30vh',
@@ -106,7 +107,7 @@ function MembersAutoComplete({
           }}
         >
           {renderUsers.length === 0 ? (
-            <div className='px-2 py-1 italic text-gray-500 cursor-default'>
+            <div className='cursor-default px-2 py-1 italic text-gray-500'>
               {emptyListText}
             </div>
           ) : (
@@ -114,7 +115,7 @@ function MembersAutoComplete({
               return (
                 <div
                   key={ind}
-                  className={`flex items-center justify-between p-2 border-b cursor-pointer`}
+                  className={`flex cursor-pointer items-center justify-between border-b p-2`}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (
@@ -173,8 +174,8 @@ function MembersAutoComplete({
         </PopoverContent>
       </Popover>
       {error && helperText && (
-        <div className='flex flex-row items-center mt-1'>
-          <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+        <div className='mt-1 flex flex-row items-center'>
+          <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
           <p className='text-sm text-red-700'>{helperText}</p>
         </div>
       )}

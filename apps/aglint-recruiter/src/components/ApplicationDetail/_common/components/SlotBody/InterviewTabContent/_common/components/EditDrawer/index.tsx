@@ -1,5 +1,3 @@
-import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
-
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UITextField from '@/components/Common/UITextField';
@@ -61,11 +59,11 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
       <div>
         {editSession &&
         editSession.interview_session.session_type !== 'debrief' ? (
-          <SidedrawerBodySession
-            slotSessionNameInput={
+          <div className='flex flex-col space-y-4'>
+            <div>
               <UITextField
-                name={'name'}
-                placeholder={'Session name'}
+                name='name'
+                placeholder='Session name'
                 value={editSession.interview_session.name}
                 onChange={(e) =>
                   setEditSession({
@@ -77,17 +75,21 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
                 }
                 error={
                   errorValidation.find((err) => err.field === 'session_name')
-                    .error
+                    ?.error
                 }
                 helperText={
                   errorValidation.find((err) => err.field === 'session_name')
-                    .message
+                    ?.message
                 }
               />
-            }
-            slotDurationDropdown={<SessionDuration />}
-            slotModuleDropdown={<ModuleDropdown />}
-            slotScheduleTypeDropdown={
+            </div>
+            <div>
+              <SessionDuration />
+            </div>
+            <div>
+              <ModuleDropdown />
+            </div>
+            <div>
               <ScheduleTypeField
                 value={editSession.interview_session.schedule_type}
                 handleTypeChange={(value) => {
@@ -99,9 +101,11 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
                   });
                 }}
               />
-            }
-            slotInterviewMode={<InterviewModeComp />}
-          />
+            </div>
+            <div>
+              <InterviewModeComp />
+            </div>
+          </div>
         ) : (
           editSession && <DebriedForm />
         )}

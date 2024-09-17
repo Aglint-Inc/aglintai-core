@@ -28,8 +28,8 @@ export function InterviewModuleCard({
 }: InterviewModuleCardProps) {
   return (
     <Link href={navLink}>
-      <Card className='grid grid-cols-[1fr_15%_25%_20%] items-center cursor-pointer hover:bg-neutral-100 transition-all duration-200 rounded-none border-x-0 border-b-1 border-t-0'>
-        <CardContent className='flex items-center p-3 space-x-2 '>
+      <Card className='border-b-1 grid cursor-pointer grid-cols-[1fr_15%_25%_20%] items-center rounded-none border-x-0 border-t-0 transition-all duration-200 hover:bg-neutral-100'>
+        <CardContent className='flex items-center space-x-2 p-3'>
           <UITypography type='small' variant='p'>
             {textModuleName}
           </UITypography>
@@ -40,7 +40,7 @@ export function InterviewModuleCard({
             {textDepartment}
           </UITypography>
         </CardContent>
-        <CardContent className='flex items-center p-3 space-x-2'>
+        <CardContent className='flex items-center space-x-2 p-3'>
           <div className='flex items-center space-x-1'>
             <Calendar size={14} className='text-blue-600' />
             <UITypography type='small' variant='p'>

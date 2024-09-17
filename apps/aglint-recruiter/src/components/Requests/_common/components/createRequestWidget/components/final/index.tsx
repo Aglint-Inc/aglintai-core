@@ -10,7 +10,7 @@ import { useCreateRequest, useCreateRequestActions } from '../../hooks';
 
 export const Final = () => {
   return (
-    <div className='flex flex-col gap-4 m-1 justify-center items-center'>
+    <div className='m-1 flex flex-col items-center justify-center gap-4'>
       <Dates />
       <Priority />
       <Notes />

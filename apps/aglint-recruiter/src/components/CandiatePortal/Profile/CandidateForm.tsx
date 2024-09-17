@@ -122,16 +122,16 @@ export default function CandidateForm({
     }
   };
   return (
-    <div className='flex justify-center items-center'>
+    <div className='flex items-center justify-center'>
       <Card className='w-full max-w-2xl border-none bg-white p-0'>
         <CardHeader className='p-0'>
-          <CardTitle className='text-md font-semibold text-left px-4 py-4'>
+          <CardTitle className='text-md px-4 py-4 text-left font-semibold'>
             Edit Profile
           </CardTitle>
         </CardHeader>
         <CardContent className='p-0'>
           <form onSubmit={handleSubmit(handleUpdateProfile)}>
-            <div className='px-4 flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 px-4'>
               <div className='flex flex-col space-y-4 rounded-lg'>
                 <ImageUploadManual
                   image={data?.avatar}
@@ -251,7 +251,7 @@ export default function CandidateForm({
                 )}
               </div>
             </div>
-            <div className='p-4 m-0 mt-0'>
+            <div className='m-0 mt-0 p-4'>
               <Button type='submit' className='w-full' disabled={loading}>
                 {loading ? 'Updating...' : 'Update Profile'}
               </Button>

@@ -7,12 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Page404 } from '@devlink/Page404';
 import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { NotFound } from '@/components/Common/404';
+import { Loader } from '@/components/Common/Loader';
 import Seo from '@/components/Common/Seo';
 import { UIBadge } from '@/components/Common/UIBadge';
 import UITypography from '@/components/Common/UITypography';
@@ -36,14 +36,14 @@ import Trigger from './trigger';
 const Body = () => {
   const { workflow } = useWorkflow();
   if (workflow === null) return <Loader />;
-  if (workflow === undefined) return <Page404 />;
+  if (workflow === undefined) return <NotFound />;
   return (
     <>
       <Seo title='Workflow | Aglint AI' description='AI for People Products' />
 
-      <div className='flex overflow-auto bg-neutral-100 h-[calc(100vh-48px)]'>
+      <div className='flex h-[calc(100vh-48px)] overflow-auto bg-neutral-100'>
         <div className='w-full'>
-          <div className='flex flex-col items-center max-w-[800px] p-5'>
+          <div className='flex max-w-[800px] flex-col items-center p-5'>
             <>
               <Edit />
               <Trigger />
@@ -53,13 +53,13 @@ const Body = () => {
             </>
           </div>
         </div>
-        <div className='sticky top-[10px] right-4 z-10 flex flex-col w-[380px] h-[90vh] p-4 rounded-lg bg-white overflow-y-auto'>
-          <div className='flex flex-col w-[367px] space-y-1'>
-            <div className='flex items-center text-neutral-900 font-medium'>
+        <div className='sticky right-4 top-[10px] z-10 flex h-[90vh] w-[380px] flex-col overflow-y-auto rounded-lg bg-white p-4'>
+          <div className='flex w-[367px] flex-col space-y-1'>
+            <div className='flex items-center font-medium text-neutral-900'>
               Connected Jobs
             </div>
           </div>
-          <div className='flex flex-col space-y-2 mt-3'>
+          <div className='mt-3 flex flex-col space-y-2'>
             <ConnectedJobs />
           </div>
         </div>
@@ -78,7 +78,7 @@ const ConnectedJobs = () => {
   if (count === 0)
     return (
       <div className='flex flex-col items-center justify-center p-6 text-center'>
-        <Briefcase size={30} className=' text-gray-400 mb-4' />
+        <Briefcase size={30} className='mb-4 text-gray-400' />
         <UITypography variant='p' type='small'>
           No jobs connected
         </UITypography>

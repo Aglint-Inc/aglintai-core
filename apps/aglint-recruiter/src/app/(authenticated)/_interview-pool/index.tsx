@@ -10,9 +10,9 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
-import Loader from '../../../components/Common/Loader';
 import { Header } from './_common/components/Header';
 import { InterviewPoolList } from './_common/components/InterviewPoolList';
 import { useAllInterviewModules } from './_common/hooks';
@@ -28,7 +28,7 @@ export default function InterviewTypesPage() {
 
   if (modulesLoading || departmentLoading)
     return (
-      <div className='flex items-center justify-center w-full h-full'>
+      <div className='flex h-full w-full items-center justify-center'>
         <Loader />
       </div>
     );
@@ -68,8 +68,8 @@ export default function InterviewTypesPage() {
 
   return (
     <div className='min-h-screen py-8'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <h1 className='text-3xl font-bold text-gray-900 mb-8'>
+      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+        <h1 className='mb-8 text-3xl font-bold text-gray-900'>
           Interview Pool
         </h1>
         <Card className='w-full'>
@@ -87,7 +87,7 @@ export default function InterviewTypesPage() {
               onValueChange={handleTabChange}
               className='mb-6'
             >
-              <TabsList className='bg-gray-100 p-1 rounded-lg'>
+              <TabsList className='rounded-lg bg-gray-100 p-1'>
                 <TabsTrigger
                   value='active'
                   className='data-[state=active]:bg-white data-[state=active]:shadow'
@@ -128,7 +128,7 @@ export default function InterviewTypesPage() {
               </TableBody>
             </Table>
             {filteredInterviewModules?.length === 0 ? (
-              <div className='w-full flex items-center justify-center h-[200px]'>
+              <div className='flex h-[200px] w-full items-center justify-center'>
                 No Interview pools found
               </div>
             ) : (

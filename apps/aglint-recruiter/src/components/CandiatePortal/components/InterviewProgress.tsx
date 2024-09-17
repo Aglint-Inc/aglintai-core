@@ -11,7 +11,7 @@ function InterviewProgress({
   interviews: apiHomepageResponse['interviewPlan'];
 }) {
   return (
-    <Card className='w-full max-w-3xl mx-auto'>
+    <Card className='mx-auto w-full max-w-3xl'>
       <CardHeader>
         <CardTitle className='text-lg font-medium'>Interview Plan</CardTitle>
       </CardHeader>

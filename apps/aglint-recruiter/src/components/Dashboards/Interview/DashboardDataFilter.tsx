@@ -87,7 +87,7 @@ export default function Component() {
         <div className='flex-grow'>
           {/* @ts-ignore */}
           <Select value={value || ''} onValueChange={onChange}>
-            <SelectTrigger className='min-w-[120px] w-auto h-9'>
+            <SelectTrigger className='h-9 w-auto min-w-[120px]'>
               <div className='flex items-center space-x-2'>
                 {icon}
                 <SelectValue
@@ -110,7 +110,7 @@ export default function Component() {
           <Button
             variant='ghost'
             // size='icon'
-            className='flex-shrink-0 h-9 w-9'
+            className='h-9 w-9 flex-shrink-0'
             onClick={() => clearFilter(placeholder)}
           >
             <X className='h-4 w-4' />
@@ -122,7 +122,7 @@ export default function Component() {
 
   return (
     <div className=''>
-      <div className='flex items-center space-x-2 justify-between'>
+      <div className='flex items-center justify-between space-x-2'>
         <div className='flex items-center space-x-2'>
           {renderSelect(
             filters.job,
@@ -150,7 +150,7 @@ export default function Component() {
 
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant='outline' size='sm' className='min-w-[120px] h-9'>
+              <Button variant='outline' size='sm' className='h-9 min-w-[120px]'>
                 <CalendarIcon className='mr-2 h-4 w-4' />
                 {filters.dateRange
                   ? `${format(filters.dateRange.from, 'PP')} - ${format(filters.dateRange.to, 'PP')}`
@@ -190,7 +190,7 @@ export default function Component() {
           <Button
             variant='ghost'
             size='sm'
-            className='min-w-[120px] h-9'
+            className='h-9 min-w-[120px]'
             onClick={clearAllFilter}
           >
             Clear All
@@ -200,7 +200,7 @@ export default function Component() {
               applyFilter(filters);
             }}
             size='sm'
-            className='min-w-[120px] h-9'
+            className='h-9 min-w-[120px]'
           >
             Apply Filters
           </Button>

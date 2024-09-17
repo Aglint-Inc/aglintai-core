@@ -53,7 +53,7 @@ export const InterviewPoolList = ({
                   variant='secondary'
                   className='bg-green-100 text-green-800'
                 >
-                  <CheckCircle className='h-3 w-3 mr-1' />
+                  <CheckCircle className='mr-1 h-3 w-3' />
                   {interviewType.this_month_completed_count}
                 </Badge>
               </TooltipTrigger>
@@ -69,7 +69,7 @@ export const InterviewPoolList = ({
                   variant='secondary'
                   className='bg-blue-100 text-blue-800'
                 >
-                  <Calendar className='h-3 w-3 mr-1' />
+                  <Calendar className='mr-1 h-3 w-3' />
                   {interviewType.this_month_scheduled_count}
                 </Badge>
               </TooltipTrigger>
@@ -82,7 +82,7 @@ export const InterviewPoolList = ({
             <Tooltip>
               <TooltipTrigger>
                 <Badge variant='secondary' className='bg-red-100 text-red-800'>
-                  <XCircle className='h-3 w-3 mr-1' />
+                  <XCircle className='mr-1 h-3 w-3' />
                   {interviewType.this_month_cancelled_count}
                 </Badge>
               </TooltipTrigger>
@@ -99,9 +99,9 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-purple-50 text-purple-800 border-purple-200 justify-center w-[80px]'
+                className='w-[80px] justify-center border-purple-200 bg-purple-50 text-purple-800'
               >
-                <Clock className='h-3 w-3 mr-1' />
+                <Clock className='mr-1 h-3 w-3' />
                 {interviewType.average_meeting_duration} min
               </Badge>
             </TooltipTrigger>
@@ -117,9 +117,9 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-orange-50 text-orange-800 border-orange-200'
+                className='border-orange-200 bg-orange-50 text-orange-800'
               >
-                <Users className='h-3 w-3 mr-1' />-
+                <Users className='mr-1 h-3 w-3' />-
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -134,9 +134,9 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-teal-50 text-teal-800 border-teal-200'
+                className='border-teal-200 bg-teal-50 text-teal-800'
               >
-                <Calendar className='h-3 w-3 mr-1' />
+                <Calendar className='mr-1 h-3 w-3' />
                 {interviewType.upcoming_meeting_count}
               </Badge>
             </TooltipTrigger>
@@ -152,9 +152,9 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-yellow-50 text-yellow-800 border-yellow-200 flex items-center justify-center  w-[70px]'
+                className='flex w-[70px] items-center justify-center border-yellow-200 bg-yellow-50 text-yellow-800'
               >
-                <Star className='h-3 w-3 mr-1' />
+                <Star className='mr-1 h-3 w-3' />
                 <span>{interviewType.passed_rate} %</span>
               </Badge>
             </TooltipTrigger>
@@ -170,9 +170,9 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <Badge
                 variant='outline'
-                className='bg-indigo-50 text-indigo-800 border-indigo-200'
+                className='border-indigo-200 bg-indigo-50 text-indigo-800'
               >
-                <Briefcase className='h-3 w-3 mr-1' />-
+                <Briefcase className='mr-1 h-3 w-3' />-
               </Badge>
             </TooltipTrigger>
             <TooltipContent>

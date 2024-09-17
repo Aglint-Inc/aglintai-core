@@ -9,12 +9,12 @@ const ChooseScheduleMode = () => {
   return (
     <>
       <div className='flex flex-col gap-4'>
-        <Alert className='bg-purple-100 border border-purple-300'>
+        <Alert className='border border-purple-300 bg-purple-100'>
           <Lightbulb className='h-4 w-4' />
           <AlertTitle>Add Automations</AlertTitle>
           <AlertDescription>
             Streamline your workflow with Aglint AI automations.
-            <div className='flex justify-end mt-4'>
+            <div className='mt-4 flex justify-end'>
               <div className='flex justify-start'>
                 <Button
                   variant='outline'

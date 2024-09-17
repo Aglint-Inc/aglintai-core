@@ -23,7 +23,7 @@ export function InterviewerWorkload({
 }: InterviewerWorkloadProps) {
   return (
     <Card className='h-[calc(100vh-48px)] overflow-auto border-none'>
-      <CardHeader className='flex flex-row justify-between items-center p-3'>
+      <CardHeader className='flex flex-row items-center justify-between p-3'>
         <div>{slotFilter}</div>
         <div className='flex items-center space-x-2'>
           <Button
@@ -51,7 +51,7 @@ export function InterviewerWorkload({
         </div>
       </CardHeader>
       <CardContent className='p-0'>
-        <div className='grid grid-cols-[300px_1fr] bg-neutral-100 border-b'>
+        <div className='grid grid-cols-[300px_1fr] border-b bg-neutral-100'>
           <div className='p-2 font-medium'>Interviewer</div>
           <div className='p-2 font-medium'>Workload</div>
         </div>

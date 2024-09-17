@@ -8,12 +8,12 @@ export function InterviewModuleStats({
   isViewAllVisible = true,
 }) {
   return (
-    <div className='overflow-hidden h-[296px] border border-neutral-200 rounded-md bg-white'>
-      <div className='flex h-10 px-4 py-2 justify-between items-center border-b border-neutral-200 rounded-t-lg bg-neutral-50'>
+    <div className='h-[296px] overflow-hidden rounded-md border border-neutral-200 bg-white'>
+      <div className='flex h-10 items-center justify-between rounded-t-lg border-b border-neutral-200 bg-neutral-50 px-4 py-2'>
         <UITypography type='small'>Interview Type</UITypography>
         {isViewAllVisible && (
           <div
-            className='text-primary underline cursor-pointer hover:opacity-80 transition-opacity'
+            className='cursor-pointer text-primary underline transition-opacity hover:opacity-80'
             {...onClickViewAllModules}
           >
             View all
@@ -32,7 +32,7 @@ export function InterviewModuleStats({
             <UITypography type='small'>Training</UITypography>
           </div>
         </div>
-        <div className='overflow-auto h-[347px]'>
+        <div className='h-[347px] overflow-auto'>
           {slotInterviewModuleStatsCard}
         </div>
       </div>

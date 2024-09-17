@@ -23,9 +23,9 @@ export default function UrgentVsStandard() {
   ];
 
   return (
-    <Card className='w-full max-w-3xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-3xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Request Type Distribution: Standard vs. Urgent
         </CardTitle>
       </CardHeader>

@@ -199,7 +199,7 @@ export const UserDetail = () => {
       <Card className='p-6'>
         <CardContent className='space-y-4'>
           <div className='flex items-center space-x-4'>
-            <Avatar className='w-16 h-16 relative'>
+            <Avatar className='relative h-16 w-16'>
               {recruiterUser.profile_image ? (
                 <Image
                   src={recruiterUser.profile_image}
@@ -209,7 +209,7 @@ export const UserDetail = () => {
                   className='object-cover'
                 />
               ) : (
-                <User className='w-8 h-8 text-gray-400' />
+                <User className='h-8 w-8 text-gray-400' />
               )}
             </Avatar>
             <div>
@@ -221,24 +221,24 @@ export const UserDetail = () => {
           </div>
           <div className='grid grid-cols-2 gap-4'>
             <div className='flex items-center space-x-2'>
-              <Briefcase className='w-5 h-5 text-gray-400' />
+              <Briefcase className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.department?.name || '--'}</span>
             </div>
             <div className='flex items-center space-x-2'>
-              <MapPin className='w-5 h-5 text-gray-400' />
+              <MapPin className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.office_location?.line1 || '--'}</span>
             </div>
             <div className='flex items-center space-x-2'>
-              <Mail className='w-5 h-5 text-gray-400' />
+              <Mail className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.email || '--'}</span>
             </div>
             <div className='flex items-center space-x-2'>
-              <Phone className='w-5 h-5 text-gray-400' />
+              <Phone className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.phone || '--'}</span>
             </div>
             {recruiterUser.linked_in && (
               <div className='flex items-center space-x-2'>
-                <Linkedin className='w-5 h-5 text-gray-400' />
+                <Linkedin className='h-5 w-5 text-gray-400' />
                 <a
                   href={recruiterUser.linked_in}
                   target='_blank'
@@ -251,7 +251,7 @@ export const UserDetail = () => {
             )}
             {recruiterUser.role === 'admin' && (
               <div className='flex items-center space-x-2'>
-                <User className='w-5 h-5 text-gray-400' />
+                <User className='h-5 w-5 text-gray-400' />
                 <span
                   className='cursor-pointer text-blue-500 hover:underline'
                   onClick={() =>

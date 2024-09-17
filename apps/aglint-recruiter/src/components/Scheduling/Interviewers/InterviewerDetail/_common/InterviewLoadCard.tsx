@@ -14,7 +14,7 @@ export function InterviewLoadCard({
   textLabel = '',
 }: InterviewLoadCardProps) {
   return (
-    <div className='flex flex-col justify-center h-15 p-3 rounded-md bg-neutral-100'>
+    <div className='h-15 flex flex-col justify-center rounded-md bg-neutral-100 p-3'>
       <CardContent className='p-0'>
         <p className='text-sm text-neutral-600'>{textHeading}</p>
         <div className='flex items-center gap-1'>

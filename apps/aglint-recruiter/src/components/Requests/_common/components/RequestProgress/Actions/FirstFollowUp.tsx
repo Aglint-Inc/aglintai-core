@@ -49,7 +49,7 @@ const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex items-center text-gray-500'>
-        <CheckIcon className='w-4 h-4 mr-2' />
+        <CheckIcon className='mr-2 h-4 w-4' />
         <span className='text-sm'>{copy}</span>
       </div>
       {!isTimePast && (

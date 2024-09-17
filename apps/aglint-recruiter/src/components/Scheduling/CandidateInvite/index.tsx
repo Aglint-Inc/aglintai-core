@@ -2,11 +2,11 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Page404 } from '@devlink/Page404';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -19,7 +19,7 @@ import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
 import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
-import Loader from '../../Common/Loader';
+import { Loader } from '../../Common/Loader';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
@@ -37,14 +37,14 @@ const CandidateInviteNew = () => {
 
   return (
     <div className='h-screen'>
-      <div className='bg-[var(--sand-3)] w-full min-h-[calc(100vh-50px)] max-h-[calc(100vh-50px)] overflow-auto py-10 '>
+      <div className='max-h-[calc(100vh-50px)] min-h-[calc(100vh-50px)] w-full overflow-auto bg-[var(--sand-3)] py-10'>
         {load === undefined ? (
-          <div className='w-full h-screen flex justify-center items-center'>
+          <div className='flex h-screen w-full items-center justify-center'>
             <Loader />
           </div>
         ) : load === null ? (
-          <div className='w-full h-screen flex justify-center items-center'>
-            <Page404 text404='The requested page was not found' />
+          <div className='flex h-screen w-full items-center justify-center'>
+            <NotFound />
           </div>
         ) : (
           <>
@@ -103,8 +103,8 @@ const CandidateInvitePlanPage = () => {
 
   if (meetings.length === 0)
     return (
-      <div className='w-full h-screen'>
-        <Page404 />
+      <div className='h-screen w-full'>
+        <NotFound />
       </div>
     );
 
@@ -122,10 +122,10 @@ const CandidateInvitePlanPage = () => {
     );
 
   return (
-    <div className='flex flex-col items-center justify-center w-full py-4 bg-sand-3'>
-      <Card className='w-full max-w-[900px] space-y-4 border-neutral-6'>
-        <CardHeader className='text-center space-y-2'>
-          <div className='w-full flex justify-center'>
+    <div className='bg-sand-3 flex w-full flex-col items-center justify-center py-4'>
+      <Card className='border-neutral-6 w-full max-w-[900px] space-y-4'>
+        <CardHeader className='space-y-2 text-center'>
+          <div className='flex w-full justify-center'>
             <Logo companyName={recruiter.name} logo={recruiter.logo} />
           </div>
           <CardTitle className='text-2xl font-medium'>
@@ -147,7 +147,7 @@ const CandidateInvitePlanPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className='w-full max-w-[900px] mx-auto space-y-2'>
+          <div className='mx-auto w-full max-w-[900px] space-y-2'>
             <div className='flex w-full justify-end'>
               <div className='w-[300px]'>
                 <TimezonePicker

@@ -102,7 +102,7 @@ const RequestDecline = () => {
       >
         <div className='flex flex-col gap-2'>
           {declinedUserDetails && (
-            <div className='bg-neutral-100 p-2 rounded-md'>
+            <div className='rounded-md bg-neutral-100 p-2'>
               <MemberRow
                 slotConflicts={<></>}
                 slotInterviewerImage={
@@ -136,7 +136,7 @@ const RequestDecline = () => {
                 return (
                   <div
                     key={item.replacement_int.user_id}
-                    className={`bg-neutral-100 p-2 rounded-md ${
+                    className={`rounded-md bg-neutral-100 p-2 ${
                       isSelected ? 'border-gray-100 outline' : ''
                     }`}
                     onClick={() => {

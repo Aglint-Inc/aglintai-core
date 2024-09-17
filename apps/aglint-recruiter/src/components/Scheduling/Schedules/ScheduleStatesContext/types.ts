@@ -6,5 +6,3 @@ export type InterviewDateRangeType =
   | 'next_7_days'
   | 'next_30_days'
   | 'date_range';
-
-  

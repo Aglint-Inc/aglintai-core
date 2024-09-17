@@ -110,7 +110,7 @@ function AddMemberDialog() {
         </>
       }
     >
-      <div className='flex flex-col w-full'>
+      <div className='flex w-full flex-col'>
         <p className='mb-1'>Choose members from your team.</p>
         <MembersAutoComplete
           maxWidth={'460px'}

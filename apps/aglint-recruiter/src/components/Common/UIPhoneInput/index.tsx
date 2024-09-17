@@ -63,7 +63,7 @@ export default function UIPhoneInput({
 
   return (
     <div
-      className={`w-full max-w-sm mx-auto ${isError ? 'border-red-500' : ''}`}
+      className={`mx-auto w-full max-w-sm ${isError ? 'border-red-500' : ''}`}
     >
       <div className='relative'>
         <Popover open={open} onOpenChange={setOpen}>
@@ -72,7 +72,7 @@ export default function UIPhoneInput({
               variant='outline'
               role='combobox'
               aria-expanded={open}
-              className='w-[80px] justify-between absolute left-0 top-0 h-full rounded-r-none border-r-0'
+              className='absolute left-0 top-0 h-full w-[80px] justify-between rounded-r-none border-r-0'
             >
               {selectedCountry?.flag}
               <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />

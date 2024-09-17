@@ -80,7 +80,7 @@ function TrainingInterviewerType({
         isTrainingProgressDetailVisible={true}
         isTrainingCompletedVisible={false}
         slotProgressBar={
-          <div className='flex flex-row overflow-hidden border-radius-2'>
+          <div className='border-radius-2 flex flex-row overflow-hidden'>
             {pills.map((pill, i) => (
               <HistoryPillShadcn
                 key={i}

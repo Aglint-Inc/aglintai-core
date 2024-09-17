@@ -48,7 +48,7 @@ function RequestNotes() {
 
   return (
     <div>
-      <div className='flex items-center justify-between my-4'>
+      <div className='my-4 flex items-center justify-between'>
         <h3 className='text-lg font-semibold'>Notes</h3>
       </div>
       <Card
@@ -61,7 +61,7 @@ function RequestNotes() {
       >
         <ShowCode>
           <ShowCode.When isTrue={!isFetched}>
-            <Skeleton className='w-full h-20' />
+            <Skeleton className='h-20 w-full' />
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <ShowCode>
@@ -84,7 +84,7 @@ function RequestNotes() {
                       );
                     }}
                     placeholder='Add note'
-                    className='min-h-[40px] resize-none focus:ring-0 focus:outline-none focus:border-transparent bg-transparent'
+                    className='min-h-[40px] resize-none bg-transparent focus:border-transparent focus:outline-none focus:ring-0'
                     // style={{ background: 'transparent', outline: 'none' }}
                     onBlur={() => {
                       setEditorEnabled(false);
@@ -107,7 +107,7 @@ function RequestNotes() {
             </ShowCode>
           </ShowCode.When>
         </ShowCode>
-        <div className='flex flex-row items-center gap-1 mt-2'>
+        <div className='mt-2 flex flex-row items-center gap-1'>
           <p className='text-xs text-neutral-500'>
             {!requestNotes?.[0]?.note
               ? 'Notes will remain here until you clear it.'

@@ -75,7 +75,7 @@ function MembersPopUps({
         <div>
           <p>{selectedRequest?.title}</p>
           <Input
-            className='w-full p-2.5 mt-4'
+            className='mt-4 w-full p-2.5'
             placeholder='Search by name.'
             onChange={(e) => {
               const text = e.target.value.toLowerCase();
@@ -90,7 +90,7 @@ function MembersPopUps({
           {filteredMembers.length === 0 ? (
             <GlobalEmpty iconSlot={<Search />} text={'No members found'} />
           ) : status === 'success' ? (
-            <div className='h-[150px] max-h-[150px] overflow-auto w-full mt-4'>
+            <div className='mt-4 h-[150px] max-h-[150px] w-full overflow-auto'>
               {filteredMembers
                 .filter(
                   ({ user_id }) => user_id !== selectedRequest?.assignee_id,
@@ -99,7 +99,7 @@ function MembersPopUps({
                   <div
                     key={member.user_id}
                     onClick={() => setSelectedMember(member)}
-                    className={`flex items-center p-2 cursor-pointer rounded ${
+                    className={`flex cursor-pointer items-center rounded p-2 ${
                       selectedMember?.user_id === member.user_id
                         ? 'bg-black/[0.08]'
                         : ''
@@ -115,7 +115,7 @@ function MembersPopUps({
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className='font-semibold mb-1'>
+                      <p className='mb-1 font-semibold'>
                         {getFullName(member.first_name, member.last_name)}
                       </p>
                       <p className='text-sm text-gray-500'>
@@ -126,7 +126,7 @@ function MembersPopUps({
                 ))}
             </div>
           ) : (
-            <div className='h-[300px] overflow-auto space-y-1 w-full mt-4'>
+            <div className='mt-4 h-[300px] w-full space-y-1 overflow-auto'>
               <Skeleton />
               <Skeleton />
               <Skeleton />

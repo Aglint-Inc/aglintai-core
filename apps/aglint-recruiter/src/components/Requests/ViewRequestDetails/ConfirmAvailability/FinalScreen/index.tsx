@@ -6,7 +6,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import { mailSender } from '@/utils/mailSender';
@@ -63,7 +63,7 @@ function FinalScreen() {
     }
   }, []);
   return (
-    <ScrollArea className='w-full h-[calc(100vh-123px)] flex flex-col gap-2'>
+    <ScrollArea className='flex h-[calc(100vh-123px)] w-full flex-col gap-2'>
       <p>Please confirm the selected schedule</p>
       <div className='flex flex-col gap-2'>
         {selectedDateSlots?.map((item, index) => {
@@ -95,7 +95,7 @@ function FinalScreen() {
           While clicking send to candidate ,an email containing the following
           message will be sent to the candidate:
         </p>
-        <div className='flex flex-row gap-1 justify-start mb-2'>
+        <div className='mb-2 flex flex-row justify-start gap-1'>
           <UIButton
             size={'sm'}
             variant='secondary'

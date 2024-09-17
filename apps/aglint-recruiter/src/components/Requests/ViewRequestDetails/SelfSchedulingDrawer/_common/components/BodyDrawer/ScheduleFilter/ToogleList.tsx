@@ -112,7 +112,7 @@ function ToogleList() {
                 slotCountText={
                   <Stack direction={'row'} gap={1} alignItems={'center'}>
                     <p
-                      className={`font-semibold text-lg ${enabled ? `text-${color}` : `text-${disableColor}`}`}
+                      className={`text-lg font-semibold ${enabled ? `text-${color}` : `text-${disableColor}`}`}
                     >
                       {number}
                     </p>
