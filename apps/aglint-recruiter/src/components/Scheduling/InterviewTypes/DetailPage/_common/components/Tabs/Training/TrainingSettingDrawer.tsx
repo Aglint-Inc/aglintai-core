@@ -1,9 +1,9 @@
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
-import { ModuleSetting } from '@devlink2/ModuleSetting';
+import { Label } from '@components/ui/label';
 import _ from 'lodash';
-import { AlertCircle, Minus, Plus } from 'lucide-react';
+import { AlertCircle, Minus, Plus, X } from 'lucide-react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
@@ -123,157 +123,173 @@ function TrainingSettingDrawer(
     >
       <>
         {localModule && (
-          <ModuleSetting
-            onClickClose={{
-              onClick: () => setIsModuleSettingsDialogOpen(false),
-            }}
-            isDisable={!localModule?.settings?.require_training}
-            isRequireTrainingVisible={true}
-            isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
-            slotCheckbox={
-              <Checkbox
-                checked={localModule?.settings?.reqruire_approval}
-                onChange={() => {
-                  setLocalModule({
-                    ...localModule,
-                    settings: {
-                      ...localModule.settings,
-                      reqruire_approval:
-                        !localModule.settings.reqruire_approval,
-                    },
-                  });
-                }}
-              />
-            }
-            slotButtonPrimary={<></>}
-            slotApprovalDoneInput={
-              <>
-                <MembersAutoComplete
-                  error={errorApproval || selectedUsers.length === 0}
-                  renderUsers={dropDownMembers}
-                  setSelectedUsers={setSelectedUsers}
-                  selectedUsers={selectedUsers}
-                  pillColor='var(--neutral-3)'
-                  maxWidth='430px'
-                  onUserSelect={() => setErrorApproval(false)}
-                />
-                {selectedUsers.length === 0 && (
-                  <div className='text-error-9 mb-2 pt-2 flex items-center'>
-                    <AlertCircle className='h-3 w-3 text-error-9 mr-1' />
-                    Please select users to approve or uncheck require approval
-                  </div>
-                )}
-              </>
-            }
-            slotInputNoOfReverse={
-              <div className='flex items-center gap-1'>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  disabled={localModule.settings.noReverseShadow === 1}
-                  onClick={() => {
+          <div className='space-y-6'>
+            <div className='flex items-center justify-between'>
+              <h3 className='text-lg font-semibold'>Module Settings</h3>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => setIsModuleSettingsDialogOpen(false)}
+              >
+                <X className='h-5 w-5' />
+              </Button>
+            </div>
+
+            <div
+              className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
+            >
+              <div className='flex items-center space-x-2'>
+                <Checkbox
+                  checked={localModule?.settings?.reqruire_approval}
+                  onChange={() => {
                     setLocalModule({
                       ...localModule,
                       settings: {
                         ...localModule.settings,
-                        noReverseShadow: Number(
-                          localModule.settings.noReverseShadow - 1,
-                        ),
+                        reqruire_approval:
+                          !localModule.settings.reqruire_approval,
                       },
                     });
                   }}
-                >
-                  <Minus className='h-4 w-4' />
-                </Button>
-                <UITextField
-                  className='w-20'
-                  type='number'
-                  value={localModule.settings.noReverseShadow}
-                  onChange={(e) =>
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        noReverseShadow:
-                          Number(e.target.value) === 0
-                            ? editModule.settings.noReverseShadow
-                            : Number(e.target.value),
-                      },
-                    })
-                  }
+                  id='require-approval'
                 />
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        noReverseShadow: Number(
-                          localModule.settings.noReverseShadow + 1,
-                        ),
-                      },
-                    });
-                  }}
-                >
-                  <Plus className='h-4 w-4' />
-                </Button>
+                <Label htmlFor='require-approval'>Require Approval</Label>
               </div>
-            }
-            slotInputNoOfShadow={
-              <div className='flex items-center gap-1'>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  disabled={localModule.settings.noShadow === 1}
-                  onClick={() => {
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        noShadow: Number(localModule.settings.noShadow - 1),
-                      },
-                    });
-                  }}
-                >
-                  <Minus className='h-4 w-4' />
-                </Button>
-                <Input
-                  className='w-20'
-                  type='number'
-                  value={localModule.settings.noShadow}
-                  onChange={(e) =>
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        noShadow:
-                          Number(e.target.value) === 0
-                            ? editModule.settings.noShadow
-                            : Number(e.target.value),
-                      },
-                    })
-                  }
-                />
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        noShadow: Number(localModule.settings.noShadow + 1),
-                      },
-                    });
-                  }}
-                >
-                  <Plus className='h-4 w-4' />
-                </Button>
+
+              {localModule?.settings?.reqruire_approval && (
+                <div className='space-y-2'>
+                  <Label>Approval Users</Label>
+                  <MembersAutoComplete
+                    error={errorApproval || selectedUsers.length === 0}
+                    renderUsers={dropDownMembers}
+                    setSelectedUsers={setSelectedUsers}
+                    selectedUsers={selectedUsers}
+                    pillColor='var(--neutral-3)'
+                    maxWidth='430px'
+                    onUserSelect={() => setErrorApproval(false)}
+                  />
+                  {selectedUsers.length === 0 && (
+                    <div className='flex items-center text-sm text-red-500'>
+                      <AlertCircle className='mr-1 h-3 w-3' />
+                      Please select users to approve or uncheck require approval
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className='space-y-2'>
+                <Label>Number of Reverse Shadows</Label>
+                <div className='flex items-center gap-1'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    disabled={localModule.settings.noReverseShadow === 1}
+                    onClick={() => {
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          noReverseShadow: Number(
+                            localModule.settings.noReverseShadow - 1,
+                          ),
+                        },
+                      });
+                    }}
+                  >
+                    <Minus className='h-4 w-4' />
+                  </Button>
+                  <UITextField
+                    className='w-20'
+                    type='number'
+                    value={localModule.settings.noReverseShadow}
+                    onChange={(e) =>
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          noReverseShadow:
+                            Number(e.target.value) === 0
+                              ? editModule.settings.noReverseShadow
+                              : Number(e.target.value),
+                        },
+                      })
+                    }
+                  />
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() => {
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          noReverseShadow: Number(
+                            localModule.settings.noReverseShadow + 1,
+                          ),
+                        },
+                      });
+                    }}
+                  >
+                    <Plus className='h-4 w-4' />
+                  </Button>
+                </div>
               </div>
-            }
-          />
+
+              <div className='space-y-2'>
+                <Label>Number of Shadows</Label>
+                <div className='flex items-center gap-1'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    disabled={localModule.settings.noShadow === 1}
+                    onClick={() => {
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          noShadow: Number(localModule.settings.noShadow - 1),
+                        },
+                      });
+                    }}
+                  >
+                    <Minus className='h-4 w-4' />
+                  </Button>
+                  <Input
+                    className='w-20'
+                    type='number'
+                    value={localModule.settings.noShadow}
+                    onChange={(e) =>
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          noShadow:
+                            Number(e.target.value) === 0
+                              ? editModule.settings.noShadow
+                              : Number(e.target.value),
+                        },
+                      })
+                    }
+                  />
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() => {
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          noShadow: Number(localModule.settings.noShadow + 1),
+                        },
+                      });
+                    }}
+                  >
+                    <Plus className='h-4 w-4' />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
         {editModule?.settings?.require_training && (
           <div className='mx-2'>

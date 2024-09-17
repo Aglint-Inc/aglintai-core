@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { NewScheduleDetail } from '@devlink3/NewScheduleDetail';
 import { SquareArrowOutUpRight, Users } from 'lucide-react';
 import Link from 'next/link';
@@ -65,8 +64,8 @@ function Overview() {
               );
             })
           ) : (
-            <Card className='bg-neutral-100 text-neutral-700 p-4 flex items-center justify-center'>
-              <Users className='w-8 h-8 mr-2' />
+            <Card className='flex items-center justify-center bg-neutral-100 p-4 text-neutral-700'>
+              <Users className='mr-2 h-8 w-8' />
               <p>Interviewers will be decided once interview is confirmed</p>
             </Card>
           )
@@ -148,22 +147,25 @@ function Overview() {
             }}
           >
             {schedule?.interview_module?.name}
-            <SquareArrowOutUpRight className='w-4 h-4 ml-2' />
+            <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
           </Button>
         }
         slotCandidateList={
-          <GlobalUserDetail
-            isRoleVisible={false}
-            textName={getFullName(
-              schedule.candidates.first_name,
-              schedule.candidates.last_name,
-            )}
-            textTimeZone={formatTimeWithTimeZone({
-              start_time: schedule.interview_meeting.start_time,
-              end_time: schedule.interview_meeting.end_time,
-              timeZone: schedule.candidates.timezone,
-            })}
-          />
+          <div className='flex flex-col space-y-2'>
+            <div className='text-sm font-medium'>
+              {getFullName(
+                schedule.candidates.first_name,
+                schedule.candidates.last_name,
+              )}
+            </div>
+            <div className='text-xs text-gray-500'>
+              {formatTimeWithTimeZone({
+                start_time: schedule.interview_meeting.start_time,
+                end_time: schedule.interview_meeting.end_time,
+                timeZone: schedule.candidates.timezone,
+              })}
+            </div>
+          </div>
         }
         textMeetingLink={schedule.interview_meeting.meeting_link || '--'}
         slotJoinMeeting={
@@ -177,7 +179,7 @@ function Overview() {
               }}
             >
               Join Meeting
-              <SquareArrowOutUpRight className='w-4 h-4 ml-2' />
+              <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
             </Button>
           )
         }

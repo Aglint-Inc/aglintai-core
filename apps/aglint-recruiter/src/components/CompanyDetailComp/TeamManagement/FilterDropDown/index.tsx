@@ -11,7 +11,7 @@ type ItemType = string;
 
 function FilterDropDown({
   title,
-  itemList, 
+  itemList,
   setSelectedItems,
   selectedItems,
   icon,
@@ -119,8 +119,10 @@ function FilterDropDown({
                 );
               })
             ) : (
-              <GlobalEmpty text={`No ${capitalizeAll(title)}`} iconSlot={<Info className='text-gray-500'/>}/>
-              
+              <GlobalEmpty
+                text={`No ${capitalizeAll(title)}`}
+                iconSlot={<Info className='text-gray-500' />}
+              />
             )
           }
           onClickReset={{

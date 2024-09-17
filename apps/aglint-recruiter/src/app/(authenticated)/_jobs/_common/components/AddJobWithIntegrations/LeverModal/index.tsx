@@ -179,7 +179,7 @@ export default function LeverModalComp() {
               className={error ? 'border-red-500' : ''}
             />
             {error && (
-              <p className='text-red-500 text-sm'>Please enter an API key</p>
+              <p className='text-sm text-red-500'>Please enter an API key</p>
             )}
             <Button
               variant='default'
@@ -190,7 +190,7 @@ export default function LeverModalComp() {
               {loading ? 'Submitting...' : 'Submit'}
             </Button>
             {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
-              <p className='text-red-500 text-sm'>
+              <p className='text-sm text-red-500'>
                 Invalid API key. Please try again.
               </p>
             )}
@@ -215,15 +215,15 @@ export default function LeverModalComp() {
               height={50}
               alt='Lever logo'
             />
-            <p className='text-sm text-gray-600 mb-2'>
+            <p className='mb-2 text-sm text-gray-600'>
               Fetching data from Lever...
             </p>
-            <div className='flex justify-center items-center h-24 w-24'>
+            <div className='flex h-24 w-24 items-center justify-center'>
               <Loader2 className='h-12 w-12 animate-spin text-gray-500' />
             </div>
           </div>
         ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-          <div className='flex flex-col h-full overflow-hidden space-y-4'>
+          <div className='flex h-full flex-col space-y-4 overflow-hidden'>
             <Tabs value={leverFilter} onValueChange={setLeverFilter}>
               <TabsList className='grid w-full grid-cols-4'>
                 <TabsTrigger value='all'>All</TabsTrigger>
@@ -232,7 +232,7 @@ export default function LeverModalComp() {
                 <TabsTrigger value='closed'>Closed</TabsTrigger>
               </TabsList>
             </Tabs>
-            <div className='space-y-2 max-h-[400px] overflow-y-auto'>
+            <div className='max-h-[400px] space-y-2 overflow-y-auto'>
               {!initialFetch ? (
                 leverPostings.filter(
                   (job) => leverFilter === 'all' || job.state === leverFilter,
@@ -283,12 +283,12 @@ export default function LeverModalComp() {
                 )
               ) : (
                 <>
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
                 </>
               )}
             </div>
@@ -304,8 +304,8 @@ export default function LeverModalComp() {
             </Button>
           </div>
         ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
-          <div className='flex flex-col items-center justify-center space-y-4 h-[508px]'>
-            <Loader2 className='w-8 h-8 animate-spin text-gray-500' />
+          <div className='flex h-[508px] flex-col items-center justify-center space-y-4'>
+            <Loader2 className='h-8 w-8 animate-spin text-gray-500' />
             <p className='text-gray-600'>Importing from Lever</p>
           </div>
         ) : null}

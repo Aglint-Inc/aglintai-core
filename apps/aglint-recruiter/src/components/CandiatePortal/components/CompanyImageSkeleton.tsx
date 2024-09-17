@@ -3,14 +3,14 @@ import React from 'react';
 
 const CompanyImageSkeleton = () => {
   return (
-    <div className='h-48 relative'>
+    <div className='relative h-48'>
       {/* Cover Image Skeleton */}
-      <Skeleton className='absolute inset-0 w-full h-full' />
+      <Skeleton className='absolute inset-0 h-full w-full' />
 
       {/* Company Logo Skeleton */}
       <div className='absolute -bottom-16 left-8'>
-        <div className='w-32 h-32 bg-white rounded-md border border-gray-100 flex items-center justify-center overflow-hidden'>
-          <Skeleton className='w-32 h-32 rounded-md' />
+        <div className='flex h-32 w-32 items-center justify-center overflow-hidden rounded-md border border-gray-100 bg-white'>
+          <Skeleton className='h-32 w-32 rounded-md' />
         </div>
       </div>
     </div>

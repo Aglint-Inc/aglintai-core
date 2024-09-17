@@ -27,7 +27,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
         style={{ gridTemplateRows: 'max-content 1fr' }}
       >
         <div
-          className='block overflow-hidden mt-2'
+          className='mt-2 block overflow-hidden'
           style={{
             backgroundColor: isActive
               ? 'hsl(var(--primary))'
@@ -44,7 +44,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
               height: '100%',
               width: '1px',
             }}
-            className=' mx-auto'
+            className='mx-auto'
           ></div>
         )}
       </div>

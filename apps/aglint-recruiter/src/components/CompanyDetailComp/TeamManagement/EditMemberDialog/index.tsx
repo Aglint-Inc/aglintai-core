@@ -216,7 +216,7 @@ const EditMember = ({
           <DialogTitle>Update Details</DialogTitle>
         </DialogHeader>
         {form && (
-          <div className='space-y-4 mt-4'>
+          <div className='mt-4 space-y-4'>
             <div className='flex items-center space-x-4'>
               <Avatar className='h-16 w-16'>
                 <AvatarImage src={form.profile_image} alt={form.first_name} />
@@ -429,7 +429,7 @@ const EditMember = ({
                 </>
               )}
 
-            <div className='flex justify-end space-x-2 mt-6'>
+            <div className='mt-6 flex justify-end space-x-2'>
               <Button variant='outline' onClick={onClose}>
                 Cancel
               </Button>

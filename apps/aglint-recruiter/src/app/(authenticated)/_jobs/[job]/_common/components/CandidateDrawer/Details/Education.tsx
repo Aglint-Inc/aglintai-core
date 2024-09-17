@@ -31,7 +31,7 @@ const Education = () => {
     <Accordion type='single' collapsible>
       <AccordionItem value='education'>
         <AccordionTrigger>
-          <div className='flex items-center justify-between w-full'>
+          <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
               <GraduationCap size={16} />
               <span className='font-medium'>Education</span>
@@ -74,9 +74,9 @@ const Content = () => {
       // Updated loading state with shadcn Skeleton
       <div className='space-y-4'>
         {[...Array(3)].map((_, index) => (
-          <div key={index} className='p-4 border rounded-md'>
-            <Skeleton className='h-6 w-1/3 mb-2' />
-            <Skeleton className='h-4 w-1/2 mb-1' />
+          <div key={index} className='rounded-md border p-4'>
+            <Skeleton className='mb-2 h-6 w-1/3' />
+            <Skeleton className='mb-1 h-4 w-1/2' />
             <Skeleton className='h-4 w-1/4' />
           </div>
         ))}
@@ -91,8 +91,8 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <School className='text-gray-500 w-12 h-12 mb-2' />
-        <p className='text-gray-600 text-sm'>No education found</p>
+        <School className='mb-2 h-12 w-12 text-gray-500' />
+        <p className='text-sm text-gray-600'>No education found</p>
       </div>
     );
 
@@ -158,7 +158,7 @@ const Schools = () => {
         <TableBody>
           {itemsToShow.map(({ institution, degree, start, end }, i) => (
             <TableRow key={i}>
-              <TableCell className='flex items-center space-x-2 w-1/4'>
+              <TableCell className='flex w-1/4 items-center space-x-2'>
                 <ImageWithFallback
                   src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${institution} logo`}

@@ -18,7 +18,7 @@ const CompanyLogo = ({
     name && !(name.includes('pvt') || name.includes('ltd'));
 
   return (
-    <Avatar className='w-full h-full bg-white/70'>
+    <Avatar className='h-full w-full bg-white/70'>
       <AvatarImage
         src={
           shouldUseClearbit
@@ -30,7 +30,7 @@ const CompanyLogo = ({
         className={`object-contain ${borderRadius ? `rounded-[${borderRadius}px]` : ''}`}
       />
       <AvatarFallback className='bg-neutral-100'>
-        <Building2 className='w-6 h-6 text-neutral-400' />
+        <Building2 className='h-6 w-6 text-neutral-400' />
       </AvatarFallback>
     </Avatar>
   );

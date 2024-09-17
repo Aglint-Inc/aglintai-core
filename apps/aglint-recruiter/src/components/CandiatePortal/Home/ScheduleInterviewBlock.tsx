@@ -10,7 +10,7 @@ export function ScheduleInterviewBlock() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className='text-sm text-gray-500 mb-4'>Requested on Aug 22</p>
+        <p className='mb-4 text-sm text-gray-500'>Requested on Aug 22</p>
         <Button className='w-full'>Schedule</Button>
       </CardContent>
     </Card>

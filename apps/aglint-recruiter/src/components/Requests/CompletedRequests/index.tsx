@@ -83,10 +83,10 @@ function CompletedRequests() {
 
   return (
     <>
-      <div className='bg-gray-50 min-h-screen'>
-        <div className='py-8 w-[960px] mx-auto'>
+      <div className='min-h-screen bg-gray-50'>
+        <div className='mx-auto w-[960px] py-8'>
           <div className='sticky top-0 z-10 mb-8'>
-            <h2 className='text-2xl font-bold mb-6'>
+            <h2 className='mb-6 text-2xl font-bold'>
               {capitalizeFirstLetter('all_completed_requests')}
             </h2>
             <div className='my-4'>
@@ -112,14 +112,14 @@ function CompletedRequests() {
               </Breadcrumb>
             </div>
           </div>
-          <div className='w-[960px] mx-auto'>
+          <div className='mx-auto w-[960px]'>
             <div className='my-8'>
               <h3>Filters:</h3>
               <RequestHistoryFilter />
             </div>
             {hasRequests ? (
               <>
-                <div className='flex justify-end mb-4'>
+                <div className='mb-4 flex justify-end'>
                   <Button
                     variant='ghost'
                     onClick={() => setAllExpanded(true)}
@@ -149,11 +149,11 @@ function CompletedRequests() {
                       }}
                     >
                       <AccordionItem value={date}>
-                        <AccordionTrigger className='text-md font-semibold py-4'>
+                        <AccordionTrigger className='text-md py-4 font-semibold'>
                           {dayjs(date).fromNow()} ({requests.length} requests)
                         </AccordionTrigger>
                         <AccordionContent>
-                          <div className='flex flex-col border rounded-lg overflow-hidden'>
+                          <div className='flex flex-col overflow-hidden rounded-lg border'>
                             {requests.map((request, i) => (
                               <React.Fragment key={request.id ?? i}>
                                 <RequestProvider request_id={request.id}>
@@ -165,7 +165,7 @@ function CompletedRequests() {
                                 {i !== requests.length - 1 &&
                                   requests.length > 1 && (
                                     <hr
-                                      className='border-t border-gray-200 my-0'
+                                      className='my-0 border-t border-gray-200'
                                       style={{ borderTopWidth: '0.5px' }}
                                     />
                                   )}
@@ -179,9 +179,9 @@ function CompletedRequests() {
                 )}
                 {hasMore && (
                   <>
-                    <div ref={loaderRef} className='text-center py-4'>
+                    <div ref={loaderRef} className='py-4 text-center'>
                       {isLoadingMore ? (
-                        <Loader2 className='h-6 w-6 animate-spin mx-auto' />
+                        <Loader2 className='mx-auto h-6 w-6 animate-spin' />
                       ) : (
                         <Button onClick={loadMore} disabled={isLoadingMore}>
                           Load More

@@ -33,31 +33,31 @@ const JobsSideNavV2 = () => {
 
   const navItems = [
     {
-      icon: <FileText className='w-5 h-5' />,
+      icon: <FileText className='h-5 w-5' />,
       label: 'Job Details',
       route: 'job-details',
       show: true,
     },
     {
-      icon: <BarChart className='w-5 h-5' />,
+      icon: <BarChart className='h-5 w-5' />,
       label: 'Profile Score',
       route: 'profile-score',
       show: isScoringEnabled,
     },
     {
-      icon: <UserPlus className='w-5 h-5' />,
+      icon: <UserPlus className='h-5 w-5' />,
       label: 'Hiring Team',
       route: 'hiring-team',
       show: true,
     },
     {
-      icon: <Calendar className='w-5 h-5' />,
+      icon: <Calendar className='h-5 w-5' />,
       label: 'Interview Plan',
       route: 'interview-plan',
       show: isShowFeature('SCHEDULING'),
     },
     {
-      icon: <Workflow className='w-5 h-5' />,
+      icon: <Workflow className='h-5 w-5' />,
       label: 'Workflows',
       route: 'workflows',
       show: isShowFeature('WORKFLOW'),
@@ -74,7 +74,7 @@ const JobsSideNavV2 = () => {
 
   return (
     <>
-      <nav className='py-4 space-y-2'>
+      <nav className='space-y-2 py-4'>
         {navItems.map(
           (item, index) =>
             item.show && (
@@ -92,18 +92,18 @@ const JobsSideNavV2 = () => {
       </nav>
 
       {manageJob && (
-        <div className='p-4 border rounded-md mt-12 max-w-60'>
-          <h4 className='text-sm font-semibold mb-1'>
+        <div className='mt-12 max-w-60 rounded-md border p-4'>
+          <h4 className='mb-1 text-sm font-semibold'>
             {job?.status !== 'published' ? 'Delete' : 'Close'} Job
           </h4>
-          <p className='text-xs text-muted-foreground mb-2'>
+          <p className='mb-2 text-xs text-muted-foreground'>
             {job?.status !== 'published'
               ? 'Permanently remove this job and all related data.'
               : 'Stop all activities and remove the job from the company page.'}
           </p>
           <Button
             variant='link'
-            className='text-destructive p-0 h-auto'
+            className='h-auto p-0 text-destructive'
             onClick={() => setIsCloseJobDialogOpen(true)}
           >
             <span>{job?.status !== 'published' ? 'Delete' : 'Close'} Job</span>

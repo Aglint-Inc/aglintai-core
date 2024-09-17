@@ -22,11 +22,11 @@ export function InterviewPlanWrap({
   isBottomArrowVisible = true,
 }) {
   return (
-    <div className='flex items-start gap-2 relative'>
-      <div className='w-full p-4 md:p-5 border border-transparent rounded-lg bg-neutral-100 hover:border-neutral-300 transition-colors duration-200'>
+    <div className='relative flex items-start gap-2'>
+      <div className='w-full rounded-lg border border-transparent bg-neutral-100 p-4 transition-colors duration-200 hover:border-neutral-300 md:p-5'>
         <div className='relative'>
-          <div className='flex justify-between items-center '>
-            <div className='flex gap-2 items-center'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-2'>
               <UITypography type='small' variant='p'>
                 {textStageName}
               </UITypography>
@@ -34,7 +34,7 @@ export function InterviewPlanWrap({
                 variant='ghost'
                 size='sm'
                 icon={<Edit />}
-                className='opacity-0 hover:opacity-100 transition-opacity duration-300'
+                className='opacity-0 transition-opacity duration-300 hover:opacity-100'
                 {...onClickEdit}
               />
             </div>
@@ -52,17 +52,17 @@ export function InterviewPlanWrap({
           )}
         </div>
         {isSlotInterviewPlanVisible && (
-          <div className='flex flex-col gap-2 '>
+          <div className='flex flex-col gap-2'>
             {slotInterviewPlanDetail ?? <InterviewPlanDetail />}
           </div>
         )}
       </div>
-      <div className='absolute top-0 right-0 translate-x-[120%] flex flex-col gap-2'>
+      <div className='absolute right-0 top-0 flex translate-x-[120%] flex-col gap-2'>
         {isTopArrowVisible && (
           <UIButton
             variant='secondary'
             size='sm'
-            className='opacity-0 hover:opacity-100 transition-opacity duration-300'
+            className='opacity-0 transition-opacity duration-300 hover:opacity-100'
             {...onClickUp}
             icon={<ArrowUp />}
           />
@@ -71,7 +71,7 @@ export function InterviewPlanWrap({
           <UIButton
             variant='secondary'
             size='sm'
-            className='opacity-0 hover:opacity-100 transition-opacity duration-300'
+            className='opacity-0 transition-opacity duration-300 hover:opacity-100'
             {...onClickDown}
             icon={<ArrowDown />}
           />

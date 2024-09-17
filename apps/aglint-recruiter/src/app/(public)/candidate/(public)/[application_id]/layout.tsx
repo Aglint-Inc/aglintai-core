@@ -4,8 +4,8 @@ import { Footer } from '@/components/CandiatePortal/Layout/Footer';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <div className='flex flex-col w-full min-h-screen'>
-      <div className='flex-grow flex justify-center items-center'>
+    <div className='flex min-h-screen w-full flex-col'>
+      <div className='flex flex-grow items-center justify-center'>
         {children}
       </div>
       <div className='mt-auto'>

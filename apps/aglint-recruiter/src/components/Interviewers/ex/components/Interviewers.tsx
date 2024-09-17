@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { InterviewStatsLoader } from '@devlink3/InterviewStatsLoader';
 import Stack from '@mui/material/Stack';
 import { HardDrive } from 'lucide-react';
 import { memo, useState } from 'react';
@@ -80,7 +79,7 @@ const List = ({ data }: { data: useMatricsInterviewersType }) => {
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => <InterviewStatsLoader key={i} slotSkeleton={<Skeleton />} />,
+    (_, i) => <Skeleton key={i} className='h-full w-full' />,
   );
 });
 Loader.displayName = 'Loader';

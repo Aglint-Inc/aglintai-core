@@ -19,11 +19,11 @@ export function InterviewerTraining({
   onClickRight,
 }: InterviewerTrainingProps) {
   return (
-    <div className='overflow-auto h-[calc(100vh-48px)]'>
-      <div className='flex justify-between items-center p-2 px-4 border-b border-neutral-200'>
+    <div className='h-[calc(100vh-48px)] overflow-auto'>
+      <div className='flex items-center justify-between border-b border-neutral-200 p-2 px-4'>
         <div>{slotFilter}</div>
         <div className='flex items-center space-x-2'>
-          <div className='px-2 py-0.5 border border-neutral-200 rounded-md bg-neutral-100'>
+          <div className='rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5'>
             <div>
               <p>{textDateRange}</p>
               <CalendarIcon size={16} />
@@ -39,26 +39,26 @@ export function InterviewerTraining({
             <UIButton
               variant='outline'
               size='sm'
-              icon={<ChevronRight className='w-4 h-4' />}
+              icon={<ChevronRight className='h-4 w-4' />}
               onClick={onClickRight}
             ></UIButton>
           </div>
         </div>
       </div>
       <div>
-        <div className='grid grid-cols-[300px_257px_1fr] bg-neutral-100 border-b border-neutral-200'>
+        <div className='grid grid-cols-[300px_257px_1fr] border-b border-neutral-200 bg-neutral-100'>
           <div className='p-1 px-3'>
-            <span className='font-medium text-sm'>Trainee</span>
+            <span className='text-sm font-medium'>Trainee</span>
           </div>
           <div className='p-1 px-3'>
-            <span className='font-medium text-sm'>Interview Pool</span>
+            <span className='text-sm font-medium'>Interview Pool</span>
           </div>
           <div className='p-1 px-3'>
-            <span className='font-medium text-sm'>Training Progress</span>
+            <span className='text-sm font-medium'>Training Progress</span>
           </div>
         </div>
-        <div className='overflow-auto h-[calc(100vh-117px)]'>
-          <div className='flex flex-col bg-neutral-200 divide-y divide-neutral-300'>
+        <div className='h-[calc(100vh-117px)] overflow-auto'>
+          <div className='flex flex-col divide-y divide-neutral-300 bg-neutral-200'>
             {slotInterviewerTrainnigList}
           </div>
         </div>

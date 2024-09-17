@@ -51,11 +51,11 @@ export function ThemeSelector() {
             className='sr-only'
           />
           <Card
-            className={`transition-colors duration-200 ${theme === pageTheme.value ? `bg-${pageTheme.value}-100 border-${pageTheme.value}-500` : 'bg-white border-gray-200'}`}
+            className={`transition-colors duration-200 ${theme === pageTheme.value ? `bg-${pageTheme.value}-100 border-${pageTheme.value}-500` : 'border-gray-200 bg-white'}`}
           >
             <CardContent className='flex flex-col items-center justify-between p-4'>
               <Palette
-                className={`h-6 w-6 mb-2 ${theme === pageTheme.value ? `text-${pageTheme.value}-500` : 'text-gray-500'}`}
+                className={`mb-2 h-6 w-6 ${theme === pageTheme.value ? `text-${pageTheme.value}-500` : 'text-gray-500'}`}
               />
               <span
                 className={`text-sm font-medium ${theme === pageTheme.value ? `text-${pageTheme.value}-700` : 'text-gray-700'}`}

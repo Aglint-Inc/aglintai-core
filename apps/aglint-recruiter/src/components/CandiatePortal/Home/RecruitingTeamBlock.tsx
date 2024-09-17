@@ -10,10 +10,10 @@ export function RecruitingTeamBlock() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className='text-sm text-gray-500 mb-4'>
+        <p className='mb-4 text-sm text-gray-500'>
           Based on availability requested on Aug 22
         </p>
-        <Link href='#' className='text-blue-600 text-sm'>
+        <Link href='#' className='text-sm text-blue-600'>
           View availability
         </Link>
       </CardContent>

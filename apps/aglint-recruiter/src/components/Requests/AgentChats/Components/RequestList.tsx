@@ -38,7 +38,7 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
   return (
     <div className='space-y-1'>
       {requests.length === 0 ? (
-        <div className='text-neutral-500 space-y-1'>
+        <div className='space-y-1 text-neutral-500'>
           <p className='text-sm text-gray-500'>No requests found.</p>
         </div>
       ) : (
@@ -99,12 +99,12 @@ const CardIndividual = ({ request }: { request: RequestListProps }) => {
         onMouseLeave={() => setHovered(null)}
         className='block text-inherit no-underline'
       >
-        <div className='flex items-center space-x-1 text-neutral-800 relative'>
+        <div className='relative flex items-center space-x-1 text-neutral-800'>
           <div className='flex-1'>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className='overflow-hidden'>
-                  <p className='text-sm line-clamp-1'>{request.title}</p>
+                  <p className='line-clamp-1 text-sm'>{request.title}</p>
                 </div>
               </TooltipTrigger>
               <TooltipContent>{request.title}</TooltipContent>
@@ -119,7 +119,7 @@ const CardIndividual = ({ request }: { request: RequestListProps }) => {
             </Badge>
           </div>
           {hovered === request.link && (
-            <div className='absolute right-0 top-0 bottom-0 flex items-center'>
+            <div className='absolute bottom-0 right-0 top-0 flex items-center'>
               <Button variant='outline' size='sm' className='flex items-center'>
                 View Details
                 <ArrowUpRight className='ml-2 h-4 w-4' />

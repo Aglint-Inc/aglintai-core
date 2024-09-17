@@ -24,18 +24,18 @@ const ScheduleOption: React.FC<ScheduleOptionProps> = ({
   return (
     <Button
       variant='outline'
-      className='w-full justify-between group'
+      className='group w-full justify-between'
       onClick={onClick}
     >
-      <div className='flex items-center py-2 space-x-2'>
+      <div className='flex items-center space-x-2 py-2'>
         <Calendar className='h-4 w-4 text-muted-foreground' />
-        <span className='text-xs flex items-center'>
+        <span className='flex items-center text-xs'>
           {prefix}
           <KeyboardShortcut keys={commandKeys} /> {/* Pass the array of keys */}
           {suffix}
         </span>
       </div>
-      <SendHorizontal className='h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200' />
+      <SendHorizontal className='h-4 w-4 text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100' />
     </Button>
   );
 };

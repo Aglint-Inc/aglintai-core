@@ -9,14 +9,14 @@ export function ModuleMembers({
   isMembersTrainingVisible = true,
 }) {
   return (
-    <div className='flex flex-col w-[900px] p-4 space-y-4'>
+    <div className='flex w-[900px] flex-col space-y-4 p-4'>
       <div>
         <div className='flex items-center space-x-2'>
           <UITypography type='small' className='font-semibold' variant='p'>
             Interviewers
           </UITypography>
         </div>
-        <div className='flex flex-col mt-4 space-y-2'>
+        <div className='mt-4 flex flex-col space-y-2'>
           {slotQualifiedMemberList}
         </div>
       </div>
@@ -27,7 +27,7 @@ export function ModuleMembers({
               Members in training
             </UITypography>
           </div>
-          <div className='flex flex-col mt-4 space-y-2'>
+          <div className='mt-4 flex flex-col space-y-2'>
             {slotMembersInTraining}
           </div>
         </div>

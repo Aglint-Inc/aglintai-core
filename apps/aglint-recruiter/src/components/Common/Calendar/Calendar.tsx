@@ -30,10 +30,10 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
-import Loader from '../Loader';
 // import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {
@@ -111,9 +111,9 @@ function CalendarComp({
   };
 
   return (
-    <div className='p-2 w-[900px] h-[624px] space-y-2'>
+    <div className='h-[624px] w-[900px] space-y-2 p-2'>
       {isLoading ? (
-        <div className='w-[900px] h-[400px] flex items-center justify-center'>
+        <div className='flex h-[400px] w-[900px] items-center justify-center'>
           <Loader />
         </div>
       ) : (
@@ -170,7 +170,7 @@ function renderEventContent(eventInfo) {
     <Tooltip>
       <TooltipTrigger asChild>
         <div
-          className='rounded-md p-[5px_10px] w-full'
+          className='w-full rounded-md p-[5px_10px]'
           style={{
             backgroundColor: color?.bg,
             borderLeft: `3px solid ${color.pri}`,
@@ -234,7 +234,7 @@ const TooltipComp = ({ data }) => {
           </div>
         </CardContent>
       </Card>
-      <div className='px-4 pb-4 space-y-1'>
+      <div className='space-y-1 px-4 pb-4'>
         <p>
           Candidate:{' '}
           {getFullName(

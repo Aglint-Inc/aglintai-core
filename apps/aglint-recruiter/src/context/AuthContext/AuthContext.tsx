@@ -4,6 +4,7 @@ import {
   type RecruiterUserType,
   type SocialsType,
 } from '@aglint/shared-types';
+import { useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import posthog from 'posthog-js';
 import {
@@ -13,7 +14,7 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState
+  useState,
 } from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -79,6 +80,7 @@ const defaultProvider: ContextValue = {
 export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
+  const queryClient = useQueryClient();
   const router = useRouterPro();
   const [recruiter, setRecruiter] = useState<ContextValue['recruiter']>(null);
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
@@ -160,6 +162,7 @@ const AuthProvider = ({ children }) => {
     const { error } = await supabase.auth.signOut({
       scope: 'local',
     });
+    queryClient.removeQueries();
     posthog.reset();
     if (!error) {
       router.push(ROUTES['/login']());
@@ -219,7 +222,7 @@ export { AuthContext, AuthProvider };
 
 const AuthLoader = () => {
   return (
-    <div className='flex h-screen items-center justify-center w-full'>
+    <div className='flex h-screen w-full items-center justify-center'>
       <Loader2 className='animate-spin' />
     </div>
   );

@@ -14,7 +14,7 @@ export const Insights = () => {
     <Accordion type='single' defaultValue='insights' collapsible>
       <AccordionItem value='insights'>
         <AccordionTrigger>
-          <div className='flex items-center justify-between w-full'>
+          <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
               <Lightbulb size={16} />
               <span className='font-medium'>Insights</span>

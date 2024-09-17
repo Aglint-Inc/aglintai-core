@@ -14,12 +14,12 @@ function Integrations() {
 
   return (
     <>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8'>
+      <div className='mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8'>
         <header className='mb-8'>
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between'>
             <div>
               <h1 className='text-lg font-semibold'>Integrations</h1>
-              <p className='text-gray-600 mb-4'>
+              <p className='mb-4 text-gray-600'>
                 Connect your favorite tools to streamline your recruitment
                 process.
               </p>
@@ -36,33 +36,33 @@ function Integrations() {
 
         <section>
           <h2 className='text-md font-semibold'>ATS</h2>
-          <p className='text-gray-600 mb-4'>
+          <p className='mb-4 text-gray-600'>
             Easily manage job postings and candidate information by connecting
             your preferred ATS.
           </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
             <ATSTools integrations={allIntegrations} refetch={refetch} />
           </div>
         </section>
 
         <section>
           <h2 className='text-md font-semibold'>Scheduling Tools</h2>
-          <p className='text-gray-600 mb-4'>
+          <p className='mb-4 text-gray-600'>
             Connect your calendar and video conferencing tools to simplify
             interview scheduling.
           </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
             <Scheduling allIntegrations={allIntegrations} />
           </div>
         </section>
 
         <section>
           <h2 className='text-md font-semibold'>Communication Platforms</h2>
-          <p className='text-gray-600 mb-4'>
+          <p className='mb-4 text-gray-600'>
             Connect popular communication tools to enhance your team&apos;s
             coordination.
           </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
             <MessagingTools />
           </div>
         </section>

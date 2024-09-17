@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { SidedrawerBodyBreak } from '@devlink2/SidedrawerBodyBreak';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -100,7 +99,7 @@ const BreakForms = ({
     [break_duration],
   );
 
-  return <SidedrawerBodyBreak slotDurationDropdown={sessionDurationField} />;
+  return sessionDurationField;
 };
 
 export default BreakForms;

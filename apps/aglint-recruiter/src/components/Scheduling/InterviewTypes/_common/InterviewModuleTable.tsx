@@ -14,9 +14,9 @@ export function InterviewModuleTable({
   isFilterVisible?: boolean;
 }) {
   return (
-    <Component className='flex w-full h-full flex-col '>
+    <Component className='flex h-full w-full flex-col'>
       {isFilterVisible && (
-        <div className='px-4 p-2 flex w-full  justify-start items-center gap-4 border-t border-transparent'>
+        <div className='flex w-full items-center justify-start gap-4 border-t border-transparent p-2 px-4'>
           {slotFilter}
         </div>
       )}
@@ -34,7 +34,7 @@ export function InterviewModuleTable({
           <UITypography>Members</UITypography>
         </div>
       </div>
-      <div className='flex flex-col overflow-auto h-[calc(100vh-134px)]'>
+      <div className='flex h-[calc(100vh-134px)] flex-col overflow-auto'>
         {slotInterviewModuleCard}
       </div>
     </Component>

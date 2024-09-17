@@ -216,7 +216,7 @@ function Availibility({
         </Stack>
         <Typography>{selectedTimeZone?.label}</Typography>
       </Stack>
-      <div className='flex flex-col w-[600px] space-y-2'>
+      <div className='flex w-[600px] flex-col space-y-2'>
         <Card className='grid grid-cols-3 gap-3 border-none shadow-none'>
           <>
             <InterviewLoadCard

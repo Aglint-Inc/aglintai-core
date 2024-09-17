@@ -162,7 +162,7 @@ function ConfirmAvailability() {
             >
               <div
                 className={
-                  'h-[calc(100vh - 96px)] w-full p-4 flex flex-col gap-2'
+                  'h-[calc(100vh - 96px)] flex w-full flex-col gap-2 p-4'
                 }
               >
                 <div>
@@ -214,8 +214,8 @@ function ConfirmAvailability() {
               </div>
             </ShowCode.When>
             <ShowCode.When isTrue={isLoading && !isFetched}>
-              <div className='flex justify-center items-center h-[calc(100vh - 96px)]'>
-                <Loader2 className='w-6 h-6 animate-spin text-primary' />
+              <div className='h-[calc(100vh - 96px)] flex items-center justify-center'>
+                <Loader2 className='h-6 w-6 animate-spin text-primary' />
               </div>
             </ShowCode.When>
             <ShowCode.Else>

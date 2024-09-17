@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';
@@ -122,7 +122,7 @@ export function EmailTemplateHolder({
 }: EmailTemplateHolderProps) {
   return (
     <Card className='w-full'>
-      <CardHeader className='flex p-2 flex-row items-center justify-between space-y-0 pb-2'>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 p-2 pb-2'>
         <div className='flex items-center text-sm text-muted-foreground'>
           <Info className='mr-2 h-4 w-4' />
           {textHeader}
@@ -136,7 +136,7 @@ export function EmailTemplateHolder({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className='p-0 bg-neutral-50'>{slotEmail}</CardContent>
+      <CardContent className='bg-neutral-50 p-0'>{slotEmail}</CardContent>
     </Card>
   );
 }

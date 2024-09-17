@@ -2,10 +2,10 @@ import { getFullName } from '@aglint/shared-utils';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import Loader from '../Common/Loader';
 import { BreadCrumb, SideBar, Top } from './components/Components';
 import { Feedback } from './components/FeedbackCard';
 import { Header } from './components/Header';
@@ -63,7 +63,7 @@ export default function InterviewerDetailsPage() {
 
   if (isLoading)
     return (
-      <div className='flex items-center justify-center w-full h-full'>
+      <div className='flex min-h-screen w-full items-center justify-center'>
         <Loader />
       </div>
     );

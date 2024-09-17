@@ -1,4 +1,3 @@
-
 import { Popover, Stack } from '@mui/material';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -24,12 +23,8 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
 
   return (
     <>
-      <UIButton
-        variant='secondary'
-        size='sm'
-        onClick={handleClick}
-      >
-       <Pencil className='h-4 w-4'/>
+      <UIButton variant='secondary' size='sm' onClick={handleClick}>
+        <Pencil className='h-4 w-4' />
       </UIButton>
       <Popover
         id={id}

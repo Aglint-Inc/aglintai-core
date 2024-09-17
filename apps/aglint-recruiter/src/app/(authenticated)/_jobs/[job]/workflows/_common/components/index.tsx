@@ -10,7 +10,7 @@ import { Button } from '@components/ui/button';
 import { Zap } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';
@@ -27,21 +27,21 @@ export const JobWorkflowDashboard = () => {
     job && job?.status !== 'closed' ? (
       <div className='min-h-screen'>
         <div className='container mx-auto'>
-          <div className='flex justify-between items-center mb-6'>
+          <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             <Actions />
           </div>
 
-          <div className='flex gap-6 mb-6'>
+          <div className='mb-6 flex gap-6'>
             <div className='w-1/4'>
               <JobsSideNavV2 />
             </div>
             <div className='w-3/4'>
-              <h2 className='text-xl font-bold mb-2'>Automations</h2>
-              <p className='text-sm text-gray-600 mb-4'>
+              <h2 className='mb-2 text-xl font-bold'>Automations</h2>
+              <p className='mb-4 text-sm text-gray-600'>
                 Automations streamline recruitment processes, saving time and
                 enhancing efficiency throughout the hiring workflow.
               </p>
@@ -54,7 +54,7 @@ export const JobWorkflowDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='w-full h-screen flex items-center justify-center'>
+    <div className='flex h-screen w-full items-center justify-center'>
       <Loader />
     </div>
   );
@@ -94,7 +94,7 @@ const Actions = () => {
   const { setPopup } = useJobDashboardActions();
   return (
     <>
-      <div className='flex justify-between items-center gap-2'>
+      <div className='flex items-center justify-between gap-2'>
         {manageJob && (
           <Button
             variant='outline'

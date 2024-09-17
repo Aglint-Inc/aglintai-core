@@ -17,8 +17,8 @@ function BreakCard({
 }) {
   return (
     <Card className='p-2'>
-      <div className='flex flex-row gap-8 items-center p-2 bg- rounded-md'>
-        <div className='flex flex-row gap-2 items-center'>
+      <div className='bg- flex flex-row items-center gap-8 rounded-md p-2'>
+        <div className='flex flex-row items-center gap-2'>
           <Coffee size={16} />
           <UITypography type='small' fontBold='normal'>
             Break

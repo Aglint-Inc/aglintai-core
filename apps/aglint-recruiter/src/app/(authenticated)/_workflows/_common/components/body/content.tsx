@@ -74,9 +74,9 @@ const Cards = (props: {
               passHref
             >
               <a className='block'>
-                <CardHeader className='p-3 pb-0 flex justify-between items-start'>
-                  <CardTitle className='text-base w-full font-semibold'>
-                    <div className='flex justify-between items-center'>
+                <CardHeader className='flex items-start justify-between p-3 pb-0'>
+                  <CardTitle className='w-full text-base font-semibold'>
+                    <div className='flex items-center justify-between'>
                       {capitalizeSentence(title ?? '---')}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -137,12 +137,12 @@ const Cards = (props: {
   );
   if (cards.length === 0)
     return (
-      <div className='flex flex-col items-center justify-center h-full p-8 text-center'>
-        <div className='rounded-full bg-muted p-3 mb-4'>
+      <div className='flex h-full flex-col items-center justify-center p-8 text-center'>
+        <div className='mb-4 rounded-full bg-muted p-3'>
           <Inbox className='h-6 w-6 text-muted-foreground' />
         </div>
         <h3 className='text-lg font-semibold'>No workflows</h3>
-        <p className='text-sm text-muted-foreground mt-2 mb-4'>
+        <p className='mb-4 mt-2 text-sm text-muted-foreground'>
           You haven&apos;t created any workflows yet. Start by creating a new
           one.
         </p>

@@ -10,13 +10,13 @@ import { ProfileEdit } from './ProfileEdit';
 export default function ProfileView() {
   const { data } = useCandidatePortalProfile();
   return (
-    <Card className='w-full max-w-3xl mx-auto'>
+    <Card className='mx-auto w-full max-w-3xl'>
       <CardHeader className='flex flex-row items-start justify-between'>
         <div className='flex flex-col gap-4'>
           <div className='flex items-center gap-2'>
-            <Avatar className='w-40 h-40 rounded-md'>
+            <Avatar className='h-40 w-40 rounded-md'>
               <AvatarImage src={data.avatar || ''} />
-              <AvatarFallback className='text-6xl font-semibold rounded-md'>
+              <AvatarFallback className='rounded-md text-6xl font-semibold'>
                 {data.first_name.charAt(0) + data.last_name.charAt(0)}
               </AvatarFallback>
             </Avatar>

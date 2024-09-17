@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';

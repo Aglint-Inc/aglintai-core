@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import UITypography from '@/components/Common/UITypography';
 import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useAllDepartments } from '@/queries/departments';
@@ -90,7 +90,7 @@ function Metrics() {
 
   if (isLoading)
     return (
-      <div className='flex items-center justify-center w-full h-full'>
+      <div className='flex h-full w-full items-center justify-center'>
         <Loader />
       </div>
     );
@@ -126,15 +126,15 @@ function Metrics() {
         // textDescription={`Metrics showing for the ${leaderTypeFilterList.find((item) => item.value === leaderboardType).name}  ${departmentForDes.length ? 'for ' + departmentForDes.join(', ') : ''} `}
         slotFirstGrid={
           <>
-            <Card className='h-[420px] p-4 border border-neutral-200 rounded-md'>
-              <CardHeader className='px-4 py-0 mb-2'>
-                <div className='flex gap-2 items-center'>
+            <Card className='h-[420px] rounded-md border border-neutral-200 p-4'>
+              <CardHeader className='mb-2 px-4 py-0'>
+                <div className='flex items-center gap-2'>
                   <Trophy size={14} />
                   <UITypography>Interviewer Leaderboard</UITypography>
                 </div>
               </CardHeader>
-              <CardContent className='p-0 mt-1'>
-                <ScrollArea className='h-[378px] px-1 '>
+              <CardContent className='mt-1 p-0'>
+                <ScrollArea className='h-[378px] px-1'>
                   {filteredInterviewers?.length > 0 ? (
                     filteredInterviewers.map((interviewer, i) => {
                       return (

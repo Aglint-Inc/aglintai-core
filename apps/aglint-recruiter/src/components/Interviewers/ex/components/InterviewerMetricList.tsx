@@ -28,7 +28,7 @@ export function InterviewerMetricList({
   return (
     <Card
       className={cn(
-        'flex justify-between items-center p-2 px-3 rounded-md cursor-pointer hover:bg-neutral-100 mb-3',
+        'mb-3 flex cursor-pointer items-center justify-between rounded-md p-2 px-3 hover:bg-neutral-100',
         // Add any additional classes from your CSS module here
       )}
       {...onClickCard}
@@ -70,7 +70,7 @@ interface MetricItemProps {
 
 function MetricItem({ label, value, color = 'text-black' }: MetricItemProps) {
   return (
-    <div className='flex flex-col items-center justify-center p-2 bg-neutral-100 rounded-md'>
+    <div className='flex flex-col items-center justify-center rounded-md bg-neutral-100 p-2'>
       <span className={cn('text-sm font-medium', color)}>{value}</span>
       <span className='text-[10px] leading-3'>{label}</span>
     </div>

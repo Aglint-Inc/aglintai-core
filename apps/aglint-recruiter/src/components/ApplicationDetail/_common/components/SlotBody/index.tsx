@@ -49,7 +49,7 @@ function SlotBody() {
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className='flex items-center space-x-2'>
                         <Skeleton className='h-8 w-8 rounded-full' />
-                        <div className='space-y-1 flex-1'>
+                        <div className='flex-1 space-y-1'>
                           <Skeleton className='h-4 w-full' />
                           <Skeleton className='h-3 w-3/4' />
                         </div>
@@ -80,7 +80,7 @@ function SlotBody() {
 
   return (
     <div className='flex'>
-      <div className='w-8/12 flex flex-col gap-4 pr-6'>
+      <div className='flex w-8/12 flex-col gap-4 pr-6'>
         <CandidateInfo />
         <Tabs />
         {renderTabContent()}

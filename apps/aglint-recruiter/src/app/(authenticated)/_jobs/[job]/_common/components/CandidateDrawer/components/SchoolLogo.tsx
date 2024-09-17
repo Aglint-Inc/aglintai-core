@@ -15,15 +15,15 @@ export const SchoolLogo = ({ schoolName }: SchoolLogoProps) => {
       alt={schoolName}
       width={24}
       height={24}
-      className='object-contain rounded-full'
+      className='rounded-full object-contain'
       onError={(e) => {
         const target = e.target as HTMLImageElement;
         target.src = '/images/default-school-logo.png';
       }}
     />
   ) : (
-    <div className='w-6 h-6 rounded-md bg-gray-100 flex items-center justify-center'>
-      <School className='w-4 h-4 text-gray-500' />
+    <div className='flex h-6 w-6 items-center justify-center rounded-md bg-gray-100'>
+      <School className='h-4 w-4 text-gray-500' />
     </div>
   );
 };

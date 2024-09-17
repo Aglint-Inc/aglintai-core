@@ -24,8 +24,8 @@ export function ApplicantInfoBox({
     <dl className='grid grid-cols-3 gap-x-4 gap-y-2 text-sm'>
       {/* Work Information */}
       {isDepartmentVisible && (
-        <div className='flex items-center col-span-1'>
-          <Briefcase className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
+        <div className='col-span-1 flex items-center'>
+          <Briefcase className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
             <dt className='sr-only'>Department</dt>
             <dd className='truncate'>{textDepartment}</dd>
@@ -33,8 +33,8 @@ export function ApplicantInfoBox({
         </div>
       )}
       {isRoleVisible && (
-        <div className='flex items-center col-span-1'>
-          <SquareUser className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
+        <div className='col-span-1 flex items-center'>
+          <SquareUser className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
             <dt className='sr-only'>Current Role</dt>
             <dd className='truncate'>{textRole}</dd>
@@ -43,10 +43,10 @@ export function ApplicantInfoBox({
       )}
       {isLinkedInVisible && (
         <div
-          className='flex items-center col-span-1 cursor-pointer'
+          className='col-span-1 flex cursor-pointer items-center'
           {...onClickLinkedIn}
         >
-          <LinkedinIcon className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
+          <LinkedinIcon className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
             <dt className='sr-only'>LinkedIn</dt>
             <dd className='truncate'>View Profile</dd>
@@ -55,8 +55,8 @@ export function ApplicantInfoBox({
       )}
 
       {/* Location Information */}
-      <div className='flex items-center col-span-1'>
-        <MapPin className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
+      <div className='col-span-1 flex items-center'>
+        <MapPin className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
         <div>
           <dt className='sr-only'>Location</dt>
           <dd className='truncate'>{textLocation}</dd>
@@ -71,15 +71,15 @@ export function ApplicantInfoBox({
       </div> */}
 
       {/* Contact Information */}
-      <div className='flex items-center col-span-2'>
-        <Mail className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
+      <div className='col-span-2 flex items-center'>
+        <Mail className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
         <div>
           <dt className='sr-only'>Email</dt>
           <dd className='truncate'>{textEmail}</dd>
         </div>
       </div>
-      <div className='flex items-center col-span-1'>
-        <Smartphone className='w-4 h-4 text-neutral-600 mr-2 flex-shrink-0' />
+      <div className='col-span-1 flex items-center'>
+        <Smartphone className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
         <div>
           <dt className='sr-only'>Phone</dt>
           <dd className='truncate'>{textPhone}</dd>

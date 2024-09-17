@@ -67,7 +67,7 @@ function CollapseTrainingProgress({
                             </p>
 
                             {prog.is_approved ? (
-                              <p className='text-xs text-accent-11'>
+                              <p className='text-accent-11 text-xs'>
                                 Approved by{' '}
                                 <span className='font-semibold'>
                                   {getFullName(
@@ -135,7 +135,7 @@ function CollapseTrainingProgress({
                           </div>
 
                           {prog.is_approved ? (
-                            <p className='text-xs text-accent-11'>
+                            <p className='text-accent-11 text-xs'>
                               Approved by{' '}
                               <span className='font-semibold'>
                                 {getFullName(

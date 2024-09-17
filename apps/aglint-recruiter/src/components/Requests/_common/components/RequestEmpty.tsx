@@ -1,15 +1,9 @@
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Check, Inbox } from 'lucide-react';
 
 export const RequestEmpty = () => {
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-4'>
+    <div className='grid grid-cols-1 gap-4 pt-4 md:grid-cols-2'>
       <div className='col-span-1 md:col-span-2'>
         <Card className='w-full'>
           <CardHeader>
@@ -18,20 +12,21 @@ export const RequestEmpty = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className='flex flex-col items-center'>
-            <Inbox className='w-24 h-24 text-gray-400 mb-4' />
-            <p className='text-center text-gray-600 mb-4'>
-              You haven&apos;t created any requests yet. 
+            <Inbox className='mb-4 h-24 w-24 text-gray-400' />
+            <p className='mb-4 text-center text-gray-600'>
+              You haven&apos;t created any requests yet.
               <br />
               Start by creating a new request to get things rolling!
             </p>
           </CardContent>
-         
         </Card>
       </div>
       <div className='col-span-1'>
-        <Card className='w-full h-full'>
+        <Card className='h-full w-full'>
           <CardHeader>
-            <CardTitle className='text-lg font-semibold'>Getting Started</CardTitle>
+            <CardTitle className='text-lg font-semibold'>
+              Getting Started
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className='space-y-2'>
@@ -46,9 +41,7 @@ export const RequestEmpty = () => {
                   <Check
                     className={`mr-2 h-5 w-5 ${index < 2 ? 'text-green-500' : 'text-gray-300'}`}
                   />
-                  <span
-                    className={index < 2 ? ' text-gray-500' : ''}
-                  >
+                  <span className={index < 2 ? 'text-gray-500' : ''}>
                     {item}
                   </span>
                 </li>
@@ -58,9 +51,11 @@ export const RequestEmpty = () => {
         </Card>
       </div>
       <div className='col-span-1'>
-        <Card className='w-full h-full'>
+        <Card className='h-full w-full'>
           <CardHeader>
-            <CardTitle className='text-lg font-semibold'>System Setup Tasks</CardTitle>
+            <CardTitle className='text-lg font-semibold'>
+              System Setup Tasks
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className='space-y-2'>
@@ -75,9 +70,7 @@ export const RequestEmpty = () => {
                   <Check
                     className={`mr-2 h-5 w-5 ${index < 2 ? 'text-green-500' : 'text-gray-300'}`}
                   />
-                  <span
-                    className={index < 2 ? ' text-gray-500' : ''}
-                  >
+                  <span className={index < 2 ? 'text-gray-500' : ''}>
                     {item}
                   </span>
                 </li>

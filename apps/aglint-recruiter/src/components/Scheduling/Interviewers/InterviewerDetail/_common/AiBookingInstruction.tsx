@@ -14,9 +14,9 @@ export function AiBookingInstruction({
 
       <div>{slotTextArea}</div>
 
-      <div className='flex flex-col gap-3 p-4 rounded-lg bg-[var(--accent-2)]'>
+      <div className='flex flex-col gap-3 rounded-lg bg-[var(--accent-2)] p-4'>
         <div className='flex flex-col gap-1'>
-          <div className='text-left text-sm text-red-600 font-regular '>
+          <div className='font-regular text-left text-sm text-red-600'>
             {'How to Use:'}
           </div>
           <ul className='text-[#63635e]'>
@@ -25,10 +25,10 @@ export function AiBookingInstruction({
         </div>
 
         <div className='flex flex-col gap-1'>
-          <div className='text-left text-sm font-regular text-neutral'>
+          <div className='font-regular text-neutral text-left text-sm'>
             {'Example:'}
           </div>
-          <div className='text-left text-sm font-regular text-neutral-12'>
+          <div className='font-regular text-neutral-12 text-left text-sm'>
             {textExample}
           </div>
         </div>

@@ -79,7 +79,7 @@ const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
           <Button variant='outline'>Add Social Link</Button>
         </PopoverTrigger>
         <PopoverContent className='w-80' align='start' side='top'>
-          <h3 className='font-medium mb-2'>Add Social Link</h3>
+          <h3 className='mb-2 font-medium'>Add Social Link</h3>
           <div className='space-y-4'>
             <div className='space-y-2'>
               <Label htmlFor='name'>Platform Name</Label>
@@ -116,7 +116,7 @@ const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
               )}
             </div>
           </div>
-          <div className='flex justify-end gap-2 mt-4'>
+          <div className='mt-4 flex justify-end gap-2'>
             <Button variant='outline' onClick={handleClose}>
               Cancel
             </Button>

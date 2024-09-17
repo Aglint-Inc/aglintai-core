@@ -1,4 +1,3 @@
-
 import { Application } from '@/context/ApplicationContext';
 import { Body } from '@/job/components/CandidateDrawer/Body';
 import { Details } from '@/job/components/CandidateDrawer/Details';
