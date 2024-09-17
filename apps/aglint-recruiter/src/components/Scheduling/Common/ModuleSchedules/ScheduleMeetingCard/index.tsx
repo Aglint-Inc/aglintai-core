@@ -59,11 +59,6 @@ function ScheduleMeetingCard({
                       meetingDetails.applications.candidates.last_name,
                     )}
                     isDesignationVisible={true}
-                    textDesignation={
-                      <span className='text-xs text-gray-500'>
-                        {'Candidate'}
-                      </span>
-                    }
                     textDesignation={'Candidate'}
                     textTime={null}
                   />

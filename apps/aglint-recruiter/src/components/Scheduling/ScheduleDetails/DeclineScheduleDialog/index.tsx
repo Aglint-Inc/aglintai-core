@@ -3,6 +3,7 @@ import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tab
 import { useToast } from '@components/hooks/use-toast';
 import { Label } from '@components/ui/label';
 import { RadioGroupItem } from '@components/ui/radio-group';
+import { Textarea } from '@components/ui/textarea';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -149,12 +150,7 @@ function DeclineScheduleDialog({
                     checked={rea === reason}
                     id={`radio-${rea}`}
                   />
-                  <span
-                    className='text-base text-neutral-800'
-                    sx={{
-                      cursor: 'pointer',
-                    }}
-                  >
+                  <span className='cursor-pointer text-base text-neutral-800'>
                     {rea}
                   </span>
                 </div>
@@ -163,14 +159,11 @@ function DeclineScheduleDialog({
           </div>
 
           <Label className='text-base font-medium'>Additional Notes</Label>
-          <TextField
-            multiline
+          <Textarea
             value={notes}
-            minRows={3}
             placeholder='Add additional notes.'
-            onChange={(e) => {
-              setNotes(e.target.value);
-            }}
+            onChange={(e) => setNotes(e.target.value)}
+            className='min-h-[80px]'
           />
         </div>
       </UIDialog>

@@ -93,6 +93,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
                   width='100%'
                   height='600px'
                   style={{ border: 'none' }}
+                  title='Email Preview'
                 />
               </div>
             </ShowCode.Else>

@@ -145,13 +145,13 @@ const DoughnutChart = memo(({ data }: Props) => {
 DoughnutChart.displayName = 'DoughnutChart';
 
 const Meta = memo(({ data }: Props) => {
-  const sum = (data ?? []).reduce((acc, { count }) => {
-    acc += count;
-    return acc;
-  }, 0);
+  // const sum = (data ?? []).reduce((acc, { count }) => {
+  //   acc += count;
+  //   return acc;
+  // }, 0);
   return (
     <div className='flex max-h-[48px] w-full flex-col gap-1 overflow-scroll'>
-      {data.map(({ count, color, name }, i) => {
+      {data.map(({ color, name }, i) => {
         return (
           <div className='flex flex-row items-center gap-1' key={i}>
             <div

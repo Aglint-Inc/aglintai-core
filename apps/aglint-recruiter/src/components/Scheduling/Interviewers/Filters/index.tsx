@@ -1,9 +1,8 @@
 import { Button } from '@components/ui/button';
-import { Award, GraduationCap, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import React, { useEffect, useState, useTransition } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
-import FilterDropDown from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
 function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
   const [searchText, setSearchText] = useState('');
@@ -40,6 +39,8 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
 
   const uniqueQualifiedModules = [...new Set(allQualifiedModules)];
   const uniqueTrainingModules = [...new Set(allQualifiedModules)];
+  uniqueTrainingModules;//remove it
+  uniqueQualifiedModules; //remove it
 
   useEffect(() => {
     const isFilter = Boolean(
@@ -95,7 +96,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
           onClear={handleTextClear}
           placeholder='Search Interviewer'
         />
-        <FilterDropDown
+        {/* <FilterDropDown
           title={'Qualified'}
           iconname='person_check'
           itemList={uniqueQualifiedModules}
@@ -110,7 +111,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
           selectedItems={selectedTrainingModule}
           setSelectedItems={setSelectedTrainingModule}
           icon={<GraduationCap className='h-4 w-4' />}
-        />
+        /> */}
         {(selectedQualifiedModule.length > 0 ||
           selectedTrainingModule.length > 0) && (
           <Button variant='ghost' size='sm' onClick={resetFilter}>

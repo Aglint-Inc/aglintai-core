@@ -54,7 +54,7 @@ function CandidateDetails({
   ];
 
   return (
-    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+    <div className="flex flex-row items-center space-x-1">
       {items
         .filter(({ hide }) => !hide)
         .map(({ text, type, route }, i) => {
@@ -69,19 +69,17 @@ function CandidateDetails({
             );
           } else
             return (
-              <>
-                <Button
-                  key={i}
-                  variant='ghost'
-                  size='sm'
-                  onClick={() => push(route)}
-                >
-                  {text}
-                </Button>
-              </>
+              <Button
+                key={i}
+                variant='ghost'
+                size='sm'
+                onClick={() => push(route)}
+              >
+                {text}
+              </Button>
             );
         })}
-    </Stack>
+    </div>
   );
 }
 

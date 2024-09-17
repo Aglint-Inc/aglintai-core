@@ -1,6 +1,4 @@
-import { Stack } from '@mui/material';
 /* eslint-disable security/detect-object-injection */
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
 import {
   BarElement,
   CategoryScale,

@@ -1,7 +1,16 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
-import { RadioGroupItem } from '@components/ui/radio-group';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
+import { Textarea } from '@components/ui/textarea';
 import axios from 'axios';
-import { X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -77,95 +86,65 @@ function CancelScheduleDialog({
   return (
     <Dialog
       open={isDeclineOpen}
-      onClose={() => {
-        setIsDeclineOpen(false);
-        closeDialog();
+      onOpenChange={(open) => {
+        if (!open) {
+          setIsDeclineOpen(false);
+          closeDialog();
+        }
       }}
     >
-      <div className='flex w-[500px] items-center justify-center'>
-        <div className='w-full max-w-lg rounded-lg bg-white shadow-lg'>
-          <div className='flex items-center justify-between border-b border-gray-200 p-4'>
-            <h2 className='font-semibold'>Cancel Schedule Initial Screening</h2>
-            <UIButton
-              onClick={() => {
-                setIsDeclineOpen(false);
-                closeDialog();
-              }}
-              variant='ghost'
-              size='sm'
-            >
-              <X className='h-4 w-4' />
-            </UIButton>
-          </div>
-          <div className='p-4'>
-            <div className='w-full space-y-2'>
-              <p className='text-base'>
-                Please provide a reason for canceling and any additional notes.
-              </p>
-              <div className='space-y-1'>
-                {reasons.map((rea) => {
-                  return (
-                    <div
-                      key={rea}
-                      className='flex cursor-pointer items-center space-x-2'
-                      onClick={() => {
-                        setReason(rea);
-                      }}
-                    >
-                      <RadioGroupItem
-                        value={rea}
-                        checked={rea === reason}
-                        id={`radio-${rea}`}
-                      />
-                      <span
-                        className='text-base text-neutral-800'
-                        sx={{
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {rea}
-                      </span>
-                    </div>
-                  );
-                })}
+      <DialogContent className='sm:max-w-[500px]'>
+        <DialogHeader>
+          <DialogTitle>Cancel Schedule Initial Screening</DialogTitle>
+          <DialogDescription>
+            Please provide a reason for canceling and any additional notes.
+          </DialogDescription>
+        </DialogHeader>
+        <div className='space-y-4'>
+          <RadioGroup value={reason} onValueChange={setReason}>
+            {reasons.map((rea) => (
+              <div key={rea} className='flex items-center space-x-2'>
+                <RadioGroupItem value={rea} id={`radio-${rea}`} />
+                <Label htmlFor={`radio-${rea}`}>{rea}</Label>
               </div>
+            ))}
+          </RadioGroup>
 
-              <Label className='text-base font-medium'>Additional Notes</Label>
-              <TextField
-                multiline
-                value={notes}
-                minRows={3}
-                placeholder='Add additional notes.'
-                onChange={(e) => {
-                  setNotes(e.target.value);
-                }}
-              />
-            </div>
-          </div>
-          <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
-            <UIButton
-              variant='secondary'
-              onClick={() => {
-                setIsDeclineOpen(false);
-                closeDialog();
-              }}
-            >
-              Close
-            </UIButton>
-            <UIButton
-              variant='destructive'
-              isLoading={isSaving}
-              onClick={() => {
-                if (reason && !isSaving) {
-                  onClickConfirm();
-                }
-              }}
-            >
-              Cancel Schedule
-            </UIButton>
+          <div className='space-y-2'>
+            <Label htmlFor='notes' className='text-base font-medium'>
+              Additional Notes
+            </Label>
+            <Textarea
+              id='notes'
+              value={notes}
+              placeholder='Add additional notes.'
+              onChange={(e) => setNotes(e.target.value)}
+              className='min-h-[80px]'
+            />
           </div>
         </div>
-      </div>
+        <DialogFooter>
+          <UIButton
+            variant='outline'
+            onClick={() => {
+              setIsDeclineOpen(false);
+              closeDialog();
+            }}
+          >
+            Close
+          </UIButton>
+          <UIButton
+            variant='destructive'
+            disabled={isSaving || !reason}
+            onClick={onClickConfirm}
+          >
+            {isSaving ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : null}
+            Cancel Schedule
+          </UIButton>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 }
