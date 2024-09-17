@@ -40,6 +40,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './ui/alert-dialog';
+import { Skeleton } from './ui/skeleton';
 
 type Step =
   | Awaited<ReturnType<typeof fetchProgressByJobId>>
@@ -138,7 +139,19 @@ export default function ReorderableInterviewPlan({
   }, [data]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <><Skeleton style={{
+      width: '100%',
+      height: '20px',
+    }}/><Skeleton style={{
+      width: '100%',
+      height: '20px',
+    }}/><Skeleton style={{
+      width: '100%',
+      height: '20px',
+    }}/><Skeleton style={{
+      width: '100%',
+      height: '20px',
+    }}/></>;
   }
 
   const handleEdit = (id: number) => {
