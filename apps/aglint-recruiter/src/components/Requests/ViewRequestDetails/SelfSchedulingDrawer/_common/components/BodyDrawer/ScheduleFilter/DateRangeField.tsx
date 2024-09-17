@@ -114,7 +114,7 @@ function DateRangeField() {
               <PopoverTrigger asChild>
                 <Button
                   variant='outline'
-                  className='w-full justify-start text-left font-normal h-9 px-3 py-2'
+                  className='h-9 w-full justify-start px-3 py-2 text-left font-normal'
                 >
                   <ClockIcon className='mr-2 h-4 w-4' />
                   {value?.startTime ? (
@@ -153,7 +153,7 @@ function DateRangeField() {
                 <PopoverTrigger asChild>
                   <Button
                     variant='outline'
-                    className='w-full justify-start text-left font-normal h-9 px-3 py-2'
+                    className='h-9 w-full justify-start px-3 py-2 text-left font-normal'
                   >
                     <ClockIcon className='mr-2 h-4 w-4' />
                     {value?.endTime ? (

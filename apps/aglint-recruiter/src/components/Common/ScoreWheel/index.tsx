@@ -73,7 +73,7 @@ const ScoreWheel = ({
   return (
     <div
       id={id}
-      className='w-full flex items-center justify-center rounded-full cursor-pointer'
+      className='flex w-full cursor-pointer items-center justify-center rounded-full'
       style={{
         aspectRatio: '1',
         background: `conic-gradient(${conicGradient})`,
@@ -89,7 +89,7 @@ const ScoreWheel = ({
       }}
     >
       <div
-        className='w-4/5 flex items-center justify-center rounded-full text-center'
+        className='flex w-4/5 items-center justify-center rounded-full text-center'
         style={{
           aspectRatio: '1',
           backgroundColor: 'var(--white)',

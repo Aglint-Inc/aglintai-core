@@ -9,9 +9,9 @@ export function ScheduleOption({
   slotCheckbox,
 }) {
   return (
-    <div className='relative flex w-full p-0 flex-row flex-nowrap bg-white cursor-pointer'>
+    <div className='relative flex w-full cursor-pointer flex-row flex-nowrap bg-white p-0'>
       {isCheckbox ? (
-        <div className='flex pt-3 pr-3 pl-4 justify-center items-start'>
+        <div className='flex items-start justify-center pl-4 pr-3 pt-3'>
           <div className='relative'>{slotCheckbox}</div>
         </div>
       ) : (
@@ -22,9 +22,9 @@ export function ScheduleOption({
           {slotSingleDaySchedule ?? <SingleDaySchedule />}
         </div>
         {isSelected ? (
-          <div className='absolute inset-0 z-3 flex border border-primary rounded-lg pointer-events-none' />
+          <div className='z-3 pointer-events-none absolute inset-0 flex rounded-lg border border-primary' />
         ) : (
-          <div className='absolute inset-0 z-2 rounded-lg border border-gray-300 pointer-events-none' />
+          <div className='z-2 pointer-events-none absolute inset-0 rounded-lg border border-gray-300' />
         )}
       </div>
       {isCheckbox ? <div className='w-4' /> : null}

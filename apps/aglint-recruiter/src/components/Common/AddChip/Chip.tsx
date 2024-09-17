@@ -26,7 +26,7 @@ function Chip({
   return (
     <span
       key={index}
-      className={`bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm flex items-center ${disable ? 'opacity-[0.6]' : ''}`}
+      className={`flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 ${disable ? 'opacity-[0.6]' : ''}`}
     >
       {name}
       {!disable && (

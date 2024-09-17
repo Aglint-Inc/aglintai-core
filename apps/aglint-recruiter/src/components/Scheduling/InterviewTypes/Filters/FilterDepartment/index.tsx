@@ -49,14 +49,14 @@ function FilterDepartment() {
     item: ReturnType<typeof useAllDepartments>['data'][0],
   ) => {
     return (
-      <div className='flex items-center hover:bg-neutral-2 rounded-[var(--radius-2)] p-[var(--space-2)_var(--space-3)] mt-0 space-x-1'>
+      <div className='hover:bg-neutral-2 mt-0 flex items-center space-x-1 rounded-[var(--radius-2)] p-[var(--space-2)_var(--space-3)]'>
         <Checkbox
           checked={!!departments.find((id) => id === item.id)}
           onCheckedChange={() => handleFilterClick(item)}
         />
         <span
           key={item.id}
-          className='text-sm cursor-pointer'
+          className='cursor-pointer text-sm'
           onClick={() => handleFilterClick(item)}
         >
           {capitalizeFirstLetter(item.name)}

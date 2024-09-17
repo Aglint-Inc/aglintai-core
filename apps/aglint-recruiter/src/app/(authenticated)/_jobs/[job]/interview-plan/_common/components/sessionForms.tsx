@@ -3,7 +3,6 @@ import { type DB } from '@aglint/shared-types';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { SidedrawerBodySession } from '@devlink2/SidedrawerBodySession';
 import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, {
@@ -271,37 +270,31 @@ const SessionForms = ({
   );
 
   return (
-    <SidedrawerBodySession
-      slotSessionNameInput={nameField}
-      slotDurationDropdown={sessionDurationField}
-      slotModuleDropdown={
+    <div className='flex flex-col space-y-4'>
+      <div>{nameField}</div>
+      <div>{sessionDurationField}</div>
+      <div>
         <InterviewModulesField
           value={interview_module.value}
           handleModuleChange={handleModuleChange}
           error={rest.interviewers.error}
         />
-      }
-      slotScheduleTypeDropdown={
-        <div className='flex flex-col gap-2'>
-          <ScheduleTypeField
-            value={schedule_type.value}
-            handleTypeChange={handleTypeChange}
-          />
-          {locationField}
-        </div>
-      }
-      slotInterviewMode={
-        interview_module.value ? (
-          <Interview
-            setFields={setFields}
-            interview_module={interview_module}
-            {...rest}
-          />
-        ) : (
-          <></>
-        )
-      }
-    />
+      </div>
+      <div className='flex flex-col gap-2'>
+        <ScheduleTypeField
+          value={schedule_type.value}
+          handleTypeChange={handleTypeChange}
+        />
+        {locationField}
+      </div>
+      {interview_module.value ? (
+        <Interview
+          setFields={setFields}
+          interview_module={interview_module}
+          {...rest}
+        />
+      ) : null}
+    </div>
   );
 };
 
@@ -732,7 +725,7 @@ const InterviewModePills = ({
               handleModeChange('individual');
             }}
           >
-            <div className='flex flex-row gap-1 justify-center'>
+            <div className='flex flex-row justify-center gap-1'>
               <IndividualIcon /> Individual
             </div>
           </TabsTrigger>
@@ -742,7 +735,7 @@ const InterviewModePills = ({
               handleModeChange('panel');
             }}
           >
-            <div className='flex flex-row gap-1 justify-center'>
+            <div className='flex flex-row justify-center gap-1'>
               <PanelIcon /> Panel
             </div>
           </TabsTrigger>

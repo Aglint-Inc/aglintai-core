@@ -66,9 +66,9 @@ const Requests = () => {
   }, [localStorage.getItem('openChat')]);
 
   return (
-    <div className='h-screen flex bg-gray-50 overflow-hidden'>
+    <div className='flex h-screen overflow-hidden bg-gray-50'>
       {/* Dock to Right Button */}
-      <div className='fixed top-4 left-[80px] z-50'>
+      <div className='fixed left-[80px] top-4 z-50'>
         <Button
           variant='ghost'
           size='sm'
@@ -89,11 +89,7 @@ const Requests = () => {
       {/* AgentIEditorProvider Section */}
       <AgentIEditorProvider>
         <div
-          className={`
-            transition-all duration-300 ease-in-out
-            ${openChat ? 'w-[450px]' : 'w-0'}
-            overflow-hidden h-screen sticky top-0 left-0
-          `}
+          className={`transition-all duration-300 ease-in-out ${openChat ? 'w-[450px]' : 'w-0'} sticky left-0 top-0 h-screen overflow-hidden`}
         >
           <div className='h-full'>
             <AgentChats />
@@ -103,7 +99,7 @@ const Requests = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-1 pt-0 z-10 overflow-scroll overflow-x-hidden h-screen ${
+        className={`z-10 h-screen flex-1 overflow-scroll overflow-x-hidden pt-0 ${
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
@@ -164,7 +160,7 @@ function RequestListContent({
   );
 
   return (
-    <div className='space-y-6 mt-8'>
+    <div className='mt-8 space-y-6'>
       {/******** Urgent sections ******* */}
       {urgentRequests && urgentRequests.requests.length > 0 && (
         <ScrollableSection section={urgentRequests} isFetched={isFetched} />
@@ -177,7 +173,7 @@ function RequestListContent({
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
-              className={view === 'kanban' ? 'flex-shrink-0 w-full' : ''}
+              className={view === 'kanban' ? 'w-full flex-shrink-0' : ''}
             >
               {isFetched ? (
                 view === 'list' ? (
@@ -195,9 +191,9 @@ function RequestListContent({
                 )
               ) : (
                 <>
-                  <Skeleton className='h-6 w-40 mb-2' />
-                  <Skeleton className='h-[200px] w-full mb-4' />
-                  <Skeleton className='h-[200px] w-full mb-4' />
+                  <Skeleton className='mb-2 h-6 w-40' />
+                  <Skeleton className='mb-4 h-[200px] w-full' />
+                  <Skeleton className='mb-4 h-[200px] w-full' />
                 </>
               )}
             </div>

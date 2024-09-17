@@ -36,7 +36,7 @@ const Content = ({ url }: { url: string }) => {
         <Viewer
           fileUrl={url}
           renderLoader={() => (
-            <div className='absolute z-0 w-full h-full'>
+            <div className='absolute z-0 h-full w-full'>
               <Skeleton />
             </div>
           )}
@@ -48,7 +48,7 @@ const Content = ({ url }: { url: string }) => {
 
 const ResumeLayout = (props: PropsWithChildren) => {
   return (
-    <div className='relative flex w-full h-full items-center justify-center'>
+    <div className='relative flex h-full w-full items-center justify-center'>
       {props.children}
     </div>
   );

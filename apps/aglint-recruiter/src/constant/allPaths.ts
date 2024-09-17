@@ -155,7 +155,7 @@ export const PATHS = [
   '/integrations/[platform]',
   '/interview/feedback',
   '/interview-pool',
-  '/interview-pool/[type_id]',
+  '/interview-pool/[pool]',
   '/interviewers',
   '/jobs/create',
   '/jobs',
@@ -245,5 +245,5 @@ export const PATHS = [
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;

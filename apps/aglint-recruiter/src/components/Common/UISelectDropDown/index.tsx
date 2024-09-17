@@ -113,7 +113,7 @@ const UISelectDropDown = ({
               {children ? (
                 children
               ) : menuOptions.length === 0 ? (
-                <div className='px-2 py-1 italic text-gray-500 cursor-default'>
+                <div className='cursor-default px-2 py-1 italic text-gray-500'>
                   No options available
                 </div>
               ) : (
@@ -127,8 +127,8 @@ const UISelectDropDown = ({
           </SelectContent>
         </Select>
         {error && helperText && (
-          <div className='flex flex-row items-center mt-1'>
-            <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+          <div className='mt-1 flex flex-row items-center'>
+            <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
             <p className='text-sm text-red-700'>{helperText}</p>
           </div>
         )}

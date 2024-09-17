@@ -36,7 +36,7 @@ export default function InterviewModulesTable() {
           <TableHeader>
             <TableRow>
               <TableHead className='w-[200px]'>
-                Name <ArrowUpIcon className='inline-block h-4 w-4 ml-1' />
+                Name <ArrowUpIcon className='ml-1 inline-block h-4 w-4' />
               </TableHead>
               <TableHead className='text-right'>Trained</TableHead>
               <TableHead className='text-right'>Training</TableHead>

@@ -31,23 +31,23 @@ export function UITab({
 
   return (
     <div
-      className={`relative flex justify-center items-center transition-opacity duration-200 cursor-pointer  ${sizeClasses[size]} z-10`}
+      className={`relative flex cursor-pointer items-center justify-center transition-opacity duration-200 ${sizeClasses[size]} z-10`}
       onClick={onClickPill}
     >
       <div
-        className={`h-full py-1 px-2 flex justify-center items-center gap-2 rounded-md  ${
+        className={`flex h-full items-center justify-center gap-2 rounded-md px-2 py-1 ${
           isPillActive
-            ? 'bg-neutral-100 text-primary-700'
-            : 'text-gray-500 hover:bg-neutral-100 hover:text-primary-700'
+            ? 'text-primary-700 bg-neutral-100'
+            : 'hover:text-primary-700 text-gray-500 hover:bg-neutral-100'
         }`}
       >
-        <div className={`flex justify-center items-center gap-2 rounded-lg`}>
+        <div className={`flex items-center justify-center gap-2 rounded-lg`}>
           {slotStartIcon ? <div>{slotStartIcon}</div> : null}
           <div>{textLabel}</div>
           {slotEndIcon ? <div>{slotEndIcon}</div> : null}
           {tabCount ? (
             <div
-              className={`flex flex-col justify-center items-center border border-neutral-300 rounded-md bg-gray-800 text-white ${tabCountSizeClasses[size]} text-center`}
+              className={`flex flex-col items-center justify-center rounded-md border border-neutral-300 bg-gray-800 text-white ${tabCountSizeClasses[size]} text-center`}
             >
               {tabCount}
             </div>
@@ -55,7 +55,7 @@ export function UITab({
         </div>
         {isPillActive && (
           <div
-            className={`absolute left-0 bottom-0 right-0 h-0.5 bg-primary`}
+            className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary`}
           />
         )}
       </div>
@@ -67,9 +67,9 @@ export default UITab;
 
 export function UITabWrapper({ children }: { children?: React.ReactNode }) {
   return (
-    <div className='relative flex flex-col w-full'>
+    <div className='relative flex w-full flex-col'>
       {/* Tabs container */}
-      <div className='flex flex-row w-full'>{children}</div>
+      <div className='flex w-full flex-row'>{children}</div>
       {/* Bottom border line with absolute positioning */}
       <div className='absolute bottom-0 left-0 right-0 border-b border-neutral-300'></div>
     </div>

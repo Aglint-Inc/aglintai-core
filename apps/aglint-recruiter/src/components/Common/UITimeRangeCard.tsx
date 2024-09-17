@@ -21,9 +21,9 @@ export function UITimeRangeCard({
       <UIButton
         variant='outline'
         className={cn(
-          'relative w-full h-10 px-4 py-1 text-center transition-all duration-200 text-black ease-in-out bg-white ',
+          'relative h-10 w-full bg-white px-4 py-1 text-center text-black transition-all duration-200 ease-in-out',
           isActive && 'border-primary bg-primary/10 text-primary',
-          isSemiActive && 'border-dashed border-orange-400  text-black',
+          isSemiActive && 'border-dashed border-orange-400 text-black',
         )}
         onClick={onClickTime}
       >
@@ -32,9 +32,9 @@ export function UITimeRangeCard({
       {ShowCloseIcon && isActive && (
         <span
           onClick={onClickTime}
-          className='absolute z-2 -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-white border border-neutral-300 rounded-full '
+          className='z-2 absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border border-neutral-300 bg-white'
         >
-          <X className='w-3 h-3 text-neutral-600' />
+          <X className='h-3 w-3 text-neutral-600' />
         </span>
       )}
     </div>

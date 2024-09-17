@@ -51,14 +51,14 @@ const Component = (props) => {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <div>
-              <div className='bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4 rounded-r'>
+              <div className='mb-4 rounded-r border-l-4 border-blue-500 bg-blue-100 p-4 text-blue-700'>
                 <p className='font-bold'>{props.node.attrs.aiPrompt}</p>
                 <button
                   onClick={() => {
                     setOpen(true);
                     setAiCmd(props.node.attrs.aiPrompt);
                   }}
-                  className='mt-2 text-sm text-blue-600 hover:text-blue-800 underline'
+                  className='mt-2 text-sm text-blue-600 underline hover:text-blue-800'
                 >
                   Edit
                 </button>
@@ -87,7 +87,7 @@ const Component = (props) => {
               slotInputCommand={
                 <textarea
                   placeholder='AI Command'
-                  className='w-full h-20 resize-none border-none outline-none p-2'
+                  className='h-20 w-full resize-none border-none p-2 outline-none'
                   value={aiCmd}
                   onChange={(e) => {
                     setAiCmd(e.target.value);

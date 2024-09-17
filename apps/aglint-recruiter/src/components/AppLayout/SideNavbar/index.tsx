@@ -48,7 +48,7 @@ function SideNavbar() {
   }, [pathName, checkPermissions, router, toast]);
 
   return (
-    <div className='flex flex-col items-center space-y-3 p-4 w-16'>
+    <div className='flex w-16 flex-col items-center space-y-3 p-4'>
       {navList
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,
@@ -83,18 +83,18 @@ const LinkIcon = ({
   const hoverClasses = 'hover:bg-gray-200';
 
   const iconMap = {
-    Requests: <LayoutList className='w-6 h-6' strokeWidth={1.5} />,
-    Jobs: <BriefcaseBusiness className='w-6 h-6' strokeWidth={1.5} />,
-    Interviews: <Calendar className='w-6 h-6' strokeWidth={1.5} />,
-    'Interview Pools': <LibraryBig className='w-6 h-6' strokeWidth={1.5} />,
-    Candidates: <Users className='w-6 h-6' strokeWidth={1.5} />,
-    Interviewers: <Users className='w-6 h-6' strokeWidth={1.5} />,
-    'Sourcing Hub': <Search className='w-6 h-6' strokeWidth={1.5} />,
-    Integrations: <LayoutGrid className='w-6 h-6' strokeWidth={1.5} />,
-    'Company Settings': <Settings className='w-6 h-6' strokeWidth={1.5} />,
-    Workflows: <Workflow className='w-6 h-6' strokeWidth={1.5} />,
-    Tasks: <ListTodo className='w-6 h-6' strokeWidth={1.5} />,
-    Analytics: <GitGraph className='w-6 h-6' strokeWidth={1.5} />,
+    Requests: <LayoutList className='h-6 w-6' strokeWidth={1.5} />,
+    Jobs: <BriefcaseBusiness className='h-6 w-6' strokeWidth={1.5} />,
+    Interviews: <Calendar className='h-6 w-6' strokeWidth={1.5} />,
+    'Interview Pools': <LibraryBig className='h-6 w-6' strokeWidth={1.5} />,
+    Candidates: <Users className='h-6 w-6' strokeWidth={1.5} />,
+    Interviewers: <Users className='h-6 w-6' strokeWidth={1.5} />,
+    'Sourcing Hub': <Search className='h-6 w-6' strokeWidth={1.5} />,
+    Integrations: <LayoutGrid className='h-6 w-6' strokeWidth={1.5} />,
+    'Company Settings': <Settings className='h-6 w-6' strokeWidth={1.5} />,
+    Workflows: <Workflow className='h-6 w-6' strokeWidth={1.5} />,
+    Tasks: <ListTodo className='h-6 w-6' strokeWidth={1.5} />,
+    Analytics: <GitGraph className='h-6 w-6' strokeWidth={1.5} />,
   };
 
   return (

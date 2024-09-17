@@ -1,7 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
@@ -48,8 +47,8 @@ const Containter = () => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -148,7 +147,7 @@ Pills.displayName = 'Pills';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => <TrainingProgressLoader key={i} slotSkeleton={<Skeleton />} />,
+    (_, i) => <Skeleton key={i} />,
   );
 });
 Loader.displayName = 'Loader';

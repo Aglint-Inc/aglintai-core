@@ -12,7 +12,7 @@ import { capitalize } from 'lodash';
 import React, { type FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 
@@ -108,18 +108,18 @@ const DashboardDoughnutChart: FC<{
   }, 0);
   const safeLocations = getOrderedGraphValues(locations);
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex w-full flex-col'>
       <div className='flex flex-row items-center justify-around'>
         <DoughnutChart locations={safeLocations} />
         <div className='flex flex-col gap-3'>
           {safeLocations.map(({ color, count, name }, i) => (
             <div key={i} className='flex flex-row justify-between gap-5'>
-              <div className='flex flex-row gap-1 items-center'>
+              <div className='flex flex-row items-center gap-1'>
                 <div
-                  className='w-2.5 aspect-square rounded-full'
+                  className='aspect-square w-2.5 rounded-full'
                   style={{ backgroundColor: color }}
                 />
-                <span className='text-sm capitalize whitespace-nowrap'>
+                <span className='whitespace-nowrap text-sm capitalize'>
                   {capitalize(name)}
                 </span>
               </div>

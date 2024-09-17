@@ -20,8 +20,8 @@ const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
   if (!enabled)
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
   return (
@@ -30,8 +30,8 @@ const SchedulingDashboard = memo(() => {
         <Filters />
         <Tabs />
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-6'>
-        <div className='flex flex-col gap-4 h-full'>
+      <div className='grid grid-cols-1 gap-4 p-6 md:grid-cols-2'>
+        <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
             <Reasons />
           </div>
@@ -39,7 +39,7 @@ const SchedulingDashboard = memo(() => {
             <Leaderboard />
           </div>
         </div>
-        <div className='flex flex-col gap-4 h-full'>
+        <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
             <DeclineRequests />
           </div>
@@ -48,8 +48,8 @@ const SchedulingDashboard = memo(() => {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-6'>
-        <div className='flex flex-col gap-4 h-full'>
+      <div className='grid grid-cols-1 gap-4 p-6 md:grid-cols-2'>
+        <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
             <TrainingProgress />
           </div>
@@ -57,7 +57,7 @@ const SchedulingDashboard = memo(() => {
             <Interviewes />
           </div>
         </div>
-        <div className='flex flex-col gap-4 h-full'>
+        <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
             <CompletedInterviews />
           </div>
@@ -66,13 +66,13 @@ const SchedulingDashboard = memo(() => {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-6'>
-        <div className='flex flex-col gap-4 h-full'>
+      <div className='grid grid-cols-1 gap-4 p-6 md:grid-cols-2'>
+        <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
             <RecentDeclines />
           </div>
         </div>
-        <div className='flex flex-col gap-4 h-full'>
+        <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
             <RecentReschedules />
           </div>

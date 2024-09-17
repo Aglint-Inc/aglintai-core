@@ -38,7 +38,7 @@ export function SessionList({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className='w-full flex flex-wrap items-center gap-2 min-h-[24px] cursor-pointer'>
+        <div className='flex min-h-[24px] w-full cursor-pointer flex-wrap items-center gap-2'>
           {selectedSession.length > 0 ? (
             <>
               {selectedSession.map((ele, i) => (
@@ -64,7 +64,7 @@ export function SessionList({
               sessionList.map((item, i) => (
                 <div
                   key={i}
-                  className={`w-full px-4 py-2 rounded-md cursor-pointer hover:bg-accent ${
+                  className={`w-full cursor-pointer rounded-md px-4 py-2 hover:bg-accent ${
                     selectedSession.map((ele) => ele.id).includes(item.id)
                       ? 'bg-accent'
                       : ''
@@ -97,8 +97,8 @@ export function SessionList({
                 </div>
               ))
             ) : (
-              <div className='flex flex-col items-center justify-center h-32 text-center'>
-                <FileQuestion className='w-12 h-12 text-muted-foreground mb-2' />
+              <div className='flex h-32 flex-col items-center justify-center text-center'>
+                <FileQuestion className='mb-2 h-12 w-12 text-muted-foreground' />
                 <p className='text-sm text-muted-foreground'>
                   No sessions found.
                 </p>

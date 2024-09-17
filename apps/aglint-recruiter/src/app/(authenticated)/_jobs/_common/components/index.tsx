@@ -49,7 +49,7 @@ const DashboardComp = () => {
       {!initialLoad ? (
         <div className='min-h-screen'>
           <div className='container mx-auto space-y-4'>
-            <div className='flex justify-between items-center'>
+            <div className='flex items-center justify-between'>
               <div className='space-y-2'>
                 <Skeleton className='h-8 w-[200px]' />
                 <Skeleton className='h-4 w-[300px]' />
@@ -78,9 +78,9 @@ const DashboardComp = () => {
           ) : (
             <div className='min-h-screen'>
               <div className='container mx-auto'>
-                <h1 className='text-2xl font-bold mb-4'>Jobs</h1>
-                <div className='flex flex-col gap-4 mb-4'>
-                  <div className='flex justify-between items-center'>
+                <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
+                <div className='mb-4 flex flex-col gap-4'>
+                  <div className='flex items-center justify-between'>
                     <div className='flex-grow'>
                       <FilterJobDashboard
                         filterOptions={filterOptions}
@@ -95,7 +95,7 @@ const DashboardComp = () => {
                     </div>
                     <div className='ml-4'>{manageJob && <AddJob />}</div>
                   </div>
-                  <div className='overflow-x-auto bg-white rounded-lg shadow'>
+                  <div className='overflow-x-auto rounded-lg bg-white shadow'>
                     <JobsList jobs={jobs} />
                   </div>
                 </div>
@@ -188,9 +188,9 @@ const Sync = () => {
         size='sm'
         variant='secondary'
         onClick={handleSync}
-        className='w-auto flex items-center'
+        className='flex w-auto items-center'
       >
-        <RefreshCw className='w-4 h-4 mr-2' strokeWidth={1.5} />
+        <RefreshCw className='mr-2 h-4 w-4' strokeWidth={1.5} />
         <span className='flex-grow'>Sync</span>
       </Button>
     </OptimisticWrapper>

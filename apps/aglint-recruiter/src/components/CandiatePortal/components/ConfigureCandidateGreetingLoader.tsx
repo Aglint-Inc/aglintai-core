@@ -14,7 +14,7 @@ const ConfigureCandidateGreetingLoader = () => {
       <Skeleton className='h-32 w-full rounded-md border bg-gray-100' />
 
       {/* Button Skeleton */}
-      <Skeleton className='h-10 w-40 mt-4' />
+      <Skeleton className='mt-4 h-10 w-40' />
     </div>
   );
 };

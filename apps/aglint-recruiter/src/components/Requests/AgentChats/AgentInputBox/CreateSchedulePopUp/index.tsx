@@ -74,10 +74,10 @@ function CreateSchedulePopUp({
   return selectedItems?.schedule_type[0]?.id === 'schedule' &&
     selectedItems.applicant_name[0]?.id &&
     !!selectedItems.interview_name.length ? (
-    <div className='px-4 relative -top-2.5'>
-      <div className='border rounded-md shadow-sm p-4'>
+    <div className='relative -top-2.5 px-4'>
+      <div className='rounded-md border p-4 shadow-sm'>
         <div className='mb-2 text-sm text-gray-700'>Schedule an interview</div>
-        <div className='h-full w-full flex flex-col justify-between items-end p-1'>
+        <div className='flex h-full w-full flex-col items-end justify-between p-1'>
           <div>
             <p className='text-sm text-muted-foreground'>
               {`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between.`}

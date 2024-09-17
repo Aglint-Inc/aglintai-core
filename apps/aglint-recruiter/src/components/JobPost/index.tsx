@@ -80,8 +80,8 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   return (
     <div className='relative min-h-screen bg-gray-100'>
       {thank && (
-        <div className='absolute inset-0 z-50 bg-gray-100 p-4 flex flex-col'>
-          <div className='flex-grow flex flex-col items-center justify-center space-y-4'>
+        <div className='absolute inset-0 z-50 flex flex-col bg-gray-100 p-4'>
+          <div className='flex flex-grow flex-col items-center justify-center space-y-4'>
             <ThankYou />
             <h2 className='text-2xl font-bold'>
               Application submitted successfully.
@@ -103,10 +103,10 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 contact support
               </Button>
             </p>
-            <Avatar className='w-20 h-20'>
+            <Avatar className='h-20 w-20'>
               <AvatarImage src={recruiter?.logo} alt={recruiter?.name} />
               <AvatarFallback>
-                <Building2 className='w-12 h-12' />
+                <Building2 className='h-12 w-12' />
               </AvatarFallback>
             </Avatar>
             <h3 className='text-xl font-semibold'>{recruiter?.name}</h3>
@@ -125,8 +125,8 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
       )}
 
       {loading && (
-        <div className='absolute inset-0 z-40 bg-white flex items-center justify-center'>
-          <Loader2 className='w-12 h-12 animate-spin' />
+        <div className='absolute inset-0 z-40 flex items-center justify-center bg-white'>
+          <Loader2 className='h-12 w-12 animate-spin' />
         </div>
       )}
 
@@ -136,10 +136,10 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
         <Card className='m-4'>
           <CardHeader>
             <div className='flex items-center space-x-4'>
-              <Avatar className='w-20 h-20'>
+              <Avatar className='h-20 w-20'>
                 <AvatarImage src={recruiter?.logo} alt={recruiter?.name} />
                 <AvatarFallback>
-                  <Building2 className='w-12 h-12' />
+                  <Building2 className='h-12 w-12' />
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -152,33 +152,33 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           <CardContent>
             <div className='space-y-6'>
               <div>
-                <h3 className='text-lg font-semibold mb-2'>Job Description</h3>
+                <h3 className='mb-2 text-lg font-semibold'>Job Description</h3>
                 <EditorContent editor={editor} />
               </div>
 
               <div>
-                <h3 className='text-lg font-semibold mb-2'>
+                <h3 className='mb-2 text-lg font-semibold'>
                   About the Company
                 </h3>
                 <p>{recruiter?.company_overview}</p>
               </div>
 
               <div>
-                <h3 className='text-lg font-semibold mb-2'>Company Details</h3>
+                <h3 className='mb-2 text-lg font-semibold'>Company Details</h3>
                 <div className='grid grid-cols-2 gap-2'>
                   <div className='flex items-center space-x-2'>
-                    <MapPin className='w-5 h-5 text-gray-400' />
+                    <MapPin className='h-5 w-5 text-gray-400' />
                     <span>Location: --</span>
                   </div>
                   <div className='flex items-center space-x-2'>
-                    <Users className='w-5 h-5 text-gray-400' />
+                    <Users className='h-5 w-5 text-gray-400' />
                     <span>Employees: {recruiter?.employee_size || '--'}</span>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className='text-lg font-semibold mb-2'>
+                <h3 className='mb-2 text-lg font-semibold'>
                   Apply for this Job
                 </h3>
                 <UploadDB
@@ -192,7 +192,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               </div>
 
               <div>
-                <h3 className='text-lg font-semibold mb-2'>
+                <h3 className='mb-2 text-lg font-semibold'>
                   Other Open Positions
                 </h3>
                 {filteredJobs.length > 0 ? (
@@ -200,7 +200,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     {filteredJobs.map((job: any, ind) => (
                       <Card key={ind}>
                         <CardContent className='p-4'>
-                          <div className='flex justify-between items-start'>
+                          <div className='flex items-start justify-between'>
                             <div>
                               <h4 className='font-semibold'>
                                 {job.job_title || '--'}
@@ -236,7 +236,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               </div>
 
               <div>
-                <h3 className='text-lg font-semibold mb-2'>Get Notified</h3>
+                <h3 className='mb-2 text-lg font-semibold'>Get Notified</h3>
                 <div className='flex space-x-2'>
                   <Input
                     placeholder='Enter your email'
@@ -246,12 +246,12 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   <Button onClick={notifyMe}>Notify Me</Button>
                 </div>
                 {error && (
-                  <p className='text-sm text-red-500 mt-1'>Email is required</p>
+                  <p className='mt-1 text-sm text-red-500'>Email is required</p>
                 )}
               </div>
 
               <div>
-                <h3 className='text-lg font-semibold mb-2'>Share</h3>
+                <h3 className='mb-2 text-lg font-semibold'>Share</h3>
                 <div className='flex space-x-2'>
                   <LinkedinShareButton
                     url={window.location.href}

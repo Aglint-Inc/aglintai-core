@@ -7,7 +7,7 @@ import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { deleteRelationByUserDbDelete } from '../../../InterviewTypes/DetailPage/_common/utils/utils';
+import { deleteRelationByUserDbDelete } from '../../../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import {
   setisRemoveModuleDialogOpen,
   setSelRelation,
@@ -130,9 +130,9 @@ function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
           </p>
           {isFetching ? (
             <div className='flex flex-col space-y-2'>
-              <Skeleton className='w-full h-3 mb-2' />
-              <Skeleton className='w-full h-3 mb-2' />
-              <Skeleton className='w-3/4 h-3' />
+              <Skeleton className='mb-2 h-3 w-full' />
+              <Skeleton className='mb-2 h-3 w-full' />
+              <Skeleton className='h-3 w-3/4' />
             </div>
           ) : (
             <div className='flex flex-col space-y-2'>

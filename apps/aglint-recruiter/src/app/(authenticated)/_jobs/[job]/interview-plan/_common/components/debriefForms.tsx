@@ -1,8 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Switch } from '@components/ui/switch';
-import { Attendee } from '@devlink2/Attendee';
-import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
-import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -11,7 +9,6 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
@@ -223,33 +220,26 @@ const DebriefForms = ({
   );
 
   return (
-    <SidedrawerBodyDebrief
-      slotSessionNameInput={nameField}
-      slotDurationDropdown={sessionDurationField}
-      slotMemberAvatarSelectionPill={<></>}
-      slotScheduleTypeDropdown={
-        <div className='flex flex-col gap-2'>
-          <ScheduleTypeField
-            value={schedule_type.value}
-            handleTypeChange={handleTypeChange}
-          />
-          {locationField}
-        </div>
-      }
-      slotMembersDropdown={
-        showMembers && (
-          <InterviewersField
-            value={members.value}
-            memberRecommendations={memberRecommendations}
-            handleChange={handleChange}
-            error={members.error}
-          />
-        )
-      }
-      slotAttendee={
-        <Attendees handleChange={handleChange} value={members_meta.value} />
-      }
-    />
+    <div className='flex flex-col space-y-4'>
+      <div>{nameField}</div>
+      <div>{sessionDurationField}</div>
+      <div className='flex flex-col space-y-2'>
+        <ScheduleTypeField
+          value={schedule_type.value}
+          handleTypeChange={handleTypeChange}
+        />
+        {locationField}
+      </div>
+      {showMembers && (
+        <InterviewersField
+          value={members.value}
+          memberRecommendations={memberRecommendations}
+          handleChange={handleChange}
+          error={members.error}
+        />
+      )}
+      <Attendees handleChange={handleChange} value={members_meta.value} />
+    </div>
   );
 };
 
@@ -281,22 +271,20 @@ const Attendees = ({
   return (
     <>
       {attendees}
-
-      <Attendee
-        textRole={'Previous interviewers'}
-        slotToggle={
-          <Switch
-            checked={value.previous_interviewers}
-            onCheckedChange={() =>
-              handleChange('members_meta', {
-                ...value,
-                previous_interviewers: !value.previous_interviewers,
-              })
-            }
-          />
-        }
-        slotSelectedMemberPill={<></>}
-      />
+      <div className='flex items-center justify-between border-b p-4'>
+        <div className='flex items-center space-x-4'>
+          <span className='text-sm font-medium'>Previous interviewers</span>
+        </div>
+        <Switch
+          checked={value.previous_interviewers}
+          onCheckedChange={() =>
+            handleChange('members_meta', {
+              ...value,
+              previous_interviewers: !value.previous_interviewers,
+            })
+          }
+        />
+      </div>
     </>
   );
 };
@@ -332,22 +320,17 @@ const Member = ({
   if (!member) return <></>;
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Attendee
-      textRole={capitalize(role)}
-      slotToggle={<Switch checked={checked} onCheckedChange={onClick} />}
-      slotSelectedMemberPill={
-        <SelectedMemberPill
-          isCloseButton={false}
-          isReverseShadow={false}
-          isShadow={false}
-          onClickRemove={null}
-          textMemberName={name}
-          slotMemberAvatar={
-            <MuiAvatar src={member.profile_image} level={name} />
-          }
-        />
-      }
-    />
+    <div className='flex items-center justify-between border-b p-4'>
+      <div className='flex items-center space-x-4'>
+        <span className='text-sm font-medium'>{capitalize(role)}</span>
+        <Avatar className='h-8 w-8'>
+          <AvatarImage src={member.profile_image} alt={name} />
+          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <span className='text-sm'>{name}</span>
+      </div>
+      <Switch checked={checked} onCheckedChange={onClick} />
+    </div>
   );
 };
 

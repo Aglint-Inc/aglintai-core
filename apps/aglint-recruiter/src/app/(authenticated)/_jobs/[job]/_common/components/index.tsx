@@ -21,22 +21,22 @@ export const ApplicationsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-     <div className='min-h-screen'>
-      <div className='container mx-auto p-8 space-y-6'>
-        <div className='flex justify-between items-center mb-6'>
+    <div className='min-h-screen'>
+      <div className='container mx-auto space-y-6 p-8'>
+        <div className='mb-6 flex items-center justify-between'>
           <div className='space-y-2'>
             <Skeleton className='h-8 w-48' />
             <Skeleton className='h-4 w-64' />
           </div>
           <Skeleton className='h-10 w-24' />
         </div>
-        <div className='bg-white rounded-lg shadow p-4 space-y-4'>
+        <div className='space-y-4 rounded-lg bg-white p-4 shadow'>
           <div className='flex space-x-2'>
             {[1, 2, 3, 4].map((i) => (
               <Skeleton key={i} className='h-8 w-24' />
             ))}
           </div>
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between'>
             <div className='flex space-x-2'>
               {[1, 2, 3].map((i) => (
                 <Skeleton key={i} className='h-8 w-24' />
@@ -51,7 +51,7 @@ export const ApplicationsDashboard = () => {
           </div>
         </div>
       </div>
-     </div>
+    </div>
   );
 };
 
@@ -61,16 +61,16 @@ const ApplicationsComponent = () => {
     <DNDProvider>
       <div className='min-h-screen'>
         <div className='container mx-auto'>
-          <div className='flex justify-between items-center mb-6'>
+          <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Details </h1>
+              <h1 className='mb-2 text-2xl font-bold'>Job Details </h1>
               <SharedBreadCrumbs />
             </div>
             <SharedActions />
           </div>
 
-          <div className='flex flex-col gap-6 mb-6'>
-            <div className='bg-white rounded-lg shadow p-4'>
+          <div className='mb-6 flex flex-col gap-6'>
+            <div className='rounded-lg bg-white p-4 shadow'>
               <div className='mb-4'>
                 <Tabs />
               </div>

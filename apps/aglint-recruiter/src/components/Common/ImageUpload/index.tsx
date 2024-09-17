@@ -97,21 +97,21 @@ function ImageUpload({
         onMouseLeave={() => setIsHovered(false)}
       >
         <Avatar
-          className={`${dynamic ? 'w-full h-full' : `w-${size} h-${size}`} rounded-lg`}
+          className={`${dynamic ? 'h-full w-full' : `w-${size} h-${size}`} rounded-lg`}
         >
           <AvatarImage src={displayImage} alt='Profile' />
           <AvatarFallback>
             {router.route.includes(ROUTES['/profile']()) ? (
-              <User className='w-6 h-6' />
+              <User className='h-6 w-6' />
             ) : (
-              <Building className='w-6 h-6' />
+              <Building className='h-6 w-6' />
             )}
           </AvatarFallback>
         </Avatar>
 
         {loading && (
-          <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg'>
-            <Loader2 className='w-8 h-8 animate-spin text-white' />
+          <div className='absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-50'>
+            <Loader2 className='h-8 w-8 animate-spin text-white' />
           </div>
         )}
 
@@ -130,12 +130,12 @@ function ImageUpload({
                   size='sm'
                   className='bg-black bg-opacity-50 text-white'
                 >
-                  <Upload className='w-6 h-6' />
+                  <Upload className='h-6 w-6' />
                 </Button>
               )}
             </FileUploader>
           ) : (
-            <div className='flex space-x-2 bg-black bg-opacity-50 p-2 rounded-lg'>
+            <div className='flex space-x-2 rounded-lg bg-black bg-opacity-50 p-2'>
               <FileUploader
                 handleChange={setProfilePicture}
                 name='file'
@@ -143,7 +143,7 @@ function ImageUpload({
               >
                 {!disabled && (
                   <Button variant='ghost' size='sm' className='text-white'>
-                    <RefreshCw className='w-4 h-4' />
+                    <RefreshCw className='h-4 w-4' />
                   </Button>
                 )}
               </FileUploader>
@@ -155,7 +155,7 @@ function ImageUpload({
                   className='text-white'
                   onClick={handleDelete}
                 >
-                  <Trash2 className='w-4 h-4' />
+                  <Trash2 className='h-4 w-4' />
                 </Button>
               )}
             </div>

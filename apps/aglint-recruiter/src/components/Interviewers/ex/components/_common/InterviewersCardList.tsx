@@ -14,17 +14,17 @@ export function InterviewersCardList({
   textDeclined = '',
 }: InterviewersCardListProps) {
   return (
-    <div className='grid grid-cols-[40%_20%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200 h-14'>
+    <div className='grid h-14 cursor-pointer grid-cols-[40%_20%_20%_20%] border-b border-[#eaf1f3] bg-white transition-colors duration-200 hover:bg-neutral-100'>
       <div className='p-2 px-4'>
         <div>{textName}</div>
       </div>
-      <div className='flex justify-center items-center p-2 px-4'>
+      <div className='flex items-center justify-center p-2 px-4'>
         <div>{textUpcoming}</div>
       </div>
-      <div className='flex justify-center items-center p-2 px-4'>
+      <div className='flex items-center justify-center p-2 px-4'>
         <div>{textCompleted}</div>
       </div>
-      <div className='flex justify-center items-center p-2 px-4'>
+      <div className='flex items-center justify-center p-2 px-4'>
         <div>{textDeclined}</div>
       </div>
     </div>

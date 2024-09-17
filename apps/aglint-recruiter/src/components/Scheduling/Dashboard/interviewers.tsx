@@ -34,8 +34,8 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -44,8 +44,8 @@ const Container = memo(() => {
   if (data.length === 0)
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>
@@ -84,27 +84,22 @@ const List = ({ data }: Props) => {
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => (
-      <InterviewStatsLoader
-        key={i}
-        slotSkeleton={<Skeleton className='w-full h-full' />}
-      />
-    ),
+    (_, i) => <Skeleton key={i} className='h-full w-full' />,
   );
 });
 Loader.displayName = 'Loader';
 
 export const InterviewStatsLoader = ({ slotSkeleton }) => {
   return (
-    <div className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'>
+    <div className='grid cursor-pointer grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white transition-colors duration-200 hover:bg-neutral-100'>
       <div className='p-2 px-4'>
-        <div className='relative w-[150px] h-5'>{slotSkeleton}</div>
+        <div className='relative h-5 w-[150px]'>{slotSkeleton}</div>
       </div>
       <div className='p-2 px-4'>
-        <div className='relative w-5 h-5'>{slotSkeleton}</div>
+        <div className='relative h-5 w-5'>{slotSkeleton}</div>
       </div>
       <div className='p-2 px-4'>
-        <div className='relative w-5 h-5'>{slotSkeleton}</div>
+        <div className='relative h-5 w-5'>{slotSkeleton}</div>
       </div>
     </div>
   );

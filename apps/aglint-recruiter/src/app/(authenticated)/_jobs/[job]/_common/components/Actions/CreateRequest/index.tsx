@@ -133,9 +133,9 @@ function CreateRequest({
         }
         slotAssignedInput={
           membersStatus === 'pending' ? (
-            <div className='h-10 w-full bg-gray-100 rounded-md animate-pulse'></div>
+            <div className='h-10 w-full animate-pulse rounded-md bg-gray-100'></div>
           ) : (
-            <div className='flex items-center justify-between pr-2 '>
+            <div className='flex items-center justify-between pr-2'>
               {selectedInterviewer && (
                 <MemberCard selectedMember={selectedInterviewer} />
               )}
@@ -151,7 +151,7 @@ function CreateRequest({
                   });
                 }}
                 updateButton={
-                  <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                 }
                 members={members}
               />

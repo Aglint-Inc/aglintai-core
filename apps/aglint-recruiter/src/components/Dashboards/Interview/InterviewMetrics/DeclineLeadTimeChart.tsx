@@ -30,10 +30,10 @@ export default function DeclineLeadTimeChart() {
         <DownloadIcon className='h-5 w-5 text-gray-400' />
       </CardHeader>
       <CardContent>
-        <div className='flex items-center space-x-2 mb-4'>
-          <div className='bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center'>
+        <div className='mb-4 flex items-center space-x-2'>
+          <div className='flex items-center rounded-full bg-green-100 px-3 py-1 text-green-700'>
             <span className='text-xl font-bold'>{averageLeadTime} days</span>
-            <ArrowDownIcon className='h-5 w-5 ml-1' />
+            <ArrowDownIcon className='ml-1 h-5 w-5' />
           </div>
           <span className='text-muted-foreground'>on average</span>
         </div>

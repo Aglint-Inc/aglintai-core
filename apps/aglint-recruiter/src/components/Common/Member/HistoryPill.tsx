@@ -19,11 +19,11 @@ export function HistoryPillShadcn({
   isHistoryTrainingCardVisible = true,
 }: HistoryPillProps) {
   return (
-    <div className='relative flex items-center justify-center cursor-pointer'>
+    <div className='relative flex cursor-pointer items-center justify-center'>
       <div className='relative'>
         <div
           className={cn(
-            'flex w-[60px] h-[26px] justify-center items-center bg-neutral-300 text-neutral-900',
+            'flex h-[26px] w-[60px] items-center justify-center bg-neutral-300 text-neutral-900',
             position === 'start' && 'rounded-l-md',
             position === 'end' && 'rounded-r-md',
           )}
@@ -34,7 +34,7 @@ export function HistoryPillShadcn({
         {isActive && (
           <div
             className={cn(
-              'absolute inset-0 flex justify-center items-center bg-green-400 text-green-900',
+              'absolute inset-0 flex items-center justify-center bg-green-400 text-green-900',
               position === 'start' && 'rounded-l-md',
               position === 'end' && 'rounded-r-md',
             )}
@@ -52,7 +52,7 @@ export function HistoryPillShadcn({
 function ShadowIcon() {
   return (
     <svg
-      className='w-4 h-4'
+      className='h-4 w-4'
       viewBox='0 0 16 16'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -79,7 +79,7 @@ function ShadowIcon() {
 function ReverseShadowIcon() {
   return (
     <svg
-      className='w-4 h-4'
+      className='h-4 w-4'
       viewBox='0 0 16 16'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

@@ -59,7 +59,7 @@ function CommandItem({ onClick, isActive, icon, label }: CommandItemProps) {
     <div className='relative overflow-hidden rounded'>
       <div
         className={cn(
-          'relative z-10 flex cursor-pointer items-center gap-2.5 rounded p-3 transition-colors duration-250 hover:bg-gray-50',
+          'duration-250 relative z-10 flex cursor-pointer items-center gap-2.5 rounded p-3 transition-colors hover:bg-gray-50',
           onClick,
         )}
       >

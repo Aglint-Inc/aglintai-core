@@ -14,7 +14,7 @@ function CompanyImage({
 }) {
   return (
     <div
-      className='h-48 relative'
+      className='relative h-48'
       style={{
         backgroundImage: `url(${coverSrc})`,
         backgroundSize: 'cover',
@@ -22,7 +22,7 @@ function CompanyImage({
       }}
     >
       <div className='absolute -bottom-16 left-8'>
-        <div className='w-32 h-32 bg-white rounded-md flex items-center justify-center overflow-hidden'>
+        <div className='flex h-32 w-32 items-center justify-center overflow-hidden rounded-md bg-white'>
           {candidate ? (
             // <Image
             //   src={imageSrc}
@@ -33,9 +33,9 @@ function CompanyImage({
             // />
             // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
             // <img src={candidate?.avatar} width={'128px'} height={'128px'} />
-            <Avatar className='w-full h-full cursor-pointer rounded-md'>
+            <Avatar className='h-full w-full cursor-pointer rounded-md'>
               <AvatarImage
-                className='object-cover rounded-md'
+                className='rounded-md object-cover'
                 src={candidate?.avatar}
                 alt='@shadcn'
               />
@@ -44,7 +44,7 @@ function CompanyImage({
               </AvatarFallback>
             </Avatar>
           ) : (
-            <span className='text-white text-4xl font-bold'>{altText}</span>
+            <span className='text-4xl font-bold text-white'>{altText}</span>
           )}
         </div>
       </div>

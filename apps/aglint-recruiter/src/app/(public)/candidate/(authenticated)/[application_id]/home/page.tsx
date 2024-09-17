@@ -46,18 +46,18 @@ export default function Component({ params }) {
     schedule?.length === 0;
 
   return (
-    <div className='flex flex-col min-h-screen'>
-      <main className='flex-1 mx-auto px-4 py-8'>
+    <div className='flex min-h-screen flex-col'>
+      <main className='mx-auto flex-1 px-4 py-8'>
         <div className='grid grid-cols-3 gap-8'>
           <div className='col-span-2'>
-            <div className=' rounded-lg overflow-hidden shadow'>
+            <div className='overflow-hidden rounded-lg shadow'>
               <CompanyImage
                 candidate={candidate}
                 coverSrc={company.banner_image}
               />
 
-              <div className='p-8 pt-20 pb-0'>
-                <h1 className='text-2xl font-semibold mb-1 mt-2'>
+              <div className='p-8 pb-0 pt-20'>
+                <h1 className='mb-1 mt-2 text-2xl font-semibold'>
                   {getFullName(candidate.first_name, candidate.last_name)}
                 </h1>
                 <p className='text-sm'>

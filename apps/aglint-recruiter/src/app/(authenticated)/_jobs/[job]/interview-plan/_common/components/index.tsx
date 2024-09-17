@@ -11,7 +11,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Collapse, MenuItem, Stack, TextField, Tooltip } from '@mui/material';
+import { Collapse, MenuItem, TextField, Tooltip } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
@@ -28,7 +28,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -75,9 +75,7 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-      <Loader />
-    </Stack>
+    <Loader variant='full' />
   );
 };
 
@@ -120,23 +118,23 @@ const InterviewPlanPage = () => {
     <>
       <div className='min-h-screen'>
         <div className='container mx-auto'>
-          <div className='flex justify-between items-center mb-6'>
+          <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             <Settings />
           </div>
 
-          <div className='flex gap-6 mb-6'>
+          <div className='mb-6 flex gap-6'>
             <div className='w-1/4'>
               <JobsSideNavV2 />
             </div>
             <div className='w-3/4'>
               <div className='flex flex-row justify-between'>
                 <div className='flex flex-col gap-2'>
-                  <h2 className='text-xl font-bold mb-2'>Interview Plan</h2>
-                  <p className='text-sm text-gray-600 mb-4'>
+                  <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
+                  <p className='mb-4 text-sm text-gray-600'>
                     Update the hiring team details here. Changes will be saved
                     automatically.
                   </p>
@@ -148,7 +146,7 @@ const InterviewPlanPage = () => {
                   <TabsTrigger value='candidate'>Candidate</TabsTrigger>
                 </TabsList>
                 <TabsContent value='internal'>
-                  <div className='max-w-2xl my-8 mb-10 space-y-4'>
+                  <div className='my-8 mb-10 max-w-2xl space-y-4'>
                     {data?.length ? (
                       data.map((plan) => (
                         <InterviewPlan
@@ -208,14 +206,7 @@ const AddStageComponent = () => {
   return (
     <>
       {form && (
-        <Stack
-          direction={'row'}
-          bgcolor={'var(--neutral-2)'}
-          p={2}
-          width={'100%'}
-          gap={1}
-          alignItems={'center'}
-        >
+        <div className='flex w-full flex-row items-center gap-2 bg-[var(--neutral-2)] p-4'>
           {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
@@ -235,13 +226,13 @@ const AddStageComponent = () => {
           >
             Cancel
           </UIButton>
-        </Stack>
+        </div>
       )}
-      <Stack direction={'row'}>
+      <div className='flex flex-row'>
         <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
           Add Stage
         </UIButton>
-      </Stack>
+      </div>
     </>
   );
 };
@@ -404,7 +395,8 @@ const InterviewPlan = ({
           onClickEdit={{ onClick: handleEditPlan }}
           isSlotInterviewPlanVisible={expanded}
           slotInputButton={
-            <Stack direction={'row'} gap={1} alignItems={'center'}>
+            // Start of Selection
+            <div className='flex items-center gap-2'>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
               <UIButton
                 size='sm'
@@ -420,10 +412,10 @@ const InterviewPlan = ({
               >
                 Cancel
               </UIButton>
-            </Stack>
+            </div>
           }
           slotRightIconButton={
-            <Stack direction={'row'} gap={1}>
+            <div className='flex flex-row gap-1'>
               <UIButton
                 variant='destructive'
                 onClick={() => deletePlan({ id: plan_id })}
@@ -434,24 +426,22 @@ const InterviewPlan = ({
               <UIButton variant='secondary' onClick={handleExpandClick}>
                 <ChevronDown className='h-4 w-4' />
               </UIButton>
-            </Stack>
+            </div>
           }
           slotInterviewPlanDetail={
             <Collapse in={expanded} timeout='auto' unmountOnExit>
-              <Stack pt={2}>
+              <div className='pt-2'>
                 {sessionsCount ? (
-                  <>
-                    <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-                  </>
+                  <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                 ) : (
-                  <div className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-lg'>
-                    <Kanban className='w-4 h-4 text-gray-400 mb-4' />
-                    <p className='text-gray-500 mb-4'>
+                  <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
+                    <Kanban className='mb-4 h-4 w-4 text-gray-400' />
+                    <p className='mb-4 text-gray-500'>
                       No interview plan found
                     </p>
                   </div>
                 )}
-              </Stack>
+              </div>
             </Collapse>
           }
         />
@@ -612,31 +602,27 @@ const InterviewSession = ({
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
-    <Stack
+    <div
       ref={manageJob ? ref : null}
-      style={{ opacity: isDragging ? 0 : 1 }}
+      className={`flex flex-col ${isDragging ? 'opacity-0' : 'opacity-100'}`}
       data-handler-id={handlerId}
     >
       <OptimisticWrapper loading={isLoading}>
-        <Stack
+        <div
           onMouseOver={() => setHover(true)}
           onMouseOut={() => setHover(false)}
-          mb={hover ? 1 : 4}
+          onFocus={() => setHover(true)}
+          onBlur={() => setHover(false)}
+          className={`flex flex-col ${hover ? 'mb-1' : 'mb-4'}`}
         >
           <InterviewPlanDetail
             textModuleName={
-              <Stack style={{ flexDirection: 'row', gap: '12px' }}>
+              <div className='flex flex-row gap-3'>
                 <>{session.name}</>
-                <Stack
-                  style={{
-                    color: 'var(--neutral-9)',
-                    fontSize: 'var(--font-size-1)',
-                    fontWeight: 400,
-                  }}
-                >
+                <div className='font-normal text-[var(--font-size-1)] text-[var(--neutral-9)]'>
                   {getSessionType(session.session_type)}
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             }
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
@@ -677,7 +663,7 @@ const InterviewSession = ({
             }
             isAddCardVisible={hover}
             slotAddScheduleCard={
-              <Stack style={{ opacity: manageJob ? 100 : 0 }}>
+              <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
                 <Tooltip
                   open={tooltipOpen}
                   onOpen={() => setTooltipOpen(true)}
@@ -722,23 +708,23 @@ const InterviewSession = ({
                     />
                   }
                 >
-                  <Stack>
+                  <div>
                     <div
                       className={
-                        'relative flex h-6 justify-center items-center'
+                        'relative flex h-6 items-center justify-center'
                       }
                     >
-                      <div className='w-full ' />
-                      <div className=' w-full absolute inset-0 flex flex-col justify-center items-center'>
-                        <div className='relative top-[50%] flex h-[2px] w-full bg-[#cc4e00]  flex-col justify-center items-center cursor-pointer transition-all duration-250 ease hover:opacity-80'></div>
-                        <div className='h-[20px] w-[20px] bg-[#cc4e00] flex items-center justify-center z-10 rounded-[20px]'>
+                      <div className='w-full' />
+                      <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
+                        <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
+                        <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
                           <Plus size={10} color='white' />
                         </div>
                       </div>
                     </div>
-                  </Stack>
+                  </div>
                 </Tooltip>
-              </Stack>
+              </div>
             }
             slotButtons={
               manageJob && (
@@ -771,9 +757,9 @@ const InterviewSession = ({
               )
             }
           />
-        </Stack>
+        </div>
       </OptimisticWrapper>
-    </Stack>
+    </div>
   );
 };
 
@@ -839,7 +825,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <div className='flex flex-row gap-3 mb-1'>
+    <div className='mb-1 flex flex-row gap-3'>
       <div className='flex items-center space-x-3'>
         <Avatar className='h-8 w-8 rounded-sm'>
           <AvatarImage src={member.profile_image} alt={name} />

@@ -82,7 +82,7 @@ export const ImportManual = () => {
   };
 
   return (
-    <Card className='border-0 shadow-none h-[500px] flex flex-col'>
+    <Card className='flex h-[500px] flex-col border-0 shadow-none'>
       <div className='flex-grow overflow-auto p-6'>
         <FormBody applicant={applicant} setApplicant={setApplicant} />
       </div>
@@ -163,19 +163,19 @@ const FormField = ({ label, id, value, onChange, error, type = 'text' }) => (
       className={error ? 'border-red-500' : ''}
     />
     {error && (
-      <p className='text-red-500 text-sm'>Please provide a valid {label}</p>
+      <p className='text-sm text-red-500'>Please provide a valid {label}</p>
     )}
   </div>
 );
 
 const ResumeUploadComp = ({ value, handleChange, error }) => (
   <div className='space-y-2'>
-    <Label htmlFor='resume' className='flex items-center gap-1 mb-3'>
+    <Label htmlFor='resume' className='mb-3 flex items-center gap-1'>
       Upload Resume <span className='text-red-500'>*</span>
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
-        className={`border border-dashed rounded-md p-8 cursor-pointer flex items-center justify-center space-x-2 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
+        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border border-dashed p-8 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span
@@ -187,7 +187,7 @@ const ResumeUploadComp = ({ value, handleChange, error }) => (
       </div>
     </FileUploader>
     {error && (
-      <p className='text-red-500 text-sm'>Please upload the candidate resume</p>
+      <p className='text-sm text-red-500'>Please upload the candidate resume</p>
     )}
   </div>
 );

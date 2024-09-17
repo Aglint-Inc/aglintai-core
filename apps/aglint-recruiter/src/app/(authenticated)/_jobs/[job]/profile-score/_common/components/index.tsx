@@ -66,9 +66,9 @@ export const JobProfileScoreDashboard = () => {
       </TourProvider>
     ) : (
       // TODO: When we move to app router, we should move to separate component
-      <div className='flex items-center justify-center h-screen'>
+      <div className='flex h-screen items-center justify-center'>
         <div className='text-center'>
-          <h1 className='text-2xl font-bold mb-4'>Job Not Found</h1>
+          <h1 className='mb-4 text-2xl font-bold'>Job Not Found</h1>
           <p className='text-gray-600'>
             The job you&apos;re looking for doesn&apos;t exist or you don`&apost
             have permission to view it.
@@ -79,8 +79,8 @@ export const JobProfileScoreDashboard = () => {
   ) : (
     // TODO: When we move to app router, we should move to separate skeleton component
     <div className='min-h-screen'>
-      <div className='container mx-auto p-6 flex flex-col space-y-6'>
-        <div className='flex justify-between items-center'>
+      <div className='container mx-auto flex flex-col space-y-6 p-6'>
+        <div className='flex items-center justify-between'>
           <div className='space-y-2'>
             <Skeleton className='h-8 w-64' />
             <Skeleton className='h-4 w-32' />
@@ -115,28 +115,28 @@ const ProfileScorePage = () => {
     <>
       <div className='min-h-screen'>
         <div className='container mx-auto'>
-          <div className='flex justify-between items-center mb-6'>
+          <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             {/* <Settings /> */}
           </div>
 
-          <div className='flex gap-6 mb-6'>
+          <div className='mb-6 flex gap-6'>
             <div className='w-1/4'>
               <JobsSideNavV2 />
             </div>
             <div className='w-3/4'>
-              <h2 className='text-xl font-bold mb-2'>Profile Scoring</h2>
-              <p className='text-sm text-gray-600 mb-4'>
+              <h2 className='mb-2 text-xl font-bold'>Profile Scoring</h2>
+              <p className='mb-4 text-sm text-gray-600'>
                 Profile scoring helps evaluate candidates objectively, assigning
                 numerical values to their qualifications and experience to
                 streamline the hiring process and identify the best-fit
                 applicants efficiently.
               </p>
               <div className='flex'>
-                <div className='flex-1 mr-4'>
+                <div className='mr-4 flex-1'>
                   <ProfileScore />
                 </div>
                 <div className='w-1/3'>
@@ -221,17 +221,17 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky top-0 right-0 p-4 ${
-        job.scoring_criteria_loading ? 'opacity-40 pointer-events-none' : ''
+      className={`sticky right-0 top-0 p-4 ${
+        job.scoring_criteria_loading ? 'pointer-events-none opacity-40' : ''
       }`}
     >
       <div className='space-y-4'>
         <div className='flex justify-center'>
-          <div className='flex flex-row w-4/5 justify-center items-center gap-10'>
+          <div className='flex w-4/5 flex-row items-center justify-center gap-10'>
             <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
           </div>
         </div>
-        <div className='flex flex-row space-x-2 justify-center'>
+        <div className='flex flex-row justify-center space-x-2'>
           <Input
             type='number'
             name='experience'
@@ -272,14 +272,14 @@ const ProfileScore = () => {
   const parameter_weights = job.parameter_weights as ScoreWheelParams;
 
   return (
-    <div className='space-y-4 mr-4'>
+    <div className='mr-4 space-y-4'>
       <Banners />
       {job.scoring_criteria_loading ? (
         <div className='space-y-4'>
           <LoaadingSkeleton />
         </div>
       ) : (
-        <Card className='w-full '>
+        <Card className='w-full'>
           <CardContent className='pt-6'>
             <Accordion type='single' defaultValue='experience' collapsible>
               <AccordionItem value='experience'>
@@ -424,7 +424,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
               handleAddTags();
             }
           }}
-          className='flex-grow p-1 pl-3 h-fit'
+          className='h-fit flex-grow p-1 pl-3'
         />
         <Button
           size='sm'
@@ -432,7 +432,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
           variant='outline'
           className='ml-2'
         >
-          <PlusCircle className='h-4 w-4 mr-1' />
+          <PlusCircle className='mr-1 h-4 w-4' />
           Add
         </Button>
       </div>
@@ -459,34 +459,34 @@ const Tag: FC<{
   return (
     <div className='group relative inline-block'>
       {isEditing ? (
-        <div className='flex items-center bg-white border rounded-md overflow-hidden'>
+        <div className='flex items-center overflow-hidden rounded-md border bg-white'>
           <Input
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onBlur={handleSubmit}
             onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-            className='w-[200px] h-8 p-1 text-sm border-none focus:outline-none focus-visible:ring-0 pl-3'
+            className='h-8 w-[200px] border-none p-1 pl-3 text-sm focus:outline-none focus-visible:ring-0'
           />
           <UIButton
             onClick={handleSubmit}
-            className='px-2 py-1  bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
+            className='bg-gray-100 px-2 py-1 transition-colors duration-200 hover:bg-gray-200'
             title='Press Enter to save'
             icon={<Check />}
             size='sm'
           />
         </div>
       ) : (
-        <div className='inline-flex items-center bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm'>
+        <div className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700'>
           {item.field}
           <button
             onClick={() => setIsEditing(true)}
-            className='ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
+            className='ml-2 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100'
           >
             <Edit2 className='h-4 w-4' />
           </button>
           <button
             onClick={onDelete}
-            className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
+            className='ml-1 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100'
           >
             <X className='h-4 w-4' />
           </button>
@@ -602,10 +602,10 @@ const Tips = () => {
     <>
       {firstVisit && (
         <div className='mt-4'>
-          <div className='bg-purple-100 p-4 rounded-md flex items-start space-x-4'>
-            <Lightbulb className='w-6 h-6 text-purple-500 flex-shrink-0' />
+          <div className='flex items-start space-x-4 rounded-md bg-purple-100 p-4'>
+            <Lightbulb className='h-6 w-6 flex-shrink-0 text-purple-500' />
             <div className='flex-grow'>
-              <h4 className='text-lg font-semibold text-purple-700 mb-1'>
+              <h4 className='mb-1 text-lg font-semibold text-purple-700'>
                 Pro Tip
               </h4>
               <p className='text-sm text-purple-600'>
@@ -624,8 +624,8 @@ const Tips = () => {
           </div>
         </div>
       )}
-      <div className='flex flex-col gap-1 p-4 mx-4 mt-8 border rounded-md'>
-        <p className='text-info font-semibold text-sm'>How It Works</p>
+      <div className='mx-4 mt-8 flex flex-col gap-1 rounded-md border p-4'>
+        <p className='text-sm font-semibold text-info'>How It Works</p>
         <p className='text-sm text-muted-foreground'>
           Adjust the weightage for Experience, Skills, and Education to
           customize the profile score. The total must equal 100%. Use the input
@@ -639,8 +639,8 @@ const Tips = () => {
 
 const LoaadingSkeleton = () => {
   return (
-    <div className='w-full  p-4 bg-white rounded-lg shadow'>
-      <div className='flex items-center justify-between mb-4'>
+    <div className='w-full rounded-lg bg-white p-4 shadow'>
+      <div className='mb-4 flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <Skeleton className='h-4 w-4 rounded-full' />
           <Skeleton className='h-6 w-24' />
@@ -652,7 +652,7 @@ const LoaadingSkeleton = () => {
           <Skeleton key={i} className='h-8 w-full' />
         ))}
       </div>
-      <div className='flex items-center justify-between my-4'>
+      <div className='my-4 flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <Skeleton className='h-4 w-4 rounded-full' />
           <Skeleton className='h-6 w-24' />
@@ -664,7 +664,7 @@ const LoaadingSkeleton = () => {
           <Skeleton key={i} className='h-8 w-full' />
         ))}
       </div>
-      <div className='flex items-center justify-between my-4'>
+      <div className='my-4 flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <Skeleton className='h-4 w-4 rounded-full' />
           <Skeleton className='h-6 w-24' />

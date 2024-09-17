@@ -21,13 +21,13 @@ export default function NavProfile({
   candidate: ReturnType<typeof useCandidatePortalNavbar>['data']['candidate'];
 }) {
   return (
-    <Avatar className='w-10 h-10 cursor-pointer rounded-md'>
+    <Avatar className='h-10 w-10 cursor-pointer rounded-md'>
       <AvatarImage
-        className='object-cover rounded-md'
+        className='rounded-md object-cover'
         src={candidate?.avatar}
         alt='@shadcn'
       />
-      <AvatarFallback className='rounded-md '>
+      <AvatarFallback className='rounded-md'>
         {candidate.first_name.charAt(0) + candidate.last_name.charAt(0)}
       </AvatarFallback>
     </Avatar>

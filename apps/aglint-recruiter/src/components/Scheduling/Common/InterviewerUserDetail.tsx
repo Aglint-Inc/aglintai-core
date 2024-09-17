@@ -1,19 +1,17 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { Stack } from '@mui/material';
-import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
 
+import { getPauseMemberText } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
-import MuiAvatar from '../../Common/MuiAvatar';
-import { getPauseMemberText } from '../InterviewTypes/DetailPage/_common/utils/utils';
 import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
 
 function InterviewerUserDetail({
@@ -49,107 +47,100 @@ function InterviewerUserDetail({
   interviewerType: DatabaseTable['interview_session_relation']['interviewer_type'];
 }) {
   return (
-    <GlobalUserDetail
-      slotCandidateStatus={
-        <Stack
-          height={'100%'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          direction={'row'}
-        >
-          {trainingType ? (
-            <InterviewerTrainingTypeIcon type={trainingType} />
-          ) : interviewerType !== 'qualified' &&
-            trainingType !== 'qualified' ? (
-            <UIBadge color={'info'} textBadge={'Training'} size={'sm'} />
-          ) : (
-            ''
-          )}
-          {interview_meeting?.status === 'confirmed' && (
-            <>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Stack
-                    sx={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <InterviewerAcceptDeclineIcon type={accepted_status} />
-                  </Stack>
-                </TooltipTrigger>
-                {cancelReason?.reason && (
-                  <TooltipContent>
-                    <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
-                      <p className='text-sm text-warning'>
-                        Reason : {cancelReason?.reason}
-                      </p>
-                      {cancelReason?.other_details?.note && (
-                        <p className='text-sm text-muted-foreground'>
-                          Notes : {cancelReason?.other_details?.note}
-                        </p>
-                      )}
-                    </Stack>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </>
-          )}
-
-          {interview_meeting?.status !== 'confirmed' &&
-            interview_meeting?.status !== 'completed' && (
-              <>
-                {!isCalendarConnected && (
-                  <UIBadge
-                    size={'sm'}
-                    iconName={'CalendarOff'}
-                    color={'error'}
-                    textBadge={`Calendar not connected`}
-                  />
-                )}
-                {isPaused && (
-                  <UIBadge
-                    size={'sm'}
-                    color={'error'}
-                    iconName={'CalendarFold'}
-                    textBadge={`Paused ${getPauseMemberText(pause_json)}`}
-                  />
-                )}
-              </>
+    <div className='flex items-center space-x-4'>
+      <div className='flex-shrink-0'>
+        {userDetails.profile_image ? (
+          <Avatar>
+            <AvatarImage
+              src={userDetails.profile_image}
+              alt={getFullName(userDetails.first_name, userDetails.last_name)}
+            />
+            <AvatarFallback>
+              {getFullName(
+                userDetails.first_name,
+                userDetails.last_name,
+              ).charAt(0)}
+            </AvatarFallback>
+          </Avatar>
+        ) : (
+          <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm text-gray-500'>
+            {getFullName(userDetails.first_name, userDetails.last_name).charAt(
+              0,
             )}
-        </Stack>
-      }
-      textTimeZone={
-        interview_meeting?.start_time
-          ? formatTimeWithTimeZone({
-              start_time: interview_meeting.start_time,
-              end_time: interview_meeting.end_time,
-              timeZone: interviewerTimeZone,
-            })
-          : getShortTimeZone(interviewerTimeZone)
-      }
-      isRoleVisible={true}
-      slotRole={
-        userDetails?.position ? (
+          </div>
+        )}
+      </div>
+      <div className='flex-grow'>
+        <p className='text-sm font-medium'>
+          {getFullName(userDetails.first_name, userDetails.last_name)}
+        </p>
+        {userDetails?.position && (
           <p className='text-sm text-muted-foreground'>
             {userDetails.position}
           </p>
-        ) : (
-          '--'
-        )
-      }
-      textName={getFullName(userDetails.first_name, userDetails.last_name)}
-      slotImage={
-        <MuiAvatar
-          level={getFullName(userDetails.first_name, userDetails.last_name)}
-          src={userDetails.profile_image}
-          fontSize={'14px'}
-          width='100%'
-          height='100%'
-        />
-      }
-      isSlotImageVisible={true}
-      isCandidateAvatarVisible={false}
-    />
+        )}
+        <p className='text-xs text-muted-foreground'>
+          {interview_meeting?.start_time
+            ? formatTimeWithTimeZone({
+                start_time: interview_meeting.start_time,
+                end_time: interview_meeting.end_time,
+                timeZone: interviewerTimeZone,
+              })
+            : getShortTimeZone(interviewerTimeZone)}
+        </p>
+      </div>
+      <div className='flex items-center space-x-2'>
+        {trainingType ? (
+          <InterviewerTrainingTypeIcon type={trainingType} />
+        ) : interviewerType !== 'qualified' && trainingType !== 'qualified' ? (
+          <UIBadge color={'info'} textBadge={'Training'} size={'sm'} />
+        ) : null}
+        {interview_meeting?.status === 'confirmed' && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className='cursor-pointer'>
+                <InterviewerAcceptDeclineIcon type={accepted_status} />
+              </div>
+            </TooltipTrigger>
+            {cancelReason?.reason && (
+              <TooltipContent>
+                <div className='space-y-1 p-2'>
+                  <p className='text-warning text-sm'>
+                    Reason : {cancelReason?.reason}
+                  </p>
+                  {cancelReason?.other_details?.note && (
+                    <p className='text-sm text-muted-foreground'>
+                      Notes : {cancelReason?.other_details?.note}
+                    </p>
+                  )}
+                </div>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        )}
+        {interview_meeting?.status !== 'confirmed' &&
+          interview_meeting?.status !== 'completed' && (
+            <>
+              {!isCalendarConnected && (
+                <UIBadge
+                  size={'sm'}
+                  iconName={'CalendarOff'}
+                  color={'error'}
+                  textBadge={`Calendar not connected`}
+                />
+              )}
+              {isPaused && (
+                <UIBadge
+                  size={'sm'}
+                  color={'error'}
+                  iconName={'CalendarFold'}
+                  textBadge={`Paused ${getPauseMemberText(pause_json)}`}
+                />
+              )}
+            </>
+          )}
+      </div>
+    </div>
   );
 }
 

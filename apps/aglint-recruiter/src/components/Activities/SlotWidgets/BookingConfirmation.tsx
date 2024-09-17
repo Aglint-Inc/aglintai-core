@@ -23,8 +23,8 @@ function BookingConfirmation({
         {sessions.map((session) => (
           <Card key={session.id}>
             <CardContent className='p-4'>
-              <div className='flex items-center space-x-2 mb-2'>
-                <Calendar className='w-5 h-5 text-muted-foreground' />
+              <div className='mb-2 flex items-center space-x-2'>
+                <Calendar className='h-5 w-5 text-muted-foreground' />
                 <span className='font-medium'>
                   {dayjsLocal(session.interview_meeting.start_time).format(
                     'DD MMMM YYYY',
@@ -38,14 +38,14 @@ function BookingConfirmation({
                 <div className='flex-grow'>
                   <h4 className='font-semibold'>{session.name}</h4>
                   <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
-                    <Clock className='w-4 h-4' />
+                    <Clock className='h-4 w-4' />
                     <span>{getBreakLabel(session.session_duration)}</span>
                   </div>
                   <div className='flex items-center space-x-2 text-sm'>
                     <IconScheduleType type={session.schedule_type} />
                     <span>{getScheduleType(session.schedule_type)}</span>
                   </div>
-                  <p className='text-sm mt-1'>
+                  <p className='mt-1 text-sm'>
                     {formatTimeWithTimeZone({
                       start_time: session.interview_meeting.start_time,
                       end_time: session.interview_meeting.end_time,

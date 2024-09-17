@@ -1,8 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { AlertDialog, AlertDialogContent } from '@components/ui/alert-dialog';
+import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -30,21 +36,36 @@ const MoveCandidate = () => {
   const enabled = checklist.length !== 0;
   return (
     <>
-      <SelectActionsDropdown
-        isAssessment={false}
-        isDisqualified={enabled && emailVisibilities.disqualified}
-        isInterview={enabled && emailVisibilities.interview}
-        isMoveNew={enabled && emailVisibilities.new}
-        isQualified={enabled && emailVisibilities.qualified}
-        isScreening={false}
-        onClickAssessment={{ style: { display: 'none' } }}
-        onClickDisqualified={{ onClick: () => setActionPopup('disqualified') }}
-        onClickInterview={{ onClick: () => setActionPopup('interview') }}
-        onClickMoveNew={{ onClick: () => setActionPopup('new') }}
-        onClickQualified={{ onClick: () => setActionPopup('qualified') }}
-        onClickScreening={{ style: { display: 'none' } }}
-      />
-      <AlertDialog open={!!actionPopup} onOpenChange={() => resetActionPopup()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='outline' className='w-full justify-start'>
+            Move Candidate
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className='w-56'>
+          {enabled && emailVisibilities.new && (
+            <DropdownMenuItem onClick={() => setActionPopup('new')}>
+              Move to New
+            </DropdownMenuItem>
+          )}
+          {enabled && emailVisibilities.qualified && (
+            <DropdownMenuItem onClick={() => setActionPopup('qualified')}>
+              Move to Qualified
+            </DropdownMenuItem>
+          )}
+          {enabled && emailVisibilities.disqualified && (
+            <DropdownMenuItem onClick={() => setActionPopup('disqualified')}>
+              Move to Disqualified
+            </DropdownMenuItem>
+          )}
+          {enabled && emailVisibilities.interview && (
+            <DropdownMenuItem onClick={() => setActionPopup('interview')}>
+              Move to Interview
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <AlertDialog open={!!actionPopup} onOpenChange={resetActionPopup}>
         <AlertDialogContent className='p-0'>
           <MoveAction />
         </AlertDialogContent>
@@ -254,20 +275,20 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
 const ReusablePopup = ({ title, slotBody, slotButtons }) => {
   const { resetActionPopup } = useApplicationsActions();
   return (
-    <div className='flex items-center mx-autojustify-center mx-auto w-[500px]'>
+    <div className='mx-autojustify-center mx-auto flex w-[500px] items-center'>
       <div className='w-full max-w-lg'>
-        <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+        <div className='flex items-center justify-between border-b border-gray-200 p-4'>
           <h2 className='font-semibold'>{title}</h2>
           <UIButton
             onClick={() => resetActionPopup()}
             variant='ghost'
             size='sm'
           >
-            <X className='w-4 h-4' />
+            <X className='h-4 w-4' />
           </UIButton>
         </div>
         <div className='p-4'>{slotBody}</div>
-        <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+        <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
           {slotButtons}
         </div>
       </div>

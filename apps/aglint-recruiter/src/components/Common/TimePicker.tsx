@@ -63,7 +63,7 @@ function TimePicker({
       <div className='space-y-2'>
         <div
           id='time-picker'
-          className='flex items-center space-x-2 bg-background p-2 rounded-md border'
+          className='flex items-center space-x-2 rounded-md border bg-background p-2'
         >
           <Select
             value={displayHour}
@@ -107,7 +107,7 @@ function TimePicker({
                   key={option}
                   onClick={() => updateTime(displayHour, displayMinute, option)}
                   className={cn(
-                    'px-2 py-1 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
+                    'rounded-md px-2 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                     displayPeriod === option
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-background text-foreground hover:bg-muted',

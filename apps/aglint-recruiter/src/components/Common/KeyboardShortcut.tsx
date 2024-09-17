@@ -5,7 +5,7 @@ interface KeyProps {
 }
 
 const Key: React.FC<KeyProps> = ({ children }) => (
-  <span className='inline-flex items-center justify-center min-w-[1.5em] px-1 py-0.5 text-xs font-medium bg-secondary text-secondary-foreground rounded border border-secondary-foreground/20'>
+  <span className='inline-flex min-w-[1.5em] items-center justify-center rounded border border-secondary-foreground/20 bg-secondary px-1 py-0.5 text-xs font-medium text-secondary-foreground'>
     {children}
   </span>
 );
@@ -32,7 +32,7 @@ export default function KeyboardShortcut({ keys }: KeyboardShortcutProps) {
 // Example usage
 export function Example() {
   return (
-    <div className='p-4 space-y-4'>
+    <div className='space-y-4 p-4'>
       <KeyboardShortcut keys={['⌘', 'K']} />
       <KeyboardShortcut keys={['Ctrl', 'Shift', 'P']} />
       <KeyboardShortcut keys={['Alt', 'F4']} />

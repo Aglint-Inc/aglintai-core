@@ -3,15 +3,15 @@ import { Skeleton } from '@components/ui/skeleton';
 
 export default function InterviewsSkeleton() {
   return (
-    <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
-      <main className='lg:w-[70%] space-y-6 mx-auto'>
+    <div className='container mx-auto flex max-w-screen-xl flex-col gap-8 p-6 lg:flex-row'>
+      <main className='mx-auto space-y-6 lg:w-[70%]'>
         <div>
-          <Skeleton className='h-6 w-48 mb-4' />
+          <Skeleton className='mb-4 h-6 w-48' />
           <InterviewCardSkeleton />
           <InterviewCardSkeleton />
         </div>
         <div>
-          <Skeleton className='h-6 w-48 mb-4' />
+          <Skeleton className='mb-4 h-6 w-48' />
           <InterviewCardSkeleton />
         </div>
       </main>
@@ -21,22 +21,22 @@ export default function InterviewsSkeleton() {
 
 function InterviewCardSkeleton() {
   return (
-    <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
+    <Card className='mb-4 border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
       <CardContent className='pt-4'>
-        <div className='flex justify-between items-center mb-4'>
+        <div className='mb-4 flex items-center justify-between'>
           <div className='flex items-center'>
-            <Skeleton className='w-16 h-16 rounded-md mr-3' />
+            <Skeleton className='mr-3 h-16 w-16 rounded-md' />
             <div>
-              <Skeleton className='h-4 w-32 mb-2' />
+              <Skeleton className='mb-2 h-4 w-32' />
               <Skeleton className='h-3 w-24' />
             </div>
           </div>
         </div>
         {[1, 2].map((_, index) => (
-          <div key={index} className='flex items-center mb-2'>
-            <Skeleton className='w-8 h-8 rounded-full mr-3' />
+          <div key={index} className='mb-2 flex items-center'>
+            <Skeleton className='mr-3 h-8 w-8 rounded-full' />
             <div className='flex-grow'>
-              <Skeleton className='h-4 w-40 mb-1' />
+              <Skeleton className='mb-1 h-4 w-40' />
               <Skeleton className='h-3 w-32' />
             </div>
           </div>

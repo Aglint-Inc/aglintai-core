@@ -73,8 +73,8 @@ function MySchedule() {
 
   if (scheduleLoading || integrationLoading)
     return (
-      <div className='flex items-center justify-center w-full h-screen'>
-        <Loader2 className='w-8 h-8 animate-spin' />
+      <div className='flex h-screen w-full items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin' />
       </div>
     );
 
@@ -122,8 +122,8 @@ function MySchedule() {
                   ''
                 ) : allSchedules.length === 0 ? (
                   <div className='flex flex-col items-center justify-center p-8 text-center'>
-                    <Calendar className='w-12 h-12 text-gray-400 mb-2' />
-                    <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                    <Calendar className='mb-2 h-12 w-12 text-gray-400' />
+                    <h3 className='mb-1 text-lg font-medium text-gray-900'>
                       No schedule found
                     </h3>
                     <p className='text-sm text-gray-500'>
@@ -175,7 +175,7 @@ function MySchedule() {
           />
         </ShowCode.When>
         <ShowCode.Else>
-          <div className='p-4 border rounded-md bg-white shadow-md'>
+          <div className='rounded-md border bg-white p-4 shadow-md'>
             {recruiterUser.schedule_auth ? (
               <div>
                 <p className='text-lg font-semibold'>
@@ -187,7 +187,7 @@ function MySchedule() {
                 <p className='text-lg font-semibold'>
                   Connect your Google Calendar
                 </p>
-                <p className='text-sm text-gray-500 mt-2'>
+                <p className='mt-2 text-sm text-gray-500'>
                   To manage your schedules, please connect your Google Calendar
                   via OAuth.
                 </p>

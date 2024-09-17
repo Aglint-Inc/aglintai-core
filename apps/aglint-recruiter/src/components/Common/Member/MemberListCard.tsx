@@ -73,12 +73,12 @@ export function MemberListCardShadcn({
   // slotBadge,
 }: MemberListCardProps) {
   return (
-    <div className='border border-gray-200 rounded-lg overflow-hidden bg-white'>
-      <div className='flex justify-between items-center p-3'>
-        <div className='flex items-center space-x-5 '>
+    <div className='overflow-hidden rounded-lg border border-gray-200 bg-white'>
+      <div className='flex items-center justify-between p-3'>
+        <div className='flex items-center space-x-5'>
           {isProfileVisible && slotProfileImage}
           <div
-            className='flex flex-col w-[250px]'
+            className='flex w-[250px] flex-col'
             onClick={onClickCard?.onClick}
           >
             <span className='font-medium'>{textName}</span>
@@ -95,7 +95,7 @@ export function MemberListCardShadcn({
           )}
         </div>
 
-        <div className='flex items-center space-x-4 '>
+        <div className='flex items-center space-x-4'>
           {isScheduleCountVisible && (
             <div className='flex gap-4'>
               <div className='flex items-center space-x-1'>
@@ -137,11 +137,11 @@ export function MemberListCardShadcn({
 
           {isInterviewsVisible && (
             <div className='flex gap-2'>
-              <div className='w-[120px] p-[5px] bg-slate-100 rounded-sm'>
+              <div className='w-[120px] rounded-sm bg-slate-100 p-[5px]'>
                 <p>Today</p>
                 <p>{textTodayInterview}</p>
               </div>
-              <div className='w-[120px] p-[5px] bg-slate-100 rounded-sm'>
+              <div className='w-[120px] rounded-sm bg-slate-100 p-[5px]'>
                 <p>Week</p>
                 <p>{textWeekInterview}</p>
               </div>
@@ -155,9 +155,9 @@ export function MemberListCardShadcn({
       {isTrainingProgressDetailVisible && slotTrainingProgressDetail}
 
       {isPauseResumeVisible && textPause && textPauseResumeDate && (
-        <div className='flex items-center justify-between p-2 bg-orange-50'>
+        <div className='flex items-center justify-between bg-orange-50 p-2'>
           <div className='flex items-center text-orange-600'>
-            <Pause className='h-4 w-4 mr-2' />
+            <Pause className='mr-2 h-4 w-4' />
             <span className='text-sm'>{textPause}</span>
           </div>
           <span className='text-sm text-orange-700'>{textPauseResumeDate}</span>

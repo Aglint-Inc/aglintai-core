@@ -41,7 +41,7 @@ const AddChip: React.FC<Props> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   return (
-    <div className='flex flex-wrap gap-2 mb-6 items-center'>
+    <div className='mb-6 flex flex-wrap items-center gap-2'>
       {options.map((item) => (
         <Chip
           key={item.id}

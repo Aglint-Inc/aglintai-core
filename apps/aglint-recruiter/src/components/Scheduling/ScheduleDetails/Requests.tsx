@@ -1,18 +1,17 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { RequestHistoryCard } from '@devlink3/RequestHistoryCard';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
-import Loader from '../../Common/Loader';
 
 function Requests({ session_id }) {
   const router = useRouter();
@@ -34,63 +33,65 @@ function Requests({ session_id }) {
           {requests?.map((request) => {
             return (
               <>
-                <RequestHistoryCard
+                <Card
                   key={request.id}
-                  onClickCard={{
-                    onClick: () => {
-                      router.push(
-                        ROUTES['/requests/[id]']({
-                          id: request.id,
-                        }),
-                      );
-                    },
+                  className='cursor-pointer hover:bg-gray-50'
+                  onClick={() => {
+                    router.push(
+                      ROUTES['/requests/[id]']({
+                        id: request.id,
+                      }),
+                    );
                   }}
-                  textHistory={request.title}
-                  slotAssignedTo={
-                    <div className='flex items-center space-x-2'>
-                      <Avatar className='h-5 w-5 rounded'>
-                        <AvatarImage
-                          src={request.assignee_details.profile_image}
-                          alt={getFullName(
-                            request.assignee_details.first_name,
-                            request.assignee_details.last_name,
-                          )}
-                        />
-                        <AvatarFallback>
+                >
+                  <CardHeader>
+                    <CardTitle>{request.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className='flex items-center justify-between'>
+                      <div className='flex items-center space-x-2'>
+                        <Avatar className='h-5 w-5 rounded'>
+                          <AvatarImage
+                            src={request.assignee_details.profile_image}
+                            alt={getFullName(
+                              request.assignee_details.first_name,
+                              request.assignee_details.last_name,
+                            )}
+                          />
+                          <AvatarFallback>
+                            {getFullName(
+                              request.assignee_details.first_name,
+                              request.assignee_details.last_name,
+                            ).charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className='text-sm font-medium'>
                           {getFullName(
                             request.assignee_details.first_name,
                             request.assignee_details.last_name,
-                          ).charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className='text-sm font-medium'>
-                        {getFullName(
-                          request.assignee_details.first_name,
-                          request.assignee_details.last_name,
-                        )}
-                      </span>
+                          )}
+                        </span>
+                      </div>
+                      <div className='flex flex-row'>
+                        <UIBadge
+                          size={'sm'}
+                          textBadge={capitalizeFirstLetter(request.status)}
+                          color={
+                            request.status === 'to_do'
+                              ? 'purple'
+                              : request.status === 'in_progress'
+                                ? 'info'
+                                : request.status === 'blocked'
+                                  ? 'error'
+                                  : request.status === 'completed'
+                                    ? 'success'
+                                    : 'neutral'
+                          }
+                        />
+                      </div>
                     </div>
-                  }
-                  slotStatus={
-                    <Stack direction={'row'}>
-                      <UIBadge
-                        size={'sm'}
-                        textBadge={capitalizeFirstLetter(request.status)}
-                        color={
-                          request.status === 'to_do'
-                            ? 'purple'
-                            : request.status === 'in_progress'
-                              ? 'info'
-                              : request.status === 'blocked'
-                                ? 'error'
-                                : request.status === 'completed'
-                                  ? 'success'
-                                  : 'neutral'
-                        }
-                      />
-                    </Stack>
-                  }
-                />
+                  </CardContent>
+                </Card>
               </>
             );
           })}

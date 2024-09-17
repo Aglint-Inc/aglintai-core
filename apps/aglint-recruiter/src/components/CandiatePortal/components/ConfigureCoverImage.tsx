@@ -47,16 +47,16 @@ export function ConfigureCoverImage() {
             image.
           </p>
         </div>
-        <div className='flex flex-col '>
+        <div className='flex flex-col'>
           {/* if there is no image show this button */}
           {data?.banner_image ? (
-            <div className='flex flex-col  items-center justify-center gap-4 w-96 h-48 bg-gray-100 rounded-md overflow-hidden '>
+            <div className='flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-gray-100'>
               <ImageWithLoading src={data.banner_image} />
             </div>
           ) : (
             <div className='relative'>
               <Button
-                className='flex flex-col items-center gap-4 w-96 h-48 '
+                className='flex h-48 w-96 flex-col items-center gap-4'
                 variant='outline'
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -70,11 +70,11 @@ export function ConfigureCoverImage() {
                   accept='image/*'
                   className='hidden'
                 />
-                <ImagePlus className='w-10 h-10 ' />
+                <ImagePlus className='h-10 w-10' />
                 Add Cover Image
               </Button>
               {isCoverUploading && (
-                <div className='w-[380px] h-[190px] absolute top-0 left-0 bg-white z-10 flex items-center justify-center'>
+                <div className='absolute left-0 top-0 z-10 flex h-[190px] w-[380px] items-center justify-center bg-white'>
                   Uploading ...
                 </div>
               )}
@@ -151,7 +151,7 @@ const ImageWithLoading = ({ src }) => {
           onLoad={handleImageLoaded}
           onError={handleImageError}
           alt='Company Cover'
-          className='object-cover h-full'
+          className='h-full object-cover'
         ></Image>
       )}
       {error && <p>Error loading image.</p>}

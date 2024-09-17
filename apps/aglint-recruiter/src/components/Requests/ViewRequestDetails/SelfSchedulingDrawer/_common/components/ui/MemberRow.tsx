@@ -21,10 +21,10 @@ export function MemberRow({
 }) {
   const Component = _Component;
   return (
-    <Component className='flex w-full h-10 justify-start items-center gap-2'>
-      <div className='flex w-64 justify-start items-center gap-2'>
-        <div className='relative z-1 w-8 h-8 rounded-full'>
-          <div className='overflow-hidden w-8 h-8 rounded-lg'>
+    <Component className='flex h-10 w-full items-center justify-start gap-2'>
+      <div className='flex w-64 items-center justify-start gap-2'>
+        <div className='z-1 relative h-8 w-8 rounded-full'>
+          <div className='h-8 w-8 overflow-hidden rounded-lg'>
             {slotInterviewerImage}
           </div>
           {iconTraining}
@@ -33,15 +33,15 @@ export function MemberRow({
           <UITypography type='small' variant='h6'>
             {textName}
           </UITypography>
-          <div className='flex items-center text-neutral text-sm'>
-            <Briefcase className='w-3 h-3 text-neutral-500' />
+          <div className='text-neutral flex items-center text-sm'>
+            <Briefcase className='h-3 w-3 text-neutral-500' />
             <UITypography type='extraSmall' className='ml-1'>
               {textRole}
             </UITypography>
           </div>
         </div>
       </div>
-      <div className='flex flex-1 justify-start items-center gap-2'>
+      <div className='flex flex-1 items-center justify-start gap-2'>
         {slotConflicts}
       </div>
     </Component>

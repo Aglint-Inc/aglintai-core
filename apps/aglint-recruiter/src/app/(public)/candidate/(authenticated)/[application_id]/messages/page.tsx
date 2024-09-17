@@ -11,7 +11,7 @@ export default function MessagesPage() {
   const { data, isPending, status } = useCandidatePortalMessages();
   if (isPending)
     return (
-      <div className='max-w-screen-sm mt-8 mx-auto'>
+      <div className='mx-auto mt-8 max-w-screen-sm'>
         <MessageCardSkeleton />
         <MessageCardSkeleton />
         <MessageCardSkeleton />
@@ -22,7 +22,7 @@ export default function MessagesPage() {
     return <EmptyState icon={Mail} text='No Past interviews' />;
 
   return (
-    <div className='flex flex-col max-w-screen-sm mt-8 mx-auto'>
+    <div className='mx-auto mt-8 flex max-w-screen-sm flex-col'>
       {data.map((message, index) => (
         <MessageCard key={message.id} index={index} />
       ))}

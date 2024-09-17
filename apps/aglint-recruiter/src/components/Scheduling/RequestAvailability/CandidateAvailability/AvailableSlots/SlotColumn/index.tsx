@@ -101,19 +101,19 @@ function SlotColumn({
 
   return (
     <>
-      <div className='relative w-[237px]  flex-1 border border-gray-200 rounded-lg'>
-        <div className='flex h-10 justify-center items-center bg-gray-50 rounded-t-lg px-2.5'>
+      <div className='relative w-[237px] flex-1 rounded-lg border border-gray-200'>
+        <div className='flex h-10 items-center justify-center rounded-t-lg bg-gray-50 px-2.5'>
           <div>{dayjs(slotTime.curr_day).format('dddd DD, MMMM')}</div>
         </div>
         {day === 1 && (
           <span
             onClick={onClose}
-            className='absolute  -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-white border border-neutral-300 rounded-full'
+            className='absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border border-neutral-300 bg-white'
           >
-            <X className='w-5 h-5 text-neutral-600' />
+            <X className='h-5 w-5 text-neutral-600' />
           </span>
         )}
-        <div className='h-[300px] overflow-auto p-2.5 gap-2 flex flex-col'>
+        <div className='flex h-[300px] flex-col gap-2 overflow-auto p-2.5'>
           {slotTime.slots.map((slot, ind) => {
             const isSelected =
               (!isSubmitted &&

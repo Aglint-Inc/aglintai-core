@@ -106,13 +106,13 @@ function JobPost({
         description='AI for People Products'
       />
       {loading ? (
-        <div className='flex h-screen items-center justify-center w-full'>
+        <div className='flex h-screen w-full items-center justify-center'>
           <Loader2 className='animate-spin' />
         </div>
       ) : valid ? (
         <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
       ) : (
-        <div className='flex flex-col items-center justify-center h-screen'>
+        <div className='flex h-screen flex-col items-center justify-center'>
           <p className='mt-4 text-xl font-semibold text-gray-700'>
             Job not found. Please check the URL or try again later.
           </p>

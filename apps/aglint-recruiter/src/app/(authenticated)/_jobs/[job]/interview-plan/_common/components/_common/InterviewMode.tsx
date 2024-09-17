@@ -19,7 +19,7 @@ export function InterviewMode({
   isTraineesDropVisible = true,
 }) {
   return (
-    <div className={cn(' rounded-lg ')}>
+    <div className={cn('rounded-lg')}>
       <div className={cn('mb-4')}>
         <UITypography type='small' variant='p' fontBold='default'>
           Interview Mode
@@ -36,7 +36,7 @@ export function InterviewMode({
         {isInterviewerDropVisible && (
           <div className={cn('mt-2')}>
             {slotInterviewersDropdown ?? (
-              <div className={cn('border p-2 rounded')}>
+              <div className={cn('rounded border p-2')}>
                 <div>{'Search Interviewers'}</div>
               </div>
             )}
@@ -47,7 +47,7 @@ export function InterviewMode({
             <div>{'Include'}</div>
             <div>
               {slotMemberCountDropdown ?? (
-                <div className={cn('border p-2 rounded')}>
+                <div className={cn('rounded border p-2')}>
                   <div>{'2'}</div>
                 </div>
               )}
@@ -75,7 +75,7 @@ export function InterviewMode({
               {isTraineesDropVisible && (
                 <div className={cn('mt-2')}>
                   {slotTraineesDropdown ?? (
-                    <div className={cn('border p-2 rounded')}>
+                    <div className={cn('rounded border p-2')}>
                       <div>{'Search Interviewers'}</div>
                     </div>
                   )}

@@ -50,7 +50,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
       {hiringTeam?.map((item) => {
         return (
           <div key={item.user_id} className='flex items-center space-x-4'>
-            <Avatar className='rounded-full w-10 h-10'>
+            <Avatar className='h-10 w-10 rounded-full'>
               <AvatarImage src={item.image} alt={item.name} />
               <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -69,7 +69,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
 
       {job?.id && (
         <Link href={`/jobs/${job?.id}/hiring-team`} className='flex flex-row'>
-          <button className='px-4 py-2 bg-neutral-200 text-neutral-700 rounded'>
+          <button className='rounded bg-neutral-200 px-4 py-2 text-neutral-700'>
             View Hiring Team
           </button>
         </Link>

@@ -2,7 +2,7 @@ import { Avatar, Stack } from '@mui/material';
 import { HardDrive } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
 import { useJobs } from '@/jobs/hooks';
@@ -111,7 +111,7 @@ function TrainingProgress() {
               </>
             ))
           ) : (
-            <div className='flex flex-col items-center justify-center p-4 bg-white h-[200px]'>
+            <div className='flex h-[200px] flex-col items-center justify-center bg-white p-4'>
               <div className='mb-2'>
                 <HardDrive className='h-9 w-9 text-gray-500' />
               </div>

@@ -58,7 +58,7 @@ function MenuOptions({ request_id }: { request_id: string }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className='cursor-pointer'>
-            <MoreHorizontal className='w-5 h-5' />
+            <MoreHorizontal className='h-5 w-5' />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>

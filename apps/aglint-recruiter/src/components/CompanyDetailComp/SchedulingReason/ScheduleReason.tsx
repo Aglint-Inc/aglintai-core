@@ -49,7 +49,7 @@ export function ScheduleReason({
     <div className='w-full py-6'>
       {isMainHeadingVisible && (
         <div className='mb-6'>
-          <h2 className='text-lg font-bold mb-2'>{textMainHeading}</h2>
+          <h2 className='mb-2 text-lg font-bold'>{textMainHeading}</h2>
           <p className='text-sm text-gray-500'>{textMainHelperText}</p>
         </div>
       )}
@@ -123,7 +123,7 @@ function ReasonSection({
           {reasons.map((reason, reasonIndex) => (
             <li
               key={reasonIndex}
-              className={`flex items-center justify-between py-2 px-3 rounded-md ${
+              className={`flex items-center justify-between rounded-md px-3 py-2 ${
                 editingIndex === reasonIndex
                   ? 'bg-gray-100'
                   : 'border border-gray-200'
@@ -133,15 +133,15 @@ function ReasonSection({
                 <Input
                   value={editingReason}
                   onChange={(e) => setEditingReason(e.target.value)}
-                  className='flex-grow mr-2 h-8.5'
+                  className='h-8.5 mr-2 flex-grow'
                 />
               ) : (
                 <span>{reason}</span>
               )}
-              <div className='opacity-0 group-hover:opacity-100 transition-opacity'>
+              <div className='opacity-0 transition-opacity group-hover:opacity-100'>
                 {editingIndex === reasonIndex ? (
                   <>
-                    <div className='flex items-center flex-row'>
+                    <div className='flex flex-row items-center'>
                       <Button
                         variant='ghost'
                         size='sm'
@@ -184,14 +184,14 @@ function ReasonSection({
             </li>
           ))}
           {isAddingNew && (
-            <li className='flex items-center justify-between py-2 px-3 rounded-md bg-gray-100'>
+            <li className='flex items-center justify-between rounded-md bg-gray-100 px-3 py-2'>
               <Input
                 value={newReason}
                 onChange={(e) => setNewReason(e.target.value)}
                 placeholder='Enter new reason'
-                className='flex-grow mr-2 h-8.5'
+                className='h-8.5 mr-2 flex-grow'
               />
-              <div className='flex items-center flex-row'>
+              <div className='flex flex-row items-center'>
                 <Button
                   variant='ghost'
                   size='sm'
@@ -219,7 +219,7 @@ function ReasonSection({
               size='sm'
               onClick={() => setIsAddingNew(true)}
             >
-              <Plus className='h-4 w-4 mr-2' /> Add
+              <Plus className='mr-2 h-4 w-4' /> Add
             </Button>
           </div>
         )}

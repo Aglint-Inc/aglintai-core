@@ -68,7 +68,7 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['interview_types'],
-    active: ['/interview-pool', '/interview-pool/[type_id]'],
+    active: ['/interview-pool', '/interview-pool/[pool]'],
   },
   {
     text: 'Sourcing Hub',
