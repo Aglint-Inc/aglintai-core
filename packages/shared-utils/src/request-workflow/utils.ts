@@ -28,6 +28,8 @@ export const createRequestProgressLogger = ({
       'log' | 'status' | 'id' | 'is_progress_step' | 'meta'
     >
   ) => {
+    console.log('rec s');
+
     let progress_id = uuidv4();
     if (payload.is_progress_step === false) {
       const [progress] = supabaseWrap(
@@ -46,7 +48,7 @@ export const createRequestProgressLogger = ({
     const [rec] = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
-        .insert({
+        .upsert({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
@@ -61,6 +63,7 @@ export const createRequestProgressLogger = ({
         })
         .select()
     );
+    console.log('rec f');
     return rec;
   };
   logger.resetEventProgress = async () => {
