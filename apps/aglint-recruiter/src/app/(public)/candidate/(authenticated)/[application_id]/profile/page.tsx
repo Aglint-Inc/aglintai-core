@@ -16,8 +16,8 @@ export default function ProfilePage() {
     );
   if (!data) return <>Error</>;
   return (
-    <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8'>
-      <main className='lg:w-[70%] space-y-6 mx-auto mt-8'>
+    <div className='container mx-auto flex max-w-screen-xl flex-col gap-8 lg:flex-row'>
+      <main className='mx-auto mt-8 space-y-6 lg:w-[70%]'>
         <ProfileView />
       </main>
     </div>

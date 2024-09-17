@@ -19,8 +19,8 @@ function AgentChats() {
   }));
 
   return (
-    <div className='flex w-[450px] flex-col h-full bg-white border-r'>
-      <div className='flex justify-end items-center pt-4 px-4'>
+    <div className='flex h-full w-[450px] flex-col border-r bg-white'>
+      <div className='flex items-center justify-end px-4 pt-4'>
         <div className='flex space-x-2'>
           {chatList.length > 0 && (
             <Button

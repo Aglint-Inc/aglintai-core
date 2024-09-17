@@ -62,7 +62,7 @@ export default function ImagesUpload({
     <div className='w-full space-y-4'>
       <button
         type='button'
-        className={`border-2 w-full border-dashed rounded-lg p-8 text-center ${
+        className={`w-full rounded-lg border-2 border-dashed p-8 text-center ${
           isDragging
             ? 'border-primary bg-primary/10'
             : 'border-muted-foreground/25 bg-muted'
@@ -87,11 +87,11 @@ export default function ImagesUpload({
       </button>
 
       {selectedImages.length > 0 && (
-        <div className='flex flex-col gap-2 mt-4'>
+        <div className='mt-4 flex flex-col gap-2'>
           {selectedImages.map((file, index) => (
             <Card
               key={index}
-              className='relative h-14 flex flex-row items-center shadow-none'
+              className='relative flex h-14 flex-row items-center shadow-none'
             >
               <CardContent className='flex flex-row items-center gap-2 p-2'>
                 <Image
@@ -99,13 +99,13 @@ export default function ImagesUpload({
                   alt={`Preview ${index}`}
                   width={50} // Specify width
                   height={50} // Specify height
-                  className='h-full object-cover rounded-md'
+                  className='h-full rounded-md object-cover'
                 />
                 <p className='mt-2 text-sm text-muted-foreground'>
                   {file.name}
                 </p>
                 <button
-                  className='absolute top-4 right-4 bg-secondary text-secondary-foreground rounded-sm p-1'
+                  className='absolute right-4 top-4 rounded-sm bg-secondary p-1 text-secondary-foreground'
                   onClick={() => handleRemoveFile(index)}
                 >
                   <X className='h-4 w-4' />

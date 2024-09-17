@@ -25,14 +25,14 @@ export function StageListCard({
   return (
     <div
       className={cn(
-        'relative flex w-full h-16 items-stretch cursor-pointer',
+        'relative flex h-16 w-full cursor-pointer items-stretch',
         isActive && 'z-10',
       )}
       onClick={onClickTab}
     >
       <div
         className={cn(
-          'relative z-10 flex w-full px-4 flex-col justify-center gap-1.5 rounded-lg',
+          'relative z-10 flex w-full flex-col justify-center gap-1.5 rounded-lg px-4',
           {
             'bg-neutral-100 text-neutral-800': color === 'neutral',
             'bg-sky-100 text-sky-800': color === 'info',
@@ -51,7 +51,7 @@ export function StageListCard({
         </div>
       </div>
       {isActive && (
-        <div className='absolute right-[-20px] top-0 bottom-0 w-10 overflow-hidden'>
+        <div className='absolute bottom-0 right-[-20px] top-0 w-10 overflow-hidden'>
           <div
             className={cn('h-full w-[34px]', {
               'text-neutral-100': color === 'neutral',

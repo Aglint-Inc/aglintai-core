@@ -4,14 +4,14 @@ import React from 'react';
 const MessageSkeleton: React.FC<{ isUser?: boolean }> = ({
   isUser = false,
 }) => (
-  <div className='flex justify-start mb-4'>
+  <div className='mb-4 flex justify-start'>
     <div className='flex flex-row items-start'>
       <Skeleton
         className={`h-8 w-8 rounded-full ${isUser ? 'bg-secondary' : 'bg-secondary'}`}
       />
-      <div className='mx-2 rounded-tr-xl rounded-br-xl rounded-bl-sm'>
+      <div className='mx-2 rounded-bl-sm rounded-br-xl rounded-tr-xl'>
         <Skeleton
-          className={`h-16 w-80 rounded-tr-xl rounded-br-xl rounded-bl-sm ${isUser ? 'bg-secondary' : 'bg-secondary'}`}
+          className={`h-16 w-80 rounded-bl-sm rounded-br-xl rounded-tr-xl ${isUser ? 'bg-secondary' : 'bg-secondary'}`}
         />
       </div>
     </div>

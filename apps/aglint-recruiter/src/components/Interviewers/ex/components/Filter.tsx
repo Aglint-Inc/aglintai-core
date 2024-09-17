@@ -112,8 +112,10 @@ export const Filter = ({
                 );
               })
             ) : (
-             
-              <GlobalEmpty iconSlot={<Plus/>} text={`No ${capitalizeAll(title)}`}/>
+              <GlobalEmpty
+                iconSlot={<Plus />}
+                text={`No ${capitalizeAll(title)}`}
+              />
             )
           }
           onClickReset={{

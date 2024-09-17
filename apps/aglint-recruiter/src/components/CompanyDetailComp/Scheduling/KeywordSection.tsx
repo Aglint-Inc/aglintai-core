@@ -40,7 +40,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
       placeholder='Enter new value...'
       btn={
         <Button variant='outline' size='sm' className='rounded-full'>
-          <Plus className='h-4 w-4 mr-2' />
+          <Plus className='mr-2 h-4 w-4' />
           Add keyword
         </Button>
       }

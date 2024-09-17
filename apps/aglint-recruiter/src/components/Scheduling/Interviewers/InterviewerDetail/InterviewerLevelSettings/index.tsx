@@ -242,7 +242,7 @@ function InterviewerLevelSettings({
       {isAvailability ? (
         <ScheduleSettings
           slotTimeZoneInput={
-            <div className='space-y-2 w-[420px] flex flex-col-reverse'>
+            <div className='flex w-[420px] flex-col-reverse space-y-2'>
               <TimezonePicker
                 value={selectedTimeZone?.tzCode}
                 onChange={(value) => {
@@ -314,7 +314,7 @@ function InterviewerLevelSettings({
                   return (
                     <div
                       key={day.day}
-                      className='flex items-center justify-between p-4 border rounded-lg shadow-sm'
+                      className='flex items-center justify-between rounded-lg border p-4 shadow-sm'
                     >
                       <div className='flex items-center space-x-2'>
                         <Checkbox
@@ -379,7 +379,7 @@ function InterviewerLevelSettings({
                 return (
                   <div
                     key={i}
-                    className='flex items-center justify-between p-2 bg-gray-100 rounded-md mb-2'
+                    className='mb-2 flex items-center justify-between rounded-md bg-gray-100 p-2'
                   >
                     <span className='text-sm font-medium'>{item.date}</span>
                     <Button
@@ -425,9 +425,9 @@ function InterviewerLevelSettings({
         />
       ) : (
         <div>
-          <div className='flex flex-col gap-5 w-[700px]'>
+          <div className='flex w-[700px] flex-col gap-5'>
             <div>
-              <div className='flex items-center mb-1'>
+              <div className='mb-1 flex items-center'>
                 <BookKey className='mr-2 h-6 w-6 text-gray-500' />
                 <h3 className='text-lg font-semibold'>Keywords</h3>
               </div>

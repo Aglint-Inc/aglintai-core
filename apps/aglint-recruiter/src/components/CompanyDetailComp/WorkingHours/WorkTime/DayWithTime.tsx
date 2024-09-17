@@ -27,8 +27,8 @@ function DayWithTime({
   i: number;
 }) {
   return (
-    <div key={i} className='flex gap-2 flex-center items-center'>
-      <div className='flex gap-2 flex-center min-w-[120px] items-center'>
+    <div key={i} className='flex-center flex items-center gap-2'>
+      <div className='flex-center flex min-w-[120px] items-center gap-2'>
         <Checkbox
           onClick={() => {
             setWorkingHours((pre) => {

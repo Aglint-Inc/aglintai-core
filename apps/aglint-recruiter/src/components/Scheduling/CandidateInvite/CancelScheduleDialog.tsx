@@ -211,8 +211,8 @@ export function RequestReschedule({
       )}
 
       {isCancelWarningVisible && (
-        <div className='flex items-start space-x-2 p-3 bg-red-50 rounded-lg'>
-          <TriangleAlert className='w-6 h-6 ' />
+        <div className='flex items-start space-x-2 rounded-lg bg-red-50 p-3'>
+          <TriangleAlert className='h-6 w-6' />
           <div className='flex flex-col space-y-1'>
             <p className='text-sm'>
               If you wish to keep this job opportunity open, consider opting for
@@ -221,7 +221,7 @@ export function RequestReschedule({
             <div>
               <UIButton
                 variant='link'
-                className='text-accent-600 p-0 h-auto'
+                className='text-accent-600 h-auto p-0'
                 onClick={onClickTryReschedulingNow}
               >
                 Reschedule

@@ -215,14 +215,14 @@ function UploadDB({
   }, [profile]);
 
   return (
-    <div className='bg-neutral-100 p-4 sm:p-8 rounded-lg'>
-      <div className='flex justify-between items-center mb-6'>
+    <div className='rounded-lg bg-neutral-100 p-4 sm:p-8'>
+      <div className='mb-6 flex items-center justify-between'>
         <h2 className='text-2xl font-bold'>Apply for this job.</h2>
         <p className='text-sm'>
           <span className='text-red-500'>*</span> Required
         </p>
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
         <div>
           <Input
             required
@@ -275,8 +275,8 @@ function UploadDB({
               name='file'
               types={fileTypes}
             >
-              <div className='border border-dashed border-neutral-300 rounded-md p-8 cursor-pointer bg-white flex items-center justify-center'>
-                {!file && <CloudUpload className='w-6 h-6 mr-2' />}
+              <div className='flex cursor-pointer items-center justify-center rounded-md border border-dashed border-neutral-300 bg-white p-8'>
+                {!file && <CloudUpload className='mr-2 h-6 w-6' />}
                 <p className='text-center'>
                   {file
                     ? `Uploaded File: ${file?.name}`
@@ -294,11 +294,11 @@ function UploadDB({
                   setFile(null);
                 }}
               >
-                <Trash className='w-4 h-4' />
+                <Trash className='h-4 w-4' />
               </Button>
             )}
             {error.file.error && (
-              <p className='text-sm text-red-500 mt-1 ml-1'>{error.file.msg}</p>
+              <p className='ml-1 mt-1 text-sm text-red-500'>{error.file.msg}</p>
             )}
           </div>
         </div>

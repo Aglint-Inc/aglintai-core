@@ -20,7 +20,7 @@ const CompanyDetailComp = () => {
   return (
     <div className='min-h-screen'>
       <div className='container mx-auto'>
-        <div className='flex justify-between items-center mb-6'>
+        <div className='mb-6 flex items-center justify-between'>
           <div>
             {/* <h1 className='text-2xl font-bold mb-2'>Company Settings</h1>
             <p className='text-sm text-gray-600'>
@@ -29,7 +29,7 @@ const CompanyDetailComp = () => {
           </div>
         </div>
 
-        <div className='flex gap-6 mb-6'>
+        <div className='mb-6 flex gap-6'>
           <div className='w-1/4'>
             <SettingsSubNabItem />
           </div>

@@ -112,10 +112,10 @@ export default function ComprehensiveInterviewerLeaderboard() {
   });
 
   return (
-    <div className='w-full max-w-6xl mx-auto'>
-      <Card className='w-full mx-auto'>
+    <div className='mx-auto w-full max-w-6xl'>
+      <Card className='mx-auto w-full'>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-md font-semibold flex items-center text-primary'>
+          <CardTitle className='text-md flex items-center font-semibold text-primary'>
             <Trophy className='mr-2 h-4 w-4' />
             Interviewer Leaderboard
           </CardTitle>
@@ -142,7 +142,7 @@ export default function ComprehensiveInterviewerLeaderboard() {
             {sortedData.map((interviewer) => (
               <div
                 key={interviewer.rank}
-                className='flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 bg-muted p-4 rounded-lg'
+                className='flex flex-col items-start space-y-4 rounded-lg bg-muted p-4 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0'
               >
                 <div className='flex w-[50%] items-center space-x-4'>
                   <div className='relative'>
@@ -150,7 +150,7 @@ export default function ComprehensiveInterviewerLeaderboard() {
                       <AvatarImage
                         src={interviewer.avatar}
                         alt={interviewer.name}
-                        className='rounded-full object-cove rounded-fullr'
+                        className='object-cove rounded-fullr rounded-full'
                       />
                       <AvatarFallback className='rounded-full'>
                         {interviewer.name
@@ -159,22 +159,22 @@ export default function ComprehensiveInterviewerLeaderboard() {
                           .join('')}
                       </AvatarFallback>
                     </Avatar>
-                    <div className='absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold overflow-hidden'>
+                    <div className='absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-primary text-xs font-bold text-primary-foreground'>
                       {interviewer.rank}
                     </div>
                   </div>
-                  <div className='flex-1 min-w-0'>
-                    <p className='text-md font-semibold text-foreground truncate'>
+                  <div className='min-w-0 flex-1'>
+                    <p className='text-md truncate font-semibold text-foreground'>
                       {interviewer.name}
                     </p>
-                    <p className='text-xs text-muted-foreground truncate'>
+                    <p className='truncate text-xs text-muted-foreground'>
                       {interviewer.role}
                     </p>
                     <div className='mt-2 flex flex-wrap gap-1'>
                       {interviewer.topSkills.map((skill, index) => (
                         <span
                           key={index}
-                          className='text-xs bg-primary/10 text-primary px-2 py-1 rounded-full'
+                          className='rounded-full bg-primary/10 px-2 py-1 text-xs text-primary'
                         >
                           {skill}
                         </span>
@@ -182,11 +182,11 @@ export default function ComprehensiveInterviewerLeaderboard() {
                     </div>
                   </div>
                 </div>
-                <div className='flex-1 grid grid-cols-4 sm:grid-cols-5 gap-4 w-full'>
+                <div className='grid w-full flex-1 grid-cols-4 gap-4 sm:grid-cols-5'>
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                        <Clock className='h-5 w-5 text-muted-foreground mb-1' />
+                      <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                        <Clock className='mb-1 h-5 w-5 text-muted-foreground' />
                         <span className='text-lg font-semibold'>
                           {interviewer.hours.toFixed(1)}
                         </span>
@@ -201,8 +201,8 @@ export default function ComprehensiveInterviewerLeaderboard() {
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                        <Users className='h-5 w-5 text-muted-foreground mb-1' />
+                      <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                        <Users className='mb-1 h-5 w-5 text-muted-foreground' />
                         <span className='text-lg font-semibold'>
                           {interviewer.interviews}
                         </span>
@@ -217,8 +217,8 @@ export default function ComprehensiveInterviewerLeaderboard() {
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                        <ThumbsUp className='h-5 w-5 text-muted-foreground mb-1' />
+                      <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                        <ThumbsUp className='mb-1 h-5 w-5 text-muted-foreground' />
                         <span className='text-lg font-semibold'>
                           {interviewer.satisfactionRate}%
                         </span>
@@ -233,8 +233,8 @@ export default function ComprehensiveInterviewerLeaderboard() {
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                        <Zap className='h-5 w-5 text-muted-foreground mb-1' />
+                      <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                        <Zap className='mb-1 h-5 w-5 text-muted-foreground' />
                         <span className='text-lg font-semibold'>
                           {interviewer.hiringRate}%
                         </span>
@@ -249,8 +249,8 @@ export default function ComprehensiveInterviewerLeaderboard() {
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                        <BarChart className='h-5 w-5 text-muted-foreground mb-1' />
+                      <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                        <BarChart className='mb-1 h-5 w-5 text-muted-foreground' />
                         <span className='text-lg font-semibold'>
                           {interviewer.averageScore}
                         </span>

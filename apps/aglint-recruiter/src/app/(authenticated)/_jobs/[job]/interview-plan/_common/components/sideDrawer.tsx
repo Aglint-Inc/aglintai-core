@@ -65,15 +65,15 @@ const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
             <div className='mb-2'>
               <FileQuestion size={80} />
             </div>
-            <DialogTitle className='text-lg font-semibold mb-2'>
+            <DialogTitle className='mb-2 text-lg font-semibold'>
               No Interview Plan
             </DialogTitle>
-            <DialogDescription className='text-sm text-gray-600 mb-4'>
+            <DialogDescription className='mb-4 text-sm text-gray-600'>
               Create an interview plan to get started
             </DialogDescription>
             <Button
               onClick={() => push('/scheduling?tab=interviewtypes')}
-              className='bg-primary text-white hover:bg-primary-dark'
+              className='hover:bg-primary-dark bg-primary text-white'
             >
               Create Interview Plan
             </Button>

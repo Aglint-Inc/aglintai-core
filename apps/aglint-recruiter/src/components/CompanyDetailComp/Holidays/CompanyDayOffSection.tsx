@@ -86,17 +86,17 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
         {daysOff.sort(compareDates).map((item, i) => (
           <div
             key={i}
-            className='flex justify-between items-center p-2 bg-gray-100 rounded'
+            className='flex items-center justify-between rounded bg-gray-100 p-2'
           >
             <div>
               <span className='font-bold'>{item.date}</span>
               <span className='ml-2'>{item.event_name}</span>
-              <div className='flex gap-1 mt-1'>
+              <div className='mt-1 flex gap-1'>
                 {item?.locations ? (
                   item.locations.map((location, index) => (
                     <span
                       key={index}
-                      className='bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded'
+                      className='rounded bg-blue-100 px-2 py-1 text-xs text-blue-800'
                     >
                       {location}
                     </span>
@@ -197,7 +197,7 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
               </div>
             )}
           </div>
-          <div className='flex justify-end space-x-2 mt-4'>
+          <div className='mt-4 flex justify-end space-x-2'>
             <Button variant='outline' onClick={handleClose}>
               Cancel
             </Button>

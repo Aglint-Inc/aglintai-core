@@ -55,8 +55,8 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -110,7 +110,7 @@ const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * LIMIT) + 1)].map((_, i) => (
     <LeaderBoardLoader
       key={i}
-      slotSkeleton={<Skeleton className='w-full h-full' />}
+      slotSkeleton={<Skeleton className='h-full w-full' />}
     />
   ));
 });

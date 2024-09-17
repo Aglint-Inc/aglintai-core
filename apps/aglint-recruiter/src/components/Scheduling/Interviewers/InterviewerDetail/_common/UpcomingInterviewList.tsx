@@ -20,7 +20,7 @@ export function UpcomingInterviewList({
   return (
     <div
       className={
-        'flex flex-col gap-1 p-3 border border-neutral-6 rounded-md transition-colors cursor-pointer hover:bg-neutral-2'
+        'border-neutral-6 hover:bg-neutral-2 flex cursor-pointer flex-col gap-1 rounded-md border p-3 transition-colors'
       }
       onClick={onClick}
     >
@@ -30,11 +30,11 @@ export function UpcomingInterviewList({
       <div className={'flex gap-3'}>
         <div className='flex flex-col space-y-2'>
           <div className='flex items-center space-x-2 text-sm text-gray-600'>
-            <Calendar className='w-4 h-4' />
+            <Calendar className='h-4 w-4' />
             <span>{textDate}</span>
           </div>
           <div className='flex items-center space-x-2 text-sm text-gray-600'>
-            <Clock className='w-4 h-4' />
+            <Clock className='h-4 w-4' />
             <span>{textTime}</span>
           </div>
         </div>

@@ -75,25 +75,25 @@ export function GlobalScheduleCard({
 }: GlobalScheduleCardProps) {
   return (
     <div className={cn('relative', className)}>
-      <div className='relative border border-neutral-200 rounded-md bg-white'>
-        <div className='flex p-4 gap-1'>
+      <div className='relative rounded-md border border-neutral-200 bg-white'>
+        <div className='flex gap-1 p-4'>
           {isCheckboxVisible && (
             <div className='relative z-10 w-6 flex-none'>{slotCheckbox}</div>
           )}
-          <div className='grid grid-cols-[1.1fr_1.7fr_1fr] gap-4 w-full'>
+          <div className='grid w-full grid-cols-[1.1fr_1.7fr_1fr] gap-4'>
             <div className='flex flex-col gap-2'>
               {isStatusVisible && (
                 <div className='flex items-center gap-1'>{slotGlobalBadge}</div>
               )}
               {isDateVisible && (
                 <div className='flex items-center gap-1'>
-                  <Calendar className='w-4 h-4 text-neutral-600' />
+                  <Calendar className='h-4 w-4 text-neutral-600' />
                   <UITypography type='small'>{textDate}</UITypography>
                 </div>
               )}
               {isTimeVisible && (
                 <div className='flex items-center gap-1 text-yellow-500'>
-                  <Clock className='w-4 h-4 text-neutral-600' />
+                  <Clock className='h-4 w-4 text-neutral-600' />
                   <UITypography type='small'>{textTime}</UITypography>
                 </div>
               )}
@@ -101,7 +101,7 @@ export function GlobalScheduleCard({
                 <div>
                   {slotRequestStatus ?? (
                     <div className='flex items-center gap-1 text-green-500'>
-                      <Clock className='w-4 h-4 text-neutral-600' />
+                      <Clock className='h-4 w-4 text-neutral-600' />
                       <UITypography type='small'>
                         Send self scheduling link to candidate
                       </UITypography>
@@ -117,7 +117,7 @@ export function GlobalScheduleCard({
               </div>
               <div className='flex gap-4'>
                 <div className='flex items-center gap-1'>
-                  <Hourglass className='w-4 h-4 text-neutral-600' />
+                  <Hourglass className='h-4 w-4 text-neutral-600' />
                   <UITypography type='small'>{textDuration}</UITypography>
                 </div>
                 <div className='flex items-center gap-1'>
@@ -129,13 +129,13 @@ export function GlobalScheduleCard({
                 <div className='flex gap-4'>
                   {isRoleVisible && (
                     <div className='flex items-center gap-1'>
-                      <Briefcase className='w-4 h-4' />
+                      <Briefcase className='h-4 w-4' />
                       <UITypography type='small'>{textRole}</UITypography>
                     </div>
                   )}
                   {isCandidateVisible && (
                     <div className='flex items-center gap-1'>
-                      <User className='w-4 h-4' />
+                      <User className='h-4 w-4' />
                       <UITypography type='small'>
                         {textCandidateName}
                       </UITypography>
@@ -155,7 +155,7 @@ export function GlobalScheduleCard({
                         size='sm'
                         variant='secondary'
                         icon={
-                          <ChevronDown className='w-4 h-4 text-neutral-500' />
+                          <ChevronDown className='h-4 w-4 text-neutral-500' />
                         }
                       ></UIButton>
                     </div>
@@ -171,7 +171,7 @@ export function GlobalScheduleCard({
         {slotDropdownContent}
       </div>
       {isSelectedVisible && (
-        <div className='absolute inset-0 border border-primary rounded-md' />
+        <div className='absolute inset-0 rounded-md border border-primary' />
       )}
     </div>
   );

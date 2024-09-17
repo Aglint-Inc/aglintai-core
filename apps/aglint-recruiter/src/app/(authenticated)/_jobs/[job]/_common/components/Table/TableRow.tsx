@@ -31,21 +31,21 @@ export function TableRow({
   return (
     <div
       className={cn(
-        'flex items-center px-4 py-3 text-sm border-b border-gray-200 hover:bg-gray-50 cursor-pointer w-full group',
+        'group flex w-full cursor-pointer items-center border-b border-gray-200 px-4 py-3 text-sm hover:bg-gray-50',
         isChecked && 'bg-blue-50',
       )}
       onClick={onClickCandidate}
     >
       <div
-        className='w-4 flex-shrink-0 mr-2 opacity-0 group-hover:opacity-100 transition-opacity'
+        className='mr-2 w-4 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100'
         aria-hidden='true'
       >
         <GripVertical
-          className={cn('w-4 h-4 text-gray-400', isChecked && 'opacity-100')}
+          className={cn('h-4 w-4 text-gray-400', isChecked && 'opacity-100')}
         />
       </div>
       <div
-        className='w-10 flex-shrink-0 mr-4'
+        className='mr-4 w-10 flex-shrink-0'
         onClick={(e) => {
           e.stopPropagation();
           onCheck();
@@ -58,20 +58,20 @@ export function TableRow({
           className={cn(!checkEnabled && 'opacity-50')}
         />
       </div>
-      <div className='flex-1 w-[200px] flex items-center overflow-hidden mr-4'>
+      <div className='mr-4 flex w-[200px] flex-1 items-center overflow-hidden'>
         <div className='mr-2 flex-shrink-0'>
-          {application.bookmarked && <Bookmark className='w-4 h-4' />}
-          {application.is_new && <Star className='w-4 h-4' />}
+          {application.bookmarked && <Bookmark className='h-4 w-4' />}
+          {application.is_new && <Star className='h-4 w-4' />}
         </div>
         <div className='truncate'>
-          <div className='font-medium truncate'>{application.name}</div>
-          <div className='text-gray-500 truncate'>
+          <div className='truncate font-medium'>{application.name}</div>
+          <div className='truncate text-gray-500'>
             {application.current_job_title || '---'}
           </div>
         </div>
       </div>
       {isResumeMatchVisible && (
-        <div className='w-[200px] mr-4'>
+        <div className='mr-4 w-[200px]'>
           {status === 'draft' ? (
             '---'
           ) : (
@@ -83,14 +83,14 @@ export function TableRow({
         </div>
       )}
       {isInterviewVisible && (
-        <div className='w-[250px] mr-4'>
+        <div className='mr-4 w-[250px]'>
           <StageProgress interview_plans={application.interview_plans} />
         </div>
       )}
-      <div className='w-[250px] truncate mr-4'>
+      <div className='mr-4 w-[250px] truncate'>
         {application.current_job_title || '---'}
       </div>
-      <div className='w-[150px] truncate mr-4'>
+      <div className='mr-4 w-[150px] truncate'>
         {application.city && application.country
           ? `${application.city}, ${application.country}`
           : '---'}

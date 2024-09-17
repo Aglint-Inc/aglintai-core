@@ -110,8 +110,8 @@ Unavailable for interviews on Tuesdays.`);
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
-        <div className='flex justify-center items-center'>
-          <Loader2 className='w-6 h-6 animate-spin text-primary' />
+        <div className='flex items-center justify-center'>
+          <Loader2 className='h-6 w-6 animate-spin text-primary' />
         </div>
       ) : (
         <>
@@ -180,7 +180,7 @@ Unavailable for interviews on Tuesdays.`);
               ) : (
                 <div className='flex flex-col items-center justify-center p-8 text-center'>
                   <svg
-                    className='w-12 h-12 text-gray-400 mb-2'
+                    className='mb-2 h-12 w-12 text-gray-400'
                     fill='none'
                     viewBox='0 0 24 24'
                     stroke='currentColor'
@@ -193,7 +193,7 @@ Unavailable for interviews on Tuesdays.`);
                       d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
                     />
                   </svg>
-                  <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                  <h3 className='mb-1 text-lg font-medium text-gray-900'>
                     No Interviews found
                   </h3>
                   <p className='text-sm text-gray-500'>
@@ -289,7 +289,7 @@ Unavailable for interviews on Tuesdays.`);
             slotInterviewerAvatar={
               <Avatar
                 key={interviewerDetails.user_id}
-                className='w-full h-full rounded-lg'
+                className='h-full w-full rounded-lg'
               >
                 <AvatarImage
                   src={interviewerDetails.profile_image}
@@ -343,7 +343,7 @@ const renderCalendarConnectionReminder = ({
     (interviewerDetails.user_id === recruiterUser.user_id ||
       recruiterUser.role === 'admin') && (
       <>
-        <div className='max-w-[870px] ml-2 mt-2'>
+        <div className='ml-2 mt-2 max-w-[870px]'>
           <UIAlert
             color={'error'}
             title={
@@ -363,22 +363,22 @@ const renderCalendarConnectionReminder = ({
                 </PopoverTrigger>
                 <PopoverContent className='w-auto p-2'>
                   <div
-                    className='flex gap-2 items-center w-full hover:bg-neutral-200 rounded-lg p-2 mt-0 cursor-pointer'
+                    className='mt-0 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-neutral-200'
                     onClick={() => {
                       handleClickOpen('email');
                     }}
                   >
-                    <Mail className='w-4 h-4' />
+                    <Mail className='h-4 w-4' />
                     <span className='text-sm'>Via Email</span>
                   </div>
 
                   <div
-                    className='flex gap-2 items-center w-full hover:bg-neutral-200 rounded-lg p-2 mt-0 cursor-pointer'
+                    className='mt-0 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-neutral-200'
                     onClick={() => {
                       handleClickOpen('slack');
                     }}
                   >
-                    <MessageSquare className='w-4 h-4' />
+                    <MessageSquare className='h-4 w-4' />
                     <span className='text-sm'>Via Slack</span>
                   </div>
                 </PopoverContent>
@@ -413,7 +413,7 @@ const renderCalendarConnectionReminder = ({
             <p className='mt-2 font-medium'>
               {dialogOpen === 'email' ? 'Email' : 'Slack'} Body
             </p>
-            <div className='mt-2 border border-[var(--neutral-6)] rounded-[var(--radius-2)]'>
+            <div className='mt-2 rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
               <TipTapAIEditor
                 enablAI={false}
                 disabled

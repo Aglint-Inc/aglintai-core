@@ -14,11 +14,11 @@ export function ScheduleSettings({
   isCompanyDaysOffVisible = true,
 }) {
   return (
-    <div className='flex max-w-[700px] p-4 flex-col gap-5 bg-white'>
+    <div className='flex max-w-[700px] flex-col gap-5 bg-white p-4'>
       {isKeywordVisible ? (
         <div className='flex flex-col gap-5'>
           {isCompanyLevelVisible ? (
-            <div className='flex flex-col gap-1 w-[620px]'>
+            <div className='flex w-[620px] flex-col gap-1'>
               <div className='font-semibold'>{'Keywords'}</div>
               <div className='text-gray-600'>
                 {
@@ -27,11 +27,11 @@ export function ScheduleSettings({
               </div>
             </div>
           ) : null}
-          <div className='flex flex-col gap-3 w-[658px]'>{slotKeywordCard}</div>
+          <div className='flex w-[658px] flex-col gap-3'>{slotKeywordCard}</div>
         </div>
       ) : null}
       {isCompanyLevelVisible ? (
-        <div className='flex justify-between items-center'>
+        <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-1'>
             <UITypography variant='p' type='small'>
               Set up recruiting time ranges and available working hours
@@ -57,7 +57,7 @@ export function ScheduleSettings({
             Setup maximum interviews per day and week.
           </UITypography>
         </div>
-        <div className='flex flex-col gap-2 '>
+        <div className='flex flex-col gap-2'>
           <UITypography variant='p' type='small' className='w-[120px]'>
             Daily Limit
           </UITypography>
@@ -66,7 +66,7 @@ export function ScheduleSettings({
           <UITypography variant='p' type='small' className='w-[120px]'>
             Weekly Limit
           </UITypography>
-          <div className='flex flex-col  gap-1'>{slotWeeklyLimit}</div>
+          <div className='flex flex-col gap-1'>{slotWeeklyLimit}</div>
         </div>
       </div>
       <div className='flex flex-col gap-2'>
@@ -75,7 +75,7 @@ export function ScheduleSettings({
             Setup working hour across company level.
           </UITypography>
         </div>
-        <div className='flex flex-col w-full max-w-[700px]'>
+        <div className='flex w-full max-w-[700px] flex-col'>
           {slotWorkingHourDay}
         </div>
       </div>
@@ -89,9 +89,9 @@ export function ScheduleSettings({
               }
             </div>
           </div>
-          <div className='flex flex-col w-full max-w-[500px]'>{slotDayOff}</div>
+          <div className='flex w-full max-w-[500px] flex-col'>{slotDayOff}</div>
           <div
-            className='flex items-center gap-1 text-[#337fbd] cursor-pointer hover:text-[#1e5f8d]'
+            className='flex cursor-pointer items-center gap-1 text-[#337fbd] hover:text-[#1e5f8d]'
             {...onClickAddDate}
           >
             <div className='flex items-center'>

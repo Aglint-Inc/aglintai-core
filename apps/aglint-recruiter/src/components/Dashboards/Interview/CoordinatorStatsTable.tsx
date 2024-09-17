@@ -44,7 +44,7 @@ export default function CoordinatorStatsTable() {
               <TableHead className='w-[200px]'>Coordinator</TableHead>
               <TableHead className='text-right'>
                 Scheduled{' '}
-                <ArrowDownIcon className='inline-block h-4 w-4 ml-1' />
+                <ArrowDownIcon className='ml-1 inline-block h-4 w-4' />
               </TableHead>
               <TableHead className='text-right'>Cancel</TableHead>
               <TableHead className='text-right'>Decline</TableHead>

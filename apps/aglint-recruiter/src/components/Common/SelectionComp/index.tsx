@@ -17,7 +17,7 @@ const SelectionComp: FC<{
     <div className='w-full'>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger
-          className={`w-full border border-input hover:border-neutral-600 focus:border-neutral-900 focus:ring-0 transition-colors ${
+          className={`w-full border border-input transition-colors hover:border-neutral-600 focus:border-neutral-900 focus:ring-0 ${
             height ? `h-[${height}px]` : 'h-10'
           }`}
         >

@@ -12,32 +12,32 @@ const MessageCard = ({ index }: { index: number }) => {
 
   const htmlParser = Parser();
   return (
-    <Card className='mx-auto rounded-lg overflow-hidden border shadow-none mb-4'>
+    <Card className='mx-auto mb-4 overflow-hidden rounded-lg border shadow-none'>
       <CardHeader className='flex items-center px-6 py-4'>
         <div className='flex w-full items-center justify-between'>
-          <div className='flex flex-row items-center gap-4 justify-center'>
+          <div className='flex flex-row items-center justify-center gap-4'>
             <div className='flex items-center gap-2'>
-              <Mail className='w-4 h-4' />
+              <Mail className='h-4 w-4' />
               <div className='text-sm'>From</div>
 
               <div className='text-sm font-semibold'>
                 {message?.company_name}
               </div>
             </div>
-            <div className='flex items-center gap-2 text-sm ml-auto text-center sm:text-right'>
-              <Clock className='w-4 h-4' />
+            <div className='ml-auto flex items-center gap-2 text-center text-sm sm:text-right'>
+              <Clock className='h-4 w-4' />
               <p className='text-sm'>
                 {dayjsLocal(message.created_at).fromNow()}
               </p>
             </div>
             {message.isSubmitted && (
-              <div className='flex items-center gap-2 text-sm ml-auto text-center sm:text-right'>
-                <CheckCheck className='w-4 h-4 text-green-700' />
+              <div className='ml-auto flex items-center gap-2 text-center text-sm sm:text-right'>
+                <CheckCheck className='h-4 w-4 text-green-700' />
                 <p className='text-sm text-green-700'>Completed</p>
               </div>
             )}
             {message.isNew && (
-              <Badge className=' px-2 py-0.5 text-xs rounded-md bg-red-500'>
+              <Badge className='rounded-md bg-red-500 px-2 py-0.5 text-xs'>
                 New
               </Badge>
             )}
@@ -46,7 +46,7 @@ const MessageCard = ({ index }: { index: number }) => {
       </CardHeader>
       <CardContent className='px-6'>
         <h2 className='text-md font-semibold'>{message.title}</h2>
-        <p className='text-sm font-normal mt-2 opacity-70'>
+        <p className='mt-2 text-sm font-normal opacity-70'>
           {htmlParser.parse(message.message)}
         </p>
       </CardContent>

@@ -106,9 +106,9 @@ export default function Component() {
   };
 
   return (
-    <Card className='w-full mx-auto border-none shadow-none'>
+    <Card className='mx-auto w-full border-none shadow-none'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-primary flex justify-between items-center'>
+        <CardTitle className='text-md flex items-center justify-between font-semibold text-primary'>
           Completion rates for training programs
           <Button onClick={handleDownload} variant='outline' size='sm'>
             <DownloadIcon className='mr-2 h-4 w-4' /> Download CSV
@@ -116,9 +116,9 @@ export default function Component() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0'>
-          <div className='flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2'>
-            <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2'>
+        <div className='mb-4 flex flex-col items-start justify-between space-y-2 sm:flex-row sm:items-center sm:space-y-0'>
+          <div className='flex flex-col items-start space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0'>
+            <div className='flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0'>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className='w-[180px]'>
                   <SelectValue placeholder='Filter by status' />
@@ -213,7 +213,7 @@ export default function Component() {
               placeholder='Search'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className='pl-8 w-full sm:w-[250px]'
+              className='w-full pl-8 sm:w-[250px]'
             />
           </div>
         </div>

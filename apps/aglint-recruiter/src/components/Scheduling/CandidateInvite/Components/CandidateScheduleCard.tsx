@@ -26,24 +26,24 @@ export function CandidateScheduleCard({
       className={cn('relative overflow-hidden', isSelected && 'bg-neutral-100')}
       onClick={onClickCard}
     >
-      <CardContent className='p-4 space-y-4'>
+      <CardContent className='space-y-4 p-4'>
         {isTitle && (
-          <div className='flex justify-between items-center'>
+          <div className='flex items-center justify-between'>
             <span className='font-medium text-blue-600'>{textDay}</span>
           </div>
         )}
-        <div className='flex justify-start items-center space-x-4'>
+        <div className='flex items-center justify-start space-x-4'>
           <span className='text-neutral-600'>Total Duration</span>
           <div className='flex items-center space-x-2'>
-            <Clock className='w-4 h-4 text-neutral-500' />
+            <Clock className='h-4 w-4 text-neutral-500' />
             <span>{textDuration}</span>
           </div>
         </div>
         {isSlotButtonVisible && (
-          <div className='absolute top-3 right-3'>{slotButton}</div>
+          <div className='absolute right-3 top-3'>{slotButton}</div>
         )}
         {isSelected && (
-          <div className='absolute inset-0 flex justify-end items-start p-4 bg-neutral-100'>
+          <div className='absolute inset-0 flex items-start justify-end bg-neutral-100 p-4'>
             {slotButton}
           </div>
         )}
@@ -62,6 +62,6 @@ export function CandidateScheduleCard({
 }
 function SessionInfo() {
   return (
-    <div className='p-2 bg-gray-100 rounded'>Session Info Placeholder</div>
+    <div className='rounded bg-gray-100 p-2'>Session Info Placeholder</div>
   );
 }

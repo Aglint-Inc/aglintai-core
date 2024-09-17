@@ -94,12 +94,12 @@ function EmailPreview({
       slotEmailPreview={
         <ShowCode>
           <ShowCode.When isTrue={fetching}>
-            <div className='h-[80vh] w-[538px] flex items-center justify-center'>
-              <Loader2 className='w-8 h-8 animate-spin' />
+            <div className='flex h-[80vh] w-[538px] items-center justify-center'>
+              <Loader2 className='h-8 w-8 animate-spin' />
             </div>
           </ShowCode.When>
           <ShowCode.Else>
-            <div className='flex flex-row justify-between items-center w-full px-5 gap-8'>
+            <div className='flex w-full flex-row items-center justify-between gap-8 px-5'>
               <div>
                 <Alert>
                   <AlertCircle className='h-4 w-4' />
@@ -109,7 +109,7 @@ function EmailPreview({
                   </AlertDescription>
                 </Alert>
               </div>
-              <div className='flex flex-row space-x-1 justify-start min-w-[152px]'>
+              <div className='flex min-w-[152px] flex-row justify-start space-x-1'>
                 <Button
                   variant='outline'
                   size='sm'
@@ -127,7 +127,7 @@ function EmailPreview({
               </div>
             </div>
             <iframe
-              className='w-[600px] h-[720px]'
+              className='h-[720px] w-[600px]'
               srcDoc={emailData?.html}
               title='Preview Email'
             />

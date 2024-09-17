@@ -50,7 +50,7 @@ const CompanyInfoComp = () => {
     <div>
       <div className='flex flex-col gap-6'>
         <div>
-          <h2 className='text-xl font-bold mb-2'>Company Information</h2>
+          <h2 className='mb-2 text-xl font-bold'>Company Information</h2>
           <p className='text-sm text-gray-600'>
             Update the settings here changes will be saved automatically.
           </p>
@@ -67,18 +67,18 @@ const CompanyInfoComp = () => {
               <Button
                 variant='outline'
                 size='sm'
-                className='absolute top-4 right-4'
+                className='absolute right-4 top-4'
                 onClick={() => setEditDrawer(true)}
               >
-                <PencilIcon className='h-3 w-3 mr-2' />
+                <PencilIcon className='mr-2 h-3 w-3' />
                 Edit
               </Button>
             )}
           </CardHeader>
           <CardContent>
             <div className='flex items-center justify-between'>
-              <div className='flex items-center space-x-4 mb-2'>
-                <div className='h-[50px] w-[50px] flex items-center justify-center border border-gray-200 rounded-md'>
+              <div className='mb-2 flex items-center space-x-4'>
+                <div className='flex h-[50px] w-[50px] items-center justify-center rounded-md border border-gray-200'>
                   {recruiter.logo && (
                     <Image
                       src={recruiter.logo}
@@ -125,7 +125,7 @@ const CompanyInfoComp = () => {
                       key={key}
                       href={val as string}
                       target='_blank'
-                      className='inline-flex items-center px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors'
+                      className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1 transition-colors hover:bg-gray-200'
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Image
@@ -157,12 +157,12 @@ const CompanyInfoComp = () => {
             <Button
               variant='outline'
               size='sm'
-              className='mt-4 rounded-md  absolute top-4 right-4'
+              className='absolute right-4 top-4 mt-4 rounded-md'
               onClick={() => {
                 setDialog({ ...dialog, location: { open: true, edit: -1 } });
               }}
             >
-              <Plus className='h-4 w-4 mr-2' />
+              <Plus className='mr-2 h-4 w-4' />
               Add
             </Button>
           </CardHeader>

@@ -28,26 +28,26 @@ export const Header = ({
               </Avatar>
               <div>
                 <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>
-                <p className=' text-gray-600'>
+                <p className='text-gray-600'>
                   {role} - {department}
                 </p>
-                <div className='flex items-center mt-2 space-x-4'>
+                <div className='mt-2 flex items-center space-x-4'>
                   <span className='flex items-center text-sm text-gray-500'>
-                    <MapPin className='h-4 w-4 mr-1' />
+                    <MapPin className='mr-1 h-4 w-4' />
                     {location}
                   </span>
                   <span className='flex items-center text-sm text-gray-500'>
-                    <Clock className='h-4 w-4 mr-1' />
+                    <Clock className='mr-1 h-4 w-4' />
                     {timeZone}
                   </span>
                 </div>
-                <div className='flex items-center mt-2 space-x-4'>
+                <div className='mt-2 flex items-center space-x-4'>
                   <span className='flex items-center text-sm text-gray-500'>
-                    <Mail className='h-4 w-4 mr-1' />
+                    <Mail className='mr-1 h-4 w-4' />
                     {email}
                   </span>
                   <span className='flex items-center text-sm text-gray-500'>
-                    <Phone className='h-4 w-4 mr-1' />
+                    <Phone className='mr-1 h-4 w-4' />
                     {phone}
                   </span>
                 </div>

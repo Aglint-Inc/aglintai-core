@@ -12,14 +12,14 @@ export function ModuleSetting({
   isDisable = false,
 }) {
   return (
-    <div className='relative mb-3 p-4 rounded-lg bg-white'>
+    <div className='relative mb-3 rounded-lg bg-white p-4'>
       <div className='relative'>
         <div className='flex flex-col gap-2'>
           {isRequireTrainingVisible ? (
             <div className='flex flex-col gap-2'>
-              <div className='flex justify-between items-center'>
-                <div className='flex items-center w-full justify-between  gap-2'>
-                  <div className='flex gap-2 items-center '>
+              <div className='flex items-center justify-between'>
+                <div className='flex w-full items-center justify-between gap-2'>
+                  <div className='flex items-center gap-2'>
                     <svg
                       width='14'
                       height='14'
@@ -56,9 +56,9 @@ export function ModuleSetting({
                   {slotInputNoOfShadow}
                 </div>
               </div>
-              <div className='flex justify-between items-center'>
-                <div className='flex items-center gap-2 w-full justify-between'>
-                  <div className='flex gap-2 items-center'>
+              <div className='flex items-center justify-between'>
+                <div className='flex w-full items-center justify-between gap-2'>
+                  <div className='flex items-center gap-2'>
                     <svg
                       width='14'
                       height='14'
@@ -95,12 +95,12 @@ export function ModuleSetting({
                   {slotInputNoOfReverse}
                 </div>
               </div>
-              <div className='flex mt-3 justify-start items-center gap-2'>
+              <div className='mt-3 flex items-center justify-start gap-2'>
                 {slotCheckbox}
                 <span>Require approval before moving to Qualified</span>
               </div>
               {isApprovalDoneVisible ? (
-                <div className='flex flex-col mt-2'>
+                <div className='mt-2 flex flex-col'>
                   <span>Approvers:</span>
                   {slotApprovalDoneInput}
                 </div>
@@ -109,7 +109,7 @@ export function ModuleSetting({
           ) : null}
         </div>
         {isDisable ? (
-          <div className='absolute inset-0 z-2 bg-white opacity-50' />
+          <div className='z-2 absolute inset-0 bg-white opacity-50' />
         ) : null}
       </div>
     </div>

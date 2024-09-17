@@ -44,7 +44,7 @@ export default function CandidateDropoutFunnelReport() {
   return (
     <Card>
       <CardHeader>
-        <div className='flex justify-between items-center'>
+        <div className='flex items-center justify-between'>
           <CardTitle className='text-md font-semibold'>
             Candidate Dropout Funnel Report
           </CardTitle>
@@ -52,22 +52,22 @@ export default function CandidateDropoutFunnelReport() {
       </CardHeader>
       <CardContent>
         <div className='mb-8'>
-          <div className='flex justify-between items-end h-64'>
+          <div className='flex h-64 items-end justify-between'>
             {stageCounts.map((stageData) => (
               <div
                 key={stageData.stage}
-                className='flex flex-col items-center w-1/4'
+                className='flex w-1/4 flex-col items-center'
               >
                 <div
-                  className='w-full bg-primary/20 rounded-t-lg relative'
+                  className='relative w-full rounded-t-lg bg-primary/20'
                   style={{ height: `${(stageData.count / maxCount) * 100}%` }}
                 >
                   <div className='absolute bottom-2 left-0 right-0 text-center text-sm font-semibold'>
                     {stageData.count}
                   </div>
                 </div>
-                <div className='w-full h-2 bg-primary'></div>
-                <div className='text-xs text-center mt-2'>
+                <div className='h-2 w-full bg-primary'></div>
+                <div className='mt-2 text-center text-xs'>
                   {stageData.stage}
                 </div>
               </div>

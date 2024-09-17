@@ -42,7 +42,7 @@ export const JobHiringTeamDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='flex justify-center items-center w-full h-screen'>
+    <div className='flex h-screen w-full items-center justify-center'>
       <Loader />
     </div>
   );
@@ -103,23 +103,23 @@ const JobEdit = () => {
   return (
     <div className='min-h-screen'>
       <div className='container mx-auto'>
-        <div className='flex justify-between items-center mb-6'>
+        <div className='mb-6 flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
+            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
             <BreadCrumbs job={job} />
           </div>
           <Settings />
         </div>
 
-        <div className='flex gap-6 mb-6'>
+        <div className='mb-6 flex gap-6'>
           <div className='w-1/4'>
             <JobsSideNavV2 />
           </div>
           <div className='w-3/4'>
             <div className='flex flex-row justify-between'>
               <div className='flex flex-col gap-2'>
-                <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
-                <p className='text-sm text-gray-600 mb-4'>
+                <h2 className='mb-2 text-xl font-bold'>Hiring Team</h2>
+                <p className='mb-4 text-sm text-gray-600'>
                   Update the hiring team details here. Changes will be saved
                   automatically.
                 </p>
@@ -130,12 +130,12 @@ const JobEdit = () => {
                 <div className='flex items-center space-x-2 text-sm text-gray-600'>
                   {saving ? (
                     <>
-                      <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
+                      <div className='h-4 w-4 animate-spin rounded-full border-2 border-neutral-600 border-t-transparent'></div>
                       <span>Saving changes...</span>
                     </>
                   ) : (
                     <>
-                      <CheckIcon className='w-4 h-4 text-green-500' />
+                      <CheckIcon className='h-4 w-4 text-green-500' />
                       <span>Changes saved</span>
                     </>
                   )}
@@ -263,8 +263,8 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <div className='bg-white p-6 rounded-lg shadow-md'>
-      <p className='text-sm text-gray-600 mb-4'>
+    <div className='rounded-lg bg-white p-6 shadow-md'>
+      <p className='mb-4 text-sm text-gray-600'>
         Update the hiring team details here. Changes will be saved
         automatically.
       </p>

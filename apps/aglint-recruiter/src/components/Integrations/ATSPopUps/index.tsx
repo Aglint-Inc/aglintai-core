@@ -80,7 +80,7 @@ function ATSPopUps({
             <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleAction}
-              className='bg-red-600 hover:bg-red-700 font-bold'
+              className='bg-red-600 font-bold hover:bg-red-700'
             >
               Disconnect
             </AlertDialogAction>
@@ -96,7 +96,7 @@ function ATSPopUps({
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>
             <div className='flex flex-col items-center justify-center space-y-2'>
-              <Skeleton className='w-8 h-8' />
+              <Skeleton className='h-8 w-8' />
               <p className='text-sm'>
                 {reason?.startsWith('connect') ? 'Connecting' : 'Reconnecting'}{' '}
                 to {atsName}

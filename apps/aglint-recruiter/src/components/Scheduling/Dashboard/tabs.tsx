@@ -50,6 +50,6 @@ const TabSkeleton = () => (
       height: '36px',
     }}
   >
-    <Skeleton className='w-full h-full' />
+    <Skeleton className='h-full w-full' />
   </div>
 );

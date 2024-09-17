@@ -27,7 +27,7 @@ function UpdateDetails({ updateButton, handleChange, items }: StatusListProps) {
                 handleChange(item);
                 setOpen(false);
               }}
-              className='cursor-pointer hover:bg-slate-200 p-2 rounded-md'
+              className='cursor-pointer rounded-md p-2 hover:bg-slate-200'
             >
               <span>{capitalizeFirstLetter(item.label)}</span>
             </Label>

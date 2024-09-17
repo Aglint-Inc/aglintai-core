@@ -1,4 +1,3 @@
-
 import { School } from 'lucide-react';
 import { useRouter } from 'next/router';
 

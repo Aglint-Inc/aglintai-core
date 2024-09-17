@@ -1,4 +1,3 @@
-
 import { Typography } from '@mui/material';
 
 import { RangePicker } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
@@ -28,7 +27,7 @@ function ScheduleFilter() {
   return (
     <div className='space-y-2'>
       <ErrorConflicts />
-      <div className='space-y-1 w-full'>
+      <div className='w-full space-y-1'>
         <Typography variant='body1'>Date Range</Typography>
         {localFilters.dateRange && (
           <RangePicker
@@ -44,10 +43,7 @@ function ScheduleFilter() {
       <ToogleList />
       <DateRangeField />
       <PreferedInterviewers />
-      <UIButton
-        variant='secondary'
-        onClick={() => filterSlots()}
-      >
+      <UIButton variant='secondary' onClick={() => filterSlots()}>
         Apply Filters
       </UIButton>
     </div>

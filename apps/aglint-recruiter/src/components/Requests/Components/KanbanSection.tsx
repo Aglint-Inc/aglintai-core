@@ -14,7 +14,7 @@ function KanbanSection({
 }) {
   return (
     <>
-      <div className='text-md font-semibold mb-2'>
+      <div className='text-md mb-2 font-semibold'>
         {capitalizeFirstLetter(sectionName)}
         <Badge variant='outline' className='ml-2'>
           {requests.length}
@@ -32,7 +32,7 @@ function KanbanSection({
           ))}
         </div>
       ) : (
-        <div className='text-center text-muted-foreground p-4 border rounded-md'>
+        <div className='rounded-md border p-4 text-center text-muted-foreground'>
           No requests in this section
         </div>
       )}

@@ -172,8 +172,8 @@ const TeamManagement = () => {
         pendingList={[]}
       />
       <div className='flex flex-col'>
-        <h2 className='text-xl font-bold mb-2'>Manage User</h2>
-        <p className='text-gray-600 mb-6'>
+        <h2 className='mb-2 text-xl font-bold'>Manage User</h2>
+        <p className='mb-6 text-gray-600'>
           Invite your hiring team members and manage their roles and profile
           details in one place. Assign roles such as interviewer, hiring
           manager, or recruiter to ensure an organized team structure and
@@ -189,7 +189,7 @@ const TeamManagement = () => {
         </Alert> */}
 
         <div className='space-y-4'>
-          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0'>
+          <div className='flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0'>
             <div className='flex flex-row gap-2'>
               <div className='w-full sm:w-auto'>
                 <SearchField
@@ -264,7 +264,7 @@ const TeamManagement = () => {
           </div>
         </div>
 
-        <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
+        <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
           <Table>
             <TableHeader className='bg-gray-100'>
               <TableRow>
@@ -313,8 +313,8 @@ const TeamManagement = () => {
               ) : filteredMembers.length === 0 ? (
                 <TableCell colSpan={6}>
                   <div className='flex flex-col items-center justify-center p-8 text-center'>
-                    <Users className='w-12 h-12 text-gray-400 mb-2' />
-                    <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                    <Users className='mb-2 h-12 w-12 text-gray-400' />
+                    <h3 className='mb-1 text-lg font-medium text-gray-900'>
                       No team members
                     </h3>
                     <p className='text-sm text-gray-500'>

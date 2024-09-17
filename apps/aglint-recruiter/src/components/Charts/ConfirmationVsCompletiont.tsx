@@ -25,9 +25,9 @@ export default function ConfirmationVsCompletion() {
   ];
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-bold text-center'>
+        <CardTitle className='text-md text-center font-bold'>
           Interview Confirmation vs. Completion Rates Over 6 Months
         </CardTitle>
       </CardHeader>

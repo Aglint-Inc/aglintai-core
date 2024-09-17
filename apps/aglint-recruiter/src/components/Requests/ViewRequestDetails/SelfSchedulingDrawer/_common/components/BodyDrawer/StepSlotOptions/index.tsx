@@ -74,7 +74,7 @@ function StepSlotOptions() {
 
   return (
     <div className='border-l border-gray-200'>
-      <div className='gap-2 flex flex-row justify-between px-4 py-2.5 border-b border-gray-200 items-center'>
+      <div className='flex flex-row items-center justify-between gap-2 border-b border-gray-200 px-4 py-2.5'>
         <UITypography type='small'>
           Showing available options between{' '}
           {dayjs(dateRange.start_date).format('MMM DD')}
@@ -83,7 +83,7 @@ function StepSlotOptions() {
         </UITypography>
         <FilterButton />
       </div>
-      <div className='flex flex-col gap-2 p-4 h-[calc(100vh-144px)] overflow-scroll'>
+      <div className='flex h-[calc(100vh-144px)] flex-col gap-2 overflow-scroll p-4'>
         {filteredSchedulingOptions?.map((item, index) => {
           return (
             <DayCardWrapper

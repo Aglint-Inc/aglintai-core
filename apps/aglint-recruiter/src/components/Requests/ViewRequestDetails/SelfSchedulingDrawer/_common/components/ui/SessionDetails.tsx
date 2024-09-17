@@ -12,23 +12,23 @@ export function SessionDetails({
   slotMemberRow,
 }) {
   return (
-    <div className='flex w-full mb-4 p-3 flex-col flex-nowrap gap-3 rounded-lg bg-neutral-50'>
-      <div className='flex justify-start items-center gap-2'>
-        <div className='flex flex-row justify-start flex-nowrap items-center gap-2'>
+    <div className='mb-4 flex w-full flex-col flex-nowrap gap-3 rounded-lg bg-neutral-50 p-3'>
+      <div className='flex items-center justify-start gap-2'>
+        <div className='flex flex-row flex-nowrap items-center justify-start gap-2'>
           <div>{slotSessionIcon}</div>
           <UITypography variant='h6' type='small' className='font-medium'>
             {textSessionName}
           </UITypography>
         </div>
-        <div className='flex flex-row flex-nowrap gap-2 items-center'>
-          <Clock className='w-3 h-3 text-gray-600' />
+        <div className='flex flex-row flex-nowrap items-center gap-2'>
+          <Clock className='h-3 w-3 text-gray-600' />
           <UITypography variant='body1' type='small' className='font-medium'>
             {textSessionDuration}
           </UITypography>
         </div>
       </div>
       {isMemberRow ? (
-        <div className='flex flex-col flex-nowrap gap-2.5 w-full'>
+        <div className='flex w-full flex-col flex-nowrap gap-2.5'>
           {slotMemberRow}
         </div>
       ) : null}

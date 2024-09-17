@@ -17,7 +17,7 @@ function PlayStop({ lottieRef, speaking }) {
     }
   }, [speaking]);
   return (
-    <div className='h-[21px] relative'>
+    <div className='relative h-[21px]'>
       <div className='absolute left-[-16px] top-[-8px] w-[35px]'>
         <Lottie
           lottieRef={lottieRef}

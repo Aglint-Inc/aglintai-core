@@ -7,8 +7,8 @@ import { jd_lottie } from '@/public/lottie/jd-loader-lottie';
 function JdFetching() {
   const lottieRef = useRef();
   return (
-    <div className="relative h-[50px] left-0 w-[60px]">
-      <div className="absolute top-0 left-[-5px] w-[70px]">
+    <div className='relative left-0 h-[50px] w-[60px]'>
+      <div className='absolute left-[-5px] top-0 w-[70px]'>
         <Lottie
           lottieRef={lottieRef}
           animationData={jd_lottie}

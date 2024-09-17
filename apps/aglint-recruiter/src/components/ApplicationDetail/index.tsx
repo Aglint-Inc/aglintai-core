@@ -15,9 +15,9 @@ function ApplicationDetailComp() {
       <Application application_id={application_id} job_id={job_id}>
         <div className='min-h-screen'>
           <div className='container mx-auto'>
-            <div className='flex justify-between items-center mb-6'>
+            <div className='mb-6 flex items-center justify-between'>
               <div>
-                <h1 className='text-2xl font-bold mb-2'>Application Details</h1>
+                <h1 className='mb-2 text-2xl font-bold'>Application Details</h1>
                 <BreadCrumb />
               </div>
             </div>

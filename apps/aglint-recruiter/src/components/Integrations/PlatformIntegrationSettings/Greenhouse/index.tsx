@@ -33,20 +33,20 @@ function GreenhouseSettings() {
   return (
     <div className='container mt-10 space-y-4'>
       <Card>
-        <CardHeader className='flex flex-row justify-between items-center space-x-4'>
+        <CardHeader className='flex flex-row items-center justify-between space-x-4'>
           <CardTitle className='text-lg'>Sync Entities</CardTitle>
           <Badge variant='outline' className='bg-green-50 text-green-700'>
             Connected
           </Badge>
         </CardHeader>
         <CardContent>
-          <p className='text-sm text-gray-500 mb-4'>
+          <p className='mb-4 text-sm text-gray-500'>
             Select the entities you want to sync: Jobs, Interview Plans,
             Candidates, Applications, Users, Office Locations, and Departments.
           </p>
           {isPending ? (
-            <div className='flex justify-center items-center'>
-              <Loader2 className='w-6 h-6 animate-spin text-primary' />
+            <div className='flex items-center justify-center'>
+              <Loader2 className='h-6 w-6 animate-spin text-primary' />
             </div>
           ) : (
             <div className='space-y-4'>
@@ -75,7 +75,7 @@ function GreenhouseSettings() {
                   </div>
                 ))}
               </div>
-              <div className='flex items-center justify-between mt-4 bg-gray-100 p-4 rounded-md'>
+              <div className='mt-4 flex items-center justify-between rounded-md bg-gray-100 p-4'>
                 <p className='text-sm text-gray-500'>{`Last synchronized on: ${last_sync}`}</p>
                 <Button
                   size='sm'
@@ -94,7 +94,7 @@ function GreenhouseSettings() {
           <CardTitle className='text-lg'>AI Task Automation</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='flex items-start space-x-2 mb-4'>
+          <div className='mb-4 flex items-start space-x-2'>
             <Checkbox
               id='task_sync'
               checked={data?.options['task_sync']}
@@ -114,7 +114,7 @@ function GreenhouseSettings() {
                 Use Aglint AI to automate tasks directly from comments in
                 Greenhouse.
               </label>
-              <p className='text-sm text-gray-500 mt-1'>
+              <p className='mt-1 text-sm text-gray-500'>
                 Mention `@aglintai` in a comment, then include the task details.
                 Aglint AI will handle the rest.
               </p>
@@ -122,11 +122,11 @@ function GreenhouseSettings() {
           </div>
           <Alert>
             <AlertTitle className='flex items-center'>
-              <Lightbulb className='h-4 w-4 text-purple-500 mr-2' />
+              <Lightbulb className='mr-2 h-4 w-4 text-purple-500' />
               How to Use:
             </AlertTitle>
             <AlertDescription>
-              <ol className='list-decimal list-inside space-y-2 text-sm mt-2'>
+              <ol className='mt-2 list-inside list-decimal space-y-2 text-sm'>
                 <li>Mention `@aglintai` in your comment.</li>
                 <li>
                   Specify the action, like creating, rescheduling, or canceling

@@ -151,9 +151,9 @@ export function MultiDayCard({
   slotSelected,
 }: MultiDayCardCardProps) {
   return (
-    <div className='w-full max-w-2xl border border-neutral-200 rounded-lg overflow-hidden'>
-      <div className='p-4 space-y-4'>
-        <div className='flex justify-between items-start'>
+    <div className='w-full max-w-2xl overflow-hidden rounded-lg border border-neutral-200'>
+      <div className='space-y-4 p-4'>
+        <div className='flex items-start justify-between'>
           <div>
             <h1 className='text-black'>{textDayCount}</h1>
             <div className='flex items-center space-x-2 text-sm text-neutral-600'>
@@ -168,10 +168,10 @@ export function MultiDayCard({
       {isSelected ? (
         <>
           <hr className='border-t border-neutral-200' />
-          <div className='p-4 space-y-4'>
+          <div className='space-y-4 p-4'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-2'>
-                <CheckCircle className='w-4 h-4 text-green-800' />
+                <CheckCircle className='h-4 w-4 text-green-800' />
                 <span className='text-sm text-neutral-600'>
                   {textSelectedSlots}
                 </span>
@@ -193,13 +193,13 @@ export function SelectedSlot({
   slotBadge: React.ReactNode;
 }) {
   return (
-    <div className='w-full flex flex-row gap-4'>
+    <div className='flex w-full flex-row gap-4'>
       <div className='flex min-w-[200px] items-start space-x-2'>
         <Calendar className='h-4 w-4 text-gray-500' />
         <span className='text-sm text-gray-700'>{textDate}</span>
       </div>
-      <div className='flex items-start space-x-2 mt-1'>
-        <Clock className='min-h-4 min-w-4 max-h-4 max-w-4  text-gray-500' />
+      <div className='mt-1 flex items-start space-x-2'>
+        <Clock className='max-h-4 min-h-4 min-w-4 max-w-4 text-gray-500' />
         <div className='flex flex-wrap gap-1'>{slotBadge}</div>
       </div>
     </div>

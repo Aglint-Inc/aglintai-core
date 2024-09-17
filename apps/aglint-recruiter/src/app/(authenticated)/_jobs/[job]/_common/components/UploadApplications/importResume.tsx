@@ -67,7 +67,7 @@ export const ImportResume = () => {
       name='file'
       types={FILE_TYPES}
     >
-      <div className='h-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg'>
+      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
         <div className='text-center'>
           <Upload className='mx-auto h-12 w-12 text-gray-400' />
           <h3 className='mt-2 text-sm font-semibold text-gray-900'>
@@ -83,18 +83,18 @@ export const ImportResume = () => {
 
   const renderFileList = () => (
     <div className='space-y-4'>
-      <div className='space-y-2 max-h-[300px] overflow-auto'>
+      <div className='max-h-[300px] space-y-2 overflow-auto'>
         {selectedFiles.map((file, index) => (
           <div
             key={index}
-            className='flex items-center justify-between p-2 bg-gray-50 rounded-md'
+            className='flex items-center justify-between rounded-md bg-gray-50 p-2'
           >
             {file.type.includes('pdf') ? (
               <FileText className='h-5 w-5 text-blue-500' />
             ) : (
               <File className='h-5 w-5 text-green-500' />
             )}
-            <span className='flex-1 ml-2 truncate'>{file.name}</span>
+            <span className='ml-2 flex-1 truncate'>{file.name}</span>
             <span className='text-sm text-gray-500'>
               {formatFileSize(file.size)}
             </span>
@@ -109,7 +109,7 @@ export const ImportResume = () => {
           </div>
         ))}
       </div>
-      <div className='flex justify-between items-center'>
+      <div className='flex items-center justify-between'>
         <FileUploader
           handleChange={handleInputChange}
           multiple={true}
@@ -123,7 +123,7 @@ export const ImportResume = () => {
           }
         >
           <Button variant='outline' size='sm'>
-            <Plus className='h-4 w-4 mr-2' />
+            <Plus className='mr-2 h-4 w-4' />
             Add More Resume
           </Button>
         </FileUploader>
@@ -135,7 +135,7 @@ export const ImportResume = () => {
   );
 
   return (
-    <div className='h-[500px] flex flex-col'>
+    <div className='flex h-[500px] flex-col'>
       <div className='flex-grow overflow-auto p-6'>
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>

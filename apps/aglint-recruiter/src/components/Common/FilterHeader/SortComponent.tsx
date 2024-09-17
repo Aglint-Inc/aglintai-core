@@ -49,7 +49,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
   );
   return (
     <div className='flex flex-row items-center gap-1'>
-      <p className='text-muted-foreground text-sm'>Sort by</p>
+      <p className='text-sm text-muted-foreground'>Sort by</p>
       <Popover>
         <PopoverTrigger asChild>
           <Button variant='outline' className='flex items-center gap-2'>
@@ -69,7 +69,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
             />
             <SortOptionsDropDown
               icon={
-                <div className='flex row gap-2 items-center'>
+                <div className='row flex items-center gap-2'>
                   <OrderIcon order={selected.order} />
                   {capitalizeFirstLetter(selectedSort.label)}
                 </div>

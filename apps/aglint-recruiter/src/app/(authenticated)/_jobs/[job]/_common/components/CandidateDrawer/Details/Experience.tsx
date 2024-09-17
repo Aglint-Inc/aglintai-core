@@ -31,7 +31,7 @@ const Experience = () => {
     <Accordion type='single' collapsible>
       <AccordionItem value='experience'>
         <AccordionTrigger>
-          <div className='flex items-center justify-between w-full'>
+          <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
               <Briefcase size={16} />
               <span className='font-medium'>Experience</span>
@@ -72,9 +72,9 @@ const Content = () => {
     return (
       <div className='space-y-4'>
         {[...Array(3)].map((_, index) => (
-          <div key={index} className='p-4 border rounded-md'>
-            <Skeleton className='h-6 w-1/3 mb-2' />
-            <Skeleton className='h-4 w-1/2 mb-1' />
+          <div key={index} className='rounded-md border p-4'>
+            <Skeleton className='mb-2 h-6 w-1/3' />
+            <Skeleton className='mb-1 h-4 w-1/2' />
             <Skeleton className='h-4 w-1/4' />
           </div>
         ))}
@@ -88,8 +88,8 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <Briefcase className='text-gray-500 w-12 h-12 mb-2' />
-        <p className='text-gray-600 text-sm'>No experience found</p>
+        <Briefcase className='mb-2 h-12 w-12 text-gray-500' />
+        <p className='text-sm text-gray-600'>No experience found</p>
       </div>
     );
   return <Experiences />;
@@ -155,7 +155,7 @@ const Experiences = () => {
         <TableBody>
           {itemsToShow.map(({ org, title, start, end }, i) => (
             <TableRow key={i}>
-              <TableCell className='flex items-center space-x-2 w-1/4'>
+              <TableCell className='flex w-1/4 items-center space-x-2'>
                 <ImageWithFallback
                   key={i}
                   src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}

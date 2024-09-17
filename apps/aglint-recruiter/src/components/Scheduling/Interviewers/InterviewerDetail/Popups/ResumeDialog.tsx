@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -80,8 +79,12 @@ function ResumeDialog() {
           </>
         }
       >
-        <p className="text-muted-foreground">
-          This member is currently paused from scheduling for this interview until {selRelation?.pause_json?.isManual ? 'you resume' : dayjs(selRelation?.pause_json?.end_date).format('MMMM DD YYYY')}
+        <p className='text-muted-foreground'>
+          This member is currently paused from scheduling for this interview
+          until{' '}
+          {selRelation?.pause_json?.isManual
+            ? 'you resume'
+            : dayjs(selRelation?.pause_json?.end_date).format('MMMM DD YYYY')}
         </p>
       </UIDialog>
     </>

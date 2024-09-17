@@ -190,7 +190,7 @@ export function AshbyModalComp() {
                 type='password'
               />
               {error && (
-                <p className='text-red-500 text-sm'>Please enter an API key</p>
+                <p className='text-sm text-red-500'>Please enter an API key</p>
               )}
               <Button
                 variant='default'
@@ -201,7 +201,7 @@ export function AshbyModalComp() {
                 {loading ? 'Submitting...' : 'Submit'}
               </Button>
               {integration.ashby.step === STATE_ASHBY_DIALOG.ERROR && (
-                <p className='text-red-500 text-sm'>
+                <p className='text-sm text-red-500'>
                   Invalid API key. Please try again.
                 </p>
               )}
@@ -215,12 +215,12 @@ export function AshbyModalComp() {
                 alt='Ashby logo'
               />
               <p>Fetching data from Ashby...</p>
-              <div className='h-[100px] w-[100px] transform rotate-270'>
+              <div className='rotate-270 h-[100px] w-[100px] transform'>
                 <FetchingJobsLever />
               </div>
             </div>
           ) : integration.ashby.step === STATE_ASHBY_DIALOG.LISTJOBS ? (
-            <div className='flex flex-col h-full overflow-hidden space-y-4'>
+            <div className='flex h-full flex-col space-y-4 overflow-hidden'>
               <p className='text-sm font-medium'>
                 {selectedAshbyPostings.length == 0
                   ? `Showing ${postings.length} Jobs from Ashby`
@@ -237,7 +237,7 @@ export function AshbyModalComp() {
               >
                 Import
               </Button>
-              <div className='space-y-2 max-h-[400px] overflow-y-auto'>
+              <div className='max-h-[400px] space-y-2 overflow-y-auto'>
                 {!initialFetch ? (
                   postings.length > 0 ? (
                     postings.map((post) => (
@@ -285,12 +285,12 @@ export function AshbyModalComp() {
                   )
                 ) : (
                   <>
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
-                    <Skeleton className='w-full h-16 mb-2' />
+                    <Skeleton className='mb-2 h-16 w-full' />
+                    <Skeleton className='mb-2 h-16 w-full' />
+                    <Skeleton className='mb-2 h-16 w-full' />
+                    <Skeleton className='mb-2 h-16 w-full' />
+                    <Skeleton className='mb-2 h-16 w-full' />
+                    <Skeleton className='mb-2 h-16 w-full' />
                   </>
                 )}
               </div>

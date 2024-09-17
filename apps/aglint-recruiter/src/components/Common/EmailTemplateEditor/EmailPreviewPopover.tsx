@@ -33,7 +33,7 @@ export default function EmailPreviewPopover({
         </DialogHeader>
         <div className='h-[80vh]'>
           {isLoading ? (
-            <div className='flex items-center justify-center h-full'>
+            <div className='flex h-full items-center justify-center'>
               <Loader2 className='h-8 w-8 animate-spin' />
             </div>
           ) : (
@@ -45,7 +45,7 @@ export default function EmailPreviewPopover({
                 </AlertTitle>
               </Alert>
               <iframe
-                className='w-full h-[calc(100%-4rem)]'
+                className='h-[calc(100%-4rem)] w-full'
                 srcDoc={isHtml}
                 title='Preview Email'
               />

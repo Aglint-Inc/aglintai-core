@@ -79,9 +79,9 @@ export default Page;
 
 const Send = ({ email, isSending, handleSendLink }) => {
   return (
-    <Card className='w-full max-w-md mx-auto'>
+    <Card className='mx-auto w-full max-w-md'>
       <CardHeader>
-        <CardTitle className='text-2xl font-bold text-center'>
+        <CardTitle className='text-center text-2xl font-bold'>
           Welcome
         </CardTitle>
       </CardHeader>
@@ -92,7 +92,7 @@ const Send = ({ email, isSending, handleSendLink }) => {
         </p>
         {email ? (
           <>
-            <p className='font-medium mb-4'>
+            <p className='mb-4 font-medium'>
               Your email:{' '}
               <span className='text-primary'>{hideEmail(email)}</span>
             </p>
@@ -101,7 +101,7 @@ const Send = ({ email, isSending, handleSendLink }) => {
             </p>
           </>
         ) : (
-          <p className='font-medium mb-4'>Invalide Candidate</p>
+          <p className='mb-4 font-medium'>Invalide Candidate</p>
         )}
       </CardContent>
       {email && (
@@ -122,14 +122,14 @@ const Send = ({ email, isSending, handleSendLink }) => {
 
 const Sent = ({ email, setStatus }) => {
   return (
-    <Card className='w-full max-w-md mx-auto text-center'>
+    <Card className='mx-auto w-full max-w-md text-center'>
       <CardHeader>
         <CardTitle className='text-2xl font-bold'>Login Link Sent!</CardTitle>
       </CardHeader>
       <CardContent className='flex flex-col items-center'>
-        <CheckCircle className='w-16 h-16 text-green-500 mb-4' />
+        <CheckCircle className='mb-4 h-16 w-16 text-green-500' />
         <p className='mb-2'>We&apos;ve successfully sent a login link to:</p>
-        <p className='font-medium text-primary mb-4'>{email}</p>
+        <p className='mb-4 font-medium text-primary'>{email}</p>
         <p className='text-sm text-muted-foreground'>
           Please check your email and click on the link to access your Candidate
           Portal.

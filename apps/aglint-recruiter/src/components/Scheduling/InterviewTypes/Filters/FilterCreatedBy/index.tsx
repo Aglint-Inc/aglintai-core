@@ -126,7 +126,7 @@ function FilterCreatedBy() {
               {loading && (
                 <div className='h-1 w-full bg-blue-200'>
                   <div
-                    className='h-1 bg-blue-600 animate-pulse'
+                    className='h-1 animate-pulse bg-blue-600'
                     style={{ width: '50%' }}
                   ></div>
                 </div>
@@ -136,7 +136,7 @@ function FilterCreatedBy() {
                   members.map((item, index) => (
                     <div
                       key={index}
-                      className='flex items-center space-x-2 p-2 hover:bg-neutral-100 cursor-pointer rounded'
+                      className='flex cursor-pointer items-center space-x-2 rounded p-2 hover:bg-neutral-100'
                       onClick={() => handleFilterClick(item.user_id)}
                     >
                       <Checkbox checked={createdBy.includes(item.user_id)} />
@@ -153,7 +153,7 @@ function FilterCreatedBy() {
                     </div>
                   ))
                 ) : (
-                  <div className='flex flex-col items-center justify-center h-full'>
+                  <div className='flex h-full flex-col items-center justify-center'>
                     <User size={16} className='text-neutral-400' />
                     <span className='text-sm text-neutral-400'>
                       No user found

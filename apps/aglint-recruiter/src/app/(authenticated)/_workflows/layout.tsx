@@ -7,9 +7,9 @@ import { WorkflowsStoreProvider } from '@/workflows/contexts';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <WorkflowsStoreProvider>
-      <div className='flex flex-col min-h-screen'>
-        <header className='sticky top-0 z-10 bg-white border-b border-gray-200'>
-          <div className='container mx-auto px-4 py-4 flex justify-between items-center'>
+      <div className='flex min-h-screen flex-col'>
+        <header className='sticky top-0 z-10 border-b border-gray-200 bg-white'>
+          <div className='container mx-auto flex items-center justify-between px-4 py-4'>
             <div className='flex-1'>
               <BreadCrumbs />
             </div>
@@ -18,7 +18,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             </div>
           </div>
         </header>
-        <main className='flex-grow container mx-auto px-4 py-8'>
+        <main className='container mx-auto flex-grow px-4 py-8'>
           {children}
         </main>
       </div>

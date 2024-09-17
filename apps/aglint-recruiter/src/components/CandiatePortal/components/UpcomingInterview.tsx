@@ -17,7 +17,7 @@ function UpcomingInterview({
 
   return (
     <div>
-      <Card className='bg-background/80 backdrop-blur-sm shadow-sm border border-border '>
+      <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
         <CardHeader className='p-4'>
           <h3 className='text-md font-semibold'>Upcoming Interview</h3>
         </CardHeader>
@@ -47,11 +47,11 @@ const UpcomingCard = ({
   return (
     <>
       <div className='flex items-center gap-3'>
-        <div className='flex flex-col items-center justify-center bg-gray-100 py-2 rounded-lg w-24'>
+        <div className='flex w-24 flex-col items-center justify-center rounded-lg bg-gray-100 py-2'>
           <span className='text-sm font-normal text-gray-500'>
             {dayjsLocal(latestUpcoming.start_time).format('MMMM')}
           </span>
-          <span className='text-2xl font-medium my-1'>
+          <span className='my-1 text-2xl font-medium'>
             {dayjsLocal(latestUpcoming.start_time).format('DD')}
           </span>
           <span className='text-sm font-medium text-gray-500'>
@@ -92,7 +92,7 @@ const UpcomingCard = ({
       ))} */}
       <div className='flex w-full gap-2'>
         <Button
-          className='w-full mt-4'
+          className='mt-4 w-full'
           onClick={() => {
             window.open('', '_blank');
           }}
@@ -100,7 +100,7 @@ const UpcomingCard = ({
           Schedule Info
         </Button>
         <Button
-          className='w-full mt-4'
+          className='mt-4 w-full'
           variant='outline'
           onClick={() => {
             window.open(latestUpcoming.meeting_link, '_blank');

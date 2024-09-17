@@ -12,14 +12,14 @@ export const Qualifications = ({
         <CardTitle>Qualifications</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='space-y-4 max-h-[360px] overflow-y-auto'>
+        <div className='max-h-[360px] space-y-4 overflow-y-auto'>
           {interview_types?.length ? (
             interview_types.map((interview_type, index) => (
-              <div key={index} className='bg-gray-50 p-4 rounded-lg'>
-                <h3 className='text-base font-medium mb-2'>
+              <div key={index} className='rounded-lg bg-gray-50 p-4'>
+                <h3 className='mb-2 text-base font-medium'>
                   {interview_type.module_name}
                 </h3>
-                <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
+                <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
                   <div>
                     <p className='text-sm text-gray-500'>Monthly Scheduled</p>
                     <p className='text-base font-bold'>-</p>
@@ -44,7 +44,7 @@ export const Qualifications = ({
               </div>
             ))
           ) : (
-            <div className='w-full h-[100px] flex items-center justify-center'>
+            <div className='flex h-[100px] w-full items-center justify-center'>
               No Qulifications found
             </div>
           )}

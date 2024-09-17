@@ -100,7 +100,7 @@ const EventNode = ({
                     setShowEditDialog(true);
                   }}
                 >
-                  <Edit className='h-4 w-4 mr-2' />
+                  <Edit className='mr-2 h-4 w-4' />
                   Edit
                 </Button>
                 <Button
@@ -108,7 +108,7 @@ const EventNode = ({
                   size='sm'
                   onClick={handleDeleteScheduleAction}
                 >
-                  <Trash className='h-4 w-4 mr-2 text-destructive' />
+                  <Trash className='mr-2 h-4 w-4 text-destructive' />
                   Remove
                 </Button>
               </div>

@@ -66,7 +66,7 @@ export const Edit = () => {
             <DialogTitle>Edit Workflow</DialogTitle>
           </DialogHeader>
           <div className='space-y-4'>
-            <p className='text-sm text-muted-foreground mb-4'>
+            <p className='mb-4 text-sm text-muted-foreground'>
               Edit workflow details.
             </p>
             <div className='space-y-2'>
