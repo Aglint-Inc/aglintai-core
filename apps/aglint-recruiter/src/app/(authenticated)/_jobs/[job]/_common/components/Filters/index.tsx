@@ -7,7 +7,12 @@ import {
 } from '@/components/Common/FilterHeader/filters/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useApplications, useJob } from '@/job/hooks';
+import {
+  useApplications,
+  useJob,
+  useJobFilterBadges,
+  useJobFilterLocations,
+} from '@/job/hooks';
 import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { capitalize } from '@/utils/text/textUtils';
 
@@ -16,10 +21,12 @@ const Filters = () => {
   const {
     interviewPlans: { data: interviewPlans },
   } = useJob();
+
+  const filterLocations = useJobFilterLocations();
+  const filterBadges = useJobFilterBadges();
+
   const {
     job: { application_match },
-    locationFilterOptions,
-    badgesCount,
     filters: {
       search,
       bookmarked,
@@ -39,9 +46,9 @@ const Filters = () => {
     () =>
       badgesTypes.map((id) => ({
         id,
-        label: `${badgeLabel(id)} ${badgesCount.data?.[id] ? `(${badgesCount.data[id]})` : ''}`,
+        label: `${badgeLabel(id)} ${filterBadges.data?.[id] ? `(${filterBadges.data[id]})` : ''}`,
       })),
-    [badgesTypes, badgeLabel, badgesCount.data],
+    [badgesTypes, badgeLabel, filterBadges.data],
   );
 
   const resume_matchOptions = useMemo(
@@ -101,12 +108,12 @@ const Filters = () => {
   const Locations: Parameters<typeof FilterHeader>[0]['filters'][number] = {
     type: 'nested-filter',
     name: 'Locations',
-    options: locationFilterOptions?.data ?? {},
+    options: filterLocations?.data ?? {},
     sectionHeaders: ['Country', 'State', 'City'],
     value: arrayToNestedObject(locations?.[locations.length - 1] ?? []),
     setValue: (value) => {
       const locations = nestedObjectToArray(
-        locationFilterOptions?.data ?? {},
+        filterLocations?.data ?? {},
         value,
       ).map((item) => item.filter(({ status }) => status !== 'inactive'));
       setFilters({

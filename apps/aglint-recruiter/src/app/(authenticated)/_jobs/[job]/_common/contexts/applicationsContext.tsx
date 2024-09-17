@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import React, { createContext, memo } from 'react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -57,22 +57,6 @@ const useApplicationsContext = () => {
     status: section,
     ...params,
   });
-
-  const locationFilterOptions = useQuery(
-    applicationsQueries.locationFilters({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-    }),
-  );
-
-  const badgesCount = useQuery(
-    applicationsQueries.badgesCount({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-    }),
-  );
 
   // eslint-disable-next-line no-unused-vars
   const { section: _section, ...queryParams } = params;
@@ -298,8 +282,6 @@ const useApplicationsContext = () => {
     emailVisibilities,
     cascadeVisibilites,
     sectionApplication,
-    locationFilterOptions,
-    badgesCount,
     filters,
     manageJob,
     applicationMutations,

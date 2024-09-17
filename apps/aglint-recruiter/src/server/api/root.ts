@@ -1,12 +1,12 @@
-import { analyticsRouter } from './routers/analytics';
-import { applications } from './routers/applications';
+import { analytics } from './routers/analytics';
 import { ats } from './routers/ats';
-import { candidatePortalRouter } from './routers/candidatePortal';
+import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
-import { interviewPool } from './routers/interview_pool';
-import { interviewerRouter } from './routers/interviewers';
+import { interview_pool } from './routers/interview_pool';
+import { interviewers } from './routers/interviewers';
+import { jobs } from './routers/jobs';
 import { requests } from './routers/requests';
-import { schedulingRouter } from './routers/scheduling';
+import { scheduling } from './routers/scheduling';
 import { textTransform } from './routers/textTransform';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
@@ -16,16 +16,16 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  analytics,
   ats,
-  applications,
-  scheduling: schedulingRouter,
+  candidatePortal,
   example,
-  candidatePortal: candidatePortalRouter,
-  analytics: analyticsRouter,
-  textTransform,
-  interviewers: interviewerRouter,
-  interview_pool: interviewPool,
+  interviewers,
+  interview_pool,
+  jobs,
   requests,
+  scheduling,
+  textTransform,
 });
 
 export const appRouterSchema = {
