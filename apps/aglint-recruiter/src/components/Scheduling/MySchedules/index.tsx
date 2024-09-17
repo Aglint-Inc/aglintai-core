@@ -3,7 +3,6 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
-import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import axios from 'axios';
 import { Calendar, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -20,6 +19,7 @@ import {
   useAllSchedulesByUserId,
 } from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
+import { NewMyScheduleCard } from './NewMyScheduleCard';
 
 function MySchedule() {
   const { toast } = useToast();

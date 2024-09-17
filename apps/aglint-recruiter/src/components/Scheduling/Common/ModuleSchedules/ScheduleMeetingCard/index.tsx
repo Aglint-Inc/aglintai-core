@@ -1,4 +1,3 @@
-import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
@@ -19,6 +18,7 @@ import {
 import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
+import { MyScheduleSubCard } from './MyScheduleSubCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
@@ -42,11 +42,9 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={{
-            onClick: (e) => {
-              setCollapseOpen((pre) => !pre);
-              e.stopPropagation();
-            },
+          onClickDropdownIocn={(e) => {
+            setCollapseOpen((pre) => !pre);
+            e.stopPropagation();
           }}
           isDropdownIconVisible={interviewers.length > 0}
           isMembersListVisible={interviewers.length > 0 && collapseOpen}
@@ -139,10 +137,8 @@ function ScheduleMeetingCard({
             </Stack>
           }
           bgColorProps={{
-            style: {
-              background: getScheduleBgcolor(meetingDetails.status),
-              color: getScheduleTextcolor(meetingDetails.status),
-            },
+            background: getScheduleBgcolor(meetingDetails.status),
+            color: getScheduleTextcolor(meetingDetails.status),
           }}
         />
       </Stack>

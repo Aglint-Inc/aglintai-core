@@ -1,7 +1,8 @@
-import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { CalendarClock } from 'lucide-react';
+
+import { NewMyScheduleCard } from '@/components/Scheduling/MySchedules/NewMyScheduleCard';
 
 import {
   type SchedulesSupabase,
