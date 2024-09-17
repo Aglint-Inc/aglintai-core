@@ -36,7 +36,7 @@ export const InterviewerList = ({
   const router = useRouter();
   return (
     <TableRow
-      onClick={() => router.push(`/user/profile/${interviewer.user_id}`)}
+      onClick={() => router.push(`/user/${interviewer.user_id}`)}
       className='cursor-pointer'
     >
       <TableCell>

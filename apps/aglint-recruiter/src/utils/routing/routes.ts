@@ -172,7 +172,7 @@ const previewAssessment = {
 } as const;
 
 const user = {
-  '/user/profile/[user_id]': ({ user_id }: { user_id: string }) =>
+  '/user/[user]': ({ user_id }: { user_id: string }) =>
     pageRouteBuilder([
       pageRouteBuilder([ROUTES.app(), 'user']),
       'profile',

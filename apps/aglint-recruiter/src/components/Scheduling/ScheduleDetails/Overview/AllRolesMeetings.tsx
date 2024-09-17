@@ -52,7 +52,7 @@ function AllRolesMeetings() {
               </Avatar>
               <div>
                 <Link
-                  href={`/user/profile/${item.details.user_id}`}
+                  href={`/user/${item.details.user_id}`}
                   className='text-sm font-medium hover:underline'
                 >
                   {getFullName(item.details.first_name, item.details.last_name)}

@@ -13,7 +13,7 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
-  const user_id = router.query.user_id as string;
+  const user_id = router.query.user as string;
   const { refetch: interviewerDetailsRefetch } = useInterviewer();
 
   const { data: members } = useMemberList();

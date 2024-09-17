@@ -7,6 +7,6 @@ export type InterviewerDetailType = Awaited<
 >['data'];
 export const useInterviewer = () => {
   const router = useRouter();
-  const user_id = router.query.user_id as string;
+  const user_id = router.query.user as string;
   return api.interviewers.get_user_details.useQuery({ user_id });
 };

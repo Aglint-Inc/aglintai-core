@@ -38,7 +38,7 @@ const Member = ({ member }: { member: RecruiterUserType }) => {
           </Avatar>
           <div>
             <Link
-              href={`/user/profile/${member.user_id}`}
+              href={`/user/${member.user_id}`}
               className='font-medium hover:underline'
             >
               {getFullName(member.first_name, member.last_name)}

@@ -81,7 +81,7 @@ const TrainingProgressComponent = () => {
         count,
       }) => (
         <>
-          <Link href={`/user/profile/${user_id}`}>
+          <Link href={`/user/${user_id}`}>
             <div className='flex items-center space-x-4 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-50'>
               <div className='flex-shrink-0'>
                 <Avatar className='h-10 w-10'>
@@ -96,7 +96,7 @@ const TrainingProgressComponent = () => {
               </div>
               <div className='flex-grow'>
                 <Link
-                  href={`/user/profile/${user_id}`}
+                  href={`/user/${user_id}`}
                   className='text-sm font-medium text-gray-900 hover:underline'
                 >
                   {capitalizeAll(getFullName(first_name, last_name))}

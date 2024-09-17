@@ -74,7 +74,7 @@ function EnableDisable() {
                   )
                 }
                 slotApproval={approvers.map((user, i) => (
-                  <Link href={`/user/profile/${user.user_id}`} key={i}>
+                  <Link href={`/user/${user.user_id}`} key={i}>
                     <TrainingSettingItem
                       text={getFullName(user.first_name, user.last_name)}
                       image={
