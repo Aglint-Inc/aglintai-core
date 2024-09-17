@@ -9,12 +9,12 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
+import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsDeleteModuleDialogOpen,
   useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
-import { deleteModuleById } from '../../../../../../../components/Scheduling/InterviewTypes/utils';
-import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
+} from '../../stores/store';
+import { deleteModuleById } from '../../utils/pool';
 
 function DeleteModuleDialog({
   editModule,

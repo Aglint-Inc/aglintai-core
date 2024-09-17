@@ -4,10 +4,6 @@ import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
-import {
-  setIsAddMemberDialogOpen,
-  setTrainingStatus,
-} from '@/components/Scheduling/InterviewTypes/store';
 
 import AddMemberDialog from '../../../dialogs/AddMemberDialog';
 import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
@@ -15,6 +11,10 @@ import PauseDialog from '../../../dialogs/PauseDialog';
 import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import { useProgressModuleUsers } from '../../../hooks/useProgressModuleUsers';
+import {
+  setIsAddMemberDialogOpen,
+  setTrainingStatus,
+} from '../../../stores/store';
 import EnableDisable from './EnableDisable';
 import IndividualRow from './IndividualRow';
 

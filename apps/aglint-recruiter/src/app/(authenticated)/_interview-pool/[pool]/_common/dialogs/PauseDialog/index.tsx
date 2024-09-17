@@ -9,14 +9,14 @@ import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
 import { supabase } from '@/utils/supabase/client';
 
-import { optionsPause } from '../../../../../../../components/Scheduling/InterviewTypes/const';
+import { optionsPause } from '../../../../_common/constants/const';
+import { usePauseHandler } from '../../hooks/usePauseHandler';
 import {
   setIsPauseDialogOpen,
   setPauseJson,
   setSelUser,
   useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
-import { usePauseHandler } from '../../hooks/usePauseHandler';
+} from '../../stores/store';
 import { type PauseType } from '../../types/type';
 
 function PauseDialog() {
@@ -148,7 +148,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <UITypography type='small' className="text-neutral-800">
+              <UITypography type='small' className='text-neutral-800'>
                 {option.label}
               </UITypography>
               {option.description && (

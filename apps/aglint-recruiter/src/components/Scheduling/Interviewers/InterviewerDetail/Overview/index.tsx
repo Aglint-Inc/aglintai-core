@@ -1,11 +1,11 @@
 import { School } from 'lucide-react';
 import { useRouter } from 'next/router';
+import { useAllInterviewModules } from 'src/app/(authenticated)/_interview-pool/_common/hooks';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { type ApiResponseGetMember } from '@/pages/api/get_member';
 
 import { InterviewerDetailOverview } from '../_common/InterviewerDetailOverview';

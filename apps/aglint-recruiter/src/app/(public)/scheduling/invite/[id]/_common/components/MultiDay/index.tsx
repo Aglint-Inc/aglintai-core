@@ -16,8 +16,13 @@ import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
-import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
-import { SessionIcon } from '../../Common/ScheduleProgress/ScheduleProgressPillComp';
+import { SessionIcon } from '../../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { getScheduleType } from '../../../../../../../../utils/scheduling/colors_and_enums';
+import {
+  type ScheduleCardProps,
+  type ScheduleCardsProps,
+} from '../../types/types';
+import { dayJS, getDurationText } from '../../utils/utils';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
 } from '../calender';
@@ -25,8 +30,6 @@ import { CandidateScheduleCard } from '../Components/CandidateScheduleCard';
 import { SelectedDateAndTime } from '../Components/SelectedDateAndTime';
 import { SessionAndTime } from '../Components/SessionAndTime';
 import { SessionInfo } from '../Components/SessionInfo';
-import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
-import { dayJS, getDurationText } from '../utils';
 
 const MultiDay = ({ rounds }: ScheduleCardsProps) => {
   const { params } = useCandidateInvite();

@@ -5,7 +5,7 @@ import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type useInviteSlots } from '@/queries/candidate-invite';
 import dayjs from '@/utils/dayjs';
 
-import { dayJS } from './utils';
+import { dayJS } from '../utils/utils';
 
 export type CandidateInviteCalendarProps = {
   sessions: {
