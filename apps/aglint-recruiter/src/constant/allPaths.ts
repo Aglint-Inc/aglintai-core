@@ -159,7 +159,6 @@ export const PATHS = [
   '/interviewers',
   '/jobs/create',
   '/jobs',
-  '/jobs/[job]/application/[application_id]',
   '/jobs/[job]/email-templates',
   '/jobs/[job]/hiring-team',
   '/jobs/[job]',
@@ -168,6 +167,7 @@ export const PATHS = [
   '/jobs/[job]/metrics',
   '/jobs/[job]/profile-score',
   '/jobs/[job]/workflows',
+  '/jobs/[job]/[application]',
   '/requests/history',
   '/requests',
   '/requests/[id]',
@@ -245,5 +245,5 @@ export const PATHS = [
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
-] as const;
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
+] as const

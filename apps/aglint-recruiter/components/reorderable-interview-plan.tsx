@@ -521,7 +521,7 @@ export default function ReorderableInterviewPlan({
   };
 
   return (
-    <div className='mt-8 max-w-2xl'>
+    <div className='max-w-2xl'>
       <div className='relative' ref={timelineRef}>
         <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
           <Droppable droppableId='droppable'>
