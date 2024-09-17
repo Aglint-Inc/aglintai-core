@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { useEffect, useRef, useState } from 'react';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 
 import axios from '@/client/axios';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

@@ -70,7 +70,7 @@ export default function AppLayout({ children, appRouter = false }) {
             <Button variant='link' asChild>
               <Link
                 href={
-                  ROUTES['/user/profile/[user_id]']({
+                  ROUTES['/user/[user]']({
                     user_id: recruiterUser?.user_id,
                   }) + '?profile=true'
                 }
@@ -122,7 +122,7 @@ export default function AppLayout({ children, appRouter = false }) {
                   <Button variant='ghost' className='rounded-sm' asChild>
                     <Link
                       href={
-                        ROUTES['/user/profile/[user_id]']({
+                        ROUTES['/user/[user]']({
                           user_id: recruiterUser?.user_id,
                         }) + '?profile=true'
                       }

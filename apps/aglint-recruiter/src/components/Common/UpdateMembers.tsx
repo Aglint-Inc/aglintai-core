@@ -15,7 +15,7 @@ import {
 import { cn } from '@lib/utils';
 import { Check } from 'lucide-react';
 import React, { useState } from 'react';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 
 import MemberCard from './MemberCard';
 

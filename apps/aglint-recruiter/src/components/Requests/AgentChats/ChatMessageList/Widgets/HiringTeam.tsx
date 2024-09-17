@@ -56,7 +56,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
             </Avatar>
             <div>
               <Link
-                href={`/user/profile/${item.user_id}`}
+                href={`/user/${item.user_id}`}
                 className='text-blue-500 hover:underline'
               >
                 {item.name}

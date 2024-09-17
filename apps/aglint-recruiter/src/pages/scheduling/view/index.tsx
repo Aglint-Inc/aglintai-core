@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
+import SchedulingViewComp from 'src/app/(authenticated)/_scheduling/view/_common/components';
 
 import Seo from '@/components/Common/Seo';
-import SchedulingViewComp from '@/components/Scheduling/ScheduleDetails';
 
 function SchedulingViewPage() {
   const {
@@ -18,10 +18,7 @@ function SchedulingViewPage() {
       {tab === 'instructions' && (
         <Seo title='Instructions - Scheduling | Aglint AI' />
       )}
-      {/* <Seo
-        title={`View - Scheduling | Aglint AI`}
-        description='AI for People Products'
-      /> */}
+
       <SchedulingViewComp />
     </>
   );

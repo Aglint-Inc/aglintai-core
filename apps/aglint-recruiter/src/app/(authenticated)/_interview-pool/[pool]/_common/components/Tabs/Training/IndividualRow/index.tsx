@@ -70,7 +70,7 @@ function IndividualRow({
       >
         <td className='p-4'>
           <Link
-            href={ROUTES['/user/profile/[user_id]']({
+            href={ROUTES['/user/[user]']({
               user_id: relation.recruiter_user.user_id,
             })}
           >
