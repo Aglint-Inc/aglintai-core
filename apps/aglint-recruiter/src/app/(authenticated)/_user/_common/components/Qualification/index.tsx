@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 
-import { type InterviewerDetailType } from '../hook';
+import { type InterviewerDetailType } from '../../hooks/useInterviewer';
+
 export const Qualifications = ({
   interview_types,
 }: {
