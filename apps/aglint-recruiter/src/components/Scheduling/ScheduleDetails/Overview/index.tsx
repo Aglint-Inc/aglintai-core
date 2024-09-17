@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
 import { NewScheduleDetail } from '@devlink3/NewScheduleDetail';
 import { SquareArrowOutUpRight, Users } from 'lucide-react';
 import Link from 'next/link';
@@ -152,14 +151,14 @@ function Overview() {
           </Button>
         }
         slotCandidateList={
-          <div className="flex flex-col space-y-2">
-            <div className="text-sm font-medium">
+          <div className='flex flex-col space-y-2'>
+            <div className='text-sm font-medium'>
               {getFullName(
                 schedule.candidates.first_name,
                 schedule.candidates.last_name,
               )}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className='text-xs text-gray-500'>
               {formatTimeWithTimeZone({
                 start_time: schedule.interview_meeting.start_time,
                 end_time: schedule.interview_meeting.end_time,

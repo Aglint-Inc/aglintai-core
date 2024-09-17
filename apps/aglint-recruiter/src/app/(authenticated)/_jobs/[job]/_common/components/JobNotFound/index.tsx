@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const JobNotFound = () => {
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+    <div className='flex items-center justify-center min-h-screen'>
       <div className='text-center space-y-6 p-8 bg-white rounded-lg shadow-lg max-w-md w-full'>
         <div className='flex justify-center'>
           <FileQuestion stroke='1' className='h-24 w-24' />
