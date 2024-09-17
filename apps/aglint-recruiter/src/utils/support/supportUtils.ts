@@ -120,39 +120,39 @@ export function fillEmailTemplate(
 
 const allCandidateStatusColor = {
   'invitation not sent': {
-    color: 'var(--error-11)',
-    backgroundColor: 'var(--error-3)',
+    color: 'text-red-700',
+    backgroundColor: 'bg-red-200',
   },
   'invitation sent': {
-    color: 'var(--warning-11)',
-    backgroundColor: 'var(--warning-2',
+    color: 'text-yellow-700',
+    backgroundColor: 'bg-yellow-100',
   },
   'invitation accepted': {
-    color: 'var(--success-11)',
-    backgroundColor: 'var(--success-3)',
+    color: 'text-green-700',
+    backgroundColor: 'bg-green-200',
   },
   'invitation rejected': {
-    color: 'var(--error-11)',
-    backgroundColor: 'var(--error-3)',
+    color: 'text-red-700',
+    backgroundColor: 'bg-red-200',
   },
   'invitation expired': {
-    color: 'var(--error-11)',
-    backgroundColor: 'var(--error-3)',
+    color: 'text-red-700',
+    backgroundColor: 'bg-red-200',
   },
   'invitation completed': {
-    color: 'var(--accent-11)',
-    backgroundColor: 'var(--accent-2)',
+    color: 'text-accent-700',
+    backgroundColor: 'bg-accent-100',
   },
   'invitation incomplete': {
-    color: 'var(--neutral-11)',
-    backgroundColor: 'var(--neutral-3)',
+    color: 'text-neutral-700',
+    backgroundColor: 'bg-neutral-200',
   },
 };
 export const getCandidateStatusColor = (key: string) => {
   return (
     allCandidateStatusColor[String(key).toLocaleLowerCase()] || {
-      color: 'var(--neutral-11)',
-      backgroundColor: 'var(--neutral-3)',
+      color: 'text-neutral-700',
+      backgroundColor: 'bg-neutral-200',
     }
   );
 };

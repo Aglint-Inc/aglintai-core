@@ -1,5 +1,4 @@
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -53,7 +52,7 @@ function InterviewersTabs() {
   }, [left, right]);
 
   return (
-    <Stack>
+    <div className="flex flex-col">
       <Tabs value={tab} onValueChange={setTabHandle}>
         <TabsList>
           <TabsTrigger value='interview_load'>Interview Load</TabsTrigger>
@@ -62,7 +61,7 @@ function InterviewersTabs() {
           <TabsTrigger value='metrics'>Metrics</TabsTrigger>
         </TabsList>
       </Tabs>
-    </Stack>
+    </div>
   );
 }
 

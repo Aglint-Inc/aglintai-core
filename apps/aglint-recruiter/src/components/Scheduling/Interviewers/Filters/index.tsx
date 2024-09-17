@@ -1,5 +1,4 @@
 import { Button } from '@components/ui/button';
-import { Stack } from '@mui/material';
 import { Award, GraduationCap, RotateCcw } from 'lucide-react';
 import React, { useEffect, useState, useTransition } from 'react';
 
@@ -89,13 +88,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
   }
   return (
     <div>
-      <Stack
-        direction={'row'}
-        p={'var(--space-2)'}
-        alignItems={'center'}
-        spacing={'var(--space-2)'}
-        marginRight={5}
-      >
+      <div className='flex w-full flex-row items-center justify-between bg-white p-4'>
         <SearchField
           value={searchText}
           onChange={handleSearchInputChange}
@@ -125,7 +118,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
             Reset All
           </Button>
         )}
-      </Stack>
+      </div>
     </div>
   );
 }

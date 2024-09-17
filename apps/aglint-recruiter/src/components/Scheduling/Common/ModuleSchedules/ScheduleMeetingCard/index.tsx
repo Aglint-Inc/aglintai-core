@@ -1,6 +1,6 @@
 import { MembersList } from '@devlink3/MembersList';
 import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
-import { Collapse, Stack, Typography } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -53,7 +53,7 @@ function ScheduleMeetingCard({
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
-                <Stack direction={'column'} spacing={'var(--space-2)'}>
+                <div className='flex flex-col space-y-2'>
                   <MembersList
                     slotImage={<User size={40} />}
                     textName={getFullName(
@@ -62,7 +62,9 @@ function ScheduleMeetingCard({
                     )}
                     isDesignationVisible={true}
                     textDesignation={
-                      <Typography variant='caption'>{'Candidate'}</Typography>
+                      <span className='text-xs text-gray-500'>
+                        {'Candidate'}
+                      </span>
                     }
                     textTime={null}
                   />
@@ -99,7 +101,7 @@ function ScheduleMeetingCard({
                       </>
                     );
                   })}
-                </Stack>
+                </div>
               </Collapse>
             </>
           }
@@ -135,7 +137,7 @@ function ScheduleMeetingCard({
             <Stack
               direction={'row'}
               alignItems={'center'}
-              spacing={'var(--space-5)'}
+              className='space-y-5'
             >
               <span>{meetingDetails?.public_jobs.job_title}</span>
             </Stack>

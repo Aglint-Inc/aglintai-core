@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import {
   Chart as ChartJs,
   type ChartData,
@@ -86,9 +85,9 @@ function LineGraph({
   };
 
   return (
-    <Stack width={'300px'} height={'40px'}>
+    <div className='h-[40px] w-[300px]'>
       <Line data={data} options={options} />
-    </Stack>
+    </div>
   );
 }
 

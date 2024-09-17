@@ -1,6 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
-import Stack from '@mui/material/Stack';
 import {
   BarElement,
   CategoryScale,
@@ -48,9 +47,9 @@ const Container = memo(() => {
     );
 
   return (
-    <Stack height={'200px'}>
+    <div className='h-[200px]'>
       <BarChart data={data} />
-    </Stack>
+    </div>
   );
 });
 Container.displayName = 'Container';

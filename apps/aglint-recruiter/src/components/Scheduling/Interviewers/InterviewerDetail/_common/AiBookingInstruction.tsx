@@ -14,7 +14,7 @@ export function AiBookingInstruction({
 
       <div>{slotTextArea}</div>
 
-      <div className='flex flex-col gap-3 rounded-lg bg-[var(--accent-2)] p-4'>
+      <div className='flex flex-col gap-3 rounded-lg bg-accent-100 p-4'>
         <div className='flex flex-col gap-1'>
           <div className='font-regular text-left text-sm text-red-600'>
             {'How to Use:'}

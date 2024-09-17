@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import Stack from '@mui/material/Stack';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
@@ -61,14 +60,9 @@ const List = ({ data }: Props) => {
   return (
     <>
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (
-        <Stack
+        <div
           key={user_id}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
+          className="flex flex-row items-center justify-between cursor-pointer hover:bg-gray-100"
         >
           <InterviewersCardList
             textName={capitalizeAll(name)}
@@ -76,7 +70,7 @@ const List = ({ data }: Props) => {
             textDeclined={declined}
             textUpcoming={'--'}
           />
-        </Stack>
+        </div>
       ))}
     </>
   );

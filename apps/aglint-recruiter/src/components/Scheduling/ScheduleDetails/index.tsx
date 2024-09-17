@@ -137,7 +137,7 @@ function SchedulingViewComp() {
                 </div>
 
                 {checkPermissions(['scheduling_actions']) && (
-                  <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto border-l border-[var(--neutral-6)] p-[var(--space-4)]'>
+                  <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto border-l border-neutral-300 p-4'>
                     <div className='mb-2 flex flex-col space-y-1'>
                       <p className='font-medium'>Job</p>
                       <WorkflowConnectedCard

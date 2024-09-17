@@ -145,7 +145,7 @@ export default function Heatmap({
           const isToday = dayjsLocal(arrayDates[index]).isToday();
           return {
             visibility: isToday ? 'visible' : 'hidden',
-            backgroundColor: isToday ? 'var(--error-8)' : 'transparent',
+            backgroundColor: isToday ? 'bg-red-500' : 'transparent',
             borderRadius: '20px',
             height: '2px ',
             padding: 0,
@@ -163,12 +163,12 @@ export default function Heatmap({
           return {
             background:
               value?.status === 'completed'
-                ? `var(--success-${8 - x})`
+                ? `bg-green-${900 - x * 100}`
                 : value?.status === 'confirmed'
-                  ? `var(--info-${8 - x})`
+                  ? `bg-blue-${900 - x * 100}`
                   : value?.status === 'cancelled'
-                    ? `var(--error-${8 - x})`
-                    : `var(--neutral-3)`,
+                    ? `bg-red-${900 - x * 100}`
+                    : 'bg-neutral-200',
             fontSize: '4px',
             borderRadius: '3px',
             width: '29px',

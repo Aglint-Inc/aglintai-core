@@ -1,7 +1,6 @@
 'use strict';
 
 import { Checkbox } from '@components/ui/checkbox';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -69,7 +68,7 @@ function ScheduleIndividualCard({
       isCandidateVisible={false}
       slotStatus={
         interview_meeting?.status === 'confirmed' && (
-          <Stack direction={'row'} spacing={'4px'} alignContent={'center'}>
+          <div className='flex flex-row items-center space-x-1'>
             {users
               .filter((user) => user.interview_session_relation.is_confirmed)
               .map((user, i) => (
@@ -78,7 +77,7 @@ function ScheduleIndividualCard({
                   type={user.interview_session_relation.accepted_status}
                 />
               ))}
-          </Stack>
+          </div>
         )
       }
       isCheckboxVisible={isCheckboxVisible}

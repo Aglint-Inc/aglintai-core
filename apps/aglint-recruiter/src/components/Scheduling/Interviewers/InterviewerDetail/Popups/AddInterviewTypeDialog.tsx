@@ -1,4 +1,3 @@
-import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -102,10 +101,10 @@ function AddInterviewTypeDialog() {
           </>
         }
       >
-        <Stack>
-          <Typography mb={1}>
+        <div className='flex flex-col'>
+          <p className='mb-1 text-sm'>
             Pick an interview type from the list to add.
-          </Typography>
+          </p>
           <UISelectDropDown
             disabled={isLoading}
             menuOptions={filteredModules?.map((module) => ({
@@ -133,9 +132,9 @@ function AddInterviewTypeDialog() {
             renderOption={(props, option) => {
               return (
                 <li {...props}>
-                  <Typography variant='body1' color={'var(--neutral-12)'}>
+                  <span className="text-base text-neutral-800">
                     {option.name}
-                  </Typography>
+                  </span>
                 </li>
               );
             }}
@@ -145,7 +144,7 @@ function AddInterviewTypeDialog() {
               );
             }}
           /> */}
-        </Stack>
+        </div>
       </UIDialog>
     </>
   );

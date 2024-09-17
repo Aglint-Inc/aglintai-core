@@ -106,7 +106,7 @@ export const pulse = keyframes`
 `;
 
 export const eventColor = (type: EventType) => {
-  const bg = 'var(--neutral-3)';
+  const bg = 'bg-neutral-200';
 
   const colors = color;
   switch (type) {

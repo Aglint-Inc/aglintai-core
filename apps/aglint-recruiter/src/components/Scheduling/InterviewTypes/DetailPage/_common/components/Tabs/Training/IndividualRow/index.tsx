@@ -114,7 +114,7 @@ function IndividualRow({
           />
         </td>
         <td className='p-4'>
-          <div className='flex flex-row space-x-0.5 overflow-hidden rounded-[var(--radius-2)]'>
+          <div className='flex flex-row space-x-0.5 overflow-hidden rounded-md'>
             {pills.map((pill, i) => (
               <HistoryPillShadcn
                 key={i}

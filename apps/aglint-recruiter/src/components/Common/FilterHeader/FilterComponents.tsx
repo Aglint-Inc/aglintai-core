@@ -1,7 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
 import { AddFilter } from '@devlink2/AddFilter';
-import { List, ListItemButton, Popover, Stack } from '@mui/material';
+import { List, ListItemButton, Popover } from '@mui/material';
 import React, { memo, type ReactNode } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -205,7 +205,7 @@ export function FilterComponent({
       <UIFilter
         isActive={Boolean(selectedItems.length)}
         isDotVisible={Boolean(selectedItems.length)}
-        slotLeftIcon={<Stack>{icon}</Stack>}
+        slotLeftIcon={<div className="flex flex-col">{icon}</div>}
         // isDotVisible={filter.job_ids.length > 0}
         textLabel={title}
         showCaret
@@ -293,7 +293,7 @@ function MultiSectionFilterComponent({
       <UIFilter
         isActive={isAnyActive}
         isDotVisible={isAnyActive}
-        slotLeftIcon={<Stack>{icon}</Stack>}
+        slotLeftIcon={<div className="flex flex-col">{icon}</div>}
         // isDotVisible={filter.job_ids.length > 0}
         // onClickStatus={{
         //   onClick: handleClick,
@@ -396,7 +396,7 @@ function NestedFilterComponent({
       <UIFilter
         isActive={isAnyActive}
         isDotVisible={isAnyActive}
-        slotLeftIcon={<Stack>{icon}</Stack>}
+        slotLeftIcon={<div className="flex flex-col">{icon}</div>}
         // isDotVisible={filter.job_ids.length > 0}
         // onClickStatus={{
         //   onClick: handleClick,
@@ -500,7 +500,7 @@ function AddFilterComp({
           },
         }}
       >
-        <Stack direction={'column'}>
+        <div className="flex flex-col">
           {filterList.map((item, i) => {
             return (
               <List key={i}>
@@ -510,7 +510,7 @@ function AddFilterComp({
               </List>
             );
           })}
-        </Stack>
+        </div>
       </Popover>
     </>
   );

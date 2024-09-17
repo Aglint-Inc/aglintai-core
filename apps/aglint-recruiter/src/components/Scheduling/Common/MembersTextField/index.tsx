@@ -33,7 +33,7 @@ type MembersAutoCompleteProps = {
       [key: string]: any;
     })[],
   ) => void;
-  pillColor?: 'transparent' | 'var(--neutral-3)';
+  pillColor?: 'transparent' | 'bg-neutral-200';
   maxWidth?: string;
   error?: boolean;
   helperText?: string;
@@ -147,26 +147,20 @@ function MembersAutoComplete({
                     width='24px'
                     fontSize='12px'
                   />
-                  <Stack
-                    direction={'row'}
-                    justifyContent={'space-between'}
-                    width={'100%'}
-                    className='pl-2'
-                  >
-                    <Typography
-                      variant='body1'
-                      className='one-line-clamp'
-                      sx={{ textTransform: 'capitalize' }}
+                  <div className='flex flex-row items-center justify-between'>
+                    <span
+                      className="text-base"
+                      // ... other props
                     >
                       {getFullName(option.first_name, option.last_name)}
-                    </Typography>
-                    <Typography
-                      variant='caption'
-                      sx={{ textTransform: 'capitalize' }}
+                    </span>
+                    <span
+                      className="text-xs text-gray-500"
+                      // ... other props
                     >
                       {option.position || ''}
-                    </Typography>
-                  </Stack>
+                    </span>
+                  </div>
                 </div>
               );
             })

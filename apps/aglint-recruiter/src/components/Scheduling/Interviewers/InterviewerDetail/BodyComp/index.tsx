@@ -413,7 +413,7 @@ const renderCalendarConnectionReminder = ({
             <p className='mt-2 font-medium'>
               {dialogOpen === 'email' ? 'Email' : 'Slack'} Body
             </p>
-            <div className='mt-2 rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
+            <div className='mt-2 rounded-md border border-neutral-300'>
               <TipTapAIEditor
                 enablAI={false}
                 disabled

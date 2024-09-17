@@ -51,10 +51,10 @@ const EmailTemplateEditor = ({
   }, [editor, defaultJson]);
 
   return (
-    <div className='rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
+    <div className='rounded-md border border-neutral-300'>
       <EditorContent
         editor={editor}
-        className='[&_.ProseMirror-focused]:outline-none [&_.ProseMirror]:min-h-[250px] [&_.ProseMirror]:w-full [&_.ProseMirror]:break-words [&_.ProseMirror]:px-3 [&_.ProseMirror]:py-3 [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:text-[var(--neutral-11)] [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_span_.mention]:bg-red-500 [&_span_.mention]:text-[var(--error-11)]'
+        className='[&_.ProseMirror-focused]:outline-none [&_.ProseMirror]:min-h-[250px] [&_.ProseMirror]:w-full [&_.ProseMirror]:break-words [&_.ProseMirror]:px-3 [&_.ProseMirror]:py-3 [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-700 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_span_.mention]:bg-red-500 [&_span_.mention]:text-red-700'
       />
     </div>
   );

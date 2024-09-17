@@ -1,5 +1,4 @@
 import { NewMyScheduleCard } from '@devlink3/NewMyScheduleCard';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { CalendarClock } from 'lucide-react';
 
@@ -15,7 +14,7 @@ function ScheduleMeetingList({
   filterSchedules: SchedulesSupabase;
 }) {
   return (
-    <Stack spacing={'var(--space-4)'}>
+    <div className='space-y-4'>
       {transformDataSchedules(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
         const schedules = sch[String(date)];
@@ -39,7 +38,7 @@ function ScheduleMeetingList({
           />
         );
       })}
-    </Stack>
+    </div>
   );
 }
 

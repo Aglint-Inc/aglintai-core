@@ -1,5 +1,4 @@
 import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
-import { Box, Stack } from '@mui/material';
 import { Calendar, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -50,7 +49,7 @@ function ModuleSchedules({
   return (
     <InterviewMemberSide
       slotInterview={
-        <Stack>
+        <div className='flex flex-col'>
           <SearchField
             value={changeText}
             onChange={(e) => {
@@ -59,7 +58,7 @@ function ModuleSchedules({
             onClear={() => setChangeText('')}
             placeholder={'Search by session.'}
           />
-        </Stack>
+        </div>
       }
       isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
@@ -81,18 +80,8 @@ function ModuleSchedules({
           <ShowCode.When
             isTrue={isFetched && newFilterSchedules()?.length === 0}
           >
-            <Box
-              sx={{
-                padding: 'var(--space-4)',
-                borderRadius: 'var(--radius-2)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: 'calc(100vh - 128px)',
-                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
-              }}
-            >
-              <Box maxWidth='sm' width='300px' p={2}>
+            <div className='flex min-h-[calc(100vh-128px)] items-center justify-center rounded-md bg-neutral-100 p-4'>
+              <div className='w-[300px] max-w-sm p-2'>
                 <div className='flex flex-col items-center justify-center text-center'>
                   <Calendar className='mb-2 h-12 w-12 text-gray-400' />
                   <h3 className='mb-1 text-lg font-medium text-gray-900'>
@@ -102,8 +91,8 @@ function ModuleSchedules({
                     There are no schedules available at the moment.
                   </p>
                 </div>
-              </Box>
-            </Box>
+              </div>
+            </div>
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <ScheduleMeetingList filterSchedules={newFilterSchedules()} />

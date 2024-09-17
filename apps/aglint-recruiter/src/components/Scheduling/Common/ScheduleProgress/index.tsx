@@ -1,5 +1,4 @@
 import { ScheduleProgress as ScheduleProgressDev } from '@devlink/ScheduleProgress';
-import { Stack } from '@mui/system';
 import { forwardRef, type Ref } from 'react';
 
 import ScheduleProgressPill, {
@@ -29,11 +28,11 @@ const ScheduleProgress = forwardRef(
       />
     ));
     return (
-      <Stack ref={ref}>
+      <div ref={ref} className='flex flex-col'>
         <ScheduleProgressDev
           slotScheduleProgressPill={pills.length ? pills : '---'}
         />
-      </Stack>
+      </div>
     );
   },
 );

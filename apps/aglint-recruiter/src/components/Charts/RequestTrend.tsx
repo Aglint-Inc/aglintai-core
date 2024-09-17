@@ -165,11 +165,11 @@ const chartConfig = {
   },
   desktop: {
     label: 'Desktop',
-    color: 'hsl(var(--chart-1))',
+    color: 'text-blue-500',
   },
   mobile: {
     label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
+    color: 'text-green-500',
   },
 } satisfies ChartConfig;
 
@@ -263,7 +263,7 @@ export function RequestTrend() {
             />
             <Bar
               dataKey={activeChart}
-              fill={`hsl(var(--${activeChart === 'desktop' ? 'chart-1' : 'chart-2'}))`}
+              fill={activeChart === 'desktop' ? 'text-blue-500' : 'text-green-500'}
             />
           </BarChart>
         </ChartContainer>

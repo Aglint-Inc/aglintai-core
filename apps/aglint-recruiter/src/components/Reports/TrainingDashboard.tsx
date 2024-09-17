@@ -119,7 +119,7 @@ export default function Component() {
                   <XAxis dataKey='status' />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey='count' fill='hsl(var(--chart-1))' />
+                  <Bar dataKey='count' fill='text-blue-500' />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -140,7 +140,7 @@ export default function Component() {
                     cx='50%'
                     cy='50%'
                     outerRadius={80}
-                    fill='hsl(var(--chart-2))'
+                    fill='text-green-500'
                     label
                   />
                   <Tooltip />
@@ -164,7 +164,7 @@ export default function Component() {
                   <Line
                     type='monotone'
                     dataKey='averageTime'
-                    stroke='hsl(var(--chart-3))'
+                    stroke='text-red-500'
                   />
                 </LineChart>
               </ResponsiveContainer>

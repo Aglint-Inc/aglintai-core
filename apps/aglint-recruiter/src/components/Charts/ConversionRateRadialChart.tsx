@@ -19,7 +19,7 @@ import {
 } from 'recharts';
 
 const chartData = [
-  { browser: 'safari', visitors: 200, fill: 'hsl(var(--chart-2))' },
+  { browser: 'safari', visitors: 200, fill: 'text-green-500' },
 ];
 
 const chartConfig = {
@@ -28,7 +28,7 @@ const chartConfig = {
   },
   safari: {
     label: 'Safari',
-    color: 'hsl(var(--chart-2))',
+    color: 'text-green-500',
   },
 } satisfies ChartConfig;
 

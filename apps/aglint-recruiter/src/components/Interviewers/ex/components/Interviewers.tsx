@@ -1,5 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import Stack from '@mui/material/Stack';
 import { HardDrive } from 'lucide-react';
 import { memo, useState } from 'react';
 
@@ -56,14 +55,9 @@ const List = ({ data }: { data: useMatricsInterviewersType }) => {
   return (
     <>
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (
-        <Stack
+        <div
           key={user_id}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
+          className="flex flex-col cursor-pointer hover:bg-neutral-200"
         >
           <InterviewersCardList
             textName={capitalizeAll(name)}
@@ -71,7 +65,7 @@ const List = ({ data }: { data: useMatricsInterviewersType }) => {
             textDeclined={declined}
             textUpcoming={'--'}
           />
-        </Stack>
+        </div>
       ))}
     </>
   );

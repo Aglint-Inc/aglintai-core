@@ -1,4 +1,4 @@
-import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import React from 'react';
 
 function AutoCompletePro<T>({
@@ -35,12 +35,10 @@ function AutoCompletePro<T>({
   return (
     <>
       {Boolean(label) && (
-        <Stack direction={'row'}>
-          <Typography>{label}</Typography>
-          {required && (
-            <Typography sx={{ color: 'var(--error-9)', pl: 0.5 }}>*</Typography>
-          )}
-        </Stack>
+        <div className='flex flex-row'>
+          <span className='text-sm'>{label}</span>
+          {required && <span className='pl-0.5 text-sm text-red-600'>*</span>}
+        </div>
       )}
       <Autocomplete
         fullWidth

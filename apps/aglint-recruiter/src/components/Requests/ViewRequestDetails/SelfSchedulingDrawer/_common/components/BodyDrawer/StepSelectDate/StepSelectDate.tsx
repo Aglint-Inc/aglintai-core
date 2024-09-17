@@ -1,7 +1,6 @@
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { DatePickerBody } from '@devlink3/DatePickerBody';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { CheckCircle, Clock, X } from 'lucide-react';
 import type { DateRange as DateRangeType } from 'react-day-picker';
@@ -85,18 +84,13 @@ function SelectDateRange() {
           </>
         }
         slotMuiDatePicker={
-          <Stack
-            sx={{
-              border: '1px solid var(--neutral-6)',
-              borderRadius: 'var(--radius-2)',
-            }}
-          >
+          <div className="w-full h-full bg-white">
             <DateRangePicker
               onChange={handleDateRangeChange}
               value={[dayjs(dateRange.start_date), dayjs(dateRange.end_date)]}
               disablePast
             />
-          </Stack>
+          </div>
         }
       />
     </>

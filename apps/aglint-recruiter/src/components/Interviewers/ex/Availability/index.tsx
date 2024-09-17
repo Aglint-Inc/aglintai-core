@@ -4,7 +4,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
-import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { Skeleton, Tooltip } from '@mui/material';
 import { CheckCircle, RotateCcw, XCircle } from 'lucide-react';
 import {
   type Dispatch,
@@ -174,15 +174,9 @@ const TimeLineCalendar = () => {
 
   if (isLoading)
     return (
-      <Stack
-        height={'100%'}
-        width={'100%'}
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
+      <div className='flex h-full flex-col items-center justify-center'>
         <Loader />
-      </Stack>
+      </div>
     );
 
   const calconnectedInterviewers = filteredInterviewers.filter(
@@ -193,15 +187,10 @@ const TimeLineCalendar = () => {
   );
 
   return (
-    <Stack>
-      <Stack p={2}>
-        <Stack
-          direction={'row'}
-          gap={1}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-        >
-          <Stack direction={'row'} gap={1} alignItems={'center'}>
+    <div className='flex flex-col'>
+      <div className='flex flex-col p-2'>
+        <div className='flex flex-row items-center justify-between'>
+          <div className='flex flex-row items-center gap-1'>
             {isLoading && <p>loading </p>}
             <Filter
               itemList={JobsList?.length ? JobsList : []}
@@ -245,28 +234,25 @@ const TimeLineCalendar = () => {
                 Reset All
               </Button>
             )}
-          </Stack>
+          </div>
           {/* Legent */}
-          <Stack direction={'row'} gap={1}>
+          <div className='flex flex-row gap-1'>
             {Object.keys(color).map((name, i) => {
               return (
-                <Stack key={i} direction={'row'} gap={1} alignItems={'center'}>
-                  <Box
-                    sx={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '8px',
-                      // eslint-disable-next-line security/detect-object-injection
-                      bgcolor: color[name],
+                <div key={i} className='flex flex-row items-center gap-1'>
+                  <div
+                    className='h-2 w-2 rounded-full'
+                    style={{
+                      backgroundColor: color[name],
                     }}
-                  ></Box>
-                  <Typography>{capitalizeAll(name)}</Typography>
-                </Stack>
+                  ></div>
+                  <span className="text-sm">{capitalizeAll(name)}</span>
+                </div>
               );
             })}
-          </Stack>
-        </Stack>
-      </Stack>
+          </div>
+        </div>
+      </div>
       <AvailabilityView
         allInterviewers={calconnectedInterviewers}
         fetchNextPage={fetchNextPage}
@@ -275,11 +261,11 @@ const TimeLineCalendar = () => {
         isFetchingNextPage={isFetchingNextPage}
         isLoading={isLoading}
       />
-      <Typography fontWeight={500} pl={2} mt={3} mb={2}>
+      <h3 className="font-medium pl-2 mt-3 mb-2 text-base">
         Calendar Not Connect Interviewers
-      </Typography>
+      </h3>
       <AvailabilityView allInterviewers={NotCalconnectedInterviewers} />
-    </Stack>
+    </div>
   );
 };
 
@@ -325,17 +311,9 @@ const AvailabilityView = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+    <div className='flex flex-row'>
       {/* Left Column for Interviewer Names and Timezones */}
-      <Box
-        sx={{
-          minWidth: 120,
-          flexShrink: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}
-      >
+      <div className='flex min-w-[120px] flex-shrink-0 flex-col gap-2'>
         {sortedInterviewers.map((interviewer) => (
           <MemberList
             key={interviewer.user_id}
@@ -344,25 +322,17 @@ const AvailabilityView = ({
             setCheckedInterviewers={setCheckedInterviewers}
           />
         ))}
-      </Box>
+      </div>
 
       {/* Scrollable View for Time Blocks */}
-      <Box
+      <div
         ref={containerRef}
         onScroll={handleScroll}
-        sx={{
-          // position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          overflowX: 'auto',
-          gap: 2,
-          marginRight: '20px',
-          // bgcolor: 'red',
-        }}
+        className='mr-5 flex flex-col gap-2 overflow-x-auto'
       >
         {sortedInterviewers.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
-            return <Box key={index} minHeight={'36px'}></Box>;
+            return <div key={index} className='h-9'></div>;
 
           const timeZoneOffset = dayjsLocal()
             .tz(interviewer.scheduling_settings.timeZone.tzCode)
@@ -394,8 +364,8 @@ const AvailabilityView = ({
             />
           );
         })}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
@@ -422,17 +392,9 @@ const MemberList = ({
     setLocalSortedInterviewerIds(newIds);
   };
   return (
-    <Box
+    <div
       key={getFullName(interviewer.first_name, interviewer.last_name)}
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        minWidth: 290,
-        padding: 1,
-        gap: 1,
-      }}
+      className='flex min-w-[290px] flex-row items-center justify-between gap-1 p-1'
       onMouseEnter={() => {
         setIsHover(true);
       }}
@@ -440,34 +402,27 @@ const MemberList = ({
         setIsHover(false);
       }}
     >
-      <Stack
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 1,
-        }}
-        onClick={checkHandle}
-      >
-        <Stack width={20}>
+      <div className='flex cursor-pointer flex-row gap-1' onClick={checkHandle}>
+        <div className='w-20'>
           {isCheckBoxVisible && (
             <Checkbox
               checked={checkedInterviewers.includes(interviewer.user_id)}
             />
           )}
-        </Stack>
-        <Typography variant='body1'>
+        </div>
+        <p className="text-base">
           {getFullName(interviewer.first_name, interviewer.last_name)}
-        </Typography>
-        <Typography variant='caption'>
+        </p>
+        <span className="text-xs text-gray-500">
           (
           {dayjsLocal()
             .tz(interviewer.scheduling_settings.timeZone.tzCode)
             .format('z')}
           )
-        </Typography>
-      </Stack>
+        </span>
+      </div>
       <StatusGlyph isConnected={interviewer.isCalenderConnected} />
-    </Box>
+    </div>
   );
 };
 
@@ -497,13 +452,9 @@ const TimeLineList = ({
 
   return (
     // whole box
-    <Box
-      sx={{
-        display: 'flex',
-        padding: 1,
-        position: 'relative',
-        left: `-${timeZoneLeftOffset}px`,
-      }}
+    <div
+      className='relative flex flex-col'
+      style={{ left: `-${timeZoneLeftOffset}px` }}
     >
       {/* each loop is each day */}
       {interviewer.all_events.map((day, i) => {
@@ -523,38 +474,18 @@ const TimeLineList = ({
           !interviewer.scheduling_settings.workingHours[todayIndex].isWorkDay;
 
         return (
-          <Box
-            key={i}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              position: 'relative',
-            }}
-          >
-            <Typography
-              variant='body2'
-              sx={{
-                position: 'absolute',
-                top: '-8px',
-                zIndex: 6,
-                fontSize: 10,
-                backgroundColor: 'white',
-                padding: 0,
-                lineHeight: 0,
-              }}
+          <div key={i} className='relative flex flex-col items-center'>
+            <span
+              className="absolute top-[-8px] z-10 bg-white p-0 text-[10px] leading-none text-sm"
             >
               {dayjsLocal().add(i, 'day').format('ddd DD MMM')}
-            </Typography>
-            <Box
-              sx={{
+            </span>
+            <div
+              className='flex overflow-hidden rounded-[5px]'
+              style={{
                 width: oneDayPx,
                 height: 20,
-                borderRadius: 5,
-                display: 'flex',
-                overflow: 'hidden',
-                bgcolor: eventColor('bg'),
-                position: 'relative',
+                backgroundColor: eventColor('bg'),
               }}
             >
               {/* working hour */}
@@ -574,19 +505,17 @@ const TimeLineList = ({
                   />
                 }
               >
-                <Box
-                  sx={{
+                <div
+                  className='z-1 absolute top-0'
+                  style={{
                     width:
                       timeToPx(workingendHour, workingendMinute) -
                       timeToPx(workingstartHour, workingstartMinute),
                     height: '20px',
-                    bgcolor: eventColor(
+                    backgroundColor: eventColor(
                       isHoliday ? 'company_off' : 'working_hour',
                     ),
-                    position: 'absolute',
-                    top: 0,
                     left: timeToPx(workingstartHour, workingstartMinute),
-                    zIndex: 1,
                   }}
                 />
               </Tooltip>
@@ -607,22 +536,20 @@ const TimeLineList = ({
                   />
                 }
               >
-                <Box
-                  sx={{
+                <div
+                  className='z-2 absolute top-0'
+                  style={{
                     width:
                       timeToPx(workingstartHour, workingstartMinute) -
                       timeToPx(earlyMorningStartHour, earlyMorningStartMinute),
                     height: '20px',
-                    bgcolor: eventColor(
+                    backgroundColor: eventColor(
                       isHoliday ? 'company_off' : 'early_morning',
                     ),
-                    position: 'absolute',
-                    top: 0,
                     left: timeToPx(
                       earlyMorningStartHour,
                       earlyMorningStartMinute,
                     ),
-                    zIndex: 2,
                   }}
                 />
               </Tooltip>
@@ -643,19 +570,17 @@ const TimeLineList = ({
                   />
                 }
               >
-                <Box
-                  sx={{
+                <div
+                  className='z-2 absolute top-0'
+                  style={{
                     width:
                       timeToPx(afterWorkingEndHour, afterWorkingEndMinute) -
                       timeToPx(workingendHour, workingendMinute),
                     height: '20px',
-                    bgcolor: eventColor(
+                    backgroundColor: eventColor(
                       isHoliday ? 'company_off' : 'after_work',
                     ),
-                    position: 'absolute',
-                    top: 0,
                     left: timeToPx(workingendHour, workingendMinute),
-                    zIndex: 2,
                   }}
                 />
               </Tooltip>
@@ -677,15 +602,13 @@ const TimeLineList = ({
                     />
                   }
                 >
-                  <Box
-                    sx={{
+                  <div
+                    className='z-3 absolute top-0'
+                    style={{
                       width: breakWidth,
                       height: '20px',
-                      bgcolor: eventColor('break'),
-                      position: 'absolute',
-                      top: 0,
+                      backgroundColor: eventColor('break'),
                       left: timeToPx(breakStartHour, breakStartMinute),
-                      zIndex: 3,
                     }}
                   />
                 </Tooltip>
@@ -714,52 +637,41 @@ const TimeLineList = ({
                         />
                       }
                     >
-                      <Box
-                        sx={{
+                      <div
+                        className='z-4 absolute top-0'
+                        style={{
                           width:
                             timeToPx(eventEndHour, eventEndMinute) -
                             timeToPx(eventStartHour, eventStartMinute),
                           height: '20px',
-                          bgcolor: eventColor(event.type as EventType),
-                          position: 'absolute',
-                          top: 0,
+                          backgroundColor: eventColor(event.type as EventType),
                           left: timeToPx(eventStartHour, eventStartMinute),
-                          zIndex: 4,
                         }}
                       />
                     </Tooltip>
                   </>
                 );
               })}
-            </Box>
-          </Box>
+            </div>
+          </div>
         );
       })}
 
       {hasNextPage && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'relative',
-          }}
-        >
-          <Stack>
-            <Skeleton
-              variant='rectangular'
-              width={oneDayPx}
-              height={20}
-              sx={{
-                borderRadius: 10,
-                animation: `${pulse} 1.5s infinite`, // Adjust the speed here
-                backgroundColor: '#c0c0c0', // Change the color here
-              }}
-            />
-          </Stack>
-        </Box>
+        <div className='relative flex flex-col items-center'>
+          <Skeleton
+            variant='rectangular'
+            width={oneDayPx}
+            height={20}
+            className='rounded-[10px]'
+            style={{
+              animation: `${pulse} 1.5s infinite`,
+              backgroundColor: '#c0c0c0',
+            }}
+          />
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 
@@ -767,13 +679,13 @@ const StatusGlyph = ({ isConnected }) => (
   <Tooltip
     title={isConnected ? 'Calendar Connected' : 'Calendar Not Connected'}
   >
-    <Stack>
+    <div className='flex flex-col'>
       {isConnected ? (
-        <CheckCircle size={16} color='var(--success)' />
+        <CheckCircle size={16} className='text-green-500' />
       ) : (
-        <XCircle size={16} color='var(--error)' />
+        <XCircle size={16} className='text-red-500' />
       )}
-    </Stack>
+    </div>
   </Tooltip>
 );
 
@@ -792,7 +704,7 @@ const TooltipComp = ({ title, start_time, end_time, status }) => {
   }
 
   return (
-    <Stack>
+    <div className='flex flex-col'>
       <ProgressHoverCard
         textScheduleName={title}
         textDuration={result}
@@ -814,7 +726,7 @@ const TooltipComp = ({ title, start_time, end_time, status }) => {
           />
         }
       />
-    </Stack>
+    </div>
   );
 };
 
@@ -830,9 +742,9 @@ const TimeHoverCard = ({
   end_time: { hour: number; min: number };
 }) => {
   return (
-    <Stack>
-      <Typography>{title}</Typography>
-      <Typography>
+    <div className='flex flex-col'>
+      <p className="text-sm">{title}</p>
+      <p className="text-sm">
         {dayjsLocal()
           .add(index, 'day')
           .hour(start_time.hour)
@@ -844,7 +756,7 @@ const TimeHoverCard = ({
           .hour(end_time.hour)
           .minute(end_time.min)
           .format(' hh:mm A')}
-      </Typography>
-    </Stack>
+      </p>
+    </div>
   );
 };

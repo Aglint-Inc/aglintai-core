@@ -83,16 +83,16 @@ export function groupByDateAndHour(events) {
 export const getColor = (value: Event['type']) => {
   const color =
     value === 'empty_event'
-      ? 'var(--success-8)'
+      ? 'bg-green-500'
       : value === 'soft'
-        ? 'var(--warning-8)'
+        ? 'bg-yellow-500'
         : value === 'ooo'
-          ? 'var(--info-8)'
+          ? 'bg-blue-500'
           : value === 'free_time'
-            ? 'var(--success-8)'
+            ? 'bg-green-500'
             : value === 'recruiting_blocks'
-              ? 'var(--error-8)'
-              : value === 'cal_event' && 'var(--error-9)';
+              ? 'bg-red-500'
+              : value === 'cal_event' && 'bg-red-600';
   return {
     style: {
       background: color,
