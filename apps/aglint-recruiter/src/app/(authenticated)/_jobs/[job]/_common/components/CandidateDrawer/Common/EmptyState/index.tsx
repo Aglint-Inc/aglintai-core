@@ -5,7 +5,7 @@ import { type ApplicationStore } from '@/context/ApplicationContext/store';
 
 export const EmptyState = memo(({ tab }: { tab: ApplicationStore['tab'] }) => {
   return (
-    <div className='w-full flex flex-col items-center justify-center'>
+    <div className='flex w-full flex-col items-center justify-center'>
       <div className='w-[100px]'>
         <FileQuestion size={100} />
       </div>

@@ -19,8 +19,8 @@ export function InterviewConfirmedCard({
   isAddtoCalenderVisible = true,
 }) {
   return (
-    <div className='flex justify-between p-4 border my-2 w-[700px]  border-neutral-300 rounded bg-white transition-colors duration-200 0'>
-      <div className='flex flex-col justify-between '>
+    <div className='0 my-2 flex w-[700px] justify-between rounded border border-neutral-300 bg-white p-4 transition-colors duration-200'>
+      <div className='flex flex-col justify-between'>
         <div className='flex items-center space-x-4'>
           <UITypography className='font-semibold' variant='p' type='small'>
             {textDate}
@@ -42,7 +42,7 @@ export function InterviewConfirmedCard({
               {textPlatformName}
             </UITypography>
           </div>
-          <div className='flex items-center gap-1 '>
+          <div className='flex items-center gap-1'>
             <Clock size={16} strokeWidth={1} />
             <UITypography variant='p' type='small'>
               {textDuration}

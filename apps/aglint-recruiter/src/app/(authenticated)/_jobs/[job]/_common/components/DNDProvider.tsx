@@ -54,7 +54,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
 
   return (
     <div
-      className={`fixed pointer-events-none left-0 top-0 w-full h-full`}
+      className={`pointer-events-none fixed left-0 top-0 h-full w-full`}
       style={{ zIndex: section_count[section] + 1 }}
     >
       <div
@@ -74,8 +74,8 @@ const DragCard = () => {
   const count = useApplicationsChecklist()?.length ?? 0;
   return (
     <div className='w-[180px]'>
-      <div className='flex items-center justify-center px-3 py-2 bg-primary text-primary-foreground rounded-full shadow-sm'>
-        <Move className='w-4 h-4 mr-2' />
+      <div className='flex items-center justify-center rounded-full bg-primary px-3 py-2 text-primary-foreground shadow-sm'>
+        <Move className='mr-2 h-4 w-4' />
         <span className='text-sm font-medium'>
           Move {count} candidate{count === 1 ? '' : 's'}
         </span>

@@ -4,8 +4,8 @@ import React from 'react';
 
 function StatsCards() {
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6'>
-      <Card className='bg-white border-t-4 border-t-blue-500 shadow-md'>
+    <div className='mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
+      <Card className='border-t-4 border-t-blue-500 bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>Interview Statistics</CardTitle>
         </CardHeader>
@@ -31,34 +31,34 @@ function StatsCards() {
         </CardContent>
       </Card>
 
-      <Card className='bg-white border-t-4 border-t-purple-500 shadow-md'>
+      <Card className='border-t-4 border-t-purple-500 bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>Candidate Pipeline</CardTitle>
         </CardHeader>
         <CardContent>
           <div className='space-y-2'>
-            <div className='flex justify-between items-center'>
+            <div className='flex items-center justify-between'>
               <span className='text-gray-600'>Applied</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>210</span>
                 <Progress value={100} className='w-[60px] bg-purple-100' />
               </div>
             </div>
-            <div className='flex justify-between items-center'>
+            <div className='flex items-center justify-between'>
               <span className='text-gray-600'>Screened</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>180</span>
                 <Progress value={86} className='w-[60px] bg-purple-100' />
               </div>
             </div>
-            <div className='flex justify-between items-center'>
+            <div className='flex items-center justify-between'>
               <span className='text-gray-600'>Interviewed</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>145</span>
                 <Progress value={69} className='w-[60px] bg-purple-100' />
               </div>
             </div>
-            <div className='flex justify-between items-center'>
+            <div className='flex items-center justify-between'>
               <span className='text-gray-600'>Offered</span>
               <div className='flex items-center space-x-2'>
                 <span className='font-bold text-gray-900'>12</span>
@@ -69,7 +69,7 @@ function StatsCards() {
         </CardContent>
       </Card>
 
-      <Card className='bg-white border-t-4 border-t-green-500 shadow-md'>
+      <Card className='border-t-4 border-t-green-500 bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>
             Interviewer Performance
@@ -99,7 +99,7 @@ function StatsCards() {
         </CardContent>
       </Card>
 
-      <Card className='bg-white border-t-4 border-t-orange-500 shadow-md'>
+      <Card className='border-t-4 border-t-orange-500 bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>Training Overview</CardTitle>
         </CardHeader>

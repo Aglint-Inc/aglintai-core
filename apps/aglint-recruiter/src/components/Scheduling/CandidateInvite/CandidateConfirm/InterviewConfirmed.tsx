@@ -17,14 +17,14 @@ const InterviewConfirmed = ({
   isBannerVisible?: boolean;
 }) => {
   return (
-    <div className='relative flex flex-col items-center justify-start  w-full h-screen overflow-auto bg-sand-3'>
-      <div className='flex flex-col items-center justify-center max-w-2xl min-w-[760px] p-6 mt-[80px] border border-neutral-300 rounded-lg bg-white'>
+    <div className='bg-sand-3 relative flex h-screen w-full flex-col items-center justify-start overflow-auto'>
+      <div className='mt-[80px] flex min-w-[760px] max-w-2xl flex-col items-center justify-center rounded-lg border border-neutral-300 bg-white p-6'>
         <div className='flex flex-col items-center text-center'>
           {slotCompanyLogo && <div className='mb-4'>{slotCompanyLogo}</div>}
           <UITypography className='text-[18px] font-semibold'>
             Interview Confirmed
           </UITypography>
-          <h2 className='text-sm max-w-[500px]'>{textDesc}</h2>
+          <h2 className='max-w-[500px] text-sm'>{textDesc}</h2>
           {textMailSent && (
             <p className='mt-2'>
               Information has sent to{' '}
@@ -32,7 +32,7 @@ const InterviewConfirmed = ({
             </p>
           )}
         </div>
-        <div className='flex flex-col items-center justify-center w-full mt-4'>
+        <div className='mt-4 flex w-full flex-col items-center justify-center'>
           {slotInterviewConfirmedCard}
         </div>
         {slotButton && <div className='mt-4'>{slotButton}</div>}

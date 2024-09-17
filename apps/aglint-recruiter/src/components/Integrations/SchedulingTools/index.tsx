@@ -298,9 +298,9 @@ function Scheduling({ allIntegrations }) {
                       <ShowCode.Else>
                         <div {...getRootProps()} className='cursor-pointer'>
                           <input {...getInputProps()} />
-                          <div className='flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-6 rounded-lg'>
+                          <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6'>
                             <Upload className='h-12 w-12 text-gray-400' />
-                            <p className='mt-2 text-center text-gray-600 text-sm'>
+                            <p className='mt-2 text-center text-sm text-gray-600'>
                               Drag & drop a file here, or click to select a file
                             </p>
                           </div>

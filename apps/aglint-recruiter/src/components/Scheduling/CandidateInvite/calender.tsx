@@ -55,14 +55,14 @@ function CandidateCalender({
   textMonth: string;
 }) {
   return (
-    <div className='flex flex-col h-[500px]  border border-neutral-200 rounded-md bg-white overflow-hidden'>
-      <div className='flex justify-between items-center h-10 px-4 border-b border-neutral-200 bg-neutral-100'>
+    <div className='flex h-[500px] flex-col overflow-hidden rounded-md border border-neutral-200 bg-white'>
+      <div className='flex h-10 items-center justify-between border-b border-neutral-200 bg-neutral-100 px-4'>
         <div className='flex items-center space-x-1'>
-          <Calendar className='w-5 h-5 text-neutral-700' />
+          <Calendar className='h-5 w-5 text-neutral-700' />
           <span className='font-medium'>{textMonth}</span>
         </div>
       </div>
-      <div className='flex gap-2 p-2 items-center justify-center overflow-auto'>
+      <div className='flex items-center justify-center gap-2 overflow-auto p-2'>
         {slotDayColumn}
       </div>
     </div>
@@ -92,12 +92,12 @@ type ColumnType = {
 const Column = (props: ColumnType) => {
   const date = dayJS(props.session.date, props.tz);
   return (
-    <div className='relative min-w-[237px] max-w-[237px]  flex-1 border border-gray-200 rounded-lg'>
-      <div className='flex h-10 justify-center items-center bg-gray-50 rounded-t-lg px-2.5'>
+    <div className='relative min-w-[237px] max-w-[237px] flex-1 rounded-lg border border-gray-200'>
+      <div className='flex h-10 items-center justify-center rounded-t-lg bg-gray-50 px-2.5'>
         <div>{dayjs(date).format('dddd DD, MMMM')}</div>
       </div>
 
-      <div className='h-[390px] overflow-auto p-2.5 gap-2 flex flex-col'>
+      <div className='flex h-[390px] flex-col gap-2 overflow-auto p-2.5'>
         <Slots
           slots={props.session.slots}
           selections={props.selections}

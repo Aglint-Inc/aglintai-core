@@ -24,7 +24,7 @@ function Header({
   setView: (value: 'list' | 'kanban') => void;
 }) {
   return (
-    <div className='container mx-auto px-6 mt-4'>
+    <div className='container mx-auto mt-4 px-6'>
       <div className='flex items-end justify-between'>
         <div className='flex flex-col gap-1'>
           <h1 className='text-lg font-semibold'>
@@ -40,13 +40,13 @@ function Header({
           </p>
         </div>
         <div className='flex flex-col gap-1'>
-          <h3 className='text-sm text-muted-foreground font-semibold'>
+          <h3 className='text-sm font-semibold text-muted-foreground'>
             {open_request + 1} Open Requests ({completed_percentage}% complete)
           </h3>
           <Progress value={completed_percentage} className='w-full' />
         </div>
       </div>
-      <div className='flex justify-end items-center mt-4 gap-2'>
+      <div className='mt-4 flex items-center justify-end gap-2'>
         <RequestListFilter />
         <CreateRequestWidget />
         <Tabs

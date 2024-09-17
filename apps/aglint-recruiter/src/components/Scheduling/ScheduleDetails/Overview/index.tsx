@@ -65,8 +65,8 @@ function Overview() {
               );
             })
           ) : (
-            <Card className='bg-neutral-100 text-neutral-700 p-4 flex items-center justify-center'>
-              <Users className='w-8 h-8 mr-2' />
+            <Card className='flex items-center justify-center bg-neutral-100 p-4 text-neutral-700'>
+              <Users className='mr-2 h-8 w-8' />
               <p>Interviewers will be decided once interview is confirmed</p>
             </Card>
           )
@@ -148,7 +148,7 @@ function Overview() {
             }}
           >
             {schedule?.interview_module?.name}
-            <SquareArrowOutUpRight className='w-4 h-4 ml-2' />
+            <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
           </Button>
         }
         slotCandidateList={
@@ -177,7 +177,7 @@ function Overview() {
               }}
             >
               Join Meeting
-              <SquareArrowOutUpRight className='w-4 h-4 ml-2' />
+              <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
             </Button>
           )
         }

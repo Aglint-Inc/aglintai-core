@@ -54,70 +54,70 @@ export default function ScheduleAnalyticsCards() {
     <ScheduleCountStats
       textCompletedCount={
         loading ? (
-          <Skeleton className='w-5 h-7' />
+          <Skeleton className='h-7 w-5' />
         ) : (
           (processedData.grouping_unit_a.completed || []).length || 0
         )
       }
       textIncreasedCompleted={
         loading ? (
-          <Skeleton className='w-[130px] h-5' />
+          <Skeleton className='h-5 w-[130px]' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textWaitingCount={
         loading ? (
-          <Skeleton className='w-5 h-7' />
+          <Skeleton className='h-7 w-5' />
         ) : (
           (processedData.grouping_unit_a.waiting || []).length || 0
         )
       }
       textIncreasedWaiting={
         loading ? (
-          <Skeleton className='w-[130px] h-5' />
+          <Skeleton className='h-5 w-[130px]' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.waiting || []).length, (processedData.grouping_unit_b.waiting || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textConfirmedCount={
         loading ? (
-          <Skeleton className='w-5 h-7' />
+          <Skeleton className='h-7 w-5' />
         ) : (
           (processedData.grouping_unit_a.confirmed || []).length || 0
         )
       }
       textIncreasedConfirmed={
         loading ? (
-          <Skeleton className='w-[130px] h-5' />
+          <Skeleton className='h-5 w-[130px]' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.confirmed || []).length, (processedData.grouping_unit_b.confirmed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textNotScheduledCount={
         loading ? (
-          <Skeleton className='w-5 h-7' />
+          <Skeleton className='h-7 w-5' />
         ) : (
           (processedData.grouping_unit_a.not_scheduled || []).length || 0
         )
       }
       textIncreasedNotScheduled={
         loading ? (
-          <Skeleton className='w-[130px] h-5' />
+          <Skeleton className='h-5 w-[130px]' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.not_scheduled || []).length, (processedData.grouping_unit_b.not_scheduled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )
       }
       textCancelledCount={
         loading ? (
-          <Skeleton className='w-5 h-7' />
+          <Skeleton className='h-7 w-5' />
         ) : (
           (processedData.grouping_unit_a.cancelled || []).length || 0
         )
       }
       textIncreasedCancelled={
         loading ? (
-          <Skeleton className='w-[130px] h-5' />
+          <Skeleton className='h-5 w-[130px]' />
         ) : (
           `${Math.round(percentChange((processedData.grouping_unit_a.cancelled || []).length, (processedData.grouping_unit_b.cancelled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
         )

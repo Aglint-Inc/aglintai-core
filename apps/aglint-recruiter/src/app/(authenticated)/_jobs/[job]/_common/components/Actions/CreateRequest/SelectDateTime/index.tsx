@@ -1,5 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import {
   LocalizationProvider,
   renderTimeViewClock,
@@ -32,24 +36,25 @@ function SelectDateTime({
   const id = open ? 'simple-popover' : undefined;
   return (
     <>
-      <div className="cursor-pointer" onClick={handleClick}>
+      <div className='cursor-pointer' onClick={handleClick}>
         {dayjs(selectCallDate).format('DD MMM YYYY, hh:mm A')}
       </div>
       <Popover open={open} onOpenChange={handleClose}>
         <PopoverTrigger asChild>
-          <div className="hidden" /> {/* Hidden trigger for programmatic control */}
+          <div className='hidden' />{' '}
+          {/* Hidden trigger for programmatic control */}
         </PopoverTrigger>
-        <PopoverContent className="p-0 border-none" side="bottom" align="start">
+        <PopoverContent className='border-none p-0' side='bottom' align='start'>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDateTimePicker
-              orientation="portrait"
+              orientation='portrait'
               viewRenderers={{
                 hours: renderTimeViewClock,
                 minutes: renderTimeViewClock,
                 seconds: renderTimeViewClock,
               }}
               ampmInClock={true}
-              className="[&_.MuiPickersToolbar-root]:hidden [&_.MuiTabs-root]:hidden"
+              className='[&_.MuiPickersToolbar-root]:hidden [&_.MuiTabs-root]:hidden'
               disablePast
               value={dayjs(selectCallDate)}
               onAccept={(e: any) => {

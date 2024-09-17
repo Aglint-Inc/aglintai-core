@@ -13,7 +13,7 @@ export function TextWithIcon({
 }: TextWithIconProps): React.JSX.Element {
   return (
     <div className={'flex items-start gap-1'} id='text-with-icon'>
-      <div className='flex w-4 h-4 pt-0.5 items-center '>
+      <div className='flex h-4 w-4 items-center pt-0.5'>
         {icon || <Earth />}
       </div>
       <p>{textContent}</p>

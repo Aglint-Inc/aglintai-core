@@ -32,7 +32,7 @@ const ScoreWheelControls = ({
   };
 
   return (
-    <Card className='p-6 space-y-6'>
+    <Card className='space-y-6 p-6'>
       {scoreWheelDependencies.parameterOrder.map((key, i) => (
         <ScoreWheelSlider
           key={i}
@@ -49,7 +49,7 @@ const ScoreWheelControls = ({
         />
       ))}
       <Button variant='outline' onClick={handleEqualise} className='w-full'>
-        <RefreshCw className='w-4 h-4 mr-2' />
+        <RefreshCw className='mr-2 h-4 w-4' />
         Reset
       </Button>
     </Card>
@@ -76,7 +76,7 @@ const ScoreWheelSlider = ({
 
   return (
     <div className='flex items-center space-x-4'>
-      <div className='font-semibold w-24'>{capitalize(label)}</div>
+      <div className='w-24 font-semibold'>{capitalize(label)}</div>
       <Slider
         id={`ScoreWheelSliders${id}`}
         value={[weight]}
@@ -86,7 +86,7 @@ const ScoreWheelSlider = ({
         onValueChange={handleChange}
         className={`flex-grow ${color}`}
       />
-      <div className='font-semibold w-16 text-right'>{`${weight}%`}</div>
+      <div className='w-16 text-right font-semibold'>{`${weight}%`}</div>
     </div>
   );
 };

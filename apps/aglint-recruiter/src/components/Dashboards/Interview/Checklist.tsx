@@ -229,7 +229,7 @@ export default function ReadOnlyCoordinatorChecklist() {
 
   return (
     <div className='container mx-auto p-4'>
-      <h1 className='text-md font-semibold mb-4'>Coordinator Checklist</h1>
+      <h1 className='text-md mb-4 font-semibold'>Coordinator Checklist</h1>
       <div className='mb-4'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

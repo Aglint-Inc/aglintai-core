@@ -30,7 +30,7 @@ function CalendarHeader({
 
   return (
     <div className='flex flex-col'>
-      <div className='grid grid-cols-3 gap-2 items-center'>
+      <div className='grid grid-cols-3 items-center gap-2'>
         <div>
           <Tabs defaultValue={mode} onValueChange={handleMode}>
             <TabsList>
@@ -40,11 +40,11 @@ function CalendarHeader({
           </Tabs>
         </div>
         <div className='flex justify-center'>
-          <div className='flex flex-row justify-between items-center space-x-2 min-w-[200px]'>
+          <div className='flex min-w-[200px] flex-row items-center justify-between space-x-2'>
             <UIButton
               variant='outline'
               size='sm'
-              icon={<ChevronLeft className='w-4 h-4' />}
+              icon={<ChevronLeft className='h-4 w-4' />}
               onClick={() => calendarApi.prev()}
             />
 
@@ -60,13 +60,13 @@ function CalendarHeader({
             <UIButton
               variant='outline'
               size='sm'
-              icon={<ChevronRight className='w-4 h-4' />}
+              icon={<ChevronRight className='h-4 w-4' />}
               onClick={() => calendarApi.next()}
             />
           </div>
         </div>
         <div className='flex justify-end'>
-          <div className='flex flex-row items-center justify-end space-x-1 min-w-[250px]'>
+          <div className='flex min-w-[250px] flex-row items-center justify-end space-x-1'>
             {!dayjsLocal(currentDate?.startStr).isToday() &&
               !isThisWeekrMonth && (
                 <UIButton onClick={() => calendarApi?.today()}>Today</UIButton>

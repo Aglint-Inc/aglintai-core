@@ -64,13 +64,13 @@ export default function EmailTemplateEditForm({
             </SelectTrigger>
             <SelectContent>
               {options.length === 0 ? (
-                <div className='px-2 py-1 italic text-[var(--neutral-9)] cursor-default'>
+                <div className='cursor-default px-2 py-1 italic text-[var(--neutral-9)]'>
                   No options available
                 </div>
               ) : (
                 options.map((value, idx) => (
                   <SelectItem key={idx} value={value}>
-                    <span className='bg-[#f7ebfc] px-1 pb-[3px] text-[#B552E2] rounded-sm'>
+                    <span className='rounded-sm bg-[#f7ebfc] px-1 pb-[3px] text-[#B552E2]'>
                       {value}
                     </span>
                   </SelectItem>
@@ -86,7 +86,7 @@ export default function EmailTemplateEditForm({
           <UITypography type='small' fontBold='normal'>
             Subject
           </UITypography>
-          <div className='mt-2 border border-[var(--neutral-6)] rounded-[var(--radius-2)]'>
+          <div className='mt-2 rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
@@ -109,7 +109,7 @@ export default function EmailTemplateEditForm({
         <UITypography type='small' fontBold='normal'>
           Message
         </UITypography>
-        <div className='mt-2 border border-[var(--neutral-6)] rounded-[var(--radius-2)]'>
+        <div className='mt-2 rounded-[var(--radius-2)] border border-[var(--neutral-6)]'>
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}

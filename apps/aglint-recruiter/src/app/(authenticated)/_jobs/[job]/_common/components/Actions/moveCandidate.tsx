@@ -254,20 +254,20 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
 const ReusablePopup = ({ title, slotBody, slotButtons }) => {
   const { resetActionPopup } = useApplicationsActions();
   return (
-    <div className='flex items-center mx-autojustify-center mx-auto w-[500px]'>
+    <div className='mx-autojustify-center mx-auto flex w-[500px] items-center'>
       <div className='w-full max-w-lg'>
-        <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+        <div className='flex items-center justify-between border-b border-gray-200 p-4'>
           <h2 className='font-semibold'>{title}</h2>
           <UIButton
             onClick={() => resetActionPopup()}
             variant='ghost'
             size='sm'
           >
-            <X className='w-4 h-4' />
+            <X className='h-4 w-4' />
           </UIButton>
         </div>
         <div className='p-4'>{slotBody}</div>
-        <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+        <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
           {slotButtons}
         </div>
       </div>

@@ -167,7 +167,7 @@ function DetailsOverview({
                     }}
                   />
                 ) : (
-                  <div className='flex flex-row w-full h-[200px] justify-center items-center'>
+                  <div className='flex h-[200px] w-full flex-row items-center justify-center'>
                     <GlobalEmpty
                       text={
                         'Feedback will be enabled once the interview is completed'

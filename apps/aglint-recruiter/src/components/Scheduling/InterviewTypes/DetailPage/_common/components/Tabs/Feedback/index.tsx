@@ -86,7 +86,7 @@ function Feedback() {
                       </td>
                       <td className='p-4'>
                         <div className='flex items-center text-yellow-600'>
-                          <Star className='h-4 w-4 mr-2' />
+                          <Star className='mr-2 h-4 w-4' />
                           {feedback.recommendation}
                         </div>
                       </td>

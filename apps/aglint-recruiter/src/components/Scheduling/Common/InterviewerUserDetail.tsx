@@ -80,7 +80,7 @@ function InterviewerUserDetail({
                 {cancelReason?.reason && (
                   <TooltipContent>
                     <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
-                      <p className='text-sm text-warning'>
+                      <p className='text-warning text-sm'>
                         Reason : {cancelReason?.reason}
                       </p>
                       {cancelReason?.other_details?.note && (

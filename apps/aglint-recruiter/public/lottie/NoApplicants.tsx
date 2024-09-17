@@ -4,7 +4,7 @@ const NoApplicants = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData:     {
+    animationData: {
       v: '5.4.4',
       fr: 60,
       ip: 0,

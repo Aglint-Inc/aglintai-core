@@ -80,7 +80,7 @@ function IndividualRow({
                 level={relation.full_name}
               />
               <div>
-                <div className='font-medium text-gray-900 flex flex-row gap-2'>
+                <div className='flex flex-row gap-2 font-medium text-gray-900'>
                   {relation.full_name}
                   {relation.pause_json && (
                     <UIBadge
@@ -114,7 +114,7 @@ function IndividualRow({
           />
         </td>
         <td className='p-4'>
-          <div className='flex flex-row overflow-hidden rounded-[var(--radius-2)] space-x-0.5'>
+          <div className='flex flex-row space-x-0.5 overflow-hidden rounded-[var(--radius-2)]'>
             {pills.map((pill, i) => (
               <HistoryPillShadcn
                 key={i}
@@ -135,7 +135,7 @@ function IndividualRow({
                   icon={<ChevronDown />}
                 />
               </PopoverTrigger>
-              <PopoverContent className='w-auto p-0 rounded-sm'>
+              <PopoverContent className='w-auto rounded-sm p-0'>
                 <CollapseTrainingProgress
                   reverse_shadow_to_complete={relation.number_of_reverse_shadow}
                   shadow_to_complete={relation.number_of_shadow}
@@ -170,7 +170,7 @@ const ThreeDot = ({
       <PopoverTrigger asChild>
         <UIButton variant='secondary' size='sm' icon={<MoreVertical />} />
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0 rounded-sm'>
+      <PopoverContent className='w-auto rounded-sm p-0'>
         <MemberListCardOption
           isMoveToQualifierVisible={isMoveToQualifierVisible}
           isRemoveVisible={true}

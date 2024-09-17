@@ -45,19 +45,19 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
     <Table>
       <TableHeader>
         <TableRow className='border-b border-gray-200'>
-          <TableHead className='font-semibold text-gray-600 py-3'>
+          <TableHead className='py-3 font-semibold text-gray-600'>
             Job Title
           </TableHead>
-          <TableHead className='font-semibold text-gray-600 py-3'>
+          <TableHead className='py-3 font-semibold text-gray-600'>
             Location
           </TableHead>
-          <TableHead className='font-semibold text-gray-600 py-3'>
+          <TableHead className='py-3 font-semibold text-gray-600'>
             Candidates
           </TableHead>
-          <TableHead className='font-semibold text-gray-600 py-3'>
+          <TableHead className='py-3 font-semibold text-gray-600'>
             Posted
           </TableHead>
-          <TableHead className='font-semibold text-gray-600 py-3'>
+          <TableHead className='py-3 font-semibold text-gray-600'>
             Status
           </TableHead>
           <TableHead className='w-[80px] text-right'>Actions</TableHead>
@@ -74,7 +74,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               <div className='flex flex-col'>
                 <div className='flex items-center space-x-2'>
                   {getAtsBadge(job.posted_by) || (
-                    <Briefcase className='h-5 w-5 text-gray-400 px-1' />
+                    <Briefcase className='h-5 w-5 px-1 text-gray-400' />
                   )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
                 </div>
@@ -153,7 +153,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 }}
               >
                 <Pin
-                  className={`h-4 w-4 ${job.is_pinned ? 'text-yellow-400 fill-current' : ''}`}
+                  className={`h-4 w-4 ${job.is_pinned ? 'fill-current text-yellow-400' : ''}`}
                 />
               </Button>
             </TableCell>
@@ -180,7 +180,7 @@ const getAtsBadge = (postedBy: string) => {
       alt={`${postedBy} ATS`}
       width={20}
       height={20}
-      className='w-5 h-5 object-contain'
+      className='h-5 w-5 object-contain'
     />
   ) : null;
 };

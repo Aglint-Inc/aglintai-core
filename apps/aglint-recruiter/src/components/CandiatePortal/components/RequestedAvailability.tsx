@@ -27,7 +27,7 @@ function RequestedAvailability({
 
   return (
     <div>
-      <Card className='bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
+      <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
         {latestavailability ? (
           <AvailabilityCard latestavailability={latestavailability} job={job} />
         ) : (
@@ -42,8 +42,8 @@ export default RequestedAvailability;
 
 const AvailabilityEmpty = () => {
   return (
-    <CardContent className='p-0 pl-4 pb-4'>
-      <CardHeader className='p-4 pl-0 text-md font-semibold'>
+    <CardContent className='p-0 pb-4 pl-4'>
+      <CardHeader className='text-md p-4 pl-0 font-semibold'>
         Availability Request
       </CardHeader>
       <p className='text-muted-foreground'>No Availability Requests</p>
@@ -60,11 +60,11 @@ const AvailabilityCard = ({
 }) => {
   return (
     <>
-      <CardHeader className='p-0 pt-4 pl-4 pb-4'>
+      <CardHeader className='p-0 pb-4 pl-4 pt-4'>
         <h2 className='font-semibold'>Availability Requested</h2>
-        <div className='flex gap-2 items-center'>
-          <BriefcaseBusinessIcon className='w-4 h-4' strokeWidth={1.5} />
-          <div className='text-sm '>{job.name}</div>
+        <div className='flex items-center gap-2'>
+          <BriefcaseBusinessIcon className='h-4 w-4' strokeWidth={1.5} />
+          <div className='text-sm'>{job.name}</div>
         </div>
 
         <p className='text-sm text-gray-600'>
@@ -73,7 +73,7 @@ const AvailabilityCard = ({
         </p>
         {/* <p className='text-sm text-gray-600'>Requested on Aug 22, 05:00 PM</p> */}
       </CardHeader>
-      <CardContent className='p-0 pl-4 pr-4 pb-4'>
+      <CardContent className='p-0 pb-4 pl-4 pr-4'>
         <Button
           className='w-full'
           variant='outline'

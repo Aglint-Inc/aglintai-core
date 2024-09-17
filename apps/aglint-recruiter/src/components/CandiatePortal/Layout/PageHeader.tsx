@@ -14,16 +14,16 @@ export function PageHeader() {
             className='min-h-[64px] w-auto'
           />
         </div> */}
-        <div className='relative w-full h-[300px]'>
+        <div className='relative h-[300px] w-full'>
           <Image
             src='https://pbs.twimg.com/profile_banners/274788446/1713887007/1500x500'
             alt='Intercom image'
             width={1200}
             height={300}
-            className='object-cover w-full h-full'
+            className='h-full w-full object-cover'
           />
         </div>
-        <div className='absolute bottom-0 left-8 transform translate-y-1/2'>
+        <div className='absolute bottom-0 left-8 translate-y-1/2 transform'>
           <Image
             src='https://aglintai-seed-data.vercel.app/profile/ramya.jpg'
             alt='Ramya'

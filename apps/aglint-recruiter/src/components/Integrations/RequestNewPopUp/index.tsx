@@ -63,11 +63,11 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
       <DialogContent className='sm:max-w-[425px]'>
         {showThanks ? (
           <div className='flex flex-col items-center justify-center p-6 text-center'>
-            <div className='text-green-500 mb-4'>
+            <div className='mb-4 text-green-500'>
               <ThumbsUp size={48} />
             </div>
-            <h2 className='text-2xl font-bold mb-2'>Thank You!</h2>
-            <p className='text-gray-600 mb-6'>
+            <h2 className='mb-2 text-2xl font-bold'>Thank You!</h2>
+            <p className='mb-6 text-gray-600'>
               Thank you for your time. We will review your request and get back
               to you.
             </p>
@@ -79,7 +79,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                 }, 500);
               }}
               size='sm'
-              className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded'
+              className='rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600'
             >
               Close
             </Button>

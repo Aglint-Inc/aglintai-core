@@ -204,10 +204,10 @@ const DebriefForms = ({
   const locationField = useMemo(
     () =>
       schedule_type.value === 'in_person_meeting' ? (
-        <div className="flex flex-col space-y-1">
-          <span className="text-sm font-medium">Address</span>
+        <div className='flex flex-col space-y-1'>
+          <span className='text-sm font-medium'>Address</span>
           <UITextArea
-            name="location"
+            name='location'
             rows={5}
             value={location.value}
             error={location.error}
@@ -215,7 +215,7 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className='w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
         </div>
       ) : null,
@@ -228,7 +228,7 @@ const DebriefForms = ({
       slotDurationDropdown={sessionDurationField}
       slotMemberAvatarSelectionPill={<></>}
       slotScheduleTypeDropdown={
-        <div className="flex flex-col gap-2">
+        <div className='flex flex-col gap-2'>
           <ScheduleTypeField
             value={schedule_type.value}
             handleTypeChange={handleTypeChange}

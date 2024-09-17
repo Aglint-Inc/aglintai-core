@@ -50,9 +50,9 @@ const ResumePreviewer = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className='bg-transparent p-0 max-w-4xl'>
-        <div className='bg-white rounded-lg shadow-lg overflow-hidden'>
-          <div className='flex justify-between items-center p-4 border-b'>
+      <DialogContent className='max-w-4xl bg-transparent p-0'>
+        <div className='overflow-hidden rounded-lg bg-white shadow-lg'>
+          <div className='flex items-center justify-between border-b p-4'>
             <h2 className='text-xl font-semibold'>{name}</h2>
             <div className='flex items-center space-x-2'>
               {download && (
@@ -91,12 +91,12 @@ const ResumePreviewer = ({
             <div className='absolute inset-0 z-10'>
               <ResumeEmbed url={url} />
             </div>
-            <div className='absolute inset-0 flex items-center justify-center bg-neutral-100 z-0'>
+            <div className='absolute inset-0 z-0 flex items-center justify-center bg-neutral-100'>
               <Loader />
             </div>
           </div>
           {navigation && (
-            <div className='flex justify-between p-4 border-t'>
+            <div className='flex justify-between border-t p-4'>
               <Button
                 variant='outline'
                 onClick={navigation.handleUp}

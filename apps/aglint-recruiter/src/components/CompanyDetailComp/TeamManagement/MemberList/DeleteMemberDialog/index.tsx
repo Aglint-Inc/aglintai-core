@@ -121,7 +121,7 @@ function DeleteMemberDialog({
         <p className='font-medium'>
           You are about to suspend {name} from the system.
         </p>
-        <ul className='list-disc pl-5 space-y-2'>
+        <ul className='list-disc space-y-2 pl-5'>
           <li> Once suspended, {name} will not have login access.</li>
           <li>
             The user will be removed from interview types, so no new interviews

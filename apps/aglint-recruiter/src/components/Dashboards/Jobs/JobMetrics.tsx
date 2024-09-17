@@ -6,8 +6,8 @@ import CandidatesBySkillsChart from './CandidatesBySkillsChart';
 export default function JobMetrics() {
   return (
     <div className='container mx-auto p-4'>
-      <h1 className='text-md font-semibold mb-6'>Job Metrics Dashboard</h1>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <h1 className='text-md mb-6 font-semibold'>Job Metrics Dashboard</h1>
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         <CandidatesByLocationChart />
         <CandidatesBySkillsChart />
         <CandidatesByExperienceChart />

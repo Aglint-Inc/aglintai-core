@@ -16,10 +16,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   // setActiveTab: (tab: string) => void;
 }
 
-export default function Component({
-  activeTab,
-  setActiveTab,
-}: SidebarProps) {
+export default function Component({ activeTab, setActiveTab }: SidebarProps) {
   const navItems = [
     {
       title: 'Interview Metrics',

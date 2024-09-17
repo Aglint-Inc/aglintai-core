@@ -93,9 +93,9 @@ export default function Component() {
   };
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-primary flex justify-between items-center'>
+        <CardTitle className='text-md flex items-center justify-between font-semibold text-primary'>
           Interviewers Training Report
           <Button onClick={handleDownload} variant='outline' size='sm'>
             <DownloadIcon className='mr-2 h-4 w-4' /> Download CSV
@@ -103,7 +103,7 @@ export default function Component() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='flex justify-between items-center mb-4'>
+        <div className='mb-4 flex items-center justify-between'>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className='w-[180px]'>
               <SelectValue placeholder='Filter by status' />

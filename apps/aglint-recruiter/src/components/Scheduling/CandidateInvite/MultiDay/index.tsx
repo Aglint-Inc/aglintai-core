@@ -242,7 +242,7 @@ const ScheduleCard = (props: ScheduleCardProps) => {
           enabled ? (
             isSelected ? (
               <UIButton onClick={() => setOpen(true)}>
-                <Repeat className='w-4 h-4' />
+                <Repeat className='h-4 w-4' />
               </UIButton>
             ) : (
               <UIButton variant='outline' onClick={() => setOpen(true)}>

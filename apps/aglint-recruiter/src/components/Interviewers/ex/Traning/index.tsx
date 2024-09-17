@@ -111,7 +111,7 @@ function TrainingProgress() {
               </>
             ))
           ) : (
-            <div className='flex flex-col items-center justify-center p-4 bg-white h-[200px]'>
+            <div className='flex h-[200px] flex-col items-center justify-center bg-white p-4'>
               <div className='mb-2'>
                 <HardDrive className='h-9 w-9 text-gray-500' />
               </div>

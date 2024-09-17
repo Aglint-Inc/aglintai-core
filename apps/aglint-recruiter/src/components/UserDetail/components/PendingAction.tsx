@@ -13,14 +13,14 @@ export const PendingActions = ({ interviewer }) => {
           {interviewer.pendingActions.map((action, index) => (
             <div
               key={index}
-              className='flex items-center justify-between p-4 bg-yellow-50 rounded-lg border border-yellow-200'
+              className='flex items-center justify-between rounded-lg border border-yellow-200 bg-yellow-50 p-4'
             >
               <div className='flex items-start space-x-3'>
-                <AlertTriangle className='h-5 w-5 text-yellow-500 mt-1' />
+                <AlertTriangle className='mt-1 h-5 w-5 text-yellow-500' />
                 <div>
                   <h3 className='font-medium text-yellow-800'>{action.type}</h3>
                   <p className='text-sm text-yellow-700'>{action.details}</p>
-                  <p className='text-xs text-yellow-600 mt-1'>
+                  <p className='mt-1 text-xs text-yellow-600'>
                     Deadline: {action.deadline}
                   </p>
                 </div>

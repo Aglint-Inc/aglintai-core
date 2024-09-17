@@ -10,7 +10,7 @@ export const Performance = ({ interviewer }) => {
       <CardContent>
         <div className='space-y-4'>
           <div>
-            <div className='flex justify-between mb-1'>
+            <div className='mb-1 flex justify-between'>
               <span className='text-sm font-medium text-gray-700'>
                 Candidate Satisfaction
               </span>
@@ -24,7 +24,7 @@ export const Performance = ({ interviewer }) => {
             />
           </div>
           <div>
-            <div className='flex justify-between mb-1'>
+            <div className='mb-1 flex justify-between'>
               <span className='text-sm font-medium text-gray-700'>
                 Hiring Manager Satisfaction
               </span>
@@ -38,7 +38,7 @@ export const Performance = ({ interviewer }) => {
             />
           </div>
           <div>
-            <div className='flex justify-between mb-1'>
+            <div className='mb-1 flex justify-between'>
               <span className='text-sm font-medium text-gray-700'>
                 Decision Accuracy
               </span>

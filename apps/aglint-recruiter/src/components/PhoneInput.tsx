@@ -60,7 +60,7 @@ export const PhoneInput: React.FC<{
         placeholder='(555) 555-5555'
         value={value}
         onChange={handlePhoneChange}
-        className='flex-1 ml-2'
+        className='ml-2 flex-1'
       />
     </div>
   );

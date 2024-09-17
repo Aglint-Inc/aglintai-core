@@ -35,7 +35,7 @@ export default function ConfigureCandidateGreeting() {
         </div>
         {data?.greetings?.length && (
           <ScrollArea className='max-h-40 w-full rounded-md border bg-gray-100'>
-            <div className='w-full p-4 space-y-4  '>{data?.greetings}</div>
+            <div className='w-full space-y-4 p-4'>{data?.greetings}</div>
           </ScrollArea>
         )}
         <Dialog
@@ -66,9 +66,9 @@ export default function ConfigureCandidateGreeting() {
               value={text}
               onChange={handleTextChange}
               placeholder='Start typing here...'
-              className='min-h-[200px] p-4 border border-muted-foreground rounded-md bg-background'
+              className='min-h-[200px] rounded-md border border-muted-foreground bg-background p-4'
             />
-            <DialogFooter className='w-full flex flex-row gap-2 justify-between'>
+            <DialogFooter className='flex w-full flex-row justify-between gap-2'>
               <Button
                 variant='secondary'
                 className='w-full'

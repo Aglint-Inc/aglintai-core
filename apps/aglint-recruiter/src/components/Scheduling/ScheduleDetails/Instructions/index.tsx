@@ -63,14 +63,7 @@ function Instructions({
             interview, including dos and don’ts, and a clear guideline.
           </UITypography>
 
-          <div
-            className='
-            border border-neutral-600
-            max-w-[800px]
-            rounded-[var(--radius-2)]
-            h-[500px] overflow-auto
-          '
-          >
+          <div className='h-[500px] max-w-[800px] overflow-auto rounded-[var(--radius-2)] border border-neutral-600'>
             <TipTapAIEditor
               enablAI={false}
               placeholder={'Instructions'}
@@ -84,13 +77,7 @@ function Instructions({
       </UIDialog>
       <div className='flex flex-col'>
         <div
-          className={`
-            flex flex-col gap-2 bg-white
-            ${isPadding ? 'p-4' : ''}
-            ${isBorder ? 'border border-neutral-200 rounded-md' : ''}
-            ${isWidth ? 'w-[855px]' : ''}
-            ${isMinWidth ? 'min-w-full' : ''}
-          `}
+          className={`flex flex-col gap-2 bg-white ${isPadding ? 'p-4' : ''} ${isBorder ? 'rounded-md border border-neutral-200' : ''} ${isWidth ? 'w-[855px]' : ''} ${isMinWidth ? 'min-w-full' : ''} `}
         >
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>
@@ -98,7 +85,7 @@ function Instructions({
                 <p className='text-base font-medium'>Instructions</p>
                 <UIButton
                   variant='secondary'
-                  leftIcon={<Edit className='w-4 h-4' />}
+                  leftIcon={<Edit className='h-4 w-4' />}
                   size='sm'
                   onClick={() => setEdit(true)}
                 >

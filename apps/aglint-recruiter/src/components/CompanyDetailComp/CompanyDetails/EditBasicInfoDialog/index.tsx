@@ -187,8 +187,8 @@ const EditBasicInfoDialog = ({
               </Alert>
             )}
 
-            <div className='flex items-center space-x-4 '>
-              <div className='border border-gray-200 p-4 rounded-md'>
+            <div className='flex items-center space-x-4'>
+              <div className='rounded-md border border-gray-200 p-4'>
                 <ImageUploadManual
                   image={logo}
                   size={10}
@@ -202,7 +202,7 @@ const EditBasicInfoDialog = ({
                 <>
                   <div className='flex flex-col items-start'>
                     <Label htmlFor='company-name'>Update Logo</Label>
-                    <p className='text-xs text-muted-foreground mt-1 max-w-[350px]'>
+                    <p className='mt-1 max-w-[350px] text-xs text-muted-foreground'>
                       The file shouldn&apos;t exceed the maximum allowed size.
                       Please ensure that the file size is less than 5 MB
                     </p>
@@ -211,7 +211,7 @@ const EditBasicInfoDialog = ({
               )}
             </div>
 
-            <div className='grid grid-cols-2 gap-4 w-full'>
+            <div className='grid w-full grid-cols-2 gap-4'>
               <div className='space-y-2'>
                 <Label htmlFor='company-name'>Company Name</Label>
                 <Input

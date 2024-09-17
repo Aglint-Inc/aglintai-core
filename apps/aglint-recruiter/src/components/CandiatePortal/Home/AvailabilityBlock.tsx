@@ -11,9 +11,9 @@ export function AvailabilityBlock() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className='text-sm text-gray-500 mb-4'>Requested on Aug 22</p>
-        <div className='bg-gray-100 p-3 rounded-md mb-4 flex items-start'>
-          <PenIcon className='w-5 h-5 mr-2 mt-0.5 flex-shrink-0' />
+        <p className='mb-4 text-sm text-gray-500'>Requested on Aug 22</p>
+        <div className='mb-4 flex items-start rounded-md bg-gray-100 p-3'>
+          <PenIcon className='mr-2 mt-0.5 h-5 w-5 flex-shrink-0' />
           <div>
             <p className='font-semibold'>A note from your recruiter</p>
             <p className='text-sm'>

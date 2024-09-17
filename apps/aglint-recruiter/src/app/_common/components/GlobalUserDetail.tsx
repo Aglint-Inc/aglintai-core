@@ -37,7 +37,7 @@ export function GlobalUserDetail({
         <User className='h-8 w-8 text-neutral-500' />
       )}
       {isSlotImageVisible && <div className='h-8 w-8'>{slotImage}</div>}
-      <div className='flex w-full justify-between items-center space-x-2'>
+      <div className='flex w-full items-center justify-between space-x-2'>
         <div className='flex items-center space-x-1'>
           <div>
             <UITypography type='small'>{textName}</UITypography>
@@ -54,7 +54,7 @@ export function GlobalUserDetail({
               </div>
             )}
           </div>
-          <div className='flex items-center space-x-1 pt-1 self-start'>
+          <div className='flex items-center space-x-1 self-start pt-1'>
             {slotCandidateStatus}
           </div>
         </div>

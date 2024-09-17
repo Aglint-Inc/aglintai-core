@@ -29,17 +29,17 @@ export function UserLayout({
   isUpcomingInterviewVisible = false,
 }) {
   return (
-    <div className='flex justify-between w-full'>
-      <div className='flex flex-col h-[calc(100vh-48px)] overflow-auto w-full'>
+    <div className='flex w-full justify-between'>
+      <div className='flex h-[calc(100vh-48px)] w-full flex-col overflow-auto'>
         {/* header  */}
-        <div className='flex gap-3 max-w-[870px] mx-4 my-4 p-4 bg-neutral-100 rounded-lg'>
+        <div className='mx-4 my-4 flex max-w-[870px] gap-3 rounded-lg bg-neutral-100 p-4'>
           {/* logo part  */}
-          <div className='flex justify-between items-start'>
-            <div className='w-[50px] h-[50px] overflow-hidden rounded-lg'>
+          <div className='flex items-start justify-between'>
+            <div className='h-[50px] w-[50px] overflow-hidden rounded-lg'>
               {slotInterviewerAvatar ?? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  className='w-full h-full object-cover'
+                  className='h-full w-full object-cover'
                   alt='Interviewer Avatar'
                   src='https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg'
                 />
@@ -50,7 +50,7 @@ export function UserLayout({
           <div>
             <div className='flex flex-col'>
               <div className='flex items-center space-x-2'>
-                <h3 className='font-medium text-base	'>{textInterviewerName}</h3>
+                <h3 className='text-base font-medium'>{textInterviewerName}</h3>
                 {isLinkedInVisible && (
                   <div className='cursor-pointer' onClick={onClickLinkedIn}>
                     <Linkedin className='h-4 w-4 text-gray-600' />
@@ -60,7 +60,7 @@ export function UserLayout({
               <p className='text-neutral-500'>{textDepartment}</p>
             </div>
 
-            <div className='flex gap-3 mt-4 '>
+            <div className='mt-4 flex gap-3'>
               <div className='flex items-center space-x-2'>
                 <Building className='h-4 w-4 text-gray-600' />
                 <span>{textRole}</span>
@@ -75,7 +75,7 @@ export function UserLayout({
               </div>
             </div>
             {/* part - 2 */}
-            <div className='flex  gap-3 mt-2 '>
+            <div className='mt-2 flex gap-3'>
               <div className='flex items-center space-x-2'>
                 <User className='h-4 w-4 text-gray-600' />
                 <span>{textInterviewer}</span>
@@ -91,11 +91,11 @@ export function UserLayout({
             </div>
           </div>
           {/* Edit Button */}
-          <div className='grow flex justify-end'>
+          <div className='flex grow justify-end'>
             {slotEditButton && slotEditButton}
           </div>
         </div>
-        <div className='sticky top-0 z-3 flex items-center bg-white'>
+        <div className='z-3 sticky top-0 flex items-center bg-white'>
           {slotNewTabPill ?? <></>}
         </div>
         <div className='flex flex-col bg-white p-4'>
@@ -103,7 +103,7 @@ export function UserLayout({
         </div>
       </div>
       {isUpcomingInterviewVisible && (
-        <div className='w-[400px] p-4 border-l border-neutral-400 flex flex-col space-y-2'>
+        <div className='flex w-[400px] flex-col space-y-2 border-l border-neutral-400 p-4'>
           <div className='flex items-center space-x-2'>
             <Building className='h-4 w-4 text-gray-600' />
             <span>Upcoming Interview</span>

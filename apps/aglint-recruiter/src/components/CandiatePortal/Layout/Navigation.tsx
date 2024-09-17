@@ -39,9 +39,9 @@ export default function Navigation() {
 
   const { company } = data;
   return (
-    <div className='sticky w-full px-5 top-3 z-50 flex items-center justify-center'>
-      <header className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border w-full max-w-screen-xl container mx-auto p-0'>
-        <div className='container mx-auto px-4 py-2 flex items-center justify-between'>
+    <div className='sticky top-3 z-50 flex w-full items-center justify-center px-5'>
+      <header className='container mx-auto w-full max-w-screen-xl rounded-md border border-border bg-background/80 p-0 shadow-sm backdrop-blur-sm'>
+        <div className='container mx-auto flex items-center justify-between px-4 py-2'>
           <div className='flex items-center justify-center'>
             {company?.logo ? (
               <Image
@@ -52,7 +52,7 @@ export default function Navigation() {
                 className='rounded-md object-contain'
               />
             ) : (
-              <span className='text-foreground text-4xl font-bold'>
+              <span className='text-4xl font-bold text-foreground'>
                 {company?.name}
               </span>
             )}
@@ -94,7 +94,7 @@ export default function Navigation() {
               >
                 Messages
                 {messageNewCount > 0 && (
-                  <Badge className='ml-2 px-2 py-0.5 text-xs bg-red-500'>
+                  <Badge className='ml-2 bg-red-500 px-2 py-0.5 text-xs'>
                     {messageNewCount}
                   </Badge>
                 )}

@@ -23,7 +23,7 @@ export const UpcomingInterview = ({
             {interviews.map((interview, index) => (
               <div
                 key={index}
-                className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'
+                className='flex items-center justify-between rounded-lg bg-gray-50 p-4'
               >
                 <div>
                   <h3 className='font-medium'>
@@ -52,7 +52,7 @@ export const UpcomingInterview = ({
             ))}
           </div>
         ) : (
-          <div className='w-full h-[100px] flex items-center justify-center'>
+          <div className='flex h-[100px] w-full items-center justify-center'>
             No Upcoming
           </div>
         )}

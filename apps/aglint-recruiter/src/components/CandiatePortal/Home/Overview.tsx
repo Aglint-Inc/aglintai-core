@@ -13,8 +13,8 @@ export function Overview() {
         </Button>
       </CardHeader>
       <CardContent>
-        <h2 className='text-xl font-bold mb-2'>Our Mission</h2>
-        <p className='text-sm text-gray-500 mb-4'>
+        <h2 className='mb-2 text-xl font-bold'>Our Mission</h2>
+        <p className='mb-4 text-sm text-gray-500'>
           Helping individuals, families, and communities live healthier more
           fulfilling lives by providing them access to healthier, affordable,
           and enjoyable food & lifestyle choices.

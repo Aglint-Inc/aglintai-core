@@ -4,7 +4,7 @@ import React from 'react';
 
 function Loader() {
   return (
-    <div className='h-[100px] relative'>
+    <div className='relative h-[100px]'>
       <div className='absolute left-[-100px] top-[-25px] w-[200px]'>
         <Lottie
           //   lottieRef={lottieRef}

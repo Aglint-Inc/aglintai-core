@@ -68,7 +68,7 @@ const Component = (props: Props) => {
               key={virtualRow.index}
               value={`${id} ${label}`}
               onSelect={() => props.onSelect({ id, label })}
-              className={`absolute top-0 left-0 w-full h-[${virtualRow.size}px]`}
+              className={`absolute left-0 top-0 w-full h-[${virtualRow.size}px]`}
               style={{
                 transform: `translateY(${virtualRow.start}px)`,
               }}

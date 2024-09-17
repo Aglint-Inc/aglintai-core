@@ -40,20 +40,20 @@ export function ConfigureSliderImages() {
             slider.
           </p>
         </div>
-        <div className='grid grid-cols-4 gap-4 auto-rows-auto'>
+        <div className='grid auto-rows-auto grid-cols-4 gap-4'>
           {/* 5 Grey Background Divs */}
           {data?.company_images?.map((image, index) => (
             <div
               key={index}
-              className='bg-gray-300 rounded-md flex items-center justify-center w-[150px] h-[150px] relative overflow-hidden group'
+              className='group relative flex h-[150px] w-[150px] items-center justify-center overflow-hidden rounded-md bg-gray-300'
             >
               {/* Show delete button on hover */}
               <button
                 onClick={() => deleteImages(image)}
-                className='absolute top-2 right-2 z-20 w-5 h-5 rounded-sm bg-white border border-gray-300 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out'
+                className='absolute right-2 top-2 z-20 flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm border border-gray-300 bg-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100'
                 aria-label='Delete image' // Added for accessibility
               >
-                <X strokeWidth={1} className='w-3 h-3' />
+                <X strokeWidth={1} className='h-3 w-3' />
               </button>
 
               <Image
@@ -61,10 +61,10 @@ export function ConfigureSliderImages() {
                 alt='company image'
                 width={150}
                 height={150}
-                className='w-full h-full object-cover relative z-10'
+                className='relative z-10 h-full w-full object-cover'
               />
               {isImageRemoving === image && (
-                <div className='w-[150px] h-[150px] absolute top-0 left-0 bg-white z-[21] flex items-center justify-center'>
+                <div className='absolute left-0 top-0 z-[21] flex h-[150px] w-[150px] items-center justify-center bg-white'>
                   Removing ...
                 </div>
               )}
@@ -77,11 +77,11 @@ export function ConfigureSliderImages() {
           >
             <DialogTrigger asChild>
               <Button
-                className='flex flex-col items-center gap-2 justify-center w-[150px] h-[150px]'
+                className='flex h-[150px] w-[150px] flex-col items-center justify-center gap-2'
                 variant='outline'
                 onClick={() => setIsDialogOpen('images')}
               >
-                <ImagePlus strokeWidth={1.5} className='w-10 h-10 ' />
+                <ImagePlus strokeWidth={1.5} className='h-10 w-10' />
                 <span className='text-sm font-normal'>Add Images</span>
               </Button>
             </DialogTrigger>
@@ -98,7 +98,7 @@ export function ConfigureSliderImages() {
                 setSelectedImages={setSelectedImages}
                 selectedImages={selectedImages}
               />
-              <DialogFooter className='w-full flex flex-row gap-2 justify-between'>
+              <DialogFooter className='flex w-full flex-row justify-between gap-2'>
                 <Button
                   variant='secondary'
                   className='w-full'

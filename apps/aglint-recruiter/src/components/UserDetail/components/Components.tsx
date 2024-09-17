@@ -25,9 +25,9 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
     <>
       {interviewer ? (
         <div
-          className={`sticky top-0 z-10 bg-white shadow transition-all duration-300 ${isTopBarVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`sticky top-0 z-10 bg-white shadow transition-all duration-300 ${isTopBarVisible ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
         >
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
+          <div className='mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-4'>
                 <Avatar className='h-10 w-10'>
@@ -61,9 +61,9 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
                   //   }
                   >
                     {interviewer.calendarConnected ? (
-                      <CheckCircle className='h-4 w-4 mr-1' />
+                      <CheckCircle className='mr-1 h-4 w-4' />
                     ) : (
-                      <AlertCircle className='h-4 w-4 mr-1' />
+                      <AlertCircle className='mr-1 h-4 w-4' />
                     )}
                     Calendar
                   </Badge>
@@ -71,9 +71,9 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
                   //   variant={interviewer.gmailConnected ? 'success' : 'secondary'}
                   >
                     {interviewer.gmailConnected ? (
-                      <CheckCircle className='h-4 w-4 mr-1' />
+                      <CheckCircle className='mr-1 h-4 w-4' />
                     ) : (
-                      <AlertCircle className='h-4 w-4 mr-1' />
+                      <AlertCircle className='mr-1 h-4 w-4' />
                     )}
                     Gmail
                   </Badge>
@@ -125,7 +125,7 @@ export const SideBar = ({
 }) => {
   const SideNavItem = ({ icon: Icon, label, active = false, onClick }) => (
     <div
-      className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'}`}
+      className={`flex cursor-pointer items-center space-x-3 rounded-lg px-3 py-2 ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'}`}
       onClick={onClick}
     >
       <Icon className='h-5 w-5' />
@@ -134,7 +134,7 @@ export const SideBar = ({
   );
 
   return (
-    <aside className='w-64 flex-shrink-0 sticky  top-[275px] self-start'>
+    <aside className='sticky top-[275px] w-64 flex-shrink-0 self-start'>
       <nav className='space-y-1'>
         <SideNavItem
           icon={UserCircle}

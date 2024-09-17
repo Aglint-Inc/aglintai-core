@@ -111,7 +111,7 @@ function RoleDetails({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className='flex justify-between items-center mb-6'>
+      <div className='mb-6 flex items-center justify-between'>
         <h1 className='text-lg font-bold'>
           {capitalizeFirstLetter(role.name)} Role
         </h1>
@@ -136,7 +136,7 @@ function RoleDetails({
           </AlertDescription>
         </Alert>
       )}
-      <div className='flex mt-6'>
+      <div className='mt-6 flex'>
         <div className='w-2/3 pr-6'>
           <div className='space-y-6'>
             {Object.entries(roleDetails || {}).map(
@@ -201,7 +201,7 @@ function RoleDetails({
         <div className='w-1/3'>
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg flex justify-between items-center'>
+              <CardTitle className='flex items-center justify-between text-lg'>
                 Users ({userLength || 0})
                 {ifAllowed(
                   <Button
@@ -210,7 +210,7 @@ function RoleDetails({
                     variant='outline'
                     className='flex items-center'
                   >
-                    <CirclePlus className='w-3 h-3 mr-1' />
+                    <CirclePlus className='mr-1 h-3 w-3' />
                     Add
                   </Button>,
                   ['manage_roles'],

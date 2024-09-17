@@ -26,7 +26,7 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
 
   return (
     <div className='w-full' id={chat.id}>
-      <div className='flex flex-row space-x-2 w-full'>
+      <div className='flex w-full flex-row space-x-2'>
         {chat.type === 'user' ? (
           <MuiAvatar
             src={recruiterUser.profile_image}
@@ -38,7 +38,7 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
           <AgentIcon />
         )}
 
-        <div className='flex flex-col space-y-1 w-full'>
+        <div className='flex w-full flex-col space-y-1'>
           <div className='flex flex-row space-x-2'>
             <p className='text-sm font-semibold'>
               {chat.type === 'agent'

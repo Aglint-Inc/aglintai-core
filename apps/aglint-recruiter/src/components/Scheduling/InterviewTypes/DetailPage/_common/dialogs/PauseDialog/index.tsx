@@ -144,7 +144,7 @@ function PauseDialog() {
           {optionsPause.map((option) => (
             <div
               key={option.type}
-              className='flex items-center space-x-1 cursor-pointer'
+              className='flex cursor-pointer items-center space-x-1'
               onClick={() => {
                 setSelectedType(option.type);
                 setPauseJson(option.pauseJson);
@@ -160,7 +160,7 @@ function PauseDialog() {
             </div>
           ))}
           {selectedType === 'custom' && (
-            <div className='flex space-x-1 w-full'>
+            <div className='flex w-full space-x-1'>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={dayjs(pause_json?.start_date)}

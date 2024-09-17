@@ -149,7 +149,7 @@ const Unparsable = () => {
       <OptimisticWrapper loading={loading}>
         {file ? (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Upload resume</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Upload resume</h2>
             <p className='mb-4'>Upload the resume to score the candidate</p>
             <div className='flex flex-col items-center gap-4'>
               <ResumeUploadComp
@@ -173,7 +173,7 @@ const Unparsable = () => {
           </div>
         ) : (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Resume not parsable</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Resume not parsable</h2>
             <p className='mb-4'>
               The system is unable to parse the candidate&apos;s resume. Please
               review it manually and proceed accordingly.
@@ -244,7 +244,7 @@ const Unavailable = () => {
       <OptimisticWrapper loading={loading}>
         {file ? (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Upload resume</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Upload resume</h2>
             <p className='mb-4'>Upload the resume to score the candidate</p>
             <div className='flex flex-col items-center gap-4'>
               <ResumeUploadComp
@@ -268,7 +268,7 @@ const Unavailable = () => {
           </div>
         ) : (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Resume not found</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Resume not found</h2>
             <p className='mb-4'>
               Unable to find the candidate resume. Upload the resume to score
               the candidate
@@ -326,7 +326,7 @@ const ResumeUploadComp = ({
       )}
       <div
         onClick={handleChange}
-        className={`border border-dashed rounded-md p-8 cursor-pointer flex items-center justify-center space-x-2 ${
+        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border border-dashed p-8 ${
           error ? 'border-red-500' : 'border-gray-300'
         } bg-gray-50`}
       >
@@ -345,7 +345,7 @@ const ResumeUploadComp = ({
         {value && <CheckCircle2 className='h-4 w-4 text-green-600' />}
       </div>
       {error && (
-        <p className='text-red-500 text-sm'>
+        <p className='text-sm text-red-500'>
           Please upload the candidate resume
         </p>
       )}

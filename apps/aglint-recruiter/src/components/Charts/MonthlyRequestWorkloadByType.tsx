@@ -74,9 +74,9 @@ export default function MonthlyRequestWorkloadChart() {
   };
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Monthly Request Workload by Type
         </CardTitle>
       </CardHeader>

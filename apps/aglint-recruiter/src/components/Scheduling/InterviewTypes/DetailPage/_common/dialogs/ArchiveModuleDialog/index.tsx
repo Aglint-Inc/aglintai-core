@@ -158,7 +158,7 @@ function ArchiveModuleDialog() {
               <AlertCircle className='h-4 w-4' />
               <AlertTitle>Unable to Archive</AlertTitle>
               <AlertDescription>
-                <ul className='list-disc pl-5 space-y-1'>
+                <ul className='list-disc space-y-1 pl-5'>
                   {errors.map((error, index) => (
                     <li key={index} className='text-sm text-muted-foreground'>
                       {error}
