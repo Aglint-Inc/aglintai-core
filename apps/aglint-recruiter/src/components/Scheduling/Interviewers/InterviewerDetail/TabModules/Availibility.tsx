@@ -4,7 +4,7 @@ import { Card } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { Autocomplete, Stack, TextField, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
@@ -15,7 +15,6 @@ import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/C
 import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
-import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import { InterviewLoadCard } from '../_common/InterviewLoadCard';
@@ -348,49 +347,7 @@ function Availibility({
           <Stack padding={'16px'}>
             <ScheduleSettings
               slotDayOff={<></>}
-              slotTimeZoneInput={
-                <Stack
-                  spacing={'var(--space-2)'}
-                  width={420}
-                  flexDirection={'column-reverse'}
-                  gap={'var(--space-2)'}
-                >
-                  <Autocomplete
-                    disabled={isTimeZone}
-                    disableClearable
-                    options={timeZone}
-                    value={selectedTimeZone}
-                    onChange={(_event, value) => {
-                      if (value) {
-                        setSelectedTimeZone(value);
-                      }
-                    }}
-                    autoComplete={false}
-                    getOptionLabel={(option) => option.label}
-                    renderOption={(props, option) => {
-                      return (
-                        <li {...props}>
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            {option.label}
-                          </Typography>
-                        </li>
-                      );
-                    }}
-                    renderInput={(params) => {
-                      return (
-                        <TextField
-                          {...params}
-                          label=''
-                          placeholder='Ex. Healthcare'
-                        />
-                      );
-                    }}
-                  />
-                </Stack>
-              }
+              slotTimeZoneInput={<>{/* // Autocomplete was here */}</>}
               isKeywordVisible={false}
               isCompanyLevelVisible={false}
               slotKeywordCard={<></>}

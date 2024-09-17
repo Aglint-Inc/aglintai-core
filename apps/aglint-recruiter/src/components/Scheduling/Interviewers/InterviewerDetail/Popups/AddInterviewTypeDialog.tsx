@@ -118,33 +118,6 @@ function AddInterviewTypeDialog() {
               setSelectedModule(module);
             }}
           />
-          {/* <Autocomplete
-            fullWidth
-            disabled={isLoading}
-            disableClearable
-            options={filteredModules}
-            onChange={(_event, value) => {
-              if (value) {
-                setSelectedModule(value);
-              }
-            }}
-            autoComplete={false}
-            getOptionLabel={(option) => option.name}
-            renderOption={(props, option) => {
-              return (
-                <li {...props}>
-                  <Typography variant='body1' color={'var(--neutral-12)'}>
-                    {option.name}
-                  </Typography>
-                </li>
-              );
-            }}
-            renderInput={(params) => {
-              return (
-                <TextField {...params} placeholder='Ex. Initial Screening' />
-              );
-            }}
-          /> */}
         </Stack>
       </UIDialog>
     </>
