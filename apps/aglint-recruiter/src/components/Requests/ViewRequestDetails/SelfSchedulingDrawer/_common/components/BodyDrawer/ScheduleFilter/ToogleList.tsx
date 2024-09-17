@@ -1,4 +1,3 @@
-import { SchedulerConflictCard } from '@devlink3/SchedulerConflictCard';
 import { Grid, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -8,6 +7,7 @@ import {
   setLocalFilters,
   useSelfSchedulingFlowStore,
 } from '../../../store/store';
+import { SchedulerConflictCard } from './SchedulerConflictCard';
 import { filterSchedulingOptionsArray } from './utils';
 
 type AvailabilityType =
