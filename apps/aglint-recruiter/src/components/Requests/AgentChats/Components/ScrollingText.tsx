@@ -48,10 +48,10 @@ const ScrollingText = () => {
     <Button
       variant='ghost'
       onClick={handleClick}
-      className='cursor-pointer text-left w-full'
+      className='w-full cursor-pointer text-left'
       aria-label='Cycle through tips'
     >
-      <p className='text-sm truncate'>{textArray[currentIndex]}</p>
+      <p className='truncate text-sm'>{textArray[currentIndex]}</p>
     </Button>
   );
 };

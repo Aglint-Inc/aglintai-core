@@ -75,7 +75,7 @@ const WorkTime: FC<WorkTimeProps> = ({
   }, []);
 
   return (
-    <Card className='relative group'>
+    <Card className='group relative'>
       <CardHeader>
         <CardTitle className='text-lg font-semibold'>Working Hours</CardTitle>
         <CardDescription className='text-sm text-gray-500'>
@@ -86,7 +86,7 @@ const WorkTime: FC<WorkTimeProps> = ({
             <Button
               variant='outline'
               size='sm'
-              className='absolute top-1 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
+              className='absolute right-2 top-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100'
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Working Hours</span>
@@ -155,12 +155,12 @@ const WorkTime: FC<WorkTimeProps> = ({
         </Popover>
       </CardHeader>
       <CardContent>
-        <div className='relative  rounded-lg py-4 group'>
-          <div className='flex items-center space-x-2 mb-4'>
+        <div className='group relative rounded-lg py-4'>
+          <div className='mb-4 flex items-center space-x-2'>
             <Calendar className='h-4 w-4 text-muted-foreground' />
             <p className='text-sm font-medium'>Weekly Schedule</p>
           </div>
-          <div className='border rounded-lg'>
+          <div className='rounded-lg border'>
             <Table>
               <TableHeader className='bg-gray-100'>
                 <TableRow>

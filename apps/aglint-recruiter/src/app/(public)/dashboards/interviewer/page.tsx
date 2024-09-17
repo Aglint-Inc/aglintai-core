@@ -15,7 +15,7 @@ export default function InterviewDashboard() {
 
   return (
     <div className='flex'>
-      <div className='w-4/12 mr-6'>
+      <div className='mr-6 w-4/12'>
         <InterviewDashboardSideNav
           activeTab={activeTab}
           setActiveTab={(tab) => {
@@ -26,7 +26,7 @@ export default function InterviewDashboard() {
           }}
         />
       </div>
-      <div className='w-8/12 flex flex-col'>
+      <div className='flex w-8/12 flex-col'>
         <div className='p-6'>
           <DashboardDataFilter />
         </div>

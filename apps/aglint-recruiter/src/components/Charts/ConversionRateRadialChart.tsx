@@ -36,7 +36,7 @@ export function ConversionRateRadialChart() {
   return (
     <Card className='flex flex-col border border-border'>
       <CardHeader className='items-center pb-0'>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Total Interviews Conducted
         </CardTitle>
         <CardDescription>January - June 2024</CardDescription>

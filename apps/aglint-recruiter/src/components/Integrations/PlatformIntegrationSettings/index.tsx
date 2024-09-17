@@ -23,9 +23,9 @@ function PlatformIntegrationSettingsComponent() {
         title={`Integrations | Aglint AI`}
         description='AI for People Products'
       />
-      <div className='w-[960px] mx-auto mt-4'>
+      <div className='mx-auto mt-4 w-[960px]'>
         <div className='flex flex-col'>
-          <h1 className='text-xl font-bold mb-4'>
+          <h1 className='mb-4 text-xl font-bold'>
             {capitalizeFirstLetter(params.platform)} Integration Settings
           </h1>
           <Breadcrumb>
@@ -61,15 +61,15 @@ function switchToPlatform(platform: string) {
       return <GreenhouseSettings />;
     default:
       return (
-        <div className='flex flex-col w-[460px] mx-auto items-center justify-center min-h-screen'>
-          <h1 className='text-2xl font-bold mb-4'>Page Not Found</h1>
-          <p className='text-base mb-8'>
+        <div className='mx-auto flex min-h-screen w-[460px] flex-col items-center justify-center'>
+          <h1 className='mb-4 text-2xl font-bold'>Page Not Found</h1>
+          <p className='mb-8 text-base'>
             The requested integration platform is not available. Please contact
             support at support@aglinthq.com for assistance.
           </p>
           <Link
             href={ROUTES['/integrations']()}
-            className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors'
+            className='rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600'
           >
             Go to Integrations
           </Link>

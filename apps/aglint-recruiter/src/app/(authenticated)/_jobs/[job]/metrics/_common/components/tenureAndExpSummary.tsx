@@ -11,7 +11,7 @@ const TenureAndExpSummary: FC = () => {
 
   if (status === 'pending') {
     return (
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
         <Skeleton className='h-[200px] w-full' />
         <Skeleton className='h-[200px] w-full' />
       </div>
@@ -20,7 +20,7 @@ const TenureAndExpSummary: FC = () => {
 
   if (status === 'error') {
     return (
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
         <Card>
           <CardContent className='pt-6'>
             <p className='text-center text-red-500'>Error loading data</p>
@@ -37,7 +37,7 @@ const TenureAndExpSummary: FC = () => {
 
   if (!data) {
     return (
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
         <NoDataCard title='Average Tenure' />
         <NoDataCard title='Average Experience' />
       </div>
@@ -45,7 +45,7 @@ const TenureAndExpSummary: FC = () => {
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+    <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
       <Tenure average_tenure={data.average_tenure} />
       <Experience average_experience={data.average_experience} />
     </div>

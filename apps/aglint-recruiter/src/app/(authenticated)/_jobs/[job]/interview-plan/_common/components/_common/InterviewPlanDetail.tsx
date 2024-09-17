@@ -45,7 +45,7 @@ export function InterviewPlanDetail({
 }: InterviewPlanDetailProps) {
   return (
     <div className={cn('relative', className)}>
-      <div className='relative flex flex-col gap-2 p-4 border border-neutral-200 rounded-lg bg-white'>
+      <div className='relative flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white p-4'>
         <div className='flex items-center gap-1'>
           <div className='flex gap-1'>
             {isDebriefIconVisible && <Users size={16} />}
@@ -66,7 +66,7 @@ export function InterviewPlanDetail({
         </div>
         <div>
           <div
-            className=' hover:bg-orange-100 cursor-pointer flex items-center gap-2 rounded-sm p-[3px] px-2 w-fit bg-orange-50'
+            className='flex w-fit cursor-pointer items-center gap-2 rounded-sm bg-orange-50 p-[3px] px-2 hover:bg-orange-100'
             onClick={onClickLink}
           >
             <UITypography className='text-red-900' variant='p' type='small'>
@@ -80,7 +80,7 @@ export function InterviewPlanDetail({
           <div className='text-sm text-gray-600'>{textSelected}</div>
           <div>{slotInterviewers}</div>
         </div>
-        <div className='absolute top-4 right-4 hidden group-hover:flex gap-2'>
+        <div className='absolute right-4 top-4 hidden gap-2 group-hover:flex'>
           {slotButtons}
         </div>
       </div>

@@ -24,7 +24,7 @@ function Interviewers() {
 
   if (isLoading)
     return (
-      <div className='flex items-center justify-center w-full h-full'>
+      <div className='flex h-full w-full items-center justify-center'>
         <Loader />
       </div>
     );
@@ -69,7 +69,7 @@ function Interviewers() {
 
   return (
     <div className='min-h-screen py-8'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <Header
           isFilterApplied={isFilterApplied}
           searchText={searchText}
@@ -106,7 +106,7 @@ function Interviewers() {
               </TableBody>
             </Table>
             {filteredInterviewers?.length === 0 ? (
-              <div className='w-full flex items-center justify-center h-[200px]'>
+              <div className='flex h-[200px] w-full items-center justify-center'>
                 No Interviewers found
               </div>
             ) : (

@@ -12,10 +12,10 @@ function ErrorsFindAvailibility() {
   return (
     <>
       {noOptions && (
-        <div className='bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4'>
+        <div className='mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4'>
           <div className='flex'>
             <div className='flex-shrink-0'>
-              <Lightbulb className='w-6 h-6 text-purple-500 flex-shrink-0' />
+              <Lightbulb className='h-6 w-6 flex-shrink-0 text-purple-500' />
             </div>
             <div className='ml-3'>
               <p className='text-sm font-medium text-yellow-700'>

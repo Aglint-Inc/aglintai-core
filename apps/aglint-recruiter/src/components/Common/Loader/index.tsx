@@ -20,7 +20,7 @@ export function Loader({ variant = 'inline', size, className }: LoaderProps) {
   return (
     <div
       className={cn(
-        'flex items-center justify-center w-full h-full',
+        'flex h-full w-full items-center justify-center',
         className,
       )}
     >

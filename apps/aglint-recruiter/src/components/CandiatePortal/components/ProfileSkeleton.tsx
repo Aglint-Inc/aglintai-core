@@ -3,10 +3,10 @@ import { Skeleton } from '@components/ui/skeleton';
 
 export default function ProfileSkeleton() {
   return (
-    <Card className='w-full max-w-3xl mx-auto '>
+    <Card className='mx-auto w-full max-w-3xl'>
       <CardHeader className='flex flex-row items-start justify-between'>
         <div className='flex flex-col gap-4'>
-          <Skeleton className='w-[120px] h-[120px] rounded-md' />
+          <Skeleton className='h-[120px] w-[120px] rounded-md' />
           <Skeleton className='h-6 w-[200px]' />
         </div>
         <Skeleton className='h-10 w-[100px]' />

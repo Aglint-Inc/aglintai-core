@@ -44,10 +44,10 @@ export function UIAlert({
   return (
     <Alert variant={color} className={alertClass}>
       {type === 'large' ? (
-        <div className='flex flex-col w-full'>
+        <div className='flex w-full flex-col'>
           <div
             className={
-              'flex flex-row gap-2 justify-between w-full items-center'
+              'flex w-full flex-row items-center justify-between gap-2'
             }
           >
             <div className={'flex flex-row gap-2'}>
@@ -65,8 +65,8 @@ export function UIAlert({
           </div>
           {notes && (
             <div className='mt-4 pl-2'>
-              <div className={'flex flex-row gap-2 items-center'}>
-                <Icons.NotebookPen size={16} className=' text-neutral-500' />
+              <div className={'flex flex-row items-center gap-2'}>
+                <Icons.NotebookPen size={16} className='text-neutral-500' />
                 <p>Additional Note</p>
               </div>
               <AlertDescription>{notes}</AlertDescription>
@@ -75,7 +75,7 @@ export function UIAlert({
         </div>
       ) : type === 'inline' ? (
         <div
-          className={'flex flex-row gap-2 justify-between w-full items-center'}
+          className={'flex w-full flex-row items-center justify-between gap-2'}
         >
           <div className={'flex flex-row gap-2'}>
             {IconComponent && <IconComponent size={16} />}
@@ -86,7 +86,7 @@ export function UIAlert({
           {actions && <div className='flex gap-2'>{actions}</div>}
         </div>
       ) : (
-        <div className={'flex flex-col gap-1 w-full'}>
+        <div className={'flex w-full flex-col gap-1'}>
           <div className={'flex flex-row gap-2'}>
             {IconComponent && <IconComponent size={16} />}
             <div className='flex flex-col'>
@@ -98,7 +98,7 @@ export function UIAlert({
               {description}
             </AlertDescription>
           )}
-          {actions && <div className='flex gap-2 w-full'>{actions}</div>}
+          {actions && <div className='flex w-full gap-2'>{actions}</div>}
         </div>
       )}
     </Alert>

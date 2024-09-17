@@ -84,7 +84,7 @@ export default function Heatmap({
 
   return (
     <div className='m-2'>
-      <div className='flex justify-between items-center mb-1 max-w-[870px]'>
+      <div className='mb-1 flex max-w-[870px] items-center justify-between'>
         <div className='flex items-center space-x-1'>
           <p className='min-w-[250px]'>
             Activity on{' '}
@@ -101,7 +101,7 @@ export default function Heatmap({
                 end: pre.end - 28,
               }))
             }
-            icon={<ChevronLeft className='w-4 h-4' />}
+            icon={<ChevronLeft className='h-4 w-4' />}
           />
           <UIButton
             size='sm'
@@ -112,7 +112,7 @@ export default function Heatmap({
                 end: pre.end + 28,
               }))
             }
-            icon={<ChevronRight className='w-4 h-4' />}
+            icon={<ChevronRight className='h-4 w-4' />}
           />
         </div>
 

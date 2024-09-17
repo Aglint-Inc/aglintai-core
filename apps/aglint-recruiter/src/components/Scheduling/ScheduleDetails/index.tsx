@@ -106,8 +106,8 @@ function SchedulingViewComp() {
       <UIPageLayout
         slotTopbarLeft={
           isLoading ? (
-            <div className='w-[150px] h-[20px]'>
-              <Skeleton className='w-full h-full' />
+            <div className='h-[20px] w-[150px]'>
+              <Skeleton className='h-full w-full' />
             </div>
           ) : (
             <>{breadcrum}</>
@@ -117,7 +117,11 @@ function SchedulingViewComp() {
           <div className='h-[calc(100vh-48px)] overflow-hidden'>
             {!isLoading ? (
               <div className='flex justify-between'>
+<<<<<<< HEAD
                 <div className='h-screen overflow-auto w-full'>
+=======
+                <div className='h-screen w-full overflow-auto'>
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
                   {data?.schedule_data ? (
                     <DetailsOverview
                       data={data}
@@ -137,7 +141,11 @@ function SchedulingViewComp() {
                 </div>
 
                 {checkPermissions(['scheduling_actions']) && (
+<<<<<<< HEAD
                   <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto p-[var(--space-4)] border-l border-[var(--neutral-6)]'>
+=======
+                  <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto border-l border-[var(--neutral-6)] p-[var(--space-4)]'>
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
                     <div className='mb-2 flex flex-col space-y-1'>
                       <p className='font-medium'>Job</p>
                       <WorkflowConnectedCard

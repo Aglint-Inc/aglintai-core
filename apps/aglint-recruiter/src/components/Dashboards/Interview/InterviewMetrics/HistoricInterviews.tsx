@@ -18,7 +18,7 @@ export default function HistoricInterviews() {
   const data = useInterviewCount(timeFrame);
   return (
     <div>
-      <div className='flex justify-between items-center mb-4'>
+      <div className='mb-4 flex items-center justify-between'>
         <h2 className='text-md font-semibold'>Historic</h2>
         <div className='mb-4'>
           <ToggleGroup
@@ -54,7 +54,7 @@ export default function HistoricInterviews() {
             )}
           </BarChart>
         ) : (
-          <div className='flex justify-center items-center h-64'>
+          <div className='flex h-64 items-center justify-center'>
             empty@ravi
           </div>
         )}

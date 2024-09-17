@@ -59,7 +59,7 @@ export default function FilterHeader({
   }, [debouncedSearch]);
 
   return (
-    <div className='flex flex-row justify-between items-center w-full'>
+    <div className='flex w-full flex-row items-center justify-between'>
       <div className='flex flex-row space-x-2'>
         {Boolean(search) && (
           <SearchField
@@ -70,8 +70,8 @@ export default function FilterHeader({
             height='h-9'
           />
         )}
-        <div className='flex flex-row justify-between flex-grow'>
-          <div className='flex flex-row gap-2 items-center'>
+        <div className='flex flex-grow flex-row justify-between'>
+          <div className='flex flex-row items-center gap-2'>
             <div className='flex flex-row gap-2'>
               <FiltersComponent
                 filters={filters}

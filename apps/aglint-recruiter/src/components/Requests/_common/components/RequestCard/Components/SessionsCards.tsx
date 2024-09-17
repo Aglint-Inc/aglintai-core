@@ -1,4 +1,3 @@
-
 import { Stack } from '@mui/material';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -27,7 +26,7 @@ function SessionsCards({
                 key={id ?? i}
                 variant='secondary'
                 size='sm'
-                rightIcon={<ArrowUpRight/>}
+                rightIcon={<ArrowUpRight />}
                 onClick={() => {
                   window.open(
                     `${process.env.NEXT_PUBLIC_HOST_NAME}/jobs/${job_id}/application/${application_id}?tab=interview`,

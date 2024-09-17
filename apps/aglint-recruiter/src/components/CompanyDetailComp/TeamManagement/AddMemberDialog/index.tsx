@@ -244,7 +244,7 @@ const AddMember = ({
       size='lg'
       slotButtons={<></>}
     >
-      <div className='mt-4 space-y-4 '>
+      <div className='mt-4 space-y-4'>
         {menu === 'addMember' ? (
           <>
             <form className='space-y-4'>
@@ -430,8 +430,8 @@ const AddMember = ({
               </UIButton>
             </div>
             {isDisable && (
-              <div className='flex justify-center items-center'>
-                <Loader2 className='w-6 h-6 animate-spin text-primary' />
+              <div className='flex items-center justify-center'>
+                <Loader2 className='h-6 w-6 animate-spin text-primary' />
               </div>
             )}
           </>

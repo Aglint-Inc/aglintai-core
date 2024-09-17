@@ -5,8 +5,8 @@ import { ScheduleInterviewBlock } from './ScheduleInterviewBlock';
 
 export default function InterviewScheduler() {
   return (
-    <div className='max-w-md mx-auto p-4 bg-white rounded-lg shadow'>
-      <h1 className='text-2xl font-bold mb-6'>Whats next?</h1>
+    <div className='mx-auto max-w-md rounded-lg bg-white p-4 shadow'>
+      <h1 className='mb-6 text-2xl font-bold'>Whats next?</h1>
       <ScheduleInterviewBlock />
       <AvailabilityBlock />
       <NextInterviewBlock />

@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <link rel='icon' href='/favicon.ico' />
         <meta name='description' content='AI for People Products' />
-       
+
         <meta
           name='keywords'
           content='hiring, recruitment, AI, company culture, automated screening, job candidates'

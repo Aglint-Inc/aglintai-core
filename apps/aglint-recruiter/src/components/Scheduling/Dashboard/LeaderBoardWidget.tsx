@@ -36,14 +36,21 @@ const LeaderBoardWidgetRows = ({ type }: LeaderBoardWidgetRowsProps) => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
+<<<<<<< HEAD
       <Skeleton key={i} className='w-full h-full' />
+=======
+      <LeaderBoardLoader
+        key={i}
+        slotSkeleton={<Skeleton className='h-full w-full' />}
+      />
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
     ));
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>
@@ -69,7 +76,7 @@ const LeaderBoardWidgetComponent = ({
           onClick={() => {
             router.push(`scheduling/interviewer/${item.user_id}?tab=overview`);
           }}
-          className='rounded-md cursor-pointer'
+          className='cursor-pointer rounded-md'
         >
           <Link href={`/user/profile/${item.user_id}`}>
             <Card className='p-4 hover:bg-neutral-100 transition-colors duration-200'>

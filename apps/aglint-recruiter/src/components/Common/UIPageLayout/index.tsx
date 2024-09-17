@@ -20,29 +20,29 @@ export function UIPageLayout({
   isHeaderDividerVisible?: boolean;
 }) {
   return (
-    <div className='w-full h-screen'>
-      <div className='relative flex h-[48px] px-5 justify-between items-center'>
+    <div className='h-screen w-full'>
+      <div className='relative flex h-[48px] items-center justify-between px-5'>
         <div className='relative z-10 flex items-center gap-4'>
           {isBackButton && (
             <div
-              className='flex items-center gap-1 cursor-pointer transition-all duration-250 ease hover:opacity-70'
+              className='duration-250 ease flex cursor-pointer items-center gap-1 transition-all hover:opacity-70'
               {...onClickBack}
             >
-              <ChevronLeft className='w-3 h-3 text-gray-600' />
+              <ChevronLeft className='h-3 w-3 text-gray-600' />
               <div className='text-gray-600'>Back</div>
             </div>
           )}
           <div className='flex items-center gap-1'>{slotTopbarLeft}</div>
         </div>
         <div className='relative z-10 flex gap-2'>{slotTopbarRight}</div>
-        <div className='absolute inset-0 flex flex-col justify-center items-center pointer-events-none'>
+        <div className='pointer-events-none absolute inset-0 flex flex-col items-center justify-center'>
           {slotSaving}
         </div>
         {isHeaderDividerVisible && (
-          <div className='absolute inset-x-0 bottom-0 w-full h-px bg-neutral-200 pointer-events-none' />
+          <div className='pointer-events-none absolute inset-x-0 bottom-0 h-px w-full bg-neutral-200' />
         )}
       </div>
-      <div className='overflow-auto h-[calc(100vh-48px)]'>{slotBody}</div>
+      <div className='h-[calc(100vh-48px)] overflow-auto'>{slotBody}</div>
     </div>
   );
 }

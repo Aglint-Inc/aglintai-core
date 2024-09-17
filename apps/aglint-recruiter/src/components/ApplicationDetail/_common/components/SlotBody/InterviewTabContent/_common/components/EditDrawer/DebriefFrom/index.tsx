@@ -120,7 +120,7 @@ function DebriedForm() {
           />
         </div>
         <div>
-          <h3 className='text-sm font-medium mb-2'>Members</h3>
+          <h3 className='mb-2 text-sm font-medium'>Members</h3>
           <MembersAutoComplete
             placeholder='Select Interviewers'
             renderUsers={filterDebriefMembers}

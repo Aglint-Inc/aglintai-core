@@ -17,11 +17,11 @@ export const Feedback = ({
         <div className='space-y-4'>
           {feedbacks?.length ? (
             feedbacks.map((feedback, index) => (
-              <div key={index} className='bg-gray-50 p-4 rounded-lg'>
-                <div className='flex justify-between items-start'>
+              <div key={index} className='rounded-lg bg-gray-50 p-4'>
+                <div className='flex items-start justify-between'>
                   <div>
                     <h3 className='text-base font-medium'>from</h3>
-                    <p className='text-sm text-gray-500 mt-1'>date</p>
+                    <p className='mt-1 text-sm text-gray-500'>date</p>
                   </div>
                   <Badge variant='secondary'>from</Badge>
                 </div>
@@ -29,7 +29,7 @@ export const Feedback = ({
               </div>
             ))
           ) : (
-            <div className='w-full h-[100px] flex items-center justify-center'>
+            <div className='flex h-[100px] w-full items-center justify-center'>
               No feedback available
             </div>
           )}

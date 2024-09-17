@@ -17,7 +17,7 @@ export function TrainingDetailList({
 }: TrainingDetailListProps) {
   return (
     <div className='flex items-center gap-2.5'>
-      <div className='flex items-center gap-2.5 w-[300px]'>
+      <div className='flex w-[300px] items-center gap-2.5'>
         <div>
           {isShadow && (
             <svg

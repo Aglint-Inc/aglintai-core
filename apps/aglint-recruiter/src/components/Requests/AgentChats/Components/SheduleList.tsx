@@ -27,7 +27,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
           onMouseLeave={() => setHovered(null)}
           className='block text-inherit no-underline'
         >
-          <div className='flex flex-row items-start space-x-3 relative'>
+          <div className='relative flex flex-row items-start space-x-3'>
             <div className='w-36'>
               <div className='text-neutral-500'>
                 <p className='text-base font-medium text-gray-500'>
@@ -54,8 +54,8 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
             </div>
 
             {hovered === schedule.link && (
-              <div className='absolute right-0 top-0 bottom-0 flex items-center'>
-                <button className='flex items-center px-3 py-1 border border-neutral-300 rounded text-neutral-700'>
+              <div className='absolute bottom-0 right-0 top-0 flex items-center'>
+                <button className='flex items-center rounded border border-neutral-300 px-3 py-1 text-neutral-700'>
                   View Details
                   <SquareArrowOutUpRight />
                 </button>

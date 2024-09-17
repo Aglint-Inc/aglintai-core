@@ -84,7 +84,7 @@ export default function ResetPasswordComponent() {
   return (
     <Card className='w-[400px] border-border'>
       <CardHeader>
-        <h2 className='text-2xl font-bold text-center'>Reset Password</h2>
+        <h2 className='text-center text-2xl font-bold'>Reset Password</h2>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
@@ -120,7 +120,7 @@ export default function ResetPasswordComponent() {
               </Button>
             </div>
             {errors.password && (
-              <p className='text-red-500 text-sm'>{errors.password.message}</p>
+              <p className='text-sm text-red-500'>{errors.password.message}</p>
             )}
           </div>
           <div className='space-y-2'>
@@ -136,7 +136,7 @@ export default function ResetPasswordComponent() {
               })}
             />
             {errors.confirmPassword && (
-              <p className='text-red-500 text-sm'>
+              <p className='text-sm text-red-500'>
                 {errors.confirmPassword.message}
               </p>
             )}

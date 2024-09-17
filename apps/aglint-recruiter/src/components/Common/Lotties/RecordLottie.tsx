@@ -23,7 +23,7 @@ function RecordLottie({ lottieRef, listening }) {
     }
   }, [listening]);
   return (
-    <div className='h-[21px] relative'>
+    <div className='relative h-[21px]'>
       <div className='absolute left-[-18px] top-[-25px] w-[65px]'>
         <Lottie
           lottieRef={lottieRef}

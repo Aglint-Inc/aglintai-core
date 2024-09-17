@@ -50,14 +50,14 @@ const YourScheduleMeetings = ({
 
               return (
                 <Card key={index} className='flex items-center p-4'>
-                  <div className='flex-shrink-0 mr-4 text-center'>
+                  <div className='mr-4 flex-shrink-0 text-center'>
                     <div className='text-lg font-semibold'>{meetingDay}</div>
                     <div className='text-3xl font-bold'>{meetingDate}</div>
                     <div className='text-sm'>{month}</div>
                   </div>
                   <div className='flex-grow'>
-                    <div className='flex items-center mb-2'>
-                      <Avatar className='h-10 w-10 mr-2'>
+                    <div className='mb-2 flex items-center'>
+                      <Avatar className='mr-2 h-10 w-10'>
                         <AvatarImage
                           src={item.candidate.image}
                           alt={item.candidate.name}
@@ -76,11 +76,11 @@ const YourScheduleMeetings = ({
                       </div>
                     </div>
                     <div className='flex items-center text-sm text-gray-500'>
-                      <Clock className='w-4 h-4 mr-1' />
+                      <Clock className='mr-1 h-4 w-4' />
                       {meetTime}
                     </div>
-                    <div className='flex items-center mt-2'>
-                      <Avatar className='h-6 w-6 mr-2'>
+                    <div className='mt-2 flex items-center'>
+                      <Avatar className='mr-2 h-6 w-6'>
                         <AvatarImage
                           src={item.meetingClient.icon}
                           alt={item.meetingClient.name}

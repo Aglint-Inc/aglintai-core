@@ -50,7 +50,7 @@ const RequestDetailsBreadcrumb: React.FC<BreadcrumbComponentProps> = ({
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <div className='flex flex-row justify-center items-center space-x-2'>
+          <div className='flex flex-row items-center justify-center space-x-2'>
             <span className='text-sm'>
               {`Schedule ${formatSessions(
                 selectedRequest.request_relation.map(
@@ -59,7 +59,7 @@ const RequestDetailsBreadcrumb: React.FC<BreadcrumbComponentProps> = ({
               )} interview with `}
             </span>
             <span
-              className='text-sm text-accent-900 cursor-pointer'
+              className='text-accent-900 cursor-pointer text-sm'
               onClick={() => {
                 window.open(
                   ROUTES['/jobs/[job]/application/[application_id]']({

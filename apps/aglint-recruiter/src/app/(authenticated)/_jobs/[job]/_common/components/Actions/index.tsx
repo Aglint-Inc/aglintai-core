@@ -11,7 +11,7 @@ const Actions = () => {
   const count = checklist.length;
   return (
     <>
-      <div className='flex items-center justify-between p-4 bg-white border-t border-gray-200'>
+      <div className='flex items-center justify-between border-t border-gray-200 bg-white p-4'>
         <div className='flex items-center space-x-4'>
           <Button
             onClick={() => setChecklist([])}

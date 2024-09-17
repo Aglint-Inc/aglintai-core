@@ -36,7 +36,7 @@ export default function ConfigureCompanyEdit() {
         </div>
         {data?.about && (
           <ScrollArea className='w-full rounded-md border bg-gray-100'>
-            <div className='max-h-72 w-full p-4 space-y-4 '>
+            <div className='max-h-72 w-full space-y-4 p-4'>
               {htmlParser.parse(data?.about)}
             </div>
           </ScrollArea>
@@ -63,7 +63,7 @@ export default function ConfigureCompanyEdit() {
               Edit the about section of your company.
             </DialogDescription>
           </DialogHeader>
-          <div className='border border-muted-foreground rounded-md bg-background'>
+          <div className='rounded-md border border-muted-foreground bg-background'>
             <TipTapAIEditor
               enablAI={false}
               placeholder={''}
@@ -76,7 +76,7 @@ export default function ConfigureCompanyEdit() {
               initialValue={data?.about}
             />
           </div>
-          <DialogFooter className='w-full flex flex-row gap-2 justify-between'>
+          <DialogFooter className='flex w-full flex-row justify-between gap-2'>
             <Button
               variant='secondary'
               className='w-full'

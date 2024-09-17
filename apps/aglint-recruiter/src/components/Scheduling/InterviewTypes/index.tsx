@@ -88,7 +88,7 @@ export function InterviewTypes() {
         }
         slotBody={
           isLoading || isFetching ? (
-            <div className='flex flex-col h-full'>
+            <div className='flex h-full flex-col'>
               <Loader />
             </div>
           ) : (
@@ -96,8 +96,8 @@ export function InterviewTypes() {
               <CreateModuleDialog />
               <InterviewModuleTable
                 slotFilter={
-                  <div className='flex flex-row gap-4 justify-between items-center w-full h-8'>
-                    <div className='flex flex-row gap-4 justify-center items-center h-full'>
+                  <div className='flex h-8 w-full flex-row items-center justify-between gap-4'>
+                    <div className='flex h-full flex-row items-center justify-center gap-4'>
                       <UITextField
                         value={textSearch}
                         placeholder='Search by name.'
@@ -152,7 +152,7 @@ export function InterviewTypes() {
                   </div>
                 }
                 slotInterviewModuleCard={
-                  <div className='w-full h-[calc(100vh-112px)]'>
+                  <div className='h-[calc(100vh-112px)] w-full'>
                     {filterModules.length > 0 ? (
                       <>
                         {filterModules.map((mod) => {
@@ -223,7 +223,7 @@ export function InterviewTypes() {
                       </>
                     ) : (
                       <div className='p-2'>
-                        <div className='p-4 rounded-md flex justify-center items-center min-h-[calc(100vh-166px)] bg-neutral-200'>
+                        <div className='flex min-h-[calc(100vh-166px)] items-center justify-center rounded-md bg-neutral-200 p-4'>
                           <div className='flex flex-col items-center justify-center space-y-4'>
                             <FileQuestion className='h-16 w-20 text-gray-400' />
                             <p className='text-sm text-gray-500'>

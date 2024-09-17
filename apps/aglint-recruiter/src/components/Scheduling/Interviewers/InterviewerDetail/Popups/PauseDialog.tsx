@@ -122,7 +122,7 @@ function PauseDialog() {
           </>
         }
       >
-        <div className='flex flex-col space-y-2 w-full'>
+        <div className='flex w-full flex-col space-y-2'>
           <UIAlert
             type='small'
             color={'warning'}
@@ -155,7 +155,7 @@ function PauseDialog() {
             <div className='flex flex-col space-y-2'>
               <p className='text-sm font-medium text-[#2F3941]'>Pause For</p>
               <div
-                className='flex flex-row items-center space-x-2 cursor-pointer'
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('isManual');
                   setPauseJson({
@@ -174,7 +174,7 @@ function PauseDialog() {
                 </div>
               </div>
               <div
-                className='flex flex-row items-center space-x-2 cursor-pointer'
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('twoWeek');
                   setPauseJson({
@@ -195,7 +195,7 @@ function PauseDialog() {
                 </div>
               </div>
               <div
-                className='flex flex-row items-center space-x-2 cursor-pointer'
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('oneMonth');
                   setPauseJson({
@@ -216,7 +216,7 @@ function PauseDialog() {
                 </div>
               </div>
               <div
-                className='flex flex-row items-center space-x-2 cursor-pointer'
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('threeMonth');
                   setPauseJson({
@@ -237,7 +237,7 @@ function PauseDialog() {
                 </div>
               </div>
               <div
-                className='flex flex-row items-center space-x-2 cursor-pointer'
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('custom');
                   setPauseJson({
@@ -253,7 +253,7 @@ function PauseDialog() {
                 </span>
               </div>
               {selectedType === 'custom' && (
-                <div className='flex flex-row w-full space-x-1'>
+                <div className='flex w-full flex-row space-x-1'>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       value={dayjs(pause_json?.start_date)}

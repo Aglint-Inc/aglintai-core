@@ -25,7 +25,7 @@ function InterviewTabContent() {
 
   if (isLoadingSession || isLoadingDetail)
     return (
-      <div className='h-[50vh] flex items-center justify-center'>
+      <div className='flex h-[50vh] items-center justify-center'>
         <Loader />
       </div>
     );

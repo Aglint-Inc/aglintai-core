@@ -11,7 +11,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       <div>
         <Navigation />
         <div
-          className='w-full container max-w-screen-xl mx-auto mt-5'
+          className='container mx-auto mt-5 w-full max-w-screen-xl'
           style={{ minHeight: 'calc(100vh - 260px)' }}
         >
           {children}

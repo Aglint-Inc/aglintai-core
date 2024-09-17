@@ -31,7 +31,7 @@ export const Header = ({
   return (
     <>
       <CreateModuleDialog />
-      <div className='mb-6 flex justify-between items-center'>
+      <div className='mb-6 flex items-center justify-between'>
         <UITextField
           placeholder='Search interviewers...'
           fieldSize='medium'

@@ -13,10 +13,10 @@ export function AddPreference({
 }: AddPreferenceProps) {
   return (
     <Card
-      className='overflow-hidden border border-neutral-200 rounded-md shadow-md'
+      className='overflow-hidden rounded-md border border-neutral-200 shadow-md'
       {...onClickAddPreference}
     >
-      <CardHeader className='py-1 px-3 bg-gray-50'>
+      <CardHeader className='bg-gray-50 px-3 py-1'>
         <UITypography variant='p' type='small'>
           {textPreference}
         </UITypography>
@@ -26,7 +26,7 @@ export function AddPreference({
           <UITypography variant='p' type='small'>
             Press
           </UITypography>
-          <span className='px-1 border border-neutral-200 rounded'>
+          <span className='rounded border border-neutral-200 px-1'>
             <UITypography variant='p' type='small'>
               Enter
             </UITypography>

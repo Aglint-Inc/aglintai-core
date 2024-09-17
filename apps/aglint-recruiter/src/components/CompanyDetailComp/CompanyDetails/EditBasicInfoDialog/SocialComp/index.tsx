@@ -38,9 +38,9 @@ const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
   };
 
   return (
-    <div className=' w-full flex flex-col gap-2'>
-      <Label className='text-sm font-semibold '>Social</Label>
-      <div className='w-full grid grid-cols-2 gap-x-4 gap-y-4'>
+    <div className='flex w-full flex-col gap-2'>
+      <Label className='text-sm font-semibold'>Social</Label>
+      <div className='grid w-full grid-cols-2 gap-x-4 gap-y-4'>
         {socials.map((socialName) => (
           <SocialField
             key={socialName}

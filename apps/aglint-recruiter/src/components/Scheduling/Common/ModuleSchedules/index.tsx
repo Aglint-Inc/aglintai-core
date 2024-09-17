@@ -22,8 +22,8 @@ function ModuleSchedules({
 
   if (!isFetched) {
     return (
-      <div className='flex justify-center items-center'>
-        <Loader2 className='w-6 h-6 animate-spin text-primary' />
+      <div className='flex items-center justify-center'>
+        <Loader2 className='h-6 w-6 animate-spin text-primary' />
       </div>
     );
   }
@@ -94,8 +94,8 @@ function ModuleSchedules({
             >
               <Box maxWidth='sm' width='300px' p={2}>
                 <div className='flex flex-col items-center justify-center text-center'>
-                  <Calendar className='w-12 h-12 text-gray-400 mb-2' />
-                  <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                  <Calendar className='mb-2 h-12 w-12 text-gray-400' />
+                  <h3 className='mb-1 text-lg font-medium text-gray-900'>
                     No schedule found
                   </h3>
                   <p className='text-sm text-gray-500'>

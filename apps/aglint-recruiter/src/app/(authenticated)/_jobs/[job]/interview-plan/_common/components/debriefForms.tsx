@@ -212,7 +212,11 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
+<<<<<<< HEAD
             className='w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+=======
+            className='w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
           />
         </div>
       ) : null,
@@ -220,6 +224,7 @@ const DebriefForms = ({
   );
 
   return (
+<<<<<<< HEAD
     <div className='flex flex-col space-y-4'>
       <div>{nameField}</div>
       <div>{sessionDurationField}</div>
@@ -240,6 +245,35 @@ const DebriefForms = ({
       )}
       <Attendees handleChange={handleChange} value={members_meta.value} />
     </div>
+=======
+    <SidedrawerBodyDebrief
+      slotSessionNameInput={nameField}
+      slotDurationDropdown={sessionDurationField}
+      slotMemberAvatarSelectionPill={<></>}
+      slotScheduleTypeDropdown={
+        <div className='flex flex-col gap-2'>
+          <ScheduleTypeField
+            value={schedule_type.value}
+            handleTypeChange={handleTypeChange}
+          />
+          {locationField}
+        </div>
+      }
+      slotMembersDropdown={
+        showMembers && (
+          <InterviewersField
+            value={members.value}
+            memberRecommendations={memberRecommendations}
+            handleChange={handleChange}
+            error={members.error}
+          />
+        )
+      }
+      slotAttendee={
+        <Attendees handleChange={handleChange} value={members_meta.value} />
+      }
+    />
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
   );
 };
 

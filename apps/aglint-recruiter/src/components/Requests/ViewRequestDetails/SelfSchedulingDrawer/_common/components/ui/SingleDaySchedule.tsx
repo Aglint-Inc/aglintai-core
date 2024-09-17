@@ -25,14 +25,14 @@ export function SingleDaySchedule({
 }) {
   return (
     <Component
-      className='overflow-hidden w-full bg-white'
+      className='w-full overflow-hidden bg-white'
       onClick={onClickSingleDay}
     >
-      <div className='z-10 flex p-2 justify-between items-center'>
-        <div className='flex justify-start items-center gap-7'>
+      <div className='z-10 flex items-center justify-between p-2'>
+        <div className='flex items-center justify-start gap-7'>
           {isMultiDay && (
-            <div className='flex flex-row flex-nowrap gap-2 items-center'>
-              <Calendar className='w-4 h-4 text-gray-600' />
+            <div className='flex flex-row flex-nowrap items-center gap-2'>
+              <Calendar className='h-4 w-4 text-gray-600' />
               <UITypography type='small' className='font-semibold'>
                 {textDayCount}
               </UITypography>
@@ -41,15 +41,15 @@ export function SingleDaySchedule({
               </UITypography>
             </div>
           )}
-          <div className='flex flex-row flex-nowrap gap-2 items-center'>
-            <Clock className='w-4 h-4 text-gray-600' />
+          <div className='flex flex-row flex-nowrap items-center gap-2'>
+            <Clock className='h-4 w-4 text-gray-600' />
             <UITypography type='extraSmall' className='font-semibold'>
               {textTotalTimeRange}
             </UITypography>
           </div>
         </div>
-        <div className='flex justify-start items-center gap-2'>
-          <div className='flex h-7 justify-start items-center gap-2'>
+        <div className='flex items-center justify-start gap-2'>
+          <div className='flex h-7 items-center justify-start gap-2'>
             {slotConflicts}
           </div>
         </div>

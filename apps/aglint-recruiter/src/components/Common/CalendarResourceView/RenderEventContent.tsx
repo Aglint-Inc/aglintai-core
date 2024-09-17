@@ -29,15 +29,15 @@ function RenderEventContent(eventInfo) {
   return (
     <>
       {isLoading ? (
-        <div className='h-full w-full skeleton-item'></div>
+        <div className='skeleton-item h-full w-full'></div>
       ) : (
         <Tooltip>
           <TooltipTrigger asChild>
             <div
               id={session_id}
-              className={`p-[4px_10px] w-full rounded-md h-full ${
+              className={`h-full w-full rounded-md p-[4px_10px] ${
                 isSelected
-                  ? 'bg-accent-2 border border-dashed border-accent-6'
+                  ? 'bg-accent-2 border-accent-6 border border-dashed'
                   : ''
               }`}
               style={{
@@ -46,7 +46,7 @@ function RenderEventContent(eventInfo) {
               }}
             >
               <p
-                className={`text-xs one-line-clamp ${
+                className={`one-line-clamp text-xs ${
                   isSelected ? 'text-accent-12' : 'text-white'
                 }`}
               >
@@ -57,7 +57,7 @@ function RenderEventContent(eventInfo) {
           <TooltipContent>
             {title && (
               <div className='space-y-1 p-1'>
-                <p className='text-base font-semibold text-neutral-12'>
+                <p className='text-neutral-12 text-base font-semibold'>
                   {title}
                 </p>
                 <div className='flex flex-row space-x-1'>

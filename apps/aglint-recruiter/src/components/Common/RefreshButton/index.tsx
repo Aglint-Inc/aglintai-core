@@ -13,7 +13,7 @@ const RefreshBtn = ({ text, isDisabled, onClick, animatedDisable = true }) => {
       }`}
     >
       <RefreshCw
-        className={`w-4 h-4 ${
+        className={`h-4 w-4 ${
           isDisabled && animatedDisable ? 'animate-spin' : ''
         }`}
       />

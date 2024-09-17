@@ -21,12 +21,21 @@ const InterviewConversion = () => {
     useState<InterviewConversionGraphProps['type']>('month');
   return (
     <>
+<<<<<<< HEAD
       <div className='w-full h-full'>
         <div className='flex flex-col space-y-4'>
           <div className='flex justify-end'>
             <SchedulingDropdown type={type} setType={setType} />
           </div>
           <div className='flex-1 flex items-center justify-center'>
+=======
+      <InterviewRatio
+        slotDropdownButton={
+          <SchedulingDropdown type={type} setType={setType} />
+        }
+        slotInterviewGraph={
+          <div className='flex h-full w-full items-center justify-center'>
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
             <InterviewConversionGraph type={type} />
           </div>
         </div>
@@ -44,16 +53,16 @@ const InterviewConversionGraph = ({ type }: InterviewConversionGraphProps) => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>

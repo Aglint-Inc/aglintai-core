@@ -79,7 +79,7 @@ const List = ({ data }: { data: useMatricsInterviewersType }) => {
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => <Skeleton key={i} className='w-full h-full' />,
+    (_, i) => <Skeleton key={i} className='h-full w-full' />,
   );
 });
 Loader.displayName = 'Loader';

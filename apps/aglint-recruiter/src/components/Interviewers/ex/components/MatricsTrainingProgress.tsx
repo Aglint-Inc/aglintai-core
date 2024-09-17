@@ -18,18 +18,18 @@ export const TrainingProgress = memo(() => {
   return (
     <div className='w-full'>
       <div className='w-full'>
-        <div className='flex justify-between items-center mb-4'>
+        <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-xl font-semibold'>Training Progress</h2>
           {(data ?? []).length > LIMIT && (
             <Link
               href={`${ROUTES['/scheduling']()}?tab=interviewtypes`}
-              className='text-blue-600 hover:text-blue-800 transition-colors'
+              className='text-blue-600 transition-colors hover:text-blue-800'
             >
               View All Interviewers
             </Link>
           )}
         </div>
-        <div className='bg-white shadow rounded-lg p-4'>
+        <div className='rounded-lg bg-white p-4 shadow'>
           <Containter />
         </div>
       </div>
@@ -57,7 +57,7 @@ const List = memo(({ data }: { data: useTrainingProgressType }) => {
       {(data ?? []).map((data) => (
         <div
           key={data.user_id}
-          className='cursor-pointer hover:bg-neutral-100 p-4 rounded-lg transition-colors duration-200'
+          className='cursor-pointer rounded-lg p-4 transition-colors duration-200 hover:bg-neutral-100'
         >
           <div className='flex items-center space-x-4'>
             <Avatar alt={data.name} />

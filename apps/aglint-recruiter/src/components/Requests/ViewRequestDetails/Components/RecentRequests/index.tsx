@@ -59,10 +59,10 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
                 return (
                   <div
                     key={index}
-                    className='border rounded-lg overflow-hidden'
+                    className='overflow-hidden rounded-lg border'
                   >
                     <div
-                      className='flex items-center justify-between p-4 cursor-pointer bg-gray-50'
+                      className='flex cursor-pointer items-center justify-between bg-gray-50 p-4'
                       onClick={() =>
                         setExpandedCard(expandedCard === index ? null : index)
                       }
@@ -73,7 +73,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
                           {jobDetails.departments.name}
                         </p>
                       </div>
-                      <div className='text-right flex items-center space-x-2'>
+                      <div className='flex items-center space-x-2 text-right'>
                         <p className='text-sm'>
                           {sessions.length} interview session
                           {sessions.length !== 1 ? 's' : ''}
@@ -92,17 +92,17 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
                         </Badge>
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
-                            expandedCard === index ? 'transform rotate-180' : ''
+                            expandedCard === index ? 'rotate-180 transform' : ''
                           }`}
                         />
                       </div>
                     </div>
                     {expandedCard === index && (
-                      <div className='p-4 bg-white'>
-                        <h4 className='font-medium mb-2'>
+                      <div className='bg-white p-4'>
+                        <h4 className='mb-2 font-medium'>
                           Interview Sessions:
                         </h4>
-                        <ul className='list-disc pl-5 space-y-1'>
+                        <ul className='list-disc space-y-1 pl-5'>
                           {sessions.map((session, sessionIndex) => (
                             <li key={sessionIndex} className='text-sm'>
                               {session.name}

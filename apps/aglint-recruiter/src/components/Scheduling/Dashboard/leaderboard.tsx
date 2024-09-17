@@ -54,7 +54,16 @@ const Container = memo(() => {
 
   if (status === 'error') return <>Error</>;
 
+<<<<<<< HEAD
   if (status === 'pending') return <Loader />;
+=======
+  if (status === 'pending')
+    return (
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
+      </div>
+    );
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
 
   if (data.length === 0)
     return (
@@ -120,7 +129,14 @@ List.displayName = 'ListList';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * LIMIT) + 1)].map((_, i) => (
+<<<<<<< HEAD
     <Skeleton key={i} className='w-full h-full' />
+=======
+    <LeaderBoardLoader
+      key={i}
+      slotSkeleton={<Skeleton className='h-full w-full' />}
+    />
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
   ));
 });
 Loader.displayName = 'Loader';

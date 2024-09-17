@@ -41,3 +41,18 @@ export const Tabs = memo(() => {
     );
 });
 Tabs.displayName = 'Tabs';
+<<<<<<< HEAD
+=======
+
+const TabSkeleton = () => (
+  <div
+    style={{
+      position: 'relative',
+      width: '30px',
+      height: '36px',
+    }}
+  >
+    <Skeleton className='h-full w-full' />
+  </div>
+);
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f

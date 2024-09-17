@@ -43,11 +43,11 @@ function SelectDateRange() {
         slotTextWithIcon={
           <>
             <Label>
-              <CheckCircle className='w-3 h-3 mr-2' />
+              <CheckCircle className='mr-2 h-3 w-3' />
               {`${selectedSessions.length} Schedule selected`}
             </Label>
             <Label>
-              <Clock className='w-3 h-3 mr-2' />
+              <Clock className='mr-2 h-3 w-3' />
               {getBreakLabel(totalTime)}
             </Label>
           </>
@@ -57,7 +57,7 @@ function SelectDateRange() {
             {selectedSessions.map((session, i) => (
               <div
                 key={i}
-                className='flex items-center justify-between p-2 bg-gray-100 rounded-md'
+                className='flex items-center justify-between rounded-md bg-gray-100 p-2'
               >
                 <div className='flex items-center space-x-2'>
                   <IconSessionType
@@ -77,7 +77,7 @@ function SelectDateRange() {
                 </div>
                 {selectedSessions.length > 1 && (
                   <Button className='text-gray-400 hover:text-gray-600'>
-                    <X className='w-4 h-4' />
+                    <X className='h-4 w-4' />
                   </Button>
                 )}
               </div>

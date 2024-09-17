@@ -43,10 +43,10 @@ function ChatMessageList() {
   return (
     <ScrollArea
       ref={chatContainerRef}
-      className='h-[calc(100vh-180px)] px-4 space-y-4'
+      className='h-[calc(100vh-180px)] space-y-4 px-4'
     >
       {!viewHistory ? (
-        <div className='p-4 h-[calc(100vh-180px)] flex flex-col items-center justify-center gap-4'>
+        <div className='flex h-[calc(100vh-180px)] flex-col items-center justify-center gap-4 p-4'>
           <div>
             <svg
               width='244'
@@ -75,7 +75,7 @@ function ChatMessageList() {
               />
             </svg>
           </div>
-          <div className='text-center flex flex-col gap-2'>
+          <div className='flex flex-col gap-2 text-center'>
             <UITypography type='small'>
               {`Good morning, ${getFullName(recruiterUser.first_name, '')}. I am Aglint AI, your Scheduling co-pilot.`}
             </UITypography>
@@ -83,16 +83,16 @@ function ChatMessageList() {
               Aglint AI makes scheduling and rescheduling interviews easy.
             </UITypography>
           </div>
-          <div className='flex items-center justify-center w-full mt-4'>
-            <div className='border-t border-gray-300 flex-grow'></div>
+          <div className='mt-4 flex w-full items-center justify-center'>
+            <div className='flex-grow border-t border-gray-300'></div>
             <UITypography type='small' color='gray-500' className='mx-4'>
               Getting started? Try these:
             </UITypography>
-            <div className='border-t border-gray-300 flex-grow'></div>
+            <div className='flex-grow border-t border-gray-300'></div>
           </div>
-          <div className='mt-4 flex flex-col gap-2 w-full'>
+          <div className='mt-4 flex w-full flex-col gap-2'>
             <CommandShortCuts />
-            <div className='flex justify-center mt-4'>
+            <div className='mt-4 flex justify-center'>
               <UIButton
                 variant='outline'
                 size='sm'

@@ -14,7 +14,7 @@ function JobDetails({
     extensions: [StarterKit],
   });
   return (
-    <div className='p-5 max-w-[800px]'>
+    <div className='max-w-[800px] p-5'>
       <EditorContent editor={editor} />
     </div>
   );

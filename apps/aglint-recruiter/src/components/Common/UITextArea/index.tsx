@@ -75,8 +75,8 @@ const UITextArea = React.forwardRef<HTMLTextAreaElement, UITextFieldProps>(
             className={inputClasses}
           />
           {error && helperText && (
-            <div className='flex flex-row items-center mt-1'>
-              <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+            <div className='mt-1 flex flex-row items-center'>
+              <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
               <p className='text-sm text-red-700'>{helperText}</p>
             </div>
           )}

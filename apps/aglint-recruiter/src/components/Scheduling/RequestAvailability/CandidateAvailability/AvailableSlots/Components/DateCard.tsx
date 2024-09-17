@@ -25,9 +25,9 @@ export function DateCard({
       <UIButton
         variant='outline'
         className={cn(
-          'w-[85px] h-[85px] p-2 flex flex-col items-center justify-center rounded-lg',
+          'flex h-[85px] w-[85px] flex-col items-center justify-center rounded-lg p-2',
           isActive && 'border-primary bg-primary/10 text-primary',
-          isDisable && 'opacity-60 cursor-not-allowed',
+          isDisable && 'cursor-not-allowed opacity-60',
         )}
         onClick={onClickDate}
         disabled={isDisable}
@@ -41,7 +41,7 @@ export function DateCard({
           onClick={onClickDate}
           size='sm'
           variant='outline'
-          className='absolute -top-2 -right-2 h-5 w-5 rounded-full p-0'
+          className='absolute -right-2 -top-2 h-5 w-5 rounded-full p-0'
         >
           <X className='h-3 w-3' />
         </UIButton>

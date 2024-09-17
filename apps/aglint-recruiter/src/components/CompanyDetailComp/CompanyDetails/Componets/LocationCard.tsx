@@ -56,12 +56,12 @@ function LocationCard({
 
   return (
     <Card
-      className='p-4 h-full relative border-none shadow-none'
+      className='relative h-full border-none p-4 shadow-none'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {!isFormDisabled && isHovered && (
-        <div className='absolute top-2 right-2 flex space-x-1'>
+        <div className='absolute right-2 top-2 flex space-x-1'>
           <Button variant='ghost' size='sm' onClick={() => onEdit(id)}>
             <PencilIcon className='h-3 w-3' />
           </Button>
@@ -80,11 +80,11 @@ function LocationCard({
       </div>
       <div className='mt-2'>
         <div className='flex items-center'>
-          <MapPin className='h-4 w-4 mr-2 text-gray-500' />
+          <MapPin className='mr-2 h-4 w-4 text-gray-500' />
           <p>{address || '-'}</p>
         </div>
-        <div className='flex items-center mt-1'>
-          <Clock className='h-4 w-4 mr-2 text-gray-500' />
+        <div className='mt-1 flex items-center'>
+          <Clock className='mr-2 h-4 w-4 text-gray-500' />
           <p>{timeZone}</p>
         </div>
       </div>

@@ -64,15 +64,15 @@ const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
             <div className='mb-2'>
               <FileQuestion size={80} />
             </div>
-            <DialogTitle className='text-lg font-semibold mb-2'>
+            <DialogTitle className='mb-2 text-lg font-semibold'>
               No Interview Plan
             </DialogTitle>
-            <DialogDescription className='text-sm text-gray-600 mb-4'>
+            <DialogDescription className='mb-4 text-sm text-gray-600'>
               Create an interview plan to get started
             </DialogDescription>
             <Button
               onClick={() => push('/scheduling?tab=interviewtypes')}
-              className='bg-primary text-white hover:bg-primary-dark'
+              className='hover:bg-primary-dark bg-primary text-white'
             >
               Create Interview Plan
             </Button>
@@ -172,14 +172,14 @@ const CreateSession = ({
   };
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='text-lg font-semibold mb-4'>Create Interview</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Create Interview</h2>
           <SessionForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 p-4 border-t'>
+      <div className='flex justify-end space-x-2 border-t p-4'>
         <UIButton
           size='sm'
           variant='secondary'
@@ -282,14 +282,14 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='text-lg font-semibold mb-4'>Update Interview</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Update Interview</h2>
           <SessionForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 p-4 border-t'>
+      <div className='flex justify-end space-x-2 border-t p-4'>
         <Button
           variant='outline'
           size='sm'
@@ -349,14 +349,14 @@ const CreateDebrief = ({
     }
   };
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='text-lg font-semibold mb-4'>Create Debrief</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Create Debrief</h2>
           <DebriefForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 p-4 border-t'>
+      <div className='flex justify-end space-x-2 border-t p-4'>
         <UIButton
           variant='secondary'
           disabled={debriefCreation}
@@ -438,14 +438,14 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='text-lg font-semibold mb-4'>Edit Debrief</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Edit Debrief</h2>
           <DebriefForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 p-4 border-t'>
+      <div className='flex justify-end space-x-2 border-t p-4'>
         <UIButton
           variant='secondary'
           disabled={isLoading}
@@ -501,14 +501,14 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     }
   };
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='text-lg font-semibold mb-4'>Edit Break</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Edit Break</h2>
           <BreakForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 p-4 border-t'>
+      <div className='flex justify-end space-x-2 border-t p-4'>
         <UIButton
           disabled={isLoading}
           variant='secondary'

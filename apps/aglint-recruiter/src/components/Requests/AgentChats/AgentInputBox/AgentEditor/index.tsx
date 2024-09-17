@@ -255,20 +255,24 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     },
     customSuggestionsContainer: (children) => (
       <div>
-        <div className="border rounded-md shadow-sm bg-white">
-          <div className='p-3 flex justify-between'>
-          <div className="mb-2 text-sm text-gray-700">
-            {`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
+        <div className='rounded-md border bg-white shadow-sm'>
+          <div className='flex justify-between p-3'>
+            <div className='mb-2 text-sm text-gray-700'>
+              {`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
+            </div>
+            <div className='mb-2 flex items-center space-x-2'>
+              <kbd className='rounded bg-gray-200 px-2 py-1 text-xs font-semibold text-gray-800'>
+                ↑
+              </kbd>
+              <kbd className='rounded bg-gray-200 px-2 py-1 text-xs font-semibold text-gray-800'>
+                ↓
+              </kbd>
+            </div>
           </div>
-          <div className="flex items-center space-x-2 mb-2">
-            <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded">↑</kbd>
-            <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded">↓</kbd>
-          </div>
-          </div>
-          
+
           <div
             id='listContainer'
-            className="max-h-48 overflow-y-auto overflow-x-hidden p-3 pt-0"
+            className='max-h-48 overflow-y-auto overflow-x-hidden p-3 pt-0'
           >
             <ShowCode>
               <ShowCode
@@ -389,7 +393,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         <Mention {...mentionSessionList} />
         <Mention {...mentionRequestList} />
       </MentionsInput>
-      <div className='relative -top-[10px] border border-[var(--neutral-6)] border-t-0 rounded-b-[10px] h-[28px] bg-[#F9F9F8] w-full flex flex-row justify-center items-center'>
+      <div className='relative -top-[10px] flex h-[28px] w-full flex-row items-center justify-center rounded-b-[10px] border border-t-0 border-[var(--neutral-6)] bg-[#F9F9F8]'>
         <ScrollingText />
       </div>
     </div>

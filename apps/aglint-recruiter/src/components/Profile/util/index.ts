@@ -13,7 +13,10 @@ export const validateString = (value: string): boolean => {
   return value !== undefined && value.trim() !== '';
 };
 
-const passwordSchema = z.string().min(8).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/);
+const passwordSchema = z
+  .string()
+  .min(8)
+  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/);
 export const validatePassword = (value: string): boolean => {
   return passwordSchema.safeParse(value).success;
 };
@@ -39,7 +42,13 @@ export interface FormValues {
   type: 'text' | 'password';
   placeholder: string;
   error: boolean;
-  validation: 'string' | 'phone' | 'mail' | 'password' | 'linkedIn' | 'timeZone';
+  validation:
+    | 'string'
+    | 'phone'
+    | 'mail'
+    | 'password'
+    | 'linkedIn'
+    | 'timeZone';
   helperText: string;
   blocked: boolean;
   required: boolean;

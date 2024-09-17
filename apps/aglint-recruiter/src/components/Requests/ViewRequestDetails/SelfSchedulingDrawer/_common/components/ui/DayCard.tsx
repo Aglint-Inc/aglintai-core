@@ -35,14 +35,14 @@ export function DayCard({
       <div className='w-full'>
         <div
           className={cn(
-            'relative flex justify-between px-3 py-2 rounded-md bg-neutral-100 cursor-pointer',
+            'relative flex cursor-pointer justify-between rounded-md bg-neutral-100 px-3 py-2',
             isDisabled && 'cursor-not-allowed',
           )}
           onClick={onClickDateOption}
         >
           <div className='flex items-center gap-1'>
             {isCheckboxVisible && (
-              <div className='relative z-10 pr-[22px] flex justify-start items-start'>
+              <div className='relative z-10 flex items-start justify-start pr-[22px]'>
                 {slotCheckbox ?? <Checkbox className='mt-0.5' />}
               </div>
             )}
@@ -61,10 +61,10 @@ export function DayCard({
             {slotRightBlock}
           </div>
           {isSelected && (
-            <div className='absolute inset-0 z-[1] rounded-md bg-accent-200' />
+            <div className='bg-accent-200 absolute inset-0 z-[1] rounded-md' />
           )}
           {isDisabled && (
-            <div className='absolute inset-0 z-[3] flex justify-between p-2 rounded-md bg-neutral-100 cursor-not-allowed'>
+            <div className='absolute inset-0 z-[3] flex cursor-not-allowed justify-between rounded-md bg-neutral-100 p-2'>
               <div className='relative z-[2] flex items-center gap-2 text-neutral-900'>
                 <Calendar size={16} />
                 <div className='flex items-center gap-1'>
@@ -72,7 +72,7 @@ export function DayCard({
                 </div>
               </div>
               <div className='relative z-[2] flex items-center gap-5'>
-                <div className='italic text-sm text-neutral-700'>
+                <div className='text-sm italic text-neutral-700'>
                   {`Can't choose from this date`}
                 </div>
               </div>

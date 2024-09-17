@@ -12,7 +12,7 @@ export function InterviewBreakCard({
   slotEditButton,
 }: InterviewBreakCardProps) {
   return (
-    <Card className='flex  flex-row justify-between p-4 py-3 border border-dashed border-neutral-300 bg-white rounded-md'>
+    <Card className='flex flex-row justify-between rounded-md border border-dashed border-neutral-300 bg-white p-4 py-3'>
       <div className='flex flex-row space-x-4'>
         <div className='flex items-center space-x-1'>
           <Coffee strokeWidth={1} size={18} />

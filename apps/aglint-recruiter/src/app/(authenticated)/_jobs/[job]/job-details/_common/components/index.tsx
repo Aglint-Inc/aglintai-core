@@ -45,8 +45,8 @@ export const JobDetailsDashboard = () => {
   ) : (
     // TODO: When we move to app router, we should move to separate skeleton component
     <div className='min-h-screen'>
-      <div className='container mx-auto p-6 flex flex-col space-y-6'>
-        <div className='flex justify-between items-center mb-6'>
+      <div className='container mx-auto flex flex-col space-y-6 p-6'>
+        <div className='mb-6 flex items-center justify-between'>
           <div className='space-y-2'>
             <Skeleton className='h-8 w-64' />
             <Skeleton className='h-4 w-32' />
@@ -159,23 +159,23 @@ const JobEdit = () => {
   return (
     <div className='min-h-screen'>
       <div className='container mx-auto'>
-        <div className='flex justify-between items-center mb-6'>
+        <div className='mb-6 flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
+            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
             <BreadCrumbs job={job} />
           </div>
           {/* <Settings /> */}
         </div>
 
-        <div className='flex gap-6 mb-6'>
+        <div className='mb-6 flex gap-6'>
           <div className='w-1/4'>
             <JobsSideNavV2 />
           </div>
           <div className='w-3/4'>
             <div className='flex flex-row justify-between'>
               <div>
-                <h2 className='text-xl font-bold mb-2'>Job Details</h2>
-                <p className='text-sm text-gray-600 mb-4'>
+                <h2 className='mb-2 text-xl font-bold'>Job Details</h2>
+                <p className='mb-4 text-sm text-gray-600'>
                   Update the job details here; changes will be saved
                   automatically. Publish to make the updates live.
                 </p>
@@ -186,12 +186,12 @@ const JobEdit = () => {
                 <div className='flex items-center space-x-2 text-sm text-gray-600'>
                   {saving ? (
                     <>
-                      <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
+                      <div className='h-4 w-4 animate-spin rounded-full border-2 border-neutral-600 border-t-transparent'></div>
                       <span>Saving changes...</span>
                     </>
                   ) : (
                     <>
-                      <CheckIcon className='w-4 h-4 text-green-500' />
+                      <CheckIcon className='h-4 w-4 text-green-500' />
                       <span>Changes saved</span>
                     </>
                   )}
@@ -325,20 +325,20 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <div className='bg-white p-6 rounded-lg shadow-md'>
-      <p className='text-sm text-gray-600 mb-4'>
+    <div className='rounded-lg bg-white p-6 shadow-md'>
+      <p className='mb-4 text-sm text-gray-600'>
         Update the job details here; changes will be saved automatically.
         Publish to make the updates live.
       </p>
-      <div className='grid grid-cols-2 gap-4 mb-6'>{forms}</div>
+      <div className='mb-6 grid grid-cols-2 gap-4'>{forms}</div>
       <div
-        className={`border rounded-md p-4 ${fields.description.error.value ? 'border-red-500' : 'border-gray-300'}`}
+        className={`rounded-md border p-4 ${fields.description.error.value ? 'border-red-500' : 'border-gray-300'}`}
       >
         {description}
       </div>
       {fields.description.error.value && (
-        <div className='flex items-center text-red-600 mt-2'>
-          <AlertTriangle className='w-4 h-4 mr-2' />
+        <div className='mt-2 flex items-center text-red-600'>
+          <AlertTriangle className='mr-2 h-4 w-4' />
           <span>{fields.description.error.helper}</span>
         </div>
       )}

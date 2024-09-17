@@ -47,18 +47,18 @@ export function EmptyState({
   const Icon = moduleIcons[module];
 
   return (
-    <Card className='w-full max-w-md mx-auto border-none shadow-none'>
-      <CardContent className='pt-6 px-6 pb-8 flex flex-col items-center text-center'>
-        <div className='flex items-center justify-center mb-4'>
+    <Card className='mx-auto w-full max-w-md border-none shadow-none'>
+      <CardContent className='flex flex-col items-center px-6 pb-8 pt-6 text-center'>
+        <div className='mb-4 flex items-center justify-center'>
           <Icon
-            className='w-16 h-16 text-primary'
+            className='h-16 w-16 text-primary'
             strokeWidth={0.5}
             size={48}
           />
         </div>
-        <h3 className='text-lg font-semibold mb-2'>{title}</h3>
+        <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
         {description && (
-          <p className='text-muted-foreground mb-6'>{description}</p>
+          <p className='mb-6 text-muted-foreground'>{description}</p>
         )}{' '}
         {/* Conditionally render description */}
         {actionLabel && onAction && (

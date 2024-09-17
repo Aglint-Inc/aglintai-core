@@ -45,16 +45,16 @@ const InterviewersAnalyticCards = () => {
             <InterviewersCardList
               key={index}
               textName={
-                <div className="h-6 w-24 bg-gray-200 animate-pulse rounded" />
+                <div className='h-6 w-24 animate-pulse rounded bg-gray-200' />
               }
               textCompleted={
-                <div className="h-6 w-5 bg-gray-200 animate-pulse rounded" />
+                <div className='h-6 w-5 animate-pulse rounded bg-gray-200' />
               }
               textUpcoming={
-                <div className="h-6 w-5 bg-gray-200 animate-pulse rounded" />
+                <div className='h-6 w-5 animate-pulse rounded bg-gray-200' />
               }
               textDeclined={
-                <div className="h-6 w-5 bg-gray-200 animate-pulse rounded" />
+                <div className='h-6 w-5 animate-pulse rounded bg-gray-200' />
               }
             />
           ))
@@ -62,7 +62,7 @@ const InterviewersAnalyticCards = () => {
           interviewersData?.map((item) => (
             <div
               key={item.id}
-              className="cursor-pointer"
+              className='cursor-pointer'
               onClick={() => router.push(`/user/profile/${item.id}`)}
             >
               <InterviewersCardList
@@ -75,8 +75,8 @@ const InterviewersAnalyticCards = () => {
           ))
         ) : (
           <div className='h-[296px]'>
-            <div className='flex flex-col items-center justify-center h-full'>
-              <BarChart2 className='w-12 h-12 text-gray-400' />
+            <div className='flex h-full flex-col items-center justify-center'>
+              <BarChart2 className='h-12 w-12 text-gray-400' />
               <p className='mt-2 text-sm text-gray-500'>No data available</p>
             </div>
           </div>

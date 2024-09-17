@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 
 import type ROUTES from '@/utils/routing/routes';
 
-export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T> ;
+export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
 
 export type LinkProps =
   | {

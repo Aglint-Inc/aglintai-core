@@ -71,7 +71,7 @@ function Interviewers() {
       <AddMemberDialog />
       <PauseDialog />
       <ResumeMemberDialog />
-      <div className='flex justify-between mb-4'>
+      <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
           className='max-w-sm bg-white'
@@ -126,7 +126,7 @@ function Interviewers() {
                             level={interviewer.name}
                           />
                           <div>
-                            <div className='font-medium text-gray-900 flex flex-row gap-2'>
+                            <div className='flex flex-row gap-2 font-medium text-gray-900'>
                               {interviewer.name}
                               {interviewer.rel.pause_json && (
                                 <UIBadge
@@ -162,7 +162,7 @@ function Interviewers() {
                       />
                     </TableCell>
                     <TableCell className='w-2/12'>
-                      <div className='invisible group-hover:visible flex space-x-2'>
+                      <div className='invisible flex space-x-2 group-hover:visible'>
                         <UIButton
                           variant='ghost'
                           size='sm'
@@ -171,7 +171,7 @@ function Interviewers() {
                             setIsDeleteMemberDialogOpen(true);
                           }}
                         >
-                          <Trash2 className='h-4 w-4 mr-2' />
+                          <Trash2 className='mr-2 h-4 w-4' />
                           Remove
                         </UIButton>
                         {interviewer.rel.pause_json ? (
@@ -183,7 +183,7 @@ function Interviewers() {
                               setIsResumeDialogOpen(true);
                             }}
                           >
-                            <Play className='h-4 w-4 mr-2' />
+                            <Play className='mr-2 h-4 w-4' />
                             Resume
                           </UIButton>
                         ) : (
@@ -195,7 +195,7 @@ function Interviewers() {
                               setIsPauseDialogOpen(true);
                             }}
                           >
-                            <Pause className='h-4 w-4 mr-2' />
+                            <Pause className='mr-2 h-4 w-4' />
                             Pause
                           </UIButton>
                         )}

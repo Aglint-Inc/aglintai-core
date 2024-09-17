@@ -82,9 +82,9 @@ function CancelScheduleDialog({
         closeDialog();
       }}
     >
-      <div className='flex items-center justify-center w-[500px]'>
-        <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
-          <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+      <div className='flex w-[500px] items-center justify-center'>
+        <div className='w-full max-w-lg rounded-lg bg-white shadow-lg'>
+          <div className='flex items-center justify-between border-b border-gray-200 p-4'>
             <h2 className='font-semibold'>Cancel Schedule Initial Screening</h2>
             <UIButton
               onClick={() => {
@@ -94,7 +94,7 @@ function CancelScheduleDialog({
               variant='ghost'
               size='sm'
             >
-              <X className='w-4 h-4' />
+              <X className='h-4 w-4' />
             </UIButton>
           </div>
           <div className='p-4'>
@@ -145,7 +145,7 @@ function CancelScheduleDialog({
               />
             </Stack>
           </div>
-          <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+          <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
             <UIButton
               variant='secondary'
               onClick={() => {

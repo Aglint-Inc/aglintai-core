@@ -23,7 +23,7 @@ export function FilterDropDownDash<T>({
     <>
       <div className='w-full'>
         <Tabs defaultValue={String(selectedItem)} onValueChange={handleChange}>
-          <TabsList className='grid w-full grid-cols-{itemList.length}'>
+          <TabsList className='grid-cols-{itemList.length} grid w-full'>
             {itemList.map((item, i) => (
               <TabsTrigger
                 key={i}

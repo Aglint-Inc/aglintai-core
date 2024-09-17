@@ -40,13 +40,13 @@ function JobPost({ params: { id } }: { params: { id: string } }) {
         description='AI for People Products'
       />
       {loading ? (
-        <div className='h-screen flex justify-center items-center'>
+        <div className='flex h-screen items-center justify-center'>
           <Loader />
         </div>
       ) : valid ? (
         <CompanyJobPost recruiter={recruiter} jobs={jobs} />
       ) : (
-        <div className='h-screen flex justify-center items-center'>
+        <div className='flex h-screen items-center justify-center'>
           <JobNotFound />
         </div>
       )}

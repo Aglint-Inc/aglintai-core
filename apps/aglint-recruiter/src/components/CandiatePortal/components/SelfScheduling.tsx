@@ -16,7 +16,7 @@ function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
   )[0];
   return (
     <div>
-      <Card className='bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
+      <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
         {latestschedule ? (
           <SelfSchedulingComp schedule={latestschedule} />
         ) : (
@@ -31,8 +31,8 @@ export default SelfScheduling;
 
 const SelfSchedulingEmpty = () => {
   return (
-    <CardContent className='p-0 pl-4 pb-4'>
-      <CardHeader className='p-4 pl-0 text-md font-semibold'>
+    <CardContent className='p-0 pb-4 pl-4'>
+      <CardHeader className='text-md p-4 pl-0 font-semibold'>
         Self Scheduling Request
       </CardHeader>
       <p className='text-muted-foreground'>No Self Scheduling Requests</p>
@@ -47,7 +47,7 @@ const SelfSchedulingComp = ({ schedule }) => {
           Self scheduling request for
           {formatSessions(schedule.sessions.map(({ name }) => name))}
         </h2>
-        <p className='text-sm text-gray-600 mb-4'>
+        <p className='mb-4 text-sm text-gray-600'>
           Requested on $
           {dayjsLocal(schedule.created_at).format('mmm DD, hh:mm A')}
         </p>

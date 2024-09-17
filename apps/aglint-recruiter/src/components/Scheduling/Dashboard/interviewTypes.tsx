@@ -42,8 +42,8 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -69,7 +69,7 @@ const List = memo(({ data }: Props) => {
         <>
           <div
             key={id}
-            className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'
+            className='grid cursor-pointer grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white transition-colors duration-200 hover:bg-neutral-100'
           >
             <div className='p-2 px-4'>
               <span>{capitalizeAll(name)}</span>
@@ -90,7 +90,16 @@ List.displayName = 'List';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
+<<<<<<< HEAD
     (_, i) => <Skeleton key={i} className='w-full h-full' />,
+=======
+    (_, i) => (
+      <InterviewStatsLoader
+        key={i}
+        slotSkeleton={<Skeleton className='h-full w-full' />}
+      />
+    ),
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
   );
 });
 Loader.displayName = 'Loader';

@@ -203,7 +203,7 @@ const EmailSubject: React.FC<FormsType> = memo(
     return (
       <div>
         <UITypography type='small'>Email Subject</UITypography>
-        <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
+        <div className='border-neutral-6 mt-2 rounded-[var(--radius-2)] border'>
           <TipTapAIEditor
             singleLine={true}
             padding={1}
@@ -226,7 +226,7 @@ const EmailBody: React.FC<FormsType> = memo(
     return (
       <div>
         <UITypography type='small'>Email Body</UITypography>
-        <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
+        <div className='border-neutral-6 mt-2 rounded-[var(--radius-2)] border'>
           <TipTapAIEditor
             toolbar={false}
             disabled={disabled}
@@ -306,7 +306,7 @@ const AgentInstructionBody: React.FC<
   return (
     <div>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
-      <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
+      <div className='border-neutral-6 mt-2 rounded-[var(--radius-2)] border'>
         <TipTapAIEditor
           toolbar={false}
           disabled={disabled}
@@ -325,9 +325,9 @@ AgentInstructionBody.displayName = 'AgentInstructionBody';
 
 const WorkflowConnector = () => {
   return (
-    <div className={'flex w-full justify-center items-center text-neutral-600'}>
+    <div className={'flex w-full items-center justify-center text-neutral-600'}>
       <svg
-        className='flex justify-center items-center'
+        className='flex items-center justify-center'
         width='16'
         height='45'
         viewBox='0 0 16 45'

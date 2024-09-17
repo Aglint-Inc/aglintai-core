@@ -66,7 +66,7 @@ function EnableDisable() {
                       size='sm'
                       onClick={() => setOpen(true)}
                     >
-                      <Settings className='w-4 h-4 mr-2' />
+                      <Settings className='mr-2 h-4 w-4' />
                       Settings
                     </Button>
                   ) : (
@@ -78,7 +78,7 @@ function EnableDisable() {
                     <TrainingSettingItem
                       text={getFullName(user.first_name, user.last_name)}
                       image={
-                        <Avatar className='w-[20px] h-[20px]'>
+                        <Avatar className='h-[20px] w-[20px]'>
                           <AvatarImage src={user.profile_image} alt='@shadcn' />
                           <AvatarFallback>
                             {getFullName(user?.first_name, user?.last_name)}

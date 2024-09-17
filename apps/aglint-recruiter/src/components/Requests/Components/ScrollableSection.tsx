@@ -19,7 +19,7 @@ function ScrollableSection({
       {isFetched ? (
         <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
           <div className='container'>
-            <div className='flex flex-center items-center text-md w-full justify-between font-semibold mb-2'>
+            <div className='flex-center text-md mb-2 flex w-full items-center justify-between font-semibold'>
               <p>{capitalizeFirstLetter(section.sectionName)}</p>
               {section.sectionName === 'completed_request' && (
                 <Button variant='ghost'>
@@ -30,9 +30,9 @@ function ScrollableSection({
           </div>
         </div>
       ) : (
-        <Skeleton className='h-6 w-40 mb-2' />
+        <Skeleton className='mb-2 h-6 w-40' />
       )}
-      <div className='flex items-start w-full mb-10'>
+      <div className='mb-10 flex w-full items-start'>
         <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
           <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
             <div className='container'>
@@ -59,9 +59,9 @@ function ScrollableSection({
                   )
                 ) : (
                   <>
-                    <Skeleton className='h-[200px] w-[300px] mr-4' />
-                    <Skeleton className='h-[200px] w-[300px] mr-4' />
-                    <Skeleton className='h-[200px] w-[300px] mr-4' />
+                    <Skeleton className='mr-4 h-[200px] w-[300px]' />
+                    <Skeleton className='mr-4 h-[200px] w-[300px]' />
+                    <Skeleton className='mr-4 h-[200px] w-[300px]' />
                   </>
                 )}
               </div>

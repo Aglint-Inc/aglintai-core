@@ -110,7 +110,11 @@ const TopBar = (props: PropsWithChildren) => {
   } = useApplication();
   if (status === 'pending') return <>Loadin...</>;
   return (
+<<<<<<< HEAD
     <div className='flex flex-row items-center justify-between w-full h-full'>
+=======
+    <div className='flex h-full w-full flex-row items-center justify-between'>
+>>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
       {props.children ?? (
         <>
           <Info />

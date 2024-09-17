@@ -244,10 +244,10 @@ export function FilterComponent({
 
 const Loader = memo(() => {
   return (
-    <div className='space-y-2 p-2 min-w-[176px]'>
+    <div className='min-w-[176px] space-y-2 p-2'>
       {[...Array(5)].map((_, i) => (
-        <div key={i} className='w-[200px] h-[20px]'>
-          <Skeleton className=' max-w-[200px] h-5' />
+        <div key={i} className='h-[20px] w-[200px]'>
+          <Skeleton className='h-5 max-w-[200px]' />
         </div>
       ))}
     </div>
