@@ -1,11 +1,10 @@
-import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useAllInterviewModules } from 'src/app/(authenticated)/_interview-pool/_common/hooks';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { supabase } from '@/utils/supabase/client';
 
 import { useModuleRelations } from '../hooks';
@@ -102,10 +101,10 @@ function AddInterviewTypeDialog() {
           </>
         }
       >
-        <Stack>
-          <Typography mb={1}>
+        <div className='flex flex-col'>
+          <p className='mb-1 text-sm'>
             Pick an interview type from the list to add.
-          </Typography>
+          </p>
           <UISelectDropDown
             disabled={isLoading}
             menuOptions={filteredModules?.map((module) => ({
@@ -118,34 +117,7 @@ function AddInterviewTypeDialog() {
               setSelectedModule(module);
             }}
           />
-          {/* <Autocomplete
-            fullWidth
-            disabled={isLoading}
-            disableClearable
-            options={filteredModules}
-            onChange={(_event, value) => {
-              if (value) {
-                setSelectedModule(value);
-              }
-            }}
-            autoComplete={false}
-            getOptionLabel={(option) => option.name}
-            renderOption={(props, option) => {
-              return (
-                <li {...props}>
-                  <Typography variant='body1' color={'var(--neutral-12)'}>
-                    {option.name}
-                  </Typography>
-                </li>
-              );
-            }}
-            renderInput={(params) => {
-              return (
-                <TextField {...params} placeholder='Ex. Initial Screening' />
-              );
-            }}
-          /> */}
-        </Stack>
+        </div>
       </UIDialog>
     </>
   );

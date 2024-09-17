@@ -1,7 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { Stack } from '@mui/material';
 import React from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -55,7 +54,7 @@ function CandidateDetails({
   ];
 
   return (
-    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+    <div className="flex flex-row items-center space-x-1">
       {items
         .filter(({ hide }) => !hide)
         .map(({ text, type, route }, i) => {
@@ -70,19 +69,17 @@ function CandidateDetails({
             );
           } else
             return (
-              <>
-                <Button
-                  key={i}
-                  variant='ghost'
-                  size='sm'
-                  onClick={() => push(route)}
-                >
-                  {text}
-                </Button>
-              </>
+              <Button
+                key={i}
+                variant='ghost'
+                size='sm'
+                onClick={() => push(route)}
+              >
+                {text}
+              </Button>
             );
         })}
-    </Stack>
+    </div>
   );
 }
 

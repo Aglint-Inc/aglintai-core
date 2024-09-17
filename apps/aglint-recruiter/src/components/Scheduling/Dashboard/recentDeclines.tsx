@@ -1,6 +1,5 @@
 import Avatar from '@mui/material/Avatar';
 import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
@@ -47,9 +46,9 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <Stack>
+      <div className='flex flex-col'>
         <Empty />
-      </Stack>
+      </div>
     );
 
   return <List data={data} />;

@@ -1,15 +1,15 @@
 import { Skeleton } from '@components/ui/skeleton';
-import Stack from '@mui/material/Stack';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
-import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 import { capitalizeAll } from '@/utils/text/textUtils';
+
+import { InterviewersCardList } from './_common/InterviewersCardList';
+import { InterviewersDash } from './_common/InterviewersDash';
 
 const LIMIT = 4;
 
@@ -61,14 +61,9 @@ const List = ({ data }: Props) => {
   return (
     <>
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (
-        <Stack
+        <div
           key={user_id}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
+          className="flex flex-row items-center justify-between cursor-pointer hover:bg-gray-100"
         >
           <InterviewersCardList
             textName={capitalizeAll(name)}
@@ -76,7 +71,7 @@ const List = ({ data }: Props) => {
             textDeclined={declined}
             textUpcoming={'--'}
           />
-        </Stack>
+        </div>
       ))}
     </>
   );
@@ -84,12 +79,7 @@ const List = ({ data }: Props) => {
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => (
-      <InterviewStatsLoader
-        key={i}
-        slotSkeleton={<Skeleton className='h-full w-full' />}
-      />
-    ),
+    (_, i) => <Skeleton key={i} className='h-full w-full' />,
   );
 });
 Loader.displayName = 'Loader';

@@ -50,14 +50,14 @@ export default function CandidatesByLocationChart() {
                 cy='50%'
                 innerRadius={60}
                 outerRadius={80}
-                fill='hsl(var(--chart-1))'
+                fill='text-blue-500'
                 paddingAngle={5}
                 dataKey='value'
               >
                 {data.map((_entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={`hsl(var(--chart-${(index % 10) + 1}))`}
+                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                   />
                 ))}
               </Pie>

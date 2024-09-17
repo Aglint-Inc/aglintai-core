@@ -23,7 +23,7 @@ export type dynamicOptionsTypes =
       options: { id: string; label: string }[];
     }[];
 
-interface ButtonFilterInterface {
+interface FilterButtonInterface {
   isActive?: boolean;
   isDotVisible: boolean;
   textLabel: string;
@@ -49,7 +49,7 @@ export default function UIFilter({
   resetFilter,
   onClick,
   type = 'popover',
-}: ButtonFilterInterface) {
+}: FilterButtonInterface) {
   const [caret, setCaret] = React.useState<boolean>(false);
   const Caret = showCaret ? (
     caret ? (

@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@components/ui/dialog';
-import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
 import { FileQuestion } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -173,33 +172,32 @@ const CreateSession = ({
   };
 
   return (
-    <SideDrawerBlock
-      slotButton={
-        <>
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() => handleClose()}
-            disabled={sessionCreation}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            size='sm'
-            variant='default'
-            isLoading={sessionCreation}
-            onClick={() => handleAdd()}
-          >
-            Add
-          </UIButton>
-        </>
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      textTitle='Create Interview'
-      slotSidedrawerBody={
-        <SessionForms fields={fields} setFields={setFields} />
-      }
-    />
+    <div className='flex h-screen flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <h2 className='mb-4 text-lg font-semibold'>Create Interview</h2>
+          <SessionForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 border-t p-4'>
+        <UIButton
+          size='sm'
+          variant='secondary'
+          onClick={() => handleClose()}
+          disabled={sessionCreation}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          size='sm'
+          variant='default'
+          isLoading={sessionCreation}
+          onClick={() => handleAdd()}
+        >
+          Add
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -284,33 +282,32 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <SideDrawerBlock
-      textTitle='Update Interview'
-      slotSidedrawerBody={
-        <SessionForms fields={fields} setFields={setFields} />
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      slotButton={
-        <>
-          <UIButton
-            disabled={isLoading}
-            variant='secondary'
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            size='sm'
-            isLoading={isLoading}
-            onClick={() => handleEdit()}
-          >
-            Update
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex h-screen flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <h2 className='mb-4 text-lg font-semibold'>Update Interview</h2>
+          <SessionForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 border-t p-4'>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={handleClose}
+          disabled={isLoading}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant='default'
+          size='sm'
+          onClick={handleEdit}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Updating...' : 'Update'}
+        </Button>
+      </div>
+    </div>
   );
 };
 
@@ -352,33 +349,32 @@ const CreateDebrief = ({
     }
   };
   return (
-    <SideDrawerBlock
-      textTitle='Create Debrief'
-      slotSidedrawerBody={
-        <DebriefForms fields={fields} setFields={setFields} />
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      slotButton={
-        <>
-          <UIButton
-            variant='secondary'
-            disabled={debriefCreation}
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            size='sm'
-            variant='default'
-            isLoading={debriefCreation}
-            onClick={() => handleAdd()}
-          >
-            Add
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex h-screen flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <h2 className='mb-4 text-lg font-semibold'>Create Debrief</h2>
+          <DebriefForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 border-t p-4'>
+        <UIButton
+          variant='secondary'
+          disabled={debriefCreation}
+          size='sm'
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          size='sm'
+          variant='default'
+          isLoading={debriefCreation}
+          onClick={() => handleAdd()}
+        >
+          Add
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -442,33 +438,32 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <SideDrawerBlock
-      textTitle='Edit Debrief'
-      slotSidedrawerBody={
-        <DebriefForms fields={fields} setFields={setFields} />
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      slotButton={
-        <>
-          <UIButton
-            variant='secondary'
-            disabled={isLoading}
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            size='sm'
-            isLoading={isLoading}
-            onClick={() => handleEdit()}
-          >
-            Update
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex h-screen flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <h2 className='mb-4 text-lg font-semibold'>Edit Debrief</h2>
+          <DebriefForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 border-t p-4'>
+        <UIButton
+          variant='secondary'
+          disabled={isLoading}
+          size='sm'
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          variant='default'
+          size='sm'
+          isLoading={isLoading}
+          onClick={() => handleEdit()}
+        >
+          Update
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -506,30 +501,31 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     }
   };
   return (
-    <SideDrawerBlock
-      onClickClose={{ onClick: () => handleClose() }}
-      textTitle={break_duration === 0 ? 'Create Break' : 'Edit Break'}
-      slotSidedrawerBody={<BreakForms fields={fields} setFields={setFields} />}
-      slotButton={
-        <>
-          <UIButton
-            disabled={isLoading}
-            variant='secondary'
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            size='sm'
-            isLoading={isLoading}
-            onClick={() => handleUpdate()}
-          >
-            {break_duration === 0 ? 'Add' : 'Update'}
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex h-screen flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <h2 className='mb-4 text-lg font-semibold'>Edit Break</h2>
+          <BreakForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 border-t p-4'>
+        <UIButton
+          disabled={isLoading}
+          variant='secondary'
+          size='sm'
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          variant='default'
+          size='sm'
+          isLoading={isLoading}
+          onClick={() => handleUpdate()}
+        >
+          {break_duration === 0 ? 'Add' : 'Update'}
+        </UIButton>
+      </div>
+    </div>
   );
 };

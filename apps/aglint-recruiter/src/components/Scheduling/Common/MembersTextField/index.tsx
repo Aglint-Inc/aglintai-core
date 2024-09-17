@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PanelMemberPill } from '@devlink2/PanelMemberPill';
-import { Stack, Typography } from '@mui/material';
-import { AlertCircle, Check } from 'lucide-react';
+import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
@@ -33,7 +32,7 @@ type MembersAutoCompleteProps = {
       [key: string]: any;
     })[],
   ) => void;
-  pillColor?: 'transparent' | 'var(--neutral-3)';
+  pillColor?: 'transparent' | 'bg-neutral-200';
   maxWidth?: string;
   error?: boolean;
   helperText?: string;
@@ -61,32 +60,31 @@ function MembersAutoComplete({
       <div className='flex flex-row flex-wrap gap-2'>
         {selectedUsers.map((user) => {
           return (
-            <PanelMemberPill
+            <div
               key={user.user_id}
-              propsBgColor={{
-                style: {
-                  background: pillColor ? pillColor : 'var(--neutral-3)',
-                  textTransform: 'capitalize',
-                },
-              }}
-              onClickClose={{
-                onClick: () => {
+              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${pillColor ? `bg-${pillColor}` : 'bg-neutral-300'
+                }`}
+            >
+              <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    height='24px'
+                    width='24px'
+                    fontSize='12px'
+                  />
+              
+              <span>{getFullName(user?.first_name, user?.last_name)}</span>
+              <button
+                onClick={() => {
                   setSelectedUsers(
                     selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
-                },
-              }}
-              slotImage={
-                <MuiAvatar
-                  src={user.profile_image}
-                  level={getFullName(user?.first_name, user?.last_name)}
-                  height='20px'
-                  width='20px'
-                  fontSize='12px'
-                />
-              }
-              textMemberName={getFullName(user?.first_name, user?.last_name)}
-            />
+                }}
+                className='ml-1 text-gray-500 hover:text-gray-700'
+              >
+                <X size={12} />
+              </button>
+            </div>
           );
         })}
       </div>
@@ -146,26 +144,21 @@ function MembersAutoComplete({
                     width='24px'
                     fontSize='12px'
                   />
-                  <Stack
-                    direction={'row'}
-                    justifyContent={'space-between'}
-                    width={'100%'}
-                    className='pl-2'
+                  <div
+                    className='pl-2 flex flex-row justify-between w-full items-center'
                   >
-                    <Typography
-                      variant='body1'
-                      className='one-line-clamp'
-                      sx={{ textTransform: 'capitalize' }}
+                    <div
+                      className='one-line-clamp text-sm'
                     >
                       {getFullName(option.first_name, option.last_name)}
-                    </Typography>
-                    <Typography
-                      variant='caption'
-                      sx={{ textTransform: 'capitalize' }}
+                    </div>
+                    <div
+                      className='text-xs text-gray-500'
+                      style={{ textTransform: 'capitalize' }}
                     >
                       {option.position || ''}
-                    </Typography>
-                  </Stack>
+                    </div>
+                  </div>
                 </div>
               );
             })

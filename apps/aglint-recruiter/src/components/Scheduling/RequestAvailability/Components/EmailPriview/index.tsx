@@ -1,11 +1,9 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { EmailPreviewOnScheduling } from '@devlink3/EmailPreviewOnScheduling';
 import { AlertCircle, Loader2, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
@@ -58,58 +56,53 @@ function EmailPreview({
   }, []);
 
   return (
-    <EmailPreviewOnScheduling
-      textEmailPreview={
-        <div className='flex flex-col space-y-1'>
-          <p>
-            This email will be sent to the candidate. To edit the content, go to
-            the template section, make edits, then click refresh.
-            <br />
-            {`Click "Request Availability" to send.`}
-          </p>
-        </div>
-      }
-      slotButton={
-        <>
-          <Button
-            variant='outline'
-            onClick={() => {
-              setRequestSteps('finding_slots');
-            }}
-          >
-            Back
-          </Button>
-          <Button disabled={loading} onClick={onSubmit}>
-            {loading ? (
-              <>
-                <RefreshCcw className='mr-2 h-4 w-4 animate-spin' />
-                Loading...
-              </>
-            ) : (
-              'Request Availability'
-            )}
-          </Button>
-        </>
-      }
-      slotEmailPreview={
-        <ShowCode>
-          <ShowCode.When isTrue={fetching}>
-            <div className='flex h-[80vh] w-[538px] items-center justify-center'>
-              <Loader2 className='h-8 w-8 animate-spin' />
+    <div className='flex flex-col space-y-4'>
+      <div className='flex flex-col space-y-1'>
+        <p className='text-sm text-gray-600'>
+          This email will be sent to the candidate. To edit the content, go to
+          the template section, make edits, then click refresh.
+          <br />
+          {`Click "Request Availability" to send.`}
+        </p>
+      </div>
+
+      <div className='flex space-x-2'>
+        <Button
+          variant='outline'
+          onClick={() => {
+            setRequestSteps('finding_slots');
+          }}
+        >
+          Back
+        </Button>
+        <Button disabled={loading} onClick={onSubmit}>
+          {loading ? (
+            <div className='flex items-center'>
+              <RefreshCcw className='mr-2 h-4 w-4 animate-spin' />
+              Loading...
             </div>
-          </ShowCode.When>
-          <ShowCode.Else>
-            <div className='flex w-full flex-row items-center justify-between gap-8 px-5'>
-              <div>
-                <Alert>
-                  <AlertCircle className='h-4 w-4' />
-                  <AlertDescription>
-                    This is a preview only. All actions in this email are
-                    disabled.
-                  </AlertDescription>
-                </Alert>
-              </div>
-              <div className='flex min-w-[152px] flex-row justify-start space-x-1'>
+          ) : (
+            'Request Availability'
+          )}
+        </Button>
+      </div>
+
+      <div className='w-full'>
+        {fetching ? (
+          <div className='flex h-[80vh] w-full items-center justify-center'>
+            <Loader2 className='h-8 w-8 animate-spin' />
+          </div>
+        ) : (
+          <div className='flex flex-col space-y-4'>
+            <div className='flex w-full items-center justify-between px-5'>
+              <Alert className='mr-8 flex-grow'>
+                <AlertCircle className='h-4 w-4' />
+                <AlertDescription>
+                  This is a preview only. All actions in this email are
+                  disabled.
+                </AlertDescription>
+              </Alert>
+              <div className='flex space-x-1'>
                 <Button
                   variant='outline'
                   size='sm'
@@ -127,14 +120,14 @@ function EmailPreview({
               </div>
             </div>
             <iframe
-              className='h-[720px] w-[600px]'
+              className='h-[720px] w-full rounded border border-gray-200'
               srcDoc={emailData?.html}
               title='Preview Email'
             />
-          </ShowCode.Else>
-        </ShowCode>
-      }
-    />
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 

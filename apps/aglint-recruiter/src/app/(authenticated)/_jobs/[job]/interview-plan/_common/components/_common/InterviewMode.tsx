@@ -21,13 +21,13 @@ export function InterviewMode({
   return (
     <div className={cn('rounded-lg')}>
       <div className={cn('mb-4')}>
-        <UITypography type='small' variant='p' fontBold='default'>
+        <UITypography type='small' variant='p' fontBold='normal' className='pb-1'>
           Interview Mode
         </UITypography>
         <div className={cn('flex flex-col')}>{slotInterviewModePill}</div>
       </div>
       <div className={cn('mb-4')}>
-        <UITypography type='small' variant='p' fontBold='default'>
+        <UITypography type='small' variant='p' fontBold='normal'>
           Interviewers
         </UITypography>
         <div className={cn('flex flex-col')}>
@@ -43,7 +43,7 @@ export function InterviewMode({
           </div>
         )}
         {isPanel && (
-          <div className={cn('mt-4')}>
+          <div className='flex flex-row mt-2 space-x-2 items-center'> 
             <div>{'Include'}</div>
             <div>
               {slotMemberCountDropdown ?? (
@@ -53,19 +53,19 @@ export function InterviewMode({
               )}
             </div>
             <div>{'of selected members'}</div>
-          </div>
+         </div>
         )}
         {isIndividual && (
-          <div className={cn('mt-2 text-gray-600')}>
+          <div className={cn('mt-2 text-gray-600 text-sm')}>
             {'One chosen member will serve as the interviewer.'}
           </div>
         )}
       </div>
       {isTrainingVisible && (
         <div className={cn('mb-4')}>
-          <div className={cn('flex items-center')}>
+          <div className={cn('flex items-center space-x-2')}>
             <div>{slotToggle}</div>
-            <UITypography fontBold='default'>{textToggleLabel}</UITypography>
+            <UITypography fontBold='default' type='small'>{textToggleLabel}</UITypography>
           </div>
           {isTraining && (
             <div className={cn('mt-2')}>
@@ -73,7 +73,7 @@ export function InterviewMode({
                 {slotTraineeAvatarSelectionPill}
               </div>
               {isTraineesDropVisible && (
-                <div className={cn('mt-2')}>
+                <div>
                   {slotTraineesDropdown ?? (
                     <div className={cn('rounded border p-2')}>
                       <div>{'Search Interviewers'}</div>

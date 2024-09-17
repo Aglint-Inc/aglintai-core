@@ -10,7 +10,7 @@ import { Button } from '@components/ui/button';
 import { Zap } from 'lucide-react';
 import { useRouter } from 'next/router';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { Settings } from '@/job/components/SharedTopNav/actions';

@@ -3,6 +3,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -13,7 +14,6 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { WorkflowConnectedCard } from '@/workflow/components/WorkflowConnectedCard';
 
-import Loader from '../../Common/Loader';
 import ButtonGroup from './ButtonGroup';
 import DetailsOverview from './DetailsOverview';
 import { useScheduleDetails } from './hooks';
@@ -137,7 +137,7 @@ function SchedulingViewComp() {
                 </div>
 
                 {checkPermissions(['scheduling_actions']) && (
-                  <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto border-l border-[var(--neutral-6)] p-[var(--space-4)]'>
+                  <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto border-l border-neutral-300 p-4'>
                     <div className='mb-2 flex flex-col space-y-1'>
                       <p className='font-medium'>Job</p>
                       <WorkflowConnectedCard

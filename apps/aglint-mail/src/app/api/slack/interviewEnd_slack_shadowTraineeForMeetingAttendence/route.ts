@@ -25,7 +25,7 @@ const func = async (
     false,
   );
   if (training_ints.length === 0) {
-    return null;
+    return 'ok';
   }
   const [session_detail] = supabaseWrap(
     await supabaseAdmin

@@ -1,5 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Stack, Tooltip, Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import React from 'react';
 
 import { UIBadge } from '../UIBadge';
@@ -19,13 +19,13 @@ function InterviewerAcceptDeclineIcon({
             </React.Fragment>
           }
         >
-          <Stack>
+          <div className='flex flex-col'>
             <UIBadge
               iconName={'CalendarSearch'}
               size={'sm'}
               color={'warning'}
             />
-          </Stack>
+          </div>
         </Tooltip>
       )}
 

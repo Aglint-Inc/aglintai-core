@@ -1,4 +1,3 @@
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
 import Stack from '@mui/material/Stack';
 import {
   BarElement,
@@ -17,6 +16,8 @@ import {
 } from '@/context/SchedulingAnalytics';
 import { SafeObject } from '@/utils/safeObject';
 import { capitalizeAll } from '@/utils/text/textUtils';
+
+import { NewInterviewDetail } from './_common/NewInterviewDetail';
 
 export const Interviewes = memo(() => (
   <NewInterviewDetail

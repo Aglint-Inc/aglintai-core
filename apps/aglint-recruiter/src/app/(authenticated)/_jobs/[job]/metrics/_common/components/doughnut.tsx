@@ -12,7 +12,7 @@ import { capitalize } from 'lodash';
 import React, { type FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 

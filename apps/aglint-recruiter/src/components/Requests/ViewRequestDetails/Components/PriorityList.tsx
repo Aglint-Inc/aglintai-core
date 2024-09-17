@@ -1,4 +1,4 @@
-import { Popover, Stack } from '@mui/material';
+import { Popover } from '@mui/material';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -42,20 +42,10 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
           horizontal: 'right',
         }}
       >
-        <Stack
-          width={'130px'}
-          padding={1}
-          spacing={1}
-          sx={{
-            display: 'flex',
-            alignItems: 'self-start',
-          }}
-        >
+        <div className='flex w-[130px] flex-col'>
           {['urgent', 'standard'].map((priority: Request['priority']) => (
-            <Stack
-              sx={{
-                cursor: 'pointer',
-              }}
+            <div
+              className='cursor-pointer'
               key={priority}
               onClick={async () => {
                 setAnchorEl(null);
@@ -73,17 +63,15 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
                   toast.success('Request priority updated successfully');
                 }
               }}
-              direction={'row'}
-              gap={1}
             >
               <UIBadge
                 iconName={priority === 'urgent' ? 'ShieldAlert' : null}
                 color={priority === 'urgent' ? 'warning' : 'neutral'}
                 textBadge={capitalizeFirstLetter(priority)}
               />
-            </Stack>
+            </div>
           ))}
-        </Stack>
+        </div>
       </Popover>
     </>
   );

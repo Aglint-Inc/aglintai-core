@@ -15,7 +15,7 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase, Globe, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import {
   useJob,
   useJobDashboardActions,
