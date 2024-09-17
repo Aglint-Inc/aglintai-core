@@ -1,4 +1,3 @@
-import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -31,10 +30,8 @@ function ScheduleMeetingCard({
 
   return (
     <>
-      <Stack
-        sx={{
-          cursor: 'pointer',
-        }}
+      <div
+        className="cursor-pointer"
         onClick={() => {
           router.push(
             `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
@@ -50,7 +47,7 @@ function ScheduleMeetingCard({
           isMembersListVisible={interviewers.length > 0 && collapseOpen}
           slotMembersList={
             <>
-              <Collapse in={collapseOpen}>
+              <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
                 <div className='flex flex-col space-y-2'>
                   <MembersList
                     slotImage={<User size={40} />}
@@ -96,7 +93,7 @@ function ScheduleMeetingCard({
                     );
                   })}
                 </div>
-              </Collapse>
+              </div>
             </>
           }
           textTime={`${dayjs(meetingDetails?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
@@ -128,20 +125,16 @@ function ScheduleMeetingCard({
           }
           isAvatarWithNameVisible={!collapseOpen}
           textJob={
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              className='space-y-5'
-            >
+            <div className="flex flex-row items-center space-y-5">
               <span>{meetingDetails?.public_jobs.job_title}</span>
-            </Stack>
+            </div>
           }
           bgColorProps={{
             background: getScheduleBgcolor(meetingDetails.status),
             color: getScheduleTextcolor(meetingDetails.status),
           }}
         />
-      </Stack>
+      </div>
     </>
   );
 }
