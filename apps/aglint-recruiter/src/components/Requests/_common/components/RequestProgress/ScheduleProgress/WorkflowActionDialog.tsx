@@ -98,9 +98,9 @@ const WorkflowActionDialog = () => {
   };
   const { mutateAsync } =
     api.textTransform.selfScheduleInstruction.useMutation();
-  let isDialogEdit = true;
-  if (selectedActionsDetails?.id && selectedActionsDetails.id.length === 0) {
-    isDialogEdit = false;
+  let isDialogEdit = false;
+  if (selectedActionsDetails?.id && selectedActionsDetails.id.length > 0) {
+    isDialogEdit = true;
   }
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],

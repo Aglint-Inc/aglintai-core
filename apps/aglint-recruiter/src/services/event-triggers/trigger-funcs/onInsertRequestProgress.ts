@@ -92,10 +92,6 @@ const selfScheduleReminder = async ({
     await reqProgressLogger({
       is_progress_step: false,
       status: 'completed',
-    });
-    await reqProgressLogger({
-      is_progress_step: true,
-      status: 'completed',
       meta: {
         workflow_action_id: schedule_reminder_action.id,
         event_run_id: run_id,
@@ -153,12 +149,9 @@ const availReminder = async ({
         phase: avail_reminder_action.workflow.phase,
       }),
     );
+
     await reqProgressLogger({
       is_progress_step: false,
-      status: 'completed',
-    });
-    await reqProgressLogger({
-      is_progress_step: true,
       status: 'completed',
       meta: {
         workflow_action_id: avail_reminder_action.id,
