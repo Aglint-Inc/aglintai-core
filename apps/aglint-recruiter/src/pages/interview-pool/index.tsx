@@ -1,5 +1,5 @@
 import React from 'react';
-import InterviewTypesPage from 'src/app/(authenticated)/_interview-pool';
+import InterviewTypesPage from 'src/app/(authenticated)/_interview-pool/_common/components';
 
 function InterviewTypesPages() {
   return (

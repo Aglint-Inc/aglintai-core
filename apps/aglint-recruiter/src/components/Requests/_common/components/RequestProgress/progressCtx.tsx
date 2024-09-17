@@ -14,8 +14,17 @@ export interface RequestProgressContextType {
       DatabaseTable['company_email_template']
     >
   >;
-  editTrigger: DatabaseTable['workflow']['trigger'];
-  setEditTrigger: (trigger: DatabaseTable['workflow']['trigger']) => void;
+  triggerDetails: {
+    trigger: DatabaseTable['workflow']['trigger'];
+    interval: number;
+  };
+  setTriggerDetails: ({
+    interval,
+    trigger,
+  }: {
+    trigger: DatabaseTable['workflow']['trigger'];
+    interval: number;
+  }) => void;
   showEditDialog: boolean;
   setShowEditDialog: (show: boolean) => void;
 }

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import SchedulingViewComp from 'src/app/(authenticated)/_scheduling/view';
+import SchedulingViewComp from 'src/app/(authenticated)/_scheduling/view/_common/components';
 
 import Seo from '@/components/Common/Seo';
 

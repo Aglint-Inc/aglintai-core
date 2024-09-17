@@ -25,6 +25,8 @@ const CandidateCancelRequest = () => {
         wActions: cancelReqActions,
         request_id: requestDetails.id,
         recruiter_id: recruiter_id,
+        interval: 0,
+        workflow_id: null,
       });
       await request_workflow.refetch();
       await handleAsyncUpdateRequest({

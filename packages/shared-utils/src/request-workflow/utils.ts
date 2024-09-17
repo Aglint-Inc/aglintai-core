@@ -28,6 +28,8 @@ export const createRequestProgressLogger = ({
       'log' | 'status' | 'id' | 'is_progress_step' | 'meta'
     >
   ) => {
+    console.log('rec s');
+
     let progress_id = uuidv4();
     if (payload.is_progress_step === false) {
       const [progress] = supabaseWrap(
@@ -61,6 +63,7 @@ export const createRequestProgressLogger = ({
         })
         .select()
     );
+    console.log('rec f');
     return rec;
   };
   logger.resetEventProgress = async () => {

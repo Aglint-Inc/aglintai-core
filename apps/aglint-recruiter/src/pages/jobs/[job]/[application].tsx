@@ -1,4 +1,4 @@
-import ApplicationDetail from 'src/app/(authenticated)/_jobs/[application]';
+import ApplicationDetail from 'src/app/(authenticated)/_jobs/[application]/_common/components';
 
 import {
   ApplicationsProvider,

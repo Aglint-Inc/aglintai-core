@@ -16,6 +16,13 @@ import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
 
+const defaultTriggerDurations: Partial<
+  Record<DatabaseTable['workflow']['trigger'], number>
+> = {
+  sendAvailReqReminder: 24 * 60,
+  selfScheduleReminder: 24 * 60,
+};
+
 const EventNode = ({
   eventType,
   reqProgresMap,
@@ -30,7 +37,7 @@ const EventNode = ({
   showEditBtns?: boolean;
 }) => {
   const { request_workflow } = useRequest();
-  const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
+  const { setShowEditDialog, setTriggerDetails } = useRequestProgressProvider();
   const [, setOnHover] = React.useState(false);
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
@@ -77,7 +84,19 @@ const EventNode = ({
                   variant='outline'
                   size='sm'
                   onClick={() => {
-                    setEditTrigger(currEventTrigger);
+                    let interval = 0;
+                    const trigger_info = request_workflow.data.find(
+                      (rw) => rw.trigger === currEventTrigger,
+                    );
+                    if (trigger_info) {
+                      interval = trigger_info.interval;
+                    } else if (defaultTriggerDurations[currEventTrigger]) {
+                      interval = defaultTriggerDurations[currEventTrigger];
+                    }
+                    setTriggerDetails({
+                      trigger: currEventTrigger,
+                      interval,
+                    });
                     setShowEditDialog(true);
                   }}
                 >
