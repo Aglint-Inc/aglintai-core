@@ -11,10 +11,10 @@ import { apiTargetToEvents } from '../utils/progressMaps';
 
 const InterviewerDecline = () => {
   const {
-    setEditTrigger,
     reqTriggerActionsMap,
     setShowEditDialog,
     reqProgressMap,
+    setTriggerDetails,
   } = useRequestProgressProvider();
 
   return (
@@ -40,7 +40,10 @@ const InterviewerDecline = () => {
                   variant='outline'
                   size={'sm'}
                   onClick={() => {
-                    setEditTrigger('onRequestInterviewerDecline');
+                    setTriggerDetails({
+                      trigger: 'onRequestInterviewerDecline',
+                      interval: 0,
+                    });
                     setShowEditDialog(true);
                   }}
                 >

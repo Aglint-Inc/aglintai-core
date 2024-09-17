@@ -11,7 +11,6 @@ import SelectScheduleFlow from './SelectScheduleFlow';
 
 const ScheduleProgress = () => {
   const { reqProgressMap, reqTriggerActionsMap } = useRequestProgressProvider();
-
   const scheduleFlow = getSchedulFlow({
     eventTargetMap: reqTriggerActionsMap,
     requestTargetMp: reqProgressMap,
