@@ -3,7 +3,6 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-import { ProgressHoverCard } from '@devlink/ProgressHoverCard';
 import { Box, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import { CheckCircle, RotateCcw, XCircle } from 'lucide-react';
 import {
@@ -27,6 +26,7 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import dayjs from '@/utils/dayjs';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { ProgressHoverCard } from '../components/_common/ProgressHoverCard';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
 import { type CalendarEventWithType, type EventType } from '../types';
