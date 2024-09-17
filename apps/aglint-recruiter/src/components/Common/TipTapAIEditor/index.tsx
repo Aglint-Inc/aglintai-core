@@ -137,14 +137,14 @@ const TipTapAIEditor = ({
               className={`${disabled ? 'pointer-events-none opacity-50' : ''}`}
             >
               <MenuBtns
-                borderRadius={(border && borderRadius) || 'var(--radius-2)'}
+                borderRadius={(border && borderRadius) || 'rounded-md'}
                 isSize={isSize}
                 isAlign={isAlign}
               />
             </div>
           )}
           <div
-            className={`relative ${disabled ? 'pointer-events-none opacity-50' : ''} overflow-auto rounded-[var(--radius-2)] bg-white`}
+            className={`relative ${disabled ? 'pointer-events-none opacity-50' : ''} overflow-auto rounded-md bg-white`}
             style={{
               minHeight: minHeight,
               height: height,

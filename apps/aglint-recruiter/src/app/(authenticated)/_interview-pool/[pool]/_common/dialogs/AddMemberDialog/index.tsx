@@ -114,7 +114,7 @@ function AddMemberDialog() {
         <p className='mb-1'>Choose members from your team.</p>
         <MembersAutoComplete
           maxWidth={'460px'}
-          pillColor='neutral-200'
+          pillColor='bg-neutral-200'
           renderUsers={allMembers}
           selectedUsers={selectedUsers}
           setSelectedUsers={(users) => {

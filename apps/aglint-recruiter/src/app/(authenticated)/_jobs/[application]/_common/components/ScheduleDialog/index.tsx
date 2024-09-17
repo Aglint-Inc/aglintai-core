@@ -9,7 +9,6 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { cn } from '@lib/utils';
-import { Stack } from '@mui/material';
 import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -306,7 +305,7 @@ export const RequestOption = ({
   >;
 }) => {
   return (
-    <Stack direction={'row'} width={'100%'} spacing={'var(--space-2)'}>
+    <div className="flex flex-row w-full space-x-2">
       <UIButton
         variant={requestType === 'urgent' ? 'default' : 'outline'}
         leftIcon={<FileBadge2 />}
@@ -324,6 +323,6 @@ export const RequestOption = ({
       >
         Standard Request
       </UIButton>
-    </Stack>
+    </div>
   );
 };

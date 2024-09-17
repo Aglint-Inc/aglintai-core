@@ -60,11 +60,11 @@ const Label = (props) => {
       <span
         style={{
           display: 'inline',
-          backgroundColor: 'var(--neutral-4)',
-          color: 'var(--white)',
+          backgroundColor: 'bg-neutral-300',
+          color: 'text-white',
           padding: '4px 10px',
           margin: '2px',
-          borderRadius: 'var(--radius-2)',
+          borderRadius: 'rounded-md',
           flexDirection: 'row',
           alignItems: 'center',
           gap: 5,

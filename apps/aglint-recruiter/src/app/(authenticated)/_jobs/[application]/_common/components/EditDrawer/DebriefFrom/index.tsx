@@ -103,7 +103,7 @@ function DebriedForm() {
             renderUsers={filterDebriefMembers}
             selectedUsers={debriefMembers}
             setSelectedUsers={setDebriefMembers}
-            pillColor='neutral-200'
+            pillColor='bg-neutral-200'
             error={
               errorValidation.find(
                 (err) => err.field === 'qualified_interviewers',

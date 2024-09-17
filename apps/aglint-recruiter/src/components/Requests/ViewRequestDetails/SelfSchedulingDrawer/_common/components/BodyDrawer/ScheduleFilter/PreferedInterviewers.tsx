@@ -1,5 +1,3 @@
-import { Stack, Typography } from '@mui/material';
-
 import MembersAutoComplete from '@/components/Scheduling/Common/MembersTextField';
 
 import {
@@ -37,10 +35,10 @@ function PreferedInterviewers() {
     });
 
   return (
-    <Stack width={'100%'} spacing={0.5}>
-      <Typography variant='body1'>Preferred Interviewers</Typography>
+    <div className='w-full space-y-0.5'>
+      <span className='text-base font-medium'>Preferred Interviewers</span>
       <MembersAutoComplete
-        pillColor={'neutral-200'}
+        pillColor={'bg-neutral-200'}
         renderUsers={uniqueInterviewers}
         selectedUsers={localFilters.preferredInterviewers}
         maxWidth='100%'
@@ -50,7 +48,7 @@ function PreferedInterviewers() {
           });
         }}
       />
-    </Stack>
+    </div>
   );
 }
 

@@ -35,7 +35,7 @@ export default function InterviewCountByTimeFrame() {
                     outerRadius={80}
                     dataKey='value'
                   >
-                    <Cell fill={`hsl(var(--chart-${(index % 10) + 1}))`} />
+                    <Cell fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`} />
                     <Cell fill='#f3f4f6' />
                   </Pie>
                   <text

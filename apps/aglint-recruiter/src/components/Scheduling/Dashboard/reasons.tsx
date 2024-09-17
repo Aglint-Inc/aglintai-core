@@ -1,7 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BarElement,
@@ -55,11 +53,11 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack height={'300px'}>
+      <div className='h-[300px]'>
         <div className='flex h-[350px] items-center justify-center'>
           <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
         </div>
-      </Stack>
+      </div>
     );
 
   if (status === 'error') return <>Error</>;
@@ -77,10 +75,10 @@ const Container = memo(() => {
   const safeData = getOrderedGraphValues(data);
 
   return (
-    <Stack alignItems={'center'} justifyContent={'center'} gap={4}>
+    <div className='flex flex-col items-center justify-center gap-4'>
       <DoughnutChart data={safeData} />
       <Meta data={safeData} />
-    </Stack>
+    </div>
   );
 });
 Container.displayName = 'Container';
@@ -118,10 +116,8 @@ const DoughnutChart = memo(({ data }: Props) => {
   const s = useMediaQuery('(min-width:1300px)');
 
   return (
-    <Stack
-      width={
-        s ? (m ? (l ? (xl ? '275px' : '250px') : '225px') : '200px') : '175px'
-      }
+    <div
+      className={` ${s ? (m ? (l ? (xl ? '275px' : '250px') : '225px') : '200px') : '175px'} `}
       style={{ aspectRatio: 1 }}
     >
       <Doughnut
@@ -143,53 +139,30 @@ const DoughnutChart = memo(({ data }: Props) => {
         }}
         data={dataBar}
       />
-    </Stack>
+    </div>
   );
 });
 DoughnutChart.displayName = 'DoughnutChart';
 
 const Meta = memo(({ data }: Props) => {
-  const sum = (data ?? []).reduce((acc, { count }) => {
-    acc += count;
-    return acc;
-  }, 0);
+  // const sum = (data ?? []).reduce((acc, { count }) => {
+  //   acc += count;
+  //   return acc;
+  // }, 0);
   return (
-    <Stack gap={1} width={'100%'} maxHeight={'48px'} overflow={'scroll'}>
-      {data.map(({ count, color, name }, i) => {
+    <div className='flex max-h-[48px] w-full flex-col gap-1 overflow-scroll'>
+      {data.map(({ color, name }, i) => {
         return (
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            gap={2}
-            key={i}
-          >
-            <Stack direction={'row'} gap={1} alignItems={'center'}>
-              <Stack
-                sx={{
-                  bgcolor: color,
-                  width: '10px',
-                  aspectRatio: 1,
-                  borderRadius: 'var(--radius-full)',
-                }}
-              />
-
-              <Typography
-                variant='body1'
-                sx={{
-                  textWrap: 'nowrap',
-                  // textTransform: 'capitalize',
-                }}
-              >
-                {name}
-              </Typography>
-            </Stack>
-            <Typography variant='body1'>
-              {((count / sum) * 100).toFixed(0)}%
-            </Typography>
-          </Stack>
+          <div className='flex flex-row items-center gap-1' key={i}>
+            <div
+              className='h-3 w-3 rounded'
+              style={{ backgroundColor: color }}
+            />
+            <span className='text-sm'>{name}</span>
+          </div>
         );
       })}
-    </Stack>
+    </div>
   );
 });
 Meta.displayName = 'Meta';

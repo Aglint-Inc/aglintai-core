@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+/* eslint-disable security/detect-object-injection */
 import {
   BarElement,
   CategoryScale,
@@ -75,9 +75,9 @@ const InterviewMeetingStatusComponent = ({
     {} as InterviewMeetingStatusCountProps['interviewMeetingStatus'],
   );
   return (
-    <Stack height={'100%'}>
+    <div className='h-full'>
       <StackedBar interviewMeetingStatus={safeData} />
-    </Stack>
+    </div>
   );
 };
 

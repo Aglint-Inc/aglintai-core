@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -18,12 +17,12 @@ function Requests({ session_id }) {
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
-    <Stack spacing={'var(--space-2)'}>
+    <div className='space-y-2'>
       <p className='font-semibold text-muted-foreground'>Request History</p>
       {isLoading ? (
         <Loader />
       ) : (
-        <Stack spacing={'var(--space-2)'}>
+        <div className='space-y-2'>
           {requests.length === 0 && (
             <GlobalEmpty
               iconSlot={<Calendar className='text-gray-500' />}
@@ -95,9 +94,9 @@ function Requests({ session_id }) {
               </>
             );
           })}
-        </Stack>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import { Grid, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
 import { UISwitch } from '@/components/Common/UISwitch';
@@ -93,8 +93,8 @@ function ToogleList() {
     },
   ];
   return (
-    <Stack>
-      <Grid container rowSpacing={2} columnSpacing={2}>
+    <div className='flex flex-col'>
+      <div className='grid grid-cols-2 gap-2'>
         {availabilityCards.map((availableData, index) => {
           const {
             color,
@@ -106,7 +106,7 @@ function ToogleList() {
             availabilityType,
           } = availableData;
           return (
-            <Grid item xs={6} key={index}>
+            <div key={index}>
               <SchedulerConflictCard
                 key={index}
                 slotCountText={
@@ -151,11 +151,11 @@ function ToogleList() {
                   </div>
                 }
               />
-            </Grid>
+            </div>
           );
         })}
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   );
 }
 

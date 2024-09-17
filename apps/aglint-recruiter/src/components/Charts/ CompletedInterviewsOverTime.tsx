@@ -55,7 +55,7 @@ const CompletedInterviewsOverTime = () => {
               <Line
                 type='monotone'
                 dataKey='interviews'
-                stroke='hsl(var(--chart-1))'
+                stroke='text-blue-500'
                 strokeWidth={2}
                 dot={{ r: 5 }}
                 activeDot={{ r: 7 }}

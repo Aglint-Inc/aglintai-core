@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { RangePicker } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -28,7 +27,7 @@ function ScheduleFilter() {
     <div className='space-y-2'>
       <ErrorConflicts />
       <div className='w-full space-y-1'>
-        <Typography variant='body1'>Date Range</Typography>
+        <span className='text-base font-medium'>Date Range</span>
         {localFilters.dateRange && (
           <RangePicker
             dateRange={localFilters.dateRange}

@@ -26,13 +26,13 @@ import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import { AllInterviewers } from './_common/AllInterviewers';
-import Filters from './Filters';
 
 const InterviewTab = () => {
   const { recruiter } = useAuthDetails();
   const router = useRouter();
   const { data: interviewers, isLoading, isFetched } = useInterviewerList();
-  const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
+  const [filteredInterviewer] = useState(interviewers);
+  // const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
   const { activeMembers } = useTeamMembers();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
@@ -76,11 +76,11 @@ const InterviewTab = () => {
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <div className='relative'>
-              <Filters
+              {/* <Filters
                 setFilteredInterviewer={setFilteredInterviewer}
                 interviewers={interviewers}
                 isLoading={isLoading}
-              />
+              /> */}
 
               {filteredInterviewer?.length > 0 ? (
                 <>

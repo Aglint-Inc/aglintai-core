@@ -51,7 +51,7 @@ function ScheduleMeetingCard({
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
-                <Stack direction={'column'} spacing={'var(--space-2)'}>
+                <div className='flex flex-col space-y-2'>
                   <MembersList
                     slotImage={<User size={40} />}
                     textName={getFullName(
@@ -95,7 +95,7 @@ function ScheduleMeetingCard({
                       </>
                     );
                   })}
-                </Stack>
+                </div>
               </Collapse>
             </>
           }
@@ -131,7 +131,7 @@ function ScheduleMeetingCard({
             <Stack
               direction={'row'}
               alignItems={'center'}
-              spacing={'var(--space-5)'}
+              className='space-y-5'
             >
               <span>{meetingDetails?.public_jobs.job_title}</span>
             </Stack>

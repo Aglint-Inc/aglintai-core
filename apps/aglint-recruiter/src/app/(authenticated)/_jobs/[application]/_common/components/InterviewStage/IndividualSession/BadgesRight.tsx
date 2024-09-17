@@ -1,5 +1,4 @@
 import {
-  Stack,
   styled,
   Tooltip,
   tooltipClasses,
@@ -33,11 +32,10 @@ function BadgesRight({
     <Tooltip {...props} classes={{ popper: className }} />
   ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: 'var(--neutral-11)',
-      border: '1px solid var(--neutral-6)',
-      color: 'var(--neutral-1)',
-      boxShadow: 'none',
-      fontSize: 'var(--font-size-1)',
+      backgroundColor: 'bg-neutral-700',
+      border: '1px solid border-neutral-300',
+      color: 'text-neutral-50',
+      fontSize: 'text-xs',
       fontWeight: '400',
     },
   }));
@@ -95,7 +93,7 @@ function BadgesRight({
                   <>
                     <span
                       style={{
-                        fontSize: 'var(--font-size-1)',
+                        fontSize: 'text-xs',
                       }}
                       dangerouslySetInnerHTML={{
                         __html: `${pausedUser.length} Interviewer${pausedUser.length > 1 ? 's' : ''} paused`,
@@ -104,14 +102,14 @@ function BadgesRight({
                   </>
                 }
               >
-                <Stack>
+                <div className="flex flex-col">
                   <UIBadge
                     size={'sm'}
                     iconName={'Info'}
                     color={'warning'}
                     textBadge={pausedUser.length}
                   />
-                </Stack>
+                </div>
               </LightTooltip>
             )}
             {allUsers.length === 0 && (
@@ -134,7 +132,7 @@ function BadgesRight({
                   <>
                     <span
                       style={{
-                        fontSize: 'var(--font-size-1)',
+                        fontSize: 'text-xs',
                       }}
                       dangerouslySetInnerHTML={{
                         __html: `No interviewers assigned`,
@@ -143,14 +141,14 @@ function BadgesRight({
                   </>
                 }
               >
-                <Stack>
+                <div className="flex flex-col">
                   <UIBadge
                     size={'sm'}
                     iconName={'CircleAlert'}
                     color={'error'}
                     textBadge={1}
                   />
-                </Stack>
+                </div>
               </LightTooltip>
             )}
           </>

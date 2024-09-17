@@ -93,7 +93,7 @@ function DeleteMemberDialog({
           By clicking delete the member will be permanently deleted.
         </p>
         {warning && (
-          <p className='text-base text-[var(--error-11)]'>Warning: {warning}</p>
+          <p className='text-base text-red-700'>Warning: {warning}</p>
         )}
       </div>
     ) : reason === 'cancel_invite' ? (

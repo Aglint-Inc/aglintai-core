@@ -32,7 +32,7 @@ type MembersAutoCompleteProps = {
       [key: string]: any;
     })[],
   ) => void;
-  pillColor?: 'transparent' | 'neutral-200';
+  pillColor?: 'transparent' | 'bg-neutral-200';
   maxWidth?: string;
   error?: boolean;
   helperText?: string;

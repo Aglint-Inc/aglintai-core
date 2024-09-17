@@ -14,7 +14,7 @@ function ScheduleList() {
         </div>
       )}
       {!loadingSchedules && filteredSchedules.length === 0 && (
-        <div className='flex min-h-[calc(100vh-128px)] items-center justify-center rounded-[var(--radius-2)] bg-[var(--neutral-2)]'>
+        <div className='flex min-h-[calc(100vh-128px)] items-center justify-center rounded-md bg-neutral-100'>
           <div className='w-[300px] max-w-sm p-2'>
             <div className='flex flex-col items-center justify-center p-8 text-center'>
               <svg
