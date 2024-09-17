@@ -152,11 +152,7 @@ function DetailsOverview({
                     }}
                   />
                 ) : (
-<<<<<<< HEAD
                   <div className='flex items-center justify-center w-full h-[200px]'>
-=======
-                  <div className='flex h-[200px] w-full flex-row items-center justify-center'>
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
                     <GlobalEmpty
                       text='Feedback will be enabled once the interview is completed'
                       iconSlot={<MessageCircle className='text-gray-500' />}

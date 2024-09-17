@@ -43,13 +43,8 @@ const CandidateInviteNew = () => {
             <Loader />
           </div>
         ) : load === null ? (
-<<<<<<< HEAD
           <div className='w-full h-screen flex justify-center items-center'>
             <NotFound />
-=======
-          <div className='flex h-screen w-full items-center justify-center'>
-            <Page404 text404='The requested page was not found' />
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
           </div>
         ) : (
           <>
@@ -108,13 +103,8 @@ const CandidateInvitePlanPage = () => {
 
   if (meetings.length === 0)
     return (
-<<<<<<< HEAD
       <div className='w-full h-screen'>
         <NotFound />
-=======
-      <div className='h-screen w-full'>
-        <Page404 />
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
       </div>
     );
 

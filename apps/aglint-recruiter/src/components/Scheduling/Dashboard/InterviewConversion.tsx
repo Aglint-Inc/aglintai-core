@@ -21,21 +21,12 @@ const InterviewConversion = () => {
     useState<InterviewConversionGraphProps['type']>('month');
   return (
     <>
-<<<<<<< HEAD
-      <div className='w-full h-full'>
+      <div className='h-full w-full'>
         <div className='flex flex-col space-y-4'>
           <div className='flex justify-end'>
             <SchedulingDropdown type={type} setType={setType} />
           </div>
-          <div className='flex-1 flex items-center justify-center'>
-=======
-      <InterviewRatio
-        slotDropdownButton={
-          <SchedulingDropdown type={type} setType={setType} />
-        }
-        slotInterviewGraph={
-          <div className='flex h-full w-full items-center justify-center'>
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
+          <div className='flex flex-1 items-center justify-center'>
             <InterviewConversionGraph type={type} />
           </div>
         </div>
