@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { ZodError } from 'zod';
+import { fromError } from 'zod-validation-error';
 
 export const createPostRoute = (schema: any, func: any) => {
   const POST = async (req: Request) => {
@@ -15,6 +17,10 @@ export const createPostRoute = (schema: any, func: any) => {
         status: 200,
       });
     } catch (error: any) {
+      if (error instanceof ZodError) {
+        const validationError = fromError(error);
+        return NextResponse.json({ error: validationError }, { status: 500 });
+      }
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
   };
