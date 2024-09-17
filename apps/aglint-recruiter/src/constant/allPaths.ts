@@ -155,7 +155,7 @@ export const PATHS = [
   '/integrations/[platform]',
   '/interview/feedback',
   '/interview-pool',
-  '/interview-pool/[type_id]',
+  '/interview-pool/[pool]',
   '/interviewers',
   '/jobs/create',
   '/jobs',

@@ -11,9 +11,9 @@ import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
 
+import { getPauseMemberText } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
-import { getPauseMemberText } from '../InterviewTypes/DetailPage/_common/utils/utils';
 import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
 
 function InterviewerUserDetail({

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import SearchField from '@/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/components/Common/ShowCode';
 
-import { type fetchModuleSchedules } from '../../InterviewTypes/DetailPage/_common/utils/utils';
+import { type fetchModuleSchedules } from '../../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import ScheduleMeetingList from './ScheduleMeetingList';
 
 type tabs = 'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting';
