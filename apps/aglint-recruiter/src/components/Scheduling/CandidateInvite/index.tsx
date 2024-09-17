@@ -37,7 +37,7 @@ const CandidateInviteNew = () => {
 
   return (
     <div className='h-screen'>
-      <div className='max-h-[calc(100vh-50px)] min-h-[calc(100vh-50px)] w-full overflow-auto bg-[var(--sand-3)] py-10'>
+      <div className='max-h-[calc(100vh-50px)] min-h-[calc(100vh-50px)] w-full overflow-auto bg-amber-50 py-10'>
         {load === undefined ? (
           <div className='flex h-screen w-full items-center justify-center'>
             <Loader />
@@ -273,10 +273,12 @@ type SessionsProps = Pick<ScheduleCardProps['round'], 'sessions'> & {
 const Sessions = (props: SessionsProps) => {
   const sessions = props.sessions.reduce((acc, curr) => {
     acc.push(
-      <SessionCard
-        key={curr.interview_session.id + curr.interview_session.id}
-        session={curr}
-      />,
+      <>
+        <SessionCard
+          key={curr.interview_session.id + curr.interview_session.id}
+          session={curr}
+        />
+      </>,
     );
     if (curr.interview_session.break_duration !== 0 && props.showBreak)
       acc.push(
@@ -325,7 +327,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textSessionDuration={duration}
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<Coffee size={16} color={'var(--neutral-2)'} />}
+      slotInterviewtypeIcon={<Coffee size={16} className="text-neutral-100" />}
       iconName={null}
     />
   );

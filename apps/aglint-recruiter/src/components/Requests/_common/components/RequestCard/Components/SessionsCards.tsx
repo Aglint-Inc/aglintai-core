@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { ArrowUpRight } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -18,8 +17,8 @@ function SessionsCards({
 }) {
   return (
     <>
-      <Stack direction={'row'} spacing={1} alignItems={'center'}>
-        <Stack direction={'row'} spacing={1}>
+      <div className='flex flex-row items-center space-x-1'>
+        <div className='flex flex-row space-x-1'>
           {sessions.map(({ name, id }, i) => {
             return (
               <UIButton
@@ -38,8 +37,8 @@ function SessionsCards({
               </UIButton>
             );
           })}
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </>
   );
 }

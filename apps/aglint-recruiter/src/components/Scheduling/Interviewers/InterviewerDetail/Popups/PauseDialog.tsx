@@ -167,7 +167,7 @@ function PauseDialog() {
               >
                 <Checkbox checked={selectedType === 'isManual'} />
                 <div className='flex flex-row space-x-1'>
-                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                  <span className='text-sm font-medium text-neutral-800'>
                     Indefinitely
                   </span>
                   <span className='text-sm'>Until you manually resume</span>
@@ -186,7 +186,7 @@ function PauseDialog() {
               >
                 <Checkbox checked={selectedType === 'twoWeek'} />
                 <div className='flex flex-row space-x-1'>
-                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                  <span className='text-sm font-medium text-neutral-800'>
                     2 Weeks
                   </span>
                   <span className='text-sm'>
@@ -207,7 +207,7 @@ function PauseDialog() {
               >
                 <Checkbox checked={selectedType === 'oneMonth'} />
                 <div className='flex flex-row space-x-1'>
-                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                  <span className='text-sm font-medium text-neutral-800'>
                     1 Month
                   </span>
                   <span className='text-sm'>
@@ -228,7 +228,7 @@ function PauseDialog() {
               >
                 <Checkbox checked={selectedType === 'threeMonth'} />
                 <div className='flex flex-row space-x-1'>
-                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                  <span className='text-sm font-medium text-neutral-800'>
                     3 Months
                   </span>
                   <span className='text-sm'>
@@ -248,7 +248,7 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'custom'} />
-                <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                <span className='text-sm font-medium text-neutral-800'>
                   Custom date
                 </span>
               </div>

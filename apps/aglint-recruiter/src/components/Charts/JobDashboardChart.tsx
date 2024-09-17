@@ -38,7 +38,7 @@ export default function JobDashboardChart() {
               <Tooltip />
               <Bar
                 dataKey='candidates'
-                fill='hsl(var(--chart-1))'
+                fill='text-blue-500'
                 label={{ position: 'right' }}
               />
             </BarChart>

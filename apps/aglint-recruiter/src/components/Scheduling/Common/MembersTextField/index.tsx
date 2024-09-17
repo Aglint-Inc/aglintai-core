@@ -5,7 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Stack, Typography } from '@mui/material';
 import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -33,7 +32,7 @@ type MembersAutoCompleteProps = {
       [key: string]: any;
     })[],
   ) => void;
-  pillColor?: 'transparent' | 'var(--neutral-3)';
+  pillColor?: 'transparent' | 'bg-neutral-200';
   maxWidth?: string;
   error?: boolean;
   helperText?: string;
@@ -63,19 +62,17 @@ function MembersAutoComplete({
           return (
             <div
               key={user.user_id}
-              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${
-                pillColor ? `bg-[${pillColor}]` : 'bg-neutral-3'
-              }`}
+              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${pillColor ? `bg-${pillColor}` : 'bg-neutral-300'
+                }`}
             >
-              <Avatar className='h-5 w-5 text-xs'>
-                <AvatarImage
-                  src={user.profile_image}
-                  alt={getFullName(user?.first_name, user?.last_name)}
-                />
-                <AvatarFallback>
-                  {getFullName(user?.first_name, user?.last_name).charAt(0)}
-                </AvatarFallback>
-              </Avatar>
+              <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    height='24px'
+                    width='24px'
+                    fontSize='12px'
+                  />
+              
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
               <button
                 onClick={() => {
@@ -147,26 +144,21 @@ function MembersAutoComplete({
                     width='24px'
                     fontSize='12px'
                   />
-                  <Stack
-                    direction={'row'}
-                    justifyContent={'space-between'}
-                    width={'100%'}
-                    className='pl-2'
+                  <div
+                    className='pl-2 flex flex-row justify-between w-full items-center'
                   >
-                    <Typography
-                      variant='body1'
-                      className='one-line-clamp'
-                      sx={{ textTransform: 'capitalize' }}
+                    <div
+                      className='one-line-clamp text-sm'
                     >
                       {getFullName(option.first_name, option.last_name)}
-                    </Typography>
-                    <Typography
-                      variant='caption'
-                      sx={{ textTransform: 'capitalize' }}
+                    </div>
+                    <div
+                      className='text-xs text-gray-500'
+                      style={{ textTransform: 'capitalize' }}
                     >
                       {option.position || ''}
-                    </Typography>
-                  </Stack>
+                    </div>
+                  </div>
                 </div>
               );
             })

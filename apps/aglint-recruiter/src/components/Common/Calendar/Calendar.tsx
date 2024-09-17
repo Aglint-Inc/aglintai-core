@@ -192,12 +192,12 @@ function renderEventContent(eventInfo) {
 
 const colorPick = (status): colorType => {
   return status === 'confirmed'
-    ? { bg: 'var(--info-3)', pri: 'var(--info-11)' }
+    ? { bg: 'bg-blue-200', pri: 'text-blue-700' }
     : status === 'completed'
-      ? { bg: 'var(--success-3)', pri: 'var(--success-11)' }
+      ? { bg: 'bg-green-200', pri: 'text-green-700' }
       : status === 'canceled'
-        ? { bg: 'var(--error-3)', pri: 'var(--error-11)' }
-        : null;
+        ? { bg: 'bg-red-200', pri: 'text-red-700' }
+        : { bg: 'bg-neutral-200', pri: 'text-neutral-700' };
 };
 
 const TooltipComp = ({ data }) => {

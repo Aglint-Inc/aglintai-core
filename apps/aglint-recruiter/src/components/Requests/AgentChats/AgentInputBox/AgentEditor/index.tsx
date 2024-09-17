@@ -202,7 +202,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       },
       input: {
         margin: 0,
-        border: '1px solid var(--neutral-6)',
+        border: '1px solid border-neutral-300',
         borderBottom: 'none',
         borderRadius: '10px',
         outline: 'none',
@@ -325,7 +325,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       backgroundColor,
       color: '#00000000',
       borderRadius: '5px',
-      border: '1px solid #F1F0EF',
+      border: '1px solid border-neutral-300',
     },
     markup,
     renderSuggestion: (entry, search, highlightedDisplay, index, focused) => (
@@ -349,7 +349,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     scheduleTypes.filter(
       (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
     ),
-    '#8E00F112',
+    'bg-purple-700',
     'schedule_type[__id__]:[__display__]',
   );
 
@@ -358,7 +358,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     jobList.filter(
       (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
     ),
-    '#fcf4a3',
+    'bg-yellow-100',
     'job_title[__id__]:[__display__]',
   );
   const mentionApplicationsList = createMentionComponent(
@@ -366,13 +366,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     applicationsList.filter(
       (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
     ),
-    '#daf4fa',
+    'bg-sky-100',
     'applicant_name[__id__]:[__display__]',
   );
   const mentionSessionList = createMentionComponent(
     '$',
     filteredSessions,
-    '#F1F0EF',
+    'bg-neutral-200',
     'interview_name[__id__]:[__display__]',
   );
   const mentionRequestList = createMentionComponent(
@@ -380,7 +380,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     requestList.filter(
       (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
     ),
-    '#fcf',
+    'bg-pink-100',
     'request_name[__id__]:[__display__]',
   );
 
@@ -393,7 +393,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         <Mention {...mentionSessionList} />
         <Mention {...mentionRequestList} />
       </MentionsInput>
-      <div className='relative -top-[10px] flex h-[28px] w-full flex-row items-center justify-center rounded-b-[10px] border border-t-0 border-[var(--neutral-6)] bg-[#F9F9F8]'>
+      <div className='relative -top-[10px] flex h-[28px] w-full flex-row items-center justify-center rounded-b-[10px] border border-t-0 border-neutral-300 bg-neutral-50'>
         <ScrollingText />
       </div>
     </div>

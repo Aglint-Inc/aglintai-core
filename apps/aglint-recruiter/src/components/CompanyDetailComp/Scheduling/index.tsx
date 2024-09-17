@@ -1,4 +1,4 @@
-import { Autocomplete, Stack, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -349,7 +349,7 @@ export const TimezoneSelector = ({
   value,
 }: TimezoneSelectorProps) => {
   return (
-    <Stack spacing={'var(--space-2)'} width={420}>
+    <div className="space-y-2 w-[420px]">
       <Autocomplete
         disabled={disabled}
         disableClearable
@@ -380,6 +380,6 @@ export const TimezoneSelector = ({
           );
         }}
       />
-    </Stack>
+    </div>
   );
 };

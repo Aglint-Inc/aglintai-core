@@ -20,9 +20,9 @@ export const Drag = ({ id, index, ...props }) => {
             {...provided.draggableProps}
             {...props}
           >
-            <div className='relative my-2 px-[var(--space-3)]'>
+            <div className='relative my-2 px-3'>
               <div
-                className='drag-handle absolute -left-1 z-[2] mt-[var(--space-4)]'
+                className='drag-handle absolute -left-1 z-[2] mt-4'
                 {...provided.dragHandleProps}
                 style={{
                   display: onHovered || snapshot.isDragging ? 'block' : 'none',

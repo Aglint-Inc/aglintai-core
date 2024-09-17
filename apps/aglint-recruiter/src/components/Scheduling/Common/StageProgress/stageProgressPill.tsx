@@ -1,8 +1,7 @@
-import { StagePipelineSmall } from '@devlink3/StagePipelineSmall';
-import { Stack } from '@mui/material';
 import { forwardRef, memo, type Ref } from 'react';
 
 import type { StageProgressProps } from '.';
+import { StagePipelineSmall } from './StagePipelineSmall';
 
 export type StageProgressPillProps = {
   pillProps: ReturnType<typeof getPlanPillProps>[number];
@@ -20,7 +19,7 @@ const StageProgressPill = memo(
       const isLeft = position !== 'ending' && position !== 'lone';
       const isRight = position !== 'starting' && position !== 'lone';
       return (
-        <Stack ref={ref}>
+        <div ref={ref} className='flex flex-col'>
           <StagePipelineSmall
             isRight={isLeft}
             isLeft={isRight}
@@ -29,7 +28,7 @@ const StageProgressPill = memo(
             textStageName={pillProps.name}
             iconName={pillProps.icon}
           />
-        </Stack>
+        </div>
       );
     },
   ),

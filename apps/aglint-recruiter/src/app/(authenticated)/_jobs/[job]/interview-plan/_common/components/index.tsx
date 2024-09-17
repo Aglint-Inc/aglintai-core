@@ -206,7 +206,7 @@ const AddStageComponent = () => {
   return (
     <>
       {form && (
-        <div className='flex w-full flex-row items-center gap-2 bg-[var(--neutral-2)] p-4'>
+        <div className='flex w-full flex-row items-center gap-2 bg-neutral-100 p-4'>
           {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
@@ -619,7 +619,7 @@ const InterviewSession = ({
             textModuleName={
               <div className='flex flex-row gap-3'>
                 <>{session.name}</>
-                <div className='font-normal text-[var(--font-size-1)] text-[var(--neutral-9)]'>
+                <div className='font-normal text-sm text-neutral-500'>
                   {getSessionType(session.session_type)}
                 </div>
               </div>
@@ -875,11 +875,11 @@ const InterviewBreak = ({
           value={value}
           onChange={handleEdit}
           sx={{
-            ml: 'var(--space-2)',
+            ml: 'space-x-2',
             width: '120px',
             '& .MuiOutlinedInput-root': {
               padding: '0px',
-              paddingLeft: 'var(--space-2)',
+              paddingLeft: 'pl-2',
             },
           }}
         >

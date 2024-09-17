@@ -151,7 +151,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <UITypography type='small' color='var(--neutral-12)'>
+              <UITypography type='small' className="text-neutral-800">
                 {option.label}
               </UITypography>
               {option.description && (
