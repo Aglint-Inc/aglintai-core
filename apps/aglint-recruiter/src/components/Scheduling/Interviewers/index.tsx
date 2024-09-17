@@ -9,7 +9,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { AllInterviewers } from '@devlink2/AllInterviewers';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -26,6 +25,7 @@ import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
+import { AllInterviewers } from './_common/AllInterviewers';
 import Filters from './Filters';
 
 const InterviewTab = () => {
@@ -81,6 +81,7 @@ const InterviewTab = () => {
                 interviewers={interviewers}
                 isLoading={isLoading}
               />
+
               {filteredInterviewer?.length > 0 ? (
                 <>
                   <AllInterviewers
