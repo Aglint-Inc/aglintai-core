@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import type { GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
 import ROUTES from '@/utils/routing/routes';
@@ -228,7 +229,7 @@ export { AuthContext, AuthProvider };
 const AuthLoader = () => {
   return (
     <div className='flex h-screen w-full items-center justify-center'>
-      <Loader2 className='animate-spin' />
+      <Loader />
     </div>
   );
 };
