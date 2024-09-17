@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
-import { FiltersComponent, type FilterTypes } from './FilterComponents';
+import { Filters, type FiltersTypes } from './filters';
 import SortComponent, { type sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
@@ -73,7 +73,7 @@ export default function FilterHeader({
         <div className='flex flex-grow flex-row justify-between'>
           <div className='flex flex-row items-center gap-2'>
             <div className='flex flex-row gap-2'>
-              <FiltersComponent
+              <Filters
                 filters={filters}
                 showFilters={showFiltersByDefault}
                 setShowFilters={setShowFilters}
@@ -109,7 +109,7 @@ export type FilterHeaderType = {
     setValue: (x: string) => void;
     placeholder?: string;
   };
-  filters?: FilterTypes[];
+  filters?: FiltersTypes[];
   showFiltersByDefault?: string[];
   // eslint-disable-next-line no-unused-vars
   setShowFilters?: (x: string[]) => void;

@@ -21,6 +21,7 @@
     "plpgsql",
     "posthog",
     "sendgrid",
+    "Shadcn",
     "sourcer",
     "supabase",
     "tanstack",
