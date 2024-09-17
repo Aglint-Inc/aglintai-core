@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';

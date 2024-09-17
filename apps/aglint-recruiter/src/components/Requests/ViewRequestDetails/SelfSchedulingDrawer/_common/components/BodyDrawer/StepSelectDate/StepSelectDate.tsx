@@ -1,9 +1,9 @@
+import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { DatePickerBody } from '@devlink3/DatePickerBody';
-import { ScheduleSelectPill } from '@devlink3/ScheduleSelectPill';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { CheckCircle, Clock } from 'lucide-react';
+import { CheckCircle, Clock, X } from 'lucide-react';
 import type { DateRange as DateRangeType } from 'react-day-picker';
 
 import { DateRangePicker } from '@/components/Common/DateRange';
@@ -54,21 +54,33 @@ function SelectDateRange() {
         }
         slotScheduleSelectPill={
           <>
-            {selectedSessions.map((session) => (
-              <ScheduleSelectPill
-                key={session.interview_session.id}
-                slotIcons={
+            {selectedSessions.map((session, i) => (
+              <div
+                key={i}
+                className='flex items-center justify-between p-2 bg-gray-100 rounded-md'
+              >
+                <div className='flex items-center space-x-2'>
                   <IconSessionType
                     type={session.interview_session.session_type}
                     size={6}
                   />
-                }
-                textScheduleName={session.interview_session.name}
-                textTime={getBreakLabel(
-                  session.interview_session.session_duration,
+                  <div>
+                    <p className='text-sm font-medium'>
+                      {session.interview_session.name}
+                    </p>
+                    <p className='text-xs text-gray-500'>
+                      {getBreakLabel(
+                        session.interview_session.session_duration,
+                      )}
+                    </p>
+                  </div>
+                </div>
+                {selectedSessions.length > 1 && (
+                  <Button className='text-gray-400 hover:text-gray-600'>
+                    <X className='w-4 h-4' />
+                  </Button>
                 )}
-                isCloseVisible={selectedSessions.length > 1}
-              />
+              </div>
             ))}
           </>
         }

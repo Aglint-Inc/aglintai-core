@@ -1,6 +1,6 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { Briefcase } from 'lucide-react';
-import { GlobalUserDetail } from 'src/app/_common/components/GlobalUserDetail';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
@@ -50,29 +50,41 @@ function CollapseContent({
                 candidate.timezone &&
                 interview_meeting?.start_time && (
                   <div className='space-y-2'>
-                    <GlobalUserDetail
-                      textTimeZone={
-                        interview_meeting?.start_time
-                          ? formatTimeWithTimeZone({
-                              start_time: interview_meeting.start_time,
-                              end_time: interview_meeting.end_time,
-                              timeZone: candidate.timezone,
-                            })
-                          : '--'
-                      }
-                      isRoleVisible={Boolean(candidate.current_job_title)}
-                      slotRole={
-                        <div className='flex items-center space-x-2'>
-                          <Briefcase size={16} />
-                          <UITypography color='neutral' className='text-sm'>
-                            {candidate.current_job_title}
-                          </UITypography>
-                        </div>
-                      }
-                      textName={candidate.name}
-                      isCandidateAvatarVisible={true}
-                      textRole={''}
-                    />
+                    <div className='flex items-center space-x-4'>
+                      <div className='flex-shrink-0'>
+                        {candidate.name && (
+                          <Avatar>
+                            <AvatarImage
+                              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&background=random`}
+                              alt={candidate.name}
+                            />
+                            <AvatarFallback>
+                              {candidate.name.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
+                        )}
+                      </div>
+                      <div className='flex-grow'>
+                        <p className='text-sm font-medium text-gray-900'>
+                          {candidate.name}
+                        </p>
+                        {candidate.current_job_title && (
+                          <div className='flex items-center mt-1 text-sm text-gray-500'>
+                            <Briefcase className='w-4 h-4 mr-1' />
+                            <span>{candidate.current_job_title}</span>
+                          </div>
+                        )}
+                        <p className='mt-1 text-sm text-gray-500'>
+                          {interview_meeting?.start_time
+                            ? formatTimeWithTimeZone({
+                                start_time: interview_meeting.start_time,
+                                end_time: interview_meeting.end_time,
+                                timeZone: candidate.timezone,
+                              })
+                            : '--'}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
 

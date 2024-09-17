@@ -3,7 +3,7 @@ import { Plus, School } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';

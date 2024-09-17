@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useAllInterviewModules } from '@/components/Scheduling/InterviewTypes/_common/hooks/useAllInterviewModules';
 import { useJobs } from '@/jobs/hooks';
 import { type allInterviewerType } from '@/pages/api/interviewers/getAllInterviewers';

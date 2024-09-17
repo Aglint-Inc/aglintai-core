@@ -6,7 +6,6 @@ import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';
 
 import { InterviewModuleStats } from '../Common/InterviewType/InterviewModulesStats.';
-import { InterviewStatsLoader } from './interviewers';
 
 const LIMIT = 6;
 
@@ -35,12 +34,7 @@ const TrainingStatusComponent = () => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-      (_, i) => (
-        <InterviewStatsLoader
-          key={i}
-          slotSkeleton={<Skeleton className='w-full h-full' />}
-        />
-      ),
+      (_, i) => <Skeleton key={i} className='w-full h-full' />,
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))

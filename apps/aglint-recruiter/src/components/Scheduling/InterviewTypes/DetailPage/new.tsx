@@ -6,7 +6,7 @@ import {
 import { MoreVertical } from 'lucide-react';
 import { useEffect } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';

@@ -3,7 +3,7 @@ import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
 

@@ -1,8 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { AlertDialog, AlertDialogContent } from '@components/ui/alert-dialog';
+import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-import { SelectActionsDropdown } from '@devlink2/SelectActionsDropdown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -30,21 +36,36 @@ const MoveCandidate = () => {
   const enabled = checklist.length !== 0;
   return (
     <>
-      <SelectActionsDropdown
-        isAssessment={false}
-        isDisqualified={enabled && emailVisibilities.disqualified}
-        isInterview={enabled && emailVisibilities.interview}
-        isMoveNew={enabled && emailVisibilities.new}
-        isQualified={enabled && emailVisibilities.qualified}
-        isScreening={false}
-        onClickAssessment={{ style: { display: 'none' } }}
-        onClickDisqualified={{ onClick: () => setActionPopup('disqualified') }}
-        onClickInterview={{ onClick: () => setActionPopup('interview') }}
-        onClickMoveNew={{ onClick: () => setActionPopup('new') }}
-        onClickQualified={{ onClick: () => setActionPopup('qualified') }}
-        onClickScreening={{ style: { display: 'none' } }}
-      />
-      <AlertDialog open={!!actionPopup} onOpenChange={() => resetActionPopup()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='outline' className='w-full justify-start'>
+            Move Candidate
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className='w-56'>
+          {enabled && emailVisibilities.new && (
+            <DropdownMenuItem onClick={() => setActionPopup('new')}>
+              Move to New
+            </DropdownMenuItem>
+          )}
+          {enabled && emailVisibilities.qualified && (
+            <DropdownMenuItem onClick={() => setActionPopup('qualified')}>
+              Move to Qualified
+            </DropdownMenuItem>
+          )}
+          {enabled && emailVisibilities.disqualified && (
+            <DropdownMenuItem onClick={() => setActionPopup('disqualified')}>
+              Move to Disqualified
+            </DropdownMenuItem>
+          )}
+          {enabled && emailVisibilities.interview && (
+            <DropdownMenuItem onClick={() => setActionPopup('interview')}>
+              Move to Interview
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <AlertDialog open={!!actionPopup} onOpenChange={resetActionPopup}>
         <AlertDialogContent className='p-0'>
           <MoveAction />
         </AlertDialogContent>

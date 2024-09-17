@@ -26,7 +26,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { Settings } from '@/job/components/SharedTopNav/actions';

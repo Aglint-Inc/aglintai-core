@@ -152,18 +152,21 @@ function Overview() {
           </Button>
         }
         slotCandidateList={
-          <GlobalUserDetail
-            isRoleVisible={false}
-            textName={getFullName(
-              schedule.candidates.first_name,
-              schedule.candidates.last_name,
-            )}
-            textTimeZone={formatTimeWithTimeZone({
-              start_time: schedule.interview_meeting.start_time,
-              end_time: schedule.interview_meeting.end_time,
-              timeZone: schedule.candidates.timezone,
-            })}
-          />
+          <div className="flex flex-col space-y-2">
+            <div className="text-sm font-medium">
+              {getFullName(
+                schedule.candidates.first_name,
+                schedule.candidates.last_name,
+              )}
+            </div>
+            <div className="text-xs text-gray-500">
+              {formatTimeWithTimeZone({
+                start_time: schedule.interview_meeting.start_time,
+                end_time: schedule.interview_meeting.end_time,
+                timeZone: schedule.candidates.timezone,
+              })}
+            </div>
+          </div>
         }
         textMeetingLink={schedule.interview_meeting.meeting_link || '--'}
         slotJoinMeeting={

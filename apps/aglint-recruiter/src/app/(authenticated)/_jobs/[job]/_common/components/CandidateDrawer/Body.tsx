@@ -2,13 +2,11 @@ import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { CandidateSideDrawer } from '@devlink/CandidateSideDrawer';
-import { ResumeErrorBlock } from '@devlink2/ResumeErrorBlock';
 import ResumeWait from '@public/lottie/ResumeWait';
 import { CheckCircle2, FileIcon, RefreshCw, UploadCloud } from 'lucide-react';
 import { type ReactNode, useCallback, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 
@@ -33,35 +31,34 @@ const Body = (props: Partial<Props> & { showTabs?: boolean }) => {
   const blocker = useBlocker();
   if (blocker)
     return (
-      <CandidateSideDrawer
-        slotTopBar={props.topBar ?? <TopBar />}
-        slotBasicInfo={blocker}
-        isTabs={false}
-        slotNewTabPill={<></>}
-        slotTabContent={<></>}
-      />
+      <div className='flex flex-col w-full h-full'>
+        <div className='p-4 border-b'>{props.topBar ?? <TopBar />}</div>
+        <div className='flex-grow overflow-y-auto p-4'>{blocker}</div>
+      </div>
     );
   return (
-    <CandidateSideDrawer
-      slotTopBar={props.topBar ?? <TopBar />}
-      slotBasicInfo={props.meta ?? <Meta />}
-      slotNewTabPill={
-        props.tabs ?? (
-          <TabsList className='grid w-full grid-cols-3'>
-            <TabsTrigger value='resume'>Resume</TabsTrigger>
-            <TabsTrigger value='details'>Details</TabsTrigger>
-            <TabsTrigger value='activity'>Activity</TabsTrigger>
-          </TabsList>
-        )
-      }
-      slotTabContent={
-        <TabContent
-          interview={props.interview}
-          details={props.details}
-          resume={props.resume}
-        />
-      }
-    />
+    <div className='flex flex-col w-full h-full'>
+      <div className='p-4 border-b'>{props.topBar ?? <TopBar />}</div>
+      <div className='flex-grow overflow-y-auto'>
+        <div className='p-4'>{props.meta ?? <Meta />}</div>
+        <div className='px-4'>
+          {props.tabs ?? (
+            <TabsList className='grid w-full grid-cols-3'>
+              <TabsTrigger value='resume'>Resume</TabsTrigger>
+              <TabsTrigger value='details'>Details</TabsTrigger>
+              <TabsTrigger value='activity'>Activity</TabsTrigger>
+            </TabsList>
+          )}
+        </div>
+        <div className='p-4'>
+          <TabContent
+            interview={props.interview}
+            details={props.details}
+            resume={props.resume}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -112,7 +109,7 @@ const useBlocker = () => {
   switch (meta?.data?.resume_processing_state) {
     case 'fetching':
     case 'processing':
-      return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
+      return <ResumeWait />;
     case 'unavailable':
       return <Unavailable />;
     case 'unparsable':

@@ -2,11 +2,11 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Page404 } from '@devlink/Page404';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -19,7 +19,7 @@ import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
 import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
-import Loader from '../../Common/Loader';
+import { Loader } from '../../Common/Loader';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
@@ -44,7 +44,7 @@ const CandidateInviteNew = () => {
           </div>
         ) : load === null ? (
           <div className='w-full h-screen flex justify-center items-center'>
-            <Page404 text404='The requested page was not found' />
+            <NotFound />
           </div>
         ) : (
           <>
@@ -104,7 +104,7 @@ const CandidateInvitePlanPage = () => {
   if (meetings.length === 0)
     return (
       <div className='w-full h-screen'>
-        <Page404 />
+        <NotFound />
       </div>
     );
 

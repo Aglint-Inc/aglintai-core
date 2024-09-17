@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Bookmark, BookmarkCheck, DownloadCloud, X } from 'lucide-react';
 import { useMemo } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const ResumePreviewer = ({

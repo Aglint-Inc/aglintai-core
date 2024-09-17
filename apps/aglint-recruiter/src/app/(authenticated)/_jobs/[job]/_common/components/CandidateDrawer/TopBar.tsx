@@ -1,4 +1,10 @@
-import { CandidateSidedrawerTop } from '@devlink/CandidateSidedrawerTop';
+import { Button } from '@components/ui/button';
+import {
+  BookmarkIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XIcon,
+} from 'lucide-react';
 import { type PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -45,25 +51,56 @@ const Actions = () => {
   const { devlinkProps } = useRolesAndPermissions();
   const props = useMemo(() => devlinkProps(['manage_job']), [devlinkProps]);
   return (
-    <CandidateSidedrawerTop
-      isBookmarked={data.bookmarked}
-      isDownArrowEnable={false}
-      isUpArrowEnable={false}
-      onClickBookMark={{
-        onClick: () =>
-          handleUpdateApplication({ bookmarked: !data.bookmarked }),
-        ...props,
-      }}
-      onClickClose={{ onClick: () => handlClose() }}
-      onClickDown={{
-        style: { display: navigation?.handleDown ? 'flex' : 'none' },
-        onClick: () => navigation?.handleDown(),
-      }}
-      onClickUp={{
-        style: { display: navigation?.handleUp ? 'flex' : 'none' },
-        onClick: () => navigation?.handleUp(),
-      }}
-    />
+    <div className='flex items-center justify-between w-full'>
+      <Button
+        variant='ghost'
+        size='sm'
+        className={
+          data.bookmarked
+            ? 'text-yellow-500 hover:text-yellow-600'
+            : 'text-gray-400 hover:text-gray-500'
+        }
+        onClick={() =>
+          handleUpdateApplication({ bookmarked: !data.bookmarked })
+        }
+        {...props}
+      >
+        <BookmarkIcon className='w-5 h-5' />
+      </Button>
+
+      <div className='flex items-center space-x-2'>
+        {navigation?.handleUp && (
+          <Button
+            variant='ghost'
+            size='sm'
+            className='text-gray-600 hover:text-gray-800'
+            onClick={() => navigation.handleUp()}
+          >
+            <ChevronUpIcon className='w-5 h-5' />
+          </Button>
+        )}
+
+        {navigation?.handleDown && (
+          <Button
+            variant='ghost'
+            size='sm'
+            className='text-gray-600 hover:text-gray-800'
+            onClick={() => navigation.handleDown()}
+          >
+            <ChevronDownIcon className='w-5 h-5' />
+          </Button>
+        )}
+
+        <Button
+          variant='ghost'
+          size='sm'
+          className='text-gray-600 hover:text-gray-800'
+          onClick={() => handlClose()}
+        >
+          <XIcon className='w-5 h-5' />
+        </Button>
+      </div>
+    </div>
   );
 };
 
@@ -73,7 +110,7 @@ const TopBar = (props: PropsWithChildren) => {
   } = useApplication();
   if (status === 'pending') return <>Loadin...</>;
   return (
-    <div className="flex flex-row items-center justify-between w-full h-full">
+    <div className='flex flex-row items-center justify-between w-full h-full'>
       {props.children ?? (
         <>
           <Info />

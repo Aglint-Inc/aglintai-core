@@ -3,6 +3,7 @@ import { Calendar } from '@components/ui/calendar';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
@@ -16,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import { DayOffHelper } from '@devlink3/DayOffHelper';
 import React, { useRef } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -49,7 +49,6 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
   daysOff,
   compareDates,
   removeDayOff,
-  openCompany,
   openAddCompany,
   open,
   handleClose,
@@ -74,9 +73,9 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
   return (
     <div className='space-y-4'>
       <div className='flex justify-between'>
-        <Button variant='outline' onClick={openCompany}>
+        {/* <Button variant='outline' onClick={openCompany}>
           Learn How
-        </Button>
+        </Button> */}
         <Button variant='outline' size='sm' onClick={openAddCompany}>
           Add Day Off
         </Button>
@@ -254,7 +253,13 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
 
       <Dialog open={openDialog} onOpenChange={closeDialog}>
         <DialogContent>
-          <DayOffHelper />
+          <DialogHeader>
+            <DialogDescription>
+              This feature is currently under development and will be available
+              soon. We appreciate your patience.
+            </DialogDescription>
+          </DialogHeader>
+          {/* <DayOffHelper /> */}
           <Button onClick={closeDialog}>Got It</Button>
         </DialogContent>
       </Dialog>

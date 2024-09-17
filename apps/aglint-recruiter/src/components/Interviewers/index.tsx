@@ -8,7 +8,8 @@ import {
 } from '@components/ui/table';
 import { useState } from 'react';
 
-import Loader from '../Common/Loader';
+import { Loader } from '@/components/Common/Loader';
+
 import { useAllInterviewers } from './_hook';
 import { Header } from './components/Header';
 import { InterviewerList } from './components/InterviewerList';

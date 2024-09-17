@@ -1,7 +1,4 @@
 import { Skeleton } from '@components/ui/skeleton';
-import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
-import { TrainingProgressList } from '@devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import { Avatar } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
@@ -20,13 +17,25 @@ const TrainingProgress = () => {
   const { push } = useRouter();
   const { data } = useInterviewTrainingProgress();
   return (
-    <TrainingProgressDev
-      onClickViewAllInterviewers={{
-        onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-      }}
-      isViewAllVisible={!!data && data.length !== 0}
-      slotTrainingProgressList={<TrainingProgressComponent />}
-    />
+    <div className='w-full'>
+      <div className='flex justify-between items-center mb-4'>
+        <h2 className='text-xl font-semibold'>Training Progress</h2>
+        {!!data && data.length !== 0 && (
+          <Link
+            href={`${ROUTES['/scheduling']()}?tab=interviewtypes`}
+            className='text-blue-600 hover:text-blue-800 transition-colors'
+            onClick={() =>
+              push(`${ROUTES['/scheduling']()}?tab=interviewtypes`)
+            }
+          >
+            View All Interviewers
+          </Link>
+        )}
+      </div>
+      <div className='bg-white shadow rounded-lg p-4'>
+        <TrainingProgressComponent />
+      </div>
+    </div>
   );
 };
 
@@ -43,12 +52,7 @@ const TrainingProgressComponent = () => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-      (_, i) => (
-        <TrainingProgressLoader
-          key={i}
-          slotSkeleton={<Skeleton className='w-full h-full' />}
-        />
-      ),
+      (_, i) => <Skeleton key={i} className='w-full h-full' />,
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
@@ -77,23 +81,28 @@ const TrainingProgressComponent = () => {
       }) => (
         <>
           <Link href={`/user/profile/${user_id}`}>
-            <TrainingProgressList
-              key={module.id + user_id}
-              slotHistoryPill={<HistoryPills count={count} module={module} />}
-              slotInterviewerImage={
+            <div className='flex items-center space-x-4 p-4 hover:bg-gray-50 rounded-lg transition-colors duration-200'>
+              <div className='flex-shrink-0'>
                 <Avatar
                   src={profile_image}
                   alt={capitalizeAll(getFullName(first_name, last_name))}
+                  className='w-10 h-10'
                 />
-              }
-              textInterviewModule={module.name}
-              textName={
-                <Link href={`/user/profile/${user_id}`}>
+              </div>
+              <div className='flex-grow'>
+                <Link
+                  href={`/user/profile/${user_id}`}
+                  className='text-sm font-medium text-gray-900 hover:underline'
+                >
                   {capitalizeAll(getFullName(first_name, last_name))}
                 </Link>
-              }
-              textRole={position}
-            />
+                <p className='text-sm text-gray-500'>{position}</p>
+                <p className='text-xs text-gray-400 mt-1'>{module.name}</p>
+              </div>
+              <div className='flex-shrink-0'>
+                <HistoryPills count={count} module={module} />
+              </div>
+            </div>
           </Link>
         </>
       ),

@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';

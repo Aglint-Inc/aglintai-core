@@ -10,7 +10,7 @@ import { CardContent } from '@components/ui/card';
 import { Terminal } from 'lucide-react';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelect from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';

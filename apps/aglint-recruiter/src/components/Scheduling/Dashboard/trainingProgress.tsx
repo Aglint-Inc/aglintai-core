@@ -1,7 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
@@ -148,7 +147,7 @@ Pills.displayName = 'Pills';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => <TrainingProgressLoader key={i} slotSkeleton={<Skeleton />} />,
+    (_, i) => <Skeleton key={i} />,
   );
 });
 Loader.displayName = 'Loader';

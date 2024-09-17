@@ -3,7 +3,7 @@ import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';

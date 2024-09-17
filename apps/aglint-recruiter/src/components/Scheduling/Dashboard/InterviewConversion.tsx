@@ -1,4 +1,3 @@
-import { InterviewRatio } from '@devlink3/InterviewRatio';
 import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
@@ -22,16 +21,16 @@ const InterviewConversion = () => {
     useState<InterviewConversionGraphProps['type']>('month');
   return (
     <>
-      <InterviewRatio
-        slotDropdownButton={
-          <SchedulingDropdown type={type} setType={setType} />
-        }
-        slotInterviewGraph={
-          <div className='w-full h-full flex items-center justify-center'>
+      <div className='w-full h-full'>
+        <div className='flex flex-col space-y-4'>
+          <div className='flex justify-end'>
+            <SchedulingDropdown type={type} setType={setType} />
+          </div>
+          <div className='flex-1 flex items-center justify-center'>
             <InterviewConversionGraph type={type} />
           </div>
-        }
-      />
+        </div>
+      </div>
     </>
   );
 };

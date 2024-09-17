@@ -11,7 +11,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Collapse, MenuItem, Stack, TextField, Tooltip } from '@mui/material';
+import { Collapse, MenuItem, TextField, Tooltip } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronDown,
@@ -28,7 +28,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -75,9 +75,7 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-      <Loader />
-    </Stack>
+    <Loader variant='full' />
   );
 };
 
@@ -208,14 +206,7 @@ const AddStageComponent = () => {
   return (
     <>
       {form && (
-        <Stack
-          direction={'row'}
-          bgcolor={'var(--neutral-2)'}
-          p={2}
-          width={'100%'}
-          gap={1}
-          alignItems={'center'}
-        >
+        <div className='flex flex-row bg-[var(--neutral-2)] p-4 w-full gap-2 items-center'>
           {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
@@ -235,13 +226,13 @@ const AddStageComponent = () => {
           >
             Cancel
           </UIButton>
-        </Stack>
+        </div>
       )}
-      <Stack direction={'row'}>
+      <div className='flex flex-row'>
         <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
           Add Stage
         </UIButton>
-      </Stack>
+      </div>
     </>
   );
 };
@@ -404,7 +395,8 @@ const InterviewPlan = ({
           onClickEdit={{ onClick: handleEditPlan }}
           isSlotInterviewPlanVisible={expanded}
           slotInputButton={
-            <Stack direction={'row'} gap={1} alignItems={'center'}>
+            // Start of Selection
+            <div className='flex items-center gap-2'>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
               <UIButton
                 size='sm'
@@ -420,10 +412,10 @@ const InterviewPlan = ({
               >
                 Cancel
               </UIButton>
-            </Stack>
+            </div>
           }
           slotRightIconButton={
-            <Stack direction={'row'} gap={1}>
+            <div className='flex flex-row gap-1'>
               <UIButton
                 variant='destructive'
                 onClick={() => deletePlan({ id: plan_id })}
@@ -434,15 +426,13 @@ const InterviewPlan = ({
               <UIButton variant='secondary' onClick={handleExpandClick}>
                 <ChevronDown className='h-4 w-4' />
               </UIButton>
-            </Stack>
+            </div>
           }
           slotInterviewPlanDetail={
             <Collapse in={expanded} timeout='auto' unmountOnExit>
-              <Stack pt={2}>
+              <div className='pt-2'>
                 {sessionsCount ? (
-                  <>
-                    <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-                  </>
+                  <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                 ) : (
                   <div className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-lg'>
                     <Kanban className='w-4 h-4 text-gray-400 mb-4' />
@@ -451,7 +441,7 @@ const InterviewPlan = ({
                     </p>
                   </div>
                 )}
-              </Stack>
+              </div>
             </Collapse>
           }
         />
@@ -612,31 +602,27 @@ const InterviewSession = ({
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
-    <Stack
+    <div
       ref={manageJob ? ref : null}
-      style={{ opacity: isDragging ? 0 : 1 }}
+      className={`flex flex-col ${isDragging ? 'opacity-0' : 'opacity-100'}`}
       data-handler-id={handlerId}
     >
       <OptimisticWrapper loading={isLoading}>
-        <Stack
+        <div
           onMouseOver={() => setHover(true)}
           onMouseOut={() => setHover(false)}
-          mb={hover ? 1 : 4}
+          onFocus={() => setHover(true)}
+          onBlur={() => setHover(false)}
+          className={`flex flex-col ${hover ? 'mb-1' : 'mb-4'}`}
         >
           <InterviewPlanDetail
             textModuleName={
-              <Stack style={{ flexDirection: 'row', gap: '12px' }}>
+              <div className='flex flex-row gap-3'>
                 <>{session.name}</>
-                <Stack
-                  style={{
-                    color: 'var(--neutral-9)',
-                    fontSize: 'var(--font-size-1)',
-                    fontWeight: 400,
-                  }}
-                >
+                <div className='text-[var(--neutral-9)] text-[var(--font-size-1)] font-normal'>
                   {getSessionType(session.session_type)}
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             }
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
@@ -677,7 +663,7 @@ const InterviewSession = ({
             }
             isAddCardVisible={hover}
             slotAddScheduleCard={
-              <Stack style={{ opacity: manageJob ? 100 : 0 }}>
+              <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
                 <Tooltip
                   open={tooltipOpen}
                   onOpen={() => setTooltipOpen(true)}
@@ -722,7 +708,7 @@ const InterviewSession = ({
                     />
                   }
                 >
-                  <Stack>
+                  <div>
                     <div
                       className={
                         'relative flex h-6 justify-center items-center'
@@ -736,9 +722,9 @@ const InterviewSession = ({
                         </div>
                       </div>
                     </div>
-                  </Stack>
+                  </div>
                 </Tooltip>
-              </Stack>
+              </div>
             }
             slotButtons={
               manageJob && (
@@ -771,9 +757,9 @@ const InterviewSession = ({
               )
             }
           />
-        </Stack>
+        </div>
       </OptimisticWrapper>
-    </Stack>
+    </div>
   );
 };
 

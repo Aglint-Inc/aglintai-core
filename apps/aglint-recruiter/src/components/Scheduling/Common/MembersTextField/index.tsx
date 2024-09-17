@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PanelMemberPill } from '@devlink2/PanelMemberPill';
 import { Stack, Typography } from '@mui/material';
-import { AlertCircle, Check } from 'lucide-react';
+import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
@@ -61,32 +61,33 @@ function MembersAutoComplete({
       <div className='flex flex-row gap-2 flex-wrap'>
         {selectedUsers.map((user) => {
           return (
-            <PanelMemberPill
+            <div
               key={user.user_id}
-              propsBgColor={{
-                style: {
-                  background: pillColor ? pillColor : 'var(--neutral-3)',
-                  textTransform: 'capitalize',
-                },
-              }}
-              onClickClose={{
-                onClick: () => {
+              className={`flex items-center gap-2 px-2 py-1 rounded-full text-sm capitalize ${
+                pillColor ? `bg-[${pillColor}]` : 'bg-neutral-3'
+              }`}
+            >
+              <Avatar className='h-5 w-5 text-xs'>
+                <AvatarImage
+                  src={user.profile_image}
+                  alt={getFullName(user?.first_name, user?.last_name)}
+                />
+                <AvatarFallback>
+                  {getFullName(user?.first_name, user?.last_name).charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <span>{getFullName(user?.first_name, user?.last_name)}</span>
+              <button
+                onClick={() => {
                   setSelectedUsers(
                     selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
-                },
-              }}
-              slotImage={
-                <MuiAvatar
-                  src={user.profile_image}
-                  level={getFullName(user?.first_name, user?.last_name)}
-                  height='20px'
-                  width='20px'
-                  fontSize='12px'
-                />
-              }
-              textMemberName={getFullName(user?.first_name, user?.last_name)}
-            />
+                }}
+                className='ml-1 text-gray-500 hover:text-gray-700'
+              >
+                <X size={12} />
+              </button>
+            </div>
           );
         })}
       </div>

@@ -1,6 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
-import { ScheduleDetailTabs } from '@devlink3/ScheduleDetailTabs';
 import { useQueryClient } from '@tanstack/react-query';
 import { MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -11,7 +10,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { ShowCode } from '../../Common/ShowCode';
 import Banners from './Banners';
 import CancelScheduleDialog from './CancelScheduleDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
@@ -93,21 +91,11 @@ function DetailsOverview({
 
   return (
     <div className='flex flex-col pb-8'>
-      <ScheduleDetailTabs
-        slotScheduleTabOverview={
-          <div className='flex flex-col space-y-2'>
-            <Banners
-              sessionRelation={sessionRelation}
-              refetch={refetch}
-              setIsDeclineOpen={setIsDeclineOpen}
-            />
-            <Overview />
-          </div>
-        }
-        slotDarkPills={viewScheduleTabs
-          .filter((item) => !item.hide)
-          .map((item, i: number) => {
-            return (
+      <div className='flex flex-col space-y-4'>
+        <div className='flex space-x-2'>
+          {viewScheduleTabs
+            .filter((item) => !item.hide)
+            .map((item, i: number) => (
               <Button
                 key={i}
                 variant={router.query.tab === item.tab ? 'default' : 'outline'}
@@ -119,30 +107,27 @@ function DetailsOverview({
               >
                 {item.name}
               </Button>
-            );
-          })}
-        slotTabContent={
-          <ShowCode>
-            <ShowCode.When isTrue={router.query.tab === 'instructions'}>
-              <Instructions
-                instruction={schedule?.interview_meeting.instructions as string}
-                setTextValue={setTextValue}
-                showEditButton={
-                  recruiterUser.role === 'admin' ||
-                  recruiterUser.role === 'recruiter'
-                }
-                updateInstruction={updateInstruction}
-                isBorder={false}
-                isPadding={false}
-                isWidth={false}
-              />
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={
-                router.query.tab === 'feedback' &&
-                schedule.interview_session.session_type !== 'debrief'
+            ))}
+        </div>
+
+        <div className='flex flex-col space-y-4'>
+          {router.query.tab === 'instructions' && (
+            <Instructions
+              instruction={schedule?.interview_meeting.instructions as string}
+              setTextValue={setTextValue}
+              showEditButton={
+                recruiterUser.role === 'admin' ||
+                recruiterUser.role === 'recruiter'
               }
-            >
+              updateInstruction={updateInstruction}
+              isBorder={false}
+              isPadding={false}
+              isWidth={false}
+            />
+          )}
+
+          {router.query.tab === 'feedback' &&
+            schedule.interview_session.session_type !== 'debrief' && (
               <div className='flex flex-col'>
                 {schedule?.interview_meeting?.status === 'completed' ? (
                   <FeedbackWindow
@@ -167,25 +152,30 @@ function DetailsOverview({
                     }}
                   />
                 ) : (
-                  <div className='flex flex-row w-full h-[200px] justify-center items-center'>
+                  <div className='flex items-center justify-center w-full h-[200px]'>
                     <GlobalEmpty
-                      text={
-                        'Feedback will be enabled once the interview is completed'
-                      }
+                      text='Feedback will be enabled once the interview is completed'
                       iconSlot={<MessageCircle className='text-gray-500' />}
                     />
                   </div>
                 )}
               </div>
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={router.query.tab === 'job_details' || !router.query.tab}
-            >
-              <JobDetails schedule={schedule} />
-            </ShowCode.When>
-          </ShowCode>
-        }
-      />
+            )}
+
+          {(router.query.tab === 'job_details' || !router.query.tab) && (
+            <JobDetails schedule={schedule} />
+          )}
+        </div>
+
+        <div className='flex flex-col space-y-2'>
+          <Banners
+            sessionRelation={sessionRelation}
+            refetch={refetch}
+            setIsDeclineOpen={setIsDeclineOpen}
+          />
+          <Overview />
+        </div>
+      </div>
       <>
         <DeclineScheduleDialog
           sessionRelation={sessionRelation}

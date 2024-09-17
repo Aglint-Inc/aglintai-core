@@ -15,6 +15,7 @@ import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -22,7 +23,6 @@ import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
-import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';

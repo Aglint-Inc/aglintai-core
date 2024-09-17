@@ -9,9 +9,9 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
-import Loader from '../Common/Loader';
 import { Header } from './components/Header';
 import { InterviewPoolList } from './components/InterviewPoolList';
 import { useAllInterviewModules } from './hook';

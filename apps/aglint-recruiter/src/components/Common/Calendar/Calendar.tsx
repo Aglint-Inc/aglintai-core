@@ -30,10 +30,10 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
-import Loader from '../Loader';
 // import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {

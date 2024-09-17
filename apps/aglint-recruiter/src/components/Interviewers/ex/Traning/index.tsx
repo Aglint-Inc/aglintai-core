@@ -2,7 +2,7 @@ import { Avatar, Stack } from '@mui/material';
 import { HardDrive } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { type SchedulingAnalyticsContextType } from '@/context/SchedulingAnalytics';
 import { useJobs } from '@/jobs/hooks';

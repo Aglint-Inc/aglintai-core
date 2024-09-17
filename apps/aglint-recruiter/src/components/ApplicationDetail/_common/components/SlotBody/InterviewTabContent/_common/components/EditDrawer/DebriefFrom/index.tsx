@@ -1,4 +1,3 @@
-import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -67,9 +66,8 @@ function DebriedForm() {
 
   return (
     <>
-      <SidedrawerBodyDebrief
-        isAttendeeVisible={false}
-        slotSessionNameInput={
+      <div className='space-y-4'>
+        <div>
           <UITextField
             name={'name'}
             placeholder={'Session name'}
@@ -83,8 +81,8 @@ function DebriedForm() {
               })
             }
           />
-        }
-        slotDurationDropdown={
+        </div>
+        <div>
           <TextField
             fullWidth
             select
@@ -107,9 +105,8 @@ function DebriedForm() {
               </MenuItem>
             ))}
           </TextField>
-        }
-        slotMemberAvatarSelectionPill={<></>}
-        slotScheduleTypeDropdown={
+        </div>
+        <div>
           <ScheduleTypeField
             value={editSession.interview_session.schedule_type}
             handleTypeChange={(value) => {
@@ -121,8 +118,9 @@ function DebriedForm() {
               });
             }}
           />
-        }
-        slotMembersDropdown={
+        </div>
+        <div>
+          <h3 className='text-sm font-medium mb-2'>Members</h3>
           <MembersAutoComplete
             placeholder='Select Interviewers'
             renderUsers={filterDebriefMembers}
@@ -140,9 +138,8 @@ function DebriedForm() {
               ).message
             }
           />
-        }
-        textMembers={'Members'}
-      />
+        </div>
+      </div>
     </>
   );
 }

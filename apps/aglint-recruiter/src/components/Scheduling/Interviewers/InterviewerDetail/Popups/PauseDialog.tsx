@@ -1,4 +1,4 @@
-import { Checkbox, Stack, Typography } from '@mui/material';
+import { Checkbox } from '@components/ui/checkbox';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Calendar } from 'lucide-react';
@@ -122,14 +122,14 @@ function PauseDialog() {
           </>
         }
       >
-        <Stack spacing={'var(--space-2)'} width={'100%'}>
+        <div className='flex flex-col space-y-2 w-full'>
           <UIAlert
             type='small'
             color={'warning'}
             iconName={'CircleAlert'}
             title={'Pausing the interviewer'}
             description={
-              'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
+              "By pausing the interviewer, the member won't be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected."
             }
           />
           {connectedJobs.length > 0 && (
@@ -147,19 +147,15 @@ function PauseDialog() {
               }
             />
           )}
-          <Stack>
-            <Typography mb={2}>
+          <div className='flex flex-col'>
+            <p className='mb-2 text-sm'>
               This member will be excluded from all new interview scheduling
               within module until the pause period ends.
-            </Typography>
-            <Stack spacing={2}>
-              <Typography variant='body1' color={'#2F3941'}>
-                Pause For
-              </Typography>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
+            </p>
+            <div className='flex flex-col space-y-2'>
+              <p className='text-sm font-medium text-[#2F3941]'>Pause For</p>
+              <div
+                className='flex flex-row items-center space-x-2 cursor-pointer'
                 onClick={() => {
                   setSelectedType('isManual');
                   setPauseJson({
@@ -168,21 +164,17 @@ function PauseDialog() {
                     end_date: '',
                   });
                 }}
-                sx={{ cursor: 'pointer' }}
               >
                 <Checkbox checked={selectedType === 'isManual'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Indefinitely
-                </Typography>
-                <Typography variant='body1'>
-                  Until you manually resume
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                    Indefinitely
+                  </span>
+                  <span className='text-sm'>Until you manually resume</span>
+                </div>
+              </div>
+              <div
+                className='flex flex-row items-center space-x-2 cursor-pointer'
                 onClick={() => {
                   setSelectedType('twoWeek');
                   setPauseJson({
@@ -193,18 +185,17 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'twoWeek'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  2 Weeks
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {twoWeeks.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                    2 Weeks
+                  </span>
+                  <span className='text-sm'>
+                    Resumes on {twoWeeks.format('MMMM DD, YYYY')}
+                  </span>
+                </div>
+              </div>
+              <div
+                className='flex flex-row items-center space-x-2 cursor-pointer'
                 onClick={() => {
                   setSelectedType('oneMonth');
                   setPauseJson({
@@ -215,18 +206,17 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'oneMonth'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  1 Month
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {oneMonth.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                    1 Month
+                  </span>
+                  <span className='text-sm'>
+                    Resumes on {oneMonth.format('MMMM DD, YYYY')}
+                  </span>
+                </div>
+              </div>
+              <div
+                className='flex flex-row items-center space-x-2 cursor-pointer'
                 onClick={() => {
                   setSelectedType('threeMonth');
                   setPauseJson({
@@ -237,18 +227,17 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'threeMonth'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  3 Months
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {threeMonth.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-[var(--neutral-12)]'>
+                    3 Months
+                  </span>
+                  <span className='text-sm'>
+                    Resumes on {threeMonth.format('MMMM DD, YYYY')}
+                  </span>
+                </div>
+              </div>
+              <div
+                className='flex flex-row items-center space-x-2 cursor-pointer'
                 onClick={() => {
                   setSelectedType('custom');
                   setPauseJson({
@@ -259,12 +248,12 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'custom'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
+                <span className='text-sm font-medium text-[var(--neutral-12)]'>
                   Custom date
-                </Typography>
-              </Stack>
+                </span>
+              </div>
               {selectedType === 'custom' && (
-                <Stack direction={'row'} width={'100%'} spacing={1}>
+                <div className='flex flex-row w-full space-x-1'>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       value={dayjs(pause_json?.start_date)}
@@ -305,11 +294,11 @@ function PauseDialog() {
                       }}
                     />
                   </LocalizationProvider>
-                </Stack>
+                </div>
               )}
-            </Stack>
-          </Stack>
-        </Stack>
+            </div>
+          </div>
+        </div>
       </UIDialog>
     </>
   );

@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { FileQuestion, Plus, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
@@ -16,7 +17,6 @@ import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/utils/jsonResume';
 
-import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from './_common/hooks/useAllInterviewModules';
 import { InterviewModuleCard } from './_common/InterviewModuleCard';
 import { InterviewModuleTable } from './_common/InterviewModuleTable';

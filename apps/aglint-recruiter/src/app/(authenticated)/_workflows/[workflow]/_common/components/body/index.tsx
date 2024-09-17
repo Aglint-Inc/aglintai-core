@@ -7,12 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Page404 } from '@devlink/Page404';
 import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { NotFound } from '@/components/Common/404';
+import { Loader } from '@/components/Common/Loader';
 import Seo from '@/components/Common/Seo';
 import { UIBadge } from '@/components/Common/UIBadge';
 import UITypography from '@/components/Common/UITypography';
@@ -36,7 +36,7 @@ import Trigger from './trigger';
 const Body = () => {
   const { workflow } = useWorkflow();
   if (workflow === null) return <Loader />;
-  if (workflow === undefined) return <Page404 />;
+  if (workflow === undefined) return <NotFound />;
   return (
     <>
       <Seo title='Workflow | Aglint AI' description='AI for People Products' />

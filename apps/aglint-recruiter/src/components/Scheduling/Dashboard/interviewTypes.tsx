@@ -13,7 +13,6 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { InterviewModuleStats } from '../Common/InterviewType/InterviewModulesStats.';
 import { Empty } from './common';
-import { InterviewStatsLoader } from './interviewers';
 
 const LIMIT = 6;
 
@@ -91,12 +90,7 @@ List.displayName = 'List';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => (
-      <InterviewStatsLoader
-        key={i}
-        slotSkeleton={<Skeleton className='w-full h-full' />}
-      />
-    ),
+    (_, i) => <Skeleton key={i} className='w-full h-full' />,
   );
 });
 Loader.displayName = 'Loader';

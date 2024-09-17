@@ -2,7 +2,7 @@ import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ExternalLink } from 'lucide-react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
