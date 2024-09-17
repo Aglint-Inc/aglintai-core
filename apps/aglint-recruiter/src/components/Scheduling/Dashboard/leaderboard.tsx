@@ -1,7 +1,6 @@
-import { AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import Avatar from '@mui/material/Avatar';
 import { memo } from 'react';
 
 import {
@@ -18,9 +17,11 @@ const LIMIT = 5;
 export const Leaderboard = memo(() => {
   return (
     <Card className='p-4'>
-      <div className='mb-4 flex items-center justify-between'>
+      <div className='mb-4 flex w-full items-center justify-between'>
         <h3 className='text-lg font-semibold'>Leaderboard</h3>
-        <Dropdown />
+        <div>
+          <Dropdown />
+        </div>
       </div>
       <Container />
     </Card>
@@ -32,16 +33,18 @@ Leaderboard.displayName = 'Leaderboard';
 const Dropdown = memo(() => {
   const { leaderboardType, setLeaderboardType } = useSchedulingAnalytics();
   return (
-    <FilterDropDownDash
-      itemList={[
-        { label: 'Past Week', value: 'week' },
-        { label: 'Past Month', value: 'month' },
-        { label: 'Past Year', value: 'year' },
-        { label: 'All Time', value: 'all_time' },
-      ]}
-      onChange={setLeaderboardType}
-      value={leaderboardType}
-    />
+    <>
+      <FilterDropDownDash
+        itemList={[
+          { label: 'Past Week', value: 'week' },
+          { label: 'Past Month', value: 'month' },
+          { label: 'Past Year', value: 'year' },
+          { label: 'All Time', value: 'all_time' },
+        ]}
+        onChange={setLeaderboardType}
+        value={leaderboardType}
+      />
+    </>
   );
 });
 Dropdown.displayName = 'Dropdown';

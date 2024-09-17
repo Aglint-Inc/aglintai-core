@@ -1,5 +1,4 @@
-import { FilterPageLayout } from '@devlink2/FilterPageLayout';
-
+import { FilterPageLayout } from '../_common/components/FilterPageLayout';
 import Filters from './Filters';
 import ScheduleList from './ScheduleList';
 import { ScheduleStatesProvider } from './ScheduleStatesContext';
