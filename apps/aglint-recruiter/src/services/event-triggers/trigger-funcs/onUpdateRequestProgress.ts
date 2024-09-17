@@ -23,7 +23,7 @@ export const onUpdateRequestProgress = async ({
     old_data.status !== 'completed'
   ) {
     console.log('lol run_id', 'lol');
-    await selfScheduleReminder({ new_data });
+    // await selfScheduleReminder({ new_data });
   }
   // if (
   //   new_data.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
