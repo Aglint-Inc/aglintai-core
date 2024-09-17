@@ -9,7 +9,7 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
-import type { nestedObjectToArray } from '@/components/Common/FilterHeader/utils';
+import type { nestedObjectToArray } from '@/components/Common/FilterHeader/filters/utils';
 import type { CreateContextStore } from '@/hooks/createContextStoreSelector';
 
 type Checklist = DatabaseTable['applications']['id'][];

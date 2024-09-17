@@ -1,11 +1,9 @@
-import { Checkbox, Stack, Typography } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Calendar } from 'lucide-react';
+import { Checkbox } from '@components/ui/checkbox';
 import React, { useEffect } from 'react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDialog from '@/components/Common/UIDialog';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
@@ -122,14 +120,14 @@ function PauseDialog() {
           </>
         }
       >
-        <Stack spacing={'var(--space-2)'} width={'100%'}>
+        <div className='flex w-full flex-col space-y-2'>
           <UIAlert
             type='small'
             color={'warning'}
             iconName={'CircleAlert'}
             title={'Pausing the interviewer'}
             description={
-              'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
+              "By pausing the interviewer, the member won't be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected."
             }
           />
           {connectedJobs.length > 0 && (
@@ -147,19 +145,15 @@ function PauseDialog() {
               }
             />
           )}
-          <Stack>
-            <Typography mb={2}>
+          <div className='flex flex-col'>
+            <p className='mb-2 text-sm'>
               This member will be excluded from all new interview scheduling
               within module until the pause period ends.
-            </Typography>
-            <Stack spacing={2}>
-              <Typography variant='body1' color={'#2F3941'}>
-                Pause For
-              </Typography>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
+            </p>
+            <div className='flex flex-col space-y-2'>
+              <p className='text-sm font-medium text-[#2F3941]'>Pause For</p>
+              <div
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('isManual');
                   setPauseJson({
@@ -168,21 +162,17 @@ function PauseDialog() {
                     end_date: '',
                   });
                 }}
-                sx={{ cursor: 'pointer' }}
               >
                 <Checkbox checked={selectedType === 'isManual'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  Indefinitely
-                </Typography>
-                <Typography variant='body1'>
-                  Until you manually resume
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-neutral-800'>
+                    Indefinitely
+                  </span>
+                  <span className='text-sm'>Until you manually resume</span>
+                </div>
+              </div>
+              <div
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('twoWeek');
                   setPauseJson({
@@ -193,18 +183,17 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'twoWeek'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  2 Weeks
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {twoWeeks.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-neutral-800'>
+                    2 Weeks
+                  </span>
+                  <span className='text-sm'>
+                    Resumes on {twoWeeks.format('MMMM DD, YYYY')}
+                  </span>
+                </div>
+              </div>
+              <div
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('oneMonth');
                   setPauseJson({
@@ -215,18 +204,17 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'oneMonth'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  1 Month
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {oneMonth.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-neutral-800'>
+                    1 Month
+                  </span>
+                  <span className='text-sm'>
+                    Resumes on {oneMonth.format('MMMM DD, YYYY')}
+                  </span>
+                </div>
+              </div>
+              <div
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('threeMonth');
                   setPauseJson({
@@ -237,18 +225,17 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'threeMonth'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
-                  3 Months
-                </Typography>
-                <Typography variant='body1'>
-                  Resumes on {threeMonth.format('MMMM DD, YYYY')}
-                </Typography>
-              </Stack>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
+                <div className='flex flex-row space-x-1'>
+                  <span className='text-sm font-medium text-neutral-800'>
+                    3 Months
+                  </span>
+                  <span className='text-sm'>
+                    Resumes on {threeMonth.format('MMMM DD, YYYY')}
+                  </span>
+                </div>
+              </div>
+              <div
+                className='flex cursor-pointer flex-row items-center space-x-2'
                 onClick={() => {
                   setSelectedType('custom');
                   setPauseJson({
@@ -259,57 +246,51 @@ function PauseDialog() {
                 }}
               >
                 <Checkbox checked={selectedType === 'custom'} />
-                <Typography variant='body1' color={'var(--neutral-12)'}>
+                <span className='text-sm font-medium text-neutral-800'>
                   Custom date
-                </Typography>
-              </Stack>
+                </span>
+              </div>
               {selectedType === 'custom' && (
-                <Stack direction={'row'} width={'100%'} spacing={1}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={dayjs(pause_json?.start_date)}
-                      onChange={(newValue) => {
-                        if (
-                          dayjs(newValue).toISOString() < pause_json?.end_date
-                        ) {
-                          setPauseJson({
-                            ...pause_json,
-                            start_date: dayjs(newValue).toISOString(),
-                          });
-                        } else {
-                          setPauseJson({
-                            ...pause_json,
-                            start_date: dayjs(newValue).toISOString(),
-                            end_date: null,
-                          });
-                        }
-                      }}
-                      minDate={currentDate}
-                      slots={{
-                        openPickerIcon: () => <Calendar size={20} />,
-                      }}
-                    />
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={dayjs(pause_json?.end_date)}
-                      minDate={dayjs(pause_json?.start_date)}
-                      onChange={(newValue) => {
-                        setPauseJson({
-                          ...pause_json,
-                          end_date: newValue.toISOString(),
-                        });
-                      }}
-                      slots={{
-                        openPickerIcon: () => <Calendar size={20} />,
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Stack>
+                <div className='flex w-full flex-row space-x-1'>
+                  <UIDatePicker
+                  value={new Date(pause_json?.start_date)}
+                  onAccept={(newValue) => {
+                    if (
+                      dayjs(newValue).toISOString() < pause_json?.end_date
+                    ) {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                      });
+                    } else {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                        end_date: null,
+                      });
+                    }
+                  }}
+                  minDate={new Date(currentDate.toISOString())}
+
+                  />
+                  <UIDatePicker
+                  value={new Date(pause_json?.end_date)}
+                  onAccept={(newValue) => {
+                    if (dayjs(newValue).toISOString() > pause_json?.start_date) {
+                      setPauseJson({
+                        ...pause_json,
+                        end_date: dayjs(newValue).toISOString(),
+                      });
+                    }
+                  }}
+                  minDate={new Date(pause_json?.start_date)}
+                  />
+                 
+                </div>
               )}
-            </Stack>
-          </Stack>
-        </Stack>
+            </div>
+          </div>
+        </div>
       </UIDialog>
     </>
   );

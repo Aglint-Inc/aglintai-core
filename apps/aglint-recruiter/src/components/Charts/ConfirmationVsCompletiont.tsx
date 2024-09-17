@@ -47,26 +47,26 @@ export default function ConfirmationVsCompletion() {
             <YAxis
               yAxisId='left'
               orientation='left'
-              stroke='hsl(var(--chart-1))'
+              stroke='text-blue-500'
             />
             <YAxis
               yAxisId='right'
               orientation='right'
-              stroke='hsl(var(--chart-2))'
+              stroke='text-green-500'
             />
             <Tooltip />
             <Legend />
             <Bar
               yAxisId='left'
               dataKey='confirmationRate'
-              fill='hsl(var(--chart-1))'
+              fill='text-blue-500'
               name='Confirmation Rate (%)'
             />
             <Line
               yAxisId='right'
               type='monotone'
               dataKey='completionRate'
-              stroke='hsl(var(--chart-2))'
+              stroke='text-green-500'
               strokeWidth={2}
               name='Completion Rate (%)'
             />

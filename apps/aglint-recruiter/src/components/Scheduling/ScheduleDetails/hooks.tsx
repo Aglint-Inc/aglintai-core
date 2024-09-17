@@ -1,12 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { type MemberType } from 'src/app/_common/types/member';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 import { supabase } from '@/utils/supabase/client';
-
-import { type MemberType } from '../InterviewTypes/types';
 
 export const useScheduleDetails = () => {
   const queryClient = useQueryClient();

@@ -9,7 +9,7 @@ import {
 } from '@components/ui/dialog';
 import { useQuery } from '@tanstack/react-query';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';

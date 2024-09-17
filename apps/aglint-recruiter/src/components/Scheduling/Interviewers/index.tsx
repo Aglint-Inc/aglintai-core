@@ -9,12 +9,12 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { AllInterviewers } from '@devlink2/AllInterviewers';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -22,17 +22,17 @@ import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
-import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { useTeamMembers } from '../../CompanyDetailComp/TeamManagement';
 import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
-import Filters from './Filters';
+import { AllInterviewers } from './_common/AllInterviewers';
 
 const InterviewTab = () => {
   const { recruiter } = useAuthDetails();
   const router = useRouter();
   const { data: interviewers, isLoading, isFetched } = useInterviewerList();
-  const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
+  const [filteredInterviewer] = useState(interviewers);
+  // const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
   const { activeMembers } = useTeamMembers();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
@@ -76,11 +76,12 @@ const InterviewTab = () => {
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <div className='relative'>
-              <Filters
+              {/* <Filters
                 setFilteredInterviewer={setFilteredInterviewer}
                 interviewers={interviewers}
                 isLoading={isLoading}
-              />
+              /> */}
+
               {filteredInterviewer?.length > 0 ? (
                 <>
                   <AllInterviewers

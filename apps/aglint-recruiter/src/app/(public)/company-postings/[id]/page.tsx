@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { SeoPro } from '@/components/Common/SeoPro';
 import CompanyJobPost from '@/components/CompanyJobPost';
 import { JobNotFound } from '@/job/components/JobNotFound';

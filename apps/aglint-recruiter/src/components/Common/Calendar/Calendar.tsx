@@ -30,10 +30,10 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
-import Loader from '../Loader';
 // import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {
@@ -111,9 +111,9 @@ function CalendarComp({
   };
 
   return (
-    <div className='h-[624px] w-[900px] space-y-2 p-2'>
+    <div className='p-2 space-y-2'>
       {isLoading ? (
-        <div className='flex h-[400px] w-[900px] items-center justify-center'>
+        <div className='w-[900px] flex items-center justify-center'>
           <Loader />
         </div>
       ) : (
@@ -192,12 +192,12 @@ function renderEventContent(eventInfo) {
 
 const colorPick = (status): colorType => {
   return status === 'confirmed'
-    ? { bg: 'var(--info-3)', pri: 'var(--info-11)' }
+    ? { bg: 'bg-blue-200', pri: 'text-blue-700' }
     : status === 'completed'
-      ? { bg: 'var(--success-3)', pri: 'var(--success-11)' }
+      ? { bg: 'bg-green-200', pri: 'text-green-700' }
       : status === 'canceled'
-        ? { bg: 'var(--error-3)', pri: 'var(--error-11)' }
-        : null;
+        ? { bg: 'bg-red-200', pri: 'text-red-700' }
+        : { bg: 'bg-neutral-200', pri: 'text-neutral-700' };
 };
 
 const TooltipComp = ({ data }) => {

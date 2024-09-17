@@ -1,9 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
 import { TrainingProgressList } from '@devlink3/TrainingProgressList';
-import { TrainingProgressLoader } from '@devlink3/TrainingProgressLoader';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { memo, useMemo } from 'react';
@@ -26,7 +24,7 @@ export const TrainingProgress = memo(() => {
     training_progress: { data },
   } = useSchedulingAnalytics();
   return (
-    <Stack width={'100%'}>
+    <div className='w-full'>
       <TrainingProgressDev
         onClickViewAllInterviewers={{
           onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
@@ -34,7 +32,7 @@ export const TrainingProgress = memo(() => {
         isViewAllVisible={(data ?? []).length > LIMIT}
         slotTrainingProgressList={<Containter />}
       />
-    </Stack>
+    </div>
   );
 });
 TrainingProgress.displayName = 'TrainingProgress';
@@ -57,9 +55,9 @@ const Containter = () => {
 
   if (data.length === 0)
     return (
-      <Stack>
+      <div className='flex flex-col'>
         <Empty />
-      </Stack>
+      </div>
     );
 
   return <List data={data} />;
@@ -69,10 +67,7 @@ const List = memo(({ data }: Props) => {
   return (
     <>
       {(data ?? []).map((data) => (
-        <div
-          key={data.user_id}
-          className='cursor-pointer hover:bg-[var(--neutral-3)]'
-        >
+        <div key={data.user_id} className='cursor-pointer hover:bg-neutral-200'>
           <TrainingProgressList
             slotHistoryPill={<Pills {...data} />}
             slotInterviewerImage={<Avatar alt={data.name} />}
@@ -148,7 +143,7 @@ Pills.displayName = 'Pills';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => <TrainingProgressLoader key={i} slotSkeleton={<Skeleton />} />,
+    (_, i) => <Skeleton key={i} />,
   );
 });
 Loader.displayName = 'Loader';

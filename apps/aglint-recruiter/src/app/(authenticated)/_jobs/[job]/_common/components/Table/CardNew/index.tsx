@@ -1,10 +1,10 @@
 import OptimisticWrapper from '@components/loadingWapper';
-import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useApplications,
   useApplicationsActions,
@@ -17,7 +17,7 @@ import { TableRow } from '../TableRow';
 
 const ApplicationCard = memo(
   ({ application }: { application: Application }) => {
-    const router = useRouter();
+    const router = useRouterPro();
     const {
       cascadeVisibilites,
       job: { status },
@@ -79,7 +79,7 @@ const ApplicationCard = memo(
 
     const handleClickCandidate = () => {
       router.push(
-        `${ROUTES['/jobs/[job]/application/[application_id]']({
+        `${ROUTES['/jobs/[job]/[application]']({
           application_id: application.id,
           job: application.job_id,
         })}${

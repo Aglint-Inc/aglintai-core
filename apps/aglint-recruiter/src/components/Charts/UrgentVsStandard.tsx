@@ -36,26 +36,26 @@ export default function UrgentVsStandard() {
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='type' stroke='hsl(var(--foreground))' />
+            <XAxis dataKey='type' stroke='text-foreground' />
             <YAxis
               label={{
                 value: 'Number of Requests',
                 angle: -90,
                 position: 'insideLeft',
-                style: { fill: 'hsl(var(--foreground))' },
+                style: { fill: 'text-foreground' },
               }}
-              stroke='hsl(var(--foreground))'
+              stroke='text-foreground'
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--background))',
-                borderColor: 'hsl(var(--border))',
+                backgroundColor: 'bg-background',
+                borderColor: 'border-border',
               }}
-              labelStyle={{ color: 'hsl(var(--foreground))' }}
+              labelStyle={{ color: 'text-foreground' }}
             />
-            <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
-            <Bar dataKey='Standard' stackId='a' fill='hsl(var(--chart-1))' />
-            <Bar dataKey='Urgent' stackId='a' fill='hsl(var(--chart-2))' />
+            <Legend wrapperStyle={{ color: 'text-foreground' }} />
+            <Bar dataKey='Standard' stackId='a' fill='text-blue-500' />
+            <Bar dataKey='Urgent' stackId='a' fill='text-green-500' />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

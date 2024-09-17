@@ -1,15 +1,12 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { TimeRangeSelector } from '@devlink3/TimeRangeSelector';
-import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
 import React from 'react';
@@ -22,6 +19,7 @@ import {
   setLocalFilters,
   useSelfSchedulingFlowStore,
 } from '../../../store/store';
+import { TimeRangeSelector } from './TimeRangeSelector';
 
 function DateRangeField() {
   const localFilters = useSelfSchedulingFlowStore(
@@ -34,8 +32,8 @@ function DateRangeField() {
   }>(null);
 
   return (
-    <Stack spacing={0.5}>
-      <Typography variant='body1'>Preferred Date Ranges</Typography>
+    <div className='flex flex-col space-y-0.5'>
+      <span className='text-base font-medium'>Preferred Date Ranges</span>
       <TimeRangeSelector
         slotButton={
           <UIButton
@@ -108,10 +106,9 @@ function DateRangeField() {
             </div>
           )
         }
-        slotCheckbox={<Checkbox />}
         isMultiDay={false}
         slotTimeinputs={
-          <Stack direction={'row'} spacing={2}>
+          <div className='flex flex-row space-x-2'>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -190,11 +187,11 @@ function DateRangeField() {
                 </PopoverContent>
               </Popover>
             </div>
-          </Stack>
+          </div>
         }
         textDay={'Day'}
       />
-    </Stack>
+    </div>
   );
 }
 

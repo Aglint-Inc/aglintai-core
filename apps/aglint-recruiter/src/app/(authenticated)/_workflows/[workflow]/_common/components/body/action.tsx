@@ -10,7 +10,7 @@ import { CardContent } from '@components/ui/card';
 import { Terminal } from 'lucide-react';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelect from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
@@ -203,7 +203,7 @@ const EmailSubject: React.FC<FormsType> = memo(
     return (
       <div>
         <UITypography type='small'>Email Subject</UITypography>
-        <div className='border-neutral-6 mt-2 rounded-[var(--radius-2)] border'>
+        <div className='border-neutral-300 mt-2 rounded-md border'>
           <TipTapAIEditor
             singleLine={true}
             padding={1}
@@ -226,7 +226,7 @@ const EmailBody: React.FC<FormsType> = memo(
     return (
       <div>
         <UITypography type='small'>Email Body</UITypography>
-        <div className='border-neutral-6 mt-2 rounded-[var(--radius-2)] border'>
+        <div className='border-neutral-300 mt-2 rounded-md border'>
           <TipTapAIEditor
             toolbar={false}
             disabled={disabled}
@@ -306,7 +306,7 @@ const AgentInstructionBody: React.FC<
   return (
     <div>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
-      <div className='border-neutral-6 mt-2 rounded-[var(--radius-2)] border'>
+      <div className='border-neutral-300 mt-2 rounded-md border'>
         <TipTapAIEditor
           toolbar={false}
           disabled={disabled}

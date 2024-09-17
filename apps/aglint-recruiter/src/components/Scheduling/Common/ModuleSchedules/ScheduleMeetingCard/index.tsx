@@ -1,6 +1,4 @@
-import { MembersList } from '@devlink3/MembersList';
-import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
-import { Collapse, Stack, Typography } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -8,6 +6,7 @@ import { useState } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
+import { MembersList } from '@/components/Scheduling/_common/components/MembersList';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -19,6 +18,7 @@ import {
 import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
+import { MyScheduleSubCard } from './MyScheduleSubCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
@@ -42,18 +42,16 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={{
-            onClick: (e) => {
-              setCollapseOpen((pre) => !pre);
-              e.stopPropagation();
-            },
+          onClickDropdownIocn={(e) => {
+            setCollapseOpen((pre) => !pre);
+            e.stopPropagation();
           }}
           isDropdownIconVisible={interviewers.length > 0}
           isMembersListVisible={interviewers.length > 0 && collapseOpen}
           slotMembersList={
             <>
               <Collapse in={collapseOpen}>
-                <Stack direction={'column'} spacing={'var(--space-2)'}>
+                <div className='flex flex-col space-y-2'>
                   <MembersList
                     slotImage={<User size={40} />}
                     textName={getFullName(
@@ -61,9 +59,7 @@ function ScheduleMeetingCard({
                       meetingDetails.applications.candidates.last_name,
                     )}
                     isDesignationVisible={true}
-                    textDesignation={
-                      <Typography variant='caption'>{'Candidate'}</Typography>
-                    }
+                    textDesignation={'Candidate'}
                     textTime={null}
                   />
                   {interviewers.map((user) => {
@@ -99,7 +95,7 @@ function ScheduleMeetingCard({
                       </>
                     );
                   })}
-                </Stack>
+                </div>
               </Collapse>
             </>
           }
@@ -135,16 +131,14 @@ function ScheduleMeetingCard({
             <Stack
               direction={'row'}
               alignItems={'center'}
-              spacing={'var(--space-5)'}
+              className='space-y-5'
             >
               <span>{meetingDetails?.public_jobs.job_title}</span>
             </Stack>
           }
           bgColorProps={{
-            style: {
-              background: getScheduleBgcolor(meetingDetails.status),
-              color: getScheduleTextcolor(meetingDetails.status),
-            },
+            background: getScheduleBgcolor(meetingDetails.status),
+            color: getScheduleTextcolor(meetingDetails.status),
           }}
         />
       </Stack>

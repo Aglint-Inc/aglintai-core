@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import axios from '@/client/axios';
-import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiBodyGetUsersByIds,
@@ -14,6 +12,9 @@ import {
 } from '@/pages/api/get_users_by_ids';
 import { schedulingDashboardQueryKeys } from '@/queries/scheduling-dashboard/keys';
 import { supabase } from '@/utils/supabase/client';
+
+import { InterviewersCardList } from './_common/InterviewersCardList';
+import { InterviewersDash } from './_common/InterviewersDash';
 
 const InterviewersAnalyticCards = () => {
   const [type, setType] =

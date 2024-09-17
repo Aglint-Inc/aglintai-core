@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { SelectActionBar } from '@devlink2/SelectActionBar';
+import { Button } from '@components/ui/button';
 
 import { useApplicationsActions, useApplicationsStore } from '@/job/hooks';
 
@@ -11,22 +11,34 @@ const Actions = () => {
   const count = checklist.length;
   return (
     <>
-      <SelectActionBar
-        onclickSelectAll={null}
-        onClickDelete={{ style: { display: 'none' } }}
-        isAssessmentVisible={false}
-        isSendScreeningVisible={false}
-        isDisqualifyVisible={false}
-        isSelectAllVisible={false}
-        onClickClear={{ onClick: () => setChecklist([]) }}
-        textSelected={`${count} candidate${count === 1 ? '' : 's'} selected`}
-        selectAllText={null}
-        onClickNew={{ onClick: () => setActionPopup('new') }}
-        onclickSendScreening={{ style: { display: 'none' } }}
-        onclickAssessment={{ style: { display: 'none' } }}
-        onclickDisqualify={{ onClick: () => setActionPopup('disqualified') }}
-        slotDropdown={<MoveCandidate />}
-      />
+      <div className='flex items-center justify-between border-t border-gray-200 bg-white p-4'>
+        <div className='flex items-center space-x-4'>
+          <Button
+            onClick={() => setChecklist([])}
+            variant='ghost'
+            size='sm'
+            className='text-gray-600 hover:text-gray-800'
+          >
+            Clear
+          </Button>
+          <span className='text-sm text-gray-600'>
+            {`${count} candidate${count === 1 ? '' : 's'} selected`}
+          </span>
+        </div>
+        <div className='flex items-center space-x-4'>
+          <Button onClick={() => setActionPopup('new')} size='sm'>
+            New
+          </Button>
+          <Button
+            onClick={() => setActionPopup('disqualified')}
+            variant='outline'
+            size='sm'
+          >
+            Disqualify
+          </Button>
+          <MoveCandidate />
+        </div>
+      </div>
     </>
   );
 };

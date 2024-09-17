@@ -1,10 +1,7 @@
+import { AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { LeaderBoard } from '@devlink3/LeaderBoard';
-import { LeaderBoardCard } from '@devlink3/LeaderBoardCard';
-import { LeaderBoardLoader } from '@devlink3/LeaderBoardLoader';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
 import {
@@ -20,10 +17,13 @@ const LIMIT = 5;
 
 export const Leaderboard = memo(() => {
   return (
-    <LeaderBoard
-      slotDropdownButton={<Dropdown />}
-      slotLeaderboardCard={<Container />}
-    />
+    <Card className='p-4'>
+      <div className='mb-4 flex items-center justify-between'>
+        <h3 className='text-lg font-semibold'>Leaderboard</h3>
+        <Dropdown />
+      </div>
+      <Container />
+    </Card>
   );
 });
 
@@ -53,18 +53,13 @@ const Container = memo(() => {
 
   if (status === 'error') return <>Error</>;
 
-  if (status === 'pending')
-    return (
-      <div className='flex h-[350px] items-center justify-center'>
-        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
-      </div>
-    );
+  if (status === 'pending') return <Loader />;
 
   if (data.length === 0)
     return (
-      <Stack>
+      <div className="flex flex-col">
         <Empty />
-      </Stack>
+      </div>
     );
 
   return <List data={data.slice(0, LIMIT + 1)} />;
@@ -81,24 +76,40 @@ const List = memo(({ data }: Props) => {
           { duration, interviews, name, position, profile_image, user_id },
           index,
         ) => (
-          <Stack
+          <Card
             key={user_id}
-            sx={{
-              cursor: 'pointer',
-              '&:hover': {
-                backgroundColor: 'var(--neutral-3)',
-              },
-            }}
+            className='cursor-pointer p-4 hover:bg-neutral-100'
           >
-            <LeaderBoardCard
-              textCountNo={index + 1}
-              textName={capitalizeAll(name)}
-              textRole={capitalizeAll(position)}
-              slotImage={<Avatar src={profile_image} alt={name} />}
-              noInterview={interviews}
-              noHours={(duration / 60).toFixed(1)}
-            />
-          </Stack>
+            <div className='flex items-center space-x-4'>
+              <div className='flex-shrink-0'>
+                <Avatar>
+                  <AvatarImage src={profile_image} alt={name} />
+                  <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                </Avatar>
+              </div>
+              <div className='flex-grow'>
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <p className='text-sm font-medium'>{capitalizeAll(name)}</p>
+                    <p className='text-xs text-gray-500'>
+                      {capitalizeAll(position)}
+                    </p>
+                  </div>
+                  <div className='text-right'>
+                    <p className='text-sm font-medium'>
+                      {interviews} interviews
+                    </p>
+                    <p className='text-xs text-gray-500'>
+                      {(duration / 60).toFixed(1)} hours
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-200'>
+                <span className='text-sm font-medium'>{index + 1}</span>
+              </div>
+            </div>
+          </Card>
         ),
       )}
     </>
@@ -108,10 +119,7 @@ List.displayName = 'ListList';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * LIMIT) + 1)].map((_, i) => (
-    <LeaderBoardLoader
-      key={i}
-      slotSkeleton={<Skeleton className='h-full w-full' />}
-    />
+    <Skeleton key={i} className='h-full w-full' />
   ));
 });
 Loader.displayName = 'Loader';

@@ -54,7 +54,7 @@ export default function CandidatesBySkillsChart() {
               <Tooltip />
               <Bar
                 dataKey='frequency'
-                fill='hsl(var(--chart-1))'
+                fill='text-blue-500'
                 label={{
                   value: 'candidates',
                 }}
@@ -62,7 +62,7 @@ export default function CandidatesBySkillsChart() {
                 {data.map((entry, index) => (
                   <Bar
                     key={index}
-                    fill={`hsl(var(--chart-${(index % 10) + 1}))`}
+                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][(index % 10)]}-500`}
                     dataKey={entry.frequency}
                   />
                 ))}

@@ -39,7 +39,7 @@ export const navList: {
       '/jobs/[job]/profile-score',
       '/jobs/[job]/workflows',
       '/jobs/[job]/metrics',
-      '/jobs/[job]/application/[application_id]',
+      '/jobs/[job]/[application]',
     ],
   },
   {
@@ -68,7 +68,7 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['interview_types'],
-    active: ['/interview-pool', '/interview-pool/[type_id]'],
+    active: ['/interview-pool', '/interview-pool/[pool]'],
   },
   {
     text: 'Sourcing Hub',

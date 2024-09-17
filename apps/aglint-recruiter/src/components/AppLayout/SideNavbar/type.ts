@@ -57,13 +57,10 @@ export type LinkProps =
       module: 'Interview Pools';
       path: Path<'/interview-pool'>;
     }
-  | {
-      module: 'Candidates';
-      path: Path<'/scheduling/application'>;
-    }
+
   | {
       module: 'Interviewers';
-      path: Path<'/scheduling/interviewer'>;
+      path: Path<'/interviewers'>;
     }
   | {
       module: 'Requests';

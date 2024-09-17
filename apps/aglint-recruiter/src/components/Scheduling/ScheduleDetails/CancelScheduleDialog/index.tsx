@@ -1,10 +1,19 @@
-import { RadioGroupItem } from '@components/ui/radio-group';
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Label } from '@components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import axios from 'axios';
-import { X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UITextArea } from '@/components/Common/UITextArea';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
 import toast from '@/utils/toast';
@@ -77,98 +86,65 @@ function CancelScheduleDialog({
   return (
     <Dialog
       open={isDeclineOpen}
-      onClose={() => {
-        setIsDeclineOpen(false);
-        closeDialog();
+      onOpenChange={(open) => {
+        if (!open) {
+          setIsDeclineOpen(false);
+          closeDialog();
+        }
       }}
     >
-      <div className='flex w-[500px] items-center justify-center'>
-        <div className='w-full max-w-lg rounded-lg bg-white shadow-lg'>
-          <div className='flex items-center justify-between border-b border-gray-200 p-4'>
-            <h2 className='font-semibold'>Cancel Schedule Initial Screening</h2>
-            <UIButton
-              onClick={() => {
-                setIsDeclineOpen(false);
-                closeDialog();
-              }}
-              variant='ghost'
-              size='sm'
-            >
-              <X className='h-4 w-4' />
-            </UIButton>
-          </div>
-          <div className='p-4'>
-            <Stack spacing={2} width={'100%'}>
-              <Typography variant='body1'>
-                Please provide a reason for canceling and any additional notes.
-              </Typography>
-              <Stack spacing={1}>
-                {reasons.map((rea) => {
-                  return (
-                    <Stack
-                      direction={'row'}
-                      key={rea}
-                      onClick={() => {
-                        setReason(rea);
-                      }}
-                      alignItems={'center'}
-                      spacing={1}
-                    >
-                      <RadioGroupItem
-                        value={rea}
-                        checked={rea === reason}
-                        id={`radio-${rea}`}
-                      />
-                      <Typography
-                        variant='body1'
-                        color={'var(--neutral-12)'}
-                        sx={{
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {rea}
-                      </Typography>
-                    </Stack>
-                  );
-                })}
-              </Stack>
+      <DialogContent className='sm:max-w-[500px]'>
+        <DialogHeader>
+          <DialogTitle>Cancel Schedule Initial Screening</DialogTitle>
+          <DialogDescription>
+            Please provide a reason for canceling and any additional notes.
+          </DialogDescription>
+        </DialogHeader>
+        <div className='space-y-4'>
+          <RadioGroup value={reason} onValueChange={setReason}>
+            {reasons.map((rea) => (
+              <div key={rea} className='flex items-center space-x-2'>
+                <RadioGroupItem value={rea} id={`radio-${rea}`} />
+                <Label htmlFor={`radio-${rea}`}>{rea}</Label>
+              </div>
+            ))}
+          </RadioGroup>
 
-              <Typography variant='body1'>Additional Notes</Typography>
-              <TextField
-                multiline
+          <div className='space-y-2'>
+            <Label htmlFor='notes' className='text-base font-medium'>
+              Additional Notes
+            </Label>
+            <UITextArea
                 value={notes}
-                minRows={3}
                 placeholder='Add additional notes.'
                 onChange={(e) => {
                   setNotes(e.target.value);
                 }}
               />
-            </Stack>
-          </div>
-          <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
-            <UIButton
-              variant='secondary'
-              onClick={() => {
-                setIsDeclineOpen(false);
-                closeDialog();
-              }}
-            >
-              Close
-            </UIButton>
-            <UIButton
-              variant='destructive'
-              isLoading={isSaving}
-              onClick={() => {
-                if (reason && !isSaving) {
-                  onClickConfirm();
-                }
-              }}
-            >
-              Cancel Schedule
-            </UIButton>
           </div>
         </div>
-      </div>
+        <DialogFooter>
+          <UIButton
+            variant='outline'
+            onClick={() => {
+              setIsDeclineOpen(false);
+              closeDialog();
+            }}
+          >
+            Close
+          </UIButton>
+          <UIButton
+            variant='destructive'
+            disabled={isSaving || !reason}
+            onClick={onClickConfirm}
+          >
+            {isSaving ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : null}
+            Cancel Schedule
+          </UIButton>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 }

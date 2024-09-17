@@ -6,7 +6,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import { mailSender } from '@/utils/mailSender';

@@ -19,15 +19,15 @@ const AntSwitch = styled(Switch)(() => ({
     padding: 2,
     '&.Mui-checked': {
       transform: 'translateX(16px)',
-      color: 'var(--white)',
+      color: 'text-white',
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: 'var(--accent-9)',
+        backgroundColor: 'bg-accent-500',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    boxShadow: 'var(--shadow-3)',
+    boxShadow: 'shadow-md',
     width: 12,
     height: 12,
     borderRadius: 4,
@@ -35,7 +35,7 @@ const AntSwitch = styled(Switch)(() => ({
   '& .MuiSwitch-track': {
     borderRadius: 16 / 2,
     opacity: 1,
-    backgroundColor: 'var(--neutral-7)',
+    backgroundColor: 'bg-neutral-400',
     boxSizing: 'border-box',
   },
 }));
