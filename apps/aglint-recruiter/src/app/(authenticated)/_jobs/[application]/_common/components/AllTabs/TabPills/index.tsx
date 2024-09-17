@@ -113,22 +113,19 @@ function TabsComp() {
   }, [left, right]);
 
   return (
-      <Tabs value={allTabs.find((tabItem) => tabItem.tab === tab)?.textLabel}>
-        <TabsList>
-          {allTabs
-            .filter((tab) => tab.isVisible)
-            .map((tabItem) => (
-              <>
-                <TabsTrigger
-                  onClick={tabItem.onClick}
-                  value={tabItem.textLabel}
-                >
-                  {tabItem.textLabel}
-                </TabsTrigger>
-              </>
-            ))}
-        </TabsList>
-      </Tabs>
+    <Tabs value={allTabs.find((tabItem) => tabItem.tab === tab)?.textLabel}>
+      <TabsList>
+        {allTabs
+          .filter((tab) => tab.isVisible)
+          .map((tabItem) => (
+            <>
+              <TabsTrigger onClick={tabItem.onClick} value={tabItem.textLabel}>
+                {tabItem.textLabel}
+              </TabsTrigger>
+            </>
+          ))}
+      </TabsList>
+    </Tabs>
   );
 }
 

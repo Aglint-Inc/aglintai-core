@@ -62,7 +62,6 @@ export function ApplicantInfoBox({
           <dd className='truncate'>{textLocation}</dd>
         </div>
       </div>
-     
 
       {/* Contact Information */}
       <div className='col-span-2 flex items-center'>

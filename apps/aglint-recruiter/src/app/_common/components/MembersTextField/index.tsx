@@ -62,17 +62,18 @@ function MembersAutoComplete({
           return (
             <div
               key={user.user_id}
-              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${pillColor ? `bg-${pillColor}` : 'bg-neutral-300'
-                }`}
+              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${
+                pillColor ? `bg-${pillColor}` : 'bg-neutral-300'
+              }`}
             >
               <MuiAvatar
-                    src={user.profile_image}
-                    level={getFullName(user?.first_name, user?.last_name)}
-                    height='24px'
-                    width='24px'
-                    fontSize='12px'
-                  />
-              
+                src={user.profile_image}
+                level={getFullName(user?.first_name, user?.last_name)}
+                height='24px'
+                width='24px'
+                fontSize='12px'
+              />
+
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
               <button
                 onClick={() => {
@@ -144,12 +145,8 @@ function MembersAutoComplete({
                     width='24px'
                     fontSize='12px'
                   />
-                  <div
-                    className='pl-2 flex flex-row justify-between w-full items-center'
-                  >
-                    <div
-                      className='one-line-clamp text-sm'
-                    >
+                  <div className='flex w-full flex-row items-center justify-between pl-2'>
+                    <div className='one-line-clamp text-sm'>
                       {getFullName(option.first_name, option.last_name)}
                     </div>
                     <div

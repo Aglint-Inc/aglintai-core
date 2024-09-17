@@ -102,7 +102,7 @@ function BadgesRight({
                   </>
                 }
               >
-                <div className="flex flex-col">
+                <div className='flex flex-col'>
                   <UIBadge
                     size={'sm'}
                     iconName={'Info'}
@@ -141,7 +141,7 @@ function BadgesRight({
                   </>
                 }
               >
-                <div className="flex flex-col">
+                <div className='flex flex-col'>
                   <UIBadge
                     size={'sm'}
                     iconName={'CircleAlert'}

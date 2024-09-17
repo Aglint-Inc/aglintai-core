@@ -39,7 +39,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
 
   const uniqueQualifiedModules = [...new Set(allQualifiedModules)];
   const uniqueTrainingModules = [...new Set(allQualifiedModules)];
-  uniqueTrainingModules;//remove it
+  uniqueTrainingModules; //remove it
   uniqueQualifiedModules; //remove it
 
   useEffect(() => {

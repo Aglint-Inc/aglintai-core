@@ -62,7 +62,7 @@ export default function CandidatesBySkillsChart() {
                 {data.map((entry, index) => (
                   <Bar
                     key={index}
-                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][(index % 10)]}-500`}
+                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                     dataKey={entry.frequency}
                   />
                 ))}

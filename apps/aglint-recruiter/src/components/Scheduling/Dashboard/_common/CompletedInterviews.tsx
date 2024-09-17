@@ -38,14 +38,14 @@ export function CompletedInterviewsNew({
         ? 'quater'
         : '';
   return (
-    <div className='flex flex-col p-4 space-y-4 rounded-lg bg-white border-[1px]'>
-      <div className='flex justify-between items-center'>
+    <div className='flex flex-col space-y-4 rounded-lg border-[1px] bg-white p-4'>
+      <div className='flex items-center justify-between'>
         <UITypography variant='p' type='small'>
           Completed Interviews
         </UITypography>
         <div className='flex space-x-2'>
           <Tabs defaultValue={value} value={value} className='h-[30px]'>
-            <TabsList className='p-0 px-2 h-[30px]'>
+            <TabsList className='h-[30px] p-0 px-2'>
               <TabsTrigger
                 value='month'
                 onClick={onClickLastMonth}

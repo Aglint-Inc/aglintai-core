@@ -7,7 +7,6 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 
 import StageIndividual from './StageIndividual';
 
-
 function StageSessions() {
   const router = useRouterPro();
   const {

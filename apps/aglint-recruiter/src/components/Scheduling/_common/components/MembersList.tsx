@@ -45,23 +45,23 @@ export function MembersList({
   slotIcon,
 }: SlotComponentProps) {
   return (
-    <div className='relative flex w-full mt-4 justify-between items-start '>
-      <div className='flex justify-start items-start gap-2'>
+    <div className='relative mt-4 flex w-full items-start justify-between'>
+      <div className='flex items-start justify-start gap-2'>
         <div className='relative'>
-          <div className='overflow-hidden w-10 h-10 flex-none rounded-md'>
+          <div className='h-10 w-10 flex-none overflow-hidden rounded-md'>
             {slotImage}
           </div>
-          <div className='absolute right-[-3px] bottom-[-2px]'>
+          <div className='absolute bottom-[-2px] right-[-3px]'>
             {isShadow && (
-              <div className='flex justify-center items-center'>S</div>
+              <div className='flex items-center justify-center'>S</div>
             )}
             {isReverseShadow && (
-              <div className='flex justify-center items-center'>R</div>
+              <div className='flex items-center justify-center'>R</div>
             )}
           </div>
         </div>
         <div className='flex flex-col gap-0'>
-          <div className='flex justify-start items-center gap-1'>
+          <div className='flex items-center justify-start gap-1'>
             <UITypography variant='p' className='font-semibold' type='small'>
               {textName}
             </UITypography>
@@ -76,16 +76,16 @@ export function MembersList({
               </div>
             )}
             {isButtonVisible && (
-              <div className='flex justify-start items-center gap-3'>
+              <div className='flex items-center justify-start gap-3'>
                 <div
-                  className='flex justify-start items-center gap-1 cursor-pointer'
+                  className='flex cursor-pointer items-center justify-start gap-1'
                   {...onClickResendInvite}
                 >
                   {/* SVG content */}
                   <UITypography variant='p' type='small'></UITypography>
                 </div>
                 <div
-                  className='flex justify-start items-center gap-1 cursor-pointer'
+                  className='flex cursor-pointer items-center justify-start gap-1'
                   {...onClickCopyInvite}
                 >
                   {/* SVG content */}
@@ -96,7 +96,7 @@ export function MembersList({
               </div>
             )}
             {isAcceptDeclineVisibe && (
-              <div className='flex justify-start items-center gap-3'>
+              <div className='flex items-center justify-start gap-3'>
                 {isAcceptVisible && (
                   <div {...onClickAccept}>
                     <UIButton size='sm'>Accept</UIButton>
@@ -120,7 +120,7 @@ export function MembersList({
         </UITypography>
       </div>
       {isDetailVisible && (
-        <div className='absolute left-0 top-12 right-0 z-10 flex flex-col gap-3 border border-neutral-6 rounded-md bg-white shadow-md'>
+        <div className='border-neutral-6 absolute left-0 right-0 top-12 z-10 flex flex-col gap-3 rounded-md border bg-white shadow-md'>
           {slotMemberDetail}
         </div>
       )}

@@ -115,12 +115,12 @@ function CancelScheduleDialog({
               Additional Notes
             </Label>
             <UITextArea
-                value={notes}
-                placeholder='Add additional notes.'
-                onChange={(e) => {
-                  setNotes(e.target.value);
-                }}
-              />
+              value={notes}
+              placeholder='Add additional notes.'
+              onChange={(e) => {
+                setNotes(e.target.value);
+              }}
+            />
           </div>
         </div>
         <DialogFooter>

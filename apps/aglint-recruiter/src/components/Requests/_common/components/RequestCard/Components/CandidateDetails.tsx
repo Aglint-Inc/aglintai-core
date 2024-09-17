@@ -54,7 +54,7 @@ function CandidateDetails({
   ];
 
   return (
-    <div className="flex flex-row items-center space-x-1">
+    <div className='flex flex-row items-center space-x-1'>
       {items
         .filter(({ hide }) => !hide)
         .map(({ text, type, route }, i) => {

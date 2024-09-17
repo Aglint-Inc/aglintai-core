@@ -18,9 +18,9 @@ export function StatusBadge({
   isWaitingVisible = false,
 }) {
   return (
-    <div className='flex flex-col justify-start items-start'>
+    <div className='flex flex-col items-start justify-start'>
       {isCompletedVisible && (
-        <div className='flex justify-start items-center gap-2 rounded bg-green-100 text-green-800'>
+        <div className='flex items-center justify-start gap-2 rounded bg-green-100 text-green-800'>
           <UIBadge
             textBadge={'Completed'}
             icon={<CalendarCheck size={12} />}
@@ -29,7 +29,7 @@ export function StatusBadge({
         </div>
       )}
       {isConfirmedVisible && (
-        <div className='flex justify-start items-center gap-2 rounded bg-blue-100 text-blue-800'>
+        <div className='flex items-center justify-start gap-2 rounded bg-blue-100 text-blue-800'>
           <UIBadge
             textBadge={'Confirmed'}
             icon={<CalendarCheck2 size={12} />}
@@ -38,7 +38,7 @@ export function StatusBadge({
         </div>
       )}
       {isNotScheduledVisible && (
-        <div className='flex justify-start items-center gap-2 rounded bg-gray-100 text-gray-800'>
+        <div className='flex items-center justify-start gap-2 rounded bg-gray-100 text-gray-800'>
           <UIBadge
             icon={<CircleX size={12} />}
             color='neutral'
@@ -47,7 +47,7 @@ export function StatusBadge({
         </div>
       )}
       {isInProgressVisible && (
-        <div className='flex justify-start items-center gap-2 rounded bg-yellow-100 text-yellow-800'>
+        <div className='flex items-center justify-start gap-2 rounded bg-yellow-100 text-yellow-800'>
           <UIBadge
             textBadge={'In Progress'}
             icon={<CalendarSearch size={12} />}
@@ -56,7 +56,7 @@ export function StatusBadge({
         </div>
       )}
       {isCancelledVisible && (
-        <div className='flex justify-start items-center gap-2 rounded bg-red-100 text-red-800'>
+        <div className='flex items-center justify-start gap-2 rounded bg-red-100 text-red-800'>
           <UIBadge
             icon={<CircleX size={12} />}
             color='error'
@@ -65,7 +65,7 @@ export function StatusBadge({
         </div>
       )}
       {isWaitingVisible && (
-        <div className='flex justify-start items-center gap-2 rounded bg-yellow-100 text-yellow-800'>
+        <div className='flex items-center justify-start gap-2 rounded bg-yellow-100 text-yellow-800'>
           <UIBadge
             textBadge={'Unconfirmed'}
             icon={<CalendarArrowUp size={12} />}

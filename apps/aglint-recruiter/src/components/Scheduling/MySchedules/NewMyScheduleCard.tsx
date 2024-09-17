@@ -19,11 +19,11 @@ export function NewMyScheduleCard({
   isNotScheduledIconVisible = false,
 }: NewMyScheduleCardProps) {
   return (
-    <div className={'relative max-w-[1000px] my-schedule'}>
-      <div className='flex h-full justify-start items-stretch gap-4'>
+    <div className={'my-schedule relative max-w-[1000px]'}>
+      <div className='flex h-full items-stretch justify-start gap-4'>
         <div className='relative h-full'>
           <div className='h-full w-[100px] rounded bg-neutral-200'>
-            <div className='sticky top-0 flex w-30 p-3 flex-col justify-start items-center gap-1'>
+            <div className='w-30 sticky top-0 flex flex-col items-center justify-start gap-1 p-3'>
               <UITypography variant='p' type='small'>
                 {textMonth}
               </UITypography>
@@ -37,8 +37,8 @@ export function NewMyScheduleCard({
           </div>
           {isNotScheduledIconVisible && (
             <div className='absolute inset-0 z-10 bg-neutral-500'>
-              <div className='flex flex-col justify-center items-center gap-2'>
-                <div className='flex flex-col justify-center items-center'>
+              <div className='flex flex-col items-center justify-center gap-2'>
+                <div className='flex flex-col items-center justify-center'>
                   <svg
                     width='36'
                     height='36'

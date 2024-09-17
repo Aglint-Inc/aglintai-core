@@ -20,7 +20,6 @@ import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
 
-
 function ScheduleIndividualCard({
   session,
   selectedSessionIds,

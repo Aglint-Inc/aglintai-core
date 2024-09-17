@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import MembersAutoComplete, {
+  type MemberTypeAutoComplete,
+} from 'src/app/_common/components/MembersTextField';
 import { type MemberType } from 'src/app/_common/types/member';
 
 import UITextField from '@/components/Common/UITextField';
-import MembersAutoComplete, {
-  type MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';

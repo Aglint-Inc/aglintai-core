@@ -2,7 +2,10 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { sessionDurations } from '@/utils/scheduling/const';
 
-import { setEditSession, useEditSessionDrawerStore } from '../../stores/editSessionDrawer';
+import {
+  setEditSession,
+  useEditSessionDrawerStore,
+} from '../../stores/editSessionDrawer';
 
 function SessionDuration() {
   const { editSession } = useEditSessionDrawerStore((state) => ({

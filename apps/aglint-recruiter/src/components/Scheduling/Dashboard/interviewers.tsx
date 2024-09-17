@@ -63,7 +63,7 @@ const List = ({ data }: Props) => {
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (
         <div
           key={user_id}
-          className="flex flex-row items-center justify-between cursor-pointer hover:bg-gray-100"
+          className='flex cursor-pointer flex-row items-center justify-between hover:bg-gray-100'
         >
           <InterviewersCardList
             textName={capitalizeAll(name)}

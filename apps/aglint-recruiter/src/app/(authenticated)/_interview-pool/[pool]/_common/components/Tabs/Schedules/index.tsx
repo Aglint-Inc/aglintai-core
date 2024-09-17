@@ -19,7 +19,7 @@ function Schedules() {
   return (
     <>
       {isLoading ? (
-        <div className='w-[820px] flex items-center justify-center'>
+        <div className='flex w-[820px] items-center justify-center'>
           <Loader />
         </div>
       ) : allSchedules.length === 0 ? (

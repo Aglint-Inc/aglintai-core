@@ -62,22 +62,22 @@ export default function FilterButton({
       >
         <PopoverTrigger asChild>
           <Button variant='outline' className='relative' onClick={onClick}>
-            <div className='flex row gap-2 items-center'>
+            <div className='row flex items-center gap-2'>
               {slotLeftIcon ? slotLeftIcon : false}
               {text}
               {slotRightIcon ? slotRightIcon : false}
             </div>
             {isDotVisible && isActive && (
-              <span className='absolute top-1 right-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white' />
+              <span className='absolute right-1 top-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white' />
             )}
           </Button>
         </PopoverTrigger>
         {type == 'popover' && (
-          <PopoverContent className='p-0 w-max'>
+          <PopoverContent className='w-max p-0'>
             {popover}
             <Button
               variant='ghost'
-              className='gap-1 justify-start w-full hover:rounded-t-none'
+              className='w-full justify-start gap-1 hover:rounded-t-none'
               onClick={resetFilter}
             >
               <Repeat size={15} /> <p>Reset</p>
