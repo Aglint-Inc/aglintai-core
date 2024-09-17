@@ -13,13 +13,13 @@ import Link from 'next/link';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import NotFoundPage from '@/pages/404';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 
 import defaultProfileImage from '../../../public/images/default-user-profile.svg';
-import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children, appRouter = false }) {
@@ -30,7 +30,11 @@ export default function AppLayout({ children, appRouter = false }) {
   const logo = recruiter?.logo;
   const name = recruiter?.name;
 
-  const { data: userDetails } = useImrQuery({ user_id: recruiterUser.user_id });
+  const { data: members } = useMemberList();
+
+  const userDetails = members?.find(
+    (member) => member.user_id === recruiterUser.user_id,
+  );
 
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 

@@ -17,10 +17,10 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { useEffect, useRef, useState } from 'react';
+import { type MemberType } from 'src/app/_common/types/member';
 
 import axios from '@/client/axios';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { type ApiResponseGetMember } from '@/pages/api/get_member';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
@@ -39,7 +39,7 @@ const EditMember = ({
 }: {
   open: boolean;
   refetch: any;
-  member: ApiResponseGetMember;
+  member: MemberType;
   memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
@@ -87,9 +87,9 @@ const EditMember = ({
         profile_image: member.profile_image,
         department_id: member.department_id,
         position: member.position,
-        role: member?.recruiter_relation[0].roles.name,
-        role_id: member?.recruiter_relation[0].roles.id,
-        manager_id: member?.recruiter_relation[0].manager_id,
+        role: member?.role,
+        role_id: member?.role_id,
+        manager_id: member?.manager_id,
       });
   }, [member?.user_id]);
 
@@ -133,7 +133,7 @@ const EditMember = ({
       if (
         recruiterUser.user_id === member.user_id ||
         form.role !== 'admin' ||
-        recruiterUser.user_id === member.recruiter_relation[0].created_by
+        recruiterUser.user_id === member.created_by
       ) {
         return true;
       } else if (
@@ -145,7 +145,7 @@ const EditMember = ({
         return false;
       } else if (
         form.role === 'admin' &&
-        recruiterUser.user_id !== member.recruiter_relation[0].created_by
+        recruiterUser.user_id !== member.created_by
       ) {
         toast.error('Permission Denied');
         // toast.error('You cannot edit another admin detail');
@@ -358,9 +358,8 @@ const EditMember = ({
               </div>
             </div>
 
-            {(member.recruiter_relation[0].roles.name !== 'admin' ||
-              member.recruiter_relation[0].created_by ===
-                recruiterUser.user_id) &&
+            {(member.role !== 'admin' ||
+              member.created_by === recruiterUser.user_id) &&
               member.user_id !== recruiterUser.user_id && (
                 <>
                   <div className='grid grid-cols-2 gap-4'>
