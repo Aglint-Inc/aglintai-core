@@ -40,7 +40,7 @@ function PreferedInterviewers() {
     <Stack width={'100%'} spacing={0.5}>
       <Typography variant='body1'>Preferred Interviewers</Typography>
       <MembersAutoComplete
-        pillColor={'var(--neutral-3)'}
+        pillColor={'neutral-200'}
         renderUsers={uniqueInterviewers}
         selectedUsers={localFilters.preferredInterviewers}
         maxWidth='100%'
