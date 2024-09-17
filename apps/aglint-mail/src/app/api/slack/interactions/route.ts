@@ -5,6 +5,7 @@ import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
 import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
 
 const handleInteraction = async (payload: any) => {
+  console.log('payload', payload);
   const interaction_data = JSON.parse(payload);
   const action = interaction_data.actions[0];
   const metadata = interaction_data.message.metadata;

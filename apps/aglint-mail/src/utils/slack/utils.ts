@@ -3,6 +3,7 @@ import { getSlackWeb } from '../../slack/slackWeb';
 
 export async function getUserIdByEmail(email: string) {
   try {
+    email = 'dileep@aglinthq.com';
     const slackWeb = getSlackWeb();
     const { user } = await slackWeb.users.lookupByEmail({ email });
     return user?.id;
