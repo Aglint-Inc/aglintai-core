@@ -1,5 +1,6 @@
+import CandidateInviteNew from 'src/app/(public)/scheduling/invite/[id]/_common/components';
+
 import Seo from '@/components/Common/Seo';
-import CandidateInviteNew from '@/components/Scheduling/CandidateInvite';
 import CandidateInviteProvider from '@/context/CandidateInviteContext';
 
 const CandidateInvitePage = () => {

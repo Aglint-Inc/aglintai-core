@@ -11,17 +11,17 @@ import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
+import ROUTES from '@/utils/routing/routes';
+
+import { type useModuleAndUsers } from '../../../../hooks/useModuleAndUsers';
+import { type useProgressModuleUsers } from '../../../../hooks/useProgressModuleUsers';
 import {
   setIsDeleteMemberDialogOpen,
   setIsMovedToQualifiedDialogOpen,
   setIsPauseDialogOpen,
   setIsResumeDialogOpen,
   setSelUser,
-} from '@/components/Scheduling/InterviewTypes/store';
-import ROUTES from '@/utils/routing/routes';
-
-import { type useModuleAndUsers } from '../../../../hooks/useModuleAndUsers';
-import { type useProgressModuleUsers } from '../../../../hooks/useProgressModuleUsers';
+} from '../../../../stores/store';
 import { type PillsTraining } from '../../../../types/type';
 import { getPauseMemberText } from '../../../../utils/utils';
 import CollapseTrainingProgress from './Collapse';

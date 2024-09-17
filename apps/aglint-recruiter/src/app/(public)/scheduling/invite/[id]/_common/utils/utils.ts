@@ -5,9 +5,7 @@ import {
 import axios from 'axios';
 
 import dayjs from '@/utils/dayjs';
-import timeZones from '@/utils/timeZone';
-
-import { type TimezoneObj } from '../../CompanyDetailComp/Scheduling';
+import timeZones, { type TimezoneObj } from '@/utils/timeZone';
 
 export const getDurationText = (duration: number) => {
   const hours = Math.trunc(duration / 60);

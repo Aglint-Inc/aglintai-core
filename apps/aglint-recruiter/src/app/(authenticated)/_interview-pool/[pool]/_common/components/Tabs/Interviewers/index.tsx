@@ -17,14 +17,6 @@ import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
-import {
-  setIsAddMemberDialogOpen,
-  setIsDeleteMemberDialogOpen,
-  setIsPauseDialogOpen,
-  setIsResumeDialogOpen,
-  setSelUser,
-  setTrainingStatus,
-} from '@/components/Scheduling/InterviewTypes/store';
 import ROUTES from '@/utils/routing/routes';
 
 import AddMemberDialog from '../../../dialogs/AddMemberDialog';
@@ -32,6 +24,14 @@ import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
 import PauseDialog from '../../../dialogs/PauseDialog';
 import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
+import {
+  setIsAddMemberDialogOpen,
+  setIsDeleteMemberDialogOpen,
+  setIsPauseDialogOpen,
+  setIsResumeDialogOpen,
+  setSelUser,
+  setTrainingStatus,
+} from '../../../stores/store';
 import { getPauseMemberText } from '../../../utils/utils';
 
 function Interviewers() {

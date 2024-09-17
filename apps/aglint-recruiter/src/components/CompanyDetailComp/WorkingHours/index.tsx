@@ -3,7 +3,7 @@ import { toast } from '@components/hooks/use-toast';
 import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import { type TimezoneObj } from '@/utils/timeZone';
 
 import BreakTimeCard from './BreakTime';
 import TimeZone from './TimeZone';

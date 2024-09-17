@@ -8,12 +8,12 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
 import Footer from '@/components/Common/Footer';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
-import { ConfirmedInvitePage } from '@/components/Scheduling/CandidateInvite/CandidateConfirm';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/utils/jsonResume';

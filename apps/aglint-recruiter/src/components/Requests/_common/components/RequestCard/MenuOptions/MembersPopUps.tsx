@@ -13,9 +13,9 @@ import { Skeleton } from '@components/ui/skeleton';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/members';
+import { type MemberType } from 'src/app/_common/types/member';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';

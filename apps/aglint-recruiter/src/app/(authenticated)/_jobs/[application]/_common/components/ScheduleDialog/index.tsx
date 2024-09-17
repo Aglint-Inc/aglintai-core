@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
+import { type MemberType } from 'src/app/_common/types/member';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
@@ -20,7 +21,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useApplication } from '@/context/ApplicationContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
@@ -305,7 +305,7 @@ export const RequestOption = ({
   >;
 }) => {
   return (
-    <div className="flex flex-row w-full space-x-2">
+    <div className='flex w-full flex-row space-x-2'>
       <UIButton
         variant={requestType === 'urgent' ? 'default' : 'outline'}
         leftIcon={<FileBadge2 />}
