@@ -9,13 +9,13 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
 import ROUTES from '@/utils/routing/routes';
 import { capitalize } from '@/utils/text/textUtils';
@@ -25,7 +25,7 @@ import * as store from '../store';
 import { createModule } from '../utils';
 
 function CreateModuleDialog() {
-  const router = useRouter();
+  const router = useRouterPro();
   const { recruiter_id } = useAuthDetails();
   const { isCreateDialogOpen } = store.useModulesStore();
   const [loading, setLoading] = useState(false);

@@ -2,9 +2,9 @@ import { type DB, type PauseJson } from '@aglint/shared-types';
 
 import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
 
+import { type useModuleAndUsers } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/hooks/useModuleAndUsers';
+import { type fetchInterviewModules } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
-import { type useModuleAndUsers } from './DetailPage/_common/hooks/useModuleAndUsers';
-import { type fetchInterviewModules } from './DetailPage/_common/utils/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;

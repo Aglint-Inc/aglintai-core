@@ -50,7 +50,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/interview-pool': ['view_interview_types'],
-  '/interview-pool/[type_id]': ['interview_types'],
+  '/interview-pool/[pool]': ['interview_types'],
   '/requests': ['job_module'],
   '/requests/[id]': ['job_module'],
   '/requests/history': ['job_module'],

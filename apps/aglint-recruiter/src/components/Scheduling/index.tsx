@@ -9,10 +9,10 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { fetchInterviewModules } from '../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import { ShowCode } from '../Common/ShowCode';
 import { UIPageLayout } from '../Common/UIPageLayout';
 import SchedulingDashboard from './Dashboard';
-import { fetchInterviewModules } from './InterviewTypes/DetailPage/_common/utils/utils';
 import MySchedule from './MySchedules';
 import Schedules from './Schedules';
 import SeoSettings from './SEO/SeoSettings';

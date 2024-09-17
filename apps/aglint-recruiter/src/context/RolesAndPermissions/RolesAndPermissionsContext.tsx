@@ -96,7 +96,7 @@ export const RolesAndPermissionsProvider = ({
   );
 };
 
-export const useRolesAndPermissions = () => {
+export const  useRolesAndPermissions = () => {
   const context = useContext(RolesAndPermissionsContext);
   if (context === undefined) {
     throw new Error('useTasksAgentContext must be used within a Task page');
