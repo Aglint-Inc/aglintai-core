@@ -64,9 +64,7 @@ const Containter = () => {
 
   if (data.length === 0)
     return (
-      <div className='flex flex-col'>
         <Empty />
-      </div>
     );
 
   return <List data={data} />;

@@ -7,7 +7,7 @@ function ScheduleList() {
   const { filteredSchedules, loadingSchedules } = useScheduleStatesContext();
 
   return (
-    <div className='p-4'>
+    <div className='py-4'>
       {loadingSchedules && (
         <div className='h-[calc(100vh-96px)] w-full'>
           <Loader />

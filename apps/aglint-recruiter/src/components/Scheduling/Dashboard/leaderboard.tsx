@@ -31,16 +31,18 @@ Leaderboard.displayName = 'Leaderboard';
 const Dropdown = memo(() => {
   const { leaderboardType, setLeaderboardType } = useSchedulingAnalytics();
   return (
-    <FilterDropDownDash
-      itemList={[
-        { label: 'Past Week', value: 'week' },
-        { label: 'Past Month', value: 'month' },
-        { label: 'Past Year', value: 'year' },
-        { label: 'All Time', value: 'all_time' },
-      ]}
-      onChange={setLeaderboardType}
-      value={leaderboardType}
-    />
+    <>
+      <FilterDropDownDash
+        itemList={[
+          { label: 'Past Week', value: 'week' },
+          { label: 'Past Month', value: 'month' },
+          { label: 'Past Year', value: 'year' },
+          { label: 'All Time', value: 'all_time' },
+        ]}
+        onChange={setLeaderboardType}
+        value={leaderboardType}
+      />
+    </>
   );
 });
 Dropdown.displayName = 'Dropdown';
