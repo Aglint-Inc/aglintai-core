@@ -47,14 +47,16 @@ function SchedulingViewComp() {
     <>
       <div className='min-h-screen py-8'>
         <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-          <h1 className='mb-8 text-xl font-bold text-gray-900'>
-            {schedule.interview_session.name}
-          </h1>
+          <div className='flex flex-row justify-between'>
+            <h1 className='mb-8 text-xl font-bold text-gray-900'>
+              {schedule.interview_session.name}
+            </h1>
+            <ButtonGroup />
+          </div>
 
           <div className='flex justify-between space-x-8'>
             <div className='w-full'>
-              <ButtonGroup />
-              <div className='flex flex-col space-y-2'>
+              <div className='flex flex-col space-y-2 pb-4'>
                 <Banners />
               </div>
               {data?.schedule_data ? (

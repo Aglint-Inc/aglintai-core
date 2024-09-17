@@ -1,7 +1,6 @@
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { useToast } from '@components/hooks/use-toast';
-import { Label } from '@components/ui/label';
-import { RadioGroupItem } from '@components/ui/radio-group';
+import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -23,7 +22,7 @@ function DeclineScheduleDialog() {
   const { sessionUser, isDeclineDialogOpen } = useScheduleDetailsStore();
   const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
-
+  const [isSaving, setIsSaving] = useState(false);
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -42,6 +41,7 @@ function DeclineScheduleDialog() {
 
   const onClickConfirm = async () => {
     try {
+      setIsSaving(true);
       if (sessionRelation?.id) {
         const { error: errorSelRel } = await supabase
           .from('interview_session_relation')
@@ -95,6 +95,7 @@ function DeclineScheduleDialog() {
       });
     } finally {
       setIsDeclineDialogOpen(false);
+      setIsSaving(false);
     }
   };
 
@@ -104,6 +105,7 @@ function DeclineScheduleDialog() {
         open={isDeclineDialogOpen}
         title='Decline Schedule'
         onClose={() => {
+          if (!isSaving) return;
           setIsDeclineDialogOpen(false);
         }}
         slotButtons={
@@ -118,7 +120,9 @@ function DeclineScheduleDialog() {
               Cancel
             </UIButton>
             <UIButton
+              isLoading={isSaving}
               onClick={() => {
+                if (isSaving) return;
                 onClickConfirm();
               }}
             >
@@ -127,35 +131,37 @@ function DeclineScheduleDialog() {
           </>
         }
       >
-        <div className='w-full space-y-2'>
+        <div className='w-full space-y-4'>
           <p className='text-base'>
             Please provide a reason for declining and any additional notes.
           </p>
           <div className='space-y-1'>
-            {reasons.map((rea) => {
-              return (
-                <div
-                  key={rea}
-                  className='flex cursor-pointer items-center space-x-1'
-                  onClick={() => {
-                    setReason(rea);
-                  }}
-                >
-                  <RadioGroupItem
-                    value={rea}
-                    checked={rea === reason}
-                    id={`radio-${rea}`}
-                  />
-                  <span className='cursor-pointer text-base text-neutral-800'>
-                    {rea}
-                  </span>
-                </div>
-              );
-            })}
+            <RadioGroup>
+              {reasons.map((rea) => {
+                return (
+                  <div
+                    key={rea}
+                    className='flex cursor-pointer items-center space-x-2'
+                    onClick={() => {
+                      setReason(rea);
+                    }}
+                  >
+                    <RadioGroupItem
+                      value={rea}
+                      checked={rea === reason}
+                      id={`radio-${rea}`}
+                    />
+                    <span className='cursor-pointer text-sm text-neutral-800'>
+                      {rea}
+                    </span>
+                  </div>
+                );
+              })}
+            </RadioGroup>
           </div>
 
-          <Label className='text-base font-medium'>Additional Notes</Label>
           <UITextArea
+            label='Additional Notes'
             value={notes}
             placeholder='Add additional notes.'
             onChange={(e) => {
