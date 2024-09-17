@@ -4,12 +4,9 @@ import { useState } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 
-import {
-  setIsResumeDialogOpen,
-  useModulesStore,
-} from '../../../../../../../components/Scheduling/InterviewTypes/store';
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import { useResumeHandler } from '../../hooks/useResumeHandler';
+import { setIsResumeDialogOpen, useModulesStore } from '../../stores/store';
 
 function ResumeMemberDialog() {
   const isResumeDialogOpen = useModulesStore(

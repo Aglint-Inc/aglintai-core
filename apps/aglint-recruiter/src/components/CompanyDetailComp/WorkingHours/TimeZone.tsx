@@ -18,8 +18,7 @@ import { Clock, Edit, Loader2 } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
-
-import type { TimezoneObj } from '../Scheduling';
+import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
   timeZone: string;

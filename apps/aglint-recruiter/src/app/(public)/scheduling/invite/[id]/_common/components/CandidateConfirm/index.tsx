@@ -10,17 +10,20 @@ import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
-import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import { type TimezoneObj } from '@/utils/timeZone';
 
+import {
+  type ScheduleCardProps,
+  type ScheduleCardsProps,
+} from '../../types/types';
+import { createRequest, dayJS, getCalenderEventUrl } from '../../utils/utils';
 import CancelRescheduleDialog from '../CancelScheduleDialog';
-import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
-import { createRequest, dayJS, getCalenderEventUrl } from '../utils';
 import InterviewConfirmed from './InterviewConfirmed';
 import { InterviewConfirmedCard } from './InterviewConfirmedCard';
 export const ConfirmedInvitePage = (

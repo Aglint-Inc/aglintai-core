@@ -4,10 +4,10 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
 
+import { dayJS } from '../utils/utils';
 import { CandidateScheduleCard } from './Components/CandidateScheduleCard';
 import { SelectedDateAndTime } from './Components/SelectedDateAndTime';
 import { SessionAndTime } from './Components/SessionAndTime';
-import { dayJS } from './utils';
 
 export const SingleDayConfirmation = () => {
   const { selectedSlots, setSelectedSlots, handleSubmit, timezone } =

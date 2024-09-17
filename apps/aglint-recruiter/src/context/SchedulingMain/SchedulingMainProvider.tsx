@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { type MemberType } from 'src/app/_common/types/member';
 
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
-// import { resetInterviewState } from '@/components/Scheduling/Agent/store';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiFetchUserDetails,

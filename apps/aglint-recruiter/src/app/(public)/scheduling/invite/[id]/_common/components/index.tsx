@@ -15,12 +15,17 @@ import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
-import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
-import CompanyLogo from '../../Common/CompanyLogo';
-import Footer from '../../Common/Footer';
-import IconScheduleType from '../../Common/Icons/IconScheduleType';
-import { Loader } from '../../Common/Loader';
-import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
+import CompanyLogo from '../../../../../../../components/Common/CompanyLogo';
+import Footer from '../../../../../../../components/Common/Footer';
+import IconScheduleType from '../../../../../../../components/Common/Icons/IconScheduleType';
+import { Loader } from '../../../../../../../components/Common/Loader';
+import { SessionIcon } from '../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
+import {
+  type ScheduleCardProps,
+  type ScheduleCardsProps,
+} from '../types/types';
+import { getDurationText } from '../utils/utils';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
 } from './calender';
@@ -29,8 +34,6 @@ import { CandidateScheduleCard } from './Components/CandidateScheduleCard';
 import { SessionInfo } from './Components/SessionInfo';
 import MultiDay from './MultiDay';
 import { SingleDayConfirmation } from './SingleDayConfirmation';
-import { type ScheduleCardProps, type ScheduleCardsProps } from './types';
-import { getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -327,7 +330,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textSessionDuration={duration}
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<Coffee size={16} className="text-neutral-100" />}
+      slotInterviewtypeIcon={<Coffee size={16} className='text-neutral-100' />}
       iconName={null}
     />
   );

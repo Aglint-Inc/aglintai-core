@@ -21,13 +21,17 @@ import ROUTES from '@/utils/routing/routes';
 import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
-import * as store from '../store';
-import { createModule } from '../utils';
+import {
+  setIsCreateDialogOpen,
+  setSelectedUsers,
+  useModulesStore,
+} from '../../[pool]/_common/stores/store';
+import { createModule } from '../../[pool]/_common/utils/pool';
 
 function CreateModuleDialog() {
   const router = useRouterPro();
   const { recruiter_id } = useAuthDetails();
-  const { isCreateDialogOpen } = store.useModulesStore();
+  const { isCreateDialogOpen } = useModulesStore();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
@@ -69,11 +73,11 @@ function CreateModuleDialog() {
             type_id: res.id,
           }),
         );
-        store.setIsCreateDialogOpen(null);
-        store.setSelectedUsers([]);
+        setIsCreateDialogOpen(null);
+        setSelectedUsers([]);
       } catch (e) {
         toast.error(e.message);
-        store.setIsCreateDialogOpen(null);
+        setIsCreateDialogOpen(null);
       } finally {
         setLoading(true);
       }
@@ -83,7 +87,7 @@ function CreateModuleDialog() {
   return (
     <Dialog
       open={isCreateDialogOpen}
-      onOpenChange={(open) => store.setIsCreateDialogOpen(open)}
+      onOpenChange={(open) => setIsCreateDialogOpen(open)}
     >
       <DialogContent>
         <DialogHeader>
@@ -169,7 +173,7 @@ function CreateModuleDialog() {
           <Button
             variant='outline'
             onClick={() => {
-              store.setIsCreateDialogOpen(false);
+              setIsCreateDialogOpen(false);
             }}
           >
             Cancel

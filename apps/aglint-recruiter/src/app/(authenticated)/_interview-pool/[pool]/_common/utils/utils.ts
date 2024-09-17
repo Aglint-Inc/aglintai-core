@@ -6,15 +6,13 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils';
 import axios from 'axios';
 import _ from 'lodash';
+import { type MemberType } from 'src/app/_common/types/member';
 
 import { supabase } from '@/utils/supabase/client';
 
-import {
-  type MemberType,
-  type StatusTraining,
-} from '../../../../../../components/Scheduling/InterviewTypes/types';
 import { schedulesSupabase } from '../../../../../../components/Scheduling/schedules-query';
 import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
+import { type StatusTraining } from '../types/pool';
 
 export const fetchSchedulesCountByModule = async (module_id: string) => {
   const { data } = await supabase
