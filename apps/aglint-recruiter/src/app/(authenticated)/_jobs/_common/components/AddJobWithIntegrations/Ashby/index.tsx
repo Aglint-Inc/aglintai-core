@@ -15,7 +15,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
-import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
+import {
+  useIntegrationActions,
+  useIntegrationStore,
+  useJobs,
+} from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -28,8 +32,8 @@ import { createJobObject, fetchAllJobs } from './utils';
 
 export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
-  const { setIntegration, handleClose } = useIntegrationActions();
-  const integration = useIntegrations();
+  const { setIntegrations, resetIntegrations } = useIntegrationActions();
+  const integration = useIntegrationStore((state) => state.integrations);
   const router = useRouter();
   const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
@@ -75,7 +79,7 @@ export function AshbyModalComp() {
 
   const importAshby = async () => {
     try {
-      setIntegration({
+      setIntegrations({
         ashby: { open: true, step: STATE_ASHBY_DIALOG.IMPORTING },
       });
       //converting ashby jobs to db jobs
@@ -103,7 +107,7 @@ export function AshbyModalComp() {
         });
         //closing modal once done
         router.push(ROUTES['/jobs/[job]']({ job: newJobs[0].id }));
-        setIntegration({
+        setIntegrations({
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         });
       }
@@ -112,7 +116,7 @@ export function AshbyModalComp() {
         'Sorry unable to import. Please try again later or contact support.',
       );
       posthog.capture('Error Importing Asbhy Jobs');
-      handleClose();
+      resetIntegrations();
     }
   };
 
@@ -130,7 +134,7 @@ export function AshbyModalComp() {
       });
 
       if (response.status === 200 && response.data?.results?.length > 0) {
-        setIntegration({
+        setIntegrations({
           ashby: { open: true, step: STATE_ASHBY_DIALOG.FETCHING },
         });
         const responseRec = await axios.post('/api/ashby/saveApiKey', {
@@ -144,7 +148,7 @@ export function AshbyModalComp() {
           setInitialFetch(false);
           posthog.capture('Asbhy Data Fetched');
           setTimeout(() => {
-            setIntegration({
+            setIntegrations({
               ashby: {
                 open: true,
                 step: STATE_ASHBY_DIALOG.LISTJOBS,
@@ -154,20 +158,20 @@ export function AshbyModalComp() {
         }
       } else {
         setLoading(false);
-        setIntegration({
+        setIntegrations({
           ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
         });
       }
     } catch (error) {
       setLoading(false);
-      setIntegration({
+      setIntegrations({
         ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
       });
     }
   };
 
   return (
-    <Dialog open={integration.ashby.open} onOpenChange={handleClose}>
+    <Dialog open={integration.ashby.open} onOpenChange={resetIntegrations}>
       <DialogContent className='sm:max-w-[425px]'>
         <div className='flex flex-col space-y-4'>
           <div className='flex justify-center'>

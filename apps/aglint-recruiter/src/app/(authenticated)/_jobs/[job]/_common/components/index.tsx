@@ -1,7 +1,7 @@
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 
-import { useApplicationsChecklist, useJob } from '@/job/hooks';
+import { useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
@@ -56,7 +56,7 @@ export const ApplicationsDashboard = () => {
 };
 
 const ApplicationsComponent = () => {
-  const checklist = useApplicationsChecklist();
+  const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
       <div className='min-h-screen'>

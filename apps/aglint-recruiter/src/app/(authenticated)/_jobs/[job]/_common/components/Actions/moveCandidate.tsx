@@ -11,9 +11,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   useApplications,
-  useApplicationsActionPopup,
   useApplicationsActions,
-  useApplicationsChecklist,
   useApplicationsStore,
 } from '@/job/hooks';
 import { formatSessions } from '@/utils/formatSessions';
@@ -24,8 +22,8 @@ import type { SessionType } from './CreateRequest/SessionsList';
 
 const MoveCandidate = () => {
   const { emailVisibilities } = useApplications();
-  const actionPopup = useApplicationsActionPopup();
-  const checklist = useApplicationsChecklist();
+  const actionPopup = useApplicationsStore((state) => state.actionPopup);
+  const checklist = useApplicationsStore((state) => state.checklist);
   const { setActionPopup, resetActionPopup } = useApplicationsActions();
   const enabled = checklist.length !== 0;
   return (
@@ -105,7 +103,7 @@ const MoveCandidateInterview = () => {
     handleMoveApplicationToInterview,
     sectionApplication: { data },
   } = useApplications();
-  const checklist = useApplicationsChecklist();
+  const checklist = useApplicationsStore((state) => state.checklist);
   const { resetActionPopup } = useApplicationsActions();
 
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
@@ -231,8 +229,8 @@ const MoveCandidateDisqualified = () => {
 };
 
 function useMeta(onSubmit: () => void, buttonText: string = null) {
-  const checklist = useApplicationsChecklist();
-  const actionPopup = useApplicationsActionPopup();
+  const checklist = useApplicationsStore((state) => state.checklist);
+  const actionPopup = useApplicationsStore((state) => state.actionPopup);
   const { resetActionPopup } = useApplicationsActions();
   const buttons = (
     <>

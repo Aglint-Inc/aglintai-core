@@ -10,6 +10,7 @@ import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 import type { nestedObjectToArray } from '@/components/Common/FilterHeader/utils';
+import type { CreateContextStore } from '@/hooks/createContextStoreSelector';
 
 type Checklist = DatabaseTable['applications']['id'][];
 
@@ -18,39 +19,17 @@ type Locations = ReturnType<typeof nestedObjectToArray>;
 type ActionPopup = DatabaseTable['applications']['status'];
 
 type States = {
-  initial: {
-    checklist: Checklist;
-    importPopup: boolean;
-    locations: Locations;
-    actionPopup: ActionPopup;
-  };
   checklist: Checklist;
   importPopup: boolean;
   locations: Locations;
   actionPopup: ActionPopup;
-  actions: {
-    // eslint-disable-next-line no-unused-vars
-    setActionPopup: (actionPopup: ActionPopup) => void;
-    // eslint-disable-next-line no-unused-vars
-    resetActionPopup: () => void;
-    // eslint-disable-next-line no-unused-vars
-    setChecklist: (checklist: Checklist) => void;
-    // eslint-disable-next-line no-unused-vars
-    resetChecklist: () => void;
-    // eslint-disable-next-line no-unused-vars
-    setImportPopup: (importPopup: boolean) => void;
-    // eslint-disable-next-line no-unused-vars
-    resetImportPopup: () => void;
-    // eslint-disable-next-line no-unused-vars
-    setLocations: (locations: Locations) => void;
-    // eslint-disable-next-line no-unused-vars
-    resetLocations: () => void;
-  };
 };
+
+type Store = CreateContextStore<States>;
 
 const useApplicationsStoreContext = () => {
   const [store] = useState(
-    createStore<States>((set) => ({
+    createStore<Store>((set) => ({
       initial: {
         actionPopup: null,
         checklist: [],

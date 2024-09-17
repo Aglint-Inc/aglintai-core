@@ -14,7 +14,11 @@ import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
-import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
+import {
+  useIntegrationActions,
+  useIntegrationStore,
+  useJobs,
+} from '@/jobs/hooks';
 import { type ApiLeverCreateJob } from '@/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
@@ -27,8 +31,8 @@ import { fetchAllJobs } from './utils';
 
 export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
-  const { setIntegration, handleClose } = useIntegrationActions();
-  const integration = useIntegrations();
+  const { setIntegrations, resetIntegrations } = useIntegrationActions();
+  const integration = useIntegrationStore((state) => state.integrations);
   const router = useRouter();
   const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
@@ -68,7 +72,7 @@ export default function LeverModalComp() {
 
   const importLever = async () => {
     try {
-      setIntegration({
+      setIntegrations({
         lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING },
       });
 
@@ -86,13 +90,13 @@ export default function LeverModalComp() {
       }
       await handleGenerateJd(response.public_job_id);
       await handleJobsRefresh();
-      setIntegration({
+      setIntegrations({
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
       });
       router.push(ROUTES['/jobs/[job]']({ job: response.public_job_id }));
     } catch (error) {
       toast.error(error.message);
-      handleClose();
+      resetIntegrations();
     }
   };
 
@@ -122,7 +126,7 @@ export default function LeverModalComp() {
         isInitial: true,
       });
       if (response.status === 200 && response.data.data) {
-        setIntegration({
+        setIntegrations({
           lever: { open: true, step: STATE_LEVER_DIALOG.FETCHING },
         });
         const responseRec = await axios.post('/api/lever/saveApiKey', {
@@ -135,20 +139,20 @@ export default function LeverModalComp() {
           setLeverPostings(response.data.data);
           setInitialFetch(false);
           setTimeout(() => {
-            setIntegration({
+            setIntegrations({
               lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
             });
           }, 1000);
         }
       } else {
         setLoading(false);
-        setIntegration({
+        setIntegrations({
           lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
         });
       }
     } catch (error) {
       setLoading(false);
-      setIntegration({
+      setIntegrations({
         lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
       });
     }
@@ -157,7 +161,7 @@ export default function LeverModalComp() {
   return (
     <UIDialog
       open={integration.lever.open}
-      onClose={handleClose}
+      onClose={resetIntegrations}
       slotButtons={<></>}
       title={
         <Image

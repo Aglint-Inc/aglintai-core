@@ -19,9 +19,7 @@ import Loader from '@/components/Common/Loader';
 import {
   useJob,
   useJobDashboardActions,
-  useJobDashboardFilters,
-  useJobDashboardPopup,
-  useJobDashboardSelections,
+  useJobDashboardStore,
 } from '@/job/hooks';
 import {
   useJobWorkflowConnect,
@@ -172,9 +170,9 @@ const JobWorkflows = () => {
 const WorkflowBrowser = () => {
   const { workflows, handleConnect } = useJobWorkflows();
   const { data, status } = useWorkflowQuery();
-  const { open } = useJobDashboardPopup();
-  const selections = useJobDashboardSelections();
-  const filters = useJobDashboardFilters();
+  const { open } = useJobDashboardStore((state) => state.popup);
+  const selections = useJobDashboardStore((state) => state.selections);
+  const filters = useJobDashboardStore((state) => state.filters);
   const { setSelections, resetFilters, resetPopup, resetSelections } =
     useJobDashboardActions();
 
@@ -288,7 +286,7 @@ const WorkflowBrowser = () => {
 };
 
 const Filters = () => {
-  const { search, ...filters } = useJobDashboardFilters();
+  const { search, ...filters } = useJobDashboardStore((state) => state.filters);
   const { setFilters } = useJobDashboardActions();
   const { jobOptions, tagOptions } = useWorkflowFilterOptions();
 
@@ -305,7 +303,6 @@ const Filters = () => {
         value: value,
         type: 'filter',
         iconname: '',
-        icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
         setValue: (newValue) =>
           setFilters({ [key]: structuredClone(newValue) }),
         options: options[key] ?? [],
@@ -327,22 +324,4 @@ const Filters = () => {
     [safeFilters, search],
   );
   return component;
-};
-
-// const FilterDropdown = ({ filter }) => {
-//   // Implement the dropdown for each filter
-//   // You can use the shadcn Dropdown component here
-// };
-
-type FilterIconProps = {
-  filter: keyof Omit<ReturnType<typeof useJobDashboardFilters>, 'search'>;
-};
-const FilterIcon = ({ filter }: FilterIconProps) => {
-  switch (filter) {
-    case 'job':
-      return <Briefcase className='h-4 w-4' />;
-    // Add more cases for other filter types
-    default:
-      return null;
-  }
 };

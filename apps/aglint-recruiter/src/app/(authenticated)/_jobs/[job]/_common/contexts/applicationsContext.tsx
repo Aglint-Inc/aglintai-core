@@ -8,7 +8,7 @@ import { useApplicationStore } from '@/context/ApplicationContext/store';
 import { CASCADE_VISIBILITIES, EMAIL_VISIBILITIES } from '@/job/constants';
 import { useApplicationsParams } from '@/job/hooks/useApplicationParams';
 import { useApplicationsActions } from '@/job/hooks/useApplicationsActions';
-import { useApplicationsChecklist } from '@/job/hooks/useApplicationsChecklist';
+import { useApplicationsStore } from '@/job/hooks/useApplicationsStore';
 import { useJob } from '@/job/hooks/useJob';
 import {
   applicationsQueries,
@@ -31,7 +31,7 @@ const useApplicationsContext = () => {
 
   const { resetChecklist } = useApplicationsActions();
 
-  const checklist = useApplicationsChecklist();
+  const checklist = useApplicationsStore((state) => state.checklist);
 
   const { filters, section, setFilters, setSection } = useApplicationsParams();
 

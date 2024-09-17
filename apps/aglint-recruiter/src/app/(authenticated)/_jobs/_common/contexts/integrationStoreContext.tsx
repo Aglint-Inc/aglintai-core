@@ -8,31 +8,30 @@
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
+import type { CreateContextStore } from '@/hooks/createContextStoreSelector';
 import { INITIAL_STATE } from '@/jobs/constants';
 
 type Integrations = typeof INITIAL_STATE;
 
-type Store = {
-  intialIntegrations: Integrations;
+type State = {
   integrations: Integrations;
-  actions: {
-    // eslint-disable-next-line no-unused-vars
-    setIntegration: (integrations: Partial<Integrations>) => void;
-    handleClose: () => void;
-  };
 };
+
+type Store = CreateContextStore<State>;
 
 const useIntegrationStoreContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
-      intialIntegrations: INITIAL_STATE,
-      integrations: INITIAL_STATE,
+      initial: {
+        integrations: INITIAL_STATE,
+      },
+      integrations: structuredClone(INITIAL_STATE),
       actions: {
-        setIntegration: (integrations) =>
+        setIntegrations: (integrations) =>
           set((state) => ({
             integrations: { ...state.integrations, ...integrations },
           })),
-        handleClose: () => set(() => ({ integrations: INITIAL_STATE })),
+        resetIntegrations: () => set(() => ({ integrations: INITIAL_STATE })),
       },
     })),
   );

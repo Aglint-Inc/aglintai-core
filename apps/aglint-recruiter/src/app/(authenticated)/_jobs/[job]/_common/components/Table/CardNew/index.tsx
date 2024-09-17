@@ -8,7 +8,7 @@ import { useKeyPress } from '@/hooks/useKeyPress';
 import {
   useApplications,
   useApplicationsActions,
-  useApplicationsChecklist,
+  useApplicationsStore,
 } from '@/job/hooks';
 import { type Application } from '@/types/applications.types';
 import ROUTES from '@/utils/routing/routes';
@@ -28,7 +28,7 @@ const ApplicationCard = memo(
       applicationMutations,
     } = useApplications();
 
-    const checklist = useApplicationsChecklist();
+    const checklist = useApplicationsStore((state) => state.checklist);
     const { setChecklist } = useApplicationsActions();
     const { isScoringEnabled } = useRolesAndPermissions();
     const { pressed: shift } = useKeyPress('Shift');

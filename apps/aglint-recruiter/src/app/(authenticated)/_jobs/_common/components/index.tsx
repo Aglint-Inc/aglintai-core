@@ -14,7 +14,11 @@ import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useIntegrations, useIntegrationStore, useJobs } from '@/jobs/hooks';
+import {
+  useIntegrationActions,
+  useIntegrationStore,
+  useJobs,
+} from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 
@@ -112,10 +116,8 @@ export default DashboardComp;
 
 export function AddJob() {
   const router = useRouter();
-  const useSetIntegrations = () =>
-    useIntegrationStore((state) => state.actions);
-  const integration = useIntegrations();
-  const { setIntegration } = useSetIntegrations();
+  const integration = useIntegrationStore((state) => state.integrations);
+  const { setIntegrations } = useIntegrationActions();
   const { data: integrations } = useAllIntegrations();
 
   return (
@@ -140,12 +142,12 @@ export function AddJob() {
           <DropdownMenuItem
             onSelect={() => {
               if (!integrations.lever_key) {
-                setIntegration({
+                setIntegrations({
                   ...integration,
                   lever: { open: true, step: STATE_LEVER_DIALOG.API },
                 });
               } else {
-                setIntegration({
+                setIntegrations({
                   ...integration,
                   lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
                 });
