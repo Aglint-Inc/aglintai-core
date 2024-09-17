@@ -164,7 +164,7 @@ function TrainingSettingDrawer(
                     renderUsers={dropDownMembers}
                     setSelectedUsers={setSelectedUsers}
                     selectedUsers={selectedUsers}
-                    pillColor='var(--neutral-3)'
+                    pillColor='neutral-200'
                     maxWidth='430px'
                     onUserSelect={() => setErrorApproval(false)}
                   />

@@ -645,7 +645,7 @@ const InterviewersField = ({
   return (
     <MembersAutoComplete
       maxWidth='468px'
-      pillColor='var(--neutral-3)'
+      pillColor='neutral-200'
       renderUsers={options}
       selectedUsers={value.map((m) => ({
         user_id: m.user_id,

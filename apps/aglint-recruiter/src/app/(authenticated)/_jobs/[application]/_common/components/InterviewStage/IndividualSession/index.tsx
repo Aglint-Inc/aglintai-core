@@ -16,7 +16,7 @@ import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { GlobalScheduleCard } from '../../ui/GlobalScheduleCard';
-import RequestStatusUnconfirmed from '../ScheduleIndividual/RequestStatusUnconfirmed';
+import RequestStatusUnconfirmed from '../RequestStatusUnconfirmed';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';

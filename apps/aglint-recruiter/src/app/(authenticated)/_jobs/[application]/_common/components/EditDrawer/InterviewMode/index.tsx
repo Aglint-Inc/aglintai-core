@@ -138,7 +138,7 @@ function InterviewModeComp() {
               renderUsers={optionsInterviewers}
               selectedUsers={selectedInterviewers}
               setSelectedUsers={setSelectedInterviewers}
-              pillColor='var(--neutral-3)'
+              pillColor='neutral-200'
               error={
                 errorValidation.find(
                   (err) => err.field === 'qualified_interviewers',
@@ -175,7 +175,7 @@ function InterviewModeComp() {
           renderUsers={optionTrainees}
           selectedUsers={trainingInterviewers}
           setSelectedUsers={setTrainingInterviewers}
-          pillColor='var(--neutral-3)'
+          pillColor='neutral-200'
           error={
             errorValidation.find((err) => err.field === 'training_interviewers')
               .error
