@@ -10,14 +10,14 @@ import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
-import { MeetingStatusBadge } from '../../../../app/_common/components/MeetingStatusBadge';
-import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
-import IconSessionType from '../../../Common/Icons/IconSessionType';
-import { formatTimeWithTimeZone } from '../../utils';
-import { useScheduleDetails } from '../hooks';
+import IconSessionType from '../../../../../../../components/Common/Icons/IconSessionType';
+import { formatTimeWithTimeZone } from '../../../../../../../components/Scheduling/utils';
+import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
+import { MeetingStatusBadge } from '../../../../../../_common/components/MeetingStatusBadge';
+import { useScheduleDetails } from '../../hooks/useScheduleDetails';
+import { NewScheduleDetail } from '../ui/NewScheduleDetails';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
-import { NewScheduleDetail } from './NewScheduleDetails';
 
 function Overview() {
   const { checkPermissions } = useRolesAndPermissions();
@@ -195,7 +195,7 @@ function Overview() {
         slotPanelIcon={
           <IconSessionType
             type={schedule.interview_session.session_type}
-            size={4}
+            size={16}
           />
         }
       />
