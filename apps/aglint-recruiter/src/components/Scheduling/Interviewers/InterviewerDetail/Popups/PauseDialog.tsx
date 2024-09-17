@@ -1,11 +1,9 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Calendar } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDialog from '@/components/Common/UIDialog';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
@@ -254,46 +252,40 @@ function PauseDialog() {
               </div>
               {selectedType === 'custom' && (
                 <div className='flex w-full flex-row space-x-1'>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={dayjs(pause_json?.start_date)}
-                      onChange={(newValue) => {
-                        if (
-                          dayjs(newValue).toISOString() < pause_json?.end_date
-                        ) {
-                          setPauseJson({
-                            ...pause_json,
-                            start_date: dayjs(newValue).toISOString(),
-                          });
-                        } else {
-                          setPauseJson({
-                            ...pause_json,
-                            start_date: dayjs(newValue).toISOString(),
-                            end_date: null,
-                          });
-                        }
-                      }}
-                      minDate={currentDate}
-                      slots={{
-                        openPickerIcon: () => <Calendar size={20} />,
-                      }}
-                    />
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={dayjs(pause_json?.end_date)}
-                      minDate={dayjs(pause_json?.start_date)}
-                      onChange={(newValue) => {
-                        setPauseJson({
-                          ...pause_json,
-                          end_date: newValue.toISOString(),
-                        });
-                      }}
-                      slots={{
-                        openPickerIcon: () => <Calendar size={20} />,
-                      }}
-                    />
-                  </LocalizationProvider>
+                  <UIDatePicker
+                  value={new Date(pause_json?.start_date)}
+                  onAccept={(newValue) => {
+                    if (
+                      dayjs(newValue).toISOString() < pause_json?.end_date
+                    ) {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                      });
+                    } else {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                        end_date: null,
+                      });
+                    }
+                  }}
+                  minDate={new Date(currentDate.toISOString())}
+
+                  />
+                  <UIDatePicker
+                  value={new Date(pause_json?.end_date)}
+                  onAccept={(newValue) => {
+                    if (dayjs(newValue).toISOString() > pause_json?.start_date) {
+                      setPauseJson({
+                        ...pause_json,
+                        end_date: dayjs(newValue).toISOString(),
+                      });
+                    }
+                  }}
+                  minDate={new Date(pause_json?.start_date)}
+                  />
+                 
                 </div>
               )}
             </div>

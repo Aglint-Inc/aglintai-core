@@ -133,7 +133,7 @@ export default function ViewRequestDetails() {
                   <User className='h-4 w-4' />
                   <Link
                     href={
-                      ROUTES['/jobs/[job]/application/[application_id]']({
+                      ROUTES['/jobs/[job]/[application]']({
                         job: jobDetails?.id,
                         application_id: selectedRequest?.application_id,
                       }) + '?tab=scoring'
