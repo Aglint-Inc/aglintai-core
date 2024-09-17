@@ -1,12 +1,13 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonFilter } from '@devlink2/ButtonFilter';
-import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
 import { ChevronDown, Info } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { ButtonFilter } from '@/components/Scheduling/Schedules/Filters/FilterChip/ButtonFilter';
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
+
+import { FilterDropdown } from './FilterDroopDown';
 type ItemType = string;
 
 function FilterDropDown({

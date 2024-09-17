@@ -6,14 +6,14 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { ButtonFilter } from '@devlink2/ButtonFilter';
-import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { capitalize, debounce } from 'lodash';
 import { ChevronDown, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import SearchField from '@/components/Common/SearchField/SearchField';
+import { FilterDropdown } from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown/FilterDroopDown';
+import { ButtonFilter } from '@/components/Scheduling/Schedules/Filters/FilterChip/ButtonFilter';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { getFullName } from '@/utils/jsonResume';
 import { supabase } from '@/utils/supabase/client';

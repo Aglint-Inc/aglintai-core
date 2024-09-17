@@ -1,6 +1,4 @@
 import { Checkbox } from '@components/ui/checkbox';
-import { ButtonFilter } from '@devlink2/ButtonFilter';
-import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { Popover, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -8,9 +6,11 @@ import React from 'react';
 import DateRange from '@/components/Common/DateRange';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
+import { FilterDropdown } from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown/FilterDroopDown';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type FilterOptionsType } from '../../types';
+import { ButtonFilter } from './ButtonFilter';
 
 function FilterChip({
   filterType,

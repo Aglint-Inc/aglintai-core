@@ -5,11 +5,11 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { ButtonFilter } from '@devlink2/ButtonFilter';
-import { FilterDropdown } from '@devlink2/FilterDropdown';
 import { ChevronDown } from 'lucide-react';
 import React from 'react';
 
+import { FilterDropdown } from '@/components/CompanyDetailComp/TeamManagement/FilterDropDown/FilterDroopDown';
+import { ButtonFilter } from '@/components/Scheduling/Schedules/Filters/FilterChip/ButtonFilter';
 import { useAllDepartments } from '@/queries/departments';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
