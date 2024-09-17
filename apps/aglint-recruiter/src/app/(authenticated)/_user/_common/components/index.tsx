@@ -6,15 +6,15 @@ import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { BreadCrumb, SideBar, Top } from './components/Components';
-import { Feedback } from './components/FeedbackCard';
-import { Header } from './components/Header';
-import { KeyMatrics } from './components/KeyMatrix';
-import { Qualifications } from './components/Qualification';
-import { RecentInterviews } from './components/RecentInterviewCard';
-import { UpcomingInterview } from './components/UpcomingInterviews';
+import { useInterviewer } from '../hooks/useInterviewer';
+import { BreadCrumb, SideBar, Top } from './Components';
 import { EditUserDialog } from './Dialogs/EditUser';
-import { useInterviewer } from './hook';
+import { Feedback } from './FeedbackCard';
+import { Header } from './Header';
+import { KeyMatrics } from './KeyMatrix';
+import { Qualifications } from './Qualification';
+import { RecentInterviews } from './RecentInterviewCard';
+import { UpcomingInterview } from './UpcomingInterviews';
 
 export default function InterviewerDetailsPage() {
   //scrolling-------------------

@@ -6,7 +6,7 @@ import EditMember from '@/components/CompanyDetailComp/TeamManagement/EditMember
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 
-import { useInterviewer } from '../hook';
+import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditProfileDialog } from './EditProfileDialog';
 
 export const EditUserDialog = ({ isOpen, setIsOpen }) => {

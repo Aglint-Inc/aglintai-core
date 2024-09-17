@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { type InterviewerDetailType } from '../hook';
+import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 
 export const UpcomingInterview = ({
   interviews,
