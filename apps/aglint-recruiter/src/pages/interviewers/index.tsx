@@ -1,5 +1,6 @@
+import Page from 'src/app/(authenticated)/_Interviewers/page';
+
 import Seo from '@/components/Common/Seo';
-import Interviewers from '@/components/Interviewers';
 
 function InterviewersPage() {
   return (
@@ -9,7 +10,7 @@ function InterviewersPage() {
         description='AI for People Products'
       />
 
-      <Interviewers />
+      <Page />
     </>
   );
 }

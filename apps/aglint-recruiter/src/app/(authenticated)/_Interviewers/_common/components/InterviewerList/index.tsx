@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 
 import UITypography from '@/components/Common/UITypography';
 
-import { type useAllInterviewers } from '../_hook';
+import { type useAllInterviewers } from '../../hooks/useAllInterviewers';
 
 export const InterviewerList = ({
   interviewer,
