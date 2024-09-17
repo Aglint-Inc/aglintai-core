@@ -3,22 +3,22 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function Requests({ session_id }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
     <div className='space-y-2'>
-      <p className='font-semibold text-muted-foreground'>Request History</p>
+      <p className='font-medium'>Request History</p>
       {isLoading ? (
         <Loader />
       ) : (
@@ -34,7 +34,7 @@ function Requests({ session_id }) {
               <>
                 <Card
                   key={request.id}
-                  className='cursor-pointer hover:bg-gray-50'
+                  className='cursor-pointer space-y-4 p-4 hover:bg-gray-50'
                   onClick={() => {
                     router.push(
                       ROUTES['/requests/[id]']({
@@ -43,10 +43,10 @@ function Requests({ session_id }) {
                     );
                   }}
                 >
-                  <CardHeader>
-                    <CardTitle>{request.title}</CardTitle>
+                  <CardHeader className='p-0'>
+                    <CardTitle className='text-sm'>{request.title}</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className='p-0'>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center space-x-2'>
                         <Avatar className='h-5 w-5 rounded'>
@@ -64,7 +64,7 @@ function Requests({ session_id }) {
                             ).charAt(0)}
                           </AvatarFallback>
                         </Avatar>
-                        <span className='text-sm font-medium'>
+                        <span className='text-xs font-medium'>
                           {getFullName(
                             request.assignee_details.first_name,
                             request.assignee_details.last_name,

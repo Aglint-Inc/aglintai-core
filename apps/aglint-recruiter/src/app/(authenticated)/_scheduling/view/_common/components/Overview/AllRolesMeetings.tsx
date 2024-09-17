@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { getFullName } from '@/utils/jsonResume';
 
-import { useScheduleDetails } from '../hooks';
+import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 
 function AllRolesMeetings() {
   const { data } = useScheduleDetails();

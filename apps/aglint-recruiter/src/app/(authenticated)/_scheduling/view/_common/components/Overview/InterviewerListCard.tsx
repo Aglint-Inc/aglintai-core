@@ -1,5 +1,7 @@
-import InterviewerUserDetail from '../../Common/InterviewerUserDetail';
-import { type ScheduleDetailsType } from '../hooks';
+import { type DatabaseTable } from '@aglint/shared-types';
+
+import InterviewerUserDetail from '../../../../../../../components/Scheduling/Common/InterviewerUserDetail';
+import { type ScheduleDetailsType } from '../../hooks/useScheduleDetails';
 
 function InterviewerListCard({
   schedule,
@@ -24,7 +26,7 @@ function InterviewerListCard({
         status: schedule.interview_meeting.status,
       }}
       accepted_status={item.interview_session_relation.accepted_status}
-      cancelReason={cancelReason}
+      cancelReason={cancelReason as DatabaseTable['interview_session_cancel']}
       userDetails={{
         first_name: item.user_details.first_name,
         last_name: item.user_details.last_name,

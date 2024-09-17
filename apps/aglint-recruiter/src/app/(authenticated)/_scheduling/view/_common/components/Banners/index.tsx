@@ -1,25 +1,17 @@
-import { type DatabaseTable } from '@aglint/shared-types';
-import React from 'react';
-
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 
-import { useScheduleDetails } from '../hooks';
-import { onClickAccept } from '../utils';
+import { useScheduleDetails } from '../../hooks/useScheduleDetails';
+import { setIsDeclineDialogOpen, useScheduleDetailsStore } from '../../stores';
+import { onClickAccept } from '../../utils';
+import DeclineScheduleDialog from '../DeclineScheduleDialog';
 
-interface CancelReasonCardsProps {
-  refetch: () => void;
-  sessionRelation: DatabaseTable['interview_session_relation'];
-  setIsDeclineOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Banners({
-  refetch,
-  sessionRelation,
-  setIsDeclineOpen,
-}: CancelReasonCardsProps) {
-  const { data } = useScheduleDetails();
+function Banners() {
+  const { sessionUser } = useScheduleDetailsStore();
+  const { data, refetch } = useScheduleDetails();
   const schedule = data?.schedule_data;
+
+  const sessionRelation = sessionUser?.interview_session_relation;
 
   const isAcceptVisible =
     sessionRelation?.accepted_status === 'waiting' &&
@@ -36,6 +28,7 @@ function Banners({
 
   return (
     <div className='flex flex-col gap-4'>
+      <DeclineScheduleDialog />
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
         <UIAlert
           type='inline'
@@ -49,7 +42,7 @@ function Banners({
                   variant='outline'
                   size='sm'
                   onClick={() => {
-                    setIsDeclineOpen(true);
+                    setIsDeclineDialogOpen(true);
                   }}
                 >
                   Decline
