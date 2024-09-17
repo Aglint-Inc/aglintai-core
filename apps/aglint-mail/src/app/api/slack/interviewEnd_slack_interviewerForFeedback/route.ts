@@ -189,6 +189,7 @@ const func = async (
       },
     ],
   });
+  return { success: true };
 };
 
 export const POST = createPostRoute(

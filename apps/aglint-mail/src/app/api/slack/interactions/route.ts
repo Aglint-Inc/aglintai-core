@@ -4,8 +4,13 @@ import { getSlackWeb } from '../../../../slack/slackWeb';
 import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
 import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
 
-const handleInteraction = async (payload: any) => {
-  const interaction_data = JSON.parse(payload);
+const handleInteraction = async (formData: any) => {
+  const object: any = {};
+  formData.forEach((value, key) => {
+    object[key] = value;
+  });
+
+  const interaction_data = JSON.parse(object.payload);
   const action = interaction_data.actions[0];
   const metadata = interaction_data.message.metadata;
 
@@ -55,6 +60,7 @@ const handleInteraction = async (payload: any) => {
         await meeting_status_organizer_decline(interaction_data);
       break;
   }
+  return 'ok';
 };
 
 const meeting_status_organizer_accept = async (interaction_data: any) => {
@@ -657,4 +663,4 @@ const qualified_approver_confirmation_decline = async (
   }
 };
 
-export const POST = createPostRoute(null, handleInteraction);
+export const POST = createPostRoute(null, handleInteraction, true);
