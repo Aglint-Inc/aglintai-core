@@ -1,6 +1,6 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { Avatar } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -84,11 +84,15 @@ const TrainingProgressComponent = () => {
           <Link href={`/user/profile/${user_id}`}>
             <div className='flex items-center space-x-4 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-50'>
               <div className='flex-shrink-0'>
-                <Avatar
-                  src={profile_image}
-                  alt={capitalizeAll(getFullName(first_name, last_name))}
-                  className='h-10 w-10'
-                />
+                <Avatar className='h-10 w-10'>
+                  <AvatarImage
+                    src={profile_image}
+                    alt={capitalizeAll(getFullName(first_name, last_name))}
+                  />
+                  <AvatarFallback>
+                    {getInitials(first_name, last_name)}
+                  </AvatarFallback>
+                </Avatar>
               </div>
               <div className='flex-grow'>
                 <Link
