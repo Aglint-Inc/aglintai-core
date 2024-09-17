@@ -219,6 +219,7 @@ function SchedulingSettings({ updateSettings }) {
       {dailyLmit.type && weeklyLmit.type && (
         <Card>
           <CardHeader>
+
             <CardTitle className='text-lg font-semibold'>
               Interview Load
             </CardTitle>
@@ -257,6 +258,7 @@ function SchedulingSettings({ updateSettings }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          
           <DebriefDefaults
             value={debriefDefaults}
             setValue={setDebriefDefaults}

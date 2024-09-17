@@ -1,20 +1,25 @@
 /* eslint-disable security/detect-object-injection */
 import { type schedulingSettingType } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
-import { Attendee } from '@devlink2/Attendee';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
+import UITypography from '@/components/Common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 type MembersMeta = schedulingSettingType['debrief_defaults'];
 
 type DebriefDefaultsProps = {
   value: MembersMeta;
+
   setValue: Dispatch<SetStateAction<MembersMeta>>;
 };
 
 const DebriefDefaults = ({ value, setValue }: DebriefDefaultsProps) => {
-  return <Toggles setValue={setValue} value={value} />;
+  return (
+    <>
+      <Toggles setValue={setValue} value={value} />
+    </>
+  );
 };
 
 const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
@@ -27,10 +32,8 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
   } = Object.entries(value).reduce(
     (acc, [key, value]) => {
       acc[key] = (
-        <Attendee
-          key={key}
-          textRole={capitalizeAll(key)}
-          slotToggle={
+        <>
+          <div className='flex items-center gap-3'>
             <Switch
               checked={value}
               onCheckedChange={() =>
@@ -40,9 +43,9 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
                 }))
               }
             />
-          }
-          slotSelectedMemberPill={<></>}
-        />
+            <UITypography>{capitalizeAll(key)}</UITypography>
+          </div>
+        </>
       );
       return acc;
     },
