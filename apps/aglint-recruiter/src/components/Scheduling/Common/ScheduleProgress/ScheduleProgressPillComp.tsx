@@ -1,18 +1,4 @@
 import { type DB } from '@aglint/shared-types';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@components/ui/tooltip';
-import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/ScheduleProgressPill';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import {
@@ -23,12 +9,8 @@ import {
   Hourglass,
   XCircle,
 } from 'lucide-react';
-import { forwardRef, memo, type Ref } from 'react';
+import { memo } from 'react';
 
-import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/utils/getBreakLabel';
-
-import { getScheduleType } from '../../../../utils/scheduling/colors_and_enums';
 import { StatusBadge } from './StatusBadge';
 
 type Enums = DB['public']['Enums'];
@@ -45,68 +27,6 @@ export type ScheduleProgressPillProps = {
     end_time: string;
   };
 };
-
-const ScheduleProgressPill = memo(
-  forwardRef(
-    (
-      { date = null, position = 'middle', ...props }: ScheduleProgressPillProps,
-      ref: Ref<HTMLDivElement>,
-    ) => {
-      const isStarting = position !== 'ending' && position !== 'lone';
-      const isEnding = position !== 'starting' && position !== 'lone';
-      const isScheduleDate =
-        (props.status === 'completed' || props.status === 'confirmed') &&
-        !!date;
-      const scheduleDate = getScheduleDate(date);
-      const backgroundColor = statusToColor(props.status);
-      const scheduleType = getScheduleType(props.schedule_type);
-      const duration = getBreakLabel(props.session_duration);
-      return (
-        <Stack ref={ref}>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Stack>
-                  <ScheduleProgressPillDev
-                    isEnding={isEnding}
-                    isStarting={isStarting}
-                    styleBgColor={{ style: { backgroundColor } }}
-                    slotProgressIcon={<ProgressIcon status={props.status} />}
-                  />
-                </Stack>
-              </TooltipTrigger>
-              <TooltipContent>
-                <Stack>
-                  <Card className='w-[350px]'>
-                    <CardHeader>
-                      <CardTitle>{props.session_name}</CardTitle>
-                      <CardDescription>{duration}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className='space-y-2'>
-                        {isScheduleDate && (
-                          <p className='text-sm'>{scheduleDate}</p>
-                        )}
-                        <div className='flex items-center space-x-2'>
-                          <SessionIcon session_type={props.session_type} />
-                          <IconScheduleType type={props.schedule_type} />
-                          <span>{scheduleType}</span>
-                        </div>
-                        <ScheduleStatus status={props.status} />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Stack>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </Stack>
-      );
-    },
-  ),
-);
-ScheduleProgressPill.displayName = 'ScheduleProgressPill';
-export default ScheduleProgressPill;
 
 const ScheduleStatus = memo(
   ({ status }: Pick<ScheduleProgressPillProps, 'status'>) => {
