@@ -35,5 +35,10 @@ export const getCompanyMembers = async ({
 
 export type CompanyMember = Omit<
   CompanyMembersAPI[number],
-  'role' | 'office_locations' | 'departments'
+  | 'role'
+  | 'office_locations'
+  | 'departments'
+  | 'role_id'
+  | 'manager_id'
+  | 'created_by'
 >;

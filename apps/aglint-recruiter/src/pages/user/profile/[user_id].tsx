@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Seo from '@/components/Common/Seo';
-// import Interviewer from '@/components/Scheduling/Interviewers/InterviewerDetail';
 import InterviewerDetailsPage from '@/components/UserDetail';
 import { InterviewerContextProvider } from '@/context/InterviewerContext/InterviewerContext';
 

@@ -48,7 +48,7 @@ export const fetchUsers = async (
   const query = supabase
     .from('recruiter_relation')
     .select(
-      `recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}, office_locations(*), departments(id,name)), roles(name)`,
+      `manager_id, created_by, recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}, office_locations(*), departments(id,name)), roles(id,name)`,
     )
     .eq('recruiter_id', recruiter_id)
     .eq('is_active', true);
@@ -70,6 +70,9 @@ export const fetchUsers = async (
       .map((item) => ({
         ...item.recruiter_user,
         role: item.roles.name,
+        role_id: item.roles.id,
+        manager_id: item.manager_id,
+        created_by: item.created_by,
       }));
 
     return resAlter;
