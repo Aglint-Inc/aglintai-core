@@ -32,14 +32,14 @@ function ScheduleProgressTracker({
           <>
             <div
               className={cn(
-                'w-4 h-4 rounded-full border-2',
+                'h-4 w-4 rounded-full border-2',
                 status === 'completed'
                   ? 'border-green-500 bg-green-500'
                   : 'border-gray-300',
               )}
             >
               {status === 'completed' && (
-                <Check className='w-4 h-4 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' />
+                <Check className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-white' />
               )}
             </div>
           </>

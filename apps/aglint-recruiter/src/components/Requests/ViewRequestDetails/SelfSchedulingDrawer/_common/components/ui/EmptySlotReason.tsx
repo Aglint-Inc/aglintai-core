@@ -12,10 +12,10 @@ export function EmptySlotReason({
   return (
     <div
       className={
-        'flex overflow-hidden p-3 justify-start items-center gap-3 border border-neutral-300 rounded-lg'
+        'flex items-center justify-start gap-3 overflow-hidden rounded-lg border border-neutral-300 p-3'
       }
     >
-      <TreePine className='text-sky-800 w-4 h-4' />
+      <TreePine className='h-4 w-4 text-sky-800' />
       <UITypography type='small' className={'text-sky-800'}>
         {textMain}
       </UITypography>

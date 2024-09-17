@@ -106,18 +106,18 @@ function SchedulingViewComp() {
       <UIPageLayout
         slotTopbarLeft={
           isLoading ? (
-            <div className='w-[150px] h-[20px]'>
-              <Skeleton className='w-full h-full' />
+            <div className='h-[20px] w-[150px]'>
+              <Skeleton className='h-full w-full' />
             </div>
           ) : (
             <>{breadcrum}</>
           )
         }
         slotBody={
-          <div className="h-[calc(100vh-48px)] overflow-hidden">
+          <div className='h-[calc(100vh-48px)] overflow-hidden'>
             {!isLoading ? (
-              <div className="flex justify-between">
-                <div className="h-screen overflow-auto w-full">
+              <div className='flex justify-between'>
+                <div className='h-screen w-full overflow-auto'>
                   {data?.schedule_data ? (
                     <DetailsOverview
                       data={data}
@@ -127,7 +127,7 @@ function SchedulingViewComp() {
                       viewScheduleTabs={viewScheduleTabs}
                     />
                   ) : (
-                    <div className="p-2">
+                    <div className='p-2'>
                       <UIAlert
                         title={'Meeting Not Found'}
                         iconName={'Calendar'}
@@ -137,11 +137,9 @@ function SchedulingViewComp() {
                 </div>
 
                 {checkPermissions(['scheduling_actions']) && (
-                  <div
-                    className="h-[calc(100vh-48px)] min-w-[400px] overflow-auto p-[var(--space-4)] border-l border-[var(--neutral-6)]"
-                  >
-                    <div className="mb-2 flex flex-col space-y-1">
-                      <p className="font-medium">Job</p>
+                  <div className='h-[calc(100vh-48px)] min-w-[400px] overflow-auto border-l border-[var(--neutral-6)] p-[var(--space-4)]'>
+                    <div className='mb-2 flex flex-col space-y-1'>
+                      <p className='font-medium'>Job</p>
                       <WorkflowConnectedCard
                         isLinkOffVisible={false}
                         textRoleCategory={

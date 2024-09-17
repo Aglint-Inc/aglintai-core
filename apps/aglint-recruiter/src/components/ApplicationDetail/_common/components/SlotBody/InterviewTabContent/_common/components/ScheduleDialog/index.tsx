@@ -226,7 +226,7 @@ function DialogSchedule() {
               />
             }
             slotAssignedInput={
-              <div className='flex items-center justify-between pr-2 '>
+              <div className='flex items-center justify-between pr-2'>
                 {selectedInterviewer && (
                   <MemberCard selectedMember={selectedInterviewer} />
                 )}
@@ -235,7 +235,7 @@ function DialogSchedule() {
                     setSelectedInterviewer(member);
                   }}
                   updateButton={
-                    <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                    <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                   }
                   members={members}
                 />

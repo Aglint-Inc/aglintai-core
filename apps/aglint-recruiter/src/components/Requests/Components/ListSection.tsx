@@ -51,7 +51,7 @@ function ListSection({
       <AccordionItem
         value={sectionName}
         className={cn(
-          'border rounded-lg px-4 bg-white',
+          'rounded-lg border bg-white px-4',
           isExpanded && 'bg-gray-100',
         )}
       >
@@ -62,7 +62,7 @@ function ListSection({
           )}
           disabled={requests.length === 0}
         >
-          <div className='flex items-center justify-between w-full mr-2'>
+          <div className='mr-2 flex w-full items-center justify-between'>
             <div className='flex items-center'>
               {capitalizeFirstLetter(sectionName)}
               <Badge variant='outline' className='ml-2'>
@@ -112,12 +112,12 @@ function ListSection({
                     >
                       {isExpanded ? (
                         <>
-                          <ChevronUp className='h-4 w-4 mr-2' />
+                          <ChevronUp className='mr-2 h-4 w-4' />
                           Show Less
                         </>
                       ) : (
                         <>
-                          <ChevronDown className='h-4 w-4 mr-2' />
+                          <ChevronDown className='mr-2 h-4 w-4' />
                           Show More ({requests.length - 5} more)
                         </>
                       )}
@@ -127,7 +127,7 @@ function ListSection({
               )}
             </div>
           ) : (
-            <div className='text-center text-muted-foreground p-4 border rounded-md'>
+            <div className='rounded-md border p-4 text-center text-muted-foreground'>
               No requests in this section
             </div>
           )}

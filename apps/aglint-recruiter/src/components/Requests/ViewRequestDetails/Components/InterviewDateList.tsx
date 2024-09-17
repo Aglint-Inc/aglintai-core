@@ -59,7 +59,7 @@ function InterviewDateList({
                 to: dayjs(selectedFilter.endDate),
               }}
             />
-            <div className='flex justify-end items-center space-x-2'>
+            <div className='flex items-center justify-end space-x-2'>
               <UIButton
                 size='sm'
                 variant='secondary'

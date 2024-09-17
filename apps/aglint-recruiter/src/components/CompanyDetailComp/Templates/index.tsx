@@ -238,10 +238,10 @@ function SchedulerEmailTemps({ setSaving }) {
     }, []);
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className='py-4'>
         {isEditorLoad ? (
-          <div className='flex items-center justify-center h-[calc(100vh-48px)]'>
+          <div className='flex h-[calc(100vh-48px)] items-center justify-center'>
             <div className='space-y-2'>
               <Skeleton className='h-4 w-[250px]' />
               <Skeleton className='h-4 w-[200px]' />
@@ -344,7 +344,7 @@ function SchedulerEmailTemps({ setSaving }) {
                               ? 'default'
                               : 'outline'
                           }
-                          className='h-16 w-full my-1 justify-start text-left'
+                          className='my-1 h-16 w-full justify-start text-left'
                           onClick={() => {
                             if (temp_email !== emailPath.type) {
                               setTipTapLoder(true);
@@ -361,7 +361,7 @@ function SchedulerEmailTemps({ setSaving }) {
                               {emailTemplateCopy[emailPath.type]?.heading}
                             </div>
                             <div
-                              className={`text-sm line-clamp-2 ${emailPath.type === temp_email ? 'text-primary-600' : 'text-neutral-500'}`}
+                              className={`line-clamp-2 text-sm ${emailPath.type === temp_email ? 'text-primary-600' : 'text-neutral-500'}`}
                             >
                               {emailTemplateCopy[emailPath.type].description}
                             </div>
@@ -374,7 +374,7 @@ function SchedulerEmailTemps({ setSaving }) {
                 {/* Email Template Details */}
                 <div className='w-2/3'>
                   {isEditorLoad ? (
-                    <div className='flex items-center justify-center h-[calc(100vh-200px)] bg-neutral-100'>
+                    <div className='flex h-[calc(100vh-200px)] items-center justify-center bg-neutral-100'>
                       <div className='space-y-2'>
                         <Skeleton className='h-4 w-[250px]' />
                         <Skeleton className='h-4 w-[200px]' />
@@ -383,7 +383,7 @@ function SchedulerEmailTemps({ setSaving }) {
                     </div>
                   ) : (
                     <div className='space-y-4'>
-                      <div className='flex justify-between items-center'>
+                      <div className='flex items-center justify-between'>
                         <h2 className='text-md font-bold'>
                           {emailTemplateCopy[temp_email].heading}
                         </h2>
@@ -401,7 +401,7 @@ function SchedulerEmailTemps({ setSaving }) {
                         {emailTemplateCopy[temp_email].description}
                       </p>
                       {tiptapLoader ? (
-                        <div className='flex items-center justify-center h-[calc(100vh-300px)]'>
+                        <div className='flex h-[calc(100vh-300px)] items-center justify-center'>
                           <div className='space-y-2'>
                             <Skeleton className='h-4 w-[250px]' />
                             <Skeleton className='h-4 w-[200px]' />

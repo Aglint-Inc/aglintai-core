@@ -86,7 +86,7 @@ export default function LoginForm() {
   return (
     <Card className='w-[400px] border-border'>
       <CardHeader>
-        <h2 className='text-2xl font-bold text-center'>Login</h2>
+        <h2 className='text-center text-2xl font-bold'>Login</h2>
       </CardHeader>
       <CardContent>
         {resetRequested && (
@@ -157,13 +157,13 @@ export default function LoginForm() {
             Sign in with Google
           </Button>
         )}
-        <div className='text-sm text-center'>
+        <div className='text-center text-sm'>
           <a href='/forgot-password' className='text-blue-500 hover:underline'>
             Forgot password?
           </a>
         </div>
         {process.env.NODE_ENV === 'development' && (
-          <div className='text-sm text-center'>
+          <div className='text-center text-sm'>
             Don&apos;t have an account?{' '}
             <a href='/signup' className='text-blue-500 hover:underline'>
               Sign up

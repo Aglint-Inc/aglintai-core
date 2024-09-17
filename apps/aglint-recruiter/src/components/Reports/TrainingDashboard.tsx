@@ -103,12 +103,12 @@ export default function Component() {
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
-    <div className='container mx-auto p-4 space-y-4'>
+    <div className='container mx-auto space-y-4 p-4'>
       <Card className='border-none shadow-none'>
-        <CardContent className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+        <CardContent className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           <Card className='border-none shadow-none'>
             <CardHeader>
-              <CardTitle className='text-md font-semibold text-center'>
+              <CardTitle className='text-md text-center font-semibold'>
                 Number of Interviewers by Status
               </CardTitle>
             </CardHeader>
@@ -126,7 +126,7 @@ export default function Component() {
           </Card>
           <Card className='border-none shadow-none'>
             <CardHeader>
-              <CardTitle className='text-md font-semibold text-center'>
+              <CardTitle className='text-md text-center font-semibold'>
                 Completion Rate
               </CardTitle>
             </CardHeader>
@@ -150,7 +150,7 @@ export default function Component() {
           </Card>
           <Card className='border-none shadow-none'>
             <CardHeader>
-              <CardTitle className='text-md font-semibold text-center'>
+              <CardTitle className='text-md text-center font-semibold'>
                 Average Time to Graduation
               </CardTitle>
             </CardHeader>

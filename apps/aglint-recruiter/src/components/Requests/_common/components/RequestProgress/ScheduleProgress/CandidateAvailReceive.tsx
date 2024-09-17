@@ -275,7 +275,7 @@ const WActionMenu = () => {
           <ShowCode.When isTrue={wActionAfterAvailRecive.length === 0}>
             <Alert
               variant='default'
-              className='bg-purple-100 border-purple-200 mb-4'
+              className='mb-4 border-purple-200 bg-purple-100'
             >
               <Lightbulb className='h-4 w-4 text-purple-500' />
               <AlertDescription className='flex flex-col items-end'>
@@ -324,7 +324,7 @@ const WActionMenu = () => {
                     <div>
                       <Alert
                         variant='default'
-                        className='bg-purple-100 border-purple-200 mb-4'
+                        className='mb-4 border-purple-200 bg-purple-100'
                       >
                         <Lightbulb className='h-4 w-4 text-purple-500' />
                         <AlertDescription className='flex flex-col items-start'>

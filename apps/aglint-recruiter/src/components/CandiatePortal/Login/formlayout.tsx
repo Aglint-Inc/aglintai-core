@@ -9,9 +9,9 @@ import { type PropsWithChildren } from 'react';
 
 export const FormLayout = ({ children }: PropsWithChildren) => {
   return (
-    <div className='w-full min-h-screen bg-gray-100 flex items-center justify-center p-4'>
-      <div className='w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden'>
-        <div className='relative h-40 w-full bg-cyan-50 flex items-center justify-center'>
+    <div className='flex min-h-screen w-full items-center justify-center bg-gray-100 p-4'>
+      <div className='w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg'>
+        <div className='relative flex h-40 w-full items-center justify-center bg-cyan-50'>
           <Image
             src='https://aglintai-seed-data.vercel.app/logo/discord.jpg'
             alt='Company Logo'
@@ -21,10 +21,10 @@ export const FormLayout = ({ children }: PropsWithChildren) => {
           />
         </div>
         <div className='p-8'>
-          <h1 className='text-2xl font-bold text-center mb-2'>
+          <h1 className='mb-2 text-center text-2xl font-bold'>
             Check your email for a code
           </h1>
-          <p className='text-gray-600 text-center mb-6'>
+          <p className='mb-6 text-center text-gray-600'>
             Please insert below the verification code that was sent to
             <br />
             bri****@aglint.ai

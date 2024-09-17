@@ -37,7 +37,7 @@ export const UploadApplications = ({
         title='Add Candidates'
         size='lg'
       >
-        <Tabs defaultValue='manual' className='w-full mt-5'>
+        <Tabs defaultValue='manual' className='mt-5 w-full'>
           <TabsList className='grid w-full grid-cols-3'>
             <TabsTrigger value='manual'>Manual</TabsTrigger>
             <TabsTrigger value='csv'>CSV</TabsTrigger>

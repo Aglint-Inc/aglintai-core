@@ -20,7 +20,7 @@ function Requests() {
         requests?.map((req) => (
           <div
             key={req.id}
-            className='p-3 cursor-pointer'
+            className='cursor-pointer p-3'
             onClick={() => {
               router.push(
                 ROUTES['/requests/[id]']({
@@ -29,7 +29,7 @@ function Requests() {
               );
             }}
           >
-            <div className='flex justify-between items-center mb-2'>
+            <div className='mb-2 flex items-center justify-between'>
               <p className='text-sm font-medium'>{req.title}</p>
               <UIBadge
                 size='sm'
@@ -77,8 +77,8 @@ function Requests() {
         ))}
 
       {!requests?.length && (
-        <div className='flex flex-col items-center justify-center p-4 bg-gray-100 rounded-lg'>
-          <Calendar className='h-8 w-8 text-gray-400 mb-2' />
+        <div className='flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4'>
+          <Calendar className='mb-2 h-8 w-8 text-gray-400' />
           <p className='text-sm text-gray-500'>No requests found</p>
         </div>
       )}

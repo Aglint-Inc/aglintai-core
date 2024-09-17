@@ -49,7 +49,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
   };
 
   return (
-    <Card className='relative group'>
+    <Card className='group relative'>
       <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Break Time</CardTitle>
         <CardDescription className='text-sm text-gray-500'>
@@ -60,7 +60,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
             <Button
               variant='outline'
               size='sm'
-              className='absolute top-1 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
+              className='absolute right-2 top-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100'
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Break Time</span>
@@ -120,7 +120,7 @@ const EditBreakTime = ({
   }, []);
 
   return (
-    <div className='flex flex-col gap-4 w-[300  px]'>
+    <div className='w-[300 px] flex flex-col gap-4'>
       <div>
         <Label>Break Start Time</Label>
         <TimePicker

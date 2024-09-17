@@ -84,7 +84,7 @@ export default function InterviewersTable() {
             <TableRow>
               <TableHead className='w-[250px]'>
                 Interviewer Name{' '}
-                <ArrowDownIcon className='inline-block h-4 w-4 ml-1' />
+                <ArrowDownIcon className='ml-1 inline-block h-4 w-4' />
               </TableHead>
               <TableHead className='text-right'>Upcoming</TableHead>
               <TableHead className='text-right'>Completed</TableHead>

@@ -293,9 +293,9 @@ const FilterField = ({
             onClick={() => {
               onCancel();
             }}
-            className='p-1 hover:bg-gray-100 rounded-full'
+            className='rounded-full p-1 hover:bg-gray-100'
           >
-            <X className='w-4 h-4' />
+            <X className='h-4 w-4' />
           </Button>
         </div>
       </div>

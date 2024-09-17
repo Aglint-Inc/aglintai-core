@@ -203,13 +203,13 @@ export const UserDetail = () => {
         <CardContent className='space-y-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center space-x-4'>
-              <Avatar className='w-16 h-16'>
+              <Avatar className='h-16 w-16'>
                 <AvatarImage
                   src={recruiterUser.profile_image}
                   alt={recruiterUser.first_name}
                 />
                 <AvatarFallback>
-                  <User className='w-8 h-8' />
+                  <User className='h-8 w-8' />
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -222,29 +222,29 @@ export const UserDetail = () => {
               </div>
             </div>
             <Button variant='outline' onClick={() => setProfileForm(true)}>
-              <Edit className='w-4 h-4 mr-2' /> Edit Profile
+              <Edit className='mr-2 h-4 w-4' /> Edit Profile
             </Button>
           </div>
           <div className='grid grid-cols-2 gap-4'>
             <div className='flex items-center space-x-2'>
-              <Briefcase className='w-5 h-5 text-gray-400' />
+              <Briefcase className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.department?.name || '--'}</span>
             </div>
             <div className='flex items-center space-x-2'>
-              <MapPin className='w-5 h-5 text-gray-400' />
+              <MapPin className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.office_location?.line1 || '--'}</span>
             </div>
             <div className='flex items-center space-x-2'>
-              <Mail className='w-5 h-5 text-gray-400' />
+              <Mail className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.email || '--'}</span>
             </div>
             <div className='flex items-center space-x-2'>
-              <Phone className='w-5 h-5 text-gray-400' />
+              <Phone className='h-5 w-5 text-gray-400' />
               <span>{recruiterUser.phone || '--'}</span>
             </div>
             {recruiterUser.linked_in && (
               <div className='flex items-center space-x-2'>
-                <Linkedin className='w-5 h-5 text-gray-400' />
+                <Linkedin className='h-5 w-5 text-gray-400' />
                 <a
                   href={recruiterUser.linked_in}
                   target='_blank'
@@ -257,7 +257,7 @@ export const UserDetail = () => {
             )}
             {recruiterUser.role === 'admin' && (
               <div className='flex items-center space-x-2'>
-                <User className='w-5 h-5 text-gray-400' />
+                <User className='h-5 w-5 text-gray-400' />
                 <span
                   className='cursor-pointer text-blue-500 hover:underline'
                   onClick={() =>

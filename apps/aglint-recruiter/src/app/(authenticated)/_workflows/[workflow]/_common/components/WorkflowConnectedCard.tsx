@@ -26,7 +26,7 @@ export function WorkflowConnectedCard({
   onClickJob,
 }: WorkflowConnectedCardProps) {
   return (
-    <Card className='cursor-pointer group p-3'>
+    <Card className='group cursor-pointer p-3'>
       <CardHeader className='flex flex-row items-center gap-2 p-0'>
         <p className='font-semibold'>{role}</p>
         {slotBadges}
@@ -42,7 +42,7 @@ export function WorkflowConnectedCard({
             <p>{textLocation}</p>
           </div>
         </div>
-        <div className='absolute right-0 bottom-0 hidden group-hover:flex items-center gap-2'>
+        <div className='absolute bottom-0 right-0 hidden items-center gap-2 group-hover:flex'>
           <Link href={jobLink.href} target='_blank'>
             <UIButton
               variant='ghost'

@@ -12,8 +12,8 @@ export function SelectedDateAndTime({
   slotSessionAndTime: React.ReactNode;
 }) {
   return (
-    <div className='grid grid-cols-[max-content_1fr] gap-4 items-stretch sm:grid-cols-[max-content_1fr] xs:grid-cols-[max-content]'>
-      <div className='flex flex-col justify-center items-center w-[85px] h-[88px] bg-white rounded-md '>
+    <div className='xs:grid-cols-[max-content] grid grid-cols-[max-content_1fr] items-stretch gap-4 sm:grid-cols-[max-content_1fr]'>
+      <div className='flex h-[88px] w-[85px] flex-col items-center justify-center rounded-md bg-white'>
         <p className='text-sm'>{textMonth}</p>
         <p className='text-2xl font-bold'>{textDate}</p>
         <p className='text-sm'>{textDay}</p>

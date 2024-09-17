@@ -19,7 +19,7 @@ function RightPanel({
 
   if (!isFetched || isLoading) {
     return (
-      <div className='space-y-4 h-[calc(100vh-60px)]'>
+      <div className='h-[calc(100vh-60px)] space-y-4'>
         {[...Array(5)].map((_, index) => (
           <Card key={index}>
             <CardHeader>
@@ -36,8 +36,8 @@ function RightPanel({
 
   if (activities.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center h-64 text-center'>
-        <ActivityIcon className='w-12 h-12 text-muted-foreground mb-2' />
+      <div className='flex h-64 flex-col items-center justify-center text-center'>
+        <ActivityIcon className='mb-2 h-12 w-12 text-muted-foreground' />
         <p className='text-sm text-muted-foreground'>No activities found.</p>
       </div>
     );
@@ -70,7 +70,7 @@ function RightPanel({
                 {Boolean(act.task_id) && (
                   <Button
                     variant='link'
-                    className='p-0 h-auto'
+                    className='h-auto p-0'
                     onClick={() => router.push(`/tasks?task_id=${act.task_id}`)}
                   >
                     View Task

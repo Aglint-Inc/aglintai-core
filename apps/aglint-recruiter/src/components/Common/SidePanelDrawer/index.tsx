@@ -27,7 +27,7 @@ function SidePanelSheet({
       <SheetPortal>
         <SheetContent
           side={dir}
-          className='p-6 w-full max-w-[400px]'
+          className='w-full max-w-[400px] p-6'
           style={{ zIndex }}
         >
           {children}

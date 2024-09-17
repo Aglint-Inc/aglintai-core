@@ -37,7 +37,7 @@ export const AnalysisItem = ({
 
   return (
     <div className='p-4'>
-      <h3 className='text-lg font-semibold mb-2'>{capitalizeAll(type)}</h3>
+      <h3 className='mb-2 text-lg font-semibold'>{capitalizeAll(type)}</h3>
       <p className='text-sm text-gray-700'>{reasoning[reasoningType]}</p>
       <div className='mt-2'>
         <Badge

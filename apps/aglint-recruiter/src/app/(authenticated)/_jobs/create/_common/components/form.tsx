@@ -124,7 +124,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
         Company
       </Label>
       {value.error.value && (
-        <p className='text-sm text-destructive mt-1'>{value.error.helper}</p>
+        <p className='mt-1 text-sm text-destructive'>{value.error.helper}</p>
       )}
     </div>
   );

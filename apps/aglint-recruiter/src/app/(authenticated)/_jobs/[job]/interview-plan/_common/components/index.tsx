@@ -120,23 +120,23 @@ const InterviewPlanPage = () => {
     <>
       <div className='min-h-screen'>
         <div className='container mx-auto'>
-          <div className='flex justify-between items-center mb-6'>
+          <div className='mb-6 flex items-center justify-between'>
             <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
+              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
               <BreadCrumbs />
             </div>
             <Settings />
           </div>
 
-          <div className='flex gap-6 mb-6'>
+          <div className='mb-6 flex gap-6'>
             <div className='w-1/4'>
               <JobsSideNavV2 />
             </div>
             <div className='w-3/4'>
               <div className='flex flex-row justify-between'>
                 <div className='flex flex-col gap-2'>
-                  <h2 className='text-xl font-bold mb-2'>Interview Plan</h2>
-                  <p className='text-sm text-gray-600 mb-4'>
+                  <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
+                  <p className='mb-4 text-sm text-gray-600'>
                     Update the hiring team details here. Changes will be saved
                     automatically.
                   </p>
@@ -148,7 +148,7 @@ const InterviewPlanPage = () => {
                   <TabsTrigger value='candidate'>Candidate</TabsTrigger>
                 </TabsList>
                 <TabsContent value='internal'>
-                  <div className='max-w-2xl my-8 mb-10 space-y-4'>
+                  <div className='my-8 mb-10 max-w-2xl space-y-4'>
                     {data?.length ? (
                       data.map((plan) => (
                         <InterviewPlan
@@ -444,9 +444,9 @@ const InterviewPlan = ({
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                   </>
                 ) : (
-                  <div className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-lg'>
-                    <Kanban className='w-4 h-4 text-gray-400 mb-4' />
-                    <p className='text-gray-500 mb-4'>
+                  <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
+                    <Kanban className='mb-4 h-4 w-4 text-gray-400' />
+                    <p className='mb-4 text-gray-500'>
                       No interview plan found
                     </p>
                   </div>
@@ -725,13 +725,13 @@ const InterviewSession = ({
                   <Stack>
                     <div
                       className={
-                        'relative flex h-6 justify-center items-center'
+                        'relative flex h-6 items-center justify-center'
                       }
                     >
-                      <div className='w-full ' />
-                      <div className=' w-full absolute inset-0 flex flex-col justify-center items-center'>
-                        <div className='relative top-[50%] flex h-[2px] w-full bg-[#cc4e00]  flex-col justify-center items-center cursor-pointer transition-all duration-250 ease hover:opacity-80'></div>
-                        <div className='h-[20px] w-[20px] bg-[#cc4e00] flex items-center justify-center z-10 rounded-[20px]'>
+                      <div className='w-full' />
+                      <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
+                        <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
+                        <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
                           <Plus size={10} color='white' />
                         </div>
                       </div>
@@ -839,7 +839,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <div className='flex flex-row gap-3 mb-1'>
+    <div className='mb-1 flex flex-row gap-3'>
       <div className='flex items-center space-x-3'>
         <Avatar className='h-8 w-8 rounded-sm'>
           <AvatarImage src={member.profile_image} alt={name} />

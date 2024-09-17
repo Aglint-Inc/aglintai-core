@@ -34,9 +34,9 @@ export default function InterviewerLeaderboardWidget() {
   });
   return (
     <>
-      <Card className='w-full mx-auto'>
+      <Card className='mx-auto w-full'>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-md font-semibold flex items-center text-primary'>
+          <CardTitle className='text-md flex items-center font-semibold text-primary'>
             <Trophy className='mr-2 h-4 w-4' />
             Interviewer Leaderboard
           </CardTitle>
@@ -147,11 +147,11 @@ function InterviewerLeaderboardItem({
   isLoading?: boolean;
 }) {
   return (
-    <div className='flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 bg-muted p-4 rounded-lg'>
+    <div className='flex flex-col items-start space-y-4 rounded-lg bg-muted p-4 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0'>
       <div className='flex w-[50%] items-center space-x-4'>
         <div className='relative'>
           {isLoading ? (
-            <Skeleton className='h-16 w-16  bg-primary/10 rounded-full' />
+            <Skeleton className='h-16 w-16 rounded-full bg-primary/10' />
           ) : (
             <Avatar className='h-16 w-16 border-2 border-primary'>
               <AvatarImage
@@ -168,22 +168,18 @@ function InterviewerLeaderboardItem({
             </Avatar>
           )}
           {isLoading ? null : (
-            <div className='absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold overflow-hidden'>
+            <div className='absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-primary text-xs font-bold text-primary-foreground'>
               {rank}
             </div>
           )}
         </div>
-        <div className='flex-1 min-w-0'>
-          <p className='text-md font-semibold text-foreground truncate'>
-            {isLoading ? (
-              <Skeleton className='h-5 w-20  bg-primary/10' />
-            ) : (
-              name
-            )}
+        <div className='min-w-0 flex-1'>
+          <p className='text-md truncate font-semibold text-foreground'>
+            {isLoading ? <Skeleton className='h-5 w-20 bg-primary/10' /> : name}
           </p>
-          <p className='text-xs text-muted-foreground truncate'>
+          <p className='truncate text-xs text-muted-foreground'>
             {isLoading ? (
-              <Skeleton className='h-3 w-14 ml-1 mt-1 bg-primary/10' />
+              <Skeleton className='ml-1 mt-1 h-3 w-14 bg-primary/10' />
             ) : (
               role
             )}
@@ -193,13 +189,13 @@ function InterviewerLeaderboardItem({
               ? [...new Array(5)].map((_, i) => (
                   <Skeleton
                     key={i}
-                    className='text-xs bg-primary/10 px-2 py-1 h-4 w-6 rounded-full'
+                    className='h-4 w-6 rounded-full bg-primary/10 px-2 py-1 text-xs'
                   />
                 ))
               : topSkills.map((skill, index) => (
                   <span
                     key={index}
-                    className='text-xs bg-primary/10 text-primary px-2 py-1 rounded-full'
+                    className='rounded-full bg-primary/10 px-2 py-1 text-xs text-primary'
                   >
                     {skill}
                   </span>
@@ -207,14 +203,14 @@ function InterviewerLeaderboardItem({
           </div>
         </div>
       </div>
-      <div className='flex-1 grid grid-cols-4 sm:grid-cols-5 gap-4 w-full'>
+      <div className='grid w-full flex-1 grid-cols-4 gap-4 sm:grid-cols-5'>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                <Clock className='h-5 w-5 text-muted-foreground mb-1' />
+              <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                <Clock className='mb-1 h-5 w-5 text-muted-foreground' />
                 {isLoading ? (
-                  <Skeleton className='h-5 w-6  bg-primary/10' />
+                  <Skeleton className='h-5 w-6 bg-primary/10' />
                 ) : (
                   <span className='text-lg font-semibold'>{totalHours}</span>
                 )}
@@ -229,10 +225,10 @@ function InterviewerLeaderboardItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                <Users className='h-5 w-5 text-muted-foreground mb-1' />
+              <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                <Users className='mb-1 h-5 w-5 text-muted-foreground' />
                 {isLoading ? (
-                  <Skeleton className='h-5 w-6  bg-primary/10' />
+                  <Skeleton className='h-5 w-6 bg-primary/10' />
                 ) : (
                   <span className='text-lg font-semibold'>{interviews}</span>
                 )}
@@ -249,10 +245,10 @@ function InterviewerLeaderboardItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                <ThumbsUp className='h-5 w-5 text-muted-foreground mb-1' />
+              <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                <ThumbsUp className='mb-1 h-5 w-5 text-muted-foreground' />
                 {isLoading ? (
-                  <Skeleton className='h-5 w-6  bg-primary/10' />
+                  <Skeleton className='h-5 w-6 bg-primary/10' />
                 ) : (
                   <span className='text-lg font-semibold'>
                     {acceptenceRate}%
@@ -271,10 +267,10 @@ function InterviewerLeaderboardItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                <Zap className='h-5 w-5 text-muted-foreground mb-1' />
+              <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                <Zap className='mb-1 h-5 w-5 text-muted-foreground' />
                 {isLoading ? (
-                  <Skeleton className='h-5 w-6  bg-primary/10' />
+                  <Skeleton className='h-5 w-6 bg-primary/10' />
                 ) : (
                   <span className='text-lg font-semibold'>{declineRate}%</span>
                 )}
@@ -291,10 +287,10 @@ function InterviewerLeaderboardItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className='flex flex-col items-center p-2 bg-background rounded-md'>
-                <BarChart className='h-5 w-5 text-muted-foreground mb-1' />
+              <div className='flex flex-col items-center rounded-md bg-background p-2'>
+                <BarChart className='mb-1 h-5 w-5 text-muted-foreground' />
                 {isLoading ? (
-                  <Skeleton className='h-5 w-6  bg-primary/10' />
+                  <Skeleton className='h-5 w-6 bg-primary/10' />
                 ) : (
                   <span className='text-lg font-semibold'>{averageScore}</span>
                 )}

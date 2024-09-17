@@ -33,8 +33,8 @@ const InterviewFeedbackPage = () => {
     return (
       <>
         <Seo title='Feedback - Interview | Aglint AI' />
-        <div className='flex justify-center items-center min-h-screen'>
-          <Loader2 className='w-8 h-8 animate-spin text-primary' />
+        <div className='flex min-h-screen items-center justify-center'>
+          <Loader2 className='h-8 w-8 animate-spin text-primary' />
         </div>
       </>
     );
@@ -43,8 +43,8 @@ const InterviewFeedbackPage = () => {
   return (
     <>
       <Seo title='Feedback - Interview | Aglint AI' />
-      <div className='min-h-screen bg-gradient-to-b from-blue-100 to-white py-12 px-4 sm:px-6 lg:px-8'>
-        <Card className='max-w-2xl mx-auto'>
+      <div className='min-h-screen bg-gradient-to-b from-blue-100 to-white px-4 py-12 sm:px-6 lg:px-8'>
+        <Card className='mx-auto max-w-2xl'>
           <CardHeader className='text-center'>
             <div className='mb-4'>
               {details.company_logo && (
@@ -70,9 +70,9 @@ const InterviewFeedbackPage = () => {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`w-10 h-10 cursor-pointer ${
+                      className={`h-10 w-10 cursor-pointer ${
                         star <= form.rating
-                          ? 'text-yellow-400 fill-current'
+                          ? 'fill-current text-yellow-400'
                           : 'text-gray-300'
                       }`}
                       onClick={() => handleRatingChange(star)}
@@ -89,7 +89,7 @@ const InterviewFeedbackPage = () => {
                     }))
                   }
                   rows={5}
-                  className='w-full p-2 border rounded-md'
+                  className='w-full rounded-md border p-2'
                 />
                 <Button
                   onClick={handleSubmit}

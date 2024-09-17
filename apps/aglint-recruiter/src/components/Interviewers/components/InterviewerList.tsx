@@ -59,20 +59,20 @@ export const InterviewerList = ({
         </div>
       </TableCell>
       <TableCell>
-        <div className='flex flex-col w-[300px] gap-1'>
-          <div className='flex items-center m-0 gap-2'>
+        <div className='flex w-[300px] flex-col gap-1'>
+          <div className='m-0 flex items-center gap-2'>
             <BookOpen className='h-4 w-4 text-gray-400' />
             <UITypography variant='p' type='small'>
               {interviewer.department?.name || '-'}
             </UITypography>
           </div>
-          <div className='flex items-center m-0 gap-2'>
+          <div className='m-0 flex items-center gap-2'>
             <MapPin className='h-4 w-4 text-gray-400' />
             <UITypography variant='p' type='small'>
               {location || '-'}
             </UITypography>
           </div>
-          <div className='flex items-center m-0 gap-2'>
+          <div className='m-0 flex items-center gap-2'>
             <Clock8 className='h-4 w-4 text-gray-400' />
             <UITypography variant='p' type='small'>
               {interviewer.time_zone?.toString() || '-'}
@@ -81,23 +81,23 @@ export const InterviewerList = ({
         </div>
       </TableCell>
       <TableCell>
-        <div className='flex gap-2 flex-wrap'>
+        <div className='flex flex-wrap gap-2'>
           {isQualifed ? (
             <>
               {qualified_first.map((qua) => (
                 <Badge
                   key={qua.id}
                   variant='outline'
-                  className='bg-indigo-50 text-indigo-800 border-indigo-200'
+                  className='border-indigo-200 bg-indigo-50 text-indigo-800'
                 >
-                  <Layers className='h-3 w-3 mr-1' />
+                  <Layers className='mr-1 h-3 w-3' />
                   {qua.name}
                 </Badge>
               ))}
               {qualified_second?.length ? (
                 <Badge
                   variant='outline'
-                  className='bg-indigo-50 text-indigo-800 border-indigo-200'
+                  className='border-indigo-200 bg-indigo-50 text-indigo-800'
                 >
                   +{qualified_second.length}
                 </Badge>
@@ -112,14 +112,14 @@ export const InterviewerList = ({
       </TableCell>
       <TableCell>
         <Badge variant='secondary' className='bg-blue-100 text-blue-800'>
-          <Clock className='h-3 w-3 mr-1' />
+          <Clock className='mr-1 h-3 w-3' />
           {interviewer.completed_count}
         </Badge>
       </TableCell>
       <TableCell>
         <div className='flex items-center space-x-2'>
           <Badge variant='secondary' className='bg-green-100 text-green-800'>
-            <Briefcase className='h-3 w-3 mr-1' />
+            <Briefcase className='mr-1 h-3 w-3' />
             {interviewer.completed_count}
           </Badge>
         </div>
@@ -128,7 +128,7 @@ export const InterviewerList = ({
       <TableCell>
         <div className='flex items-center space-x-2'>
           <Badge variant='secondary' className='bg-purple-100 text-purple-800'>
-            <GraduationCap className='h-3 w-3 mr-1' />
+            <GraduationCap className='mr-1 h-3 w-3' />
             {interviewer.training_types?.length}
           </Badge>
         </div>

@@ -2,7 +2,9 @@ interface ResetPasswordTemplateProps {
   resetLink: string;
 }
 
-export const resetPasswordTemplate = ({ resetLink }: ResetPasswordTemplateProps) => `
+export const resetPasswordTemplate = ({
+  resetLink,
+}: ResetPasswordTemplateProps) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>

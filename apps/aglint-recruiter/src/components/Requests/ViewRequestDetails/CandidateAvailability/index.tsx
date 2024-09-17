@@ -364,7 +364,7 @@ export function RequestCandidate({
   slotEmailTemplateHolder,
 }: RequestCandidateProps) {
   return (
-    <div className='flex flex-col h-full space-y-6 p-4'>
+    <div className='flex h-full flex-col space-y-6 p-4'>
       <Card>
         <CardContent className='grid grid-cols-2 gap-4 pt-6'>
           <div className='space-y-1'>

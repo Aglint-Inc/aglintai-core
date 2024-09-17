@@ -453,7 +453,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
           }
           slotTimePick={
             <>
-              <div className='flex max-w-2xl  items-center space-x-2'>
+              <div className='flex max-w-2xl items-center space-x-2'>
                 <Button
                   variant='ghost'
                   size='sm'
@@ -471,7 +471,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                 </Button>
                 <div
                   ref={scrollRef}
-                  className='flex overflow-x-auto space-x-4 py-2 max-w-[900px] h-[360px] scrollbar-hide p-4'
+                  className='scrollbar-hide flex h-[360px] max-w-[900px] space-x-4 overflow-x-auto p-4 py-2'
                   id='newTimePick'
                 >
                   <ShowCode>
@@ -483,8 +483,8 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
                       }
                     >
                       <div className='flex flex-col items-center justify-center p-8 text-center'>
-                        <Calendar className='w-12 h-12 text-gray-400 mb-2' />
-                        <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                        <Calendar className='mb-2 h-12 w-12 text-gray-400' />
+                        <h3 className='mb-1 text-lg font-medium text-gray-900'>
                           No availability
                         </h3>
                         <p className='text-sm text-gray-500'>
@@ -542,12 +542,12 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
   }
   if (!candidateRequestAvailability) {
     return (
-      <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
+      <div className='flex min-h-screen flex-col items-center justify-center bg-gray-100'>
         <div className='text-center'>
-          <h1 className='text-6xl font-bold text-gray-800 mb-4'>404</h1>
-          <p className='text-xl text-gray-600 mb-8'>Page not found</p>
+          <h1 className='mb-4 text-6xl font-bold text-gray-800'>404</h1>
+          <p className='mb-8 text-xl text-gray-600'>Page not found</p>
           <div className='flex justify-center'>
-            <AlertCircle className='w-16 h-16 text-red-500' />
+            <AlertCircle className='h-16 w-16 text-red-500' />
           </div>
         </div>
       </div>
@@ -576,7 +576,7 @@ export function CalendarPick({
         </Button>
       )}
       <div
-        className='flex overflow-x-auto w-[800px] max-w-[800px] space-x-4 scrollbar-hide p-3'
+        className='scrollbar-hide flex w-[800px] max-w-[800px] space-x-4 overflow-x-auto p-3'
         {...styleScrollProps}
       >
         {slotDatePicker}
@@ -610,14 +610,14 @@ export function PickSlotDay({
   slotPrimaryButton: React.ReactNode;
 }) {
   return (
-    <div className='flex flex-col px-4 space-y-4'>
+    <div className='flex flex-col space-y-4 px-4'>
       <div className='flex flex-col items-center space-y-4'>
         <div className='flex items-center space-x-2'>
           <div className='relative'>
-            <Calendar className='w-4 h-4 text-gray-500' />
+            <Calendar className='h-4 w-4 text-gray-500' />
             {isPickedCalendarActive && (
               <div className='absolute inset-0 bg-white'>
-                <CheckCircle className='w-4 h-4 text-green-800' />
+                <CheckCircle className='h-4 w-4 text-green-800' />
               </div>
             )}
           </div>
@@ -629,10 +629,10 @@ export function PickSlotDay({
         <div className='flex flex-col items-center space-y-1'>
           <div className='flex items-center space-x-2'>
             <div className='relative'>
-              <Calendar className='w-4 h-4 text-gray-500' />
+              <Calendar className='h-4 w-4 text-gray-500' />
               {isPickSlotIconActive ? (
                 <div className='absolute inset-0 bg-white'>
-                  <CheckCircle className='w-4 h-4 text-green-800' />
+                  <CheckCircle className='h-4 w-4 text-green-800' />
                 </div>
               ) : null}
             </div>

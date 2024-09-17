@@ -37,7 +37,7 @@ function CalendarResourceView({
   }, [currentDate]);
 
   return (
-    <div className='max-w-[calc(100vw-600px)] overflow-y-auto h-screen'>
+    <div className='h-screen max-w-[calc(100vw-600px)] overflow-y-auto'>
       <CalendarHeader
         currentDate={currentDate}
         dateRange={dateRange}
@@ -107,7 +107,7 @@ const CalendarHeader = ({
   if (isLoading) return null;
 
   return (
-    <div className='flex flex-row items-center justify-center w-full p-1 bg-white min-h-[47px] space-x-2'>
+    <div className='flex min-h-[47px] w-full flex-row items-center justify-center space-x-2 bg-white p-1'>
       <UIButton
         variant='outline'
         size='sm'

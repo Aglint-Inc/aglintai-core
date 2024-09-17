@@ -41,7 +41,7 @@ export const Form = () => {
   };
   return (
     <>
-      <div className='flex justify-between mb-6'>
+      <div className='mb-6 flex justify-between'>
         {verificationCode.map((digit, index) => (
           <Input
             key={index}
@@ -51,11 +51,11 @@ export const Form = () => {
             maxLength={1}
             value={digit}
             onChange={(e) => handleCodeChange(index, e.target.value)}
-            className='w-12 h-12 text-center text-2xl'
+            className='h-12 w-12 text-center text-2xl'
           />
         ))}
       </div>
-      <div className='flex items-center space-x-2 mb-6'>
+      <div className='mb-6 flex items-center space-x-2'>
         <Checkbox
           id='terms'
           checked={agreedToTerms}
@@ -80,7 +80,7 @@ export const Form = () => {
         </Label>
       </div>
       <Button
-        className='w-full mb-4'
+        className='mb-4 w-full'
         onClick={handleVerify}
         disabled={!agreedToTerms || verificationCode.some((digit) => !digit)}
       >

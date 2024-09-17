@@ -30,13 +30,13 @@ const JobCreateComponent = () => {
   const { status } = useCompanyMembers();
   if (status === 'error')
     return (
-      <div className='w-full h-full flex items-center justify-center'>
+      <div className='flex h-full w-full items-center justify-center'>
         <div>Error</div>
       </div>
     );
   if (status === 'pending')
     return (
-      <div className='w-full h-full flex items-center justify-center'>
+      <div className='flex h-full w-full items-center justify-center'>
         <Loader2 className='animate-spin' />
       </div>
     );
@@ -121,8 +121,8 @@ const JobCreate = () => {
   });
 
   return (
-    <div className='p-4 max-w-2xl mx-auto'>
-      <div className='flex items-center mb-4'>
+    <div className='mx-auto max-w-2xl p-4'>
+      <div className='mb-4 flex items-center'>
         {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
           Back
           </Button> */}
@@ -138,7 +138,7 @@ const JobCreate = () => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className='ml-4 text-2xl font-bold mt-4'>Create Job</h1>
+          <h1 className='ml-4 mt-4 text-2xl font-bold'>Create Job</h1>
         </div>
       </div>
       <JobCreateForm fields={fields} setFields={setFields} />
@@ -286,29 +286,29 @@ const JobForms = ({
 
   return (
     <div className='space-y-6'>
-      <div className='p-4 border bg-white bg-white rounded-md'>
-        <h2 className='text-lg font-semibold mb-4'>Job Details</h2>
+      <div className='rounded-md border bg-white p-4'>
+        <h2 className='mb-4 text-lg font-semibold'>Job Details</h2>
         <div className='text-sm text-gray-500'>
           Add job details to help candidates understand the role and apply.
         </div>
         {forms}
       </div>
-      <div className='p-4 border bg-white rounded-md'>
-        <h2 className='text-lg font-semibold mb-4'>Hiring Team</h2>
+      <div className='rounded-md border bg-white p-4'>
+        <h2 className='mb-4 text-lg font-semibold'>Hiring Team</h2>
         <div className='text-sm text-gray-500'>
           Add the hiring team so they can manage the job.
         </div>
         {roleForms}
       </div>
-      <div className='p-4 border bg-white rounded-md'>
-        <h2 className='text-lg font-semibold mb-4'>Job Description</h2>
+      <div className='rounded-md border bg-white p-4'>
+        <h2 className='mb-4 text-lg font-semibold'>Job Description</h2>
         <div className='text-sm text-gray-500'>
           Add a detailed job description to help candidates understand the role
           and apply.
         </div>
-        <div className='mt-4 border rounded-md p-4'>{description}</div>
+        <div className='mt-4 rounded-md border p-4'>{description}</div>
         {fields.description.error.value && (
-          <div className='flex items-center text-red-500 mt-2'>
+          <div className='mt-2 flex items-center text-red-500'>
             <AlertTriangle className='mr-2' />
             <span>{fields.description.error.helper}</span>
           </div>

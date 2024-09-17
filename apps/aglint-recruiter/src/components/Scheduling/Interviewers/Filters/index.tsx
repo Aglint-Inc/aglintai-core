@@ -108,7 +108,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
           itemList={uniqueQualifiedModules}
           selectedItems={selectedQualifiedModule}
           setSelectedItems={setSelectedQualifiedModule}
-          icon={<Award className="h-4 w-4" />}
+          icon={<Award className='h-4 w-4' />}
         />
         <FilterDropDown
           title={'Training'}
@@ -116,7 +116,7 @@ function Filters({ setFilteredInterviewer, interviewers, isLoading }) {
           itemList={uniqueTrainingModules}
           selectedItems={selectedTrainingModule}
           setSelectedItems={setSelectedTrainingModule}
-          icon={<GraduationCap className="h-4 w-4" />}
+          icon={<GraduationCap className='h-4 w-4' />}
         />
         {(selectedQualifiedModule.length > 0 ||
           selectedTrainingModule.length > 0) && (

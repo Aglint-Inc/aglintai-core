@@ -80,7 +80,7 @@ export function GreenhouseModal() {
       <DialogContent className='sm:max-w-[425px]'>
         <div className='flex flex-col space-y-4'>
           <h2 className='text-lg font-semibold'>Import from Greenhouse</h2>
-          <div className='flex flex-col h-[calc(100vh-200px)] overflow-hidden space-y-4'>
+          <div className='flex h-[calc(100vh-200px)] flex-col space-y-4 overflow-hidden'>
             <p className='text-sm font-medium'>
               {selectedGreenhousePostings.length == 0
                 ? `Showing ${postings.length} Jobs from Greenhouse`
@@ -94,7 +94,7 @@ export function GreenhouseModal() {
             >
               {saving ? 'Importing...' : 'Import'}
             </Button>
-            <div className='space-y-2 flex-grow overflow-y-auto'>
+            <div className='flex-grow space-y-2 overflow-y-auto'>
               {!initialFetch ? (
                 postings.length > 0 ? (
                   postings.map((post, ind) => (
@@ -132,12 +132,12 @@ export function GreenhouseModal() {
                 )
               ) : (
                 <>
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
-                  <Skeleton className='w-full h-16 mb-2' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
+                  <Skeleton className='mb-2 h-16 w-full' />
                 </>
               )}
             </div>

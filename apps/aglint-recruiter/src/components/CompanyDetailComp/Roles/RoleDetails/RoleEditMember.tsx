@@ -67,7 +67,7 @@ function RoleEditMember({
               </Alert>
               <div className='space-y-2'>
                 <Card className='flex items-center p-4'>
-                  <Avatar className='h-12 w-12 mr-4'>
+                  <Avatar className='mr-4 h-12 w-12'>
                     <AvatarImage
                       src={selectedMember.profile_image}
                       alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
@@ -86,8 +86,8 @@ function RoleEditMember({
                   </div>
                 </Card>
                 <ChevronDown className='mx-auto h-4 w-4' />
-                <Card className='flex items-center p-4 border border-dashed'>
-                  <Avatar className='h-12 w-12 mr-4'>
+                <Card className='flex items-center border border-dashed p-4'>
+                  <Avatar className='mr-4 h-12 w-12'>
                     <AvatarImage
                       src={selectedMember.profile_image}
                       alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
@@ -118,10 +118,10 @@ function RoleEditMember({
                 {filteredMember.map((member) => (
                   <Card
                     key={member.user_id}
-                    className='cursor-pointer hover:bg-accent p-4 flex items-center'
+                    className='flex cursor-pointer items-center p-4 hover:bg-accent'
                     onClick={() => setSelectedMember(member)}
                   >
-                    <Avatar className='h-10 w-10 mr-4'>
+                    <Avatar className='mr-4 h-10 w-10'>
                       <AvatarImage
                         src={member.profile_image}
                         alt={`${member.first_name || ''} ${member.last_name || ''}`.trim()}

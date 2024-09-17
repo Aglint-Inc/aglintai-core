@@ -149,7 +149,7 @@ const WorkflowActionDialog = () => {
   return (
     <Card className='border-0 shadow-none'>
       <CardHeader>
-        <CardTitle className='text-lg flex'>
+        <CardTitle className='flex text-lg'>
           <Terminal width={24} height={24} className='mr-4' />
           Action
         </CardTitle>

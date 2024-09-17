@@ -19,7 +19,7 @@ export const Activity = () => {
   if (status === 'pending')
     return (
       <div className='flex items-center justify-center'>
-        <Loader2 className='w-6 h-6 animate-spin text-gray-500' />
+        <Loader2 className='h-6 w-6 animate-spin text-gray-500' />
       </div>
     );
   if (status === 'error')
@@ -35,15 +35,15 @@ export const Activity = () => {
         <div key={activity.id} className='relative pb-4 last:pb-0'>
           {i !== count - 1 && (
             <span
-              className='absolute top-4 left-2 -ml-px h-full w-0.5 bg-gray-200'
+              className='absolute left-2 top-4 -ml-px h-full w-0.5 bg-gray-200'
               aria-hidden='true'
             ></span>
           )}
           <div className='relative flex space-x-3'>
             <div>
-              <span className='h-4 w-4 flex items-center justify-center'>
+              <span className='flex h-4 w-4 items-center justify-center'>
                 <Circle
-                  className='h-4 w-4 mt-1.5 text-gray-400 fill-gray-400'
+                  className='mt-1.5 h-4 w-4 fill-gray-400 text-gray-400'
                   aria-hidden='true'
                 />
               </span>
@@ -66,7 +66,7 @@ export const Activity = () => {
             </div>
           </div>
           {activity.task_id && (
-            <div className='mt-2 ml-11'>
+            <div className='ml-11 mt-2'>
               <Button
                 variant='outline'
                 size='sm'
@@ -82,7 +82,7 @@ export const Activity = () => {
         <Button
           variant='ghost'
           size='sm'
-          className='w-full mt-2'
+          className='mt-2 w-full'
           onClick={() => setShowAll(!showAll)}
         >
           {showAll ? (

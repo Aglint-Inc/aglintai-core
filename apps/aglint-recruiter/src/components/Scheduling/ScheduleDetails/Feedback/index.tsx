@@ -194,7 +194,7 @@ const FeedbackWindow = ({
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <div className='flex items-center justify-center'>
-            <Loader2 className='w-8 h-8 animate-spin text-primary' />
+            <Loader2 className='h-8 w-8 animate-spin text-primary' />
           </div>
         </ShowCode.When>
         <ShowCode.When isTrue={checkPermissions(['scheduling_actions'])}>
@@ -444,7 +444,7 @@ const InterviewerFeedback = ({
                             )}
                           </span>
                         </div>
-                        <div className='flex items-center space-x-2 text-neutral-500 text-sm'>
+                        <div className='flex items-center space-x-2 text-sm text-neutral-500'>
                           <Clock size={16} />
                           <span>{`${dayjsLocal(
                             session[0].session.time.start,
@@ -733,12 +733,12 @@ const FeedbackForm = ({
   return (
     // Feedback Popup Card
 
-    <div className='flex items-center justify-center w-[650px]'>
-      <div className='bg-white rounded-lg shadow-lg w-full max-w-lg'>
-        <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+    <div className='flex w-[650px] items-center justify-center'>
+      <div className='w-full max-w-lg rounded-lg bg-white shadow-lg'>
+        <div className='flex items-center justify-between border-b border-gray-200 p-4'>
           <h2 className='font-semibold'>My Feedback</h2>
           <UIButton onClick={() => onClose()} variant='ghost' size='sm'>
-            <X className='w-4 h-4' />
+            <X className='h-4 w-4' />
           </UIButton>
         </div>
         <div className='p-4'>
@@ -755,7 +755,7 @@ const FeedbackForm = ({
                           key={i}
                           variant='ghost'
                           size='sm'
-                          className={`w-8 h-8 rounded-full ${
+                          className={`h-8 w-8 rounded-full ${
                             (interviewer.feedback?.recommendation || 0) > i
                               ? 'bg-primary text-primary-foreground'
                               : 'bg-secondary text-secondary-foreground'
@@ -800,7 +800,7 @@ const FeedbackForm = ({
             </div>
           </div>
         </div>
-        <div className='flex justify-end p-4 border-t border-gray-200 gap-2'>
+        <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
           <Button variant='outline' size='sm' onClick={onCancel}>
             Cancel
           </Button>

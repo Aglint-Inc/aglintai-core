@@ -315,7 +315,7 @@ function CommandBar() {
 
   const renderStructuredRequest = () => {
     return (
-      <div className='flex flex-wrap gap-2 mt-2'>
+      <div className='mt-2 flex flex-wrap gap-2'>
         {Object.entries(structuredRequest).map(
           ([key, value]) =>
             value &&
@@ -407,7 +407,7 @@ function CommandBar() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-[400px] p-0' align='start' sideOffset={4}>
-        <div className='p-4 space-y-4'>
+        <div className='space-y-4 p-4'>
           {step > 0 && (
             <Button
               variant='ghost'

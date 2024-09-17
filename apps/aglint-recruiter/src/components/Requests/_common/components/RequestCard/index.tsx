@@ -48,25 +48,25 @@ export const RequestCard = ({ ...props }: RequestProps) => {
   return (
     <Card
       className={cn(
-        'cursor-pointer transition-shadow duration-300 group',
+        'group cursor-pointer transition-shadow duration-300',
         isCompactList &&
-          'border-none hover:bg-gray-50 shadow-none rounded-none',
+          'rounded-none border-none shadow-none hover:bg-gray-50',
       )}
     >
       <div
         className={cn(
           'flex items-center justify-between p-4',
-          isCompactList && 'py-3 px-2',
+          isCompactList && 'px-2 py-3',
         )}
       >
         <Link href={`/requests/${props.id}`} passHref className='flex-grow'>
           <div className='flex items-center space-x-2'>
             <Label
               className={cn(
-                'text-base break-words whitespace-normal line-clamp-1 flex-grow',
+                'line-clamp-1 flex-grow whitespace-normal break-words text-base',
                 {
                   'font-semibold': !isCompactList,
-                  'font-normal text-sm': isCompactList,
+                  'text-sm font-normal': isCompactList,
                 },
               )}
             >
@@ -97,8 +97,8 @@ export const RequestCard = ({ ...props }: RequestProps) => {
       {(mode === 'expanded' || (isCompactList && isExpanded)) && (
         <CardContent
           className={cn(
-            'p-4 space-y-4 pt-0',
-            isCompactList && 'p-2 space-y-2 bg-gray-50',
+            'space-y-4 p-4 pt-0',
+            isCompactList && 'space-y-2 bg-gray-50 p-2',
           )}
         >
           <div
@@ -113,16 +113,16 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                 <Badge
                   variant='secondary'
                   className={cn(
-                    'capitalize text-xs px-3 py-0.5',
-                    mode === 'compact-list' && 'text-xs px-1.5 py-0.5',
+                    'px-3 py-0.5 text-xs capitalize',
+                    mode === 'compact-list' && 'px-1.5 py-0.5 text-xs',
                     {
-                      'bg-purple-100/50 text-purple-800/90 border-purple-300':
+                      'border-purple-300 bg-purple-100/50 text-purple-800/90':
                         request.type === 'schedule_request',
-                      'bg-orange-100/50 text-orange-800/90 border-orange-300':
+                      'border-orange-300 bg-orange-100/50 text-orange-800/90':
                         request.type === 'cancel_schedule_request',
-                      'bg-pink-100/50 text-pink-800/90 border-pink-300':
+                      'border-pink-300 bg-pink-100/50 text-pink-800/90':
                         request.type === 'decline_request',
-                      'bg-indigo-100/50 text-indigo-800/90 border-indigo-300':
+                      'border-indigo-300 bg-indigo-100/50 text-indigo-800/90':
                         request.type === 'reschedule_request',
                     },
                   )}
@@ -132,17 +132,17 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                 <Badge
                   variant='outline'
                   className={cn(
-                    'capitalize text-xs px-3 py-0.5',
+                    'px-3 py-0.5 text-xs capitalize',
                     getStatusColor({ status: props.status }),
-                    mode === 'compact-list' && 'text-xs px-1.5 py-0.5',
+                    mode === 'compact-list' && 'px-1.5 py-0.5 text-xs',
                     {
-                      'bg-yellow-100/50 text-yellow-800/90 border-yellow-300':
+                      'border-yellow-300 bg-yellow-100/50 text-yellow-800/90':
                         props.status === 'to_do',
-                      'bg-blue-100/50 text-blue-800/90 border-blue-300':
+                      'border-blue-300 bg-blue-100/50 text-blue-800/90':
                         props.status === 'in_progress',
-                      'bg-red-100/50 text-red-800/90 border-red-300':
+                      'border-red-300 bg-red-100/50 text-red-800/90':
                         props.status === 'blocked',
-                      'bg-green-100/50 text-green-800/90 border-green-300':
+                      'border-green-300 bg-green-100/50 text-green-800/90':
                         props.status === 'completed',
                     },
                   )}
@@ -155,10 +155,10 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                       <TooltipTrigger>
                         <Badge
                           variant='outline'
-                          className='capitalize text-xs px-3 py-0.5'
+                          className='px-3 py-0.5 text-xs capitalize'
                         >
                           {' '}
-                          <StickyNote className='w-3 h-3 mr-1' />
+                          <StickyNote className='mr-1 h-3 w-3' />
                           Note
                         </Badge>
                       </TooltipTrigger>
@@ -168,15 +168,15 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                     </Tooltip>
                   </TooltipProvider>
                 )}
-                <div className='space-y-3 flex items-start'>
+                <div className='flex items-start space-y-3'>
                   <InfoItem
                     icon={<></>}
                     label=''
                     value={
                       <>
-                        <div className='flex flex-row  items-center gap-4'>
+                        <div className='flex flex-row items-center gap-4'>
                           <div className='flex flex-row items-center space-x-2'>
-                            {<UserCircle className='w-4 h-4' />}
+                            {<UserCircle className='h-4 w-4' />}
                             <Link
                               href={`/user/profile/${request.assigner_id}`}
                               target='_blank'
@@ -217,7 +217,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                 </div>
               </div>
               <InfoItem
-                icon={<Calendar className='w-4 h-4' />}
+                icon={<Calendar className='h-4 w-4' />}
                 label='Proposed Interview Date'
                 variant='column'
                 value={
@@ -246,7 +246,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                 }
               />
               <InfoItem
-                icon={<User className='w-4 h-4' />}
+                icon={<User className='h-4 w-4' />}
                 label='Candidate and Job'
                 variant='column'
                 value={
@@ -280,11 +280,11 @@ export const RequestCard = ({ ...props }: RequestProps) => {
 
 const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
   return (
-    <Card className='w-full p-2 cursor-pointer transition-shadow duration-300 group'>
+    <Card className='group w-full cursor-pointer p-2 transition-shadow duration-300'>
       <Link href={`/requests/${props.id}`} passHref>
         <div className='space-y-2'>
           <div className='flex items-center justify-between'>
-            <Label className='text-xs font-semibold line-clamp-1'>
+            <Label className='line-clamp-1 text-xs font-semibold'>
               {props.title}
             </Label>
             {/* <RequestOverflowMenu request_id={props.id} /> */}
@@ -292,14 +292,14 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
           <div className='flex flex-wrap gap-1'>
             <Badge
               variant='secondary'
-              className={cn('capitalize text-xs px-1 py-0.5', {
-                'bg-purple-100/50 text-purple-800/90 border-purple-300':
+              className={cn('px-1 py-0.5 text-xs capitalize', {
+                'border-purple-300 bg-purple-100/50 text-purple-800/90':
                   props.type === 'schedule_request',
-                'bg-orange-100/50 text-orange-800/90 border-orange-300':
+                'border-orange-300 bg-orange-100/50 text-orange-800/90':
                   props.type === 'cancel_schedule_request',
-                'bg-pink-100/50 text-pink-800/90 border-pink-300':
+                'border-pink-300 bg-pink-100/50 text-pink-800/90':
                   props.type === 'decline_request',
-                'bg-indigo-100/50 text-indigo-800/90 border-indigo-300':
+                'border-indigo-300 bg-indigo-100/50 text-indigo-800/90':
                   props.type === 'reschedule_request',
               })}
             >
@@ -308,7 +308,7 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
             <Badge
               variant='outline'
               className={cn(
-                'capitalize text-xs px-1 py-0.5',
+                'px-1 py-0.5 text-xs capitalize',
                 getStatusColor({ status: props.status }),
               )}
             >
@@ -317,11 +317,11 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
           </div>
           <div className='text-xs'>
             <div className='flex items-center'>
-              <Calendar className='w-3 h-3 mr-1' />
+              <Calendar className='mr-1 h-3 w-3' />
               {dayjsLocal(props.schedule_start_date).format('MMM D, YYYY')}
             </div>
-            <div className='flex items-center mt-1'>
-              <User className='w-3 h-3 mr-1' />
+            <div className='mt-1 flex items-center'>
+              <User className='mr-1 h-3 w-3' />
               {getFullName(
                 props.applications.candidates.first_name,
                 props.applications.candidates.last_name,
@@ -347,8 +347,8 @@ const InfoItem = ({
 }) => {
   if (variant === 'column') {
     return (
-      <div className='flex items-start space-x-2 flex-col'>
-        <div className='flex flex-row gap-1 items-center '>
+      <div className='flex flex-col items-start space-x-2'>
+        <div className='flex flex-row items-center gap-1'>
           <div className=''>
             {React.cloneElement(icon as React.ReactElement, {
               className: 'w-3 h-3',
@@ -356,7 +356,7 @@ const InfoItem = ({
           </div>
           <p className='text-2xs text-gray-500'>{label}</p>
         </div>
-        <div className='flex flex-row items-start gap-1 pl-2 '>
+        <div className='flex flex-row items-start gap-1 pl-2'>
           {typeof value === 'string' ? (
             <p className='ml-3 text-xs font-medium'>{value}</p>
           ) : (

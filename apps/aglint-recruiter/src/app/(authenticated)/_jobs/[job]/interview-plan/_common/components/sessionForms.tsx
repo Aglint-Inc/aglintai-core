@@ -732,7 +732,7 @@ const InterviewModePills = ({
               handleModeChange('individual');
             }}
           >
-            <div className='flex flex-row gap-1 justify-center'>
+            <div className='flex flex-row justify-center gap-1'>
               <IndividualIcon /> Individual
             </div>
           </TabsTrigger>
@@ -742,7 +742,7 @@ const InterviewModePills = ({
               handleModeChange('panel');
             }}
           >
-            <div className='flex flex-row gap-1 justify-center'>
+            <div className='flex flex-row justify-center gap-1'>
               <PanelIcon /> Panel
             </div>
           </TabsTrigger>

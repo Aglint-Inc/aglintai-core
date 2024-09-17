@@ -19,9 +19,9 @@ export function RequestProgressTracker({
   return (
     <div className='flex gap-3'>
       <div className='flex flex-col items-center pt-1'>
-        <div className='flex w-[18px] h-[18px] justify-center items-center'>
+        <div className='flex h-[18px] w-[18px] items-center justify-center'>
           <div
-            className={cn('w-[10px] h-[10px] rounded-full', {
+            className={cn('h-[10px] w-[10px] rounded-full', {
               'bg-neutral-300': circleIndicator === 'default',
               'bg-green-500': circleIndicator === 'success',
               'bg-red-500': circleIndicator === 'error',
@@ -31,11 +31,11 @@ export function RequestProgressTracker({
           />
         </div>
         {isDividerVisible && !isLastNode && (
-          <div className='w-[1px] h-full bg-neutral-200' />
+          <div className='h-full w-[1px] bg-neutral-200' />
         )}
       </div>
-      <div className='flex flex-col gap-4 mb-8'>
-        <div className='inline-flex px-1.5 py-0.5 border border-neutral-200 rounded text-sm text-neutral-700 whitespace-nowrap max-w-max'>
+      <div className='mb-8 flex flex-col gap-4'>
+        <div className='inline-flex max-w-max whitespace-nowrap rounded border border-neutral-200 px-1.5 py-0.5 text-sm text-neutral-700'>
           {textRequestProgress}
         </div>
         <div className='flex flex-col gap-2'>{slotProgress}</div>

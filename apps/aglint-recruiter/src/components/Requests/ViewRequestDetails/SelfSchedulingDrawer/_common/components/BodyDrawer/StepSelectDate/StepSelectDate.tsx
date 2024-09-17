@@ -43,11 +43,11 @@ function SelectDateRange() {
         slotTextWithIcon={
           <>
             <Label>
-              <CheckCircle className='w-3 h-3 mr-2' />
+              <CheckCircle className='mr-2 h-3 w-3' />
               {`${selectedSessions.length} Schedule selected`}
             </Label>
             <Label>
-              <Clock className='w-3 h-3 mr-2' />
+              <Clock className='mr-2 h-3 w-3' />
               {getBreakLabel(totalTime)}
             </Label>
           </>

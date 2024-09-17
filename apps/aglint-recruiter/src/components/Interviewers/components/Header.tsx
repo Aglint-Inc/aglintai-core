@@ -52,10 +52,10 @@ export const Header = ({
 
   return (
     <>
-      <h1 className='text-3xl font-bold text-gray-900 mb-8'>
+      <h1 className='mb-8 text-3xl font-bold text-gray-900'>
         Interviewer Management
       </h1>
-      <div className='mb-6 flex justify-between items-center'>
+      <div className='mb-6 flex items-center justify-between'>
         <UITextField
           placeholder='Search interviewers...'
           fieldSize='medium'

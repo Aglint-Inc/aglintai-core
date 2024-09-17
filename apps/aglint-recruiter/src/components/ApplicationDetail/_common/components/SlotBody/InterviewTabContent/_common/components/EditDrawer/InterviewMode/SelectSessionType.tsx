@@ -33,7 +33,7 @@ function SelectSessionType() {
               });
             }}
           >
-            <div className='flex flex-row gap-1 justify-center'>
+            <div className='flex flex-row justify-center gap-1'>
               <IndividualIcon /> Individual
             </div>
           </TabsTrigger>
@@ -48,7 +48,7 @@ function SelectSessionType() {
               });
             }}
           >
-            <div className='flex flex-row gap-1 justify-center'>
+            <div className='flex flex-row justify-center gap-1'>
               <PanelIcon /> Panel
             </div>
           </TabsTrigger>

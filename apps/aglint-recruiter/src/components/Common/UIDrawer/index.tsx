@@ -40,19 +40,19 @@ function UIDrawer({
   return (
     <Drawer open={open} onClose={onClose} direction='right'>
       <DrawerContent
-        className={`h-screen top-0 right-0 left-auto mt-0 ${widthClass} rounded-none `}
+        className={`left-auto right-0 top-0 mt-0 h-screen ${widthClass} rounded-none`}
       >
-        <div className='flex flex-row w-full'>
+        <div className='flex w-full flex-row'>
           {calendar}
-          <div className='border-l border-gray-200 w-full'>
+          <div className='w-full border-l border-gray-200'>
             <UIButton
               onClick={onClose}
-              className='absolute top-2 right-2 p-2 text-gray-600 hover:text-gray-800 h-8 w-8'
+              className='absolute right-2 top-2 h-8 w-8 p-2 text-gray-600 hover:text-gray-800'
               variant='ghost'
             >
               <CloseIcon size={16} />
             </UIButton>
-            <DrawerHeader className='border-b border-gray-200 items-center p-3'>
+            <DrawerHeader className='items-center border-b border-gray-200 p-3'>
               <div className='flex flex-row items-center'>
                 <UITypography className='text-sm' fontBold='normal'>
                   {title}
@@ -61,8 +61,8 @@ function UIDrawer({
             </DrawerHeader>
             <ScrollArea className='h-[calc(100vh-95px)]'>{children}</ScrollArea>
             {slotBottom && (
-              <DrawerFooter className='border-t border-gray-200 h-12'>
-                <div className='flex flex-row items-center justify-center gap-4 h-full'>
+              <DrawerFooter className='h-12 border-t border-gray-200'>
+                <div className='flex h-full flex-row items-center justify-center gap-4'>
                   {slotBottom}
                 </div>
               </DrawerFooter>

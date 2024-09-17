@@ -77,7 +77,7 @@ function RequestAvailabilityBody({
 
   return (
     <div className='flex w-[500px] flex-col gap-2 p-4'>
-      <div className='flex w-full mb-2'>
+      <div className='mb-2 flex w-full'>
         {availableSlots &&
           [...availableSlots, [{}]]?.map(
             (_ele: PlanCombinationRespType[][], i) => {
@@ -103,7 +103,7 @@ function RequestAvailabilityBody({
           )}
       </div>
       <UIDivider />
-      <div className='flex flex-col gap-2 overflow-auto h-[calc(100vh - 123px)]'>
+      <div className='h-[calc(100vh - 123px)] flex flex-col gap-2 overflow-auto'>
         <ShowCode>
           <ShowCode.When isTrue={selectedIndex === availableSlots?.length}>
             <FinalScreen />
@@ -162,22 +162,22 @@ export function Stepper({
 }: StepperProps) {
   return (
     <div
-      className={`flex flex-col  w-full ${!isLeftLine ? 'items-start' : !isRightLine ? 'items-end' : 'items-center'}`}
+      className={`flex w-full flex-col ${!isLeftLine ? 'items-start' : !isRightLine ? 'items-end' : 'items-center'}`}
     >
-      <div className='flex items-center  w-full'>
+      <div className='flex w-full items-center'>
         {isLeftLine && (
           <div
             className={cn(
-              'w-full h-0.5 transition-all duration-200 ease-in-out',
+              'h-0.5 w-full transition-all duration-200 ease-in-out',
               isCompleted || isCurrent ? 'bg-blue-500' : 'bg-gray-300',
             )}
           />
         )}
         <div
           className={cn(
-            'min-w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-200 ease-in-out',
+            'flex h-8 min-w-8 items-center justify-center rounded-full border-2 transition-all duration-200 ease-in-out',
             isCompleted
-              ? 'bg-blue-500 border-blue-500 text-white'
+              ? 'border-blue-500 bg-blue-500 text-white'
               : isCurrent
                 ? 'border-blue-500 text-blue-500'
                 : 'border-gray-300 text-gray-300',
@@ -185,7 +185,7 @@ export function Stepper({
           onClick={isCompleted ? onClickCompleted : undefined}
         >
           {isCompleted ? (
-            <Check className='w-5 h-5' />
+            <Check className='h-5 w-5' />
           ) : (
             <span>{/* You can add step number here if needed */}</span>
           )}
@@ -193,7 +193,7 @@ export function Stepper({
         {isRightLine && (
           <div
             className={cn(
-              'w-full h-0.5 transition-all duration-200 ease-in-out',
+              'h-0.5 w-full transition-all duration-200 ease-in-out',
               isCompleted ? 'bg-blue-500' : 'bg-gray-300',
             )}
           />
@@ -201,7 +201,7 @@ export function Stepper({
       </div>
       <span
         className={cn(
-          'mt-2 text-xs font-medium ',
+          'mt-2 text-xs font-medium',
           isCurrent
             ? 'text-blue-500'
             : isCompleted

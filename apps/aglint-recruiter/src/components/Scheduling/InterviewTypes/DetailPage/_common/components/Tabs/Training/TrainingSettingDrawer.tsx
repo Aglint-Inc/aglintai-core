@@ -158,8 +158,8 @@ function TrainingSettingDrawer(
                   onUserSelect={() => setErrorApproval(false)}
                 />
                 {selectedUsers.length === 0 && (
-                  <div className='text-error-9 mb-2 pt-2 flex items-center'>
-                    <AlertCircle className='h-3 w-3 text-error-9 mr-1' />
+                  <div className='text-error-9 mb-2 flex items-center pt-2'>
+                    <AlertCircle className='text-error-9 mr-1 h-3 w-3' />
                     Please select users to approve or uncheck require approval
                   </div>
                 )}

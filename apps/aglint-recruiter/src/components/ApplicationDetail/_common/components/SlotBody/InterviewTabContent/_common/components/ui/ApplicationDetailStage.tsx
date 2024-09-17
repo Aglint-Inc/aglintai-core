@@ -24,8 +24,8 @@ export function ApplicantDetailStage({
   isScheduleButtonVisible = false,
 }: ApplicantDetailStageProps) {
   return (
-    <Card className='p-4 justify-between items-center rounded-md bg-neutral-100'>
-      <div className='flex h-10 justify-between items-center'>
+    <Card className='items-center justify-between rounded-md bg-neutral-100 p-4'>
+      <div className='flex h-10 items-center justify-between'>
         <div>
           <UITypography type='medium' fontBold='normal'>
             {textName}
@@ -33,18 +33,18 @@ export function ApplicantDetailStage({
         </div>
         {isScheduleButtonVisible && <div>{slotScheduleButton}</div>}
         {isCountVisible && (
-          <div className='flex justify-start items-center gap-3'>
+          <div className='flex items-center justify-start gap-3'>
             <UITypography type='small' color='neutral'>
               {textInterviewCount}
             </UITypography>
-            <div className='hidden w-6 h-6 justify-center items-center rounded-sm bg-white cursor-pointer'>
+            <div className='hidden h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-white'>
               <ArrowBigDown size={16} className='text' />
             </div>
           </div>
         )}
       </div>
       {isInterviewStageDetailVisible && (
-        <div className='flex flex-col flex-nowrap gap-3 mt-4'>
+        <div className='mt-4 flex flex-col flex-nowrap gap-3'>
           {slotInterviewStageDetail}
         </div>
       )}

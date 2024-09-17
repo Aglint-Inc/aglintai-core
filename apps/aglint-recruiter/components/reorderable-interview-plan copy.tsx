@@ -164,19 +164,19 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
     };
 
     return (
-      <div key={step.id} className='flex items-start space-x-4 mb-4'>
-        <div className='flex flex-col items-center cursor-move'>
-          <GripVertical className='w-6 h-6 text-gray-400' />
+      <div key={step.id} className='mb-4 flex items-start space-x-4'>
+        <div className='flex cursor-move flex-col items-center'>
+          <GripVertical className='h-6 w-6 text-gray-400' />
         </div>
         <div className='relative'>
           <div
-            className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer z-10 relative`}
+            className={`relative z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full`}
           >
             {/* <Icon className='w-4 h-4' /> */}
             {step.order}
           </div>
           {index < steps.length - 1 && (
-            <div className='absolute top-3 left-3 w-0.5 h-full bg-gray-300 -z-10'></div>
+            <div className='absolute left-3 top-3 -z-10 h-full w-0.5 bg-gray-300'></div>
           )}
         </div>
 
@@ -235,7 +235,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                   }
                   size='sm'
                 >
-                  <Save className='w-4 h-4 mr-2' />
+                  <Save className='mr-2 h-4 w-4' />
                   {isNewStep
                     ? isAdding
                       ? 'Adding'
@@ -260,14 +260,14 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                   variant='outline'
                   size='sm'
                 >
-                  <X className='w-4 h-4 mr-2' />
+                  <X className='mr-2 h-4 w-4' />
                   Cancel
                 </Button>
               </div>
             </>
           ) : (
             <>
-              <h3 className='font-semibold text-lg'>{step.name}</h3>
+              <h3 className='text-lg font-semibold'>{step.name}</h3>
               <p className='text-gray-600'>{step.description}</p>
               <Button
                 onClick={() => handleEdit(step.id)}
@@ -275,7 +275,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                 size='sm'
                 className='mt-2'
               >
-                <Edit className='w-4 h-4 mr-2' />
+                <Edit className='mr-2 h-4 w-4' />
                 Edit
               </Button>
             </>
@@ -286,8 +286,8 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   };
 
   return (
-    <div className='max-w-2xl mx-auto p-4'>
-      <h1 className='text-2xl font-bold mb-6'>Reorderable Interview Plan</h1>
+    <div className='mx-auto max-w-2xl p-4'>
+      <h1 className='mb-6 text-2xl font-bold'>Reorderable Interview Plan</h1>
 
       <div className='relative' ref={timelineRef}>
         {data?.length && steps.map((step, index) => RenderStep(step, index))}

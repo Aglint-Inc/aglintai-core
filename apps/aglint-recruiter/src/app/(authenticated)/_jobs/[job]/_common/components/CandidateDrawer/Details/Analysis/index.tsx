@@ -17,7 +17,7 @@ export const Analysis = () => {
     <Accordion type='single' defaultValue='analysis' collapsible>
       <AccordionItem value='analysis'>
         <AccordionTrigger className='hover:no-underline'>
-          <div className='flex items-center justify-between w-full'>
+          <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
               <Brain size={16} />
               <span className='font-medium'>Analysis</span>

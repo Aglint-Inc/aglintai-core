@@ -35,15 +35,15 @@ const LeaderBoardWidgetRows = ({ type }: LeaderBoardWidgetRowsProps) => {
     return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
       <LeaderBoardLoader
         key={i}
-        slotSkeleton={<Skeleton className='w-full h-full' />}
+        slotSkeleton={<Skeleton className='h-full w-full' />}
       />
     ));
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>
@@ -69,7 +69,7 @@ const LeaderBoardWidgetComponent = ({
           onClick={() => {
             router.push(`scheduling/interviewer/${item.user_id}?tab=overview`);
           }}
-          className='rounded-md cursor-pointer'
+          className='cursor-pointer rounded-md'
         >
           <Link href={`/user/profile/${item.user_id}`}>
             <LeaderBoardCard
