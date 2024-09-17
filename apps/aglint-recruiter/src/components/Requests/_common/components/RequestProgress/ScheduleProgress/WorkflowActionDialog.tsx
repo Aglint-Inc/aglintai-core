@@ -37,7 +37,7 @@ const WorkflowActionDialog = () => {
   const {
     reqTriggerActionsMap,
     companyEmailTemplatesMp,
-    editTrigger,
+    triggerDetails,
     setShowEditDialog,
   } = useRequestProgressProvider();
 
@@ -54,6 +54,7 @@ const WorkflowActionDialog = () => {
   const handleChangeSelectedAction = (
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
+    const editTrigger = triggerDetails.trigger;
     setTiptapLoadStatus({ email: true, agent: true });
     if (
       get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
@@ -133,6 +134,7 @@ const WorkflowActionDialog = () => {
         wActions: [wAction],
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
+        interval: triggerDetails.interval,
       });
       await request_workflow.refetch();
       setShowEditDialog(false);
@@ -163,10 +165,12 @@ const WorkflowActionDialog = () => {
               handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
-            menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({
-              name: action.name,
-              value: action.value.target_api,
-            }))}
+            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.interval].map(
+              (action) => ({
+                name: action.name,
+                value: action.value.target_api,
+              }),
+            )}
           />
           <TargetAPIBody action={selectedActionsDetails} />
         </div>

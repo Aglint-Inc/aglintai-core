@@ -55,6 +55,7 @@ const InterviewScheduled = () => {
         ],
         recruiter_id: recruiter.id,
         request_id: currentRequest.id,
+        interval: 0,
       });
       await request_workflow.refetch();
     } catch (err) {

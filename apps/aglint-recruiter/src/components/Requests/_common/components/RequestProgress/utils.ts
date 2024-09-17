@@ -1,33 +1,25 @@
 import {
-  type DatabaseEnums,
   type DatabaseTable,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/utils/supabase/client';
-
-const triggerinterval: Partial<
-  Record<DatabaseEnums['workflow_trigger'], number>
-> = {
-  sendAvailReqReminder: 24 * 60,
-  selfScheduleReminder: 24 * 60,
-};
+import { TRIGGER_PAYLOAD } from '@/workflows/constants';
 
 export const createRequestWorkflowAction = async ({
   wActions,
   request_id,
   recruiter_id,
+  interval,
 }: {
   wActions: DatabaseTableInsert['workflow_action'][];
   request_id: string;
   recruiter_id: string;
+  interval: number;
 }) => {
   const trigger = wActions[0].target_api.split('_')[0] as any;
-  let interval = 0;
-  if (triggerinterval[trigger]) {
-    interval = triggerinterval[trigger];
-  }
+  const phase = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger).phase[0];
   let wTrigger: DatabaseTable['workflow'];
   [wTrigger] = supabaseWrap(
     await supabase
@@ -44,7 +36,7 @@ export const createRequestWorkflowAction = async ({
         .insert({
           request_id: request_id,
           trigger: trigger,
-          phase: 'after',
+          phase: phase,
           recruiter_id: recruiter_id,
           interval: interval,
           workflow_type: 'job',

@@ -19,8 +19,10 @@ import type { RequestProgressMapType, TriggerActionMapType } from './types';
 
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();
-  const [editTrigger, setEditTrigger] =
-    React.useState<DatabaseTable['workflow']['trigger']>('onRequestSchedule');
+  const [triggerDetails, setTriggerDetails] = React.useState<{
+    trigger: DatabaseTable['workflow']['trigger'];
+    interval: number;
+  }>({ interval: 0, trigger: 'onRequestSchedule' });
   const [showEditDialog, setShowEditDialog] = React.useState(false);
   const { recruiter } = useAuthDetails();
   const [companyEmailTemplates, setCompanyEmailTemplates] = React.useState<
@@ -69,12 +71,12 @@ function RequestProgress() {
     <RequestProgressContext.Provider
       value={{
         companyEmailTemplatesMp,
-        editTrigger,
         reqProgressMap,
         reqTriggerActionsMap,
-        setEditTrigger,
         setShowEditDialog,
         showEditDialog,
+        triggerDetails,
+        setTriggerDetails,
       }}
     >
       <div className='row-gap-1'>
@@ -117,7 +119,7 @@ function RequestProgress() {
           <SelectedActionsDetailsProvider
             defaultSelectedActionsDetails={getInitialActionDetails({
               companyEmailTemplatesMp,
-              editTrigger,
+              triggerDetails,
               reqTriggerActionsMap,
             })}
             companyTemplatesMp={companyEmailTemplatesMp}
@@ -144,9 +146,13 @@ export function RequestProgressSkeleton() {
 
 const getInitialActionDetails = ({
   companyEmailTemplatesMp,
-  editTrigger,
   reqTriggerActionsMap,
+  triggerDetails,
 }: {
+  triggerDetails: {
+    trigger: DatabaseTable['workflow']['trigger'];
+    interval: number;
+  };
   reqTriggerActionsMap: TriggerActionMapType;
   companyEmailTemplatesMp: Partial<
     Record<
@@ -154,8 +160,8 @@ const getInitialActionDetails = ({
       DatabaseTable['company_email_template']
     >
   >;
-  editTrigger: DatabaseTable['workflow']['trigger'];
 }) => {
+  const editTrigger = triggerDetails.trigger;
   if (
     reqTriggerActionsMap[editTrigger] &&
     reqTriggerActionsMap[editTrigger].length > 0

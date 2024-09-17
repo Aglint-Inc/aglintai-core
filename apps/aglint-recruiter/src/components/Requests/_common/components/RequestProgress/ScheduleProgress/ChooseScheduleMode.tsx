@@ -5,7 +5,7 @@ import { Lightbulb, WandSparkles } from 'lucide-react';
 import { useRequestProgressProvider } from '../progressCtx';
 
 const ChooseScheduleMode = () => {
-  const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
+  const { setTriggerDetails, setShowEditDialog } = useRequestProgressProvider();
   return (
     <>
       <div className='flex flex-col gap-4'>
@@ -19,7 +19,10 @@ const ChooseScheduleMode = () => {
                 <Button
                   variant='outline'
                   onClick={() => {
-                    setEditTrigger('onRequestSchedule');
+                    setTriggerDetails({
+                      trigger: 'onRequestSchedule',
+                      interval: 0,
+                    });
                     setShowEditDialog(true);
                   }}
                 >

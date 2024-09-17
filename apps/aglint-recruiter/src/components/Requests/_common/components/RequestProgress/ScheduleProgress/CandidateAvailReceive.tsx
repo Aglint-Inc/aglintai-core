@@ -248,7 +248,7 @@ const RequestEvents = ({
 };
 
 const WActionMenu = () => {
-  const { setEditTrigger, setShowEditDialog, reqTriggerActionsMap } =
+  const { setTriggerDetails, setShowEditDialog, reqTriggerActionsMap } =
     useRequestProgressProvider();
   let wActionAfterAvailRecive: DatabaseTable['workflow_action'][] = [];
   if (
@@ -286,7 +286,10 @@ const WActionMenu = () => {
                   variant='outline'
                   size='sm'
                   onClick={() => {
-                    setEditTrigger('onReceivingAvailReq');
+                    setTriggerDetails({
+                      interval: 0,
+                      trigger: 'onReceivingAvailReq',
+                    });
                     setShowEditDialog(true);
                   }}
                 >
@@ -335,7 +338,10 @@ const WActionMenu = () => {
                             variant='outline'
                             size='sm'
                             onClick={() => {
-                              setEditTrigger('selfScheduleReminder');
+                              setTriggerDetails({
+                                trigger: 'selfScheduleReminder',
+                                interval: 24 * 60,
+                              });
                               setShowEditDialog(true);
                             }}
                           >

@@ -19,7 +19,7 @@ const SelfScheduleFlowMenus = ({
   isManualSchedule: boolean;
   isSelectScheduleFlowComplete: boolean;
 }) => {
-  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+  const { reqTriggerActionsMap, setTriggerDetails, setShowEditDialog } =
     useRequestProgressProvider();
   const { request_progress } = useRequest();
 
@@ -108,7 +108,10 @@ const SelfScheduleFlowMenus = ({
                 variant='outline'
                 size='sm'
                 onClick={() => {
-                  setEditTrigger('selfScheduleReminder');
+                  setTriggerDetails({
+                    trigger: 'selfScheduleReminder',
+                    interval: 24 * 60,
+                  });
                   setShowEditDialog(true);
                 }}
               >
