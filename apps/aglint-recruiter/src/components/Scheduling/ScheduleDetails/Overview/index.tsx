@@ -2,7 +2,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { GlobalUserDetail } from '@devlink3/GlobalUserDetail';
-import { NewScheduleDetail } from '@devlink3/NewScheduleDetail';
 import { SquareArrowOutUpRight, Users } from 'lucide-react';
 import Link from 'next/link';
 
@@ -19,6 +18,7 @@ import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
+import { NewScheduleDetail } from './NewScheduleDetails';
 
 function Overview() {
   const { checkPermissions } = useRolesAndPermissions();
