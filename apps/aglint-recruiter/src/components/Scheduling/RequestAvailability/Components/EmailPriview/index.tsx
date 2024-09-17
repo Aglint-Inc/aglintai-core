@@ -89,13 +89,13 @@ function EmailPreview({
 
       <div className='w-full'>
         {fetching ? (
-          <div className='h-[80vh] w-full flex items-center justify-center'>
-            <Loader2 className='w-8 h-8 animate-spin' />
+          <div className='flex h-[80vh] w-full items-center justify-center'>
+            <Loader2 className='h-8 w-8 animate-spin' />
           </div>
         ) : (
           <div className='flex flex-col space-y-4'>
-            <div className='flex justify-between items-center w-full px-5'>
-              <Alert className='flex-grow mr-8'>
+            <div className='flex w-full items-center justify-between px-5'>
+              <Alert className='mr-8 flex-grow'>
                 <AlertCircle className='h-4 w-4' />
                 <AlertDescription>
                   This is a preview only. All actions in this email are
@@ -120,7 +120,7 @@ function EmailPreview({
               </div>
             </div>
             <iframe
-              className='w-full h-[720px] border border-gray-200 rounded'
+              className='h-[720px] w-full rounded border border-gray-200'
               srcDoc={emailData?.html}
               title='Preview Email'
             />

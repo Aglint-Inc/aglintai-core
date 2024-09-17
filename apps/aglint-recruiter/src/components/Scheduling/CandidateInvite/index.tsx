@@ -43,7 +43,7 @@ const CandidateInviteNew = () => {
             <Loader />
           </div>
         ) : load === null ? (
-          <div className='w-full h-screen flex justify-center items-center'>
+          <div className='flex h-screen w-full items-center justify-center'>
             <NotFound />
           </div>
         ) : (
@@ -103,7 +103,7 @@ const CandidateInvitePlanPage = () => {
 
   if (meetings.length === 0)
     return (
-      <div className='w-full h-screen'>
+      <div className='h-screen w-full'>
         <NotFound />
       </div>
     );

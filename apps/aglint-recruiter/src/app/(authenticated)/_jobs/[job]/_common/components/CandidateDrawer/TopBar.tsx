@@ -51,7 +51,7 @@ const Actions = () => {
   const { devlinkProps } = useRolesAndPermissions();
   const props = useMemo(() => devlinkProps(['manage_job']), [devlinkProps]);
   return (
-    <div className='flex items-center justify-between w-full'>
+    <div className='flex w-full items-center justify-between'>
       <Button
         variant='ghost'
         size='sm'
@@ -65,7 +65,7 @@ const Actions = () => {
         }
         {...props}
       >
-        <BookmarkIcon className='w-5 h-5' />
+        <BookmarkIcon className='h-5 w-5' />
       </Button>
 
       <div className='flex items-center space-x-2'>
@@ -76,7 +76,7 @@ const Actions = () => {
             className='text-gray-600 hover:text-gray-800'
             onClick={() => navigation.handleUp()}
           >
-            <ChevronUpIcon className='w-5 h-5' />
+            <ChevronUpIcon className='h-5 w-5' />
           </Button>
         )}
 
@@ -87,7 +87,7 @@ const Actions = () => {
             className='text-gray-600 hover:text-gray-800'
             onClick={() => navigation.handleDown()}
           >
-            <ChevronDownIcon className='w-5 h-5' />
+            <ChevronDownIcon className='h-5 w-5' />
           </Button>
         )}
 
@@ -97,7 +97,7 @@ const Actions = () => {
           className='text-gray-600 hover:text-gray-800'
           onClick={() => handlClose()}
         >
-          <XIcon className='w-5 h-5' />
+          <XIcon className='h-5 w-5' />
         </Button>
       </div>
     </div>
@@ -110,7 +110,7 @@ const TopBar = (props: PropsWithChildren) => {
   } = useApplication();
   if (status === 'pending') return <>Loadin...</>;
   return (
-    <div className='flex flex-row items-center justify-between w-full h-full'>
+    <div className='flex h-full w-full flex-row items-center justify-between'>
       {props.children ?? (
         <>
           <Info />

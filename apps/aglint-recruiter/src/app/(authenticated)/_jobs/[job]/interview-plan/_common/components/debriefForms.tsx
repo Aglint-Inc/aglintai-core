@@ -212,7 +212,7 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
-            className='w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
         </div>
       ) : null,
@@ -271,7 +271,7 @@ const Attendees = ({
   return (
     <>
       {attendees}
-      <div className='flex items-center justify-between p-4 border-b'>
+      <div className='flex items-center justify-between border-b p-4'>
         <div className='flex items-center space-x-4'>
           <span className='text-sm font-medium'>Previous interviewers</span>
         </div>
@@ -320,7 +320,7 @@ const Member = ({
   if (!member) return <></>;
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <div className='flex items-center justify-between p-4 border-b'>
+    <div className='flex items-center justify-between border-b p-4'>
       <div className='flex items-center space-x-4'>
         <span className='text-sm font-medium'>{capitalize(role)}</span>
         <Avatar className='h-8 w-8'>
