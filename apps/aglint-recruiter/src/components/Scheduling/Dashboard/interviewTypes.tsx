@@ -90,16 +90,7 @@ List.displayName = 'List';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-<<<<<<< HEAD
-    (_, i) => <Skeleton key={i} className='w-full h-full' />,
-=======
-    (_, i) => (
-      <InterviewStatsLoader
-        key={i}
-        slotSkeleton={<Skeleton className='h-full w-full' />}
-      />
-    ),
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
+    (_, i) => <Skeleton key={i} className='h-full w-full' />,
   );
 });
 Loader.displayName = 'Loader';

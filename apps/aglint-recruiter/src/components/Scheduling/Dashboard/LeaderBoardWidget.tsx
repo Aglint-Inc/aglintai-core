@@ -15,8 +15,8 @@ import SchedulingDropdown from './SchedulingDropdown';
 const LeaderBoardWidget = () => {
   const [type, setType] = useState<LeaderBoardWidgetRowsProps['type']>('month');
   return (
-    <div className='bg-white rounded-lg shadow-md p-4'>
-      <div className='flex justify-between items-center mb-4'>
+    <div className='rounded-lg bg-white p-4 shadow-md'>
+      <div className='mb-4 flex items-center justify-between'>
         <h3 className='text-lg font-semibold'>Leaderboard</h3>
         <SchedulingDropdown type={type} setType={setType} />
       </div>
@@ -36,14 +36,7 @@ const LeaderBoardWidgetRows = ({ type }: LeaderBoardWidgetRowsProps) => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
-<<<<<<< HEAD
-      <Skeleton key={i} className='w-full h-full' />
-=======
-      <LeaderBoardLoader
-        key={i}
-        slotSkeleton={<Skeleton className='h-full w-full' />}
-      />
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
+      <Skeleton key={i} className='h-full w-full' />
     ));
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
@@ -79,7 +72,7 @@ const LeaderBoardWidgetComponent = ({
           className='cursor-pointer rounded-md'
         >
           <Link href={`/user/profile/${item.user_id}`}>
-            <Card className='p-4 hover:bg-neutral-100 transition-colors duration-200'>
+            <Card className='p-4 transition-colors duration-200 hover:bg-neutral-100'>
               <div className='flex items-center space-x-4'>
                 <Avatar>
                   <AvatarImage
@@ -109,7 +102,7 @@ const LeaderBoardWidgetComponent = ({
                     {(item.duration / 60).toFixed(1)} hours
                   </p>
                 </div>
-                <div className='flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center'>
+                <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-200'>
                   <span className='text-sm font-medium'>{index + 1}</span>
                 </div>
               </div>

@@ -23,7 +23,7 @@ export const Tabs = memo(() => {
     );
   if (status === 'success')
     return (
-      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5'>
         {[
           'Completed',
           'Waiting',
@@ -41,18 +41,3 @@ export const Tabs = memo(() => {
     );
 });
 Tabs.displayName = 'Tabs';
-<<<<<<< HEAD
-=======
-
-const TabSkeleton = () => (
-  <div
-    style={{
-      position: 'relative',
-      width: '30px',
-      height: '36px',
-    }}
-  >
-    <Skeleton className='h-full w-full' />
-  </div>
-);
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f

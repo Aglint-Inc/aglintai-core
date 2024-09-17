@@ -18,12 +18,12 @@ const TrainingProgress = () => {
   const { data } = useInterviewTrainingProgress();
   return (
     <div className='w-full'>
-      <div className='flex justify-between items-center mb-4'>
+      <div className='mb-4 flex items-center justify-between'>
         <h2 className='text-xl font-semibold'>Training Progress</h2>
         {!!data && data.length !== 0 && (
           <Link
             href={`${ROUTES['/scheduling']()}?tab=interviewtypes`}
-            className='text-blue-600 hover:text-blue-800 transition-colors'
+            className='text-blue-600 transition-colors hover:text-blue-800'
             onClick={() =>
               push(`${ROUTES['/scheduling']()}?tab=interviewtypes`)
             }
@@ -32,7 +32,7 @@ const TrainingProgress = () => {
           </Link>
         )}
       </div>
-      <div className='bg-white shadow rounded-lg p-4'>
+      <div className='rounded-lg bg-white p-4 shadow'>
         <TrainingProgressComponent />
       </div>
     </div>
@@ -52,16 +52,7 @@ const TrainingProgressComponent = () => {
 
   if (status === 'pending')
     return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-<<<<<<< HEAD
-      (_, i) => <Skeleton key={i} className='w-full h-full' />,
-=======
-      (_, i) => (
-        <TrainingProgressLoader
-          key={i}
-          slotSkeleton={<Skeleton className='h-full w-full' />}
-        />
-      ),
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
+      (_, i) => <Skeleton key={i} className='h-full w-full' />,
     );
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
@@ -90,12 +81,12 @@ const TrainingProgressComponent = () => {
       }) => (
         <>
           <Link href={`/user/profile/${user_id}`}>
-            <div className='flex items-center space-x-4 p-4 hover:bg-gray-50 rounded-lg transition-colors duration-200'>
+            <div className='flex items-center space-x-4 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-50'>
               <div className='flex-shrink-0'>
                 <Avatar
                   src={profile_image}
                   alt={capitalizeAll(getFullName(first_name, last_name))}
-                  className='w-10 h-10'
+                  className='h-10 w-10'
                 />
               </div>
               <div className='flex-grow'>
@@ -106,7 +97,7 @@ const TrainingProgressComponent = () => {
                   {capitalizeAll(getFullName(first_name, last_name))}
                 </Link>
                 <p className='text-sm text-gray-500'>{position}</p>
-                <p className='text-xs text-gray-400 mt-1'>{module.name}</p>
+                <p className='mt-1 text-xs text-gray-400'>{module.name}</p>
               </div>
               <div className='flex-shrink-0'>
                 <HistoryPills count={count} module={module} />

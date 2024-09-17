@@ -47,7 +47,6 @@ function InterviewerUserDetail({
   interviewerType: DatabaseTable['interview_session_relation']['interviewer_type'];
 }) {
   return (
-<<<<<<< HEAD
     <div className='flex items-center space-x-4'>
       <div className='flex-shrink-0'>
         {userDetails.profile_image ? (
@@ -64,77 +63,9 @@ function InterviewerUserDetail({
             </AvatarFallback>
           </Avatar>
         ) : (
-          <div className='w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm'>
+          <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm text-gray-500'>
             {getFullName(userDetails.first_name, userDetails.last_name).charAt(
               0,
-=======
-    <GlobalUserDetail
-      slotCandidateStatus={
-        <Stack
-          height={'100%'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          direction={'row'}
-        >
-          {trainingType ? (
-            <InterviewerTrainingTypeIcon type={trainingType} />
-          ) : interviewerType !== 'qualified' &&
-            trainingType !== 'qualified' ? (
-            <UIBadge color={'info'} textBadge={'Training'} size={'sm'} />
-          ) : (
-            ''
-          )}
-          {interview_meeting?.status === 'confirmed' && (
-            <>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Stack
-                    sx={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <InterviewerAcceptDeclineIcon type={accepted_status} />
-                  </Stack>
-                </TooltipTrigger>
-                {cancelReason?.reason && (
-                  <TooltipContent>
-                    <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
-                      <p className='text-warning text-sm'>
-                        Reason : {cancelReason?.reason}
-                      </p>
-                      {cancelReason?.other_details?.note && (
-                        <p className='text-sm text-muted-foreground'>
-                          Notes : {cancelReason?.other_details?.note}
-                        </p>
-                      )}
-                    </Stack>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </>
-          )}
-
-          {interview_meeting?.status !== 'confirmed' &&
-            interview_meeting?.status !== 'completed' && (
-              <>
-                {!isCalendarConnected && (
-                  <UIBadge
-                    size={'sm'}
-                    iconName={'CalendarOff'}
-                    color={'error'}
-                    textBadge={`Calendar not connected`}
-                  />
-                )}
-                {isPaused && (
-                  <UIBadge
-                    size={'sm'}
-                    color={'error'}
-                    iconName={'CalendarFold'}
-                    textBadge={`Paused ${getPauseMemberText(pause_json)}`}
-                  />
-                )}
-              </>
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
             )}
           </div>
         )}
@@ -173,8 +104,8 @@ function InterviewerUserDetail({
             </TooltipTrigger>
             {cancelReason?.reason && (
               <TooltipContent>
-                <div className='p-2 space-y-1'>
-                  <p className='text-sm text-warning'>
+                <div className='space-y-1 p-2'>
+                  <p className='text-warning text-sm'>
                     Reason : {cancelReason?.reason}
                   </p>
                   {cancelReason?.other_details?.note && (

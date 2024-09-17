@@ -51,8 +51,7 @@ export default function ScheduleAnalyticsCards() {
   );
 
   return (
-<<<<<<< HEAD
-    <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4'>
+    <div className='grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5'>
       <Card>
         <CardHeader>
           <CardTitle>Completed</CardTitle>
@@ -60,14 +59,14 @@ export default function ScheduleAnalyticsCards() {
         <CardContent>
           <div className='text-2xl font-bold'>
             {loading ? (
-              <Skeleton className='w-5 h-7' />
+              <Skeleton className='h-7 w-5' />
             ) : (
               (processedData.grouping_unit_a.completed || []).length || 0
             )}
           </div>
           <p className='text-xs text-muted-foreground'>
             {loading ? (
-              <Skeleton className='w-[130px] h-5' />
+              <Skeleton className='h-5 w-[130px]' />
             ) : (
               `${Math.round(percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
             )}
@@ -82,14 +81,14 @@ export default function ScheduleAnalyticsCards() {
         <CardContent>
           <div className='text-2xl font-bold'>
             {loading ? (
-              <Skeleton className='w-5 h-7' />
+              <Skeleton className='h-7 w-5' />
             ) : (
               (processedData.grouping_unit_a.waiting || []).length || 0
             )}
           </div>
           <p className='text-xs text-muted-foreground'>
             {loading ? (
-              <Skeleton className='w-[130px] h-5' />
+              <Skeleton className='h-5 w-[130px]' />
             ) : (
               `${Math.round(percentChange((processedData.grouping_unit_a.waiting || []).length, (processedData.grouping_unit_b.waiting || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
             )}
@@ -104,14 +103,14 @@ export default function ScheduleAnalyticsCards() {
         <CardContent>
           <div className='text-2xl font-bold'>
             {loading ? (
-              <Skeleton className='w-5 h-7' />
+              <Skeleton className='h-7 w-5' />
             ) : (
               (processedData.grouping_unit_a.confirmed || []).length || 0
             )}
           </div>
           <p className='text-xs text-muted-foreground'>
             {loading ? (
-              <Skeleton className='w-[130px] h-5' />
+              <Skeleton className='h-5 w-[130px]' />
             ) : (
               `${Math.round(percentChange((processedData.grouping_unit_a.confirmed || []).length, (processedData.grouping_unit_b.confirmed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
             )}
@@ -126,14 +125,14 @@ export default function ScheduleAnalyticsCards() {
         <CardContent>
           <div className='text-2xl font-bold'>
             {loading ? (
-              <Skeleton className='w-5 h-7' />
+              <Skeleton className='h-7 w-5' />
             ) : (
               (processedData.grouping_unit_a.not_scheduled || []).length || 0
             )}
           </div>
           <p className='text-xs text-muted-foreground'>
             {loading ? (
-              <Skeleton className='w-[130px] h-5' />
+              <Skeleton className='h-5 w-[130px]' />
             ) : (
               `${Math.round(percentChange((processedData.grouping_unit_a.not_scheduled || []).length, (processedData.grouping_unit_b.not_scheduled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
             )}
@@ -148,14 +147,14 @@ export default function ScheduleAnalyticsCards() {
         <CardContent>
           <div className='text-2xl font-bold'>
             {loading ? (
-              <Skeleton className='w-5 h-7' />
+              <Skeleton className='h-7 w-5' />
             ) : (
               (processedData.grouping_unit_a.cancelled || []).length || 0
             )}
           </div>
           <p className='text-xs text-muted-foreground'>
             {loading ? (
-              <Skeleton className='w-[130px] h-5' />
+              <Skeleton className='h-5 w-[130px]' />
             ) : (
               `${Math.round(percentChange((processedData.grouping_unit_a.cancelled || []).length, (processedData.grouping_unit_b.cancelled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
             )}
@@ -163,80 +162,6 @@ export default function ScheduleAnalyticsCards() {
         </CardContent>
       </Card>
     </div>
-=======
-    <ScheduleCountStats
-      textCompletedCount={
-        loading ? (
-          <Skeleton className='h-7 w-5' />
-        ) : (
-          (processedData.grouping_unit_a.completed || []).length || 0
-        )
-      }
-      textIncreasedCompleted={
-        loading ? (
-          <Skeleton className='h-5 w-[130px]' />
-        ) : (
-          `${Math.round(percentChange((processedData.grouping_unit_a.completed || []).length, (processedData.grouping_unit_b.completed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
-        )
-      }
-      textWaitingCount={
-        loading ? (
-          <Skeleton className='h-7 w-5' />
-        ) : (
-          (processedData.grouping_unit_a.waiting || []).length || 0
-        )
-      }
-      textIncreasedWaiting={
-        loading ? (
-          <Skeleton className='h-5 w-[130px]' />
-        ) : (
-          `${Math.round(percentChange((processedData.grouping_unit_a.waiting || []).length, (processedData.grouping_unit_b.waiting || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
-        )
-      }
-      textConfirmedCount={
-        loading ? (
-          <Skeleton className='h-7 w-5' />
-        ) : (
-          (processedData.grouping_unit_a.confirmed || []).length || 0
-        )
-      }
-      textIncreasedConfirmed={
-        loading ? (
-          <Skeleton className='h-5 w-[130px]' />
-        ) : (
-          `${Math.round(percentChange((processedData.grouping_unit_a.confirmed || []).length, (processedData.grouping_unit_b.confirmed || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
-        )
-      }
-      textNotScheduledCount={
-        loading ? (
-          <Skeleton className='h-7 w-5' />
-        ) : (
-          (processedData.grouping_unit_a.not_scheduled || []).length || 0
-        )
-      }
-      textIncreasedNotScheduled={
-        loading ? (
-          <Skeleton className='h-5 w-[130px]' />
-        ) : (
-          `${Math.round(percentChange((processedData.grouping_unit_a.not_scheduled || []).length, (processedData.grouping_unit_b.not_scheduled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
-        )
-      }
-      textCancelledCount={
-        loading ? (
-          <Skeleton className='h-7 w-5' />
-        ) : (
-          (processedData.grouping_unit_a.cancelled || []).length || 0
-        )
-      }
-      textIncreasedCancelled={
-        loading ? (
-          <Skeleton className='h-5 w-[130px]' />
-        ) : (
-          `${Math.round(percentChange((processedData.grouping_unit_a.cancelled || []).length, (processedData.grouping_unit_b.cancelled || []).length))}% from last ${capitalizeFirstLetter(groupingUnit)}`
-        )
-      }
-    />
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
   );
 }
 

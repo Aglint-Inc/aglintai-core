@@ -123,7 +123,6 @@ function TrainingSettingDrawer(
     >
       <>
         {localModule && (
-<<<<<<< HEAD
           <div className='space-y-6'>
             <div className='flex items-center justify-between'>
               <h3 className='text-lg font-semibold'>Module Settings</h3>
@@ -137,63 +136,12 @@ function TrainingSettingDrawer(
             </div>
 
             <div
-              className={`space-y-4 ${!localModule?.settings?.require_training ? 'opacity-50 pointer-events-none' : ''}`}
+              className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
             >
               <div className='flex items-center space-x-2'>
                 <Checkbox
                   checked={localModule?.settings?.reqruire_approval}
                   onChange={() => {
-=======
-          <ModuleSetting
-            onClickClose={{
-              onClick: () => setIsModuleSettingsDialogOpen(false),
-            }}
-            isDisable={!localModule?.settings?.require_training}
-            isRequireTrainingVisible={true}
-            isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
-            slotCheckbox={
-              <Checkbox
-                checked={localModule?.settings?.reqruire_approval}
-                onChange={() => {
-                  setLocalModule({
-                    ...localModule,
-                    settings: {
-                      ...localModule.settings,
-                      reqruire_approval:
-                        !localModule.settings.reqruire_approval,
-                    },
-                  });
-                }}
-              />
-            }
-            slotButtonPrimary={<></>}
-            slotApprovalDoneInput={
-              <>
-                <MembersAutoComplete
-                  error={errorApproval || selectedUsers.length === 0}
-                  renderUsers={dropDownMembers}
-                  setSelectedUsers={setSelectedUsers}
-                  selectedUsers={selectedUsers}
-                  pillColor='var(--neutral-3)'
-                  maxWidth='430px'
-                  onUserSelect={() => setErrorApproval(false)}
-                />
-                {selectedUsers.length === 0 && (
-                  <div className='text-error-9 mb-2 flex items-center pt-2'>
-                    <AlertCircle className='text-error-9 mr-1 h-3 w-3' />
-                    Please select users to approve or uncheck require approval
-                  </div>
-                )}
-              </>
-            }
-            slotInputNoOfReverse={
-              <div className='flex items-center gap-1'>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  disabled={localModule.settings.noReverseShadow === 1}
-                  onClick={() => {
->>>>>>> 8eb6ea7dfa37de2bebc9079affacd757345fc96f
                     setLocalModule({
                       ...localModule,
                       settings: {
@@ -221,8 +169,8 @@ function TrainingSettingDrawer(
                     onUserSelect={() => setErrorApproval(false)}
                   />
                   {selectedUsers.length === 0 && (
-                    <div className='text-red-500 text-sm flex items-center'>
-                      <AlertCircle className='h-3 w-3 mr-1' />
+                    <div className='flex items-center text-sm text-red-500'>
+                      <AlertCircle className='mr-1 h-3 w-3' />
                       Please select users to approve or uncheck require approval
                     </div>
                   )}
