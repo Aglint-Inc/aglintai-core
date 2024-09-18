@@ -56,8 +56,7 @@ const Create = () => {
 
   return (
     <>
-      <Button size='sm' onClick={() => setPopup({ open: true })}>
-        <Bolt className='mr-2 h-4 w-4' />
+      <Button variant='outline' onClick={() => setPopup({ open: true })}>
         Create
       </Button>
       <Dialog open={open} onOpenChange={handleClose}>

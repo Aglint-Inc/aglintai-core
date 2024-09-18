@@ -136,7 +136,7 @@ export default function ViewRequestDetails() {
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
               <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-                Schedule Request Details
+                Request Detail
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
@@ -158,16 +158,16 @@ export default function ViewRequestDetails() {
                   </Link>
                 </div>
                 <span>•</span>
-                <span>{candidateDetails?.current_job_title}</span>
-                <span>•</span>
+                {/* <span>{candidateDetails?.current_job_title}</span>
+                <span>•</span> */}
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
                   <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
                     <span>{jobDetails?.job_title}</span>
                   </Link>
                 </div>
-                <span>•</span>
-                <span>Finance and Accounting</span>
+                {/* <span>•</span> */}
+                {/* <span>Finance and Accounting</span> */}
                 {jobDetails?.office_locations && (
                   <>
                     <span>•</span>
@@ -179,7 +179,7 @@ export default function ViewRequestDetails() {
                 )}
               </div>
             </div>
-            <div className='flex flex-col gap-4 space-x-2'>
+            <div className='flex flex-col items-end gap-4 space-x-2'>
               <div className='flex flex-row gap-2'>
                 <Badge variant='destructive'>
                   {capitalizeFirstLetter(selectedRequest?.type)}
