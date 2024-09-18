@@ -25,6 +25,7 @@ import type { CustomRequestProgress } from "./request_progress";
 import type { CustomUserChat } from "./user_chat";
 import type { CustomIntegrations } from "./integrations.types";
 import type { CustomRecruiterPreferences } from "./recruiter_preferences.types";
+import { CustomInterviewMeeting } from "./interview_meeting";
 
 type DatabaseTables = Database["public"]["Tables"];
 type DatabaseTableInsert<T extends keyof DatabaseTables> =
@@ -84,5 +85,6 @@ export type Tables = Custom<
     user_chat: CustomUserChat;
     integrations: CustomIntegrations;
     recruiter_preferences: CustomRecruiterPreferences;
+    interview_meeting: CustomInterviewMeeting;
   }
 >;
