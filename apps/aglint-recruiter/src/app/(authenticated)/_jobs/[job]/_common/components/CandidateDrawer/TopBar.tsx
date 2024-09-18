@@ -5,12 +5,11 @@ import {
   ChevronUpIcon,
   XIcon,
 } from 'lucide-react';
-import { type PropsWithChildren, useEffect, useMemo } from 'react';
+import { type PropsWithChildren, useMemo } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useKeyPress } from '@/hooks/useKeyPress';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 const Info = () => {
@@ -42,12 +41,12 @@ const Actions = () => {
   const {
     meta: { data },
     navigation,
-    handleUpdateApplication,
+    // handleUpdateApplication,
   } = useApplication();
-  const { pressed } = useKeyPress('b');
-  useEffect(() => {
-    if (pressed) handleUpdateApplication({ bookmarked: !data?.bookmarked });
-  }, [pressed]);
+  // const { pressed } = useKeyPress('b');
+  // useEffect(() => {
+  //   if (pressed) handleUpdateApplication({ bookmarked: !data?.bookmarked });
+  // }, [pressed]);
   const { devlinkProps } = useRolesAndPermissions();
   const props = useMemo(() => devlinkProps(['manage_job']), [devlinkProps]);
   return (
@@ -60,8 +59,9 @@ const Actions = () => {
             ? 'text-yellow-500 hover:text-yellow-600'
             : 'text-gray-400 hover:text-gray-500'
         }
-        onClick={() =>
-          handleUpdateApplication({ bookmarked: !data.bookmarked })
+        onClick={
+          () => {}
+          // handleUpdateApplication({ bookmarked: !data.bookmarked })
         }
         {...props}
       >

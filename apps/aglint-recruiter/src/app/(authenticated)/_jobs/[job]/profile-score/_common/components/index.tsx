@@ -224,7 +224,7 @@ const ProfileScoreControls = () => {
       <div className='space-y-4'>
         <div className='flex justify-center'>
           <div className='flex w-4/5 flex-row items-center justify-center gap-10'>
-            <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
+            <ScoreWheel parameter_weights={weights} />
           </div>
         </div>
         <div className='flex flex-row justify-center space-x-2'>

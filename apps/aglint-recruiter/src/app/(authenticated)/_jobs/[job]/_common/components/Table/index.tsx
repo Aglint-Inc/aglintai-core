@@ -3,7 +3,7 @@ import { memo, useEffect, useMemo } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
-import { useApplications } from '@/job/hooks';
+import { useApplications, useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';
@@ -13,9 +13,11 @@ import { TableHeader } from './TableHeader';
 export const Table = memo(() => {
   const {
     job: { section_count },
+  } = useJob();
+  const status = useApplicationsStore((state) => state.status);
+  const {
     cascadeVisibilites,
-    section,
-    sectionApplication,
+    queryData,
     handleSelectPrevApplication,
     handleSelectNextApplication,
   } = useApplications();
@@ -48,17 +50,17 @@ export const Table = memo(() => {
     [cascadeVisibilites],
   );
 
-  if ((section_count[section] ?? 0) === 0) return <EmptyList />;
-  if (sectionApplication.status === 'error') return <>Error</>;
-  if (sectionApplication.status === 'pending')
+  if ((section_count[status] ?? 0) === 0) return <EmptyList />;
+  if (queryData.status === 'error') return <>Error</>;
+  if (queryData.status === 'pending')
     return <Loader count={8}>{skeleton}</Loader>;
 
   return (
     // <NewTable />
     <List
-      key={section}
-      applications={sectionApplication}
-      count={section_count[section]}
+      key={status}
+      queryData={queryData}
+      count={section_count[status]}
       loader={<Loader count={5}>{skeleton}</Loader>}
       header={
         <div className='sticky top-0' style={{ zIndex: 1 }}>

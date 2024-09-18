@@ -12,7 +12,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
-import { useJob, useJobDashboard, useJobParams } from '@/job/hooks';
+import { useJob, useJobDashboard } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
 import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
@@ -105,16 +105,14 @@ const Dashboard = () => {
   } = useJobDashboard();
   const { push } = useRouter();
 
-  const { getParams } = useJobParams();
-
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
-  const handleFilter = (
-    resume_match: Parameters<typeof getParams>[0]['resume_match'][number],
-  ) => {
-    const params = getParams({ resume_match: [resume_match] });
-    push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
-  };
+  // const handleFilter = (
+  //   resume_match: Parameters<typeof getParams>[0]['resume_match'][number],
+  // ) => {
+  //   const params = getParams({ resume_match: [resume_match] });
+  //   push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
+  // };
 
   // const [, setStorage] = useLocalStorage('scheduleFilterIds');
 
@@ -147,7 +145,7 @@ const Dashboard = () => {
               <JobStats
                 isScoringEnabled={isScoringEnabled}
                 score_matches={score_matches}
-                handleFilter={handleFilter}
+                // handleFilter={handleFilter}
               />
             </div>
           </div>
@@ -181,7 +179,7 @@ const Dashboard = () => {
   );
 };
 
-const JobStats = ({ isScoringEnabled, score_matches, handleFilter }) => (
+const JobStats = ({ isScoringEnabled, score_matches }) => (
   <div className='flex space-x-12 overflow-x-auto'>
     {isScoringEnabled && (
       <>
@@ -189,35 +187,35 @@ const JobStats = ({ isScoringEnabled, score_matches, handleFilter }) => (
           label='Top Match'
           percentage={score_matches?.top_match?.percentage ?? '---'}
           count={score_matches?.top_match?.count ?? '---'}
-          onClick={() => handleFilter('top_match')}
+          // onClick={() => handleFilter('top_match')}
           color='bg-green-500'
         />
         <StatItem
           label='Good Match'
           percentage={score_matches?.good_match?.percentage ?? '---'}
           count={score_matches?.good_match?.count ?? '---'}
-          onClick={() => handleFilter('good_match')}
+          // onClick={() => handleFilter('good_match')}
           color='bg-lime-500'
         />
         <StatItem
           label='Average Match'
           percentage={score_matches?.average_match?.percentage ?? '---'}
           count={score_matches?.average_match?.count ?? '---'}
-          onClick={() => handleFilter('average_match')}
+          // onClick={() => handleFilter('average_match')}
           color='bg-yellow-500'
         />
         <StatItem
           label='Below Average'
           percentage={score_matches?.poor_match?.percentage ?? '---'}
           count={score_matches?.poor_match?.count ?? '---'}
-          onClick={() => handleFilter('poor_match')}
+          // onClick={() => handleFilter('poor_match')}
           color='bg-orange-500'
         />
         <StatItem
           label='Not a Match'
           percentage={score_matches?.not_a_match?.percentage ?? '---'}
           count={score_matches?.not_a_match?.count ?? '---'}
-          onClick={() => handleFilter('not_a_match')}
+          // onClick={() => handleFilter('not_a_match')}
           color='bg-red-500'
         />
       </>
@@ -225,8 +223,8 @@ const JobStats = ({ isScoringEnabled, score_matches, handleFilter }) => (
   </div>
 );
 
-const StatItem = ({ label, percentage, count, onClick, color }) => (
-  <div className='mx-auto w-full max-w-4xl p-4' onClick={onClick}>
+const StatItem = ({ label, percentage, count, color }) => (
+  <div className='mx-auto w-full max-w-4xl p-4'>
     <div className='flex cursor-pointer flex-col rounded-lg transition-colors duration-200 hover:bg-gray-100 sm:flex-row'>
       <div className='flex-1 p-2'>
         <div className='mb-1 text-sm font-medium' style={{ color: color }}>

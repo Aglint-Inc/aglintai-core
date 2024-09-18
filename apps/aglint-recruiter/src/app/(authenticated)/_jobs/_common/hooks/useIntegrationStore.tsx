@@ -6,8 +6,8 @@
  *
  */
 
-import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 import { IntegrationStoreContext } from '@/jobs/contexts';
+import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 
 export const useIntegrationStore = createContextStoreSelector(
   IntegrationStoreContext,

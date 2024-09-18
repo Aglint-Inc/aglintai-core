@@ -5,7 +5,7 @@ import { DndProvider, useDragLayer, type XYCoord } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { useMousePosition } from '@/hooks/useMousePosition';
-import { useApplications, useApplicationsStore } from '@/job/hooks';
+import { useApplicationsStore, useJob } from '@/job/hooks';
 
 const DNDProvider = (props: PropsWithChildren) => {
   const count = useApplicationsStore((state) => state.checklist)?.length ?? 0;
@@ -27,8 +27,8 @@ const DNDLayer = (props: PropsWithChildren) => {
 const CustomDragLayer = ({ x }: { x: number }) => {
   const {
     job: { section_count },
-    section,
-  } = useApplications();
+  } = useJob();
+  const status = useApplicationsStore((state) => state.status);
   const { itemType, isDragging, initialOffset, currentOffset } = useDragLayer(
     (monitor) => ({
       item: monitor.getItem(),
@@ -55,7 +55,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
   return (
     <div
       className={`pointer-events-none fixed left-0 top-0 h-full w-full`}
-      style={{ zIndex: section_count[section] + 1 }}
+      style={{ zIndex: section_count[status] + 1 }}
     >
       <div
         className='transform'

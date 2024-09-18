@@ -5,7 +5,11 @@ import { Button } from '@components/ui/button';
 import { cn } from '@lib/utils';
 import { forwardRef, useEffect, useState } from 'react';
 
-import { useApplications, useJob } from '@/job/hooks';
+import {
+  useApplicationsActions,
+  useApplicationsStore,
+  useJob,
+} from '@/job/hooks';
 import type { Application } from '@/types/applications.types';
 
 interface TabProps {
@@ -17,7 +21,8 @@ interface TabProps {
 const Tab = forwardRef<HTMLButtonElement, TabProps>(
   ({ status, isOver, canDrop }, dropRef) => {
     const { job } = useJob();
-    const { section, setSection } = useApplications();
+    const currentStatus = useApplicationsStore((state) => state.status);
+    const { setStatus } = useApplicationsActions();
     const [normalize, setNormalize] = useState(false);
 
     useEffect(() => {
@@ -33,14 +38,14 @@ const Tab = forwardRef<HTMLButtonElement, TabProps>(
     return (
       <Button
         ref={dropRef}
-        onClick={() => setSection(status)}
+        onClick={() => setStatus(status)}
         variant='ghost'
         className={cn(
           'relative px-2 py-1',
           'hover:bg-transparent hover:text-foreground',
           'focus-visible:bg-transparent focus-visible:text-foreground focus-visible:ring-0',
-          section === status && 'text-foreground',
-          section === status && 'rounded-none border-b-2 border-primary',
+          currentStatus === status && 'text-foreground',
+          currentStatus === status && 'rounded-none border-b-2 border-primary',
           (normalize || isOver) && 'border border-orange-200 bg-orange-100',
         )}
       >

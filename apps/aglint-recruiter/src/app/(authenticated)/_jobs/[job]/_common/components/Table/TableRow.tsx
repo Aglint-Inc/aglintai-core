@@ -3,7 +3,7 @@ import { cn } from '@lib/utils';
 import { Bookmark, GripVertical, Star } from 'lucide-react';
 
 import StageProgress from '@/components/Scheduling/Common/StageProgress';
-import { type Application } from '@/types/applications.types';
+import type { Application } from '@/job/types';
 
 import { ResumeScore } from '../Common/ResumeScoreNew';
 

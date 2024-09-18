@@ -9,21 +9,22 @@ import {
   useApplications,
   useApplicationsActions,
   useApplicationsStore,
+  useJob,
 } from '@/job/hooks';
-import { type Application } from '@/types/applications.types';
+import type { Applications } from '@/job/types';
 import ROUTES from '@/utils/routing/routes';
 
 import { TableRow } from '../TableRow';
 
 const ApplicationCard = memo(
-  ({ application }: { application: Application }) => {
+  ({ application }: { application: Applications<'output'>[number] }) => {
     const router = useRouterPro();
     const {
-      cascadeVisibilites,
       job: { status },
-      sectionApplication: {
-        data: { pages },
-      },
+    } = useJob();
+    const {
+      cascadeVisibilites,
+      applications,
       manageJob,
       applicationMutations,
     } = useApplications();
@@ -46,23 +47,26 @@ const ApplicationCard = memo(
       else {
         if (shift && checklist.length) {
           //
-          const list = pages.flatMap((page) => page);
-          const indexes = [list.findIndex(({ id }) => id === application.id)];
-          for (let i = 0; i < list.length && indexes.length !== 2; i++)
+          const indexes = [
+            applications.findIndex(({ id }) => id === application.id),
+          ];
+          for (let i = 0; i < applications.length && indexes.length !== 2; i++)
             // eslint-disable-next-line security/detect-object-injection
-            if (checklist.includes(list[i].id)) indexes.push(i);
+            if (checklist.includes(applications[i].id)) indexes.push(i);
           indexes.sort((a, b) => a - b);
           setChecklist(
             Array.from(
               new Set([
                 ...checklist,
-                ...list.slice(indexes[0], indexes[1] + 1).map(({ id }) => id),
+                ...applications
+                  .slice(indexes[0], indexes[1] + 1)
+                  .map(({ id }) => id),
               ]),
             ),
           );
         } else setChecklist([...checklist, application.id]);
       }
-    }, [checklist, isChecked, application, shift, pages, setChecklist]);
+    }, [checklist, isChecked, application, shift, applications, setChecklist]);
 
     const checkEnabled = useMemo(
       () =>

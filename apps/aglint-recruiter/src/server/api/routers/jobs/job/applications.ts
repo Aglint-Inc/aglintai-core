@@ -15,7 +15,7 @@ type Params = {
   bookmarked: boolean;
   search: Application['name'];
   badges: (keyof Application['badges'])[];
-  resume_match: Application['application_match'][];
+  application_match: Application['application_match'][];
   city: Application['city'][];
   state: Application['state'][];
   country: Application['country'][];
@@ -23,7 +23,7 @@ type Params = {
   type:
     | keyof Pick<Application, 'applied_at' | 'name' | 'latest_activity'>
     | 'location'
-    | 'resume_match';
+    | 'application_match';
   order: 'asc' | 'desc';
 };
 
@@ -43,7 +43,7 @@ export const schema = z.object({
       'jobHopping',
     ]),
   ),
-  resume_match: z.array(
+  application_match: z.array(
     z.enum([
       'top_match',
       'good_match',
@@ -58,7 +58,7 @@ export const schema = z.object({
   country: z.array(z.string()),
   session_names: z.array(z.string()),
   type: z.enum([
-    'resume_match',
+    'application_match',
     'name',
     'applied_at',
     'latest_activity',
@@ -88,9 +88,9 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
     query.ilike('name', `%${input.search}%`);
   }
 
-  if (input.resume_match.length) {
+  if (input.application_match.length) {
     query.or(
-      `application_match.in.(${input.resume_match.map((match) => match).join(',')})`,
+      `application_match.in.(${input.application_match.map((match) => match).join(',')})`,
     );
   }
 
@@ -135,16 +135,13 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
         query.order(type, { ascending: input.order === 'asc' }),
       );
     else
-      query.order(
-        input.type === 'resume_match' ? 'application_match' : input.type,
-        {
-          ascending:
-            input.type === 'resume_match'
-              ? input.order === 'desc'
-              : input.order === 'asc',
-          nullsFirst: false,
-        },
-      );
+      query.order(input.type, {
+        ascending:
+          input.type === 'application_match'
+            ? input.order === 'desc'
+            : input.order === 'asc',
+        nullsFirst: false,
+      });
   }
 
   query.order('id');

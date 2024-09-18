@@ -7,18 +7,18 @@ import DNDCard from './CardNew/DNDCard';
 import { EmptyList } from './Common/EmptyList';
 
 const List = ({
-  applications,
+  queryData,
   header,
   loader,
 }: {
-  applications: ReturnType<typeof useApplications>['sectionApplication'];
+  queryData: ReturnType<typeof useApplications>['queryData'];
   header: React.JSX.Element;
   loader: React.JSX.Element;
   count: number;
 }) => {
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = applications;
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = queryData;
 
-  const allRows = data ? data.pages.flatMap((d) => d) : [];
+  const allRows = data ? data.pages.flatMap((d) => d.items) : [];
 
   const parentRef = useRef();
 

@@ -1,16 +1,15 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { updateRequestNotes } from '@/components/Requests/_common/functions';
 // import { updateRequestNotes } from '@/components/Requests/_common/functions';
 import type { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
-import { useApplications } from '@/job/hooks';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
-import { applicationQuery, useUpdateApplication } from '@/queries/application';
-import { diffApplication } from '@/queries/job-applications';
+import { applicationQuery } from '@/queries/application';
+// import { diffApplication } from '@/queries/job-applications';
 import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
@@ -29,18 +28,16 @@ export const useApplicationContext = (
   const { isScoringEnabled } = useRolesAndPermissions();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const updateApplication = useApplications()?.handleAsyncUpdateApplication;
-  const resumeReupload = useApplications()?.handleReuploadResume;
-  const applicationMutations = useApplications()?.applicationMutations ?? [];
-  const deleteApplication = useApplications()?.handleDeleteApplication;
+  // const updateApplication = useApplications()?.handleAsyncUpdateApplication;
+  // const resumeReupload = useApplications()?.handleReuploadResume;
+  // const applicationMutations = useApplications()?.applicationMutations ?? [];
+  // const deleteApplication = useApplications()?.handleDeleteApplication;
 
-  const { setTab, handlClose } = useApplicationStore(
-    ({ setTab, tab, handlClose }) => ({
-      setTab,
-      tab,
-      handlClose,
-    }),
-  );
+  const { setTab } = useApplicationStore(({ setTab, tab }) => ({
+    setTab,
+    tab,
+    // handlClose,
+  }));
 
   const tabs = useQuery(
     applicationQuery.tabs({
@@ -69,64 +66,59 @@ export const useApplicationContext = (
       enabled: true,
     }),
   );
-  const { mutate } = useUpdateApplication(props);
+  // const { mutate } = useUpdateApplication(props);
 
-  const handleUpdateApplication = useCallback(
-    async (
-      application: Parameters<typeof updateApplication>[0]['application'],
-    ) => {
-      const diffedApplication = diffApplication(application);
-      if (updateApplication && Object.keys(diffedApplication).length) {
-        try {
-          queryClient.setQueryData(applicationQuery.meta(props).queryKey, {
-            ...meta.data,
-            ...diffedApplication,
-          });
-          await updateApplication({
-            application,
-            application_id: props.application_id,
-          });
-        } catch {
-          queryClient.setQueryData(
-            applicationQuery.meta(props).queryKey,
-            meta.data,
-          );
-        }
-      } else {
-        mutate({ application, application_id: props.application_id });
-      }
-    },
-    [
-      updateApplication,
-      props.application_id,
-      applicationQuery,
-      meta,
-      queryClient.setQueryData,
-    ],
-  );
+  // const handleUpdateApplication = useCallback(
+  //   async (
+  //     application: Parameters<typeof updateApplication>[0]['application'],
+  //   ) => {
+  //     const diffedApplication = diffApplication(application);
+  //     if (updateApplication && Object.keys(diffedApplication).length) {
+  //       try {
+  //         queryClient.setQueryData(applicationQuery.meta(props).queryKey, {
+  //           ...meta.data,
+  //           ...diffedApplication,
+  //         });
+  //         await updateApplication({
+  //           application,
+  //           application_id: props.application_id,
+  //         });
+  //       } catch {
+  //         queryClient.setQueryData(
+  //           applicationQuery.meta(props).queryKey,
+  //           meta.data,
+  //         );
+  //       }
+  //     } else {
+  //       mutate({ application, application_id: props.application_id });
+  //     }
+  //   },
+  //   [
+  //     updateApplication,
+  //     props.application_id,
+  //     applicationQuery,
+  //     meta,
+  //     queryClient.setQueryData,
+  //   ],
+  // );
 
-  const handleResumeReUpload = async (
-    files: Parameters<typeof resumeReupload>[0]['files'],
-  ) => {
-    if (resumeReupload)
-      return await resumeReupload({
-        application_id: props.application_id,
-        candidate_id: meta?.data?.candidate_id,
-        files,
-      });
-  };
+  // const handleResumeReUpload = async (
+  //   files: Parameters<typeof resumeReupload>[0]['files'],
+  // ) => {
+  //   if (resumeReupload)
+  //     return await resumeReupload({
+  //       application_id: props.application_id,
+  //       candidate_id: meta?.data?.candidate_id,
+  //       files,
+  //     });
+  // };
 
-  const handleDeleteApplication = useCallback(async () => {
-    if (deleteApplication) {
-      handlClose();
-      return await deleteApplication({ application_id: props.application_id });
-    }
-  }, [deleteApplication, props.application_id]);
-
-  const applicationUpdating = useMemo(
-    () => applicationMutations.includes(props.application_id),
-    [applicationMutations, props.application_id],
-  );
+  // const handleDeleteApplication = useCallback(async () => {
+  //   if (deleteApplication) {
+  //     handlClose();
+  //     return await deleteApplication({ application_id: props.application_id });
+  //   }
+  // }, [deleteApplication, props.application_id]);
 
   const handleCreateRequest = async ({
     sel_user_id,
@@ -221,11 +213,9 @@ export const useApplicationContext = (
     interview,
     activity,
     requests,
-    handleUpdateApplication,
-    handleResumeReUpload,
-    handleDeleteApplication,
+    // handleResumeReUpload,
+    // handleDeleteApplication,
     handleCreateRequest,
-    applicationUpdating,
     ...props,
   };
 };

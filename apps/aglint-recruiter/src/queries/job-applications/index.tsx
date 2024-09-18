@@ -6,9 +6,6 @@ import type {
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import {
-  infiniteQueryOptions,
-  keepPreviousData,
-  queryOptions,
   useMutation,
   useMutationState,
   useQueryClient,
@@ -17,101 +14,13 @@ import {
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import type { useJobParams } from '@/job/hooks';
 import { type Application } from '@/types/applications.types';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { GC_TIME } from '..';
-import { jobQueries, useInvalidateJobQueries } from '../job';
+import { useInvalidateJobQueries } from '../job';
 import { requestQueries } from '../requests';
 import { applicationMutationKeys } from './keys';
-
-const ROWS = 30;
-
-export const applicationsQueries = {
-  all: ({ job_id }: ApplicationsAllQueryPrerequistes) => ({
-    queryKey: [...jobQueries.job({ id: job_id }).queryKey, 'applications'],
-  }),
-  locationFilters: ({
-    job_id,
-    recruiter_id,
-    polling = false,
-  }: ApplicationsAllQueryPrerequistes) =>
-    queryOptions({
-      enabled: !!job_id,
-      gcTime: job_id ? GC_TIME : 0,
-      refetchOnMount: polling,
-      queryKey: [
-        ...applicationsQueries.all({ job_id, recruiter_id }).queryKey,
-        'location_filters',
-      ],
-      queryFn: async () =>
-        (await supabase.rpc('get_applicant_locations', { job_id }).single())
-          .data.locations,
-    }),
-  badgesCount: ({
-    job_id,
-    recruiter_id,
-    polling = false,
-  }: ApplicationsAllQueryPrerequistes) =>
-    queryOptions({
-      enabled: !!job_id,
-      gcTime: job_id ? GC_TIME : 0,
-      refetchOnMount: polling,
-      queryKey: [
-        ...applicationsQueries.all({ job_id, recruiter_id }).queryKey,
-        'badges_count',
-      ],
-      queryFn: async () =>
-        (await supabase.rpc('get_applicant_badges', { job_id })).data,
-    }),
-  applications: ({
-    job_id,
-    recruiter_id,
-    count,
-    polling = false,
-    status,
-    ...filters
-  }: Params) =>
-    infiniteQueryOptions({
-      queryKey: [
-        ...applicationsQueries.all({ job_id, recruiter_id }).queryKey,
-        { status },
-        filters,
-      ],
-      initialPageParam: { index: 0, job_id, recruiter_id, status, ...filters },
-      enabled: !!job_id,
-      refetchOnMount: polling,
-      refetchOnWindowFocus: false,
-      maxPages: Math.trunc(count / ROWS) + (count % ROWS ? 1 : 0) + 1,
-      placeholderData: keepPreviousData,
-      getPreviousPageParam: (firstPage) =>
-        firstPage?.[0]
-          ? {
-              index: firstPage[0].index,
-              job_id,
-              recruiter_id,
-              status,
-              ...filters,
-            }
-          : undefined,
-      getNextPageParam: (lastPage) => {
-        const len = lastPage?.length ?? 0;
-        if (!len) return undefined;
-        const index = lastPage[len - 1].index + 1;
-        if (!count || index >= count) return undefined;
-        return {
-          index,
-          job_id,
-          recruiter_id,
-          status,
-          ...filters,
-        };
-      },
-      queryFn: getApplications,
-    }),
-};
 
 type ApplicationsAllQueryPrerequistes = {
   recruiter_id: DatabaseTable['recruiter']['id'];
@@ -120,175 +29,48 @@ type ApplicationsAllQueryPrerequistes = {
   polling?: boolean;
 };
 
-type Params = ApplicationsAllQueryPrerequistes &
-  Omit<JobParams['filters'], 'section'> & {
-    status: Application['status'];
-  };
+// type Params = ApplicationsAllQueryPrerequistes &
+//   Omit<JobParams['filters'], 'section'> & {
+//     status: Application['status'];
+//   };
 
-const getApplications = async ({
-  pageParam: {
-    job_id,
-    index,
-    status,
-    badges,
-    bookmarked,
-    locations,
-    order,
-    resume_match,
-    search,
-    type,
-    stages,
-  },
-}: {
-  pageParam: Params & { index: number };
-}) => {
-  const query = supabase
-    .from('application_view')
-    .select()
-    .range(index, index + ROWS - 1)
-    .eq('job_id', job_id)
-    .eq('status', status);
-
-  if (bookmarked) {
-    query.eq('bookmarked', true);
-  }
-
-  if (search?.length) {
-    query.ilike('name', `%${search}%`);
-  }
-
-  if (resume_match?.length) {
-    query.or(
-      `application_match.in.(${resume_match.map((match) => match).join(',')})`,
-    );
-  }
-
-  if (badges?.length) {
-    query.or(
-      badges
-        .map((badge) => `badges->${badge}.gt.${BADGE_CONSTANTS[badge]}`)
-        .join(','),
-    );
-  }
-
-  const { country, state, city } = (locations ?? []).reduce(
-    (acc, curr, i) => {
-      let type: keyof typeof acc = null;
-      switch (i) {
-        case 0:
-          type = 'country';
-          break;
-        case 1:
-          type = 'state';
-          break;
-        case 2:
-          type = 'city';
-          break;
-      }
-      acc[type].push(
-        curr.filter(({ status }) => status === 'active').map(({ id }) => id),
-      );
-      return acc;
-    },
-    { country: [], state: [], city: [] },
-  );
-
-  if ([...country, ...state, ...city].length)
-    query.or(
-      [
-        country.length
-          ? `country.in.(${country.map((country) => country).join(',')})`
-          : null,
-        state.length
-          ? `state.in.(${(state ?? []).map((state) => state).join(',')})`
-          : null,
-        (city ?? []).length
-          ? `city.in.(${(city ?? []).map((city) => city).join(',')})`
-          : null,
-      ]
-        .filter(Boolean)
-        .join(','),
-    );
-
-  if ((stages?.[1] ?? []).length)
-    query.or(
-      stages[1]
-        // eslint-disable-next-line no-useless-escape
-        .map(({ id }) => `session_names.cs.\{"${id}"\}`)
-        .join(', '),
-    );
-
-  if (type || order) {
-    if (type === 'location')
-      ['city', 'state', 'country'].forEach((type) =>
-        query.order(type, { ascending: order === 'asc' }),
-      );
-    else
-      query.order(type === 'resume_match' ? 'application_match' : type, {
-        ascending: type === 'resume_match' ? order === 'desc' : order === 'asc',
-        nullsFirst: false,
-      });
-  }
-  query.order('id');
-
-  const applications = (await query.throwOnError()).data.map(
-    (application, i) => ({ ...application, index: index + i }),
-  );
-  return applications;
-};
-
-type JobParams = ReturnType<typeof useJobParams>;
-
-export const BADGE_CONSTANTS: {
-  // eslint-disable-next-line no-unused-vars
-  [_id in JobParams['filters']['badges'][number]]: number;
-} = {
-  careerGrowth: 89,
-  jobStability: 89,
-  leadership: 69,
-  jobHopping: 0,
-  positions: 0,
-  schools: 0,
-  skills: 0,
-};
-
-export const useUpdateApplication = (params: Params) => {
-  const queryClient = useQueryClient();
-  const queryKey = applicationsQueries.applications(params).queryKey;
-  return useMutation({
-    mutationFn: updateApplication,
-    onMutate: (variables) => {
-      const oldApplications = queryClient.getQueryData(queryKey);
-      const diffedApplication = diffApplication(variables.application);
-      if (Object.keys(diffedApplication).length)
-        queryClient.setQueryData(queryKey, {
-          ...oldApplications,
-          pages: oldApplications.pages.reduce(
-            (acc, curr) => {
-              acc.push(
-                curr.reduce(
-                  (acc, curr) => {
-                    if (curr.id === variables.application_id)
-                      acc.push({ ...curr, ...diffedApplication });
-                    else acc.push(curr);
-                    return acc;
-                  },
-                  [] as (typeof oldApplications)['pages'][number],
-                ),
-              );
-              return acc;
-            },
-            [] as (typeof oldApplications)['pages'],
-          ),
-        });
-      return { oldApplications, diffedApplication };
-    },
-    onError: (_, __, { oldApplications }) => {
-      toast.error('Unable to update application');
-      queryClient.setQueryData(queryKey, oldApplications);
-    },
-  });
-};
+// export const useUpdateApplication = (params: Params) => {
+//   const queryClient = useQueryClient();
+//   const queryKey = applicationsQueries.applications(params).queryKey;
+//   return useMutation({
+//     mutationFn: updateApplication,
+//     onMutate: (variables) => {
+//       const oldApplications = queryClient.getQueryData(queryKey);
+//       const diffedApplication = diffApplication(variables.application);
+//       if (Object.keys(diffedApplication).length)
+//         queryClient.setQueryData(queryKey, {
+//           ...oldApplications,
+//           pages: oldApplications.pages.reduce(
+//             (acc, curr) => {
+//               acc.push(
+//                 curr.reduce(
+//                   (acc, curr) => {
+//                     if (curr.id === variables.application_id)
+//                       acc.push({ ...curr, ...diffedApplication });
+//                     else acc.push(curr);
+//                     return acc;
+//                   },
+//                   [] as (typeof oldApplications)['pages'][number],
+//                 ),
+//               );
+//               return acc;
+//             },
+//             [] as (typeof oldApplications)['pages'],
+//           ),
+//         });
+//       return { oldApplications, diffedApplication };
+//     },
+//     onError: (_, __, { oldApplications }) => {
+//       toast.error('Unable to update application');
+//       queryClient.setQueryData(queryKey, oldApplications);
+//     },
+//   });
+// };
 
 type UpdateParams = {
   application: DatabaseTableUpdate['applications'];
@@ -331,7 +113,7 @@ export const diffApplication = (
   }, {} as Partial<Application>);
 };
 
-export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
+export const useUploadApplication = ({ job_id }: { job_id: string }) => {
   const { recruiter_id } = useAuthDetails();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
@@ -374,7 +156,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
   if (!response.confirmation) throw new Error(response.error);
 };
 
-export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
+export const useUploadResume = (params: { job_id: string }) => {
   const { recruiter_id } = useAuthDetails();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
@@ -430,7 +212,7 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
     throw new Error(`Failed to upload ${failedResponses.length} resumes.`);
 };
 
-export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
+export const useUploadCsv = (params: { job_id: string }) => {
   const { recruiter_id } = useAuthDetails();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
@@ -579,9 +361,10 @@ type ReuploadResumeArgs = Pick<
   HandleReUploadResume,
   'application_id' | 'candidate_id' | 'files'
 >;
-export const useReuploadResume = (
-  params: Pick<Params, 'job_id' | 'recruiter_id'>,
-) => {
+export const useReuploadResume = (params: {
+  job_id: string;
+  recruiter_id: string;
+}) => {
   const { revalidateJobQueries } = useInvalidateJobQueries();
   const { mutationKey } = applicationMutationKeys.reupload();
   const mutationQueue = useMutationState({

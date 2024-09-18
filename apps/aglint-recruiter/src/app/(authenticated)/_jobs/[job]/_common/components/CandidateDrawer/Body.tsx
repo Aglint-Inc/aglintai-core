@@ -119,7 +119,7 @@ const useBlocker = () => {
 };
 
 const Unparsable = () => {
-  const { handleResumeReUpload, handleDeleteApplication } = useApplication();
+  // const { handleResumeReUpload, handleDeleteApplication } = useApplication();
   const setPreview = useApplicationStore(({ setPreview }) => setPreview);
 
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -128,18 +128,18 @@ const Unparsable = () => {
   const handleUpload = useCallback(async () => {
     if (!loading && file) {
       setLoading(true);
-      await handleResumeReUpload([file]);
+      // await handleResumeReUpload([file]);
       setLoading(false);
     }
-  }, [file, loading, handleResumeReUpload]);
+  }, [file, loading]);
 
   const handleDelete = useCallback(async () => {
     if (!loading) {
       setLoading(true);
-      await handleDeleteApplication();
+      // await handleDeleteApplication();
       setLoading(false);
     }
-  }, [loading, handleDeleteApplication]);
+  }, [loading]);
 
   return (
     <div className='flex flex-col items-center justify-center'>
@@ -215,7 +215,7 @@ const Unparsable = () => {
 };
 
 const Unavailable = () => {
-  const { handleResumeReUpload, handleDeleteApplication } = useApplication();
+  // const { handleResumeReUpload, handleDeleteApplication } = useApplication();
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [loading, setLoading] = useState(false);
@@ -223,18 +223,18 @@ const Unavailable = () => {
   const handleUpload = useCallback(async () => {
     if (!loading && file) {
       setLoading(true);
-      await handleResumeReUpload([file]);
+      // await handleResumeReUpload([file]);
       setLoading(false);
     }
-  }, [file, loading, handleResumeReUpload]);
+  }, [file, loading]);
 
   const handleDelete = useCallback(async () => {
     if (!loading) {
       setLoading(true);
-      await handleDeleteApplication();
+      // await handleDeleteApplication();
       setLoading(false);
     }
-  }, [loading, handleDeleteApplication]);
+  }, [loading]);
 
   return (
     <div className='flex flex-col items-center justify-center'>

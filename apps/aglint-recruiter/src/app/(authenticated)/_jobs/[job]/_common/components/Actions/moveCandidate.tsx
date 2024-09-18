@@ -120,10 +120,7 @@ const MoveCandidateNew = () => {
 
 const MoveCandidateInterview = () => {
   const { recruiterUser, isShowFeature } = useAuthDetails();
-  const {
-    handleMoveApplicationToInterview,
-    sectionApplication: { data },
-  } = useApplications();
+  const { handleMoveApplicationToInterview, applications } = useApplications();
   const checklist = useApplicationsStore((state) => state.checklist);
   const { resetActionPopup } = useApplicationsActions();
 
@@ -136,9 +133,7 @@ const MoveCandidateInterview = () => {
     handleMoveApplicationToInterview({
       requests: checklist.map((application_id) => {
         const name =
-          (data?.pages ?? [])
-            .flatMap((list) => list)
-            .find(({ id }) => id === application_id)?.name ?? '';
+          applications.find(({ id }) => id === application_id)?.name ?? '';
         return {
           assignee_id: request.assignee_id,
           type: request.type,

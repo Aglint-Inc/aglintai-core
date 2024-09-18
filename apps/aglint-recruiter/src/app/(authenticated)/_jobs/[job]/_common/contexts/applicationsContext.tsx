@@ -1,22 +1,18 @@
 /* eslint-disable security/detect-object-injection */
-import { useInfiniteQuery } from '@tanstack/react-query';
 import React, { createContext, memo } from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import useDeepCompareEffect from 'use-deep-compare-effect';
+import { useCallback, useMemo } from 'react';
 
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 import { CASCADE_VISIBILITIES, EMAIL_VISIBILITIES } from '@/job/constants';
 import { useApplicationsActions } from '@/job/hooks/useApplicationsActions';
 import { useApplicationsStore } from '@/job/hooks/useApplicationsStore';
 import { useJob } from '@/job/hooks/useJob';
-import { useJobParams } from '@/job/hooks/useJobParams';
+import { useJobApplications } from '@/job/hooks/useJobApplications';
 import {
-  applicationsQueries,
   useDeleteApplication,
   useMoveApplications,
   useMoveApplicationsToInterview,
   useReuploadResume,
-  useUpdateApplication,
 } from '@/queries/job-applications';
 
 const useApplicationsContext = () => {
@@ -33,99 +29,79 @@ const useApplicationsContext = () => {
 
   const checklist = useApplicationsStore((state) => state.checklist);
 
-  const { filters, section, setFilters, setSection } = useJobParams();
+  // const { filters, status, setFilters, setSection } = useJobParams();
 
-  const [params, setParams] = useState(filters);
-  const ref = useRef(true);
+  // const [params, setParams] = useState(filters);
+  // const ref = useRef(true);
 
-  useDeepCompareEffect(() => {
-    if (ref.current) {
-      ref.current = false;
-      return;
-    }
-    const timeout = setTimeout(() => setParams(filters), 200);
-    return () => clearTimeout(timeout);
-  }, [filters]);
+  // useDeepCompareEffect(() => {
+  //   if (ref.current) {
+  //     ref.current = false;
+  //     return;
+  //   }
+  //   const timeout = setTimeout(() => setParams(filters), 200);
+  //   return () => clearTimeout(timeout);
+  // }, [filters]);
 
-  const {
-    mutate: handleUpdateApplication,
-    mutateAsync: handleAsyncUpdateApplication,
-  } = useUpdateApplication({
-    job_id,
-    recruiter_id,
-    polling: applicationScoringPollEnabled,
-    status: section,
-    ...params,
-  });
+  // const {
+  //   mutate: handleUpdateApplication,
+  //   mutateAsync: handleAsyncUpdateApplication,
+  // } = useUpdateApplication({
+  //   job_id,
+  //   recruiter_id,
+  //   polling: applicationScoringPollEnabled,
+  //   status: status,
+  //   ...params,
+  // });
 
   // eslint-disable-next-line no-unused-vars
-  const { section: _section, ...queryParams } = params;
+  // const { status: _section, ...queryParams } = params;
 
-  const newApplications = useInfiniteQuery(
-    applicationsQueries.applications({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-      status: 'new',
-      count: job?.section_count?.new ?? 0,
-      ...queryParams,
-    }),
+  const newApplications = useJobApplications(
+    'new',
+    applicationScoringPollEnabled,
   );
-  const interviewApplications = useInfiniteQuery(
-    applicationsQueries.applications({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-      status: 'interview',
-      count: job?.section_count?.interview ?? 0,
-      ...queryParams,
-    }),
+
+  const interviewApplications = useJobApplications(
+    'interview',
+    applicationScoringPollEnabled,
   );
-  const qualifiedApplications = useInfiniteQuery(
-    applicationsQueries.applications({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-      status: 'qualified',
-      count: job?.section_count?.qualified ?? 0,
-      ...queryParams,
-    }),
+
+  const qualifiedApplications = useJobApplications(
+    'qualified',
+    applicationScoringPollEnabled,
   );
-  const disqualifiedApplications = useInfiniteQuery(
-    applicationsQueries.applications({
-      job_id,
-      recruiter_id,
-      polling: applicationScoringPollEnabled,
-      status: 'disqualified',
-      count: job?.section_count?.disqualified ?? 0,
-      ...queryParams,
-    }),
+  const disqualifiedApplications = useJobApplications(
+    'disqualified',
+    applicationScoringPollEnabled,
   );
+
+  const status = useApplicationsStore((state) => state.status);
 
   const emailVisibilities = useMemo(
     () =>
       Object.entries(EMAIL_VISIBILITIES ?? {}).reduce(
         (acc, [key, value]) => {
-          acc[key] = value.includes(section);
+          acc[key] = value.includes(status);
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
         {} as { [_id in keyof typeof EMAIL_VISIBILITIES]: boolean },
       ),
-    [EMAIL_VISIBILITIES, section],
+    [EMAIL_VISIBILITIES, status],
   );
 
   const cascadeVisibilites = useMemo(
     () =>
       Object.entries(CASCADE_VISIBILITIES ?? {}).reduce(
         (acc, [key, value]) => {
-          acc[key] = value.includes(section);
+          acc[key] = value.includes(status);
           return acc;
         },
         // eslint-disable-next-line no-unused-vars
         {} as { [_id in keyof typeof CASCADE_VISIBILITIES]: boolean },
       ),
-    [CASCADE_VISIBILITIES, section],
+    [CASCADE_VISIBILITIES, status],
   );
 
   const { mutateAsync: moveApplications, mutationQueue: moveMutationQueue } =
@@ -179,7 +155,7 @@ const useApplicationsContext = () => {
     useReuploadResume({ job_id, recruiter_id });
 
   const {
-    mutateAsync: deleteApplication,
+    // mutateAsync: deleteApplication,
     mutationQueue: deleteApplicationQueue,
   } = useDeleteApplication({
     job_id,
@@ -196,18 +172,18 @@ const useApplicationsContext = () => {
     }
   };
 
-  const handleDeleteApplication = async (
-    payload: Parameters<typeof deleteApplication>[0],
-  ) => {
-    try {
-      return await deleteApplication(payload);
-    } catch {
-      //
-    }
-  };
+  // const handleDeleteApplication = async (
+  //   payload: Parameters<typeof deleteApplication>[0],
+  // ) => {
+  //   try {
+  //     return await deleteApplication(payload);
+  //   } catch {
+  //     //
+  //   }
+  // };
 
-  const sectionApplication = useMemo(() => {
-    switch (section) {
+  const queryData = useMemo(() => {
+    switch (status) {
       case 'new':
         return newApplications;
       case 'qualified':
@@ -222,7 +198,7 @@ const useApplicationsContext = () => {
     interviewApplications,
     qualifiedApplications,
     disqualifiedApplications,
-    section,
+    status,
   ]);
 
   const {
@@ -233,36 +209,32 @@ const useApplicationsContext = () => {
     handleOpen,
   }));
 
-  const sectionApplications = useMemo(
-    () => (sectionApplication?.data?.pages ?? []).flatMap((page) => page),
-    [sectionApplication?.data?.pages],
+  const applications = useMemo(
+    () => (queryData?.data?.pages ?? []).flatMap(({ items }) => items),
+    [queryData?.data?.pages],
   );
 
   const currentIndex = useMemo(
-    () => sectionApplications.findIndex(({ id }) => id === application_id),
-    [application_id, sectionApplications],
+    () => applications.findIndex(({ id }) => id === application_id),
+    [application_id, applications],
   );
 
-  const applicationsCount = useMemo(
-    () => sectionApplications.length,
-    [sectionApplications],
-  );
+  const applicationsCount = useMemo(() => applications.length, [applications]);
 
   const handleSelectNextApplication = useCallback(() => {
     handleOpen({
-      application_id:
-        sectionApplications[(currentIndex + 1) % applicationsCount].id,
+      application_id: applications[(currentIndex + 1) % applicationsCount].id,
     });
-  }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
+  }, [queryData, currentIndex, applicationsCount, handleOpen]);
 
   const handleSelectPrevApplication = useCallback(() => {
     handleOpen({
       application_id:
-        sectionApplications[
+        applications[
           currentIndex - 1 < 0 ? applicationsCount - 1 : currentIndex - 1
         ].id,
     });
-  }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
+  }, [queryData, currentIndex, applicationsCount, handleOpen]);
 
   const applicationMutations = useMemo(() => {
     const reuploads = reuploadMutationQueue.map(
@@ -278,22 +250,20 @@ const useApplicationsContext = () => {
   return {
     job,
     jobLoad,
-    section,
+    status,
     emailVisibilities,
     cascadeVisibilites,
-    sectionApplication,
-    filters,
+    queryData,
+    applications,
     manageJob,
     applicationMutations,
-    setFilters,
-    setSection,
-    handleUpdateApplication,
-    handleAsyncUpdateApplication,
+    // handleUpdateApplication,
+    // handleAsyncUpdateApplication,
     handleMoveApplications,
     handleSelectNextApplication,
     handleSelectPrevApplication,
     handleReuploadResume,
-    handleDeleteApplication,
+    // handleDeleteApplication,
     handleMoveApplicationToInterview,
   };
 };

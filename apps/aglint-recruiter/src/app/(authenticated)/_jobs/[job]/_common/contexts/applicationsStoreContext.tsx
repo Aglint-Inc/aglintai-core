@@ -15,23 +15,17 @@ import {
   getContextStoreInitial,
 } from '@/utils/zustandContextHelpers';
 
-type Application = DatabaseView['application_view'];
+import type { Applications } from '../types';
 
 type Locations = ReturnType<typeof nestedObjectToArray>;
 
 type Stages = ReturnType<typeof nestedObjectToArray>;
 
-type Checklist = Application['id'][];
-
-type ActionPopup = Application['status'];
-
-type Filters = {
-  badges: (keyof Application['badges'])[];
-  bookmarked: boolean;
+type Filters = Pick<
+  Applications<'input'>,
+  'application_match' | 'badges' | 'bookmarked' | 'search' | 'status'
+> & {
   locations: Locations;
-  resumeMatch: Application['application_match'][];
-  search: Application['name'];
-  section: Application['status'];
   stages: Stages;
 };
 
@@ -39,24 +33,22 @@ const initialFilter: Filters = Object.freeze({
   badges: [],
   bookmarked: false,
   locations: [],
-  resumeMatch: [],
+  application_match: [],
   search: '',
   section: 'new',
   stages: [],
 });
 
-type Sort = {
-  order: 'asc' | 'desc';
-  type:
-    | keyof Pick<Application, 'applied_at' | 'name' | 'latest_activity'>
-    | 'location'
-    | 'resume_match';
-};
+type Sort = Pick<Applications<'input'>, 'order' | 'type'>;
 
 const initialSort: Sort = Object.freeze({
   order: 'desc',
   type: 'latest_activity',
 });
+
+type Checklist = DatabaseView['application_view']['id'][];
+
+type ActionPopup = DatabaseView['application_view']['status'];
 
 type Misc = {
   actionPopup: ActionPopup;
@@ -81,10 +73,12 @@ const initial: States = Object.freeze({
 const get = getContextStoreInitial(initial);
 
 type Actions = {
-  handleBadge: (badge: Filters['badges'][number]) => void;
+  handleBadge: (_badge: Filters['badges'][number]) => void;
   handleBookmarked: () => void;
-  handleResumeMatch: (resumeMatch: Filters['resumeMatch'][number]) => void;
-  handleChecklist: (id: Misc['checklist'][number]) => void;
+  handleApplication_match: (
+    _resumeMatch: Filters['application_match'][number],
+  ) => void;
+  handleChecklist: (_id: Misc['checklist'][number]) => void;
   handleImportPopup: () => void;
 };
 
@@ -114,23 +108,29 @@ const useApplicationsStoreContext = () => {
         resetBookmarked: () => set(() => ({ bookmarked: get('bookmarked') })),
         setLocations: (locations) => set(() => ({ locations })),
         resetLocations: () => set(() => ({ locations: get('locations') })),
-        handleResumeMatch: (resumeMatch) =>
+        handleApplication_match: (application_match) =>
           set((state) => {
-            if (state.resumeMatch.includes(resumeMatch))
+            if (state.application_match.includes(application_match))
               return {
-                resumeMatch: state.resumeMatch.filter((b) => b !== resumeMatch),
+                application_match: state.application_match.filter(
+                  (b) => b !== application_match,
+                ),
               };
             return {
-              resumeMatch: [...state.resumeMatch, resumeMatch],
+              application_match: [
+                ...state.application_match,
+                application_match,
+              ],
             };
           }),
-        setResumeMatch: (resumeMatch) => set(() => ({ resumeMatch })),
-        resetResumeMatch: () =>
-          set(() => ({ resumeMatch: get('resumeMatch') })),
+        setApplication_match: (application_match) =>
+          set(() => ({ application_match })),
+        resetApplication_match: () =>
+          set(() => ({ application_match: get('application_match') })),
         setSearch: (search) => set(() => ({ search })),
         resetSearch: () => set(() => ({ search: get('search') })),
-        setSection: (section) => set(() => ({ section })),
-        resetSection: () => set(() => ({ section: get('section') })),
+        setStatus: (status) => set(() => ({ status })),
+        resetStatus: () => set(() => ({ status: get('status') })),
         setStages: (stages) => set(() => ({ stages })),
         resetStages: () => set(() => ({ stages: get('stages') })),
         setOrder: (order) => set(() => ({ order })),

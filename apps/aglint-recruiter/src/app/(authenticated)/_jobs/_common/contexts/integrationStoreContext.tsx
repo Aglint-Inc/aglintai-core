@@ -8,8 +8,8 @@
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
-import type { CreateContextStore } from '@/utils/zustandContextHelpers';
 import { INITIAL_STATE } from '@/jobs/constants';
+import type { CreateContextStore } from '@/utils/zustandContextHelpers';
 
 type Integrations = typeof INITIAL_STATE;
 
