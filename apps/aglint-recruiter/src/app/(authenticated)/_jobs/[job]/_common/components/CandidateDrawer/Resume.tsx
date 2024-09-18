@@ -7,7 +7,6 @@ import { type PropsWithChildren } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
 
-// import { ResumeEmbed } from '../../Candidate-List/Common/ResumePreviewer';
 import { EmptyState } from './Common/EmptyState';
 
 export const Resume = () => {
@@ -24,10 +23,26 @@ export const Resume = () => {
         <Skeleton />
       </ResumeLayout>
     );
-  return <Content key={data?.file_url} url={data?.file_url} />;
+
+  const url = data?.file_url;
+  const exten = getExtension(url);
+
+  if (exten === '.docx' || exten === '.doc')
+    return (
+      <>
+        <embed
+          src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
+          title='resume'
+          width='1000px'
+          height='1000px'
+        />
+      </>
+    );
+
+  return <Pdf key={data?.file_url} url={data?.file_url} />;
 };
 
-const Content = ({ url }: { url: string }) => {
+const Pdf = ({ url }: { url: string }) => {
   return (
     <ResumeLayout>
       <Worker
@@ -48,8 +63,12 @@ const Content = ({ url }: { url: string }) => {
 
 const ResumeLayout = (props: PropsWithChildren) => {
   return (
-    <div className='relative flex h-full w-full items-center justify-center'>
+    <div className='relative flex h-full max-h-[1000px] w-full max-w-[1000px] items-center justify-center'>
       {props.children}
     </div>
   );
+};
+
+const getExtension = (url: string) => {
+  return url.slice(url.lastIndexOf('.'), url.length);
 };

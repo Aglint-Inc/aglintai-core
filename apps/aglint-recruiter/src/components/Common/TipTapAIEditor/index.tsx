@@ -130,7 +130,7 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <div>
+      <div className='rounded-md border border-solid border-gray-400'>
         <div>
           {editor && toolbar && (
             <div
@@ -156,7 +156,7 @@ const TipTapAIEditor = ({
                 height: height !== 'auto' ? height : 'auto',
               }}
             >
-              <div className={`${singleLine ? 'px-4 py-2' : 'p-6'}`}>
+              <div className={`${singleLine ? 'px-4 py-2' : 'p-4'}`}>
                 {loader.isLoading ? (
                   <div className='flex flex-col gap-1'>
                     {[...Array(loader.count)].map((_e, i) => (
