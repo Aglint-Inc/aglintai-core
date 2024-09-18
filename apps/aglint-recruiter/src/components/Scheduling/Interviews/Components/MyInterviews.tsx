@@ -6,24 +6,26 @@ import axios from 'axios';
 import { Calendar, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
+import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/queries/intergrations';
 
-import { transformDataSchedules } from '../../../app/_common/utils/schedules-query';
-import SearchField from '../../Common/SearchField/SearchField';
-import { ShowCode } from '../../Common/ShowCode';
-import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
-import { InterviewMemberSide } from './InterviewMemberSide';
-import { NewMyScheduleCard } from './NewMyScheduleCard';
-import { fetchSchedulesCountByUserId, useAllSchedulesByUserId } from './query';
+import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
+import { InterviewMemberSide } from '../_common/components/InterviewMemberSide';
+import { NewMyScheduleCard } from '../_common/components/NewMyScheduleCard';
+import {
+  getInterviewsCountByUserId,
+  useInterviewsByUserId,
+} from '../_common/hooks/useInterviewsByUserId';
 
-function MySchedule() {
+function MyInterviews() {
   const { toast } = useToast();
   const { recruiterUser } = useAuthDetails();
   const [filter, setFilter] =
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
-  const [changeText, setChangeText] = useState('');
+  // const [changeText, setChangeText] = useState('');
   const [counts, setCounts] = useState({
     upcomingCount: 0,
     completedCount: 0,
@@ -32,7 +34,7 @@ function MySchedule() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetchSchedulesCountByUserId(recruiterUser.user_id);
+      const res = await getInterviewsCountByUserId(recruiterUser.user_id);
       setCounts(res);
     })();
   }, []);
@@ -60,7 +62,7 @@ function MySchedule() {
   const {
     data: { schedules: allSchedules },
     isLoading: scheduleLoading,
-  } = useAllSchedulesByUserId({
+  } = useInterviewsByUserId({
     filter,
     member_id: recruiterUser.user_id,
   });
@@ -89,14 +91,15 @@ function MySchedule() {
           <InterviewMemberSide
             propsGrids={{ style: { maxWidth: 'none' } }}
             slotInterview={
-              <SearchField
-                value={changeText}
-                onChange={(e) => {
-                  setChangeText(e.target.value);
-                }}
-                onClear={() => setChangeText('')}
-                placeholder={'Search by session name'}
-              />
+              <></>
+              // <SearchField
+              //   value={changeText}
+              //   onChange={(e) => {
+              //     setChangeText(e.target.value);
+              //   }}
+              //   onClear={() => setChangeText('')}
+              //   placeholder={'Search by session name'}
+              // />
             }
             isUpcomingActive={filter === 'confirmed'}
             isCancelActive={filter === 'cancelled'}
@@ -203,4 +206,4 @@ function MySchedule() {
   );
 }
 
-export default MySchedule;
+export default MyInterviews;

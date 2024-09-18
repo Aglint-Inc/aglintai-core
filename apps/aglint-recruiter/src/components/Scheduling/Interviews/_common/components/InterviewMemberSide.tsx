@@ -21,7 +21,7 @@ export function InterviewMemberSide({
       {isMenuTabVisible && (
         <div className='flex h-12 items-center justify-between'>
           <div className='flex items-center gap-2.5'>
-            <div className='flex hidden flex-col gap-2.5'>{slotInterview}</div>
+            <div className='flex flex-col gap-2.5'>{slotInterview}</div>
             <div className='relative'>
               <UIButton
                 variant={isUpcomingActive ? 'default' : 'secondary'}
