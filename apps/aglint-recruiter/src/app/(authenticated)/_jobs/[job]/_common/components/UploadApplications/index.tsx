@@ -1,6 +1,5 @@
 import { Button } from '@components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { PlusCircle } from 'lucide-react';
 import React from 'react';
 
 import UIDialog from '@/components/Common/UIDialog';
@@ -21,12 +20,10 @@ export const UploadApplications = ({
     <>
       {children || (
         <Button
-          size='sm'
           variant='outline'
           className='w-auto'
           onClick={() => setImportPopup(true)}
         >
-          <PlusCircle className='mr-2 h-4 w-4' />
           Add candidates
         </Button>
       )}

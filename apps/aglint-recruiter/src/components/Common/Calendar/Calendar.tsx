@@ -1,27 +1,22 @@
 import '@styles/fullcalendar-theme.css';
 
 import { type DatabaseTable } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+// import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@components/ui/tooltip';
+// import { Button } from '@components/ui/button';
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from '@components/ui/card';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import {
   type Dispatch,
   type SetStateAction,
@@ -31,13 +26,13 @@ import {
 } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
-import { capitalizeAll } from '@/utils/text/textUtils';
 
+// import { capitalizeAll } from '@/utils/text/textUtils';
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
 // import { UIBadge } from '../UIBadge';
 import CalendarHeader from './CalendarHeader';
 import {
-  type colorType,
+  // type colorType,
   type event,
   type Modes,
   type Types,
@@ -220,60 +215,60 @@ const colorPick = (status) => {
   }
 };
 
-const TooltipComp = ({ data }) => {
-  const router = useRouter();
-  return (
-    <div className='space-y-4'>
-      <Card className='w-[350px]'>
-        <CardHeader>
-          <CardTitle>{data?.session_name}</CardTitle>
-          <CardDescription>
-            {`${data?.session_duration} minutes`} •{' '}
-            {capitalizeAll(data?.schedule_type)}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-2'>
-            <p className='text-sm'>
-              {dayjsLocal(data.start_time).format('ddd, MMM DD, YYYY hh:mm A')}{' '}
-              - {dayjsLocal(data.end_time).format('hh:mm A')}
-            </p>
-            {/* <UIBadge
-              variant={
-                data?.status === 'completed'
-                  ? 'success'
-                  : data?.status === 'canceled'
-                    ? 'destructive'
-                    : data?.status === 'confirmed'
-                      ? 'default'
-                      : 'secondary'
-              }
-            >
-              {capitalizeAll(data?.status)}
-            </UIBadge> */}
-          </div>
-        </CardContent>
-      </Card>
-      <div className='space-y-1 px-4 pb-4'>
-        <p>
-          Candidate:{' '}
-          {getFullName(
-            data.applications.candidates.first_name,
-            data.applications.candidates.last_name,
-          )}
-        </p>
-        <Button
-          color={'neutral'}
-          size={'sm'}
-          onClick={() =>
-            router.push(
-              `/scheduling/view?meeting_id=${data.meeting_interviewers[0].meeting_id}&tab=candidate_details`,
-            )
-          }
-        >
-          View Details
-        </Button>
-      </div>
-    </div>
-  );
-};
+// const TooltipComp = ({ data }) => {
+//   const router = useRouter();
+//   return (
+//     <div className='space-y-4'>
+//       <Card className='w-[350px]'>
+//         <CardHeader>
+//           <CardTitle>{data?.session_name}</CardTitle>
+//           <CardDescription>
+//             {`${data?.session_duration} minutes`} •{' '}
+//             {capitalizeAll(data?.schedule_type)}
+//           </CardDescription>
+//         </CardHeader>
+//         <CardContent>
+//           <div className='space-y-2'>
+//             <p className='text-sm'>
+//               {dayjsLocal(data.start_time).format('ddd, MMM DD, YYYY hh:mm A')}{' '}
+//               - {dayjsLocal(data.end_time).format('hh:mm A')}
+//             </p>
+//             {/* <UIBadge
+//               variant={
+//                 data?.status === 'completed'
+//                   ? 'success'
+//                   : data?.status === 'canceled'
+//                     ? 'destructive'
+//                     : data?.status === 'confirmed'
+//                       ? 'default'
+//                       : 'secondary'
+//               }
+//             >
+//               {capitalizeAll(data?.status)}
+//             </UIBadge> */}
+//           </div>
+//         </CardContent>
+//       </Card>
+//       <div className='space-y-1 px-4 pb-4'>
+//         <p>
+//           Candidate:{' '}
+//           {getFullName(
+//             data.applications.candidates.first_name,
+//             data.applications.candidates.last_name,
+//           )}
+//         </p>
+//         <Button
+//           color={'neutral'}
+//           size={'sm'}
+//           onClick={() =>
+//             router.push(
+//               `/scheduling/view?meeting_id=${data.meeting_interviewers[0].meeting_id}&tab=candidate_details`,
+//             )
+//           }
+//         >
+//           View Details
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// };
