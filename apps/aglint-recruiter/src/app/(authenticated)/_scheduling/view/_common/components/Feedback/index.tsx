@@ -1,11 +1,9 @@
-/* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { Dialog, DialogContent } from '@components/ui/dialog';
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +21,6 @@ import {
   Star,
   User,
   Users,
-  X,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
@@ -31,7 +28,8 @@ import { useMemo, useState } from 'react';
 import axios from '@/client/axios';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -45,8 +43,6 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
-import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
