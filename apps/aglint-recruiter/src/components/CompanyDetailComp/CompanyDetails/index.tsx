@@ -50,8 +50,8 @@ const CompanyInfoComp = () => {
     <div>
       <div className='flex flex-col gap-6'>
         <div>
-          <h2 className='mb-2 text-xl font-bold'>Company Information</h2>
-          <p className='text-sm text-gray-600'>
+          <h2 className='mb-1 text-xl font-semibold'>Company Information</h2>
+          <p className='text-gray-600'>
             Update the settings here changes will be saved automatically.
           </p>
         </div>

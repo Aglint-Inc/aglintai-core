@@ -69,7 +69,7 @@ const MainBody = () => {
   }, [localStorage.getItem('openChat')]);
 
   return (
-    <div className='flex h-screen w-full overflow-hidden'>
+    <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
       {isShowFeature('AGENT') ? (
         <div className='fixed left-[20] top-4 z-50'>
@@ -106,7 +106,7 @@ const MainBody = () => {
 
       {/* Main Content */}
       <div
-        className={`z-10 h-screen flex-1 overflow-scroll overflow-x-hidden pt-0 ${
+        className={`z-10 flex-1  overflow-x-hidden pt-0 ${
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >

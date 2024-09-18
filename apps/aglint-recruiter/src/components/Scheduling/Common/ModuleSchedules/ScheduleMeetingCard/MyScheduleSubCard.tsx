@@ -44,7 +44,7 @@ export function MyScheduleSubCard({
   isLocationVisible,
   textLocation,
   isPhoneCallVisible,
-  bgColorProps,
+  // bgColorProps,
   textJob,
   slotMembersList,
   onClickDropdownIocn,
@@ -54,7 +54,8 @@ export function MyScheduleSubCard({
   isAvatarWithNameVisible,
 }: MeetingSlotProps) {
   return (
-    <div className='relative h-full w-full rounded-lg' style={bgColorProps}>
+    <div className='relative h-full w-full rounded-lg'>
+      {/* style={bgColorProps} */}
       <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white p-4'>
         <div className='z-1 relative flex items-start justify-between gap-2'>
           <div className='flex items-start justify-start gap-5'>

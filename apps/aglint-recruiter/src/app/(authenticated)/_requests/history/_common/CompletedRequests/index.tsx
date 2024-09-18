@@ -18,19 +18,16 @@ import { useCompletedRequestsStore } from '@requestHistory/contexts/completedReq
 import { RequestCard } from '@requests/components/RequestCard';
 import RequestHistoryFilter from '@requests/components/RequestHistoryFilter';
 import { useCompletedRequests } from '@requests/hooks';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { AlertCircle } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+import { AlertCircle, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { RequestProvider } from '@/context/RequestContext';
 import type { Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
-  const { data: completedRequests, isLoading } = useCompletedRequests({
+  const { data: completedRequests, isFetched } = useCompletedRequests({
     completedFilters,
   });
   const [allExpanded, setAllExpanded] = useState(false);
@@ -64,7 +61,7 @@ function CompletedRequests() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
+        if (entries[0].isIntersecting && hasMore && isFetched) {
           loadMore();
         }
       },
@@ -76,16 +73,13 @@ function CompletedRequests() {
     }
 
     return () => observer.disconnect();
-  }, [hasMore, isLoading, page]);
+  }, [hasMore, isFetched, page]);
 
   return (
     <>
-      <div className='min-h-screen bg-gray-50'>
-        <div className='mx-auto w-[960px] py-8'>
-          <div className='sticky top-0 z-10 mb-8'>
-            <h2 className='mb-6 text-2xl font-bold'>
-              {capitalizeFirstLetter('all_completed_requests')}
-            </h2>
+      <div className='container-lg mx-auto w-full px-16'>
+        <div className='w-[960px]'>
+          <div className='sticky top-0 z-10'>
             <div className='my-4'>
               <Breadcrumb>
                 <BreadcrumbList>
@@ -103,28 +97,36 @@ function CompletedRequests() {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
+            <div className='flex flex-row justify-between'>
+              <h2 className='text-2xl font-bold'>All Completed Requests</h2>
+              <div className='lex justify-end'>
+                <Button
+                  variant='ghost'
+                  onClick={() => setAllExpanded(!allExpanded)}
+                  className='mr-2 w-[150px]'
+                >
+                  {allExpanded ? (
+                    <ChevronUp className='mr-2 h-4 w-4' />
+                  ) : (
+                    <ChevronDown className='mr-2 h-4 w-4' />
+                  )}
+                  {!allExpanded ? 'Expand All' : 'Collapse All'}
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className='mx-auto w-[960px]'>
+          <div className=''>
             <div className='my-8'>
-              <h3>Filters:</h3>
               <RequestHistoryFilter />
             </div>
-            {hasRequests ? (
+
+            {!isFetched && (
+              <div className='flex items-center justify-center'>
+                <Loader2 className='h-6 w-6 animate-spin' />
+              </div>
+            )}
+            {isFetched && hasRequests ? (
               <>
-                <div className='mb-4 flex justify-end'>
-                  <Button
-                    variant='ghost'
-                    onClick={() => setAllExpanded(true)}
-                    className='mr-2'
-                  >
-                    <ChevronDown className='mr-2 h-4 w-4' />
-                    Expand All
-                  </Button>
-                  <Button variant='ghost' onClick={() => setAllExpanded(false)}>
-                    <ChevronUp className='mr-2 h-4 w-4' />
-                    Collapse All
-                  </Button>
-                </div>
                 {Object.entries(groupedRequests).map(
                   ([date, requests], index) => (
                     <Accordion
@@ -188,7 +190,8 @@ function CompletedRequests() {
                   </>
                 )}
               </>
-            ) : (
+            ) : null}
+            {isFetched && !hasRequests && (
               <Alert>
                 <AlertCircle className='h-4 w-4' />
                 <AlertTitle>No requests found</AlertTitle>
