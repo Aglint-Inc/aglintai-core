@@ -1,9 +1,7 @@
-import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import dayjs from 'dayjs';
 import { ActivityIcon, FileText } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import { type useAllActivities } from '@/queries/activities';
 
@@ -14,7 +12,6 @@ function RightPanel({
 }: {
   allActivities: ReturnType<typeof useAllActivities>;
 }) {
-  const router = useRouter();
   const { data: activities, isLoading, isFetched } = allActivities;
 
   if (!isFetched || isLoading) {
@@ -58,7 +55,7 @@ function RightPanel({
           <CardContent>
             <div className='flex items-start space-x-4'>
               <FileText size={24} className='text-muted-foreground' />
-              <div className='flex-grow w-full'>
+              <div className='w-full flex-grow'>
                 <p className='text-sm'>
                   {act?.metadata?.type === 'candidate_response_self_schedule'
                     ? act.metadata.response_type === 'reschedule'
