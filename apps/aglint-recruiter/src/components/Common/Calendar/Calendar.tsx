@@ -167,37 +167,57 @@ export default CalendarComp;
 function renderEventContent(eventInfo) {
   const { data, color } = eventInfo.event.extendedProps;
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <div
-          className='w-full rounded-md p-[5px_10px]'
-          style={{
-            backgroundColor: color?.bg,
-            borderLeft: `3px solid ${color.pri}`,
-          }}
-        >
-          <p className='font-medium'>{eventInfo.event.title}</p>
-          <p className='text-xs'>
-            {dayjsLocal(data.start_time).format('hh:mm A -')}
-            {dayjsLocal(data.end_time).format('hh:mm A')}
-          </p>
-        </div>
-      </TooltipTrigger>
-      <TooltipContent>
-        <TooltipComp data={data} />
-      </TooltipContent>
-    </Tooltip>
+    <div
+      className={`w-full cursor-pointer rounded-md p-[5px_10px] ${color.bg} border-l-[3px] ${color.pri}`}
+      onClick={() => {
+        // Create a custom tooltip element
+        const tooltip = document.createElement('div');
+        tooltip.className = 'custom-tooltip';
+        tooltip.innerHTML = `
+          <h3>${eventInfo.event.title}</h3>
+          <p>${dayjsLocal(data.start_time).format('hh:mm A')} - ${dayjsLocal(data.end_time).format('hh:mm A')}</p>
+          <p>Status: ${data.status}</p>
+        `;
+
+        // Position the tooltip near the event
+        const rect = eventInfo.el.getBoundingClientRect();
+        tooltip.style.position = 'absolute';
+        tooltip.style.left = `${rect.left + window.scrollX}px`;
+        tooltip.style.top = `${rect.bottom + window.scrollY}px`;
+
+        // Add the tooltip to the body
+        document.body.appendChild(tooltip);
+
+        // Remove the tooltip when clicking outside
+        const removeTooltip = (e) => {
+          if (!tooltip.contains(e.target) && e.target !== eventInfo.el) {
+            document.body.removeChild(tooltip);
+            document.removeEventListener('click', removeTooltip);
+          }
+        };
+        document.addEventListener('click', removeTooltip);
+      }}
+    >
+      <p className='font-medium'>{eventInfo.event.title}</p>
+      <p className='text-xs'>
+        {dayjsLocal(data.start_time).format('hh:mm A')} -
+        {dayjsLocal(data.end_time).format('hh:mm A')}
+      </p>
+    </div>
   );
 }
 
-const colorPick = (status): colorType => {
-  return status === 'confirmed'
-    ? { bg: 'bg-blue-200', pri: 'text-blue-700' }
-    : status === 'completed'
-      ? { bg: 'bg-green-200', pri: 'text-green-700' }
-      : status === 'canceled'
-        ? { bg: 'bg-red-200', pri: 'text-red-700' }
-        : { bg: 'bg-neutral-200', pri: 'text-neutral-700' };
+const colorPick = (status) => {
+  switch (status) {
+    case 'confirmed':
+      return { bg: 'bg-blue-200', pri: 'border-blue-700' };
+    case 'completed':
+      return { bg: 'bg-green-200', pri: 'border-green-700' };
+    case 'canceled':
+      return { bg: 'bg-red-200', pri: 'border-red-700' };
+    default:
+      return { bg: 'bg-grey-200', pri: 'border-grey-700' };
+  }
 };
 
 const TooltipComp = ({ data }) => {
