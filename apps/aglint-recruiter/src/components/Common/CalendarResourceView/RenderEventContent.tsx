@@ -7,7 +7,7 @@ import {
 } from '@components/ui/tooltip';
 
 import InterviewerAcceptDeclineIcon from '../Icons/InterviewerAcceptDeclineIcon';
-import { type Event } from './types';
+import { type EventCalendar } from './types';
 
 function RenderEventContent(eventInfo) {
   const { title, start, end } = eventInfo.event as {
@@ -24,7 +24,7 @@ function RenderEventContent(eventInfo) {
     isLoading,
     isSelected,
     session_id,
-  } = eventInfo.event.extendedProps as Event['extendedProps'];
+  } = eventInfo.event.extendedProps as EventCalendar['extendedProps'];
 
   return (
     <>

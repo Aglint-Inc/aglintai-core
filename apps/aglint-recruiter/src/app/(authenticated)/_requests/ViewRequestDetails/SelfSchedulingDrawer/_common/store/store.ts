@@ -1,14 +1,14 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
+import {
+  type EventCalendar,
+  type Resource,
+} from '@/components/Common/CalendarResourceView/types';
 import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
 import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 import dayjs from '@/utils/dayjs';
 
-import {
-  type Event,
-  type Resource,
-} from '../../../../../Common/CalendarResourceView/types';
 import { type filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 
 type PrefferedInterviewer = {
@@ -52,7 +52,7 @@ export interface SelfSchedulingFlow {
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
   availabilities: {
-    events: Event[];
+    events: EventCalendar[];
     resources: Resource[];
   };
   localFilters: {
