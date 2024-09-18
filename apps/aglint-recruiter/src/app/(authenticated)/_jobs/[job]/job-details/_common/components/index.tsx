@@ -51,25 +51,20 @@ export const JobDetailsDashboard = () => {
           <Skeleton className='h-8 w-64' />
           <Skeleton className='h-4 w-32' />
         </div>
-        <div className='flex space-x-4'>
-          <Skeleton className='h-10 w-10' />
-          <Skeleton className='h-10 w-10' />
-          <Skeleton className='h-10 w-10' />
-        </div>
-      </div>
-      <div className='flex gap-6'>
-        <div className='w-1/4'>
-          <Skeleton className='h-[calc(100vh-200px)] w-full' />
-        </div>
-        <div className='w-3/4 space-y-4'>
-          <Skeleton className='h-6 w-48' />
-          <Skeleton className='h-4 w-full' />
-          <div className='space-y-4'>
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-10 w-full' />
-            <Skeleton className='h-40 w-full' />
+        <div className='flex gap-6'>
+          <div className='w-1/4'>
+            <Skeleton className='h-[calc(100vh-200px)] w-full' />
+          </div>
+          <div className='w-3/4 space-y-4'>
+            <Skeleton className='h-6 w-48' />
+            <Skeleton className='h-4 w-full' />
+            <div className='space-y-4'>
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-40 w-full' />
+            </div>
           </div>
         </div>
       </div>
@@ -166,7 +161,7 @@ const JobEdit = () => {
       </div>
 
       <div className='mb-6 flex gap-6'>
-        <div className='w-3/12 pr-6'>
+        <div className='w-2/12 pr-6'>
           <JobsSideNavV2 />
         </div>
         <div className='w-9/12'>

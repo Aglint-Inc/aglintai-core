@@ -1,6 +1,6 @@
-import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'selfScheduleReminder_email_applicant'
@@ -13,9 +13,7 @@ export const fetchUtil: FetchUtilType<
       )
       .eq('id', req_body.filter_id),
   );
-  if (filterJson.request_id) {
-    await updateReminderInRequest(supabaseAdmin, filterJson.request_id);
-  }
+
   const [meetingDetails] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -47,7 +45,7 @@ export const fetchUtil: FetchUtilType<
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: companyName,
+      companyName,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
@@ -75,18 +73,4 @@ export const fetchUtil: FetchUtilType<
       recipient_email: cand_email,
     },
   };
-};
-
-const updateReminderInRequest = async (
-  supabaseAdmin: SupabaseType,
-  request_id: string,
-) => {
-  supabaseWrap(
-    await supabaseAdmin.from('request_progress').insert({
-      request_id,
-      event_type: 'SELF_SCHEDULE_FIRST_FOLLOWUP',
-      is_progress_step: false,
-      status: 'completed',
-    }),
-  );
 };

@@ -51,7 +51,7 @@ export const ApplicationsDashboard = () => {
           </div>
         </div>
       </div>
-    </div>
+     </div>
   );
 };
 
