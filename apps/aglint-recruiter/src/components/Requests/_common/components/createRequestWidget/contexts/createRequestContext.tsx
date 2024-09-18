@@ -6,6 +6,7 @@ import dayjs from '@/utils/dayjs';
 
 import { STEPS } from '../constants';
 import type { Menus } from '../types';
+import { getContextStoreInitial } from '@/hooks/createContextStoreSelector';
 
 type Selections = {
   requestType: { id: DatabaseTable['request']['type']; label: string };
@@ -78,12 +79,7 @@ type Actions = {
   setPriority: (_priority: States['priority']) => void;
 };
 
-export type Store = States & {
-  initial: States;
-  actions: Actions;
-};
-
-const initial = Object.freeze<States>({
+const initial: States = Object.freeze({
   open: false,
   step: STEPS.findIndex((step) => step === 'requestType'),
   selections: {
@@ -120,17 +116,18 @@ const initial = Object.freeze<States>({
   priority: 'standard',
 });
 
+const get = getContextStoreInitial(initial);
+
+type Store = States & {
+  initial: States;
+  actions: Actions;
+};
+
 const useCreateRequestContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
       initial,
-      open: initial.open,
-      step: initial.step,
-      dates: structuredClone(initial.dates),
-      note: initial.note,
-      priority: initial.priority,
-      payloads: structuredClone(initial.payloads),
-      selections: structuredClone(initial.selections),
+      ...get(),
       actions: {
         onOpenChange: (open) =>
           set((state) => {
@@ -232,7 +229,8 @@ const useCreateRequestContext = () => {
               step: newPayload.step + 1,
             };
           }),
-        setDates: (dates) => set(() => ({ dates })),
+        setDates: (dates) =>
+          set((state) => ({ dates: { ...state.dates, ...dates } })),
         setNote: (note) => set(() => ({ note })),
         setPriority: (priority) => set(() => ({ priority })),
         resetSelection: (payload) =>
@@ -258,11 +256,11 @@ CreateRequestProvider.displayName = 'CreateRequestProvider';
 
 const resetPayload = (menu: PayloadMenus, state: States): Partial<States> => {
   const response = {
-    payloads: structuredClone(initial.payloads),
-    selections: structuredClone(initial.selections),
-    step: initial.step,
-    dates: structuredClone(initial.dates),
-    note: initial.note,
+    payloads: get('payloads'),
+    selections: get('selections'),
+    step: get('step'),
+    dates: get('dates'),
+    note: get('note'),
   };
   if (menu === 'requestType') return response;
   if (menu === 'jobs') {
