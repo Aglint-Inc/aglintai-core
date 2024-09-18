@@ -29,34 +29,6 @@ const useApplicationsContext = () => {
 
   const checklist = useApplicationsStore((state) => state.checklist);
 
-  // const { filters, status, setFilters, setSection } = useJobParams();
-
-  // const [params, setParams] = useState(filters);
-  // const ref = useRef(true);
-
-  // useDeepCompareEffect(() => {
-  //   if (ref.current) {
-  //     ref.current = false;
-  //     return;
-  //   }
-  //   const timeout = setTimeout(() => setParams(filters), 200);
-  //   return () => clearTimeout(timeout);
-  // }, [filters]);
-
-  // const {
-  //   mutate: handleUpdateApplication,
-  //   mutateAsync: handleAsyncUpdateApplication,
-  // } = useUpdateApplication({
-  //   job_id,
-  //   recruiter_id,
-  //   polling: applicationScoringPollEnabled,
-  //   status: status,
-  //   ...params,
-  // });
-
-  // eslint-disable-next-line no-unused-vars
-  // const { status: _section, ...queryParams } = params;
-
   const newApplications = useJobApplications(
     'new',
     applicationScoringPollEnabled,
