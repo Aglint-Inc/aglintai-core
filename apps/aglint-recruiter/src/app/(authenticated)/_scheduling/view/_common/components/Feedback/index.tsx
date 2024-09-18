@@ -45,6 +45,8 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
@@ -526,37 +528,38 @@ function EditFeedbackPopUp({
   return (
     <>
       {selectedInterviewer?.interviewer && (
-        <Dialog
+        <UIDialog
+          title='My Feedback'
+          size='xl'
           open={selectedInterviewer.interviewer !== null}
-          onOpenChange={() => setSelectedInterviewer(null)}
+          onClose={() => setSelectedInterviewer(null)}
+          slotButtons={<></>}
         >
-          <DialogContent className='sm:max-w-[650px]'>
-            <FeedbackForm
-              interviewerData={selectedInterviewer.interviewer}
-              onSubmit={(feedback) =>
-                handelSubmit(feedback).then(() => {
-                  toast.success('Feedback saved successfully.');
-                  setSelectedInterviewer({
-                    index: null,
-                    interviewer: null,
-                  });
-                })
-              }
-              onCancel={() => {
+          <FeedbackForm
+            interviewerData={selectedInterviewer.interviewer}
+            onSubmit={(feedback) =>
+              handelSubmit(feedback).then(() => {
+                toast.success('Feedback saved successfully.');
                 setSelectedInterviewer({
                   index: null,
                   interviewer: null,
                 });
-              }}
-              onClose={() => {
-                setSelectedInterviewer({
-                  index: null,
-                  interviewer: null,
-                });
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+              })
+            }
+            onCancel={() => {
+              setSelectedInterviewer({
+                index: null,
+                interviewer: null,
+              });
+            }}
+            onClose={() => {
+              setSelectedInterviewer({
+                index: null,
+                interviewer: null,
+              });
+            }}
+          />
+        </UIDialog>
       )}
     </>
   );
@@ -730,7 +733,6 @@ function FeedbackCardDetails({
 const FeedbackForm = ({
   interviewerData,
   onSubmit,
-  onClose,
   onCancel,
 }: {
   interviewerData: FeedbackWindowInterviewersType[string][number];
@@ -753,93 +755,88 @@ const FeedbackForm = ({
   return (
     // Feedback Popup Card
 
-    <div className='flex w-[650px] items-center justify-center'>
-      <div className='w-full max-w-lg rounded-lg bg-white shadow-lg'>
-        <div className='flex items-center justify-between border-b border-gray-200 p-4'>
-          <h2 className='font-semibold'>My Feedback</h2>
-          <UIButton onClick={() => onClose()} variant='ghost' size='sm'>
-            <X className='h-4 w-4' />
-          </UIButton>
-        </div>
-        <div className='p-4'>
-          <div className='flex flex-col gap-3'>
-            <div className='flex flex-col gap-1'>
-              <p>Recommendation Level</p>
-              <div>
-                <div className='flex gap-2'>
-                  {Array(10)
-                    .fill(1)
-                    .map((_, i) => {
-                      return (
-                        <Button
-                          key={i}
-                          variant='ghost'
-                          size='sm'
-                          className={`h-8 w-8 rounded-full ${
-                            (interviewer.feedback?.recommendation || 0) > i
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-secondary text-secondary-foreground'
-                          }`}
-                          onClick={() => {
-                            const temp = { ...interviewer };
-                            temp.feedback = {
-                              ...temp.feedback,
-                              recommendation: i + 1,
-                            };
-                            setInterviewer(temp);
-                          }}
-                        >
-                          {i + 1}
-                        </Button>
-                      );
-                    })}
-                </div>
-                <p>{re_mapper[interviewer.feedback?.recommendation || 0]}</p>
-              </div>
-            </div>
-            <div className='flex flex-col gap-2'>
-              <p>Feedback</p>
-              <div>
-                <TipTapAIEditor
-                  placeholder='Your feedback.'
-                  initialValue={interviewer.feedback?.objective || ''}
-                  border
-                  height='300px'
-                  isSize={false}
-                  isAlign={false}
-                  handleChange={(html) => {
-                    const temp = { ...interviewer };
-                    temp.feedback = {
-                      ...temp.feedback,
-                      objective: html,
-                    };
-                    setInterviewer(temp);
-                  }}
-                />
-              </div>
-            </div>
+    <div className='flex w-full flex-col gap-5'>
+      <div className='flex flex-col gap-1'>
+        <UITypography type='small' variant='p'>
+          Recommendation Level
+        </UITypography>
+        <div>
+          <div className='flex gap-2'>
+            {Array(10)
+              .fill(1)
+              .map((_, i) => {
+                const is = (interviewer.feedback?.recommendation || 0) > i;
+                return (
+                  <Button
+                    key={i}
+                    variant='ghost'
+                    size='sm'
+                    className={`h-8 w-8 rounded-full ${
+                      is
+                        ? 'bg-primary text-primary-foreground hover:bg-slate-950 hover:text-white'
+                        : 'bg-secondary text-secondary-foreground'
+                    }`}
+                    onClick={() => {
+                      const temp = { ...interviewer };
+                      temp.feedback = {
+                        ...temp.feedback,
+                        recommendation: i + 1,
+                      };
+                      setInterviewer(temp);
+                    }}
+                  >
+                    {i + 1}
+                  </Button>
+                );
+              })}
           </div>
+          <UITypography type='small' variant='p' className=''>
+            {re_mapper[interviewer.feedback?.recommendation || 0]}
+          </UITypography>
         </div>
-        <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
-          <Button variant='outline' size='sm' onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button
-            size='sm'
-            onClick={() => {
-              if (!interviewer.feedback) {
-                return toast.warning('Please provide feedback.');
-              }
-              onSubmit({
-                relation_id: interviewer.relation_id,
-                session_id: interviewer.session.id,
-                feedback: interviewer.feedback,
-              });
+      </div>
+      <div className='flex flex-col gap-2'>
+        <UITypography type='small' variant='p'>
+          Feedback
+        </UITypography>
+        <div>
+          <TipTapAIEditor
+            placeholder='Your feedback.'
+            initialValue={interviewer.feedback?.objective || ''}
+            border
+            height='300px'
+            isSize={false}
+            isAlign={false}
+            handleChange={(html) => {
+              const temp = { ...interviewer };
+              temp.feedback = {
+                ...temp.feedback,
+                objective: html,
+              };
+              setInterviewer(temp);
             }}
-          >
-            Submit Feedback
-          </Button>
+          />
         </div>
+      </div>
+      <div className='flex justify-end gap-2 p-4'>
+        <Button variant='outline' size='sm' onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button
+          size='sm'
+          onClick={() => {
+            if (!interviewer.feedback) {
+              return toast.warning('Please provide feedback.');
+            }
+            onSubmit({
+              relation_id: interviewer.relation_id,
+              session_id: interviewer.session.id,
+              feedback: interviewer.feedback,
+            });
+          }}
+        >
+          Submit Feedback
+        </Button>
       </div>
     </div>
   );
