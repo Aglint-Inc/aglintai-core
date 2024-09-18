@@ -7,7 +7,7 @@ import {
 import {
   BriefcaseBusiness,
   Calendar,
-  GitGraph,
+  ChartNoAxesCombined,
   LayoutGrid,
   LayoutList,
   LibraryBig,
@@ -56,7 +56,7 @@ function SideNavbar() {
         )
         .map((item) => {
           const isVisible =
-            item.text === 'Analytics'
+            item.text === 'Reports'
               ? isShowFeature('ANALYTICS') && item.isVisible
               : item.text === 'Workflows'
                 ? isShowFeature('WORKFLOW') && item.isVisible
@@ -103,9 +103,8 @@ const LinkIcon = ({
     'Company Settings': <Settings className='h-6 w-6' strokeWidth={1.5} />,
     Workflows: <Workflow className='h-6 w-6' strokeWidth={1.5} />,
     Tasks: <ListTodo className='h-6 w-6' strokeWidth={1.5} />,
-    Analytics: <GitGraph className='h-6 w-6' strokeWidth={1.5} />,
+    Reports: <ChartNoAxesCombined className='h-6 w-6' strokeWidth={1.5} />,
   };
-
   return (
     <Tooltip>
       <TooltipTrigger>

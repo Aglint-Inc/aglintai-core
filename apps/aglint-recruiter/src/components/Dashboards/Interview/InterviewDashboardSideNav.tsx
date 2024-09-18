@@ -2,11 +2,11 @@ import { Button } from '@components/ui/button';
 import { cn } from '@lib/utils';
 import {
   Briefcase,
-  GraduationCap,
+  // GraduationCap,
   List,
   PieChart,
   Trophy,
-  UserPlus,
+  // UserPlus,
 } from 'lucide-react';
 import React from 'react';
 
@@ -28,16 +28,16 @@ export default function Component({ activeTab, setActiveTab }: SidebarProps) {
       icon: Trophy,
       value: 'interviewerLeaderboard',
     },
-    {
-      title: 'Training Metrics',
-      icon: GraduationCap,
-      value: 'trainingMetrics',
-    },
-    {
-      title: 'Candidate Metrics',
-      icon: UserPlus,
-      value: 'candidateMetrics',
-    },
+    // {
+    //   title: 'Training Metrics',
+    //   icon: GraduationCap,
+    //   value: 'trainingMetrics',
+    // },
+    // {
+    //   title: 'Candidate Metrics',
+    //   icon: UserPlus,
+    //   value: 'candidateMetrics',
+    // },
     {
       title: 'Request Metrics',
       icon: List,

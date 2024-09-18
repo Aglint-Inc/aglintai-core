@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { useInterviewCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
+import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -54,8 +54,8 @@ export default function HistoricInterviews() {
             )}
           </BarChart>
         ) : (
-          <div className='flex h-64 items-center justify-center'>
-            empty@ravi
+          <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
           </div>
         )}
       </ResponsiveContainer>

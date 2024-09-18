@@ -69,7 +69,9 @@ export default function CandidatesByLocationChart() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <>empty@ravi</>
+            <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
+          </div>
           )}
         </div>
       </CardContent>

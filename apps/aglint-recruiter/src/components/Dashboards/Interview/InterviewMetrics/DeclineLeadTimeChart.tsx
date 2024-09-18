@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { useDeclineCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
+import { useDeclineCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
 export default function DeclineLeadTimeChart() {
   const data = useDeclineCount();
@@ -62,7 +62,9 @@ export default function DeclineLeadTimeChart() {
                 <Scatter data={data.scatterData} fill='#22c55e' />
               </ScatterChart>
             ) : (
-              <>empty@ravi</>
+              <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
+          </div>
             )}
           </ResponsiveContainer>
         </div>

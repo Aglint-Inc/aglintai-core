@@ -99,7 +99,9 @@ export default function InterviewersDeclineTable() {
             </TableBody>
           </Table>
         ) : (
-          <>Empty@Ravi</>
+          <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
+          </div>
         )}
       </CardContent>
     </Card>
