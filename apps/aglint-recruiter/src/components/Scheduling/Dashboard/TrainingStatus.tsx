@@ -53,7 +53,7 @@ const TrainingStatusComponent = () => {
       <div
         key={id}
         onClick={() =>
-          router.push(`${ROUTES['/interview-pool/[type_id]']({ type_id: id })}`)
+          router.push(`${ROUTES['/interview-pool/[pool]']({ type_id: id })}`)
         }
         className='cursor-pointer hover:bg-neutral-100'
       >

@@ -53,7 +53,12 @@ function CollapseContent({
                     <div className='flex items-center space-x-4'>
                       <div className='flex-shrink-0'>
                         {candidate.name && (
-                          <Avatar>
+                          <Avatar
+                            style={{
+                              height: '50px',
+                              width: '50px',
+                            }}
+                          >
                             <AvatarImage
                               src={`https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&background=random`}
                               alt={candidate.name}
@@ -69,12 +74,12 @@ function CollapseContent({
                           {candidate.name}
                         </p>
                         {candidate.current_job_title && (
-                          <div className='mt-1 flex items-center text-sm text-gray-500'>
-                            <Briefcase className='mr-1 h-4 w-4' />
+                          <div className='mt-1 flex items-center text-xs text-gray-500'>
+                            <Briefcase className='mr-1 h-3 w-3' />
                             <span>{candidate.current_job_title}</span>
                           </div>
                         )}
-                        <p className='mt-1 text-sm text-gray-500'>
+                        <p className='mt-1 text-xs text-gray-500'>
                           {interview_meeting?.start_time
                             ? formatTimeWithTimeZone({
                                 start_time: interview_meeting.start_time,

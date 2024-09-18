@@ -92,23 +92,12 @@ export function GlobalScheduleCard({
                 </div>
               )}
               {isTimeVisible && (
-                <div className='flex items-center gap-1 text-yellow-500'>
+                <div className='flex items-center gap-1'>
                   <Clock className='h-4 w-4 text-neutral-600' />
                   <UITypography type='small'>{textTime}</UITypography>
                 </div>
               )}
-              {isRequestStatusVisible && (
-                <div>
-                  {slotRequestStatus ?? (
-                    <div className='flex items-center gap-1 text-green-500'>
-                      <Clock className='h-4 w-4 text-neutral-600' />
-                      <UITypography type='small'>
-                        Send self scheduling link to candidate
-                      </UITypography>
-                    </div>
-                  )}
-                </div>
-              )}
+              {isRequestStatusVisible && <div>{slotRequestStatus}</div>}
             </div>
             <div className='flex flex-col gap-2'>
               <div className='flex items-center gap-1'>

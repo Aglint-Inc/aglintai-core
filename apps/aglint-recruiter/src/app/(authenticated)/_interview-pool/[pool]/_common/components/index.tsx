@@ -53,7 +53,7 @@ export default function InterviewTypeDetail() {
   };
 
   return (
-    <>
+    <div className='h-full w-full'>
       {fetchingModule ? (
         <div className='fixed inset-0 flex items-center justify-center'>
           <Loader />
@@ -114,6 +114,6 @@ export default function InterviewTypeDetail() {
           <InterviewDetailsTabs />
         </div>
       )}
-    </>
+    </div>
   );
 }
