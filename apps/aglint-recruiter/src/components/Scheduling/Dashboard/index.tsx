@@ -13,9 +13,7 @@ import { Leaderboard } from './leaderboard';
 import { Reasons } from './reasons';
 import { RecentDeclines } from './recentDeclines';
 import { RecentReschedules } from './recentReschedules';
-import { Tabs } from './tabs';
 import { TrainingProgress } from './trainingProgress';
-
 const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
   if (!enabled)
@@ -28,8 +26,9 @@ const SchedulingDashboard = memo(() => {
     <>
       <div className='flex flex-col gap-4 p-6'>
         <Filters />
-        <Tabs />
+        {/* <Tabs /> */}
       </div>
+
       <div className='grid grid-cols-1 gap-4 p-6 md:grid-cols-2'>
         <div className='flex h-full flex-col gap-4'>
           <div className='flex-1'>
