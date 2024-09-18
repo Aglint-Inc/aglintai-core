@@ -28,7 +28,7 @@ import {
 } from 'date-fns';
 import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { useAnalyticsContext } from 'src/app/(authenticated)/analytics/_common/context/AnalyticsContext/AnalyticsContextProvider';
+import { useAnalyticsContext } from 'src/app/(authenticated)/reports/_common/context/AnalyticsContext/AnalyticsContextProvider';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 

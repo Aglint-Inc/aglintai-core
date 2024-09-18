@@ -4609,7 +4609,6 @@ export type Database = {
       };
       interview_types_view: {
         Row: {
-          avg_meeting_duration: number | null;
           canceled_meeting_count: number | null;
           completed_meeting_count: number | null;
           created_by: string | null;
@@ -4618,12 +4617,8 @@ export type Database = {
           description: string | null;
           id: string | null;
           is_archived: boolean | null;
-          job_names: string[] | null;
           name: string | null;
           recruiter_id: string | null;
-          this_month_cancelled_meeting_count: number | null;
-          this_month_completed_meeting_count: number | null;
-          this_month_confirmed_meeting_count: number | null;
           upcoming_meeting_count: number | null;
           users: Json | null;
         };
@@ -6184,6 +6179,30 @@ export type Database = {
           interview_plan_id: string;
         };
         Returns: undefined;
+      };
+      reports_request_metrics: {
+        Args: {
+          recruiter_id: string;
+          departments?: number[];
+          locations?: number[];
+          jobs?: string[];
+          start_datetime?: string;
+          end_datetime?: string;
+        };
+        Returns: {
+          request_id: string;
+          interviewing_coordinator: string;
+          candidate_name: string;
+          recruiting_coord: string;
+          type: string;
+          availability_req: boolean;
+          self_scheduling_req: boolean;
+          confirmation: boolean;
+          availability_received: boolean;
+          availability_followup: boolean;
+          self_scheduling_followup: boolean;
+          candidate_status: string;
+        }[];
       };
       reset_auth_users_identities: {
         Args: {

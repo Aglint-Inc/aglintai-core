@@ -4,9 +4,10 @@ import {
   executeWorkflowAction,
   type ProgressLoggerType,
 } from '@aglint/shared-utils';
+import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
+// import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
 import { changeInterviewer } from '@/services/api-schedulings/interviewer-decline/change-interviewer';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 // import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';

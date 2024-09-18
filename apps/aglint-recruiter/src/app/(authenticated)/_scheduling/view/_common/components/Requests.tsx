@@ -17,8 +17,8 @@ function Requests({ session_id }) {
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
-    <div className='space-y-2'>
-      <p className='font-medium'>Request History</p>
+    <div className='rounded-md border border-gray-200 bg-white p-4'>
+      <h3 className='mb-3 text-sm font-semibold'>Request History</h3>
       {isLoading ? (
         <Loader />
       ) : (
@@ -29,71 +29,67 @@ function Requests({ session_id }) {
               text={'No requests found'}
             />
           )}
-          {requests?.map((request) => {
-            return (
-              <>
-                <Card
-                  key={request.id}
-                  className='cursor-pointer space-y-4 p-4 hover:bg-gray-50'
-                  onClick={() => {
-                    router.push(
-                      ROUTES['/requests/[id]']({
-                        id: request.id,
-                      }),
-                    );
-                  }}
-                >
-                  <CardHeader className='p-0'>
-                    <CardTitle className='text-sm'>{request.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className='p-0'>
-                    <div className='flex items-center justify-between'>
-                      <div className='flex items-center space-x-2'>
-                        <Avatar className='h-5 w-5 rounded'>
-                          <AvatarImage
-                            src={request.assignee_details.profile_image}
-                            alt={getFullName(
-                              request.assignee_details.first_name,
-                              request.assignee_details.last_name,
-                            )}
-                          />
-                          <AvatarFallback>
-                            {getFullName(
-                              request.assignee_details.first_name,
-                              request.assignee_details.last_name,
-                            ).charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className='text-xs font-medium'>
-                          {getFullName(
-                            request.assignee_details.first_name,
-                            request.assignee_details.last_name,
-                          )}
-                        </span>
-                      </div>
-                      <div className='flex flex-row'>
-                        <UIBadge
-                          size={'sm'}
-                          textBadge={capitalizeFirstLetter(request.status)}
-                          color={
-                            request.status === 'to_do'
-                              ? 'purple'
-                              : request.status === 'in_progress'
-                                ? 'info'
-                                : request.status === 'blocked'
-                                  ? 'error'
-                                  : request.status === 'completed'
-                                    ? 'success'
-                                    : 'neutral'
-                          }
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            );
-          })}
+          {requests?.map((request) => (
+            <Card
+              key={request.id}
+              className='cursor-pointer border-none p-3 shadow-none hover:bg-gray-50'
+              onClick={() => {
+                router.push(
+                  ROUTES['/requests/[id]']({
+                    id: request.id,
+                  }),
+                );
+              }}
+            >
+              <CardHeader className='mb-2 p-0'>
+                <CardTitle className='line-clamp-1 text-sm font-medium'>
+                  {request.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='p-0'>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center space-x-2'>
+                    <Avatar className='h-6 w-6'>
+                      <AvatarImage
+                        src={request.assignee_details.profile_image}
+                        alt={getFullName(
+                          request.assignee_details.first_name,
+                          request.assignee_details.last_name,
+                        )}
+                      />
+                      <AvatarFallback className='text-xs'>
+                        {getFullName(
+                          request.assignee_details.first_name,
+                          request.assignee_details.last_name,
+                        ).charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className='text-xs text-gray-600'>
+                      {getFullName(
+                        request.assignee_details.first_name,
+                        request.assignee_details.last_name,
+                      )}
+                    </span>
+                  </div>
+                  <UIBadge
+                    size={'sm'}
+                    textBadge={capitalizeFirstLetter(request.status)}
+                    color={
+                      request.status === 'to_do'
+                        ? 'purple'
+                        : request.status === 'in_progress'
+                          ? 'info'
+                          : request.status === 'blocked'
+                            ? 'error'
+                            : request.status === 'completed'
+                              ? 'success'
+                              : 'neutral'
+                    }
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
     </div>

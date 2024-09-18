@@ -144,7 +144,7 @@ function CollapseContent({
                           status: interview_meeting?.status,
                         }}
                         interviewerTimeZone={
-                          item.scheduling_settings?.timeZone.tzCode
+                          item.scheduling_settings?.timeZone?.tzCode
                         }
                         isCalendarConnected={isCalendarConnected}
                         isPaused={isPaused}

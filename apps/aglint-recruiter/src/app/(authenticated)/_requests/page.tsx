@@ -1,4 +1,4 @@
-import MainBody from './Components/MainBody';
+import MainBody from '@requests/components/MainBody';
 
 function RequestsPage() {
   return <MainBody />;

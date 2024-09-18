@@ -8,10 +8,11 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
+// import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
 import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
 import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';

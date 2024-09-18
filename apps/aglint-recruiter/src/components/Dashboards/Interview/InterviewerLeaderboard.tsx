@@ -112,7 +112,7 @@ export default function ComprehensiveInterviewerLeaderboard() {
   });
 
   return (
-    <div className='mx-auto w-full max-w-6xl'>
+    <div className='mx-auto w-full'>
       <Card className='mx-auto w-full'>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
           <CardTitle className='text-md flex items-center font-semibold text-primary'>
