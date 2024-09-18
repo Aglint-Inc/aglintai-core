@@ -18,8 +18,7 @@ import { Clock, Edit, Loader2 } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
-
-import type { TimezoneObj } from '../Scheduling';
+import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
   timeZone: string;
@@ -51,7 +50,7 @@ const TimeZone: FC<TimeZoneProps> = ({
   }, []);
 
   return (
-    <Card className='relative group'>
+    <Card className='group relative'>
       <CardHeader className='relative'>
         <CardTitle className='text-lg font-semibold'>Time Zone</CardTitle>
         <CardDescription className='text-sm text-gray-500'>
@@ -62,14 +61,14 @@ const TimeZone: FC<TimeZoneProps> = ({
             <Button
               variant='outline'
               size='sm'
-              className='absolute top-1 right-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100'
+              className='absolute right-2 top-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100'
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
           </PopoverTrigger>
           <PopoverContent className='w-full' align='start' side='left'>
-            <div className='flex flex-col gap-4 w-[300px]'>
+            <div className='flex w-[300px] flex-col gap-4'>
               <Label>Time Zone</Label>
               <TimezonePicker
                 value={selectedTimeZone?.tzCode}

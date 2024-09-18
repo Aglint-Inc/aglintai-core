@@ -1,21 +1,22 @@
-import Seo from '@/components/Common/Seo';
-import Requests from '@/components/Requests/index';
-import { RequestsProvider } from '@/context/RequestsContext';
+import RequestsPage from 'src/app/(authenticated)/_requests/page';
+import RequestLayout from 'src/app/(authenticated)/_requests/RequestLayout';
 
-const RequestsPage = () => {
+import Seo from '@/components/Common/Seo';
+
+const Page = () => {
   return (
     <>
       <Seo
         title={`Requests Dashboard - Requests | Aglint AI`}
         description='AI for People Products'
       />
-      <Requests />
+      <RequestsPage />
     </>
   );
 };
 
-RequestsPage.privateProvider = (page) => {
-  return <RequestsProvider>{page}</RequestsProvider>;
+Page.privateProvider = (page) => {
+  return <RequestLayout>{page}</RequestLayout>;
 };
 
-export default RequestsPage;
+export default Page;

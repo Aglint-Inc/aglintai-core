@@ -35,7 +35,9 @@ export default function InterviewCountByTimeFrame() {
                     outerRadius={80}
                     dataKey='value'
                   >
-                    <Cell fill={`hsl(var(--chart-${(index % 10) + 1}))`} />
+                    <Cell
+                      fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
+                    />
                     <Cell fill='#f3f4f6' />
                   </Pie>
                   <text
@@ -58,7 +60,7 @@ export default function InterviewCountByTimeFrame() {
                   </text>
                 </PieChart>
               </ResponsiveContainer>
-              <p className='text-center mt-2'>{data.name}</p>
+              <p className='mt-2 text-center'>{data.name}</p>
               <p className='text-center text-sm text-muted-foreground'>
                 {timeFrame === 'today'
                   ? 'Today'
@@ -87,7 +89,7 @@ interface TimeFrameToggleProps {
 
 const TimeFrameToggle = ({ value, onValueChange }: TimeFrameToggleProps) => {
   return (
-    <div className='flex justify-between items-center mb-4'>
+    <div className='mb-4 flex items-center justify-between'>
       <h2 className='text-md font-semibold'>Interview Count</h2>
       <ToggleGroup type='single' value={value} onValueChange={onValueChange}>
         <ToggleGroupItem value='today'>Today</ToggleGroupItem>

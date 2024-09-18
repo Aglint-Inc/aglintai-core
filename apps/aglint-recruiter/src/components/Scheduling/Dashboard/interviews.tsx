@@ -1,5 +1,3 @@
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
-import Stack from '@mui/material/Stack';
 import {
   BarElement,
   CategoryScale,
@@ -18,6 +16,8 @@ import {
 import { SafeObject } from '@/utils/safeObject';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { NewInterviewDetail } from './_common/NewInterviewDetail';
+
 export const Interviewes = memo(() => (
   <NewInterviewDetail
     textHeading={'Interviews'}
@@ -34,19 +34,15 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack width={'400px'} height={'500px'}>
-        <div className='flex items-center justify-center h-[350px]'>
-          <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+        <div className='flex h-[350px] items-center justify-center'>
+          <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
         </div>
-      </Stack>
     );
 
   if (status === 'error') return <>Error</>;
 
   return (
-    <Stack width={'400px'} height={'500px'}>
       <BarChart data={data} />
-    </Stack>
   );
 });
 Container.displayName = 'Container';

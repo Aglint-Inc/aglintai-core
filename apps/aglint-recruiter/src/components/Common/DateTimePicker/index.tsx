@@ -81,7 +81,7 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
           selected={selectedDateTime}
           onSelect={handleDateSelect}
         />
-        <div className='p-3 border-t border-border'>
+        <div className='border-t border-border p-3'>
           <Select
             onValueChange={handleTimeChange}
             value={format(selectedDateTime, 'HH:mm')}

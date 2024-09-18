@@ -25,7 +25,7 @@ const Skills = () => {
     <Accordion type='single' collapsible>
       <AccordionItem value='skills'>
         <AccordionTrigger>
-          <div className='flex items-center justify-between w-full'>
+          <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
               <Lightbulb size={16} />
               <span className='font-medium'>Skills</span>
@@ -35,7 +35,7 @@ const Skills = () => {
                 {highRelevanceSkills.map((skill, index) => (
                   <UIBadge
                     key={index}
-                    className='text-xs font-medium px-2 py-1 rounded-full bg-purple-200 text-purple-600'
+                    className='rounded-full bg-purple-200 px-2 py-1 text-xs font-medium text-purple-600'
                     textBadge={skill}
                   />
                 ))}
@@ -44,7 +44,7 @@ const Skills = () => {
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div className='flex flex-row flex-wrap w-full gap-1'>
+          <div className='flex w-full flex-row flex-wrap gap-1'>
             <Content />
           </div>
         </AccordionContent>
@@ -72,7 +72,7 @@ const Content = () => {
   if (status === 'pending')
     return (
       <Loader count={10}>
-        <div className='relative w-[60px] h-[22px]'>
+        <div className='relative h-[22px] w-[60px]'>
           <Skeleton className='h-10 w-full' />
         </div>
       </Loader>
@@ -85,8 +85,8 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <Medal className='text-gray-500 w-12 h-12 mb-2' />
-        <p className='text-gray-600 text-sm'>No skills found</p>
+        <Medal className='mb-2 h-12 w-12 text-gray-500' />
+        <p className='text-sm text-gray-600'>No skills found</p>
       </div>
     );
   return <Skill />;
@@ -141,7 +141,7 @@ const Skill = () => {
         />
       ))}
       {skillsWithRelevance.length > 10 && (
-        <div className='w-full mt-2'>
+        <div className='mt-2 w-full'>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className='text-blue-500 hover:underline'

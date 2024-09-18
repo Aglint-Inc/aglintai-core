@@ -1,13 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import axios from '@/client/axios';
-import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   type ApiBodyGetUsersByIds,
@@ -15,6 +12,9 @@ import {
 } from '@/pages/api/get_users_by_ids';
 import { schedulingDashboardQueryKeys } from '@/queries/scheduling-dashboard/keys';
 import { supabase } from '@/utils/supabase/client';
+
+import { InterviewersCardList } from './_common/InterviewersCardList';
+import { InterviewersDash } from './_common/InterviewersDash';
 
 const InterviewersAnalyticCards = () => {
   const [type, setType] =
@@ -46,52 +46,38 @@ const InterviewersAnalyticCards = () => {
             <InterviewersCardList
               key={index}
               textName={
-                <Skeleton
-                  variant='text'
-                  width={'100px'}
-                  height={'var(--space-6)'}
-                />
+                <div className='h-6 w-24 animate-pulse rounded bg-gray-200' />
               }
               textCompleted={
-                <Skeleton
-                  variant='text'
-                  width={'var(--space-5)'}
-                  height={'var(--space-6)'}
-                />
+                <div className='h-6 w-5 animate-pulse rounded bg-gray-200' />
               }
               textUpcoming={
-                <Skeleton
-                  variant='text'
-                  width={'var(--space-5)'}
-                  height={'var(--space-6)'}
-                />
+                <div className='h-6 w-5 animate-pulse rounded bg-gray-200' />
               }
               textDeclined={
-                <Skeleton
-                  variant='text'
-                  width={'var(--space-5)'}
-                  height={'var(--space-6)'}
-                />
+                <div className='h-6 w-5 animate-pulse rounded bg-gray-200' />
               }
             />
           ))
         ) : interviewersData.length ? (
           interviewersData?.map((item) => (
-            // eslint-disable-next-line react/jsx-key
-            <Stack onClick={() => router.push(`/user/profile/${item.id}`)}>
+            <div
+              key={item.id}
+              className='cursor-pointer'
+              onClick={() => router.push(`/user/${item.id}`)}
+            >
               <InterviewersCardList
-                key={item.id}
                 textName={item.name}
                 textCompleted={item.status['completed'] || 0}
                 textUpcoming={item.status['confirmed'] || 0}
                 textDeclined={item.status['cancelled'] || 0}
               />
-            </Stack>
+            </div>
           ))
         ) : (
           <div className='h-[296px]'>
-            <div className='flex flex-col items-center justify-center h-full'>
-              <BarChart2 className='w-12 h-12 text-gray-400' />
+            <div className='flex h-full flex-col items-center justify-center'>
+              <BarChart2 className='h-12 w-12 text-gray-400' />
               <p className='mt-2 text-sm text-gray-500'>No data available</p>
             </div>
           </div>

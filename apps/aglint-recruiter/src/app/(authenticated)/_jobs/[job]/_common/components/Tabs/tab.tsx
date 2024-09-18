@@ -40,8 +40,8 @@ const Tab = forwardRef<HTMLButtonElement, TabProps>(
           'hover:bg-transparent hover:text-foreground',
           'focus-visible:bg-transparent focus-visible:text-foreground focus-visible:ring-0',
           section === status && 'text-foreground',
-          section === status && 'border-b-2 border-primary rounded-none',
-          (normalize || isOver) && 'bg-orange-100 border border-orange-200',
+          section === status && 'rounded-none border-b-2 border-primary',
+          (normalize || isOver) && 'border border-orange-200 bg-orange-100',
         )}
       >
         {status.charAt(0).toUpperCase() + status.slice(1)}

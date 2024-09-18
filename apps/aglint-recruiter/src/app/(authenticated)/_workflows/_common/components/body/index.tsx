@@ -23,13 +23,9 @@ const Body = () => {
   return (
     <>
       <Seo title='Workflow | Aglint AI' description='AI for People Products' />
-      <div className='flex flex-col w-[960px] mx-auto'>
-        <div className='sticky top-0 left-0 right-0 z-10 bg-white mb-4'>
-          <Filters />
-        </div>
-        <div className='flex-grow'>
-          <Content />
-        </div>
+      <div className='flex flex-col gap-4'>
+        <Filters />
+        <Content />
       </div>
     </>
   );

@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
@@ -10,7 +9,7 @@ import {
 import React, { type FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { capitalize } from '@/utils/text/textUtils';
@@ -23,7 +22,12 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 const BarChart: React.FC<{
   skills: ReturnType<typeof getOrderedGraphValues>;
 }> = ({ skills }) => {
-  const matches = useMediaQuery('(min-width:1920px)');
+  const matches = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1920px)').matches;
+    }
+    return false;
+  }, []);
   const { labels, tooltips, counts, colors } = skills.reduce(
     (acc, { color, name, count }) => {
       const safeName = capitalize((name ?? '').trim());

@@ -8,12 +8,12 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
 import Footer from '@/components/Common/Footer';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
-import { ConfirmedInvitePage } from '@/components/Scheduling/CandidateInvite/CandidateConfirm';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/utils/jsonResume';
@@ -241,7 +241,7 @@ function CandidateAvailability() {
   }, [candidateRequestAvailability]);
   if (loading || confirmLoading) {
     return (
-      <div className='w-full h-screen flex justify-center items-center bg-[var(--neutral-2)]'>
+      <div className='flex h-screen w-full items-center justify-center bg-neutral-100'>
         <div className='w-[120px] -translate-y-1/2'>
           <CandidateSlotLoad />
         </div>
@@ -296,10 +296,10 @@ function CandidateAvailability() {
   return (
     <div className='h-screen'>
       <DateSlotsPoPup />
-      <div className='bg-[var(--sand-3)] w-full h-[calc(100vh-50px)] py-10 '>
-        <div className='flex flex-col items-center  max-w-3xl mx-auto p-4 border border-neutral-200 rounded-lg bg-white'>
-          <div className='flex flex-col items-center w-lg'>
-            <div className='flex justify-center items-center mb-4'>
+      <div className='h-[calc(100vh-50px)] w-full bg-amber-50 py-10'>
+        <div className='mx-auto flex max-w-3xl flex-col items-center rounded-lg border border-neutral-200 bg-white p-4'>
+          <div className='w-lg flex flex-col items-center'>
+            <div className='mb-4 flex items-center justify-center'>
               {candidateRequestAvailability?.recruiter.logo ? (
                 <MuiAvatar
                   height='100px'
@@ -310,18 +310,18 @@ function CandidateAvailability() {
               ) : null}
             </div>
             <div
-              className={`flex items-center gap-2 mb-2 ${isSubmitted ? 'text-green-500' : 'text-gray-500'}'} `}
+              className={`mb-2 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
             >
               {isSubmitted ? (
                 <>
-                  <CheckCircle className='w-6 h-6 text-[var(--success-11)]' />
+                  <CheckCircle className='h-6 w-6 text-green-600' />
                   <p className='text-lg font-semibold'>
                     Availability Submitted successfully
                   </p>
                 </>
               ) : (
                 <>
-                  <Calendar className='w-6 h-6 text-[var(--neutral-12)]' />
+                  <Calendar className='h-6 w-6 text-neutral-800' />
                   <p className='text-lg font-semibold'>
                     Your Availability Requested
                   </p>
@@ -431,8 +431,8 @@ export function MultiDaySelect({
   slotPrimaryButton?: React.ReactNode;
 }) {
   return (
-    <div className='flex flex-col items-center space-y-4 w-full'>
-      <div className='w-full max-w-3xl mx-auto flex flex-col space-y-4'>
+    <div className='flex w-full flex-col items-center space-y-4'>
+      <div className='mx-auto flex w-full max-w-3xl flex-col space-y-4'>
         {slotCandidateScheduleCard}
       </div>
       <div className='w-72'>{slotPrimaryButton}</div>

@@ -21,38 +21,38 @@ export default function RequestTypesDelaysChart() {
       type: 'Scheduling',
       avgTime: 3,
       completionRate: 85,
-      color: 'hsl(var(--chart-1))',
+      color: 'text-blue-500',
     },
     {
       type: 'Rescheduling',
       avgTime: 4.5,
       completionRate: 90,
-      color: 'hsl(var(--chart-2))',
+      color: 'text-green-500',
     },
     {
       type: 'Decline',
       avgTime: 2,
       completionRate: 75,
-      color: 'hsl(var(--chart-3))',
+      color: 'text-red-500',
     },
     {
       type: 'Cancel',
       avgTime: 1.5,
       completionRate: 95,
-      color: 'hsl(var(--chart-4))',
+      color: 'text-yellow-500',
     },
     {
       type: 'Debrief',
       avgTime: 5,
       completionRate: 80,
-      color: 'hsl(var(--chart-5))',
+      color: 'text-purple-500',
     },
   ];
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Request Types Causing Most Delays: Avg. Time to Completion vs
           Completion Rate
         </CardTitle>
@@ -63,7 +63,7 @@ export default function RequestTypesDelaysChart() {
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis
               dataKey='type'
-              stroke='hsl(var(--foreground))'
+              stroke='text-foreground'
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -71,7 +71,7 @@ export default function RequestTypesDelaysChart() {
             <YAxis
               yAxisId='left'
               orientation='left'
-              stroke='hsl(var(--foreground))'
+              stroke='text-foreground'
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -85,7 +85,7 @@ export default function RequestTypesDelaysChart() {
             <YAxis
               yAxisId='right'
               orientation='right'
-              stroke='hsl(var(--foreground))'
+              stroke='text-foreground'
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -98,10 +98,10 @@ export default function RequestTypesDelaysChart() {
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--background))',
-                borderColor: 'hsl(var(--border))',
+                backgroundColor: 'bg-background',
+                borderColor: 'border-border',
               }}
-              labelStyle={{ color: 'hsl(var(--foreground))' }}
+              labelStyle={{ color: 'text-foreground' }}
             />
             <Legend />
             <Bar
@@ -118,10 +118,10 @@ export default function RequestTypesDelaysChart() {
               yAxisId='right'
               type='monotone'
               dataKey='completionRate'
-              stroke='hsl(var(--primary))'
+              stroke='text-primary'
               name='Completion Rate (%)'
               strokeWidth={2}
-              dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2 }}
+              dot={{ fill: 'text-primary', strokeWidth: 2 }}
             />
           </ComposedChart>
         </ResponsiveContainer>

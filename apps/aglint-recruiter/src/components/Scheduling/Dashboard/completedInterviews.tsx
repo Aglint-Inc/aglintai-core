@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { CompletedInterviews as CompletedInterviewsDev } from '@devlink3/CompletedInterviews';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
   BarElement,
   CategoryScale,
@@ -11,72 +12,106 @@ import { Loader2 } from 'lucide-react';
 import { memo, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import {
-  type SchedulingAnalyticsContextType,
-  useSchedulingAnalytics,
-} from '@/context/SchedulingAnalytics';
-
-export const CompletedInterviews = memo(() => {
-  const { completedInterviewType, setCompletedInterviewType } =
-    useSchedulingAnalytics();
-  return (
-    <CompletedInterviewsDev
-      isLastDaysActive={completedInterviewType === 'month'}
-      isLastQuarterActive={completedInterviewType === 'quarter'}
-      isLastMonthsActive={completedInterviewType === 'year'}
-      onClickLastDays={{ onClick: () => setCompletedInterviewType('month') }}
-      onClickLastQuarter={{
-        onClick: () => setCompletedInterviewType('quarter'),
-      }}
-      onClickLastMonth={{ onClick: () => setCompletedInterviewType('year') }}
-      textLastDays={'Last Month'}
-      textLastQuarter={'Last Quarter'}
-      textMonth={'Last Year'}
-      slotGraph={<Container />}
-    />
-  );
-});
-CompletedInterviews.displayName = 'CompletedInterviews';
-
-const Container = memo(() => {
-  const {
-    completedInterviewType,
-    completed_interviews: { data, status },
-  } = useSchedulingAnalytics();
-
-  if (status === 'pending')
-    return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
-      </div>
-    );
-
-  if (status === 'error') return <>Error</>;
-
-  if (data.length === 0)
-    return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
-      </div>
-    );
-
-  return (
-    <div className='h-[350px]'>
-      <BarChart data={data} completedInterviewType={completedInterviewType} />
-    </div>
-  );
-});
-Container.displayName = 'Container';
-
-type Props = Pick<
-  SchedulingAnalyticsContextType['completed_interviews'],
-  'data'
-> &
-  Pick<SchedulingAnalyticsContextType, 'completedInterviewType'>;
+import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
-const BarChart = memo(({ data, completedInterviewType }: Props) => {
+export const CompletedInterviews = memo(() => {
+  const {
+    completedInterviewType,
+    setCompletedInterviewType,
+    completed_interviews: { data, status },
+  } = useSchedulingAnalytics();
+
+  const value =
+    completedInterviewType === 'year'
+      ? 'month'
+      : completedInterviewType === 'month'
+        ? 'day'
+        : 'quarter';
+
+  return (
+    <Card>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+        <CardTitle>Completed Interviews</CardTitle>
+        <Tabs value={value} className='h-[30px]'>
+          <TabsList>
+            <TabsTrigger
+              value='month'
+              onClick={() => setCompletedInterviewType('year')}
+              className='p-0 px-2 text-[12px]'
+            >
+              Last Year
+            </TabsTrigger>
+            <TabsTrigger
+              value='quarter'
+              onClick={() => setCompletedInterviewType('quarter')}
+            >
+              Last Quarter
+            </TabsTrigger>
+            <TabsTrigger
+              value='day'
+              onClick={() => setCompletedInterviewType('month')}
+            >
+              Last Month
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+      <CardContent>
+        <GraphContainer
+          status={status}
+          data={data}
+          completedInterviewType={completedInterviewType}
+        />
+      </CardContent>
+    </Card>
+  );
+});
+
+CompletedInterviews.displayName = 'CompletedInterviews';
+
+interface GraphContainerProps {
+  status: string;
+  data: any[];
+  completedInterviewType: string;
+}
+
+const GraphContainer = memo(
+  ({ status, data, completedInterviewType }: GraphContainerProps) => {
+    if (status === 'pending' || data.length === 0) {
+      return (
+        <div className='flex h-[350px] items-center justify-center'>
+          <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
+        </div>
+      );
+    }
+
+    if (status === 'error') return <div className='h-[350px]'>Error</div>;
+
+    return (
+      <div className='h-[350px]'>
+        <BarChart data={data} completedInterviewType={completedInterviewType} />
+      </div>
+    );
+  },
+);
+
+GraphContainer.displayName = 'GraphContainer';
+
+// type BarChartProps = Pick<
+//   SchedulingAnalyticsContextType['completed_interviews'],
+//   'data'
+// > &
+//   Pick<SchedulingAnalyticsContextType, 'completedInterviewType'>;
+type BarChartProps = {
+  data: {
+    date?: string;
+    count?: number;
+  }[];
+  completedInterviewType: string;
+};
+const BarChart = memo(({ data, completedInterviewType }: BarChartProps) => {
   const getLabel = useCallback(
     (label: string) => {
       if (completedInterviewType === 'month')
@@ -87,15 +122,17 @@ const BarChart = memo(({ data, completedInterviewType }: Props) => {
     },
     [completedInterviewType],
   );
+
   const { labels, counts } = (data ?? []).reduce(
     (acc, curr) => {
       acc.labels.push(getLabel(curr.date));
       acc.counts.push(curr.count);
       return acc;
     },
-    { labels: [], counts: [] } satisfies { labels: string[]; counts: number[] },
+    { labels: [], counts: [] } as { labels: string[]; counts: number[] },
   );
-  const bars = {
+
+  const chartData = {
     labels: labels,
     datasets: [
       {
@@ -109,39 +146,24 @@ const BarChart = memo(({ data, completedInterviewType }: Props) => {
       },
     ],
   };
+
   return (
     <Bar
       options={{
-        elements: {
-          bar: {
-            borderRadius: 20,
-          },
-        },
+        elements: { bar: { borderRadius: 20 } },
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
           tooltip: {
-            callbacks: {
-              title: (values) => labels[values[0].dataIndex],
-            },
+            callbacks: { title: (values) => labels[values[0].dataIndex] },
           },
-          legend: {
-            display: false,
-          },
+          legend: { display: false },
         },
         scales: {
           x: {
-            title: {
-              display: false,
-              font: { weight: 'bold' },
-              text: 'Dates',
-            },
-            border: {
-              color: 'transparent',
-            },
-            grid: {
-              display: false,
-            },
+            title: { display: false, font: { weight: 'bold' }, text: 'Dates' },
+            border: { color: 'transparent' },
+            grid: { display: false },
           },
           y: {
             title: {
@@ -149,18 +171,14 @@ const BarChart = memo(({ data, completedInterviewType }: Props) => {
               font: { weight: 'bold' },
               text: 'Interviews',
             },
-            border: {
-              color: 'transparent',
-            },
-            grid: {
-              display: false,
-              color: 'rgba(0, 0, 0, 0.05)',
-            },
+            border: { color: 'transparent' },
+            grid: { display: false, color: 'rgba(0, 0, 0, 0.05)' },
           },
         },
       }}
-      data={bars}
+      data={chartData}
     />
   );
 });
+
 BarChart.displayName = 'BarChart';

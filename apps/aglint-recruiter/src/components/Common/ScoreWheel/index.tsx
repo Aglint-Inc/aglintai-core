@@ -1,23 +1,9 @@
-import type { DatabaseTable } from '@aglint/shared-types';
+'use client';
+
+import { Card } from '@components/ui/card';
 import { capitalize } from 'lodash';
-import { useEffect, useState } from 'react';
-
-import { getOverallResumeScore } from '@/utils/support/supportUtils';
-
-export const scoreWheelDependencies = {
-  initialScoreWheelScores: {
-    skills: 100,
-    experience: 100,
-    education: 100,
-  } as ScoreWheelParams,
-  initialScoreWheelWeights: {
-    skills: 33,
-    experience: 34,
-    education: 33,
-  } as ScoreWheelParams,
-  wheelColors: ['#886BD8', '#30AABC', '#5D7DF5'],
-  parameterOrder: ['skills', 'experience', 'education'],
-};
+import { useMemo, useState } from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 
 export type ScoreWheelParams = {
   skills: number;
@@ -26,202 +12,111 @@ export type ScoreWheelParams = {
 };
 
 const ScoreWheel = ({
-  id,
   scores,
   parameter_weights,
-  fontSize = 14,
 }: {
-  id: string;
-  scores?: DatabaseTable['applications']['score_json']['scores'];
+  scores?: ScoreWheelParams;
   parameter_weights: ScoreWheelParams;
-  fontSize?: number;
 }) => {
+  const [activeIndex, setActiveIndex] = useState<number | undefined>();
+
   const isSettings = scores === undefined;
-  const [delay, setDelay] = useState(0);
-  const [degree, setDegree] = useState(null);
-  const jdScore = !isSettings ? (scores as ScoreWheelParams) : null;
-  const newScore = {
-    ...scoreWheelDependencies.initialScoreWheelScores,
-    ...jdScore,
+  const totalWeight = Object.values(parameter_weights).reduce(
+    (sum, weight) => sum + weight,
+    0,
+  );
+  const unusedPercentage = 100 - totalWeight;
+
+  const data = useMemo(() => {
+    const result = Object.entries(parameter_weights).map(([key, value]) => ({
+      name: key,
+      value: isSettings
+        ? value
+        : (value * (scores?.[key as keyof ScoreWheelParams] || 0)) / 100,
+    }));
+    if (unusedPercentage > 0) {
+      result.push({ name: 'unused', value: unusedPercentage });
+    }
+    return result;
+  }, [parameter_weights, scores, isSettings, unusedPercentage]);
+
+  const COLORS = ['#886BD8', '#30AABC', '#5D7DF5', '#e9ebed'];
+
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
   };
-  const { conicGradient, hoverKey, unused } = getStyles(
-    delay,
-    parameter_weights,
-    newScore,
-    degree,
-  );
-  useEffect(() => {
-    if (delay === 100) {
-      return;
-    }
-    if (delay > 100) {
-      const timer = setTimeout(() => {
-        setDelay((prev) => prev - 2);
-      }, 10);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setDelay((prev) => prev + 2);
-      }, 10);
-      return () => clearTimeout(timer);
-    }
-  }, [delay]);
 
-  const overallScore = !isSettings
-    ? getOverallResumeScore(scores, parameter_weights)
-    : 0;
-  return (
-    <div
-      id={id}
-      className='w-full flex items-center justify-center rounded-full cursor-pointer'
-      style={{
-        aspectRatio: '1',
-        background: `conic-gradient(${conicGradient})`,
-      }}
-      onMouseMove={(e) => {
-        setDegree(getCursorDegrees(e, id));
-      }}
-      onMouseOut={() => {
-        setDegree(null);
-      }}
-      onBlur={() => {
-        setDegree(null);
-      }}
-    >
-      <div
-        className='w-4/5 flex items-center justify-center rounded-full text-center'
-        style={{
-          aspectRatio: '1',
-          backgroundColor: 'var(--white)',
-          color:
-            isSettings &&
-            (hoverKey === null || hoverKey === 'unused') &&
-            unused.isUnused
-              ? 'red'
-              : 'black',
-        }}
-      >
-        <div className={`text-[${fontSize}px] translate-y-[2px]`}>
-          <div className='text-[200%] font-semibold'>
-            {isSettings
-              ? hoverKey
-                ? `${parameter_weights[hoverKey] ?? unused.count}%`
-                : unused.isUnused
-                  ? `${unused.count}%`
-                  : '100%'
-              : `${
-                  hoverKey
-                    ? Math.trunc(
-                        (parameter_weights[hoverKey] * jdScore[hoverKey]) / 100,
-                      )
-                    : overallScore
-                }`}
-          </div>
-          <div>
-            {isSettings
-              ? hoverKey
-                ? capitalize(hoverKey)
-                : unused.isUnused
-                  ? 'Unused'
-                  : 'Complete'
-              : hoverKey
-                ? capitalize(hoverKey)
-                : 'Overall Score'}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+  const renderActiveShape = (props: any) => {
+    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } =
+      props;
+    return (
+      <g>
+        <Sector
+          cx={cx}
+          cy={cy}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius + 6}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          fill={fill}
+        />
+      </g>
+    );
+  };
 
-const getStyles = (
-  delay: number,
-  weights: ScoreWheelParams,
-  score: ScoreWheelParams,
-  degree?: number,
-) => {
-  const lightColors = ['#e7e1f7', '#d6eef2', '#dfe5fd'];
-  const disabledColor = '#e9ebed';
-  const unusedColor = '#ddd';
-  const count = Object.keys(weights).length;
-  let hoverKey = null;
-  const conicGradientObj = scoreWheelDependencies.parameterOrder.reduce(
-    (acc, key, i) => {
-      const startDegree = acc.start;
-      let scoreDegree =
-        acc.start + (3.6 * weights[key] * score[key] * delay) / 10000;
-      const unused = acc.unused - weights[key];
-      const endDegree = acc.start + 3.6 * weights[key];
-      if (scoreDegree > endDegree - 1) scoreDegree = endDegree - 1;
-      else if (scoreDegree < startDegree + 1) scoreDegree = startDegree + 1;
-      const isDisabled = getDisabledState(degree, startDegree, endDegree);
-      hoverKey = isDisabled && degree !== null ? key : hoverKey;
-      const currentDarkColor = isDisabled
-        ? scoreWheelDependencies.wheelColors[
-            i % scoreWheelDependencies.wheelColors.length
-          ]
-        : disabledColor;
-      const currentLightColor = isDisabled
-        ? lightColors[i % scoreWheelDependencies.wheelColors.length]
-        : disabledColor;
-      let newConicGradient =
-        acc.conicGradient +
-        `white ${startDegree + 1}deg, ${currentDarkColor} ${
-          startDegree + 1
-        }deg, ${currentDarkColor} ${scoreDegree}deg, ${currentLightColor} ${scoreDegree}deg, ${currentLightColor} ${
-          endDegree - 1
-        }deg, white ${endDegree - 1}deg, `;
-      const newStart = endDegree;
-      if (i === count - 1 && newStart !== 360) {
-        const isUnusedHover = getDisabledState(degree, endDegree, 360);
-        hoverKey = isUnusedHover && degree !== null ? 'unused' : hoverKey;
-        newConicGradient += `white ${newStart + 1}deg, ${
-          isUnusedHover ? unusedColor : disabledColor
-        } ${startDegree + 1}deg,  ${
-          isUnusedHover ? unusedColor : disabledColor
-        } ${359}deg, white ${359}deg, `;
-      }
+  const getCenterContent = () => {
+    if (activeIndex !== undefined) {
+      const activeData = data[activeIndex];
       return {
-        conicGradient: newConicGradient,
-        start: newStart,
-        unused: unused,
+        value: isSettings
+          ? `${activeData.value}%`
+          : Math.trunc(activeData.value),
+        label: capitalize(activeData.name),
       };
-    },
-    { conicGradient: '', start: 0, unused: 100 },
+    }
+    if (isSettings) {
+      return unusedPercentage > 0
+        ? { value: `${unusedPercentage}%`, label: 'Unused' }
+        : { value: '100%', label: 'Complete' };
+    }
+    return {
+      value: Math.trunc(data.reduce((sum, item) => sum + item.value, 0)),
+      label: 'Overall Score',
+    };
+  };
+
+  const centerContent = getCenterContent();
+
+  return (
+    <Card className='flex h-64 w-64 items-center justify-center border-none bg-transparent shadow-none'>
+      <ResponsiveContainer width='100%' height='100%'>
+        <PieChart>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={data}
+            innerRadius={60}
+            outerRadius={80}
+            paddingAngle={5}
+            dataKey='value'
+            onMouseEnter={onPieEnter}
+            onMouseLeave={() => setActiveIndex(undefined)}
+          >
+            {data.map((_entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      <div className='absolute text-center'>
+        <div className='text-2xl font-semibold'>{centerContent.value}</div>
+        <div>{centerContent.label}</div>
+      </div>
+    </Card>
   );
-  return {
-    lightColors,
-    disabledColor,
-    count,
-    hoverKey,
-    conicGradient: conicGradientObj.conicGradient.replace(
-      /(^\s*,)|(,\s*$)/g,
-      '',
-    ),
-    unused: {
-      count: conicGradientObj.unused,
-      isUnused: conicGradientObj.unused !== 0,
-    },
-  };
-};
-
-const getDisabledState = (degree: number, start: number, end: number) => {
-  return degree === null || (degree <= end && degree >= start);
-};
-
-const getCursorDegrees = (e: any, id: string) => {
-  const div = document.getElementById(id);
-  const coords = div.getBoundingClientRect();
-  const center = {
-    x: coords.left + coords.width / 2,
-    y: coords.top + coords.height / 2,
-  };
-  const x = e.clientX - center.x;
-  const y = center.y - e.clientY;
-  const radians = Math.atan2(y, x);
-  const degrees = 90 - radians * (180 / Math.PI);
-  const correctedDegrees = degrees < 0 ? 360 + degrees : degrees;
-  return correctedDegrees;
 };
 
 export default ScoreWheel;

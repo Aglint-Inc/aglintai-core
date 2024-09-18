@@ -19,8 +19,14 @@ import {
 import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import {
   BarChart,
   Calendar,
+  Clock,
   FileText,
   Loader2,
   MoreHorizontal,
@@ -55,9 +61,7 @@ export const SharedActions = () => {
         <Switcher />
         {/* <Dropdown /> */}
         <Link href={`/jobs/${value.job.id}/job-details`}>
-          <UIButton variant='outline' size='sm'>
-            Edit
-          </UIButton>
+          <UIButton variant='outline'>Edit</UIButton>
         </Link>
       </div>
     </SettingsContext.Provider>
@@ -83,19 +87,21 @@ const Sync = () => {
   const date = dayjsLocal(job?.remote_sync_time ?? new Date()).fromNow();
   return (
     <div className='flex flex-row gap-1'>
-      <div className='flex-shrink-0 flex items-center'>
-        <p className='text-neutral-500 text-sm'>{`Last synced ${date}`}</p>
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className='flex flex-shrink-0 items-center'>
+            <Clock className='mr-1 h-4 w-4 text-neutral-500' />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className='text-sm'>{`Last synced ${date}`}</p>
+        </TooltipContent>
+      </Tooltip>
 
       <OptimisticWrapper loading={load}>
-        <Button
-          variant='outline'
-          size='sm'
-          onClick={handleSync}
-          className='w-auto'
-        >
-          <RefreshCw className='w-3 h-5 mr-3' strokeWidth={1.5} />
-          Sync job
+        <Button variant='outline' onClick={handleSync} className='w-auto'>
+          <RefreshCw className='mr-2 h-4 w-4' />
+          Sync
         </Button>
       </OptimisticWrapper>
     </div>
@@ -106,8 +112,8 @@ const Score = () => {
   const { applicationScoringPollEnabled, job, total } = useJob();
   if (!applicationScoringPollEnabled) return null;
   return (
-    <div className='flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-2 rounded-md'>
-      <Loader2 className='w-4 h-4 animate-spin' />
+    <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
+      <Loader2 className='h-4 w-4 animate-spin' />
       <span className='text-sm font-medium'>
         Application scoring in progress:{' '}
         {job?.processing_count.processed +

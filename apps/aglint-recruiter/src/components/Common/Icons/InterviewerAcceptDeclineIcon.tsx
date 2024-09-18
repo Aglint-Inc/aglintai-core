@@ -1,5 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Stack, Tooltip, Typography } from '@mui/material';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 import React from 'react';
 
 import { UIBadge } from '../UIBadge';
@@ -12,20 +16,19 @@ function InterviewerAcceptDeclineIcon({
   return (
     <>
       {type === 'request_reschedule' && (
-        <Tooltip
-          title={
-            <React.Fragment>
-              <Typography variant='body2'>Requested Reschedule</Typography>
-            </React.Fragment>
-          }
-        >
-          <Stack>
-            <UIBadge
-              iconName={'CalendarSearch'}
-              size={'sm'}
-              color={'warning'}
-            />
-          </Stack>
+        <Tooltip>
+          <TooltipTrigger>
+            <div className='flex flex-col'>
+              <UIBadge
+                iconName={'CalendarSearch'}
+                size={'sm'}
+                color={'warning'}
+              />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className='text-sm'>Requested Reschedule</p>
+          </TooltipContent>
         </Tooltip>
       )}
 

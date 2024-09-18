@@ -10,7 +10,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           email: null,
         },
       },
-      name: 'Send email to applicant',
+      name: 'Send Availability Request Reminder to Applicant',
     },
   ],
   selfScheduleReminder: [
@@ -22,7 +22,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           email: null,
         },
       },
-      name: 'Send email to applicant',
+      name: 'Send Self-Schedule Reminder to Applicant',
     },
   ],
   interviewStart: [

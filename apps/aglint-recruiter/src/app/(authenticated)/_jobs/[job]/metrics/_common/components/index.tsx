@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
@@ -35,7 +35,7 @@ export const JobDashboard = () => {
   ) : (
     <div className='min-h-screen'>
       <div className='container mx-auto'>
-        <div className='space-y-6 w-full'>
+        <div className='w-full space-y-6'>
           <div className='space-y-2'>
             <Skeleton className='h-8 w-[200px]' />
             <Skeleton className='h-4 w-[300px]' />
@@ -120,62 +120,60 @@ const Dashboard = () => {
   // const [, setStorage] = useLocalStorage('scheduleFilterIds');
 
   return (
-    <div className='min-h-screen'>
-      <div className='container mx-auto'>
-        <div className='flex justify-between items-center mb-6'>
-          <div>
-            <h1 className='text-2xl font-bold mb-2'>Job Analytics</h1>
-            <SharedBreadCrumbs />
-          </div>
-          <SharedActions />
+    <div className='container-lg mx-auto w-full px-12'>
+      <div className='mb-6 flex items-center justify-between'>
+        <div>
+          <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>
+          <SharedBreadCrumbs />
         </div>
+        <SharedActions />
+      </div>
 
-        <div className='flex flex-col gap-6 mb-6'>
-          <div>
-            <div className='py-4 flex flex-col gap-4'>
-              {/* {banners.length > 0 && (
-                <div className='flex flex-col gap-1'>
-                  {banners.map((banner, i) => (
-                    <Fragment key={i}>{banner}</Fragment>
-                  ))}
-                </div>
-              )}
-
-              <div className='space-y-4'>
-                <Pipeline />
-              </div> */}
-
-              <div className='space-y-4  bg-white border rounded-lg p-4'>
-                <JobStats
-                  isScoringEnabled={isScoringEnabled}
-                  score_matches={score_matches}
-                  handleFilter={handleFilter}
-                />
+      <div className='mb-6 flex flex-col gap-6'>
+        <div>
+          <div className='flex flex-col gap-4 py-4'>
+            {/* {banners.length > 0 && (
+              <div className='flex flex-col gap-1'>
+                {banners.map((banner, i) => (
+                  <Fragment key={i}>{banner}</Fragment>
+                ))}
               </div>
+            )}
+
+            <div className='space-y-4'>
+              <Pipeline />
+            </div> */}
+
+            <div className='space-y-4 rounded-lg border bg-white p-4'>
+              <JobStats
+                isScoringEnabled={isScoringEnabled}
+                score_matches={score_matches}
+                handleFilter={handleFilter}
+              />
+            </div>
+          </div>
+
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div className='space-y-4'>
+              <Doughnut />
+              <Bars />
             </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <div className='space-y-4'>
-                <Doughnut />
-                <Bars />
-              </div>
+            {/* Bottom Left */}
+            <div className='space-y-4'>
+              <LineGraph />
+              <TenureAndExpSummary />
+            </div>
 
-              {/* Bottom Left */}
-              <div className='space-y-4'>
-                <LineGraph />
-                <TenureAndExpSummary />
-              </div>
-
-              {/* Bottom Right */}
-              <div className='space-y-4'>
-                <Schedules
-                  schedule={schedule}
-                  // setStorage={setStorage}
-                  push={push}
-                  // job={job}
-                />
-                {/* <Roles /> */}
-              </div>
+            {/* Bottom Right */}
+            <div className='space-y-4'>
+              <Schedules
+                schedule={schedule}
+                // setStorage={setStorage}
+                push={push}
+                // job={job}
+              />
+              {/* <Roles /> */}
             </div>
           </div>
         </div>
@@ -229,14 +227,14 @@ const JobStats = ({ isScoringEnabled, score_matches, handleFilter }) => (
 );
 
 const StatItem = ({ label, percentage, count, onClick, color }) => (
-  <div className='w-full max-w-4xl mx-auto p-4' onClick={onClick}>
-    <div className='flex flex-col sm:flex-row cursor-pointer hover:bg-gray-100 rounded-lg transition-colors duration-200'>
+  <div className='mx-auto w-full max-w-4xl p-4' onClick={onClick}>
+    <div className='flex cursor-pointer flex-col rounded-lg transition-colors duration-200 hover:bg-gray-100 sm:flex-row'>
       <div className='flex-1 p-2'>
-        <div className='text-sm font-medium mb-1' style={{ color: color }}>
+        <div className='mb-1 text-sm font-medium' style={{ color: color }}>
           {label}
         </div>
-        <div className='text-2xl font-bold mb-2'>{percentage}</div>
-        <div className='h-2 w-full bg-gray-200 rounded-full overflow-hidden'>
+        <div className='mb-2 text-2xl font-bold'>{percentage}</div>
+        <div className='h-2 w-full overflow-hidden rounded-full bg-gray-200'>
           <div
             className={`h-full ${color}`}
             style={{ width: `${parseFloat(percentage)}%` }}
@@ -246,7 +244,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
             aria-valuemax={100}
           ></div>
         </div>
-        <div className='text-xs text-gray-500 mt-1'>({count})</div>
+        <div className='mt-1 text-xs text-gray-500'>({count})</div>
       </div>
     </div>
   </div>
@@ -286,7 +284,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 //                 </Avatar>
 //                 <div className='flex flex-col'>
 //                   <Link
-//                     href={`/user/profile/${user.user_id}`}
+//                     href={`/user/${user.user_id}`}
 //                     className='font-medium hover:underline'
 //                   >
 //                     {name}
@@ -336,7 +334,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 //             className='flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
 //             onClick={() =>
 //               push(
-//                 `/user/profile/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
+//                 `/user/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
 //               )
 //             }
 //           >
@@ -472,7 +470,7 @@ const Schedules = ({ schedule, push }) => {
         </Card>
       </div>
     ));
-  return <div className='w-full h-full flex flex-col gap-2'>{cards}</div>;
+  return <div className='flex h-full w-full flex-col gap-2'>{cards}</div>;
 };
 
 // const useBanners = () => {

@@ -1,19 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@components/ui/dialog';
-import { SideDrawerBlock } from '@devlink2/SideDrawerBlock';
+import { DialogDescription, DialogTitle } from '@components/ui/dialog';
 import { FileQuestion } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import UIDrawer from '@/components/Common/UIDrawer';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
@@ -44,43 +38,82 @@ type InterviewDrawersProps = {
   drawers: DrawerType;
   handleClose: () => void;
 };
-const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
+const InterviewDrawers = ({
+  open,
+  drawers,
+  handleClose,
+}: InterviewDrawersProps) => {
   const { push } = useRouter();
   const {
     interviewModules: { data },
   } = useJobInterviewPlan();
+
+  let drawerTitle = '';
+
+  const [createKey, createValue] = (Object.entries(drawers.create).find(
+    ([, value]) => value.open,
+  ) ?? [null, null]) as [
+    keyof DrawerType['create'],
+    DrawerType['create'][keyof DrawerType['create']],
+  ];
+
+  if (createKey && createValue) {
+    switch (createKey) {
+      case 'session':
+        drawerTitle = 'Create Interview';
+        break;
+      case 'debrief':
+        drawerTitle = 'Create Debrief';
+        break;
+    }
+  }
+  const [editKey, editValue] = (Object.entries(drawers.edit).find(
+    ([, value]) => value.open,
+  ) ?? [null, null]) as [
+    keyof DrawerType['edit'],
+    DrawerType['edit'][keyof DrawerType['edit']],
+  ];
+  if (editKey && editValue) {
+    switch (editKey) {
+      case 'session':
+        drawerTitle = 'Update Interview';
+        break;
+      case 'debrief':
+        drawerTitle = 'Edit Debrief';
+        break;
+      case 'break':
+        drawerTitle = 'Edit Break';
+        break;
+    }
+  }
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button onClick={() => handleClose()}>Close</Button>
-      </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
-        {data.length ? (
-          <InterviewSideDrawer
-            drawers={drawers}
-            handleClose={() => handleClose()}
-          />
-        ) : (
-          <div className='flex flex-col items-center justify-center p-8 text-center'>
-            <div className='mb-2'>
-              <FileQuestion size={80} />
-            </div>
-            <DialogTitle className='text-lg font-semibold mb-2'>
-              No Interview Plan
-            </DialogTitle>
-            <DialogDescription className='text-sm text-gray-600 mb-4'>
-              Create an interview plan to get started
-            </DialogDescription>
-            <Button
-              onClick={() => push('/scheduling?tab=interviewtypes')}
-              className='bg-primary text-white hover:bg-primary-dark'
-            >
-              Create Interview Plan
-            </Button>
+    <UIDrawer title={drawerTitle} size='sm' open={open} onClose={handleClose}>
+      {data.length ? (
+        <InterviewSideDrawer
+          drawers={drawers}
+          handleClose={() => handleClose()}
+        />
+      ) : (
+        <div className='flex flex-col items-center justify-center p-8 text-center'>
+          <div className='mb-2'>
+            <FileQuestion size={80} />
           </div>
-        )}
-      </DialogContent>
-    </Dialog>
+          <DialogTitle className='mb-2 text-lg font-semibold'>
+            No Interview Plan
+          </DialogTitle>
+          <DialogDescription className='mb-4 text-sm text-gray-600'>
+            Create an interview plan to get started
+          </DialogDescription>
+          <Button
+            onClick={() => push('/scheduling?tab=interviewtypes')}
+            className='hover:bg-primary-dark bg-primary text-white'
+          >
+            Create Interview Plan
+          </Button>
+        </div>
+      )}
+    </UIDrawer>
   );
 };
 
@@ -96,6 +129,7 @@ const InterviewSideDrawer = ({
     keyof DrawerType['create'],
     DrawerType['create'][keyof DrawerType['create']],
   ];
+
   if (createKey && createValue) {
     const { order, plan_id } = createValue;
     switch (createKey) {
@@ -173,33 +207,31 @@ const CreateSession = ({
   };
 
   return (
-    <SideDrawerBlock
-      slotButton={
-        <>
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() => handleClose()}
-            disabled={sessionCreation}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            size='sm'
-            variant='default'
-            isLoading={sessionCreation}
-            onClick={() => handleAdd()}
-          >
-            Add
-          </UIButton>
-        </>
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      textTitle='Create Interview'
-      slotSidedrawerBody={
-        <SessionForms fields={fields} setFields={setFields} />
-      }
-    />
+    <div className='flex flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <SessionForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 p-4'>
+        <UIButton
+          size='sm'
+          variant='secondary'
+          onClick={() => handleClose()}
+          disabled={sessionCreation}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          size='sm'
+          variant='default'
+          isLoading={sessionCreation}
+          onClick={() => handleAdd()}
+        >
+          Add
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -266,11 +298,11 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       const { error, newFields } = validateSessionFields(fields);
       if (error) setFields(newFields);
       else {
-        const {
-          // eslint-disable-next-line no-unused-vars
-          // eslint-disable-next-line no-unused-vars
-          ...rest
-        } = getSessionPayload(fields, order + 1, interview_plan_id);
+        const { ...rest } = getSessionPayload(
+          fields,
+          order + 1,
+          interview_plan_id,
+        );
         handleEditSession({ ...rest, session_id: id });
         handleClose();
       }
@@ -284,33 +316,31 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <SideDrawerBlock
-      textTitle='Update Interview'
-      slotSidedrawerBody={
-        <SessionForms fields={fields} setFields={setFields} />
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      slotButton={
-        <>
-          <UIButton
-            disabled={isLoading}
-            variant='secondary'
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            size='sm'
-            isLoading={isLoading}
-            onClick={() => handleEdit()}
-          >
-            Update
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='border-none p-4'>
+          <SessionForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 p-4'>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={handleClose}
+          disabled={isLoading}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant='default'
+          size='sm'
+          onClick={handleEdit}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Updating...' : 'Update'}
+        </Button>
+      </div>
+    </div>
   );
 };
 
@@ -352,33 +382,31 @@ const CreateDebrief = ({
     }
   };
   return (
-    <SideDrawerBlock
-      textTitle='Create Debrief'
-      slotSidedrawerBody={
-        <DebriefForms fields={fields} setFields={setFields} />
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      slotButton={
-        <>
-          <UIButton
-            variant='secondary'
-            disabled={debriefCreation}
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            size='sm'
-            variant='default'
-            isLoading={debriefCreation}
-            onClick={() => handleAdd()}
-          >
-            Add
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <DebriefForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 p-4'>
+        <UIButton
+          variant='secondary'
+          disabled={debriefCreation}
+          size='sm'
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          size='sm'
+          variant='default'
+          isLoading={debriefCreation}
+          onClick={() => handleAdd()}
+        >
+          Add
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -442,33 +470,31 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <SideDrawerBlock
-      textTitle='Edit Debrief'
-      slotSidedrawerBody={
-        <DebriefForms fields={fields} setFields={setFields} />
-      }
-      onClickClose={{ onClick: () => handleClose() }}
-      slotButton={
-        <>
-          <UIButton
-            variant='secondary'
-            disabled={isLoading}
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            size='sm'
-            isLoading={isLoading}
-            onClick={() => handleEdit()}
-          >
-            Update
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex h-full flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <DebriefForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 p-4'>
+        <UIButton
+          variant='secondary'
+          disabled={isLoading}
+          size='sm'
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          variant='default'
+          size='sm'
+          isLoading={isLoading}
+          onClick={() => handleEdit()}
+        >
+          Update
+        </UIButton>
+      </div>
+    </div>
   );
 };
 
@@ -506,30 +532,31 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     }
   };
   return (
-    <SideDrawerBlock
-      onClickClose={{ onClick: () => handleClose() }}
-      textTitle={break_duration === 0 ? 'Create Break' : 'Edit Break'}
-      slotSidedrawerBody={<BreakForms fields={fields} setFields={setFields} />}
-      slotButton={
-        <>
-          <UIButton
-            disabled={isLoading}
-            variant='secondary'
-            size='sm'
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            size='sm'
-            isLoading={isLoading}
-            onClick={() => handleUpdate()}
-          >
-            {break_duration === 0 ? 'Add' : 'Update'}
-          </UIButton>
-        </>
-      }
-    />
+    <div className='flex h-screen flex-col'>
+      <div className='flex-1 overflow-y-auto'>
+        <div className='p-4'>
+          <h2 className='mb-4 text-lg font-semibold'>Edit Break</h2>
+          <BreakForms fields={fields} setFields={setFields} />
+        </div>
+      </div>
+      <div className='flex justify-end space-x-2 border-t p-4'>
+        <UIButton
+          disabled={isLoading}
+          variant='secondary'
+          size='sm'
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          variant='default'
+          size='sm'
+          isLoading={isLoading}
+          onClick={() => handleUpdate()}
+        >
+          {break_duration === 0 ? 'Add' : 'Update'}
+        </UIButton>
+      </div>
+    </div>
   );
 };

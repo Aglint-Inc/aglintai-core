@@ -2946,6 +2946,7 @@ export type Database = {
       recruiter_preferences: {
         Row: {
           about: string | null;
+          agent: boolean;
           analytics: boolean;
           ats: string;
           banner_image: string | null;
@@ -2954,14 +2955,17 @@ export type Database = {
           greetings: string | null;
           integrations: boolean;
           recruiter_id: string;
+          reports: boolean;
           request: boolean;
           roles: boolean | null;
           scheduling: boolean;
           scoring: boolean;
+          themes: boolean;
           workflow: boolean;
         };
         Insert: {
           about?: string | null;
+          agent?: boolean;
           analytics?: boolean;
           ats?: string;
           banner_image?: string | null;
@@ -2970,14 +2974,17 @@ export type Database = {
           greetings?: string | null;
           integrations?: boolean;
           recruiter_id: string;
+          reports?: boolean;
           request?: boolean;
           roles?: boolean | null;
           scheduling?: boolean;
           scoring?: boolean;
+          themes?: boolean;
           workflow?: boolean;
         };
         Update: {
           about?: string | null;
+          agent?: boolean;
           analytics?: boolean;
           ats?: string;
           banner_image?: string | null;
@@ -2986,10 +2993,12 @@ export type Database = {
           greetings?: string | null;
           integrations?: boolean;
           recruiter_id?: string;
+          reports?: boolean;
           request?: boolean;
           roles?: boolean | null;
           scheduling?: boolean;
           scoring?: boolean;
+          themes?: boolean;
           workflow?: boolean;
         };
         Relationships: [
@@ -4600,6 +4609,7 @@ export type Database = {
       };
       interview_types_view: {
         Row: {
+          avg_meeting_duration: number | null;
           canceled_meeting_count: number | null;
           completed_meeting_count: number | null;
           created_by: string | null;
@@ -4608,8 +4618,12 @@ export type Database = {
           description: string | null;
           id: string | null;
           is_archived: boolean | null;
+          job_names: string[] | null;
           name: string | null;
           recruiter_id: string | null;
+          this_month_cancelled_meeting_count: number | null;
+          this_month_completed_meeting_count: number | null;
+          this_month_confirmed_meeting_count: number | null;
           upcoming_meeting_count: number | null;
           users: Json | null;
         };
@@ -5957,6 +5971,7 @@ export type Database = {
       };
       insert_debrief_session: {
         Args: {
+          recruiter_id: string;
           interview_plan_id: string;
           session_order: number;
           session_duration: number;
@@ -5977,6 +5992,7 @@ export type Database = {
       };
       insert_interview_session: {
         Args: {
+          recruiter_id: string;
           module_id: string;
           interview_plan_id: string;
           session_order: number;
@@ -6127,6 +6143,40 @@ export type Database = {
       overviewgenerate: {
         Args: Record<PropertyKey, never>;
         Returns: Json;
+      };
+      per_module_candidate_pipeline: {
+        Args: {
+          module_id: string;
+        };
+        Returns: {
+          applied: number;
+          screened: number;
+          interviewed: number;
+          offered: number;
+        }[];
+      };
+      per_module_interview_statistics: {
+        Args: {
+          module_id: string;
+        };
+        Returns: {
+          total: number;
+          completed: number;
+          duration: number;
+          time_to_schedule: Json;
+        }[];
+      };
+      per_module_interviewer_performance: {
+        Args: {
+          module_id: string;
+        };
+        Returns: {
+          candidate_feedback_avg: number;
+          total_interviews: number;
+          interviewer_feedback_count: number;
+          recommendation_success: number;
+          interviewers_count: number;
+        }[];
       };
       reorder_sessions: {
         Args: {

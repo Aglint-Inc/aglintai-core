@@ -20,21 +20,21 @@ function CompanySlider({ slides }: { slides: string[] }) {
         // eslint-disable-next-line security/detect-object-injection
         src={slides[currentSlide]}
         alt={`Company image ${currentSlide + 1}`}
-        className='object-cover rounded-lg'
+        className='rounded-lg object-cover'
         fill
         sizes='100vw'
         priority
       />
       <Button
         variant='outline'
-        className='absolute top-1/2 left-4 transform -translate-y-1/2'
+        className='absolute left-4 top-1/2 -translate-y-1/2 transform'
         onClick={prevSlide}
       >
         <ChevronLeft className='h-4 w-4' />
       </Button>
       <Button
         variant='outline'
-        className='absolute top-1/2 right-4 transform -translate-y-1/2'
+        className='absolute right-4 top-1/2 -translate-y-1/2 transform'
         onClick={nextSlide}
       >
         <ChevronRight className='h-4 w-4' />

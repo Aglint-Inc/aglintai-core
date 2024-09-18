@@ -13,13 +13,13 @@ import Link from 'next/link';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import NotFoundPage from '@/pages/404';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 
 import defaultProfileImage from '../../../public/images/default-user-profile.svg';
-import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
+import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children, appRouter = false }) {
@@ -30,16 +30,20 @@ export default function AppLayout({ children, appRouter = false }) {
   const logo = recruiter?.logo;
   const name = recruiter?.name;
 
-  const { data: userDetails } = useImrQuery({ user_id: recruiterUser.user_id });
+  const { data: members } = useMemberList();
+
+  const userDetails = members?.find(
+    (member) => member.user_id === recruiterUser.user_id,
+  );
 
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
-    <div className='flex flex-col h-full'>
+    <>
       {isHorizontalNav && (
-        <nav className='flex items-center justify-between w-full p-2 bg-white border-b sticky top-0 z-50'>
+        <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
           <div className='flex items-center space-x-4'>
-            <Link href='/'>
+            <Link href='/jobs'>
               <Image
                 src={logo || defaultCompanyLogo}
                 alt={name}
@@ -58,7 +62,7 @@ export default function AppLayout({ children, appRouter = false }) {
           <div className='flex items-center'>
             <Button variant='ghost' asChild>
               <Link href='/company?tab=company-info'>
-                <Settings className='w-5 h-5 mr-2' strokeWidth={1.5} />
+                <Settings className='mr-2 h-5 w-5' strokeWidth={1.5} />
                 Settings
               </Link>
             </Button>
@@ -66,7 +70,7 @@ export default function AppLayout({ children, appRouter = false }) {
             <Button variant='link' asChild>
               <Link
                 href={
-                  ROUTES['/user/profile/[user_id]']({
+                  ROUTES['/user/[user]']({
                     user_id: recruiterUser?.user_id,
                   }) + '?profile=true'
                 }
@@ -81,44 +85,44 @@ export default function AppLayout({ children, appRouter = false }) {
                     style={{ objectFit: 'cover' }}
                   />
                 ) : (
-                  <User className='w-5 h-5' strokeWidth={1.5} />
+                  <User className='h-5 w-5' strokeWidth={1.5} />
                 )}
               </Link>
             </Button>
 
             <Button variant='link' onClick={handleLogout} asChild>
               <Link href='#'>
-                <LogOut className='w-5 h-5 mr-2' strokeWidth={1.5} />
+                <LogOut className='mr-2 h-5 w-5' strokeWidth={1.5} />
               </Link>
             </Button>
           </div>
         </nav>
       )}
-      <div className='flex flex-1 bg-gray-50'>
+      <div className='flex flex-1'>
         {!isHorizontalNav && (
-          <nav className='flex flex-col justify-between w-16 border-r bg-white h-[100vh]'>
-            <div className='flex flex-col items-center py-3 flex-grow'>
-              <Button variant='ghost' className='mt-4' asChild>
-                <Link href='/'>
+          <nav className='fixed flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
+            <div className='flex flex-grow flex-col items-center py-3'>
+              <Button variant='link' className='mt-4' asChild>
+                <Link href='/jobs'>
                   <Image
                     src={logo || defaultCompanyLogo}
                     alt={name}
                     width={40}
                     height={40}
-                    className='rounded-sm mb-5'
+                    className='mb-5 rounded-sm'
                     style={{ objectFit: 'contain' }}
                   />
                 </Link>
               </Button>
               <SideNavbar />
             </div>
-            <div className='flex flex-col items-center pb-3 space-y-3'>
+            <div className='flex flex-col items-center space-y-3 pb-3'>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='ghost' className='rounded-sm' asChild>
+                  <Button variant='link' asChild>
                     <Link
                       href={
-                        ROUTES['/user/profile/[user_id]']({
+                        ROUTES['/user/[user]']({
                           user_id: recruiterUser?.user_id,
                         }) + '?profile=true'
                       }
@@ -141,8 +145,8 @@ export default function AppLayout({ children, appRouter = false }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='outline' onClick={handleLogout}>
-                    <LogOut className='w-5 h-5' strokeWidth={1.5} />
+                  <Button variant='link' onClick={handleLogout}>
+                    <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent align='center' side='right'>
@@ -153,16 +157,18 @@ export default function AppLayout({ children, appRouter = false }) {
           </nav>
         )}
         <main
-          className={`flex-1 overflow-auto ${isHorizontalNav ? 'mt-8' : ''}`}
+          className={`flex min-h-screen w-full bg-gray-50 pt-8 ${
+            isHorizontalNav ? '' : 'ml-16'
+          }`}
         >
           {appRouter ||
           checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
             children
           ) : (
-            <NotFoundPage />
+            <NotFound />
           )}
         </main>
       </div>
-    </div>
+    </>
   );
 }

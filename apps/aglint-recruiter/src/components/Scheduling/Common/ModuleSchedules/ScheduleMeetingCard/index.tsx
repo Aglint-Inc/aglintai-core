@@ -1,13 +1,12 @@
-import { MembersList } from '@devlink3/MembersList';
-import { MyScheduleSubCard } from '@devlink3/MyScheduleSubCard';
-import { Collapse, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
+import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { MeetingStatusBadge } from '@/components/Scheduling/_common/components/MeetingStatusBadge';
+import { type getAllInterviews } from '@/components/Scheduling/Interviews/_common/hooks/useAllInterviews';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -16,14 +15,14 @@ import {
   getScheduleTextcolor,
   getScheduleType,
 } from '../../../../../utils/scheduling/colors_and_enums';
-import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
+import { MyScheduleSubCard } from './MyScheduleSubCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
 }: {
-  meetingDetails: Awaited<ReturnType<typeof getAllScheduleList>>[number];
+  meetingDetails: Awaited<ReturnType<typeof getAllInterviews>>[number];
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
@@ -31,10 +30,8 @@ function ScheduleMeetingCard({
 
   return (
     <>
-      <Stack
-        sx={{
-          cursor: 'pointer',
-        }}
+      <div
+        className='cursor-pointer'
         onClick={() => {
           router.push(
             `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
@@ -42,18 +39,16 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={{
-            onClick: (e) => {
-              setCollapseOpen((pre) => !pre);
-              e.stopPropagation();
-            },
+          onClickDropdownIocn={(e) => {
+            setCollapseOpen((pre) => !pre);
+            e.stopPropagation();
           }}
           isDropdownIconVisible={interviewers.length > 0}
           isMembersListVisible={interviewers.length > 0 && collapseOpen}
           slotMembersList={
             <>
-              <Collapse in={collapseOpen}>
-                <Stack direction={'column'} spacing={'var(--space-2)'}>
+              <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
+                <div className='flex flex-col space-y-2'>
                   <MembersList
                     slotImage={<User size={40} />}
                     textName={getFullName(
@@ -61,9 +56,7 @@ function ScheduleMeetingCard({
                       meetingDetails.applications.candidates.last_name,
                     )}
                     isDesignationVisible={true}
-                    textDesignation={
-                      <Typography variant='caption'>{'Candidate'}</Typography>
-                    }
+                    textDesignation={'Candidate'}
                     textTime={null}
                   />
                   {interviewers.map((user) => {
@@ -99,8 +92,8 @@ function ScheduleMeetingCard({
                       </>
                     );
                   })}
-                </Stack>
-              </Collapse>
+                </div>
+              </div>
             </>
           }
           textTime={`${dayjs(meetingDetails?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
@@ -132,22 +125,16 @@ function ScheduleMeetingCard({
           }
           isAvatarWithNameVisible={!collapseOpen}
           textJob={
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              spacing={'var(--space-5)'}
-            >
+            <div className='flex flex-row items-center space-y-5'>
               <span>{meetingDetails?.public_jobs.job_title}</span>
-            </Stack>
+            </div>
           }
           bgColorProps={{
-            style: {
-              background: getScheduleBgcolor(meetingDetails.status),
-              color: getScheduleTextcolor(meetingDetails.status),
-            },
+            background: getScheduleBgcolor(meetingDetails.status),
+            color: getScheduleTextcolor(meetingDetails.status),
           }}
         />
-      </Stack>
+      </div>
     </>
   );
 }

@@ -10,7 +10,7 @@ import { CardContent } from '@components/ui/card';
 import { Terminal } from 'lucide-react';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelect from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
@@ -149,6 +149,7 @@ const ActionForm = ({ action }: ActionProps) => {
   );
 
   return (
+    <div className="mb-4">
     <UISelect
       label='Do this'
       value={currentOption.target_api}
@@ -166,6 +167,7 @@ const ActionForm = ({ action }: ActionProps) => {
         } as WorkflowAction);
       }}
     />
+    </div>
   );
 };
 
@@ -203,7 +205,7 @@ const EmailSubject: React.FC<FormsType> = memo(
     return (
       <div>
         <UITypography type='small'>Email Subject</UITypography>
-        <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
+        <div className='mt-2 rounded-md border border-neutral-300'>
           <TipTapAIEditor
             singleLine={true}
             padding={1}
@@ -226,7 +228,7 @@ const EmailBody: React.FC<FormsType> = memo(
     return (
       <div>
         <UITypography type='small'>Email Body</UITypography>
-        <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
+        <div className='mt-2 rounded-md border border-neutral-300'>
           <TipTapAIEditor
             toolbar={false}
             disabled={disabled}
@@ -306,7 +308,7 @@ const AgentInstructionBody: React.FC<
   return (
     <div>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
-      <div className='mt-2 border border-neutral-6 rounded-[var(--radius-2)]'>
+      <div className='mt-2 rounded-md border border-neutral-300'>
         <TipTapAIEditor
           toolbar={false}
           disabled={disabled}
@@ -325,9 +327,9 @@ AgentInstructionBody.displayName = 'AgentInstructionBody';
 
 const WorkflowConnector = () => {
   return (
-    <div className={'flex w-full justify-center items-center text-neutral-600'}>
+    <div className={'flex w-full items-center justify-center text-neutral-600'}>
       <svg
-        className='flex justify-center items-center'
+        className='flex items-center justify-center'
         width='16'
         height='45'
         viewBox='0 0 16 45'

@@ -14,17 +14,17 @@ function Integrations() {
 
   return (
     <>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8'>
-        <header className='mb-8'>
-          <div className='flex justify-between items-center'>
+      <div className='container-lg mx-auto w-full px-12'>
+        <header className='mb-4'>
+          <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-lg font-semibold'>Integrations</h1>
-              <p className='text-gray-600 mb-4'>
+              <h1 className='text-3xl font-semibold'>Integrations</h1>
+              <p className='mb-4 text-gray-600'>
                 Connect your favorite tools to streamline your recruitment
                 process.
               </p>
             </div>
-            <Button size='sm' onClick={() => setIsRequestNewOpen(true)}>
+            <Button variant='outline' onClick={() => setIsRequestNewOpen(true)}>
               Request New
             </Button>
             <RequestNew
@@ -33,39 +33,40 @@ function Integrations() {
             />
           </div>
         </header>
+        <div className='flex flex-col gap-12'>
+          <section>
+            <h2 className='text-md font-semibold'>ATS</h2>
+            <p className='mb-4 text-gray-600'>
+              Easily manage job postings and candidate information by connecting
+              your preferred ATS.
+            </p>
+            <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+              <ATSTools integrations={allIntegrations} refetch={refetch} />
+            </div>
+          </section>
 
-        <section>
-          <h2 className='text-md font-semibold'>ATS</h2>
-          <p className='text-gray-600 mb-4'>
-            Easily manage job postings and candidate information by connecting
-            your preferred ATS.
-          </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ATSTools integrations={allIntegrations} refetch={refetch} />
-          </div>
-        </section>
+          <section>
+            <h2 className='text-md font-semibold'>Scheduling Tools</h2>
+            <p className='mb-4 text-gray-600'>
+              Connect your calendar and video conferencing tools to simplify
+              interview scheduling.
+            </p>
+            <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+              <Scheduling allIntegrations={allIntegrations} />
+            </div>
+          </section>
 
-        <section>
-          <h2 className='text-md font-semibold'>Scheduling Tools</h2>
-          <p className='text-gray-600 mb-4'>
-            Connect your calendar and video conferencing tools to simplify
-            interview scheduling.
-          </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <Scheduling allIntegrations={allIntegrations} />
-          </div>
-        </section>
-
-        <section>
-          <h2 className='text-md font-semibold'>Communication Platforms</h2>
-          <p className='text-gray-600 mb-4'>
-            Connect popular communication tools to enhance your team&apos;s
-            coordination.
-          </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <MessagingTools />
-          </div>
-        </section>
+          <section>
+            <h2 className='text-md font-semibold'>Communication Platforms</h2>
+            <p className='mb-4 text-gray-600'>
+              Connect popular communication tools to enhance your team&apos;s
+              coordination.
+            </p>
+            <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+              <MessagingTools />
+            </div>
+          </section>
+        </div>
       </div>
     </>
   );

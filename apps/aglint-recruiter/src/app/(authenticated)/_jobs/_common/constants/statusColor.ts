@@ -1,14 +1,14 @@
 export const STATUS_COLOR = Object.freeze({
   draft: {
-    bgColor: 'var(--warning-3)',
-    textColor: 'var(--warning-11)',
+    bgColor: 'bg-amber-200',
+    textColor: 'text-amber-700',
   },
   published: {
-    bgColor: 'var(--success-3)',
-    textColor: 'var(--success-11)',
+    bgColor: 'bg-green-200',
+    textColor: 'text-green-700',
   },
   closed: {
-    bgColor: 'var(--error-3)',
-    textColor: 'var(--error-11)',
+    bgColor: 'bg-red-200',
+    textColor: 'text-red-700',
   },
 });

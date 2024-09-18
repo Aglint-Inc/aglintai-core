@@ -57,12 +57,12 @@ function RolesAndPermissionsComponent() {
         />
       ) : (
         <div className=''>
-          <h1 className='text-lg font-semibold mb-4'>Roles & Permissions</h1>
-          <p className='text-gray-600 mb-6'>
+          <h1 className='mb-4 text-lg font-semibold'>Roles & Permissions</h1>
+          <p className='mb-6 text-gray-600'>
             Customize permissions for each role and control access by enabling
             or disabling the toggle next to each permission.
           </p>
-          <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
+          <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
             <RoleTable
               roles={data?.rolesAndPermissions || {}}
               loading={loading}

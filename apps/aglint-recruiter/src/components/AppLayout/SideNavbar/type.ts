@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 
 import type ROUTES from '@/utils/routing/routes';
 
-export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T> ;
+export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
 
 export type LinkProps =
   | {
@@ -58,12 +58,8 @@ export type LinkProps =
       path: Path<'/interview-pool'>;
     }
   | {
-      module: 'Candidates';
-      path: Path<'/scheduling/application'>;
-    }
-  | {
       module: 'Interviewers';
-      path: Path<'/scheduling/interviewer'>;
+      path: Path<'/interviewers'>;
     }
   | {
       module: 'Requests';

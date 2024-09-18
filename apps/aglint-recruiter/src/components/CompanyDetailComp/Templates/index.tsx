@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Input } from '@components/ui/input';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
 import { debounce } from 'lodash';
@@ -238,10 +239,10 @@ function SchedulerEmailTemps({ setSaving }) {
     }, []);
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex flex-col'>
       <div className='py-4'>
         {isEditorLoad ? (
-          <div className='flex items-center justify-center h-[calc(100vh-48px)]'>
+          <div className='flex h-[calc(100vh-48px)] items-center justify-center'>
             <div className='space-y-2'>
               <Skeleton className='h-4 w-[250px]' />
               <Skeleton className='h-4 w-[200px]' />
@@ -302,79 +303,81 @@ function SchedulerEmailTemps({ setSaving }) {
               {/* Main content */}
               <div className='flex space-x-4'>
                 {/* Email Template List */}
-                <div className='w-1/3 pr-6'>
-                  {templates
-                    .filter((emailPath) => {
-                      const flag = filterEmailByTemplateTab(
-                        temp_tab as any,
-                        emailPath.type,
-                      );
-                      if (searchQry.length > 0) {
-                        return (
-                          flag &&
-                          emailTemplateCopy[emailPath.type].heading
-                            .toLowerCase()
-                            .includes(searchQry.toLowerCase())
+                <div className='w-1/3 pr-4'>
+                  <ScrollArea className='h-[calc(100vh-118px)]'>
+                    {templates
+                      .filter((emailPath) => {
+                        const flag = filterEmailByTemplateTab(
+                          temp_tab as any,
+                          emailPath.type,
                         );
-                      }
-                      return flag;
-                    })
-                    .filter((email) =>
-                      filteredEnum.length > 0
-                        ? filteredEnum.includes(email.type)
-                        : true,
-                    )
-                    .sort((a, b) =>
-                      emailTemplateCopy[a.type].heading.localeCompare(
-                        emailTemplateCopy[b.type].heading,
-                      ),
-                    )
-                    .map((emailPath) => (
-                      <Link
-                        key={emailPath.id}
-                        href={{
-                          pathname: router.pathname,
-                          query: { ...router.query, email: emailPath.type },
-                        }}
-                        passHref
-                      >
-                        <Button
-                          variant={
-                            emailPath.type === temp_email
-                              ? 'default'
-                              : 'outline'
-                          }
-                          className='h-16 w-full my-1 justify-start text-left'
-                          onClick={() => {
-                            if (temp_email !== emailPath.type) {
-                              setTipTapLoder(true);
-                              setTimeout(() => {
-                                setTipTapLoder(false);
-                              }, 500);
-                            }
+                        if (searchQry.length > 0) {
+                          return (
+                            flag &&
+                            emailTemplateCopy[emailPath.type].heading
+                              .toLowerCase()
+                              .includes(searchQry.toLowerCase())
+                          );
+                        }
+                        return flag;
+                      })
+                      .filter((email) =>
+                        filteredEnum.length > 0
+                          ? filteredEnum.includes(email.type)
+                          : true,
+                      )
+                      .sort((a, b) =>
+                        emailTemplateCopy[a.type].heading.localeCompare(
+                          emailTemplateCopy[b.type].heading,
+                        ),
+                      )
+                      .map((emailPath) => (
+                        <Link
+                          key={emailPath.id}
+                          href={{
+                            pathname: router.pathname,
+                            query: { ...router.query, email: emailPath.type },
                           }}
+                          passHref
                         >
-                          <div className='w-full'>
-                            <div
-                              className={`font-semibold ${emailPath.type === temp_email ? 'text-white' : 'text-neutral-900'}`}
-                            >
-                              {emailTemplateCopy[emailPath.type]?.heading}
+                          <Button
+                            variant={
+                              emailPath.type === temp_email
+                                ? 'default'
+                                : 'outline'
+                            }
+                            className='my-1 h-16 w-72 justify-start text-left'
+                            onClick={() => {
+                              if (temp_email !== emailPath.type) {
+                                setTipTapLoder(true);
+                                setTimeout(() => {
+                                  setTipTapLoder(false);
+                                }, 500);
+                              }
+                            }}
+                          >
+                            <div className='w-full'>
+                              <div
+                                className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-white' : 'text-neutral-900'}`}
+                              >
+                                {emailTemplateCopy[emailPath.type]?.heading}
+                              </div>
+                              <div
+                                className={`line-clamp-2 text-sm ${emailPath.type === temp_email ? 'text-primary-600' : 'text-neutral-500'}`}
+                              >
+                                {emailTemplateCopy[emailPath.type].description}
+                              </div>
                             </div>
-                            <div
-                              className={`text-sm line-clamp-2 ${emailPath.type === temp_email ? 'text-primary-600' : 'text-neutral-500'}`}
-                            >
-                              {emailTemplateCopy[emailPath.type].description}
-                            </div>
-                          </div>
-                        </Button>
-                      </Link>
-                    ))}
+                          </Button>
+                        </Link>
+                      ))}
+                  </ScrollArea>
                 </div>
 
                 {/* Email Template Details */}
                 <div className='w-2/3'>
                   {isEditorLoad ? (
-                    <div className='flex items-center justify-center h-[calc(100vh-200px)] bg-neutral-100'>
+                    <div className='flex h-[calc(100vh-200px)] items-center justify-center bg-neutral-100'>
                       <div className='space-y-2'>
                         <Skeleton className='h-4 w-[250px]' />
                         <Skeleton className='h-4 w-[200px]' />
@@ -383,7 +386,7 @@ function SchedulerEmailTemps({ setSaving }) {
                     </div>
                   ) : (
                     <div className='space-y-4'>
-                      <div className='flex justify-between items-center'>
+                      <div className='flex items-center justify-between'>
                         <h2 className='text-md font-bold'>
                           {emailTemplateCopy[temp_email].heading}
                         </h2>
@@ -401,7 +404,7 @@ function SchedulerEmailTemps({ setSaving }) {
                         {emailTemplateCopy[temp_email].description}
                       </p>
                       {tiptapLoader ? (
-                        <div className='flex items-center justify-center h-[calc(100vh-300px)]'>
+                        <div className='flex h-[calc(100vh-300px)] items-center justify-center'>
                           <div className='space-y-2'>
                             <Skeleton className='h-4 w-[250px]' />
                             <Skeleton className='h-4 w-[200px]' />

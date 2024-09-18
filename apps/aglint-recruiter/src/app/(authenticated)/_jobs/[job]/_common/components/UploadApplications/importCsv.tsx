@@ -21,6 +21,7 @@ type Candidate = {
   phone: string;
   linkedin: string;
   file_url: string;
+  avatar: string;
 };
 
 export const ImportCsv: React.FC = () => {
@@ -72,11 +73,14 @@ export const ImportCsv: React.FC = () => {
 
   const handleImport = async () => {
     try {
-      const formattedCandidates = candidates.map((candidate) => ({
-        ...candidate,
-        linkedin: candidate.linkedin || '',
-        file_url: candidate.file_url || '',
-      }));
+      const formattedCandidates = candidates.map((candidate) => {
+        return {
+          ...candidate,
+          linkedin: candidate.linkedin || '',
+          file_url: candidate.file_url,
+          avatar: candidate.avatar,
+        };
+      });
       await handleUploadCsv({ candidates: formattedCandidates });
       setImportPopup(false);
     } catch {
@@ -85,20 +89,49 @@ export const ImportCsv: React.FC = () => {
   };
 
   return (
-    <div className='border-0 shadow-none h-[500px] flex flex-col'>
+    <div className='flex h-[500px] flex-col border-0 shadow-none'>
       <div className='flex-grow overflow-auto p-6'>
         {isLoading ? (
-          <div className='flex justify-center items-center w-full h-full'>
+          <div className='flex h-full w-full items-center justify-center'>
             <p className='text-gray-500'>Loading...</p>
           </div>
-        ) : (
-          <div className='space-y-6 h-full flex flex-col'>
-            <div className='flex items-center justify-center w-full'>
+        ) : candidates.length ? (
+          <div className='flex flex-col gap-2'>
+            <CandidatesListTable candidates={candidates} />
+            <div className='flex items-center justify-between overflow-hidden'>
               <label
                 htmlFor='file-upload'
-                className='flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer'
+                className='flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
               >
-                <Upload className='w-5 h-5 mr-2 text-gray-400' />
+                <Upload className='mr-2 h-5 w-5 text-gray-400' />
+                Re-Upload
+                <input
+                  id='file-upload'
+                  type='file'
+                  className='hidden'
+                  accept='.csv'
+                  onChange={(event) =>
+                    handleFileUpload(
+                      (
+                        event.target as React.ChangeEvent<HTMLInputElement>['target']
+                      ).files[0],
+                    )
+                  }
+                />
+              </label>
+              {candidates.length > 0 && (
+                <p className='text-center text-sm text-gray-600'>{`Listing ${candidates.length} candidates`}</p>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className='flex h-full flex-col space-y-6'>
+            <div className='flex w-full items-center justify-center'>
+              <label
+                htmlFor='file-upload'
+                className='flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
+              >
+                <Upload className='mr-2 h-5 w-5 text-gray-400' />
                 Select CSV file
                 <input
                   id='file-upload'
@@ -115,7 +148,7 @@ export const ImportCsv: React.FC = () => {
                 />
               </label>
             </div>
-            <div className='text-sm text-gray-600 text-center'>or</div>
+            <div className='text-center text-sm text-gray-600'>or</div>
             <div className='flex-grow overflow-auto'>
               <FileUploader
                 handleChange={(
@@ -124,21 +157,14 @@ export const ImportCsv: React.FC = () => {
                   handleFileUpload(file);
                 }}
               >
-                {candidates.length > 0 ? (
-                  <CandidatesListTable candidates={candidates} />
-                ) : (
-                  <div className='border border-dashed border-gray-300 p-6 text-center rounded-lg'>
-                    <FileText className='w-12 h-12 text-gray-400 mx-auto mb-4' />
-                    <p className='text-gray-500'>
-                      Upload a CSV file to import candidates
-                    </p>
-                  </div>
-                )}
+                <div className='rounded-lg border border-dashed border-gray-300 p-6 text-center'>
+                  <FileText className='mx-auto mb-4 h-12 w-12 text-gray-400' />
+                  <p className='text-gray-500'>
+                    Upload a CSV file to import candidates
+                  </p>
+                </div>
               </FileUploader>
             </div>
-            {candidates.length > 0 && (
-              <p className='text-sm text-gray-600 text-center'>{`Listing ${candidates.length} candidates`}</p>
-            )}
           </div>
         )}
       </div>
@@ -158,7 +184,7 @@ export const ImportCsv: React.FC = () => {
 const CandidatesListTable: React.FC<{ candidates: Candidate[] }> = ({
   candidates,
 }) => (
-  <div className='overflow-auto max-h-[300px]'>
+  <div className='max-h-[330px] overflow-auto'>
     <Table>
       <TableHeader>
         <TableRow>

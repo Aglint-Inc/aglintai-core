@@ -14,14 +14,14 @@ import {
   CircleDot,
   Locate,
   RefreshCw,
-  RotateCcw,
   User,
   Users,
 } from 'lucide-react';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 
 import { type GreenHouseUserSyncAPI } from '@/api/sync/greenhouse/user/type';
 import axios from '@/client/axios';
+import FilterHeader from '@/components/Common/FilterHeader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { type API_get_last_login } from '@/pages/api/get_last_login/types';
@@ -29,9 +29,7 @@ import { useGreenhouseDetails } from '@/queries/greenhouse';
 import { useAllMembers } from '@/queries/members';
 import dayjs from '@/utils/dayjs';
 
-import SearchField from '../../Common/SearchField/SearchField';
 import AddMember from './AddMemberDialog';
-import FilterDropDown from './FilterDropDown';
 import Member from './MemberList';
 
 type ItemType = string;
@@ -112,46 +110,6 @@ const TeamManagement = () => {
     selectedRoles,
     members,
   ]);
-
-  const [, startTransition] = useTransition();
-
-  function handleTextChange(e) {
-    const value = e.target.value;
-    setSearchText(value);
-    startTransition(() => {
-      if (value) {
-        const filtered = members.filter((member) => {
-          const { first_name, position, email } = member;
-          return (
-            first_name?.toLowerCase().includes(value.toLowerCase()) ||
-            position?.toLowerCase().includes(value.toLowerCase()) ||
-            email?.toLowerCase().includes(value.toLowerCase())
-          );
-        });
-        setFilteredMembers(filtered);
-      } else {
-        setFilteredMembers(members);
-      }
-    });
-  }
-  function handleTextClear() {
-    setSearchText('');
-    setFilteredMembers(members);
-  }
-
-  function resetAllFilter() {
-    setSelectedStatus([]);
-    setSelectedRoles([]);
-    setSelectedDepartments([]);
-    setSelectedLocations([]);
-  }
-
-  const isResetAllVisible =
-    Boolean(selectedStatus.length) ||
-    Boolean(selectedDepartments.length) ||
-    Boolean(selectedRoles.length) ||
-    Boolean(selectedLocations.length);
-
   const canManage = checkPermissions(['manage_users']);
   const [isInitialLoading, setIsInitialLoading] = useState(
     filteredMembers.length ? false : true,
@@ -172,99 +130,85 @@ const TeamManagement = () => {
         pendingList={[]}
       />
       <div className='flex flex-col'>
-        <h2 className='text-xl font-bold mb-2'>Manage User</h2>
-        <p className='text-gray-600 mb-6'>
+        <h2 className='mb-2 text-xl font-bold'>Manage User</h2>
+        <p className='mb-6 text-gray-600'>
           Invite your hiring team members and manage their roles and profile
           details in one place. Assign roles such as interviewer, hiring
           manager, or recruiter to ensure an organized team structure and
           compliance with user permissions in the organization.
         </p>
 
-        {/* <Alert>
-          <History className='h-4 w-4' />
-          <AlertTitle>Pending Invites</AlertTitle>
-          <AlertDescription>
-            You currently have four pending invites awaiting your response.
-          </AlertDescription>
-        </Alert> */}
-
-        <div className='space-y-4'>
-          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0'>
-            <div className='flex flex-row gap-2'>
-              <div className='w-full sm:w-auto'>
-                <SearchField
-                  value={searchText}
-                  onChange={handleTextChange}
-                  onClear={handleTextClear}
-                  placeholder='Search users'
-                />
-              </div>
-              <div className='flex flex-wrap gap-2'>
-                <FilterDropDown
-                  icon={<CircleDot size={12} />}
-                  itemList={uniqueStatus}
-                  selectedItems={selectedStatus}
-                  setSelectedItems={setSelectedStatus}
-                  title={'Status'}
-                />
-                <FilterDropDown
-                  icon={<User size={12} />}
-                  itemList={uniqueRoles}
-                  selectedItems={selectedRoles}
-                  setSelectedItems={setSelectedRoles}
-                  title={'Role'}
-                />
-                <FilterDropDown
-                  icon={<Building size={12} />}
-                  itemList={uniqueDepartments}
-                  selectedItems={selectedDepartments}
-                  setSelectedItems={setSelectedDepartments}
-                  title={'Department'}
-                />
-                <FilterDropDown
-                  icon={<Locate size={12} />}
-                  itemList={uniqueLocations}
-                  selectedItems={selectedLocations}
-                  setSelectedItems={setSelectedLocations}
-                  title={'Location'}
-                />
-                {isResetAllVisible && (
-                  <Button variant='ghost' onClick={resetAllFilter} size='sm'>
-                    <RotateCcw className='mr-2 h-4 w-4' />
-                    Reset All
-                  </Button>
-                )}
-              </div>
-            </div>
-            {canManage &&
-              (remote_sync.isEnabled ? (
-                <div className='flex flex-col space-y-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={remote_sync.sync}
-                    className='flex items-center'
-                  >
-                    <RefreshCw className='mr-2 h-4 w-4' />
-                    Sync Team ({last_sync})
-                  </Button>
-                </div>
-              ) : (
+        <div className='row flex w-full justify-end pb-4'>
+          {canManage &&
+            (remote_sync.isEnabled ? (
+              <div className='flex flex-col space-y-2'>
                 <Button
                   variant='outline'
                   size='sm'
-                  onClick={() => {
-                    setOpen(true);
-                  }}
+                  onClick={remote_sync.sync}
                   className='flex items-center'
                 >
-                  Invite Member
+                  <RefreshCw className='mr-2 h-4 w-4' />
+                  Sync Team ({last_sync})
                 </Button>
-              ))}
-          </div>
+              </div>
+            ) : (
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => {
+                  setOpen(true);
+                }}
+                className='flex items-center'
+              >
+                Invite Member
+              </Button>
+            ))}
         </div>
+        <FilterHeader
+          search={{
+            setValue: setSearchText,
+            value: searchText,
+            placeholder: 'Search users',
+          }}
+          isResetAll={true}
+          filters={[
+            {
+              name: 'Status',
+              type: 'filter',
+              icon: <CircleDot size={12} />,
+              options: uniqueStatus,
+              setValue: setSelectedStatus,
+              value: selectedStatus,
+            },
+            {
+              name: 'Role',
+              type: 'filter',
+              icon: <User size={12} />,
+              options: uniqueRoles,
+              setValue: setSelectedRoles,
+              value: selectedRoles,
+            },
+            {
+              name: 'Department',
+              type: 'filter',
+              icon: <Building size={12} />,
+              options: uniqueDepartments,
+              setValue: setSelectedDepartments,
+              value: selectedDepartments,
+            },
+            {
+              name: 'Location',
+              type: 'filter',
+              icon: <Locate size={12} />,
+              options: uniqueLocations,
+              setValue: setSelectedLocations,
+              value: selectedLocations,
+            },
+          ]}
+        />
 
-        <div className='mt-6 overflow-x-auto bg-white border rounded-lg'>
+        <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
           <Table>
             <TableHeader className='bg-gray-100'>
               <TableRow>
@@ -313,8 +257,8 @@ const TeamManagement = () => {
               ) : filteredMembers.length === 0 ? (
                 <TableCell colSpan={6}>
                   <div className='flex flex-col items-center justify-center p-8 text-center'>
-                    <Users className='w-12 h-12 text-gray-400 mb-2' />
-                    <h3 className='text-lg font-medium text-gray-900 mb-1'>
+                    <Users className='mb-2 h-12 w-12 text-gray-400' />
+                    <h3 className='mb-1 text-lg font-medium text-gray-900'>
                       No team members
                     </h3>
                     <p className='text-sm text-gray-500'>

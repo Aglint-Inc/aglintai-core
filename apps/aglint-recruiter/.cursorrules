@@ -3,7 +3,6 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, ShadCN UI, 
     Use ShadCN components imported from @components/ui only.
     Use Lucide React for all icons.
     Style components with Tailwind CSS exclusively.
-    Remove MUI components and Devlink components from @devlink whenever possible.
     Use Supabase for backend services, ensuring secure data management and efficient querying.
 
 Code Style and Structure:

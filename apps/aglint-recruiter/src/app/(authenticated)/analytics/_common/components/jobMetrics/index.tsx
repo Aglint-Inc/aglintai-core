@@ -10,7 +10,7 @@ export default function JobMetrics() {
       <CandidatesByLocationChart />
       <CandidatesBySkillsChart />
       <CandidatesByExperienceChart />
-      <div className='flex flex-roe gap-4'>
+      <div className='flex-roe flex gap-4'>
         <AverageExperience />
         <AverageTenure />
       </div>

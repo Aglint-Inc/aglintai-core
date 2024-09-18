@@ -15,6 +15,7 @@ type Props = InputProps & {
   defaultLabelColor?: string;
   fullWidth?: boolean;
   ref: React.ForwardedRef<HTMLInputElement>;
+  className?: string;
 };
 
 const UITextField = forwardRef<HTMLInputElement, Props>(
@@ -81,7 +82,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
             <Label htmlFor={id} className={labelClasses}>
               {label}
             </Label>
-            {required && <span className='text-red-500 ml-1'>*</span>}{' '}
+            {required && <span className='ml-1 text-red-500'>*</span>}{' '}
             {/* Corrected color class */}
           </div>
         )}
@@ -98,8 +99,8 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
             type={type}
           />
           {error && helperText && (
-            <div className='flex flex-row items-center mt-1'>
-              <AlertCircle className='w-4 h-4 text-red-500 mr-1' />
+            <div className='mt-1 flex flex-row items-center'>
+              <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
               <p className='text-sm text-red-700'>{helperText}</p>
             </div>
           )}

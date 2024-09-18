@@ -3,7 +3,7 @@ import { toast } from '@components/hooks/use-toast';
 import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import type { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
+import { type TimezoneObj } from '@/utils/timeZone';
 
 import BreakTimeCard from './BreakTime';
 import TimeZone from './TimeZone';
@@ -56,9 +56,9 @@ export default function WorkingHour({
     }
   };
   return (
-    <div className='flex flex-col gap-4 mb-8'>
+    <div className='mb-8 flex flex-col gap-4'>
       <div className='flex flex-col'>
-        <h2 className='text-xl font-bold mb-2'>Working Hours</h2>
+        <h2 className='mb-2 text-xl font-bold'>Working Hours</h2>
         <p className='text-gray-600'>
           List company holidays to exclude them from scheduling.
         </p>

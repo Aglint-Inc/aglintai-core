@@ -3,17 +3,17 @@ import { Plus } from 'lucide-react';
 import UITypography from '@/components/Common/UITypography';
 
 export function AddScheduleOption({
-  onClickAddSession = {},
-  onClickAddDebriefSession = {},
-  onClickAddBreak = {},
+  onClickAddSession = () => {},
+  onClickAddDebriefSession = () => {},
+  onClickAddBreak = () => {},
   isBreakVisibe = true,
 }) {
   return (
-    <div className='z-4 w-44 p-1 flex flex-col justify-start items-start gap-3  shadow-sm border border-slate-200 rounded-md bg-white'>
-      <div className=' w-full flex flex-col justify-start items-start gap-3'>
+    <div className='z-4 flex w-44 flex-col items-start justify-start gap-3 rounded-md border border-slate-200 bg-white p-1 shadow-sm'>
+      <div className='flex w-full flex-col items-start justify-start gap-3'>
         <div
-          className='px-2 py-1 rounded-sm w-full flex justify-start items-center gap-1 cursor-pointer hover:bg-slate-100'
-          {...onClickAddSession}
+          className='flex w-full cursor-pointer items-center justify-start gap-1 rounded-sm px-2 py-1 hover:bg-slate-100'
+          onClick={onClickAddSession}
         >
           <Plus size={15} />
           <UITypography variant='p' type='small'>
@@ -21,8 +21,8 @@ export function AddScheduleOption({
           </UITypography>
         </div>
         <div
-          className='px-2 py-1 rounded-sm w-full flex justify-start items-center gap-1 cursor-pointer hover:bg-slate-100'
-          {...onClickAddDebriefSession}
+          className='flex w-full cursor-pointer items-center justify-start gap-1 rounded-sm px-2 py-1 hover:bg-slate-100'
+          onClick={onClickAddDebriefSession}
         >
           <Plus size={15} />
           <UITypography variant='p' type='small'>
@@ -31,8 +31,8 @@ export function AddScheduleOption({
         </div>
         {isBreakVisibe ? (
           <div
-            className='px-2 py-1 rounded-sm w-full flex justify-start items-center gap-1 cursor-pointer hover:bg-slate-100'
-            {...onClickAddBreak}
+            className='flex w-full cursor-pointer items-center justify-start gap-1 rounded-sm px-2 py-1 hover:bg-slate-100'
+            onClick={onClickAddBreak}
           >
             <Plus size={15} />
             <UITypography variant='p' type='small'>

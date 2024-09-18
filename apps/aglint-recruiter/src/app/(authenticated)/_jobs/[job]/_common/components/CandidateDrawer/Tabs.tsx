@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { NewTabPill } from '@devlink3/NewTabPill';
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -108,14 +109,22 @@ const AllTabs = memo(() => {
   const pills = useMemo(
     () =>
       tabs.map((t) => (
-        <NewTabPill
+        <Button
           key={t}
-          onClickPill={{ onClick: () => setTab(t) }}
-          textLabel={t}
-          isPillActive={tab === t}
-          isTabCountVisible={counts[t] !== null && counts[t] !== 0}
-          tabCount={counts[t] ?? 0}
-        />
+          onClick={() => setTab(t)}
+          variant={tab === t ? 'default' : 'ghost'}
+          className='relative'
+        >
+          {t}
+          {counts[t] !== null && counts[t] !== 0 && (
+            <Badge
+              variant='secondary'
+              className='ml-2 h-5 w-5 rounded-full p-0 text-xs leading-5'
+            >
+              {counts[t]}
+            </Badge>
+          )}
+        </Button>
       )),
     [tabs, tab],
   );

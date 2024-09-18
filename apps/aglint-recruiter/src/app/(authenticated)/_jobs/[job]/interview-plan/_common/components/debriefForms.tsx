@@ -1,23 +1,20 @@
 /* eslint-disable security/detect-object-injection */
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Switch } from '@components/ui/switch';
-import { Attendee } from '@devlink2/Attendee';
-import { SelectedMemberPill } from '@devlink2/SelectedMemberPill';
-import { SidedrawerBodyDebrief } from '@devlink2/SidedrawerBodyDebrief';
 import React, {
   type Dispatch,
   type SetStateAction,
   useCallback,
   useMemo,
 } from 'react';
+import MembersAutoComplete, {
+  type MemberTypeAutoComplete,
+} from 'src/app/_common/components/MembersTextField';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import MembersAutoComplete, {
-  type MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';
@@ -204,10 +201,10 @@ const DebriefForms = ({
   const locationField = useMemo(
     () =>
       schedule_type.value === 'in_person_meeting' ? (
-        <div className="flex flex-col space-y-1">
-          <span className="text-sm font-medium">Address</span>
+        <div className='flex flex-col space-y-1'>
+          <span className='text-sm font-medium'>Address</span>
           <UITextArea
-            name="location"
+            name='location'
             rows={5}
             value={location.value}
             error={location.error}
@@ -215,7 +212,7 @@ const DebriefForms = ({
             onChange={({ target: { value } }) =>
               handleChange('location', value)
             }
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className='w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
           />
         </div>
       ) : null,
@@ -223,33 +220,26 @@ const DebriefForms = ({
   );
 
   return (
-    <SidedrawerBodyDebrief
-      slotSessionNameInput={nameField}
-      slotDurationDropdown={sessionDurationField}
-      slotMemberAvatarSelectionPill={<></>}
-      slotScheduleTypeDropdown={
-        <div className="flex flex-col gap-2">
-          <ScheduleTypeField
-            value={schedule_type.value}
-            handleTypeChange={handleTypeChange}
-          />
-          {locationField}
-        </div>
-      }
-      slotMembersDropdown={
-        showMembers && (
-          <InterviewersField
-            value={members.value}
-            memberRecommendations={memberRecommendations}
-            handleChange={handleChange}
-            error={members.error}
-          />
-        )
-      }
-      slotAttendee={
-        <Attendees handleChange={handleChange} value={members_meta.value} />
-      }
-    />
+    <div className='flex flex-col space-y-4'>
+      <div>{nameField}</div>
+      <div>{sessionDurationField}</div>
+      <div className='flex flex-col space-y-2'>
+        <ScheduleTypeField
+          value={schedule_type.value}
+          handleTypeChange={handleTypeChange}
+        />
+        {locationField}
+      </div>
+      {showMembers && (
+        <InterviewersField
+          value={members.value}
+          memberRecommendations={memberRecommendations}
+          handleChange={handleChange}
+          error={members.error}
+        />
+      )}
+      <Attendees handleChange={handleChange} value={members_meta.value} />
+    </div>
   );
 };
 
@@ -281,21 +271,20 @@ const Attendees = ({
   return (
     <>
       {attendees}
-      <Attendee
-        textRole={'Previous interviewers'}
-        slotToggle={
-          <Switch
-            checked={value.previous_interviewers}
-            onCheckedChange={() =>
-              handleChange('members_meta', {
-                ...value,
-                previous_interviewers: !value.previous_interviewers,
-              })
-            }
-          />
-        }
-        slotSelectedMemberPill={<></>}
-      />
+      <div className='flex items-center justify-between border-b p-4'>
+        <div className='flex items-center space-x-4'>
+          <span className='text-sm font-medium'>Previous interviewers</span>
+        </div>
+        <Switch
+          checked={value.previous_interviewers}
+          onCheckedChange={() =>
+            handleChange('members_meta', {
+              ...value,
+              previous_interviewers: !value.previous_interviewers,
+            })
+          }
+        />
+      </div>
     </>
   );
 };
@@ -331,22 +320,17 @@ const Member = ({
   if (!member) return <></>;
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Attendee
-      textRole={capitalize(role)}
-      slotToggle={<Switch checked={checked} onCheckedChange={onClick} />}
-      slotSelectedMemberPill={
-        <SelectedMemberPill
-          isCloseButton={false}
-          isReverseShadow={false}
-          isShadow={false}
-          onClickRemove={null}
-          textMemberName={name}
-          slotMemberAvatar={
-            <MuiAvatar src={member.profile_image} level={name} />
-          }
-        />
-      }
-    />
+    <div className='flex items-center justify-between border-b p-4'>
+      <div className='flex items-center space-x-4'>
+        <span className='text-sm font-medium'>{capitalize(role)}</span>
+        <Avatar className='h-8 w-8'>
+          <AvatarImage src={member.profile_image} alt={name} />
+          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <span className='text-sm'>{name}</span>
+      </div>
+      <Switch checked={checked} onCheckedChange={onClick} />
+    </div>
   );
 };
 
@@ -455,7 +439,7 @@ const InterviewersField = ({
   return (
     <MembersAutoComplete
       maxWidth='468px'
-      pillColor='var(--neutral-3)'
+      pillColor='bg-neutral-200'
       renderUsers={options}
       selectedUsers={value.map((m) => ({
         user_id: m.user_id,
@@ -562,7 +546,7 @@ export const getDebriefSessionPayload = (
   fields: DebriefFormFields,
   session_order: number,
   interview_plan_id: string,
-): CreateDebriefSession => {
+): Omit<CreateDebriefSession, 'recruiter_id'> => {
   const {
     name,
     schedule_type,

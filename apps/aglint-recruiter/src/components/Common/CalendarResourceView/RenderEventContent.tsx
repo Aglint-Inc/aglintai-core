@@ -7,7 +7,7 @@ import {
 } from '@components/ui/tooltip';
 
 import InterviewerAcceptDeclineIcon from '../Icons/InterviewerAcceptDeclineIcon';
-import { type Event } from './types';
+import { type EventCalendar } from './types';
 
 function RenderEventContent(eventInfo) {
   const { title, start, end } = eventInfo.event as {
@@ -24,20 +24,20 @@ function RenderEventContent(eventInfo) {
     isLoading,
     isSelected,
     session_id,
-  } = eventInfo.event.extendedProps as Event['extendedProps'];
+  } = eventInfo.event.extendedProps as EventCalendar['extendedProps'];
 
   return (
     <>
       {isLoading ? (
-        <div className='h-full w-full skeleton-item'></div>
+        <div className='skeleton-item h-full w-full'></div>
       ) : (
         <Tooltip>
           <TooltipTrigger asChild>
             <div
               id={session_id}
-              className={`p-[4px_10px] w-full rounded-md h-full ${
+              className={`h-full w-full rounded-md p-[4px_10px] ${
                 isSelected
-                  ? 'bg-accent-2 border border-dashed border-accent-6'
+                  ? 'border border-dashed border-amber-400 bg-amber-100'
                   : ''
               }`}
               style={{
@@ -46,8 +46,8 @@ function RenderEventContent(eventInfo) {
               }}
             >
               <p
-                className={`text-xs one-line-clamp ${
-                  isSelected ? 'text-accent-12' : 'text-white'
+                className={`truncate text-xs ${
+                  isSelected ? 'text-amber-600' : 'text-white'
                 }`}
               >
                 {title}
@@ -57,7 +57,7 @@ function RenderEventContent(eventInfo) {
           <TooltipContent>
             {title && (
               <div className='space-y-1 p-1'>
-                <p className='text-base font-semibold text-neutral-12'>
+                <p className='text-neutral-12 text-base font-semibold'>
                   {title}
                 </p>
                 <div className='flex flex-row space-x-1'>

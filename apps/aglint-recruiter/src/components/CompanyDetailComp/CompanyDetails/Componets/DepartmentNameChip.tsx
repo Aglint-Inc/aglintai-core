@@ -16,7 +16,7 @@ function DepartmentNameChip({
   return (
     <span
       key={index}
-      className='bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm flex items-center'
+      className='flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700'
     >
       {name}
       <button

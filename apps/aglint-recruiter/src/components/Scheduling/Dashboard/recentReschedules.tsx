@@ -1,8 +1,5 @@
-
-
-import Avatar from '@mui/material/Avatar';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Skeleton } from '@components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
@@ -18,18 +15,17 @@ import { Empty } from './common';
 const LIMIT = 4;
 
 export const RecentReschedules = memo(() => (
-  
-  <div className='border border-gray-200 rounded-md h-[450px] overflow-hidden'>
-  <div className='p-3 bg-gray-100 border-b border-gray-200 flex justify-between items-center'>
-    <UITypography type='small' fontBold='normal' color='black'>
-      Recent Reschedule
-    </UITypography>
-    <div></div>
+  <div className='h-[450px] overflow-hidden rounded-md border border-gray-200'>
+    <div className='flex items-center justify-between border-b border-gray-200 bg-gray-100 p-3'>
+      <UITypography type='small' fontBold='normal' color='black'>
+        Recent Reschedule
+      </UITypography>
+      <div></div>
+    </div>
+    <div className='flex flex-col'>
+      <Container />
+    </div>
   </div>
-  <div className='flex flex-col'>
-    <Container />
-  </div>
-</div>
 ));
 RecentReschedules.displayName = 'RecentReschedules';
 
@@ -40,8 +36,8 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -51,9 +47,9 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <Stack>
+      <div className='flex flex-col'>
         <Empty />
-      </Stack>
+      </div>
     );
 
   return <List data={data} />;
@@ -71,13 +67,16 @@ const List = memo(({ data }: Props) => {
       {(data ?? []).map(({ id, name, note, profile_image }) => (
         <div key={id} className='flex items-center space-x-4 p-4'>
           <div className='flex-shrink-0'>
-            <Avatar src={profile_image} alt={name} />
+            <Avatar>
+              <AvatarImage src={profile_image} alt={name} />
+              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+            </Avatar>
           </div>
-          <div className='flex-1 min-w-0'>
-            <p className='text-sm font-medium text-gray-900 truncate'>
+          <div className='min-w-0 flex-1'>
+            <p className='truncate text-sm font-medium text-gray-900'>
               {capitalizeAll(name)}
             </p>
-            <p className='text-sm text-gray-500 truncate'>
+            <p className='truncate text-sm text-gray-500'>
               {note?.trim() || '--'}
             </p>
           </div>
@@ -93,9 +92,9 @@ const Loader = memo(() => {
     (_, i) => (
       <div key={i} className='flex items-center space-x-4 p-4'>
         <div className='flex-shrink-0'>
-          <Skeleton className='rounded-full' width={'100%'} height={'100%'} />
+          <Skeleton className='h-4 w-24' />
         </div>
-        <div className='flex-1 min-w-0'>
+        <div className='min-w-0 flex-1'>
           <Skeleton className='h-4 w-24' />
           <Skeleton className='h-4 w-12' />
           <Skeleton className='h-4 w-48' />

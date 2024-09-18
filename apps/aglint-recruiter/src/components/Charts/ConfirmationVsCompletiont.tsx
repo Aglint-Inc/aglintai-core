@@ -25,9 +25,9 @@ export default function ConfirmationVsCompletion() {
   ];
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-bold text-center'>
+        <CardTitle className='text-md text-center font-bold'>
           Interview Confirmation vs. Completion Rates Over 6 Months
         </CardTitle>
       </CardHeader>
@@ -44,29 +44,25 @@ export default function ConfirmationVsCompletion() {
           >
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis dataKey='month' />
-            <YAxis
-              yAxisId='left'
-              orientation='left'
-              stroke='hsl(var(--chart-1))'
-            />
+            <YAxis yAxisId='left' orientation='left' stroke='text-blue-500' />
             <YAxis
               yAxisId='right'
               orientation='right'
-              stroke='hsl(var(--chart-2))'
+              stroke='text-green-500'
             />
             <Tooltip />
             <Legend />
             <Bar
               yAxisId='left'
               dataKey='confirmationRate'
-              fill='hsl(var(--chart-1))'
+              fill='text-blue-500'
               name='Confirmation Rate (%)'
             />
             <Line
               yAxisId='right'
               type='monotone'
               dataKey='completionRate'
-              stroke='hsl(var(--chart-2))'
+              stroke='text-green-500'
               strokeWidth={2}
               name='Completion Rate (%)'
             />

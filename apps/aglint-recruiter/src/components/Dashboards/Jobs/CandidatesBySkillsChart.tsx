@@ -28,7 +28,7 @@ export default function CandidatesBySkillsChart() {
   const [view, setView] = useState('Top skills');
 
   return (
-    <Card className='w-full max-w-4xl mx-auto'>
+    <Card className='mx-auto w-full max-w-4xl'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle className='text-md font-semibold'>Candidates By</CardTitle>
         <div className='flex space-x-2'>
@@ -63,11 +63,11 @@ export default function CandidatesBySkillsChart() {
               <XAxis type='number' />
               <YAxis dataKey='skill' type='category' width={100} />
               <Tooltip />
-              <Bar dataKey='candidates' fill='hsl(var(--chart-1))'>
+              <Bar dataKey='candidates' fill='text-blue-500'>
                 {data.map((entry, index) => (
                   <Bar
                     key={index}
-                    fill={`hsl(var(--chart-${(index % 10) + 1}))`}
+                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                     dataKey={entry.candidates}
                   />
                 ))}

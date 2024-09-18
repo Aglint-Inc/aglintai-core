@@ -45,7 +45,7 @@ export function ProfileEdit() {
           Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[500px] p-0'>
+      <DialogContent className='p-0 sm:max-w-[500px]'>
         <CandidateForm closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>

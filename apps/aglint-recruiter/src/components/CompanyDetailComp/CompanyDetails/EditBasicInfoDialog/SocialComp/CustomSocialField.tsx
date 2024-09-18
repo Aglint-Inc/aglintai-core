@@ -25,7 +25,7 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
 
   return (
     <div
-      className='relative flex items-center w-full '
+      className='relative flex w-full items-center'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -46,7 +46,7 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
             size='sm'
             onClick={onDelete}
             icon={<Trash2 />}
-            className='absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8'
+            className='absolute right-2 top-1/2 h-8 w-8 -translate-y-1/2 transform'
           />
         </div>
       )}

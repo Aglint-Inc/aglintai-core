@@ -24,12 +24,14 @@ const Requests = () => {
     requests: { data: requestList, isPlaceholderData, isFetched },
     filters,
   } = useRequests();
+  const { recruiterUser, isShowFeature } = useAuthDetails();
   const [openChat, setOpenChat] = useState(
-    localStorage.getItem('openChat') === 'true' ? true : false,
+    localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+      ? true
+      : false,
   );
   const [view, setView] = useState<'list' | 'kanban'>('list');
 
-  const { recruiterUser } = useAuthDetails();
   const { data: requestCount } = useRequestCount();
 
   const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
@@ -62,38 +64,42 @@ const Requests = () => {
     ) || 0;
 
   useEffect(() => {
-    setOpenChat(localStorage.getItem('openChat') === 'true' ? true : false);
+    setOpenChat(
+      localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+        ? true
+        : false,
+    );
   }, [localStorage.getItem('openChat')]);
 
   return (
-    <div className='h-screen flex bg-gray-50 overflow-hidden'>
+    <div className='flex h-screen w-full overflow-hidden'>
       {/* Dock to Right Button */}
-      <div className='fixed top-4 left-[80px] z-50'>
-        <Button
-          variant='ghost'
-          size='sm'
-          onClick={() => {
-            const newOpenChat = !openChat;
-            localStorage.setItem('openChat', newOpenChat.toString());
-            setOpenChat(newOpenChat);
-          }}
-        >
-          {openChat ? (
-            <PanelLeftClose className='h-6 w-6 text-gray-500' />
-          ) : (
-            <PanelLeftOpen className='h-6 w-6 text-gray-500' />
-          )}
-        </Button>
-      </div>
+      {isShowFeature('AGENT') ? (
+        <div className='fixed left-[20] top-4 z-50'>
+          <Button
+            variant='link'
+            size='sm'
+            onClick={() => {
+              const newOpenChat = !openChat;
+              localStorage.setItem('openChat', newOpenChat.toString());
+              setOpenChat(newOpenChat);
+            }}
+          >
+            {openChat ? (
+              <PanelLeftClose className='h-6 w-6 text-gray-500' />
+            ) : (
+              <PanelLeftOpen className='h-6 w-6 text-gray-500' />
+            )}
+          </Button>
+        </div>
+      ) : (
+        <></>
+      )}
 
       {/* AgentIEditorProvider Section */}
       <AgentIEditorProvider>
         <div
-          className={`
-            transition-all duration-300 ease-in-out
-            ${openChat ? 'w-[450px]' : 'w-0'}
-            overflow-hidden h-screen sticky top-0 left-0
-          `}
+          className={`transition-all duration-300 ease-in-out ${openChat ? 'w-[450px]' : 'w-0'} sticky left-0 top-0 h-screen overflow-hidden`}
         >
           <div className='h-full'>
             <AgentChats />
@@ -103,7 +109,7 @@ const Requests = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-1 pt-0 z-10 overflow-scroll overflow-x-hidden h-screen ${
+        className={`z-10 h-screen flex-1 overflow-scroll overflow-x-hidden pt-0 ${
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
@@ -164,20 +170,20 @@ function RequestListContent({
   );
 
   return (
-    <div className='space-y-6 mt-8'>
+    <div className='mt-8 space-y-6'>
       {/******** Urgent sections ******* */}
       {urgentRequests && urgentRequests.requests.length > 0 && (
         <ScrollableSection section={urgentRequests} isFetched={isFetched} />
       )}
 
-      <div className='container mx-auto px-6'>
+      <div className='container-lg mx-auto w-full px-12'>
         <div
           className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
         >
           {otherSections.map(({ requests, sectionName }) => (
             <div
               key={sectionName}
-              className={view === 'kanban' ? 'flex-shrink-0 w-full' : ''}
+              className={view === 'kanban' ? 'w-full flex-shrink-0' : ''}
             >
               {isFetched ? (
                 view === 'list' ? (
@@ -195,9 +201,9 @@ function RequestListContent({
                 )
               ) : (
                 <>
-                  <Skeleton className='h-6 w-40 mb-2' />
-                  <Skeleton className='h-[200px] w-full mb-4' />
-                  <Skeleton className='h-[200px] w-full mb-4' />
+                  <Skeleton className='mb-2 h-6 w-40' />
+                  <Skeleton className='mb-4 h-[200px] w-full' />
+                  <Skeleton className='mb-4 h-[200px] w-full' />
                 </>
               )}
             </div>

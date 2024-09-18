@@ -21,21 +21,19 @@ export function FilterDropDownDash<T>({
   };
   return (
     <>
-      <div className='w-full'>
-        <Tabs defaultValue={String(selectedItem)} onValueChange={handleChange}>
-          <TabsList className='grid w-full grid-cols-{itemList.length}'>
-            {itemList.map((item, i) => (
-              <TabsTrigger
-                key={i}
-                value={String(item.value)}
-                className='px-3 py-2 text-sm font-medium'
-              >
-                {capitalizeFirstLetter(String(item.label))}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      </div>
+      <Tabs defaultValue={String(selectedItem)} onValueChange={handleChange}>
+        <TabsList>
+          {itemList.map((item, i) => (
+            <TabsTrigger
+              key={i}
+              value={String(item.value)}
+              className='px-3 py-2 text-sm font-medium'
+            >
+              {capitalizeFirstLetter(String(item.label))}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
     </>
   );
 }

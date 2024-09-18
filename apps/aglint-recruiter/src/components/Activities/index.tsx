@@ -1,9 +1,7 @@
-import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import dayjs from 'dayjs';
 import { ActivityIcon, FileText } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import { type useAllActivities } from '@/queries/activities';
 
@@ -14,12 +12,11 @@ function RightPanel({
 }: {
   allActivities: ReturnType<typeof useAllActivities>;
 }) {
-  const router = useRouter();
   const { data: activities, isLoading, isFetched } = allActivities;
 
   if (!isFetched || isLoading) {
     return (
-      <div className='space-y-4 h-[calc(100vh-60px)]'>
+      <div className='h-[calc(100vh-60px)] space-y-4'>
         {[...Array(5)].map((_, index) => (
           <Card key={index}>
             <CardHeader>
@@ -36,8 +33,8 @@ function RightPanel({
 
   if (activities.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center h-64 text-center'>
-        <ActivityIcon className='w-12 h-12 text-muted-foreground mb-2' />
+      <div className='flex h-64 flex-col items-center justify-center text-center'>
+        <ActivityIcon className='mb-2 h-12 w-12 text-muted-foreground' />
         <p className='text-sm text-muted-foreground'>No activities found.</p>
       </div>
     );
@@ -46,7 +43,7 @@ function RightPanel({
   return (
     <div className='space-y-4'>
       {activities.map((act, ind) => (
-        <Card key={act.id}>
+        <Card key={act.id} className='w-full'>
           <CardHeader>
             <CardTitle className='text-lg font-semibold'>
               {act.title || ''}
@@ -58,7 +55,7 @@ function RightPanel({
           <CardContent>
             <div className='flex items-start space-x-4'>
               <FileText size={24} className='text-muted-foreground' />
-              <div className='flex-grow'>
+              <div className='w-full flex-grow'>
                 <p className='text-sm'>
                   {act?.metadata?.type === 'candidate_response_self_schedule'
                     ? act.metadata.response_type === 'reschedule'
@@ -67,15 +64,6 @@ function RightPanel({
                     : act.description}
                 </p>
                 {Boolean(act.metadata) && <SlotContent act={act} />}
-                {Boolean(act.task_id) && (
-                  <Button
-                    variant='link'
-                    className='p-0 h-auto'
-                    onClick={() => router.push(`/tasks?task_id=${act.task_id}`)}
-                  >
-                    View Task
-                  </Button>
-                )}
               </div>
             </div>
           </CardContent>

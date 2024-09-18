@@ -51,7 +51,7 @@ function FilterJobDashboard({
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
   return (
-    <div className='flex col w-full'>
+    <div className='col flex w-full'>
       <FilterHeader
         isResetAll={!isResetAll}
         filters={[

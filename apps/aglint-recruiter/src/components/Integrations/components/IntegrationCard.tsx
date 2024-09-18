@@ -36,12 +36,12 @@ export function IntegrationCard({
   learnHowLink,
 }: IntegrationCardProps) {
   return (
-    <Component className='w-full max-w-sm'>
+    <Component className='w-full'>
       <CardContent className='pt-6'>
         <div className='flex items-center space-x-4'>
           {slotLogo || (
-            <div className='w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
-              <span className='text-gray-500 text-xl font-bold'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
+              <span className='text-xl font-bold text-gray-500'>
                 {(textName as string).charAt(0)}
               </span>
             </div>
@@ -80,13 +80,13 @@ export function IntegrationCard({
       <CardFooter className='flex justify-between'>
         {secondaryText === 'Learn How' ? (
           <Link href={learnHowLink} target='_blank' rel='noopener noreferrer'>
-            <Button variant='link' size='sm'>
+            <Button variant='link'>
               Learn How
               <ExternalLink className='ml-1 h-4 w-4' />
             </Button>
           </Link>
         ) : (
-          <Button variant='outline' size='sm' onClick={secondaryAction}>
+          <Button variant='outline' onClick={secondaryAction}>
             {secondaryText || 'Disconnect'}
           </Button>
         )}
@@ -99,7 +99,6 @@ export function IntegrationCard({
               ? 'outline'
               : 'default'
           }
-          size='sm'
           onClick={primaryAction}
         >
           {primaryText || 'Connect'}

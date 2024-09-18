@@ -14,10 +14,14 @@ export function UIDatePicker({
   value,
   onAccept,
   closeOnSelect,
+  minDate,
+  maxDate,
 }: {
   value: Date;
   onAccept: (_value: Date) => void;
   closeOnSelect?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
 }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -46,6 +50,9 @@ export function UIDatePicker({
             onAccept(date);
             closeOnSelect && setOpen(false);
           }}
+          disabled={(date) =>
+            (minDate && date < minDate) || (maxDate && date > maxDate)
+          }
         />
       </PopoverContent>
     </Popover>

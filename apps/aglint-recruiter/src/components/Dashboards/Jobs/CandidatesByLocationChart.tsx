@@ -16,7 +16,7 @@ export default function CandidatesByLocationChart() {
   const [view, setView] = useState('City');
 
   return (
-    <Card className='w-full max-w-3xl mx-auto'>
+    <Card className='mx-auto w-full max-w-3xl'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle className='text-md font-semibold'>Candidates By</CardTitle>
         <div className='flex space-x-2'>
@@ -50,14 +50,14 @@ export default function CandidatesByLocationChart() {
                 cy='50%'
                 innerRadius={60}
                 outerRadius={80}
-                fill='hsl(var(--chart-1))'
+                fill='text-blue-500'
                 paddingAngle={5}
                 dataKey='value'
               >
                 {data.map((_entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={`hsl(var(--chart-${(index % 10) + 1}))`}
+                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                   />
                 ))}
               </Pie>

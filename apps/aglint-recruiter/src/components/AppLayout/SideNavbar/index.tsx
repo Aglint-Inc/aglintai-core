@@ -20,6 +20,7 @@ import {
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
@@ -31,7 +32,7 @@ function SideNavbar() {
   const pathName = router.pathName;
   const { checkPermissions } = useRolesAndPermissions();
   const { toast } = useToast();
-
+  const { isShowFeature } = useAuthDetails();
   useEffect(() => {
     const tempR = navList.find((item) => {
       return pathName?.includes(item.route.split('?')[0]);
@@ -48,21 +49,29 @@ function SideNavbar() {
   }, [pathName, checkPermissions, router, toast]);
 
   return (
-    <div className='flex flex-col items-center space-y-3 p-4 w-16'>
+    <div className='flex w-16 flex-col items-center space-y-3 p-4'>
       {navList
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,
         )
-        .filter((item) => item.isVisible)
         .map((item) => {
-          return (
+          const isVisible =
+            item.text === 'Analytics'
+              ? isShowFeature('ANALYTICS') && item.isVisible
+              : item.text === 'Workflows'
+                ? isShowFeature('WORKFLOW') && item.isVisible
+                : item.text === 'Integrations'
+                  ? isShowFeature('INTEGRATIONS') && item.isVisible
+                  : item.isVisible;
+
+          return isVisible ? (
             <LinkComp
               module={item.text}
               key={item.text}
               path={item.route}
               active={item.active}
             />
-          );
+          ) : null;
         })}
     </div>
   );
@@ -83,18 +92,18 @@ const LinkIcon = ({
   const hoverClasses = 'hover:bg-gray-200';
 
   const iconMap = {
-    Requests: <LayoutList className='w-6 h-6' strokeWidth={1.5} />,
-    Jobs: <BriefcaseBusiness className='w-6 h-6' strokeWidth={1.5} />,
-    Interviews: <Calendar className='w-6 h-6' strokeWidth={1.5} />,
-    'Interview Pools': <LibraryBig className='w-6 h-6' strokeWidth={1.5} />,
-    Candidates: <Users className='w-6 h-6' strokeWidth={1.5} />,
-    Interviewers: <Users className='w-6 h-6' strokeWidth={1.5} />,
-    'Sourcing Hub': <Search className='w-6 h-6' strokeWidth={1.5} />,
-    Integrations: <LayoutGrid className='w-6 h-6' strokeWidth={1.5} />,
-    'Company Settings': <Settings className='w-6 h-6' strokeWidth={1.5} />,
-    Workflows: <Workflow className='w-6 h-6' strokeWidth={1.5} />,
-    Tasks: <ListTodo className='w-6 h-6' strokeWidth={1.5} />,
-    Analytics: <GitGraph className='w-6 h-6' strokeWidth={1.5} />,
+    Requests: <LayoutList className='h-6 w-6' strokeWidth={1.5} />,
+    Jobs: <BriefcaseBusiness className='h-6 w-6' strokeWidth={1.5} />,
+    Interviews: <Calendar className='h-6 w-6' strokeWidth={1.5} />,
+    'Interview Pools': <LibraryBig className='h-6 w-6' strokeWidth={1.5} />,
+    Candidates: <Users className='h-6 w-6' strokeWidth={1.5} />,
+    Interviewers: <Users className='h-6 w-6' strokeWidth={1.5} />,
+    'Sourcing Hub': <Search className='h-6 w-6' strokeWidth={1.5} />,
+    Integrations: <LayoutGrid className='h-6 w-6' strokeWidth={1.5} />,
+    'Company Settings': <Settings className='h-6 w-6' strokeWidth={1.5} />,
+    Workflows: <Workflow className='h-6 w-6' strokeWidth={1.5} />,
+    Tasks: <ListTodo className='h-6 w-6' strokeWidth={1.5} />,
+    Analytics: <GitGraph className='h-6 w-6' strokeWidth={1.5} />,
   };
 
   return (

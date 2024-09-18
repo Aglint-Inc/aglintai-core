@@ -6,9 +6,10 @@
   "scripts": {
     "db": "npx supabase db",
     "migration": "npx supabase migration",
-    "types:dev": "npx supabase gen types --lang=typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > ../packages/shared-types/src/db/schema.types.ts",
-    "types:local": "npx supabase gen types --lang=typescript --local  --schema public> ../packages/shared-types/src/db/schema.types.ts",
-    "seed:local": "npx supabase db dump -f supabase/seed.sql --local --data-only"
+    "types:dev": "npx supabase gen types --lang=typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > ../packages/shared-types/src/db/schema.types.ts && npm run fix_types",
+    "types:local": "npx supabase gen types --lang=typescript --local  --schema public> ../packages/shared-types/src/db/schema.types.ts && npm run fix_types",
+    "seed:local": "npx supabase db dump -f supabase/seed.sql --local --data-only",
+    "fix_types": "npx tsc ../apps/aglint-recruiter/script/removeJsonType.ts --skipLibCheck && node ../apps/aglint-recruiter/script/removeJsonType.js"
   },
   "devDependencies": {
     "supabase": "^1.191.3"

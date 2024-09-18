@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import OptimisticWrapper from '@components/loadingWapper';
-import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
@@ -10,11 +9,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Collapse, MenuItem, Stack, TextField, Tooltip } from '@mui/material';
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  ChevronDown,
+  Edit,
   Kanban,
   PauseCircle,
   Pencil,
@@ -28,13 +31,14 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
@@ -75,9 +79,7 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-      <Loader />
-    </Stack>
+    <Loader variant='full' />
   );
 };
 
@@ -118,67 +120,52 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='min-h-screen'>
-        <div className='container mx-auto'>
-          <div className='flex justify-between items-center mb-6'>
-            <div>
-              <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
-              <BreadCrumbs />
-            </div>
-            <Settings />
+      <div className='container-lg mx-auto w-full px-12'>
+        <div className='mb-6 flex items-center justify-between'>
+          <div>
+            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
+            <BreadCrumbs />
           </div>
+          {/* <Settings /> */}
+        </div>
 
-          <div className='flex gap-6 mb-6'>
-            <div className='w-1/4'>
-              <JobsSideNavV2 />
-            </div>
-            <div className='w-3/4'>
-              <div className='flex flex-row justify-between'>
-                <div className='flex flex-col gap-2'>
-                  <h2 className='text-xl font-bold mb-2'>Interview Plan</h2>
-                  <p className='text-sm text-gray-600 mb-4'>
-                    Update the hiring team details here. Changes will be saved
-                    automatically.
-                  </p>
-                </div>
+        <div className='mb-6 flex gap-6'>
+          <div className='w-2/12'>
+            <JobsSideNavV2 />
+          </div>
+          <div className='w-9/12 pl-12'>
+            <div className='flex flex-row justify-between'>
+              <div className='flex flex-col gap-2'>
+                <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
+                <p className='mb-4 text-sm text-gray-600'>
+                  Set up your interview plan here. Changes will be saved
+                  automatically.
+                </p>
               </div>
-              <Tabs defaultValue='internal'>
-                <TabsList>
-                  <TabsTrigger value='internal'>Internal</TabsTrigger>
-                  <TabsTrigger value='candidate'>Candidate</TabsTrigger>
-                </TabsList>
-                <TabsContent value='internal'>
-                  <div className='max-w-2xl my-8 mb-10 space-y-4'>
-                    {data?.length ? (
-                      data.map((plan) => (
-                        <InterviewPlan
-                          key={plan.id}
-                          plan_id={plan.id}
-                          handleCreate={handleCreate}
-                          handleEdit={handleEdit}
-                        />
-                      ))
-                    ) : (
-                      <p className='text-gray-600'>
-                        Create your interview stages for the job to ensure a
-                        structured evaluation process. Add different interview
-                        types such as &quot;Initial Screening&quot; or
-                        &quot;Technical Interview.&quot; Use this template each
-                        time you schedule interviews for candidates to maintain
-                        consistency and efficiency.
-                      </p>
-                    )}
+            </div>
 
-                    <AddStageComponent />
-                  </div>
-                </TabsContent>
-                <TabsContent value='candidate'>
-                  <ReorderableInterviewPlan
-                    jobId={data[0]?.job_id}
-                    applicationId={null}
+            <div className='my-4 mb-10 max-w-2xl space-y-4'>
+              {data?.length ? (
+                data.map((plan) => (
+                  <InterviewPlan
+                    key={plan.id}
+                    plan_id={plan.id}
+                    handleCreate={handleCreate}
+                    handleEdit={handleEdit}
                   />
-                </TabsContent>
-              </Tabs>
+                ))
+              ) : (
+                <p className='text-gray-600'>
+                  Create your interview stages for the job to ensure a
+                  structured evaluation process. Add different interview types
+                  such as &quot;Initial Screening&quot; or &quot;Technical
+                  Interview.&quot; Use this template each time you schedule
+                  interviews for candidates to maintain consistency and
+                  efficiency.
+                </p>
+              )}
+
+              <AddStageComponent handleCreate={handleCreate} />
             </div>
           </div>
         </div>
@@ -192,56 +179,79 @@ const InterviewPlanPage = () => {
   );
 };
 
-const AddStageComponent = () => {
+const AddStageComponent = ({
+  handleCreate,
+}: {
+  handleCreate: (
+    // eslint-disable-next-line no-unused-vars
+    key: keyof DrawerType['create'],
+    // eslint-disable-next-line no-unused-vars
+    plan_id: string,
+    // eslint-disable-next-line no-unused-vars
+    order: number,
+  ) => void;
+}) => {
   const { interviewPlans, handleCreatePlan } = useJobInterviewPlan();
   const [form, setForm] = useState(false);
   const nameField = useRef<null | HTMLInputElement>(null);
-  function handleAddStage() {
+
+  const handleAddStage = async () => {
     if (nameField.current.value.length) {
-      handleCreatePlan(nameField.current.value, interviewPlans.data.length + 1);
+      const interviewPlan = await handleCreatePlan(
+        nameField.current.value,
+        interviewPlans.data.length + 1,
+      );
+      handleCreate('session', interviewPlan.id, 1);
       setForm(false);
     }
-  }
+  };
   useEffect(() => {
     nameField.current?.focus();
   }, []);
   return (
     <>
       {form && (
-        <Stack
-          direction={'row'}
-          bgcolor={'var(--neutral-2)'}
-          p={2}
-          width={'100%'}
-          gap={1}
-          alignItems={'center'}
-        >
-          {
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
-          }
+        <div className='flex w-full flex-row items-center justify-between gap-2 rounded-md border bg-white p-4'>
+          <div className='flex flex-1'>
+            <UITextField
+              placeholder='Stage Name'
+              ref={nameField}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+              fieldSize='medium'
+              fullWidth
+            />
+          </div>
 
-          <UIButton
-            size='sm'
-            variant='default'
-            onClick={() => handleAddStage()}
-          >
-            Add
-          </UIButton>
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() => setForm(!form)}
-          >
-            Cancel
-          </UIButton>
-        </Stack>
+          <div className='flex gap-2'>
+            <UIButton
+              size='sm'
+              variant='default'
+              onClick={() => handleAddStage()}
+            >
+              Add
+            </UIButton>
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => setForm(!form)}
+            >
+              Cancel
+            </UIButton>
+          </div>
+        </div>
       )}
-      <Stack direction={'row'}>
-        <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
-          Add Stage
-        </UIButton>
-      </Stack>
+      {!form && (
+        <div className='flex w-full flex-row'>
+          <UIButton
+            variant='outline'
+            onClick={() => setForm(!form)}
+            className='w-full'
+          >
+            Add Stage
+          </UIButton>
+        </div>
+      )}
     </>
   );
 };
@@ -317,17 +327,16 @@ const InterviewPlan = ({
     updatePlan,
     deletePlan,
     handleSwapPlan,
-    isPlanMutating,
+    isPlanUpdating,
+    isStageDeleting,
     // handleUpdateSession,
   } = useJobInterviewPlan();
   const index = interviewPlans.data.findIndex((plan) => plan.id === plan_id);
   const prevData = interviewPlans?.data?.[index - 1] ?? null;
   const data = interviewPlans?.data?.[index] ?? null;
   const nextData = interviewPlans?.data?.[index + 1] ?? null;
-  const [expanded, setExpanded] = React.useState(true);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const [expanded] = React.useState(true);
+
   const [editPlan, setEditPlan] = useState(false);
   const handleEditPlan = () => {
     setEditPlan((pre) => !pre);
@@ -347,17 +356,26 @@ const InterviewPlan = ({
     },
     [],
   );
-  const handleDelete = useCallback(async (args: DeleteInterviewSession) => {
-    const isLoading = getLoadingState(args.session_id);
-    if (!isLoading) {
-      handleDeleteSession(args);
-    } else {
-      toast.warning('Session under deletion. Please wait.');
-    }
-  }, []);
+  const handleDelete = useCallback(
+    async (args: DeleteInterviewSession, sessionName: '') => {
+      const isLoading = getLoadingState(args.session_id);
+      if (!isLoading) {
+        setPopupModal(true);
+        setPopup({
+          name: sessionName,
+          break: false,
+          id: args.session_id,
+        });
+      } else {
+        toast.warning('Session under deletion. Please wait.');
+      }
+    },
+    [],
+  );
   const sessionsCount = data.interview_session.length;
   const sessions = data.interview_session.map((session, order) => (
     <InterviewSession
+      handleDeletionSession={handleDelete}
       key={session.id}
       session={session}
       plan_id={plan_id}
@@ -376,35 +394,33 @@ const InterviewPlan = ({
     }
   };
 
-  const loading = isPlanMutating(data.id);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <>
-      <OptimisticWrapper loading={loading}>
+      <OptimisticWrapper loading={isPlanUpdating}>
         <InterviewPlanWrap
           isTopArrowVisible={!!prevData}
-          onClickUp={{
-            onClick: () =>
-              handleSwapPlan({
-                plan_id_1: prevData.id,
-                plan_id_2: data.id,
-              }),
-          }}
+          onClickUp={() =>
+            handleSwapPlan({
+              plan_id_1: prevData.id,
+              plan_id_2: data.id,
+            })
+          }
           isBottomArrowVisible={!!nextData}
-          onClickDown={{
-            onClick: () =>
-              handleSwapPlan({
-                plan_id_1: nextData.id,
-                plan_id_2: data.id,
-              }),
-          }}
+          onClickDown={() =>
+            handleSwapPlan({
+              plan_id_1: nextData.id,
+              plan_id_2: data.id,
+            })
+          }
           textStageName={`${capitalizeFirstLetter(data.name)}`}
           textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
           isInputVisible={editPlan}
-          onClickEdit={{ onClick: handleEditPlan }}
           isSlotInterviewPlanVisible={expanded}
           slotInputButton={
-            <Stack direction={'row'} gap={1} alignItems={'center'}>
+            // Start of Selection
+            <div className='flex items-center gap-2'>
               <UITextField ref={planRef} defaultValue={data.name} fullWidth />
               <UIButton
                 size='sm'
@@ -420,39 +436,81 @@ const InterviewPlan = ({
               >
                 Cancel
               </UIButton>
-            </Stack>
+            </div>
           }
           slotRightIconButton={
-            <Stack direction={'row'} gap={1}>
+            <div className='ml-4 flex flex-row items-center gap-1'>
               <UIButton
-                variant='destructive'
-                onClick={() => deletePlan({ id: plan_id })}
+                variant='ghost'
+                size='sm'
+                icon={<Edit className='h-4 w-4' />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditPlan();
+                }}
+              />
+              <UIButton
+                variant='ghost'
+                size='sm'
+                className='text-red-700'
+                onClick={() => setDeleteOpen(true)}
+                icon={<Trash size={10} color='brown' />}
+              />
+              <UIDialog
+                open={deleteOpen}
+                onClose={() => setDeleteOpen(false)}
+                title='Delete Confirmation  '
+                slotButtons={
+                  <>
+                    <UIButton
+                      variant='secondary'
+                      size='sm'
+                      onClick={() => setDeleteOpen(false)}
+                    >
+                      Cancel
+                    </UIButton>
+                    <UIButton
+                      size='sm'
+                      isLoading={isStageDeleting}
+                      onClick={async () => {
+                        await deletePlan({ id: plan_id });
+                        setDeleteOpen(false);
+                      }}
+                    >
+                      Delete
+                    </UIButton>
+                  </>
+                }
               >
-                <Trash className='h-4 w-4' />
-              </UIButton>
-
-              <UIButton variant='secondary' onClick={handleExpandClick}>
-                <ChevronDown className='h-4 w-4' />
-              </UIButton>
-            </Stack>
+                Are you sure to delete this interview plan ?
+              </UIDialog>
+            </div>
           }
           slotInterviewPlanDetail={
-            <Collapse in={expanded} timeout='auto' unmountOnExit>
-              <Stack pt={2}>
-                {sessionsCount ? (
-                  <>
+            <Collapsible open={expanded}>
+              <CollapsibleContent>
+                <div className='pt-2'>
+                  {sessionsCount ? (
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-                  </>
-                ) : (
-                  <div className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-lg'>
-                    <Kanban className='w-4 h-4 text-gray-400 mb-4' />
-                    <p className='text-gray-500 mb-4'>
-                      No interview plan found
-                    </p>
-                  </div>
-                )}
-              </Stack>
-            </Collapse>
+                  ) : (
+                    <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
+                      <Kanban className='mb-4 h-4 w-4 text-gray-400' />
+                      <p className='mb-4 text-gray-500'>
+                        No interview plan found
+                      </p>
+                      <UIButton
+                        size='sm'
+                        variant='outline'
+                        onClick={() => handleCreate('session', plan_id, 1)}
+                        leftIcon={<Plus />}
+                      >
+                        Add Interview
+                      </UIButton>
+                    </div>
+                  )}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           }
         />
       </OptimisticWrapper>
@@ -462,7 +520,7 @@ const InterviewPlan = ({
         popup={popup}
         handleClose={handlePopupClose}
         handleDelete={() =>
-          handleDelete({
+          handleDeleteSession({
             session_id: popup.id,
             interview_plan_id: data.id,
           })
@@ -487,6 +545,12 @@ type InterviewSessionProps = {
   ) => void;
   // eslint-disable-next-line no-unused-vars
   handleDeletionSelect: (args: InterviewDeletePopupType['popup']) => void;
+  handleDeletionSession: (
+    // eslint-disable-next-line no-unused-vars
+    args: DeleteInterviewSession,
+    // eslint-disable-next-line no-unused-vars
+    sessionName: string,
+  ) => void;
   lastSession: boolean;
   index: number;
 };
@@ -501,6 +565,7 @@ const InterviewSession = ({
   plan_id,
   handleCreate,
   handleEdit,
+  handleDeletionSession,
   handleDeletionSelect,
   lastSession,
   index,
@@ -517,7 +582,6 @@ const InterviewSession = ({
     handleUpdateSession,
     manageJob,
   } = useJobInterviewPlan();
-  const [hover, setHover] = useState(false);
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
@@ -609,35 +673,31 @@ const InterviewSession = ({
   });
   drag(drop(ref));
 
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-
+  const [hover, setHover] = useState(false);
+  const sessionEditType =
+    session.session_type === 'debrief' ? 'debrief' : 'session';
   return (
-    <Stack
+    <div
       ref={manageJob ? ref : null}
-      style={{ opacity: isDragging ? 0 : 1 }}
+      className={`flex flex-col ${isDragging ? 'opacity-0' : 'opacity-100'}`}
       data-handler-id={handlerId}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <OptimisticWrapper loading={isLoading}>
-        <Stack
-          onMouseOver={() => setHover(true)}
-          onMouseOut={() => setHover(false)}
-          mb={hover ? 1 : 4}
-        >
+        <div className={`flex flex-col`}>
           <InterviewPlanDetail
             textModuleName={
-              <Stack style={{ flexDirection: 'row', gap: '12px' }}>
+              <div className='flex flex-row items-center gap-3'>
                 <>{session.name}</>
-                <Stack
-                  style={{
-                    color: 'var(--neutral-9)',
-                    fontSize: 'var(--font-size-1)',
-                    fontWeight: 400,
-                  }}
-                >
+                <div className='text-sm font-normal text-neutral-500'>
                   {getSessionType(session.session_type)}
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             }
+            onClickEditSession={() => {
+              handleEdit(sessionEditType, session.id);
+            }}
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
             isPanelIconVisible={session.session_type === 'panel'}
@@ -649,6 +709,15 @@ const InterviewSession = ({
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
+            onClickDeleteSession={() => {
+              handleDeletionSession(
+                {
+                  interview_plan_id: plan_id,
+                  session_id: session.id,
+                },
+                session.name,
+              );
+            }}
             onClickLink={() =>
               window.open(
                 `interview-pools/${session.interview_module.id}?tab=qualified`,
@@ -659,10 +728,10 @@ const InterviewSession = ({
             slotBreakCard={
               <InterviewBreak
                 value={session.break_duration}
-                handleEdit={(e) =>
+                handleEdit={(value: string) =>
                   handleUpdateSession({
                     session_id: session.id,
-                    session: { break_duration: +e.target.value },
+                    session: { break_duration: parseInt(value) },
                   })
                 }
                 handleDelete={() =>
@@ -675,70 +744,50 @@ const InterviewSession = ({
                 manageJob={manageJob}
               />
             }
-            isAddCardVisible={hover}
             slotAddScheduleCard={
-              <Stack style={{ opacity: manageJob ? 100 : 0 }}>
-                <Tooltip
-                  open={tooltipOpen}
-                  onOpen={() => setTooltipOpen(true)}
-                  onClose={() => setTooltipOpen(false)}
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        marginTop: '0px !important',
-                        padding: 0,
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        boxShadow: 'none',
-                      },
-                    },
-                  }}
-                  title={
+              <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <div
+                      className={
+                        'relative mb-4 mt-2 flex h-[20px] items-center justify-center'
+                      }
+                    >
+                      {hover ? (
+                        <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
+                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all'></div>
+                          <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
+                            <Plus size={10} color='white' />
+                          </div>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side='top'
+                    align='center'
+                    className='border-none bg-transparent p-0 shadow-none'
+                  >
                     <AddScheduleOption
                       isBreakVisibe={
                         !lastSession && session.break_duration === 0
                       }
-                      onClickAddSession={{
-                        onClick: () => {
-                          handleCreate('session');
-                          setTooltipOpen(false);
-                        },
+                      onClickAddSession={() => {
+                        handleCreate('session');
                       }}
-                      onClickAddDebriefSession={{
-                        onClick: () => {
-                          handleCreate('debrief');
-                          setTooltipOpen(false);
-                        },
-                      }}
-                      onClickAddBreak={{
-                        onClick: () => {
-                          handleUpdateSession({
-                            session: { break_duration: 30 },
-                            session_id: session.id,
-                          });
-                          setTooltipOpen(false);
-                        },
+                      onClickAddDebriefSession={() => handleCreate('debrief')}
+                      onClickAddBreak={() => {
+                        handleUpdateSession({
+                          session: { break_duration: 30 },
+                          session_id: session.id,
+                        });
                       }}
                     />
-                  }
-                >
-                  <Stack>
-                    <div
-                      className={
-                        'relative flex h-6 justify-center items-center'
-                      }
-                    >
-                      <div className='w-full ' />
-                      <div className=' w-full absolute inset-0 flex flex-col justify-center items-center'>
-                        <div className='relative top-[50%] flex h-[2px] w-full bg-[#cc4e00]  flex-col justify-center items-center cursor-pointer transition-all duration-250 ease hover:opacity-80'></div>
-                        <div className='h-[20px] w-[20px] bg-[#cc4e00] flex items-center justify-center z-10 rounded-[20px]'>
-                          <Plus size={10} color='white' />
-                        </div>
-                      </div>
-                    </div>
-                  </Stack>
+                  </TooltipContent>
                 </Tooltip>
-              </Stack>
+              </div>
             }
             slotButtons={
               manageJob && (
@@ -771,9 +820,9 @@ const InterviewSession = ({
               )
             }
           />
-        </Stack>
+        </div>
       </OptimisticWrapper>
-    </Stack>
+    </div>
   );
 };
 
@@ -839,7 +888,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <div className='flex flex-row gap-3 mb-1'>
+    <div className='mb-1 flex flex-row gap-3'>
       <div className='flex items-center space-x-3'>
         <Avatar className='h-8 w-8 rounded-sm'>
           <AvatarImage src={member.profile_image} alt={name} />
@@ -864,7 +913,7 @@ const InterviewBreak = ({
   manageJob,
 }: {
   value: number;
-  handleEdit: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  handleEdit: (_value: string) => void;
   handleDelete: () => void;
   manageJob: boolean;
 }) => {
@@ -883,26 +932,15 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <TextField
-          select
-          fullWidth
-          value={value}
-          onChange={handleEdit}
-          sx={{
-            ml: 'var(--space-2)',
-            width: '120px',
-            '& .MuiOutlinedInput-root': {
-              padding: '0px',
-              paddingLeft: 'var(--space-2)',
-            },
-          }}
-        >
-          {breakDurations.map((item) => (
-            <MenuItem key={item} value={item}>
-              {getBreakLabel(item)}
-            </MenuItem>
-          ))}
-        </TextField>
+        <UISelectDropDown
+          fieldSize='small'
+          value={value.toString()}
+          onValueChange={handleEdit}
+          menuOptions={breakDurations.map((item) => ({
+            name: getBreakLabel(item),
+            value: item.toString(),
+          }))}
+        />
       }
     />
   );

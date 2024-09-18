@@ -1,8 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
   BarElement,
   CategoryScale,
@@ -11,7 +8,7 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { BarChart2, Loader2 } from 'lucide-react';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
@@ -21,10 +18,8 @@ export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle>Reasons</CardTitle>
-      </CardHeader>
-      <CardContent>
         <Tabs
           value={reasonsType}
           onValueChange={(value) =>
@@ -35,13 +30,11 @@ export const Reasons = memo(() => {
             <TabsTrigger value='reschedule'>Reschedule</TabsTrigger>
             <TabsTrigger value='declined'>Declined</TabsTrigger>
           </TabsList>
-          <TabsContent value='reschedule'>
-            <Container />
-          </TabsContent>
-          <TabsContent value='declined'>
-            <Container />
-          </TabsContent>
         </Tabs>
+      </CardHeader>
+      <CardContent>
+        {reasonsType === 'declined' && <Container />}
+        {reasonsType === 'reschedule' && <Container />}
       </CardContent>
     </Card>
   );
@@ -55,11 +48,11 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack height={'300px'}>
-        <div className='flex items-center justify-center h-[350px]'>
-          <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='h-[300px]'>
+        <div className='flex h-[350px] items-center justify-center'>
+          <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
         </div>
-      </Stack>
+      </div>
     );
 
   if (status === 'error') return <>Error</>;
@@ -67,8 +60,8 @@ const Container = memo(() => {
   if (data.length === 0)
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>
@@ -77,10 +70,10 @@ const Container = memo(() => {
   const safeData = getOrderedGraphValues(data);
 
   return (
-    <Stack alignItems={'center'} justifyContent={'center'} gap={4}>
+    <div className='flex flex-col items-center justify-center gap-4'>
       <DoughnutChart data={safeData} />
       <Meta data={safeData} />
-    </Stack>
+    </div>
   );
 });
 Container.displayName = 'Container';
@@ -112,16 +105,34 @@ const DoughnutChart = memo(({ data }: Props) => {
       },
     ],
   };
-  const xl = useMediaQuery('(min-width:1900px)');
-  const l = useMediaQuery('(min-width:1500px)');
-  const m = useMediaQuery('(min-width:1300px)');
-  const s = useMediaQuery('(min-width:1300px)');
+  const xl = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1900px)').matches;
+    }
+    return false;
+  }, []);
+  const l = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1500px)').matches;
+    }
+    return false;
+  }, []);
+  const m = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1300px)').matches;
+    }
+    return false;
+  }, []);
+  const s = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1300px)').matches;
+    }
+    return false;
+  }, []);
 
   return (
-    <Stack
-      width={
-        s ? (m ? (l ? (xl ? '275px' : '250px') : '225px') : '200px') : '175px'
-      }
+    <div
+      className={` ${s ? (m ? (l ? (xl ? '275px' : '250px') : '225px') : '200px') : '175px'} `}
       style={{ aspectRatio: 1 }}
     >
       <Doughnut
@@ -143,53 +154,30 @@ const DoughnutChart = memo(({ data }: Props) => {
         }}
         data={dataBar}
       />
-    </Stack>
+    </div>
   );
 });
 DoughnutChart.displayName = 'DoughnutChart';
 
 const Meta = memo(({ data }: Props) => {
-  const sum = (data ?? []).reduce((acc, { count }) => {
-    acc += count;
-    return acc;
-  }, 0);
+  // const sum = (data ?? []).reduce((acc, { count }) => {
+  //   acc += count;
+  //   return acc;
+  // }, 0);
   return (
-    <Stack gap={1} width={'100%'} maxHeight={'48px'} overflow={'scroll'}>
-      {data.map(({ count, color, name }, i) => {
+    <div className='flex max-h-[48px] w-full flex-col gap-1'>
+      {data.map(({ color, name }, i) => {
         return (
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            gap={2}
-            key={i}
-          >
-            <Stack direction={'row'} gap={1} alignItems={'center'}>
-              <Stack
-                sx={{
-                  bgcolor: color,
-                  width: '10px',
-                  aspectRatio: 1,
-                  borderRadius: 'var(--radius-full)',
-                }}
-              />
-
-              <Typography
-                variant='body1'
-                sx={{
-                  textWrap: 'nowrap',
-                  // textTransform: 'capitalize',
-                }}
-              >
-                {name}
-              </Typography>
-            </Stack>
-            <Typography variant='body1'>
-              {((count / sum) * 100).toFixed(0)}%
-            </Typography>
-          </Stack>
+          <div className='flex flex-row items-center gap-1' key={i}>
+            <div
+              className='h-3 w-3 rounded'
+              style={{ backgroundColor: color }}
+            />
+            <span className='text-sm'>{name}</span>
+          </div>
         );
       })}
-    </Stack>
+    </div>
   );
 });
 Meta.displayName = 'Meta';

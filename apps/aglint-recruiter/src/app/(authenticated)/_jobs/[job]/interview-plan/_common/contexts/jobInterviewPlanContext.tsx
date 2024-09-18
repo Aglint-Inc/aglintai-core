@@ -1,6 +1,7 @@
 import { useMutationState } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJob } from '@/job/hooks';
 import { useCompanyMembers } from '@/queries/company-members';
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -23,12 +24,15 @@ import {
 import { interviewSessionMutationKeys } from '@/queries/interview-plans/keys';
 
 const useJobInterviewPlanContext = () => {
+  const { recruiter_id } = useAuthDetails();
   const { job, interviewPlans, jobLoad, manageJob } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
-  const { mutateAsync: updatePlan } = useUpdateInterviewPlan();
-  const { mutateAsync: deletePlan } = useDeleteInterviewPlan();
+  const { mutateAsync: updatePlan, isPending: isPlanUpdating } =
+    useUpdateInterviewPlan();
+  const { mutateAsync: deletePlan, isPending: isStageDeleting } =
+    useDeleteInterviewPlan();
   const { mutateAsync: swapPlans } = useSwapInterviewPlan();
   const { swap, update, remove } = useInterviewPlanMutation();
   const { mutateAsync: createSession } = useAddInterviewSession();
@@ -69,7 +73,7 @@ const useJobInterviewPlanContext = () => {
 
   const handleCreatePlan = async (name: string, order?: number) => {
     try {
-      await createPlan({ name, order });
+      return await createPlan({ name, order });
     } catch {
       //toast.error('Unable to create interview plan');
     }
@@ -83,17 +87,21 @@ const useJobInterviewPlanContext = () => {
     }
   };
 
-  const handleCreateSession = async (args: CreateInterviewSession) => {
+  const handleCreateSession = async (
+    args: Omit<CreateInterviewSession, 'recruiter_id'>,
+  ) => {
     try {
-      await createSession(args);
+      await createSession({ ...args, recruiter_id });
     } catch {
       //toast.error('Unable to create interview session');
     }
   };
 
-  const handleCreateDebriefSession = async (args: CreateDebriefSession) => {
+  const handleCreateDebriefSession = async (
+    args: Omit<CreateDebriefSession, 'recruiter_id'>,
+  ) => {
     try {
-      await createDebriefSession(args);
+      await createDebriefSession({ ...args, recruiter_id });
     } catch {
       //toast.error('Unable to create debrief session');
     }
@@ -120,6 +128,8 @@ const useJobInterviewPlanContext = () => {
     handleUpdateSession,
     handleEditDebriefSession,
     handleDeleteSession,
+    isStageDeleting,
+    isPlanUpdating,
     getLoadingState,
     handleCreatePlan,
     handleSwapPlan,

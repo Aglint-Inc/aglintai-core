@@ -9,7 +9,7 @@ import React, { useEffect, useRef } from 'react';
 import { UIButton } from '../UIButton';
 import RenderEventContent from './RenderEventContent';
 import RenderResourceContent from './RenderResource';
-import { type Event, type Resource } from './types';
+import { type EventCalendar, type Resource } from './types';
 
 function CalendarResourceView({
   events,
@@ -18,8 +18,13 @@ function CalendarResourceView({
   currentDate,
   setCurrentDate,
   isLoading = false,
+  businessHours = {
+    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+    startTime: '00:00',
+    endTime: '24:00',
+  },
 }: {
-  events: Event[];
+  events: EventCalendar[];
   resources: Resource[];
   dateRange: {
     start: string;
@@ -28,6 +33,11 @@ function CalendarResourceView({
   currentDate: string;
   setCurrentDate: React.Dispatch<React.SetStateAction<string>>;
   isLoading?: boolean;
+  businessHours?: {
+    daysOfWeek: number[];
+    startTime: string;
+    endTime: string;
+  };
 }) {
   const calendarRef = useRef<FullCalendar>(null);
   const calendarApi = calendarRef.current?.getApi();
@@ -37,7 +47,7 @@ function CalendarResourceView({
   }, [currentDate]);
 
   return (
-    <div className='max-w-[calc(100vw-600px)] overflow-y-auto h-screen'>
+    <div className='h-screen max-w-[calc(100vw-600px)] overflow-y-auto'>
       <CalendarHeader
         currentDate={currentDate}
         dateRange={dateRange}
@@ -53,11 +63,7 @@ function CalendarResourceView({
           initialView={'resourceTimeGridDay'}
           nowIndicator={true}
           editable={true}
-          businessHours={{
-            daysOfWeek: [1, 2, 3, 4, 5],
-            startTime: '09:00',
-            endTime: '17:00',
-          }}
+          businessHours={businessHours}
           allDaySlot={false}
           resources={resources}
           resourceLabelContent={RenderResourceContent}
@@ -107,7 +113,7 @@ const CalendarHeader = ({
   if (isLoading) return null;
 
   return (
-    <div className='flex flex-row items-center justify-center w-full p-1 bg-white min-h-[47px] space-x-2'>
+    <div className='flex min-h-[47px] w-full flex-row items-center justify-center space-x-2 bg-white p-1'>
       <UIButton
         variant='outline'
         size='sm'

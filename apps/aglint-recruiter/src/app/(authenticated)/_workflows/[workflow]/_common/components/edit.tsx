@@ -63,12 +63,12 @@ export const Edit = () => {
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>
-            <DialogTitle>Edit Workflow</DialogTitle>
+            <DialogTitle>Edit Automation Details</DialogTitle>
           </DialogHeader>
           <div className='space-y-4'>
-            <p className='text-sm text-muted-foreground mb-4'>
+            {/* <p className='mb-4 text-sm text-muted-foreground'>
               Edit workflow details.
-            </p>
+            </p> */}
             <div className='space-y-2'>
               <Forms form={form} setForm={setForm} />
             </div>

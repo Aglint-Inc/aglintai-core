@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 
-import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
@@ -11,7 +10,7 @@ import {
 import React, { type FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
 
 import { type DashboardGraphOptions } from '.';
@@ -22,7 +21,12 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 const LineChart: React.FC<{
   experience: { [id: number]: number };
 }> = ({ experience }) => {
-  const matches = useMediaQuery('(min-width:1920px)');
+  const matches = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1920px)').matches;
+    }
+    return false;
+  }, []);
   const { names, counts, pointBackgroundColor } = Object.entries(
     experience,
   ).reduce(

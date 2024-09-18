@@ -15,7 +15,7 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase, Globe, X } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import {
   useJob,
   useJobDashboardActions,
@@ -95,7 +95,7 @@ const JobWorkflowComp = () => {
   const value = useJobWorkflowActions();
   return (
     <JobWorkflowContext.Provider value={value}>
-      <div className='flex flex-col gap-1 bg-neutral-6'>
+      <div className='bg-neutral-6 flex flex-col gap-1'>
         <JobWorkflows />
         <WorkflowBrowser />
       </div>
@@ -121,7 +121,7 @@ const JobWorkflows = () => {
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-      <div className='flex flex-col items-center justify-center p-4 bg-white'>
+      <div className='flex flex-col items-center justify-center bg-white p-4'>
         <div className='mb-2'>
           <Globe className='h-9 w-9 text-gray-500' />
         </div>
@@ -136,9 +136,9 @@ const JobWorkflows = () => {
         <OptimisticWrapper key={workflow.id} loading={loading}>
           <div className='p-2'>
             <Card key={workflow.id} className='group relative'>
-              <CardHeader className='p-3 pb-0 flex justify-between items-start'>
-                <CardTitle className='text-base w-full'>
-                  <div className='flex items-center max-w-[420px]'>
+              <CardHeader className='flex items-start justify-between p-3 pb-0'>
+                <CardTitle className='w-full text-base'>
+                  <div className='flex max-w-[420px] items-center'>
                     {capitalizeSentence(workflow.title ?? '---')}
                   </div>
                 </CardTitle>
@@ -151,7 +151,7 @@ const JobWorkflows = () => {
                   </p>
                 </div>
               </CardContent>
-              <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+              <div className='absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100'>
                 <Button
                   variant='ghost'
                   size='sm'
@@ -255,11 +255,11 @@ const WorkflowBrowser = () => {
         <div className='mt-4'>
           <Filters />
         </div>
-        <ScrollArea className='h-[calc(100vh-300px)] mt-4'>
+        <ScrollArea className='mt-4 h-[calc(100vh-300px)]'>
           {cards.length ? (
             <div className='grid gap-4'>{cards}</div>
           ) : (
-            <div className='flex items-center justify-center h-full'>
+            <div className='flex h-full items-center justify-center'>
               <div className='text-center'>
                 <Briefcase className='mx-auto h-12 w-12 text-gray-400' />
                 <h3 className='mt-2 text-sm font-medium text-gray-900'>
@@ -276,7 +276,7 @@ const WorkflowBrowser = () => {
           <Button onClick={handleSubmit}>
             Add
             {count > 0 && (
-              <span className='ml-2 px-2 py-1 bg-white text-accent-11 rounded-md'>
+              <span className='text-accent-11 ml-2 rounded-md bg-white px-2 py-1'>
                 {count}
               </span>
             )}

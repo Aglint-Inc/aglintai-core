@@ -1,10 +1,9 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import Stack from '@mui/material/Stack';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
-import { InterviewersCardList } from '@/components/Interviewers/ex/components/_common/InterviewersCardList';
-import { InterviewersDash } from '@/components/Interviewers/ex/components/_common/InterviewersDash';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
@@ -15,14 +14,28 @@ const LIMIT = 4;
 
 export const Interviewers = memo(() => {
   const { interviewersType, setInterviewersType } = useSchedulingAnalytics();
+
+  const handleTabChange = (value: string) => {
+    if (value === 'training' || value === 'qualified') {
+      setInterviewersType(value);
+    }
+  };
+
   return (
-    <InterviewersDash
-      isQualifiedActive={interviewersType === 'qualified'}
-      isTraineeActive={interviewersType === 'training'}
-      onClickQualified={() => setInterviewersType('qualified')}
-      onClickTrainee={() => setInterviewersType('training')}
-      slotInterviewersCardList={<Container />}
-    />
+    <Card>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+        <CardTitle>Interviewers</CardTitle>
+        <Tabs value={interviewersType} onValueChange={handleTabChange}>
+          <TabsList>
+            <TabsTrigger value='qualified'>Qualified</TabsTrigger>
+            <TabsTrigger value='training'>Trainee</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+      <CardContent>
+        <Container />
+      </CardContent>
+    </Card>
   );
 });
 Interviewers.displayName = 'Interviewers';
@@ -34,8 +47,8 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -44,8 +57,8 @@ const Container = memo(() => {
   if (data.length === 0)
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>
@@ -61,22 +74,19 @@ const List = ({ data }: Props) => {
   return (
     <>
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (
-        <Stack
+        <div
           key={user_id}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
+          className='flex cursor-pointer flex-row items-center justify-between hover:bg-gray-100'
         >
-          <InterviewersCardList
-            textName={capitalizeAll(name)}
-            textCompleted={accepted}
-            textDeclined={declined}
-            textUpcoming={'--'}
-          />
-        </Stack>
+          <div className='flex w-full flex-row items-center justify-between px-4 py-2'>
+            <span className='flex-grow text-sm font-medium'>
+              {capitalizeAll(name)}
+            </span>
+            <span className='px-2 text-sm text-gray-600'>{accepted}</span>
+            <span className='px-2 text-sm text-gray-600'>{declined}</span>
+            <span className='px-2 text-sm text-gray-600'>--</span>
+          </div>
+        </div>
       ))}
     </>
   );
@@ -84,27 +94,22 @@ const List = ({ data }: Props) => {
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
-    (_, i) => (
-      <InterviewStatsLoader
-        key={i}
-        slotSkeleton={<Skeleton className='w-full h-full' />}
-      />
-    ),
+    (_, i) => <Skeleton key={i} className='h-full w-full' />,
   );
 });
 Loader.displayName = 'Loader';
 
 export const InterviewStatsLoader = ({ slotSkeleton }) => {
   return (
-    <div className='grid grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white hover:bg-neutral-100 cursor-pointer transition-colors duration-200'>
+    <div className='grid cursor-pointer grid-cols-[60%_20%_20%] border-b border-[#eaf1f3] bg-white transition-colors duration-200 hover:bg-neutral-100'>
       <div className='p-2 px-4'>
-        <div className='relative w-[150px] h-5'>{slotSkeleton}</div>
+        <div className='relative h-5 w-[150px]'>{slotSkeleton}</div>
       </div>
       <div className='p-2 px-4'>
-        <div className='relative w-5 h-5'>{slotSkeleton}</div>
+        <div className='relative h-5 w-5'>{slotSkeleton}</div>
       </div>
       <div className='p-2 px-4'>
-        <div className='relative w-5 h-5'>{slotSkeleton}</div>
+        <div className='relative h-5 w-5'>{slotSkeleton}</div>
       </div>
     </div>
   );

@@ -24,10 +24,10 @@ export default function InterviewsPage() {
     data?.filter((interview) => interview.status === 'completed') || [];
 
   return (
-    <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
-      <main className='lg:w-[70%] space-y-6 mx-auto'>
+    <div className='container mx-auto flex flex-col gap-8 p-6'>
+      <main className='mx-auto space-y-6 lg:w-[70%]'>
         <div>
-          <h2 className='text-lg font-semibold mb-4'>Upcoming interviews</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Upcoming interviews</h2>
           {upcoming?.length > 0 ? (
             upcoming.map((interview, index) => (
               <InterviewCard key={index} interview={interview} />
@@ -39,7 +39,7 @@ export default function InterviewsPage() {
           )}
         </div>
         <div>
-          <h2 className='text-lg font-semibold mb-4'>Past interviews</h2>
+          <h2 className='mb-4 text-lg font-semibold'>Past interviews</h2>
           {past?.length > 0 ? (
             past.map((interview, index) => (
               <InterviewCard key={index} interview={interview} />
@@ -61,11 +61,11 @@ function InterviewCard({
   interview: ReturnType<typeof useCandidatePortalInterviews>['data'][number];
 }) {
   return (
-    <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
+    <Card className='mb-4 border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
       <CardContent className='pt-4'>
-        <div className='flex justify-between items-center mb-4'>
+        <div className='mb-4 flex items-center justify-between'>
           <div className='flex items-center'>
-            <div className='bg-primary/10 text-primary rounded-md p-2 mr-3 text-center w-16 h-16 flex flex-col justify-center'>
+            <div className='mr-3 flex h-16 w-16 flex-col justify-center rounded-md bg-primary/10 p-2 text-center text-primary'>
               <span className='text-xs'>
                 {dayjs(interview.start_time).format('dddd')}
               </span>
@@ -88,8 +88,8 @@ function InterviewCard({
           </div>
         </div>
         {interview.interviewers.map((participant, index) => (
-          <div key={index} className='flex items-center mb-2'>
-            <Avatar className='w-8 h-8 mr-3'>
+          <div key={index} className='mb-2 flex items-center'>
+            <Avatar className='mr-3 h-8 w-8'>
               <AvatarImage src={participant.profile_image} />
               <AvatarFallback>
                 {getFullName(participant.first_name, participant.last_name)}
@@ -100,7 +100,7 @@ function InterviewCard({
                 <p className='text-sm font-semibold'>
                   {getFullName(participant.first_name, participant.last_name)}
                 </p>
-                <Linkedin className='w-4 h-4 ml-2 text-blue-500 cursor-pointer' />
+                <Linkedin className='ml-2 h-4 w-4 cursor-pointer text-blue-500' />
               </div>
               {participant.position && (
                 <p className='text-xs text-gray-500'>{participant.position}</p>
@@ -112,7 +112,7 @@ function InterviewCard({
           <Button
             variant='link'
             size='sm'
-            className='text-xs p-0'
+            className='p-0 text-xs'
             onClick={() => {
               window.open(interview.meeting_link, '_blank');
             }}
@@ -122,7 +122,7 @@ function InterviewCard({
           <Button
             variant='link'
             size='sm'
-            className='text-xs p-0'
+            className='p-0 text-xs'
             onClick={() => {
               window.open(interview.meeting_link, '_blank');
             }}

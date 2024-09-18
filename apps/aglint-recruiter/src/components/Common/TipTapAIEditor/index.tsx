@@ -137,52 +137,30 @@ const TipTapAIEditor = ({
               className={`${disabled ? 'pointer-events-none opacity-50' : ''}`}
             >
               <MenuBtns
-                borderRadius={(border && borderRadius) || 'var(--radius-2)'}
+                borderRadius={(border && borderRadius) || 'rounded-md'}
                 isSize={isSize}
                 isAlign={isAlign}
               />
             </div>
           )}
           <div
-            className={`
-              relative
-              ${disabled ? 'pointer-events-none opacity-50' : ''}
-              bg-white
-              rounded-[var(--radius-2)]
-              overflow-auto
-            `}
+            className={`relative ${disabled ? 'pointer-events-none opacity-50' : ''} overflow-auto rounded-md bg-white`}
             style={{
               minHeight: minHeight,
               height: height,
             }}
           >
             <div
-              className={`
-                [&_.ProseMirror]:w-full
-                [&_.ProseMirror]:break-words
-                [&_.ProseMirror]:${disabled ? 'text-neutral-3 cursor-default' : 'text-neutral-12 cursor-auto'}
-                [&_.ProseMirror_*::selection]:bg-accent-4
-                [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-9
-                [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]
-                [&_.tiptap_p.is-editor-empty:first-child::before]:float-left
-                [&_.tiptap_p.is-editor-empty:first-child::before]:h-0
-                [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none
-                [&_.ProseMirror-focused]:outline-none
-                [&_.ProseMirror_.temp-variable]:bg-[#f7ebfc]
-                [&_.ProseMirror_.temp-variable]:px-[3px]
-                [&_.ProseMirror_.temp-variable]:pb-[3px]
-                [&_.ProseMirror_.temp-variable]:text-[#B552E2]
-                [&_.ProseMirror_.temp-variable]:rounded-[2px]
-              `}
+              className={`[&_.ProseMirror]:w-full [&_.ProseMirror]:break-words [&_.ProseMirror]:${disabled ? 'text-neutral-3 cursor-default' : 'text-neutral-12 cursor-auto'} [&_.ProseMirror_*::selection]:bg-accent-4 [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-9 [&_.ProseMirror-focused]:outline-none [&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-[#f7ebfc] [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-[#B552E2] [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]`}
               style={{
                 height: height !== 'auto' ? height : 'auto',
               }}
             >
-              <div className={`${singleLine ? 'py-2 px-4' : 'p-6'}`}>
+              <div className={`${singleLine ? 'px-4 py-2' : 'p-6'}`}>
                 {loader.isLoading ? (
                   <div className='flex flex-col gap-1'>
                     {[...Array(loader.count)].map((_e, i) => (
-                      <Skeleton key={i} className='w-full h-3' />
+                      <Skeleton key={i} className='h-3 w-full' />
                     ))}
                   </div>
                 ) : (

@@ -2,13 +2,9 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
 
-import AutoCompletePro from '@/components/Common/AutoCompletePro';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { JobCoordinator } from '@/jobs/create/components/form';
-import { useAllMembers } from '@/queries/members';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function DeleteMemberDialog({
   name,
@@ -22,29 +18,21 @@ function DeleteMemberDialog({
   reason: 'cancel_invite' | 'delete' | 'suspend';
   role?: string;
   action:
-    | (({
-        interviewTypes,
-        task,
-      }: {
-        interviewTypes: string;
-        task: string;
-      }) => void)
+    | (({ interviewTypes }: { interviewTypes: string }) => void)
     | (() => void);
   warning?: string;
   close: () => void;
 }) {
   // const { status } = useCompanyMembers();
   const [form, setForm] = useState<{
-    values: { interviewTypes: string; task: string };
-    error: { interviewTypes: boolean; task: boolean };
+    values: { interviewTypes: string };
+    error: { interviewTypes: boolean };
   }>({
     values: {
       interviewTypes: null,
-      task: null,
     },
     error: {
       interviewTypes: false,
-      task: false,
     },
   });
   function handelFormUpdate(val: Partial<(typeof form)['values']>) {
@@ -75,10 +63,7 @@ function DeleteMemberDialog({
       temp.error.interviewTypes = true;
       flag = false;
     }
-    if (!form.values.task?.length) {
-      temp.error.task = true;
-      flag = false;
-    }
+
     setForm(temp);
     return flag;
   }
@@ -108,7 +93,7 @@ function DeleteMemberDialog({
           By clicking delete the member will be permanently deleted.
         </p>
         {warning && (
-          <p className='text-base text-[var(--error-11)]'>Warning: {warning}</p>
+          <p className='text-base text-red-700'>Warning: {warning}</p>
         )}
       </div>
     ) : reason === 'cancel_invite' ? (
@@ -121,7 +106,7 @@ function DeleteMemberDialog({
         <p className='font-medium'>
           You are about to suspend {name} from the system.
         </p>
-        <ul className='list-disc pl-5 space-y-2'>
+        <ul className='list-disc space-y-2 pl-5'>
           <li> Once suspended, {name} will not have login access.</li>
           <li>
             The user will be removed from interview types, so no new interviews
@@ -156,14 +141,6 @@ function DeleteMemberDialog({
               />
             </div>
           )}
-          <div className='space-y-1'>
-            <p>Reassign current Tasks to:</p>
-            <TaskAutoComplete
-              val={form.values.task}
-              setVal={(id) => handelFormUpdate({ task: id })}
-              error={form.error.task}
-            />
-          </div>
         </div>
       </div>
     ) : (
@@ -180,7 +157,6 @@ function DeleteMemberDialog({
               if (validateForm()) {
                 action({
                   interviewTypes: form.values.interviewTypes,
-                  task: form.values.task,
                 });
               }
             }
@@ -207,36 +183,3 @@ function DeleteMemberDialog({
 }
 
 export default DeleteMemberDialog;
-
-function TaskAutoComplete({
-  val,
-  setVal,
-  error,
-}: {
-  val: string;
-  setVal: (x: string) => void;
-  error;
-}) {
-  const { recruiterUser } = useAuthDetails();
-
-  const { members } = useAllMembers();
-  return (
-    <AutoCompletePro
-      options={members.filter((user) => user.user_id !== recruiterUser.user_id)}
-      value={members.find((user) => user.user_id === val) || null}
-      placeholder='Choose from the list'
-      error={error}
-      onChange={(val) => {
-        if (val) setVal(val.user_id);
-      }}
-      getSelectLabel={(val) =>
-        capitalizeFirstLetter(`${val.first_name} ${val.last_name || ''}`)
-      }
-      getOptionLabel={(props, op) => (
-        <li {...props}>
-          {capitalizeFirstLetter(`${op.first_name} ${op.last_name || ''}`)}
-        </li>
-      )}
-    />
-  );
-}

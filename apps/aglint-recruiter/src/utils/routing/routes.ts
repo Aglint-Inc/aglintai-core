@@ -108,7 +108,7 @@ const jobPostAssistant = {
 const jobsById = {
   '/jobs/[job]': ({ job }: { job: string }) =>
     pageRouteBuilder([jobs['/jobs'](), job]),
-  '/jobs/[job]/application/[application_id]': ({
+  '/jobs/[job]/[application]': ({
     job,
     application_id,
   }: {
@@ -117,7 +117,6 @@ const jobsById = {
   }) =>
     pageRouteBuilder([
       pageRouteBuilder([jobs['/jobs'](), job]),
-      'application',
       application_id,
     ]),
   '/jobs/[job]/agent': ({ job }: { job: string }) =>
@@ -130,6 +129,8 @@ const jobsById = {
     pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'email-templates']),
   '/jobs/[job]/interview-plan': ({ job }: { job: string }) =>
     pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'interview-plan']),
+  '/jobs/[job]/candidate-plan': ({ job }: { job: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'candidate-plan']),
   '/jobs/[job]/profile-score': ({ job }: { job: string }) =>
     pageRouteBuilder([jobsById['/jobs/[job]']({ job }), 'profile-score']),
   '/jobs/[job]/screening': ({ job }: { job: string }) =>
@@ -173,12 +174,8 @@ const previewAssessment = {
 } as const;
 
 const user = {
-  '/user/profile/[user_id]': ({ user_id }: { user_id: string }) =>
-    pageRouteBuilder([
-      pageRouteBuilder([ROUTES.app(), 'user']),
-      'profile',
-      user_id,
-    ]),
+  '/user/[user]': ({ user_id }: { user_id: string }) =>
+    pageRouteBuilder(['/user', user_id]),
 } as const;
 const profile = {
   '/profile': () => pageRouteBuilder([ROUTES.app(), 'profile']),
@@ -193,42 +190,14 @@ const resetPassword = {
 
 const interviewTypes = {
   '/interview-pool': () => pageRouteBuilder([ROUTES.app(), 'interview-pool']),
-  '/interview-pool/[type_id]': ({ type_id }: { type_id: string }) =>
+  '/interview-pool/[pool]': ({ type_id }: { type_id: string }) =>
     pageRouteBuilder([interviewTypes['/interview-pool'](), type_id]),
 } as const;
 
 const scheduling = {
   '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
-  '/scheduling/application': () =>
-    pageRouteBuilder([ROUTES.app(), 'scheduling/application']),
-  '/scheduling/interviewer': () =>
-    pageRouteBuilder([ROUTES.app(), 'scheduling/interviewer']),
-  '/scheduling/application/[application_id]': ({
-    application_id,
-  }: {
-    application_id: string;
-  }) =>
-    pageRouteBuilder([
-      scheduling['/scheduling'](),
-      'application',
-      application_id,
-    ]),
-  '/scheduling/interviewer/[member_id]': ({
-    member_id,
-  }: {
-    member_id: string;
-  }) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'interviewer', member_id]),
   '/scheduling/invite/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([scheduling['/scheduling'](), 'invite', id]),
-  '/scheduling/module/IProgressDrawer': () =>
-    pageRouteBuilder([
-      scheduling['/scheduling'](),
-      'module',
-      'IProgressDrawer',
-    ]),
-  '/scheduling/module/[module_id]': ({ module_id }: { module_id: string }) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'module', module_id]),
   '/scheduling/view': () =>
     pageRouteBuilder([scheduling['/scheduling'](), 'view']),
 } as const;

@@ -19,7 +19,7 @@ const SelfScheduleFlowMenus = ({
   isManualSchedule: boolean;
   isSelectScheduleFlowComplete: boolean;
 }) => {
-  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+  const { reqTriggerActionsMap, setTriggerDetails, setShowEditDialog } =
     useRequestProgressProvider();
   const { request_progress } = useRequest();
 
@@ -33,8 +33,9 @@ const SelfScheduleFlowMenus = ({
         reqProgresMap,
       };
     }
+    const progres_data = request_progress.data;
 
-    for (const prog of request_progress.data) {
+    for (const prog of progres_data) {
       if (prog.event_type === 'CAND_CONFIRM_SLOT') {
         break;
       }
@@ -49,7 +50,6 @@ const SelfScheduleFlowMenus = ({
     return { progres, reqProgresMap };
   }, [request_progress.data]);
   //
-
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
@@ -97,7 +97,7 @@ const SelfScheduleFlowMenus = ({
         <div>
           <Alert
             variant='default'
-            className='bg-purple-100 border-purple-200 mb-4'
+            className='mb-4 border-purple-200 bg-purple-100'
           >
             <Lightbulb className='h-4 w-4 text-purple-500' />
             <AlertDescription className='flex flex-col items-start'>
@@ -108,7 +108,10 @@ const SelfScheduleFlowMenus = ({
                 variant='outline'
                 size='sm'
                 onClick={() => {
-                  setEditTrigger('selfScheduleReminder');
+                  setTriggerDetails({
+                    trigger: 'selfScheduleReminder',
+                    interval: 24 * 60,
+                  });
                   setShowEditDialog(true);
                 }}
               >

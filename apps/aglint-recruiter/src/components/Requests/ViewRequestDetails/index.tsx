@@ -2,6 +2,13 @@ import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
@@ -19,10 +26,10 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import SideDrawerEdit from 'src/app/(authenticated)/_jobs/[application]/_common/components/EditDrawer';
+import CollapseContent from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewStage/IndividualSession/Collapse';
+import { useEditSession } from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewTab/hooks/useEditSession';
 
-import SideDrawerEdit from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/EditDrawer';
-import CollapseContent from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/StageSessions/StageIndividual/ScheduleIndividual/Collapse';
-import { useEditSession } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/hooks/useEditSession';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import { RequestProvider } from '@/context/RequestContext';
@@ -95,7 +102,7 @@ export default function ViewRequestDetails() {
     return <ViewRequestDetailsSkeleton />;
   } else
     return (
-      <div className='min-h-screen bg-gray-50 p-8'>
+      <div className='container-lg mx-auto w-full px-16'>
         {selectedRequest && (
           <CandidateAvailability selectedRequest={selectedRequest} />
         )}
@@ -106,34 +113,37 @@ export default function ViewRequestDetails() {
         {/* {selectedRequest?.status === 'to_do' && ( */}
         <SelfSchedulingDrawer refetch={refetchMeetings} />
         {/* )} */}
-        <div className='max-w-[calc(100%-12.5rem)] mx-auto space-y-8'>
-          <div className='flex items-center space-x-2 text-sm text-gray-500'>
-            <span>Home</span>
-            <span>/</span>
-            <span
-              className='cursor-pointer'
-              onClick={() => {
-                replace('/requests');
-              }}
-            >
-              Requests
-            </span>
-            <span>/</span>
-            {/* <span>Schedule Requests</span> */}
-            {/* <span>/</span> */}
-            <span className='font-medium text-gray-900'>Request Details</span>
-          </div>
+        <div className='space-y-8'>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink onClick={() => replace('/requests')}>
+                  Requests
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href='#' className='font-medium text-gray-900'>
+                  Request Details
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
-              <h1 className='text-2xl font-bold text-gray-900 mb-2'>
-                Schedule Request Details
+              <h1 className='mb-2 text-2xl font-bold text-gray-900'>
+                Request Detail
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
                   <User className='h-4 w-4' />
                   <Link
                     href={
-                      ROUTES['/jobs/[job]/application/[application_id]']({
+                      ROUTES['/jobs/[job]/[application]']({
                         job: jobDetails?.id,
                         application_id: selectedRequest?.application_id,
                       }) + '?tab=scoring'
@@ -148,16 +158,16 @@ export default function ViewRequestDetails() {
                   </Link>
                 </div>
                 <span>•</span>
-                <span>{candidateDetails?.current_job_title}</span>
-                <span>•</span>
+                {/* <span>{candidateDetails?.current_job_title}</span>
+                <span>•</span> */}
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
                   <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
                     <span>{jobDetails?.job_title}</span>
                   </Link>
                 </div>
-                <span>•</span>
-                <span>Finance and Accounting</span>
+                {/* <span>•</span> */}
+                {/* <span>Finance and Accounting</span> */}
                 {jobDetails?.office_locations && (
                   <>
                     <span>•</span>
@@ -169,7 +179,7 @@ export default function ViewRequestDetails() {
                 )}
               </div>
             </div>
-            <div className='flex flex-col gap-4 space-x-2'>
+            <div className='flex flex-col items-end gap-4 space-x-2'>
               <div className='flex flex-row gap-2'>
                 <Badge variant='destructive'>
                   {capitalizeFirstLetter(selectedRequest?.type)}
@@ -178,12 +188,12 @@ export default function ViewRequestDetails() {
                   {capitalizeFirstLetter(selectedRequest?.status)}
                 </Badge>
               </div>
-              <div className='flex flex-center items-center gap-2 '>
+              <div className='flex-center flex items-center gap-2'>
                 <h3 className='text-sm font-medium text-gray-500'>
                   Assigned to:
                 </h3>
                 <Link
-                  href={ROUTES['/user/profile/[user_id]']({
+                  href={ROUTES['/user/[user]']({
                     user_id: selectedMember?.user_id,
                   })}
                   className='flex flex-row items-center gap-2'
@@ -209,11 +219,11 @@ export default function ViewRequestDetails() {
             </div>
           </div>
           <div className='flex'>
-            <div className='w-8/12 pr-4 flex flex-col space-y-4'>
+            <div className='flex w-8/12 flex-col space-y-4 pr-4'>
               <Card className='bg-white shadow-sm'>
                 <CardHeader className='flex flex-row items-start justify-between pb-2'>
                   <div>
-                    <CardTitle className='text-xl font-semibold mb-2'>
+                    <CardTitle className='mb-2 text-xl font-semibold'>
                       Request Details
                     </CardTitle>
                   </div>
@@ -242,7 +252,7 @@ export default function ViewRequestDetails() {
                               }}
                               items={REQUEST_STATUS_LIST}
                               updateButton={
-                                <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
                           </div>
@@ -273,7 +283,7 @@ export default function ViewRequestDetails() {
                               }}
                               items={REQUEST_URGENT_LIST}
                               updateButton={
-                                <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
                           </div>
@@ -313,7 +323,7 @@ export default function ViewRequestDetails() {
                               }}
                               disablePastDates={true}
                               customButton={
-                                <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
                           </div>
@@ -345,7 +355,7 @@ export default function ViewRequestDetails() {
                                 });
                               }}
                               updateButton={
-                                <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                               members={members}
                             />
@@ -374,7 +384,7 @@ export default function ViewRequestDetails() {
                             }}
                             items={REQUEST_TYPE_LIST}
                             updateButton={
-                              <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                              <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                             }
                           />
                         </div>
@@ -394,7 +404,7 @@ export default function ViewRequestDetails() {
               </Card>
               <RecentRequests applicationId={selectedRequest?.application_id} />
             </div>
-            <div className='w-4/12 flex flex-col space-y-4'>
+            <div className='flex w-4/12 flex-col space-y-4'>
               <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
                 <Alert>
                   <Bot className='h-4 w-4' />
@@ -403,7 +413,7 @@ export default function ViewRequestDetails() {
                     Here is your next step on the request.
                   </AlertDescription>
 
-                  <div className='flex flex-row gap-2 justify-end mt-4'>
+                  <div className='mt-4 flex flex-row justify-end gap-2'>
                     <ShowCode.When
                       isTrue={
                         selectedRequest.type === 'schedule_request' ||
@@ -429,8 +439,8 @@ export default function ViewRequestDetails() {
               </ShowCode.When>
 
               <Card>
-                <CardHeader className='flex justify-between items-center'>
-                  <div className='flex  flex-row  w-full justify-between items-center'>
+                <CardHeader className='flex items-center justify-between'>
+                  <div className='flex w-full flex-row items-center justify-between'>
                     <CardTitle className='text-lg'>Request Progress</CardTitle>
                     <div className='flex items-center space-x-2'>
                       {/* {reqTriggerActionsMap && Object.keys(reqTriggerActionsMap).length > 0 && ( */}
@@ -510,14 +520,14 @@ function SessionCards({
     <div>
       {/* <SideDrawerEdit refetch={refetch} /> */}
 
-      <div className='flex items-center justify-between my-4'>
+      <div className='my-4 flex items-center justify-between'>
         <h3 className='text-lg font-semibold'>Sessions</h3>
         <Badge variant='outline'>{sessions?.length} sessions</Badge>
       </div>
-      <div className='space-y-2 border rounded-lg'>
+      <div className='space-y-2 rounded-lg border'>
         {sessions &&
           sessions.map((session, index) => (
-            <Card key={index} className='border-0 shado-none'>
+            <Card key={index} className='shado-none border-0'>
               <CardHeader
                 className='cursor-pointer px-4 py-2'
                 onClick={() => {
@@ -525,7 +535,7 @@ function SessionCards({
                 }}
               >
                 <div className='flex items-center justify-between'>
-                  <CardTitle className='text-sm font-medium truncate flex-1'>
+                  <CardTitle className='flex-1 truncate text-sm font-medium'>
                     {capitalizeFirstLetter(session.interview_session.name)}
                   </CardTitle>
                   <div className='flex items-center space-x-2'>
@@ -540,7 +550,7 @@ function SessionCards({
                       variant='outline'
                       size='sm'
                     >
-                      <Edit2 className='h-4 w-4 mr-2' />
+                      <Edit2 className='mr-2 h-4 w-4' />
                       Edit
                     </Button>
                     <Button
@@ -554,12 +564,12 @@ function SessionCards({
                       variant='outline'
                       size='sm'
                     >
-                      <Eye className='h-4 w-4 mr-2' />
+                      <Eye className='mr-2 h-4 w-4' />
                       View Details
                     </Button>
                     <ChevronDown
                       className={`h-4 w-4 transition-transform ${
-                        expandedCard === index ? 'transform rotate-180' : ''
+                        expandedCard === index ? 'rotate-180 transform' : ''
                       }`}
                     />
                   </div>
@@ -579,105 +589,103 @@ function SessionCards({
 
 function ViewRequestDetailsSkeleton() {
   return (
-    <div className='min-h-screen bg-gray-50 p-8'>
-      <div className='max-w-[calc(100%-12.5rem)] mx-auto space-y-8'>
-        {/* Breadcrumb */}
-        <div className='flex items-center space-x-2 text-sm text-gray-500'>
-          <span>Home</span>
-          <span>/</span>
-          <span>Requests</span>
-          <span>/</span>
-          {/* <span>Schedule Requests</span> */}
-          {/* <span>/</span> */}
-          <span className='font-medium text-gray-900'>Request Details</span>
-        </div>
-
-        {/* Header */}
-        <div className='flex flex-row items-start justify-between pb-2'>
-          <div>
-            <h1 className='text-2xl font-bold text-gray-900 mb-2'>
-              Schedule Request Details
-            </h1>
-            <Skeleton className='h-4 w-96' />
-          </div>
-          <div className='flex flex-col gap-4'>
-            <div className='flex flex-row gap-2'>
-              <Skeleton className='h-6 w-20' />
-              <Skeleton className='h-6 w-20' />
-            </div>
-            <div className='flex items-center gap-2'>
-              <Skeleton className='h-4 w-24' />
-              <Skeleton className='h-6 w-6 rounded-full' />
-              <Skeleton className='h-4 w-24' />
-            </div>
-          </div>
-        </div>
-
-        {/* Progress Holder */}
-        <Alert>
-          <Bot className='h-4 w-4' />
-          <AlertTitle>Next Step</AlertTitle>
-          <AlertDescription>
-            <Skeleton className='h-4 w-64' />
-          </AlertDescription>
-          <div className='flex flex-row gap-2 justify-end mt-4'>
-            <Skeleton className='h-9 w-32' />
-            <Skeleton className='h-9 w-40' />
-          </div>
-        </Alert>
-
-        {/* Request Details Card */}
-        <Card className='bg-white shadow-sm'>
-          <CardHeader className='flex flex-row items-start justify-between pb-2'>
-            <CardTitle className='text-xl font-semibold mb-2'>
-              Request Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='grid grid-cols-3 gap-6'>
-              {/* Left column */}
-              <div className='col-span-2 grid grid-cols-2 gap-6'>
-                {[...Array(4)].map((_, index) => (
-                  <div key={index} className='space-y-4'>
-                    <Skeleton className='h-4 w-24' />
-                    <Skeleton className='h-6 w-32' />
-                  </div>
-                ))}
-              </div>
-              {/* Right column */}
-              <div className='space-y-4'>
-                <Skeleton className='h-4 w-24' />
-                <Skeleton className='h-6 w-32' />
-              </div>
-            </div>
-
-            {/* Sessions */}
-            <div className='mt-8'>
-              <div className='flex items-center justify-between my-4'>
-                <Skeleton className='h-6 w-24' />
-                <Skeleton className='h-6 w-24' />
-              </div>
-              <div className='space-y-2 border rounded-lg p-4'>
-                {[...Array(3)].map((_, index) => (
-                  <Card key={index} className='border-0 shadow-none'>
-                    <CardHeader className='px-4 py-2'>
-                      <div className='flex items-center justify-between'>
-                        <Skeleton className='h-4 w-64' />
-                        <div className='flex items-center space-x-2'>
-                          <Skeleton className='h-6 w-20' />
-                          <Skeleton className='h-8 w-20' />
-                          <Skeleton className='h-8 w-24' />
-                          <Skeleton className='h-4 w-4' />
-                        </div>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+    <div className='container-lg mx-auto w-full px-12'>
+      {/* Breadcrumb */}
+      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+        <span>Home</span>
+        <span>/</span>
+        <span>Requests</span>
+        <span>/</span>
+        {/* <span>Schedule Requests</span> */}
+        {/* <span>/</span> */}
+        <span className='font-medium text-gray-900'>Request Details</span>
       </div>
+
+      {/* Header */}
+      <div className='flex flex-row items-start justify-between pb-2'>
+        <div>
+          <h1 className='mb-2 text-2xl font-bold text-gray-900'>
+            Schedule Request Details
+          </h1>
+          <Skeleton className='h-4 w-96' />
+        </div>
+        <div className='flex flex-col gap-4'>
+          <div className='flex flex-row gap-2'>
+            <Skeleton className='h-6 w-20' />
+            <Skeleton className='h-6 w-20' />
+          </div>
+          <div className='flex items-center gap-2'>
+            <Skeleton className='h-4 w-24' />
+            <Skeleton className='h-6 w-6 rounded-full' />
+            <Skeleton className='h-4 w-24' />
+          </div>
+        </div>
+      </div>
+
+      {/* Progress Holder */}
+      <Alert>
+        <Bot className='h-4 w-4' />
+        <AlertTitle>Next Step</AlertTitle>
+        <AlertDescription>
+          <Skeleton className='h-4 w-64' />
+        </AlertDescription>
+        <div className='mt-4 flex flex-row justify-end gap-2'>
+          <Skeleton className='h-9 w-32' />
+          <Skeleton className='h-9 w-40' />
+        </div>
+      </Alert>
+
+      {/* Request Details Card */}
+      <Card className='bg-white shadow-sm'>
+        <CardHeader className='flex flex-row items-start justify-between pb-2'>
+          <CardTitle className='mb-2 text-xl font-semibold'>
+            Request Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='grid grid-cols-3 gap-6'>
+            {/* Left column */}
+            <div className='col-span-2 grid grid-cols-2 gap-6'>
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className='space-y-4'>
+                  <Skeleton className='h-4 w-24' />
+                  <Skeleton className='h-6 w-32' />
+                </div>
+              ))}
+            </div>
+            {/* Right column */}
+            <div className='space-y-4'>
+              <Skeleton className='h-4 w-24' />
+              <Skeleton className='h-6 w-32' />
+            </div>
+          </div>
+
+          {/* Sessions */}
+          <div className='mt-8'>
+            <div className='my-4 flex items-center justify-between'>
+              <Skeleton className='h-6 w-24' />
+              <Skeleton className='h-6 w-24' />
+            </div>
+            <div className='space-y-2 rounded-lg border p-4'>
+              {[...Array(3)].map((_, index) => (
+                <Card key={index} className='border-0 shadow-none'>
+                  <CardHeader className='px-4 py-2'>
+                    <div className='flex items-center justify-between'>
+                      <Skeleton className='h-4 w-64' />
+                      <div className='flex items-center space-x-2'>
+                        <Skeleton className='h-6 w-20' />
+                        <Skeleton className='h-8 w-20' />
+                        <Skeleton className='h-8 w-24' />
+                        <Skeleton className='h-4 w-4' />
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

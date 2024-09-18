@@ -1,6 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
-import { Stack } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
@@ -14,6 +12,7 @@ import { Bar } from 'react-chartjs-2';
 
 import { useInterviewMeetingStatus } from '@/queries/scheduling-dashboard';
 
+import { NewInterviewDetail } from './_common/NewInterviewDetail';
 import { interviewMeetingTimeFormat } from './utils';
 
 type MeetingStatusObjType = ReturnType<
@@ -50,16 +49,16 @@ const InterviewMeetingStatusComponent = ({
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
   if (!data?.filter((item) => item.cancelled).length)
     return (
       <div className='h-[296px]'>
-        <div className='flex flex-col items-center justify-center h-full'>
-          <BarChart2 className='w-12 h-12 text-gray-400' />
+        <div className='flex h-full flex-col items-center justify-center'>
+          <BarChart2 className='h-12 w-12 text-gray-400' />
           <p className='mt-2 text-sm text-gray-500'>No data available</p>
         </div>
       </div>
@@ -76,9 +75,9 @@ const InterviewMeetingStatusComponent = ({
     {} as InterviewMeetingStatusCountProps['interviewMeetingStatus'],
   );
   return (
-    <Stack height={'100%'}>
+    <div className='h-full'>
       <StackedBar interviewMeetingStatus={safeData} />
-    </Stack>
+    </div>
   );
 };
 

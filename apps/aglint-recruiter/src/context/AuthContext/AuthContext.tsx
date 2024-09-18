@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import type { GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
 import ROUTES from '@/utils/routing/routes';
@@ -37,10 +38,12 @@ type Features =
   | 'ROLES'
   | 'REQUESTS'
   | 'WORKFLOW'
-  | 'INTEGRATIONS'
   | 'SCHEDULING'
   | 'ANALYTICS'
-  | 'CANDIDATE_PORTAL';
+  | 'CANDIDATE_PORTAL'
+  | 'REPORTS'
+  | 'AGENT'
+  | 'THEMES';
 export interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
@@ -190,6 +193,9 @@ const AuthProvider = ({ children }) => {
           SCHEDULING: recruiter.recruiter_preferences.scheduling,
           ANALYTICS: recruiter.recruiter_preferences.analytics,
           CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
+          AGENT: recruiter.recruiter_preferences.agent,
+          REPORTS: recruiter.recruiter_preferences.reports,
+          THEMES: recruiter.recruiter_preferences.themes,
         };
         return recruiterPref[feature];
       }
@@ -222,8 +228,8 @@ export { AuthContext, AuthProvider };
 
 const AuthLoader = () => {
   return (
-    <div className='flex h-screen items-center justify-center w-full'>
-      <Loader2 className='animate-spin' />
+    <div className='flex h-screen w-full items-center justify-center'>
+      <Loader />
     </div>
   );
 };

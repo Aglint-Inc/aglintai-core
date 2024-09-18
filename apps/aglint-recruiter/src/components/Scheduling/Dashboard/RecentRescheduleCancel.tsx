@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 
-
-import { Avatar, Skeleton } from '@mui/material';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Skeleton } from '@components/ui/skeleton';
 import dayjs from 'dayjs';
 import { BarChart2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -127,8 +127,8 @@ const RecentRescheduleCancel = () => {
     <>
       {/* Recent Reschedule Table */}
 
-      <div className='border border-gray-200 rounded-md h-[450px] overflow-hidden'>
-        <div className='p-3 bg-gray-100 border-b border-gray-200 flex justify-between items-center'>
+      <div className='h-[450px] overflow-hidden rounded-md border border-gray-200'>
+        <div className='flex items-center justify-between border-b border-gray-200 bg-gray-100 p-3'>
           <UITypography type='small' fontBold='normal' color='black'>
             Recent Reschedule
           </UITypography>
@@ -162,8 +162,8 @@ const RecentRescheduleCancel = () => {
               })
           ) : (
             <div className='h-[296px]'>
-              <div className='flex flex-col items-center justify-center h-full'>
-                <BarChart2 className='w-12 h-12 text-gray-400' />
+              <div className='flex h-full flex-col items-center justify-center'>
+                <BarChart2 className='h-12 w-12 text-gray-400' />
                 <p className='mt-2 text-sm text-gray-500'>No data available</p>
               </div>
             </div>
@@ -173,8 +173,8 @@ const RecentRescheduleCancel = () => {
 
       {/* Recent Decline Table */}
 
-      <div className='border border-gray-200 rounded-md h-[450px] overflow-hidden'>
-        <div className='p-3 bg-gray-100 border-b border-gray-200'>
+      <div className='h-[450px] overflow-hidden rounded-md border border-gray-200'>
+        <div className='border-b border-gray-200 bg-gray-100 p-3'>
           <UITypography type='small' fontBold='normal' color='black'>
             Recent Decline
           </UITypography>
@@ -198,8 +198,8 @@ const RecentRescheduleCancel = () => {
             })
           ) : (
             <div className='h-[296px]'>
-              <div className='flex flex-col items-center justify-center h-full'>
-                <BarChart2 className='w-12 h-12 text-gray-400' />
+              <div className='flex h-full flex-col items-center justify-center'>
+                <BarChart2 className='h-12 w-12 text-gray-400' />
                 <p className='mt-2 text-sm text-gray-500'>No data available</p>
               </div>
             </div>
@@ -228,26 +228,24 @@ const RecentRescheduleListItem = ({
   const router = useRouter();
   if (loading)
     return (
-  // Recent Reschedule List Skeleton
-  
-      <div className="flex items-center space-x-4 p-4">
-        <div className="flex-shrink-0">
-          <Skeleton className="rounded-full" width={40} height={40} />
+      // Recent Reschedule List Skeleton
+
+      <div className='flex items-center space-x-4 p-4'>
+        <div className='flex-shrink-0'>
+          <Skeleton className='h-[40px] w-[40px] rounded-full' />
         </div>
-        <div className="flex-1 min-w-0">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-12 mt-2" />
-          <Skeleton className="h-4 w-48 mt-2" />
+        <div className='min-w-0 flex-1'>
+          <Skeleton className='h-4 w-24' />
+          <Skeleton className='mt-2 h-4 w-12' />
+          <Skeleton className='mt-2 h-4 w-48' />
         </div>
       </div>
     );
   return (
+    // Recent Reschedule List
 
-  // Recent Reschedule List
-
-  
     <div
-      className='flex items-center space-x-4 p-4 cursor-pointer'
+      className='flex cursor-pointer items-center space-x-4 p-4'
       onClick={() => {
         if (detail?.meet_id)
           router.push(
@@ -256,19 +254,22 @@ const RecentRescheduleListItem = ({
       }}
     >
       <div className='flex-shrink-0'>
-        <Avatar
-          src={detail.image ? detail.image : undefined}
-          alt={detail.name}
-        />
+        <Avatar>
+          <AvatarImage
+            src={detail.image ? detail.image : undefined}
+            alt={detail.name}
+          />
+          <AvatarFallback>{detail.name.charAt(0)}</AvatarFallback>
+        </Avatar>
       </div>
-      <div className='flex-1 min-w-0'>
-        <p className='text-sm font-medium text-gray-900 truncate'>
+      <div className='min-w-0 flex-1'>
+        <p className='truncate text-sm font-medium text-gray-900'>
           {detail.name}
         </p>
-        <p className='text-sm text-gray-500 truncate'>
+        <p className='truncate text-sm text-gray-500'>
           {dayjs(detail.time).fromNow()}
         </p>
-        <p className='text-sm text-gray-500 truncate'>{detail.desc}</p>
+        <p className='truncate text-sm text-gray-500'>{detail.desc}</p>
       </div>
       <div className='flex-shrink-0'>
         <UIButton
@@ -302,10 +303,9 @@ const RecentDeclineListItem = ({
     return (
       <div className='flex items-center space-x-4 p-4'>
         <div className='flex-shrink-0'>
-          <Skeleton className='rounded-full' width={'100%'} height={'100%'} />
-        </div>
-        <div className='flex-1 min-w-0'>
           <Skeleton className='h-4 w-24' />
+        </div>
+        <div className='min-w-0 flex-1'>
           <Skeleton className='h-4 w-12' />
           <Skeleton className='h-4 w-48' />
         </div>
@@ -314,19 +314,19 @@ const RecentDeclineListItem = ({
   return (
     <div className='flex items-center space-x-4 p-4'>
       <div className='flex-shrink-0'>
-        <Avatar
-          src={detail.image ? detail.image : undefined}
-          alt={detail.name}
-        />
+        <Avatar>
+          <AvatarImage src={detail.image} alt={detail.name} />
+          <AvatarFallback>{detail.name.charAt(0)}</AvatarFallback>
+        </Avatar>
       </div>
-      <div className='flex-1 min-w-0'>
-        <p className='text-sm font-medium text-gray-900 truncate'>
+      <div className='min-w-0 flex-1'>
+        <p className='truncate text-sm font-medium text-gray-900'>
           {detail.name}cvscsd
         </p>
-        <p className='text-sm text-gray-500 truncate'>
+        <p className='truncate text-sm text-gray-500'>
           {dayjs(detail.time).fromNow()}
         </p>
-        <p className='text-sm text-gray-500 truncate'>{detail.desc}</p>
+        <p className='truncate text-sm text-gray-500'>{detail.desc}</p>
       </div>
     </div>
   );

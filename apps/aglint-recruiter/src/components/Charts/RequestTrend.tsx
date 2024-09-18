@@ -165,11 +165,11 @@ const chartConfig = {
   },
   desktop: {
     label: 'Desktop',
-    color: 'hsl(var(--chart-1))',
+    color: 'text-blue-500',
   },
   mobile: {
     label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
+    color: 'text-green-500',
   },
 } satisfies ChartConfig;
 
@@ -203,7 +203,7 @@ export function RequestTrend() {
               <button
                 key={chart}
                 data-active={activeChart === chart}
-                className='relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l border-border data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6'
+                className='relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-border px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6'
                 onClick={() => setActiveChart(chart)}
               >
                 <span className='text-xs text-muted-foreground'>
@@ -263,7 +263,9 @@ export function RequestTrend() {
             />
             <Bar
               dataKey={activeChart}
-              fill={`hsl(var(--${activeChart === 'desktop' ? 'chart-1' : 'chart-2'}))`}
+              fill={
+                activeChart === 'desktop' ? 'text-blue-500' : 'text-green-500'
+              }
             />
           </BarChart>
         </ChartContainer>

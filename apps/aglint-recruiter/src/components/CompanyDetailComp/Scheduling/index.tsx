@@ -1,4 +1,3 @@
-import { Autocomplete, Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -18,7 +17,6 @@ import {
 } from '@components/ui/card';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import timeZone from '@/utils/timeZone';
 
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
@@ -219,6 +217,7 @@ function SchedulingSettings({ updateSettings }) {
       {dailyLmit.type && weeklyLmit.type && (
         <Card>
           <CardHeader>
+
             <CardTitle className='text-lg font-semibold'>
               Interview Load
             </CardTitle>
@@ -257,6 +256,7 @@ function SchedulingSettings({ updateSettings }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          
           <DebriefDefaults
             value={debriefDefaults}
             setValue={setDebriefDefaults}
@@ -331,55 +331,3 @@ function SchedulingSettings({ updateSettings }) {
 }
 
 export default SchedulingSettings;
-
-type TZ = (typeof timeZone)[number];
-
-export type TimezoneObj = {
-  [key in keyof TZ]: TZ[key];
-};
-type TimezoneSelectorProps = {
-  value: TimezoneObj;
-  // eslint-disable-next-line no-unused-vars
-  setValue: (value: TimezoneObj) => void;
-  disabled: boolean;
-};
-export const TimezoneSelector = ({
-  disabled,
-  setValue,
-  value,
-}: TimezoneSelectorProps) => {
-  return (
-    <Stack spacing={'var(--space-2)'} width={420}>
-      <Autocomplete
-        disabled={disabled}
-        disableClearable
-        options={timeZone}
-        value={value}
-        onChange={(_event, value) => {
-          if (value) {
-            setValue(value);
-          }
-        }}
-        autoComplete={false}
-        getOptionLabel={(option) => option.label}
-        renderOption={(props, option) => {
-          return (
-            <li {...props}>
-              <p>{option.label}</p>
-            </li>
-          );
-        }}
-        renderInput={(params) => {
-          return (
-            <TextField
-              {...params}
-              // fullWidth
-              label=''
-              placeholder='Ex. America/Los_Angeles (GMT-08:00)'
-            />
-          );
-        }}
-      />
-    </Stack>
-  );
-};

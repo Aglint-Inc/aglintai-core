@@ -40,6 +40,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './ui/alert-dialog';
+import { Skeleton } from './ui/skeleton';
 
 type Step =
   | Awaited<ReturnType<typeof fetchProgressByJobId>>
@@ -138,7 +139,19 @@ export default function ReorderableInterviewPlan({
   }, [data]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Skeleton
+            key={index}
+            style={{
+              width: '100%',
+              height: '20px',
+            }}
+          />
+        ))}
+      </>
+    );
   }
 
   const handleEdit = (id: number) => {
@@ -290,7 +303,7 @@ export default function ReorderableInterviewPlan({
         className='grid gap-4'
         style={{ gridTemplateColumns: 'max-content 1fr' }}
       >
-        <div className='flex h-full items-stretch flex-col'>
+        <div className='flex h-full flex-col items-stretch'>
           {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             className={``}
@@ -301,7 +314,7 @@ export default function ReorderableInterviewPlan({
             }}
           >
             <div
-              className={`${step.is_completed ? 'bg-lime-100' : 'bg-muted'} p-2 w-10 h-10 flex items-center justify-center rounded-md`}
+              className={`${step.is_completed ? 'bg-lime-100' : 'bg-muted'} flex h-10 w-10 items-center justify-center rounded-md p-2`}
             >
               {step.is_completed ? (
                 <CircleCheck
@@ -316,7 +329,7 @@ export default function ReorderableInterviewPlan({
           </div>
           {index < steps.length && !isDragging && (
             <div
-              className='h-full mx-auto bg-gray-300'
+              className='mx-auto h-full bg-gray-300'
               style={{ width: '1px' }}
             ></div>
           )}
@@ -407,8 +420,8 @@ export default function ReorderableInterviewPlan({
                   </div>
                 </>
               ) : !isNewStep ? (
-                <div className='flex flex-col mb-4 gap-2'>
-                  <h3 className='font-semibold text-md'>{step.name}</h3>
+                <div className='mb-4 flex flex-col gap-2'>
+                  <h3 className='text-md font-semibold'>{step.name}</h3>
                   <p className='text-sm'>{step.description}</p>
                   <div className='flex space-x-2'>
                     <Button
@@ -459,7 +472,7 @@ export default function ReorderableInterviewPlan({
                 <>
                   {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                   <div
-                    className='font-semibold text-md cursor-pointer mt-2'
+                    className='text-md mt-2 cursor-pointer font-semibold'
                     onClick={() => {
                       setIsAddOpen((pre) => !pre);
                     }}
@@ -521,7 +534,7 @@ export default function ReorderableInterviewPlan({
   };
 
   return (
-    <div className='max-w-2xl mt-8'>
+    <div className='max-w-2xl'>
       <div className='relative' ref={timelineRef}>
         <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
           <Droppable droppableId='droppable'>

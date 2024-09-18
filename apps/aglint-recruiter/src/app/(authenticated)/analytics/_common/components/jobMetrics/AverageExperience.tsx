@@ -14,14 +14,14 @@ export default function AverageExperience() {
         </CardTitle>
       </CardHeader>
       <CardContent className='flex flex-col items-center'>
-        <div className='text-6xl font-bold mb-2'>
+        <div className='mb-2 text-6xl font-bold'>
           {isFetching ? (
             <Skeleton className='h-[60px] w-[100px]' />
           ) : (
             data.avg_total_exp
           )}
         </div>
-        <div className='text-2xl font-semibold mb-4'>Years</div>
+        <div className='mb-4 text-2xl font-semibold'>Years</div>
         <p className='text-center text-muted-foreground'>
           Average of total full time experience of the candidates
         </p>

@@ -19,7 +19,7 @@ import {
 } from 'recharts';
 
 const chartData = [
-  { browser: 'safari', visitors: 200, fill: 'hsl(var(--chart-2))' },
+  { browser: 'safari', visitors: 200, fill: 'text-green-500' },
 ];
 
 const chartConfig = {
@@ -28,7 +28,7 @@ const chartConfig = {
   },
   safari: {
     label: 'Safari',
-    color: 'hsl(var(--chart-2))',
+    color: 'text-green-500',
   },
 } satisfies ChartConfig;
 
@@ -36,7 +36,7 @@ export function ConversionRateRadialChart() {
   return (
     <Card className='flex flex-col border border-border'>
       <CardHeader className='items-center pb-0'>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Total Interviews Conducted
         </CardTitle>
         <CardDescription>January - June 2024</CardDescription>

@@ -3,7 +3,7 @@ import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
@@ -70,7 +70,7 @@ function EmailPreviewSelfSchedule() {
   };
 
   return (
-    <div className='flex flex-col gap-2 p-4 h-[calc(100vh-96px)] overflow-scroll'>
+    <div className='flex h-[calc(100vh-96px)] flex-col gap-2 overflow-scroll p-4'>
       <UITypography type='small'>
         You have selected {selectedCombIds.length} slots across {numberOfDays}
         days.
@@ -104,14 +104,15 @@ function EmailPreviewSelfSchedule() {
         </div>
       ) : (
         <>
-          <div className='flex flex-row justify-between items-center w-full gap-4'>
+          <div className='flex w-full flex-row items-center justify-between gap-4'>
             <UIAlert
+            className='text-xs'
               type='inline'
               title='This is a preview only. All actions in this email are disabled.'
               iconName='Info'
               color={'warning'}
             />
-            <div className='flex flex-row space-x-2 items-start'>
+            <div className='flex flex-row items-start space-x-2'>
               <UIButton
                 variant='secondary'
                 size='sm'

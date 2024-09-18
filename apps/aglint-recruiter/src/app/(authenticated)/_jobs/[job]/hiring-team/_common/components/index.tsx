@@ -17,10 +17,9 @@ import {
   useState,
 } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import {
   type JobMetaFormProps,
@@ -42,7 +41,7 @@ export const JobHiringTeamDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='flex justify-center items-center w-full h-screen'>
+    <div className='flex h-screen w-full items-center justify-center'>
       <Loader />
     </div>
   );
@@ -101,53 +100,51 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <div className='min-h-screen'>
-      <div className='container mx-auto'>
-        <div className='flex justify-between items-center mb-6'>
-          <div>
-            <h1 className='text-2xl font-bold mb-2'>Job Settings</h1>
-            <BreadCrumbs job={job} />
-          </div>
-          <Settings />
+    <div className='container-lg mx-auto w-full px-12'>
+      <div className='mb-6 flex items-center justify-between'>
+        <div>
+          <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
+          <BreadCrumbs job={job} />
         </div>
+        {/* <Settings /> */}
+      </div>
 
-        <div className='flex gap-6 mb-6'>
-          <div className='w-1/4'>
-            <JobsSideNavV2 />
-          </div>
-          <div className='w-3/4'>
-            <div className='flex flex-row justify-between'>
-              <div className='flex flex-col gap-2'>
-                <h2 className='text-xl font-bold mb-2'>Hiring Team</h2>
-                <p className='text-sm text-gray-600 mb-4'>
-                  Update the hiring team details here. Changes will be saved
-                  automatically.
-                </p>
-              </div>
-              <div
-                className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
-              >
-                <div className='flex items-center space-x-2 text-sm text-gray-600'>
-                  {saving ? (
-                    <>
-                      <div className='w-4 h-4 border-2 border-neutral-600 border-t-transparent rounded-full animate-spin'></div>
-                      <span>Saving changes...</span>
-                    </>
-                  ) : (
-                    <>
-                      <CheckIcon className='w-4 h-4 text-green-500' />
-                      <span>Changes saved</span>
-                    </>
-                  )}
-                </div>
+      <div className='mb-6 flex gap-6'>
+        <div className='w-2/12'>
+          <JobsSideNavV2 />
+        </div>
+        <div className='w-9/12'>
+          <div className='flex flex-row justify-between'>
+            <div className='flex flex-col gap-2'>
+              <h2 className='mb-2 text-xl font-bold'>Hiring Team</h2>
+              <p className='mb-4 text-sm text-gray-600'>
+                Update the hiring team details here. Changes will be saved
+                automatically.
+              </p>
+            </div>
+            <div
+              className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+            >
+              <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                {saving ? (
+                  <>
+                    <Loader />
+                    <span>Saving changes...</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckIcon className='h-4 w-4 text-green-500' />
+                    <span>Changes saved</span>
+                  </>
+                )}
               </div>
             </div>
-            <JobEditForm
-              fields={fields}
-              setFields={setFields}
-              setSaving={setSaving}
-            />
           </div>
+          <JobEditForm
+            fields={fields}
+            setFields={setFields}
+            setSaving={setSaving}
+          />
         </div>
       </div>
     </div>
@@ -263,11 +260,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <div className='bg-white p-6 rounded-lg shadow-md'>
-      <p className='text-sm text-gray-600 mb-4'>
-        Update the hiring team details here. Changes will be saved
-        automatically.
-      </p>
+    <div className='rounded-lg bg-white p-6 shadow-md'>
       <div className='grid grid-cols-2 gap-4'>{forms}</div>
     </div>
   );

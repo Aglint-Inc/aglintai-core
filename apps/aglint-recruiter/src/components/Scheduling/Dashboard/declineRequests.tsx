@@ -1,6 +1,4 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { NewInterviewDetail } from '@devlink3/NewInterviewDetail';
-import Stack from '@mui/material/Stack';
 import {
   BarElement,
   CategoryScale,
@@ -17,12 +15,16 @@ import {
   useSchedulingAnalytics,
 } from '@/context/SchedulingAnalytics';
 
+import { NewInterviewDetail } from './_common/NewInterviewDetail';
+
 export const DeclineRequests = memo(() => (
-  <NewInterviewDetail
-    textHeading={'Decline Requests'}
-    slotDropdownButton={<></>}
-    slotInterviewDetailPill={<Container />}
-  />
+  <>
+    <NewInterviewDetail
+      textHeading={'Decline Requests'}
+      slotDropdownButton={<></>}
+      slotInterviewDetailPill={<Container />}
+    />
+  </>
 ));
 DeclineRequests.displayName = 'DeclineRequests';
 
@@ -33,8 +35,8 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
@@ -42,15 +44,15 @@ const Container = memo(() => {
 
   if (data.length === 0)
     return (
-      <div className='flex items-center justify-center h-[350px]'>
-        <Loader2 className='w-8 h-8 animate-spin text-gray-400' />
+      <div className='flex h-[350px] items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
       </div>
     );
 
   return (
-    <Stack height={'200px'}>
+    <div className='h-[200px]'>
       <BarChart data={data} />
-    </Stack>
+    </div>
   );
 });
 Container.displayName = 'Container';

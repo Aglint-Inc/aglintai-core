@@ -3,13 +3,13 @@ import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type MemberType } from 'src/app/_common/types/memberType';
+import { ScheduleInterviewPop } from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewTab/ScheduleInterviewPop';
+import { RequestOption } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
 
-import { RequestOption } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleDialog';
-import { ScheduleInterviewPop } from '@/components/ApplicationDetail/_common/components/SlotBody/InterviewTabContent/_common/components/ScheduleInterviewPop';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { type MemberType } from '@/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useApplications, useJob } from '@/job/hooks';
@@ -79,7 +79,7 @@ function CreateRequest({
           schedule_start_date: dateRange.start,
           schedule_end_date: dateRange.end,
           assignee_id:
-            selectedInterviewer ||
+            selectedInterviewer?.user_id ||
             recruiting_coordinator ||
             hiring_manager ||
             sourcer ||
@@ -133,9 +133,9 @@ function CreateRequest({
         }
         slotAssignedInput={
           membersStatus === 'pending' ? (
-            <div className='h-10 w-full bg-gray-100 rounded-md animate-pulse'></div>
+            <div className='h-10 w-full animate-pulse rounded-md bg-gray-100'></div>
           ) : (
-            <div className='flex items-center justify-between pr-2 '>
+            <div className='flex items-center justify-between pr-2'>
               {selectedInterviewer && (
                 <MemberCard selectedMember={selectedInterviewer} />
               )}
@@ -151,7 +151,7 @@ function CreateRequest({
                   });
                 }}
                 updateButton={
-                  <Edit2 className='h-4 w-4 text-gray-400 cursor-pointer' />
+                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                 }
                 members={members}
               />

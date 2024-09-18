@@ -27,9 +27,9 @@ const CompletedInterviewsOverTime = () => {
   ];
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Completed Interviews Over Time
         </CardTitle>
       </CardHeader>
@@ -55,7 +55,7 @@ const CompletedInterviewsOverTime = () => {
               <Line
                 type='monotone'
                 dataKey='interviews'
-                stroke='hsl(var(--chart-1))'
+                stroke='text-blue-500'
                 strokeWidth={2}
                 dot={{ r: 5 }}
                 activeDot={{ r: 7 }}

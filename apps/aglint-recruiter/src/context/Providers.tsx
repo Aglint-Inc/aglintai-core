@@ -1,17 +1,15 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { PostHogProvider } from 'posthog-js/react';
-import { AuthProvider } from '../context/AuthContext/AuthContext';
-import Theme from '../context/Theme/Theme';
-import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
-import AppLayout from '../components/AppLayout';
-import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
-import { type PropsWithChildren, Suspense } from 'react';
-import { ThemeProvider } from '@components/theme-provider';
-import { TRPCReactProvider } from '../trpc/client';
-import { TooltipProvider } from '@components/ui/tooltip';
 import { JobsProvider } from '@/jobs/contexts';
 import { WorkflowsProvider } from '@/workflows/contexts';
 import { Toaster } from '@components/ui/toaster';
+import { TooltipProvider } from '@components/ui/tooltip';
+import { PostHogProvider } from 'posthog-js/react';
+import { type PropsWithChildren, Suspense } from 'react';
+import AppLayout from '../components/AppLayout';
+import { AuthProvider } from '../context/AuthContext/AuthContext';
+import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
+import { TRPCReactProvider } from '../trpc/client';
+import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 
 export const PrivateProviders = ({
   children,
@@ -41,18 +39,9 @@ export const PrivateProviders = ({
 export const PublicProviders = ({ children }: PropsWithChildren) => {
   return (
     <Suspense>
-      <Theme>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='light'
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <Toaster />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-          <Toaster />
-        </ThemeProvider>
-      </Theme>
+      <Toaster />
+      <TRPCReactProvider>{children}</TRPCReactProvider>
+      <Toaster />
     </Suspense>
   );
 };

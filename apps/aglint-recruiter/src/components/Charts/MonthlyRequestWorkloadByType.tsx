@@ -66,17 +66,17 @@ export default function MonthlyRequestWorkloadChart() {
   ];
 
   const colors = {
-    Scheduling: 'hsl(var(--chart-1))',
-    Rescheduling: 'hsl(var(--chart-2))',
-    Decline: 'hsl(var(--chart-3))',
-    Cancel: 'hsl(var(--chart-4))',
-    Debrief: 'hsl(var(--chart-5))',
+    Scheduling: 'text-blue-500',
+    Rescheduling: 'text-green-500',
+    Decline: 'text-red-500',
+    Cancel: 'text-yellow-500',
+    Debrief: 'text-purple-500',
   };
 
   return (
-    <Card className='w-full max-w-4xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-4xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Monthly Request Workload by Type
         </CardTitle>
       </CardHeader>

@@ -55,9 +55,9 @@ export default function InterviewTypeDistribution() {
   };
 
   return (
-    <Card className='w-full max-w-3xl mx-auto border border-border'>
+    <Card className='mx-auto w-full max-w-3xl border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-semibold text-center'>
+        <CardTitle className='text-md text-center font-semibold'>
           Distribution of Interview Types
         </CardTitle>
       </CardHeader>
@@ -71,14 +71,14 @@ export default function InterviewTypeDistribution() {
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={150}
-              fill='hsl(var(--chart-1))'
+              fill='text-blue-500'
               dataKey='value'
               innerRadius={90}
             >
               {data.map((_entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={`hsl(var(--chart-${index + 1}))`}
+                  fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
                 />
               ))}
             </Pie>

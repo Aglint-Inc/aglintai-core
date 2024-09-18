@@ -48,8 +48,8 @@ const DashboardComp = () => {
     <div className='h-full w-full'>
       {!initialLoad ? (
         <div className='min-h-screen'>
-          <div className='container mx-auto space-y-4'>
-            <div className='flex justify-between items-center'>
+          <div className='container-lg mx-auto w-full space-y-4 px-12'>
+            <div className='flex items-center justify-between'>
               <div className='space-y-2'>
                 <Skeleton className='h-8 w-[200px]' />
                 <Skeleton className='h-4 w-[300px]' />
@@ -76,28 +76,29 @@ const DashboardComp = () => {
               ['manage_job'],
             )
           ) : (
-            <div className='min-h-screen'>
-              <div className='container mx-auto'>
-                <h1 className='text-2xl font-bold mb-4'>Jobs</h1>
-                <div className='flex flex-col gap-4 mb-4'>
-                  <div className='flex justify-between items-center'>
-                    <div className='flex-grow'>
-                      <FilterJobDashboard
-                        filterOptions={filterOptions}
-                        filterValues={filterValues}
-                        setFilterValues={setFilterValues}
-                        setSort={setSort}
-                        sortOptions={sortOptions}
-                        sortValue={sortValue}
-                        searchText={searchText}
-                        handlerFilter={setSearchText}
-                      />
-                    </div>
-                    <div className='ml-4'>{manageJob && <AddJob />}</div>
+            <div className='container-lg mx-auto w-full px-12'>
+              <div className='flex flex-row justify-between'>
+              <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
+              <div className='ml-4'>{manageJob && <AddJob />}</div>
+              </div>
+              <div className='mb-4 flex flex-col gap-4'>
+                <div className='flex items-center justify-between'>
+                  <div className='flex-grow'>
+                    <FilterJobDashboard
+                      filterOptions={filterOptions}
+                      filterValues={filterValues}
+                      setFilterValues={setFilterValues}
+                      setSort={setSort}
+                      sortOptions={sortOptions}
+                      sortValue={sortValue}
+                      searchText={searchText}
+                      handlerFilter={setSearchText}
+                    />
                   </div>
-                  <div className='overflow-x-auto bg-white rounded-lg shadow'>
-                    <JobsList jobs={jobs} />
-                  </div>
+                  {/* <div className='ml-4'>{manageJob && <AddJob />}</div> */}
+                </div>
+                <div className='overflow-x-auto rounded-lg bg-white shadow'>
+                  <JobsList jobs={jobs} />
                 </div>
               </div>
             </div>
@@ -188,9 +189,9 @@ const Sync = () => {
         size='sm'
         variant='secondary'
         onClick={handleSync}
-        className='w-auto flex items-center'
+        className='flex w-auto items-center'
       >
-        <RefreshCw className='w-4 h-4 mr-2' strokeWidth={1.5} />
+        <RefreshCw className='mr-2 h-4 w-4' strokeWidth={1.5} />
         <span className='flex-grow'>Sync</span>
       </Button>
     </OptimisticWrapper>

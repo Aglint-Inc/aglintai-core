@@ -2,13 +2,11 @@ import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { CandidateSideDrawer } from '@devlink/CandidateSideDrawer';
-import { ResumeErrorBlock } from '@devlink2/ResumeErrorBlock';
 import ResumeWait from '@public/lottie/ResumeWait';
 import { CheckCircle2, FileIcon, RefreshCw, UploadCloud } from 'lucide-react';
 import { type ReactNode, useCallback, useState } from 'react';
 
-import Loader from '@/components/Common/Loader';
+import { Loader } from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 
@@ -33,35 +31,34 @@ const Body = (props: Partial<Props> & { showTabs?: boolean }) => {
   const blocker = useBlocker();
   if (blocker)
     return (
-      <CandidateSideDrawer
-        slotTopBar={props.topBar ?? <TopBar />}
-        slotBasicInfo={blocker}
-        isTabs={false}
-        slotNewTabPill={<></>}
-        slotTabContent={<></>}
-      />
+      <div className='flex h-full w-full flex-col'>
+        <div className='border-b p-4'>{props.topBar ?? <TopBar />}</div>
+        <div className='flex-grow overflow-y-auto p-4'>{blocker}</div>
+      </div>
     );
   return (
-    <CandidateSideDrawer
-      slotTopBar={props.topBar ?? <TopBar />}
-      slotBasicInfo={props.meta ?? <Meta />}
-      slotNewTabPill={
-        props.tabs ?? (
-          <TabsList className='grid w-full grid-cols-3'>
-            <TabsTrigger value='resume'>Resume</TabsTrigger>
-            <TabsTrigger value='details'>Details</TabsTrigger>
-            <TabsTrigger value='activity'>Activity</TabsTrigger>
-          </TabsList>
-        )
-      }
-      slotTabContent={
-        <TabContent
-          interview={props.interview}
-          details={props.details}
-          resume={props.resume}
-        />
-      }
-    />
+    <div className='flex h-full w-full flex-col'>
+      <div className='border-b p-4'>{props.topBar ?? <TopBar />}</div>
+      <div className='flex-grow overflow-y-auto'>
+        <div className='p-4'>{props.meta ?? <Meta />}</div>
+        <div className='px-4'>
+          {props.tabs ?? (
+            <TabsList className='grid w-full grid-cols-3'>
+              <TabsTrigger value='resume'>Resume</TabsTrigger>
+              <TabsTrigger value='details'>Details</TabsTrigger>
+              <TabsTrigger value='activity'>Activity</TabsTrigger>
+            </TabsList>
+          )}
+        </div>
+        <div className='p-4'>
+          <TabContent
+            interview={props.interview}
+            details={props.details}
+            resume={props.resume}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -112,7 +109,7 @@ const useBlocker = () => {
   switch (meta?.data?.resume_processing_state) {
     case 'fetching':
     case 'processing':
-      return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
+      return <ResumeWait />;
     case 'unavailable':
       return <Unavailable />;
     case 'unparsable':
@@ -149,7 +146,7 @@ const Unparsable = () => {
       <OptimisticWrapper loading={loading}>
         {file ? (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Upload resume</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Upload resume</h2>
             <p className='mb-4'>Upload the resume to score the candidate</p>
             <div className='flex flex-col items-center gap-4'>
               <ResumeUploadComp
@@ -173,7 +170,7 @@ const Unparsable = () => {
           </div>
         ) : (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Resume not parsable</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Resume not parsable</h2>
             <p className='mb-4'>
               The system is unable to parse the candidate&apos;s resume. Please
               review it manually and proceed accordingly.
@@ -244,7 +241,7 @@ const Unavailable = () => {
       <OptimisticWrapper loading={loading}>
         {file ? (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Upload resume</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Upload resume</h2>
             <p className='mb-4'>Upload the resume to score the candidate</p>
             <div className='flex flex-col items-center gap-4'>
               <ResumeUploadComp
@@ -268,7 +265,7 @@ const Unavailable = () => {
           </div>
         ) : (
           <div className='text-center'>
-            <h2 className='text-2xl font-bold mb-2'>Resume not found</h2>
+            <h2 className='mb-2 text-2xl font-bold'>Resume not found</h2>
             <p className='mb-4'>
               Unable to find the candidate resume. Upload the resume to score
               the candidate
@@ -326,7 +323,7 @@ const ResumeUploadComp = ({
       )}
       <div
         onClick={handleChange}
-        className={`border border-dashed rounded-md p-8 cursor-pointer flex items-center justify-center space-x-2 ${
+        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border border-dashed p-8 ${
           error ? 'border-red-500' : 'border-gray-300'
         } bg-gray-50`}
       >
@@ -345,7 +342,7 @@ const ResumeUploadComp = ({
         {value && <CheckCircle2 className='h-4 w-4 text-green-600' />}
       </div>
       {error && (
-        <p className='text-red-500 text-sm'>
+        <p className='text-sm text-red-500'>
           Please upload the candidate resume
         </p>
       )}

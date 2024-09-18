@@ -6,8 +6,8 @@ import { chat_message_loader } from '@/public/lottie/AssistantChat_chat_message_
 function ChatMessageLoader() {
   const lottieRef = useRef();
   return (
-    <div className="relative h-full left-0 w-[60px]">
-      <div className="w-[50px] h-full absolute -top-[27px] left-0">
+    <div className='relative left-0 h-full w-[60px]'>
+      <div className='absolute -top-[27px] left-0 h-full w-[50px]'>
         <Lottie
           lottieRef={lottieRef}
           animationData={chat_message_loader}

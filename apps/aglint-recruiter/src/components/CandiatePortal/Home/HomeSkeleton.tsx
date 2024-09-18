@@ -12,16 +12,16 @@ import GreetingCandidateSkeleton from '../components/GreetingCandidateSkeleton';
 
 export default function HomeSkeleton() {
   return (
-    <div className='flex flex-col min-h-screen w-full'>
+    <div className='flex min-h-screen w-full flex-col'>
       <main className='flex-1 px-4 py-8'>
         <div className='grid grid-cols-3 gap-8'>
           <div className='col-span-2'>
             {/* leftside skeleton */}
-            <div className=' rounded-lg overflow-hidden shadow'>
+            <div className='overflow-hidden rounded-lg shadow'>
               <CompanyImageSkeleton />
 
-              <div className='p-8 pt-20 pb-0'>
-                <Skeleton className='h-6 w-40 mb-2' />
+              <div className='p-8 pb-0 pt-20'>
+                <Skeleton className='mb-2 h-6 w-40' />
                 <Skeleton className='h-4 w-72' />
                 <GreetingCandidateSkeleton />
               </div>

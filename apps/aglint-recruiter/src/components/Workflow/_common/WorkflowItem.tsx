@@ -25,10 +25,10 @@ export function WorkflowItem({
 }: WorkflowItemProps) {
   return (
     <Card className='w-full'>
-      <CardHeader className='flex flex-row justify-between  p-4 border-b'>
+      <CardHeader className='flex flex-row justify-between border-b p-4'>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center gap-2'>
-            <div className='flex justify-center items-center w-6 h-6 rounded bg-accent text-accent-foreground'>
+            <div className='flex h-6 w-6 items-center justify-center rounded bg-accent text-accent-foreground'>
               {slotWorkflowIcon}
             </div>
             <span className='font-medium'>{textWorkflowType}</span>
