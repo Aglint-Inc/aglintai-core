@@ -30,7 +30,7 @@ function InterviewStatistics({module_id}:{module_id:string}) {
               <span className='font-bold text-gray-900'>{isFetched?data.interval:<Skeleton className='h-6 w-10'/>}</span>
             </div>
           </div>
-        </CardContent>
+        </CardContent >
       </Card>
   )
 }

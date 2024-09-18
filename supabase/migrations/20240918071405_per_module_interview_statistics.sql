@@ -27,6 +27,6 @@ BEGIN
         interview_session ON interview_meeting.id = interview_session.meeting_id
     JOIN 
         applications ON applications.id = interview_meeting.application_id
-    WHERE interview_session.module_id = per_job_interview_statistics.module_id;
+    WHERE interview_session.module_id = per_module_interview_statistics.module_id;
 END;
 $$ LANGUAGE plpgsql;
