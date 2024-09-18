@@ -8,7 +8,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'confirmInterview_email_applicant'
@@ -107,7 +107,7 @@ export const fetchUtil: FetchUtilType<
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      companyName: companyName,
+      companyName,
       jobRole: job_title,
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
