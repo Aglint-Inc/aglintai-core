@@ -26,8 +26,7 @@ function UIDrawer({
   slotBottom?: React.ReactNode;
   title: string;
   size?: 'sm' | 'md' | 'lg' | 'full' | 'half';
-  calendar?: React.ReactNode;
-  scrollAreaHeight?: string; // New prop for adjustable height
+  calendar?: React.ReactNode;// New prop for adjustable height
 }) {
   // Determine width based on size variant
   const widthClass = {
