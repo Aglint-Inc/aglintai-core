@@ -70,9 +70,11 @@ function InterviewDetailsTabs() {
               value={tab.value}
               onClick={() => {
                 router.replace(
-                  ROUTES['/interview-pool/[type_id]']({
+                  ROUTES['/interview-pool/[pool]']({
                     type_id,
-                  }),
+                  }) +
+                    '?tab=' +
+                    tab.value,
                 );
               }}
             >
