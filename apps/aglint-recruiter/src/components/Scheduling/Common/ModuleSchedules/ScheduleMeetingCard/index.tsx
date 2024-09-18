@@ -6,6 +6,7 @@ import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadg
 import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { type getAllInterviews } from '@/components/Scheduling/Interviews/_common/hooks/useAllInterviews';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -14,7 +15,6 @@ import {
   getScheduleTextcolor,
   getScheduleType,
 } from '../../../../../utils/scheduling/colors_and_enums';
-import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
 import { MyScheduleSubCard } from './MyScheduleSubCard';
@@ -22,7 +22,7 @@ import { MyScheduleSubCard } from './MyScheduleSubCard';
 function ScheduleMeetingCard({
   meetingDetails,
 }: {
-  meetingDetails: Awaited<ReturnType<typeof getAllScheduleList>>[number];
+  meetingDetails: Awaited<ReturnType<typeof getAllInterviews>>[number];
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
@@ -31,7 +31,7 @@ function ScheduleMeetingCard({
   return (
     <>
       <div
-        className="cursor-pointer"
+        className='cursor-pointer'
         onClick={() => {
           router.push(
             `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
@@ -125,7 +125,7 @@ function ScheduleMeetingCard({
           }
           isAvatarWithNameVisible={!collapseOpen}
           textJob={
-            <div className="flex flex-row items-center space-y-5">
+            <div className='flex flex-row items-center space-y-5'>
               <span>{meetingDetails?.public_jobs.job_title}</span>
             </div>
           }

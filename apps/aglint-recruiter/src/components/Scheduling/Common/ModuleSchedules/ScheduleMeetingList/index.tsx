@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { CalendarClock } from 'lucide-react';
 
-import { NewMyScheduleCard } from '@/components/Scheduling/MySchedules/NewMyScheduleCard';
+import { NewMyScheduleCard } from '@/components/Scheduling/Interviews/_common/components/NewMyScheduleCard';
 
 import {
   type SchedulesSupabase,

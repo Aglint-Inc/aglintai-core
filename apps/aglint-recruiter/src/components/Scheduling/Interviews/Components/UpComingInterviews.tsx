@@ -1,19 +1,19 @@
-import { Loader } from '@/components/Common/Loader';
-
 import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
-import { useScheduleStatesContext } from '../ScheduleStatesContext';
+import UpComingInterviewFilters from '../_common/components/Filters/upComingFilter';
+import { useScheduleStatesContext } from '../_common/contexts/ScheduleStatesContext';
+import { useAllInterviews } from '../_common/hooks/useAllInterviews';
 
-function ScheduleList() {
-  const { filteredSchedules, loadingSchedules } = useScheduleStatesContext();
+function UpComingInterviews() {
+  const { upcomingFilterState } = useScheduleStatesContext();
+  const { data: schedules, isFetched } = useAllInterviews({
+    ...upcomingFilterState,
+  });
 
   return (
-    <div>
-      {loadingSchedules && (
-        <div className='h-[calc(100vh-96px)] w-full'>
-          <Loader />
-        </div>
-      )}
-      {!loadingSchedules && filteredSchedules.length === 0 && (
+    <>
+      <UpComingInterviewFilters />
+      {!isFetched && <div>Loading...</div>}
+      {isFetched && schedules?.length === 0 && (
         <div className='flex min-h-[calc(100vh-128px)] items-center justify-center rounded-md bg-neutral-100'>
           <div className='w-[300px] max-w-sm p-2'>
             <div className='flex flex-col items-center justify-center p-8 text-center'>
@@ -41,9 +41,9 @@ function ScheduleList() {
           </div>
         </div>
       )}
-      <ScheduleMeetingList filterSchedules={filteredSchedules} />
-    </div>
+      <ScheduleMeetingList filterSchedules={schedules} />
+    </>
   );
 }
 
-export default ScheduleList;
+export default UpComingInterviews;
