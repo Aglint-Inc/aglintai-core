@@ -98,6 +98,7 @@ export async function POST(req) {
         department_id: departmentId,
         role_id: role.id,
         role: role.name,
+        is_calendar_connected: true,
         manager_id:
           role.name === 'admin'
             ? null
