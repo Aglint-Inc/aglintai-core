@@ -12,8 +12,6 @@ import {
   Calendar,
   CheckCircle,
   Clock,
-  Star,
-  Users,
   XCircle,
 } from 'lucide-react';
 
@@ -22,6 +20,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
 
 import { type useAllInterviewModulesType } from '../hooks';
+import ROUTES from '@/utils/routing/routes';
 export const InterviewPoolList = ({
   interviewType,
 }: {
@@ -39,7 +38,9 @@ export const InterviewPoolList = ({
       key={interviewType.id}
       className='cursor-pointer hover:bg-gray-50'
       onClick={() => {
-        router.push(`/interview-pool/${interviewType.id}`);
+        router.push(
+          ROUTES['/interview-pool/[pool]']({ type_id: interviewType.id }),
+        );
       }}
     >
       <TableCell className='font-medium'>{interviewType.name}</TableCell>
@@ -54,7 +55,7 @@ export const InterviewPoolList = ({
                   className='bg-green-100 text-green-800'
                 >
                   <CheckCircle className='mr-1 h-3 w-3' />
-                  {interviewType.this_month_completed_count}
+                  {interviewType.this_month_completed_meeting_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -70,7 +71,7 @@ export const InterviewPoolList = ({
                   className='bg-blue-100 text-blue-800'
                 >
                   <Calendar className='mr-1 h-3 w-3' />
-                  {interviewType.this_month_scheduled_count}
+                  {interviewType.this_month_confirmed_meeting_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -83,7 +84,7 @@ export const InterviewPoolList = ({
               <TooltipTrigger>
                 <Badge variant='secondary' className='bg-red-100 text-red-800'>
                   <XCircle className='mr-1 h-3 w-3' />
-                  {interviewType.this_month_cancelled_count}
+                  {interviewType.this_month_cancelled_meeting_count}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -102,7 +103,7 @@ export const InterviewPoolList = ({
                 className='w-[80px] justify-center border-purple-200 bg-purple-50 text-purple-800'
               >
                 <Clock className='mr-1 h-3 w-3' />
-                {interviewType.average_meeting_duration} min
+                {interviewType.avg_meeting_duration} min
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
@@ -111,69 +112,28 @@ export const InterviewPoolList = ({
           </Tooltip>
         </TooltipProvider>
       </TableCell>
+
       <TableCell>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Badge
-                variant='outline'
-                className='border-orange-200 bg-orange-50 text-orange-800'
-              >
-                <Users className='mr-1 h-3 w-3' />-
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Average Candidates per Week</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </TableCell>
-      <TableCell>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Badge
-                variant='outline'
-                className='border-teal-200 bg-teal-50 text-teal-800'
-              >
-                <Calendar className='mr-1 h-3 w-3' />
-                {interviewType.upcoming_meeting_count}
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Number of Upcoming Available Slots</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </TableCell>
-      <TableCell>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Badge
-                variant='outline'
-                className='flex w-[70px] items-center justify-center border-yellow-200 bg-yellow-50 text-yellow-800'
-              >
-                <Star className='mr-1 h-3 w-3' />
-                <span>{interviewType.passed_rate} %</span>
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Candidate Pass Rate</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </TableCell>
-      <TableCell>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Badge
-                variant='outline'
-                className='border-indigo-200 bg-indigo-50 text-indigo-800'
-              >
-                <Briefcase className='mr-1 h-3 w-3' />-
-              </Badge>
+              {interviewType.job_names.length > 0 ? (
+                <Badge
+                  variant='outline'
+                  className='border-indigo-200 bg-indigo-50 text-indigo-800'
+                >
+                  <Briefcase className='mr-1 h-3 w-3' /> {` - `}
+                  {interviewType.job_names
+                    .slice(0, 2)
+                    .map((job) => job)
+                    .join(', ')}
+                  {interviewType.job_names.length > 2 ? (
+                    <span>{` + ${interviewType.job_names.length - 2}`}</span>
+                  ) : null}
+                </Badge>
+              ) : (
+                '--'
+              )}
             </TooltipTrigger>
             <TooltipContent>
               <p>Number of Open Positions</p>

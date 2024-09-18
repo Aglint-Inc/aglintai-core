@@ -93,7 +93,7 @@ export function FilterOptions({
     : [];
 
   const filtered =
-    filteredOptions[0].options.length > 0
+    filteredOptions?.[0]?.options.length > 0
       ? filteredOptions
           ?.map((optionList) => {
             let filteredOp = optionList.options;
