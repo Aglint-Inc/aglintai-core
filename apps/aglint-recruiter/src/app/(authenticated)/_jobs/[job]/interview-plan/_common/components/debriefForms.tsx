@@ -546,7 +546,7 @@ export const getDebriefSessionPayload = (
   fields: DebriefFormFields,
   session_order: number,
   interview_plan_id: string,
-): CreateDebriefSession => {
+): Omit<CreateDebriefSession, 'recruiter_id'> => {
   const {
     name,
     schedule_type,

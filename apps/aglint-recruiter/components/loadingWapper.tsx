@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import React from 'react';
 
 const OptimisticWrapper: React.FC<{
@@ -6,16 +5,11 @@ const OptimisticWrapper: React.FC<{
   loading?: boolean;
 }> = ({ children, loading = true }) => {
   return (
-    <Stack
-      style={{
-        opacity: loading ? 0.4 : 1,
-        pointerEvents: loading ? 'none' : 'auto',
-        transition: '0.4s',
-        width: '100%',
-      }}
+    <div
+      className={`duration-400 w-full transition-opacity ${loading ? 'pointer-events-none opacity-40' : 'pointer-events-auto opacity-100'}`}
     >
       {children}
-    </Stack>
+    </div>
   );
 };
 

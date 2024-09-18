@@ -43,6 +43,7 @@ const TriggerForm = () => {
   } = useWorkflow();
   const payload = { trigger, phase };
   return (
+    <div className="">
     <UISelect
       label='When will the event trigger?'
       disabled={!manageWorkflow}
@@ -57,6 +58,7 @@ const TriggerForm = () => {
         });
       }}
     />
+    </div>
   );
 };
 
@@ -67,6 +69,7 @@ const DurationForm = () => {
     handleUpdateWorkflow,
   } = useWorkflow();
   return (
+    <div className="mt-4">
     <UISelect
       label='Interval between the trigger and action'
       disabled={!manageWorkflow}
@@ -79,6 +82,7 @@ const DurationForm = () => {
         handleUpdateWorkflow({ interval: Number(value) })
       }
     />
+    </div>
   );
 };
 

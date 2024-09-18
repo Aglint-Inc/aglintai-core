@@ -4,9 +4,6 @@
 # dependencies
 /.next
 /.vscode
-/devlink
-/devlink2
-/devlink3
 /node_modules
 
 # next.js

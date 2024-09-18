@@ -28,7 +28,7 @@ export default function InterviewTypesPage() {
 
   if (modulesLoading || departmentLoading)
     return (
-      <div className='flex h-full w-full items-center justify-center'>
+      <div className='fixed inset-0 flex items-center justify-center'>
         <Loader />
       </div>
     );
@@ -110,9 +110,6 @@ export default function InterviewTypesPage() {
                   <TableHead>Department</TableHead>
                   <TableHead>Monthly Schedules</TableHead>
                   <TableHead>Avg. Duration</TableHead>
-                  <TableHead>Candidates/Week</TableHead>
-                  <TableHead>Upcoming Slots</TableHead>
-                  <TableHead>Pass Rate</TableHead>
                   <TableHead>Open Positions</TableHead>
                   <TableHead></TableHead>
                 </TableRow>

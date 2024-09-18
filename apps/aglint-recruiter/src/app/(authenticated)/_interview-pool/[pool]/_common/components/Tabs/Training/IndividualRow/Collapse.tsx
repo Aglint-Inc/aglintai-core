@@ -1,7 +1,7 @@
 import { Minus, Plus } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
+import UITextField from '@/components/Common/UITextField';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getFullName } from '@/utils/jsonResume';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
@@ -202,19 +202,21 @@ function CollapseTrainingProgress({
                 });
               }}
             />
-            <MuiNumberfield
-              isMarginTop={false}
-              width='80px'
-              isDisable={isSaving}
+            <UITextField
+              style={{ width: '70px' }}
+              fieldSize='small'
+              type='number'
               value={mutatedShadowProgress.length + shadowProgress.length}
-              handleSelect={(value) =>
+              onChange={(e) => {
+                if (isSaving) return;
                 alterCount({
                   type: 'shadow',
-                  count: Number(value),
+                  count: Number(e.target.value),
                   module_relation_id: module_realtion_id,
-                })
-              }
+                });
+              }}
             />
+
             <UIButton
               size='sm'
               icon={<Plus />}
@@ -248,22 +250,24 @@ function CollapseTrainingProgress({
                 });
               }}
             />
-            <MuiNumberfield
-              isMarginTop={false}
-              width='80px'
-              isDisable={isSaving}
+            <UITextField
+              style={{ width: '70px' }}
+              fieldSize='small'
+              type='number'
               value={
                 mutatedReverseShadowProgress.length +
                 reverseShadowProgress.length
               }
-              handleSelect={(value) =>
+              onChange={(e) => {
+                if (isSaving) return;
                 alterCount({
                   type: 'reverse_shadow',
-                  count: value,
+                  count: Number(e.target.value),
                   module_relation_id: module_realtion_id,
-                })
-              }
+                });
+              }}
             />
+
             <UIButton
               size='sm'
               variant='secondary'
