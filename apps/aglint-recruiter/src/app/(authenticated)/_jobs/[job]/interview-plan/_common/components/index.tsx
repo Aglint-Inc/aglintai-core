@@ -518,7 +518,6 @@ const InterviewSession = ({
     handleUpdateSession,
     manageJob,
   } = useJobInterviewPlan();
-  const [hover, setHover] = useState(false);
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
@@ -610,20 +609,18 @@ const InterviewSession = ({
   });
   drag(drop(ref));
 
+  const [hover, setHover] = useState(false);
+
   return (
     <div
       ref={manageJob ? ref : null}
       className={`flex flex-col ${isDragging ? 'opacity-0' : 'opacity-100'}`}
       data-handler-id={handlerId}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <OptimisticWrapper loading={isLoading}>
-        <div
-          onMouseOver={() => setHover(true)}
-          onMouseOut={() => setHover(false)}
-          onFocus={() => setHover(true)}
-          onBlur={() => setHover(false)}
-          className={`flex flex-col ${hover ? 'mb-1' : 'mb-4'}`}
-        >
+        <div className={`flex flex-col`}>
           <InterviewPlanDetail
             textModuleName={
               <div className='flex flex-row gap-3'>
@@ -672,22 +669,23 @@ const InterviewSession = ({
             }
             slotAddScheduleCard={
               <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
-                <Tooltip>
+                <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
-                    <div>
-                      <div
-                        className={
-                          'relative flex h-6 items-center justify-center'
-                        }
-                      >
-                        <div className='h-6 w-full' />
+                    <div
+                      className={
+                        'relative mb-4 mt-2 flex h-[20px] items-center justify-center'
+                      }
+                    >
+                      {hover ? (
                         <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
-                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
+                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all'></div>
                           <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
                             <Plus size={10} color='white' />
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </TooltipTrigger>
                   <TooltipContent
