@@ -108,12 +108,12 @@ export function FilterOptions({
       : [];
   return (
     <div
-      className={`max-h-[280px] flex flex-col gap-1 min-w-56 ${separator && 'border-l'} border-b`}
+      className={`flex max-h-[280px] min-w-56 flex-col gap-1 ${separator && 'border-l'} border-b`}
     >
       {sectionHeading && (
-        <div className='px-2 py-1  border-b flex flex-row justify-between items-center'>
-          <Label className='font-bold text-base'>{sectionHeading}</Label>
-          <div className='flex row items-center'>
+        <div className='flex flex-row items-center justify-between border-b px-2 py-1'>
+          <Label className='text-base font-bold'>{sectionHeading}</Label>
+          <div className='row flex items-center'>
             <Button
               variant='ghost'
               className='px-3'
@@ -129,9 +129,9 @@ export function FilterOptions({
         </div>
       )}
       {Boolean(filterSearch) && (
-        <div className='w-full p-1 '>
+        <div className='w-full p-1'>
           <Input
-            className='w-full border rounded p-1 pl-2 transition-colors duration-200'
+            className='w-full rounded border p-1 pl-2 transition-colors duration-200'
             type='text'
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -139,7 +139,7 @@ export function FilterOptions({
           />
         </div>
       )}
-      <div className='max-h-[300px] p-1 overflow-auto'>
+      <div className='max-h-[300px] overflow-auto p-1'>
         {filtered.length > 0 ? (
           filtered.map((optionList, i) => (
             <div key={`OPS_${optionList.header}${i}`}>
@@ -159,7 +159,7 @@ export function FilterOptions({
             </div>
           ))
         ) : (
-          <div className='flex flex-col items-center justify-center h-[150px]'>
+          <div className='flex h-[150px] flex-col items-center justify-center'>
             <p className='text-sm text-gray-500'>
               No {sectionHeading || 'Options'} found
             </p>
@@ -192,7 +192,7 @@ function FilterSubOptions({
     return filtered.map((option) => (
       <div
         key={option.id}
-        className='flex items-center space-x-2 group hover:bg-muted p-2 rounded-md transition-colors cursor-pointer'
+        className='group flex cursor-pointer items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted'
         onClick={(e) => {
           e.preventDefault();
           setSelectedItems(option.id, path);
@@ -213,7 +213,7 @@ function FilterSubOptions({
         />
         <label
           htmlFor='terms'
-          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 group-hover:text-primary cursor-pointer'
+          className='cursor-pointer text-sm font-medium leading-none group-hover:text-primary peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
         >
           {option.label}
         </label>
@@ -224,13 +224,13 @@ function FilterSubOptions({
       <RadioGroup
         value={selectedItems[0]}
         onValueChange={(id) => setSelectedItems(id, path)}
-        className='flex group flex-col gap-2 '
+        className='group flex flex-col gap-2'
       >
         {filtered.map((option) => {
           return (
             <div
               key={option.id}
-              className='flex items-center space-x-2 hover:bg-muted p-2 rounded-md transition-colors w-full'
+              className='flex w-full items-center space-x-2 rounded-md p-2 transition-colors hover:bg-muted'
             >
               <RadioGroupItem value={option.id} id={option.id} />
               <Label htmlFor={option.id} className='w-full cursor-pointer'>

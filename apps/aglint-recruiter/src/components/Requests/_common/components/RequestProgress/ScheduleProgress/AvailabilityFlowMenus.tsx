@@ -19,7 +19,7 @@ const AvailabilityFlowMenus = ({
   isManualSchedule: boolean;
   isSelectScheduleFlowComplete: boolean;
 }) => {
-  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+  const { reqTriggerActionsMap, setTriggerDetails, setShowEditDialog } =
     useRequestProgressProvider();
   const { request_progress } = useRequest();
 
@@ -113,7 +113,10 @@ const AvailabilityFlowMenus = ({
                   variant='outline'
                   size='sm'
                   onClick={() => {
-                    setEditTrigger('sendAvailReqReminder');
+                    setTriggerDetails({
+                      trigger: 'sendAvailReqReminder',
+                      interval: 24 * 60,
+                    });
                     setShowEditDialog(true);
                   }}
                 >

@@ -1,6 +1,5 @@
 import { type DB, type PauseJson } from '@aglint/shared-types';
-
-import { type MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
+import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
 
 import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
 import { type fetchInterviewModules } from '../utils/utils';
@@ -33,4 +32,3 @@ export interface TimeSlotsData {
 export type StatusTraining = DB['public']['Enums']['status_training'];
 
 export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
-

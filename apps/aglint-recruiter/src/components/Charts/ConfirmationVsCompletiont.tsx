@@ -44,11 +44,7 @@ export default function ConfirmationVsCompletion() {
           >
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis dataKey='month' />
-            <YAxis
-              yAxisId='left'
-              orientation='left'
-              stroke='text-blue-500'
-            />
+            <YAxis yAxisId='left' orientation='left' stroke='text-blue-500' />
             <YAxis
               yAxisId='right'
               orientation='right'

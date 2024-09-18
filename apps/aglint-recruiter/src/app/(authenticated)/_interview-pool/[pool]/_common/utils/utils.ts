@@ -6,11 +6,11 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils';
 import axios from 'axios';
 import _ from 'lodash';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 
 import { supabase } from '@/utils/supabase/client';
 
-import { schedulesSupabase } from '../../../../../../components/Scheduling/schedules-query';
+import { schedulesSupabase } from '../../../../../_common/utils/schedules-query';
 import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
 import { type StatusTraining } from '../types/pool';
 

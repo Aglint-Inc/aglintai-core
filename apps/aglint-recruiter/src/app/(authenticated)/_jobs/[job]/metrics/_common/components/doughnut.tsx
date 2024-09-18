@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 
-import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BarElement,
   CategoryScale,
@@ -47,10 +46,33 @@ export const DoughnutChart: React.FC<{
       },
     ],
   };
-  const xl = useMediaQuery('(min-width:1900px)');
-  const l = useMediaQuery('(min-width:1500px)');
-  const m = useMediaQuery('(min-width:1300px)');
-  const s = useMediaQuery('(min-width:1300px)');
+  const xl = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1900px)').matches;
+    }
+    return false;
+  }, []);
+
+  const l = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1500px)').matches;
+    }
+    return false;
+  }, []);
+
+  const m = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1300px)').matches;
+    }
+    return false;
+  }, []);
+
+  const s = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1300px)').matches;
+    }
+    return false;
+  }, []);
 
   return (
     <div

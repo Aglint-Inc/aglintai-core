@@ -1,7 +1,7 @@
 import { toast } from '@components/hooks/use-toast';
 import React, { useEffect, useState } from 'react';
+import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
 
-import { type MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';

@@ -8,7 +8,14 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import { BarChart, Calendar, FileText, UserPlus, Workflow } from 'lucide-react';
+import {
+  BarChart,
+  Calendar,
+  CircleUser,
+  FileText,
+  UserPlus,
+  Workflow,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -61,6 +68,12 @@ const JobsSideNavV2 = () => {
       label: 'Workflows',
       route: 'workflows',
       show: isShowFeature('WORKFLOW'),
+    },
+    {
+      icon: <CircleUser className='h-5 w-5' />,
+      label: 'Candidate Plan',
+      route: 'candidate-plan',
+      show: isShowFeature('CANDIDATE_PORTAL'),
     },
   ];
 

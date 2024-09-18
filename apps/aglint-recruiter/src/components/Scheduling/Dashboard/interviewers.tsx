@@ -1,4 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { memo } from 'react';
 
@@ -8,21 +10,32 @@ import {
 } from '@/context/SchedulingAnalytics';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { InterviewersCardList } from './_common/InterviewersCardList';
-import { InterviewersDash } from './_common/InterviewersDash';
-
 const LIMIT = 4;
 
 export const Interviewers = memo(() => {
   const { interviewersType, setInterviewersType } = useSchedulingAnalytics();
+
+  const handleTabChange = (value: string) => {
+    if (value === 'training' || value === 'qualified') {
+      setInterviewersType(value);
+    }
+  };
+
   return (
-    <InterviewersDash
-      isQualifiedActive={interviewersType === 'qualified'}
-      isTraineeActive={interviewersType === 'training'}
-      onClickQualified={() => setInterviewersType('qualified')}
-      onClickTrainee={() => setInterviewersType('training')}
-      slotInterviewersCardList={<Container />}
-    />
+    <Card>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+        <CardTitle>Interviewers</CardTitle>
+        <Tabs value={interviewersType} onValueChange={handleTabChange}>
+          <TabsList>
+            <TabsTrigger value='qualified'>Qualified</TabsTrigger>
+            <TabsTrigger value='training'>Trainee</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+      <CardContent>
+        <Container />
+      </CardContent>
+    </Card>
   );
 });
 Interviewers.displayName = 'Interviewers';
@@ -63,14 +76,16 @@ const List = ({ data }: Props) => {
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (
         <div
           key={user_id}
-          className="flex flex-row items-center justify-between cursor-pointer hover:bg-gray-100"
+          className='flex cursor-pointer flex-row items-center justify-between hover:bg-gray-100'
         >
-          <InterviewersCardList
-            textName={capitalizeAll(name)}
-            textCompleted={accepted}
-            textDeclined={declined}
-            textUpcoming={'--'}
-          />
+          <div className='flex w-full flex-row items-center justify-between px-4 py-2'>
+            <span className='flex-grow text-sm font-medium'>
+              {capitalizeAll(name)}
+            </span>
+            <span className='px-2 text-sm text-gray-600'>{accepted}</span>
+            <span className='px-2 text-sm text-gray-600'>{declined}</span>
+            <span className='px-2 text-sm text-gray-600'>--</span>
+          </div>
         </div>
       ))}
     </>

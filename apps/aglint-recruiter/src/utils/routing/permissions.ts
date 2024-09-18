@@ -37,6 +37,7 @@ const PERMISSIONS: Permissions = {
   '/jobs/[job]/email-templates': ['job_module', 'manage_job'],
   '/jobs/[job]/hiring-team': ['job_module', 'manage_job'],
   '/jobs/[job]/interview-plan': ['job_module', 'manage_job'],
+  '/jobs/[job]/candidate-plan': ['job_module', 'manage_job'],
   '/jobs/[job]/job-details': ['job_module', 'manage_job'],
   '/jobs/[job]/profile-score': ['job_module', 'manage_job'],
   '/jobs/[job]/workflows': ['job_module'],
@@ -46,8 +47,6 @@ const PERMISSIONS: Permissions = {
   '/workflows/[workflow]': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
-  '/scheduling/interviewer': ['manage_interviewers'],
-  '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/interview-pool': ['view_interview_types'],
   '/interview-pool/[pool]': ['interview_types'],
@@ -58,7 +57,7 @@ const PERMISSIONS: Permissions = {
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/company': ['company_settings_module'],
-  '/user/profile/[user_id]': ['authorized'],
+  '/user/[user]': ['authorized'],
 
   //  For candidateDB module
   '/interviewers': ['authorized'],

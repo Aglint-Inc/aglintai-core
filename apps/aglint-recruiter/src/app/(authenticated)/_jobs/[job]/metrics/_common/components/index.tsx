@@ -119,62 +119,60 @@ const Dashboard = () => {
   // const [, setStorage] = useLocalStorage('scheduleFilterIds');
 
   return (
-    <div className='min-h-screen'>
-      <div className='container mx-auto'>
-        <div className='mb-6 flex items-center justify-between'>
-          <div>
-            <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>
-            <SharedBreadCrumbs />
-          </div>
-          <SharedActions />
+    <div className='container-lg mx-auto w-full px-12'>
+      <div className='mb-6 flex items-center justify-between'>
+        <div>
+          <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>
+          <SharedBreadCrumbs />
         </div>
+        <SharedActions />
+      </div>
 
-        <div className='mb-6 flex flex-col gap-6'>
-          <div>
-            <div className='flex flex-col gap-4 py-4'>
-              {/* {banners.length > 0 && (
-                <div className='flex flex-col gap-1'>
-                  {banners.map((banner, i) => (
-                    <Fragment key={i}>{banner}</Fragment>
-                  ))}
-                </div>
-              )}
-
-              <div className='space-y-4'>
-                <Pipeline />
-              </div> */}
-
-              <div className='space-y-4 rounded-lg border bg-white p-4'>
-                <JobStats
-                  isScoringEnabled={isScoringEnabled}
-                  score_matches={score_matches}
-                  handleFilter={handleFilter}
-                />
+      <div className='mb-6 flex flex-col gap-6'>
+        <div>
+          <div className='flex flex-col gap-4 py-4'>
+            {/* {banners.length > 0 && (
+              <div className='flex flex-col gap-1'>
+                {banners.map((banner, i) => (
+                  <Fragment key={i}>{banner}</Fragment>
+                ))}
               </div>
+            )}
+
+            <div className='space-y-4'>
+              <Pipeline />
+            </div> */}
+
+            <div className='space-y-4 rounded-lg border bg-white p-4'>
+              <JobStats
+                isScoringEnabled={isScoringEnabled}
+                score_matches={score_matches}
+                handleFilter={handleFilter}
+              />
+            </div>
+          </div>
+
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div className='space-y-4'>
+              <Doughnut />
+              <Bars />
             </div>
 
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-              <div className='space-y-4'>
-                <Doughnut />
-                <Bars />
-              </div>
+            {/* Bottom Left */}
+            <div className='space-y-4'>
+              <LineGraph />
+              <TenureAndExpSummary />
+            </div>
 
-              {/* Bottom Left */}
-              <div className='space-y-4'>
-                <LineGraph />
-                <TenureAndExpSummary />
-              </div>
-
-              {/* Bottom Right */}
-              <div className='space-y-4'>
-                <Schedules
-                  schedule={schedule}
-                  // setStorage={setStorage}
-                  push={push}
-                  // job={job}
-                />
-                {/* <Roles /> */}
-              </div>
+            {/* Bottom Right */}
+            <div className='space-y-4'>
+              <Schedules
+                schedule={schedule}
+                // setStorage={setStorage}
+                push={push}
+                // job={job}
+              />
+              {/* <Roles /> */}
             </div>
           </div>
         </div>
@@ -285,7 +283,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 //                 </Avatar>
 //                 <div className='flex flex-col'>
 //                   <Link
-//                     href={`/user/profile/${user.user_id}`}
+//                     href={`/user/${user.user_id}`}
 //                     className='font-medium hover:underline'
 //                   >
 //                     {name}
@@ -335,7 +333,7 @@ const StatItem = ({ label, percentage, count, onClick, color }) => (
 //             className='flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
 //             onClick={() =>
 //               push(
-//                 `/user/profile/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
+//                 `/user/${coordinator.props.children[1].props.children[0].props.href.split('/').pop()}`,
 //               )
 //             }
 //           >

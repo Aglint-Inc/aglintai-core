@@ -52,7 +52,7 @@ const DashboardComp = () => {
     <div className='h-full w-full'>
       {!initialLoad ? (
         <div className='min-h-screen'>
-          <div className='container mx-auto space-y-4'>
+          <div className='container-lg mx-auto w-full space-y-4 px-12'>
             <div className='flex items-center justify-between'>
               <div className='space-y-2'>
                 <Skeleton className='h-8 w-[200px]' />
@@ -80,28 +80,26 @@ const DashboardComp = () => {
               ['manage_job'],
             )
           ) : (
-            <div className='min-h-screen'>
-              <div className='container mx-auto'>
-                <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
-                <div className='mb-4 flex flex-col gap-4'>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex-grow'>
-                      <FilterJobDashboard
-                        filterOptions={filterOptions}
-                        filterValues={filterValues}
-                        setFilterValues={setFilterValues}
-                        setSort={setSort}
-                        sortOptions={sortOptions}
-                        sortValue={sortValue}
-                        searchText={searchText}
-                        handlerFilter={setSearchText}
-                      />
-                    </div>
-                    <div className='ml-4'>{manageJob && <AddJob />}</div>
+            <div className='container-lg mx-auto w-full px-12'>
+              <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
+              <div className='mb-4 flex flex-col gap-4'>
+                <div className='flex items-center justify-between'>
+                  <div className='flex-grow'>
+                    <FilterJobDashboard
+                      filterOptions={filterOptions}
+                      filterValues={filterValues}
+                      setFilterValues={setFilterValues}
+                      setSort={setSort}
+                      sortOptions={sortOptions}
+                      sortValue={sortValue}
+                      searchText={searchText}
+                      handlerFilter={setSearchText}
+                    />
                   </div>
-                  <div className='overflow-x-auto rounded-lg bg-white shadow'>
-                    <JobsList jobs={jobs} />
-                  </div>
+                  <div className='ml-4'>{manageJob && <AddJob />}</div>
+                </div>
+                <div className='overflow-x-auto rounded-lg bg-white shadow'>
+                  <JobsList jobs={jobs} />
                 </div>
               </div>
             </div>

@@ -31,7 +31,7 @@ export function TimeRangeSelector({
       )}
       <div className='mb-1'>{slotSelectedTime}</div>
       <div className='flex gap-4'>
-        <div className='w-full grid grid-cols-2 gap-4'>{slotTimeinputs}</div>
+        <div className='grid w-full grid-cols-2 gap-4'>{slotTimeinputs}</div>
         <div>{slotButton}</div>
       </div>
     </Component>

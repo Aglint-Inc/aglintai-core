@@ -7,14 +7,14 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+import MembersAutoComplete, {
+  type MemberTypeAutoComplete,
+} from 'src/app/_common/components/MembersTextField';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import MembersAutoComplete, {
-  type MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';

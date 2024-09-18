@@ -178,7 +178,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
                           <div className='flex flex-row items-center space-x-2'>
                             {<UserCircle className='h-4 w-4' />}
                             <Link
-                              href={`/user/profile/${request.assigner_id}`}
+                              href={`/user/${request.assigner_id}`}
                               target='_blank'
                               className='hover:underline'
                             >

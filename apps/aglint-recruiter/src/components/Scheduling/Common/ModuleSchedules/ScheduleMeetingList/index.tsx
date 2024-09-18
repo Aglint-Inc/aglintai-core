@@ -6,7 +6,7 @@ import { NewMyScheduleCard } from '@/components/Scheduling/MySchedules/NewMySche
 import {
   type SchedulesSupabase,
   transformDataSchedules,
-} from '../../../schedules-query';
+} from '../../../../../app/_common/utils/schedules-query';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({

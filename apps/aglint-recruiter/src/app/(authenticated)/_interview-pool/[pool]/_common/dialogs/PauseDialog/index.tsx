@@ -159,35 +159,35 @@ function PauseDialog() {
           {selectedType === 'custom' && (
             <div className='flex w-full space-x-1'>
               <UIDatePicker
-              value={new Date(pause_json?.start_date)}
-              onAccept={(newValue) => {
-                if (dayjs(newValue).toISOString() < pause_json?.end_date) {
-                  setPauseJson({
-                    ...pause_json,
-                    start_date: dayjs(newValue).toISOString(),
-                  });
-                } else {
-                  setPauseJson({
-                    ...pause_json,
-                    start_date: dayjs(newValue).toISOString(),
-                    end_date: null,
-                  });
-                }
-              }}
-              minDate={new Date(currentDate.toISOString())}
+                value={new Date(pause_json?.start_date)}
+                onAccept={(newValue) => {
+                  if (dayjs(newValue).toISOString() < pause_json?.end_date) {
+                    setPauseJson({
+                      ...pause_json,
+                      start_date: dayjs(newValue).toISOString(),
+                    });
+                  } else {
+                    setPauseJson({
+                      ...pause_json,
+                      start_date: dayjs(newValue).toISOString(),
+                      end_date: null,
+                    });
+                  }
+                }}
+                minDate={new Date(currentDate.toISOString())}
               />
-             <UIDatePicker
-             value={new Date(pause_json?.end_date)}
-             onAccept={(newValue) => {
-               if (dayjs(newValue).toISOString() > pause_json?.start_date) {
-                 setPauseJson({
-                   ...pause_json,
-                   end_date: dayjs(newValue).toISOString(),
-                 });
-               }
-             }}
-             minDate={new Date(pause_json?.start_date)}
-             />
+              <UIDatePicker
+                value={new Date(pause_json?.end_date)}
+                onAccept={(newValue) => {
+                  if (dayjs(newValue).toISOString() > pause_json?.start_date) {
+                    setPauseJson({
+                      ...pause_json,
+                      end_date: dayjs(newValue).toISOString(),
+                    });
+                  }
+                }}
+                minDate={new Date(pause_json?.start_date)}
+              />
             </div>
           )}
         </div>

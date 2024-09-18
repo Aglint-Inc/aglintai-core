@@ -1,4 +1,3 @@
-import Stack from '@mui/material/Stack';
 import {
   BarElement,
   CategoryScale,
@@ -35,19 +34,15 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack width={'400px'} height={'500px'}>
         <div className='flex h-[350px] items-center justify-center'>
           <Loader2 className='h-8 w-8 animate-spin text-gray-400' />
         </div>
-      </Stack>
     );
 
   if (status === 'error') return <>Error</>;
 
   return (
-    <Stack width={'400px'} height={'500px'}>
       <BarChart data={data} />
-    </Stack>
   );
 });
 Container.displayName = 'Container';

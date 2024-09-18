@@ -1,5 +1,6 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { Avatar } from '@mui/material';
 import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -17,9 +18,9 @@ const TrainingProgress = () => {
   const { push } = useRouter();
   const { data } = useInterviewTrainingProgress();
   return (
-    <div className='w-full'>
-      <div className='mb-4 flex items-center justify-between'>
-        <h2 className='text-xl font-semibold'>Training Progress</h2>
+    <Card className='w-full'>
+      <CardHeader className='flex flex-row items-center justify-between'>
+        <CardTitle>Training Progress</CardTitle>
         {!!data && data.length !== 0 && (
           <Link
             href={`${ROUTES['/scheduling']()}?tab=interviewtypes`}
@@ -31,11 +32,11 @@ const TrainingProgress = () => {
             View All Interviewers
           </Link>
         )}
-      </div>
-      <div className='rounded-lg bg-white p-4 shadow'>
+      </CardHeader>
+      <CardContent>
         <TrainingProgressComponent />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -80,18 +81,22 @@ const TrainingProgressComponent = () => {
         count,
       }) => (
         <>
-          <Link href={`/user/profile/${user_id}`}>
+          <Link href={`/user/${user_id}`}>
             <div className='flex items-center space-x-4 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-50'>
               <div className='flex-shrink-0'>
-                <Avatar
-                  src={profile_image}
-                  alt={capitalizeAll(getFullName(first_name, last_name))}
-                  className='h-10 w-10'
-                />
+                <Avatar className='h-10 w-10'>
+                  <AvatarImage
+                    src={profile_image}
+                    alt={capitalizeAll(getFullName(first_name, last_name))}
+                  />
+                  <AvatarFallback>
+                    {getInitials(first_name, last_name)}
+                  </AvatarFallback>
+                </Avatar>
               </div>
               <div className='flex-grow'>
                 <Link
-                  href={`/user/profile/${user_id}`}
+                  href={`/user/${user_id}`}
                   className='text-sm font-medium text-gray-900 hover:underline'
                 >
                   {capitalizeAll(getFullName(first_name, last_name))}
@@ -165,3 +170,11 @@ const HistoryPills = ({
     </>
   );
 };
+
+export function getInitials(firstName, lastName) {
+  if (!firstName) return '';
+  if (!lastName) {
+    return firstName.substring(0, 2).toUpperCase();
+  }
+  return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
+}

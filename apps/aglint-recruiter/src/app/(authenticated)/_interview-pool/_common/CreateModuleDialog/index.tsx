@@ -69,7 +69,7 @@ function CreateModuleDialog() {
           department_id: selDepartment.id,
         });
         await router.push(
-          ROUTES['/interview-pool/[type_id]']({
+          ROUTES['/interview-pool/[pool]']({
             type_id: res.id,
           }),
         );

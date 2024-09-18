@@ -1,5 +1,4 @@
 import {
-  DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
   SupabaseType,
@@ -43,6 +42,7 @@ export const createRequestProgressLogger = ({
         progress_id = progress.id;
       }
     }
+    console.log('meta 1', payload.meta);
     const [rec] = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
@@ -50,8 +50,8 @@ export const createRequestProgressLogger = ({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
-            ...(payload.meta ?? {}),
             event_run_id,
+            ...(payload.meta ?? {}),
           },
           log: payload.log,
           id: progress_id,

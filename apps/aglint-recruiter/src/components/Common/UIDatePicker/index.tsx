@@ -14,8 +14,8 @@ export function UIDatePicker({
   value,
   onAccept,
   closeOnSelect,
-  minDate, 
-  maxDate
+  minDate,
+  maxDate,
 }: {
   value: Date;
   onAccept: (_value: Date) => void;
@@ -51,7 +51,7 @@ export function UIDatePicker({
             closeOnSelect && setOpen(false);
           }}
           disabled={(date) =>
-            minDate && date < minDate || maxDate && date > maxDate
+            (minDate && date < minDate) || (maxDate && date > maxDate)
           }
         />
       </PopoverContent>

@@ -3,7 +3,7 @@ import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import { type MemberType } from 'src/app/_common/types/member';
+import { type MemberType } from 'src/app/_common/types/memberType';
 import { ScheduleInterviewPop } from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewTab/ScheduleInterviewPop';
 import { RequestOption } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
 

@@ -2,7 +2,6 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { InterviewMemberSide } from '@devlink2/InterviewMemberSide';
 import axios from 'axios';
 import { Calendar, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -11,15 +10,13 @@ import { useEffect, useState } from 'react';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/queries/intergrations';
 
+import { transformDataSchedules } from '../../../app/_common/utils/schedules-query';
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
-import {
-  fetchSchedulesCountByUserId,
-  useAllSchedulesByUserId,
-} from '../Interviewers/InterviewerDetail/query';
-import { transformDataSchedules } from '../schedules-query';
+import { InterviewMemberSide } from './InterviewMemberSide';
 import { NewMyScheduleCard } from './NewMyScheduleCard';
+import { fetchSchedulesCountByUserId, useAllSchedulesByUserId } from './query';
 
 function MySchedule() {
   const { toast } = useToast();

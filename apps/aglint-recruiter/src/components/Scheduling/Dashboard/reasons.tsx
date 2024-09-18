@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
   BarElement,
   CategoryScale,
@@ -9,7 +8,7 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { BarChart2, Loader2 } from 'lucide-react';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { useSchedulingAnalytics } from '@/context/SchedulingAnalytics';
@@ -19,10 +18,8 @@ export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle>Reasons</CardTitle>
-      </CardHeader>
-      <CardContent>
         <Tabs
           value={reasonsType}
           onValueChange={(value) =>
@@ -33,13 +30,11 @@ export const Reasons = memo(() => {
             <TabsTrigger value='reschedule'>Reschedule</TabsTrigger>
             <TabsTrigger value='declined'>Declined</TabsTrigger>
           </TabsList>
-          <TabsContent value='reschedule'>
-            <Container />
-          </TabsContent>
-          <TabsContent value='declined'>
-            <Container />
-          </TabsContent>
         </Tabs>
+      </CardHeader>
+      <CardContent>
+        {reasonsType === 'declined' && <Container />}
+        {reasonsType === 'reschedule' && <Container />}
       </CardContent>
     </Card>
   );
@@ -110,10 +105,30 @@ const DoughnutChart = memo(({ data }: Props) => {
       },
     ],
   };
-  const xl = useMediaQuery('(min-width:1900px)');
-  const l = useMediaQuery('(min-width:1500px)');
-  const m = useMediaQuery('(min-width:1300px)');
-  const s = useMediaQuery('(min-width:1300px)');
+  const xl = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1900px)').matches;
+    }
+    return false;
+  }, []);
+  const l = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1500px)').matches;
+    }
+    return false;
+  }, []);
+  const m = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1300px)').matches;
+    }
+    return false;
+  }, []);
+  const s = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1300px)').matches;
+    }
+    return false;
+  }, []);
 
   return (
     <div
@@ -150,7 +165,7 @@ const Meta = memo(({ data }: Props) => {
   //   return acc;
   // }, 0);
   return (
-    <div className='flex max-h-[48px] w-full flex-col gap-1 overflow-scroll'>
+    <div className='flex max-h-[48px] w-full flex-col gap-1'>
       {data.map(({ color, name }, i) => {
         return (
           <div className='flex flex-row items-center gap-1' key={i}>

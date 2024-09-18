@@ -25,28 +25,26 @@ export const JobWorkflowDashboard = () => {
 
   return jobLoad ? (
     job && job?.status !== 'closed' ? (
-      <div className='min-h-screen'>
-        <div className='container mx-auto'>
-          <div className='mb-6 flex items-center justify-between'>
-            <div>
-              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
-              <BreadCrumbs />
-            </div>
-            <Actions />
+      <div className='container-lg mx-auto w-full px-12'>
+        <div className='mb-6 flex items-center justify-between'>
+          <div>
+            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
+            <BreadCrumbs />
           </div>
+          <Actions />
+        </div>
 
-          <div className='mb-6 flex gap-6'>
-            <div className='w-1/4'>
-              <JobsSideNavV2 />
-            </div>
-            <div className='w-3/4'>
-              <h2 className='mb-2 text-xl font-bold'>Automations</h2>
-              <p className='mb-4 text-sm text-gray-600'>
-                Automations streamline recruitment processes, saving time and
-                enhancing efficiency throughout the hiring workflow.
-              </p>
-              <JobWorkflow />
-            </div>
+        <div className='mb-6 flex gap-6'>
+          <div className='w-1/4'>
+            <JobsSideNavV2 />
+          </div>
+          <div className='w-3/4'>
+            <h2 className='mb-2 text-xl font-bold'>Automations</h2>
+            <p className='mb-4 text-sm text-gray-600'>
+              Automations streamline recruitment processes, saving time and
+              enhancing efficiency throughout the hiring workflow.
+            </p>
+            <JobWorkflow />
           </div>
         </div>
       </div>

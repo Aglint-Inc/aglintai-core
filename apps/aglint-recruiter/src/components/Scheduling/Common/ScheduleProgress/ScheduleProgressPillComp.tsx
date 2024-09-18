@@ -1,5 +1,4 @@
 import { type DB } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import {
   Calendar,
@@ -49,33 +48,33 @@ export const ProgressIcon = ({
   switch (status) {
     case 'waiting':
       return (
-        <Stack style={{ color: 'var(--warning-11)' }}>
+        <div className="text-yellow-500">
           <WaitingIcon />
-        </Stack>
+        </div>
       );
     case 'confirmed':
       return (
-        <Stack style={{ color: 'var(--blue-11)' }}>
+        <div className="text-blue-500">
           <ConfirmedIcon />
-        </Stack>
+        </div>
       );
     case 'completed':
       return (
-        <Stack style={{ color: 'var(--success-11)' }}>
+        <div className="text-green-500">
           <CompletedIcon />
-        </Stack>
+        </div>
       );
     case 'cancelled':
       return (
-        <Stack style={{ color: 'var(--error-11)' }}>
+        <div className="text-red-500">
           <CancelledIcon />
-        </Stack>
+        </div>
       );
     default:
       return (
-        <Stack style={{ color: 'var(--neutral-9)' }}>
+        <div className="text-gray-500">
           <NotScheduledIcon />
-        </Stack>
+        </div>
       );
   }
 };

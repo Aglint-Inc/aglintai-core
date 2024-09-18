@@ -6,7 +6,7 @@ import UIDialog from '@/components/Common/UIDialog';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { api } from '@/trpc/client';
 
-import MembersAutoComplete from '../../../../../../../components/Scheduling/Common/MembersTextField';
+import MembersAutoComplete from '../../../../../../_common/components/MembersTextField';
 import { useAddMemberHandler } from '../../hooks/useAddMemberHandler';
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {

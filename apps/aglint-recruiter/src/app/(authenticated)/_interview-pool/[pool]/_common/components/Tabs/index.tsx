@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
 
 import { usePoolCandidates } from '../../hooks/useCandidateModule';
 import { usePoolFeedbacks } from '../../hooks/usePoolFeedback';
@@ -68,12 +69,13 @@ function InterviewDetailsTabs() {
               key={tab.value}
               value={tab.value}
               onClick={() => {
-                // router.replace(
-                //   ROUTES['/interview-pool/[type_id]']({
-                //     type_id,
-                //   }),
-                // );
-                router.replace(`/test/${type_id}?tab=${tab.value}`);
+                router.replace(
+                  ROUTES['/interview-pool/[pool]']({
+                    type_id,
+                  }) +
+                    '?tab=' +
+                    tab.value,
+                );
               }}
             >
               {tab.name}

@@ -1,6 +1,5 @@
 import { useToast } from '@components/hooks/use-toast';
-
-import { type MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
+import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
 
 import { addMemberbyUserIds, updateRelations } from '../utils/utils';
 import { type useModuleAndUsers } from './useModuleAndUsers';

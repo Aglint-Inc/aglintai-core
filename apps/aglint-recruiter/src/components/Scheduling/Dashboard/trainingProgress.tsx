@@ -1,7 +1,7 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { TrainingProgress as TrainingProgressDev } from '@devlink3/TrainingProgress';
-import { TrainingProgressList } from '@devlink3/TrainingProgressList';
-import Avatar from '@mui/material/Avatar';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { memo, useMemo } from 'react';
@@ -24,15 +24,24 @@ export const TrainingProgress = memo(() => {
     training_progress: { data },
   } = useSchedulingAnalytics();
   return (
-    <div className='w-full'>
-      <TrainingProgressDev
-        onClickViewAllInterviewers={{
-          onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-        }}
-        isViewAllVisible={(data ?? []).length > LIMIT}
-        slotTrainingProgressList={<Containter />}
-      />
-    </div>
+    <Card className='w-full'>
+      <CardHeader className='flex flex-row items-center justify-between'>
+        <CardTitle>Training Progress</CardTitle>
+        {(data ?? []).length > LIMIT && (
+          <Button
+            variant='ghost'
+            onClick={() =>
+              push(`${ROUTES['/scheduling']()}?tab=interviewtypes`)
+            }
+          >
+            View All Interviewers
+          </Button>
+        )}
+      </CardHeader>
+      <CardContent>
+        <Containter />
+      </CardContent>
+    </Card>
   );
 });
 TrainingProgress.displayName = 'TrainingProgress';
@@ -53,12 +62,7 @@ const Containter = () => {
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0)
-    return (
-      <div className='flex flex-col'>
-        <Empty />
-      </div>
-    );
+  if (data.length === 0) return <Empty />;
 
   return <List data={data} />;
 };
@@ -68,13 +72,17 @@ const List = memo(({ data }: Props) => {
     <>
       {(data ?? []).map((data) => (
         <div key={data.user_id} className='cursor-pointer hover:bg-neutral-200'>
-          <TrainingProgressList
-            slotHistoryPill={<Pills {...data} />}
-            slotInterviewerImage={<Avatar alt={data.name} />}
-            textInterviewModule={''}
-            textName={capitalizeAll(data.name)}
-            textRole={data.position}
-          />
+          <div className='flex items-center space-x-4 p-4'>
+            <Avatar>
+              <AvatarImage src={''} alt={data.name} />
+              <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className='flex-1'>
+              <p className='text-sm font-medium'>{capitalizeAll(data.name)}</p>
+              <p className='text-sm text-muted-foreground'>{data.position}</p>
+            </div>
+            <Pills {...data} />
+          </div>
         </div>
       ))}
     </>

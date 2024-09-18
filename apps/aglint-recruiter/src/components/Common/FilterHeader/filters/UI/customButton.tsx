@@ -18,13 +18,13 @@ export default function CustomButton({
 }: ButtonInterface) {
   return (
     <Button variant='outline' className='relative' onClick={onClick}>
-      <div className='flex row gap-2 items-center'>
+      <div className='row flex items-center gap-2'>
         {slotLeftIcon ? slotLeftIcon : false}
         {text}
         {slotRightIcon ? slotRightIcon : false}
       </div>
       {isDotVisible && isActive && (
-        <span className='absolute top-1 right-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white' />
+        <span className='absolute right-1 top-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white' />
       )}
     </Button>
   );

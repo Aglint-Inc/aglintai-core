@@ -1,4 +1,3 @@
-import { Plus } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 import CreateModuleDialog from 'src/app/(authenticated)/_interview-pool/_common/CreateModuleDialog';
 
@@ -42,7 +41,7 @@ export const Header = ({
         />
         <div className='flex items-center gap-2'>
           {isFilterApplied ? (
-            <UIButton size='sm' onClick={resetAllFilter}>
+            <UIButton variant='ghost' size='sm' onClick={resetAllFilter}>
               Reset all
             </UIButton>
           ) : (
@@ -65,13 +64,11 @@ export const Header = ({
           {checkPermissions(['interview_types']) && (
             <UIButton
               variant='default'
-              size='sm'
               onClick={() => {
                 setIsCreateDialogOpen(true);
               }}
-              leftIcon={<Plus />}
             >
-              Interview Type
+              Create
             </UIButton>
           )}
         </div>

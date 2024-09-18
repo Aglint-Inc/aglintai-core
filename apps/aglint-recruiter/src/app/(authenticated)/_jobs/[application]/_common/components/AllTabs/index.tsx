@@ -21,7 +21,8 @@ function SlotBody() {
   const tab = router.queryParams.tab as TabsType;
   const { isShowFeature } = useAuthDetails();
   const {
-    meta: { isLoading: isLoadingDetail }, application_id
+    meta: { isLoading: isLoadingDetail },
+    application_id,
   } = useApplication();
 
   if (isLoadingDetail) {
@@ -77,20 +78,26 @@ function SlotBody() {
       case 'scoring':
         return <Details />;
       case 'candidate_stages':
-        return <><div><UIButton
-          variant='secondary'
-          onClick={() => {
-            window.open(`/candidate/${application_id}/home`, '_blank');
-          }}
-          size='sm'
-          rightIcon={<ExternalLink />}
-        >
-          Portal
-        </UIButton></div>
-          <ReorderableInterviewPlan
-            applicationId={application_id}
-            jobId={null}
-          /></>;
+        return (
+          <>
+            <div>
+              <UIButton
+                variant='secondary'
+                onClick={() => {
+                  window.open(`/candidate/${application_id}/home`, '_blank');
+                }}
+                size='sm'
+                rightIcon={<ExternalLink />}
+              >
+                Portal
+              </UIButton>
+            </div>
+            <ReorderableInterviewPlan
+              applicationId={application_id}
+              jobId={null}
+            />
+          </>
+        );
       default:
         return null;
     }

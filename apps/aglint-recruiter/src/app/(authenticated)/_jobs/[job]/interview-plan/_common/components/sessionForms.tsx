@@ -12,15 +12,15 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+import MembersAutoComplete, {
+  type MemberTypeAutoComplete,
+} from 'src/app/_common/components/MembersTextField';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import MembersAutoComplete, {
-  type MemberTypeAutoComplete,
-} from '@/components/Scheduling/Common/MembersTextField';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
@@ -491,7 +491,7 @@ const Interview = ({
                   onClick={() =>
                     interview_module?.value?.id &&
                     push(
-                      ROUTES['/interview-pool/[type_id]']({
+                      ROUTES['/interview-pool/[pool]']({
                         type_id: interview_module.value.id,
                       }),
                     )

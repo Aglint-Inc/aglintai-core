@@ -1,5 +1,5 @@
-import Avatar from '@mui/material/Avatar';
-import Skeleton from '@mui/material/Skeleton';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Skeleton } from '@components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
@@ -67,7 +67,10 @@ const List = memo(({ data }: Props) => {
       {(data ?? []).map(({ id, name, note, profile_image }) => (
         <div key={id} className='flex items-center space-x-4 p-4'>
           <div className='flex-shrink-0'>
-            <Avatar src={profile_image} alt={name} />
+            <Avatar>
+              <AvatarImage src={profile_image} alt={name} />
+              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+            </Avatar>
           </div>
           <div className='min-w-0 flex-1'>
             <p className='truncate text-sm font-medium text-gray-900'>
@@ -89,7 +92,7 @@ const Loader = memo(() => {
     (_, i) => (
       <div key={i} className='flex items-center space-x-4 p-4'>
         <div className='flex-shrink-0'>
-          <Skeleton className='rounded-full' width={'100%'} height={'100%'} />
+          <Skeleton className='h-4 w-24' />
         </div>
         <div className='min-w-0 flex-1'>
           <Skeleton className='h-4 w-24' />

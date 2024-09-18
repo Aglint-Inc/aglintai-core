@@ -1,6 +1,6 @@
+import type { MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
 import { create } from 'zustand';
 
-import type { MemberTypeAutoComplete } from '@/components/Scheduling/Common/MembersTextField';
 import { type StageWithSessions } from '@/queries/application';
 
 export interface EditSessionDrawer {
