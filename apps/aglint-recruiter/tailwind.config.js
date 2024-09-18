@@ -55,13 +55,6 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        'calendar-bg': 'hsl(var(--background))',
-        'calendar-border': 'hsl(var(--border))',
-        'calendar-text': 'hsl(var(--foreground))',
-        'calendar-accent': 'hsl(var(--primary))',
-        'calendar-today': 'hsl(var(--primary) / 0.1)',
-        'calendar-event': 'hsl(var(--primary))',
-        'calendar-event-text': 'hsl(var(--primary-foreground))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -92,44 +85,4 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    function ({ addBase, theme }) {
-      addBase({
-        ':root': {
-          '--fc-small-font-size': '0.85em',
-          '--fc-page-bg-color': theme('colors.calendar-bg'),
-          '--fc-neutral-bg-color': theme('colors.gray.100'),
-          '--fc-neutral-text-color': theme('colors.gray.600'),
-          '--fc-border-color': theme('colors.calendar-border'),
-
-          '--fc-button-text-color': theme('colors.calendar-event-text'),
-          '--fc-button-bg-color': theme('colors.calendar-accent'),
-          '--fc-button-border-color': theme('colors.calendar-accent'),
-          '--fc-button-hover-bg-color': theme('colors.blue.600'),
-          '--fc-button-hover-border-color': theme('colors.blue.600'),
-          '--fc-button-active-bg-color': theme('colors.blue.700'),
-          '--fc-button-active-border-color': theme('colors.blue.700'),
-
-          '--fc-event-bg-color': theme('colors.calendar-event'),
-          '--fc-event-border-color': theme('colors.calendar-event'),
-          '--fc-event-text-color': theme('colors.calendar-event-text'),
-          '--fc-event-selected-overlay-color': 'rgba(0, 0, 0, 0.25)',
-
-          '--fc-more-link-bg-color': theme('colors.gray.200'),
-          '--fc-more-link-text-color': theme('colors.gray.600'),
-
-          '--fc-event-resizer-thickness': '8px',
-          '--fc-event-resizer-dot-total-width': '8px',
-          '--fc-event-resizer-dot-border-width': '1px',
-
-          '--fc-non-business-color': theme('colors.gray.100'),
-          '--fc-bg-event-color': theme('colors.gray.100'),
-          '--fc-bg-event-opacity': '0.3',
-          '--fc-highlight-color': theme('colors.blue.100'),
-          '--fc-today-bg-color': theme('colors.calendar-today'),
-          '--fc-now-indicator-color': theme('colors.red.500'),
-        },
-      });
-    },
-  ],
 };
