@@ -14,6 +14,7 @@ function Filters() {
   const [searchText, setSearchText] = useState<string>('');
 
   const { members } = useAllMembers();
+  // eslint-disable-next-line no-unused-vars
   const ScheduleTypes = [
     {
       id: 'google_meet' as DatabaseEnums['interview_schedule_type'],
