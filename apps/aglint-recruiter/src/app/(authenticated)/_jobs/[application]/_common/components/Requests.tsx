@@ -1,33 +1,27 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Calendar } from 'lucide-react';
+import Link from 'next/link';
 
 import { UIBadge } from '@/components/Common/UIBadge';
 import { useApplication } from '@/context/ApplicationContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function Requests() {
-  const router = useRouterPro();
   const {
     requests: { data: requests, isLoading },
   } = useApplication();
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       {!isLoading &&
         requests?.map((req) => (
-          <div
+          <Link
             key={req.id}
-            className='cursor-pointer rounded-lg px-4 py-2 hover:bg-gray-100'
-            onClick={() => {
-              router.push(
-                ROUTES['/requests/[id]']({
-                  id: req.id,
-                }),
-              );
-            }}
+            href={ROUTES['/requests/[id]']({
+              id: req.id,
+            })}
           >
             <div className='mb-2 flex items-center justify-between'>
               <p className='text-sm font-medium'>{req.title}</p>
@@ -73,7 +67,7 @@ function Requests() {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
 
       {!requests?.length && (

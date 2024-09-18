@@ -1,5 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 
+import { Loader } from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -12,23 +13,22 @@ import { InterviewStage } from '../ui/InterviewStage';
 
 function InterviewTabContent() {
   const {
-    interview: { data: stages, isLoading: isLoadingSession, refetch },
-    details: { isLoading: isLoadingDetail },
+    interview: { data: stages, isLoading, refetch },
   } = useApplication();
 
   useInterviewModules(); //needed to fetch interview modules which is used in edit interview plan
 
-  if (isLoadingSession || isLoadingDetail)
+  if (isLoading)
     return (
-      <div className='flex flex-row gap-8'>
+      <div className='flex flex-row gap-4'>
         <div className='flex min-w-[320px] flex-col space-y-4'>
           {Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton key={index} className='h-15 w-full' />
+            <Skeleton key={index} className='h-[70px] w-full' />
           ))}
         </div>
-        <div className='w-full flex flex-col space-y-4'>
+        <div className='flex w-full flex-col space-y-4'>
           {Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton key={index} className='h-25 w-full' />
+            <Skeleton key={index} className='h-[100px] w-full' />
           ))}
         </div>
       </div>
