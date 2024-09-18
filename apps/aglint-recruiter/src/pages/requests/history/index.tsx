@@ -1,5 +1,5 @@
-import RequestHistoryPage from 'src/app/(authenticated)/_request/[history]/page';
-import RequestLayout from 'src/app/(authenticated)/_request/RequestLayout';
+import RequestHistoryPage from 'src/app/(authenticated)/_requests/[history]/page';
+import RequestLayout from 'src/app/(authenticated)/_requests/RequestLayout';
 
 import Seo from '@/components/Common/Seo';
 

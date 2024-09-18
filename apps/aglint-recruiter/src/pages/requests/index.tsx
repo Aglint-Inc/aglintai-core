@@ -1,5 +1,5 @@
-import RequestsPage from 'src/app/(authenticated)/_request/page';
-import RequestLayout from 'src/app/(authenticated)/_request/RequestLayout';
+import RequestsPage from 'src/app/(authenticated)/_requests/page';
+import RequestLayout from 'src/app/(authenticated)/_requests/RequestLayout';
 
 import Seo from '@/components/Common/Seo';
 
