@@ -194,6 +194,20 @@ export default function Component() {
               </div>
             </PopoverContent>
           </Popover>
+          {Boolean(filters.dateRange?.to) && (
+            <Button
+              variant='outline'
+              // size='icon'
+              className='h-9 w-9 flex-shrink-0'
+              onClick={() => handleFilterChange({ dateRange: null })}
+            >
+              <X
+                style={{
+                  transform: 'scale(6.5)',
+                }}
+              />
+            </Button>
+          )}
         </div>
         <div className='flex items-center space-x-2'>
           {clear_all && (
