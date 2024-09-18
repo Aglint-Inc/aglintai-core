@@ -17,8 +17,8 @@ function Requests({ session_id }) {
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
-    <div className='space-y-2'>
-      <p className='font-medium'>Request History</p>
+    <div className='rounded-md border border-gray-200 bg-white p-4'>
+      <p className='text-md mb-2 font-medium'>Request History</p>
       {isLoading ? (
         <Loader />
       ) : (
@@ -34,7 +34,7 @@ function Requests({ session_id }) {
               <>
                 <Card
                   key={request.id}
-                  className='cursor-pointer space-y-4 p-4 hover:bg-gray-50'
+                  className='rounded-0 cursor-pointer border-none p-4 shadow-none hover:bg-gray-50'
                   onClick={() => {
                     router.push(
                       ROUTES['/requests/[id]']({
