@@ -1,6 +1,37 @@
-export type Json = any;
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       aglint_candidates: {
@@ -5962,6 +5993,7 @@ export type Database = {
       }
       insert_debrief_session: {
         Args: {
+          recruiter_id: string
           interview_plan_id: string
           session_order: number
           session_duration: number
@@ -5982,6 +6014,7 @@ export type Database = {
       }
       insert_interview_session: {
         Args: {
+          recruiter_id: string
           module_id: string
           interview_plan_id: string
           session_order: number

@@ -1,10 +1,8 @@
 'use client';
-import { Loader } from '@/components/Common/Loader';
-import { Application, useApplication } from '@/context/ApplicationContext';
+import { Application } from '@/context/ApplicationContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import SlotBody from './AllTabs';
-import BreadCrumb from './BreadCrumb';
 
 function ApplicationDetailComp() {
   const router = useRouterPro();

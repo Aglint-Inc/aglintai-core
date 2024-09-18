@@ -24,8 +24,9 @@ export const useCreateInterviewPlan = () => {
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async ({ name, order }: { name: string; order?: number }) => {
-      await createInterviewPlan(name, id, recruiter_id, order);
+      const data = await createInterviewPlan(name, id, recruiter_id, order);
       await queryClient.invalidateQueries({ queryKey });
+      return data;
     },
     onError: () => {
       toast.error('Unable to create interview plan.');
