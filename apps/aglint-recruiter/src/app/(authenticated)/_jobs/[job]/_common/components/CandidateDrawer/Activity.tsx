@@ -30,16 +30,16 @@ export const Activity = () => {
   const count = displayedActivities.length;
 
   return (
-    <div className='space-y-4'>
+    <div className='w-full space-y-4'>
       {displayedActivities.map((activity, i) => (
-        <div key={activity.id} className='relative pb-4 last:pb-0'>
+        <div key={activity.id} className='relative w-full pb-4 last:pb-0'>
           {i !== count - 1 && (
             <span
               className='absolute left-2 top-4 -ml-px h-full w-0.5 bg-gray-200'
               aria-hidden='true'
             ></span>
           )}
-          <div className='relative flex space-x-3'>
+          <div className='relative flex w-full space-x-3'>
             <div>
               <span className='flex h-4 w-4 items-center justify-center'>
                 <Circle
@@ -48,8 +48,8 @@ export const Activity = () => {
                 />
               </span>
             </div>
-            <div className='flex min-w-0 flex-1 justify-between space-x-2'>
-              <div>
+            <div className='flex w-full min-w-0 flex-1 justify-between space-x-2'>
+              <div className='w-full'>
                 <p className='text-sm font-medium text-gray-900'>
                   {activity.title || '---'}
                 </p>
@@ -57,11 +57,11 @@ export const Activity = () => {
                   {activity.description}
                 </p>
                 {activity.metadata && <SlotContent act={activity} />}
-              </div>
-              <div className='whitespace-nowrap text-right text-xs text-gray-500'>
-                <time dateTime={activity.created_at}>
-                  {dayjs(activity.created_at).fromNow()}
-                </time>
+                <div className='text-right text-xs text-gray-500 pt-2'>
+                  <time dateTime={activity.created_at}>
+                    {dayjs(activity.created_at).fromNow()}
+                  </time>
+                </div>
               </div>
             </div>
           </div>
