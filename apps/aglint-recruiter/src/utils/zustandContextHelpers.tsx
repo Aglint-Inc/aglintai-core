@@ -42,7 +42,7 @@ export function createContextStoreSelector<T>(
  *   - Passing a key arguement returns a structured clone of the value associated with the key
  *   - Passing no arguements returns the structured clone of the entire initial state
  */
-export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
+export const getContextIntials = <T extends Readonly<Record<any, any>>>(
   state: T,
 ) => {
   function getInitial(): T;
@@ -68,26 +68,20 @@ export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
  */
 export type CreateContextStore<
   T extends Record<string, any>,
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-empty-object-type
   ExtraActions extends { [_x in string]: (..._args: any[]) => any } = {},
   ExtraStatesOrComputations extends {
-    // eslint-disable-next-line no-unused-vars
     [_x in string]: ((..._args: any[]) => any) | any;
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   } = {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   ExtraInitial extends Readonly<Record<string, any>> = Readonly<{}>,
 > = keyof T extends infer U
   ? U extends string
-    ? // eslint-disable-next-line no-unused-vars
-      UnionToIntersection<
+    ? UnionToIntersection<
         T &
           (ExtraStatesOrComputations extends (..._args: any[]) => infer R
             ? R
             : ExtraStatesOrComputations) & {
-            // eslint-disable-next-line no-unused-vars
             initial: Readonly<T> & ExtraInitial;
-            // eslint-disable-next-line no-unused-vars
+
             actions: UnionToIntersection<CreateContextStoreActions<T>> &
               ExtraActions;
           }
@@ -98,9 +92,7 @@ export type CreateContextStore<
 type CreateContextStoreActions<T extends Record<string, any>> =
   keyof T extends infer U
     ? U extends string
-      ? // eslint-disable-next-line no-unused-vars
-        { [_id in `set${Capitalize<U>}`]: (_x: Partial<T[U]>) => void } & {
-          // eslint-disable-next-line no-unused-vars
+      ? { [_id in `set${Capitalize<U>}`]: (_x: Partial<T[U]>) => void } & {
           [_id in `reset${Capitalize<U>}`]: () => void;
         }
       : never
@@ -146,10 +138,10 @@ export function compute<T extends unknown[], U>(
  * @link https://github.com/pmndrs/zustand/issues/108#issuecomment-2197556875
  *
  */
-export const getContextStoreComputed =
+export const getContextComputes =
   <T,>() =>
   <U extends Record<string, () => unknown>>(
     computation: (_get: () => T, _compute: typeof compute) => U,
   ) =>
-  (_get: () => T, _compute = compute) =>
-    computation(_get, _compute);
+  (get: () => T, _compute = compute) =>
+    computation(get, _compute);

@@ -9,7 +9,10 @@ import type { DatabaseView } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
-import type { CreateContextStore } from '@/utils/zustandContextHelpers';
+import {
+  type CreateContextStore,
+  getContextIntials,
+} from '@/utils/zustandContextHelpers';
 
 type Filters = {
   search: string;
@@ -30,47 +33,39 @@ type States = {
   selections: Selections;
 };
 
+const initial = Object.freeze({
+  publishing: 0,
+  filters: {
+    search: '',
+    job: [],
+    tags: [],
+  },
+  popup: {
+    open: false,
+  },
+  selections: [],
+});
+
+const getInitial = getContextIntials(initial);
+
 type Store = CreateContextStore<States>;
 
 const useJobDashboardStoreContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
-      initial: Object.freeze({
-        publishing: 0,
-        filters: {
-          search: '',
-          job: [],
-          tags: [],
-        },
-        popup: {
-          open: false,
-        },
-        selections: [],
-      }),
-      publishing: 0,
-      filters: {
-        search: '',
-        job: [],
-        tags: [],
-      },
-      popup: {
-        open: false,
-      },
-      selections: [],
+      initial,
+      ...getInitial(),
       actions: {
         setPublishing: (publishing) => set(() => ({ publishing })),
-        resetPublishing: () => set(() => ({ publishing: 0 })),
+        resetPublishing: () =>
+          set(() => ({ publishing: getInitial('publishing') })),
         setFilters: (filters) =>
           set((state) => ({
             filters: { ...state.filters, ...filters },
           })),
         resetFilters: () =>
           set({
-            filters: {
-              search: '',
-              job: [],
-              tags: [],
-            },
+            filters: getInitial('filters'),
           }),
         setPopup: (popup) =>
           set((state) => ({
@@ -78,15 +73,13 @@ const useJobDashboardStoreContext = () => {
           })),
         resetPopup: () =>
           set({
-            popup: {
-              open: false,
-            },
+            popup: getInitial('popup'),
           }),
         setSelections: (selections) =>
           set(() => ({
             selections: structuredClone(selections),
           })),
-        resetSelections: () => set({ selections: [] }),
+        resetSelections: () => set({ selections: getInitial('selections') }),
       },
     })),
   );

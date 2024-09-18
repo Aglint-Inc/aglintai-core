@@ -3,7 +3,7 @@ import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 import dayjs from '@/utils/dayjs';
-import { getContextStoreInitial } from '@/utils/zustandContextHelpers';
+import { getContextIntials } from '@/utils/zustandContextHelpers';
 
 import { STEPS } from '../constants';
 import type { Menus } from '../types';
@@ -116,7 +116,7 @@ const initial: States = Object.freeze({
   priority: 'standard',
 });
 
-const getInitial = getContextStoreInitial(initial);
+const getInitial = getContextIntials(initial);
 
 type Store = States & {
   initial: States;

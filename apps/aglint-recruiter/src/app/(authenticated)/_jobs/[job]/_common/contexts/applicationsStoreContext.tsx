@@ -12,8 +12,8 @@ import { createStore } from 'zustand';
 import type { nestedObjectToArray } from '@/components/Common/FilterHeader/filters/utils';
 import {
   type CreateContextStore,
-  getContextStoreComputed,
-  getContextStoreInitial,
+  getContextComputes,
+  getContextIntials,
 } from '@/utils/zustandContextHelpers';
 
 import { CASCADE_VISIBILITIES, EMAIL_VISIBILITIES } from '../constants';
@@ -59,19 +59,9 @@ const initial: States = Object.freeze({
   importPopup: false,
 });
 
-const getInitial = getContextStoreInitial(initial);
+const getInitial = getContextIntials(initial);
 
-type ExtraActions = {
-  handleBadge: (_badge: States['badges'][number]) => void;
-  handleBookmarked: () => void;
-  handleApplication_match: (
-    _resumeMatch: States['application_match'][number],
-  ) => void;
-  handleChecklist: (_id: States['checklist'][number]) => void;
-  handleImportPopup: () => void;
-};
-
-const getComputed = getContextStoreComputed<States>()((get, compute) => ({
+const getComputed = getContextComputes<States>()((get, compute) => ({
   emailVisibilities: compute(
     () => [get().status],
     (status) =>
@@ -95,6 +85,16 @@ const getComputed = getContextStoreComputed<States>()((get, compute) => ({
       ),
   ),
 }));
+
+type ExtraActions = {
+  handleBadge: (_badge: States['badges'][number]) => void;
+  handleBookmarked: () => void;
+  handleApplication_match: (
+    _resumeMatch: States['application_match'][number],
+  ) => void;
+  handleChecklist: (_id: States['checklist'][number]) => void;
+  handleImportPopup: () => void;
+};
 
 type ExtraStates = typeof getComputed;
 

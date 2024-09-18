@@ -9,7 +9,10 @@ import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 import { INITIAL_STATE } from '@/jobs/constants';
-import type { CreateContextStore } from '@/utils/zustandContextHelpers';
+import {
+  type CreateContextStore,
+  getContextIntials,
+} from '@/utils/zustandContextHelpers';
 
 type Integrations = typeof INITIAL_STATE;
 
@@ -17,15 +20,19 @@ type State = {
   integrations: Integrations;
 };
 
+const initial = Object.freeze({
+  integrations: INITIAL_STATE,
+});
+
+const getInitial = getContextIntials(initial);
+
 type Store = CreateContextStore<State>;
 
 const useIntegrationStoreContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
-      initial: {
-        integrations: INITIAL_STATE,
-      },
-      integrations: structuredClone(INITIAL_STATE),
+      initial,
+      ...getInitial(),
       actions: {
         setIntegrations: (integrations) =>
           set((state) => ({
