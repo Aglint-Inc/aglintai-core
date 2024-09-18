@@ -65,7 +65,7 @@ const JobsSideNavV2 = () => {
     },
     {
       icon: <Workflow className='h-5 w-5' />,
-      label: 'Workflows',
+      label: 'Automations',
       route: 'workflows',
       show: isShowFeature('WORKFLOW'),
     },
