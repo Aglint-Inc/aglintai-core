@@ -19,6 +19,7 @@ import {
   useApplications,
   useApplicationsActions,
   useApplicationsStore,
+  useJobApplications,
 } from '@/job/hooks';
 import { formatSessions } from '@/utils/formatSessions';
 import { capitalize } from '@/utils/text/textUtils';
@@ -27,7 +28,9 @@ import CreateRequest from './CreateRequest';
 import type { SessionType } from './CreateRequest/SessionsList';
 
 const MoveCandidate = () => {
-  const { emailVisibilities } = useApplications();
+  const emailVisibilities = useApplicationsStore((state) =>
+    state.emailVisibilities(),
+  );
   const actionPopup = useApplicationsStore((state) => state.actionPopup);
   const checklist = useApplicationsStore((state) => state.checklist);
   const { setActionPopup, resetActionPopup } = useApplicationsActions();
@@ -120,7 +123,8 @@ const MoveCandidateNew = () => {
 
 const MoveCandidateInterview = () => {
   const { recruiterUser, isShowFeature } = useAuthDetails();
-  const { handleMoveApplicationToInterview, applications } = useApplications();
+  const { applications } = useJobApplications();
+  const { handleMoveApplicationToInterview } = useApplications();
   const checklist = useApplicationsStore((state) => state.checklist);
   const { resetActionPopup } = useApplicationsActions();
 

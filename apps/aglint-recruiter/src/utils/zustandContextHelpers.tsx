@@ -1,5 +1,6 @@
 import { type Context, useContext } from 'react';
 import { type StoreApi, useStore } from 'zustand';
+import { shallow } from 'zustand/shallow';
 /**
  *
  * A type safe hook creator for React Context + Zustand Store stage management solution
@@ -44,13 +45,13 @@ export function createContextStoreSelector<T>(
 export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
   state: T,
 ) => {
-  function get(): T;
-  function get<U extends keyof T>(_key: U): T[U];
-  function get<U extends keyof T>(key?: U) {
+  function getInitial(): T;
+  function getInitial<U extends keyof T>(_key: U): T[U];
+  function getInitial<U extends keyof T>(key?: U) {
     if (key) return structuredClone(state[key]);
     return structuredClone(state);
   }
-  return get;
+  return getInitial;
 };
 
 /**
@@ -61,26 +62,35 @@ export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
  *   - An "initial" state type
  *   - An "actions" state type necessary "setState" and "resetState" actions
  *
- *  Additional actions can be passed as the second parameter to this type
- *  Additional initial states can be passed as the thrid parameter to this type
+ *  Additional actions can be passed as the second parameter to this type.
+ *  Additional states can be passed as the third parameter to this type.
+ *  Additional initial states can be passed as the fourth parameter to this type.
  */
 export type CreateContextStore<
   T extends Record<string, any>,
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-empty-object-type
   ExtraActions extends { [_x in string]: (..._args: any[]) => any } = {},
+  ExtraStatesOrComputations extends {
+    // eslint-disable-next-line no-unused-vars
+    [_x in string]: ((..._args: any[]) => any) | any;
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  } = {},
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   ExtraInitial extends Readonly<Record<string, any>> = Readonly<{}>,
 > = keyof T extends infer U
   ? U extends string
     ? // eslint-disable-next-line no-unused-vars
       UnionToIntersection<
-        T & {
-          // eslint-disable-next-line no-unused-vars
-          initial: Readonly<T> & ExtraInitial;
-          // eslint-disable-next-line no-unused-vars
-          actions: UnionToIntersection<CreateContextStoreActions<T>> &
-            ExtraActions;
-        }
+        T &
+          (ExtraStatesOrComputations extends (..._args: any[]) => infer R
+            ? R
+            : ExtraStatesOrComputations) & {
+            // eslint-disable-next-line no-unused-vars
+            initial: Readonly<T> & ExtraInitial;
+            // eslint-disable-next-line no-unused-vars
+            actions: UnionToIntersection<CreateContextStoreActions<T>> &
+              ExtraActions;
+          }
       >
     : never
   : never;
@@ -101,3 +111,38 @@ type UnionToIntersection<U> = (
 ) extends (_arg: infer I) => void
   ? I
   : never;
+
+/**
+ *
+ * Correct approach to get derived values from state
+ *
+ * @link https://github.com/pmndrs/zustand/issues/108#issuecomment-2197556875
+ */
+export function compute<T extends unknown[], U>(
+  depsFn: () => [...T],
+  computeFn: (..._args: T) => U,
+) {
+  let prevDeps: T;
+  let cachedResult: U;
+  return () => {
+    const deps = depsFn();
+    if (prevDeps === undefined || !shallow(prevDeps, deps)) {
+      prevDeps = deps;
+      cachedResult = computeFn(...deps);
+    }
+    return cachedResult;
+  };
+}
+
+/**
+ * A type safe computation creator function which can be used to derive states using the get and compute
+ *
+ * @link https://github.com/pmndrs/zustand/issues/108#issuecomment-2197556875
+ */
+export const getContextStoreComputed =
+  <T,>() =>
+  <U extends Record<string, () => unknown>>(
+    computation: (_get: () => T, _compute: typeof compute) => U,
+  ) =>
+  (_get: () => T, _compute = compute) =>
+    computation(_get, _compute);

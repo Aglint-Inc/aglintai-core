@@ -116,7 +116,7 @@ const initial: States = Object.freeze({
   priority: 'standard',
 });
 
-const get = getContextStoreInitial(initial);
+const getInitial = getContextStoreInitial(initial);
 
 type Store = States & {
   initial: States;
@@ -127,7 +127,7 @@ const useCreateRequestContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
       initial,
-      ...get(),
+      ...getInitial(),
       actions: {
         onOpenChange: (open) =>
           set((state) => {
@@ -256,11 +256,11 @@ CreateRequestProvider.displayName = 'CreateRequestProvider';
 
 const resetPayload = (menu: PayloadMenus, state: States): Partial<States> => {
   const response = {
-    payloads: get('payloads'),
-    selections: get('selections'),
-    step: get('step'),
-    dates: get('dates'),
-    note: get('note'),
+    payloads: getInitial('payloads'),
+    selections: getInitial('selections'),
+    step: getInitial('step'),
+    dates: getInitial('dates'),
+    note: getInitial('note'),
   };
   if (menu === 'requestType') return response;
   if (menu === 'jobs') {

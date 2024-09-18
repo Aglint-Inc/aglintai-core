@@ -12,24 +12,39 @@ import { createStore } from 'zustand';
 import type { nestedObjectToArray } from '@/components/Common/FilterHeader/filters/utils';
 import {
   type CreateContextStore,
+  getContextStoreComputed,
   getContextStoreInitial,
 } from '@/utils/zustandContextHelpers';
 
+import { CASCADE_VISIBILITIES, EMAIL_VISIBILITIES } from '../constants';
 import type { Applications } from '../types';
 
 type Locations = ReturnType<typeof nestedObjectToArray>;
 
 type Stages = ReturnType<typeof nestedObjectToArray>;
 
-type Filters = Pick<
+type Checklist = DatabaseView['application_view']['id'][];
+
+type ActionPopup = DatabaseView['application_view']['status'];
+
+type States = Pick<
   Applications<'input'>,
-  'application_match' | 'badges' | 'bookmarked' | 'search' | 'status'
+  | 'application_match'
+  | 'badges'
+  | 'bookmarked'
+  | 'search'
+  | 'status'
+  | 'order'
+  | 'type'
 > & {
   locations: Locations;
   stages: Stages;
+  actionPopup: ActionPopup;
+  checklist: Checklist;
+  importPopup: boolean;
 };
 
-const initialFilter: Filters = Object.freeze({
+const initial: States = Object.freeze({
   badges: [],
   bookmarked: false,
   locations: [],
@@ -37,58 +52,60 @@ const initialFilter: Filters = Object.freeze({
   search: '',
   status: 'new',
   stages: [],
-});
-
-type Sort = Pick<Applications<'input'>, 'order' | 'type'>;
-
-const initialSort: Sort = Object.freeze({
   order: 'desc',
   type: 'latest_activity',
-});
-
-type Checklist = DatabaseView['application_view']['id'][];
-
-type ActionPopup = DatabaseView['application_view']['status'];
-
-type Misc = {
-  actionPopup: ActionPopup;
-  checklist: Checklist;
-  importPopup: boolean;
-};
-
-const initialMisc: Misc = Object.freeze({
   actionPopup: null,
   checklist: [],
   importPopup: false,
 });
 
-type States = Filters & Sort & Misc;
+const getInitial = getContextStoreInitial(initial);
 
-const initial: States = Object.freeze({
-  ...initialFilter,
-  ...initialSort,
-  ...initialMisc,
-});
-
-const get = getContextStoreInitial(initial);
-
-type Actions = {
-  handleBadge: (_badge: Filters['badges'][number]) => void;
+type ExtraActions = {
+  handleBadge: (_badge: States['badges'][number]) => void;
   handleBookmarked: () => void;
   handleApplication_match: (
-    _resumeMatch: Filters['application_match'][number],
+    _resumeMatch: States['application_match'][number],
   ) => void;
-  handleChecklist: (_id: Misc['checklist'][number]) => void;
+  handleChecklist: (_id: States['checklist'][number]) => void;
   handleImportPopup: () => void;
 };
 
-type Store = CreateContextStore<States, Actions>;
+const getComputed = getContextStoreComputed<States>()((get, compute) => ({
+  emailVisibilities: compute(
+    () => [get().status],
+    (status) =>
+      Object.entries(EMAIL_VISIBILITIES ?? {}).reduce(
+        (acc, [key, value]) => {
+          acc[key] = value.includes(status);
+          return acc;
+        },
+        {} as { [_id in keyof typeof EMAIL_VISIBILITIES]: boolean },
+      ),
+  ),
+  cascadeVisibilites: compute(
+    () => [get().status],
+    (status) =>
+      Object.entries(CASCADE_VISIBILITIES ?? {}).reduce(
+        (acc, [key, value]) => {
+          acc[key] = value.includes(status);
+          return acc;
+        },
+        {} as { [_id in keyof typeof CASCADE_VISIBILITIES]: boolean },
+      ),
+  ),
+}));
+
+type ExtraStates = typeof getComputed;
+
+type Store = CreateContextStore<States, ExtraActions, ExtraStates>;
 
 const useApplicationsStoreContext = () => {
   const [store] = useState(
-    createStore<Store>((set) => ({
+    createStore<Store>((set, get) => ({
       initial,
-      ...get(),
+      ...getInitial(),
+      ...getComputed(get),
       actions: {
         handleBadge: (badge) =>
           set((state) => {
@@ -101,13 +118,15 @@ const useApplicationsStoreContext = () => {
             };
           }),
         setBadges: (badges) => set(() => ({ badges })),
-        resetBadges: () => set(() => ({ badges: get('badges') })),
+        resetBadges: () => set(() => ({ badges: getInitial('badges') })),
         handleBookmarked: () =>
           set((state) => ({ bookmarked: !state.bookmarked })),
         setBookmarked: (bookmarked) => set(() => ({ bookmarked })),
-        resetBookmarked: () => set(() => ({ bookmarked: get('bookmarked') })),
+        resetBookmarked: () =>
+          set(() => ({ bookmarked: getInitial('bookmarked') })),
         setLocations: (locations) => set(() => ({ locations })),
-        resetLocations: () => set(() => ({ locations: get('locations') })),
+        resetLocations: () =>
+          set(() => ({ locations: getInitial('locations') })),
         handleApplication_match: (application_match) =>
           set((state) => {
             if (state.application_match.includes(application_match))
@@ -126,22 +145,25 @@ const useApplicationsStoreContext = () => {
         setApplication_match: (application_match) =>
           set(() => ({ application_match })),
         resetApplication_match: () =>
-          set(() => ({ application_match: get('application_match') })),
+          set(() => ({ application_match: getInitial('application_match') })),
         setSearch: (search) => set(() => ({ search })),
-        resetSearch: () => set(() => ({ search: get('search') })),
+        resetSearch: () => set(() => ({ search: getInitial('search') })),
         setStatus: (status) =>
-          set(() => ({ status, checklist: get('checklist') })),
+          set(() => ({ status, checklist: getInitial('checklist') })),
         resetStatus: () =>
-          set(() => ({ status: get('status'), checklist: get('checklist') })),
+          set(() => ({
+            status: getInitial('status'),
+            checklist: getInitial('checklist'),
+          })),
         setStages: (stages) => set(() => ({ stages })),
-        resetStages: () => set(() => ({ stages: get('stages') })),
+        resetStages: () => set(() => ({ stages: getInitial('stages') })),
         setOrder: (order) => set(() => ({ order })),
-        resetOrder: () => set(() => ({ order: get('order') })),
+        resetOrder: () => set(() => ({ order: getInitial('order') })),
         setType: (type) => set(() => ({ type })),
-        resetType: () => set(() => ({ type: get('type') })),
+        resetType: () => set(() => ({ type: getInitial('type') })),
         setActionPopup: (actionPopup) => set(() => ({ actionPopup })),
         resetActionPopup: () =>
-          set(() => ({ actionPopup: get('actionPopup') })),
+          set(() => ({ actionPopup: getInitial('actionPopup') })),
         handleChecklist: (id) =>
           set((state) => {
             if (state.checklist.includes(id))
@@ -153,12 +175,13 @@ const useApplicationsStoreContext = () => {
             };
           }),
         setChecklist: (checklist) => set(() => ({ checklist })),
-        resetChecklist: () => set(() => ({ checklist: get('checklist') })),
+        resetChecklist: () =>
+          set(() => ({ checklist: getInitial('checklist') })),
         handleImportPopup: () =>
           set((state) => ({ importPopup: !state.importPopup })),
         setImportPopup: (importPopup) => set(() => ({ importPopup })),
         resetImportPopup: () =>
-          set(() => ({ importPopup: get('importPopup') })),
+          set(() => ({ importPopup: getInitial('importPopup') })),
       },
     })),
   );

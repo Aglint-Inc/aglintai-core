@@ -10,6 +10,7 @@ import {
   useApplicationsActions,
   useApplicationsStore,
   useJob,
+  useJobApplications,
 } from '@/job/hooks';
 import type { Applications } from '@/job/types';
 import ROUTES from '@/utils/routing/routes';
@@ -19,23 +20,21 @@ import { TableRow } from '../TableRow';
 const ApplicationCard = memo(
   ({ application }: { application: Applications<'output'>[number] }) => {
     const router = useRouterPro();
+
     const {
       job: { status },
     } = useJob();
-    const {
-      cascadeVisibilites,
-      applications,
-      manageJob,
-      applicationMutations,
-    } = useApplications();
 
+    const { applications } = useJobApplications();
+    const { manageJob, applicationMutations } = useApplications();
+    const cascadeVisibilites = useApplicationsStore((state) =>
+      state.cascadeVisibilites(),
+    );
     const checklist = useApplicationsStore((state) => state.checklist);
     const { setChecklist } = useApplicationsActions();
     const { isScoringEnabled } = useRolesAndPermissions();
     const { pressed: shift } = useKeyPress('Shift');
-
     const { isShowFeature } = useAuthDetails();
-
     const isChecked = useMemo(
       () => checklist.includes(application.id),
       [application, checklist],

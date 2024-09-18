@@ -1,9 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
-import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useKeyPress } from '@/hooks/useKeyPress';
-import { useApplications, useApplicationsStore, useJob } from '@/job/hooks';
+import { useApplicationsStore, useJob, useJobApplications } from '@/job/hooks';
 
 import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';
@@ -15,23 +13,20 @@ export const Table = memo(() => {
     job: { section_count },
   } = useJob();
   const status = useApplicationsStore((state) => state.status);
-  const {
-    cascadeVisibilites,
-    queryData,
-    handleSelectPrevApplication,
-    handleSelectNextApplication,
-  } = useApplications();
+  const { query } = useJobApplications();
 
-  const { isScoringEnabled } = useRolesAndPermissions();
+  if ((section_count[status] ?? 0) === 0) return <EmptyList />;
+  if (query.status === 'error') return <>Error</>;
+  if (query.status === 'pending') return <Skeleton />;
 
-  const { pressed: up } = useKeyPress('ArrowUp');
-  const { pressed: down } = useKeyPress('ArrowDown');
+  return <List key={status} loader={<Skeleton />} header={<TableHeader />} />;
+});
+Table.displayName = 'Table';
 
-  useEffect(() => {
-    if (up) handleSelectPrevApplication();
-    else if (down) handleSelectNextApplication();
-  }, [up, down]);
-
+const Skeleton = memo(() => {
+  const cascadeVisibilites = useApplicationsStore((state) =>
+    state.cascadeVisibilites(),
+  );
   const skeleton = useMemo(
     () => (
       <div className='flex items-center space-x-4 p-4 pl-[30px]'>
@@ -49,32 +44,6 @@ export const Table = memo(() => {
     ),
     [cascadeVisibilites],
   );
-
-  if ((section_count[status] ?? 0) === 0) return <EmptyList />;
-  if (queryData.status === 'error') return <>Error</>;
-  if (queryData.status === 'pending')
-    return <Loader count={8}>{skeleton}</Loader>;
-
-  return (
-    // <NewTable />
-    <List
-      key={status}
-      queryData={queryData}
-      count={section_count[status]}
-      loader={<Loader count={5}>{skeleton}</Loader>}
-      header={
-        <div className='sticky top-0' style={{ zIndex: 1 }}>
-          <TableHeader
-            isAllChecked={false}
-            onSelectAll={() => {
-              /* Implement select all logic */
-            }}
-            isResumeMatchVisible={isScoringEnabled}
-            isInterviewVisible={cascadeVisibilites.interview}
-          />
-        </div>
-      }
-    />
-  );
+  return <Loader count={5}>{skeleton}</Loader>;
 });
-Table.displayName = 'Table';
+Skeleton.displayName = 'Skeleton';

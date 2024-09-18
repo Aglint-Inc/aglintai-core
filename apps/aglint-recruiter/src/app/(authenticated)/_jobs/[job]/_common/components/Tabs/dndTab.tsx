@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useDrop } from 'react-dnd';
 
-import { useApplications, useApplicationsStore } from '@/job/hooks';
+import { useApplicationsStore } from '@/job/hooks';
 import type { Application } from '@/types/applications.types';
 
 import Tab from './tab';
@@ -11,8 +11,9 @@ type Props = { section: Application['status'] };
 const DNDTab = (props: Props) => {
   const enabled =
     useApplicationsStore((state) => state.checklist)?.length !== 0;
-  const { emailVisibilities } = useApplications();
-
+  const emailVisibilities = useApplicationsStore((state) =>
+    state.emailVisibilities(),
+  );
   return emailVisibilities[props.section] && enabled ? (
     <DroppableTab {...props} />
   ) : (

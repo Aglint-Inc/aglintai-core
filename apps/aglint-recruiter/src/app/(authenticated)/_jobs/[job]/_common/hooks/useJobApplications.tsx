@@ -1,4 +1,5 @@
 import { keepPreviousData } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 import { getCityStateCountry } from '@/job/utils/getCityStateCountry';
 import { getSessionNames } from '@/job/utils/getSessionNames';
@@ -7,9 +8,11 @@ import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 import type { Applications } from '../types';
 import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
+import { useJob } from './useJob';
 
-export const useJobApplications = (polling = false) => {
+export const useJobApplications = () => {
   const { job_id } = useCurrentJob();
+  const { applicationScoringPollEnabled: polling } = useJob();
 
   const application_match = useApplicationsStore(
     (state) => state.application_match,
@@ -43,7 +46,7 @@ export const useJobApplications = (polling = false) => {
     order,
   };
 
-  return api.jobs.job.applications.useInfiniteQuery(payload, {
+  const query = api.jobs.job.applications.useInfiniteQuery(payload, {
     refetchInterval: polling ? 30_000 : 0,
     refetchOnMount: polling,
     refetchOnWindowFocus: false,
@@ -51,4 +54,11 @@ export const useJobApplications = (polling = false) => {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     trpc: TRPC_CLIENT_CONTEXT,
   });
+
+  const applications = useMemo(
+    () => (query.data?.pages ?? []).flatMap(({ items }) => items),
+    [query?.data?.pages],
+  );
+
+  return { query, applications };
 };
