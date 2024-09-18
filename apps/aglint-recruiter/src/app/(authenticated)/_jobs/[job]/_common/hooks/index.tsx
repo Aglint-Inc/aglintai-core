@@ -4,6 +4,7 @@ export { useApplicationsStore } from './useApplicationsStore';
 export { useCurrentJob } from './useCurrentJob';
 export { useJob } from './useJob';
 export { useJobApplications } from './useJobApplications';
+export { useJobApplicationsPrefetch } from './useJobApplicationsPrefetch';
 export { useJobDashboard } from './useJobDashboard';
 export { useJobDashboardActions } from './useJobDashboardActions';
 export { useJobDashboardStore } from './useJobDashboardStore';

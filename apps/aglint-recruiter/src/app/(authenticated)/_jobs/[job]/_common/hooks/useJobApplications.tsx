@@ -1,6 +1,8 @@
 import type { DatabaseView } from '@aglint/shared-types';
 import { keepPreviousData } from '@tanstack/react-query';
 
+import { getCityStateCountry } from '@/job/utils/getCityStateCountry';
+import { getSessionNames } from '@/job/utils/getSessionNames';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 
 import type { Applications } from '../types';
@@ -13,41 +15,21 @@ export const useJobApplications = (
 ) => {
   const { job_id } = useCurrentJob();
 
-  const badges = useApplicationsStore((state) => state.badges);
-  const bookmarked = useApplicationsStore((state) => state.bookmarked);
-  const locations = useApplicationsStore((state) => state.locations);
   const application_match = useApplicationsStore(
     (state) => state.application_match,
   );
+  const badges = useApplicationsStore((state) => state.badges);
+  const bookmarked = useApplicationsStore((state) => state.bookmarked);
+  const locations = useApplicationsStore((state) => state.locations);
   const search = useApplicationsStore((state) => state.search);
   const stages = useApplicationsStore((state) => state.stages);
 
   const type = useApplicationsStore((state) => state.type);
   const order = useApplicationsStore((state) => state.order);
 
-  const { country, state, city } = (locations ?? []).reduce(
-    (acc, curr, i) => {
-      let type: keyof typeof acc = null;
-      switch (i) {
-        case 0:
-          type = 'country';
-          break;
-        case 1:
-          type = 'state';
-          break;
-        case 2:
-          type = 'city';
-          break;
-      }
-      acc[type].push(
-        curr.filter(({ status }) => status === 'active').map(({ id }) => id),
-      );
-      return acc;
-    },
-    { country: [], state: [], city: [] },
-  );
+  const { country, state, city } = getCityStateCountry({ locations });
 
-  const session_names = (stages?.[1] ?? []).map(({ id }) => id);
+  const session_names = getSessionNames({ stages });
 
   const payload: Applications<'input'> = {
     job_id,
@@ -65,7 +47,7 @@ export const useJobApplications = (
   };
 
   return api.jobs.job.applications.useInfiniteQuery(payload, {
-    refetchInterval: polling ? 20_000 : 0,
+    refetchInterval: polling ? 30_000 : 0,
     refetchOnMount: polling,
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
