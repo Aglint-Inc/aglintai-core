@@ -35,7 +35,7 @@ const initialFilter: Filters = Object.freeze({
   locations: [],
   application_match: [],
   search: '',
-  section: 'new',
+  status: 'new',
   stages: [],
 });
 
@@ -57,7 +57,7 @@ type Misc = {
 };
 
 const initialMisc: Misc = Object.freeze({
-  actionPopup: 'new',
+  actionPopup: null,
   checklist: [],
   importPopup: false,
 });
@@ -129,8 +129,10 @@ const useApplicationsStoreContext = () => {
           set(() => ({ application_match: get('application_match') })),
         setSearch: (search) => set(() => ({ search })),
         resetSearch: () => set(() => ({ search: get('search') })),
-        setStatus: (status) => set(() => ({ status })),
-        resetStatus: () => set(() => ({ status: get('status') })),
+        setStatus: (status) =>
+          set(() => ({ status, checklist: get('checklist') })),
+        resetStatus: () =>
+          set(() => ({ status: get('status'), checklist: get('checklist') })),
         setStages: (stages) => set(() => ({ stages })),
         resetStages: () => set(() => ({ stages: get('stages') })),
         setOrder: (order) => set(() => ({ order })),

@@ -7,14 +7,14 @@ import { MoveCandidate } from './moveCandidate';
 
 const Actions = () => {
   const checklist = useApplicationsStore((state) => state.checklist);
-  const { setActionPopup, setChecklist } = useApplicationsActions();
+  const { setActionPopup, resetChecklist } = useApplicationsActions();
   const count = checklist.length;
   return (
     <>
       <div className='flex items-center justify-between border-t border-gray-200 bg-white p-4'>
         <div className='flex items-center space-x-4'>
           <Button
-            onClick={() => setChecklist([])}
+            onClick={() => resetChecklist()}
             variant='ghost'
             size='sm'
             className='text-gray-600 hover:text-gray-800'

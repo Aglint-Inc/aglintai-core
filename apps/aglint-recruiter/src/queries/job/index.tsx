@@ -93,6 +93,8 @@ export const useJobSync = () => {
 
 export const useInvalidateJobQueries = () => {
   const queryClient = useQueryClient();
+  const applicationsInvalidate =
+    api.useUtils().jobs.job.applications.invalidate;
   const predicateFn = useCallback(
     (id): QueryFilters['predicate'] =>
       (query) =>
@@ -111,6 +113,7 @@ export const useInvalidateJobQueries = () => {
         type: 'inactive',
         predicate: predicateFn(id),
       }),
+      applicationsInvalidate(),
     ]);
 
   return { revalidateJobQueries };
