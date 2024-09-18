@@ -114,9 +114,15 @@ type UnionToIntersection<U> = (
 
 /**
  *
- * Correct approach to get derived values from state
+ * Correct approach to get derived values from state without re-renders
  *
  * @link https://github.com/pmndrs/zustand/issues/108#issuecomment-2197556875
+ *
+ * @param depsFn A function returning a dependency array
+ * @param computeFn The computation callback function with the update dependecies as arguments
+ *
+ * Only computed when first accessed and only recomputed if a dependency value changes
+ *
  */
 export function compute<T extends unknown[], U>(
   depsFn: () => [...T],
@@ -135,9 +141,10 @@ export function compute<T extends unknown[], U>(
 }
 
 /**
- * A type safe computation creator function which can be used to derive states using the get and compute
+ * A type safe computation creator function which can be used to derive states using the get and compute methods
  *
  * @link https://github.com/pmndrs/zustand/issues/108#issuecomment-2197556875
+ *
  */
 export const getContextStoreComputed =
   <T,>() =>
