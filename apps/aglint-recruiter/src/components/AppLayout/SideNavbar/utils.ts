@@ -100,7 +100,7 @@ export const navList: {
   {
     text: 'Reports',
     SubComponents: null,
-    route: '/reports??tab=interviewMetrics',
+    route: '/reports?tab=interviewMetrics',
     comingSoon: false,
     isVisible: true,
     permission: ['company_settings_module'],
