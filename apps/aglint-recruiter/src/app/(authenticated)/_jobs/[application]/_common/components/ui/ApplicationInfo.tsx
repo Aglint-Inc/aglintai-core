@@ -7,7 +7,6 @@ import {
   Smartphone,
   SquareUser,
 } from 'lucide-react';
-import React from 'react';
 
 export function ApplicantInfoBox({
   onClickLinkedIn = () => {},
@@ -20,17 +19,8 @@ export function ApplicantInfoBox({
   isRoleVisible = true,
   isDepartmentVisible = true,
 }) {
-  const visibleItems = [
-    isDepartmentVisible,
-    isRoleVisible,
-    isLinkedInVisible,
-    true, // Location is always visible
-    true, // Email is always visible
-    true, // Phone is always visible
-  ].filter(Boolean).length;
-
   return (
-    <dl className={`grid grid-cols-${visibleItems} gap-x-4 gap-y-2 text-sm`}>
+    <dl className={`flex flex-row gap-x-8 gap-y-2 text-sm`}>
       {/* Work Information */}
       {isDepartmentVisible && (
         <div className='flex items-center'>

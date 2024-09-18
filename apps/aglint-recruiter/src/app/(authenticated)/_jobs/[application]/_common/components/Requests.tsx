@@ -23,11 +23,11 @@ function Requests() {
               id: req.id,
             })}
           >
-            <div className='mb-2 flex items-center justify-between'>
+            <div className='mb-2 flex justify-between gap-1'>
               <p className='text-sm font-medium'>{req.title}</p>
               <UIBadge
                 size='sm'
-                className='min-w-[70px] text-center justify-center'
+                className='min-w-[70px] justify-center text-center'
                 textBadge={capitalizeFirstLetter(req.status)}
                 color={
                   req.status === 'to_do'

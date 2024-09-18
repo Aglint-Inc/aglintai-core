@@ -33,8 +33,9 @@ const SelfScheduleFlowMenus = ({
         reqProgresMap,
       };
     }
+    const progres_data = request_progress.data;
 
-    for (const prog of request_progress.data) {
+    for (const prog of progres_data) {
       if (prog.event_type === 'CAND_CONFIRM_SLOT') {
         break;
       }
@@ -49,7 +50,6 @@ const SelfScheduleFlowMenus = ({
     return { progres, reqProgresMap };
   }, [request_progress.data]);
   //
-
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
