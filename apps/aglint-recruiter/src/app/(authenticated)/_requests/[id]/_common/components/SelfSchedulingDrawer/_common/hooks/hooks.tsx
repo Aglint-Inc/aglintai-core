@@ -87,6 +87,18 @@ export const useSelfSchedulingDrawer = ({
       session_ids: selectedSessionIds,
       rec_id: recruiter.id,
     });
+
+    //calendar resourrce view
+    const { events, resources } = transformAvailability(
+      resOptions.availabilities,
+    );
+    setAvailabilities({
+      events,
+      resources,
+    });
+    setCalendarDate(dateRange.start_date);
+    //calendar resourrce view
+
     // if api return empty array if user select same date and break duration is more than 1 day
     if (resOptions?.slots?.length === 0) {
       setNoOptions(true);
@@ -113,15 +125,6 @@ export const useSelfSchedulingDrawer = ({
       setNoSlotsReasons([]);
       setFilteredSchedulingOptions(filterSlots.combs);
     }
-
-    const { events, resources } = transformAvailability(
-      resOptions.availabilities,
-    );
-    setAvailabilities({
-      events,
-      resources,
-    });
-    setCalendarDate(dateRange.start_date);
   };
 
   const filterSlots = async () => {

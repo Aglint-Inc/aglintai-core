@@ -1,5 +1,7 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import dayjs from 'dayjs';
+import { AlertCircle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -83,7 +85,7 @@ function StepSlotOptions() {
         </UITypography>
         <FilterButton />
       </div>
-      <div className='flex h-[calc(100vh-144px)] flex-col gap-2 overflow-scroll p-4'>
+      <div className='flex h-[calc(100vh-148px)] flex-col gap-2 overflow-auto p-4'>
         {filteredSchedulingOptions?.map((item, index) => {
           return (
             <DayCardWrapper
@@ -103,6 +105,16 @@ function StepSlotOptions() {
             />
           );
         })}
+        {filteredSchedulingOptions.length === 0 && (
+          <Alert variant='neutral'>
+            <AlertCircle className='h-4 w-4' />
+            <AlertTitle>No results found</AlertTitle>
+            <AlertDescription>
+              {`Your current filter settings don't match any results. Please
+              adjust your filters.`}
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
     </div>
   );

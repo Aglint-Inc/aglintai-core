@@ -53,22 +53,23 @@ export function filterSchedulingOptionsArray({
   schedulingOptions: ApiResponseFindAvailability['slots'];
   filters: SelfSchedulingFlow['filters'];
 }) {
-  const allFilteredOptions: ApiResponseFindAvailability['slots'] =
-    schedulingOptions.map((option) => ({
-      ...option,
-      interview_rounds: option.interview_rounds.map((items) => {
-        let allOptions = items;
+  const allFilteredOptions: ApiResponseFindAvailability['slots'] = (
+    schedulingOptions || []
+  ).map((option) => ({
+    ...option,
+    interview_rounds: option.interview_rounds.map((items) => {
+      let allOptions = items;
 
-        if (filters.preferredDateRanges.length > 0) {
-          allOptions = filterByDateRanges({
-            schedulingOptions: allOptions,
-            preferredDateRanges: filters.preferredDateRanges,
-          });
-        }
+      if (filters.preferredDateRanges.length > 0) {
+        allOptions = filterByDateRanges({
+          schedulingOptions: allOptions,
+          preferredDateRanges: filters.preferredDateRanges,
+        });
+      }
 
-        return allOptions;
-      }),
-    }));
+      return allOptions;
+    }),
+  }));
 
   let allCombs: MultiDayPlanType[] =
     createCombsForMultiDaySlots(allFilteredOptions);
