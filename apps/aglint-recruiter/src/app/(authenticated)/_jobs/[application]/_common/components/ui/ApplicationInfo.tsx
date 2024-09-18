@@ -20,11 +20,20 @@ export function ApplicantInfoBox({
   isRoleVisible = true,
   isDepartmentVisible = true,
 }) {
+  const visibleItems = [
+    isDepartmentVisible,
+    isRoleVisible,
+    isLinkedInVisible,
+    true, // Location is always visible
+    true, // Email is always visible
+    true, // Phone is always visible
+  ].filter(Boolean).length;
+
   return (
-    <dl className='grid grid-cols-3 gap-x-4 gap-y-2 text-sm'>
+    <dl className={`grid grid-cols-${visibleItems} gap-x-4 gap-y-2 text-sm`}>
       {/* Work Information */}
       {isDepartmentVisible && (
-        <div className='col-span-1 flex items-center'>
+        <div className='flex items-center'>
           <Briefcase className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
             <dt className='sr-only'>Department</dt>
@@ -33,7 +42,7 @@ export function ApplicantInfoBox({
         </div>
       )}
       {isRoleVisible && (
-        <div className='col-span-1 flex items-center'>
+        <div className='flex items-center'>
           <SquareUser className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
             <dt className='sr-only'>Current Role</dt>
@@ -43,7 +52,7 @@ export function ApplicantInfoBox({
       )}
       {isLinkedInVisible && (
         <div
-          className='col-span-1 flex cursor-pointer items-center'
+          className='flex cursor-pointer items-center'
           onClick={onClickLinkedIn}
         >
           <LinkedinIcon className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
@@ -55,7 +64,7 @@ export function ApplicantInfoBox({
       )}
 
       {/* Location Information */}
-      <div className='col-span-1 flex items-center'>
+      <div className='flex items-center'>
         <MapPin className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
         <div>
           <dt className='sr-only'>Location</dt>
@@ -64,14 +73,14 @@ export function ApplicantInfoBox({
       </div>
 
       {/* Contact Information */}
-      <div className='col-span-2 flex items-center'>
+      <div className='flex items-center'>
         <Mail className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
         <div>
           <dt className='sr-only'>Email</dt>
           <dd className='truncate'>{textEmail}</dd>
         </div>
       </div>
-      <div className='col-span-1 flex items-center'>
+      <div className='flex items-center'>
         <Smartphone className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
         <div>
           <dt className='sr-only'>Phone</dt>

@@ -1,4 +1,5 @@
-import { Loader } from '@/components/Common/Loader';
+import { Skeleton } from '@components/ui/skeleton';
+
 import { useApplication } from '@/context/ApplicationContext';
 import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -19,8 +20,17 @@ function InterviewTabContent() {
 
   if (isLoadingSession || isLoadingDetail)
     return (
-      <div className='flex h-[50vh] items-center justify-center'>
-        <Loader />
+      <div className='flex flex-row gap-8'>
+        <div className='flex min-w-[320px] flex-col space-y-4'>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className='h-15 w-full' />
+          ))}
+        </div>
+        <div className='w-full flex flex-col space-y-4'>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className='h-25 w-full' />
+          ))}
+        </div>
       </div>
     );
 
