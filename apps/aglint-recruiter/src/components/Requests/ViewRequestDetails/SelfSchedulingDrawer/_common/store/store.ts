@@ -6,7 +6,7 @@ import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find
 import dayjs from '@/utils/dayjs';
 
 import {
-  type Event,
+  type EventCalendar,
   type Resource,
 } from '../../../../../Common/CalendarResourceView/types';
 import { type filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
@@ -52,7 +52,7 @@ export interface SelfSchedulingFlow {
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
   availabilities: {
-    events: Event[];
+    events: EventCalendar[];
     resources: Resource[];
   };
   localFilters: {

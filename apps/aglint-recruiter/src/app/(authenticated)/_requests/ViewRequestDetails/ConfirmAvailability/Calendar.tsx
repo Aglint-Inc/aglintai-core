@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { useEffect, useMemo } from 'react';
 
 import CalendarResourceView from '@/components/Common/CalendarResourceView';
-import { type Event } from '@/components/Common/CalendarResourceView/types';
+import { type EventCalendar } from '@/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/components/Common/MuiAvatar';
 
 import { useRequestAvailabilityDetails } from '../../_common/hooks';
@@ -47,7 +47,7 @@ function Calendar() {
         .filter((plan) => selectedIds.includes(plan.plan_comb_id))
         .flatMap((plan) => plan.sessions) || [];
 
-    const convertSelectedSessionsToEvents: Event[] = selectedSessions
+    const convertSelectedSessionsToEvents: EventCalendar[] = selectedSessions
       .map((session) => {
         const ints = [...session.qualifiedIntervs, ...session.trainingIntervs];
         return ints.map(
@@ -72,7 +72,7 @@ function Calendar() {
                 session_id:
                   session.session_id + session.qualifiedIntervs[0].user_id,
               },
-            }) as Event,
+            }) as EventCalendar,
         );
       })
       .flat();

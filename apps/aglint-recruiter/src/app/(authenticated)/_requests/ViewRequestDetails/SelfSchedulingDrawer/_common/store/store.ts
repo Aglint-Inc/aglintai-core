@@ -1,9 +1,9 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import type {
-  Event,
-  Resource,
+import {
+  type EventCalendar,
+  type Resource,
 } from '@/components/Common/CalendarResourceView/types';
 import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
 import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
@@ -52,7 +52,7 @@ export interface SelfSchedulingFlow {
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
   availabilities: {
-    events: Event[];
+    events: EventCalendar[];
     resources: Resource[];
   };
   localFilters: {
