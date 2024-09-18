@@ -52,7 +52,7 @@ export function UIAlert({
           >
             <div className={'flex flex-row gap-2'}>
               <div className='p-1'>
-                {IconComponent && <IconComponent size={20} />}
+                {IconComponent && <IconComponent size={32} className='mr-2' />}
               </div>
               <div className='flex flex-col justify-center'>
                 {title && <AlertTitle>{title}</AlertTitle>}

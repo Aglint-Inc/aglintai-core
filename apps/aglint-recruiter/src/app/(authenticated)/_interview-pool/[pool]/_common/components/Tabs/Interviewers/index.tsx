@@ -94,7 +94,7 @@ function Interviewers() {
         <CardContent className='p-0'>
           <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow className='bg-gray-100 rounded-sm hover:bg-gray-100 hover:rounded-sm'>
+              <TableRow >
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>

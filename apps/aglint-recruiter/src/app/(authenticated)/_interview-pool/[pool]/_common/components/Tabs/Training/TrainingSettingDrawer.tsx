@@ -14,10 +14,7 @@ import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainPro
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
-import {
-  setLocalModule,
-  useModulesStore,
-} from '../../../stores/store';
+import { setLocalModule, useModulesStore } from '../../../stores/store';
 
 function TrainingSettingDrawer(
   props: ReturnType<typeof useEnableDisableTraining>,
@@ -56,7 +53,6 @@ function TrainingSettingDrawer(
       size='sm'
       title='Training Settings'
       open={open}
-      scrollAreaHeight='h-[calc(100vh-114px)]'
       slotBottom={
         <>
           <Button
@@ -194,7 +190,7 @@ function TrainingSettingDrawer(
                     <Minus className='h-4 w-4' />
                   </Button>
                   <UITextField
-                    className='w-16 h-7'
+                    className='h-7 w-16'
                     type='number'
                     value={localModule.settings.noReverseShadow}
                     onChange={(e) =>
@@ -250,7 +246,7 @@ function TrainingSettingDrawer(
                     <Minus className='h-4 w-4' />
                   </Button>
                   <Input
-                    className='w-16 h-7'
+                    className='h-7 w-16'
                     type='number'
                     value={localModule.settings.noShadow}
                     onChange={(e) =>
@@ -289,6 +285,7 @@ function TrainingSettingDrawer(
         {editModule?.settings?.require_training && (
           <div className='mx-4 mt-6'>
             <UIAlert
+              type='small'
               color={'error'}
               title='Disable Training'
               description='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'

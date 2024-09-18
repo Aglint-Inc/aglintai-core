@@ -1,8 +1,7 @@
 import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { type ScheduleListType } from '../Common/ModuleSchedules/hooks';
-import { type FilterOptionsType } from './types';
+import { type FilterOptionsType, type ScheduleListType } from '../types';
 
 export const filterOptions = [
   { name: 'status' as FilterOptionsType['name'], Icon: <FilterStatusIcon /> },

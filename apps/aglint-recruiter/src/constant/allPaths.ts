@@ -172,6 +172,7 @@ export const PATHS = [
   '/requests/history',
   '/requests',
   '/requests/[id]',
+  '/scheduling/all',
   '/scheduling/dashboard',
   '/scheduling',
   '/scheduling/view',

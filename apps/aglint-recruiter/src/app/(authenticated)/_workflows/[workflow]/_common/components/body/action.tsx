@@ -149,6 +149,7 @@ const ActionForm = ({ action }: ActionProps) => {
   );
 
   return (
+    <div className="mb-4">
     <UISelect
       label='Do this'
       value={currentOption.target_api}
@@ -166,6 +167,7 @@ const ActionForm = ({ action }: ActionProps) => {
         } as WorkflowAction);
       }}
     />
+    </div>
   );
 };
 

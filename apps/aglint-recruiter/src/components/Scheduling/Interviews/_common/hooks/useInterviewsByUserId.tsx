@@ -1,12 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
+import { schedulesSupabase } from 'src/app/_common/utils/schedules-query';
 
 import { supabase } from '@/utils/supabase/client';
 
-import { schedulesSupabase } from '../../../app/_common/utils/schedules-query';
-
-export const useAllSchedulesByUserId = ({
+export const useInterviewsByUserId = ({
   filter,
   member_id,
 }: {
@@ -17,8 +16,8 @@ export const useAllSchedulesByUserId = ({
   member_id: string;
 }) => {
   const query = useQuery({
-    queryKey: ['schedulesByModuleId', member_id, filter],
-    queryFn: () => fetchUserSchedules({ member_id, filter }),
+    queryKey: ['get_Interviews_BY_UserId', member_id, filter],
+    queryFn: () => getInterviewsBYUserId({ member_id, filter }),
     enabled: !!member_id,
     placeholderData: {
       schedules: [],
@@ -31,7 +30,7 @@ export const useAllSchedulesByUserId = ({
   return query;
 };
 
-export const fetchUserSchedules = async ({
+export const getInterviewsBYUserId = async ({
   filter,
   member_id,
 }: {
@@ -74,7 +73,7 @@ export const fetchUserSchedules = async ({
   };
 };
 
-export const fetchSchedulesCountByUserId = async (user_id: string) => {
+export const getInterviewsCountByUserId = async (user_id: string) => {
   const { data } = await supabase
     .from('meeting_details')
     .select()
