@@ -33,16 +33,8 @@ function Interviews() {
 
         {/* Right Column: My Interviews and Recently Completed Interviews */}
         <div className='flex w-5/12 flex-col'>
-          <Card className='mb-6'>
-            <CardHeader>
-              <CardTitle className='text-lg font-semibold'>
-                My Interviews
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <MyInterviews />
-            </CardContent>
-          </Card>
+          <MyInterviews />
+
           <Card>
             <CardHeader>
               <CardTitle className='text-lg font-semibold'>

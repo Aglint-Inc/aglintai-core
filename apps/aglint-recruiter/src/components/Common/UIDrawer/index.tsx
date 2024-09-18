@@ -1,11 +1,11 @@
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-} from '@components/ui/drawer';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { X as CloseIcon } from 'lucide-react'; // Import Lucide Close Icon
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+} from '@components/ui/sheet';
+import { X as CloseIcon } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '../UIButton';
@@ -26,22 +26,20 @@ function UIDrawer({
   slotBottom?: React.ReactNode;
   title: string;
   size?: 'sm' | 'md' | 'lg' | 'full' | 'half';
-  calendar?: React.ReactNode;
+  calendar?: React.ReactNode;// New prop for adjustable height
 }) {
   // Determine width based on size variant
   const widthClass = {
-    sm: 'w-[500px]',
-    md: 'w-[700px]',
-    lg: 'w-[900px]',
-    full: 'w-[calc(100vw-100px)]',
-    half: 'w-[calc(50vw)]',
+    sm: 'min-w-[500px]',
+    md: 'min-w-[700px]',
+    lg: 'min-w-[900px]',
+    full: 'min-w-[calc(100vw-100px)]',
+    half: 'min-w-[calc(50vw)]',
   }[size];
 
   return (
-    <Drawer open={open} onClose={onClose} direction='right'>
-      <DrawerContent
-        className={`left-auto right-0 top-0 mt-0 h-screen ${widthClass} rounded-none`}
-      >
+    <Sheet open={open} onOpenChange={() => onClose()}>
+      <SheetContent side='right' className={`p-0 ${widthClass}`}>
         <div className='flex w-full flex-row'>
           {calendar}
           <div className='w-full border-l border-gray-200'>
@@ -52,25 +50,25 @@ function UIDrawer({
             >
               <CloseIcon size={16} />
             </UIButton>
-            <DrawerHeader className='items-center border-b border-gray-200 p-3'>
-              <div className='flex flex-row items-center'>
+            <SheetHeader className='border-b border-gray-200 p-3'>
+              <div className='flex flex-row'>
                 <UITypography className='text-sm' fontBold='normal'>
                   {title}
                 </UITypography>
               </div>
-            </DrawerHeader>
-            <ScrollArea className='h-[calc(100vh-95px)]'>{children}</ScrollArea>
+            </SheetHeader>
+            <ScrollArea className='h-[calc(100vh-98px)]'>{children}</ScrollArea>
             {slotBottom && (
-              <DrawerFooter className='h-12 border-t border-gray-200'>
-                <div className='flex h-full flex-row items-center justify-center gap-4'>
+              <SheetFooter className='w-full border-t border-gray-200 p-2'>
+                <div className='flex h-full w-full flex-row items-center justify-center gap-4'>
                   {slotBottom}
                 </div>
-              </DrawerFooter>
+              </SheetFooter>
             )}
           </div>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 }
 

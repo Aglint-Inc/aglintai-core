@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { MoreVertical } from 'lucide-react';
+import { Archive, ArchiveRestore, MoreVertical } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
@@ -21,7 +21,11 @@ import { unArchiveModuleById } from '../utils/pool';
 import StatsCards from './StatsCards';
 import InterviewDetailsTabs from './Tabs';
 
-export default function InterviewTypeDetail({module_id}:{module_id:string}) {
+export default function InterviewTypeDetail({
+  module_id,
+}: {
+  module_id: string;
+}) {
   const {
     data: editModule,
     isLoading: fetchingModule,
@@ -33,7 +37,7 @@ export default function InterviewTypeDetail({module_id}:{module_id:string}) {
     if (editModule?.id) {
       setBreadcrum([
         {
-          name: 'Interview Pools',
+          name: 'Interview Pool',
           route: ROUTES['/interview-pool'](),
         },
         {
@@ -64,53 +68,66 @@ export default function InterviewTypeDetail({module_id}:{module_id:string}) {
             {breadcrum}
           </nav>
 
-          <div className='mb-6 flex items-center justify-between'>
-            <div>
-              <h1 className='text-3xl font-bold text-gray-900'>
-                {editModule?.name}
-              </h1>
-              <div className='mt-2 flex items-center space-x-2'>
-                <UIBadge
-                  textBadge={editModule.is_archived ? 'Archived' : 'Active'}
-                  color={editModule.is_archived ? 'error' : 'success'}
-                />
-                <span className='text-gray-500'>•</span>
-                <span className='text-gray-500'>
-                  {editModule.department.name}
-                </span>
-              </div>
-            </div>
-            <div className='flex flex-row items-center space-x-2'>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <UIButton
-                    variant='outline'
-                    size='sm'
-                    icon={<MoreVertical className='h-4 w-4' />}
+            <div className='mb-6 flex items-center justify-between'>
+              <div>
+                <h1 className='text-xl font-bold text-gray-900'>
+                  {editModule?.name}
+                </h1>
+                <div className='mt-2 flex items-center space-x-2'>
+                  <UIBadge
+                    textBadge={editModule.is_archived ? 'Archived' : 'Active'}
+                    color={editModule.is_archived ? 'error' : 'success'}
                   />
-                </PopoverTrigger>
-                <PopoverContent className='w-auto p-0'>
-                  {
+                  <span className='text-gray-500'>•</span>
+                  <span className='text-gray-500'>
+                    {editModule.department.name}
+                  </span>
+                </div>
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <UIButton
                       variant='ghost'
+                      size='md'
+                      icon={<MoreVertical className='h-4 w-4' />}
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    align='end'
+                    side='left'
+                    sideOffset={8}
+                    alignOffset={-40}
+                    className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
+                  >
+                    <div
+                      className='rounded-md border-none p-2 text-sm hover:bg-gray-100 flex items-center space-x-2'
                       onClick={() => {
                         editModule?.is_archived
                           ? unArcheive()
                           : setIsArchiveDialogOpen(true);
                       }}
-                      size='sm'
                     >
-                      {editModule?.is_archived ? 'Unarchive' : 'Archive'}
-                    </UIButton>
-                  }
-                </PopoverContent>
-              </Popover>
+                      {editModule?.is_archived ? (
+                        <>
+                          <Archive className='h-4 w-4' />
+                          <span>Unarchive</span>
+                        </>
+                      ) : (
+                        <>
+                          <ArchiveRestore className='h-4 w-4' />
+                          <span>Archive</span>
+                        </>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
 
               <DeleteModuleDialog editModule={editModule} />
               <ArchiveModuleDialog />
             </div>
           </div>
-          <StatsCards module_id={module_id}/>
+          <StatsCards module_id={module_id} />
           <InterviewDetailsTabs />
         </div>
       )}

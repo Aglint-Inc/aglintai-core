@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Card } from '@components/ui/card';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
@@ -6,7 +7,6 @@ import CalendarComp from '@/components/Common/Calendar/Calendar';
 import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
-import { Card } from '@components/ui/card';
 
 function Schedules() {
   const [filter, setFilter] = useState<
@@ -24,7 +24,7 @@ function Schedules() {
           <Loader />
         </div>
       ) : allSchedules.length === 0 ? (
-        <div className='w-[820px]'>
+        <div className='w-full'>
           <div className='flex flex-col items-center justify-center p-8 text-center'>
             <Calendar className='mb-2 h-12 w-12 text-muted-foreground' />
             <h3 className='mb-1 text-lg font-medium text-foreground'>

@@ -63,7 +63,7 @@ function MembersAutoComplete({
             <div
               key={user.user_id}
               className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${
-                pillColor ? `bg-${pillColor}` : 'bg-neutral-300'
+                pillColor ? `${pillColor}` : 'bg-neutral-300'
               }`}
             >
               <MuiAvatar

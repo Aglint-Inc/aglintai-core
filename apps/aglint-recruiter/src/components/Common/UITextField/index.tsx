@@ -15,6 +15,7 @@ type Props = InputProps & {
   defaultLabelColor?: string;
   fullWidth?: boolean;
   ref: React.ForwardedRef<HTMLInputElement>;
+  className?: string;
 };
 
 const UITextField = forwardRef<HTMLInputElement, Props>(

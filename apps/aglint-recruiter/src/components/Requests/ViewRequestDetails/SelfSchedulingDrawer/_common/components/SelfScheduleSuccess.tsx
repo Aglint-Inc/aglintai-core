@@ -27,7 +27,7 @@ function SelfScheduleSuccess() {
   };
 
   return (
-    <div className='flex w-full flex-row items-center justify-center'>
+    <div className='flex w-full flex-row items-center justify-center p-4'>
       <Alert variant='success'>
         <CheckCircle2 className='h-4 w-4' />
         <AlertTitle>Self scheduling link sent successfully</AlertTitle>

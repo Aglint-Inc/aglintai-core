@@ -224,7 +224,7 @@ const ProfileScoreControls = () => {
       <div className='space-y-4'>
         <div className='flex justify-center'>
           <div className='flex w-4/5 flex-row items-center justify-center gap-10'>
-            <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
+            <ScoreWheel parameter_weights={weights} />
           </div>
         </div>
         <div className='flex flex-row justify-center space-x-2'>
@@ -253,7 +253,7 @@ const ProfileScoreControls = () => {
             className='w-20 bg-white'
           />
         </div>
-        <div className='flex justify-end'>
+        <div className='flex justify-center'>
           <Button variant='outline' size='sm' onClick={() => handleReset()}>
             <RefreshCcw className='mr-2 h-4 w-4' /> Reset
           </Button>
