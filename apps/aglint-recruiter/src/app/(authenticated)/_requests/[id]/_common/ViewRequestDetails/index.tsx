@@ -13,6 +13,13 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
+import RequestProgress from '@requests/components/RequestProgress';
+import {
+  REQUEST_STATUS_LIST,
+  REQUEST_TYPE_LIST,
+  REQUEST_URGENT_LIST,
+} from '@requests/constant';
+import { useMeetingList } from '@requests/hooks';
 import {
   Bot,
   Briefcase,
@@ -43,13 +50,6 @@ import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import RequestProgress from '../_common/components/RequestProgress';
-import {
-  REQUEST_STATUS_LIST,
-  REQUEST_TYPE_LIST,
-  REQUEST_URGENT_LIST,
-} from '../_common/constant';
-import { useMeetingList } from '../_common/hooks';
 import CandidateAvailability from './CandidateAvailability';
 import RecentRequests from './Components/RecentRequests';
 import UpdateDetails from './Components/UpdateDetails';

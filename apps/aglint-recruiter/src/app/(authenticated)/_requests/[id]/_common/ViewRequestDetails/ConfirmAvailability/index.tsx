@@ -3,6 +3,8 @@ import {
   type CandReqSlotsType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { updateCandidateRequestAvailability } from '@requests/functions';
+import { useRequestAvailabilityDetails } from '@requests/hooks';
 import axios from 'axios';
 import { Check, Loader2 } from 'lucide-react';
 import { nanoid } from 'nanoid';
@@ -15,8 +17,6 @@ import UIDrawer from '@/components/Common/UIDrawer';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/utils/toast';
 
-import { updateCandidateRequestAvailability } from '../../_common/functions';
-import { useRequestAvailabilityDetails } from '../../_common/hooks';
 import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './Calendar';
 import { useAvailabilityContext } from './RequestAvailabilityContext';

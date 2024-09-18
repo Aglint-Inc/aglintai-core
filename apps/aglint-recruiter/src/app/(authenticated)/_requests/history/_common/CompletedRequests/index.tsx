@@ -24,9 +24,9 @@ import type { Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from '../_common/components/RequestCard';
-import RequestHistoryFilter from '../_common/components/RequestHistoryFilter';
-import { useCompletedRequests } from '../_common/hooks';
+import { RequestCard } from '../../../_common/components/RequestCard';
+import RequestHistoryFilter from '../../../_common/components/RequestHistoryFilter';
+import { useCompletedRequests } from '../../../_common/hooks';
 import { useCompletedRequestsStore } from './store';
 
 function CompletedRequests() {

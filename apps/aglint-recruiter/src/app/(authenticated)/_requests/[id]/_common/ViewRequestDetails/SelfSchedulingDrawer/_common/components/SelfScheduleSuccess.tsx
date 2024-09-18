@@ -1,10 +1,10 @@
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { useMeetingList } from '@requests/hooks';
 import { CheckCircle2 } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { useMeetingList } from '../../../../_common/hooks';
 import { useSelfSchedulingFlowStore } from '../store/store';
 
 function SelfScheduleSuccess() {

@@ -4,6 +4,7 @@ import {
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
+import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
 import React from 'react';
@@ -14,7 +15,6 @@ import UIDialog from '@/components/Common/UIDialog';
 import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 
-import { useMeetingList } from '../../_common/hooks';
 import ConflictWithHover from '../SelfSchedulingDrawer/_common/components/ui/ConflictWithHover';
 import { MemberRow } from '../SelfSchedulingDrawer/_common/components/ui/MemberRow';
 

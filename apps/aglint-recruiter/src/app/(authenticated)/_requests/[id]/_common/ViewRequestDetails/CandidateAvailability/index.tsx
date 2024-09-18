@@ -10,6 +10,12 @@ import {
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
+import { DAYS_LIST, SLOTS_LIST } from '@requests/constant';
+import {
+  insertCandidateRequestAvailability,
+  updateCandidateRequestAvailability,
+} from '@requests/functions';
+import { useCandidateAvailability, useMeetingList } from '@requests/hooks';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -25,12 +31,6 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { DAYS_LIST, SLOTS_LIST } from '../../_common/constant';
-import {
-  insertCandidateRequestAvailability,
-  updateCandidateRequestAvailability,
-} from '../../_common/functions';
-import { useCandidateAvailability, useMeetingList } from '../../_common/hooks';
 import EmailTemplate from './Components/EmailTemplate';
 import {
   setCandidateAvailabilityDrawerOpen,

@@ -2,15 +2,14 @@ import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
+import { updateRequestNotes } from '@requests/functions';
+import { useRequestNotes } from '@requests/hooks';
 import { debounce } from 'lodash';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import dayjs from '@/utils/dayjs';
-
-import { updateRequestNotes } from '../../_common/functions';
-import { useRequestNotes } from '../../_common/hooks';
 
 function RequestNotes() {
   const query = useParams();

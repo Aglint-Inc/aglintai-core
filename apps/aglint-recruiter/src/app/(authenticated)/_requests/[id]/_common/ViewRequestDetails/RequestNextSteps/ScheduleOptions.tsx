@@ -1,5 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { useMeetingList } from '@requests/hooks';
 import React from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -7,7 +8,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useRequest } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 
-import { useMeetingList } from '../../_common/hooks';
 import { setCandidateAvailabilityDrawerOpen } from '../CandidateAvailability/store';
 import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
 import {

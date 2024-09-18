@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
+import { useRequestAvailabilityDetails } from '@requests/hooks';
 import { useEffect, useMemo } from 'react';
 
 import CalendarResourceView from '@/components/Common/CalendarResourceView';
 import { type EventCalendar } from '@/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/components/Common/MuiAvatar';
 
-import { useRequestAvailabilityDetails } from '../../_common/hooks';
 import { transformAvailability } from '../SelfSchedulingDrawer/_common/utils/utils';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import {
