@@ -102,7 +102,7 @@ export default function AppLayout({ children, appRouter = false }) {
         {!isHorizontalNav && (
           <nav className='fixed flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
             <div className='flex flex-grow flex-col items-center py-3'>
-              <Button variant='ghost' className='mt-4' asChild>
+              <Button variant='link' className='mt-4' asChild>
                 <Link href='/'>
                   <Image
                     src={logo || defaultCompanyLogo}
@@ -119,7 +119,7 @@ export default function AppLayout({ children, appRouter = false }) {
             <div className='flex flex-col items-center space-y-3 pb-3'>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='ghost' className='rounded-sm' asChild>
+                  <Button variant='link' asChild>
                     <Link
                       href={
                         ROUTES['/user/[user]']({
@@ -145,7 +145,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='outline' onClick={handleLogout}>
+                  <Button variant='link' onClick={handleLogout}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
@@ -158,7 +158,7 @@ export default function AppLayout({ children, appRouter = false }) {
         )}
         <main
           className={`flex min-h-screen w-full bg-gray-50 pt-8 ${
-            isHorizontalNav ? '' : 'ml-8'
+            isHorizontalNav ? '' : 'ml-16'
           }`}
         >
           {appRouter ||

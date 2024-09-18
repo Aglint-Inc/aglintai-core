@@ -68,7 +68,7 @@ function Interviewers() {
     : interviewers;
 
   return (
-    <div className='container mx-auto w-full'>
+    <div className='container-lg mx-auto w-full px-12'>
       <div className=''>
         <Header
           isFilterApplied={isFilterApplied}

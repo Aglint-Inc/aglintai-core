@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -11,7 +12,6 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { fetchInterviewModules } from '../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import { ShowCode } from '../Common/ShowCode';
-import { UIPageLayout } from '../Common/UIPageLayout';
 import SchedulingDashboard from './Dashboard';
 import MySchedule from './MySchedules';
 import Schedules from './Schedules';
@@ -36,7 +36,7 @@ function SchedulingMainComp() {
 
   const tab = router.query.tab as SchedulingTab;
 
-  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  const { setBreadcrum } = useBreadcrumContext();
 
   useEffect(() => {
     setBreadcrum([
@@ -50,11 +50,16 @@ function SchedulingMainComp() {
   return (
     <>
       <SeoSettings tab={tab} />
-
-      <UIPageLayout
-        slotTopbarLeft={<>{breadcrum}</>}
-        slotTopbarRight={
-          <>
+      <div className='container-lg mx-auto w-full px-12'>
+        <header>
+          <div className='mb-8 flex items-center justify-between'>
+            <div>
+              <h1 className='text-3xl font-semibold'>All Interviews</h1>
+              <p className='mb-4 text-gray-600'>
+                Connect your favorite tools to streamline your recruitment
+                process.
+              </p>
+            </div>
             {checkPermissions(['scheduling_actions']) && (
               <Tabs
                 value={tab}
@@ -69,10 +74,39 @@ function SchedulingMainComp() {
                 </TabsList>
               </Tabs>
             )}
-          </>
-        }
-        slotBody={<BodyComp />}
-      />
+          </div>
+        </header>
+        <div className='flex w-full flex-row'>
+          {/* Left Column: All Upcoming Interviews */}
+          <div className='w-7/12 space-y-4 pr-6'>
+            <h2 className='text-lg font-semibold'>Upcoming Interviews</h2>
+            {/* <UpcomingInterviews /> */}
+            <BodyComp />
+          </div>
+
+          {/* Right Column: My Interviews and Recently Completed Interviews */}
+          <div className='flex w-5/12 flex-col'>
+            <Card className='mb-6'>
+              <CardHeader>
+                <CardTitle className='text-lg font-semibold'>
+                  My Interviews
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <MySchedule />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className='text-lg font-semibold'>
+                  Recently Completed
+                </CardTitle>
+              </CardHeader>
+              <CardContent>{/* <RecentlyCompletedInterviews /> */}</CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

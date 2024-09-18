@@ -67,11 +67,33 @@ export default function InterviewTypesPage() {
     : archiveFiltered;
 
   return (
-    <div className='container mx-auto w-full'>
-      <div className=''>
-        <h1 className='mb-8 text-3xl font-bold text-gray-900'>
-          Interview Pool
-        </h1>
+    <div className='container-lg mx-auto w-full px-12'>
+      <div>
+        <div className='flex flex-row justify-between'>
+          <h1 className='mb-8 text-3xl font-bold text-gray-900'>
+            Interview Pools
+          </h1>
+          <Tabs
+            value={activeTab}
+            onValueChange={handleTabChange}
+            className='mb-6'
+          >
+            <TabsList className='rounded-lg bg-gray-100 p-1'>
+              <TabsTrigger
+                value='active'
+                className='data-[state=active]:bg-white data-[state=active]:shadow'
+              >
+                Active
+              </TabsTrigger>
+              <TabsTrigger
+                value='archived'
+                className='data-[state=active]:bg-white data-[state=active]:shadow'
+              >
+                Archived
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
         <Header
           searchText={searchText}
           setSearchText={setSearchText}
@@ -81,27 +103,6 @@ export default function InterviewTypesPage() {
         />
         <Card className='w-full'>
           <CardContent className='p-6'>
-            <Tabs
-              value={activeTab}
-              onValueChange={handleTabChange}
-              className='mb-6'
-            >
-              <TabsList className='rounded-lg bg-gray-100 p-1'>
-                <TabsTrigger
-                  value='active'
-                  className='data-[state=active]:bg-white data-[state=active]:shadow'
-                >
-                  Active
-                </TabsTrigger>
-                <TabsTrigger
-                  value='archived'
-                  className='data-[state=active]:bg-white data-[state=active]:shadow'
-                >
-                  Archived
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-
             <Table>
               <TableHeader>
                 <TableRow>

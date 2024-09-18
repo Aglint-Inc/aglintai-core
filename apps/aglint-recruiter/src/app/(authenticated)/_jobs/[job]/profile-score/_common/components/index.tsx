@@ -78,30 +78,28 @@ export const JobProfileScoreDashboard = () => {
     )
   ) : (
     // TODO: When we move to app router, we should move to separate skeleton component
-    <div className='min-h-screen'>
-      <div className='container mx-auto flex flex-col space-y-6 p-6'>
-        <div className='flex items-center justify-between'>
-          <div className='space-y-2'>
-            <Skeleton className='h-8 w-64' />
-            <Skeleton className='h-4 w-32' />
-          </div>
-          <Skeleton className='h-10 w-10 rounded-full' />
+    <div className='container-lg mx-auto flex flex-col space-y-6 px-12'>
+      <div className='flex items-center justify-between'>
+        <div className='space-y-2'>
+          <Skeleton className='h-8 w-64' />
+          <Skeleton className='h-4 w-32' />
         </div>
-        <div className='flex gap-6'>
-          <div className='w-1/4'>
-            <Skeleton className='h-[calc(100vh-200px)] w-full' />
-          </div>
-          <div className='w-3/4 space-y-4'>
-            <Skeleton className='h-6 w-48' />
-            <Skeleton className='h-4 w-full' />
-            <div className='flex gap-6'>
-              <div className='flex-1'>
-                <Skeleton className='h-64 w-full' />
-              </div>
-              <div className='w-1/3 space-y-4'>
-                <Skeleton className='h-40 w-full' />
-                <Skeleton className='h-40 w-full' />
-              </div>
+        <Skeleton className='h-10 w-10 rounded-full' />
+      </div>
+      <div className='flex gap-6'>
+        <div className='w-1/4'>
+          <Skeleton className='h-[calc(100vh-200px)] w-full' />
+        </div>
+        <div className='w-3/4 space-y-4'>
+          <Skeleton className='h-6 w-48' />
+          <Skeleton className='h-4 w-full' />
+          <div className='flex gap-6'>
+            <div className='flex-1'>
+              <Skeleton className='h-64 w-full' />
+            </div>
+            <div className='w-1/3 space-y-4'>
+              <Skeleton className='h-40 w-full' />
+              <Skeleton className='h-40 w-full' />
             </div>
           </div>
         </div>
@@ -113,36 +111,34 @@ export const JobProfileScoreDashboard = () => {
 const ProfileScorePage = () => {
   return (
     <>
-      <div className='min-h-screen'>
-        <div className='container mx-auto'>
-          <div className='mb-6 flex items-center justify-between'>
-            <div>
-              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
-              <BreadCrumbs />
-            </div>
-            {/* <Settings /> */}
+      <div className='container-lg mx-auto w-full px-12'>
+        <div className='mb-6 flex items-center justify-between'>
+          <div>
+            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
+            <BreadCrumbs />
           </div>
+          {/* <Settings /> */}
+        </div>
 
-          <div className='mb-6 flex gap-6'>
-            <div className='w-1/4'>
-              <JobsSideNavV2 />
-            </div>
-            <div className='w-3/4'>
-              <h2 className='mb-2 text-xl font-bold'>Profile Scoring</h2>
-              <p className='mb-4 text-sm text-gray-600'>
-                Profile scoring helps evaluate candidates objectively, assigning
-                numerical values to their qualifications and experience to
-                streamline the hiring process and identify the best-fit
-                applicants efficiently.
-              </p>
-              <div className='flex'>
-                <div className='mr-4 flex-1'>
-                  <ProfileScore />
-                </div>
-                <div className='w-1/3'>
-                  <ProfileScoreControls />
-                  <Tips />
-                </div>
+        <div className='mb-6 flex gap-6'>
+          <div className='w-1/4'>
+            <JobsSideNavV2 />
+          </div>
+          <div className='w-3/4'>
+            <h2 className='mb-2 text-xl font-bold'>Profile Scoring</h2>
+            <p className='mb-4 text-sm text-gray-600'>
+              Profile scoring helps evaluate candidates objectively, assigning
+              numerical values to their qualifications and experience to
+              streamline the hiring process and identify the best-fit applicants
+              efficiently.
+            </p>
+            <div className='flex'>
+              <div className='mr-4 flex-1'>
+                <ProfileScore />
+              </div>
+              <div className='w-1/3'>
+                <ProfileScoreControls />
+                <Tips />
               </div>
             </div>
           </div>

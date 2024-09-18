@@ -45,8 +45,8 @@ function SchedulingViewComp() {
 
   return (
     <>
-      <div className='min-h-screen py-8'>
-        <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <div className='container-lg mx-auto w-full px-12'>
+        <div className=''>
           <div className='flex flex-row justify-between'>
             <h1 className='mb-8 text-xl font-bold text-gray-900'>
               {schedule.interview_session.name}

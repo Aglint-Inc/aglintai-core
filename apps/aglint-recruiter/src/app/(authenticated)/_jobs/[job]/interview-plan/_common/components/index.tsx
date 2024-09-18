@@ -38,7 +38,6 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
@@ -120,63 +119,61 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='min-h-screen'>
-        <div className='container mx-auto'>
-          <div className='mb-6 flex items-center justify-between'>
-            <div>
-              <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
-              <BreadCrumbs />
-            </div>
-            <Settings />
+      <div className='container-lg mx-auto w-full px-12'>
+        <div className='mb-6 flex items-center justify-between'>
+          <div>
+            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
+            <BreadCrumbs />
           </div>
+          {/* <Settings /> */}
+        </div>
 
-          <div className='mb-6 flex gap-6'>
-            <div className='w-1/4'>
-              <JobsSideNavV2 />
+        <div className='mb-6 flex gap-6'>
+          <div className='w-1/4'>
+            <JobsSideNavV2 />
+          </div>
+          <div className='w-3/4'>
+            <div className='flex flex-row justify-between'>
+              <div className='flex flex-col gap-2'>
+                <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
+                <p className='mb-4 text-sm text-gray-600'>
+                  Update the hiring team details here. Changes will be saved
+                  automatically.
+                </p>
+              </div>
             </div>
-            <div className='w-3/4'>
-              <div className='flex flex-row justify-between'>
-                <div className='flex flex-col gap-2'>
-                  <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
-                  <p className='mb-4 text-sm text-gray-600'>
-                    Update the hiring team details here. Changes will be saved
-                    automatically.
-                  </p>
-                </div>
-              </div>
 
-              <div className='my-4 mb-10 max-w-2xl space-y-4'>
-                {data?.length ? (
-                  data.map((plan) => (
-                    <InterviewPlan
-                      key={plan.id}
-                      plan_id={plan.id}
-                      handleCreate={handleCreate}
-                      handleEdit={handleEdit}
-                    />
-                  ))
-                ) : (
-                  <p className='text-gray-600'>
-                    Create your interview stages for the job to ensure a
-                    structured evaluation process. Add different interview types
-                    such as &quot;Initial Screening&quot; or &quot;Technical
-                    Interview.&quot; Use this template each time you schedule
-                    interviews for candidates to maintain consistency and
-                    efficiency.
-                  </p>
-                )}
+            <div className='my-4 mb-10 max-w-2xl space-y-4'>
+              {data?.length ? (
+                data.map((plan) => (
+                  <InterviewPlan
+                    key={plan.id}
+                    plan_id={plan.id}
+                    handleCreate={handleCreate}
+                    handleEdit={handleEdit}
+                  />
+                ))
+              ) : (
+                <p className='text-gray-600'>
+                  Create your interview stages for the job to ensure a
+                  structured evaluation process. Add different interview types
+                  such as &quot;Initial Screening&quot; or &quot;Technical
+                  Interview.&quot; Use this template each time you schedule
+                  interviews for candidates to maintain consistency and
+                  efficiency.
+                </p>
+              )}
 
-                <AddStageComponent />
-              </div>
+              <AddStageComponent />
             </div>
           </div>
         </div>
+        <InterviewDrawers
+          open={drawerModal}
+          drawers={drawers}
+          handleClose={handleDrawerClose}
+        />
       </div>
-      <InterviewDrawers
-        open={drawerModal}
-        drawers={drawers}
-        handleClose={handleDrawerClose}
-      />
     </>
   );
 };
