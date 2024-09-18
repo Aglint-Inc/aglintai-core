@@ -58,7 +58,7 @@ export default function WorkingHour({
   return (
     <div className='mb-8 flex flex-col gap-4'>
       <div className='flex flex-col'>
-        <h2 className='mb-2 text-xl font-bold'>Working Hours</h2>
+        <h2 className='mb-1 text-xl font-semibold'>Working Hours</h2>
         <p className='text-gray-600'>
           List company holidays to exclude them from scheduling.
         </p>

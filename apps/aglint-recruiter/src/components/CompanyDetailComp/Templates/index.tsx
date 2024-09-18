@@ -22,6 +22,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
@@ -255,7 +256,7 @@ function SchedulerEmailTemps({ setSaving }) {
               {/* Search and Filter */}
               <div className='flex space-x-2'>
                 <Input
-                  className='w-64'
+                  className='h-9 w-64'
                   placeholder='Search Templates'
                   value={searchQry}
                   onChange={(e) => setSearchQry(e.target.value)}
@@ -264,7 +265,7 @@ function SchedulerEmailTemps({ setSaving }) {
                 />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant='outline' className='flex items-center'>
+                    <UIButton variant='outline' className='flex items-center'>
                       Type
                       {filter.length > 0 && (
                         <span className='ml-2 h-2 w-2 rounded-full bg-blue-500' />
@@ -274,7 +275,7 @@ function SchedulerEmailTemps({ setSaving }) {
                       ) : (
                         <ChevronDownIcon size={12} />
                       )} */}
-                    </Button>
+                    </UIButton>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     {filterOptions.map((opt, i) => (
@@ -386,10 +387,16 @@ function SchedulerEmailTemps({ setSaving }) {
                     </div>
                   ) : (
                     <div className='space-y-4'>
-                      <div className='flex items-center justify-between'>
-                        <h2 className='text-md font-bold'>
-                          {emailTemplateCopy[temp_email].heading}
-                        </h2>
+                      <div className='flex justify-between'>
+                        <div className='max-w-[550px]'>
+                          <h2 className='text-md font-semibold'>
+                            {emailTemplateCopy[temp_email].heading}
+                          </h2>
+                          <p className='text-gray-600'>
+                            {emailTemplateCopy[temp_email].description}
+                          </p>
+                        </div>
+
                         <Button
                           size='sm'
                           onClick={(e) => {
@@ -400,9 +407,7 @@ function SchedulerEmailTemps({ setSaving }) {
                           Preview
                         </Button>
                       </div>
-                      <p className='text-gray-600'>
-                        {emailTemplateCopy[temp_email].description}
-                      </p>
+
                       {tiptapLoader ? (
                         <div className='flex h-[calc(100vh-300px)] items-center justify-center'>
                           <div className='space-y-2'>
