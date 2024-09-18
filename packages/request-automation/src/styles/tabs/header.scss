@@ -1,4 +1,7 @@
 #header {
+  margin-bottom: 16px;
+  color: #cf583e;
+
   span.tab-btn {
     cursor: pointer;
     border-radius: 4px;
@@ -21,11 +24,8 @@
     align-items: center;
   }
 
-  margin-bottom: 16px;
-  color: var(--error-a11);
-
   strong {
-    color: var(--error-a11);
+    color: #cf583e;
   }
   .info-display {
     position: relative;

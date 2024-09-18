@@ -37,7 +37,7 @@ function RenderEventContent(eventInfo) {
               id={session_id}
               className={`h-full w-full rounded-md p-[4px_10px] ${
                 isSelected
-                  ? 'bg-accent-2 border-accent-6 border border-dashed'
+                  ? 'border border-dashed border-amber-400 bg-amber-100'
                   : ''
               }`}
               style={{
@@ -46,8 +46,8 @@ function RenderEventContent(eventInfo) {
               }}
             >
               <p
-                className={`one-line-clamp text-xs ${
-                  isSelected ? 'text-accent-12' : 'text-white'
+                className={`truncate text-xs ${
+                  isSelected ? 'text-amber-600' : 'text-white'
                 }`}
               >
                 {title}

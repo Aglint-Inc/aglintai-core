@@ -60,11 +60,11 @@ const Edit = () => {
         <>
           <div className='flex flex-row items-center gap-2'>
             <Button variant='outline' onClick={() => setPopup({ open: true })}>
-              Edit Automation
+              Edit
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size='sm' variant='outline'>
+                <Button variant='outline'>
                   <MoreHorizontal className='h-4 w-4' />
                 </Button>
               </DropdownMenuTrigger>

@@ -56,7 +56,21 @@ export const InterviewModules = () => {
   //   );
   // };
 
+  function pickRandomElement(array: any[]) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
+  }
+
   const addModules = async () => {
+    const data = (
+      await supabase
+        .from("departments")
+        .select()
+        .eq("recruiter_id", recruiter_id)
+    ).data;
+
+    const departments = data.map((dep: any) => dep.id);
+
     const modulesToInsert = newModules
       .filter((module) => selectedNewModules.includes(module.name))
       .map((module) => ({
@@ -65,9 +79,11 @@ export const InterviewModules = () => {
         instructions: module.instructions,
         is_archived: false,
         recruiter_id,
+        department_id: pickRandomElement(departments),
       }));
 
     if (!modulesToInsert?.length) return;
+
     const { error } = await supabase
       .from("interview_module")
       .insert(modulesToInsert);
@@ -81,28 +97,28 @@ export const InterviewModules = () => {
     setSelectedNewModules([]);
   };
 
-  const deleteModules = async () => {
-    const modulesToDelete = selectedModules.map((mod) => mod.id);
-    if (!modulesToDelete?.length) return;
+  // const deleteModules = async () => {
+  //   const modulesToDelete = selectedModules.map((mod) => mod.id);
+  //   if (!modulesToDelete?.length) return;
 
-    const { error } = await supabase
-      .from("interview_module")
-      .delete()
-      .in("id", modulesToDelete);
+  //   const { error } = await supabase
+  //     .from("interview_module")
+  //     .delete()
+  //     .in("id", modulesToDelete);
 
-    if (error) {
-      setMessage((pre) => [...pre, "Error deleting modules."]);
-    } else {
-      setMessage((pre) => [...pre, "Modules deleted successfully."]);
-    }
-    setSelectedModules([]);
-  };
+  //   if (error) {
+  //     setMessage((pre) => [...pre, "Error deleting modules."]);
+  //   } else {
+  //     setMessage((pre) => [...pre, "Modules deleted successfully."]);
+  //   }
+  //   setSelectedModules([]);
+  // };
 
   const handleAddSelectedModules = async () => {
     try {
       setLoading(true);
       setMessage([]);
-      await deleteModules();
+      // await deleteModules();
       await addModules();
       await fetchModules();
     } finally {

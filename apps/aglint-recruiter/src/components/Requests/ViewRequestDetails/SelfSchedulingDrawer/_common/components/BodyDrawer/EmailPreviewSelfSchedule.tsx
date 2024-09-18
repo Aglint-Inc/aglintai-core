@@ -106,6 +106,7 @@ function EmailPreviewSelfSchedule() {
         <>
           <div className='flex w-full flex-row items-center justify-between gap-4'>
             <UIAlert
+            className='text-xs'
               type='inline'
               title='This is a preview only. All actions in this email are disabled.'
               iconName='Info'
