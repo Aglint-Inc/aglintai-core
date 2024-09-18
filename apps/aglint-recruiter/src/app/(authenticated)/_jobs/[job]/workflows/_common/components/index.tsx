@@ -103,7 +103,7 @@ const Actions = () => {
             Add
           </Button>
         )}
-        <Settings />
+        {/* <Settings /> */}
       </div>
     </>
   );

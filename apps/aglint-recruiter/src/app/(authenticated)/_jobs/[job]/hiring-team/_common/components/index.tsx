@@ -20,7 +20,6 @@ import {
 import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import {
   type JobMetaFormProps,
@@ -107,7 +106,7 @@ const JobEdit = () => {
           <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
           <BreadCrumbs job={job} />
         </div>
-        <Settings />
+        {/* <Settings /> */}
       </div>
 
       <div className='mb-6 flex gap-6'>

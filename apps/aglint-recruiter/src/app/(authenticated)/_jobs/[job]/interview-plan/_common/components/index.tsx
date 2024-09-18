@@ -16,7 +16,15 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
-import { Kanban, PauseCircle, Pencil, Plus, Trash, Trash2 } from 'lucide-react';
+import {
+  Edit,
+  Kanban,
+  PauseCircle,
+  Pencil,
+  Plus,
+  Trash,
+  Trash2,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -211,24 +219,24 @@ const AddStageComponent = ({
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               fieldSize='medium'
-              className='w-full'
+              fullWidth
             />
           </div>
 
           <div className='flex gap-2'>
             <UIButton
               size='sm'
-              variant='secondary'
-              onClick={() => setForm(!form)}
-            >
-              Cancel
-            </UIButton>
-            <UIButton
-              size='sm'
               variant='default'
               onClick={() => handleAddStage()}
             >
               Add
+            </UIButton>
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => setForm(!form)}
+            >
+              Cancel
             </UIButton>
           </div>
         </div>
@@ -319,8 +327,7 @@ const InterviewPlan = ({
     updatePlan,
     deletePlan,
     handleSwapPlan,
-    isPlanMutating,
-
+    isPlanUpdating,
     isStageDeleting,
     // handleUpdateSession,
   } = useJobInterviewPlan();
@@ -387,13 +394,11 @@ const InterviewPlan = ({
     }
   };
 
-  const loading = isPlanMutating(data.id);
-
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <>
-      <OptimisticWrapper loading={loading}>
+      <OptimisticWrapper loading={isPlanUpdating}>
         <InterviewPlanWrap
           isTopArrowVisible={!!prevData}
           onClickUp={() =>
@@ -412,7 +417,6 @@ const InterviewPlan = ({
           textStageName={`${capitalizeFirstLetter(data.name)}`}
           textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
           isInputVisible={editPlan}
-          onClickEdit={handleEditPlan}
           isSlotInterviewPlanVisible={expanded}
           slotInputButton={
             // Start of Selection
@@ -435,12 +439,22 @@ const InterviewPlan = ({
             </div>
           }
           slotRightIconButton={
-            <div className='flex flex-row items-center gap-1'>
+            <div className='ml-4 flex flex-row items-center gap-1'>
               <UIButton
-                variant='destructive'
+                variant='ghost'
                 size='sm'
+                icon={<Edit className='h-4 w-4' />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditPlan();
+                }}
+              />
+              <UIButton
+                variant='ghost'
+                size='sm'
+                className='text-red-700'
                 onClick={() => setDeleteOpen(true)}
-                icon={<Trash size={10} />}
+                icon={<Trash size={10} color='brown' />}
               />
               <UIDialog
                 open={deleteOpen}
