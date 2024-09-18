@@ -14,6 +14,10 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
+import { useCompletedRequestsStore } from '@requestHistory/contexts/completedRequeststore';
+import { RequestCard } from '@requests/components/RequestCard';
+import RequestHistoryFilter from '@requests/components/RequestHistoryFilter';
+import { useCompletedRequests } from '@requests/hooks';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
@@ -23,11 +27,6 @@ import { RequestProvider } from '@/context/RequestContext';
 import type { Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
-import { RequestCard } from '../../../_common/components/RequestCard';
-import RequestHistoryFilter from '../../../_common/components/RequestHistoryFilter';
-import { useCompletedRequests } from '../../../_common/hooks';
-import { useCompletedRequestsStore } from './store';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();

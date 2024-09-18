@@ -7,12 +7,12 @@ import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
-} from '@request/ViewRequestDetails/CandidateAvailability/store';
+} from '@request/components/CandidateAvailability/store';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from '@request/ViewRequestDetails/ConfirmAvailability/store';
+} from '@request/components/ConfirmAvailability/store';
 import { Bell, Lightbulb, WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 

@@ -1,5 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { type CompletedRequests } from '@requestHistory/CompletedRequests/store';
+import { type CompletedRequests } from '@requestHistory/contexts/completedRequeststore';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

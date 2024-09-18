@@ -4,7 +4,7 @@
 import {
   setCompletedFilters,
   useCompletedRequestsStore,
-} from '@requestHistory/CompletedRequests/store';
+} from '@requestHistory/contexts/completedRequeststore';
 import { useEffect, useState } from 'react';
 
 import FilterHeader from '@/components/Common/FilterHeader';

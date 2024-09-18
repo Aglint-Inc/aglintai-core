@@ -50,16 +50,16 @@ import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import CandidateAvailability from './CandidateAvailability';
-import RecentRequests from './Components/RecentRequests';
-import UpdateDetails from './Components/UpdateDetails';
-import ConfirmAvailability from './ConfirmAvailability';
-import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
-import CandidateCancelRequest from './RequestNextSteps/CandidateCancelRequest';
-import RequestDecline from './RequestNextSteps/RequestDecline';
-import ScheduleOptions from './RequestNextSteps/ScheduleOptions';
-import RequestNotes from './RequestNotes';
-import SelfSchedulingDrawer from './SelfSchedulingDrawer';
+import CandidateAvailability from '../CandidateAvailability';
+import ConfirmAvailability from '../ConfirmAvailability';
+import { AvailabilityProvider } from '../ConfirmAvailability/RequestAvailabilityContext';
+import RecentRequests from '../RecentRequests';
+import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
+import RequestDecline from '../RequestNextSteps/RequestDecline';
+import ScheduleOptions from '../RequestNextSteps/ScheduleOptions';
+import RequestNotes from '../RequestNotes';
+import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
+import UpdateDetails from '../UpdateDetails';
 
 export default function ViewRequestDetails() {
   const query = useParams();
