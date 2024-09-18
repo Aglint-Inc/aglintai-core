@@ -1,37 +1,6 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+export type Json = any;
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-          extensions?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
   public: {
     Tables: {
       aglint_candidates: {
@@ -4610,6 +4579,7 @@ export type Database = {
       };
       interview_types_view: {
         Row: {
+          avg_meeting_duration: number | null;
           canceled_meeting_count: number | null;
           completed_meeting_count: number | null;
           created_by: string | null;
@@ -4618,8 +4588,12 @@ export type Database = {
           description: string | null;
           id: string | null;
           is_archived: boolean | null;
+          job_names: string[] | null;
           name: string | null;
           recruiter_id: string | null;
+          this_month_cancelled_meeting_count: number | null;
+          this_month_completed_meeting_count: number | null;
+          this_month_confirmed_meeting_count: number | null;
           upcoming_meeting_count: number | null;
           users: Json | null;
         };
