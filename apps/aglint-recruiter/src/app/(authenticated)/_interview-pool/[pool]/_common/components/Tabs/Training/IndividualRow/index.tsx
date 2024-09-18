@@ -170,7 +170,7 @@ const ThreeDot = ({
       <PopoverTrigger asChild>
         <UIButton variant='secondary' size='sm' icon={<MoreVertical />} />
       </PopoverTrigger>
-      <PopoverContent className='w-auto rounded-sm p-0' side='left' >
+      <PopoverContent className='w-auto rounded-sm p-0' side='left'>
         <MemberListCardOption
           isMoveToQualifierVisible={isMoveToQualifierVisible}
           isRemoveVisible={true}
