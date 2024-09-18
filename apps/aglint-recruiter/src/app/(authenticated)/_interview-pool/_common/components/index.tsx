@@ -110,9 +110,6 @@ export default function InterviewTypesPage() {
                   <TableHead>Department</TableHead>
                   <TableHead>Monthly Schedules</TableHead>
                   <TableHead>Avg. Duration</TableHead>
-                  <TableHead>Candidates/Week</TableHead>
-                  <TableHead>Upcoming Slots</TableHead>
-                  <TableHead>Pass Rate</TableHead>
                   <TableHead>Open Positions</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
