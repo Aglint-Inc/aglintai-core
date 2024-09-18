@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { Card } from '@components/ui/card';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
@@ -6,7 +7,6 @@ import CalendarComp from '@/components/Common/Calendar/Calendar';
 import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
-import { Card } from '@components/ui/card';
 
 function Schedules() {
   const [filter, setFilter] = useState<

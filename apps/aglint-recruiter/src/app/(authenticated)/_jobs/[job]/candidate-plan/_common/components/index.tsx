@@ -9,7 +9,6 @@ import {
 import { useParams, useRouter } from 'next/navigation';
 
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
@@ -26,7 +25,7 @@ export const CandidatePlan = () => {
           <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
           <BreadCrumbs />
         </div>
-        <Settings />
+        {/* <Settings /> */}
       </div>
       <div className='mb-6 flex gap-6'>
         <div className='w-2/12'>
