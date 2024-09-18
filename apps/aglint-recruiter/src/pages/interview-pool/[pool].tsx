@@ -1,13 +1,15 @@
-import InterviewTypeDetail from 'src/app/(authenticated)/_interview-pool/[pool]/_common/components';
+import { useParams } from 'next/navigation';
+import InterviewTypeDetail from 'src/app/(authenticated)/_interview-pool/[pool]';
 
 import Seo from '@/components/Common/Seo';
 import SchedulingProvider from '@/context/SchedulingMain/SchedulingMainProvider';
 
 const ModuleMembers = () => {
+  const {pool} = useParams() 
   return (
     <>
       <Seo title={`Scheduling`} description='AI for People Products' />
-      <InterviewTypeDetail />
+      <InterviewTypeDetail module_id={pool as string}/>
     </>
   );
 };
