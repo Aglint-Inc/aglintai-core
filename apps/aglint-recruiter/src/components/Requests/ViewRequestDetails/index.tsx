@@ -2,6 +2,13 @@ import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
@@ -95,7 +102,7 @@ export default function ViewRequestDetails() {
     return <ViewRequestDetailsSkeleton />;
   } else
     return (
-      <div className='min-h-screen bg-gray-50 p-8'>
+      <div className='container-lg mx-auto w-full px-16'>
         {selectedRequest && (
           <CandidateAvailability selectedRequest={selectedRequest} />
         )}
@@ -106,27 +113,30 @@ export default function ViewRequestDetails() {
         {/* {selectedRequest?.status === 'to_do' && ( */}
         <SelfSchedulingDrawer refetch={refetchMeetings} />
         {/* )} */}
-        <div className='mx-auto max-w-[calc(100%-12.5rem)] space-y-8'>
-          <div className='flex items-center space-x-2 text-sm text-gray-500'>
-            <span>Home</span>
-            <span>/</span>
-            <span
-              className='cursor-pointer'
-              onClick={() => {
-                replace('/requests');
-              }}
-            >
-              Requests
-            </span>
-            <span>/</span>
-            {/* <span>Schedule Requests</span> */}
-            {/* <span>/</span> */}
-            <span className='font-medium text-gray-900'>Request Details</span>
-          </div>
+        <div className='space-y-8'>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink onClick={() => replace('/requests')}>
+                  Requests
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href='#' className='font-medium text-gray-900'>
+                  Request Details
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
               <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-                Schedule Request Details
+                Request Detail
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
@@ -148,16 +158,16 @@ export default function ViewRequestDetails() {
                   </Link>
                 </div>
                 <span>•</span>
-                <span>{candidateDetails?.current_job_title}</span>
-                <span>•</span>
+                {/* <span>{candidateDetails?.current_job_title}</span>
+                <span>•</span> */}
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
                   <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
                     <span>{jobDetails?.job_title}</span>
                   </Link>
                 </div>
-                <span>•</span>
-                <span>Finance and Accounting</span>
+                {/* <span>•</span> */}
+                {/* <span>Finance and Accounting</span> */}
                 {jobDetails?.office_locations && (
                   <>
                     <span>•</span>
@@ -169,7 +179,7 @@ export default function ViewRequestDetails() {
                 )}
               </div>
             </div>
-            <div className='flex flex-col gap-4 space-x-2'>
+            <div className='flex flex-col items-end gap-4 space-x-2'>
               <div className='flex flex-row gap-2'>
                 <Badge variant='destructive'>
                   {capitalizeFirstLetter(selectedRequest?.type)}
@@ -579,105 +589,103 @@ function SessionCards({
 
 function ViewRequestDetailsSkeleton() {
   return (
-    <div className='min-h-screen bg-gray-50 p-8'>
-      <div className='mx-auto max-w-[calc(100%-12.5rem)] space-y-8'>
-        {/* Breadcrumb */}
-        <div className='flex items-center space-x-2 text-sm text-gray-500'>
-          <span>Home</span>
-          <span>/</span>
-          <span>Requests</span>
-          <span>/</span>
-          {/* <span>Schedule Requests</span> */}
-          {/* <span>/</span> */}
-          <span className='font-medium text-gray-900'>Request Details</span>
-        </div>
-
-        {/* Header */}
-        <div className='flex flex-row items-start justify-between pb-2'>
-          <div>
-            <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-              Schedule Request Details
-            </h1>
-            <Skeleton className='h-4 w-96' />
-          </div>
-          <div className='flex flex-col gap-4'>
-            <div className='flex flex-row gap-2'>
-              <Skeleton className='h-6 w-20' />
-              <Skeleton className='h-6 w-20' />
-            </div>
-            <div className='flex items-center gap-2'>
-              <Skeleton className='h-4 w-24' />
-              <Skeleton className='h-6 w-6 rounded-full' />
-              <Skeleton className='h-4 w-24' />
-            </div>
-          </div>
-        </div>
-
-        {/* Progress Holder */}
-        <Alert>
-          <Bot className='h-4 w-4' />
-          <AlertTitle>Next Step</AlertTitle>
-          <AlertDescription>
-            <Skeleton className='h-4 w-64' />
-          </AlertDescription>
-          <div className='mt-4 flex flex-row justify-end gap-2'>
-            <Skeleton className='h-9 w-32' />
-            <Skeleton className='h-9 w-40' />
-          </div>
-        </Alert>
-
-        {/* Request Details Card */}
-        <Card className='bg-white shadow-sm'>
-          <CardHeader className='flex flex-row items-start justify-between pb-2'>
-            <CardTitle className='mb-2 text-xl font-semibold'>
-              Request Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='grid grid-cols-3 gap-6'>
-              {/* Left column */}
-              <div className='col-span-2 grid grid-cols-2 gap-6'>
-                {[...Array(4)].map((_, index) => (
-                  <div key={index} className='space-y-4'>
-                    <Skeleton className='h-4 w-24' />
-                    <Skeleton className='h-6 w-32' />
-                  </div>
-                ))}
-              </div>
-              {/* Right column */}
-              <div className='space-y-4'>
-                <Skeleton className='h-4 w-24' />
-                <Skeleton className='h-6 w-32' />
-              </div>
-            </div>
-
-            {/* Sessions */}
-            <div className='mt-8'>
-              <div className='my-4 flex items-center justify-between'>
-                <Skeleton className='h-6 w-24' />
-                <Skeleton className='h-6 w-24' />
-              </div>
-              <div className='space-y-2 rounded-lg border p-4'>
-                {[...Array(3)].map((_, index) => (
-                  <Card key={index} className='border-0 shadow-none'>
-                    <CardHeader className='px-4 py-2'>
-                      <div className='flex items-center justify-between'>
-                        <Skeleton className='h-4 w-64' />
-                        <div className='flex items-center space-x-2'>
-                          <Skeleton className='h-6 w-20' />
-                          <Skeleton className='h-8 w-20' />
-                          <Skeleton className='h-8 w-24' />
-                          <Skeleton className='h-4 w-4' />
-                        </div>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+    <div className='container-lg mx-auto w-full px-12'>
+      {/* Breadcrumb */}
+      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+        <span>Home</span>
+        <span>/</span>
+        <span>Requests</span>
+        <span>/</span>
+        {/* <span>Schedule Requests</span> */}
+        {/* <span>/</span> */}
+        <span className='font-medium text-gray-900'>Request Details</span>
       </div>
+
+      {/* Header */}
+      <div className='flex flex-row items-start justify-between pb-2'>
+        <div>
+          <h1 className='mb-2 text-2xl font-bold text-gray-900'>
+            Schedule Request Details
+          </h1>
+          <Skeleton className='h-4 w-96' />
+        </div>
+        <div className='flex flex-col gap-4'>
+          <div className='flex flex-row gap-2'>
+            <Skeleton className='h-6 w-20' />
+            <Skeleton className='h-6 w-20' />
+          </div>
+          <div className='flex items-center gap-2'>
+            <Skeleton className='h-4 w-24' />
+            <Skeleton className='h-6 w-6 rounded-full' />
+            <Skeleton className='h-4 w-24' />
+          </div>
+        </div>
+      </div>
+
+      {/* Progress Holder */}
+      <Alert>
+        <Bot className='h-4 w-4' />
+        <AlertTitle>Next Step</AlertTitle>
+        <AlertDescription>
+          <Skeleton className='h-4 w-64' />
+        </AlertDescription>
+        <div className='mt-4 flex flex-row justify-end gap-2'>
+          <Skeleton className='h-9 w-32' />
+          <Skeleton className='h-9 w-40' />
+        </div>
+      </Alert>
+
+      {/* Request Details Card */}
+      <Card className='bg-white shadow-sm'>
+        <CardHeader className='flex flex-row items-start justify-between pb-2'>
+          <CardTitle className='mb-2 text-xl font-semibold'>
+            Request Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='grid grid-cols-3 gap-6'>
+            {/* Left column */}
+            <div className='col-span-2 grid grid-cols-2 gap-6'>
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className='space-y-4'>
+                  <Skeleton className='h-4 w-24' />
+                  <Skeleton className='h-6 w-32' />
+                </div>
+              ))}
+            </div>
+            {/* Right column */}
+            <div className='space-y-4'>
+              <Skeleton className='h-4 w-24' />
+              <Skeleton className='h-6 w-32' />
+            </div>
+          </div>
+
+          {/* Sessions */}
+          <div className='mt-8'>
+            <div className='my-4 flex items-center justify-between'>
+              <Skeleton className='h-6 w-24' />
+              <Skeleton className='h-6 w-24' />
+            </div>
+            <div className='space-y-2 rounded-lg border p-4'>
+              {[...Array(3)].map((_, index) => (
+                <Card key={index} className='border-0 shadow-none'>
+                  <CardHeader className='px-4 py-2'>
+                    <div className='flex items-center justify-between'>
+                      <Skeleton className='h-4 w-64' />
+                      <div className='flex items-center space-x-2'>
+                        <Skeleton className='h-6 w-20' />
+                        <Skeleton className='h-8 w-20' />
+                        <Skeleton className='h-8 w-24' />
+                        <Skeleton className='h-4 w-4' />
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

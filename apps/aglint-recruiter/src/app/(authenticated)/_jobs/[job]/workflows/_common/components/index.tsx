@@ -35,10 +35,10 @@ export const JobWorkflowDashboard = () => {
         </div>
 
         <div className='mb-6 flex gap-6'>
-          <div className='w-1/4'>
+          <div className='w-3/12'>
             <JobsSideNavV2 />
           </div>
-          <div className='w-3/4'>
+          <div className='w-9/12'>
             <h2 className='mb-2 text-xl font-bold'>Automations</h2>
             <p className='mb-4 text-sm text-gray-600'>
               Automations streamline recruitment processes, saving time and

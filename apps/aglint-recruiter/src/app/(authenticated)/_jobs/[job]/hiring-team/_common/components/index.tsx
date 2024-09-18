@@ -111,10 +111,10 @@ const JobEdit = () => {
       </div>
 
       <div className='mb-6 flex gap-6'>
-        <div className='w-1/4'>
+        <div className='w-3/12'>
           <JobsSideNavV2 />
         </div>
-        <div className='w-3/4'>
+        <div className='w-9/12'>
           <div className='flex flex-row justify-between'>
             <div className='flex flex-col gap-2'>
               <h2 className='mb-2 text-xl font-bold'>Hiring Team</h2>
@@ -129,7 +129,7 @@ const JobEdit = () => {
               <div className='flex items-center space-x-2 text-sm text-gray-600'>
                 {saving ? (
                   <>
-                    <div className='h-4 w-4 animate-spin rounded-full border-2 border-neutral-600 border-t-transparent'></div>
+                    <Loader />
                     <span>Saving changes...</span>
                   </>
                 ) : (

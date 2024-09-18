@@ -28,7 +28,7 @@ export default function InterviewTypesPage() {
 
   if (modulesLoading || departmentLoading)
     return (
-      <div className='flex h-full w-full items-center justify-center'>
+      <div className='fixed inset-0 flex items-center justify-center'>
         <Loader />
       </div>
     );

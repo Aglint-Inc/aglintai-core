@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Zap } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -58,7 +58,7 @@ export const DeletePopup = () => {
               <ul className='space-y-2'>
                 {(deletion?.workflow?.jobs ?? []).map(({ job_title }) => (
                   <li key={job_title} className='flex items-center space-x-2'>
-                    <Zap className='h-4 w-4 text-muted-foreground' />
+                    <Briefcase className='h-4 w-4 text-muted-foreground' />
                     <span className='text-sm font-normal'>
                       {capitalizeAll(job_title)}
                     </span>
