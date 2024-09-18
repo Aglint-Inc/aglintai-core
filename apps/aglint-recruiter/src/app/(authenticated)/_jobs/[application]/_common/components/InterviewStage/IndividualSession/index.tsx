@@ -10,7 +10,6 @@ import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { type StageWithSessions } from '@/queries/application';
-import { useAllIntegrations } from '@/queries/intergrations';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
@@ -47,7 +46,6 @@ function ScheduleIndividualCard({
   hideDateAndTime?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const { data: allIntegrations } = useAllIntegrations();
 
   const users = session.users;
   const interview_meeting = session.interview_meeting;
@@ -55,12 +53,7 @@ function ScheduleIndividualCard({
   const usersWithErrors = users.filter(
     (user) =>
       !!user?.interview_module_relation?.pause_json ||
-      !(
-        (!!allIntegrations?.service_json &&
-          allIntegrations?.google_workspace_domain?.split('//')[1] ===
-            user.user_details?.email?.split('@')[1]) ||
-        !!(user.user_details.schedule_auth as any)?.access_token
-      ),
+      !user.user_details.is_calendar_connected,
   );
 
   return (
