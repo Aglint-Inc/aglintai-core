@@ -213,8 +213,13 @@ const AddStageComponent = ({
       {form && (
         <div className='flex w-full flex-row items-center gap-2 bg-neutral-100 p-4'>
           {
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
+            <UITextField
+              placeholder='Stage Name'
+              ref={nameField}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+              fieldSize='medium'
+            />
           }
 
           <UIButton
@@ -233,11 +238,13 @@ const AddStageComponent = ({
           </UIButton>
         </div>
       )}
-      <div className='flex flex-row'>
-        <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
-          Add Stage
-        </UIButton>
-      </div>
+      {!form && (
+        <div className='flex flex-row'>
+          <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
+            Add Stage
+          </UIButton>
+        </div>
+      )}
     </>
   );
 };
