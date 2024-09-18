@@ -21,7 +21,7 @@ import { unArchiveModuleById } from '../utils/pool';
 import StatsCards from './StatsCards';
 import InterviewDetailsTabs from './Tabs';
 
-export default function InterviewTypeDetail() {
+export default function InterviewTypeDetail({module_id}:{module_id:string}) {
   const {
     data: editModule,
     isLoading: fetchingModule,
@@ -110,7 +110,7 @@ export default function InterviewTypeDetail() {
               <ArchiveModuleDialog />
             </div>
           </div>
-          <StatsCards />
+          <StatsCards module_id={module_id}/>
           <InterviewDetailsTabs />
         </div>
       )}
