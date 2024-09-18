@@ -1,5 +1,4 @@
 import { type employmentTypeEnum } from '@aglint/shared-types';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -20,6 +19,7 @@ import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
 import axios from '@/client/axios';
+import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/queries/departments';
@@ -200,8 +200,9 @@ const EditMember = ({
           data,
         })
         .then((res) => res.data);
-      onClose();
       await refetch();
+      setForm({ ...form, profile_image: profile_image });
+      onClose();
     } catch (e) {
       console.error(e);
     } finally {
@@ -210,7 +211,27 @@ const EditMember = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        if (member?.user_id)
+          setForm({
+            first_name: member.first_name,
+            last_name: member.last_name,
+            phone: member.phone,
+            linked_in: member.linked_in,
+            location_id: member.office_location_id,
+            employment: member.employment,
+            profile_image: member.profile_image,
+            department_id: member.department_id,
+            position: member.position,
+            role: member?.role,
+            role_id: member?.role_id,
+            manager_id: member?.manager_id,
+          });
+        onClose();
+      }}
+    >
       <DialogContent className='sm:max-w-[600px]'>
         <DialogHeader>
           <DialogTitle>Update Details</DialogTitle>
@@ -218,10 +239,17 @@ const EditMember = ({
         {form && (
           <div className='mt-4 space-y-4'>
             <div className='flex items-center space-x-4'>
-              <Avatar className='h-16 w-16'>
-                <AvatarImage src={form.profile_image} alt={form.first_name} />
-                <AvatarFallback>{form.first_name[0]}</AvatarFallback>
-              </Avatar>
+              <div className='max-w-[64px]'>
+                <ImageUploadManual
+                  image={form.profile_image}
+                  size={64}
+                  imageFile={imageFile}
+                  setChanges={() => {
+                    setIsImageChanged(true);
+                  }}
+                />
+              </div>
+
               <div>
                 <p className='text-sm font-medium'>
                   <span className='text-red-500'>Change profile photo</span>{' '}
@@ -359,74 +387,74 @@ const EditMember = ({
             </div>
 
             {(member.role !== 'admin' ||
-              member.created_by === recruiterUser.user_id) &&
-              member.user_id !== recruiterUser.user_id && (
-                <>
-                  <div className='grid grid-cols-2 gap-4'>
+              member.created_by === recruiterUser.user_id ||
+              member.user_id !== recruiterUser.user_id) && (
+              <>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div className='space-y-2'>
+                    <Label htmlFor='role'>Role</Label>
+                    <Select
+                      value={form.role_id}
+                      onValueChange={(value) => {
+                        const selectedRole = roleOptions.find(
+                          (role) => role.id === value,
+                        );
+                        setForm({
+                          ...form,
+                          role: selectedRole.name,
+                          role_id: value,
+                        });
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder='Choose Role' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {roleOptions.map((role) => (
+                          <SelectItem key={role.id} value={role.id}>
+                            {capitalizeFirstLetter(role.name)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {form.role !== 'admin' && (
                     <div className='space-y-2'>
-                      <Label htmlFor='role'>Role</Label>
+                      <Label htmlFor='manager'>Manager</Label>
                       <Select
-                        value={form.role_id}
-                        onValueChange={(value) => {
-                          const selectedRole = roleOptions.find(
-                            (role) => role.id === value,
-                          );
-                          setForm({
-                            ...form,
-                            role: selectedRole.name,
-                            role_id: value,
-                          });
-                        }}
+                        value={form.manager_id}
+                        onValueChange={(value) =>
+                          setForm({ ...form, manager_id: value })
+                        }
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder='Choose Role' />
+                          <SelectValue placeholder='Select Manager' />
                         </SelectTrigger>
                         <SelectContent>
-                          {roleOptions.map((role) => (
-                            <SelectItem key={role.id} value={role.id}>
-                              {capitalizeFirstLetter(role.name)}
+                          {memberList.map((member) => (
+                            <SelectItem key={member.id} value={member.id}>
+                              {capitalizeFirstLetter(member.name)}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
-                    {form.role !== 'admin' && (
-                      <div className='space-y-2'>
-                        <Label htmlFor='manager'>Manager</Label>
-                        <Select
-                          value={form.manager_id}
-                          onValueChange={(value) =>
-                            setForm({ ...form, manager_id: value })
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder='Select Manager' />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {memberList.map((member) => (
-                              <SelectItem key={member.id} value={member.id}>
-                                {capitalizeFirstLetter(member.name)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
-                  </div>
+                  )}
+                </div>
 
-                  <div className='space-y-2'>
-                    <Label htmlFor='phone'>Phone</Label>
-                    <Input
-                      id='phone'
-                      value={form.phone}
-                      onChange={(e) =>
-                        setForm({ ...form, phone: e.target.value })
-                      }
-                      className={formError.phone ? 'border-red-500' : ''}
-                    />
-                  </div>
-                </>
-              )}
+                <div className='space-y-2'>
+                  <Label htmlFor='phone'>Phone</Label>
+                  <Input
+                    id='phone'
+                    value={form.phone}
+                    onChange={(e) =>
+                      setForm({ ...form, phone: e.target.value })
+                    }
+                    className={formError.phone ? 'border-red-500' : ''}
+                  />
+                </div>
+              </>
+            )}
 
             <div className='mt-6 flex justify-end space-x-2'>
               <Button variant='outline' onClick={onClose}>
