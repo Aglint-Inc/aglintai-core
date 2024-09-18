@@ -6,6 +6,7 @@ import CalendarComp from '@/components/Common/Calendar/Calendar';
 import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
+import { Card } from '@components/ui/card';
 
 function Schedules() {
   const [filter, setFilter] = useState<
@@ -19,7 +20,7 @@ function Schedules() {
   return (
     <>
       {isLoading ? (
-        <div className='flex w-[820px] items-center justify-center'>
+        <div className='flex h-[400px] w-full items-center justify-center'>
           <Loader />
         </div>
       ) : allSchedules.length === 0 ? (
@@ -35,14 +36,14 @@ function Schedules() {
           </div>
         </div>
       ) : (
-        <>
+        <Card className='p-4'>
           <CalendarComp
             allSchedules={allSchedules as any} //TODO:fix
             isLoading={isLoading}
             setFilter={setFilter}
             filter={filter}
           />
-        </>
+        </Card>
       )}
     </>
   );
