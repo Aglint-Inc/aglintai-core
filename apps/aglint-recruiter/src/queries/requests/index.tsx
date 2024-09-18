@@ -124,6 +124,7 @@ export const requestQueries = {
             .from('request_progress')
             .select('*')
             .eq('request_id', request_id)
+            .order('updated_at', { ascending: true })
             .throwOnError()
         ).data,
     }),
