@@ -1,5 +1,5 @@
 import {
-  type Event,
+  type EventCalendar,
   type Resource,
 } from '@/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/components/Common/MuiAvatar';
@@ -14,7 +14,7 @@ export const transformAvailability = (
       }))
     : [];
 
-  const events: Event[] = intArray.flatMap((cal) =>
+  const events: EventCalendar[] = intArray.flatMap((cal) =>
     cal.all_events.flatMap((event) => {
       const data = {
         start: event.start.dateTime,

@@ -9,7 +9,7 @@ import React, { useEffect, useRef } from 'react';
 import { UIButton } from '../UIButton';
 import RenderEventContent from './RenderEventContent';
 import RenderResourceContent from './RenderResource';
-import { type Event, type Resource } from './types';
+import { type EventCalendar, type Resource } from './types';
 
 function CalendarResourceView({
   events,
@@ -24,7 +24,7 @@ function CalendarResourceView({
     endTime: '24:00',
   },
 }: {
-  events: Event[];
+  events: EventCalendar[];
   resources: Resource[];
   dateRange: {
     start: string;
@@ -71,7 +71,7 @@ function CalendarResourceView({
             isLoading
               ? [
                   {
-                    daysOfWeek: [1,2,3,4,5,6,7],
+                    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
                     startTime: '00:00',
                     endTime: '24:00',
                     display: 'background',
