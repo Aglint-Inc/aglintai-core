@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/button';
+
 import { Skeleton } from '@components/ui/skeleton';
 import {
   Table,
@@ -14,6 +14,7 @@ import {
   CircleDot,
   Locate,
   RefreshCw,
+  Send,
   User,
   Users,
 } from 'lucide-react';
@@ -22,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { type GreenHouseUserSyncAPI } from '@/api/sync/greenhouse/user/type';
 import axios from '@/client/axios';
 import FilterHeader from '@/components/Common/FilterHeader';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { type API_get_last_login } from '@/pages/api/get_last_login/types';
@@ -130,19 +132,22 @@ const TeamManagement = () => {
         pendingList={[]}
       />
       <div className='flex flex-col'>
-        <h2 className='mb-2 text-xl font-bold'>Manage User</h2>
-        <p className='mb-6 text-gray-600'>
+        <div className='flex justify-between'>
+          <div className='max-w-[700px]'>
+          <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
+          <p className='mb-6 text-gray-600'>
           Invite your hiring team members and manage their roles and profile
           details in one place. Assign roles such as interviewer, hiring
           manager, or recruiter to ensure an organized team structure and
           compliance with user permissions in the organization.
         </p>
-
-        <div className='row flex w-full justify-end pb-4'>
+          </div>
+        
+        <div className='row flex justify-end pb-4'>
           {canManage &&
             (remote_sync.isEnabled ? (
               <div className='flex flex-col space-y-2'>
-                <Button
+                <UIButton
                   variant='outline'
                   size='sm'
                   onClick={remote_sync.sync}
@@ -150,11 +155,12 @@ const TeamManagement = () => {
                 >
                   <RefreshCw className='mr-2 h-4 w-4' />
                   Sync Team ({last_sync})
-                </Button>
+                </UIButton>
               </div>
             ) : (
-              <Button
-                variant='outline'
+              <UIButton
+              leftIcon={<Send/>}
+                variant='default'
                 size='sm'
                 onClick={() => {
                   setOpen(true);
@@ -162,9 +168,14 @@ const TeamManagement = () => {
                 className='flex items-center'
               >
                 Invite Member
-              </Button>
+              </UIButton>
             ))}
         </div>
+        </div>
+       
+       
+
+       
         <FilterHeader
           search={{
             setValue: setSearchText,

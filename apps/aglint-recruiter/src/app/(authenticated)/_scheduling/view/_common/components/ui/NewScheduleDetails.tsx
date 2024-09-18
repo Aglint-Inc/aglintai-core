@@ -59,113 +59,140 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex w-full flex-col gap-4 rounded-lg border border-neutral-300 bg-white p-4'>
-      <div className='flex items-center justify-start gap-4'>
-        {isDateCardVisible && (
-          <div className='flex h-24 w-24 flex-col items-center justify-center rounded-md bg-neutral-100'>
-            <UITypography
-              variant='p'
-              type='small'
-              fontBold='normal'
-              className='text-neutral-600'
-            >
-              {textMonth}
-            </UITypography>
-            <UITypography
-              variant='p'
-              type='large'
-              fontBold='normal'
-              className='text-neutral-600'
-            >
-              {textDate}
-            </UITypography>
-            <UITypography
-              variant='p'
-              type='extraSmall'
-              fontBold='normal'
-              className='text-neutral-600'
-            >
-              {textDay}
-            </UITypography>
-          </div>
-        )}
-        <div className='flex flex-col gap-2'>
-          <div className='flex items-center gap-2'>
+    <div className='flex w-full flex-col gap-6 rounded-lg border bg-white p-6'>
+      <div className='flex items-start justify-between'>
+        <div className='flex items-start gap-6'>
+          {isDateCardVisible && (
+            <div className='flex h-20 w-20 flex-col items-center justify-center rounded-md bg-neutral-100'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='text-xs text-neutral-600'
+              >
+                {textMonth}
+              </UITypography>
+              <UITypography
+                variant='p'
+                type='large'
+                className='text-2xl font-bold text-neutral-800'
+              >
+                {textDate}
+              </UITypography>
+              <UITypography
+                variant='p'
+                type='extraSmall'
+                className='text-xs text-neutral-600'
+              >
+                {textDay}
+              </UITypography>
+            </div>
+          )}
+          <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
               <div>{slotPanelIcon}</div>
-              <UITypography variant='p' type='medium' fontBold='normal'>
+              <UITypography
+                variant='h2'
+                type='medium'
+                className='text-xl font-semibold'
+              >
                 {textPanelName}
               </UITypography>
+              <div>{slotStatusBadge}</div>
             </div>
-            <div>{slotStatusBadge}</div>
-          </div>
-          <div className='flex items-center gap-4'>
-            {isTimingVisible && (
-              <div>
-                <UITypography variant='p' type='medium'>
-                  {textTime}
-                </UITypography>
-              </div>
-            )}
-            <UITypography variant='p' type='medium'>
-              {textDuration}
-            </UITypography>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='flex items-center gap-2'>
-              <div>{slotMeetingIcon}</div>
+            <div className='flex items-center gap-4 text-sm text-neutral-600'>
+              {isTimingVisible && (
+                <div className='flex items-center gap-1'>
+                  <div>{slotMeetingIcon}</div>
+                  <UITypography variant='p' type='small'>
+                    {textTime}
+                  </UITypography>
+                </div>
+              )}
               <UITypography variant='p' type='small'>
-                {textMeetingPlatform}
+                {textDuration}
               </UITypography>
             </div>
-            {isMeetingLinkVisible && (
-              <div className='flex items-center gap-1'>
-                <UITypography variant='p' type='medium'>
-                  {textMeetingLink}
-                </UITypography>
-                <div>{slotJoinMeeting}</div>
-              </div>
-            )}
+            <div className='flex items-center gap-2 text-sm'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='text-neutral-600'
+              >
+                {textMeetingPlatform}
+              </UITypography>
+              {isMeetingLinkVisible && (
+                <div className='flex items-center gap-1'>
+                  <UITypography
+                    variant='p'
+                    type='small'
+                    className='text-primary'
+                  >
+                    {textMeetingLink}
+                  </UITypography>
+                  <div>{slotJoinMeeting}</div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div className='flex h-full w-full items-stretch justify-start'>
-        <div className='flex h-full w-2/3 flex-col gap-4 pr-4'>
-          <div className='flex flex-col gap-2'>
+      <div className='flex h-full w-full items-stretch justify-start gap-12'>
+        <div className='flex h-full w-2/3 flex-col gap-6'>
+          <div className='flex flex-col gap-4'>
+            <UITypography
+              variant='h3'
+              type='medium'
+              className='text-lg font-semibold'
+            >
+              Candidate
+            </UITypography>
             <div className='flex flex-col gap-2'>{slotCandidateList}</div>
             {isCandidateButtonVisible && <div>{slotCandidateButton}</div>}
           </div>
-          <div className='flex flex-col gap-2'>
-            <div className='flex items-center gap-1'>
-              <UITypography variant='p' type='small'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-center gap-2'>
+              <UITypography
+                variant='h3'
+                type='medium'
+                className='text-lg font-semibold'
+              >
                 {textInterviewer}
               </UITypography>
-              <UITypography variant='p' type='small'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='text-sm text-neutral-600'
+              >
                 {textInterviewerCount}
               </UITypography>
             </div>
-            <div className='flex flex-col gap-2'>{slotInterviewerList}</div>
+            <div className='flex flex-col gap-4'>{slotInterviewerList}</div>
             {isInterviewerButtonVisible && <div>{slotInterviewerButton}</div>}
           </div>
         </div>
-        <div className='flex w-1/3 flex-col gap-4 border-l border-neutral-300 pl-6'>
-          <div className='flex flex-col gap-2'>
-            <UITypography variant='p' type='small'>
-              Organizer
-            </UITypography>
-            <div className='flex flex-col gap-2'>{slotOrganizerList}</div>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <UITypography variant='p' type='small'>
-              Hiring Team
-            </UITypography>
-            <div className='flex flex-col gap-2'>{slotHiringTeamList}</div>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <UITypography variant='p' type='small'>
+        <div className='flex w-1/3 flex-col gap-6'>
+          <div className='flex flex-col gap-4'>
+            <UITypography
+              variant='h3'
+              type='medium'
+              className='text-lg font-semibold'
+            >
               Interview Type
             </UITypography>
             <div>{slotInterviewTypeButton}</div>
+          </div>
+          <div className='flex flex-col gap-4'>
+            <UITypography
+              variant='h3'
+              type='medium'
+              className='text-lg font-semibold'
+            >
+              Organizer & Hiring Team
+            </UITypography>
+            <div className='flex flex-col gap-4'>
+              {slotOrganizerList}
+              {slotHiringTeamList}
+            </div>
           </div>
         </div>
       </div>

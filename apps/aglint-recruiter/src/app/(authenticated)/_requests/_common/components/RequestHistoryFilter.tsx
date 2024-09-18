@@ -1,17 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 
+import {
+  setCompletedFilters,
+  useCompletedRequestsStore,
+} from '@requestHistory/contexts/completedRequeststore';
 import { useEffect, useState } from 'react';
 
 import FilterHeader from '@/components/Common/FilterHeader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
-
-import {
-  setCompletedFilters,
-  useCompletedRequestsStore,
-} from '../../CompletedRequests/store';
 
 function RequestHistoryFilter() {
   const [candidateAndJobs, setCandidateAndJobs] =

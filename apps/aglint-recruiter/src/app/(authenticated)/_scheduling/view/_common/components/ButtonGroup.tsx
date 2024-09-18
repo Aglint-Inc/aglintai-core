@@ -42,7 +42,6 @@ function ButtonGroup() {
       {isCancelButtonVisible && (
         <UIButton
           variant='outline'
-          size='sm'
           onClick={() => {
             setIsCancelDialogOpen(true);
           }}
