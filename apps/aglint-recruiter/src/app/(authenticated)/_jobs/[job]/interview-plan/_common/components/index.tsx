@@ -34,6 +34,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -313,6 +314,7 @@ const InterviewPlan = ({
     deletePlan,
     handleSwapPlan,
     isPlanMutating,
+    isStageDeleting,
     // handleUpdateSession,
   } = useJobInterviewPlan();
   const index = interviewPlans.data.findIndex((plan) => plan.id === plan_id);
@@ -373,6 +375,8 @@ const InterviewPlan = ({
 
   const loading = isPlanMutating(data.id);
 
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
   return (
     <>
       <OptimisticWrapper loading={loading}>
@@ -417,17 +421,44 @@ const InterviewPlan = ({
             </div>
           }
           slotRightIconButton={
-            <div className='flex flex-row gap-1'>
+            <div className='flex flex-row items-center gap-1'>
               <UIButton
                 variant='destructive'
                 size='sm'
-                onClick={() => deletePlan({ id: plan_id })}
+                onClick={() => setDeleteOpen(true)}
                 icon={<Trash size={10} />}
               />
 
               <UIButton variant='secondary' onClick={handleExpandClick}>
                 <ChevronDown className='h-4 w-4' />
               </UIButton>
+              <UIDialog
+                open={deleteOpen}
+                onClose={() => setDeleteOpen(false)}
+                slotButtons={
+                  <>
+                    <UIButton
+                      variant='secondary'
+                      size='sm'
+                      onClick={() => setDeleteOpen(false)}
+                    >
+                      Cancel
+                    </UIButton>
+                    <UIButton
+                      size='sm'
+                      isLoading={isStageDeleting}
+                      onClick={async () => {
+                        await deletePlan({ id: plan_id });
+                        setDeleteOpen(false);
+                      }}
+                    >
+                      Delete
+                    </UIButton>
+                  </>
+                }
+              >
+                Are you sure to delete this interview plan ?
+              </UIDialog>
             </div>
           }
           slotInterviewPlanDetail={

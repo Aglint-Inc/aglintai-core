@@ -30,7 +30,8 @@ const useJobInterviewPlanContext = () => {
   const interviewModules = useInterviewModules();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
   const { mutateAsync: updatePlan } = useUpdateInterviewPlan();
-  const { mutateAsync: deletePlan } = useDeleteInterviewPlan();
+  const { mutateAsync: deletePlan, isPending: isStageDeleting } =
+    useDeleteInterviewPlan();
   const { mutateAsync: swapPlans } = useSwapInterviewPlan();
   const { swap, update, remove } = useInterviewPlanMutation();
   const { mutateAsync: createSession } = useAddInterviewSession();
@@ -126,6 +127,7 @@ const useJobInterviewPlanContext = () => {
     handleUpdateSession,
     handleEditDebriefSession,
     handleDeleteSession,
+    isStageDeleting,
     getLoadingState,
     handleCreatePlan,
     handleSwapPlan,
