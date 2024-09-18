@@ -6,6 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { Briefcase } from 'lucide-react';
 
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
@@ -50,7 +51,12 @@ function InterviewerUserDetail({
     <div className='flex items-center space-x-4'>
       <div className='flex-shrink-0'>
         {userDetails.profile_image ? (
-          <Avatar>
+          <Avatar
+            style={{
+              height: '50px',
+              width: '50px',
+            }}
+          >
             <AvatarImage
               src={userDetails.profile_image}
               alt={getFullName(userDetails.first_name, userDetails.last_name)}
@@ -75,9 +81,10 @@ function InterviewerUserDetail({
           {getFullName(userDetails.first_name, userDetails.last_name)}
         </p>
         {userDetails?.position && (
-          <p className='text-sm text-muted-foreground'>
-            {userDetails.position}
-          </p>
+          <div className='mt-1 flex items-center text-xs text-gray-500'>
+            <Briefcase className='mr-1 h-3 w-3' />
+            <span>{userDetails.position}</span>
+          </div>
         )}
         <p className='text-xs text-muted-foreground'>
           {interview_meeting?.start_time

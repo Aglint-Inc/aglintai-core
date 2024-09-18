@@ -1,8 +1,8 @@
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Skeleton } from '@components/ui/skeleton';
 import { ExternalLink } from 'lucide-react';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { useApplication } from '@/context/ApplicationContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -26,47 +26,7 @@ function SlotBody() {
   } = useApplication();
 
   if (isLoadingDetail) {
-    return (
-      <Card className='container mx-auto'>
-        <CardContent className='p-6'>
-          <div className='flex space-x-6'>
-            <div className='w-8/12 space-y-4'>
-              <Skeleton className='h-24 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-64 w-full' />
-            </div>
-            <div className='w-4/12 space-y-4'>
-              <Card>
-                <CardHeader>
-                  <Skeleton className='h-6 w-24' />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className='h-32 w-full' />
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Skeleton className='h-6 w-24' />
-                </CardHeader>
-                <CardContent>
-                  <div className='space-y-2'>
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className='flex items-center space-x-2'>
-                        <Skeleton className='h-8 w-8 rounded-full' />
-                        <div className='flex-1 space-y-1'>
-                          <Skeleton className='h-4 w-full' />
-                          <Skeleton className='h-3 w-3/4' />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    return <Loader />;
   }
 
   const renderTabContent = () => {
@@ -105,12 +65,12 @@ function SlotBody() {
 
   return (
     <div className='flex'>
-      <div className='flex w-8/12 flex-col gap-4 pr-6'>
+      <div className='flex w-9/12 flex-col gap-4 pr-6'>
         <CandidateInfo />
         <TabsComp />
         {renderTabContent()}
       </div>
-      <div className='w-4/12'>
+      <div className='w-3/12'>
         <div className='flex flex-col space-y-4'>
           {isShowFeature('SCHEDULING') ? (
             <Card>
