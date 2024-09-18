@@ -16,7 +16,7 @@ export default function AverageTenure() {
           {isFetching ? (
             <Skeleton className='h-[60px] w-[100px]' />
           ) : (
-            data.avg_tenure
+            data.avg_tenure || '-'
           )}
         </div>
         <div className='mb-4 text-2xl font-semibold'>Years</div>
