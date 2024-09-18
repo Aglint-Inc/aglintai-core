@@ -19,10 +19,7 @@ function InterviewerPerformance({module_id}:{module_id:string}) {
               <span className='text-gray-600'>Avg. Rating</span>
               <span className='font-bold text-gray-900'>{isFetched?`${(data.candidate_feedback_avg)} / 5.0`:<Skeleton className='h-6 w-10'/>}</span>
             </div>
-            <div className='flex justify-between'>
-              <span className='text-gray-600'>On-time Rate</span>
-              <span className='font-bold text-green-600'>{isFetched?`${96} %`:<Skeleton className='h-6 w-10'/>}</span>
-            </div>
+           
             <div className='flex justify-between'>
               <span className='text-gray-600'>Feedback Rate</span>
               <span className='font-bold text-amber-600'>{isFetched?`${((((data.interviewer_feedback_count)/data.total_interviews)*10000)/100)||0} %`:<Skeleton className='h-6 w-10'/>}</span>

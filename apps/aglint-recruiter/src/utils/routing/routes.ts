@@ -175,11 +175,7 @@ const previewAssessment = {
 
 const user = {
   '/user/[user]': ({ user_id }: { user_id: string }) =>
-    pageRouteBuilder([
-      pageRouteBuilder([ROUTES.app(), 'user']),
-      'profile',
-      user_id,
-    ]),
+    pageRouteBuilder(['/user', user_id]),
 } as const;
 const profile = {
   '/profile': () => pageRouteBuilder([ROUTES.app(), 'profile']),

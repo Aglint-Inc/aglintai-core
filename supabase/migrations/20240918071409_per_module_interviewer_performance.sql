@@ -25,7 +25,7 @@ BEGIN
     JOIN applications on applications.id= interview_meeting.application_id
   WHERE interview_session_relation.is_confirmed
   AND interview_meeting.status ='completed'
-  AND interview_session.module_id = 'e6f79ab6-9b41-49d3-9e27-c040782c66a4'
+  AND interview_session.module_id = per_module_interviewer_performance.module_id
   group by interview_meeting.application_id, candidate_feedback, applications.status
 )
 SELECT AVG(temp_res.candidate_feedback) AS candidate_feedback_avg

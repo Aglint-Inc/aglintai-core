@@ -1,17 +1,12 @@
-import ViewRequestDetails from '@/components/Requests/ViewRequestDetails';
-import { RequestProvider } from '@/context/RequestContext';
-import { RequestsProvider } from '@/context/RequestsContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
+import RequestDetailsPage from 'src/app/(authenticated)/_requests/[id]/page';
+import RequestDetailsLayout from 'src/app/(authenticated)/_requests/[id]/RequestDetailsLayout';
 
-function RequestDetailsPage() {
-  const { params } = useRouterPro();
+function Page() {
   return (
-    <RequestsProvider>
-      <RequestProvider request_id={params.id}>
-        <ViewRequestDetails />
-      </RequestProvider>
-    </RequestsProvider>
+    <RequestDetailsLayout>
+      <RequestDetailsPage />
+    </RequestDetailsLayout>
   );
 }
 
-export default RequestDetailsPage;
+export default Page;

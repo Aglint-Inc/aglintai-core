@@ -114,7 +114,7 @@ function IndividualRow({
           />
         </td>
         <td className='p-4'>
-          <div className='flex flex-row space-x-0.5 overflow-hidden rounded-md'>
+          <div className='flex flex-row gap-0.5 overflow-hidden rounded-md'>
             {pills.map((pill, i) => (
               <HistoryPillShadcn
                 key={i}
@@ -170,7 +170,7 @@ const ThreeDot = ({
       <PopoverTrigger asChild>
         <UIButton variant='secondary' size='sm' icon={<MoreVertical />} />
       </PopoverTrigger>
-      <PopoverContent className='w-auto rounded-sm p-0'>
+      <PopoverContent className='w-auto rounded-sm p-0' side='left'>
         <MemberListCardOption
           isMoveToQualifierVisible={isMoveToQualifierVisible}
           isRemoveVisible={true}

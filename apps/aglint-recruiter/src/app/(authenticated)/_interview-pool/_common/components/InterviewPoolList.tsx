@@ -117,18 +117,18 @@ export const InterviewPoolList = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              {interviewType.job_names.length > 0 ? (
+              {interviewType.job_names?.length > 0 ? (
                 <Badge
                   variant='outline'
                   className='border-indigo-200 bg-indigo-50 text-indigo-800'
                 >
                   <Briefcase className='mr-1 h-3 w-3' /> {` - `}
                   {interviewType.job_names
-                    .slice(0, 2)
+                    ?.slice(0, 2)
                     .map((job) => job)
                     .join(', ')}
-                  {interviewType.job_names.length > 2 ? (
-                    <span>{` + ${interviewType.job_names.length - 2}`}</span>
+                  {interviewType.job_names?.length > 2 ? (
+                    <span>{` + ${interviewType.job_names?.length - 2}`}</span>
                   ) : null}
                 </Badge>
               ) : (

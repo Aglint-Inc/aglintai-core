@@ -26,9 +26,11 @@ Container.displayName = 'Container';
 const Content = memo((props: PropsWithChildren) => {
   return (
     <PopoverContent
-      className='w-[400px] px-4 py-2'
-      align='start'
-      sideOffset={4}
+      className='w-[300px] px-4 py-2'
+      align='end'
+      side='bottom'
+      sideOffset={10}
+     
     >
       <Navigation />
       {props.children}

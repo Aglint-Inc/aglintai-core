@@ -47,6 +47,7 @@ const PERMISSIONS: Permissions = {
   '/workflows/[workflow]': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
+  '/scheduling/all': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/interview-pool': ['view_interview_types'],
   '/interview-pool/[pool]': ['interview_types'],

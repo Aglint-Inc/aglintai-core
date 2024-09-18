@@ -304,7 +304,7 @@ function SchedulerEmailTemps({ setSaving }) {
               <div className='flex space-x-4'>
                 {/* Email Template List */}
                 <div className='w-1/3 pr-4'>
-                  <ScrollArea className='h-[calc(100vh-160px)]'>
+                  <ScrollArea className='h-[calc(100vh-118px)]'>
                     {templates
                       .filter((emailPath) => {
                         const flag = filterEmailByTemplateTab(
@@ -358,7 +358,7 @@ function SchedulerEmailTemps({ setSaving }) {
                           >
                             <div className='w-full'>
                               <div
-                                className={`font-semibold ${emailPath.type === temp_email ? 'text-white' : 'text-neutral-900'}`}
+                                className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-white' : 'text-neutral-900'}`}
                               >
                                 {emailTemplateCopy[emailPath.type]?.heading}
                               </div>

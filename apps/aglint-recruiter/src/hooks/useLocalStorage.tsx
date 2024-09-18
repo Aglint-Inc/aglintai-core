@@ -4,7 +4,12 @@ import { useState /*useSyncExternalStore*/ } from 'react';
 import {
   initialFilterState,
   type ScheduleFilerType,
-} from '@/components/Scheduling/Schedules/ScheduleStatesContext/constant';
+} from '@/components/Scheduling/Interviews/_common/types';
+
+// import {
+//   initialFilterState,
+//   type ScheduleFilerType,
+// } from '@/components/Scheduling/Schedules/ScheduleStatesContext/constant';
 
 const initialLocalState: {
   scheduleFilterIds: ScheduleFilerType;

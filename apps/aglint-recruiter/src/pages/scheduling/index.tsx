@@ -2,11 +2,7 @@ import SchedulingMainComp from '@/components/Scheduling';
 import { SchedulingAnalyticsContextProvider } from '@/context/SchedulingAnalytics';
 
 function SchedulingMainPage() {
-  return (
-    <>
-      <SchedulingMainComp />
-    </>
-  );
+  return <SchedulingMainComp />;
 }
 
 SchedulingMainPage.privateProvider = (page) => (
