@@ -68,8 +68,8 @@ function Interviewers() {
     : interviewers;
 
   return (
-    <div className='min-h-screen py-8'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div className='container-lg mx-auto w-full px-12'>
+      <div className=''>
         <Header
           isFilterApplied={isFilterApplied}
           searchText={searchText}

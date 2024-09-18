@@ -17,19 +17,19 @@ export function InterviewMemberSide({
   isMenuTabVisible = true,
 }) {
   return (
-    <div className='flex flex-col h-full'>
+    <div className='flex h-full flex-col'>
       {isMenuTabVisible && (
-        <div className='flex items-center justify-between h-12 px-4  bg-white'>
+        <div className='flex h-12 items-center justify-between'>
           <div className='flex items-center gap-2.5'>
-            <div className='flex flex-col gap-2.5'>{slotInterview}</div>
+            <div className='flex hidden flex-col gap-2.5'>{slotInterview}</div>
             <div className='relative'>
               <UIButton
                 variant={isUpcomingActive ? 'default' : 'secondary'}
-                className='flex items-center h-8 px-3 gap-2.5 border rounded-md cursor-pointer'
+                className='flex h-8 cursor-pointer items-center gap-2.5 rounded-md border px-3'
                 {...onClickUpcoming}
               >
                 <div>Upcoming</div>
-                <div className='flex items-center justify-center h-5 min-w-5 px-1 bg-neutral-300 text-neutral-700 rounded'>
+                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
                   <UITypography variant='p' type='small'>
                     {textUpcomingCount}
                   </UITypography>
@@ -39,11 +39,11 @@ export function InterviewMemberSide({
             <div className='relative'>
               <UIButton
                 variant={isCancelActive ? 'default' : 'secondary'}
-                className='flex items-center h-8 px-3 gap-2.5 border rounded-md cursor-pointer'
+                className='flex h-8 cursor-pointer items-center gap-2.5 rounded-md border px-3'
                 {...onClickCancelled}
               >
                 <div>Canceled</div>
-                <div className='flex items-center justify-center h-5 min-w-5 px-1 bg-neutral-300 text-neutral-700 rounded'>
+                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
                   <UITypography variant='p' type='small'>
                     {textCancelledCount}
                   </UITypography>
@@ -52,12 +52,12 @@ export function InterviewMemberSide({
             </div>
             <div className='relative'>
               <UIButton
-                className='flex items-center h-8 px-3 gap-2.5 border rounded-md cursor-pointer'
+                className='flex h-8 cursor-pointer items-center gap-2.5 rounded-md border px-3'
                 variant={isCompletedActive ? 'default' : 'secondary'}
                 {...onClickCompleted}
               >
                 <div>Past</div>
-                <div className='flex items-center justify-center h-5 min-w-5 px-1 bg-neutral-300 text-neutral-700 rounded'>
+                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
                   <UITypography variant='p' type='small'>
                     {textPastCount}
                   </UITypography>
@@ -68,7 +68,7 @@ export function InterviewMemberSide({
         </div>
       )}
       <div
-        className='flex flex-col h-full max-w-900px p-4 gap-2.5 overflow-auto'
+        className='max-w-900px flex h-full flex-col gap-2.5 overflow-auto'
         {...propsGrids}
       >
         {slotInterviewCard}

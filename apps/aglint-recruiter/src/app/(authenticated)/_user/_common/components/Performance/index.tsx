@@ -5,7 +5,7 @@ export const Performance = ({ interviewer }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Performance Metrics</CardTitle>
+        <CardTitle className='text-xl'>Performance Metrics</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>

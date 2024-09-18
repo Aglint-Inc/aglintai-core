@@ -21,7 +21,7 @@ export function NewMyScheduleCard({
   return (
     <div className={'my-schedule relative max-w-[1000px]'}>
       <div className='flex h-full items-stretch justify-start gap-4'>
-        <div className='relative h-full'>
+        <div className='relative hidden h-full'>
           <div className='h-full w-[100px] rounded bg-neutral-200'>
             <div className='w-30 sticky top-0 flex flex-col items-center justify-start gap-1 p-3'>
               <UITypography variant='p' type='small'>

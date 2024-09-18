@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { FileX } from 'lucide-react';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 
@@ -10,7 +11,7 @@ export const Qualifications = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Qualifications</CardTitle>
+        <CardTitle className='text-xl'>Qualifications</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='max-h-[360px] space-y-4 overflow-y-auto'>
@@ -45,8 +46,9 @@ export const Qualifications = ({
               </div>
             ))
           ) : (
-            <div className='flex h-[100px] w-full items-center justify-center'>
-              No Qulifications found
+            <div className='flex h-[100px] w-full flex-col items-center justify-center space-y-2 text-gray-500'>
+              <FileX size={24} />
+              <p>No qualifications found</p>
             </div>
           )}
         </div>

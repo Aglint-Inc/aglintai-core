@@ -1,5 +1,6 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Calendar } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -15,7 +16,7 @@ export const UpcomingInterview = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Upcoming Interviews</CardTitle>
+        <CardTitle className='text-xl'>Upcoming Interviews</CardTitle>
       </CardHeader>
       <CardContent>
         {interviews?.length > 0 ? (
@@ -52,8 +53,11 @@ export const UpcomingInterview = ({
             ))}
           </div>
         ) : (
-          <div className='flex h-[100px] w-full items-center justify-center'>
-            No Upcoming
+          <div className='flex flex-col items-center justify-center py-10'>
+            <Calendar className='h-12 w-12 text-gray-400' />
+            <p className='mt-4 text-gray-600'>
+              No upcoming interviews scheduled.
+            </p>
           </div>
         )}
       </CardContent>

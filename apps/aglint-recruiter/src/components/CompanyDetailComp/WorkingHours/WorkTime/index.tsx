@@ -160,7 +160,7 @@ const WorkTime: FC<WorkTimeProps> = ({
             <Calendar className='h-4 w-4 text-muted-foreground' />
             <p className='text-sm font-medium'>Weekly Schedule</p>
           </div>
-          <div className='rounded-lg border'>
+          <div className=''>
             <Table>
               <TableHeader className='bg-gray-100'>
                 <TableRow>

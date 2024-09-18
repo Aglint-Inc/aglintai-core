@@ -6,7 +6,7 @@ export const PendingActions = ({ interviewer }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Pending Actions</CardTitle>
+        <CardTitle className='text-xl'>Pending Actions</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>

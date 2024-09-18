@@ -15,11 +15,11 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import NotFoundPage from '@/pages/404';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 
 import defaultProfileImage from '../../../public/images/default-user-profile.svg';
+import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children, appRouter = false }) {
@@ -39,7 +39,7 @@ export default function AppLayout({ children, appRouter = false }) {
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
-    <div className='flex h-full flex-col'>
+    <>
       {isHorizontalNav && (
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
           <div className='flex items-center space-x-4'>
@@ -98,11 +98,11 @@ export default function AppLayout({ children, appRouter = false }) {
           </div>
         </nav>
       )}
-      <div className='flex flex-1 bg-gray-50'>
+      <div className='flex flex-1'>
         {!isHorizontalNav && (
-          <nav className='flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
+          <nav className='fixed flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
             <div className='flex flex-grow flex-col items-center py-3'>
-              <Button variant='ghost' className='mt-4' asChild>
+              <Button variant='link' className='mt-4' asChild>
                 <Link href='/'>
                   <Image
                     src={logo || defaultCompanyLogo}
@@ -119,7 +119,7 @@ export default function AppLayout({ children, appRouter = false }) {
             <div className='flex flex-col items-center space-y-3 pb-3'>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='ghost' className='rounded-sm' asChild>
+                  <Button variant='link' asChild>
                     <Link
                       href={
                         ROUTES['/user/[user]']({
@@ -145,7 +145,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='outline' onClick={handleLogout}>
+                  <Button variant='link' onClick={handleLogout}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
@@ -157,16 +157,18 @@ export default function AppLayout({ children, appRouter = false }) {
           </nav>
         )}
         <main
-          className={`flex-1 overflow-auto ${isHorizontalNav ? 'mt-8' : ''}`}
+          className={`flex min-h-screen w-full bg-gray-50 pt-8 ${
+            isHorizontalNav ? '' : 'ml-16'
+          }`}
         >
           {appRouter ||
           checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
             children
           ) : (
-            <NotFoundPage />
+            <NotFound />
           )}
         </main>
       </div>
-    </div>
+    </>
   );
 }

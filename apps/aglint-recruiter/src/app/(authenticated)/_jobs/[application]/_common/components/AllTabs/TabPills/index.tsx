@@ -70,7 +70,7 @@ function TabsComp() {
         );
       },
       textLabel: 'Candidate Stages',
-      isVisible: isShowFeature('SCHEDULING'),
+      isVisible: isShowFeature('CANDIDATE_PORTAL'),
     },
   ];
 

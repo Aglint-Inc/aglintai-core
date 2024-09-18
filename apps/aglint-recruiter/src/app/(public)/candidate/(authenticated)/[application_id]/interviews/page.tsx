@@ -24,7 +24,7 @@ export default function InterviewsPage() {
     data?.filter((interview) => interview.status === 'completed') || [];
 
   return (
-    <div className='container mx-auto flex max-w-screen-xl flex-col gap-8 p-6 lg:flex-row'>
+    <div className='container mx-auto flex flex-col gap-8 p-6'>
       <main className='mx-auto space-y-6 lg:w-[70%]'>
         <div>
           <h2 className='mb-4 text-lg font-semibold'>Upcoming interviews</h2>
