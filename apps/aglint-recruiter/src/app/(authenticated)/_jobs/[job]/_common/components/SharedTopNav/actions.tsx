@@ -61,9 +61,7 @@ export const SharedActions = () => {
         <Switcher />
         {/* <Dropdown /> */}
         <Link href={`/jobs/${value.job.id}/job-details`}>
-          <UIButton variant='outline' size='sm'>
-            Edit
-          </UIButton>
+          <UIButton variant='outline'>Edit</UIButton>
         </Link>
       </div>
     </SettingsContext.Provider>
@@ -101,14 +99,9 @@ const Sync = () => {
       </Tooltip>
 
       <OptimisticWrapper loading={load}>
-        <Button
-          variant='outline'
-          size='sm'
-          onClick={handleSync}
-          className='w-auto'
-        >
-          <RefreshCw className='mr-3 h-5 w-3' strokeWidth={1.5} />
-          Sync job
+        <Button variant='outline' onClick={handleSync} className='w-auto'>
+          <RefreshCw className='mr-2 h-4 w-4' />
+          Sync
         </Button>
       </OptimisticWrapper>
     </div>

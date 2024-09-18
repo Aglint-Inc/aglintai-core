@@ -21,7 +21,11 @@ import { unArchiveModuleById } from '../utils/pool';
 import StatsCards from './StatsCards';
 import InterviewDetailsTabs from './Tabs';
 
-export default function InterviewTypeDetail({module_id}:{module_id:string}) {
+export default function InterviewTypeDetail({
+  module_id,
+}: {
+  module_id: string;
+}) {
   const {
     data: editModule,
     isLoading: fetchingModule,
@@ -33,7 +37,7 @@ export default function InterviewTypeDetail({module_id}:{module_id:string}) {
     if (editModule?.id) {
       setBreadcrum([
         {
-          name: 'Interview Pools',
+          name: 'Interview Pool',
           route: ROUTES['/interview-pool'](),
         },
         {
@@ -123,7 +127,7 @@ export default function InterviewTypeDetail({module_id}:{module_id:string}) {
               <ArchiveModuleDialog />
             </div>
           </div>
-          <StatsCards module_id={module_id}/>
+          <StatsCards module_id={module_id} />
           <InterviewDetailsTabs />
         </div>
       )}

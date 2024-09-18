@@ -1,5 +1,5 @@
 import { Button } from '@components/ui/button';
-import { Loader2, Rocket } from 'lucide-react';
+import { Loader, Rocket } from 'lucide-react';
 import { useState } from 'react';
 
 const PublishButton = ({
@@ -20,15 +20,19 @@ const PublishButton = ({
   };
 
   return (
-    <Button size='sm' onClick={handleClick} disabled={disabled || isLoading}>
+    <Button
+      variant='outline'
+      onClick={handleClick}
+      disabled={disabled || isLoading}
+    >
       {isLoading ? (
         <>
-          <Loader2 className='mr-2 h-3 w-3 animate-spin' />
+          <Loader className='mr-2 h-4 w-4 animate-spin' />
           Publishing
         </>
       ) : (
         <>
-          <Rocket className='mr-2 h-3 w-3' />
+          <Rocket className='mr-2 h-4 w-4' />
           Publish
         </>
       )}

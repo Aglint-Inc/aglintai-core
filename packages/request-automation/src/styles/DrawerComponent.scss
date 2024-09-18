@@ -3,8 +3,8 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: var(--sky-3);
-  border-top: 1px solid var(--sky-6);
+  background-color: #c4dbff;
+  border-top: 1px solid #8cb9ff;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   transform: translateY(100%);
@@ -22,13 +22,13 @@
     left: 1%;
     transform: translateX(-1%);
     padding: 5px 10px;
-    background-color: var(--sky-3);
-    color: var(--sky-11);
+    background-color: #c4dbff;
+    color: #5a8ee0;
     border-radius: 5px 5px 0 0;
     font-size: 12px;
     cursor: pointer;
     z-index: 1001;
-    border: 1px solid var(--sky-6);
+    border: 1px solid #8cb9ff;
     border-bottom: 0;
   }
   &.open {
