@@ -30,7 +30,11 @@ const CompanyDetailComp = () => {
 
       <div className='mb-6 flex gap-6'>
         <div className='w-1/4'>
-          <SettingsSubNabItem />
+        <div className='sticky top-[32px]'>
+        <SettingsSubNabItem />
+
+        </div>
+         
         </div>
         <div className='w-3/4'>
           {tab === settingSubNavItem['COMPANYINFO'] && <CompanyInfoComp />}

@@ -30,35 +30,33 @@ function AllRolesMeetings() {
   const filteredRoles = allRoles.filter((item) => Boolean(item.details));
 
   return (
-    <div className='flex flex-col space-y-4'>
+    <div className='flex flex-wrap gap-4'>
       {filteredRoles.map((item) => {
         return (
-          <div key={item.type}>
-            <div className='flex items-center space-x-4 bg-white'>
-              <Avatar className='h-10 w-10'>
-                <AvatarImage
-                  src={item.details.profile_image}
-                  alt={getFullName(
-                    item.details.first_name,
-                    item.details.last_name,
-                  )}
-                />
-                <AvatarFallback>
-                  {getFullName(
-                    item.details.first_name,
-                    item.details.last_name,
-                  ).charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <Link
-                  href={`/user/${item.details.user_id}`}
-                  className='text-sm font-medium hover:underline'
-                >
-                  {getFullName(item.details.first_name, item.details.last_name)}
-                </Link>
-                <p className='text-sm text-gray-500'>{item.label}</p>
-              </div>
+          <div key={item.type} className='flex items-center space-x-2'>
+            <Avatar className='h-6 w-6'>
+              <AvatarImage
+                src={item.details.profile_image}
+                alt={getFullName(
+                  item.details.first_name,
+                  item.details.last_name,
+                )}
+              />
+              <AvatarFallback>
+                {getFullName(
+                  item.details.first_name,
+                  item.details.last_name,
+                ).charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <Link
+                href={`/user/${item.details.user_id}`}
+                className='text-xs font-medium hover:underline'
+              >
+                {getFullName(item.details.first_name, item.details.last_name)}
+              </Link>
+              <p className='text-xs text-gray-500'>{item.label}</p>
             </div>
           </div>
         );

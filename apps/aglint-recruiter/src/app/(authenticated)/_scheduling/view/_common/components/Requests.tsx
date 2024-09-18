@@ -17,7 +17,7 @@ function Requests({ session_id }) {
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
-    <div className='rounded-md border border-gray-200 bg-white p-4'>
+    <div className='rounded-md border border-gray-200 bg-white p-4 shadow-sm'>
       <h3 className='mb-3 text-sm font-semibold'>Request History</h3>
       {isLoading ? (
         <Loader />

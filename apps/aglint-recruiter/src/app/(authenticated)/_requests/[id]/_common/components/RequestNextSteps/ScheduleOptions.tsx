@@ -78,7 +78,7 @@ const ScheduleOptions = () => {
                 filters: initialFilters,
                 dateRange: {
                   start_date: dayjsLocal().toISOString(),
-                  end_date: dayjsLocal().add(7, 'day').toISOString(),
+                  end_date: dayjsLocal().add(14, 'day').toISOString(),
                 },
               });
               setIsSelfScheduleDrawerOpen(true);
