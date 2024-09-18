@@ -9,15 +9,15 @@ import { InterviewPlanDetail } from './InterviewPlanDetail';
 
 export function InterviewPlanWrap({
   textStageName = 'This is a global text component',
-  onClickEdit = {},
+  onClickEdit,
   textInterviewCount = 'This is a global text component',
   slotRightIconButton,
   slotInputButton,
   isInputVisible = false,
   slotInterviewPlanDetail,
   isSlotInterviewPlanVisible = true,
-  onClickUp = {},
-  onClickDown = {},
+  onClickUp,
+  onClickDown,
   isTopArrowVisible = true,
   isBottomArrowVisible = true,
 }) {
@@ -30,12 +30,13 @@ export function InterviewPlanWrap({
               <UITypography type='small' variant='p'>
                 {textStageName}
               </UITypography>
+
               <UIButton
                 variant='ghost'
                 size='sm'
                 icon={<Edit />}
                 className='opacity-0 transition-opacity duration-300 hover:opacity-100'
-                {...onClickEdit}
+                onClick={onClickEdit}
               />
             </div>
             <div className='flex items-center gap-2'>
@@ -63,7 +64,7 @@ export function InterviewPlanWrap({
             variant='secondary'
             size='sm'
             className='opacity-0 transition-opacity duration-300 hover:opacity-100'
-            {...onClickUp}
+            onClick={onClickUp}
             icon={<ArrowUp />}
           />
         )}
@@ -72,7 +73,7 @@ export function InterviewPlanWrap({
             variant='secondary'
             size='sm'
             className='opacity-0 transition-opacity duration-300 hover:opacity-100'
-            {...onClickDown}
+            onClick={onClickDown}
             icon={<ArrowDown />}
           />
         )}
