@@ -47,8 +47,48 @@ const InterviewDrawers = ({
   const {
     interviewModules: { data },
   } = useJobInterviewPlan();
+
+  let drawerTitle = '';
+
+  const [createKey, createValue] = (Object.entries(drawers.create).find(
+    ([, value]) => value.open,
+  ) ?? [null, null]) as [
+    keyof DrawerType['create'],
+    DrawerType['create'][keyof DrawerType['create']],
+  ];
+
+  if (createKey && createValue) {
+    switch (createKey) {
+      case 'session':
+        drawerTitle = 'Create Interview';
+        break;
+      case 'debrief':
+        drawerTitle = 'Create Debrief';
+        break;
+    }
+  }
+  const [editKey, editValue] = (Object.entries(drawers.edit).find(
+    ([, value]) => value.open,
+  ) ?? [null, null]) as [
+    keyof DrawerType['edit'],
+    DrawerType['edit'][keyof DrawerType['edit']],
+  ];
+  if (editKey && editValue) {
+    switch (editKey) {
+      case 'session':
+        drawerTitle = 'Update Interview';
+        break;
+      case 'debrief':
+        drawerTitle = 'Edit Debrief';
+        break;
+      case 'break':
+        drawerTitle = 'Edit Break';
+        break;
+    }
+  }
+
   return (
-    <UIDrawer title='' size='sm' open={open} onClose={handleClose}>
+    <UIDrawer title={drawerTitle} size='sm' open={open} onClose={handleClose}>
       {data.length ? (
         <InterviewSideDrawer
           drawers={drawers}
@@ -89,6 +129,7 @@ const InterviewSideDrawer = ({
     keyof DrawerType['create'],
     DrawerType['create'][keyof DrawerType['create']],
   ];
+
   if (createKey && createValue) {
     const { order, plan_id } = createValue;
     switch (createKey) {
@@ -169,11 +210,10 @@ const CreateSession = ({
     <div className='flex flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='mb-4 text-lg font-semibold'>Create Interview</h2>
           <SessionForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 border-t p-4'>
+      <div className='flex justify-end space-x-2 p-4'>
         <UIButton
           size='sm'
           variant='secondary'
@@ -258,11 +298,11 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       const { error, newFields } = validateSessionFields(fields);
       if (error) setFields(newFields);
       else {
-        const {
-          // eslint-disable-next-line no-unused-vars
-          // eslint-disable-next-line no-unused-vars
-          ...rest
-        } = getSessionPayload(fields, order + 1, interview_plan_id);
+        const { ...rest } = getSessionPayload(
+          fields,
+          order + 1,
+          interview_plan_id,
+        );
         handleEditSession({ ...rest, session_id: id });
         handleClose();
       }
@@ -276,14 +316,13 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <div className='flex h-screen flex-col'>
+    <div className='flex flex-col'>
       <div className='flex-1 overflow-y-auto'>
-        <div className='p-4'>
-          <h2 className='mb-4 text-lg font-semibold'>Update Interview</h2>
+        <div className='border-none p-4'>
           <SessionForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 border-t p-4'>
+      <div className='flex justify-end space-x-2 p-4'>
         <Button
           variant='outline'
           size='sm'
@@ -346,11 +385,10 @@ const CreateDebrief = ({
     <div className='flex flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='mb-4 text-lg font-semibold'>Create Debrief</h2>
           <DebriefForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 border-t p-4'>
+      <div className='flex justify-end space-x-2 p-4'>
         <UIButton
           variant='secondary'
           disabled={debriefCreation}
@@ -432,14 +470,13 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
   };
 
   return (
-    <div className='flex h-screen flex-col'>
+    <div className='flex h-full flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
-          <h2 className='mb-4 text-lg font-semibold'>Edit Debrief</h2>
           <DebriefForms fields={fields} setFields={setFields} />
         </div>
       </div>
-      <div className='flex justify-end space-x-2 border-t p-4'>
+      <div className='flex justify-end space-x-2 p-4'>
         <UIButton
           variant='secondary'
           disabled={isLoading}

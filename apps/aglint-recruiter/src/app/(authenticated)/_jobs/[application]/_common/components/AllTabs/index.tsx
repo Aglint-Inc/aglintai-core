@@ -1,9 +1,7 @@
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { ExternalLink } from 'lucide-react';
 
 import { Loader } from '@/components/Common/Loader';
-import { UIButton } from '@/components/Common/UIButton';
 import { useApplication } from '@/context/ApplicationContext';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -40,24 +38,10 @@ function SlotBody() {
         return <Details />;
       case 'candidate_stages':
         return (
-          <>
-            <div>
-              <UIButton
-                variant='secondary'
-                onClick={() => {
-                  window.open(`/candidate/${application_id}/home`, '_blank');
-                }}
-                size='sm'
-                rightIcon={<ExternalLink />}
-              >
-                Portal
-              </UIButton>
-            </div>
-            <ReorderableInterviewPlan
-              applicationId={application_id}
-              jobId={null}
-            />
-          </>
+          <ReorderableInterviewPlan
+            applicationId={application_id}
+            jobId={null}
+          />
         );
       default:
         return null;

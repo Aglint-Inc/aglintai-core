@@ -321,6 +321,7 @@ const InterviewPlan = ({
     deletePlan,
     handleSwapPlan,
     isPlanMutating,
+
     isStageDeleting,
     // handleUpdateSession,
   } = useJobInterviewPlan();
@@ -351,17 +352,26 @@ const InterviewPlan = ({
     },
     [],
   );
-  const handleDelete = useCallback(async (args: DeleteInterviewSession) => {
-    const isLoading = getLoadingState(args.session_id);
-    if (!isLoading) {
-      handleDeleteSession(args);
-    } else {
-      toast.warning('Session under deletion. Please wait.');
-    }
-  }, []);
+  const handleDelete = useCallback(
+    async (args: DeleteInterviewSession, sessionName: '') => {
+      const isLoading = getLoadingState(args.session_id);
+      if (!isLoading) {
+        setPopupModal(true);
+        setPopup({
+          name: sessionName,
+          break: false,
+          id: args.session_id,
+        });
+      } else {
+        toast.warning('Session under deletion. Please wait.');
+      }
+    },
+    [],
+  );
   const sessionsCount = data.interview_session.length;
   const sessions = data.interview_session.map((session, order) => (
     <InterviewSession
+      handleDeletionSession={handleDelete}
       key={session.id}
       session={session}
       plan_id={plan_id}
@@ -442,6 +452,7 @@ const InterviewPlan = ({
               <UIDialog
                 open={deleteOpen}
                 onClose={() => setDeleteOpen(false)}
+                title='Delete Confirmation  '
                 slotButtons={
                   <>
                     <UIButton
@@ -482,6 +493,7 @@ const InterviewPlan = ({
                       </p>
                       <UIButton
                         size='sm'
+                        variant='outline'
                         onClick={() => handleCreate('session', plan_id, 1)}
                         leftIcon={<Plus />}
                       >
@@ -501,7 +513,7 @@ const InterviewPlan = ({
         popup={popup}
         handleClose={handlePopupClose}
         handleDelete={() =>
-          handleDelete({
+          handleDeleteSession({
             session_id: popup.id,
             interview_plan_id: data.id,
           })
@@ -526,6 +538,12 @@ type InterviewSessionProps = {
   ) => void;
   // eslint-disable-next-line no-unused-vars
   handleDeletionSelect: (args: InterviewDeletePopupType['popup']) => void;
+  handleDeletionSession: (
+    // eslint-disable-next-line no-unused-vars
+    args: DeleteInterviewSession,
+    // eslint-disable-next-line no-unused-vars
+    sessionName: string,
+  ) => void;
   lastSession: boolean;
   index: number;
 };
@@ -540,6 +558,7 @@ const InterviewSession = ({
   plan_id,
   handleCreate,
   handleEdit,
+  handleDeletionSession,
   handleDeletionSelect,
   lastSession,
   index,
@@ -648,7 +667,8 @@ const InterviewSession = ({
   drag(drop(ref));
 
   const [hover, setHover] = useState(false);
-
+  const sessionEditType =
+    session.session_type === 'debrief' ? 'debrief' : 'session';
   return (
     <div
       ref={manageJob ? ref : null}
@@ -661,13 +681,16 @@ const InterviewSession = ({
         <div className={`flex flex-col`}>
           <InterviewPlanDetail
             textModuleName={
-              <div className='flex flex-row gap-3'>
+              <div className='flex flex-row items-center gap-3'>
                 <>{session.name}</>
                 <div className='text-sm font-normal text-neutral-500'>
                   {getSessionType(session.session_type)}
                 </div>
               </div>
             }
+            onClickEditSession={() => {
+              handleEdit(sessionEditType, session.id);
+            }}
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
             isPanelIconVisible={session.session_type === 'panel'}
@@ -679,6 +702,15 @@ const InterviewSession = ({
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
+            onClickDeleteSession={() => {
+              handleDeletionSession(
+                {
+                  interview_plan_id: plan_id,
+                  session_id: session.id,
+                },
+                session.name,
+              );
+            }}
             onClickLink={() =>
               window.open(
                 `interview-pools/${session.interview_module.id}?tab=qualified`,
