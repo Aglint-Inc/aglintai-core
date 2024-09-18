@@ -3,21 +3,21 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
+import {
+  setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
+} from '@request/ViewRequestDetails/CandidateAvailability/store';
+import {
+  setApplicationIdForConfirmAvailability,
+  setCandidateAvailabilityId,
+  useConfirmAvailabilitySchedulingFlowStore,
+} from '@request/ViewRequestDetails/ConfirmAvailability/store';
 import { Bell, Lightbulb, WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import {
-  setApplicationIdForConfirmAvailability,
-  setCandidateAvailabilityId,
-  useConfirmAvailabilitySchedulingFlowStore,
-} from '@/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';

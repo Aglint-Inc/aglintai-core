@@ -1,10 +1,10 @@
+import { updateRequestNotes } from '@requests/functions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { updateRequestNotes } from '@/components/Requests/_common/functions';
 // import { updateRequestNotes } from '@/components/Requests/_common/functions';
 import type { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
 import { useApplications } from '@/job/hooks';

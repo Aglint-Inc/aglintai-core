@@ -5,6 +5,10 @@ import {
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import axios from 'axios';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
+
 import {
   setChatList,
   setCursor,
@@ -14,11 +18,7 @@ import {
   setViewHistory,
   setViewList,
   useAgentChatStore,
-} from '@/components/Requests/AgentChats/ChatMessageList/store';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
-
+} from '../store';
 import { scrollToElementById } from './scroll';
 
 export type ChatType = Awaited<ReturnType<typeof fetchUserChat>>[0];
