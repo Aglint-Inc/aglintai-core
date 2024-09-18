@@ -19,10 +19,10 @@ function BookingConfirmation({
     const sessions = act.metadata.sessions;
 
     return (
-      <div className='w-full space-y-4'>
+      <div className='flex w-full flex-col space-y-4'>
         {sessions.map((session) => (
-          <Card key={session.id}>
-            <CardContent className='p-4'>
+          <Card key={session.id} className={'w-full'}>
+            <CardContent className='w-full p-4'>
               <div className='mb-2 flex items-center space-x-2'>
                 <Calendar className='h-5 w-5 text-muted-foreground' />
                 <span className='font-medium'>

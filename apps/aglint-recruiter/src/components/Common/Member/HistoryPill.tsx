@@ -5,7 +5,7 @@ interface HistoryPillProps {
   isReverseShadow?: boolean;
   isShadow?: boolean;
   isActive?: boolean;
-  position?: 'start' | 'end' ;
+  position?: 'start' | 'end' | '';
   slotHistoryTrainingCard?: React.ReactNode;
   isHistoryTrainingCardVisible?: boolean;
 }
