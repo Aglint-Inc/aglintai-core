@@ -166,7 +166,7 @@ const JobEdit = () => {
       </div>
 
       <div className='mb-6 flex gap-6'>
-        <div className='w-3/12 pr-6'>
+        <div className='w-2/12 pr-6'>
           <JobsSideNavV2 />
         </div>
         <div className='w-9/12'>
