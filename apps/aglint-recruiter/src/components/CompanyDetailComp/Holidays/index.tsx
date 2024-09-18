@@ -26,7 +26,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { cloneDeep } from 'lodash';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -110,14 +110,14 @@ function Holidays() {
       <div className='mb-8 flex flex-col gap-4'>
         <div className='flex items-start justify-between'>
           <div>
-            <h2 className='mb-2 text-xl font-bold'>Standard Days Off</h2>
+            <h2 className='mb-1 text-xl font-semibold'>Standard Days Off</h2>
             <p className='text-gray-600'>
               List company holidays to exclude them from scheduling.
             </p>
           </div>
-          <Button variant='outline' onClick={() => setDaysOffOpen(true)}>
+          <UIButton size='sm' leftIcon={<Plus/>}variant='default' onClick={() => setDaysOffOpen(true)}>
             Add Day Off
-          </Button>
+          </UIButton>
         </div>
         <div className='overflow-x-auto rounded-lg border bg-white'>
           <Table>
