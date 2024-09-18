@@ -1,9 +1,6 @@
-import React from 'react';
-
 import CandidatePipeline from './candidatePipeline';
 import InterviewerPerformance from './interviewerPerformance';
 import InterviewStatistics from './interviewStatistics';
-import TrainingOverview from './trainingOverview';
 
 function StatsCards({ module_id }: { module_id: string }) {
   return (
