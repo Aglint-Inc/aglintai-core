@@ -261,10 +261,6 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <div className='rounded-lg bg-white p-6 shadow-md'>
-      <p className='mb-4 text-sm text-gray-600'>
-        Update the hiring team details here. Changes will be saved
-        automatically.
-      </p>
       <div className='grid grid-cols-2 gap-4'>{forms}</div>
     </div>
   );

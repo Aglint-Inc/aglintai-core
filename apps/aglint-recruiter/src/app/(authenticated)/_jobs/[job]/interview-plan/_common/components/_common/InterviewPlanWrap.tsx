@@ -44,7 +44,7 @@ export function InterviewPlanWrap({
     >
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className='w-full'>
         <Card className='w-full'>
-          <CardHeader>
+          <CardHeader className='px-6 py-3'>
             {isInputVisible ? (
               <div className='w-full'>{slotInputButton}</div>
             ) : (
