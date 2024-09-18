@@ -1,4 +1,9 @@
 import { Button } from '@components/ui/button';
+import AgentChats from '@requests/components/AgentChats';
+import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
+import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
+import { useRequestCount } from '@requests/hooks';
+import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -7,13 +12,8 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
-import { RequestEmpty } from '../_common/components/RequestEmpty';
-import { REQUEST_SESSIONS_DEFAULT_DATA } from '../_common/constant';
-import { useRequestCount } from '../_common/hooks';
-import { checkFiltersApplied } from '../_common/utils/checkFiltersApplied';
-import AgentChats from '../AgentChats';
-import { AgentIEditorProvider } from '../AgentChats/AgentEditorContext';
 import Header from './Header';
+import { RequestEmpty } from './RequestEmpty';
 import RequestListContent from './RequestListContent';
 
 const MainBody = () => {

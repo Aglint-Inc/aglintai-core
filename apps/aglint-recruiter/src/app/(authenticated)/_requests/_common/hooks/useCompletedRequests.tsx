@@ -1,11 +1,10 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { type CompletedRequests } from '@requestHistory/CompletedRequests/store';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { REQUEST_SELECT } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
-
-import { type CompletedRequests } from '../../CompletedRequests/store';
 
 export const useCompletedRequests = ({
   completedFilters,

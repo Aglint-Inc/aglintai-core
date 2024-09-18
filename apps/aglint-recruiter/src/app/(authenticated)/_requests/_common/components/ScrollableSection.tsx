@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from '../_common/components/RequestCard';
+import { RequestCard } from './RequestCard';
+
 function ScrollableSection({
   section,
   isFetched,
@@ -40,7 +41,7 @@ function ScrollableSection({
                 {isFetched ? (
                   section.requests.length > 0 ? (
                     section.requests.map((props, i) => (
-                      <div className='pr-6 mb-6' key={i}>
+                      <div className='mb-6 pr-6' key={i}>
                         <div
                           style={{ width: '650px' }}
                           key={props.id ?? i}

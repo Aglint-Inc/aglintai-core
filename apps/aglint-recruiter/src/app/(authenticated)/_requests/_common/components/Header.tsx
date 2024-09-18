@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Progress } from '@components/ui/progress';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { formatRequestHeadingText } from '@requests/utils/formatRequestHeadingText';
 import { Columns, LayoutList } from 'lucide-react';
 
-import { CreateRequestWidget } from '../_common/components/createRequestWidget';
-import RequestListFilter from '../_common/components/RequestListFilter';
-import { formatRequestHeadingText } from '../_common/utils/formatRequestHeadingText';
+import { CreateRequestWidget } from './createRequestWidget';
+import RequestListFilter from './RequestListFilter';
 
 function Header({
   recruiterUser,

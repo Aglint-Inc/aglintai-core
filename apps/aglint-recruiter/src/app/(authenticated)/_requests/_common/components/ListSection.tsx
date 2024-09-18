@@ -17,7 +17,8 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from '../_common/components/RequestCard';
+import { RequestCard } from './RequestCard';
+
 function ListSection({
   sectionName,
   requests,
