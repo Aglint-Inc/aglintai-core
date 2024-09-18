@@ -1,6 +1,7 @@
+import RequestHistoryPage from 'src/app/(authenticated)/_request/[history]/page';
+import RequestLayout from 'src/app/(authenticated)/_request/RequestLayout';
+
 import Seo from '@/components/Common/Seo';
-import CompletedRequests from '@/components/Requests/CompletedRequests';
-import { RequestsProvider } from '@/context/RequestsContext';
 
 const RequestsHistoryPage = () => {
   return (
@@ -9,13 +10,13 @@ const RequestsHistoryPage = () => {
         title={`Requests Dashboard - Requests | Aglint AI`}
         description='AI for People Products'
       />
-      <CompletedRequests />
+      <RequestHistoryPage />
     </>
   );
 };
 
 RequestsHistoryPage.privateProvider = (page) => {
-  return <RequestsProvider>{page}</RequestsProvider>;
+  return <RequestLayout>{page}</RequestLayout>;
 };
 
 export default RequestsHistoryPage;
