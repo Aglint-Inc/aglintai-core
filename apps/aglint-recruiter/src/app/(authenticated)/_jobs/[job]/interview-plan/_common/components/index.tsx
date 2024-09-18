@@ -16,15 +16,7 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  ChevronDown,
-  Kanban,
-  PauseCircle,
-  Pencil,
-  Plus,
-  Trash,
-  Trash2,
-} from 'lucide-react';
+import { Kanban, PauseCircle, Pencil, Plus, Trash, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -133,12 +125,12 @@ const InterviewPlanPage = () => {
           <div className='w-2/12'>
             <JobsSideNavV2 />
           </div>
-          <div className='w-9/12'>
+          <div className='w-9/12 pl-12'>
             <div className='flex flex-row justify-between'>
               <div className='flex flex-col gap-2'>
                 <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
                 <p className='mb-4 text-sm text-gray-600'>
-                  Update the hiring team details here. Changes will be saved
+                  Set up your interview plan here. Changes will be saved
                   automatically.
                 </p>
               </div>
@@ -211,36 +203,43 @@ const AddStageComponent = ({
   return (
     <>
       {form && (
-        <div className='flex w-full flex-row items-center gap-2 bg-neutral-100 p-4'>
-          {
+        <div className='flex w-full flex-row items-center justify-between gap-2 rounded-md border bg-white p-4'>
+          <div className='flex flex-1'>
             <UITextField
               placeholder='Stage Name'
               ref={nameField}
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               fieldSize='medium'
+              className='w-full'
             />
-          }
+          </div>
 
-          <UIButton
-            size='sm'
-            variant='default'
-            onClick={() => handleAddStage()}
-          >
-            Add
-          </UIButton>
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() => setForm(!form)}
-          >
-            Cancel
-          </UIButton>
+          <div className='flex gap-2'>
+            <UIButton
+              size='sm'
+              variant='secondary'
+              onClick={() => setForm(!form)}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              size='sm'
+              variant='default'
+              onClick={() => handleAddStage()}
+            >
+              Add
+            </UIButton>
+          </div>
         </div>
       )}
       {!form && (
-        <div className='flex flex-row'>
-          <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
+        <div className='flex w-full flex-row'>
+          <UIButton
+            variant='outline'
+            onClick={() => setForm(!form)}
+            className='w-full'
+          >
             Add Stage
           </UIButton>
         </div>
@@ -329,10 +328,8 @@ const InterviewPlan = ({
   const prevData = interviewPlans?.data?.[index - 1] ?? null;
   const data = interviewPlans?.data?.[index] ?? null;
   const nextData = interviewPlans?.data?.[index + 1] ?? null;
-  const [expanded, setExpanded] = React.useState(true);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const [expanded] = React.useState(true);
+
   const [editPlan, setEditPlan] = useState(false);
   const handleEditPlan = () => {
     setEditPlan((pre) => !pre);
@@ -445,10 +442,6 @@ const InterviewPlan = ({
                 onClick={() => setDeleteOpen(true)}
                 icon={<Trash size={10} />}
               />
-
-              <UIButton variant='secondary' onClick={handleExpandClick}>
-                <ChevronDown className='h-4 w-4' />
-              </UIButton>
               <UIDialog
                 open={deleteOpen}
                 onClose={() => setDeleteOpen(false)}
