@@ -120,10 +120,10 @@ function Reset() {
           </button>
         </div>
 
-        <div>
+        {/* <div>
           <p style={{ marginBottom: "10px" }}>Beautify Request trends.</p>
           <RequestToDefault setConsoleMessage={setConsoleMessage} />
-        </div>
+        </div> */}
       </div>
       {consoleMessage.length ? (
         <div className="console">

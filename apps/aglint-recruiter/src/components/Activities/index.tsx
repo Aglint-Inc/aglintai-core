@@ -46,7 +46,7 @@ function RightPanel({
   return (
     <div className='space-y-4'>
       {activities.map((act, ind) => (
-        <Card key={act.id}>
+        <Card key={act.id} className='w-full'>
           <CardHeader>
             <CardTitle className='text-lg font-semibold'>
               {act.title || ''}
@@ -58,7 +58,7 @@ function RightPanel({
           <CardContent>
             <div className='flex items-start space-x-4'>
               <FileText size={24} className='text-muted-foreground' />
-              <div className='flex-grow'>
+              <div className='flex-grow w-full'>
                 <p className='text-sm'>
                   {act?.metadata?.type === 'candidate_response_self_schedule'
                     ? act.metadata.response_type === 'reschedule'
@@ -67,15 +67,6 @@ function RightPanel({
                     : act.description}
                 </p>
                 {Boolean(act.metadata) && <SlotContent act={act} />}
-                {Boolean(act.task_id) && (
-                  <Button
-                    variant='link'
-                    className='h-auto p-0'
-                    onClick={() => router.push(`/tasks?task_id=${act.task_id}`)}
-                  >
-                    View Task
-                  </Button>
-                )}
               </div>
             </div>
           </CardContent>
