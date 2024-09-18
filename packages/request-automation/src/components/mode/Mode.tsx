@@ -137,11 +137,11 @@ function Mode() {
         )}
       </div>
 
-      <div>
+      {/* <div>
         <h5>Sourcing Page</h5>
 
         <button onClick={handleSourcing}>Click here</button>
-      </div>
+      </div> */}
     </div>
   );
 }
