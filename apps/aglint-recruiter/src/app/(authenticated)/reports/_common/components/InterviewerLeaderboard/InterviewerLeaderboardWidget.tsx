@@ -17,7 +17,7 @@ import {
 import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/members';
-import { useInterviewerLeaderboard } from 'src/app/(authenticated)/analytics/_common/hook/interview/interviewerMatrix.hook';
+import { useInterviewerLeaderboard } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
 export default function InterviewerLeaderboardWidget() {
   const { data, isFetching } = useInterviewerLeaderboard();
@@ -93,7 +93,9 @@ export default function InterviewerLeaderboardWidget() {
                   );
                 })
               ) : (
-                <>Empty @Ravi</>
+                <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
+          </div>
               )
             ) : (
               [...new Array(3)].map((_, i) => (

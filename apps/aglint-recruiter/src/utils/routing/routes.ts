@@ -245,8 +245,8 @@ const interviewers = {
   '/interviewers': () => pageRouteBuilder([ROUTES.app(), 'interviewers']),
 } as const;
 
-const analytics = {
-  '/analytics': () => pageRouteBuilder([ROUTES.app(), 'analytics']),
+const reports = {
+  '/reports': () => pageRouteBuilder([ROUTES.app(), 'analytics']),
 } as const;
 
 const ROUTES = {
@@ -288,6 +288,6 @@ const ROUTES = {
   ...requests,
   ...interviewers,
   ...interviewTypes,
-  ...analytics,
+  ...reports,
 } as const;
 export default ROUTES;

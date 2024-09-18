@@ -1,7 +1,7 @@
 import { ToggleGroup, ToggleGroupItem } from '@components/ui/toggle-group';
 import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-import { useInterviewCount } from 'src/app/(authenticated)/analytics/_common/hook/interview/interview.hook';
+import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
@@ -74,7 +74,9 @@ export default function InterviewCountByTimeFrame() {
             </div>
           ))
         ) : (
-          <>empty@ravi</>
+          <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
+          </div>
         )}
       </div>
     </div>
