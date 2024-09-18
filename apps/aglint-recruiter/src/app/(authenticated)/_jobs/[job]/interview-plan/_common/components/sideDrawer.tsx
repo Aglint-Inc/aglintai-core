@@ -1,18 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@components/ui/dialog';
+import { DialogDescription, DialogTitle } from '@components/ui/dialog';
 import { FileQuestion } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import UIDrawer from '@/components/Common/UIDrawer';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
@@ -43,43 +38,42 @@ type InterviewDrawersProps = {
   drawers: DrawerType;
   handleClose: () => void;
 };
-const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
+const InterviewDrawers = ({
+  open,
+  drawers,
+  handleClose,
+}: InterviewDrawersProps) => {
   const { push } = useRouter();
   const {
     interviewModules: { data },
   } = useJobInterviewPlan();
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button onClick={() => handleClose()}>Close</Button>
-      </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
-        {data.length ? (
-          <InterviewSideDrawer
-            drawers={drawers}
-            handleClose={() => handleClose()}
-          />
-        ) : (
-          <div className='flex flex-col items-center justify-center p-8 text-center'>
-            <div className='mb-2'>
-              <FileQuestion size={80} />
-            </div>
-            <DialogTitle className='mb-2 text-lg font-semibold'>
-              No Interview Plan
-            </DialogTitle>
-            <DialogDescription className='mb-4 text-sm text-gray-600'>
-              Create an interview plan to get started
-            </DialogDescription>
-            <Button
-              onClick={() => push('/scheduling?tab=interviewtypes')}
-              className='hover:bg-primary-dark bg-primary text-white'
-            >
-              Create Interview Plan
-            </Button>
+    <UIDrawer title='' size='sm' open={open} onClose={handleClose}>
+      {data.length ? (
+        <InterviewSideDrawer
+          drawers={drawers}
+          handleClose={() => handleClose()}
+        />
+      ) : (
+        <div className='flex flex-col items-center justify-center p-8 text-center'>
+          <div className='mb-2'>
+            <FileQuestion size={80} />
           </div>
-        )}
-      </DialogContent>
-    </Dialog>
+          <DialogTitle className='mb-2 text-lg font-semibold'>
+            No Interview Plan
+          </DialogTitle>
+          <DialogDescription className='mb-4 text-sm text-gray-600'>
+            Create an interview plan to get started
+          </DialogDescription>
+          <Button
+            onClick={() => push('/scheduling?tab=interviewtypes')}
+            className='hover:bg-primary-dark bg-primary text-white'
+          >
+            Create Interview Plan
+          </Button>
+        </div>
+      )}
+    </UIDrawer>
   );
 };
 
@@ -172,7 +166,7 @@ const CreateSession = ({
   };
 
   return (
-    <div className='flex h-screen flex-col'>
+    <div className='flex flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
           <h2 className='mb-4 text-lg font-semibold'>Create Interview</h2>
@@ -349,7 +343,7 @@ const CreateDebrief = ({
     }
   };
   return (
-    <div className='flex h-screen flex-col'>
+    <div className='flex flex-col'>
       <div className='flex-1 overflow-y-auto'>
         <div className='p-4'>
           <h2 className='mb-4 text-lg font-semibold'>Create Debrief</h2>

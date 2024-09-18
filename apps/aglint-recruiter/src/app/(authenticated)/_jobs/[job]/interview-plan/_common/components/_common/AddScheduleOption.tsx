@@ -3,9 +3,9 @@ import { Plus } from 'lucide-react';
 import UITypography from '@/components/Common/UITypography';
 
 export function AddScheduleOption({
-  onClickAddSession = {},
-  onClickAddDebriefSession = {},
-  onClickAddBreak = {},
+  onClickAddSession = () => {},
+  onClickAddDebriefSession = () => {},
+  onClickAddBreak = () => {},
   isBreakVisibe = true,
 }) {
   return (
@@ -13,7 +13,7 @@ export function AddScheduleOption({
       <div className='flex w-full flex-col items-start justify-start gap-3'>
         <div
           className='flex w-full cursor-pointer items-center justify-start gap-1 rounded-sm px-2 py-1 hover:bg-slate-100'
-          {...onClickAddSession}
+          onClick={onClickAddSession}
         >
           <Plus size={15} />
           <UITypography variant='p' type='small'>
@@ -22,7 +22,7 @@ export function AddScheduleOption({
         </div>
         <div
           className='flex w-full cursor-pointer items-center justify-start gap-1 rounded-sm px-2 py-1 hover:bg-slate-100'
-          {...onClickAddDebriefSession}
+          onClick={onClickAddDebriefSession}
         >
           <Plus size={15} />
           <UITypography variant='p' type='small'>
@@ -32,7 +32,7 @@ export function AddScheduleOption({
         {isBreakVisibe ? (
           <div
             className='flex w-full cursor-pointer items-center justify-start gap-1 rounded-sm px-2 py-1 hover:bg-slate-100'
-            {...onClickAddBreak}
+            onClick={onClickAddBreak}
           >
             <Plus size={15} />
             <UITypography variant='p' type='small'>

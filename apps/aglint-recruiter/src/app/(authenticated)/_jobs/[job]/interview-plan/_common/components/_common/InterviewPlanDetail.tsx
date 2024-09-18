@@ -19,7 +19,6 @@ export interface InterviewPlanDetailProps {
   onClickLink?: () => void;
   isBreakCardVisible?: boolean;
   slotBreakCard?: React.ReactNode;
-  isAddCardVisible?: boolean;
   slotAddScheduleCard?: React.ReactNode;
   slotButtons?: React.ReactNode;
 }
@@ -39,7 +38,6 @@ export function InterviewPlanDetail({
   onClickLink,
   isBreakCardVisible = false,
   slotBreakCard,
-  isAddCardVisible = false,
   slotAddScheduleCard,
   slotButtons,
 }: InterviewPlanDetailProps) {
@@ -85,7 +83,7 @@ export function InterviewPlanDetail({
         </div>
       </div>
       {isBreakCardVisible && <div className='pt-2'>{slotBreakCard}</div>}
-      {isAddCardVisible && <div>{slotAddScheduleCard}</div>}
+      <div>{slotAddScheduleCard}</div>
     </div>
   );
 }

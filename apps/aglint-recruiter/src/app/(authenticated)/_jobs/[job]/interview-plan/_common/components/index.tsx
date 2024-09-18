@@ -164,30 +164,46 @@ const InterviewPlanPage = () => {
                 </p>
               )}
 
-              <AddStageComponent />
+              <AddStageComponent handleCreate={handleCreate} />
             </div>
           </div>
         </div>
-        <InterviewDrawers
-          open={drawerModal}
-          drawers={drawers}
-          handleClose={handleDrawerClose}
-        />
       </div>
+      <InterviewDrawers
+        open={drawerModal}
+        drawers={drawers}
+        handleClose={handleDrawerClose}
+      />
     </>
   );
 };
 
-const AddStageComponent = () => {
+const AddStageComponent = ({
+  handleCreate,
+}: {
+  handleCreate: (
+    // eslint-disable-next-line no-unused-vars
+    key: keyof DrawerType['create'],
+    // eslint-disable-next-line no-unused-vars
+    plan_id: string,
+    // eslint-disable-next-line no-unused-vars
+    order: number,
+  ) => void;
+}) => {
   const { interviewPlans, handleCreatePlan } = useJobInterviewPlan();
   const [form, setForm] = useState(false);
   const nameField = useRef<null | HTMLInputElement>(null);
-  function handleAddStage() {
+
+  const handleAddStage = async () => {
     if (nameField.current.value.length) {
-      handleCreatePlan(nameField.current.value, interviewPlans.data.length + 1);
+      const interviewPlan = await handleCreatePlan(
+        nameField.current.value,
+        interviewPlans.data.length + 1,
+      );
+      handleCreate('session', interviewPlan.id, 1);
       setForm(false);
     }
-  }
+  };
   useEffect(() => {
     nameField.current?.focus();
   }, []);
@@ -362,25 +378,23 @@ const InterviewPlan = ({
       <OptimisticWrapper loading={loading}>
         <InterviewPlanWrap
           isTopArrowVisible={!!prevData}
-          onClickUp={{
-            onClick: () =>
-              handleSwapPlan({
-                plan_id_1: prevData.id,
-                plan_id_2: data.id,
-              }),
-          }}
+          onClickUp={() =>
+            handleSwapPlan({
+              plan_id_1: prevData.id,
+              plan_id_2: data.id,
+            })
+          }
           isBottomArrowVisible={!!nextData}
-          onClickDown={{
-            onClick: () =>
-              handleSwapPlan({
-                plan_id_1: nextData.id,
-                plan_id_2: data.id,
-              }),
-          }}
+          onClickDown={() =>
+            handleSwapPlan({
+              plan_id_1: nextData.id,
+              plan_id_2: data.id,
+            })
+          }
           textStageName={`${capitalizeFirstLetter(data.name)}`}
           textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
           isInputVisible={editPlan}
-          onClickEdit={{ onClick: handleEditPlan }}
+          onClickEdit={handleEditPlan}
           isSlotInterviewPlanVisible={expanded}
           slotInputButton={
             // Start of Selection
@@ -406,10 +420,10 @@ const InterviewPlan = ({
             <div className='flex flex-row gap-1'>
               <UIButton
                 variant='destructive'
+                size='sm'
                 onClick={() => deletePlan({ id: plan_id })}
-              >
-                <Trash className='h-4 w-4' />
-              </UIButton>
+                icon={<Trash size={10} />}
+              />
 
               <UIButton variant='secondary' onClick={handleExpandClick}>
                 <ChevronDown className='h-4 w-4' />
@@ -428,6 +442,13 @@ const InterviewPlan = ({
                       <p className='mb-4 text-gray-500'>
                         No interview plan found
                       </p>
+                      <UIButton
+                        size='sm'
+                        onClick={() => handleCreate('session', plan_id, 1)}
+                        leftIcon={<Plus />}
+                      >
+                        Add Interview
+                      </UIButton>
                     </div>
                   )}
                 </div>
@@ -649,7 +670,6 @@ const InterviewSession = ({
                 manageJob={manageJob}
               />
             }
-            isAddCardVisible={hover}
             slotAddScheduleCard={
               <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
                 <Tooltip>
@@ -660,7 +680,7 @@ const InterviewSession = ({
                           'relative flex h-6 items-center justify-center'
                         }
                       >
-                        <div className='w-full' />
+                        <div className='h-6 w-full' />
                         <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
                           <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
                           <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
@@ -679,23 +699,15 @@ const InterviewSession = ({
                       isBreakVisibe={
                         !lastSession && session.break_duration === 0
                       }
-                      onClickAddSession={{
-                        onClick: () => {
-                          handleCreate('session');
-                        },
+                      onClickAddSession={() => {
+                        handleCreate('session');
                       }}
-                      onClickAddDebriefSession={{
-                        onClick: () => {
-                          handleCreate('debrief');
-                        },
-                      }}
-                      onClickAddBreak={{
-                        onClick: () => {
-                          handleUpdateSession({
-                            session: { break_duration: 30 },
-                            session_id: session.id,
-                          });
-                        },
+                      onClickAddDebriefSession={() => handleCreate('debrief')}
+                      onClickAddBreak={() => {
+                        handleUpdateSession({
+                          session: { break_duration: 30 },
+                          session_id: session.id,
+                        });
                       }}
                     />
                   </TooltipContent>

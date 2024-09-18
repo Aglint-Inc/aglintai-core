@@ -69,7 +69,7 @@ const useJobInterviewPlanContext = () => {
 
   const handleCreatePlan = async (name: string, order?: number) => {
     try {
-      await createPlan({ name, order });
+      return await createPlan({ name, order });
     } catch {
       //toast.error('Unable to create interview plan');
     }
