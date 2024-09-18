@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ArrowDownIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/members';
-import { useInterviewer_upcoming } from 'src/app/(authenticated)/analytics/_common/hook/interview/interviewerMatrix.hook';
+import { useInterviewer_upcoming } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
 export default function InterviewersTable() {
   const { data } = useInterviewer_upcoming();
@@ -63,7 +63,9 @@ export default function InterviewersTable() {
             </TableBody>
           </Table>
         ) : (
-          <>Empty @Ravi</>
+          <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
+              No Data Available
+          </div>
         )}
       </CardContent>
     </Card>
