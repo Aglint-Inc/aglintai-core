@@ -1,5 +1,4 @@
 import {
-  DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
   SupabaseType,
@@ -28,8 +27,6 @@ export const createRequestProgressLogger = ({
       'log' | 'status' | 'id' | 'is_progress_step' | 'meta'
     >
   ) => {
-    console.log('rec s');
-
     let progress_id = uuidv4();
     if (payload.is_progress_step === false) {
       const [progress] = supabaseWrap(
@@ -45,6 +42,7 @@ export const createRequestProgressLogger = ({
         progress_id = progress.id;
       }
     }
+    console.log('meta 1', payload.meta);
     const [rec] = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
@@ -52,8 +50,8 @@ export const createRequestProgressLogger = ({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
-            ...(payload.meta ?? {}),
             event_run_id,
+            ...(payload.meta ?? {}),
           },
           log: payload.log,
           id: progress_id,
@@ -63,7 +61,6 @@ export const createRequestProgressLogger = ({
         })
         .select()
     );
-    console.log('rec f');
     return rec;
   };
   logger.resetEventProgress = async () => {

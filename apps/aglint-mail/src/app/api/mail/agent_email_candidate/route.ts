@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { agentEmailCandidateSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import type { APISendgridPayload } from '@aglint/shared-types';
-import sendMail from '../../../config/sendgrid';
-import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import sendMail from '../../../../config/sendgrid';
+import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {

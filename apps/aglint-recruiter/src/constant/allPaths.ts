@@ -232,8 +232,7 @@ export const PATHS = [
   '/api/sync/greenhouse/office_locations',
   '/api/sync/greenhouse/user',
   '/api/trpc/[trpc]',
-  '/api/emails/agent_email_candidate',
-  '/api/emails/mail/InterviewCancelReq_email_recruiter',
+  '/api/emails/mail/agent_email_candidate',
   '/api/emails/mail/applicantReject_email_applicant',
   '/api/emails/mail/applicationRecieved_email_applicant',
   '/api/emails/mail/availabilityReqResend_email_candidate',
@@ -271,5 +270,5 @@ export const PATHS = [
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;
