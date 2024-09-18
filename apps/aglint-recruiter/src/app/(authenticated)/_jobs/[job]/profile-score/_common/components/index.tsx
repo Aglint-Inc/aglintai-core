@@ -253,7 +253,7 @@ const ProfileScoreControls = () => {
             className='w-20 bg-white'
           />
         </div>
-        <div className='flex justify-end'>
+        <div className='flex justify-center'>
           <Button variant='outline' size='sm' onClick={() => handleReset()}>
             <RefreshCcw className='mr-2 h-4 w-4' /> Reset
           </Button>

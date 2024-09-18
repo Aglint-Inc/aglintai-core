@@ -44,6 +44,8 @@ import {
 } from './calendarTypes';
 import CalendarFilter from './Filter';
 
+import '@styles/fullcalendar-theme.css';
+
 function CalendarComp({
   allSchedules,
   isLoading,
