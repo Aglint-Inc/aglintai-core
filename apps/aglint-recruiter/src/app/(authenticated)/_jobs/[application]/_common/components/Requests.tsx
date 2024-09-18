@@ -27,6 +27,7 @@ function Requests() {
               <p className='text-sm font-medium'>{req.title}</p>
               <UIBadge
                 size='sm'
+                className='min-w-[70px] text-center justify-center'
                 textBadge={capitalizeFirstLetter(req.status)}
                 color={
                   req.status === 'to_do'
