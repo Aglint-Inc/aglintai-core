@@ -1,4 +1,5 @@
 import '@styles/fullcalendar-theme.css';
+import '@styles/fullcalendar-theme.css';
 
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
@@ -43,8 +44,6 @@ import {
   type Types,
 } from './calendarTypes';
 import CalendarFilter from './Filter';
-
-import '@styles/fullcalendar-theme.css';
 
 function CalendarComp({
   allSchedules,
