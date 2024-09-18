@@ -124,13 +124,14 @@ export const SideBar = ({
   activeSection: string;
 }) => {
   const SideNavItem = ({ icon: Icon, label, active = false, onClick }) => (
-    <div
-      className={`flex cursor-pointer items-center space-x-3 rounded-lg px-3 py-2 ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'}`}
+    <Button
+      variant={active ? 'secondary' : 'ghost'}
+      className='w-full justify-start'
       onClick={onClick}
     >
-      <Icon className='h-5 w-5' />
-      <span className='font-medium'>{label}</span>
-    </div>
+      <Icon className='mr-2 h-5 w-5' />
+      {label}
+    </Button>
   );
 
   return (

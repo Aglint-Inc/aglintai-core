@@ -19,7 +19,7 @@ export default function InterviewersDeclineTable() {
   const { data: members } = useMemberList();
   const { data, isFetching } = useInterviewerDeclines();
   return (
-    <Card className='mx-auto w-full max-w-6xl'>
+    <Card className='mx-auto w-full'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle className='text-md font-semibold'>Interviewers</CardTitle>
         <div className='flex items-center space-x-2'>
