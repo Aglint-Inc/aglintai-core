@@ -19,6 +19,7 @@ function UIDrawer({
   title,
   size = 'half',
   calendar,
+  scrollAreaHeight = 'h-[calc(100vh-95px)]', // Default height for ScrollArea
 }: {
   children?: React.ReactNode;
   open: boolean;
@@ -27,6 +28,7 @@ function UIDrawer({
   title: string;
   size?: 'sm' | 'md' | 'lg' | 'full' | 'half';
   calendar?: React.ReactNode;
+  scrollAreaHeight?: string; // New prop for adjustable height
 }) {
   // Determine width based on size variant
   const widthClass = {
@@ -59,9 +61,9 @@ function UIDrawer({
                 </UITypography>
               </div>
             </DrawerHeader>
-            <ScrollArea className='h-[calc(100vh-95px)]'>{children}</ScrollArea>
+            <ScrollArea className={scrollAreaHeight}>{children}</ScrollArea>
             {slotBottom && (
-              <DrawerFooter className='h-12 border-t border-gray-200'>
+              <DrawerFooter className='border-t border-gray-200'>
                 <div className='flex h-full flex-row items-center justify-center gap-4'>
                   {slotBottom}
                 </div>

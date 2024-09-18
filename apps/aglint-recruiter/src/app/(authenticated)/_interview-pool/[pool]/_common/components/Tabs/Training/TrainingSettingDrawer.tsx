@@ -3,7 +3,7 @@ import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import _ from 'lodash';
-import { AlertCircle, Minus, Plus, X } from 'lucide-react';
+import { AlertCircle, Minus, Plus } from 'lucide-react';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 
 import { UIAlert } from '@/components/Common/UIAlert';
@@ -15,7 +15,6 @@ import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainPro
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import {
-  setIsModuleSettingsDialogOpen,
   setLocalModule,
   useModulesStore,
 } from '../../../stores/store';
@@ -57,12 +56,13 @@ function TrainingSettingDrawer(
       size='sm'
       title='Training Settings'
       open={open}
+      scrollAreaHeight='h-[calc(100vh-114px)]'
       slotBottom={
         <>
           <Button
             className='w-full'
             variant='outline'
-            size='lg'
+            size='md'
             onClick={() => setOpen(false)}
           >
             Close
@@ -70,7 +70,7 @@ function TrainingSettingDrawer(
           <Button
             className='w-full'
             variant='default'
-            size='lg'
+            size='md'
             disabled={
               isSaving ||
               (localModule?.settings.reqruire_approval &&
@@ -85,7 +85,14 @@ function TrainingSettingDrawer(
             }
             onClick={() => {
               if (!isSaving) {
-                updateModule();
+                if (
+                  localModule?.settings.reqruire_approval &&
+                  selectedUsers.length === 0
+                ) {
+                  setErrorApproval(true);
+                } else {
+                  updateModule();
+                }
               }
             }}
           >
@@ -123,31 +130,19 @@ function TrainingSettingDrawer(
     >
       <>
         {localModule && (
-          <div className='space-y-6'>
-            <div className='flex items-center justify-between'>
-              <h3 className='text-lg font-semibold'>Module Settings</h3>
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={() => setIsModuleSettingsDialogOpen(false)}
-              >
-                <X className='h-5 w-5' />
-              </Button>
-            </div>
-
+          <div className='space-y-6 p-4'>
             <div
               className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
             >
               <div className='flex items-center space-x-2'>
                 <Checkbox
                   checked={localModule?.settings?.reqruire_approval}
-                  onChange={() => {
+                  onCheckedChange={(checked) => {
                     setLocalModule({
                       ...localModule,
                       settings: {
                         ...localModule.settings,
-                        reqruire_approval:
-                          !localModule.settings.reqruire_approval,
+                        reqruire_approval: checked === true,
                       },
                     });
                   }}
@@ -157,18 +152,18 @@ function TrainingSettingDrawer(
               </div>
 
               {localModule?.settings?.reqruire_approval && (
-                <div className='space-y-2'>
+                <div className='space-y-1 pb-2'>
                   <Label>Approval Users</Label>
                   <MembersAutoComplete
-                    error={errorApproval || selectedUsers.length === 0}
+                    error={errorApproval}
                     renderUsers={dropDownMembers}
                     setSelectedUsers={setSelectedUsers}
                     selectedUsers={selectedUsers}
                     pillColor='bg-neutral-200'
-                    maxWidth='430px'
+                    maxWidth='465px'
                     onUserSelect={() => setErrorApproval(false)}
                   />
-                  {selectedUsers.length === 0 && (
+                  {errorApproval && selectedUsers.length === 0 && (
                     <div className='flex items-center text-sm text-red-500'>
                       <AlertCircle className='mr-1 h-3 w-3' />
                       Please select users to approve or uncheck require approval
@@ -199,7 +194,7 @@ function TrainingSettingDrawer(
                     <Minus className='h-4 w-4' />
                   </Button>
                   <UITextField
-                    className='w-20'
+                    className='w-16 h-7'
                     type='number'
                     value={localModule.settings.noReverseShadow}
                     onChange={(e) =>
@@ -255,7 +250,7 @@ function TrainingSettingDrawer(
                     <Minus className='h-4 w-4' />
                   </Button>
                   <Input
-                    className='w-20'
+                    className='w-16 h-7'
                     type='number'
                     value={localModule.settings.noShadow}
                     onChange={(e) =>
@@ -292,7 +287,7 @@ function TrainingSettingDrawer(
           </div>
         )}
         {editModule?.settings?.require_training && (
-          <div className='mx-2'>
+          <div className='mx-4 mt-6'>
             <UIAlert
               color={'error'}
               title='Disable Training'

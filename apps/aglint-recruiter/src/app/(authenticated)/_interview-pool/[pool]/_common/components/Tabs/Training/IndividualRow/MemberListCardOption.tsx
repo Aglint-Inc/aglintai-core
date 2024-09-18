@@ -15,7 +15,7 @@ export function MemberListCardOption({
   isRemoveVisible = true,
 }) {
   return (
-    <div className="z-2 block w-fit p-2 bg-white">
+    <div className="z-2 block w-fit p-2 bg-white rounded-sm">
       {isMoveToQualifierVisible && (
         <div
           className="flex cursor-pointer items-center gap-2 p-2 rounded transition-all duration-200 ease hover:bg-neutral-300 hover:text-neutral-900"

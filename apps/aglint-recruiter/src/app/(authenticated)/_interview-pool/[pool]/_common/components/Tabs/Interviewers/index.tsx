@@ -8,7 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { PersonStanding } from 'lucide-react';
+import { Popover, PopoverContent,PopoverTrigger } from '@radix-ui/react-popover';
+import { MoreVertical, PersonStanding } from 'lucide-react';
 import { Pause, Play, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -91,9 +92,9 @@ function Interviewers() {
       </div>
       <Card>
         <CardContent className='p-0'>
-          <Table>
+          <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow>
+              <TableRow className='bg-gray-100 rounded-sm hover:bg-gray-100 hover:rounded-sm'>
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>
@@ -162,9 +163,61 @@ function Interviewers() {
                       />
                     </TableCell>
                     <TableCell className='w-2/12'>
-                      <div className='invisible flex space-x-2 group-hover:visible'>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <div className='invisible group-hover:visible flex justify-end'>
+                            <UIButton variant='ghost' size='sm'>
+                              <MoreVertical className='h-4 w-4' />
+                            </UIButton>
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          align='start'
+                          side='bottom'
+                          
+                          className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
+                        >
+                          <div className='flex flex-col'>
+                           
+                            {interviewer.rel.pause_json ? (
+                              <div
+                                className='flex items-center p-2 cursor-pointer hover:bg-gray-100 rounded-sm'
+                                onClick={() => {
+                                  setSelUser(interviewer.rel);
+                                  setIsResumeDialogOpen(true);
+                                }}
+                              >
+                                <Play className='mr-2 h-4 w-4' />
+                                Resume
+                              </div>
+                            ) : (
+                              <div
+                                className='flex items-center p-2 cursor-pointer hover:bg-gray-100 rounded-sm'
+                                onClick={() => {
+                                  setSelUser(interviewer.rel);
+                                  setIsPauseDialogOpen(true);
+                                }}
+                              >
+                                <Pause className='mr-2 h-4 w-4' />
+                                Pause
+                              </div>
+                            )}
+                             <div
+                              className='flex items-center p-2 cursor-pointer hover:bg-gray-100 rounded-sm'
+                              onClick={() => {
+                                setSelUser(interviewer.rel);
+                                setIsDeleteMemberDialogOpen(true);
+                              }}
+                            >
+                              <Trash2 className='mr-2 h-4 w-4' />
+                              Remove
+                            </div>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      {/* <div className='invisible flex space-x-2 group-hover:visible'>
                         <UIButton
-                          variant='ghost'
+                          variant='destructive'
                           size='sm'
                           onClick={() => {
                             setSelUser(interviewer.rel);
@@ -199,7 +252,7 @@ function Interviewers() {
                             Pause
                           </UIButton>
                         )}
-                      </div>
+                      </div> */}
                     </TableCell>
                   </TableRow>
                 ))
