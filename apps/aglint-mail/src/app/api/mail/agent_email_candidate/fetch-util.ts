@@ -10,7 +10,7 @@ import {
   getFullName,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import { fetchCompEmailTemp } from '../../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   supabaseAdmin: SupabaseType,
@@ -58,7 +58,7 @@ export async function fetchUtil(
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: companyName,
+      companyName,
       jobRole: job_title,
       OrganizerTimeZone: recruiter_tz,
       organizerName: getFullName(recr.first_name, recr.last_name),

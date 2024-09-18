@@ -79,6 +79,12 @@ export const selfScheduleReminder = async ({
     const schedule_reminder_action = request_workflows.find(
       (j_l_a) => j_l_a.target_api === 'selfScheduleReminder_email_applicant',
     );
+    const [filter_json] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_filter_json')
+        .select()
+        .eq('request_id', new_data.id),
+    );
     if (!schedule_reminder_action) return;
     const run_id = supabaseWrap(
       await supabaseAdmin.rpc('create_new_workflow_action_log', {
@@ -90,7 +96,7 @@ export const selfScheduleReminder = async ({
         interval_minutes: schedule_reminder_action.workflow.interval,
         meta: {
           target_api: schedule_reminder_action.target_api,
-          filter_id: new_data.id,
+          filter_id: filter_json.id,
           payload: schedule_reminder_action.payload,
         },
         phase: schedule_reminder_action.workflow.phase,
@@ -137,6 +143,12 @@ export const availReminder = async ({
         .select('applications(*,public_jobs(*))')
         .eq('id', new_data.request_id),
     );
+    const [avail_req] = supabaseWrap(
+      await supabaseAdmin
+        .from('candidate_request_availability')
+        .select()
+        .eq('request_id', new_data.request_id),
+    );
     const { request_workflows } = await getWActions({
       company_id: req_details.applications.public_jobs.recruiter_id,
       request_id: new_data.request_id,
@@ -155,7 +167,7 @@ export const availReminder = async ({
         interval_minutes: avail_reminder_action.workflow.interval,
         meta: {
           target_api: avail_reminder_action.target_api,
-          avail_req_id: new_data.id,
+          avail_req_id: avail_req.id,
           payload: avail_reminder_action.payload,
         },
         phase: avail_reminder_action.workflow.phase,
