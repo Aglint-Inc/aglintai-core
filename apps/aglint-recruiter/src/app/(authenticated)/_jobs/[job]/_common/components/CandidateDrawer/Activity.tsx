@@ -32,7 +32,7 @@ export const Activity = () => {
   return (
     <div className='w-full space-y-4'>
       {displayedActivities.map((activity, i) => (
-        <div key={activity.id} className='relative w-full pb-4 last:pb-0'>
+        <div key={activity.id} className='relative w-full last:pb-0'>
           {i !== count - 1 && (
             <span
               className='absolute left-2 top-4 -ml-px h-full w-0.5 bg-gray-200'
@@ -57,7 +57,7 @@ export const Activity = () => {
                   {activity.description}
                 </p>
                 {activity.metadata && <SlotContent act={activity} />}
-                <div className='text-right text-xs text-gray-500 pt-2'>
+                <div className='pt-2 text-right text-xs text-gray-500'>
                   <time dateTime={activity.created_at}>
                     {dayjs(activity.created_at).fromNow()}
                   </time>
