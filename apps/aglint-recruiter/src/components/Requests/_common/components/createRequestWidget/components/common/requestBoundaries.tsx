@@ -1,4 +1,4 @@
-import { type PropsWithChildren, type ReactNode, Suspense } from 'react';
+import { memo, type PropsWithChildren, type ReactNode, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { RequestLayout } from './requestLayout';
@@ -20,11 +20,9 @@ export const SuspenseFallback = () => (
   </RequestLayout>
 );
 
-export const RequestBoundaries = ({
-  children = <></>,
-  errorFallback = <ErrorFallback />,
-  suspenseFallback = <SuspenseFallback />,
-}: PropsWithChildren<Props>) => {
+export const RequestBoundaries = memo(({ children = <>
+
+    </>, errorFallback = <ErrorFallback />, suspenseFallback = <SuspenseFallback /> }: PropsWithChildren<Props>) => {
   return (
     <ErrorBoundary fallback={<RequestLayout>{errorFallback}</RequestLayout>}>
       <Suspense fallback={<RequestLayout>{suspenseFallback}</RequestLayout>}>
@@ -32,4 +30,5 @@ export const RequestBoundaries = ({
       </Suspense>
     </ErrorBoundary>
   );
-};
+});
+RequestBoundaries.displayName = 'RequestBoundaries';

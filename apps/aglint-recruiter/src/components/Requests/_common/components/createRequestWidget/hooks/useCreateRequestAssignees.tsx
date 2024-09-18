@@ -1,4 +1,4 @@
-import { keepPreviousData } from '@tanstack/react-query';
+import { useDeferredValue } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
@@ -8,10 +8,10 @@ import { useCreateRequest } from './useCreateRequest';
 export const useCreateRequestAssignees = () => {
   const { recruiter_id } = useAuthDetails();
   const search = useCreateRequest((state) => state.payloads.assignees.search);
-  const result = api.requests.create.assignees.useInfiniteQuery(
-    { recruiter_id, search },
+  const deferredSearch = useDeferredValue(search);
+  const [, result] = api.requests.create.assignees.useSuspenseInfiniteQuery(
+    { recruiter_id, search: deferredSearch },
     {
-      placeholderData: keepPreviousData,
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       trpc: TRPC_CLIENT_CONTEXT,
     },

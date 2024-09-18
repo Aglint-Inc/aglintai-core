@@ -1,4 +1,4 @@
-import { keepPreviousData } from '@tanstack/react-query';
+import { useDeferredValue } from 'react';
 
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 
@@ -9,10 +9,10 @@ export const useCreateRequestSchedules = () => {
     (state) => state.selections.candidate.id,
   );
   const search = useCreateRequest((state) => state.payloads.schedules.search);
-  const result = api.requests.create.schedules.useInfiniteQuery(
-    { application_id, search },
+  const deferredSearch = useDeferredValue(search);
+  const [, result] = api.requests.create.schedules.useSuspenseInfiniteQuery(
+    { application_id, search: deferredSearch },
     {
-      placeholderData: keepPreviousData,
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       trpc: TRPC_CLIENT_CONTEXT,
     },

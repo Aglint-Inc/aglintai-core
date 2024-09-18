@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { useCreateRequest } from '../hooks';
 import { Assignees } from './assignees';
 import { Candidates } from './candidates';
@@ -6,7 +8,7 @@ import { Jobs } from './jobs';
 import { RequestType } from './requestType';
 import { Schedules } from './schedules';
 
-export const Menu = () => {
+export const Menu = memo(() => {
   const step = useCreateRequest((state) => state.step);
   if (step === 0) return <RequestType />;
   if (step === 1) return <Jobs />;
@@ -15,4 +17,5 @@ export const Menu = () => {
   if (step === 4) return <Assignees />;
   if (step === 5) return <Final />;
   return <></>;
-};
+});
+Menu.displayName = 'Menu';

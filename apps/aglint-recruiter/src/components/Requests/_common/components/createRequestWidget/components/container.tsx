@@ -5,13 +5,13 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Plus } from 'lucide-react';
-import type { PropsWithChildren } from 'react';
+import { memo, type PropsWithChildren } from 'react';
 
 import { useCreateRequest, useCreateRequestActions } from '../hooks';
 import { Actions } from './actions';
 import { Navigation } from './navigation';
 
-export const Container = (props: PropsWithChildren) => {
+export const Container = memo((props: PropsWithChildren) => {
   const open = useCreateRequest((state) => state.open);
   const { onOpenChange } = useCreateRequestActions();
   return (
@@ -20,9 +20,10 @@ export const Container = (props: PropsWithChildren) => {
       <Content>{props.children}</Content>
     </Popover>
   );
-};
+});
+Container.displayName = 'Container';
 
-const Content = (props: PropsWithChildren) => {
+const Content = memo((props: PropsWithChildren) => {
   return (
     <PopoverContent
       className='w-[400px] px-4 py-2'
@@ -34,9 +35,10 @@ const Content = (props: PropsWithChildren) => {
       <Actions />
     </PopoverContent>
   );
-};
+});
+Content.displayName = 'Content';
 
-const Button = () => {
+const Button = memo(() => {
   return (
     <PopoverTrigger asChild>
       <UIButton variant='outline'>
@@ -44,4 +46,5 @@ const Button = () => {
       </UIButton>
     </PopoverTrigger>
   );
-};
+});
+Button.displayName = 'Button';

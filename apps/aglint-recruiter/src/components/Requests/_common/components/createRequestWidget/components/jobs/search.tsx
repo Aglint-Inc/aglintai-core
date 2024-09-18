@@ -1,7 +1,9 @@
+import { memo } from 'react';
+
 import { useCreateRequest, useCreateRequestActions } from '../../hooks';
 import { RequestSearch } from '../common/requestSearch';
 
-export const Search = () => {
+export const Search = memo(() => {
   const search = useCreateRequest((state) => state.payloads.jobs.search);
   const { setJobSearch } = useCreateRequestActions();
   return (
@@ -11,4 +13,5 @@ export const Search = () => {
       placeholder='Which job?'
     />
   );
-};
+});
+Search.displayName = 'Search';
