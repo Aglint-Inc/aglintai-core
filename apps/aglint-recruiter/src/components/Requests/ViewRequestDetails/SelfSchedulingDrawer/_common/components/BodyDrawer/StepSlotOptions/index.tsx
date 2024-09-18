@@ -83,7 +83,7 @@ function StepSlotOptions() {
         </UITypography>
         <FilterButton />
       </div>
-      <div className='flex h-[calc(100vh-144px)] flex-col gap-2 overflow-scroll p-4'>
+      <div className='flex h-[calc(100vh-144px)] flex-col gap-2 overflow-auto p-4'>
         {filteredSchedulingOptions?.map((item, index) => {
           return (
             <DayCardWrapper
