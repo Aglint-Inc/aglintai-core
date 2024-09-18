@@ -11,8 +11,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: 'Aglint AI Recruiter',
-  description: 'AI Recruiter for Aglint',
+  title: 'Aglint AI',
+  description: 'AI Recruiter for your company.',
 };
 
 export default async function RootLayout({
