@@ -3,6 +3,7 @@ import { type StoreApi, useStore } from 'zustand';
 /**
  *
  * A type safe hook creator for React Context + Zustand Store stage management solution
+ * This enables the use of react context as state manager without the "any subscription = re-render" side-effect
  *
  * @link https://tkdodo.eu/blog/zustand-and-react-context
  *
