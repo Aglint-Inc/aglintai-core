@@ -79,7 +79,7 @@ function CreateRequest({
           schedule_start_date: dateRange.start,
           schedule_end_date: dateRange.end,
           assignee_id:
-            selectedInterviewer ||
+            selectedInterviewer?.user_id ||
             recruiting_coordinator ||
             hiring_manager ||
             sourcer ||
