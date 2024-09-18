@@ -1,8 +1,9 @@
 import { Edit } from 'lucide-react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { type StageWithSessions } from '@/queries/application';
+import ROUTES from '@/utils/routing/routes';
 
 import { useEditSession } from '../../InterviewTab/hooks/useEditSession';
 
@@ -15,7 +16,6 @@ function ButtonGroupRight({
   isEditIconVisible: boolean;
   isViewDetailVisible: boolean;
 }) {
-  const router = useRouter();
 
   const { onClickEdit } = useEditSession();
 
@@ -27,20 +27,16 @@ function ButtonGroupRight({
           interview_meeting?.status === 'confirmed' ||
           interview_meeting?.status === 'waiting' ||
           interview_meeting?.status === 'cancelled') && (
-          <>
-            <UIButton
-              size='sm'
-              variant='secondary'
-              onClick={(e) => {
-                e.stopPropagation();
-                router.push(
-                  `/scheduling/view?meeting_id=${interview_meeting.id}&tab=candidate_details`,
-                );
-              }}
-            >
+          <Link
+            href={
+              ROUTES['/scheduling/view']() +
+              `?meeting_id=${interview_meeting.id}&tab=candidate_details`
+            }
+          >
+            <UIButton size='sm' variant='secondary'>
               View Detail
             </UIButton>
-          </>
+          </Link>
         )}
 
       {isEditIconVisible &&

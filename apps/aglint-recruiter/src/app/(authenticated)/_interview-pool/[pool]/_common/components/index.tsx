@@ -55,7 +55,9 @@ export default function InterviewTypeDetail() {
   return (
     <div className='h-full w-full'>
       {fetchingModule ? (
-        <Loader />
+        <div className='fixed inset-0 flex items-center justify-center'>
+          <Loader />
+        </div>
       ) : (
         <div className='container-lg mx-auto w-full px-12'>
           <nav className='mb-6 flex items-center space-x-2 text-sm text-gray-600'>

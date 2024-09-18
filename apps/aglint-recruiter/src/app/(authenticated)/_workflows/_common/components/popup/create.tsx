@@ -10,7 +10,6 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Switch } from '@components/ui/switch';
 import { Textarea } from '@components/ui/textarea';
-import { Bolt } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
 import {
@@ -56,8 +55,7 @@ const Create = () => {
 
   return (
     <>
-      <Button size='sm' onClick={() => setPopup({ open: true })}>
-        <Bolt className='mr-2 h-4 w-4' />
+      <Button variant='outline' onClick={() => setPopup({ open: true })}>
         Create
       </Button>
       <Dialog open={open} onOpenChange={handleClose}>
