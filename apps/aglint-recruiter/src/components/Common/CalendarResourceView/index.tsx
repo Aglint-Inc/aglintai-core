@@ -18,6 +18,11 @@ function CalendarResourceView({
   currentDate,
   setCurrentDate,
   isLoading = false,
+  businessHours = {
+    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+    startTime: '00:00',
+    endTime: '24:00',
+  },
 }: {
   events: Event[];
   resources: Resource[];
@@ -28,6 +33,11 @@ function CalendarResourceView({
   currentDate: string;
   setCurrentDate: React.Dispatch<React.SetStateAction<string>>;
   isLoading?: boolean;
+  businessHours?: {
+    daysOfWeek: number[];
+    startTime: string;
+    endTime: string;
+  };
 }) {
   const calendarRef = useRef<FullCalendar>(null);
   const calendarApi = calendarRef.current?.getApi();
@@ -53,11 +63,7 @@ function CalendarResourceView({
           initialView={'resourceTimeGridDay'}
           nowIndicator={true}
           editable={true}
-          businessHours={{
-            daysOfWeek: [1, 2, 3, 4, 5],
-            startTime: '09:00',
-            endTime: '17:00',
-          }}
+          businessHours={businessHours}
           allDaySlot={false}
           resources={resources}
           resourceLabelContent={RenderResourceContent}
@@ -65,7 +71,7 @@ function CalendarResourceView({
             isLoading
               ? [
                   {
-                    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+                    daysOfWeek: [1,2,3,4,5,6,7],
                     startTime: '00:00',
                     endTime: '24:00',
                     display: 'background',

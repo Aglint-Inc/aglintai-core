@@ -73,7 +73,7 @@ function Training() {
             <CardContent className='p-0'>
               <table className='w-full'>
                 <thead>
-                  <tr className='border-b bg-gray-50'>
+                  <tr >
                     {Object.keys(headers).map((key) => (
                       <th
                         key={key}
