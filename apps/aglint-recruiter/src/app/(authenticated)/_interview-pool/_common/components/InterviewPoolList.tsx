@@ -18,9 +18,9 @@ import {
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
+import ROUTES from '@/utils/routing/routes';
 
 import { type useAllInterviewModulesType } from '../hooks';
-import ROUTES from '@/utils/routing/routes';
 export const InterviewPoolList = ({
   interviewType,
 }: {
