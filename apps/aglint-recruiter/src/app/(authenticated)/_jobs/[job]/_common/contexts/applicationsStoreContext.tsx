@@ -13,7 +13,7 @@ import type { nestedObjectToArray } from '@/components/Common/FilterHeader/filte
 import {
   type CreateContextStore,
   getContextStoreInitial,
-} from '@/hooks/createContextStoreSelector';
+} from '@/utils/zustandContextHelpers';
 
 type Checklist = DatabaseTable['applications']['id'][];
 

@@ -6,7 +6,7 @@ import dayjs from '@/utils/dayjs';
 
 import { STEPS } from '../constants';
 import type { Menus } from '../types';
-import { getContextStoreInitial } from '@/hooks/createContextStoreSelector';
+import { getContextStoreInitial } from '@/utils/zustandContextHelpers';
 
 type Selections = {
   requestType: { id: DatabaseTable['request']['type']; label: string };

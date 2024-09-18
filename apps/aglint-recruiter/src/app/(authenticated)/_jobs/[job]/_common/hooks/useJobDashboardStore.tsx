@@ -6,7 +6,7 @@
  *
  */
 
-import { createContextStoreSelector } from '@/hooks/createContextStoreSelector';
+import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 import { JobDashboardStoreContext } from '@/job/contexts/jobDashboardStoreContext';
 
 export const useJobDashboardStore = createContextStoreSelector(

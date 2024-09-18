@@ -9,7 +9,7 @@ import type { DatabaseView } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
-import type { CreateContextStore } from '@/hooks/createContextStoreSelector';
+import type { CreateContextStore } from '@/utils/zustandContextHelpers';
 
 type Filters = {
   search: string;

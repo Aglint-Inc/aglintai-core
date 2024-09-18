@@ -6,7 +6,17 @@ import { type StoreApi, useStore } from 'zustand';
  *
  * @link https://tkdodo.eu/blog/zustand-and-react-context
  *
- * Create separte custom hooks for states and one hook for all events/setters
+ *  To access states/getter
+ *  - Use a sole state selector hook.
+ *  - Ex: const example = useExampleStore((state)=>state.example);
+ *  - Create individual state selector hooks for each state.
+ *  - Ex: const useExample = () => useExampleStore((state)=>state.example);
+ *
+ *  To access actions/setters
+ *  - Use a sole state selector hook
+ *  - Ex: const { setExample } = useExampleActions((state)=>state.actions);
+ *  - Use a sole action hook
+ *  - Ex: const useSetExample = () => useExampleStore((state)=>state.actions.setExample);
  *
  * @link https://tkdodo.eu/blog/working-with-zustand
  *
@@ -24,6 +34,12 @@ export function createContextStoreSelector<T>(
   };
 }
 
+/**
+ *   A type safe "initial" state selector
+ *   Returns a get function
+ *   - Passing a key arguement returns a structured clone of the value associated with the key
+ *   - Passing no arguements returns the structured clone of the entire initial state
+ */
 export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
   state: T,
 ) => {
@@ -36,6 +52,17 @@ export const getContextStoreInitial = <T extends Readonly<Record<any, any>>>(
   return get;
 };
 
+/**
+ *   A type safe store creator type:
+ *
+ *   Passing a state type will return
+ *   - All the neccesary state types
+ *   - An "initial" state type
+ *   - An "actions" state type necessary "setState" and "resetState" actions
+ *
+ *  Additional actions can be passed as the second parameter to this type
+ *  Additional initial states can be passed as the thrid parameter to this type
+ */
 export type CreateContextStore<
   T extends Record<string, any>,
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-empty-object-type
