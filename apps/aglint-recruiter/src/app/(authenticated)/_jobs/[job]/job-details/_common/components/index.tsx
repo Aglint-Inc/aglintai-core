@@ -18,6 +18,7 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 // import { Settings } from '@/job/components/SharedTopNav/actions';
@@ -183,7 +184,7 @@ const JobEdit = () => {
               <div className='flex items-center space-x-2 text-sm text-gray-600'>
                 {saving ? (
                   <>
-                    <div className='h-4 w-4 animate-spin rounded-full border-2 border-neutral-600 border-t-transparent'></div>
+                    <Loader />
                     <span>Saving changes...</span>
                   </>
                 ) : (

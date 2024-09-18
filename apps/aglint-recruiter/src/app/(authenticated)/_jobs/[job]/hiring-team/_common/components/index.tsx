@@ -129,7 +129,7 @@ const JobEdit = () => {
               <div className='flex items-center space-x-2 text-sm text-gray-600'>
                 {saving ? (
                   <>
-                    <div className='h-4 w-4 animate-spin rounded-full border-2 border-neutral-600 border-t-transparent'></div>
+                    <Loader />
                     <span>Saving changes...</span>
                   </>
                 ) : (

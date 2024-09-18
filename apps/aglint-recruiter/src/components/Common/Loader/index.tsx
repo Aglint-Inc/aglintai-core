@@ -11,8 +11,8 @@ interface LoaderProps {
 export function Loader({ variant = 'inline', size, className }: LoaderProps) {
   if (variant === 'inline') {
     return (
-      <div className={cn('animate-spin', className)}>
-        <LoaderIcon size={size ?? 16} />
+      <div className={className}>
+        <LoaderIcon size={size ?? 16} className='animate-spin' />
       </div>
     );
   }
