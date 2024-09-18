@@ -29,24 +29,7 @@ const useApplicationsContext = () => {
 
   const checklist = useApplicationsStore((state) => state.checklist);
 
-  const newApplications = useJobApplications(
-    'new',
-    applicationScoringPollEnabled,
-  );
-
-  const interviewApplications = useJobApplications(
-    'interview',
-    applicationScoringPollEnabled,
-  );
-
-  const qualifiedApplications = useJobApplications(
-    'qualified',
-    applicationScoringPollEnabled,
-  );
-  const disqualifiedApplications = useJobApplications(
-    'disqualified',
-    applicationScoringPollEnabled,
-  );
+  const queryData = useJobApplications(applicationScoringPollEnabled);
 
   const status = useApplicationsStore((state) => state.status);
 
@@ -153,25 +136,6 @@ const useApplicationsContext = () => {
   //     //
   //   }
   // };
-
-  const queryData = useMemo(() => {
-    switch (status) {
-      case 'new':
-        return newApplications;
-      case 'qualified':
-        return qualifiedApplications;
-      case 'disqualified':
-        return disqualifiedApplications;
-      case 'interview':
-        return interviewApplications;
-    }
-  }, [
-    newApplications,
-    interviewApplications,
-    qualifiedApplications,
-    disqualifiedApplications,
-    status,
-  ]);
 
   const {
     drawer: { application_id },

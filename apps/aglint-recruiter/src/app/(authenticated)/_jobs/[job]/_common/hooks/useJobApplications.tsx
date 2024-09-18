@@ -1,4 +1,3 @@
-import type { DatabaseView } from '@aglint/shared-types';
 import { keepPreviousData } from '@tanstack/react-query';
 
 import { getCityStateCountry } from '@/job/utils/getCityStateCountry';
@@ -9,10 +8,7 @@ import type { Applications } from '../types';
 import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
 
-export const useJobApplications = (
-  status: DatabaseView['application_view']['status'],
-  polling: boolean,
-) => {
+export const useJobApplications = (polling = false) => {
   const { job_id } = useCurrentJob();
 
   const application_match = useApplicationsStore(
@@ -23,6 +19,7 @@ export const useJobApplications = (
   const locations = useApplicationsStore((state) => state.locations);
   const search = useApplicationsStore((state) => state.search);
   const stages = useApplicationsStore((state) => state.stages);
+  const status = useApplicationsStore((state) => state.status);
 
   const type = useApplicationsStore((state) => state.type);
   const order = useApplicationsStore((state) => state.order);
