@@ -43,7 +43,7 @@ export default function AppLayout({ children, appRouter = false }) {
       {isHorizontalNav && (
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
           <div className='flex items-center space-x-4'>
-            <Link href='/'>
+            <Link href='/jobs'>
               <Image
                 src={logo || defaultCompanyLogo}
                 alt={name}
@@ -103,7 +103,7 @@ export default function AppLayout({ children, appRouter = false }) {
           <nav className='fixed flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
             <div className='flex flex-grow flex-col items-center py-3'>
               <Button variant='link' className='mt-4' asChild>
-                <Link href='/'>
+                <Link href='/jobs'>
                   <Image
                     src={logo || defaultCompanyLogo}
                     alt={name}

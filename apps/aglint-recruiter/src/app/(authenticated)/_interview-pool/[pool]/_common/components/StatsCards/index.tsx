@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CandidatePipeline from './candidatePipeline';
 import InterviewerPerformance from './interviewerPerformance';
 import InterviewStatistics from './interviewStatistics';

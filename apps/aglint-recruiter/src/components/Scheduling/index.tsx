@@ -5,6 +5,7 @@ function SchedulingMainComp() {
   return (
     <>
       <SeoSettings tab={'interviews'} />
+
       <Interviews />
       {/* <SchedulingDashboard /> */}
     </>

@@ -5,7 +5,7 @@ interface HistoryPillProps {
   isReverseShadow?: boolean;
   isShadow?: boolean;
   isActive?: boolean;
-  position?: 'start' | 'end' | '';
+  position?: 'start' | 'end' ;
   slotHistoryTrainingCard?: React.ReactNode;
   isHistoryTrainingCardVisible?: boolean;
 }
@@ -21,20 +21,21 @@ export function HistoryPillShadcn({
   return (
     <div className='relative flex cursor-pointer items-center justify-center'>
       <div className='relative'>
-        <div
-          className={cn(
-            'flex h-[26px] w-[60px] items-center justify-center bg-neutral-300 text-neutral-900',
-            position === 'start' && 'rounded-l-md',
-            position === 'end' && 'rounded-r-md',
-          )}
-        >
-          {isShadow && <ShadowIcon />}
-          {isReverseShadow && <ReverseShadowIcon />}
-        </div>
-        {isActive && (
+        {isActive ? (
           <div
             className={cn(
               'absolute inset-0 flex items-center justify-center bg-green-400 text-green-900',
+              position === 'start' && 'rounded-l-md',
+              position === 'end' && 'rounded-r-md',
+            )}
+          >
+            {isShadow && <ShadowIcon />}
+            {isReverseShadow && <ReverseShadowIcon />}
+          </div>
+        ) : (
+          <div
+            className={cn(
+              'flex h-[26px] w-[60px] items-center justify-center bg-neutral-300 text-neutral-900',
               position === 'start' && 'rounded-l-md',
               position === 'end' && 'rounded-r-md',
             )}

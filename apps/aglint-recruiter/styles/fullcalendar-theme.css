@@ -49,6 +49,7 @@
   background-color: hsl(var(--primary));
   border-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
+  text-transform: capitalize;
 }
 
 .fc .fc-button-primary:not(:disabled):hover {
@@ -60,4 +61,9 @@
 .fc .fc-button-primary:not(:disabled):active {
   background-color: hsl(var(--primary) / 0.8);
   border-color: hsl(var(--primary) / 0.8);
+}
+
+.fc-license-message,
+.fc-header-toolbar {
+  display: none !important;
 }

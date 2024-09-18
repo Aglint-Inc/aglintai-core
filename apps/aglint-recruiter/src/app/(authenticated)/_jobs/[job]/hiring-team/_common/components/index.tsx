@@ -106,6 +106,7 @@ const JobEdit = () => {
           <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
           <BreadCrumbs job={job} />
         </div>
+        {/* <Settings /> */}
       </div>
 
       <div className='mb-6 flex gap-6'>
@@ -260,10 +261,6 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <div className='rounded-lg bg-white p-6 shadow-md'>
-      <p className='mb-4 text-sm text-gray-600'>
-        Update the hiring team details here. Changes will be saved
-        automatically.
-      </p>
       <div className='grid grid-cols-2 gap-4'>{forms}</div>
     </div>
   );
