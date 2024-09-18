@@ -77,7 +77,10 @@ const DashboardComp = () => {
             )
           ) : (
             <div className='container-lg mx-auto w-full px-12'>
+              <div className='flex flex-row justify-between'>
               <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
+              <div className='ml-4'>{manageJob && <AddJob />}</div>
+              </div>
               <div className='mb-4 flex flex-col gap-4'>
                 <div className='flex items-center justify-between'>
                   <div className='flex-grow'>
@@ -92,7 +95,7 @@ const DashboardComp = () => {
                       handlerFilter={setSearchText}
                     />
                   </div>
-                  <div className='ml-4'>{manageJob && <AddJob />}</div>
+                  {/* <div className='ml-4'>{manageJob && <AddJob />}</div> */}
                 </div>
                 <div className='overflow-x-auto rounded-lg bg-white shadow'>
                   <JobsList jobs={jobs} />

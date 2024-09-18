@@ -40,7 +40,7 @@ function ScrollableSection({
                 {isFetched ? (
                   section.requests.length > 0 ? (
                     section.requests.map((props, i) => (
-                      <div className='pr-6' key={i}>
+                      <div className='pr-6 mb-6' key={i}>
                         <div
                           style={{ width: '650px' }}
                           key={props.id ?? i}
