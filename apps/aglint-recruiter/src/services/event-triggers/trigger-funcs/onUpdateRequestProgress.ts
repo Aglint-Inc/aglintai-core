@@ -83,7 +83,7 @@ export const selfScheduleReminder = async ({
       await supabaseAdmin
         .from('interview_filter_json')
         .select()
-        .eq('request_id', new_data.id),
+        .eq('request_id', new_data.request_id),
     );
     if (!schedule_reminder_action) return;
     const run_id = supabaseWrap(
@@ -92,7 +92,7 @@ export const selfScheduleReminder = async ({
         base_time: dayjsLocal().toISOString(),
         workflow_action_id: schedule_reminder_action.id,
         workflow_id: schedule_reminder_action.workflow_id,
-        triggered_table_pkey: new_data.id,
+        triggered_table_pkey: filter_json.id,
         interval_minutes: schedule_reminder_action.workflow.interval,
         meta: {
           target_api: schedule_reminder_action.target_api,
