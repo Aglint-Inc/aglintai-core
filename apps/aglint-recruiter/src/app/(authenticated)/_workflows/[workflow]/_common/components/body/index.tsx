@@ -40,24 +40,19 @@ const Body = () => {
   return (
     <>
       <Seo title='Workflow | Aglint AI' description='AI for People Products' />
-
-      <div className='flex h-[calc(100vh-48px)] overflow-auto bg-neutral-100'>
-        <div className='w-full'>
-          <div className='flex max-w-[800px] flex-col items-center p-5'>
-            <>
-              <Edit />
-              <Trigger />
-              <ActionsProvider>
-                <Actions />
-              </ActionsProvider>
-            </>
-          </div>
+      <div className='flex flex-row'>
+        <div className='w-9/12 pr-16'>
+          <>
+            <Edit />
+            <Trigger />
+            <ActionsProvider>
+              <Actions />
+            </ActionsProvider>
+          </>
         </div>
-        <div className='sticky right-4 top-[10px] z-10 flex h-[90vh] w-[380px] flex-col overflow-y-auto rounded-lg bg-white p-4'>
-          <div className='flex w-[367px] flex-col space-y-1'>
-            <div className='flex items-center font-medium text-neutral-900'>
-              Connected Jobs
-            </div>
+        <div className='w-3/12 flex-row space-y-1'>
+          <div className='flex items-center font-medium text-neutral-900'>
+            Connected Jobs
           </div>
           <div className='mt-3 flex flex-col space-y-2'>
             <ConnectedJobs />

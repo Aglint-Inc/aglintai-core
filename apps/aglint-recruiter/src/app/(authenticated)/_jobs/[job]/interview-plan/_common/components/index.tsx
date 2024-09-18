@@ -34,6 +34,7 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -129,10 +130,10 @@ const InterviewPlanPage = () => {
         </div>
 
         <div className='mb-6 flex gap-6'>
-          <div className='w-1/4'>
+          <div className='w-2/12'>
             <JobsSideNavV2 />
           </div>
-          <div className='w-3/4'>
+          <div className='w-9/12'>
             <div className='flex flex-row justify-between'>
               <div className='flex flex-col gap-2'>
                 <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
@@ -164,30 +165,46 @@ const InterviewPlanPage = () => {
                 </p>
               )}
 
-              <AddStageComponent />
+              <AddStageComponent handleCreate={handleCreate} />
             </div>
           </div>
         </div>
-        <InterviewDrawers
-          open={drawerModal}
-          drawers={drawers}
-          handleClose={handleDrawerClose}
-        />
       </div>
+      <InterviewDrawers
+        open={drawerModal}
+        drawers={drawers}
+        handleClose={handleDrawerClose}
+      />
     </>
   );
 };
 
-const AddStageComponent = () => {
+const AddStageComponent = ({
+  handleCreate,
+}: {
+  handleCreate: (
+    // eslint-disable-next-line no-unused-vars
+    key: keyof DrawerType['create'],
+    // eslint-disable-next-line no-unused-vars
+    plan_id: string,
+    // eslint-disable-next-line no-unused-vars
+    order: number,
+  ) => void;
+}) => {
   const { interviewPlans, handleCreatePlan } = useJobInterviewPlan();
   const [form, setForm] = useState(false);
   const nameField = useRef<null | HTMLInputElement>(null);
-  function handleAddStage() {
+
+  const handleAddStage = async () => {
     if (nameField.current.value.length) {
-      handleCreatePlan(nameField.current.value, interviewPlans.data.length + 1);
+      const interviewPlan = await handleCreatePlan(
+        nameField.current.value,
+        interviewPlans.data.length + 1,
+      );
+      handleCreate('session', interviewPlan.id, 1);
       setForm(false);
     }
-  }
+  };
   useEffect(() => {
     nameField.current?.focus();
   }, []);
@@ -196,8 +213,13 @@ const AddStageComponent = () => {
       {form && (
         <div className='flex w-full flex-row items-center gap-2 bg-neutral-100 p-4'>
           {
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
+            <UITextField
+              placeholder='Stage Name'
+              ref={nameField}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+              fieldSize='medium'
+            />
           }
 
           <UIButton
@@ -216,11 +238,13 @@ const AddStageComponent = () => {
           </UIButton>
         </div>
       )}
-      <div className='flex flex-row'>
-        <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
-          Add Stage
-        </UIButton>
-      </div>
+      {!form && (
+        <div className='flex flex-row'>
+          <UIButton size='sm' variant='default' onClick={() => setForm(!form)}>
+            Add Stage
+          </UIButton>
+        </div>
+      )}
     </>
   );
 };
@@ -297,6 +321,7 @@ const InterviewPlan = ({
     deletePlan,
     handleSwapPlan,
     isPlanMutating,
+    isStageDeleting,
     // handleUpdateSession,
   } = useJobInterviewPlan();
   const index = interviewPlans.data.findIndex((plan) => plan.id === plan_id);
@@ -357,30 +382,30 @@ const InterviewPlan = ({
 
   const loading = isPlanMutating(data.id);
 
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
   return (
     <>
       <OptimisticWrapper loading={loading}>
         <InterviewPlanWrap
           isTopArrowVisible={!!prevData}
-          onClickUp={{
-            onClick: () =>
-              handleSwapPlan({
-                plan_id_1: prevData.id,
-                plan_id_2: data.id,
-              }),
-          }}
+          onClickUp={() =>
+            handleSwapPlan({
+              plan_id_1: prevData.id,
+              plan_id_2: data.id,
+            })
+          }
           isBottomArrowVisible={!!nextData}
-          onClickDown={{
-            onClick: () =>
-              handleSwapPlan({
-                plan_id_1: nextData.id,
-                plan_id_2: data.id,
-              }),
-          }}
+          onClickDown={() =>
+            handleSwapPlan({
+              plan_id_1: nextData.id,
+              plan_id_2: data.id,
+            })
+          }
           textStageName={`${capitalizeFirstLetter(data.name)}`}
           textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
           isInputVisible={editPlan}
-          onClickEdit={{ onClick: handleEditPlan }}
+          onClickEdit={handleEditPlan}
           isSlotInterviewPlanVisible={expanded}
           slotInputButton={
             // Start of Selection
@@ -403,17 +428,44 @@ const InterviewPlan = ({
             </div>
           }
           slotRightIconButton={
-            <div className='flex flex-row gap-1'>
+            <div className='flex flex-row items-center gap-1'>
               <UIButton
                 variant='destructive'
-                onClick={() => deletePlan({ id: plan_id })}
-              >
-                <Trash className='h-4 w-4' />
-              </UIButton>
+                size='sm'
+                onClick={() => setDeleteOpen(true)}
+                icon={<Trash size={10} />}
+              />
 
               <UIButton variant='secondary' onClick={handleExpandClick}>
                 <ChevronDown className='h-4 w-4' />
               </UIButton>
+              <UIDialog
+                open={deleteOpen}
+                onClose={() => setDeleteOpen(false)}
+                slotButtons={
+                  <>
+                    <UIButton
+                      variant='secondary'
+                      size='sm'
+                      onClick={() => setDeleteOpen(false)}
+                    >
+                      Cancel
+                    </UIButton>
+                    <UIButton
+                      size='sm'
+                      isLoading={isStageDeleting}
+                      onClick={async () => {
+                        await deletePlan({ id: plan_id });
+                        setDeleteOpen(false);
+                      }}
+                    >
+                      Delete
+                    </UIButton>
+                  </>
+                }
+              >
+                Are you sure to delete this interview plan ?
+              </UIDialog>
             </div>
           }
           slotInterviewPlanDetail={
@@ -428,6 +480,13 @@ const InterviewPlan = ({
                       <p className='mb-4 text-gray-500'>
                         No interview plan found
                       </p>
+                      <UIButton
+                        size='sm'
+                        onClick={() => handleCreate('session', plan_id, 1)}
+                        leftIcon={<Plus />}
+                      >
+                        Add Interview
+                      </UIButton>
                     </div>
                   )}
                 </div>
@@ -497,7 +556,6 @@ const InterviewSession = ({
     handleUpdateSession,
     manageJob,
   } = useJobInterviewPlan();
-  const [hover, setHover] = useState(false);
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
@@ -589,20 +647,18 @@ const InterviewSession = ({
   });
   drag(drop(ref));
 
+  const [hover, setHover] = useState(false);
+
   return (
     <div
       ref={manageJob ? ref : null}
       className={`flex flex-col ${isDragging ? 'opacity-0' : 'opacity-100'}`}
       data-handler-id={handlerId}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <OptimisticWrapper loading={isLoading}>
-        <div
-          onMouseOver={() => setHover(true)}
-          onMouseOut={() => setHover(false)}
-          onFocus={() => setHover(true)}
-          onBlur={() => setHover(false)}
-          className={`flex flex-col ${hover ? 'mb-1' : 'mb-4'}`}
-        >
+        <div className={`flex flex-col`}>
           <InterviewPlanDetail
             textModuleName={
               <div className='flex flex-row gap-3'>
@@ -649,25 +705,25 @@ const InterviewSession = ({
                 manageJob={manageJob}
               />
             }
-            isAddCardVisible={hover}
             slotAddScheduleCard={
               <div className={manageJob ? 'opacity-100' : 'opacity-0'}>
-                <Tooltip>
+                <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
-                    <div>
-                      <div
-                        className={
-                          'relative flex h-6 items-center justify-center'
-                        }
-                      >
-                        <div className='w-full' />
+                    <div
+                      className={
+                        'relative mb-4 mt-2 flex h-[20px] items-center justify-center'
+                      }
+                    >
+                      {hover ? (
                         <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
-                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all hover:opacity-80'></div>
+                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all'></div>
                           <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
                             <Plus size={10} color='white' />
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </TooltipTrigger>
                   <TooltipContent
@@ -679,23 +735,15 @@ const InterviewSession = ({
                       isBreakVisibe={
                         !lastSession && session.break_duration === 0
                       }
-                      onClickAddSession={{
-                        onClick: () => {
-                          handleCreate('session');
-                        },
+                      onClickAddSession={() => {
+                        handleCreate('session');
                       }}
-                      onClickAddDebriefSession={{
-                        onClick: () => {
-                          handleCreate('debrief');
-                        },
-                      }}
-                      onClickAddBreak={{
-                        onClick: () => {
-                          handleUpdateSession({
-                            session: { break_duration: 30 },
-                            session_id: session.id,
-                          });
-                        },
+                      onClickAddDebriefSession={() => handleCreate('debrief')}
+                      onClickAddBreak={() => {
+                        handleUpdateSession({
+                          session: { break_duration: 30 },
+                          session_id: session.id,
+                        });
                       }}
                     />
                   </TooltipContent>

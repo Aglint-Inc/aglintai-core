@@ -6,13 +6,11 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 function RequestDetailsPage() {
   const { params } = useRouterPro();
   return (
-    <div>
-      <RequestsProvider>
-        <RequestProvider request_id={params.id}>
-          <ViewRequestDetails />
-        </RequestProvider>
-      </RequestsProvider>
-    </div>
+    <RequestsProvider>
+      <RequestProvider request_id={params.id}>
+        <ViewRequestDetails />
+      </RequestProvider>
+    </RequestsProvider>
   );
 }
 

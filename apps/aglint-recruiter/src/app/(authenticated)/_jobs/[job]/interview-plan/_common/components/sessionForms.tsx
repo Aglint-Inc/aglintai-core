@@ -865,7 +865,7 @@ export const getSessionPayload = (
   fields: SessionFormFields,
   session_order: number,
   interview_plan_id: string,
-): CreateInterviewSession => {
+): Omit<CreateInterviewSession, 'recruiter_id'> => {
   const {
     interview_module,
     interviewer_cnt,

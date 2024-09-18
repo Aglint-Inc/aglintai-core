@@ -30,9 +30,7 @@
     "node_modules",
     ".next",
     "devlink_queries",
-    "devlink*",
     "src/components/Icons",
-    "src/components/JobTracker/Activities/devlink",
     "src/types/*",
     ".github",
     "components/ui",
@@ -45,7 +43,6 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "@aglint/linter/enforce-devlink-rules": "error",
     "security/detect-object-injection": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -66,10 +63,7 @@
   "overrides": [
     {
       "files": ["**/*.tsx"],
-      "plugins": ["@aglint/linter"],
-      "rules": {
-        "@aglint/linter/enforce-devlink-rules": "error"
-      }
+      "plugins": ["@aglint/linter"]
     }
   ],
   "settings": {

@@ -5,10 +5,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { MoreHorizontal, Zap } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { WithPermission } from '@/components/withPermission';
 import { DeletePopup } from '@/workflow//components/deletePopup';
 import { BreadCrumbs } from '@/workflow/components/breadCrumbs';
@@ -21,12 +20,22 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <WorkflowsStoreProvider>
       <WorkflowProvider>
-        <UIPageLayout
-          slotTopbarLeft={<BreadCrumbs />}
-          slotBody={children}
-          slotTopbarRight={<Edit />}
-        />
-        <DeletePopup />
+        <div className='container-lg mx-auto w-full px-16'>
+          <div className='flex flex-row justify-between'>
+            <div className='mb-4 flex flex-col'>
+              <h2 className='text-lg font-semibold'>Automation Details</h2>
+              <p className='mb-4 text-sm text-gray-600'>
+                All the Reports can be found here.
+              </p>
+              <BreadCrumbs />
+            </div>
+            <div className='space-y-8'>
+              <Edit />
+              <DeletePopup />
+            </div>
+          </div>
+          {children}
+        </div>
       </WorkflowProvider>
     </WorkflowsStoreProvider>
   );
@@ -50,9 +59,8 @@ const Edit = () => {
       {workflow ? (
         <>
           <div className='flex flex-row items-center gap-2'>
-            <Button size='sm' onClick={() => setPopup({ open: true })}>
-              <Zap size={12} className='mr-2' />
-              Edit Workflow
+            <Button variant='outline' onClick={() => setPopup({ open: true })}>
+              Edit Automation
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

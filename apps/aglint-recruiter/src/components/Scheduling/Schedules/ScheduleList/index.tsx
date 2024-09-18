@@ -9,7 +9,7 @@ function ScheduleList() {
   return (
     <div>
       {loadingSchedules && (
-        <div className='h-[calc(100vh-96px)] w-full'>
+        <div className='h-full w-full'>
           <Loader />
         </div>
       )}
