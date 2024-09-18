@@ -1,5 +1,6 @@
 import { createTRPCRouter } from '../../trpc';
 import { candidate } from './candidate';
+import { interview } from './interview';
 import { interview_count } from './interview_count';
 import { interview_decline } from './interview_decline';
 import { interviewer_analytics } from './interviewer_analytics';
@@ -15,4 +16,5 @@ export const analytics = createTRPCRouter({
   interviewer_rejections,
   job,
   candidate,
+  interview
 });
