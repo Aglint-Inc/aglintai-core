@@ -24,9 +24,9 @@ function InterviewDetailsTabs() {
       tabComp: <Interviewers />,
     },
     {
-      name: 'Candidates',
-      value: 'candidates',
-      tabComp: <Candidates />,
+      name: 'Training',
+      value: 'training',
+      tabComp: <Training />,
     },
     {
       name: 'Schedules',
@@ -34,20 +34,23 @@ function InterviewDetailsTabs() {
       tabComp: <Schedules />,
     },
     {
-      name: 'Feedback',
-      value: 'feedback',
-      tabComp: <Feedback />,
-    },
-    {
-      name: 'Training',
-      value: 'training',
-      tabComp: <Training />,
-    },
-    {
       name: 'Instructions',
       value: 'instructions',
       tabComp: <InstructionsComp />,
     },
+    {
+      name: 'Candidates',
+      value: 'candidates',
+      tabComp: <Candidates />,
+    },
+    
+    {
+      name: 'Feedback',
+      value: 'feedback',
+      tabComp: <Feedback />,
+    },
+   
+    
   ];
 
   usePoolSchedules({
