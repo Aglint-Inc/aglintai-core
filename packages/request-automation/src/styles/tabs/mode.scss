@@ -1,6 +1,6 @@
 #mode {
   display: flex;
-
+  gap: 20px;
   h5 {
     margin-bottom: 5px;
   }
@@ -9,8 +9,7 @@
     gap: 5px;
     align-items: center;
   }
-  display: flex;
-  gap: 20px;
+
   & > div {
     padding: 10px;
     border-right: 1px solid #ccc;
