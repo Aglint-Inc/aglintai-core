@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { Skeleton } from '@components/ui/skeleton';
-import { useQuery } from '@tanstack/react-query';
 import {
   CircleCheck,
   Edit,
@@ -38,65 +37,9 @@ import UITextField from '@/components/Common/UITextField';
 import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
-type Step =
-  | Awaited<ReturnType<typeof fetchProgressByJobId>>
-  | Awaited<ReturnType<typeof fetchProgressByApplicationId>>;
+import { type ProgressSteps, useInterviewPlanProgress } from '../../hooks';
 
 const iconOptions = { UserCircle, Phone, Users, FileText, Trophy };
-
-const useInterviewPlanProgress = ({
-  job_id,
-  application_id,
-}: {
-  job_id: string;
-  application_id: string;
-}) => {
-  const result = useQuery({
-    queryKey: ['interview_plan_progress', job_id],
-    queryFn: () => fetchProgress({ job_id, application_id }),
-    retry: false,
-  });
-
-  return result;
-};
-
-const fetchProgress = async ({
-  job_id,
-  application_id,
-}: {
-  job_id: string | null;
-  application_id: string | null;
-}) => {
-  let result = [];
-  if (job_id) {
-    result = await fetchProgressByJobId(job_id);
-  }
-  if (application_id) {
-    result = await fetchProgressByApplicationId(application_id);
-  }
-  return result as Step;
-};
-
-const fetchProgressByJobId = async (job_id) => {
-  const { data, error } = await supabase
-    .from('interview_progress')
-    .select(
-      'icon,id,job_id,application_id,name,order,icon,description,is_completed',
-    )
-    .eq('job_id', job_id);
-  if (error) throw new Error(error.message);
-  return data;
-};
-const fetchProgressByApplicationId = async (application_id: string) => {
-  const { data, error } = await supabase
-    .from('interview_progress')
-    .select(
-      'icon,id,job_id,application_id,name,order,icon,description,is_completed',
-    )
-    .eq('application_id', application_id);
-  if (error) throw new Error(error.message);
-  return data;
-};
 
 export default function ReorderableInterviewPlan({
   jobId,
@@ -110,11 +53,11 @@ export default function ReorderableInterviewPlan({
     application_id: applicationId,
   });
 
-  const [steps, setSteps] = useState<Step>([]);
+  const [steps, setSteps] = useState<ProgressSteps>([]);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [newStep, setNewStep] = useState<Step[number]>({
+  const [newStep, setNewStep] = useState<ProgressSteps[number]>({
     icon: '',
     job_id: jobId,
     application_id: applicationId,
@@ -180,7 +123,7 @@ export default function ReorderableInterviewPlan({
 
   const handleChange = (
     id: number,
-    field: keyof Step[number],
+    field: keyof ProgressSteps[number],
     value: string,
   ) => {
     setSteps(
@@ -276,7 +219,7 @@ export default function ReorderableInterviewPlan({
     }
   };
 
-  const renderStep = (step: Step[number], index: number) => {
+  const renderStep = (step: ProgressSteps[number], index: number) => {
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
 
@@ -490,7 +433,7 @@ export default function ReorderableInterviewPlan({
     startIndex,
     endIndex,
   }: {
-    list: Step;
+    list: ProgressSteps;
     startIndex: number;
     endIndex: number;
   }) => {
