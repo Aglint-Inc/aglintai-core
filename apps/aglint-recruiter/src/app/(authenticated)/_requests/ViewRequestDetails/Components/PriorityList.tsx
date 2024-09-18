@@ -5,7 +5,7 @@ import {
 } from '@components/ui/popover';
 import { PopoverClose } from '@radix-ui/react-popover';
 import { Pencil } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
@@ -17,7 +17,7 @@ import toast from '@/utils/toast';
 
 function PriorityList({ selectedFilter }: { selectedFilter: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
-  const { query } = useRouter();
+  const query = useParams();
 
   const [, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

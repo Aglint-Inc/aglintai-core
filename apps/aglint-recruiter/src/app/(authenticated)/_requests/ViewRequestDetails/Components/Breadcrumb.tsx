@@ -6,7 +6,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import ROUTES from '@/utils/routing/routes';
@@ -25,8 +24,6 @@ const RequestDetailsBreadcrumb: React.FC<BreadcrumbComponentProps> = ({
   jobDetails,
   candidateDetails,
 }) => {
-  const router = useRouter();
-
   const formatSessions = (sessions: string[]) => {
     return sessions.join(', '); // Adjust formatting logic based on your needs
   };
@@ -39,14 +36,7 @@ const RequestDetailsBreadcrumb: React.FC<BreadcrumbComponentProps> = ({
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink
-            href='#'
-            onClick={() => {
-              router.replace('/requests');
-            }}
-          >
-            Requests
-          </BreadcrumbLink>
+          <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

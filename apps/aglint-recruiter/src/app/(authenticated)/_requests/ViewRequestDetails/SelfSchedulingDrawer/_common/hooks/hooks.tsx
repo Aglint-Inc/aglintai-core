@@ -1,7 +1,7 @@
 import { type APIFindAvailability } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type {
@@ -40,9 +40,9 @@ export const useSelfSchedulingDrawer = ({
 }: {
   refetch: () => void;
 }) => {
-  const router = useRouter();
+  const query = useParams();
   const { recruiter, recruiterUser } = useAuthDetails();
-  const request_id = router.query.id as string;
+  const request_id = (query?.id || '') as string;
   const { data } = useMeetingList();
   const allSessions = data || [];
   const selectedSessionIds = allSessions?.map(

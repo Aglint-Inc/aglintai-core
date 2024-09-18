@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 
 import axios from '@/client/axios';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 
 export const useMeetingList = () => {
-  const router = useRouter();
+  const params = useParams();
   const queryClient = useQueryClient();
-  const request_id = router.query.id as string;
+  const request_id = params.id as string;
   const query = useQuery({
     queryKey: ['get_meeting_list', request_id],
     refetchInterval: 30000,

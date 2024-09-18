@@ -1,6 +1,6 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 import UITypography from '@/components/Common/UITypography';
@@ -21,7 +21,7 @@ import { type groupByDateRange } from './utils';
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
 function StepSlotOptions() {
-  const router = useRouter();
+  const query = useParams();
   const filteredSchedulingOptions = useSelfSchedulingFlowStore(
     (state) => state.filteredSchedulingOptions,
   );
@@ -34,7 +34,7 @@ function StepSlotOptions() {
 
   const selectedRequest = Object.values(requestList)
     .flat()
-    .find((request) => request?.id === router.query?.id);
+    .find((request) => request?.id === (query?.id || ''));
 
   const dateRange = useSelfSchedulingFlowStore((state) => state.dateRange);
 

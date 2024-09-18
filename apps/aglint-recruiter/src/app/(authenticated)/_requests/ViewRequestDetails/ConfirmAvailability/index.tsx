@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 import { Check, Loader2 } from 'lucide-react';
 import { nanoid } from 'nanoid';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -28,8 +28,6 @@ import {
 } from './store';
 
 function ConfirmAvailability() {
-  const router = useRouter();
-
   const {
     setSelectedDayAvailableBlocks,
     selectedDateSlots,
@@ -201,15 +199,13 @@ function ConfirmAvailability() {
                         />
                       );
                     })}
-                  <UIButton
-                    onClick={() => {
-                      router.replace(
-                        `/scheduling/view?meeting_id=${selectedDateSlots[0].selected_dates[0].plans[0].sessions[0].meeting_id}`,
-                      );
-                    }}
-                  >
-                    View in schedules
-                  </UIButton>
+                  {selectedDateSlots && (
+                    <Link
+                      href={`/scheduling/view?meeting_id=${selectedDateSlots[0]?.selected_dates[0]?.plans[0]?.sessions[0]?.meeting_id}`}
+                    >
+                      <UIButton>View in schedules</UIButton>
+                    </Link>
+                  )}
                 </div>
               </div>
             </ShowCode.When>

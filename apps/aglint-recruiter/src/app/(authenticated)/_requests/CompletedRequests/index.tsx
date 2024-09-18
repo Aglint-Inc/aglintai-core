@@ -20,7 +20,6 @@ import { Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { RequestProvider } from '@/context/RequestContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import type { Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -35,7 +34,6 @@ function CompletedRequests() {
   const { data: completedRequests, isLoading } = useCompletedRequests({
     completedFilters,
   });
-  const { replace } = useRouterPro();
   const [allExpanded, setAllExpanded] = useState(false);
   const [hasMore, setHasMore] = useState(true); // Assume there's more data initially
   const [page, setPage] = useState(1);
@@ -97,12 +95,7 @@ function CompletedRequests() {
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbLink
-                      href='/requests'
-                      onClick={() => replace('/requests')}
-                    >
-                      Requests
-                    </BreadcrumbLink>
+                    <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>

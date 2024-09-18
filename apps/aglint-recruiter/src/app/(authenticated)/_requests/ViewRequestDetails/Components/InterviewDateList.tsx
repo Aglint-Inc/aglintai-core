@@ -4,7 +4,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Pencil } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -23,7 +23,7 @@ function InterviewDateList({
   };
 }) {
   const { handleAsyncUpdateRequest } = useRequests();
-  const { query } = useRouter();
+  const query = useParams();
   const [date, setDate] = useState<[dayjs.Dayjs, dayjs.Dayjs] | null>([
     null,
     null,

@@ -24,7 +24,7 @@ import {
   User,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SideDrawerEdit from 'src/app/(authenticated)/_jobs/[application]/_common/components/EditDrawer';
 import CollapseContent from 'src/app/(authenticated)/_jobs/[application]/_common/components/InterviewStage/IndividualSession/Collapse';
@@ -62,8 +62,7 @@ import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 
 export default function ViewRequestDetails() {
-  const { query } = useRouter();
-  const { replace } = useRouter();
+  const query = useParams();
   const {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
@@ -121,9 +120,7 @@ export default function ViewRequestDetails() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink onClick={() => replace('/requests')}>
-                  Requests
-                </BreadcrumbLink>
+                <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>

@@ -3,7 +3,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
 import { debounce } from 'lodash';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -13,7 +13,7 @@ import { updateRequestNotes } from '../../_common/functions';
 import { useRequestNotes } from '../../_common/hooks';
 
 function RequestNotes() {
-  const { query } = useRouter();
+  const query = useParams();
   const {
     data: requestNotes,
     isFetched,

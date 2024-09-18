@@ -1,14 +1,14 @@
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { ChevronDown } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { useApplicantRequests } from '@/components/Requests/_common/hooks/useApplicantRequests';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function RecentRequests({ applicationId }: { applicationId: string }) {
-  const { query } = useRouter();
+  const query = useParams();
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { data: requestList, status } = useApplicantRequests({
     application_id: applicationId,

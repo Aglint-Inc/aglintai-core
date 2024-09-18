@@ -1,6 +1,6 @@
 import type { TargetApiPayloadType } from '@aglint/shared-types';
 import { RefreshCcw } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
@@ -17,7 +17,7 @@ import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
 
 function EmailPreviewSelfSchedule() {
   const [fetching, setFetching] = useState(false);
-  const router = useRouter();
+  const query = useParams();
   const { recruiterUser } = useAuthDetails();
 
   const {
@@ -26,7 +26,7 @@ function EmailPreviewSelfSchedule() {
 
   const selectedRequest = Object.values(requestList)
     .flat()
-    .find((request) => request?.id === router.query?.id);
+    .find((request) => request?.id === (query?.id || ''));
 
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
