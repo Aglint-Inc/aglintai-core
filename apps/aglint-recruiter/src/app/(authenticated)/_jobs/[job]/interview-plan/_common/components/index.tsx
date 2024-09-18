@@ -138,7 +138,7 @@ const InterviewPlanPage = () => {
               <div className='flex flex-col gap-2'>
                 <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
                 <p className='mb-4 text-sm text-gray-600'>
-                  Update the hiring team details here. Changes will be saved
+                  Set up your interview plan here. Changes will be saved
                   automatically.
                 </p>
               </div>

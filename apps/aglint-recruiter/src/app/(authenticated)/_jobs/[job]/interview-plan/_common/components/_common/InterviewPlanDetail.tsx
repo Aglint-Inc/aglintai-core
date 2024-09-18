@@ -43,7 +43,7 @@ export function InterviewPlanDetail({
 }: InterviewPlanDetailProps) {
   return (
     <div className={cn('relative', className)}>
-      <div className='relative flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white p-4'>
+      <div className='relative flex flex-col gap-2 rounded-lg border border-dashed border-gray-300 p-4'>
         <div className='flex items-center gap-1'>
           <div className='flex gap-1'>
             {isDebriefIconVisible && <Users size={16} />}

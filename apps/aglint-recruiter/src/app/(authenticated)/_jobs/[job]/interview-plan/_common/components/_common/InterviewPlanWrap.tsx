@@ -1,9 +1,20 @@
 'use client';
-import { ArrowDown, ArrowUp, Edit } from 'lucide-react';
-import React from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
+import { Button } from '@components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@components/ui/collapsible';
+import { ArrowDown, ArrowUp, ChevronDown, ChevronUp, Edit } from 'lucide-react';
+import React, { useState } from 'react';
 
 import { InterviewPlanDetail } from './InterviewPlanDetail';
 
@@ -21,63 +32,83 @@ export function InterviewPlanWrap({
   isTopArrowVisible = true,
   isBottomArrowVisible = true,
 }) {
-  return (
-    <div className='relative flex items-start gap-2'>
-      <div className='w-full rounded-lg border border-transparent bg-neutral-100 p-4 transition-colors duration-200 hover:border-neutral-300 md:p-5'>
-        <div className='relative'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-2'>
-              <UITypography type='small' variant='p'>
-                {textStageName}
-              </UITypography>
+  const [isOpen, setIsOpen] = useState(false);
 
-              <UIButton
-                variant='ghost'
-                size='sm'
-                icon={<Edit />}
-                className='opacity-0 transition-opacity duration-300 hover:opacity-100'
-                onClick={onClickEdit}
-              />
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className='w-full'>
+      <Card className='w-full'>
+        <CardHeader>
+          <CollapsibleTrigger asChild>
+            <div className='flex w-full cursor-pointer items-center justify-between'>
+              <div className='flex items-center gap-2'>
+                <CardTitle className='text-md'>{textStageName}</CardTitle>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  className='opacity-0 transition-opacity duration-300 hover:opacity-100'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickEdit();
+                  }}
+                >
+                  <Edit className='h-4 w-4' />
+                </Button>
+              </div>
+              <div className='flex items-center gap-2'>
+                <CardDescription>{textInterviewCount}</CardDescription>
+                {slotRightIconButton}
+                {isOpen ? (
+                  <ChevronUp className='h-4 w-4' />
+                ) : (
+                  <ChevronDown className='h-4 w-4' />
+                )}
+              </div>
             </div>
-            <div className='flex items-center gap-2'>
-              <UITypography type='small' variant='p'>
-                {textInterviewCount}
-              </UITypography>
-              {slotRightIconButton}
-            </div>
-          </div>
+          </CollapsibleTrigger>
           {isInputVisible && (
             <div className='absolute inset-0 z-10 bg-neutral-100'>
               {slotInputButton}
             </div>
           )}
-        </div>
-        {isSlotInterviewPlanVisible && (
-          <div className='flex flex-col gap-2'>
-            {slotInterviewPlanDetail ?? <InterviewPlanDetail />}
-          </div>
-        )}
-      </div>
+        </CardHeader>
+        <CardContent>
+          <CollapsibleContent>
+            {isSlotInterviewPlanVisible && (
+              <div className='flex flex-col gap-2 pt-4'>
+                {slotInterviewPlanDetail ?? <InterviewPlanDetail />}
+              </div>
+            )}
+          </CollapsibleContent>
+        </CardContent>
+      </Card>
       <div className='absolute right-0 top-0 flex translate-x-[120%] flex-col gap-2'>
         {isTopArrowVisible && (
-          <UIButton
+          <Button
             variant='secondary'
             size='sm'
             className='opacity-0 transition-opacity duration-300 hover:opacity-100'
-            onClick={onClickUp}
-            icon={<ArrowUp />}
-          />
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickUp();
+            }}
+          >
+            <ArrowUp className='h-4 w-4' />
+          </Button>
         )}
         {isBottomArrowVisible && (
-          <UIButton
+          <Button
             variant='secondary'
             size='sm'
             className='opacity-0 transition-opacity duration-300 hover:opacity-100'
-            onClick={onClickDown}
-            icon={<ArrowDown />}
-          />
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickDown();
+            }}
+          >
+            <ArrowDown className='h-4 w-4' />
+          </Button>
         )}
       </div>
-    </div>
+    </Collapsible>
   );
 }
