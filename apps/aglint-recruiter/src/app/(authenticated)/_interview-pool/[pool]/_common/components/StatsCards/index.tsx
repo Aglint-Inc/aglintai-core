@@ -5,7 +5,7 @@ import React from 'react';
 function StatsCards() {
   return (
     <div className='mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
-      <Card className='border-t-4 border-t-blue-500 bg-white shadow-md'>
+      <Card className='bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>Interview Statistics</CardTitle>
         </CardHeader>
@@ -31,7 +31,7 @@ function StatsCards() {
         </CardContent>
       </Card>
 
-      <Card className='border-t-4 border-t-purple-500 bg-white shadow-md'>
+      <Card className='bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>Candidate Pipeline</CardTitle>
         </CardHeader>
@@ -69,7 +69,7 @@ function StatsCards() {
         </CardContent>
       </Card>
 
-      <Card className='border-t-4 border-t-green-500 bg-white shadow-md'>
+      <Card className='bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>
             Interviewer Performance
@@ -99,7 +99,7 @@ function StatsCards() {
         </CardContent>
       </Card>
 
-      <Card className='border-t-4 border-t-orange-500 bg-white shadow-md'>
+      <Card className='bg-white shadow-md'>
         <CardHeader>
           <CardTitle className='text-gray-800'>Training Overview</CardTitle>
         </CardHeader>
