@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { ScheduleStatesProvider } from '@interviews/contexts/ScheduleStatesContext';
 import Link from 'next/link';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { ScheduleStatesProvider } from './_common/contexts/ScheduleStatesContext';
-import MyInterviews from './Components/MyInterviews';
-import RecentCompletedInterviews from './Components/RecentCompletedInterviews';
-import UpComingInterviews from './Components/UpComingInterviews';
+import MyInterviews from './MyInterviews';
+import RecentCompletedInterviews from './RecentCompletedInterviews';
+import UpComingInterviews from './UpComingInterviews';
 
 function Interviews() {
   return (

@@ -1,12 +1,12 @@
 import { NewMyScheduleCard } from '@interviews/components/NewMyScheduleCard';
 import dayjs from 'dayjs';
 import { CalendarClock } from 'lucide-react';
-
 import {
   type SchedulesSupabase,
   transformDataSchedules,
-} from '../../../../../app/_common/utils/schedules-query';
-import ScheduleMeetingCard from '../ScheduleMeetingCard';
+} from 'src/app/_common/utils/schedules-query';
+
+import ScheduleMeetingCard from './ScheduleMeetingCard';
 
 function ScheduleMeetingList({
   filterSchedules,

@@ -1,4 +1,5 @@
 import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
+import { convertTimeZoneToAbbreviation } from '@interviews/utils';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -15,8 +16,7 @@ import {
   getScheduleTextcolor,
   getScheduleType,
 } from '../../../../../utils/scheduling/colors_and_enums';
-import { convertTimeZoneToAbbreviation } from '../../../utils';
-import InterviewerUserDetail from '../../InterviewerUserDetail';
+import InterviewerUserDetail from './InterviewerUserDetails';
 import { MyScheduleSubCard } from './MyScheduleSubCard';
 
 function ScheduleMeetingCard({

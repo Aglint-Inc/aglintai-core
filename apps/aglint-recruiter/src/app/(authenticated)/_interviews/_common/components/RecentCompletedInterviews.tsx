@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
-import { useAllInterviews } from '../_common/hooks/useAllInterviews';
+import { useAllInterviews } from '../hooks/useAllInterviews';
+import ScheduleMeetingList from './ScheduleMeetingList';
 
 function RecentCompletedInterviews() {
   const { data: schedules, isFetched } = useAllInterviews({
