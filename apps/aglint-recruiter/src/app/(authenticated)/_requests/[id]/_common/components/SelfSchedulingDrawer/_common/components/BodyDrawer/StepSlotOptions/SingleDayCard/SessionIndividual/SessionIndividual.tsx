@@ -1,8 +1,8 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerTrainingTypeIcon from '@/components/Common/Icons/InterviewerTrainingTypeIcon';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
@@ -41,12 +41,15 @@ function SessionIndividual({
               key={member.user_id}
               textRole={member.position}
               slotInterviewerImage={
-                <MuiAvatar
-                  level={getFullName(member.first_name, member.last_name)}
-                  src={member.profile_image}
-                  width={'100%'}
-                  height={'100%'}
-                />
+                <Avatar className='h-8 w-8'>
+                  <AvatarImage
+                    src={getFullName(member.first_name, member.last_name)}
+                    alt={getFullName(member.first_name, member.last_name)}
+                  />
+                  <AvatarFallback>
+                    {getFullName(member.first_name, member.last_name).charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
               }
               iconTraining={
                 <InterviewerTrainingTypeIcon type={member.training_type} />
