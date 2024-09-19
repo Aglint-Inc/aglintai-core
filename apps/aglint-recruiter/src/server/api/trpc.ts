@@ -10,7 +10,7 @@ import type { DatabaseTable, RecursiveRequired } from '@aglint/shared-types';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
-import { type z, ZodError } from 'zod';
+import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { getDecryptKey } from '@/api/sync/greenhouse/util';
 
@@ -243,21 +243,20 @@ export type PrivateProcedure<T> = Procedure<T, typeof privateProcedure>;
 type Procedure<
   T,
   U extends ProcedureBuilder<any, any, any, any, any, any, any, any>,
-> =
-  T extends z.ZodObject<any, any, any, any, any>
-    ? U extends ProcedureBuilder<
-        infer TContext,
-        any,
-        infer TContextOverrides,
-        any,
-        any,
-        any,
-        any,
-        any
-      >
-      ? {
-          ctx: TContext & TContextOverrides;
-          input: RecursiveRequired<z.infer<T>>;
-        }
-      : never
-    : never;
+> = T extends ZodSchema
+  ? U extends ProcedureBuilder<
+      infer TContext,
+      any,
+      infer TContextOverrides,
+      any,
+      any,
+      any,
+      any,
+      any
+    >
+    ? {
+        ctx: TContext & TContextOverrides;
+        input: RecursiveRequired<TypeOf<T>>;
+      }
+    : never
+  : never;

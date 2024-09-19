@@ -1,17 +1,5 @@
 import { type DateInfoType } from '@aglint/shared-types';
 
-import { capitalizeAll } from './text/textUtils';
-
-export const getFullName = (firstName, lastName) => {
-  return capitalizeAll(
-    [firstName, lastName]
-      .filter(Boolean)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .join(' '),
-  );
-};
-
 export const getformatedDate = (start: DateInfoType, end: DateInfoType) => {
   const startDate = [monthIndexToString(start?.month - 1), start?.year]
     .filter(Boolean)

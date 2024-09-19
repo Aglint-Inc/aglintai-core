@@ -1,8 +1,9 @@
+import { getStringColor } from 'src/app/_common/utils/getColorForText';
+
 import {
   type EventCalendar,
   type Resource,
 } from '@/components/Common/CalendarResourceView/types';
-import { getStringColor } from '@/components/Common/MuiAvatar';
 import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 
 export const transformAvailability = (

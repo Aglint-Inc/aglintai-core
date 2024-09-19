@@ -1,19 +1,20 @@
 import { getFullName } from '@aglint/shared-utils';
-import { useRouter } from 'next/router';
+import { useTeamMembers } from 'src/app/(authenticated)/_company/_common/components/TeamManagement';
+import EditMember from 'src/app/(authenticated)/_company/_common/components/TeamManagement/EditMemberDialog';
 
-import { useTeamMembers } from '@/components/CompanyDetailComp/TeamManagement';
-import EditMember from '@/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditProfileDialog } from './EditProfileDialog';
 
 export const EditUserDialog = ({ isOpen, setIsOpen }) => {
-  const router = useRouter();
+  const router = useRouterPro();
   const { recruiterUser } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
-  const user_id = router.query.user as string;
+  const user_id = router.params.user as string;
   const { refetch: interviewerDetailsRefetch } = useInterviewer();
 
   const { data: members, refetch: memberListRefetch } = useMemberList();
@@ -38,13 +39,11 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
           onClose={() => {
             setIsOpen(null);
             //remove query param
-            const { pathname, query } = router;
-            const updatedQuery = { ...query };
-            delete updatedQuery['edit_enable'];
-            router.push({
-              pathname,
-              query: updatedQuery,
-            });
+            router.push(
+              ROUTES['/user/[user]']({
+                user_id: user_id,
+              }),
+            );
           }}
         />
       ) : (

@@ -1,6 +1,6 @@
 import { forwardRef, type Ref } from 'react';
 
-import { type Application } from '@/types/applications.types';
+import type { Application } from '@/job/types';
 
 import StageProgressPill, { getPlanPillProps } from './stageProgressPill';
 

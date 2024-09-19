@@ -6,11 +6,6 @@ import {
 } from '@components/ui/dialog';
 import { X } from 'lucide-react';
 import { useRef, useState } from 'react';
-
-import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import TimezonePicker from '@/components/Common/TimezonePicker';
-import { UIButton } from '@/components/Common/UIButton';
-import { ProfileForms } from '@/components/Profile/ProfileForms';
 import {
   type FormFields,
   type FormValues,
@@ -19,10 +14,16 @@ import {
   validateMail,
   validatePhone,
   validateString,
-} from '@/components/Profile/util';
+} from 'src/app/_common/components/Profile/uitls';
+
+import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import TimezonePicker from '@/components/Common/TimezonePicker';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
+
+import { ProfileForms } from './ProfileForms';
 
 const initialFormValues: FormValues = {
   value: null,

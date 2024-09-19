@@ -8,5 +8,5 @@ export const useApplicationMeta = () => {
   const query = api.application.applicationMeta.useQuery({ application_id });
   const refetch = () =>
     utils.application.applicationMeta.invalidate({ application_id });
-  return { ...query, refetch };
+  return { ...query, refetch, application_id };
 };

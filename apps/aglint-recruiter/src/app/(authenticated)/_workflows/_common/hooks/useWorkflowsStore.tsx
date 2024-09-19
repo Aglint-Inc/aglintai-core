@@ -6,7 +6,7 @@
  *
  */
 
-import { createContextStoreSelector } from '@/hooks/createContextStoreSelector';
+import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 import { WorkflowsStoreContext } from '@/workflows/contexts/workflowsStoreContext';
 
 export const useWorkflowsStore = createContextStoreSelector(

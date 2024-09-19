@@ -13,16 +13,26 @@ const modes: {
 function Mode() {
   const { recruiterId } = useAppContext();
   const [jobMode, setJobMode] = useState<jobMode>("aglint");
-  const [isSourcing, setIsSourcing] = useState<boolean>(false);
-  const [isScoring, setIsScoring] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<{
     jobMode: boolean;
-    scoring: boolean;
-    sourcing: boolean;
+    flags: boolean;
   }>({
     jobMode: false,
+    flags: true,
+  });
+
+  const [flags, setFlags] = useState({
+    integrations: false,
+    request: false,
+    roles: false,
+    scheduling: false,
+    workflow: false,
+    analytics: false,
+    candidate_portal: false,
     scoring: false,
-    sourcing: false,
+    agent: false,
+    reports: false,
+    themes: false,
   });
 
   const supabase = window.supabase;
@@ -32,14 +42,13 @@ function Mode() {
     setJobMode(value);
   };
 
-  const fetchScoring = async () => {
-    setIsLoading((pre) => ({ ...pre, scoring: true }));
-    const {
-      data: { scoring },
-      error,
-    } = await supabase
+  const fetchFlags = async () => {
+    setIsLoading((pre) => ({ ...pre, flags: true }));
+    const { data: iniFlags, error } = await supabase
       .from("recruiter_preferences")
-      .select("scoring")
+      .select(
+        "scoring, integrations, request, roles, scheduling, workflow, analytics, candidate_portal, agent, reports, themes"
+      )
       .eq("recruiter_id", recruiterId)
       .single();
 
@@ -47,101 +56,135 @@ function Mode() {
       console.log(error.message);
       return;
     }
-    setIsScoring(scoring);
-    setIsLoading((pre) => ({ ...pre, scoring: false }));
+    setFlags(iniFlags);
+    setIsLoading((pre) => ({ ...pre, flags: false }));
   };
 
   useEffect(() => {
-    if (recruiterId) fetchScoring();
+    if (recruiterId) fetchFlags();
   }, [recruiterId]);
 
-  const updateScoring = async () => {
-    setIsScoring((pre) => !pre);
-    setIsLoading((pre) => ({ ...pre, scoring: true }));
+  const updateScoring = async (updatedflags: typeof flags) => {
+    setIsLoading((pre) => ({ ...pre, flags: true }));
     const { error } = await supabase
       .from("recruiter_preferences")
-      .update({ scoring: !isScoring })
-      .eq("recruiter_id", recruiterId)
-      .single();
-
+      .update({ ...updatedflags })
+      .eq("recruiter_id", recruiterId);
+    await fetchFlags();
     if (error) {
       console.log(error.message);
       return;
     }
-    setIsScoring(!isScoring);
-    setIsLoading((pre) => ({ ...pre, scoring: false }));
+    setIsLoading((pre) => ({ ...pre, flags: false }));
   };
 
-  const sourcingHandler = () => {
-    setIsSourcing((pre) => !pre);
-  };
-
-  const handleSourcing = () => {
-    const url = "/candidates/history?currentTab=discover%20talent";
-    window.open(url, "_blank");
+  const handleFeatureChange = (key: keyof typeof flags) => {
+    const newFlags = { ...flags, [key]: !flags[key] };
+    updateScoring(newFlags);
   };
 
   return (
     <div id="mode">
-      <div className="job-mode">
-        <h5>Job Modes</h5>
-        <div className="ats" style={{ display: "flex", gap: "10px" }}>
-          {modes.map((mode) => (
-            <label>
-              <input
-                disabled
-                type="radio"
-                name={"job"}
-                value={mode.value}
-                checked={mode.value === jobMode}
-                onChange={jobModeHandler}
-              />
-              {mode.name}
-            </label>
-          ))}
+      <div id="first">
+        <div className="job-mode">
+          <h5>Job Modes</h5>
+          <div className="ats" style={{ display: "flex", gap: "10px" }}>
+            {modes.map((mode) => (
+              <label>
+                <input
+                  disabled
+                  type="radio"
+                  name={"job"}
+                  value={mode.value}
+                  checked={mode.value === jobMode}
+                  onChange={jobModeHandler}
+                />
+                {mode.name}
+              </label>
+            ))}
+          </div>
         </div>
       </div>
-
-      <div className="score">
-        <h5>Enable Scoring</h5>
-
-        {isLoading.scoring ? (
-          "Updating..."
+      <div id="second">
+        <h5>Features</h5>
+        {isLoading.flags ? (
+          <p>Loading...</p>
         ) : (
-          <label>
-            <input
-              type="checkbox"
-              onChange={updateScoring}
-              checked={isScoring}
-            />
-            Scoring
-          </label>
+          <div className="flags">
+            <div
+              className="Integrations"
+              onClick={() => handleFeatureChange("integrations")}
+            >
+              <input type="checkbox" checked={flags.integrations} />
+              <p>Integrations</p>
+            </div>
+            <div
+              className="Request"
+              onClick={() => handleFeatureChange("request")}
+            >
+              <input type="checkbox" checked={flags.request} />
+              <p>Request</p>
+            </div>
+            <div className="Roles" onClick={() => handleFeatureChange("roles")}>
+              <input type="checkbox" checked={flags.roles} />
+              <p>Roles</p>
+            </div>
+            <div
+              className="Scheduling"
+              onClick={() => handleFeatureChange("scheduling")}
+            >
+              <input type="checkbox" checked={flags.scheduling} />
+              <p>Scheduling</p>
+            </div>
+            <div
+              className="Workflow"
+              onClick={() => handleFeatureChange("workflow")}
+            >
+              <input type="checkbox" checked={flags.workflow} />
+              <p>Workflow</p>
+            </div>
+            <div
+              className="Analytics"
+              onClick={() => handleFeatureChange("analytics")}
+            >
+              <input type="checkbox" checked={flags.analytics} />
+              <p>Analytics</p>
+            </div>
+            <div
+              className="Candidate-portal"
+              onClick={() => handleFeatureChange("candidate_portal")}
+            >
+              <input type="checkbox" checked={flags.candidate_portal} />
+              <p>Candidate Portal</p>
+            </div>
+            <div
+              className="score"
+              onClick={() => handleFeatureChange("scoring")}
+            >
+              <input type="checkbox" checked={flags.scoring} />
+              <p>Scoring</p>
+            </div>
+            <div className="agent" onClick={() => handleFeatureChange("agent")}>
+              <input type="checkbox" checked={flags.agent} />
+              <p>Agent</p>
+            </div>
+            <div
+              className="reports"
+              onClick={() => handleFeatureChange("reports")}
+            >
+              <input type="checkbox" checked={flags.reports} />
+              <p>Reports</p>
+            </div>
+            <div
+              className="themes"
+              onClick={() => handleFeatureChange("themes")}
+            >
+              <input type="checkbox" checked={flags.themes} />
+              <p>Theme</p>
+            </div>
+          </div>
         )}
       </div>
-
-      <div className="Sourcing">
-        <h5>Enable Sourcing</h5>
-
-        {isLoading.sourcing ? (
-          "Updating..."
-        ) : (
-          <label>
-            <input
-              disabled
-              type="checkbox"
-              onChange={sourcingHandler}
-              checked={isSourcing}
-            />
-            Sourcing
-          </label>
-        )}
-      </div>
-
-      {/* <div>
-        <h5>Sourcing Page</h5>
-
-        <button onClick={handleSourcing}>Click here</button>
-      </div> */}
     </div>
   );
 }

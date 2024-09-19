@@ -1,9 +1,12 @@
 import { Checkbox } from '@components/ui/checkbox';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import { Bookmark, GripVertical, Star } from 'lucide-react';
 
 import StageProgress from '@/components/Scheduling/Common/StageProgress';
-import { type Application } from '@/types/applications.types';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useApplicationsStore } from '@/job/hooks';
+import type { Application } from '@/job/types';
 
 import { ResumeScore } from '../Common/ResumeScoreNew';
 
@@ -23,11 +26,19 @@ export function TableRow({
   isChecked,
   onCheck,
   onClickCandidate,
-  isResumeMatchVisible,
-  isInterviewVisible,
   checkEnabled,
-  status,
 }: TableRowProps) {
+  const { isScoringEnabled: isResumeMatchVisible } = useRolesAndPermissions();
+  const isInterviewVisible = useApplicationsStore((state) =>
+    state.cascadeVisibilites(),
+  ).interview;
+  const section = useApplicationsStore((state) => state.status);
+
+  const interviewColShow =
+    section === 'interview' ||
+    section === 'qualified' ||
+    section === 'disqualified';
+
   return (
     <div
       className={cn(
@@ -70,8 +81,9 @@ export function TableRow({
           </div>
         </div>
       </div>
+
       {isResumeMatchVisible && (
-        <div className='mr-4 w-[200px]'>
+        <div className={cn('mr-4 w-[200px]', !interviewColShow && 'flex-1')}>
           {status === 'draft' ? (
             '---'
           ) : (
@@ -83,22 +95,29 @@ export function TableRow({
         </div>
       )}
       {isInterviewVisible && (
-        <div className='mr-4 w-[250px]'>
-          <StageProgress
-            interview_plans={application.interview_plans}
-            currentStep={application.interview_plans.length}
-          />
+        <div className='mr-4 w-[250px] flex-1'>
+          <ScrollArea className='w-full'>
+            <StageProgress
+              interview_plans={application.interview_plans}
+              currentStep={application.interview_plans.length}
+            />
+            <ScrollBar orientation='horizontal' />
+          </ScrollArea>
         </div>
       )}
-      <div className='mr-4 w-[250px] truncate'>
+      <div
+        className={cn('mr-4 w-[250px] truncate', !interviewColShow && 'flex-1')}
+      >
         {application.current_job_title || '---'}
       </div>
-      <div className='mr-4 w-[150px] truncate'>
+      <div
+        className={cn('mr-4 w-[150px] truncate', !interviewColShow && 'flex-1')}
+      >
         {application.city && application.country
           ? `${application.city}, ${application.country}`
           : '---'}
       </div>
-      <div className='w-[120px]'>
+      <div className={cn('w-[120px]', !interviewColShow && 'flex-1')}>
         {application.applied_at
           ? new Date(application.applied_at).toLocaleDateString()
           : '---'}

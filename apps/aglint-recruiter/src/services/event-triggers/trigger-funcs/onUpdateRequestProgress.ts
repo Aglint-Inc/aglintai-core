@@ -45,7 +45,8 @@ const updateRequestStatus = async ({
       await getSupabaseServer()
         .from('request')
         .update({ status: 'in_progress' })
-        .eq('id', new_data.request_id),
+        .eq('id', new_data.request_id)
+        .eq('status', 'to_do'),
     );
   } catch (error) {
     console.error('Failed updateRequestStatus', error);

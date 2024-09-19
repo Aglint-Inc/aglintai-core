@@ -17,7 +17,8 @@ import {
 } from '@components/ui/dialog';
 import { type ReactNode } from 'react';
 
-import Loader from '../../Common/Lotties/Integration_Loader';
+import { Loader } from '@/components/Common/Loader';
+
 import { type SchedulingReasonTypes } from '../types';
 
 function SchedulingPopUps({

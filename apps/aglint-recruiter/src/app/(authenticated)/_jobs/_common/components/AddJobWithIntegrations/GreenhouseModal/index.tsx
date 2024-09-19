@@ -6,7 +6,11 @@ import { Skeleton } from '@components/ui/skeleton';
 import { useEffect, useState } from 'react';
 
 import { STATE_GREENHOUSE_DIALOG } from '@/jobs/constants';
-import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
+import {
+  useIntegrationActions,
+  useIntegrationStore,
+  useJobs,
+} from '@/jobs/hooks';
 import { useAllIntegrations } from '@/queries/intergrations';
 import toast from '@/utils/toast';
 
@@ -16,8 +20,8 @@ import { type JobGreenhouse } from './types';
 import { fetchAllJobs, getGreenhouseStatusColor } from './utils';
 
 export function GreenhouseModal() {
-  const { setIntegration, handleClose } = useIntegrationActions();
-  const integration = useIntegrations();
+  const { setIntegrations, resetIntegrations } = useIntegrationActions();
+  const integration = useIntegrationStore((state) => state.integrations);
   const { jobs } = useJobs();
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [saving, setSaving] = useState(false);
@@ -56,7 +60,7 @@ export function GreenhouseModal() {
   const importGreenhouse = async () => {
     try {
       setSaving(true);
-      setIntegration({
+      setIntegrations({
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       });
 
@@ -64,19 +68,19 @@ export function GreenhouseModal() {
       // ...
 
       toast.success('Jobs imported successfully');
-      handleClose();
+      resetIntegrations();
     } catch (error) {
       toast.error(
         'Import failed. Please try again later or contact support for assistance.',
       );
-      handleClose();
+      resetIntegrations();
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <Dialog open={integration.greenhouse.open} onOpenChange={handleClose}>
+    <Dialog open={integration.greenhouse.open} onOpenChange={resetIntegrations}>
       <DialogContent className='sm:max-w-[425px]'>
         <div className='flex flex-col space-y-4'>
           <h2 className='text-lg font-semibold'>Import from Greenhouse</h2>
@@ -143,7 +147,7 @@ export function GreenhouseModal() {
             </div>
           </div>
           <div className='flex justify-end space-x-2'>
-            <Button variant='outline' onClick={handleClose}>
+            <Button variant='outline' onClick={resetIntegrations}>
               Close
             </Button>
           </div>

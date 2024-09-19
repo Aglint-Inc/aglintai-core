@@ -1,6 +1,6 @@
-import { CustomActionType, DatabaseEnums } from "../..";
-import { CustomLocation } from "../common.types";
-import { Database } from "../schema.types";
+import type { CustomActionType, DatabaseEnums } from "../..";
+import type { CustomLocation } from "../common.types";
+import type { Database } from "../schema.types";
 import type { ViewType } from "./index.types";
 
 export type CustomWorkflowView = ViewType<

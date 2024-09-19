@@ -8,13 +8,12 @@ import {
   type APISendgridPayload,
   type TargetApiPayloadType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidV4 } from 'uuid';
 
 import { type InitAgentBodyParams } from '@/components/ScheduleAgent/types';
 import { EmailWebHook } from '@/services/EmailWebhook/EmailWebhook';
-import { getFullName } from '@/utils/jsonResume';
 import { mailSender } from '@/utils/mailSender';
 import { agent_activities } from '@/utils/scheduling_v2/agents_activity';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';

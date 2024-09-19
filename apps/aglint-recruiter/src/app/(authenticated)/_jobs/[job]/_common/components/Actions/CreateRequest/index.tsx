@@ -12,7 +12,7 @@ import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
-import { useApplications, useJob } from '@/job/hooks';
+import { useJob } from '@/job/hooks';
 
 import { SessionList, type SessionType } from './SessionsList';
 function CreateRequest({
@@ -33,10 +33,9 @@ function CreateRequest({
   selectedSession: SessionType[];
 }) {
   const { data: members, status: membersStatus } = useMemberList();
-
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
-  } = useApplications();
+  } = useJob();
   const { recruiterUser } = useAuthDetails();
   const selectedMember =
     membersStatus === 'success' &&

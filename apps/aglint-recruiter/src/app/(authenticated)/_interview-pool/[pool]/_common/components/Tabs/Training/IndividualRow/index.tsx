@@ -1,4 +1,5 @@
 import { type PauseJson } from '@aglint/shared-types';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
   PopoverContent,
@@ -8,7 +9,6 @@ import { ChevronDown, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import ROUTES from '@/utils/routing/routes';
@@ -75,10 +75,15 @@ function IndividualRow({
             })}
           >
             <div className='flex items-center space-x-3'>
-              <MuiAvatar
-                src={relation.recruiter_user.profile_image}
-                level={relation.full_name}
-              />
+              <Avatar className='h-8 w-8'>
+                <AvatarImage
+                  src={relation.recruiter_user.profile_image}
+                  alt={relation.recruiter_user.first_name}
+                />
+                <AvatarFallback>
+                  {relation.recruiter_user.first_name.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
               <div>
                 <div className='flex flex-row gap-2 font-medium text-gray-900'>
                   {relation.full_name}

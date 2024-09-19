@@ -1,4 +1,4 @@
-import { DatabaseTable, DatabaseView, schedulingSettingType } from "../..";
+import type { schedulingSettingType } from "../..";
 import type { ViewType } from "./index.types";
 
 export type CustomAllInterviewers = ViewType<

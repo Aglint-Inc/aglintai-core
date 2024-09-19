@@ -1,9 +1,9 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Calendar } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 
@@ -12,7 +12,7 @@ export const RecentInterviews = ({
 }: {
   interviews: InterviewerDetailType['all_meetings'];
 }) => {
-  const router = useRouter();
+  const router = useRouterPro();
   return (
     <Card>
       <CardHeader>

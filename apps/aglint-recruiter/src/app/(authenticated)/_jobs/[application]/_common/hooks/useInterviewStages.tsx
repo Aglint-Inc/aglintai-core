@@ -8,7 +8,7 @@ export const useInterviewStages = () => {
   const query = api.application.interviewStages.useQuery({ application_id });
   const refetch = () =>
     utils.application.interviewStages.invalidate({ application_id });
-  return { ...query, refetch };
+  return { ...query, refetch, application_id };
 };
 
 export type StageWithSessions = ReturnType<typeof useInterviewStages>['data'];

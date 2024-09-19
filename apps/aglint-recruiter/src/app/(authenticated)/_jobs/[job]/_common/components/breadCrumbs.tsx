@@ -9,13 +9,13 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { useApplications } from '@/job/hooks';
+import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 export const BreadCrumbs = () => {
   const { push } = useRouter();
-  const { job } = useApplications();
+  const { job } = useJob();
   return (
     <>
       <Breadcrumb>

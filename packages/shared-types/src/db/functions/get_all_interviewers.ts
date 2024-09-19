@@ -1,7 +1,6 @@
-import { schedulingSettingType } from "../../scheduleTypes";
-import { CustomApplicationBadges } from "../common.types";
-import { Database } from "../schema.types";
-import { Custom } from "../utils.types";
+import type { schedulingSettingType } from "../../scheduleTypes";
+import type { Database } from "../schema.types";
+import type { Custom } from "../utils.types";
 import type { FunctionType } from "./index.types";
 
 export type CustomGetAllInterviewers = FunctionType<

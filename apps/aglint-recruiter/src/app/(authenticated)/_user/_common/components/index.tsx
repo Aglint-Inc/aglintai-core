@@ -1,9 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
-import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
@@ -56,8 +56,8 @@ export default function InterviewerDetailsPage() {
   };
 
   //-----------------------
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(router.query.edit_enable || false);
+  const router = useRouterPro();
+  const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
 
   const { data: interviewerDetails, isLoading } = useInterviewer();
 
