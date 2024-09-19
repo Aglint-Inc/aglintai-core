@@ -8,5 +8,5 @@ export const useApplicationRequests = () => {
   const query = api.application.applicationRequest.useQuery({ application_id });
   const refetch = () =>
     utils.application.applicationRequest.invalidate({ application_id });
-  return { ...query, refetch };
+  return { ...query, refetch, application_id };
 };

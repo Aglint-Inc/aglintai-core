@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
@@ -8,7 +9,6 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { getFullName } from '@/utils/jsonResume';
 
 import IconSessionType from '../../../../../../../components/Common/Icons/IconSessionType';
 import {

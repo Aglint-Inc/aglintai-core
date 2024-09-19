@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
@@ -9,14 +8,10 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { cn } from '@lib/utils';
-import { updateRequestNotes } from '@requests/functions';
-import axios from 'axios';
 import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import type { DateRange } from 'react-day-picker';
-import { type MemberType } from 'src/app/_common/types/memberType';
-import { v4 as uuidv4 } from 'uuid';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
@@ -24,94 +19,41 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
-import { useRouterPro } from '@/hooks/useRouterPro';
-import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
 import dayjs from '@/utils/dayjs';
-import ROUTES from '@/utils/routing/routes';
-import toast from '@/utils/toast';
 
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
-import { useApplicationRequests } from '../../hooks/useApplicationRequests';
-import { useInterviewStages } from '../../hooks/useInterviewStages';
+import { useScheduleRequest } from '../../hooks/useScheduleRequest';
 import {
+  setDateRange,
   setIsScheduleOpen,
+  setNote,
+  setRequestType,
+  setSelectedAssignee,
   setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../../stores/applicationDetail';
-import { type Interviewer } from '../../types/types';
 import { ScheduleInterviewPop } from '../InterviewTab/ScheduleInterviewPop';
 
 function DialogSchedule() {
-  const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
-  const router = useRouterPro();
-  const selectedStageId = router.queryParams.stage as string;
-  const application_id = router.params.application;
-  const [selectedInterviewer, setSelectedInterviewer] =
-    React.useState<MemberType>(null);
-  const [note, setNote] = useState('');
-  const [requestType, setRequestType] =
-    React.useState<DatabaseTable['request']['priority']>('standard');
-  const [dateRange, setDateRange] = React.useState({
-    start: dayjs().toISOString(),
-    end: dayjs().add(7, 'day').toISOString(),
-  });
-  const [isSaving, setIsSaving] = React.useState(false);
-
-  const { data: members, status: membersStatus } = useMemberList();
-  const { recruiterUser } = useAuthDetails();
+  const { isScheduleOpen, note, selectedAssignee, requestType, dateRange } =
+    useApplicationDetailStore();
+  const {
+    isSaving,
+    sessionHasRequest,
+    selectedStage,
+    sessions,
+    setIsSaving,
+    handleCreateRequest,
+  } = useScheduleRequest();
+  const { data: members } = useMemberList();
   const { data: meta } = useApplicationMeta();
-  const { data: stages } = useInterviewStages();
-  const { data: requests } = useApplicationRequests();
 
   const candidate = meta;
-  const selectedStage = (stages || [])?.find(
-    (stage) => stage.interview_plan.id === selectedStageId,
-  );
-  const requestSessionIds = (requests || [])
-    .filter(
-      (request) =>
-        request.type === 'schedule_request' &&
-        (request.status === 'to_do' || request.status === 'in_progress'),
-    )
-    .flatMap((request) => request.request_relation)
-    .flatMap((relation) => relation.session_id);
-
-  const sessions = (stages || [])
-    .flatMap((stage) => stage.sessions)
-    .filter((session) =>
-      selectedSessionIds.includes(session.interview_session.id),
-    );
-
-  const sessionHasRequest = sessions.filter((session) =>
-    requestSessionIds.includes(session.interview_session.id),
-  );
-
-  const optionsInterviewers: Interviewer[] =
-    membersStatus === 'success'
-      ? members?.map((member) => {
-          return {
-            name: getFullName(member.first_name, member.last_name),
-            value: member.user_id,
-            start_icon_url: member.profile_image,
-          };
-        })
-      : [];
-
-  useEffect(() => {
-    if (optionsInterviewers?.length > 0 && membersStatus === 'success') {
-      const selectedMembers = members?.find(
-        (member) => member.user_id === String(optionsInterviewers[0].value),
-      );
-      setSelectedInterviewer(selectedMembers);
-    }
-  }, [optionsInterviewers?.length, membersStatus]);
 
   const onClickSubmit = async () => {
     setIsSaving(true);
     await handleCreateRequest();
-
     setIsSaving(false);
     setSelectedSessionIds([]);
     setIsScheduleOpen(false);
@@ -120,62 +62,6 @@ function DialogSchedule() {
   const onClose = () => {
     if (isSaving) return;
     setIsScheduleOpen(false);
-  };
-  const handleCreateRequest = async () => {
-    const sel_user_id = selectedInterviewer.user_id;
-    const assigned_user_id = recruiterUser.user_id;
-
-    const sessionNames = sessions.map(
-      (session) => session.interview_session.name,
-    );
-
-    try {
-      if (!sel_user_id) return;
-      const creatReqPayload: APICreateScheduleRequest = {
-        application_id,
-        session_ids: selectedSessionIds,
-        type: 'schedule',
-        dates: {
-          start: dateRange.start,
-          end: dateRange.end,
-        },
-        assignee_id: sel_user_id,
-        priority: requestType,
-        assigner_id: assigned_user_id,
-        session_names: sessionNames,
-      };
-
-      const res = await axios.post(
-        '/api/request/schedule-request',
-        creatReqPayload,
-      );
-      const request_id = res.data;
-
-      if (note && (res.status === 201 || res.status === 200)) {
-        await updateRequestNotes({
-          id: uuidv4(),
-          request_id,
-          note,
-          updated_at: dayjs().toISOString(),
-        });
-        router.push(
-          ROUTES['/requests/[id]']({
-            id: res.data,
-          }),
-        );
-      } else if (res.status === 201 || res.status === 200) {
-        router.push(
-          ROUTES['/requests/[id]']({
-            id: res.data,
-          }),
-        );
-      } else {
-        toast.error('Failed to create request');
-      }
-    } catch (e) {
-      console.error(e);
-      toast.error('Failed to create request');
-    }
   };
 
   return (
@@ -196,7 +82,6 @@ function DialogSchedule() {
             >
               Cancel
             </UIButton>
-
             <UIButton
               size='md'
               isLoading={isSaving}
@@ -257,12 +142,12 @@ function DialogSchedule() {
             }
             slotAssignedInput={
               <div className='flex items-center justify-between pr-2'>
-                {selectedInterviewer && (
-                  <MemberCard selectedMember={selectedInterviewer} />
+                {selectedAssignee && (
+                  <MemberCard selectedMember={selectedAssignee} />
                 )}
                 <UpdateMembers
-                  handleChange={(member) => {
-                    setSelectedInterviewer(member);
+                  handleChange={(assignee) => {
+                    setSelectedAssignee(assignee);
                   }}
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />

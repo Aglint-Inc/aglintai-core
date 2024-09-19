@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
@@ -25,7 +26,6 @@ import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { getBreakLabelV2 } from '@/utils/getBreakLabelV2';
-import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { sessionDurations } from '@/utils/scheduling/const';
 import { validateString } from '@/utils/validateString';

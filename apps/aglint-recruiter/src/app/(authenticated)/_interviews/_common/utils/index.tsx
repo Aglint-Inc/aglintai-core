@@ -1,4 +1,5 @@
-import { getFullName } from '@/utils/jsonResume';
+import { getFullName } from '@aglint/shared-utils';
+
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { type FilterOptionsType, type ScheduleListType } from '../types';

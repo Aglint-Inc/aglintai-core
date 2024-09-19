@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
@@ -8,7 +9,6 @@ import React from 'react';
 
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { useInterviewTrainingProgress } from '@/queries/scheduling-dashboard';
-import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
