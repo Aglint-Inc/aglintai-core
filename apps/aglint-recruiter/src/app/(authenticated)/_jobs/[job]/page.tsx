@@ -1,8 +1,8 @@
 import { ApplicationsDashboard } from '@/job/components';
-import { useJobApplicationsPrefetch } from '@/job/hooks';
+import { useApplicationsPrefetch } from '@/job/hooks';
 
 const Page = () => {
-  void useJobApplicationsPrefetch();
+  void useApplicationsPrefetch();
   return <ApplicationsDashboard />;
 };
 

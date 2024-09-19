@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React, { useEffect, useRef } from 'react';
 
-import { useJobApplications } from '@/job/hooks';
+import { useApplications } from '@/job/hooks';
 
 import DNDCard from './CardNew/DNDCard';
 import { EmptyList } from './Common/EmptyList';
@@ -16,7 +16,7 @@ const List = ({
   const {
     query: { hasNextPage, isFetchingNextPage, fetchNextPage },
     applications,
-  } = useJobApplications();
+  } = useApplications();
 
   const parentRef = useRef();
 

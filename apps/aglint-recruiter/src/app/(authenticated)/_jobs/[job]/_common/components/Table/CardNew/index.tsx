@@ -9,7 +9,7 @@ import {
   useApplicationsActions,
   useApplicationsStore,
   useJob,
-  useJobApplications,
+  useApplications,
 } from '@/job/hooks';
 import type { Applications } from '@/job/types';
 import ROUTES from '@/utils/routing/routes';
@@ -25,7 +25,7 @@ const ApplicationCard = memo(
       manageJob,
     } = useJob();
 
-    const { applications } = useJobApplications();
+    const { applications } = useApplications();
     const cascadeVisibilites = useApplicationsStore((state) =>
       state.cascadeVisibilites(),
     );

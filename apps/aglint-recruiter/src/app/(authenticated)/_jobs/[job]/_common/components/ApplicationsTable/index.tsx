@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { useApplicationsStore, useJob, useJobApplications } from '@/job/hooks';
+import { useApplicationsStore, useJob, useApplications } from '@/job/hooks';
 
 import { Loader } from '../CandidateDrawer/Common/Loader';
 import DNDCard from '../Table/CardNew/DNDCard';
@@ -14,7 +14,7 @@ const ApplicationsTable: React.FC = () => {
     job: { section_count },
   } = useJob();
   const section = useApplicationsStore((state) => state.status);
-  const { query, applications } = useJobApplications();
+  const { query, applications } = useApplications();
   const { hasNextPage, isFetchingNextPage, fetchNextPage, status } = query;
 
   useEffect(() => {

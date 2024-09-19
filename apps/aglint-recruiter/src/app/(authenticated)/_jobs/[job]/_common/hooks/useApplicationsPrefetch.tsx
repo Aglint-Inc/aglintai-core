@@ -6,7 +6,7 @@ import type { Applications } from '../types';
 import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
 
-export const useJobApplicationsPrefetch = () => {
+export const useApplicationsPrefetch = () => {
   const { job_id } = useCurrentJob();
   const {
     badges,

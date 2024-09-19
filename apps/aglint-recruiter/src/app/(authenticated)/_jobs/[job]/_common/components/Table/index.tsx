@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { memo, useMemo } from 'react';
 
-import { useApplicationsStore, useJob, useJobApplications } from '@/job/hooks';
+import { useApplicationsStore, useJob, useApplications } from '@/job/hooks';
 
 import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';
@@ -13,7 +13,7 @@ export const Table = memo(() => {
     job: { section_count },
   } = useJob();
   const status = useApplicationsStore((state) => state.status);
-  const { query } = useJobApplications();
+  const { query } = useApplications();
 
   if ((section_count[status] ?? 0) === 0) return <EmptyList />;
   if (query.status === 'error') return <>Error</>;

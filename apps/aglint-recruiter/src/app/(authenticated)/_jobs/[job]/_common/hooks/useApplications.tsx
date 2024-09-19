@@ -10,7 +10,7 @@ import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
 import { useJob } from './useJob';
 
-export const useJobApplications = () => {
+export const useApplications = () => {
   const { job_id } = useCurrentJob();
   const { applicationScoringPollEnabled: polling } = useJob();
 
