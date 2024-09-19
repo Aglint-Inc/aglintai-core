@@ -21,8 +21,8 @@ export const ApplicationsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='min-h-screen'>
-      <div className='container mx-auto space-y-6 p-8'>
+    <div className='min-h-screen min-w-full'>
+      <div className='h-full space-y-6 p-8'>
         <div className='mb-6 flex items-center justify-between'>
           <div className='space-y-2'>
             <Skeleton className='h-8 w-48' />
@@ -45,13 +45,13 @@ export const ApplicationsDashboard = () => {
             <Skeleton className='h-8 w-24' />
           </div>
           <div className='space-y-2'>
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5, 7, 8, 9, 10].map((i) => (
               <Skeleton key={i} className='h-12 w-full' />
             ))}
           </div>
         </div>
       </div>
-     </div>
+    </div>
   );
 };
 
@@ -76,7 +76,7 @@ const ApplicationsComponent = () => {
             <div className='my-2'>
               {checklist.length === 0 ? <Filters /> : <Actions />}
             </div>
-            <div className='overflow-x-auto'>
+            <div className=''>
               <ScrollArea>
                 <Table />
               </ScrollArea>

@@ -17,15 +17,10 @@ const StageProgressPill = memo(
       return (
         <div
           ref={ref}
-          className={`relative flex h-8 items-center ${isActive ? 'bg-blue-100' : 'bg-gray-100'} ${isLast ? 'rounded-r-md' : ''} px-3`}
+          className={`relative flex h-8 items-center ${isActive ? 'bg-blue-100' : 'bg-gray-100'} ${isLast ? 'rounded-r-md' : ''} z-1 px-3`}
         >
           <span
-            className={`text-sm font-semibold ${isActive ? 'text-blue-700' : 'text-gray-700'}`}
-          >
-            {`Step ${pillProps.step}`}
-          </span>
-          <span
-            className={`ml-2 text-sm ${isActive ? 'text-blue-600' : 'text-gray-500'}`}
+            className={`ml-2 block w-[80px] text-sm ${isActive ? 'text-blue-600' : 'text-gray-500'}`}
           >
             {pillProps.name}
           </span>

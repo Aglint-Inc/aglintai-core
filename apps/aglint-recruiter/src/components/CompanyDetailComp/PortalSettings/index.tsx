@@ -1,4 +1,4 @@
-import CandidatePortalSettings from '@/components/CandiatePortal/components/CandidatePortalSettings';
+import CandidatePortalSettings from './CandidatePortalSettings';
 
 function PortalSettings() {
   return (
