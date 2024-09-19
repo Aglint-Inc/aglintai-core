@@ -63,8 +63,8 @@ const ScheduleOptions = () => {
     const heading_events = request_progress.data.filter(
       (r) => r.is_progress_step === false,
     );
-    if (heading_events && heading_events.length === 0) return null;
-    return heading_events[request_progress.data.length - 1];
+    if (heading_events.length === 0) return null;
+    return heading_events[heading_events.length - 1];
   }, [request_progress.data]);
   const handleConfirmSlot = async (request_id: string) => {
     try {
@@ -124,8 +124,7 @@ const ScheduleOptions = () => {
       <ShowCode.When
         isTrue={
           (!scheduleWorkflowAction && !lastEvent) ||
-          (scheduleWorkflowAction &&
-            lastEvent &&
+          (lastEvent &&
             (lastEvent.event_type === 'SELF_SCHEDULE_LINK' ||
               lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
             lastEvent.status === 'failed')

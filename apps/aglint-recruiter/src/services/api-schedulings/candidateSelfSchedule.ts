@@ -1,5 +1,9 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
-import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
+import {
+  CApiError,
+  type ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 
 import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
@@ -26,7 +30,7 @@ export const candidateSelfSchedule = async ({
   mail_payload: any;
 }) => {
   if (plans.length === 0) {
-    throw new Error('No plans matched');
+    throw new CApiError('CLIENT', 'No plans matched');
   }
 
   const [filter_json] = supabaseWrap(
