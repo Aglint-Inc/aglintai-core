@@ -9,5 +9,4 @@ export { useJobFilterBadges } from './useJobFilterBadges';
 export { useJobFilterLocations } from './useJobFilterLocations';
 export { useMetricsExperienceAndTenure } from './useMetricsExperienceAndTenure';
 export { useMetricsLocationPool } from './useMetricsLocationPool';
-export { useMetricsScheduleData } from './useMetricsScheduleData';
 export { useMetricsSkillPool } from './useMetricsSkillPool';
