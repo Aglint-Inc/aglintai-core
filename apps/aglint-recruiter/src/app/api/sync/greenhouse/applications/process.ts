@@ -8,6 +8,7 @@ import {
   getGreenhouseCandidates,
   getGreenhouseJobPlan,
 } from '../util';
+import { type GreenhouseApplicationRemoteData } from './type';
 
 const MAX_EMAILS_PER_BATCH = 100;
 
@@ -117,7 +118,7 @@ export async function syncJobApplications(
           id: ref.application_id,
           is_resume_fetching: true,
           source: 'greenhouse',
-          remote_id: ref.id, //greenhouse candidate id
+          remote_id: String(ref.id), //greenhouse candidate id
           remote_data: ref,
           recruiter_id: matchingCandidate?.recruiter_id,
         } as DatabaseTableInsert['applications'];
@@ -241,7 +242,7 @@ async function fetchAllCandidates(
         return null;
       }
     })
-    .filter(Boolean);
+    .filter(Boolean) as GreenhouseApplicationRemoteData[];
 }
 
 export function extractLinkedInURLGreenhouse(item: string): string {
