@@ -1,8 +1,8 @@
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
+import { useCompanyDetailComp } from '../hooks/hook';
 import CompanyInfoComp from './CompanyDetails';
 import Holidays from './Holidays';
-import { useCompanyDetailComp } from './hook';
 import PortalSettings from './PortalSettings';
 import RolesAndPermissionsComponent from './Roles';
 import SchedulingSettings from './Scheduling';
@@ -19,22 +19,11 @@ const CompanyDetailComp = () => {
 
   return (
     <div className='container mx-auto'>
-      {/* <div className='mb-6 flex items-center justify-between'>
-          <div>
-            <h1 className='text-2xl font-bold mb-2'>Company Settings</h1>
-            <p className='text-sm text-gray-600'>
-              All the settings for your admin.
-            </p> 
-          </div>
-        </div>*/}
-
       <div className='mb-6 flex gap-6'>
         <div className='w-1/4'>
-        <div className='sticky top-[32px]'>
-        <SettingsSubNabItem />
-
-        </div>
-         
+          <div className='sticky top-[32px]'>
+            <SettingsSubNabItem />
+          </div>
         </div>
         <div className='w-3/4'>
           {tab === settingSubNavItem['COMPANYINFO'] && <CompanyInfoComp />}

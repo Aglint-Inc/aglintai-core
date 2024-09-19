@@ -8,11 +8,11 @@ import {
 } from '@components/ui/dropdown-menu';
 import axios from 'axios';
 import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
 
 import { reinviteUser } from '../utils';
@@ -21,7 +21,7 @@ import DeleteMemberDialog from './DeleteMemberDialog';
 export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();
   const [dialogReason, setDialogReason] = useState(null);
-  const router = useRouter();
+  const router = useRouterPro();
   const { recruiterUser } = useAuthDetails();
 
   const canSuspend = member.role !== 'admin';

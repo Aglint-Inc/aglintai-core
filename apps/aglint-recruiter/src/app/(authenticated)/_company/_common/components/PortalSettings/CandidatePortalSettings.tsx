@@ -2,13 +2,12 @@
 
 import React from 'react';
 
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
-import ConfigureCandidateGreeting from '@/components/CompanyDetailComp/PortalSettings/components/ConfigureCandidateGreeting';
-import ConfigureCompanyEdit from '@/components/CompanyDetailComp/PortalSettings/components/ConfigureCompanyEdit';
-import { ConfigureSliderImages } from '@/components/CompanyDetailComp/PortalSettings/components/ConfigureSliderImages';
-
+import { usePortalSettings } from '../../hooks/hook';
 import CandidatePoratlSettingsSkeleton from './components/CandidatePoratlSettingsSkeleton';
+import ConfigureCandidateGreeting from './components/ConfigureCandidateGreeting';
+import ConfigureCompanyEdit from './components/ConfigureCompanyEdit';
 import { ConfigureCoverImage } from './components/ConfigureCoverImage';
+import { ConfigureSliderImages } from './components/ConfigureSliderImages';
 
 function CandidatePortalSettings() {
   const { isPending } = usePortalSettings();
