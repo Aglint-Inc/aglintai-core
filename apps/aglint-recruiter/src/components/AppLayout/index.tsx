@@ -18,6 +18,7 @@ import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import defaultProfileImage from '../../../public/images/default-user-profile.svg';
 import { NotFound } from '../Common/404';
@@ -126,7 +127,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Button>
               <SideNavbar />
             </div>
-            <div className='flex flex-col items-center space-y-3 pb-3'>
+            <div className='mb-3 flex flex-col items-center space-y-3'>
               <Tooltip>
                 <TooltipTrigger>
                   <Button variant='link' asChild>
@@ -137,15 +138,6 @@ export default function AppLayout({ children, appRouter = false }) {
                         }) + '?profile=true'
                       }
                     >
-                      {/* <Image
-                        src={userDetails?.profile_image || defaultProfileImage}
-                        alt={name}
-                        width={32}
-                        height={32}
-                        className='rounded-sm'
-                        style={{ objectFit: 'cover' }}
-                      /> */}
-
                       <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
                         <AvatarImage
                           src={
@@ -162,7 +154,9 @@ export default function AppLayout({ children, appRouter = false }) {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent align='center' side='right'>
-                  <p>Your profile</p>
+                  <p>
+                    {capitalizeAll(userDetails?.first_name) || 'Your profile'}
+                  </p>
                 </TooltipContent>
               </Tooltip>
               <Tooltip>
