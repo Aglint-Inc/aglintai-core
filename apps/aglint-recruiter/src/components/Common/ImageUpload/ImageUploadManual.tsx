@@ -8,7 +8,7 @@ import ROUTES from '@/utils/routing/routes';
 
 function ImageUploadManual({
   image,
-  size,
+  size = 64,
   imageFile,
   setChanges = null,
 }: {
@@ -44,7 +44,7 @@ function ImageUploadManual({
         onMouseEnter={() => setIsStackHovered(true)}
         onMouseLeave={() => setIsStackHovered(false)}
       >
-        <Avatar className={`w-${size} h-${size} rounded-lg`}>
+        <Avatar className={`w-[${size}px] h-[${size}px] rounded-lg`}>
           <AvatarImage
             src={initImage || '/images/emptyProfile.jpg'}
             alt='Profile'

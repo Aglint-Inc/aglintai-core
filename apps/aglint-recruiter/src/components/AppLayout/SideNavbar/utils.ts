@@ -98,13 +98,13 @@ export const navList: {
     active: ['/integrations', '/integrations/[platform]'],
   },
   {
-    text: 'Analytics',
+    text: 'Reports',
     SubComponents: null,
-    route: ROUTES['/analytics'](),
+    route: '/reports?tab=interviewMetrics',
     comingSoon: false,
     isVisible: true,
     permission: ['company_settings_module'],
-    active: ['/analytics'],
+    active: ['/reports'],
   },
   {
     text: 'Company Settings',

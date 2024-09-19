@@ -171,6 +171,7 @@ export const PATHS = [
   '/jobs',
   '/requests/[id]',
   '/requests/history',
+  '/requests/history',
   '/requests',
   '/scheduling/all',
   '/scheduling/dashboard',
@@ -180,9 +181,9 @@ export const PATHS = [
   '/user/[user]',
   '/workflows/[workflow]',
   '/workflows',
-  '/analytics',
   '/auth/callback',
   '/auth/redirect',
+  '/reports',
   '/candidate/[application_id]/home',
   '/candidate/[application_id]/interviews',
   '/candidate/[application_id]/messages',
@@ -196,7 +197,6 @@ export const PATHS = [
   '/job-post/[id]',
   '/login',
   '/portal',
-  '/reports',
   '/reset-password',
   '/scheduling/invite/[id]',
   '/scheduling/request-availability/[request_id]',
@@ -272,5 +272,5 @@ export const PATHS = [
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;

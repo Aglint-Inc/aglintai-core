@@ -8,7 +8,7 @@ import Overview from '../Overview';
 function ScheduleDetailsTabs() {
   const tabs = [
     {
-      name: 'Details',
+      name: 'Overview',
       value: 'details',
       comp: <Overview />,
     },
@@ -18,12 +18,12 @@ function ScheduleDetailsTabs() {
       comp: <JobDetails />,
     },
     {
-      name: 'Instructions',
+      name: 'Interview Instructions',
       value: 'instructions',
       comp: <ScheduleDetailInstructions />,
     },
     {
-      name: 'Feedback',
+      name: 'Interview Feedback',
       value: 'feedback',
       comp: <FeedbackWindow />,
     },

@@ -28,7 +28,7 @@ import {
 } from 'date-fns';
 import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { useAnalyticsContext } from 'src/app/(authenticated)/analytics/_common/context/AnalyticsContext/AnalyticsContextProvider';
+import { useAnalyticsContext } from 'src/app/(authenticated)/reports/_common/context/AnalyticsContext/AnalyticsContextProvider';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -70,7 +70,12 @@ export default function Component() {
   const applyFilter = (filters) => {
     handleSetFilter(filters);
   };
-
+  const clear_all =
+    filters.job ||
+    filters.department ||
+    filters.location ||
+    filters.dateRange ||
+    false;
   const renderSelect = <
     X extends keyof typeof filtersOptions,
     T extends (typeof filtersOptions)[X][number],
@@ -108,12 +113,16 @@ export default function Component() {
         </div>
         {value && (
           <Button
-            variant='ghost'
+            variant='outline'
             // size='icon'
             className='h-9 w-9 flex-shrink-0'
             onClick={() => clearFilter(placeholder)}
           >
-            <X className='h-4 w-4' />
+            <X
+              style={{
+                transform: 'scale(6.5)',
+              }}
+            />
           </Button>
         )}
       </div>
@@ -185,16 +194,32 @@ export default function Component() {
               </div>
             </PopoverContent>
           </Popover>
+          {Boolean(filters.dateRange?.to) && (
+            <Button
+              variant='outline'
+              // size='icon'
+              className='h-9 w-9 flex-shrink-0'
+              onClick={() => handleFilterChange({ dateRange: null })}
+            >
+              <X
+                style={{
+                  transform: 'scale(6.5)',
+                }}
+              />
+            </Button>
+          )}
         </div>
         <div className='flex items-center space-x-2'>
-          <Button
-            variant='ghost'
-            size='sm'
-            className='h-9 min-w-[120px]'
-            onClick={clearAllFilter}
-          >
-            Clear All
-          </Button>
+          {clear_all && (
+            <Button
+              variant='ghost'
+              size='sm'
+              className='h-9 min-w-[120px]'
+              onClick={clearAllFilter}
+            >
+              Clear All
+            </Button>
+          )}
           <Button
             onClick={() => {
               applyFilter(filters);

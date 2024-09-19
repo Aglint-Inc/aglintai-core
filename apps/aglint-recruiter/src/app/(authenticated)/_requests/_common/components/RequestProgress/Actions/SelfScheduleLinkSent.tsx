@@ -2,13 +2,13 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Check } from 'lucide-react';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 import { useRequests } from '@/context/RequestsContext';
 
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
-  const { query } = useRouter();
+  const query = useParams();
   const {
     requests: { data: requestList },
   } = useRequests();

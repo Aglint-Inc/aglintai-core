@@ -84,7 +84,10 @@ export function TableRow({
       )}
       {isInterviewVisible && (
         <div className='mr-4 w-[250px]'>
-          <StageProgress interview_plans={application.interview_plans} />
+          <StageProgress
+            interview_plans={application.interview_plans}
+            currentStep={application.interview_plans.length}
+          />
         </div>
       )}
       <div className='mr-4 w-[250px] truncate'>

@@ -26,7 +26,7 @@ const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
         value={value}
         onChange={(e) => onValueChange(+e.target.value)}
         max={max}
-        className='w-[70px]'
+        className='w-[70px] h-9'
       />
       <Tabs
         defaultValue={type}

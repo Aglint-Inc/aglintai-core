@@ -2,10 +2,11 @@ import {
   type ApiBodyAgentSupervisor,
   type Message,
 } from '@aglint/shared-types';
+import { type ChatType } from '@requests/components/AgentChats/ChatMessageList/hooks/fetch';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { type ChatType } from '../components/Requests/AgentChats/ChatMessageList/hooks/fetch';
+// import { type ChatType } from '../components/Requests/AgentChats/ChatMessageList/hooks/fetch';
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
 
 const ChatApp = () => {

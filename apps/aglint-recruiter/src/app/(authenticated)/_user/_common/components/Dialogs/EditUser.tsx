@@ -16,7 +16,7 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
   const user_id = router.query.user as string;
   const { refetch: interviewerDetailsRefetch } = useInterviewer();
 
-  const { data: members } = useMemberList();
+  const { data: members, refetch: memberListRefetch } = useMemberList();
   const details = members?.find((member) => member.user_id === user_id);
 
   return (
@@ -31,7 +31,10 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
             }))
             .filter((mem) => mem.id !== recruiterUser.user_id)}
           member={details}
-          refetch={interviewerDetailsRefetch}
+          refetch={async () => {
+            await interviewerDetailsRefetch();
+            await memberListRefetch();
+          }}
           onClose={() => {
             setIsOpen(null);
             //remove query param

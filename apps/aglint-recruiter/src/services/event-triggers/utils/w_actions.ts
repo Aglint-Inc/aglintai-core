@@ -16,9 +16,9 @@ export const getWActions = async ({
   );
 
   return {
-    company_actions: all_actions.filter(
-      (act) => act.workflow.workflow_type === 'system',
-    ),
+    company_actions: all_actions
+      .filter((w) => w.workflow)
+      .filter((act) => act.workflow.workflow_type === 'system'),
     request_workflows: request_id
       ? all_actions.filter((act) => act.workflow.request_id === request_id)
       : [],

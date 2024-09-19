@@ -66,8 +66,8 @@ export type LinkProps =
       path: Path<'/requests'>;
     }
   | {
-      module: 'Analytics';
-      path: Path<'/analytics'>;
+      module: 'Reports';
+      path: Path<'/reports'>;
     };
 
 export type SubTabs = {

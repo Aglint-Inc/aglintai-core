@@ -8,7 +8,7 @@ import {
 import {
   type AnalyticsContextInterface,
   type AnalyticsFilters,
-} from 'src/app/(authenticated)/analytics/_common/context/AnalyticsContext/Type';
+} from 'src/app/(authenticated)/reports/_common/context/AnalyticsContext/Type';
 
 import { supabase } from '@/utils/supabase/client';
 

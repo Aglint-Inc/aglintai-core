@@ -1,11 +1,9 @@
-/* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { Dialog, DialogContent } from '@components/ui/dialog';
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +21,6 @@ import {
   Star,
   User,
   Users,
-  X,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
@@ -31,7 +28,8 @@ import { useMemo, useState } from 'react';
 import axios from '@/client/axios';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -526,37 +524,38 @@ function EditFeedbackPopUp({
   return (
     <>
       {selectedInterviewer?.interviewer && (
-        <Dialog
+        <UIDialog
+          title='My Feedback'
+          size='xl'
           open={selectedInterviewer.interviewer !== null}
-          onOpenChange={() => setSelectedInterviewer(null)}
+          onClose={() => setSelectedInterviewer(null)}
+          slotButtons={<></>}
         >
-          <DialogContent className='sm:max-w-[650px]'>
-            <FeedbackForm
-              interviewerData={selectedInterviewer.interviewer}
-              onSubmit={(feedback) =>
-                handelSubmit(feedback).then(() => {
-                  toast.success('Feedback saved successfully.');
-                  setSelectedInterviewer({
-                    index: null,
-                    interviewer: null,
-                  });
-                })
-              }
-              onCancel={() => {
+          <FeedbackForm
+            interviewerData={selectedInterviewer.interviewer}
+            onSubmit={(feedback) =>
+              handelSubmit(feedback).then(() => {
+                toast.success('Feedback saved successfully.');
                 setSelectedInterviewer({
                   index: null,
                   interviewer: null,
                 });
-              }}
-              onClose={() => {
-                setSelectedInterviewer({
-                  index: null,
-                  interviewer: null,
-                });
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+              })
+            }
+            onCancel={() => {
+              setSelectedInterviewer({
+                index: null,
+                interviewer: null,
+              });
+            }}
+            onClose={() => {
+              setSelectedInterviewer({
+                index: null,
+                interviewer: null,
+              });
+            }}
+          />
+        </UIDialog>
       )}
     </>
   );
@@ -580,9 +579,9 @@ function FeedbackCardDetails({
   handelFeedbackRequest?: any;
 }) {
   return (
-    <Card className='w-full'>
-      <CardHeader className='flex items-center space-x-4'>
-        <Avatar className='h-10 w-10'>
+    <Card className='mb-4 w-full'>
+      <CardHeader className='flex flex-row items-center space-x-4 p-4'>
+        <Avatar className='h-12 w-12'>
           <AvatarImage
             src={int.profile_image}
             alt={getFullName(int.first_name, int.last_name)}
@@ -591,127 +590,133 @@ function FeedbackCardDetails({
             {getFullName(int.first_name, int.last_name).charAt(0)}
           </AvatarFallback>
         </Avatar>
-        <div>
-          <h3 className='font-semibold'>
+        <div className='flex-grow'>
+          <h3 className='text-lg font-semibold'>
             {getFullName(int.first_name, int.last_name)}
           </h3>
           <p className='text-sm text-muted-foreground'>{int.position}</p>
         </div>
-      </CardHeader>
-      <CardContent className='space-y-4'>
-        {isFeedBackEnabled && isAdmin ? (
-          int.user_id === user_id ? (
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => {
-                if (isFeedBackEnabled) {
-                  setSelectedInterviewer({
-                    index,
-                    interviewer: int,
-                  });
-                }
-              }}
-            >
-              {int.feedback && int.feedback?.recommendation ? (
-                <>
-                  <Edit className='mr-2 h-4 w-4' />
-                  Edit Feedback
-                </>
-              ) : (
-                <>
-                  <Plus className='mr-2 h-4 w-4' />
-                  Add Feedback
-                </>
-              )}
-            </Button>
-          ) : (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant='outline' size='sm'>
-                  Re-request Feedback
+        {isFeedBackEnabled && (
+          <div className='flex-shrink-0'>
+            {isAdmin ? (
+              int.user_id === user_id ? (
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    if (isFeedBackEnabled) {
+                      setSelectedInterviewer({
+                        index,
+                        interviewer: int,
+                      });
+                    }
+                  }}
+                >
+                  {int.feedback && int.feedback?.recommendation ? (
+                    <>
+                      <Edit className='mr-2 h-4 w-4' />
+                      Edit Feedback
+                    </>
+                  ) : (
+                    <>
+                      <Plus className='mr-2 h-4 w-4' />
+                      Add Feedback
+                    </>
+                  )}
                 </Button>
-              </TooltipTrigger>
-              <TooltipContent side='bottom' align='end'>
-                <div className='flex flex-col space-y-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={(e) => {
-                      handelFeedbackRequest({
-                        e,
-                        session_id: int.session.id,
-                        relation_id: int.relation_id,
-                        recruiter_user_id: int.user_id,
-                        tool: 'slack',
-                      });
-                    }}
-                  >
-                    <MessageSquare className='mr-2 h-4 w-4' />
-                    Slack
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={(e) => {
-                      handelFeedbackRequest({
-                        e,
-                        session_id: int.session.id,
-                        relation_id: int.relation_id,
-                        recruiter_user_id: int.user_id,
-                        tool: 'email',
-                      });
-                    }}
-                  >
-                    <Mail className='mr-2 h-4 w-4' />
-                    Email
-                  </Button>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          )
-        ) : (
-          <Button
-            variant='outline'
-            size='sm'
-            onClick={() => {
-              if (isFeedBackEnabled) {
-                setSelectedInterviewer({
-                  index,
-                  interviewer: int,
-                });
-              }
-            }}
-          >
-            {int.feedback && int.feedback?.objective ? (
-              <>
-                <Edit className='mr-2 h-4 w-4' />
-                Edit Feedback
-              </>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant='outline' size='sm'>
+                      Re-request Feedback
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side='bottom' align='end'>
+                    <div className='flex flex-col space-y-2'>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={(e) => {
+                          handelFeedbackRequest({
+                            e,
+                            session_id: int.session.id,
+                            relation_id: int.relation_id,
+                            recruiter_user_id: int.user_id,
+                            tool: 'slack',
+                          });
+                        }}
+                      >
+                        <MessageSquare className='mr-2 h-4 w-4' />
+                        Slack
+                      </Button>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={(e) => {
+                          handelFeedbackRequest({
+                            e,
+                            session_id: int.session.id,
+                            relation_id: int.relation_id,
+                            recruiter_user_id: int.user_id,
+                            tool: 'email',
+                          });
+                        }}
+                      >
+                        <Mail className='mr-2 h-4 w-4' />
+                        Email
+                      </Button>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              )
             ) : (
-              <>
-                <Plus className='mr-2 h-4 w-4' />
-                Add Feedback
-              </>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => {
+                  if (isFeedBackEnabled) {
+                    setSelectedInterviewer({
+                      index,
+                      interviewer: int,
+                    });
+                  }
+                }}
+              >
+                {int.feedback && int.feedback?.objective ? (
+                  <>
+                    <Edit className='mr-2 h-4 w-4' />
+                    Edit Feedback
+                  </>
+                ) : (
+                  <>
+                    <Plus className='mr-2 h-4 w-4' />
+                    Add Feedback
+                  </>
+                )}
+              </Button>
             )}
-          </Button>
+          </div>
         )}
+      </CardHeader>
+      <CardContent className='p-4'>
         <div className='space-y-2.5'>
           {int.feedback?.recommendation ? (
             <>
-              <div className='flex items-center space-x-2.5'>
-                <Star className='h-7 w-7 text-yellow-400' />
-                <span>Recommendation Level: {int.feedback.recommendation}</span>
+              <div className='mb-2 flex items-center space-x-2.5'>
+                <Star className='h-6 w-6 text-yellow-400' />
+                <span className='text-sm font-medium'>
+                  Recommendation Level: {int.feedback.recommendation}
+                </span>
               </div>
               <div
-                className='prose prose-sm'
+                className='prose prose-sm max-w-none'
                 dangerouslySetInnerHTML={{
                   __html: int.feedback.objective,
                 }}
               />
             </>
           ) : (
-            <span className='text-muted-foreground'>
+            <span className='text-sm text-muted-foreground'>
               Not Submitted Feedback
             </span>
           )}
@@ -724,7 +729,6 @@ function FeedbackCardDetails({
 const FeedbackForm = ({
   interviewerData,
   onSubmit,
-  onClose,
   onCancel,
 }: {
   interviewerData: FeedbackWindowInterviewersType[string][number];
@@ -747,93 +751,88 @@ const FeedbackForm = ({
   return (
     // Feedback Popup Card
 
-    <div className='flex w-[650px] items-center justify-center'>
-      <div className='w-full max-w-lg rounded-lg bg-white shadow-lg'>
-        <div className='flex items-center justify-between border-b border-gray-200 p-4'>
-          <h2 className='font-semibold'>My Feedback</h2>
-          <UIButton onClick={() => onClose()} variant='ghost' size='sm'>
-            <X className='h-4 w-4' />
-          </UIButton>
-        </div>
-        <div className='p-4'>
-          <div className='flex flex-col gap-3'>
-            <div className='flex flex-col gap-1'>
-              <p>Recommendation Level</p>
-              <div>
-                <div className='flex gap-2'>
-                  {Array(10)
-                    .fill(1)
-                    .map((_, i) => {
-                      return (
-                        <Button
-                          key={i}
-                          variant='ghost'
-                          size='sm'
-                          className={`h-8 w-8 rounded-full ${
-                            (interviewer.feedback?.recommendation || 0) > i
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-secondary text-secondary-foreground'
-                          }`}
-                          onClick={() => {
-                            const temp = { ...interviewer };
-                            temp.feedback = {
-                              ...temp.feedback,
-                              recommendation: i + 1,
-                            };
-                            setInterviewer(temp);
-                          }}
-                        >
-                          {i + 1}
-                        </Button>
-                      );
-                    })}
-                </div>
-                <p>{re_mapper[interviewer.feedback?.recommendation || 0]}</p>
-              </div>
-            </div>
-            <div className='flex flex-col gap-2'>
-              <p>Feedback</p>
-              <div>
-                <TipTapAIEditor
-                  placeholder='Your feedback.'
-                  initialValue={interviewer.feedback?.objective || ''}
-                  border
-                  height='300px'
-                  isSize={false}
-                  isAlign={false}
-                  handleChange={(html) => {
-                    const temp = { ...interviewer };
-                    temp.feedback = {
-                      ...temp.feedback,
-                      objective: html,
-                    };
-                    setInterviewer(temp);
-                  }}
-                />
-              </div>
-            </div>
+    <div className='flex w-full flex-col gap-5'>
+      <div className='flex flex-col gap-1'>
+        <UITypography type='small' variant='p'>
+          Recommendation Level
+        </UITypography>
+        <div>
+          <div className='flex gap-2'>
+            {Array(10)
+              .fill(1)
+              .map((_, i) => {
+                const is = (interviewer.feedback?.recommendation || 0) > i;
+                return (
+                  <Button
+                    key={i}
+                    variant='ghost'
+                    size='sm'
+                    className={`h-8 w-8 rounded-full ${
+                      is
+                        ? 'bg-primary text-primary-foreground hover:bg-slate-950 hover:text-white'
+                        : 'bg-secondary text-secondary-foreground'
+                    }`}
+                    onClick={() => {
+                      const temp = { ...interviewer };
+                      temp.feedback = {
+                        ...temp.feedback,
+                        recommendation: i + 1,
+                      };
+                      setInterviewer(temp);
+                    }}
+                  >
+                    {i + 1}
+                  </Button>
+                );
+              })}
           </div>
+          <UITypography type='small' variant='p' className=''>
+            {re_mapper[interviewer.feedback?.recommendation || 0]}
+          </UITypography>
         </div>
-        <div className='flex justify-end gap-2 border-t border-gray-200 p-4'>
-          <Button variant='outline' size='sm' onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button
-            size='sm'
-            onClick={() => {
-              if (!interviewer.feedback) {
-                return toast.warning('Please provide feedback.');
-              }
-              onSubmit({
-                relation_id: interviewer.relation_id,
-                session_id: interviewer.session.id,
-                feedback: interviewer.feedback,
-              });
+      </div>
+      <div className='flex flex-col gap-2'>
+        <UITypography type='small' variant='p'>
+          Feedback
+        </UITypography>
+        <div>
+          <TipTapAIEditor
+            placeholder='Your feedback.'
+            initialValue={interviewer.feedback?.objective || ''}
+            border
+            height='300px'
+            isSize={false}
+            isAlign={false}
+            handleChange={(html) => {
+              const temp = { ...interviewer };
+              temp.feedback = {
+                ...temp.feedback,
+                objective: html,
+              };
+              setInterviewer(temp);
             }}
-          >
-            Submit Feedback
-          </Button>
+          />
         </div>
+      </div>
+      <div className='flex justify-end gap-2 p-4'>
+        <Button variant='outline' size='sm' onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button
+          size='sm'
+          onClick={() => {
+            if (!interviewer.feedback) {
+              return toast.warning('Please provide feedback.');
+            }
+            onSubmit({
+              relation_id: interviewer.relation_id,
+              session_id: interviewer.session.id,
+              feedback: interviewer.feedback,
+            });
+          }}
+        >
+          Submit Feedback
+        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
+import ViewRequestDetails from '@request/components/MainBody';
 import React from 'react';
-
-import ViewRequestDetails from '../ViewRequestDetails';
 
 function RequestDetailsPage() {
   return <ViewRequestDetails />;
