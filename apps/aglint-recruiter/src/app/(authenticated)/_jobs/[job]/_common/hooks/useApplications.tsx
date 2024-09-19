@@ -3,16 +3,16 @@ import { useMemo } from 'react';
 
 import { getCityStateCountry } from '@/job/utils/getCityStateCountry';
 import { getSessionNames } from '@/job/utils/getSessionNames';
-import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { api } from '@/trpc/client';
 
 import type { Applications } from '../types';
 import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
-import { useJob } from './useJob';
+import { useJobPolling } from './useJobPolling';
 
 export const useApplications = () => {
   const { job_id } = useCurrentJob();
-  const { applicationScoringPollEnabled: polling } = useJob();
+  const { opts } = useJobPolling();
 
   const application_match = useApplicationsStore(
     (state) => state.application_match,
@@ -47,12 +47,9 @@ export const useApplications = () => {
   };
 
   const query = api.jobs.job.applications.read.useInfiniteQuery(payload, {
-    refetchInterval: polling ? 30_000 : 0,
-    refetchOnMount: polling,
-    refetchOnWindowFocus: false,
+    ...opts,
     placeholderData: keepPreviousData,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    trpc: TRPC_CLIENT_CONTEXT,
   });
 
   const applications = useMemo(
