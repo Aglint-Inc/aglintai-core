@@ -10,5 +10,5 @@ export const useApplicationActivity = () => {
   });
   const refetch = () =>
     utils.application.applicationActivity.invalidate({ application_id });
-  return { ...query, refetch };
+  return { ...query, refetch, application_id };
 };

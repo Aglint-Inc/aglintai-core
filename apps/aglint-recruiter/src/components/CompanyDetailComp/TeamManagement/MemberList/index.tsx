@@ -1,4 +1,5 @@
 import type { RecruiterUserType } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
@@ -11,7 +12,6 @@ import React from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { getFullName } from '@/utils/jsonResume';
 
 import { UserListThreeDot } from './ThreeDot';
 
