@@ -144,8 +144,8 @@ function FilterSwitcher(filter: FiltersTypes, index: number) {
           isActive={filter.isActive}
           isDotVisible={false}
           slotLeftIcon={
-            <div className='pointer-events-none'>
-              <Switch checked={filter.isActive} />
+            <div className='pointer-events-none flex flex-row items-center'>
+              <Switch checked={filter.isActive} className='h-4 w-10' />
             </div>
           }
           text={capitalizeFirstLetter(filter.name || '')}
