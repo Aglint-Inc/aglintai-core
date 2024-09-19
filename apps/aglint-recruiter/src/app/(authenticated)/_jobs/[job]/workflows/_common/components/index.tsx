@@ -13,7 +13,8 @@ import { useRouter } from 'next/router';
 import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { useJob, useJobDashboardActions } from '@/job/hooks';
+import { useJob } from '@/job/hooks';
+import { useWorkflowsActions } from '@/job/workflows/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
@@ -88,16 +89,12 @@ const BreadCrumbs = () => {
 
 const Actions = () => {
   const { manageJob } = useJob();
-  const { setPopup } = useJobDashboardActions();
+  const { setOpen } = useWorkflowsActions();
   return (
     <>
       <div className='flex items-center justify-between gap-2'>
         {manageJob && (
-          <Button
-            variant='outline'
-            onClick={() => setPopup({ open: true })}
-            size='sm'
-          >
+          <Button variant='outline' onClick={() => setOpen(true)} size='sm'>
             <Zap className='mr-2 h-4 w-4' />
             Add
           </Button>

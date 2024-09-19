@@ -6,9 +6,9 @@
  *
  */
 
-import { JobDashboardStoreContext } from '@/job/contexts/jobDashboardStoreContext';
+import { WorkflowsStoreContext } from '@/job/workflows/contexts/workflowsStoreContext';
 import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 
-export const useJobDashboardStore = createContextStoreSelector(
-  JobDashboardStoreContext,
+export const useWorkflowsStore = createContextStoreSelector(
+  WorkflowsStoreContext,
 );
