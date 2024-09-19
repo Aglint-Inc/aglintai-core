@@ -1,13 +1,14 @@
-import Interviews from './Interviews';
-import SeoSettings from './SEO/SeoSettings';
+import { SeoPro } from '../Common/SeoPro';
+import SchedulingDashboard from './Dashboard';
 
 function SchedulingMainComp() {
   return (
     <>
-      <SeoSettings tab={'interviews'} />
-
-      <Interviews />
-      {/* <SchedulingDashboard /> */}
+      <SeoPro
+        title='Interviews - Scheduler | Aglint AI'
+        description='AI for People Products'
+      />
+      <SchedulingDashboard />
     </>
   );
 }

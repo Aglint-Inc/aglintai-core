@@ -87,6 +87,7 @@ export type APIConfirmRecruiterSelectedOption = {
   selectedOption: PlanCombinationRespType;
   availability_req_id: string;
   user_tz: string;
+  request_id: string;
 };
 
 export type CandidateDirectBookingType = v.InferOutput<

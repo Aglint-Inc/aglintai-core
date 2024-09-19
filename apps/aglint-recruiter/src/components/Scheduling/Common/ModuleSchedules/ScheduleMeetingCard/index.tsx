@@ -1,3 +1,4 @@
+import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -6,7 +7,6 @@ import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadg
 import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { type getAllInterviews } from '@/components/Scheduling/Interviews/_common/hooks/useAllInterviews';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getFullName } from '@/utils/jsonResume';
 
