@@ -13,6 +13,7 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
+import { updateInterviewSessionsDurations } from '@request/functions';
 import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
@@ -25,6 +26,7 @@ import {
   Briefcase,
   Calendar,
   ChevronDown,
+  Coffee,
   Edit2,
   Eye,
   MapPin,
@@ -40,6 +42,8 @@ import { useEditSession } from 'src/app/(authenticated)/_jobs/[application]/_com
 import MemberCard from '@/components/Common/MemberCard';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
+import { UIDivider } from '@/components/Common/UIDivider';
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -47,7 +51,9 @@ import { useMemberList } from '@/hooks/useMemberList';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
 import dayjs from '@/utils/dayjs';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
+import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import CandidateAvailability from '../CandidateAvailability';
@@ -396,7 +402,10 @@ export default function ViewRequestDetails() {
                   </div>
                   <RequestNotes />
 
-                  <SessionCards sessions={sessions} />
+                  <SessionCards
+                    refetchMeetings={refetchMeetings}
+                    sessions={sessions}
+                  />
                 </CardContent>
               </Card>
               <RecentRequests applicationId={selectedRequest?.application_id} />
@@ -508,11 +517,14 @@ export default function ViewRequestDetails() {
 
 function SessionCards({
   sessions,
+  refetchMeetings,
 }: {
   sessions: ApiInterviewSessionRequest['response']['sessions'];
+  refetchMeetings: () => Promise<void>;
 }) {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { onClickEdit } = useEditSession();
+
   return (
     <div>
       {/* <SideDrawerEdit refetch={refetch} /> */}
@@ -524,60 +536,91 @@ function SessionCards({
       <div className='space-y-2 rounded-lg border'>
         {sessions &&
           sessions.map((session, index) => (
-            <Card key={index} className='shado-none border-0'>
-              <CardHeader
-                className='cursor-pointer px-4 py-2'
-                onClick={() => {
-                  setExpandedCard(expandedCard === index ? null : index);
-                }}
-              >
-                <div className='flex items-center justify-between'>
-                  <CardTitle className='flex-1 truncate text-sm font-medium'>
-                    {capitalizeFirstLetter(session.interview_session.name)}
-                  </CardTitle>
-                  <div className='flex items-center space-x-2'>
-                    <Badge variant='outline' className='text-xs'>
-                      {capitalizeFirstLetter(session.interview_meeting.status)}
-                    </Badge>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onClickEdit(session);
-                      }}
-                      variant='outline'
-                      size='sm'
-                    >
-                      <Edit2 className='mr-2 h-4 w-4' />
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(
-                          `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
-                          '_blank',
-                        );
-                      }}
-                      variant='outline'
-                      size='sm'
-                    >
-                      <Eye className='mr-2 h-4 w-4' />
-                      View Details
-                    </Button>
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform ${
-                        expandedCard === index ? 'rotate-180 transform' : ''
-                      }`}
-                    />
+            <>
+              <Card key={index} className='shado-none border-0'>
+                <CardHeader
+                  className='cursor-pointer px-4 py-2'
+                  onClick={() => {
+                    setExpandedCard(expandedCard === index ? null : index);
+                  }}
+                >
+                  <div className='flex items-center justify-between'>
+                    <CardTitle className='flex-1 truncate text-sm font-medium'>
+                      {capitalizeFirstLetter(session.interview_session.name)}
+                    </CardTitle>
+                    <div className='flex items-center space-x-2'>
+                      <Badge variant='outline' className='text-xs'>
+                        {capitalizeFirstLetter(
+                          session.interview_meeting.status,
+                        )}
+                      </Badge>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onClickEdit(session);
+                        }}
+                        variant='outline'
+                        size='sm'
+                      >
+                        <Edit2 className='mr-2 h-4 w-4' />
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(
+                            `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
+                            '_blank',
+                          );
+                        }}
+                        variant='outline'
+                        size='sm'
+                      >
+                        <Eye className='mr-2 h-4 w-4' />
+                        View Details
+                      </Button>
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${
+                          expandedCard === index ? 'rotate-180 transform' : ''
+                        }`}
+                      />
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CollapseContent
-                collapsed={expandedCard === index}
-                currentSession={session}
-                candidate={null}
-              />
-            </Card>
+                </CardHeader>
+                <CollapseContent
+                  collapsed={expandedCard === index}
+                  currentSession={session}
+                  candidate={null}
+                />
+              </Card>
+              <div className='px-2'>
+                {session?.interview_session?.break_duration ? (
+                  <div className='flex items-center justify-center space-x-2'>
+                    <UIDivider />
+                    <div className='flex items-center space-x-2'>
+                      <Coffee className='h-4 w-4' /> <p>Break:</p>
+                    </div>
+                    <UISelectDropDown
+                      className='max-w-[150px]'
+                      fullWidth
+                      fieldSize='medium'
+                      menuOptions={breakDurations.map((ele) => ({
+                        name: getBreakLabel(ele),
+                        value: ele.toString(),
+                      }))}
+                      value={session.interview_session.break_duration.toString()}
+                      onValueChange={(value) => {
+                        updateInterviewSessionsDurations(
+                          session.interview_session.id,
+                          parseInt(value),
+                        ).then(() => refetchMeetings());
+                      }}
+                    />
+                    <UIDivider />
+                  </div>
+                ) : null}
+              </div>
+            </>
           ))}
       </div>
     </div>

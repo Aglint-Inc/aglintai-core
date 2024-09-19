@@ -1,15 +1,14 @@
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
-import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import _ from 'lodash';
-import { AlertCircle, Minus, Plus } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
-import UITextField from '@/components/Common/UITextField';
+import NumberInput from '@/components/Common/UINumberInput';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
@@ -170,114 +169,40 @@ function TrainingSettingDrawer(
 
               <div className='space-y-2'>
                 <Label>Number of Reverse Shadows</Label>
-                <div className='flex items-center gap-1'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    disabled={localModule.settings.noReverseShadow === 1}
-                    onClick={() => {
-                      setLocalModule({
-                        ...localModule,
-                        settings: {
-                          ...localModule.settings,
-                          noReverseShadow: Number(
-                            localModule.settings.noReverseShadow - 1,
-                          ),
-                        },
-                      });
-                    }}
-                  >
-                    <Minus className='h-4 w-4' />
-                  </Button>
-                  <UITextField
-                    className='h-7 w-16'
-                    type='number'
-                    value={localModule.settings.noReverseShadow}
-                    onChange={(e) =>
-                      setLocalModule({
-                        ...localModule,
-                        settings: {
-                          ...localModule.settings,
-                          noReverseShadow:
-                            Number(e.target.value) === 0
-                              ? editModule.settings.noReverseShadow
-                              : Number(e.target.value),
-                        },
-                      })
-                    }
-                  />
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      setLocalModule({
-                        ...localModule,
-                        settings: {
-                          ...localModule.settings,
-                          noReverseShadow: Number(
-                            localModule.settings.noReverseShadow + 1,
-                          ),
-                        },
-                      });
-                    }}
-                  >
-                    <Plus className='h-4 w-4' />
-                  </Button>
-                </div>
+                <NumberInput
+                  value={localModule.settings.noReverseShadow}
+                  min={1}
+                  max={10}
+                  inputWidth='w-16'
+                  onChange={(newValue) => {
+                    setLocalModule({
+                      ...localModule,
+                      settings: {
+                        ...localModule.settings,
+                        noReverseShadow: newValue,
+                      },
+                    });
+                  }}
+                />
               </div>
 
               <div className='space-y-2'>
                 <Label>Number of Shadows</Label>
-                <div className='flex items-center gap-1'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    disabled={localModule.settings.noShadow === 1}
-                    onClick={() => {
-                      setLocalModule({
-                        ...localModule,
-                        settings: {
-                          ...localModule.settings,
-                          noShadow: Number(localModule.settings.noShadow - 1),
-                        },
-                      });
-                    }}
-                  >
-                    <Minus className='h-4 w-4' />
-                  </Button>
-                  <Input
-                    className='h-7 w-16'
-                    type='number'
-                    value={localModule.settings.noShadow}
-                    onChange={(e) =>
-                      setLocalModule({
-                        ...localModule,
-                        settings: {
-                          ...localModule.settings,
-                          noShadow:
-                            Number(e.target.value) === 0
-                              ? editModule.settings.noShadow
-                              : Number(e.target.value),
-                        },
-                      })
-                    }
-                  />
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      setLocalModule({
-                        ...localModule,
-                        settings: {
-                          ...localModule.settings,
-                          noShadow: Number(localModule.settings.noShadow + 1),
-                        },
-                      });
-                    }}
-                  >
-                    <Plus className='h-4 w-4' />
-                  </Button>
-                </div>
+                <NumberInput
+                  value={localModule.settings.noShadow}
+                  min={1}
+                  max={10}
+                  inputWidth='w-16'
+                  onChange={(newValue) => {
+                    setLocalModule({
+                      ...localModule,
+                      settings: {
+                        ...localModule.settings,
+                        noShadow: newValue,
+                      },
+                    });
+                  }}
+                />
               </div>
             </div>
           </div>
