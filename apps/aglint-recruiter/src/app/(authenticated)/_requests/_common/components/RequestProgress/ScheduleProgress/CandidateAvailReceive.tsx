@@ -1,28 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@request/components/CandidateAvailability/store';
-import {
-  setApplicationIdForConfirmAvailability,
-  setCandidateAvailabilityId,
-  useConfirmAvailabilitySchedulingFlowStore,
-} from '@request/components/ConfirmAvailability/store';
 import { Bell, Lightbulb, WandSparkles } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { UIButton } from '@/components/Common/UIButton';
 import { useRequest } from '@/context/RequestContext';
-import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
-import { useRequestAvailabilityDetails } from '../../../hooks';
 import { useRequestProgressProvider } from '../progressCtx';
 import { RequestProgressTracker } from '../RequestProgressTracker';
 import { type RequestProgressMapType } from '../types';
@@ -106,17 +92,10 @@ export default CandidateAvailReceive;
 
 const RequestEvents = ({
   currProgress,
-  isScheduled,
 }: {
   currProgress: DatabaseTable['request_progress'][];
   isScheduled: boolean;
 }) => {
-  const { candidateAvailabilityId } =
-    useConfirmAvailabilitySchedulingFlowStore();
-  const { isFetching } = useRequestAvailabilityDetails({
-    availability_id: candidateAvailabilityId,
-  });
-
   const { reqTriggerActionsMap } = useRequestProgressProvider();
   const { reqProgresMp } = useMemo(() => {
     const mp: RequestProgressMapType = {};
@@ -132,8 +111,6 @@ const RequestEvents = ({
     };
   }, [currProgress]);
 
-  let lastEvent: DatabaseTable['request_progress'];
-
   let isManual = false;
   if (
     reqTriggerActionsMap['onReceivingAvailReq'] &&
@@ -141,35 +118,6 @@ const RequestEvents = ({
   ) {
     isManual = false;
   }
-  if (currProgress.length > 0) {
-    lastEvent = currProgress[currProgress.length - 1];
-  }
-  const handleConfirmSlot = async (request_id: string) => {
-    try {
-      const [candReq] = supabaseWrap(
-        await supabase
-          .from('candidate_request_availability')
-          .select()
-          .eq('request_id', request_id),
-      );
-      setCandidateAvailabilityId(candReq.id);
-      setApplicationIdForConfirmAvailability(candReq.application_id);
-    } catch (err) {
-      toast.error('Some thing went wrong');
-    }
-  };
-
-  const handleReReq = async (request_id: string) => {
-    const [avail_req] = supabaseWrap(
-      await supabase
-        .from('candidate_request_availability')
-        .select()
-        .eq('request_id', request_id),
-    );
-    setCandidateAvailabilityDrawerOpen(true);
-    setReRequestAvailability(true);
-    setCandidateAvailabilityIdForReRequest(avail_req.id);
-  };
 
   return (
     <>
@@ -210,35 +158,6 @@ const RequestEvents = ({
                     );
                   })}
               </>
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={
-                !isScheduled &&
-                lastEvent &&
-                lastEvent.event_type === 'CAND_AVAIL_REC'
-              }
-            >
-              <div className='gap-1'>
-                <UIButton
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    handleConfirmSlot(lastEvent.request_id);
-                  }}
-                  isLoading={isFetching}
-                >
-                  Schedule Interview
-                </UIButton>
-                <UIButton
-                  variant='default'
-                  size='sm'
-                  onClick={() => {
-                    handleReReq(lastEvent.request_id);
-                  }}
-                >
-                  Re Request Availability
-                </UIButton>
-              </div>
             </ShowCode.When>
           </>
         }
