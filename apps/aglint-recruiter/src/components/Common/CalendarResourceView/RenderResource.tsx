@@ -1,10 +1,10 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 
-import MuiAvatar from '../MuiAvatar';
 import { type Resource } from './types';
 
 function RenderResourceContent(resourceInfo) {
@@ -15,13 +15,10 @@ function RenderResourceContent(resourceInfo) {
     <Tooltip>
       <TooltipTrigger asChild>
         <div className='flex gap-2 p-2'>
-          <MuiAvatar
-            src={data.profile_pic}
-            level={data.name}
-            width='32px'
-            height='32px'
-            fontSize='12px'
-          />
+          <Avatar className='h-8 w-8'>
+            <AvatarImage src={data.profile_pic} alt={data.name} />
+            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+          </Avatar>
           <div className='flex flex-col'>
             <p className='text-xs'>{data.name}</p>
             <p className='text-xs text-neutral-400'>{data.position}</p>

@@ -12,7 +12,7 @@ import { supabase } from '@/utils/supabase/client';
 
 const useCandidatePortalContext = () => {
   const params = useParams();
-  const application_id = params?.application_id as string;
+  const application_id = params?.application as string;
   void api.candidatePortal.get_profile.usePrefetchQuery({ application_id });
   return { application_id };
 };

@@ -1,4 +1,5 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -34,7 +35,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
-import { getFullName } from '@/utils/jsonResume';
 import toast from '@/utils/toast';
 
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';

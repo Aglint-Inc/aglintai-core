@@ -1,9 +1,9 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Minus, Plus } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { getFullName } from '@/utils/jsonResume';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
 
 import { useAlterCount } from '../../../../hooks/useAlterCount';

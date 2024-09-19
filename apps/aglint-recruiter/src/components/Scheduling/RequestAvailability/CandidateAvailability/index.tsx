@@ -1,9 +1,9 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { getFullName, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
@@ -11,12 +11,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
 import Footer from '@/components/Common/Footer';
-import MuiAvatar from '@/components/Common/MuiAvatar';
+import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/utils/jsonResume';
 import timeZones from '@/utils/timeZone';
 
 import {
@@ -243,7 +242,7 @@ function CandidateAvailability() {
     return (
       <div className='flex h-screen w-full items-center justify-center bg-neutral-100'>
         <div className='w-[120px] -translate-y-1/2'>
-          <CandidateSlotLoad />
+          <Loader className='h-10 w-10' />
         </div>
       </div>
     );
@@ -301,12 +300,15 @@ function CandidateAvailability() {
           <div className='w-lg flex flex-col items-center'>
             <div className='mb-4 flex items-center justify-center'>
               {candidateRequestAvailability?.recruiter.logo ? (
-                <MuiAvatar
-                  height='100px'
-                  width='100px'
-                  level=''
-                  src={candidateRequestAvailability?.recruiter.logo}
-                />
+                <Avatar className='h-[100px] w-[100px]'>
+                  <AvatarImage
+                    src={candidateRequestAvailability?.recruiter.logo}
+                    alt={candidateRequestAvailability?.recruiter.name}
+                  />
+                  <AvatarFallback>
+                    {candidateRequestAvailability?.recruiter.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
               ) : null}
             </div>
             <div

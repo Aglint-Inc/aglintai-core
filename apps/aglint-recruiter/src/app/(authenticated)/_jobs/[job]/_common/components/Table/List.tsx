@@ -1,3 +1,4 @@
+import { ScrollArea } from '@components/ui/scroll-area';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React, { useEffect, useRef } from 'react';
 
@@ -54,39 +55,43 @@ const List = ({
   if ((allRows ?? []).length === 0) return <EmptyList />;
 
   return (
-    <div ref={parentRef} className='h-[calc(100vh-300px)] overflow-y-auto'>
+    <div>
       {header}
-      <div
-        className='relative w-full'
-        style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
-        }}
-      >
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-          const isLoaderRow = virtualRow.index > allRows.length - 1;
-          const application = allRows[virtualRow.index];
-          return (
-            <div
-              key={virtualRow.index}
-              className='absolute left-0 top-0 w-full'
-              style={{
-                height: `${virtualRow.size}px`,
-                transform: `translateY(${virtualRow.start}px)`,
-                // zIndex: count - virtualRow.index,
-              }}
-            >
-              {isLoaderRow ? (
-                hasNextPage ? (
-                  loader
-                ) : (
-                  <></>
-                )
-              ) : (
-                <DNDCard application={application} />
-              )}
-            </div>
-          );
-        })}
+      <div ref={parentRef} className='h-[calc(100vh-350px)]'>
+        <ScrollArea className='h-full w-full'>
+          <div
+            className='relative w-full'
+            style={{
+              height: `${rowVirtualizer.getTotalSize()}px`,
+            }}
+          >
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const isLoaderRow = virtualRow.index > allRows.length - 1;
+              const application = allRows[virtualRow.index];
+              return (
+                <div
+                  key={virtualRow.index}
+                  className='absolute left-0 top-0 w-full'
+                  style={{
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${virtualRow.start}px)`,
+                    // zIndex: count - virtualRow.index,
+                  }}
+                >
+                  {isLoaderRow ? (
+                    hasNextPage ? (
+                      loader
+                    ) : (
+                      <></>
+                    )
+                  ) : (
+                    <DNDCard application={application} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );

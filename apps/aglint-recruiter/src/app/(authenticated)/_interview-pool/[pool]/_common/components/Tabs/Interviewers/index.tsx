@@ -1,4 +1,5 @@
 import { type PauseJson } from '@aglint/shared-types';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent } from '@components/ui/card';
 import {
   Table,
@@ -8,13 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Popover, PopoverContent,PopoverTrigger } from '@radix-ui/react-popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@radix-ui/react-popover';
 import { MoreVertical, PersonStanding } from 'lucide-react';
 import { Pause, Play, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -94,7 +98,7 @@ function Interviewers() {
         <CardContent className='p-0'>
           <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow >
+              <TableRow>
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>
@@ -122,10 +126,15 @@ function Interviewers() {
                         })}
                       >
                         <div className='flex items-center space-x-3'>
-                          <MuiAvatar
-                            src={interviewer.image}
-                            level={interviewer.name}
-                          />
+                          <Avatar className='h-8 w-8'>
+                            <AvatarImage
+                              src={interviewer.image}
+                              alt={interviewer.name}
+                            />
+                            <AvatarFallback>
+                              {interviewer.name.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
                           <div>
                             <div className='flex flex-row gap-2 font-medium text-gray-900'>
                               {interviewer.name}
@@ -165,7 +174,7 @@ function Interviewers() {
                     <TableCell className='w-2/12'>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <div className='invisible group-hover:visible flex justify-end'>
+                          <div className='invisible flex justify-end group-hover:visible'>
                             <UIButton variant='ghost' size='sm'>
                               <MoreVertical className='h-4 w-4' />
                             </UIButton>
@@ -174,14 +183,12 @@ function Interviewers() {
                         <PopoverContent
                           align='start'
                           side='bottom'
-                          
                           className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
                         >
                           <div className='flex flex-col'>
-                           
                             {interviewer.rel.pause_json ? (
                               <div
-                                className='flex items-center p-2 cursor-pointer hover:bg-gray-100 rounded-sm'
+                                className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100'
                                 onClick={() => {
                                   setSelUser(interviewer.rel);
                                   setIsResumeDialogOpen(true);
@@ -192,7 +199,7 @@ function Interviewers() {
                               </div>
                             ) : (
                               <div
-                                className='flex items-center p-2 cursor-pointer hover:bg-gray-100 rounded-sm'
+                                className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100'
                                 onClick={() => {
                                   setSelUser(interviewer.rel);
                                   setIsPauseDialogOpen(true);
@@ -202,8 +209,8 @@ function Interviewers() {
                                 Pause
                               </div>
                             )}
-                             <div
-                              className='flex items-center p-2 cursor-pointer hover:bg-gray-100 rounded-sm'
+                            <div
+                              className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100'
                               onClick={() => {
                                 setSelUser(interviewer.rel);
                                 setIsDeleteMemberDialogOpen(true);

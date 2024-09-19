@@ -1,8 +1,10 @@
-import { Button } from '@components/ui/button';
+
+import { Send } from 'lucide-react';
 import { useState } from 'react';
 
 import { useAllIntegrations } from '@/queries/intergrations';
 
+import { UIButton } from '../Common/UIButton';
 import ATSTools from './ATSTools';
 import MessagingTools from './MessagingTools';
 import RequestNew from './RequestNewPopUp';
@@ -18,15 +20,15 @@ function Integrations() {
         <header className='mb-4'>
           <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-3xl font-semibold'>Integrations</h1>
+              <h1 className='text-xl font-semibold'>Integrations</h1>
               <p className='mb-4 text-gray-600'>
                 Connect your favorite tools to streamline your recruitment
                 process.
               </p>
             </div>
-            <Button variant='outline' onClick={() => setIsRequestNewOpen(true)}>
+            <UIButton  size='md' variant='default' leftIcon={<Send/>} onClick={() => setIsRequestNewOpen(true)}>
               Request New
-            </Button>
+            </UIButton>
             <RequestNew
               isOpen={isRequestNewOpen}
               close={() => setIsRequestNewOpen(false)}
