@@ -16,7 +16,8 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const router = useRouter();
-  const { application_id }: { application_id: string } = useParams();
+  const { application: application_id }: { application: string } = useParams();
+
   const [email, setEmail] = useState(null);
   const [status, setStatus] = useState<'send' | 'sent'>('send');
 
