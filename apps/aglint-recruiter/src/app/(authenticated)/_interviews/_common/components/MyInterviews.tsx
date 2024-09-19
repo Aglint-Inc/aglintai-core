@@ -12,13 +12,13 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/queries/intergrations';
 
-import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
-import { InterviewMemberSide } from '../_common/components/InterviewMemberSide';
-import { NewMyScheduleCard } from '../_common/components/NewMyScheduleCard';
 import {
   getInterviewsCountByUserId,
   useInterviewsByUserId,
-} from '../_common/hooks/useInterviewsByUserId';
+} from '../hooks/useInterviewsByUserId';
+import { InterviewMemberSide } from './InterviewMemberSide';
+import { NewMyScheduleCard } from './NewMyScheduleCard';
+import ScheduleMeetingCard from './ScheduleMeetingCard';
 
 function MyInterviews() {
   const { toast } = useToast();

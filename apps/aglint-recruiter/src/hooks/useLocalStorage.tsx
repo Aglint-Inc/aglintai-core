@@ -1,10 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { initialFilterState, type ScheduleFilerType } from '@interviews/types';
 import { useState /*useSyncExternalStore*/ } from 'react';
-
-import {
-  initialFilterState,
-  type ScheduleFilerType,
-} from '@/components/Scheduling/Interviews/_common/types';
 
 // import {
 //   initialFilterState,

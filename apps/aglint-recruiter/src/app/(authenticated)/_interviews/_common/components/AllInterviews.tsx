@@ -3,10 +3,10 @@ import { useRouter } from 'next/navigation';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
-import AllInterviewFilters from '../_common/components/Filters/AllInterviewFilters';
-import { useScheduleStatesContext } from '../_common/contexts/ScheduleStatesContext';
-import { useAllInterviews } from '../_common/hooks/useAllInterviews';
+import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
+import { useAllInterviews } from '../hooks/useAllInterviews';
+import AllInterviewFilters from './Filters/AllInterviewFilters';
+import ScheduleMeetingList from './ScheduleMeetingList';
 
 function AllInterviews() {
   const { back } = useRouter();
