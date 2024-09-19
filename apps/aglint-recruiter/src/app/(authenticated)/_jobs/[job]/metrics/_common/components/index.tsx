@@ -318,7 +318,7 @@ const Schedules = ({ schedule, push }) => {
 export type DashboardGraphOptions<
   T extends keyof Pick<
     ReturnType<typeof useJobDashboard>,
-    'assessments' | 'locations' | 'skills' | 'tenureAndExperience'
+    'locations' | 'skills' | 'tenureAndExperience'
   >,
 > = {
   // eslint-disable-next-line no-unused-vars

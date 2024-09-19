@@ -12,7 +12,7 @@ import React, { type FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { Loader } from '@/components/Common/Loader';
-import { useJobDashboard } from '@/job/hooks';
+import { useJob, useJobDashboard } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 
 import { type DashboardGraphOptions } from '.';
@@ -117,8 +117,10 @@ const DashboardDoughnutChart: FC<{
   option: keyof DashboardGraphOptions<'locations'>;
 }> = ({ option }) => {
   const {
-    locations: { data: locationPool, status },
     job: { processing_count },
+  } = useJob();
+  const {
+    locations: { data: locationPool, status },
   } = useJobDashboard();
   if (status === 'pending') return <Loader />;
   if (status === 'error') return <>Error</>;

@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { useJob, useJobDashboard, useJobDashboardActions } from '@/job/hooks';
+import { useJob, useJobDashboardActions } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
@@ -87,7 +87,7 @@ const BreadCrumbs = () => {
 };
 
 const Actions = () => {
-  const { manageJob } = useJobDashboard();
+  const { manageJob } = useJob();
   const { setPopup } = useJobDashboardActions();
   return (
     <>
