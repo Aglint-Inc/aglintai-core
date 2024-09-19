@@ -13,11 +13,13 @@ export const confirmSlotFromCandidateAvailability = async ({
   cand_avail_rec,
   cand_schedule,
   reqProgressLogger,
+  request_id,
 }: {
   avail_plans: PlanCombinationRespType[];
   cand_avail_rec: DatabaseTable['candidate_request_availability'];
   cand_schedule: CandidatesSchedulingV2;
   reqProgressLogger: ProgressLoggerType;
+  request_id: string;
 }) => {
   if (avail_plans.every((plan) => plan.no_slot_reasons.length > 0)) {
     const no_slot_reasons = avail_plans
@@ -50,12 +52,14 @@ export const confirmSlotFromCandidateAvailability = async ({
     availability_req_id: cand_avail_rec.id,
     selectedOption: plan,
     user_tz: cand_avail_rec.user_timezone,
+    request_id,
   });
   await bookRecruiterSelectedOption(
     {
       availability_req_id: cand_avail_rec.id,
       selectedOption: plan,
       user_tz: cand_avail_rec.user_timezone,
+      request_id,
     },
     cand_schedule,
     plan,
