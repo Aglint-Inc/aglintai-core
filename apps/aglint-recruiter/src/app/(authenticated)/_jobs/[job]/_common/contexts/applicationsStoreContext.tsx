@@ -23,7 +23,7 @@ type Locations = ReturnType<typeof nestedObjectToArray>;
 
 type Stages = ReturnType<typeof nestedObjectToArray>;
 
-type Checklist = DatabaseView['application_view']['id'][];
+type Checklist = string[];
 
 type ActionPopup = DatabaseView['application_view']['status'];
 

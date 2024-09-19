@@ -164,7 +164,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   };
 };
 
-export const applications = privateProcedure.input(schema).query(query);
+export const read = privateProcedure.input(schema).query(query);
 
 const BADGE_CONSTANTS: {
   // eslint-disable-next-line no-unused-vars

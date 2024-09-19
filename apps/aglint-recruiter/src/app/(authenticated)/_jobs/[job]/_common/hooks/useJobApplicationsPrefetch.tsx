@@ -33,19 +33,19 @@ export const useJobApplicationsPrefetch = () => {
     session_names,
     job_id,
   };
-  void api.jobs.job.applications.usePrefetchInfiniteQuery(
+  void api.jobs.job.applications.read.usePrefetchInfiniteQuery(
     { ...payload, status: 'new' },
     {},
   );
-  void api.jobs.job.applications.usePrefetchInfiniteQuery(
+  void api.jobs.job.applications.read.usePrefetchInfiniteQuery(
     { ...payload, status: 'interview' },
     {},
   );
-  void api.jobs.job.applications.usePrefetchInfiniteQuery(
+  void api.jobs.job.applications.read.usePrefetchInfiniteQuery(
     { ...payload, status: 'qualified' },
     {},
   );
-  void api.jobs.job.applications.usePrefetchInfiniteQuery(
+  void api.jobs.job.applications.read.usePrefetchInfiniteQuery(
     { ...payload, status: 'disqualified' },
     {},
   );

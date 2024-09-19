@@ -46,7 +46,7 @@ export const useJobApplications = () => {
     order,
   };
 
-  const query = api.jobs.job.applications.useInfiniteQuery(payload, {
+  const query = api.jobs.job.applications.read.useInfiniteQuery(payload, {
     refetchInterval: polling ? 30_000 : 0,
     refetchOnMount: polling,
     refetchOnWindowFocus: false,

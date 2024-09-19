@@ -1,5 +1,6 @@
 export { useApplications } from './useApplications';
 export { useApplicationsActions } from './useApplicationsActions';
+export { useApplicationsMove } from './useApplicationsMove';
 export { useApplicationsStore } from './useApplicationsStore';
 export { useCurrentJob } from './useCurrentJob';
 export { useJob } from './useJob';
