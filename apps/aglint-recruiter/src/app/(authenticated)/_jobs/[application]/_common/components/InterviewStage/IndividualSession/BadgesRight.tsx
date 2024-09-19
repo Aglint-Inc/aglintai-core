@@ -6,7 +6,8 @@ import {
 } from '@components/ui/tooltip';
 
 import { UIBadge } from '@/components/Common/UIBadge';
-import { type StageWithSessions } from '@/queries/application';
+
+import { type StageWithSessions } from '../../../hooks/useInterviewStages';
 
 function BadgesRight({
   session,

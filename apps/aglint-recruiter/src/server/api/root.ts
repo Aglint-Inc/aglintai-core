@@ -1,4 +1,5 @@
 import { analyticsRouter } from './routers/analytics';
+import { application } from './routers/application';
 import { ats } from './routers/ats';
 import { candidatePortalRouter } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   interviewers: interviewerRouter,
   interview_pool: interviewPool,
   requests,
+  application,
 });
 
 export const appRouterSchema = {

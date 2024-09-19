@@ -1,9 +1,9 @@
 import { Skeleton } from '@components/ui/skeleton';
 
-import { useApplication } from '@/context/ApplicationContext';
-import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
+import { UIAlert } from '@/components/Common/UIAlert';
 import { useInterviewModules } from '@/queries/interview-modules';
 
+import { useInterviewStages } from '../../hooks/useInterviewStages';
 import SideDrawerEdit from '../EditDrawer';
 import StageSessions from '../InterviewStage';
 import Progress from '../InterviewStage/Progress';
@@ -11,9 +11,7 @@ import DialogSchedule from '../ScheduleDialog';
 import { InterviewStage } from '../ui/InterviewStage';
 
 function InterviewTabContent() {
-  const {
-    interview: { data: stages, isLoading, refetch },
-  } = useApplication();
+  const { data: stages, isLoading, refetch, error } = useInterviewStages();
 
   useInterviewModules(); //needed to fetch interview modules which is used in edit interview plan
 
@@ -33,10 +31,14 @@ function InterviewTabContent() {
       </div>
     );
 
+  if (error) {
+    return <UIAlert title={'Error Fetching Stages'} />;
+  }
+
   if (stages.length === 0)
     return (
       <div className='p-4'>
-        <ActionEmptyState />
+        <UIAlert title={'No Stages Found'} />
       </div>
     );
 
