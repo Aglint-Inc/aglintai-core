@@ -133,7 +133,12 @@ const ScheduleOptions = () => {
       >
         <>
           <UIButton
-            onClick={() => {
+            onClick={async () => {
+              if (scheduleWorkflowAction) {
+                await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
+                await deleteRequestProgress(requestDetails.id);
+                await await request_workflow.refetch();
+              }
               setCandidateAvailabilityDrawerOpen(true);
             }}
             variant='outline'
@@ -148,6 +153,8 @@ const ScheduleOptions = () => {
               if (fetchingPlan) return;
               if (scheduleWorkflowAction) {
                 await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
+                await deleteRequestProgress(requestDetails.id);
+
                 await request_workflow.refetch();
               }
               await findAvailibility({
@@ -177,10 +184,6 @@ const ScheduleOptions = () => {
             variant='default'
             size='sm'
             onClick={async () => {
-              if (scheduleWorkflowAction) {
-                await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
-                await request_workflow.refetch();
-              }
               handleConfirmSlot(lastEvent.request_id);
             }}
             isLoading={isFetching}
@@ -203,3 +206,7 @@ const ScheduleOptions = () => {
 };
 
 export default ScheduleOptions;
+
+const deleteRequestProgress = async (requestId: string) => {
+  await supabase.from('request_progress').delete().eq('request_id', requestId);
+};
