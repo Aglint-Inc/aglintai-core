@@ -6,17 +6,17 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import React, { Suspense, type FC } from 'react';
+import React, { type FC, Suspense } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { Loader } from '@/components/Common/Loader';
 import { useMetricsSkillPool } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { capitalize } from '@/utils/text/textUtils';
 
-import { NoDataAvailable } from './nodata';
-import { ErrorBoundary } from 'react-error-boundary';
 import type { MetricsOptions } from '../types';
+import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 

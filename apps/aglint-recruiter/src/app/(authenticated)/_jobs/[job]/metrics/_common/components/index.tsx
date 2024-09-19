@@ -1,28 +1,19 @@
-/* eslint-disable security/detect-object-injection */
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 
-import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { Loader } from '@/components/Common/Loader';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
-import { useJob, useJobDashboard } from '@/job/hooks';
+import { useJob } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
-import { getFullName } from '@/utils/jsonResume';
-import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
+import type { MetricsOptions } from '../types';
 import { DashboardBarChart } from './BarChart2';
 import { DashboardDoughnutChart } from './doughnut';
-import DashboardLineChart from './lineChart';
-import { NoDataAvailable } from './nodata';
-import TenureAndExpSummary from './tenureAndExpSummary';
-import { Metrics, MetricsOptions } from '../types';
+import { DashboardLineChart } from './lineChart';
+import { TenureAndExpSummary } from './tenureAndExpSummary';
 
 export const JobDashboard = () => {
   const { job, jobLoad } = useJob();
@@ -101,10 +92,6 @@ const getMatches = (
 const Dashboard = () => {
   const { job, total } = useJob();
   const { isScoringEnabled } = useRolesAndPermissions();
-  const {
-    schedules: { data: schedule },
-  } = useJobDashboard();
-  const { push } = useRouter();
 
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
@@ -132,22 +119,9 @@ const Dashboard = () => {
               <Doughnut />
               <Bars />
             </div>
-
-            {/* Bottom Left */}
             <div className='space-y-4'>
               <LineGraph />
               <TenureAndExpSummary />
-            </div>
-
-            {/* Bottom Right */}
-            <div className='space-y-4'>
-              <Schedules
-                schedule={schedule}
-                // setStorage={setStorage}
-                push={push}
-                // job={job}
-              />
-              {/* <Roles /> */}
             </div>
           </div>
         </div>
@@ -223,74 +197,6 @@ const StatItem = ({ label, percentage, count, color }) => (
     </div>
   </div>
 );
-
-const Schedules = ({ schedule, push }) => {
-  if (schedule?.status === 'pending') return <Loader />;
-  if (schedule?.status === 'error') return <>Error</>;
-  if (schedule?.data.length === 0) return <NoDataAvailable />;
-  const cards = schedule?.data
-    .sort(
-      (a, b) =>
-        (dayjs(a.interview_meeting.start_time) as any) -
-        (dayjs(b.interview_meeting.start_time) as any),
-    )
-    .slice(0, 3)
-    .map((sch, i) => (
-      <div
-        key={i}
-        className='cursor-pointer'
-        onClick={() =>
-          push(
-            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=job_details`,
-          )
-        }
-      >
-        <Card className='w-full'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              {dayjs(sch.interview_meeting.end_time).format('DD MMM')}
-            </CardTitle>
-            <Avatar className='h-7 w-7'>
-              <AvatarImage
-                src={sch.candidates.avatar}
-                alt={getFullName(
-                  sch.candidates.first_name,
-                  sch.candidates.last_name,
-                )}
-              />
-              <AvatarFallback>
-                {getFullName(
-                  sch.candidates.first_name,
-                  sch.candidates.last_name,
-                ).charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>
-              {dayjs(sch.interview_meeting.end_time).format('dddd')}
-            </div>
-            <p className='text-xs text-muted-foreground'>
-              {getScheduleType(sch.interview_session.schedule_type)}
-            </p>
-            <div className='mt-4 flex items-center'>
-              <IconScheduleType type={sch.interview_session.schedule_type} />
-              <span className='ml-2 text-sm font-medium'>
-                {sch.interview_session.name}
-              </span>
-            </div>
-            <div className='mt-2 text-xs text-muted-foreground'>
-              {`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}`}
-            </div>
-            <div className='mt-4 text-sm font-medium'>
-              {getFullName(sch.candidates.first_name, sch.candidates.last_name)}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    ));
-  return <div className='flex h-full w-full flex-col gap-2'>{cards}</div>;
-};
 
 const Doughnut = () => {
   const options: MetricsOptions<'locationPool'> = {

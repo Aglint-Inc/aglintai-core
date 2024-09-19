@@ -8,16 +8,16 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
-import React, { Suspense, type FC } from 'react';
+import React, { type FC, Suspense } from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { Loader } from '@/components/Common/Loader';
-import { useJob, useJobDashboard, useMetricsLocationPool } from '@/job/hooks';
+import { useJob, useMetricsLocationPool } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 
 import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
-import { ErrorBoundary } from 'react-error-boundary';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 

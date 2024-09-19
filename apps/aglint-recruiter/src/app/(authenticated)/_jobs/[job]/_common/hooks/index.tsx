@@ -5,7 +5,6 @@ export { useApplicationsPrefetch } from './useApplicationsPrefetch';
 export { useApplicationsStore } from './useApplicationsStore';
 export { useCurrentJob } from './useCurrentJob';
 export { useJob } from './useJob';
-export { useJobDashboard } from './useJobDashboard';
 export { useJobFilterBadges } from './useJobFilterBadges';
 export { useJobFilterLocations } from './useJobFilterLocations';
 export { useMetricsExperienceAndTenure } from './useMetricsExperienceAndTenure';
