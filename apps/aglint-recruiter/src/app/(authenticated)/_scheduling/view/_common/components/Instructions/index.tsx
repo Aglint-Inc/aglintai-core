@@ -1,4 +1,3 @@
-import { Card } from '@components/ui/card';
 import React, { useState } from 'react';
 import Instructions from 'src/app/_common/components/Instructions';
 
@@ -34,7 +33,7 @@ function ScheduleDetailInstructions() {
     }
   }
   return (
-    <Card className='p-4'>
+    <div className='max-w-4xl'>
       <Instructions
         instruction={schedule?.interview_meeting.instructions as string}
         setTextValue={setTextValue}
@@ -42,11 +41,8 @@ function ScheduleDetailInstructions() {
           recruiterUser.role === 'admin' || recruiterUser.role === 'recruiter'
         }
         updateInstruction={updateInstruction}
-        isBorder={false}
-        isPadding={false}
-        isWidth={false}
       />
-    </Card>
+    </div>
   );
 }
 

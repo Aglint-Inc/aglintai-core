@@ -1,7 +1,7 @@
-import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
-import UpComingInterviewFilters from '../_common/components/Filters/upComingFilter';
-import { useScheduleStatesContext } from '../_common/contexts/ScheduleStatesContext';
-import { useAllInterviews } from '../_common/hooks/useAllInterviews';
+import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
+import { useAllInterviews } from '../hooks/useAllInterviews';
+import UpComingInterviewFilters from './Filters/upComingFilter';
+import ScheduleMeetingList from './ScheduleMeetingList';
 
 function UpComingInterviews() {
   const { upcomingFilterState } = useScheduleStatesContext();
