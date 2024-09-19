@@ -1,5 +1,4 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
@@ -136,9 +135,7 @@ function CandidateAvailability() {
   if (loading) {
     return (
       <div className='flex h-screen w-full items-center justify-center bg-neutral-100'>
-        <div className='w-[120px] -translate-y-1/2'>
-          <CandidateSlotLoad />
-        </div>
+        <div className='w-[120px] -translate-y-1/2'>Loading...</div>
       </div>
     );
   }
