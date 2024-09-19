@@ -1,6 +1,6 @@
-import { CustomApplicationBadges } from "../common.types";
-import { Database } from "../schema.types";
-import { Custom } from "../utils.types";
+import type { CustomApplicationBadges } from "../common.types";
+import type { Database } from "../schema.types";
+import type { Custom } from "../utils.types";
 import type { FunctionType } from "./index.types";
 
 export type CustomGetApplicantBadges = FunctionType<

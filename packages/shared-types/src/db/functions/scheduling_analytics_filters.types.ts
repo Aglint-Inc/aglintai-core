@@ -1,4 +1,4 @@
-import { Database } from "../schema.types";
+import type { Database } from "../schema.types";
 import type { FunctionType } from "./index.types";
 
 export type CustomSchedulingAnalyticsFilters = FunctionType<

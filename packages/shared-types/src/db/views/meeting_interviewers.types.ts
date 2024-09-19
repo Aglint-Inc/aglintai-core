@@ -1,6 +1,5 @@
-import { DatabaseTable } from "../..";
-import { CustomInterviewSessionCancelRow } from "../common.types";
-import { CustomSchedulingSettings } from "../tables/common.types";
+import type { CustomInterviewSessionCancelRow } from "../common.types";
+import type { CustomSchedulingSettings } from "../tables/common.types";
 import type { ViewType } from "./index.types";
 
 export type CustomMeetingInterviewersView = ViewType<

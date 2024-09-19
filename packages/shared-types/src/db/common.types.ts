@@ -1,5 +1,5 @@
-import { Database, Tables } from "./schema.types";
-import { Custom, Type } from "./utils.types";
+import type { Database, Tables } from "./schema.types";
+import type { Custom, Type } from "./utils.types";
 
 export type CustomMembersMeta = {
   [id in
