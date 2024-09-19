@@ -2,7 +2,6 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee } from 'lucide-react';
 import React, { useEffect } from 'react';
 
@@ -232,7 +231,7 @@ const SingleDayLoading = () => {
   return (
     <div className={'flex justify-center'}>
       <div className={'w-[120px]'}>
-        <CandidateSlotLoad />
+        <Loader />
       </div>
     </div>
   );

@@ -4,8 +4,6 @@ import { Checkbox } from '@components/ui/checkbox';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
-import LoaderLever from '@public/lottie/AddJobWithIntegrations';
-import FetchingJobsLever from '@public/lottie/FetchingJobsLever';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -13,6 +11,7 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrations, useJobs } from '@/jobs/hooks';
@@ -216,7 +215,7 @@ export function AshbyModalComp() {
               />
               <p>Fetching data from Ashby...</p>
               <div className='rotate-270 h-[100px] w-[100px] transform'>
-                <FetchingJobsLever />
+                <Loader />
               </div>
             </div>
           ) : integration.ashby.step === STATE_ASHBY_DIALOG.LISTJOBS ? (
@@ -303,7 +302,7 @@ export function AshbyModalComp() {
                   ? `${selectedAshbyPostings.length} Job`
                   : `${selectedAshbyPostings.length} Jobs`}
               </p>
-              <LoaderLever />
+              <Loader />
             </div>
           ) : null}
         </div>
