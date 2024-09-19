@@ -42,7 +42,6 @@ export const createRequestProgressLogger = ({
         progress_id = progress.id;
       }
     }
-    console.log('meta 1', payload.meta);
     const [rec] = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
@@ -107,14 +106,15 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
     let err_log = 'Something wrong happenned';
     if (err instanceof CApiError && err.type === 'CLIENT') {
       err_log = err.message;
+      await logger({
+        ...(logger_args ?? {}),
+        status: 'failed',
+        id: progress_id,
+        log: err_log,
+        is_progress_step: false,
+      });
+    } else {
+      throw new CApiError('WORKFLOW_ACTION', err.message, 500);
     }
-    await logger({
-      ...(logger_args ?? {}),
-      status: 'failed',
-      id: progress_id,
-      log: err_log,
-      is_progress_step: false,
-    });
-    throw new CApiError('WORKFLOW_ACTION', err.message, 500);
   }
 }

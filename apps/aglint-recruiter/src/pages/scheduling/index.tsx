@@ -1,14 +1,12 @@
-import SchedulingMainComp from '@/components/Scheduling';
-import { SchedulingAnalyticsContextProvider } from '@/context/SchedulingAnalytics';
+import InterviewsLayout from 'src/app/(authenticated)/_interviews/InterviewsLayout';
+import InterviewsPage from 'src/app/(authenticated)/_interviews/page';
 
 function SchedulingMainPage() {
-  return <SchedulingMainComp />;
+  return (
+    <InterviewsLayout>
+      <InterviewsPage />
+    </InterviewsLayout>
+  );
 }
-
-SchedulingMainPage.privateProvider = (page) => (
-  <SchedulingAnalyticsContextProvider>
-    {page}
-  </SchedulingAnalyticsContextProvider>
-);
 
 export default SchedulingMainPage;

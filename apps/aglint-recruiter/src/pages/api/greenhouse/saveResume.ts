@@ -14,7 +14,6 @@ export type SaveResumeAPI = {
     application_id: string;
     resume: string;
     candidate_id: string;
-    secret_key: string;
   };
   response: {
     success: boolean;
@@ -26,13 +25,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
-  const { application_id, candidate_id, resume, secret_key } =
+  const { application_id, candidate_id, resume } =
     req.body as SaveResumeAPI['request'];
-
-  if (secret_key !== process.env.SUPABASE_SECRET_KEY) {
-    console.log('Invalid secret key');
-    return res.status(400).json('Invalid secret key');
-  }
 
   if (application_id || resume) {
     if (

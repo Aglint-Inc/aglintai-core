@@ -72,9 +72,7 @@ const EventNode = ({
         }}
       >
         <ScheduleProgressTracker
-          status={
-            tense === 'past' ? 'completed' : tense === 'future' ? 'circle' : ''
-          }
+          status={tense}
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
             tense === 'future' &&

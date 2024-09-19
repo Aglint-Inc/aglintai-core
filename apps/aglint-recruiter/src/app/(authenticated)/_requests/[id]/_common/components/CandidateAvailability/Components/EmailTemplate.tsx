@@ -89,7 +89,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
             <ShowCode.Else>
               <div className='flex flex-col'>
                 <iframe
-                  src={emailData?.html}
+                  srcDoc={emailData?.html}
                   width='100%'
                   height='600px'
                   style={{ border: 'none' }}

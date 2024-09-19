@@ -1,9 +1,11 @@
 import { cn } from '@lib/utils';
-import { Check } from 'lucide-react';
+import { Check, CircleX } from 'lucide-react';
 import React from 'react';
 
+import { type ProgressTenseType } from './types';
+
 interface ScheduleProgressProps {
-  status?: string;
+  status?: ProgressTenseType;
   slotLeftIcon?: React.ReactNode;
   textProgress?: React.ReactNode;
   slotRightIcon?: React.ReactNode;
@@ -33,13 +35,16 @@ function ScheduleProgressTracker({
             <div
               className={cn(
                 'h-4 w-4 rounded-full border-2',
-                status === 'completed'
+                status === 'past'
                   ? 'border-green-500 bg-green-500'
                   : 'border-gray-300',
               )}
             >
-              {status === 'completed' && (
+              {status === 'past' && (
                 <Check className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-white' />
+              )}
+              {status === 'error' && (
+                <CircleX className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-red-500' />
               )}
             </div>
           </>

@@ -21,6 +21,12 @@
       "@/candidate/authenticated/*": [
         "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"
       ],
+      "@/interview-pool/details/*": [
+        "./src/app/(authenticated)/_interview-pool/[pool]/_common/*"
+      ],
+      "@/interview-pool/*": [
+        "./src/app/(authenticated)/_interview-pool/_common/*"
+      ],
       "@/jobs/*": ["./src/app/(authenticated)/_jobs/_common/*"],
       "@/scheduling/*": ["./src/app/(authenticated)/scheduling/_common/*"],
       "@/jobs/create/*": ["./src/app/(authenticated)/_jobs/create/_common/*"],
@@ -49,7 +55,10 @@
       ],
       "@requests/*": ["./src/app/(authenticated)/_requests/_common/*"],
       "@request/*": ["./src/app/(authenticated)/_requests/[id]/_common/*"],
-      "@requestHistory/*": ["./src/app/(authenticated)/_requests/history/_common/*"],
+      "@requestHistory/*": [
+        "./src/app/(authenticated)/_requests/history/_common/*"
+      ],
+      "@interviews/*": ["./src/app/(authenticated)/_interviews/_common/*"],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],

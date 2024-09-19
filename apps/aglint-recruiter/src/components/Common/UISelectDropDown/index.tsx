@@ -93,7 +93,9 @@ const UISelectDropDown = ({
   );
 
   return (
-    <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
+    <div
+      className={cn('flex flex-col gap-1', fullWidth && 'w-full', className)}
+    >
       {label && (
         <div className='flex flex-row items-center'>
           <Label htmlFor={id} className={labelClasses}>
@@ -102,37 +104,36 @@ const UISelectDropDown = ({
           {required && <span className='text-error-500 ml-1'>*</span>}
         </div>
       )}
-      <div>
-        <Select {...props} disabled={disabled} required={required}>
-          <SelectTrigger className={inputClasses}>
-            {startIcon && <span className='mr-2'>{startIcon}</span>}
-            <SelectValue placeholder={placeholder} id={id} />
-          </SelectTrigger>
-          <SelectContent className='z-[2000]'>
-            <SelectGroup>
-              {children ? (
-                children
-              ) : menuOptions.length === 0 ? (
-                <div className='cursor-default px-2 py-1 italic text-gray-500'>
-                  No options available
-                </div>
-              ) : (
-                menuOptions.map((menu, idx) => (
-                  <SelectItem key={idx} value={menu.value}>
-                    {menu.name}
-                  </SelectItem>
-                ))
-              )}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        {error && helperText && (
-          <div className='mt-1 flex flex-row items-center'>
-            <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
-            <p className='text-sm text-red-700'>{helperText}</p>
-          </div>
-        )}
-      </div>
+
+      <Select {...props} disabled={disabled} required={required}>
+        <SelectTrigger className={inputClasses}>
+          {startIcon && <span className='mr-2'>{startIcon}</span>}
+          <SelectValue placeholder={placeholder} id={id} />
+        </SelectTrigger>
+        <SelectContent className='z-[2000]'>
+          <SelectGroup>
+            {children ? (
+              children
+            ) : menuOptions.length === 0 ? (
+              <div className='cursor-default px-2 py-1 italic text-gray-500'>
+                No options available
+              </div>
+            ) : (
+              menuOptions.map((menu, idx) => (
+                <SelectItem key={idx} value={menu.value}>
+                  {menu.name}
+                </SelectItem>
+              ))
+            )}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      {error && helperText && (
+        <div className='mt-1 flex flex-row items-center'>
+          <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
+          <p className='text-sm text-red-700'>{helperText}</p>
+        </div>
+      )}
     </div>
   );
 };

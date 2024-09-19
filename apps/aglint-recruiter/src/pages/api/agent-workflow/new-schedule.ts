@@ -28,13 +28,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       target_api,
       recruiter_id,
       request_id,
+      event_run_id,
     } = v.parse(candidate_new_schedule_schema, req.body);
     const eventAction = apiTargetToEvents[target_api];
 
     const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
-      request_id: req.body.request_id,
+      request_id: request_id,
       supabaseAdmin,
-      event_run_id: req.body.event_run_id,
+      event_run_id: event_run_id,
       event_type: eventAction,
     });
     await reqProgressLogger.resetEventProgress();
@@ -45,7 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select('*,recruiter_user!request_assignee_id_fkey(*)')
         .eq('id', request_id),
     );
-    const request_assigner_tz =
+    const request_assignee_tz =
       request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
     const date_range = {
       start_date_str: dayjsLocal().format('DD/MM/YYYY'),
@@ -53,10 +54,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
     if (request_rec.schedule_start_date && request_rec.schedule_end_date) {
       date_range.start_date_str = dayjsLocal(request_rec.schedule_start_date)
-        .tz(request_assigner_tz)
+        .tz(request_assignee_tz)
         .format('DD/MM/YYYY');
       date_range.end_date_str = dayjsLocal(request_rec.schedule_end_date)
-        .tz(request_assigner_tz)
+        .tz(request_assignee_tz)
         .format('DD/MM/YYYY');
     }
     const api_target = target_api as DatabaseEnums['email_slack_types'];
@@ -78,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         recruiter_id,
         session_ids,
         reqProgressLogger,
+        time_zone: request_assignee_tz,
       },
       reqProgressLogger,
     );
