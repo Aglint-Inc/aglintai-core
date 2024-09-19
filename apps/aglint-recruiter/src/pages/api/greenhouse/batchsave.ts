@@ -16,18 +16,12 @@ const url = `${baseUrl}/api/greenhouse/saveResume`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { recruiter_id, secret_key } = req.body as {
+    const { recruiter_id } = req.body as {
       recruiter_id: string;
-      secret_key: string;
     };
     if (!recruiter_id) {
       console.log('required recruiter id is missing');
       return res.status(400).json('required payload is missing');
-    }
-
-    if (secret_key !== process.env.SUPABASE_SECRET_KEY) {
-      console.log('Invalid secret key');
-      return res.status(400).json('Invalid secret key');
     }
 
     const applications = (
@@ -58,7 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 application_id: ref.application_id,
                 resume: resume,
                 candidate_id: ref.candidate_id,
-                secret_key: secret_key,
               };
               await axios.post(`${url}`, bodyParams);
               console.log(
