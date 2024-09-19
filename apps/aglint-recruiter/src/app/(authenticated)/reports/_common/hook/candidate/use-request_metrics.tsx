@@ -5,7 +5,7 @@ import { api } from "@/trpc/client";
 export function useRequestMetics() {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching } = api.analytics.request_metrics.useQuery(
+  const { data, isFetching, isError } = api.analytics.request_metrics.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
@@ -18,8 +18,9 @@ export function useRequestMetics() {
     },
   );
   return {
-     data:data||[dummy_RequestMetics],
-     isFetching,
+    data: data || [dummy_RequestMetics],
+    isFetching,
+    isError,
   };
 }
 export const dummy_RequestMetics = {

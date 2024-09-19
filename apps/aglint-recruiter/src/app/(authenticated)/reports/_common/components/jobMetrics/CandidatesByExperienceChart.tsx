@@ -23,12 +23,13 @@ const chartConfig = {
 
 export default function CandidatesByExperienceChart() {
   const [view, setView] = useState<'Experience' | 'Tenure'>('Experience');
-  const { data, isFetching } = useCandidateExp();
+  const { data, isFetching, isError } = useCandidateExp();
 
   return (
     <ReportCard
       title={'Candidates By'}
       isEmpty={!data?.[view]}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
       headerSlot={
         <div className='flex space-x-2'>
