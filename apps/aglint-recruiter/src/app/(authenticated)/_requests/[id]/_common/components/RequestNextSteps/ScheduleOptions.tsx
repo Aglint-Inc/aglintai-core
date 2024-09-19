@@ -119,7 +119,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
-      <ShowCode.When isTrue={Boolean(!scheduleWorkflowAction)}>
+      <ShowCode.When isTrue={Boolean(!scheduleWorkflowAction) && !lastEvent}>
         <>
           <UIButton
             onClick={() => {

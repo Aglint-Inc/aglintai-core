@@ -25,9 +25,9 @@ export const candidateSelfSchedule = async ({
   reqProgressLogger: ProgressLoggerType;
   mail_payload: any;
 }) => {
-  const filterdNoSlots = plans.filter(
-    (plan) => plan.no_slot_reasons.length === 0,
-  );
+  if (plans.length === 0) {
+    throw new Error('No plans matched');
+  }
 
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
@@ -38,7 +38,7 @@ export const candidateSelfSchedule = async ({
           start_date: start_date_str,
           end_date: end_date_str,
         },
-        selected_options: [...filterdNoSlots.slice(0, 15)], //TODO: fix this later
+        selected_options: [...plans.slice(0, 15)], //TODO: fix this later
         request_id: request_id,
         application_id,
       })
