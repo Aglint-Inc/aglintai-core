@@ -25,9 +25,10 @@ export const Container = (props: PropsWithChildren) => {
 const Content = (props: PropsWithChildren) => {
   return (
     <PopoverContent
-      className='w-[400px] px-4 py-2'
-      align='start'
+      className='w-[300px] px-4 py-2'
+      align='end'
       sideOffset={4}
+      side='bottom'
     >
       <Navigation />
       {props.children}
