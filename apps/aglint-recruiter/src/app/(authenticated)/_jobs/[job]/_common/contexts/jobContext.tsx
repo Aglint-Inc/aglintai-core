@@ -25,7 +25,7 @@ import {
   useUploadApplication,
   useUploadCsv,
   useUploadResume,
-} from '@/queries/job-applications';
+} from '@/queries/job';
 import { useJobUpdate } from '@/queries/jobs';
 import toast from '@/utils/toast';
 

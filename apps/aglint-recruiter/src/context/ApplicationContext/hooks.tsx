@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 import type { ResumePreviewer } from '@/job/components/Common/ResumePreviewer';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
 import { applicationQuery } from '@/queries/application';
-// import { diffApplication } from '@/queries/job-applications';
 import dayjs from '@/utils/dayjs';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';

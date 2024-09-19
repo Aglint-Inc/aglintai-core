@@ -1,9 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import {
-  queryOptions,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 
 import axios from '@/client/axios';
 import { getActiveSection } from '@/jobs/utils/getActiveSection';
@@ -11,7 +7,6 @@ import { type ApiInterviewStages } from '@/pages/api/scheduling/application/fetc
 import { supabase } from '@/utils/supabase/client';
 
 import { jobQueries } from '../job';
-import { diffApplication, updateApplication } from '../job-applications';
 
 export const applicationQuery = {
   all: ({ job_id }: ApplicationAllQueryPrerequistes) => ({
@@ -112,30 +107,6 @@ export const applicationQuery = {
       queryFn: () => getApplicationActivity({ application_id }),
     }),
 } as const;
-
-export const useUpdateApplication = (params: Params) => {
-  const queryClient = useQueryClient();
-  const { queryKey } = applicationQuery.meta(params);
-  return useMutation({
-    mutationFn: updateApplication,
-    onMutate: (variables) => {
-      const diffedApplication = diffApplication(variables.application);
-      const oldApplication = queryClient.getQueryData(queryKey);
-      if (Object.keys(diffedApplication).length)
-        queryClient.setQueryData(
-          queryKey,
-          structuredClone({ ...oldApplication, ...diffedApplication }),
-        );
-      return { oldApplication };
-    },
-    onError: (_, __, context) => {
-      queryClient.setQueryData(
-        queryKey,
-        structuredClone(context.oldApplication),
-      );
-    },
-  });
-};
 
 type ApplicationAllQueryPrerequistes = {
   job_id: DatabaseTable['public_jobs']['id'];

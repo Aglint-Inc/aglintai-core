@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { memo, useMemo } from 'react';
 
-import { useApplicationsStore, useJob, useApplications } from '@/job/hooks';
+import { useApplications, useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Loader } from '../CandidateDrawer/Common/Loader';
 import { EmptyList } from './Common/EmptyList';

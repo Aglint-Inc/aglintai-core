@@ -6,10 +6,10 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
+  useApplications,
   useApplicationsActions,
   useApplicationsStore,
   useJob,
-  useApplications,
 } from '@/job/hooks';
 import type { Applications } from '@/job/types';
 import ROUTES from '@/utils/routing/routes';
