@@ -18,7 +18,7 @@ function Mode() {
     flags: boolean;
   }>({
     jobMode: false,
-    flags: false,
+    flags: true,
   });
 
   const [flags, setFlags] = useState({
