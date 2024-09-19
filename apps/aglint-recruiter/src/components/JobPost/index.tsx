@@ -3,10 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Input } from '@components/ui/input';
-import ThankYou from '@public/lottie/ThankYouLottie';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Building2, Loader2, MapPin, Users } from 'lucide-react';
+import { Building2, CheckCircle, Loader2, MapPin, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   FacebookShareButton,
@@ -82,7 +81,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
       {thank && (
         <div className='absolute inset-0 z-50 flex flex-col bg-gray-100 p-4'>
           <div className='flex flex-grow flex-col items-center justify-center space-y-4'>
-            <ThankYou />
+            <CheckCircle className='mb-4 h-16 w-16 text-green-500' />
             <h2 className='text-2xl font-bold'>
               Application submitted successfully.
             </h2>

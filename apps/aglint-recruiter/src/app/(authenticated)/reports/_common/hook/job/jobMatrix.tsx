@@ -11,17 +11,18 @@ export function useJobLocations() {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
   const [view, setView] = useState<'city' | 'state' | 'country'>('city');
-  const { data, isFetching } = api.analytics.job.location_count.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-    },
-  );
+  const { data, isFetching, isError } =
+    api.analytics.job.location_count.useQuery(
+      {
+        recruiter_id: recruiter.id,
+        locations: filters.location && [filters.location],
+        departments: filters.department && [filters.department],
+        data_range: filters.dateRange,
+      },
+      {
+        enabled: !!recruiter.id,
+      },
+    );
   const filterData = (data || []).reduce(
     (acc, curr) => {
       const tempKey = curr[view] || 'Not Provided';
@@ -59,23 +60,26 @@ export function useJobLocations() {
     view,
     setView,
     isFetching,
+    isError,
   };
 }
+
 export function useCandidateExp() {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
 
-  const { data, isFetching } = api.analytics.candidate.candidates_exp.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-    },
-  );
+  const { data, isFetching, isError } =
+    api.analytics.candidate.candidates_exp.useQuery(
+      {
+        recruiter_id: recruiter.id,
+        locations: filters.location && [filters.location],
+        departments: filters.department && [filters.department],
+        data_range: filters.dateRange,
+      },
+      {
+        enabled: !!recruiter.id,
+      },
+    );
 
   const processData = (data || []).map((item) => ({
     ...item,
@@ -117,6 +121,7 @@ export function useCandidateExp() {
       avg_total_exp,
     },
     isFetching,
+    isError,
   };
 }
 
@@ -137,7 +142,7 @@ export function useCandidateSkills() {
       ).data.skills as string[],
     enabled: !!filters.job,
   });
-  const { data, isFetching } =
+  const { data, isFetching, isError } =
     api.analytics.candidate.candidates_skills.useQuery(
       {
         recruiter_id: recruiter.id,
@@ -153,11 +158,15 @@ export function useCandidateSkills() {
     (view === 'JD Skills'
       ? data?.filter((item) => skills?.includes(item.skill))
       : data) || [];
-  const pData = [...mappedData.slice(0, 10)];
+  const pData = [...mappedData.slice(0, 10)].map((item, index) => ({
+    ...item,
+    fill: `hsl(var(--chart-${(index % 5) + 1}))`,
+  }));
   return {
     data: pData,
     view,
     setView,
     isFetching,
+    isError,
   };
 }

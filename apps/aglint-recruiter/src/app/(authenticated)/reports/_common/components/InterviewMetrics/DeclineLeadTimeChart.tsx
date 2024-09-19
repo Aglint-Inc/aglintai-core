@@ -22,12 +22,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function DeclineLeadTimeChart() {
-  const { average, scatterData, isFetching } = useDeclineCount();
+  const { average, scatterData, isFetching, isError } = useDeclineCount();
   const averageLeadTime = average || 0;
   return (
     <ReportCard
       title={'Decline lead time'}
       isEmpty={!scatterData.filter((item) => item.cancelled).length}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
       headerSlot={
         <div className='flex flex-row items-center justify-between gap-2 space-y-0 pb-2'>

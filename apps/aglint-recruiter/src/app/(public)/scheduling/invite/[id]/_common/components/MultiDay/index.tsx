@@ -1,5 +1,4 @@
 import { type SessionsCombType } from '@aglint/shared-types';
-import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -9,6 +8,7 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
@@ -58,7 +58,7 @@ const MultiDayLoading = () => {
   return (
     <div className={'flex justify-center'}>
       <div className={'w-[120px]'}>
-        <CandidateSlotLoad />
+        <Loader />
       </div>
     </div>
   );
