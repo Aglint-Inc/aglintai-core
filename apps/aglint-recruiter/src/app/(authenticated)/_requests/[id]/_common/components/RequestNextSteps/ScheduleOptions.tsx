@@ -1,6 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
+import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
 import { useMeetingList, useRequestAvailabilityDetails } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
@@ -60,9 +61,11 @@ const ScheduleOptions = () => {
   }, [request_workflow.data]);
 
   const lastEvent = useMemo(() => {
-    if (request_progress.data && request_progress.data.length === 0)
-      return null;
-    return request_progress.data[request_progress.data.length - 1];
+    const heading_events = request_progress.data.filter(
+      (r) => r.is_progress_step === false,
+    );
+    if (heading_events.length === 0) return null;
+    return heading_events[heading_events.length - 1];
   }, [request_progress.data]);
   const handleConfirmSlot = async (request_id: string) => {
     try {
@@ -119,10 +122,23 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
-      <ShowCode.When isTrue={Boolean(!scheduleWorkflowAction)}>
+      <ShowCode.When
+        isTrue={
+          (!scheduleWorkflowAction && !lastEvent) ||
+          (lastEvent &&
+            (lastEvent.event_type === 'SELF_SCHEDULE_LINK' ||
+              lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
+            lastEvent.status === 'failed')
+        }
+      >
         <>
           <UIButton
-            onClick={() => {
+            onClick={async () => {
+              if (scheduleWorkflowAction) {
+                await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
+                await deleteRequestProgress(requestDetails.id);
+                await await request_workflow.refetch();
+              }
               setCandidateAvailabilityDrawerOpen(true);
             }}
             variant='outline'
@@ -135,6 +151,12 @@ const ScheduleOptions = () => {
             size='sm'
             onClick={async () => {
               if (fetchingPlan) return;
+              if (scheduleWorkflowAction) {
+                await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
+                await deleteRequestProgress(requestDetails.id);
+
+                await request_workflow.refetch();
+              }
               await findAvailibility({
                 filters: initialFilters,
                 dateRange: {
@@ -151,16 +173,17 @@ const ScheduleOptions = () => {
       </ShowCode.When>
       <ShowCode.When
         isTrue={
-          Boolean(!isActionSetAfterAvailabilityRecieved) &&
           lastEvent &&
-          lastEvent.event_type === 'CAND_AVAIL_REC'
+          lastEvent.event_type === 'CAND_AVAIL_REC' &&
+          (!isActionSetAfterAvailabilityRecieved ||
+            lastEvent.status === 'failed')
         }
       >
         <div className='flex space-x-2'>
           <UIButton
             variant='default'
             size='sm'
-            onClick={() => {
+            onClick={async () => {
               handleConfirmSlot(lastEvent.request_id);
             }}
             isLoading={isFetching}
@@ -183,3 +206,7 @@ const ScheduleOptions = () => {
 };
 
 export default ScheduleOptions;
+
+const deleteRequestProgress = async (requestId: string) => {
+  await supabase.from('request_progress').delete().eq('request_id', requestId);
+};

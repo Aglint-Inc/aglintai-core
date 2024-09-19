@@ -107,6 +107,8 @@ const WorkflowActionDialog = () => {
   ) => {
     try {
       if (
+        wAction.target_api ===
+          'onRequestSchedule_emailLink_sendSelfSchedulingLink' &&
         wAction.action_type == 'email' &&
         (wAction.payload.email.subject.length == 0 ||
           wAction.payload.email.body.length == 0)
