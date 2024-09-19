@@ -1,7 +1,9 @@
-import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-
-import { UIButton } from '@/components/Common/UIButton';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from '@components/ui/breadcrumb';
 
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
 import { useAllInterviews } from '../hooks/useAllInterviews';
@@ -9,7 +11,6 @@ import AllInterviewFilters from './Filters/AllInterviewFilters';
 import ScheduleMeetingList from './ScheduleMeetingList';
 
 function AllInterviews() {
-  const { back } = useRouter();
   const { filterState } = useScheduleStatesContext();
   const { data: schedules, isFetched } = useAllInterviews({
     ...filterState,
@@ -17,15 +18,23 @@ function AllInterviews() {
   return (
     <div className='container-lg mx-auto w-full px-12'>
       <header>
-        <UIButton onClick={() => back()} variant={'ghost'} size='sm'>
-          <ArrowLeft className='h-4 w-4' />
-          Back
-        </UIButton>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/scheduling'>Interviews</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/scheduling/all'>
+                All Interviews
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className='mb-8 flex items-center justify-between'>
           <div>
             <h1 className='text-3xl font-semibold'>All Interviews</h1>
             <p className='mb-4 text-gray-600'>
-              Connect your favorite tools to streamline your recruitment
+              View and manage all scheduled interviews for your recruitment
               process.
             </p>
           </div>
