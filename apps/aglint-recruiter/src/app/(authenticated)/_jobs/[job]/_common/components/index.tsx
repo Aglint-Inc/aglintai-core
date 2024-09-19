@@ -76,7 +76,7 @@ const ApplicationsComponent = () => {
             <div className='my-2'>
               {checklist.length === 0 ? <Filters /> : <Actions />}
             </div>
-            <div className='overflow-x-auto'>
+            <div className=''>
               <ScrollArea>
                 <Table />
               </ScrollArea>
