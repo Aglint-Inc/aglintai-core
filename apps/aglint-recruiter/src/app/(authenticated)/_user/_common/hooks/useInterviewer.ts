@@ -1,12 +1,10 @@
-import { useRouter } from 'next/router';
-
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
-
 export type InterviewerDetailType = Awaited<
   ReturnType<typeof useInterviewer>
 >['data'];
 export const useInterviewer = () => {
-  const router = useRouter();
-  const user_id = router.query.user as string;
+  const router = useRouterPro();
+  const user_id = router.params.user as string;
   return api.interviewers.get_user_details.useQuery({ user_id });
 };

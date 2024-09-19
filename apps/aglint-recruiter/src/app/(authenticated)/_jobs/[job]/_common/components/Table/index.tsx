@@ -33,9 +33,9 @@ export const Table = memo(() => {
   const skeleton = useMemo(
     () => (
       <div className='flex items-center space-x-4 p-4 pl-[30px]'>
-        <div className='h-5 w-5 animate-pulse rounded bg-gray-200' />
+        <div className='h-8 w-8 animate-pulse rounded bg-gray-200' />
         <div className='flex-1 space-y-2'>
-          <div className='h-4 animate-pulse rounded bg-gray-200' />
+          <div className='h-8 animate-pulse rounded bg-gray-200' />
         </div>
         {cascadeVisibilites.interview && (
           <div className='h-8 w-20 animate-pulse rounded bg-gray-200' />
