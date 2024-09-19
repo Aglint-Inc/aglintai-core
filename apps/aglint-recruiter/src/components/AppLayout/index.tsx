@@ -1,5 +1,6 @@
 import '@styles/globals.css';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
   Tooltip,
@@ -76,14 +77,23 @@ export default function AppLayout({ children, appRouter = false }) {
                 }
               >
                 {recruiterUser?.profile_image ? (
-                  <Image
-                    src={recruiterUser?.profile_image}
-                    alt={recruiterUser?.first_name || 'User'}
-                    width={32}
-                    height={32}
-                    className='rounded-full'
-                    style={{ objectFit: 'cover' }}
-                  />
+                  // <Image
+                  //   src={recruiterUser?.profile_image}
+                  //   alt={recruiterUser?.first_name || 'User'}
+                  //   width={32}
+                  //   height={32}
+                  //   className='rounded-full'
+                  //   style={{ objectFit: 'cover' }}
+                  // />
+                  <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                    <AvatarImage
+                      src={userDetails?.profile_image || defaultProfileImage}
+                      alt='@shadcn'
+                    />
+                    <AvatarFallback className='rounded-[4px]'>
+                      <User className='text-gray-700' />
+                    </AvatarFallback>
+                  </Avatar>
                 ) : (
                   <User className='h-5 w-5' strokeWidth={1.5} />
                 )}
@@ -127,14 +137,26 @@ export default function AppLayout({ children, appRouter = false }) {
                         }) + '?profile=true'
                       }
                     >
-                      <Image
+                      {/* <Image
                         src={userDetails?.profile_image || defaultProfileImage}
                         alt={name}
                         width={32}
                         height={32}
                         className='rounded-sm'
                         style={{ objectFit: 'cover' }}
-                      />
+                      /> */}
+
+                      <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                        <AvatarImage
+                          src={
+                            userDetails?.profile_image || defaultProfileImage
+                          }
+                          alt='@shadcn'
+                        />
+                        <AvatarFallback className='rounded-[4px]'>
+                          <User className='text-gray-600' strokeWidth={1.5} />
+                        </AvatarFallback>
+                      </Avatar>
                       <span className='sr-only'>Your profile</span>
                     </Link>
                   </Button>
