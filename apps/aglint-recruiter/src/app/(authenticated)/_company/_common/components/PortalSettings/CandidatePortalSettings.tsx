@@ -2,8 +2,7 @@
 
 import React from 'react';
 
-import { usePortalSettings } from '@/components/CompanyDetailComp/_common/hooks/hook';
-
+import { usePortalSettings } from '../../hooks/hook';
 import CandidatePoratlSettingsSkeleton from './components/CandidatePoratlSettingsSkeleton';
 import ConfigureCandidateGreeting from './components/ConfigureCandidateGreeting';
 import ConfigureCompanyEdit from './components/ConfigureCompanyEdit';

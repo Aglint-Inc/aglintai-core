@@ -8,11 +8,10 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import dayjs from 'dayjs';
-import { X } from 'lucide-react';
+import { ClockIcon, X } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import { ClockIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import toast from '@/utils/toast';
 
 import {

@@ -2,18 +2,17 @@ import { type permissionsEnum } from '@aglint/shared-types/src/db/tables/permiss
 import { Button } from '@components/ui/button';
 import { cn } from '@lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
-import ROUTES from '@/utils/routing/routes';
 
 import { settingSubNavItem } from './utils';
 
 function VerticalNav() {
-  const router = useRouter();
+  const router = useRouterPro();
   const { recruiter } = useAuthDetails();
   const emailTemplates = useQuery(
     emailTemplateQueries.emailTemplates(recruiter.id),
@@ -23,16 +22,18 @@ function VerticalNav() {
 
   useEffect(() => {
     if (emailTemplates.isFetched) {
-      setFirstTemplate(router.query.email || emailTemplates.data[0]?.type);
+      setFirstTemplate(
+        router.queryParams.email || emailTemplates.data[0]?.type,
+      );
     }
-  }, [emailTemplates.isFetched, router.query.email]);
+  }, [emailTemplates.isFetched, router.queryParams.email]);
 
   const handleNavClick = (value: string) => {
-    const query = { tab: value };
+    let url = `/company?tab=${value}`;
     if (value === settingSubNavItem['EMAILTEMPLATE']) {
-      query['email'] = firstTemplate;
+      url += `&email=${firstTemplate}`;
     }
-    router.push({ pathname: ROUTES['/company'](), query });
+    router.replace(url);
   };
   const { isShowFeature } = useAuthDetails();
 
@@ -115,7 +116,7 @@ function VerticalNav() {
                 variant='ghost'
                 className={cn(
                   'justify-start',
-                  router.query.tab === item.value && 'bg-muted',
+                  router.queryParams.tab === item.value && 'bg-muted',
                 )}
                 onClick={() => handleNavClick(item.value)}
               >

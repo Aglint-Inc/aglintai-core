@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
+import { useTeamMembers } from 'src/app/(authenticated)/_company/_common/components/TeamManagement';
+import EditMember from 'src/app/(authenticated)/_company/_common/components/TeamManagement/EditMemberDialog';
 
-import { useTeamMembers } from '@/components/CompanyDetailComp/_common/components/TeamManagement';
-import EditMember from '@/components/CompanyDetailComp/_common/components/TeamManagement/EditMemberDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';

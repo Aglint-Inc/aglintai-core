@@ -2,10 +2,10 @@ import type { schedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -15,7 +15,7 @@ import {
 } from '../utils/utils';
 
 export const useCompanyDetailComp = () => {
-  const router = useRouter();
+  const router = useRouterPro();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isSaving, setIsSaving] = useState<'saving' | 'saved'>('saved');
   const [isSaved, setIsSaved] = useState(false);
@@ -34,11 +34,11 @@ export const useCompanyDetailComp = () => {
     }
   }, [recruiter]);
 
-  useEffect(() => {
-    if (router.isReady && !router.query?.tab) {
-      router.replace('/company?tab=company-info');
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (router.isReady && !router.queryParams?.tab) {
+  //     router.replace('/company?tab=company-info');
+  //   }
+  // }, [router]);
 
   useEffect(() => {
     if (!isSaved && isSaving) setIsSaved(true);
@@ -90,7 +90,7 @@ export const useCompanyDetailComp = () => {
     }
   }, [isSaving]);
 
-  const tab = router?.query?.tab as string;
+  const tab = router?.queryParams?.tab as string;
 
   return {
     isSaving,
