@@ -3,7 +3,7 @@ import React from 'react';
 
 import Seo from '@/components/Common/Seo';
 import CandidateAvailability from '@/components/Scheduling/RequestAvailability/CandidateAvailability';
-import { RequestAvailabilityProvider } from '@/components/Scheduling/RequestAvailability/RequestAvailabilityContext';
+import { RequestAvailabilityProvider } from '@/components/Scheduling/RequestAvailability/CandidateAvailability/_common/contexts/RequestAvailabilityContext';
 
 function RequestAvailability() {
   return (

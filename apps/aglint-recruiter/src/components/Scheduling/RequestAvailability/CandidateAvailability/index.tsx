@@ -1,8 +1,4 @@
-import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { useToast } from '@components/hooks/use-toast';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import { Button } from '@components/ui/button';
 import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -12,51 +8,38 @@ import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_co
 
 import Footer from '@/components/Common/Footer';
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import { ShowCode } from '@/components/Common/ShowCode';
-import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/utils/jsonResume';
 import timeZones from '@/utils/timeZone';
 
-import {
-  insertTaskProgress,
-  useRequestAvailabilityContext,
-} from '../RequestAvailabilityContext';
-import AvailableSlots from './AvailableSlots';
-import DateSlotsPoPup from './DateSlotsPopUp';
-import DaySessionCard from './DaySessionCard';
+import MultiDaySessions from './_common/components/MultiDaySessions';
+import SingleDaySessions from './_common/components/SingleDaySessions';
+import SlotsSubmitted from './_common/components/SlotsSubmitted';
+import { useRequestAvailabilityContext } from './_common/contexts/RequestAvailabilityContext';
 
 function CandidateAvailability() {
   const router = useRouterPro();
   const {
     multiDaySessions,
     candidateRequestAvailability,
-    daySlots,
     loading,
     isSubmitted,
     setIsSubmitted,
-    selectedSlots,
     setCandidateRequestAvailability,
     setDateSlots,
     setDaySlots,
-    dateSlots,
   } = useRequestAvailabilityContext();
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [submitLoading, setSubmitLoading] = useState(false);
   const [meetingsAndRounds, setMeetingsAndRound] = useState<{
     rounds: any[];
     meetings: any[];
     schedule: any;
   }>(null);
   const interview_sessions =
+    candidateRequestAvailability?.request_session_relation &&
     candidateRequestAvailability?.request_session_relation.map(
       (ele) => ele.interview_session,
     );
-  const { toast } = useToast();
 
   const getMeetings = async (session_ids: string[], application_id: string) => {
-    setConfirmLoading(true);
     const {
       data: { meetings },
     } = await axios.post(
@@ -65,7 +48,6 @@ function CandidateAvailability() {
         session_ids,
       },
     );
-
     const { rounds } = meetings.reduce(
       (acc, curr) => {
         const count = acc.rounds.length;
@@ -84,89 +66,14 @@ function CandidateAvailability() {
       },
       { rounds: [] as any },
     );
-
     const { data: sch } = await axios.post(
       `/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings`,
       {
         application_id,
       },
     );
-
     setMeetingsAndRound({ rounds: rounds, meetings: meetings, schedule: sch });
-    setConfirmLoading(false);
   };
-
-  async function handleSubmit() {
-    if (multiDaySessions.length !== daySlots.length) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Please select slots from each day',
-      });
-      return;
-    }
-    setSubmitLoading(true);
-
-    const { data: task } = await axios.post(
-      `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
-      {
-        request_id: candidateRequestAvailability?.id,
-      },
-    );
-    const { data: requestData } = await axios.post(
-      `/api/scheduling/request_availability/updateRequestAvailability`,
-      {
-        id: String(router.params?.request_id),
-        data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
-      },
-    );
-
-    if (task.id) {
-      await insertTaskProgress({
-        taskData: {
-          task_id: task.id,
-          created_by: {
-            name: getFullName(
-              candidateRequestAvailability.applications.candidates.first_name,
-              candidateRequestAvailability.applications.candidates.last_name,
-            ),
-            id: candidateRequestAvailability.applications.candidates.id,
-          },
-          jsonb_data: {
-            dates: [
-              ...new Set(
-                daySlots
-                  .map((ele) => ele.dates)
-                  .flat()
-                  .map((ele) => ele.curr_day),
-              ),
-            ],
-          },
-          title: 'Candidate submitted the availability',
-        } as DatabaseTableInsert['new_tasks_progress'],
-      });
-    }
-    const dates = selectedSlots
-      .map((ele) => ele.dates)
-      .flat()
-      .map((ele) => `${dayjs(ele.curr_day).format('DD MMM')}`);
-    await axios.post(
-      `/api/scheduling/request_availability/insertScheduleActivities`,
-      {
-        data: {
-          title: `Candidate submitted availability`,
-          description: `Candidate submitted availability on ${dates} for ${interview_sessions.map((ele) => ele.name).join(',')} Interviews.`,
-          module: 'scheduler',
-          task_id: task.id,
-          logged_by: 'candidate',
-          application_id: candidateRequestAvailability.application_id,
-        } as DatabaseTableInsert['application_logs'],
-      },
-    );
-    setCandidateRequestAvailability(requestData);
-    setIsSubmitted(true);
-    setSubmitLoading(false);
-  }
 
   const initialTimezone = useMemo(() => {
     const tz = dayjs.tz.guess();
@@ -181,13 +88,6 @@ function CandidateAvailability() {
         setDaySlots(candidateRequestAvailability.slots);
       } else {
         if (!candidateRequestAvailability.visited) {
-          const { data: task } = await axios.post(
-            `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
-            {
-              request_id: candidateRequestAvailability?.id,
-            },
-          );
-
           const { data: requestData } = await axios.post(
             `/api/scheduling/request_availability/updateRequestAvailability`,
             {
@@ -196,35 +96,6 @@ function CandidateAvailability() {
             },
           );
           setCandidateRequestAvailability(requestData);
-          await axios.post(
-            `/api/scheduling/request_availability/insertScheduleActivities`,
-            {
-              data: {
-                title: `Candidate opened request availability link for ${interview_sessions.map((ele) => ele.name).join(',')}.`,
-                module: 'scheduler',
-                logged_by: 'candidate',
-                application_id: candidateRequestAvailability.application_id,
-                task_id: task.id,
-              } as DatabaseTableInsert['application_logs'],
-            },
-          );
-          if (task.id)
-            await insertTaskProgress({
-              taskData: {
-                task_id: task.id,
-                created_by: {
-                  name: getFullName(
-                    candidateRequestAvailability.applications.candidates
-                      .first_name,
-                    candidateRequestAvailability.applications.candidates
-                      .last_name,
-                  ),
-                  id: candidateRequestAvailability.applications.candidates.id,
-                },
-                title: `Candidate opened request availability link for ${interview_sessions.map((ele) => ele.name).join(',')}.`,
-                progress_type: 'request_availability',
-              } as DatabaseTableInsert['new_tasks_progress'],
-            });
         }
       }
     } else {
@@ -239,16 +110,6 @@ function CandidateAvailability() {
       checkAndUpdate();
     }
   }, [candidateRequestAvailability]);
-  if (loading || confirmLoading) {
-    return (
-      <div className='flex h-screen w-full items-center justify-center bg-neutral-100'>
-        <div className='w-[120px] -translate-y-1/2'>
-          <CandidateSlotLoad />
-        </div>
-      </div>
-    );
-  }
-
   if (
     candidateRequestAvailability?.booking_confirmed === true &&
     meetingsAndRounds?.meetings
@@ -272,170 +133,89 @@ function CandidateAvailability() {
       />
     );
   }
-  if (dateSlots.length === 0) {
+  if (loading) {
     return (
-      <Alert variant='error'>
-        <AlertCircle className='h-4 w-4' />
-        <AlertTitle>No Slots Available</AlertTitle>
-        <AlertDescription>
-          Please try to contact our support team
-          <Button
-            variant='outline'
-            size='sm'
-            className='ml-2'
-            onClick={() => {
-              window.open('mailto:support@aglinthq.com');
-            }}
-          >
-            Contact Support
-          </Button>
-        </AlertDescription>
-      </Alert>
-    );
-  }
-  return (
-    <div className='h-screen'>
-      <DateSlotsPoPup />
-      <div className='h-[calc(100vh-50px)] w-full bg-amber-50 py-10'>
-        <div className='mx-auto flex max-w-3xl flex-col items-center rounded-lg border border-neutral-200 bg-white p-4'>
-          <div className='w-lg flex flex-col items-center'>
-            <div className='mb-4 flex items-center justify-center'>
-              {candidateRequestAvailability?.recruiter.logo ? (
-                <MuiAvatar
-                  height='100px'
-                  width='100px'
-                  level=''
-                  src={candidateRequestAvailability?.recruiter.logo}
-                />
-              ) : null}
-            </div>
-            <div
-              className={`mb-2 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
-            >
-              {isSubmitted ? (
-                <>
-                  <CheckCircle className='h-6 w-6 text-green-600' />
-                  <p className='text-lg font-semibold'>
-                    Availability Submitted successfully
-                  </p>
-                </>
-              ) : (
-                <>
-                  <Calendar className='h-6 w-6 text-neutral-800' />
-                  <p className='text-lg font-semibold'>
-                    Your Availability Requested
-                  </p>
-                </>
-              )}
-            </div>
-            <p className='text-center text-neutral-600'>
-              {isSubmitted
-                ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
-                : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'}
-            </p>
-          </div>
-          <ShowCode>
-            <ShowCode.When isTrue={multiDaySessions.length > 1}>
-              <MultiDaySelect
-                slotPrimaryButton={
-                  !isSubmitted && (
-                    <UIButton
-                      size='md'
-                      className='w-full'
-                      onClick={handleSubmit}
-                      variant='outline'
-                      disabled={multiDaySessions.length !== daySlots.length}
-                    >
-                      {submitLoading ? 'Submitting...' : 'Submit Availability'}
-                    </UIButton>
-                  )
-                }
-                slotCandidateScheduleCard={multiDaySessions.map(
-                  (sessions, i) => {
-                    const totalSessionMinutes = sessions.reduce(
-                      (accumulator, session) =>
-                        accumulator + session.session_duration,
-                      0,
-                    );
-
-                    const dates =
-                      daySlots.find((ele) => ele.round === i + 1)?.dates || [];
-                    return (
-                      <>
-                        <DaySessionCard
-                          cardIndex={i}
-                          totalSessionMinutes={totalSessionMinutes}
-                          sessions={sessions}
-                          dates={dates}
-                        />
-                      </>
-                    );
-                  },
-                )}
-              />
-            </ShowCode.When>
-            <ShowCode.Else>
-              <ShowCode>
-                <ShowCode.When isTrue={isSubmitted}>
-                  <>
-                    {multiDaySessions.map((sessions, i) => {
-                      const totalSessionMinutes = sessions.reduce(
-                        (accumulator, session) =>
-                          accumulator + session.session_duration,
-                        0,
-                      );
-
-                      const dates =
-                        daySlots.find((ele) => ele.round === i + 1)?.dates ||
-                        [];
-                      return (
-                        <>
-                          <DaySessionCard
-                            showDayCount={false}
-                            cardIndex={i}
-                            totalSessionMinutes={totalSessionMinutes}
-                            sessions={sessions}
-                            dates={dates}
-                          />
-                        </>
-                      );
-                    })}
-                  </>
-                </ShowCode.When>
-                <ShowCode.Else>
-                  {/* // single day */}
-                  <div className='max-w-2xl'>
-                    <AvailableSlots singleDay={true} />
-                  </div>
-                </ShowCode.Else>
-              </ShowCode>
-            </ShowCode.Else>
-          </ShowCode>
+      <div className='flex h-screen w-full items-center justify-center bg-neutral-100'>
+        <div className='w-[120px] -translate-y-1/2'>
+          <CandidateSlotLoad />
         </div>
       </div>
+    );
+  }
 
+  if (!candidateRequestAvailability) {
+    return (
+      <div className='flex min-h-screen flex-col items-center justify-center bg-gray-100'>
+        <div className='text-center'>
+          <h1 className='mb-4 text-6xl font-bold text-gray-800'>404</h1>
+          <p className='mb-8 text-xl text-gray-600'>Page not found</p>
+          <div className='flex justify-center'>
+            <AlertCircle className='h-16 w-16 text-red-500' />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className='w-ful h-[calc(100vh-50px)] py-10'>
+        <div className='mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4'>
+          <Header
+            candidateRequestAvailability={candidateRequestAvailability}
+            isSubmitted={isSubmitted}
+          />
+          {isSubmitted && <SlotsSubmitted />}
+          {!isSubmitted && multiDaySessions.length === 1 && (
+            <SingleDaySessions />
+          )}
+          {!isSubmitted && multiDaySessions.length > 1 && <MultiDaySessions />}
+        </div>
+      </div>
       <div className='h-[50px]'>
         <Footer brand={true} />
       </div>
-    </div>
+    </>
   );
 }
 
 export default CandidateAvailability;
 
-export function MultiDaySelect({
-  slotCandidateScheduleCard,
-  slotPrimaryButton,
-}: {
-  slotCandidateScheduleCard: React.ReactNode;
-  slotPrimaryButton?: React.ReactNode;
-}) {
+function Header({ candidateRequestAvailability, isSubmitted }) {
   return (
-    <div className='flex w-full flex-col items-center space-y-4'>
-      <div className='mx-auto flex w-full max-w-3xl flex-col space-y-4'>
-        {slotCandidateScheduleCard}
+    <div className='w-lg flex flex-col items-center'>
+      <div className='mb-4 flex items-center justify-center'>
+        {candidateRequestAvailability?.recruiter.logo ? (
+          <MuiAvatar
+            height='100px'
+            width='100px'
+            level=''
+            src={candidateRequestAvailability?.recruiter.logo}
+          />
+        ) : null}
       </div>
-      <div className='w-72'>{slotPrimaryButton}</div>
+      <div
+        className={`mb-2 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
+      >
+        {isSubmitted ? (
+          <>
+            <CheckCircle className='h-6 w-6 text-green-600' />
+            <p className='text-lg font-semibold'>
+              Availability Submitted successfully
+            </p>
+          </>
+        ) : (
+          <>
+            <Calendar className='h-6 w-6 text-neutral-800' />
+            <p className='text-lg font-semibold'>Your Availability Requested</p>
+          </>
+        )}
+      </div>
+      <p className='text-center text-neutral-600'>
+        {isSubmitted
+          ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
+          : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'}
+      </p>
     </div>
   );
 }
