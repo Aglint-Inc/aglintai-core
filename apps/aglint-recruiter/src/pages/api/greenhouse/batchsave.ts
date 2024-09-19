@@ -3,10 +3,10 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type GreenhouseApplication } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/types';
+import { type GreenhouseApplicationRemoteData } from '@/api/sync/greenhouse/applications/type';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
-import type { saveResumeAPI } from './saveResume';
+import { type SaveResumeAPI } from './saveResume';
 
 const baseUrl = process.env.NEXT_PUBLIC_HOST_NAME;
 if (!baseUrl) {
@@ -14,13 +14,30 @@ if (!baseUrl) {
 }
 const url = `${baseUrl}/api/greenhouse/saveResume`;
 
-const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const { recruiter_id, secret_key } = req.body as {
+      recruiter_id: string;
+      secret_key: string;
+    };
+    if (!recruiter_id) {
+      console.log('required recruiter id is missing');
+      return res.status(400).json('required payload is missing');
+    }
+
+    if (secret_key !== process.env.SUPABASE_SECRET_KEY) {
+      console.log('Invalid secret key');
+      return res.status(400).json('Invalid secret key');
+    }
+
     const applications = (
       await supabaseAdmin
         .from('applications')
         .select('application_id:id,remote_data, candidate_id')
         .eq('is_resume_fetching', true)
+        .not('remote_data', 'is', null)
+        .eq('source', 'greenhouse')
+        .eq('recruiter_id', recruiter_id)
         .order('created_at', {
           ascending: true,
         })
@@ -28,21 +45,20 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
         .throwOnError()
     ).data as {
       application_id: string;
-      remote_data: GreenhouseApplication;
+      remote_data: GreenhouseApplicationRemoteData;
       candidate_id: string;
     }[];
     if (applications.length) {
       await Promise.all(
         applications.map(async (ref) => {
           try {
-            const resume = ref.remote_data?.attachments?.find(
-              (item) => item.type == 'resume',
-            )?.url;
+            const resume = ref.remote_data?.resume;
             if (resume) {
-              const bodyParams: saveResumeAPI['request'] = {
+              const bodyParams: SaveResumeAPI['request'] = {
                 application_id: ref.application_id,
                 resume: resume,
                 candidate_id: ref.candidate_id,
+                secret_key: secret_key,
               };
               await axios.post(`${url}`, bodyParams);
               console.log(
