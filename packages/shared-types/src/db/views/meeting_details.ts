@@ -1,4 +1,4 @@
-import { CustomFeedback } from "../common.types";
+import type { CustomFeedback } from "../common.types";
 import type { ViewType } from "./index.types";
 
 export type CustomMeetingDetails = ViewType<

@@ -7,31 +7,39 @@ import {
 } from '@/components/Common/FilterHeader/filters/utils';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useApplications, useJob } from '@/job/hooks';
-import type { ApplicationsParams } from '@/job/hooks/useApplicationParams';
+import {
+  useApplicationsActions,
+  useApplicationsStore,
+  useJob,
+  useJobFilterBadges,
+  useJobFilterLocations,
+} from '@/job/hooks';
+import type { Applications } from '@/job/types';
 import { capitalize } from '@/utils/text/textUtils';
 
-const Filters = () => {
+export const Filters = () => {
   const { isShowFeature } = useAuthDetails();
   const {
     interviewPlans: { data: interviewPlans },
+    job: { application_match: matches },
   } = useJob();
-  const {
-    job: { application_match },
-    locationFilterOptions,
-    badgesCount,
-    filters: {
-      search,
-      bookmarked,
-      locations,
-      type,
-      order,
-      badges,
-      resume_match,
-      stages,
-    },
-    setFilters,
-  } = useApplications();
+
+  const filterLocations = useJobFilterLocations();
+  const filterBadges = useJobFilterBadges();
+
+  const badges = useApplicationsStore((state) => state.badges);
+  const bookmarked = useApplicationsStore((state) => state.bookmarked);
+  const locations = useApplicationsStore((state) => state.locations);
+  const application_match = useApplicationsStore(
+    (state) => state.application_match,
+  );
+  const search = useApplicationsStore((state) => state.search);
+  const stages = useApplicationsStore((state) => state.stages);
+
+  const type = useApplicationsStore((state) => state.type);
+  const order = useApplicationsStore((state) => state.order);
+
+  const actions = useApplicationsActions();
 
   const { isScoringEnabled } = useRolesAndPermissions();
 
@@ -39,18 +47,18 @@ const Filters = () => {
     () =>
       badgesTypes.map((id) => ({
         id,
-        label: `${badgeLabel(id)} ${badgesCount.data?.[id] ? `(${badgesCount.data[id]})` : ''}`,
+        label: `${badgeLabel(id)} ${filterBadges.data?.[id] ? `(${filterBadges.data[id]})` : ''}`,
       })),
-    [badgesTypes, badgeLabel, badgesCount.data],
+    [badgesTypes, badgeLabel, filterBadges.data],
   );
 
-  const resume_matchOptions = useMemo(
+  const application_matchOptions = useMemo(
     () =>
-      resumeScoreTypes.map((id) => ({
+      applicationMatchTypes.map((id) => ({
         id,
-        label: `${capitalize(id)} ${application_match?.[id] ? `(${application_match[id]})` : ''}`,
+        label: `${capitalize(id)} ${matches?.[id] ? `(${matches[id]})` : ''}`,
       })),
-    [resumeScoreTypes, capitalize, application_match],
+    [applicationMatchTypes, capitalize, matches],
   );
 
   const interviewPlanOptions = useMemo(
@@ -70,12 +78,12 @@ const Filters = () => {
     typeof FilterHeader
   >[0]['filters'][number] = isScoringEnabled && {
     name: 'Resume match',
-    value: resume_match,
+    value: application_match,
     type: 'filter',
     icon: <></>,
-    setValue: (newValue: typeof resume_match) =>
-      setFilters({ ['resume_match']: newValue }),
-    options: resume_matchOptions,
+    setValue: (newValue: typeof application_match) =>
+      actions.setApplication_match(newValue),
+    options: application_matchOptions,
   };
 
   const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
@@ -84,8 +92,7 @@ const Filters = () => {
       value: badges,
       type: 'filter',
       icon: <></>,
-      setValue: (newValue: typeof badges) =>
-        setFilters({ ['badges']: newValue }),
+      setValue: (newValue: typeof badges) => actions.setBadges(newValue),
       options: badgesOptions,
     };
 
@@ -96,28 +103,26 @@ const Filters = () => {
     isActive: bookmarked,
     isVisible: true,
     name: 'Bookmarked',
-    onClick: () => setFilters({ bookmarked: !bookmarked }),
+    onClick: () => actions.setBookmarked(!bookmarked),
   };
   const Locations: Parameters<typeof FilterHeader>[0]['filters'][number] = {
     type: 'nested-filter',
     name: 'Locations',
-    options: locationFilterOptions?.data ?? {},
+    options: filterLocations?.data ?? {},
     sectionHeaders: ['Country', 'State', 'City'],
     value: arrayToNestedObject(locations?.[locations.length - 1] ?? []),
     setValue: (value) => {
       const locations = nestedObjectToArray(
-        locationFilterOptions?.data ?? {},
+        filterLocations?.data ?? {},
         value,
       ).map((item) => item.filter(({ status }) => status !== 'inactive'));
-      setFilters({
-        locations: locations.flatMap((section) => section).length
-          ? locations
-          : [],
-      });
+      actions.setLocations(
+        locations.flatMap((section) => section).length ? locations : [],
+      );
     },
   };
 
-  const InterviewPlan: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+  const interviewPlan: Parameters<typeof FilterHeader>[0]['filters'][number] = {
     type: 'nested-filter',
     name: 'Interview Plan',
     options: interviewPlanOptions ?? {},
@@ -127,9 +132,9 @@ const Filters = () => {
       const stages = nestedObjectToArray(interviewPlanOptions ?? {}, value).map(
         (item) => item.filter(({ status }) => status !== 'inactive'),
       );
-      setFilters({
-        stages: stages.flatMap((section) => section).length ? stages : [],
-      });
+      actions.setStages(
+        stages.flatMap((section) => section).length ? stages : [],
+      );
     },
   };
 
@@ -151,7 +156,10 @@ const Filters = () => {
       option: type,
       order: order,
     },
-    setOrder: (payload) => setFilters({ ...payload } as unknown),
+    setOrder: (payload) => {
+      if (payload.type) actions.setType(payload.type as typeof type);
+      if (payload.order) actions.setOrder(payload.order as typeof order);
+    },
   };
 
   return (
@@ -160,22 +168,20 @@ const Filters = () => {
         ...(isShowFeature('SCHEDULING') ? [bookmarkedButton] : []),
         resumeMatchFilter,
         Locations,
-        ...(isShowFeature('SCHEDULING') ? [badgesFilter, InterviewPlan] : []),
+        ...(isShowFeature('SCHEDULING') ? [badgesFilter, interviewPlan] : []),
       ].filter(Boolean)}
       sort={safeSort}
       isResetAll={true}
       search={{
         value: search,
-        setValue: (newValue: typeof search) => setFilters({ search: newValue }),
+        setValue: (newValue: typeof search) => actions.setSearch(newValue),
         placeholder: 'Search candidate',
       }}
     />
   );
 };
 
-export default Filters;
-
-const badgesTypes: ApplicationsParams['filters']['badges'] = [
+const badgesTypes: Applications<'input'>['badges'] = [
   'careerGrowth',
   'jobStability',
   'leadership',
@@ -204,7 +210,7 @@ function badgeLabel(key: (typeof badgesTypes)[number]) {
   }
 }
 
-const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
+const applicationMatchTypes: Applications<'input'>['application_match'] = [
   'top_match',
   'good_match',
   'average_match',
@@ -213,7 +219,7 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
   'unknown_match',
 ];
 
-// const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
+// const scheduleStatus: Applications<'input'>['schedule_status'] = [
 //   'cancelled',
 //   'completed',
 //   'confirmed',
@@ -222,9 +228,9 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
 //   'waiting',
 // ];
 
-const sortTypes: ApplicationsParams['filters']['type'][] = [
+const sortTypes: Applications<'input'>['type'][] = [
   'latest_activity',
-  'resume_match',
+  'application_match',
   'applied_at',
   'name',
   'location',

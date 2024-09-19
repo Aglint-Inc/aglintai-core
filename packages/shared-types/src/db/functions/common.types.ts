@@ -1,5 +1,5 @@
-import { CustomRequestType } from "../common.types";
-import { Database } from "../schema.types";
+import type { CustomRequestType } from "../common.types";
+import type { Database } from "../schema.types";
 
 export type CustomRequestPayload = Required<
   Pick<

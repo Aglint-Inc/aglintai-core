@@ -13,16 +13,11 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { Briefcase, Globe, X } from 'lucide-react';
-import { createContext, useCallback, useContext, useMemo } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
-import {
-  useJob,
-  useJobDashboardActions,
-  useJobDashboardFilters,
-  useJobDashboardPopup,
-  useJobDashboardSelections,
-} from '@/job/hooks';
+import { useJob } from '@/job/hooks';
+import { useWorkflowsActions, useWorkflowsStore } from '@/job/workflows/hooks';
 import {
   useJobWorkflowConnect,
   useJobWorkflowDisconnect,
@@ -172,19 +167,14 @@ const JobWorkflows = () => {
 const WorkflowBrowser = () => {
   const { workflows, handleConnect } = useJobWorkflows();
   const { data, status } = useWorkflowQuery();
-  const { open } = useJobDashboardPopup();
-  const selections = useJobDashboardSelections();
-  const filters = useJobDashboardFilters();
-  const { setSelections, resetFilters, resetPopup, resetSelections } =
-    useJobDashboardActions();
+  const open = useWorkflowsStore((state) => state.open);
+  const selections = useWorkflowsStore((state) => state.selections);
+  const search = useWorkflowsStore((state) => state.search);
+  const job = useWorkflowsStore((state) => state.job);
+  const tags = useWorkflowsStore((state) => state.tags);
+  const { setSelections, resetAll } = useWorkflowsActions();
 
   const workflowIds = (workflows ?? []).map(({ id }) => id);
-
-  const handleClose = useCallback(() => {
-    resetFilters();
-    resetPopup();
-    resetSelections();
-  }, []);
 
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
@@ -207,36 +197,36 @@ const WorkflowBrowser = () => {
   const filteredWorkflows = (data ?? []).filter(
     ({ id }) => !workflowIds.includes(id),
   );
-  const cards = getFilteredWorkflows(filters, filteredWorkflows).map(
-    ({ id, title, trigger, phase, jobs }) => {
-      const checked = selections.includes(id);
-      const jobCount = (jobs ?? []).length;
-      return (
-        <>
-          <WorkflowCard
-            widthText={'small'}
-            border={'visible'}
-            key={id}
-            isCheckboxVisible={true}
-            slotCheckbox={
-              <Checkbox
-                checked={checked}
-                onCheckedChange={() =>
-                  handleClick(checked ? 'delete' : 'insert', id)
-                }
-              />
-            }
-            textWorkflowName={title}
-            textWorkflowTrigger={getTriggerOption(trigger, phase)}
-            textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
-            // onClickDelete={{ style: { display: 'none' } }}
-            isEditButton={false}
-            onClickEdit={() => handleClick(checked ? 'delete' : 'insert', id)}
-          />
-        </>
-      );
-    },
-  );
+  const cards = getFilteredWorkflows(
+    { search, job, tags },
+    filteredWorkflows,
+  ).map(({ id, title, trigger, phase, jobs }) => {
+    const checked = selections.includes(id);
+    const jobCount = (jobs ?? []).length;
+    return (
+      <>
+        <WorkflowCard
+          widthText={'small'}
+          border={'visible'}
+          key={id}
+          isCheckboxVisible={true}
+          slotCheckbox={
+            <Checkbox
+              checked={checked}
+              onCheckedChange={() =>
+                handleClick(checked ? 'delete' : 'insert', id)
+              }
+            />
+          }
+          textWorkflowName={title}
+          textWorkflowTrigger={getTriggerOption(trigger, phase)}
+          textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
+          isEditButton={false}
+          onClickEdit={() => handleClick(checked ? 'delete' : 'insert', id)}
+        />
+      </>
+    );
+  });
 
   const handleSubmit = () => {
     if (selections.length === 0) {
@@ -244,10 +234,10 @@ const WorkflowBrowser = () => {
       return;
     }
     handleConnect(selections);
-    handleClose();
+    resetAll();
   };
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && resetAll()}>
       <DialogContent className='sm:max-w-[600px]'>
         <DialogHeader>
           <DialogTitle>Add Workflow</DialogTitle>
@@ -288,8 +278,10 @@ const WorkflowBrowser = () => {
 };
 
 const Filters = () => {
-  const { search, ...filters } = useJobDashboardFilters();
-  const { setFilters } = useJobDashboardActions();
+  const search = useWorkflowsStore((state) => state.search);
+  const job = useWorkflowsStore((state) => state.job);
+  const tags = useWorkflowsStore((state) => state.tags);
+  const { setJob, setTags, setSearch } = useWorkflowsActions();
   const { jobOptions, tagOptions } = useWorkflowFilterOptions();
 
   const options = useMemo(
@@ -297,52 +289,46 @@ const Filters = () => {
     [jobOptions, tagOptions],
   );
 
-  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
-    () =>
-      Object.entries(filters).map(([key, value]) => ({
-        active: value.length,
-        name: key,
-        value: value,
+  const jobFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
+    useMemo(
+      () => ({
+        active: job.length,
+        name: 'Job',
+        value: job,
         type: 'filter',
         iconname: '',
-        icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
-        setValue: (newValue) =>
-          setFilters({ [key]: structuredClone(newValue) }),
-        options: options[key] ?? [],
-      })),
-    [filters],
-  );
+        setValue: (job) => setJob(job),
+        options: options['job'] ?? [],
+      }),
+      [job],
+    );
+
+  const tagFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
+    useMemo(
+      () => ({
+        active: tags.length,
+        name: 'Job',
+        value: tags as string[],
+        type: 'filter',
+        iconname: '',
+        setValue: (newTags) => setTags(newTags as typeof tags),
+        options: (options['tags'] as unknown as string[]) ?? [],
+      }),
+      [tags],
+    );
 
   const component = useMemo(
     () => (
       <FilterHeader
-        filters={safeFilters}
+        filters={[jobFilter, tagFilter]}
         search={{
           value: search,
-          setValue: (newValue) => setFilters({ search: newValue }),
+          setValue: (newValue) => setSearch(newValue),
           placeholder: 'Search workflow',
         }}
       />
     ),
-    [safeFilters, search],
+    [jobFilter, tagFilter, search],
   );
   return component;
-};
-
-// const FilterDropdown = ({ filter }) => {
-//   // Implement the dropdown for each filter
-//   // You can use the shadcn Dropdown component here
-// };
-
-type FilterIconProps = {
-  filter: keyof Omit<ReturnType<typeof useJobDashboardFilters>, 'search'>;
-};
-const FilterIcon = ({ filter }: FilterIconProps) => {
-  switch (filter) {
-    case 'job':
-      return <Briefcase className='h-4 w-4' />;
-    // Add more cases for other filter types
-    default:
-      return null;
-  }
 };

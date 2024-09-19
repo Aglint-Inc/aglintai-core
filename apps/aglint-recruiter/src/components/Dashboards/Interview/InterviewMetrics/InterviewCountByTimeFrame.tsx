@@ -17,11 +17,12 @@ export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
     'today' | 'day' | 'week' | 'month'
   >('day');
-  const { average, isFetching } = useInterviewCount(timeFrame);
+  const { average, isFetching, isError } = useInterviewCount(timeFrame);
   return (
     <ReportCard
       title={'Interview Count'}
       isEmpty={!average?.length}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
       headerSlot={
         <TimeFrameToggle

@@ -6,7 +6,7 @@ import { interviewPoolUsers } from './module_and_users';
 import { schedulesPool } from './schedules';
 import { trainingProgress } from './training_progress';
 
-export const interviewPool = createTRPCRouter({
+export const interview_pool = createTRPCRouter({
   module_and_users: interviewPoolUsers,
   training_progress: trainingProgress,
   candidates: candidatesModule,

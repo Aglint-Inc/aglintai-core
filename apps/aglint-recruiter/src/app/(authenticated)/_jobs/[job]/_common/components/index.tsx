@@ -1,11 +1,11 @@
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 
-import { useApplicationsChecklist, useJob } from '@/job/hooks';
+import { useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
-import Filters from './Filters';
+import { Filters } from './Filters';
 import { JobNotFound } from './JobNotFound';
 import { SharedActions } from './SharedTopNav/actions';
 import { SharedBreadCrumbs } from './SharedTopNav/breadcrumbs';
@@ -56,7 +56,7 @@ export const ApplicationsDashboard = () => {
 };
 
 const ApplicationsComponent = () => {
-  const checklist = useApplicationsChecklist();
+  const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
       <div className='container-lg mx-auto w-full px-12'>

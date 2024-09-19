@@ -3,8 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { useApplications } from '@/job/hooks';
-import { type Application } from '@/types/applications.types';
+import { useApplications, useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Loader } from '../../../../[application]/_common/components/Scoring/Analysis/Common/Loader';
 import DNDCard from '../Table/CardNew/DNDCard';
@@ -13,12 +12,10 @@ import { EmptyList } from '../Table/Common/EmptyList';
 const ApplicationsTable: React.FC = () => {
   const {
     job: { section_count },
-    section,
-    sectionApplication,
-  } = useApplications();
-
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, status } =
-    sectionApplication;
+  } = useJob();
+  const section = useApplicationsStore((state) => state.status);
+  const { query, applications } = useApplications();
+  const { hasNextPage, isFetchingNextPage, fetchNextPage, status } = query;
 
   useEffect(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -27,7 +24,7 @@ const ApplicationsTable: React.FC = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const renderApplication = useCallback(
-    (application: Application) => (
+    (application: (typeof applications)[number]) => (
       <DNDCard key={application.id} application={application} />
     ),
     [],
@@ -37,13 +34,11 @@ const ApplicationsTable: React.FC = () => {
   if (status === 'error') return <div>Error loading applications</div>;
   if (status === 'pending') return <Loader count={8} />;
 
-  const allApplications = data ? data.pages.flatMap((d) => d) : [];
-
   return (
     <DndProvider backend={HTML5Backend}>
       <ScrollArea className='h-[calc(100vh-200px)]'>
         <div className='space-y-2 p-4'>
-          {allApplications.map(renderApplication)}
+          {applications.map(renderApplication)}
           {isFetchingNextPage && <Loader count={1} />}
         </div>
       </ScrollArea>

@@ -1,4 +1,8 @@
-import { type ChartConfig, ChartContainer } from '@components/ui/chart';
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@components/ui/chart';
 import { ToggleGroup, ToggleGroupItem } from '@components/ui/toggle-group';
 import { useState } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
@@ -6,17 +10,16 @@ import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/
 
 import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
 
-const chartConfig = {} satisfies ChartConfig;
-
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
     'today' | 'day' | 'week' | 'month'
   >('day');
-  const { average, isFetching } = useInterviewCount(timeFrame);
+  const { average, isFetching, isError } = useInterviewCount(timeFrame);
   return (
     <ReportCard
       title={'Interview Count'}
       isEmpty={!average?.length}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
       headerSlot={
         <TimeFrameToggle
@@ -31,10 +34,14 @@ export default function InterviewCountByTimeFrame() {
         {average.map((data, index) => (
           <div key={data.name}>
             <ChartContainer
-              config={chartConfig}
+              config={{}}
               className='mx-auto min-h-[200px] w-[200px]'
             >
               <PieChart>
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent />}
+                />
                 <Pie
                   data={[data, { name: 'Remaining', value: 100 - data.value }]}
                   cx='50%'
@@ -44,10 +51,9 @@ export default function InterviewCountByTimeFrame() {
                   innerRadius={70}
                   outerRadius={80}
                   dataKey='value'
+                  // fill={`red`}
                 >
-                  <Cell
-                    fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
-                  />
+                  <Cell fill={`hsl(var(--chart-${(index + 1) % 5}))`} />
                   <Cell fill='#f3f4f6' />
                 </Pie>
                 <text
