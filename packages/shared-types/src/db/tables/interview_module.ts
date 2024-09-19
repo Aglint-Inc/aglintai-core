@@ -1,5 +1,4 @@
-import { PauseJson, PlanCombinationRespType } from "../../scheduleTypes";
-import { TableType } from "./index.types";
+import type { TableType } from "./index.types";
 
 export type CustomModule = TableType<
   "interview_module",

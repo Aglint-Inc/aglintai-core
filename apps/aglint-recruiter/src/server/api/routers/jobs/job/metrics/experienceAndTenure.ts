@@ -8,6 +8,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) =>
   (
     await ctx.db
       .rpc('getexperienceandtenure', { jobid: input.job_id })
+      .single()
       .throwOnError()
   ).data;
 

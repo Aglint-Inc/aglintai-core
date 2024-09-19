@@ -1,18 +1,22 @@
 import type { Database } from "../schema.types";
 import type { CustomizableTypes, Custom } from "../utils.types";
-import { CustomCreateSessionRequest } from "./create_session_request.types";
-import { CustomGetAllInterviewers } from "./get_all_interviewers";
-import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
-import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
-import { CustomGetRequestCountStats } from "./get_request_count_stats.types";
-import { CustomGetRequestCountStatsNew } from "./get_request_count_stats_new.types";
+import type { CustomCreateSessionRequest } from "./create_session_request.types";
+import type { CustomGetAllInterviewers } from "./get_all_interviewers";
+import type { CustomGetApplicantBadges } from "./get_applicant_badges.types";
+import type { CustomGetApplicantLocations } from "./get_applicant_locations.types";
+import type { CustomGetInterviewScheduleByJobId } from "./get_interview_schedule_by_job_id";
+import type { CustomGetRequestCountStats } from "./get_request_count_stats.types";
+import type { CustomGetRequestCountStatsNew } from "./get_request_count_stats_new.types";
+import type { CustomGetExperienceAndTenure } from "./getexperienceandtenure";
+import type { CustomGetLocationsPool } from "./getlocationspool";
+import type { CustomGetSkillPools } from "./getskillpools";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
-import { CustomMoveToInterview } from "./move_to_interview.types";
-import { CustomSchedulingAnalyticsCompletedInterviews } from "./scheduling_analytics_completed_interviews.types";
-import { CustomSchedulingAnalyticsFilters } from "./scheduling_analytics_filters.types";
-import { CustomSchedulingAnalyticsInterviewers } from "./scheduling_analytics_interviewers.types";
-import { CustomSchedulingAnalyticsLeaderboard } from "./scheduling_analytics_leaderboard.types";
-import { CustomSchedulingAnalyticsReasons } from "./scheduling_analytics_reasons.types";
+import type { CustomMoveToInterview } from "./move_to_interview.types";
+import type { CustomSchedulingAnalyticsCompletedInterviews } from "./scheduling_analytics_completed_interviews.types";
+import type { CustomSchedulingAnalyticsFilters } from "./scheduling_analytics_filters.types";
+import type { CustomSchedulingAnalyticsInterviewers } from "./scheduling_analytics_interviewers.types";
+import type { CustomSchedulingAnalyticsLeaderboard } from "./scheduling_analytics_leaderboard.types";
+import type { CustomSchedulingAnalyticsReasons } from "./scheduling_analytics_reasons.types";
 import type { CustomUpdateDebriefSession } from "./update_debrief_session.types";
 
 type DatabaseFunctions = Database["public"]["Functions"];
@@ -63,5 +67,9 @@ export type Functions = Custom<
     scheduling_analytics_leaderboard: CustomSchedulingAnalyticsLeaderboard;
     scheduling_analytics_reasons: CustomSchedulingAnalyticsReasons;
     get_all_interviewers: CustomGetAllInterviewers;
+    get_interview_schedule_by_job_id: CustomGetInterviewScheduleByJobId;
+    getexperienceandtenure: CustomGetExperienceAndTenure;
+    getlocationspool: CustomGetLocationsPool;
+    getskillpools: CustomGetSkillPools;
   }
 >;
