@@ -1,8 +1,4 @@
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-
 import { Skeleton } from '@components/ui/skeleton';
-import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { type PropsWithChildren } from 'react';
 
 import { useApplication } from '@/context/ApplicationContext';
@@ -27,7 +23,7 @@ export const Resume = () => {
   const url = data?.file_url;
   const exten = getExtension(url);
 
-  if (exten === '.docx' || exten === '.doc')
+  if (exten === '.docx' || exten === '.doc' || exten === '.pdf')
     return (
       <>
         <embed
@@ -38,27 +34,6 @@ export const Resume = () => {
         />
       </>
     );
-
-  return <Pdf key={data?.file_url} url={data?.file_url} />;
-};
-
-const Pdf = ({ url }: { url: string }) => {
-  return (
-    <ResumeLayout>
-      <Worker
-        workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-      >
-        <Viewer
-          fileUrl={url}
-          renderLoader={() => (
-            <div className='absolute z-0 h-full w-full'>
-              <Skeleton />
-            </div>
-          )}
-        />
-      </Worker>
-    </ResumeLayout>
-  );
 };
 
 const ResumeLayout = (props: PropsWithChildren) => {
@@ -72,3 +47,27 @@ const ResumeLayout = (props: PropsWithChildren) => {
 const getExtension = (url: string) => {
   return url.slice(url.lastIndexOf('.'), url.length);
 };
+
+// src={`https://docs.google.com/gview?url=${url}&embedded=true`}
+// import '@react-pdf-viewer/core/lib/styles/index.css';
+// import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+// import { Viewer, Worker } from '@react-pdf-viewer/core';
+// return <Pdf key={data?.file_url} url={data?.file_url} />;
+// const Pdf = ({ url }: { url: string }) => {
+//   return (
+//     <ResumeLayout>
+//       <Worker
+//         workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+//       >
+//         <Viewer
+//           fileUrl={url}
+//           renderLoader={() => (
+//             <div className='absolute z-0 h-full w-full'>
+//               <Skeleton />
+//             </div>
+//           )}
+//         />
+//       </Worker>
+//     </ResumeLayout>
+//   );
+// };
