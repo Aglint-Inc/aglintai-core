@@ -1,9 +1,9 @@
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
+import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { getFullName } from '@/utils/jsonResume';
 
 import { type ChatType } from '../hooks/fetch';
 import Widgets from '../Widgets';

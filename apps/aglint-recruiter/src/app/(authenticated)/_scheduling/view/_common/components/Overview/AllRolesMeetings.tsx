@@ -1,7 +1,6 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import Link from 'next/link';
-
-import { getFullName } from '@/utils/jsonResume';
 
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 

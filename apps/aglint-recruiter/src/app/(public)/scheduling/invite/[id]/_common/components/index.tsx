@@ -15,7 +15,6 @@ import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
 import CompanyLogo from '../../../../../../../components/Common/CompanyLogo';
-import Footer from '../../../../../../../components/Common/Footer';
 import IconScheduleType from '../../../../../../../components/Common/Icons/IconScheduleType';
 import { Loader } from '../../../../../../../components/Common/Loader';
 import { SessionIcon } from '../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
@@ -39,7 +38,7 @@ const CandidateInviteNew = () => {
 
   return (
     <div className='h-screen'>
-      <div className='max-h-[calc(100vh-50px)] min-h-[calc(100vh-50px)] w-full overflow-auto bg-amber-50 py-10'>
+      <div className='w-full py-10'>
         {load === undefined ? (
           <div className='flex h-screen w-full items-center justify-center'>
             <Loader />
@@ -55,9 +54,7 @@ const CandidateInviteNew = () => {
           </>
         )}
       </div>
-      <div className='h-[50px]'>
-        <Footer brand={true} />
-      </div>
+      
     </div>
   );
 };

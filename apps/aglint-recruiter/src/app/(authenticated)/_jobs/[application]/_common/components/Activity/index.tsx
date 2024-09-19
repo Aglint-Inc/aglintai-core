@@ -2,15 +2,15 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import dayjs from 'dayjs';
 import { ChevronDown, ChevronUp, Circle, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import SlotContent from '@/components/Activities/SlotWidgets';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { useApplicationActivity } from '../../hooks/useApplicationActivity';
 
 export const Activity = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { data, status } = useApplicationActivity();
   const [showAll, setShowAll] = useState(false);
 

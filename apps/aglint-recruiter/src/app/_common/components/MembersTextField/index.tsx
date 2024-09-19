@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
