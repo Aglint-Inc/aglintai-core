@@ -51,7 +51,11 @@ export const bookCandidateSelectedOption = async (
 
   await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, false);
-  await updateMeetingEventDetails(booked_meeting_details, parsed_body.cand_tz);
+  await updateMeetingEventDetails(
+    booked_meeting_details,
+    parsed_body.cand_tz,
+    fetched_cand_details.filter_json_data.request_id,
+  );
   await updateConfirmTime(parsed_body.filter_id);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {

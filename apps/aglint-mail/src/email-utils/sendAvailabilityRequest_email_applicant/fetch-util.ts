@@ -1,6 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'sendAvailabilityRequest_email_applicant'
@@ -69,7 +69,7 @@ export const fetchUtil: FetchUtilType<
   const comp_email_placeholder: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: companyName,
+      companyName,
       jobRole: job_title,
       organizerName: getFullName(
         meeting_organizer.first_name,
