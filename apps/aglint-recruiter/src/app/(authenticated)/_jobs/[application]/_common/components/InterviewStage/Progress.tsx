@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 
-import { useApplication } from '@/context/ApplicationContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
+import { useInterviewStages } from '../../hooks/useInterviewStages';
 import { setSelectedSessionIds } from '../../stores/applicationDetail';
 import StageIcon from '../ui/StageIcon';
 import { StageListCard } from '../ui/StageListCard';
 
 function Progress() {
   const router = useRouterPro();
-  const {
-    interview: { data: stages },
-  } = useApplication();
+
+  const { data: stages } = useInterviewStages();
 
   const selectedStageId = router.queryParams.stage as string;
 

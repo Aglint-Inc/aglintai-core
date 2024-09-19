@@ -1,3 +1,4 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { Briefcase } from 'lucide-react';
@@ -6,9 +7,9 @@ import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
-import { type StageWithSessions } from '@/queries/application';
 import { numberToText } from '@/utils/number/numberToText';
 
+import { type StageWithSessions } from '../../../../hooks/useInterviewStages';
 import CancelBanners from './AdminCancelBanners';
 
 function CollapseContent({
@@ -16,7 +17,7 @@ function CollapseContent({
   collapsed,
   candidate,
 }: {
-  currentSession: StageWithSessions[0]['sessions'][0];
+  currentSession: NonNullable<StageWithSessions>[0]['sessions'][0];
   collapsed: boolean;
   candidate?: {
     name: string;
@@ -119,8 +120,8 @@ function CollapseContent({
                 ) : (
                   users.map((user) => {
                     const item = user.user_details;
-                    const pause_json =
-                      user.interview_module_relation?.pause_json;
+                    const pause_json = user.interview_module_relation
+                      ?.pause_json as DatabaseTable['interview_module_relation']['pause_json'];
                     const isPaused = !!pause_json;
                     const isCalendarConnected =
                       user.user_details.is_calendar_connected;
@@ -129,7 +130,8 @@ function CollapseContent({
                       (can) =>
                         can.interview_session_cancel.session_relation_id ===
                         user.interview_session_relation.id,
-                    )?.interview_session_cancel;
+                    )
+                      ?.interview_session_cancel as DatabaseTable['interview_session_cancel'];
 
                     return (
                       <InterviewerUserDetail

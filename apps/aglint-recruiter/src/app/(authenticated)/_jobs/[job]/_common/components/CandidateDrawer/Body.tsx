@@ -10,10 +10,10 @@ import { Loader } from '@/components/Common/Loader';
 import { useApplication } from '@/context/ApplicationContext';
 import { useApplicationStore } from '@/context/ApplicationContext/store';
 
-import { Activity } from './Activity';
-import { Details } from './Details';
+import { Activity } from '../../../../[application]/_common/components/Activity';
+import { Resume } from '../../../../[application]/_common/components/Resume';
+import { Details } from '../../../../[application]/_common/components/Scoring';
 import { Meta } from './Meta';
-import { Resume } from './Resume';
 import { TopBar } from './TopBar';
 
 type Props = {

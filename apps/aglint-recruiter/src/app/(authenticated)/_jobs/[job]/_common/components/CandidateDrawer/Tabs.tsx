@@ -16,7 +16,6 @@ import {
 } from './Common/ActionsProvider';
 
 const allTabs: ApplicationStore['tab'][] = [
-  'Resume',
   'Details',
   'Interview',
   'Tasks',
@@ -24,14 +23,9 @@ const allTabs: ApplicationStore['tab'][] = [
 ];
 
 const Tabs = () => {
-  const { showTabs, tabs, interview, meta } = useApplication();
+  const { showTabs, tabs, meta } = useApplication();
   if (!showTabs) return <></>;
-  if (
-    tabs.status === 'pending' ||
-    interview.status === 'pending' ||
-    meta.status === 'pending'
-  )
-    return <></>;
+  if (tabs.status === 'pending' || meta.status === 'pending') return <></>;
   return (
     <ApplicationInterviewActionsProvider>
       <AllTabs />
@@ -50,7 +44,6 @@ const AllTabs = memo(() => {
 
   const {
     tabs: { data },
-    interview,
     meta,
   } = useApplication();
 
@@ -70,7 +63,7 @@ const AllTabs = memo(() => {
       Activity: latestActivities.length ?? null,
       Tasks: notStartedTasks.length ?? null,
     }),
-    [interview, meta, validActions, notStartedTasks, latestActivities],
+    [meta, validActions, notStartedTasks, latestActivities],
   );
 
   const tabs = allTabs.reduce(

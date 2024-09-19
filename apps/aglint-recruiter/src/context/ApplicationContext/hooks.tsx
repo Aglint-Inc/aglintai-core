@@ -51,12 +51,7 @@ export const useApplicationContext = (
   );
   const meta = useQuery(applicationQuery.meta(props));
   const details = useQuery(applicationQuery.details(props));
-  const interview = useQuery(
-    applicationQuery.interview({
-      ...props,
-      enabled: true,
-    }),
-  );
+
   const activity = useQuery(
     applicationQuery.activity({
       ...props,
@@ -218,7 +213,6 @@ export const useApplicationContext = (
     tabs,
     meta,
     details,
-    interview,
     activity,
     requests,
     handleUpdateApplication,

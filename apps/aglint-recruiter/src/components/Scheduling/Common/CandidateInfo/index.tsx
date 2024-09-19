@@ -1,6 +1,7 @@
+import { Details } from 'src/app/(authenticated)/_jobs/[application]/_common/components/Scoring';
+
 import { Application } from '@/context/ApplicationContext';
 import { Body } from '@/job/components/CandidateDrawer/Body';
-import { Details } from '@/job/components/CandidateDrawer/Details';
 import { Meta } from '@/job/components/CandidateDrawer/Meta';
 import { Info, TopBar } from '@/job/components/CandidateDrawer/TopBar';
 

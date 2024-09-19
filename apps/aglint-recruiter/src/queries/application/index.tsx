@@ -5,9 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import axios from '@/client/axios';
 import { getActiveSection } from '@/jobs/utils/getActiveSection';
-import { type ApiInterviewStages } from '@/pages/api/scheduling/application/fetchinterviewstages';
 import { supabase } from '@/utils/supabase/client';
 
 import { jobQueries } from '../job';
@@ -72,17 +70,7 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationDetails({ application_id }),
     }),
-  interview: ({ application_id, job_id, enabled }: ToggleParams) =>
-    queryOptions({
-      enabled: enabled && !!application_id && !!job_id,
-      gcTime: application_id ? 1 * 60_000 : 0,
-      refetchOnMount: true,
-      queryKey: [
-        ...applicationQuery.application({ application_id, job_id }).queryKey,
-        'interview',
-      ],
-      queryFn: () => getApplicationInterview({ application_id, job_id }),
-    }),
+
   requests: ({ application_id, job_id, enabled }: ToggleParams) =>
     queryOptions({
       enabled: enabled && !!application_id && !!job_id,
@@ -147,7 +135,6 @@ type Params = ApplicationAllQueryPrerequistes & {
     tabs?: Awaited<ReturnType<typeof getActiveSection>>;
     meta?: Awaited<ReturnType<typeof getApplicationMeta>>;
     details?: Awaited<ReturnType<typeof getApplicationDetails>>;
-    interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
     requests?: Awaited<ReturnType<typeof getApplicationRequests>>;
     activity?: Awaited<ReturnType<typeof getApplicationActivity>>;
   };
@@ -191,24 +178,6 @@ const getApplicationDetails = async ({
     job_status: public_jobs?.status,
   };
 };
-
-export const getApplicationInterview = async ({
-  application_id,
-}: Pick<Params, 'application_id' | 'job_id'>) => {
-  const res = await axios.call<ApiInterviewStages>(
-    'POST',
-    '/api/scheduling/application/fetchinterviewstages',
-    {
-      application_id,
-    },
-  );
-
-  return res.stages;
-};
-
-export type StageWithSessions = Awaited<
-  ReturnType<typeof getApplicationInterview>
->;
 
 const getApplicationRequests = async ({
   application_id,
