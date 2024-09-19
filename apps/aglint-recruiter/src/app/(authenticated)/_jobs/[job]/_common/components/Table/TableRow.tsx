@@ -2,9 +2,10 @@ import { Checkbox } from '@components/ui/checkbox';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import { Bookmark, GripVertical, Star } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
 
 import StageProgress from '@/components/Scheduling/Common/StageProgress';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useApplicationsStore } from '@/job/hooks';
 import type { Application } from '@/job/types';
 
 import { ResumeScore } from '../Common/ResumeScoreNew';
@@ -25,13 +26,13 @@ export function TableRow({
   isChecked,
   onCheck,
   onClickCandidate,
-  isResumeMatchVisible,
-  isInterviewVisible,
   checkEnabled,
-  status,
 }: TableRowProps) {
-  const searchParams = useSearchParams();
-  const section = searchParams.get('section');
+  const { isScoringEnabled: isResumeMatchVisible } = useRolesAndPermissions();
+  const isInterviewVisible = useApplicationsStore((state) =>
+    state.cascadeVisibilites(),
+  ).interview;
+  const section = useApplicationsStore((state) => state.status);
 
   const interviewColShow =
     section === 'interview' ||
