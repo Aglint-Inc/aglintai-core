@@ -395,5 +395,5 @@ export const interviewEndSlackOrganizerForMeetingStatusSchema = z.object({
 export const onRequestCancelSlackInterviewersOrganizerSchema = z.object({
   session_ids: z.array(z.string()),
   request_id: z.string(),
-  event_run_id: z.number(),
+  event_run_id: z.number().nullish(),
 });

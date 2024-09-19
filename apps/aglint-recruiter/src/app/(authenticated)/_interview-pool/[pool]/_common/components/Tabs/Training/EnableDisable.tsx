@@ -61,11 +61,7 @@ function EnableDisable() {
                 textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
                 slotButton={
                   checkPermissions(['interview_types']) ? (
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => setOpen(true)}
-                    >
+                    <Button variant='outline' onClick={() => setOpen(true)}>
                       <Settings className='mr-2 h-4 w-4' />
                       Settings
                     </Button>

@@ -2,9 +2,9 @@ import { Edit } from 'lucide-react';
 import Link from 'next/link';
 
 import { UIButton } from '@/components/Common/UIButton';
-import { type StageWithSessions } from '@/queries/application';
 import ROUTES from '@/utils/routing/routes';
 
+import { type StageWithSessions } from '../../../hooks/useInterviewStages';
 import { useEditSession } from '../../InterviewTab/hooks/useEditSession';
 
 function ButtonGroupRight({
@@ -16,7 +16,6 @@ function ButtonGroupRight({
   isEditIconVisible: boolean;
   isViewDetailVisible: boolean;
 }) {
-
   const { onClickEdit } = useEditSession();
 
   const interview_meeting = currentSession.interview_meeting;

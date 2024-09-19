@@ -12,19 +12,21 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useApplication } from '@/context/ApplicationContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobsRead } from '@/queries/jobs';
 import ROUTES from '@/utils/routing/routes';
 
+import { useApplicationMeta } from '../hooks/useApplicationMeta';
+
 function BreadCrumb() {
+  const router = useRouterPro();
   const [breadcrumbItems, setBreadcrumbItems] = useState<
     Array<{ name: string; route?: string }>
   >([]);
   const { data: allJobs } = useJobsRead();
-  const {
-    meta: { data: detail },
-    job_id,
-  } = useApplication();
+  const { data: detail } = useApplicationMeta();
+  const job_id = router.params.job;
+
   const job = allJobs?.find((job) => job.id === job_id);
 
   useEffect(() => {

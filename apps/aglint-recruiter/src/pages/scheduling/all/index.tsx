@@ -1,13 +1,11 @@
-import React from 'react';
-
-import { ScheduleStatesProvider } from '@/components/Scheduling/Interviews/_common/contexts/ScheduleStatesContext';
-import AllInterviews from '@/components/Scheduling/Interviews/Components/AllInterviews';
+import AllInterviewsLayout from 'src/app/(authenticated)/_interviews/all/AllInterviewsLayout';
+import AllInterviewsPage from 'src/app/(authenticated)/_interviews/all/page';
 
 function AllInterviewPage() {
   return (
-    <ScheduleStatesProvider>
-      <AllInterviews />
-    </ScheduleStatesProvider>
+    <AllInterviewsLayout>
+      <AllInterviewsPage />
+    </AllInterviewsLayout>
   );
 }
 

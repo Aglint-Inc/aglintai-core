@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run get-path && npm run dev:build && next dev",
+    "dev": "npm run get-path && npm run dev:build && next dev --turbo",
     "build": "next build",
     "start": "next start",
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
@@ -94,6 +94,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.3.0",
     "formidable": "^3.5.1",
     "google-auth-library": "^9.14.1",
     "googleapis": "^144.0.0",

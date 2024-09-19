@@ -130,7 +130,7 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <div className='rounded-md border border-solid border-gray-400'>
+      <div className='overflow-hidden rounded-md border'>
         <div>
           {editor && toolbar && (
             <div

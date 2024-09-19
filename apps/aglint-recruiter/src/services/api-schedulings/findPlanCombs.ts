@@ -11,12 +11,14 @@ export const findPlanCombs = async ({
   session_ids,
   api_options,
   reqProgressLogger,
+  time_zone,
 }: {
   recruiter_id: string;
   date_range: { start_date_str: string; end_date_str: string };
   session_ids: string[];
   api_options: APIOptions;
   reqProgressLogger: ProgressLoggerType;
+  time_zone: string;
 }) => {
   api_options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesSchedulingV2(api_options);
@@ -25,7 +27,7 @@ export const findPlanCombs = async ({
       company_id: recruiter_id,
       start_date_str: date_range.start_date_str,
       end_date_str: date_range.end_date_str,
-      req_user_tz: 'Asia/Calcutta', //TODO:TZ
+      req_user_tz: time_zone,
       session_ids: session_ids,
     },
   });
@@ -45,8 +47,23 @@ export const findPlanCombs = async ({
       preferredInterviewers: [],
     },
   });
-  const plans = filtered_slot_info.combs.flatMap((c) => c.plans);
+  const plans = filtered_slot_info.combs
+    .flatMap((c) => c.plans)
+    .filter((p) => p.no_slot_reasons.length === 0);
   const schedule_dates = cand_schedule.db_details.schedule_dates;
+  if (plans.length === 0) {
+    const conflicts = filtered_slot_info.combs
+      .flatMap((c) => c.plans)
+      .map((p) => p.no_slot_reasons)
+      .map((p) => p.map((r) => r.reason))
+      .flat();
+    await reqProgressLogger({
+      log: `No slots found within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')} due to ${conflicts.join(', ')}`,
+      status: 'completed',
+      is_progress_step: true,
+    });
+    return [];
+  }
   await reqProgressLogger({
     log: `Found ${plans.length} slots within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')}`,
     status: 'completed',

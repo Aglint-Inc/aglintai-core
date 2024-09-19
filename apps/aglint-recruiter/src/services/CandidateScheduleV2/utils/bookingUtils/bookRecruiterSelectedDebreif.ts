@@ -50,7 +50,11 @@ export const bookRecruiterSelectedDebreif = async (
 
   await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, true);
-  await updateMeetingEventDetails(booked_meeting_details, req_body.user_tz);
+  await updateMeetingEventDetails(
+    booked_meeting_details,
+    req_body.user_tz,
+    null,
+  );
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {
     cand_tz: fetched_cand_details.cand_tz,
