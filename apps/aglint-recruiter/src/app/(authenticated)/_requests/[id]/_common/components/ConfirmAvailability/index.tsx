@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Check, Loader2 } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -28,6 +29,7 @@ import {
 } from './store';
 
 function ConfirmAvailability() {
+  const params = useParams();
   const {
     setSelectedDayAvailableBlocks,
     selectedDateSlots,
@@ -85,6 +87,7 @@ function ConfirmAvailability() {
           no_slot_reasons: [],
         },
         user_tz: userTzDayjs.tz.guess(),
+        request_id: params.id as string,
       };
 
       try {

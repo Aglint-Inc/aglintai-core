@@ -99,6 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           cand_avail_rec: avail_record,
           cand_schedule: cand_schedule,
           reqProgressLogger,
+          request_id,
         },
         reqProgressLogger,
       );
