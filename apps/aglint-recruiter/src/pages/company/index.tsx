@@ -1,7 +1,6 @@
 import { useSearchParams } from 'next/navigation';
-
-import CompanyDetailComp from '@/components/CompanyDetailComp';
-import SeoSetting from '@/components/CompanyDetailComp/SeoSetting';
+import CompanyDetailComp from 'src/app/(authenticated)/_company/_common/components';
+import SeoSetting from 'src/app/(authenticated)/_company/_common/components/SeoSetting';
 
 function CompanyPage() {
   const tab = useSearchParams().get('tab');

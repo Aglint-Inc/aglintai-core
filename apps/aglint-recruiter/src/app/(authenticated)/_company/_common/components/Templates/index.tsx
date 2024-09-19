@@ -17,7 +17,6 @@ import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
@@ -25,6 +24,7 @@ import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/Email
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -49,7 +49,7 @@ function SchedulerEmailTemps({ setSaving }) {
     null,
   );
   const [searchQry, setSearchQry] = useState('');
-  const router = useRouter();
+  const router = useRouterPro();
   const { toast } = useToast();
 
   const [isHtml, setHtml] = useState(null);
@@ -57,8 +57,9 @@ function SchedulerEmailTemps({ setSaving }) {
 
   const [isFocus, setIsFocus] = useState(false);
 
-  const temp_tab = router.query.tab as any;
-  const temp_email = router.query.email as DatabaseEnums['email_slack_types'];
+  const temp_tab = router.queryParams.tab as any;
+  const temp_email = router.queryParams
+    .email as DatabaseEnums['email_slack_types'];
 
   useEffect(() => {
     (async () => {
@@ -99,7 +100,7 @@ function SchedulerEmailTemps({ setSaving }) {
     if (!template_tabs.find((t) => t.key === temp_tab)) {
       setTabRoute(template_tabs[0].key);
     }
-  }, [router.isReady, router.query]);
+  }, [router.isReady, router.queryParams]);
 
   async function updateEmailToDB(
     updated_template: DatabaseTable['company_email_template'],
@@ -186,12 +187,16 @@ function SchedulerEmailTemps({ setSaving }) {
   }, [up, down]);
 
   function setEmailRoute(temp) {
-    router.query.email = temp;
-    router.push(router);
+    const currentUrl = new URL(window.location.href); // Get the current URL
+    currentUrl.searchParams.set('email', temp); // Set or update the `email` query param
+
+    router.push(currentUrl.toString());
   }
   function setTabRoute(tab) {
-    router.query.template_tab = tab;
-    router.push(router);
+    const currentUrl = new URL(window.location.href); // Get the current URL
+    currentUrl.searchParams.set('template_tab', tab); // Set or update the `email` query param
+
+    router.push(currentUrl.toString());
   }
 
   const currentTabQueryTemplates = () => {
@@ -336,8 +341,11 @@ function SchedulerEmailTemps({ setSaving }) {
                         <Link
                           key={emailPath.id}
                           href={{
-                            pathname: router.pathname,
-                            query: { ...router.query, email: emailPath.type },
+                            pathname: router.pathName,
+                            query: {
+                              ...router.queryParams,
+                              email: emailPath.type,
+                            },
                           }}
                           passHref
                         >
@@ -440,12 +448,12 @@ function SchedulerEmailTemps({ setSaving }) {
                           }}
                           selectedTemplate={{ ...selectedTemplate }}
                           showSender={
-                            router.query.template_tab !== 'slack' &&
-                            router.query.template_tab !== 'calender'
+                            router.queryParams.template_tab !== 'slack' &&
+                            router.queryParams.template_tab !== 'calender'
                           }
                           showSubject={
-                            router.query.template_tab !== 'slack' &&
-                            router.query.template_tab !== 'calender'
+                            router.queryParams.template_tab !== 'slack' &&
+                            router.queryParams.template_tab !== 'calender'
                           }
                         />
                       )}

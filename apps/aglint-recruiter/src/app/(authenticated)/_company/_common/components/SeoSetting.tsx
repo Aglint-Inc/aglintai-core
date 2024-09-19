@@ -1,54 +1,54 @@
 import React from 'react';
 
-import Seo from '../Common/Seo';
+import { SeoPro } from '@/components/Common/SeoPro';
 
-export default function SeoSetting({ tab }) {
+export default function SeoProSetting({ tab }) {
   return (
     <>
       {tab === 'company-info' && (
-        <Seo
+        <SeoPro
           title='Company info - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'workingHours' && (
-        <Seo
+        <SeoPro
           title='Working hours - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'holidays' && (
-        <Seo
+        <SeoPro
           title='Holidays - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'team' && (
-        <Seo
+        <SeoPro
           title='Users - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'roles' && (
-        <Seo
+        <SeoPro
           title='Roles - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'emailTemplate' && (
-        <Seo
+        <SeoPro
           title='Email templates - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'scheduling' && (
-        <Seo
+        <SeoPro
           title='Scheduling - Company settings | Aglint AI'
           description='AI for People Products'
         />
       )}
       {tab === 'schedulingReasons' && (
-        <Seo
+        <SeoPro
           title='Reasons - Company settings | Aglint AI'
           description='AI for People Products'
         />
