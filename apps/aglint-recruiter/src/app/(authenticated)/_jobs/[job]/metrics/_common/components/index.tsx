@@ -18,7 +18,7 @@ import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { DashboardBarChart } from './BarChart2';
-import DashboardDoughnutChart from './doughnut';
+import { DashboardDoughnutChart } from './doughnut';
 import DashboardLineChart from './lineChart';
 import { NoDataAvailable } from './nodata';
 import TenureAndExpSummary from './tenureAndExpSummary';

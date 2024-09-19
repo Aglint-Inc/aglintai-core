@@ -2,7 +2,6 @@ import { createContext, memo, type PropsWithChildren } from 'react';
 
 import { useJob } from '@/job/hooks/useJob';
 import {
-  useJobLocations,
   useJobSchedules,
   useJobTenureAndExperience,
 } from '@/queries/job-dashboard';
@@ -10,15 +9,12 @@ import {
 const useProviderJobDashboardContext = () => {
   const { job } = useJob();
 
-  const locations = useJobLocations(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
 
   const value = {
     schedules,
     tenureAndExperience,
-
-    locations,
   };
 
   return value;

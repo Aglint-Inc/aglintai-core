@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import type { JobRequisite } from '../job';
 import { jobQueries } from '../job';
 
@@ -9,15 +7,6 @@ export const jobDashboardQueryKeys = {
   }),
   matches: (args: JobRequisite) => ({
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'matches'],
-  }),
-  locations: (args: JobRequisite) => ({
-    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'locations'],
-  }),
-  assessments: (args: JobRequisite) => ({
-    queryKey: [
-      ...jobDashboardQueryKeys.dashboard(args).queryKey,
-      'assessments',
-    ],
   }),
   tenureAndExperience: (args: JobRequisite) => ({
     queryKey: [
@@ -32,13 +21,3 @@ export const jobDashboardQueryKeys = {
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'workflows'],
   }),
 } as const;
-
-export const useJobId = () => {
-  const router = useRouter();
-  const job_id = (
-    (router?.pathname ?? null).startsWith('/jobs/[job]')
-      ? (router?.query?.id ?? null)
-      : null
-  ) as string;
-  return { job_id };
-};

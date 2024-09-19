@@ -15,18 +15,6 @@ export const useJobDashboardRefresh = () => {
   };
 };
 
-export const useJobLocations = (job: Job) => {
-  const id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.locations({ id });
-  const response = useQuery({
-    queryKey,
-    enabled: !!job,
-    queryFn: () => getLocationPool(id),
-    gcTime: job ? GC_TIME : 0,
-  });
-  return response;
-};
-
 export const useJobTenureAndExperience = (job: Job) => {
   const id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.tenureAndExperience({ id });
@@ -60,14 +48,6 @@ const getTenureAndExperience = async (job_id: string) => {
       `Tenure and Experience RPC function failure: ${error.message}`,
     );
   return data as DashboardTypes['tenureAndExperience'];
-};
-
-const getLocationPool = async (job_id: string) => {
-  const { data, error } = await supabase.rpc('getlocationspool', {
-    jobid: job_id,
-  });
-  if (error) throw new Error(error.message);
-  return data as DashboardTypes['locations'];
 };
 
 export const getScheduleData = async (job_id: string) => {
