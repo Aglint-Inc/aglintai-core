@@ -16,11 +16,12 @@ const chartConfig = {
 
 export default function HistoricInterviews() {
   const [timeFrame, setTimeFrame] = useState<'day' | 'week' | 'month'>('day');
-  const { groupedData, isFetching } = useInterviewCount(timeFrame);
+  const { groupedData, isFetching, isError} = useInterviewCount(timeFrame);
   return (
     <ReportCard
       title={'Historic'}
       isEmpty={!groupedData?.length}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
       headerSlot={
         <ToggleGroup
