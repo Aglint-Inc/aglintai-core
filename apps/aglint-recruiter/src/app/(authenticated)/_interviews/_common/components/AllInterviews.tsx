@@ -46,7 +46,7 @@ function AllInterviews() {
           <AllInterviewFilters />
           {!isFetched && <div>Loading...</div>}
           {isFetched && schedules?.length === 0 && (
-            <div className='flex items-center justify-center rounded-md bg-neutral-100'>
+            <div className='flex items-center justify-center rounded-md'>
               <div className='w-[300px] max-w-sm p-2'>
                 <div className='flex flex-col items-center justify-center p-8 text-center'>
                   <Calendar className='mb-2 h-12 w-12 text-gray-400' />

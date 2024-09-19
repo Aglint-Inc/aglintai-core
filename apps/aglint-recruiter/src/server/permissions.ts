@@ -10,11 +10,5 @@ export const API_PERMISSIONS: ApiPermissions = {
   candidatePortal: [],
   requests: [],
   ats: [],
-  application: {
-    interviewStages: ['job_module'],
-    applicationMeta: ['job_module'],
-    applicationDetails: ['job_module'],
-    applicationRequest: ['job_module'],
-    applicationActivity: ['job_module'],
-  },
+  application: ['job_module']
 };
