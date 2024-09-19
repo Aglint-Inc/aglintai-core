@@ -6,16 +6,17 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import React, { type FC } from 'react';
+import React, { Suspense, type FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { Loader } from '@/components/Common/Loader';
-import { useJobDashboard } from '@/job/hooks';
+import { useMetricsSkillPool } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { capitalize } from '@/utils/text/textUtils';
 
-import { type DashboardGraphOptions } from '.';
 import { NoDataAvailable } from './nodata';
+import { ErrorBoundary } from 'react-error-boundary';
+import type { MetricsOptions } from '../types';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
@@ -107,14 +108,22 @@ const BarChart: React.FC<{
   );
 };
 
-const DashboardBarChart: FC<{
-  option: keyof DashboardGraphOptions<'skills'>;
+export const DashboardBarChart: FC<{
+  option: keyof MetricsOptions<'skillPool'>;
 }> = ({ option }) => {
-  const {
-    skills: { data: skillPool, status },
-  } = useJobDashboard();
-  if (status === 'pending') return <Loader />;
-  if (status === 'error') return <>Error</>;
+  return (
+    <ErrorBoundary fallback={<>Error</>}>
+      <Suspense fallback={<Loader />}>
+        <Content option={option} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
+const Content: FC<{
+  option: keyof MetricsOptions<'skillPool'>;
+}> = ({ option }) => {
+  const [skillPool] = useMetricsSkillPool();
   const skills = skillPool?.[option] ?? null;
   const total = skills
     ? Object.values(skills).reduce((acc, curr) => {
@@ -126,5 +135,3 @@ const DashboardBarChart: FC<{
   if (total === 0) return <NoDataAvailable />;
   return <BarChart skills={safeSkills} />;
 };
-
-export default DashboardBarChart;

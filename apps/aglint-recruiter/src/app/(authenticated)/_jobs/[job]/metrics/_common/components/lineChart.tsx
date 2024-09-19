@@ -13,7 +13,7 @@ import { Line } from 'react-chartjs-2';
 import { Loader } from '@/components/Common/Loader';
 import { useJobDashboard } from '@/job/hooks';
 
-import { type DashboardGraphOptions } from '.';
+import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -120,7 +120,7 @@ const LineChart: React.FC<{
 
 const DashboardLineChart: FC<{
   option: keyof Pick<
-    DashboardGraphOptions<'tenureAndExperience'>,
+    MetricsOptions<'experienceAndTenure'>,
     'experience' | 'tenure'
   >;
 }> = ({ option }) => {

@@ -17,11 +17,12 @@ import { type Job } from '@/queries/jobs/types';
 import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
-import DashboardBarChart from './BarChart2';
+import { DashboardBarChart } from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import { NoDataAvailable } from './nodata';
 import TenureAndExpSummary from './tenureAndExpSummary';
+import { Metrics, MetricsOptions } from '../types';
 
 export const JobDashboard = () => {
   const { job, jobLoad } = useJob();
@@ -107,15 +108,6 @@ const Dashboard = () => {
 
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
-  // const handleFilter = (
-  //   resume_match: Parameters<typeof getParams>[0]['resume_match'][number],
-  // ) => {
-  //   const params = getParams({ resume_match: [resume_match] });
-  //   push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
-  // };
-
-  // const [, setStorage] = useLocalStorage('scheduleFilterIds');
-
   return (
     <div className='container-lg mx-auto w-full px-12'>
       <div className='mb-6 flex items-center justify-between'>
@@ -125,31 +117,16 @@ const Dashboard = () => {
         </div>
         <SharedActions />
       </div>
-
       <div className='mb-6 flex flex-col gap-6'>
         <div>
           <div className='flex flex-col gap-4 py-4'>
-            {/* {banners.length > 0 && (
-              <div className='flex flex-col gap-1'>
-                {banners.map((banner, i) => (
-                  <Fragment key={i}>{banner}</Fragment>
-                ))}
-              </div>
-            )}
-
-            <div className='space-y-4'>
-              <Pipeline />
-            </div> */}
-
             <div className='space-y-4 rounded-lg border bg-white p-4'>
               <JobStats
                 isScoringEnabled={isScoringEnabled}
                 score_matches={score_matches}
-                // handleFilter={handleFilter}
               />
             </div>
           </div>
-
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
             <div className='space-y-4'>
               <Doughnut />
@@ -315,23 +292,12 @@ const Schedules = ({ schedule, push }) => {
   return <div className='flex h-full w-full flex-col gap-2'>{cards}</div>;
 };
 
-export type DashboardGraphOptions<
-  T extends keyof Pick<
-    ReturnType<typeof useJobDashboard>,
-    'locations' | 'skills' | 'tenureAndExperience'
-  >,
-> = {
-  // eslint-disable-next-line no-unused-vars
-  [_id in keyof ReturnType<typeof useJobDashboard>[T]['data']]: string;
-};
-
 const Doughnut = () => {
-  const options: DashboardGraphOptions<'locations'> = {
+  const options: MetricsOptions<'locationPool'> = {
     city: 'City',
     state: 'State',
     country: 'Country',
   };
-
   return (
     <Card>
       <CardHeader>
@@ -361,9 +327,8 @@ const Doughnut = () => {
 
 const LineGraph = () => {
   const options: {
-    // eslint-disable-next-line no-unused-vars
     [_id in keyof Pick<
-      DashboardGraphOptions<'tenureAndExperience'>,
+      MetricsOptions<'experienceAndTenure'>,
       'experience' | 'tenure'
     >]: string;
   } = {
@@ -399,11 +364,10 @@ const LineGraph = () => {
 };
 
 const Bars = () => {
-  const options: DashboardGraphOptions<'skills'> = {
+  const options: MetricsOptions<'skillPool'> = {
     top_skills: 'Top skills',
     required_skills: 'Skills mentioned in JD',
   };
-
   return (
     <Card>
       <CardHeader>

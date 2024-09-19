@@ -4,14 +4,12 @@ import { useJob } from '@/job/hooks/useJob';
 import {
   useJobLocations,
   useJobSchedules,
-  useJobSkills,
   useJobTenureAndExperience,
 } from '@/queries/job-dashboard';
 
 const useProviderJobDashboardContext = () => {
   const { job } = useJob();
 
-  const skills = useJobSkills(job);
   const locations = useJobLocations(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
@@ -19,7 +17,7 @@ const useProviderJobDashboardContext = () => {
   const value = {
     schedules,
     tenureAndExperience,
-    skills,
+
     locations,
   };
 

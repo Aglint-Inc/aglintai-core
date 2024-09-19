@@ -10,9 +10,6 @@ export const jobDashboardQueryKeys = {
   matches: (args: JobRequisite) => ({
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'matches'],
   }),
-  skills: (args: JobRequisite) => ({
-    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'skills'],
-  }),
   locations: (args: JobRequisite) => ({
     queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'locations'],
   }),

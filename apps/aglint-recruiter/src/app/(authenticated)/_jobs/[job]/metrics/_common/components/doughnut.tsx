@@ -15,7 +15,7 @@ import { Loader } from '@/components/Common/Loader';
 import { useJob, useJobDashboard } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 
-import { type DashboardGraphOptions } from '.';
+import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -114,7 +114,7 @@ export const DoughnutChart: React.FC<{
 };
 
 const DashboardDoughnutChart: FC<{
-  option: keyof DashboardGraphOptions<'locations'>;
+  option: keyof MetricsOptions<'locationPool'>;
 }> = ({ option }) => {
   const {
     job: { processing_count },

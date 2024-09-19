@@ -1,12 +1,4 @@
 export type DashboardTypes = {
-  skills: {
-    top_skills: {
-      [id: string]: number;
-    };
-    required_skills: {
-      [id: string]: number;
-    };
-  };
   locations: {
     city: {
       [id: string]: number;
