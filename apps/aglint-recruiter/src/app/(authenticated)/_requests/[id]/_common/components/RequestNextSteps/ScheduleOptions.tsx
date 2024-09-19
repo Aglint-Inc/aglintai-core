@@ -1,6 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
+import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
 import { useMeetingList, useRequestAvailabilityDetails } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
@@ -145,6 +146,10 @@ const ScheduleOptions = () => {
             size='sm'
             onClick={async () => {
               if (fetchingPlan) return;
+              if (scheduleWorkflowAction) {
+                await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
+                await request_workflow.refetch();
+              }
               await findAvailibility({
                 filters: initialFilters,
                 dateRange: {
@@ -171,7 +176,11 @@ const ScheduleOptions = () => {
           <UIButton
             variant='default'
             size='sm'
-            onClick={() => {
+            onClick={async () => {
+              if (scheduleWorkflowAction) {
+                await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
+                await request_workflow.refetch();
+              }
               handleConfirmSlot(lastEvent.request_id);
             }}
             isLoading={isFetching}
