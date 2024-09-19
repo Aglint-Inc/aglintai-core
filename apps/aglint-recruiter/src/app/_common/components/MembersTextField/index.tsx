@@ -9,8 +9,6 @@ import {
 import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { getFullName } from '@/utils/jsonResume';
-
 export type MemberTypeAutoComplete = {
   user_id: string;
   first_name: string;
