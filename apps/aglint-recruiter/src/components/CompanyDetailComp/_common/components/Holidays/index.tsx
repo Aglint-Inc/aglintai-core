@@ -35,7 +35,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
 
-import { useCompanyDetailComp } from '../hook';
+import { useCompanyDetailComp } from '../../hooks/hook';
 
 export const LoadMax = {
   dailyHours: 8,
@@ -115,7 +115,12 @@ function Holidays() {
               List company holidays to exclude them from scheduling.
             </p>
           </div>
-          <UIButton size='sm' leftIcon={<Plus/>}variant='default' onClick={() => setDaysOffOpen(true)}>
+          <UIButton
+            size='sm'
+            leftIcon={<Plus />}
+            variant='default'
+            onClick={() => setDaysOffOpen(true)}
+          >
             Add Day Off
           </UIButton>
         </div>

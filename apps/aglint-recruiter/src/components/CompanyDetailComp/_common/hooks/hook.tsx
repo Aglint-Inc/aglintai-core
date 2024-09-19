@@ -12,7 +12,7 @@ import {
   generateDepartments,
   generateRoles,
   generateSpecialities,
-} from './utils';
+} from '../utils/utils';
 
 export const useCompanyDetailComp = () => {
   const router = useRouter();

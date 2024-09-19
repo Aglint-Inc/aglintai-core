@@ -13,7 +13,7 @@ import { Parser } from 'html-to-react';
 import { useState } from 'react';
 
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
+import { usePortalSettings } from '@/components/CompanyDetailComp/_common/hooks/hook';
 
 export default function ConfigureCompanyEdit() {
   const { data, isDialogOpen, setIsDialogOpen, updateAbout } =

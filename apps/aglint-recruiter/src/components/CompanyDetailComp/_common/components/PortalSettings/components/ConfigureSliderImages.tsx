@@ -12,7 +12,7 @@ import { ImagePlus, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
+import { usePortalSettings } from '@/components/CompanyDetailComp/_common/hooks/hook';
 
 import ImagesUpload from './ImagesUpload';
 

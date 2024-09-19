@@ -12,7 +12,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { Textarea } from '@components/ui/textarea';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/components/CompanyDetailComp/hook';
+import { usePortalSettings } from '@/components/CompanyDetailComp/_common/hooks/hook';
 
 export default function ConfigureCandidateGreeting() {
   const { data, setIsDialogOpen, isDialogOpen, updateGreetings } =
