@@ -1,24 +1,14 @@
 import ApplicationDetail from 'src/app/(authenticated)/_jobs/[application]/_common/components';
 
-import {
-  ApplicationsProvider,
-  ApplicationsStoreProvider,
-  JobProvider,
-} from '@/job/contexts';
+import { ApplicationsStoreProvider, JobProvider } from '@/job/contexts';
 
 function ApplicationDetailPage() {
-  return (
-    <>
-      <ApplicationDetail />
-    </>
-  );
+  return <ApplicationDetail />;
 }
 
 ApplicationDetailPage.privateProvider = (page) => (
   <JobProvider>
-    <ApplicationsStoreProvider>
-      <ApplicationsProvider>{page}</ApplicationsProvider>
-    </ApplicationsStoreProvider>
+    <ApplicationsStoreProvider>{page}</ApplicationsStoreProvider>
   </JobProvider>
 );
 

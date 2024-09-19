@@ -1,4 +1,4 @@
-import OptimisticWrapper from '@components/loadingWapper';
+// import OptimisticWrapper from '@components/loadingWapper';
 import { memo, useCallback, useMemo } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -6,7 +6,6 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
-  useApplications,
   useApplicationsActions,
   useApplicationsStore,
   useJob,
@@ -23,10 +22,10 @@ const ApplicationCard = memo(
 
     const {
       job: { status },
+      manageJob,
     } = useJob();
 
     const { applications } = useJobApplications();
-    const { manageJob, applicationMutations } = useApplications();
     const cascadeVisibilites = useApplicationsStore((state) =>
       state.cascadeVisibilites(),
     );
@@ -75,11 +74,6 @@ const ApplicationCard = memo(
       [application?.resume_processing_state, manageJob],
     );
 
-    const applicationLoading = useMemo(
-      () => applicationMutations.includes(application.id),
-      [applicationMutations, application.id],
-    );
-
     const handleClickCandidate = () => {
       router.push(
         `${ROUTES['/jobs/[job]/[application]']({
@@ -94,18 +88,18 @@ const ApplicationCard = memo(
     };
 
     return (
-      <OptimisticWrapper loading={applicationLoading}>
-        <TableRow
-          application={application}
-          isChecked={isChecked}
-          onCheck={handleCheck}
-          onClickCandidate={handleClickCandidate}
-          isResumeMatchVisible={isScoringEnabled}
-          isInterviewVisible={cascadeVisibilites.interview}
-          checkEnabled={checkEnabled}
-          status={status}
-        />
-      </OptimisticWrapper>
+      // <OptimisticWrapper loading={applicationLoading}>
+      <TableRow
+        application={application}
+        isChecked={isChecked}
+        onCheck={handleCheck}
+        onClickCandidate={handleClickCandidate}
+        isResumeMatchVisible={isScoringEnabled}
+        isInterviewVisible={cascadeVisibilites.interview}
+        checkEnabled={checkEnabled}
+        status={status}
+      />
+      // </OptimisticWrapper>
     );
   },
 );

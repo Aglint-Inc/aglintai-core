@@ -28,10 +28,6 @@ export const useApplicationContext = (
   const { isScoringEnabled } = useRolesAndPermissions();
   const router = useRouter();
   const queryClient = useQueryClient();
-  // const updateApplication = useApplications()?.handleAsyncUpdateApplication;
-  // const resumeReupload = useApplications()?.handleReuploadResume;
-  // const applicationMutations = useApplications()?.applicationMutations ?? [];
-  // const deleteApplication = useApplications()?.handleDeleteApplication;
 
   const { setTab } = useApplicationStore(({ setTab, tab }) => ({
     setTab,

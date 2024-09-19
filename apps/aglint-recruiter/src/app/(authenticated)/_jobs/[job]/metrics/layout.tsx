@@ -1,7 +1,6 @@
 import { type PropsWithChildren } from 'react';
 
 import {
-  ApplicationsProvider,
   ApplicationsStoreProvider,
   JobDashboardProvider,
   JobDashboardStoreProvider,
@@ -13,9 +12,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     <JobProvider>
       <JobDashboardStoreProvider>
         <JobDashboardProvider>
-          <ApplicationsStoreProvider>
-            <ApplicationsProvider>{children}</ApplicationsProvider>
-          </ApplicationsStoreProvider>
+          <ApplicationsStoreProvider>{children}</ApplicationsStoreProvider>
         </JobDashboardProvider>
       </JobDashboardStoreProvider>
     </JobProvider>

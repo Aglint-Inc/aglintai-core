@@ -1,4 +1,3 @@
-export { useApplications } from './useApplications';
 export { useApplicationsActions } from './useApplicationsActions';
 export { useApplicationsMove } from './useApplicationsMove';
 export { useApplicationsStore } from './useApplicationsStore';
