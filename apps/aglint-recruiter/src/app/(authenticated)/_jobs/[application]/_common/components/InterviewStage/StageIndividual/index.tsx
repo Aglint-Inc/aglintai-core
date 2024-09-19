@@ -1,9 +1,13 @@
 import { UIButton } from '@/components/Common/UIButton';
-import { useApplication } from '@/context/ApplicationContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { type StageWithSessions } from '@/queries/application';
 import { supabase } from '@/utils/supabase/client';
 
+import { useApplicationDetails } from '../../../hooks/useApplicationDetails';
+import { useApplicationMeta } from '../../../hooks/useApplicationMeta';
+import {
+  type StageWithSessions,
+  useInterviewStages,
+} from '../../../hooks/useInterviewStages';
 import {
   setIsScheduleOpen,
   setSelectedSessionIds,
@@ -19,6 +23,11 @@ function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
   const { selectedSessionIds } = useApplicationDetailStore((state) => ({
     selectedSessionIds: state.selectedSessionIds,
   }));
+  const { refetch } = useInterviewStages();
+  const { data: meta } = useApplicationMeta();
+  const {
+    data: { job_status, status },
+  } = useApplicationDetails();
 
   const sessions = stage.sessions;
   const isStageSelected = selectedStageId === stage.interview_plan.id;
@@ -34,14 +43,6 @@ function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
     }
     return setSelectedSessionIds([...selectedSessionIds, session_id]);
   };
-
-  const {
-    meta: { data: detail },
-    details: {
-      data: { job_status, status },
-    },
-    interview: { refetch },
-  } = useApplication();
 
   const onChangeBreak = async (session_id: string, break_duration: string) => {
     await supabase
@@ -76,9 +77,9 @@ function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
                         interview_meeting.status === 'reschedule')
                     }
                     candidate={{
-                      name: detail?.name,
-                      current_job_title: detail?.current_job_title,
-                      timezone: detail?.timezone,
+                      name: meta?.name,
+                      current_job_title: meta?.current_job_title,
+                      timezone: meta?.timezone,
                     }}
                     isEditIconVisible={true}
                     isViewDetailVisible={true}

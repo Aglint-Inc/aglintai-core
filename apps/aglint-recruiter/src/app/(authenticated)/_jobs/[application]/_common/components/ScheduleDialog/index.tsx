@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
@@ -11,9 +10,8 @@ import {
 import { cn } from '@lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import type { DateRange } from 'react-day-picker';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
@@ -21,97 +19,41 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useApplication } from '@/context/ApplicationContext';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import dayjs from '@/utils/dayjs';
 
+import { useApplicationMeta } from '../../hooks/useApplicationMeta';
+import { useScheduleRequest } from '../../hooks/useScheduleRequest';
 import {
+  setDateRange,
   setIsScheduleOpen,
+  setNote,
+  setRequestType,
+  setSelectedAssignee,
   setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../../stores/applicationDetail';
-import { type Interviewer } from '../../types/types';
 import { ScheduleInterviewPop } from '../InterviewTab/ScheduleInterviewPop';
 
 function DialogSchedule() {
-  const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
-  const router = useRouterPro();
-  const selectedStageId = router.queryParams.stage as string;
-  const { recruiterUser } = useAuthDetails();
+  const { isScheduleOpen, note, selectedAssignee, requestType, dateRange } =
+    useApplicationDetailStore();
+  const {
+    isSaving,
+    sessionHasRequest,
+    selectedStage,
+    sessions,
+    setIsSaving,
+    handleCreateRequest,
+  } = useScheduleRequest();
+  const { data: members } = useMemberList();
+  const { data: meta } = useApplicationMeta();
 
-  const [note, setNote] = useState('');
-  const [requestType, setRequestType] =
-    React.useState<DatabaseTable['request']['priority']>('standard');
-  const [dateRange, setDateRange] = React.useState({
-    start: dayjs().toISOString(),
-    end: dayjs().add(7, 'day').toISOString(),
-  });
-  const [isSaving, setIsSaving] = React.useState(false);
-
-  const { data: members, status: membersStatus } = useMemberList();
-
-  const [selectedInterviewer, setSelectedInterviewer] =
-    React.useState<MemberType>(null);
-
-  const { meta, interview, handleCreateRequest, requests } = useApplication();
-
-  const candidate = meta.data;
-  const selectedStage = interview.data.find(
-    (stage) => stage.interview_plan.id === selectedStageId,
-  );
-  const requestSessionIds = requests.data
-    .filter(
-      (request) =>
-        request.type === 'schedule_request' &&
-        (request.status === 'to_do' || request.status === 'in_progress'),
-    )
-    .flatMap((request) => request.request_relation)
-    .flatMap((relation) => relation.session_id);
-
-  const sessions = interview.data
-    .flatMap((stage) => stage.sessions)
-    .filter((session) =>
-      selectedSessionIds.includes(session.interview_session.id),
-    );
-
-  const sessionHasRequest = sessions.filter((session) =>
-    requestSessionIds.includes(session.interview_session.id),
-  );
-
-  const optionsInterviewers: Interviewer[] =
-    membersStatus === 'success'
-      ? members?.map((member) => {
-          return {
-            name: getFullName(member.first_name, member.last_name),
-            value: member.user_id,
-            start_icon_url: member.profile_image,
-          };
-        })
-      : [];
-
-  useEffect(() => {
-    if (optionsInterviewers?.length > 0 && membersStatus === 'success') {
-      const selectedMembers = members?.find(
-        (member) => member.user_id === String(optionsInterviewers[0].value),
-      );
-      setSelectedInterviewer(selectedMembers);
-    }
-  }, [optionsInterviewers?.length, membersStatus]);
+  const candidate = meta;
 
   const onClickSubmit = async () => {
     setIsSaving(true);
-    await handleCreateRequest({
-      sel_user_id: selectedInterviewer.user_id,
-      assigned_user_id: recruiterUser.user_id,
-      requestType,
-      dateRange,
-      selectedSessionIds,
-      sessionNames: sessions.map((session) => session.interview_session.name),
-      note,
-    });
-
+    await handleCreateRequest();
     setIsSaving(false);
     setSelectedSessionIds([]);
     setIsScheduleOpen(false);
@@ -140,7 +82,6 @@ function DialogSchedule() {
             >
               Cancel
             </UIButton>
-
             <UIButton
               size='md'
               isLoading={isSaving}
@@ -201,12 +142,12 @@ function DialogSchedule() {
             }
             slotAssignedInput={
               <div className='flex items-center justify-between pr-2'>
-                {selectedInterviewer && (
-                  <MemberCard selectedMember={selectedInterviewer} />
+                {selectedAssignee && (
+                  <MemberCard selectedMember={selectedAssignee} />
                 )}
                 <UpdateMembers
-                  handleChange={(member) => {
-                    setSelectedInterviewer(member);
+                  handleChange={(assignee) => {
+                    setSelectedAssignee(assignee);
                   }}
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />

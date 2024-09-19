@@ -1,26 +1,36 @@
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { type ChartConfig, ChartContainer } from '@components/ui/chart';
 import React, { useState } from 'react';
 import {
   CartesianGrid,
   Line,
   LineChart,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 
+import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+
 import { useCandidateExp } from '../../hook/job/jobMatrix';
+
+const chartConfig = {
+  // desktop: {
+  //   label: 'Desktop',
+  //   color: '#2563eb',
+  // },
+} satisfies ChartConfig;
 
 export default function CandidatesByExperienceChart() {
   const [view, setView] = useState<'Experience' | 'Tenure'>('Experience');
-  const { data } = useCandidateExp();
+  const { data, isFetching } = useCandidateExp();
 
   return (
-    <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-md font-semibold'>Candidates By</CardTitle>
+    <ReportCard
+      title={'Candidates By'}
+      isEmpty={!data?.[view]}
+      isLoading={isFetching}
+      headerSlot={
         <div className='flex space-x-2'>
           <Button
             variant={view === 'Experience' ? 'default' : 'outline'}
@@ -35,48 +45,48 @@ export default function CandidatesByExperienceChart() {
             Tenure
           </Button>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className='h-[400px]'>
-          <ResponsiveContainer width='100%' height='100%'>
-            <LineChart
-              data={data?.[view] || []}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis
-                dataKey={view === 'Experience' ? 'years' : 'months'}
-                label={{
-                  value: view === 'Experience' ? 'Years' : 'Months',
-                  position: 'insideBottomRight',
-                  offset: -10,
-                }}
-              />
-              <YAxis
-                label={{
-                  value: 'Candidates',
-                  angle: -90,
-                  position: 'insideLeft',
-                }}
-              />
-              <Tooltip />
-              <Line
-                type='monotone'
-                dataKey='candidates'
-                stroke='#8884d8'
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </CardContent>
-    </Card>
+      }
+    >
+      <ChartContainer
+        config={chartConfig}
+        className='max-h-[500px] min-h-[300px] w-full'
+      >
+        <LineChart
+          data={data?.[view] || []}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray='3 3' />
+          <XAxis
+            dataKey={view === 'Experience' ? 'years' : 'months'}
+            label={{
+              value: view === 'Experience' ? 'Years' : 'Months',
+              position: 'insideBottomRight',
+              offset: -10,
+            }}
+          />
+          <YAxis
+            label={{
+              value: 'Candidates',
+              angle: -90,
+              position: 'insideLeft',
+            }}
+          />
+          <Tooltip />
+          <Line
+            type='monotone'
+            dataKey='candidates'
+            stroke='#8884d8'
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ChartContainer>
+    </ReportCard>
   );
 }

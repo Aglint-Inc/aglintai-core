@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
@@ -7,9 +8,6 @@ import {
 } from '@components/ui/popover';
 import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
-
-import MuiAvatar from '@/components/Common/MuiAvatar';
-import { getFullName } from '@/utils/jsonResume';
 
 export type MemberTypeAutoComplete = {
   user_id: string;
@@ -66,13 +64,10 @@ function MembersAutoComplete({
                 pillColor ? `${pillColor}` : 'bg-neutral-300'
               }`}
             >
-              <MuiAvatar
-                src={user.profile_image}
-                level={getFullName(user?.first_name, user?.last_name)}
-                height='24px'
-                width='24px'
-                fontSize='12px'
-              />
+              <Avatar className='h-8 w-8'>
+                <AvatarImage src={user.profile_image} alt={user.name} />
+                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              </Avatar>
 
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
               <button
@@ -138,13 +133,10 @@ function MembersAutoComplete({
                     ) && <Check size={16} />}
                   </div>
 
-                  <MuiAvatar
-                    src={option.profile_image}
-                    level={getFullName(option.first_name, option.last_name)}
-                    height='24px'
-                    width='24px'
-                    fontSize='12px'
-                  />
+                  <Avatar className='h-8 w-8'>
+                    <AvatarImage src={option.profile_image} alt={option.name} />
+                    <AvatarFallback>{option.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <div className='flex w-full flex-row items-center justify-between pl-2'>
                     <div className='one-line-clamp text-sm'>
                       {getFullName(option.first_name, option.last_name)}

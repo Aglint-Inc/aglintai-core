@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CandidateMetrics from '@/components/Dashboards/Interview/CandidateMetrics';
 import Checklist from '@/components/Dashboards/Interview/Checklist';
 import DashboardDataFilter from '@/components/Dashboards/Interview/DashboardDataFilter';
-import InterviewDashboardSideNav from '@/components/Dashboards/Interview/InterviewDashboardSideNav';
+// import InterviewDashboardSideNav from '@/components/Dashboards/Interview/InterviewDashboardSideNav';
 import InterviewerLeaderboard from '@/components/Dashboards/Interview/InterviewerLeaderboard';
 import InterviewCount from '@/components/Dashboards/Interview/InterviewMetrics';
 import JobMetrics from '@/components/Dashboards/Jobs/JobMetrics';
@@ -12,11 +12,12 @@ import TrainingDashboard from '@/components/Reports/TrainingDashboard';
 
 export default function InterviewDashboard() {
   const [activeTab, setActiveTab] = useState('default_tab');
+  setActiveTab;
 
   return (
     <div className='flex'>
       <div className='mr-6 w-4/12'>
-        <InterviewDashboardSideNav
+        {/* <InterviewDashboardSideNav
           activeTab={activeTab}
           setActiveTab={(tab) => {
             setActiveTab(tab);
@@ -24,7 +25,7 @@ export default function InterviewDashboard() {
             url.searchParams.set('tab', tab);
             window.history.pushState({}, '', url);
           }}
-        />
+        /> */}
       </div>
       <div className='flex w-8/12 flex-col'>
         <div className='p-6'>

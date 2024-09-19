@@ -4,7 +4,7 @@ import { cn } from '@lib/utils';
 import { AlertTriangle } from 'lucide-react';
 import React from 'react';
 
-interface MetricCardProps {
+interface ReportCardProps {
   title: string;
   headerSlot?: React.ReactNode;
   children: React.ReactNode;
@@ -14,7 +14,7 @@ interface MetricCardProps {
   className?: string;
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({
+const ReportCard: React.FC<ReportCardProps> = ({
   title,
   headerSlot,
   children,
@@ -66,4 +66,4 @@ const MetricCard: React.FC<MetricCardProps> = ({
   );
 };
 
-export default MetricCard;
+export default ReportCard;

@@ -1,4 +1,5 @@
 import { analytics } from './routers/analytics';
+import { application } from './routers/application';
 import { ats } from './routers/ats';
 import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
@@ -16,8 +17,8 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  analytics,
   ats,
+  analytics,
   candidatePortal,
   example,
   interviewers,
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
   requests,
   scheduling,
   textTransform,
+  application,
 });
 
 export const appRouterSchema = {

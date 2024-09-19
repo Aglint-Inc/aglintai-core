@@ -1,9 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { type ChartConfig, ChartContainer } from '@components/ui/chart';
 import { ArrowDownIcon, DownloadIcon } from 'lucide-react';
 import React from 'react';
 import {
   CartesianGrid,
-  ResponsiveContainer,
   Scatter,
   ScatterChart,
   Tooltip,
@@ -13,62 +12,64 @@ import {
 } from 'recharts';
 import { useDeclineCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
+import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+
+const chartConfig = {
+  desktop: {
+    label: 'Desktop',
+    color: '#2563eb',
+  },
+  mobile: {
+    label: 'Mobile',
+    color: '#60a5fa',
+  },
+} satisfies ChartConfig;
+
 export default function DeclineLeadTimeChart() {
-  const data = useDeclineCount();
-  const averageLeadTime = data.average || 0;
+  const { average, scatterData, isFetching } = useDeclineCount();
+  const averageLeadTime = average || 0;
   return (
-    <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <div>
-          <CardTitle className='text-md font-semibold'>
-            Decline lead time
-          </CardTitle>
-          <p className='text-sm text-muted-foreground'>
-            Time between decline received & interview starts
-          </p>
-        </div>
-        <DownloadIcon className='h-5 w-5 text-gray-400' />
-      </CardHeader>
-      <CardContent>
-        <div className='mb-4 flex items-center space-x-2'>
-          <div className='flex items-center rounded-full bg-green-100 px-3 py-1 text-green-700'>
-            <span className='text-xl font-bold'>{averageLeadTime} days</span>
-            <ArrowDownIcon className='ml-1 h-5 w-5' />
+    <ReportCard
+      title={'Decline lead time'}
+      isEmpty={!scatterData.filter((item) => item.cancelled).length}
+      isLoading={isFetching}
+      headerSlot={
+        <div className='flex flex-row items-center justify-between gap-2 space-y-0 pb-2'>
+          <div>
+            <p className='text-sm text-muted-foreground'>
+              Time between decline received & interview starts
+            </p>
           </div>
-          <span className='text-muted-foreground'>on average</span>
+          <DownloadIcon className='h-5 w-5 text-gray-400' />
         </div>
-        <div className='h-[300px]'>
-          <ResponsiveContainer width='100%' height='100%'>
-            {data.scatterData.filter((item) => item.cancelled).length ? (
-              <ScatterChart
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-              >
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='date' />
-                <YAxis
-                  type='number'
-                  dataKey='cancelled'
-                  // domain={[0, 7]}
-                  // ticks={[0, 2, 3, 4, 5, 6, 7]}
-                />
-                {/* <XAxis type='number' dataKey='x' name='stature' unit='cm' />
-              <YAxis type='number' dataKey='y' name='weight' unit='kg' /> */}
-                <Tooltip />
-                <Scatter data={data.scatterData} fill='#22c55e' />
-              </ScatterChart>
-            ) : (
-              <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
-              No Data Available
-          </div>
-            )}
-          </ResponsiveContainer>
+      }
+    >
+      <div className='mb-4 flex items-center space-x-2'>
+        <div className='flex items-center rounded-full bg-green-100 px-3 py-1 text-green-700'>
+          <span className='text-xl font-bold'>{averageLeadTime} days</span>
+          <ArrowDownIcon className='ml-1 h-5 w-5' />
         </div>
-      </CardContent>
-    </Card>
+        <span className='text-muted-foreground'>on average</span>
+      </div>
+      <ChartContainer
+        config={chartConfig}
+        className='max-h-[400px] min-h-[300px] w-full'
+      >
+        <ScatterChart
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid strokeDasharray='3 3' />
+          <XAxis dataKey='date' />
+          <YAxis type='number' dataKey='cancelled' />
+          <Tooltip />
+          <Scatter data={scatterData} fill='#22c55e' />
+        </ScatterChart>
+      </ChartContainer>
+    </ReportCard>
   );
 }

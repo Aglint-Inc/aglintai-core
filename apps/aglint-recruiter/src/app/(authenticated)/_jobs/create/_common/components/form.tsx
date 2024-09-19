@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -17,7 +18,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
-import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 export const useJobForms = (

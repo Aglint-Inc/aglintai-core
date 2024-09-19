@@ -11,4 +11,5 @@ export const API_PERMISSIONS: ApiPermissions = {
   example: [],
   candidatePortal: [],
   requests: [],
+  application: ['job_module'],
 };

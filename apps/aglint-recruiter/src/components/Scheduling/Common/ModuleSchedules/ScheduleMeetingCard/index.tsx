@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
@@ -8,7 +9,6 @@ import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { getFullName } from '@/utils/jsonResume';
 
 import {
   getScheduleBgcolor,

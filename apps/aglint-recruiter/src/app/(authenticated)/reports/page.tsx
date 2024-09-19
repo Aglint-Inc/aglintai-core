@@ -1,12 +1,10 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 
-// import InterviewerLeaderboard from 'src/app/(authenticated)/reports/_common/components/InterviewerLeaderboard';
-import CandidateDropoutFunnelReport from '@/components/Dashboards/Interview/CandidateMetrics';
-import Checklist from '@/components/Dashboards/Interview/InterviewerChecklist/Checklist';
-import InterviewCount from '@/components/Dashboards/Interview/InterviewMetrics';
-
+import CandidateDropoutFunnelReport from './_common/components/CandidateMetrics';
+import Checklist from './_common/components/InterviewerChecklist/Checklist';
 import InterviewerLeaderboard from './_common/components/InterviewerLeaderboard';
+import InterviewCount from './_common/components/InterviewMetrics';
 import JobMetrics from './_common/components/jobMetrics';
 
 const Analytics = () => {
