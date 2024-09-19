@@ -9,11 +9,12 @@ if (!storageUrl) {
   throw new Error('NEXT_PUBLIC_SUPABASE_URL not set');
 }
 
-export type saveResumeAPI = {
+export type SaveResumeAPI = {
   request: {
     application_id: string;
     resume: string;
     candidate_id: string;
+    secret_key: string;
   };
   response: {
     success: boolean;
@@ -25,8 +26,14 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
-  const { application_id, candidate_id, resume } =
-    req.body as saveResumeAPI['request'];
+  const { application_id, candidate_id, resume, secret_key } =
+    req.body as SaveResumeAPI['request'];
+
+  if (secret_key !== process.env.SUPABASE_SECRET_KEY) {
+    console.log('Invalid secret key');
+    return res.status(400).json('Invalid secret key');
+  }
+
   if (application_id || resume) {
     if (
       resume.includes('pdf') ||
