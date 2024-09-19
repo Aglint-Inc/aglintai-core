@@ -1,7 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 
 import { UIAlert } from '@/components/Common/UIAlert';
-import { ActionEmptyState } from '@/job/components/CandidateDrawer/Common/ActionEmptyState';
 import { useInterviewModules } from '@/queries/interview-modules';
 
 import { useInterviewStages } from '../../hooks/useInterviewStages';
@@ -39,7 +38,7 @@ function InterviewTabContent() {
   if (stages.length === 0)
     return (
       <div className='p-4'>
-        <ActionEmptyState />
+        <UIAlert title={'No Stages Found'} />
       </div>
     );
 

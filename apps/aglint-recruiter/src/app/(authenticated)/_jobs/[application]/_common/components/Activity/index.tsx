@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 import SlotContent from '@/components/Activities/SlotWidgets';
 
-import { EmptyState } from '../../../../[job]/_common/components/CandidateDrawer/Common/EmptyState';
 import { useApplicationActivity } from '../../hooks/useApplicationActivity';
 
 export const Activity = () => {
@@ -23,7 +22,7 @@ export const Activity = () => {
     );
   if (status === 'error')
     return <div className='text-red-500'>Something went wrong</div>;
-  if (!data || data.length === 0) return <EmptyState tab='Activity' />;
+  if (!data || data.length === 0) return 'No activities found';
 
   const displayedActivities = showAll ? data : data.slice(0, 10);
   const count = displayedActivities.length;

@@ -18,8 +18,6 @@ import { Briefcase } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useApplication } from '@/context/ApplicationContext';
-
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 
 const Experience = () => {
@@ -65,9 +63,7 @@ const getCompanyLogos = (data) => {
 };
 
 const Content = () => {
-  const {
-    details: { data, status },
-  } = useApplication();
+  const { data, status } = useApplicationDetails();
   if (status === 'pending')
     return (
       <div className='space-y-4'>
@@ -97,15 +93,13 @@ const Content = () => {
 
 const Experiences = () => {
   const {
-    details: {
-      data: {
-        resume_json: { positions },
-        score_json: {
-          relevance: { positions: relevance },
-        },
+    data: {
+      resume_json: { positions },
+      score_json: {
+        relevance: { positions: relevance },
       },
     },
-  } = useApplication();
+  } = useApplicationDetails();
 
   // Combine positions with their relevance
   const positionsWithRelevance = positions.map((position, i) => ({
@@ -169,7 +163,7 @@ const Experiences = () => {
               </TableCell>
               <TableCell className='w-1/4'>
                 {calculateDuration(start, end)} (
-                {timeRange(timeFormat(start), timeFormat(end))})
+                {timeRange(timeFormat(start as any), timeFormat(end as any))})
               </TableCell>
             </TableRow>
           ))}

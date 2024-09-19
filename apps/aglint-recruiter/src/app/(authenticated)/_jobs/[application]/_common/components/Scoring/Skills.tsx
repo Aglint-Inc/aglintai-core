@@ -10,7 +10,6 @@ import { Lightbulb, Medal } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
-import { useApplication } from '@/context/ApplicationContext';
 
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { Loader } from './Analysis/Common/Loader';
@@ -65,9 +64,7 @@ const getHighRelevanceSkills = (data) => {
 };
 
 const Content = () => {
-  const {
-    details: { data, status },
-  } = useApplication();
+  const { data, status } = useApplicationDetails();
   if (status === 'pending')
     return (
       <Loader count={10}>
@@ -93,15 +90,13 @@ const Content = () => {
 
 const Skill = () => {
   const {
-    details: {
-      data: {
-        resume_json: { skills },
-        score_json: {
-          relevance: { skills: relevance },
-        },
+    data: {
+      resume_json: { skills },
+      score_json: {
+        relevance: { skills: relevance },
       },
     },
-  } = useApplication();
+  } = useApplicationDetails();
 
   // State to control the collapsible
   const [isExpanded, setIsExpanded] = useState(false);

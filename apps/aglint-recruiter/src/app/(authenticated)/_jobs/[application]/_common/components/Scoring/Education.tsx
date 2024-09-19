@@ -18,8 +18,6 @@ import { GraduationCap, School } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useApplication } from '@/context/ApplicationContext';
-
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 
 const Education = () => {
@@ -65,9 +63,7 @@ const getSchoolLogos = (data) => {
 };
 
 const Content = () => {
-  const {
-    details: { data, status },
-  } = useApplication();
+  const { data, status } = useApplicationDetails();
 
   if (status === 'pending')
     return (
@@ -101,15 +97,13 @@ const Content = () => {
 
 const Schools = () => {
   const {
-    details: {
-      data: {
-        resume_json: { schools },
-        score_json: {
-          relevance: { schools: relevance },
-        },
+    data: {
+      resume_json: { schools },
+      score_json: {
+        relevance: { schools: relevance },
       },
     },
-  } = useApplication();
+  } = useApplicationDetails();
 
   // Combine schools with their relevance
   const schoolsWithRelevance = schools.map((school, i) => ({
@@ -171,7 +165,7 @@ const Schools = () => {
               </TableCell>
               <TableCell className='w-1/4'>
                 {calculateDuration(start, end)} (
-                {timeRange(timeFormat(start), timeFormat(end))})
+                {timeRange(timeFormat(start as any), timeFormat(end as any))})
               </TableCell>
             </TableRow>
           ))}

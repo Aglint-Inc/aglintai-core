@@ -1,17 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import { Badge } from '@components/ui/badge';
 
-import type { ApplicationDetails } from '@/context/ApplicationContext/type';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { useApplicationDetails } from '../../../../hooks/useApplicationDetails';
+import {
+  type ApplicationDetails,
+  useApplicationDetails,
+} from '../../../../hooks/useApplicationDetails';
 import { getSafeReasoningType } from '../Util/getSafeReasoningType';
 import { getScoreTier } from '../Util/getScoreTier';
 
 export const AnalysisItem = ({
   type,
 }: {
-  type: keyof ApplicationDetails<'details'>['score_json']['scores'];
+  type: keyof ApplicationDetails['score_json']['scores'];
 }) => {
   const { data, status } = useApplicationDetails();
 
@@ -35,7 +37,9 @@ export const AnalysisItem = ({
 
   return (
     <div className='p-4'>
-      <h3 className='mb-2 text-lg font-semibold'>{capitalizeAll(type)}</h3>
+      <h3 className='mb-2 text-lg font-semibold'>
+        {capitalizeAll(String(type))}
+      </h3>
       <p className='text-sm text-gray-700'>{reasoning[reasoningType]}</p>
       <div className='mt-2'>
         <Badge

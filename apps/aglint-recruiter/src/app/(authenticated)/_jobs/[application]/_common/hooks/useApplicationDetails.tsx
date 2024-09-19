@@ -10,3 +10,7 @@ export const useApplicationDetails = () => {
     utils.application.applicationDetails.invalidate({ application_id });
   return { ...query, refetch };
 };
+
+export type ApplicationDetails = ReturnType<
+  typeof useApplicationDetails
+>['data'];
