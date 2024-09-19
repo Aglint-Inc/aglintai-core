@@ -1,8 +1,8 @@
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { type ChatType } from '../hooks/fetch';
@@ -28,12 +28,15 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
     <div className='w-full' id={chat.id}>
       <div className='flex w-full flex-row space-x-2'>
         {chat.type === 'user' ? (
-          <MuiAvatar
-            src={recruiterUser.profile_image}
-            level={recruiterUser.first_name}
-            width='24px'
-            height='24px'
-          />
+          <Avatar className='h-8 w-8'>
+            <AvatarImage
+              src={recruiterUser.profile_image}
+              alt={recruiterUser.first_name}
+            />
+            <AvatarFallback>
+              {recruiterUser.first_name.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
         ) : (
           <AgentIcon />
         )}
