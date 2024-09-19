@@ -16,17 +16,16 @@ import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useAllDepartments } from '@/queries/departments';
-import ROUTES from '@/utils/routing/routes';
-import { capitalize } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
-
 import {
   setIsCreateDialogOpen,
   setSelectedUsers,
   useModulesStore,
-} from '../../[pool]/_common/stores/store';
-import { createModule } from '../../[pool]/_common/utils/pool';
+} from '@/interview-pool/details/stores/store';
+import { createModule } from '@/interview-pool/utils/createModule';
+import { useAllDepartments } from '@/queries/departments';
+import ROUTES from '@/utils/routing/routes';
+import { capitalize } from '@/utils/text/textUtils';
+import toast from '@/utils/toast';
 
 function CreateModuleDialog() {
   const router = useRouterPro();

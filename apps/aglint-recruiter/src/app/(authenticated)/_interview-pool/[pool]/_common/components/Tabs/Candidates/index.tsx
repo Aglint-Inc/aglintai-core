@@ -7,9 +7,8 @@ import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { usePoolCandidates } from '@/interview-pool/details/hooks/useCandidateModule';
 import ROUTES from '@/utils/routing/routes';
-
-import { usePoolCandidates } from '../../../hooks/useCandidateModule';
 
 function Candidates() {
   const router = useRouterPro();
