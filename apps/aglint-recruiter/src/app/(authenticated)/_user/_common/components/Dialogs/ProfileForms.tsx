@@ -2,17 +2,17 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { capitalize } from 'lodash';
 import React from 'react';
-
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-
-import { ShadcnPhoneInput } from '../Common/UIPhoneInput/PhoneInput';
 import type {
   EmailFormFields,
   FormFields,
   FormValues,
   PasswordFormFields,
   PreferenceFormFields,
-} from './util';
+} from 'src/app/_common/components/Profile/uitls';
+
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+
+import { ShadcnPhoneInput } from '../../../../../../components/Common/UIPhoneInput/PhoneInput';
 
 export const ProfileForms = ({
   profile,
