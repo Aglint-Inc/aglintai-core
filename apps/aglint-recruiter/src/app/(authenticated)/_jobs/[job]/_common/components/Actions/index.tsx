@@ -1,8 +1,6 @@
-/* eslint-disable security/detect-object-injection */
 import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { AlertDialog, AlertDialogContent } from '@components/ui/alert-dialog';
 import { Button } from '@components/ui/button';
-import { Checkbox } from '@components/ui/checkbox';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -10,24 +8,23 @@ import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
-  useApplications,
-  useApplicationsActionPopup,
   useApplicationsActions,
-  useApplicationsChecklist,
+  useApplicationsMove,
   useApplicationsStore,
 } from '@/job/hooks';
-import { formatSessions } from '@/utils/formatSessions';
 import { capitalize } from '@/utils/text/textUtils';
 
 import CreateRequest from './CreateRequest';
 import type { SessionType } from './CreateRequest/SessionsList';
 
-const Actions = () => {
-  const checklist = useApplicationsChecklist();
-  const actionPopup = useApplicationsActionPopup();
-  const { setActionPopup, resetActionPopup, setChecklist } =
+export const Actions = () => {
+  const actionPopup = useApplicationsStore((state) => state.actionPopup);
+  const checklist = useApplicationsStore((state) => state.checklist);
+  const emailVisibilities = useApplicationsStore((state) =>
+    state.emailVisibilities(),
+  );
+  const { resetActionPopup, setActionPopup, resetChecklist } =
     useApplicationsActions();
-  const { emailVisibilities } = useApplications();
   const count = checklist.length;
   const enabled = count !== 0;
 
@@ -42,12 +39,6 @@ const Actions = () => {
             <Button variant='outline' onClick={() => setActionPopup('new')}>
               New
             </Button>
-            {/* <Button
-              onClick={() => setActionPopup('disqualified')}
-              variant='outline'
-            >
-              Disqualify
-            </Button> */}
             {enabled && emailVisibilities.new && (
               <Button variant='outline' onClick={() => setActionPopup('new')}>
                 New
@@ -78,7 +69,7 @@ const Actions = () => {
               </Button>
             )}
             <Button
-              onClick={() => setChecklist([])}
+              onClick={() => resetChecklist()}
               variant='ghost'
               className='text-gray-600 hover:text-gray-800'
             >
@@ -96,12 +87,8 @@ const Actions = () => {
   );
 };
 
-export { Actions };
-
 const MoveAction = () => {
-  const { actionPopup } = useApplicationsStore(({ actionPopup }) => ({
-    actionPopup,
-  }));
+  const actionPopup = useApplicationsStore((state) => state.actionPopup);
   switch (actionPopup) {
     case 'new':
       return <MoveCandidateNew />;
@@ -115,17 +102,14 @@ const MoveAction = () => {
 };
 
 const MoveCandidateNew = () => {
-  const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsActions();
+  const { mutate } = useApplicationsMove();
   const { buttons, title, description } = useMeta(() => {
-    handleMoveApplications({
+    mutate({
       status: 'new',
-      email: null,
     });
-    resetActionPopup();
   });
   return (
-    <ReusablePopup
+    <Popup
       title={title}
       slotBody={
         <div className='space-y-4'>
@@ -143,46 +127,27 @@ const MoveCandidateNew = () => {
 };
 
 const MoveCandidateInterview = () => {
-  const { recruiterUser, isShowFeature } = useAuthDetails();
-  const {
-    handleMoveApplicationToInterview,
-    sectionApplication: { data },
-  } = useApplications();
-  const checklist = useApplicationsChecklist();
-  const { resetActionPopup } = useApplicationsActions();
+  const { isShowFeature } = useAuthDetails();
+  const { mutate } = useApplicationsMove();
 
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
   const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
+
   const buttonText = isShowFeature('SCHEDULING') ? 'Request and Move' : 'Move';
+  const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
+
   const { buttons, title, description } = useMeta(() => {
-    handleMoveApplicationToInterview({
-      requests: checklist.map((application_id) => {
-        const name =
-          (data?.pages ?? [])
-            .flatMap((list) => list)
-            .find(({ id }) => id === application_id)?.name ?? '';
-        return {
-          assignee_id: request.assignee_id,
-          type: request.type,
-          priority: priority,
-          status: request.status,
-          schedule_end_date: request.schedule_end_date,
-          schedule_start_date: request.schedule_start_date,
-          assigner_id: recruiterUser?.user_id ?? null,
-          title: `Schedule ${formatSessions(selectedSession.map(({ name }) => name))} for ${name}`,
-          application_id,
-          note,
-        };
-      }),
+    mutate({
+      status: 'interview',
+      request,
       sessions: selectedSession.map(({ id }) => id),
     });
-    resetActionPopup();
   }, buttonText);
-  const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
+
   return (
-    <ReusablePopup
+    <Popup
       title={title}
       slotBody={
         <div className='flex flex-col gap-2'>
@@ -207,18 +172,15 @@ const MoveCandidateInterview = () => {
 };
 
 const MoveCandidateQualified = () => {
-  const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsActions();
+  const { mutate } = useApplicationsMove();
   const { buttons, title, description } = useMeta(() => {
-    handleMoveApplications({
+    mutate({
       status: 'qualified',
-      email: null,
     });
-    resetActionPopup();
   });
 
   return (
-    <ReusablePopup
+    <Popup
       title={title}
       slotBody={
         <div className='flex flex-col gap-2'>{capitalize(description)}</div>
@@ -229,19 +191,16 @@ const MoveCandidateQualified = () => {
 };
 
 const MoveCandidateDisqualified = () => {
-  const { handleMoveApplications } = useApplications();
-  const { resetActionPopup } = useApplicationsActions();
-  const [checked, setChecked] = useState(false);
-  const { buttons, title, description, action } = useMeta(() => {
-    handleMoveApplications({
+  const { mutate } = useApplicationsMove();
+  const { buttons, title, description } = useMeta(() => {
+    mutate({
       status: 'disqualified',
-      email: checked ? 'applicantReject_email_applicant' : null,
     });
-    resetActionPopup();
   });
+
   return (
     <>
-      <ReusablePopup
+      <Popup
         title={title}
         slotBody={
           <div className='flex flex-col gap-4'>
@@ -258,13 +217,6 @@ const MoveCandidateDisqualified = () => {
                 </div>
               }
             />
-            <div className='flex flex-row items-center gap-4'>
-              <Checkbox
-                checked={checked}
-                onClick={() => setChecked((prev) => !prev)}
-              />
-              {capitalize(action)}
-            </div>
           </div>
         }
         slotButtons={buttons}
@@ -274,8 +226,8 @@ const MoveCandidateDisqualified = () => {
 };
 
 function useMeta(onSubmit: () => void, buttonText: string = null) {
-  const checklist = useApplicationsChecklist();
-  const actionPopup = useApplicationsActionPopup();
+  const checklist = useApplicationsStore((state) => state.checklist);
+  const actionPopup = useApplicationsStore((state) => state.actionPopup);
   const { resetActionPopup } = useApplicationsActions();
   const buttons = (
     <>
@@ -294,7 +246,7 @@ function useMeta(onSubmit: () => void, buttonText: string = null) {
   const action = `Send ${actionPopup} email${count === 1 ? '' : 's'} to ${count} candidate${count === 1 ? '' : 's'}`;
   return { title, description, buttons, action, count };
 }
-const ReusablePopup = ({ title, slotBody, slotButtons }) => {
+const Popup = ({ title, slotBody, slotButtons }) => {
   const { resetActionPopup } = useApplicationsActions();
   return (
     <div className='mx-autojustify-center mx-auto flex w-[500px] items-center'>

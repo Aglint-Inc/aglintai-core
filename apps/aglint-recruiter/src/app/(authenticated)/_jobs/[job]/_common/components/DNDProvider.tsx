@@ -5,10 +5,10 @@ import { DndProvider, useDragLayer, type XYCoord } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { useMousePosition } from '@/hooks/useMousePosition';
-import { useApplications, useApplicationsChecklist } from '@/job/hooks';
+import { useApplicationsStore, useJob } from '@/job/hooks';
 
 const DNDProvider = (props: PropsWithChildren) => {
-  const count = useApplicationsChecklist()?.length ?? 0;
+  const count = useApplicationsStore((state) => state.checklist)?.length ?? 0;
   if (count === 0) return <>{props.children}</>;
   return <DNDLayer>{props.children}</DNDLayer>;
 };
@@ -27,8 +27,8 @@ const DNDLayer = (props: PropsWithChildren) => {
 const CustomDragLayer = ({ x }: { x: number }) => {
   const {
     job: { section_count },
-    section,
-  } = useApplications();
+  } = useJob();
+  const status = useApplicationsStore((state) => state.status);
   const { itemType, isDragging, initialOffset, currentOffset } = useDragLayer(
     (monitor) => ({
       item: monitor.getItem(),
@@ -55,7 +55,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
   return (
     <div
       className={`pointer-events-none fixed left-0 top-0 h-full w-full`}
-      style={{ zIndex: section_count[section] + 1 }}
+      style={{ zIndex: section_count[status] + 1 }}
     >
       <div
         className='transform'
@@ -71,7 +71,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
 };
 
 const DragCard = () => {
-  const count = useApplicationsChecklist()?.length ?? 0;
+  const count = useApplicationsStore((state) => state.checklist)?.length ?? 0;
   return (
     <div className='w-[180px]'>
       <div className='flex items-center justify-center rounded-full bg-primary px-3 py-2 text-primary-foreground shadow-sm'>

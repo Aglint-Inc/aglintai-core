@@ -1,6 +1,6 @@
-import { Database } from "../schema.types";
-import { Custom } from "../utils.types";
-import { CustomRequestPayload } from "./common.types";
+import type { Database } from "../schema.types";
+import type { Custom } from "../utils.types";
+import type { CustomRequestPayload } from "./common.types";
 import type { FunctionType } from "./index.types";
 
 export type CustomCreateSessionRequest = FunctionType<

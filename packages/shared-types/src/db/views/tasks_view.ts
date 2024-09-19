@@ -1,5 +1,5 @@
-import { Database } from "../schema.types";
-import {
+import type { Database } from "../schema.types";
+import type {
   CustomNewScheduleDateRange,
   meetingCardType,
   taskActionType,

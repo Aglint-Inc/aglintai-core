@@ -1,40 +1,44 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import type { FC } from 'react';
+import { type FC, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
-import { useJobDashboard } from '@/job/hooks';
+import { useMetricsExperienceAndTenure } from '@/job/hooks';
 
-const TenureAndExpSummary: FC = () => {
-  const {
-    tenureAndExperience: { data, status },
-  } = useJobDashboard();
+export const TenureAndExpSummary: FC = () => {
+  return (
+    <ErrorBoundary fallback={<Error />}>
+      <Suspense fallback={<Loader />}>
+        <Content />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
 
-  if (status === 'pending') {
-    return (
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-        <Skeleton className='h-[200px] w-full' />
-        <Skeleton className='h-[200px] w-full' />
-      </div>
-    );
-  }
+const Error = () => (
+  <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+    <Card>
+      <CardContent className='pt-6'>
+        <p className='text-center text-red-500'>Error loading data</p>
+      </CardContent>
+    </Card>
+    <Card>
+      <CardContent className='pt-6'>
+        <p className='text-center text-red-500'>Error loading data</p>
+      </CardContent>
+    </Card>
+  </div>
+);
 
-  if (status === 'error') {
-    return (
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-        <Card>
-          <CardContent className='pt-6'>
-            <p className='text-center text-red-500'>Error loading data</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className='pt-6'>
-            <p className='text-center text-red-500'>Error loading data</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+const Loader = () => (
+  <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+    <Skeleton className='h-[200px] w-full' />
+    <Skeleton className='h-[200px] w-full' />
+  </div>
+);
 
+const Content = () => {
+  const [data] = useMetricsExperienceAndTenure();
   if (!data) {
     return (
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
@@ -107,5 +111,3 @@ const NoDataCard: FC<{ title: string }> = ({ title }) => (
     </CardContent>
   </Card>
 );
-
-export default TenureAndExpSummary;

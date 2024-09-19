@@ -1,4 +1,4 @@
-import { SocialsType } from "../../data.types";
+import type { SocialsType } from "../../data.types";
 import type { CustomSchedulingSettings } from "./common.types";
 import type { TableType } from "./index.types";
 

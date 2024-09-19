@@ -6,8 +6,8 @@
  *
  */
 
-import { createContextStoreSelector } from '@/hooks/createContextStoreSelector';
 import { ApplicationsStoreContext } from '@/job/contexts/applicationsStoreContext';
+import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 
 export const useApplicationsStore = createContextStoreSelector(
   ApplicationsStoreContext,
