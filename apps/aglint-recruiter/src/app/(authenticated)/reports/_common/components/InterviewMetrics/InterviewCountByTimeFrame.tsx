@@ -6,12 +6,7 @@ import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/
 
 import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
 
-const chartConfig = {
-  // desktop: {
-  //   label: 'Desktop',
-  //   color: '#2563eb',
-  // },
-} satisfies ChartConfig;
+const chartConfig = {} satisfies ChartConfig;
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
@@ -32,7 +27,7 @@ export default function InterviewCountByTimeFrame() {
         />
       }
     >
-      <div className='row flex flex-wrap'>
+      <div className='row flex flex-wrap justify-between'>
         {average.map((data, index) => (
           <div key={data.name}>
             <ChartContainer

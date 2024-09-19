@@ -15,14 +15,10 @@ import { useDeclineCount } from 'src/app/(authenticated)/reports/_common/hook/in
 import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: '#2563eb',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: '#60a5fa',
-  },
+  // desktop: {
+  //   label: 'Desktop',
+  //   color: '#2563eb',
+  // },
 } satisfies ChartConfig;
 
 export default function DeclineLeadTimeChart() {

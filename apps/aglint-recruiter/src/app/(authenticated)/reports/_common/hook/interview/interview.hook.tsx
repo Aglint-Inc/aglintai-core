@@ -15,7 +15,7 @@ import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsCon
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data, isFetched } = api.analytics.interview_count.useQuery(
+  const { data, isFetching } = api.analytics.interview_count.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
@@ -65,13 +65,13 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
         ...data,
         date,
       })),
-    isFetched,
+    isFetching,
   };
 }
 export function useDeclineCount() {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data } = api.analytics.interview_decline.useQuery(
+  const { data, isFetching } = api.analytics.interview_decline.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
@@ -96,8 +96,10 @@ export function useDeclineCount() {
       date: item[0],
       cancelled: item[1].cancelled || null,
     })),
+    isFetching,
   };
 }
+
 function groupByDate<T extends { [key: string]: number }>(
   data: {
     created_at?: string;
