@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import {
   Table,
   TableBody,
@@ -13,62 +12,57 @@ import { ArrowDownIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/members';
 import { useInterviewer_upcoming } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
+import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+
 export default function InterviewersTable() {
-  const { data } = useInterviewer_upcoming();
+  const { data, isFetching } = useInterviewer_upcoming();
   return (
-    <Card>
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-md font-semibold'>Interviewers</CardTitle>
-        <Tabs defaultValue='interviewing'>
-          <TabsList>
-            <TabsTrigger value='interviewing'>Interviewing</TabsTrigger>
-            <TabsTrigger value='declines'>Declines</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </CardHeader>
-      <CardContent>
-        {data.length ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className='w-[250px]'>
-                  Interviewer Name{' '}
-                  <ArrowDownIcon className='ml-1 inline-block h-4 w-4' />
-                </TableHead>
-                <TableHead className='text-right'>Upcoming</TableHead>
-                <TableHead className='text-right'>Completed</TableHead>
-                <TableHead className='text-right'>
-                  Hours of interviews completed
-                </TableHead>
-                <TableHead className='text-right'>Declines</TableHead>
-                <TableHead className='text-right'>
-                  Avg Weekly Interviews
-                </TableHead>
-                <TableHead className='text-right'>Avg Weekly Hours</TableHead>
-                <TableHead className='text-right'>Modules Trained</TableHead>
-                <TableHead className='text-right'>
-                  Modules in training
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.map((interviewer) => {
-                return (
-                  <InterviewersRow
-                    key={interviewer.user_id}
-                    interviewer={interviewer}
-                  />
-                );
-              })}
-            </TableBody>
-          </Table>
-        ) : (
-          <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
-              No Data Available
-          </div>
-        )}
-      </CardContent>
-    </Card>
+    <ReportCard
+      title={'Interviewers'}
+      isEmpty={!data?.length}
+      isLoading={isFetching}
+      headerSlot={
+        <div className='flex items-center space-x-2'>
+          <Tabs defaultValue='declines'>
+            <TabsList>
+              <TabsTrigger value='interviewing'>Interviewing</TabsTrigger>
+              <TabsTrigger value='declines'>Declines</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+      }
+    >
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className='w-[250px]'>
+              Interviewer Name{' '}
+              <ArrowDownIcon className='ml-1 inline-block h-4 w-4' />
+            </TableHead>
+            <TableHead className='text-right'>Upcoming</TableHead>
+            <TableHead className='text-right'>Completed</TableHead>
+            <TableHead className='text-right'>
+              Hours of interviews completed
+            </TableHead>
+            <TableHead className='text-right'>Declines</TableHead>
+            <TableHead className='text-right'>Avg Weekly Interviews</TableHead>
+            <TableHead className='text-right'>Avg Weekly Hours</TableHead>
+            <TableHead className='text-right'>Modules Trained</TableHead>
+            <TableHead className='text-right'>Modules in training</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((interviewer) => {
+            return (
+              <InterviewersRow
+                key={interviewer.user_id}
+                interviewer={interviewer}
+              />
+            );
+          })}
+        </TableBody>
+      </Table>
+    </ReportCard>
   );
 }
 

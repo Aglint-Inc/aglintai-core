@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayjs from 'dayjs';
 
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/utils/jsonResume';
 
 export function getLastDayOfMonth(date: string) {
   return dayjs(date).endOf('month').date();

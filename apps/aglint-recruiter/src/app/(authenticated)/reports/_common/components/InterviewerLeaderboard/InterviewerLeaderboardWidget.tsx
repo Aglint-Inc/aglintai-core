@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import {
   Select,
   SelectContent,
@@ -14,10 +13,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
+import { BarChart, Clock, ThumbsUp, Users, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/members';
 import { useInterviewerLeaderboard } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
+
+import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
 
 export default function InterviewerLeaderboardWidget() {
   const { data, isFetching } = useInterviewerLeaderboard();
@@ -34,12 +35,11 @@ export default function InterviewerLeaderboardWidget() {
   });
   return (
     <>
-      <Card className='mx-auto w-full'>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-md flex items-center font-semibold text-primary'>
-            <Trophy className='mr-2 h-4 w-4' />
-            Interviewer Leaderboard
-          </CardTitle>
+      <ReportCard
+        title={'Interviewer Leaderboard'}
+        isEmpty={!sortedData?.length}
+        isLoading={isFetchingMem || isFetching}
+        headerSlot={
           <div className='flex items-center space-x-2'>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className='w-[140px]'>
@@ -57,68 +57,41 @@ export default function InterviewerLeaderboardWidget() {
               </SelectContent>
             </Select>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-6'>
-            {!(isFetching && isFetchingMem) ? (
-              sortedData.length ? (
-                sortedData.map((interviewer) => {
-                  const tempMem =
-                    (members || []).find(
-                      (member) => member.user_id === interviewer.user_id,
-                    ) || ({} as (typeof members)[number]);
-                  const mem = {
-                    ...tempMem,
-                    topSkills: [],
-                    name: `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim(),
-                  };
-                  const accept_per =
-                    (interviewer.accepted / interviewer.interviews) * 100;
-                  const reject_per =
-                    (interviewer.rejected / interviewer.interviews) * 100;
-                  return (
-                    <InterviewerLeaderboardItem
-                      key={interviewer.user_id}
-                      rank={interviewer.rank}
-                      name={mem.name}
-                      profileImage={mem.profile_image}
-                      role={mem.role}
-                      topSkills={mem.topSkills}
-                      totalHours={interviewer.total_hours?.toFixed(1)}
-                      interviews={interviewer.interviews}
-                      acceptenceRate={accept_per}
-                      declineRate={reject_per}
-                      averageScore={interviewer.feedback}
-                    />
-                  );
-                })
-              ) : (
-                <div className='flex min-h-40 w-full justify-center items-center bg-secondary'>
-              No Data Available
-          </div>
-              )
-            ) : (
-              [...new Array(3)].map((_, i) => (
-                <InterviewerLeaderboardItem
-                  key={i}
-                  isLoading
-                  rank={0}
-                  name={''}
-                  profileImage={''}
-                  // eslint-disable-next-line jsx-a11y/aria-role
-                  role={''}
-                  topSkills={[]}
-                  totalHours={''}
-                  interviews={0}
-                  acceptenceRate={0}
-                  declineRate={0}
-                  averageScore={0}
-                />
-              ))
-            )}
-          </div>
-        </CardContent>
-      </Card>
+        }
+      >
+        <div className='space-y-6'>
+          {sortedData.map((interviewer) => {
+            const tempMem =
+              (members || []).find(
+                (member) => member.user_id === interviewer.user_id,
+              ) || ({} as (typeof members)[number]);
+            const mem = {
+              ...tempMem,
+              topSkills: [],
+              name: `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim(),
+            };
+            const accept_per =
+              (interviewer.accepted / interviewer.interviews) * 100;
+            const reject_per =
+              (interviewer.rejected / interviewer.interviews) * 100;
+            return (
+              <InterviewerLeaderboardItem
+                key={interviewer.user_id}
+                rank={interviewer.rank}
+                name={mem.name}
+                profileImage={mem.profile_image}
+                role={mem.role}
+                topSkills={mem.topSkills}
+                totalHours={interviewer.total_hours?.toFixed(1)}
+                interviews={interviewer.interviews}
+                acceptenceRate={accept_per}
+                declineRate={reject_per}
+                averageScore={interviewer.feedback}
+              />
+            );
+          })}
+        </div>
+      </ReportCard>
     </>
   );
 }

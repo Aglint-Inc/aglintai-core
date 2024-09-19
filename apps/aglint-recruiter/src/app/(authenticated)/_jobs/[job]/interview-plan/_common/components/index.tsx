@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { getFullName } from '@aglint/shared-utils';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
@@ -49,7 +50,6 @@ import {
 } from '@/queries/interview-plans/types';
 import { jobQueries } from '@/queries/job';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { getFullName } from '@/utils/jsonResume';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
 import {

@@ -1,5 +1,5 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { getFullName, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
@@ -16,7 +16,6 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/utils/jsonResume';
 import timeZones from '@/utils/timeZone';
 
 import {

@@ -3,6 +3,7 @@ import {
   type RecruiterUserType,
   type schedulingSettingType,
 } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
@@ -24,7 +25,6 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllMembers } from '@/queries/members';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
-import { getFullName } from '@/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import timeZone from '@/utils/timeZone';
 

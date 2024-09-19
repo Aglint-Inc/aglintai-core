@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Popover,
@@ -9,7 +10,6 @@ import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import { getFullName } from '@/utils/jsonResume';
 
 export type MemberTypeAutoComplete = {
   user_id: string;

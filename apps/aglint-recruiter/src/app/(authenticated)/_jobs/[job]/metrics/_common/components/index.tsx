@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
@@ -14,7 +15,6 @@ import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
 import { useJob, useJobDashboard } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
-import { getFullName } from '@/utils/jsonResume';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import DashboardBarChart from './BarChart2';

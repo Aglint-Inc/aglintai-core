@@ -1,17 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 import { useEffect } from 'react';
 
-import { useApplication } from '@/context/ApplicationContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
+import { useInterviewStages } from '../../hooks/useInterviewStages';
 import StageIndividual from './StageIndividual';
 
 function StageSessions() {
   const router = useRouterPro();
-  const {
-    interview: { data: stages },
-  } = useApplication();
+  const { data: stages } = useInterviewStages();
 
   const selectedStageId = router.queryParams.stage as string;
 

@@ -1,20 +1,38 @@
 #mode {
-  display: flex;
-  gap: 20px;
-  h5 {
-    margin-bottom: 5px;
-  }
-  label {
+  #first {
     display: flex;
-    gap: 5px;
-    align-items: center;
-  }
+    gap: 20px;
+    h5 {
+      margin-bottom: 5px;
+    }
+    label {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
 
-  & > div {
-    padding: 10px;
-    border-right: 1px solid #ccc;
+    & > div {
+      padding: 10px;
+      border-right: 1px solid #ccc;
+    }
+    & > div:last-child {
+      border-right: none;
+    }
   }
-  & > div:last-child {
-    border-right: none;
+  #second {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .flags {
+      display: flex;
+      cursor: pointer;
+      user-select: none;
+      gap: 20px;
+      > div {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import {
   type DatabaseTable,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -19,7 +20,6 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { getFullName } from '@/utils/jsonResume';
 import toast from '@/utils/toast';
 
 import {

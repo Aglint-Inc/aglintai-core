@@ -10,8 +10,10 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Switch } from '@components/ui/switch';
 import { Textarea } from '@components/ui/textarea';
+import { Plus } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import {
   useWorkflows,
   useWorkflowsActions,
@@ -55,9 +57,9 @@ const Create = () => {
 
   return (
     <>
-      <Button variant='outline' onClick={() => setPopup({ open: true })}>
+      <UIButton leftIcon={<Plus/>} size='md' variant='default' onClick={() => setPopup({ open: true })}>
         Create
-      </Button>
+      </UIButton>
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent>
           <AlertDialogHeader>

@@ -31,16 +31,12 @@ function InstructionsComp() {
   }
 
   return (
-    <div>
+    <div className='max-w-4xl'>
       <Instructions
-        isWidth={true}
-        isMinWidth={false}
         instruction={editModule?.instructions}
         setTextValue={setTextValue}
         showEditButton={true}
         updateInstruction={updateInstruction}
-        isBorder={true}
-        isPadding={true}
       />
     </div>
   );

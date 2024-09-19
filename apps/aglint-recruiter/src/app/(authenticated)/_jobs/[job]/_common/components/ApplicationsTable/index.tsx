@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { useApplications, useApplicationsStore, useJob } from '@/job/hooks';
 
-import { Loader } from '../CandidateDrawer/Common/Loader';
+import { Loader } from '../../../../[application]/_common/components/Scoring/Analysis/Common/Loader';
 import DNDCard from '../Table/CardNew/DNDCard';
 import { EmptyList } from '../Table/Common/EmptyList';
 

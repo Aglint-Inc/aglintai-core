@@ -4,9 +4,10 @@ import React from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
-import { type StageWithSessions } from '@/queries/application';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { breakDurations } from '@/utils/scheduling/const';
+
+import { type StageWithSessions } from '../../hooks/useInterviewStages';
 
 function BreakCard({
   session,
