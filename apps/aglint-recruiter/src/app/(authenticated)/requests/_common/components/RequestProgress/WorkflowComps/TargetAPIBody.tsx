@@ -45,8 +45,8 @@ const EmailSubject = () => {
     tiptapLoadStatus,
   } = useSelectedActionsDetails();
   return (
-    <div>
-      <UITypography type='small'>Email Subject</UITypography>
+    <div className="mb-4">
+      <UITypography className='text-sm font-semibold mb-1'>Email Subject</UITypography>
       <div>
         <div>
           {!tiptapLoadStatus.email && (
@@ -82,7 +82,7 @@ const EmailBody = () => {
 
   return (
     <div>
-      <UITypography type='small'>Email Body</UITypography>
+      <UITypography  className='text-sm font-semibold mb-1'>Email Body</UITypography>
       <div>
         {!tiptapLoadStatus.email && (
           <TipTapAIEditor
@@ -141,7 +141,7 @@ const AgentInstructionBody = () => {
     useSelectedActionsDetails();
   return (
     <div>
-      <UITypography type='small'>Aglint AI Instruction</UITypography>
+      <UITypography  className='text-sm font-semibold mb-1'>Aglint AI Instruction</UITypography>
       <div>
         {tiptapLoadStatus.agent === false && (
           <TipTapAIEditor
