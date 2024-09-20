@@ -52,9 +52,9 @@
       "@/jobs/job/application/*": [
         "./src/app/(authenticated)/jobs/[job]/[application]/_common/*"
       ],
-      "@/workflows/*": ["./src/app/(authenticated)/_workflows/_common/*"],
+      "@/workflows/*": ["./src/app/(authenticated)/workflows/_common/*"],
       "@/workflow/*": [
-        "./src/app/(authenticated)/_workflows/[workflow]/_common/*"
+        "./src/app/(authenticated)/workflows/[workflow]/_common/*"
       ],
       "@requests/*": ["./src/app/(authenticated)/_requests/_common/*"],
       "@request/*": ["./src/app/(authenticated)/_requests/[id]/_common/*"],
