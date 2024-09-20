@@ -12,6 +12,7 @@ import { Button } from '@components/ui/button';
 import {
   AlertCircle,
   Briefcase,
+  Calendar,
   CalendarIcon,
   CheckCircle,
   CheckCircle2,
@@ -167,6 +168,12 @@ export const SideBar = ({
           label='Interview Feedback'
           active={activeSection === 'interviewFeedback'}
           onClick={() => scrollToSection('interviewFeedback')}
+        />
+        <SideNavItem
+          icon={Calendar}
+          label='Schedule Availability'
+          active={activeSection === 'scheduleAvailability'}
+          onClick={() => scrollToSection('scheduleAvailability')}
         />
         {/*<SideNavItem
       icon={BarChart}
