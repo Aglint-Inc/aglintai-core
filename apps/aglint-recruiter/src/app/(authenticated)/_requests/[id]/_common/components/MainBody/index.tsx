@@ -138,8 +138,8 @@ export default function ViewRequestDetails() {
           </Breadcrumb>
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
-              <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-                Request Detail
+              <h1 className='mb-2 text-2xl text-gray-900'>
+                {capitalizeFirstLetter(selectedRequest?.title)}
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
@@ -224,13 +224,13 @@ export default function ViewRequestDetails() {
           <div className='flex'>
             <div className='flex w-8/12 flex-col space-y-4 pr-4'>
               <Card className='bg-white shadow-sm'>
-                <CardHeader className='flex flex-row items-start justify-between pb-2'>
-                  <div>
+               <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                  {/* <div>
                     <CardTitle className='mb-2 text-xl font-semibold'>
                       Request Details
                     </CardTitle>
-                  </div>
-                </CardHeader>
+                  </div> */}
+                </CardHeader>  
                 <CardContent>
                   <div className='grid grid-cols-3 gap-6'>
                     <div className='col-span-2 grid grid-cols-2 gap-6'>
