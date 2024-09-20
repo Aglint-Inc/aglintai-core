@@ -32,5 +32,6 @@ jobs:
         run: |
           echo "Attempting to deploy..."
           # Deploy to Vercel with --no-wait option and save stdout and stderr to files
-          vercel env pull --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --environment=preview --git-branch=development --yes
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes --no-wait
+          vercel link --yes --project aglintai-core --token=FwDvfpIOFS0wNnXQCnyfz64Y --scope=team_hTaJ1NiDsIwZz12SrpuNG3o9
+          vercel env pull --token=FwDvfpIOFS0wNnXQCnyfz64Y --scope=team_hTaJ1NiDsIwZz12SrpuNG3o9 --environment=preview --git-branch=development
+          vercel deploy --token=FwDvfpIOFS0wNnXQCnyfz64Y --scope=team_hTaJ1NiDsIwZz12SrpuNG3o9 --yes --no-wait
