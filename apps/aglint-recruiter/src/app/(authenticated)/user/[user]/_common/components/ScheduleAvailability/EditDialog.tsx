@@ -326,6 +326,10 @@ export const EditForm = ({
               title, the day will be considered an Out of Office day, and
               interviews will not be scheduled.
             </UITypography>
+            <KeywordSection
+              keywords={outOfOffice}
+              setKeywords={setOutOfOffice}
+            />
           </div>
           <div className='mb-4 flex flex-col gap-4'>
             <UITypography
