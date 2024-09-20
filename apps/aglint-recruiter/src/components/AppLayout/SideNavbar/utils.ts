@@ -45,11 +45,11 @@ export const navList: {
   {
     text: 'Interviews',
     SubComponents: null,
-    route: ROUTES['/scheduling']() + '?tab=interviews',
+    route: ROUTES['/interviews']() + '?tab=interviews',
     comingSoon: false,
     isVisible: true,
     permission: ['scheduling_module'],
-    active: ['/scheduling'],
+    active: ['/interviews'],
   },
 
   {

@@ -204,7 +204,7 @@ function ConfirmAvailability() {
                     })}
                   {selectedDateSlots && (
                     <Link
-                      href={`/scheduling/view?meeting_id=${selectedDateSlots[0]?.selected_dates[0]?.plans[0]?.sessions[0]?.meeting_id}`}
+                      href={`/interviews/view?meeting_id=${selectedDateSlots[0]?.selected_dates[0]?.plans[0]?.sessions[0]?.meeting_id}`}
                     >
                       <UIButton>View in schedules</UIButton>
                     </Link>

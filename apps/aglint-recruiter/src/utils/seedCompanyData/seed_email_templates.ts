@@ -14,7 +14,7 @@ export const seed_email_templates: Pick<
     type: 'interviewStart_slack_interviewers',
     from_name: '',
     subject: 'Interview reminder',
-    body: '<p><strong>Scheduled with candidate :</strong><br><a target="_blank" rel="noopener noreferrer" class="c-link" href="https://dev.aglinthq.com/scheduling/view?meeting_id=5ad7e0df-be62-4461-a069-33e884b70c4f&amp;tab=candidate_details"><strong>Ashis Sarthak Singh - Staff Frontend Engineer</strong></a></p><p><strong>Meeting Place :</strong> In Person Meeting<br><strong>Meeting Time :</strong> July 15 03:30 AM - 04:00 AM IST<br><strong>Duration :</strong> 30 Minute      </p>',
+    body: '<p><strong>Scheduled with candidate :</strong><br><a target="_blank" rel="noopener noreferrer" class="c-link" href="https://dev.aglinthq.com/interviews/view?meeting_id=5ad7e0df-be62-4461-a069-33e884b70c4f&amp;tab=candidate_details"><strong>Ashis Sarthak Singh - Staff Frontend Engineer</strong></a></p><p><strong>Meeting Place :</strong> In Person Meeting<br><strong>Meeting Time :</strong> July 15 03:30 AM - 04:00 AM IST<br><strong>Duration :</strong> 30 Minute      </p>',
   },
   {
     type: 'confInterview_email_organizer',
