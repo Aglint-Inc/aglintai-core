@@ -8,7 +8,6 @@ import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_co
 
 import Footer from '@/components/Common/Footer';
 import { Loader } from '@/components/Common/Loader';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import timeZones from '@/utils/timeZone';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
