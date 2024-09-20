@@ -11,6 +11,7 @@ import { BreadCrumb, SideBar, Top } from './Components';
 import { EditUserDialog } from './Dialogs/EditUser';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
+import { HeatmapUser } from './Heatmap';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
@@ -33,6 +34,7 @@ export default function InterviewerDetailsPage() {
     recentInterviews: useRef(null),
     interviewFeedback: useRef(null),
     scheduleAvailability: useRef(null),
+    meetingOverview: useRef(null),
   };
   const userCardRef = useRef(null);
 
@@ -135,6 +137,13 @@ export default function InterviewerDetailsPage() {
               </section>
               <section ref={sectionRefs.interviewFeedback}>
                 <Feedback feedbacks={interviewerDetails.feedbacks} />
+              </section>
+              <section ref={sectionRefs.meetingOverview}>
+                <HeatmapUser
+                  loadSetting={
+                    interviewerDetails?.scheduling_settings?.interviewLoad
+                  }
+                />
               </section>
               <section ref={sectionRefs.scheduleAvailability}>
                 <ScheduleAvailability
