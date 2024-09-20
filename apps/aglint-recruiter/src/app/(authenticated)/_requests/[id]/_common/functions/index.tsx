@@ -1,1 +1,0 @@
-export { updateInterviewSessionsDurations } from './updateInterviewSessionDuration';
