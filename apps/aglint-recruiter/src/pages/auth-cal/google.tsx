@@ -2,13 +2,13 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import {
   AuthProvider,
   useAuthDetails,
 } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 
 const AuthHoc = () => {
@@ -22,13 +22,13 @@ const AuthHoc = () => {
 };
 
 const Google = () => {
-  const router = useRouter();
+  const router = useRouterPro();
   const { toast } = useToast();
   const { recruiterUser, setRecruiterUser } = useAuthDetails();
 
   useEffect(() => {
-    if (router.isReady && recruiterUser) {
-      const { code } = router.query;
+    if (recruiterUser) {
+      const { code } = router.params;
       if (!code) return;
 
       (async () => {
