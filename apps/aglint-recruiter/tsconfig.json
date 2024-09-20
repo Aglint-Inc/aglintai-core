@@ -27,27 +27,30 @@
       "@/interview-pool/*": [
         "./src/app/(authenticated)/_interview-pool/_common/*"
       ],
-      "@/jobs/*": ["./src/app/(authenticated)/_jobs/_common/*"],
+      "@/jobs/*": ["./src/app/(authenticated)/jobs/_common/*"],
       "@/scheduling/*": ["./src/app/(authenticated)/scheduling/_common/*"],
-      "@/jobs/create/*": ["./src/app/(authenticated)/_jobs/create/_common/*"],
-      "@/job/*": ["./src/app/(authenticated)/_jobs/[job]/_common/*"],
+      "@/jobs/create/*": ["./src/app/(authenticated)/jobs/create/_common/*"],
+      "@/job/*": ["./src/app/(authenticated)/jobs/[job]/_common/*"],
       "@/job/interview-plan/*": [
-        "./src/app/(authenticated)/_jobs/[job]/interview-plan/_common/*"
+        "./src/app/(authenticated)/jobs/[job]/interview-plan/_common/*"
       ],
       "@/job/metrics/*": [
-        "./src/app/(authenticated)/_jobs/[job]/metrics/_common/*"
+        "./src/app/(authenticated)/jobs/[job]/metrics/_common/*"
       ],
       "@/job/job-details/*": [
-        "./src/app/(authenticated)/_jobs/[job]/job-details/_common/*"
+        "./src/app/(authenticated)/jobs/[job]/job-details/_common/*"
       ],
       "@/job/profile-score/*": [
-        "./src/app/(authenticated)/_jobs/[job]/profile-score/_common/*"
+        "./src/app/(authenticated)/jobs/[job]/profile-score/_common/*"
       ],
       "@/job/workflows/*": [
-        "./src/app/(authenticated)/_jobs/[job]/workflows/_common/*"
+        "./src/app/(authenticated)/jobs/[job]/workflows/_common/*"
       ],
       "@/job/hiring-team/*": [
-        "./src/app/(authenticated)/_jobs/[job]/hiring-team/_common/*"
+        "./src/app/(authenticated)/jobs/[job]/hiring-team/_common/*"
+      ],
+      "@/jobs/job/application/*": [
+        "./src/app/(authenticated)/jobs/[job]/[application]/_common/*"
       ],
       "@/workflows/*": ["./src/app/(authenticated)/_workflows/_common/*"],
       "@/workflow/*": [
