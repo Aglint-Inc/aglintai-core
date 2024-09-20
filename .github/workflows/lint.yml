@@ -3,26 +3,19 @@ name: Lint
 # Define when this workflow should run
 on:
   push:
-    branches:
-      - main
-      - development
-      - staging
-
+    branches: [main, development, staging]
   pull_request:
-    branches:
-      - main
-      - development
-      - staging
+    branches: [main, development, staging]
 
 # Set permissions for the workflow
 permissions:
   checks: write
-  contents: write
+  contents: read
 
 jobs:
   lint:
     name: Run Lint
-    runs-on: ubuntu-latest-4-cores # Use a larger runner
+    runs-on: ubuntu-latest
 
     steps:
       # Step 1: Check out the repository
@@ -35,9 +28,14 @@ jobs:
         with:
           node-version: "20"
 
-      # Step 3: Install project dependencies
-      - name: Install Dependencies
-        run: npm install
+      # Step 3: Cache dependencies
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
 
       # Step 4: Cache Turborepo
       - name: Cache Turborepo
@@ -48,8 +46,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      # Step 5: Run the linter for all workspaces
+      # Step 5: Install project dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 6: Cache ESLint
+      - name: Cache ESLint
+        uses: actions/cache@v3
+        with:
+          path: ~/.eslintcache
+          key: ${{ runner.OS }}-eslint-${{ hashFiles('**/.eslintrc.js') }}
+          restore-keys: |
+            ${{ runner.OS }}-eslint-
+
+      # Step 7: Run the linter for all workspaces
       - name: Run Linter
-        run: npx turbo run lint --cache-dir=.turbo
+        run: npx turbo run lint --cache-dir=.turbo -- --cache --cache-location ~/.eslintcache
         env:
           NODE_OPTIONS: --max-old-space-size=4096
