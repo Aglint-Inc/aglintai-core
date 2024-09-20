@@ -222,7 +222,7 @@ export default function ViewRequestDetails() {
             </div>
           </div>
           <div className='flex'>
-            <div className='flex w-8/12 flex-col space-y-4 pr-4'>
+            <div className='flex w-8/12 flex-col space-y-4 pr-4 pb-6'>
               <Card className='bg-white shadow-sm'>
                <CardHeader className='flex flex-row items-start justify-between pb-2'>
                   {/* <div>
@@ -235,11 +235,12 @@ export default function ViewRequestDetails() {
                   <div className='grid grid-cols-3 gap-6'>
                     <div className='col-span-2 grid grid-cols-2 gap-6'>
                       <div className='space-y-4'>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 group'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Status
                             </span>
+                            <div className='hidden group-hover:block'>
                             <UpdateDetails
                               handleChange={async ({ value }) => {
                                 const status =
@@ -258,6 +259,7 @@ export default function ViewRequestDetails() {
                                 <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
+                            </div>
                           </div>
                           <Badge
                             variant='outline'
@@ -266,11 +268,12 @@ export default function ViewRequestDetails() {
                             {capitalizeFirstLetter(selectedRequest?.status)}
                           </Badge>
                         </div>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 group'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Priority
                             </span>
+                            <div className='hidden group-hover:block'>
                             <UpdateDetails
                               handleChange={async ({ value }) => {
                                 const priority =
@@ -289,6 +292,7 @@ export default function ViewRequestDetails() {
                                 <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
+                            </div>
                           </div>
                           <Badge
                             variant='outline'
@@ -299,11 +303,12 @@ export default function ViewRequestDetails() {
                         </div>
                       </div>
                       <div className='space-y-4'>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 group'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Interview Date
                             </span>
+                            <div className='hidden group-hover:block'>
                             <UIDateRangePicker
                               value={dateRange}
                               onAccept={(dates) => {
@@ -328,7 +333,7 @@ export default function ViewRequestDetails() {
                               customButton={
                                 <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
-                            />
+                            /></div>
                           </div>
                           <span className='text-sm'>
                             {dayjs(selectedRequest?.schedule_start_date).format(
@@ -340,11 +345,12 @@ export default function ViewRequestDetails() {
                               )}
                           </span>
                         </div>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 relative group'>
                           <div className='flex items-center justify-between'>
                             <h3 className='text-sm font-medium text-gray-500'>
                               Assigned to
                             </h3>
+                            <div className='hidden group-hover:block'>
                             <UpdateMembers
                               handleChange={async ({ user_id }) => {
                                 const assignee_id = user_id;
@@ -362,17 +368,19 @@ export default function ViewRequestDetails() {
                               }
                               members={members}
                             />
+                            </div>
                           </div>
                           <MemberCard selectedMember={selectedMember} />
                         </div>
                       </div>
                     </div>
                     <div className='space-y-4'>
-                      <div className='space-y-2'>
+                      <div className='space-y-2 relative group'>
                         <div className='flex items-center justify-between'>
                           <span className='text-sm font-medium text-gray-500'>
                             Request Type
                           </span>
+                          <div className='hidden group-hover:block'>
                           <UpdateDetails
                             handleChange={async ({ value }) => {
                               const type = value as unknown as Request['type'];
@@ -390,6 +398,7 @@ export default function ViewRequestDetails() {
                               <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                             }
                           />
+                          </div>
                         </div>
                         <div className='flex items-center space-x-2'>
                           <Calendar className='h-4 w-4 text-gray-500' />

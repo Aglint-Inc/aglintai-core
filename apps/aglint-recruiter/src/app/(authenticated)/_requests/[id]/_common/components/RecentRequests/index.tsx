@@ -33,7 +33,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
     );
   } else
     return (
-      <Card className='bg-white shadow-sm'>
+      <Card className='bg-white shadow-sm mb-10'>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests
