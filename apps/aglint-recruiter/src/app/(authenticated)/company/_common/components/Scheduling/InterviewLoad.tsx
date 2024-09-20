@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Input } from '@components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 type InterviewLimitInputProps = {
@@ -26,7 +26,7 @@ const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
         value={value}
         onChange={(e) => onValueChange(+e.target.value)}
         max={max}
-        className='w-[70px] h-9'
+        className='h-9 w-[70px]'
       />
       <Tabs
         defaultValue={type}

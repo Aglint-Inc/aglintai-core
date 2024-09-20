@@ -8,11 +8,11 @@ import {
   Upload,
   User,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
@@ -43,7 +43,7 @@ function ImageUpload({
   changeCallback,
   error,
 }: ImageUploadProps) {
-  const router = useRouter();
+  const router = useRouterPro();
   const [isHovered, setIsHovered] = useState(false);
   const [loading, setLoading] = useState(false);
   const { recruiterUser } = useAuthDetails();
@@ -101,7 +101,7 @@ function ImageUpload({
         >
           <AvatarImage src={displayImage} alt='Profile' />
           <AvatarFallback>
-            {router.route.includes(ROUTES['/profile']()) ? (
+            {router.pathName.includes(ROUTES['/profile']()) ? (
               <User className='h-6 w-6' />
             ) : (
               <Building className='h-6 w-6' />

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { PopoverClose } from '@radix-ui/react-popover';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { Calendar, Edit, Loader2 } from 'lucide-react';
 import {
   type Dispatch,

@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
 import { MembersList } from 'src/app/_common/components/MembersList';
@@ -34,7 +34,7 @@ function ScheduleMeetingCard({
         className='cursor-pointer'
         onClick={() => {
           router.push(
-            `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
+            `/interviews/view?meeting_id=${meetingDetails.id}&tab=job_details`,
           );
         }}
       >

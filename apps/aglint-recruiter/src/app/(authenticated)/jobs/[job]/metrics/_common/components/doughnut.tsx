@@ -7,7 +7,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import React, { type FC, Suspense } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { ErrorBoundary } from 'react-error-boundary';

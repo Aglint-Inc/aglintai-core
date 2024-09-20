@@ -5,7 +5,6 @@ import {
   type SocialsType,
 } from '@aglint/shared-types';
 import { useQueryClient } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
 import posthog from 'posthog-js';
 import {
   createContext,

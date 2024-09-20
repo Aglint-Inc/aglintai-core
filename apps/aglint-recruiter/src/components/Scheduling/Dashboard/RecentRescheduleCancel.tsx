@@ -249,7 +249,7 @@ const RecentRescheduleListItem = ({
       onClick={() => {
         if (detail?.meet_id)
           router.push(
-            `/scheduling/view?meeting_id=${detail?.meet_id}&tab=candidate_details`,
+            `/interviews/view?meeting_id=${detail?.meet_id}&tab=candidate_details`,
           );
       }}
     >
@@ -277,7 +277,7 @@ const RecentRescheduleListItem = ({
           variant='default'
           onClick={(e) => {
             e.stopPropagation();
-            router.push(`/scheduling/view?meeting_id=${detail.meet_id}`);
+            router.push(`/interviews/view?meeting_id=${detail.meet_id}`);
           }}
         >
           View

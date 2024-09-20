@@ -4,7 +4,7 @@ import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { AlertTriangle, CalendarIcon } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import ROUTES from '@/utils/routing/routes';
 
@@ -60,7 +60,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           size='sm'
           onClick={() => {
             router.push(
-              ROUTES['/scheduling/view']() +
+              ROUTES['/interviews/view']() +
                 `?meeting_id=${meeting_id}&tab=job_details`,
             );
           }}

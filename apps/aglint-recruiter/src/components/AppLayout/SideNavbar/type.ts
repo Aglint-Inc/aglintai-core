@@ -19,7 +19,7 @@ export type LinkProps =
     }
   | {
       module: 'Interviews';
-      path: Path<'/scheduling'>;
+      path: Path<'/interviews'>;
     }
   | {
       module: 'Sourcing Hub';

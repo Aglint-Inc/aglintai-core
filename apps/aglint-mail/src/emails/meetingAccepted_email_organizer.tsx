@@ -27,7 +27,7 @@ export const dummy: EmailType = {
   subject:
     '<p><span class="temp-variable" data-type="temp-variable" data-id="interviewerName">{{interviewerName}}</span> Accepted Interview for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateFirstName">{{candidateFirstName}}</span></p>',
   meetingDetailsLink:
-    'process.env.NEXT_PUBLIC_APP_URL/scheduling/view?meeting_id=interview_meeting_id&tab=candidate_details',
+    'process.env.NEXT_PUBLIC_APP_URL/interviews/view?meeting_id=interview_meeting_id&tab=candidate_details',
   candidateScheduleLink: '',
 };
 
