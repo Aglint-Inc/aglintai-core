@@ -182,7 +182,7 @@ const AddMember = ({
             ...recruiter.scheduling_settings,
             timeZone: timeZone.find(
               (item) =>
-                item.label ===
+                item.tzCode ===
                 locations.find((loc) => loc.id === form.location_id).timezone,
             ),
           } as schedulingSettingType,

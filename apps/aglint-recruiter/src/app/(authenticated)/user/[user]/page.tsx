@@ -1,5 +1,4 @@
 'use client';
-
 import InterviewerDetailsPage from './_common/components';
 
 const Page = () => {
