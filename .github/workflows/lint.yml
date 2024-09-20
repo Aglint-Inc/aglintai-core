@@ -42,7 +42,6 @@ jobs:
           key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-turbo-
-
       # Step 5: Run the linter for all workspaces
       - name: Run Linter
         run: npx turbo run lint --cache-dir=.turbo

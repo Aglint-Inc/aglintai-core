@@ -56,6 +56,5 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': 'off',
     'camelcase': 'off',
   },
-  cache: true,
   cacheLocation: '.eslintcache',
 };
