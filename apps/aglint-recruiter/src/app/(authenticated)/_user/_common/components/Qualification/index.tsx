@@ -24,24 +24,36 @@ export const Qualifications = ({
                     {interview_type.module_name}
                   </h3>
                   <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
-                    <div>
+                    {/* <div>
                       <p className='text-sm text-gray-500'>Monthly Scheduled</p>
                       <p className='text-base font-bold'>-</p>
-                    </div>
+                    </div> */}
                     <div>
-                      <p className='text-sm text-gray-500'>Avg. Duration</p>
+                      <p className='text-sm text-gray-500'>Duration</p>
                       <p className='text-base font-bold'>
                         {interview_type.completed_meeting_duration || 0} min
                       </p>
                     </div>
-                    <div>
+                    {/* <div>
                       <p className='text-sm text-gray-500'>Pass Rate</p>
                       <p className='text-base font-bold'>-</p>
+                    </div> */}
+                    <div>
+                      <p className='text-sm text-gray-500'>Completed Slots</p>
+                      <p className='text-base font-bold'>
+                        {interview_type.completed_meeting_count || 0}
+                      </p>
                     </div>
                     <div>
                       <p className='text-sm text-gray-500'>Upcoming Slots</p>
                       <p className='text-base font-bold'>
                         {interview_type.confirmed_meeting_count || 0}
+                      </p>
+                    </div>
+                    <div>
+                      <p className='text-sm text-gray-500'>Cancalled Slots</p>
+                      <p className='text-base font-bold'>
+                        {interview_type.cancelled_meeting_count || 0}
                       </p>
                     </div>
                   </div>

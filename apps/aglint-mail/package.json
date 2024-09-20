@@ -7,7 +7,7 @@
     "start": "next start  --port 3100",
     "dev": "npm run dev:build && next dev --port 3100",
     "clean": "rm -rf dist",
-    "lint": "eslint . && tsc",
+    "lint": "eslint . --cache && tsc",
     "fix": "eslint --fix"
   },
   "engines": {

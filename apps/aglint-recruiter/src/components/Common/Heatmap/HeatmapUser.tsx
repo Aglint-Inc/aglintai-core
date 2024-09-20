@@ -1,6 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Skeleton } from '@components/ui/skeleton';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
@@ -24,16 +25,15 @@ export default function Heatmap({
   const [arrayDates, setArrayDates] = useState([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 21,
+    end: 24,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
   );
+  const user_id = useParams().user as string;
   const router = useRouter();
 
-  const user_id = router?.query?.user_id as string;
-
-  const { data } = useUserSchedules(user_id);
+  const { data, isLoading } = useUserSchedules(user_id);
 
   useEffect(() => {
     setMaxCountInterviews(
@@ -83,101 +83,117 @@ export default function Heatmap({
   const mapDatas: number[][] = heatMapData.map((data) => data.map(() => 1));
 
   return (
-    <div className='m-2'>
-      <div className='mb-1 flex max-w-[870px] items-center justify-between'>
-        <div className='flex items-center space-x-1'>
-          <p className='min-w-[250px]'>
-            Activity on{' '}
-            <span className='font-medium'>
-              {startDateUI} - {endDateUI}
-            </span>
-          </p>
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() =>
-              setDayCount((pre) => ({
-                start: pre.start === 21 ? -7 : pre.start - 28,
-                end: pre.end - 28,
-              }))
-            }
-            icon={<ChevronLeft className='h-4 w-4' />}
-          />
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() =>
-              setDayCount((pre) => ({
-                start: pre.start === -7 ? 21 : pre.start + 28,
-                end: pre.end + 28,
-              }))
-            }
-            icon={<ChevronRight className='h-4 w-4' />}
-          />
-        </div>
+    <>
+      {isLoading ? (
+        <Skeleton className='h-[150] w-[1000px]' />
+      ) : (
+        <div className='m-2'>
+          <div className='mb-4 flex max-w-[1000px] items-center justify-between'>
+            <div className='flex items-center space-x-1'>
+              <p className='min-w-[250px]'>
+                Activity on{' '}
+                <span className='font-medium'>
+                  {startDateUI} - {endDateUI}
+                </span>
+              </p>
+              <UIButton
+                size='sm'
+                variant='secondary'
+                onClick={() =>
+                  setDayCount((pre) => ({
+                    start: pre.start === 21 ? -7 : pre.start - 28,
+                    end: pre.end - 28,
+                  }))
+                }
+                icon={<ChevronLeft className='h-4 w-4' />}
+              />
+              <UIButton
+                size='sm'
+                variant='secondary'
+                onClick={() =>
+                  setDayCount((pre) => ({
+                    start: pre.start === -7 ? 21 : pre.start + 28,
+                    end: pre.end + 28,
+                  }))
+                }
+                icon={<ChevronRight className='h-4 w-4' />}
+              />
+            </div>
 
-        <div className='flex space-x-1'>
-          <div className='flex space-x-1'>
-            <p className='font-medium'>Daily :</p>
-            <p>{loadSetting?.dailyLimit.value}</p>
-            <p>{todayTypeText}</p>
-            <p className='font-medium'> Weekly : </p>
-            <p>{loadSetting?.weeklyLimit.value}</p>
-            <p>{weeklyTypeText}</p>
+            <div className='flex space-x-1'>
+              <div className='flex space-x-1'>
+                <p className='font-medium'>Daily :</p>
+                <p>{loadSetting?.dailyLimit.value}</p>
+                <p>{todayTypeText}</p>
+                <p className='font-medium'> Weekly : </p>
+                <p>{loadSetting?.weeklyLimit.value}</p>
+                <p>{weeklyTypeText}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <HeatMapGrid
-        data={mapDatas}
-        xLabels={xLabel}
-        yLabels={yLabel}
-        square
-        cellHeight='30px'
-        xLabelsPos='bottom'
-        onClick={(x, y) => {
-          if (heatMapData[x][y].meeting_id)
-            router.push(
-              `/scheduling/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
-            );
-        }}
-        yLabelsPos='left'
-        xLabelsStyle={(index) => {
-          const isToday = dayjsLocal(arrayDates[index]).isToday();
-          return {
-            visibility: isToday ? 'visible' : 'hidden',
-            backgroundColor: isToday ? 'bg-red-500' : 'transparent',
-            borderRadius: '20px',
-            height: '2px ',
-            padding: 0,
-            marginTop: '2px',
-            width: isToday ? '25px' : '30px',
-          };
-        }}
-        yLabelsStyle={(index) => ({
-          color: index % 1 === 0 ? '#777' : 'transparent',
-          fontSize: '10px',
-        })}
-        cellStyle={(x: number, y: number) => {
-          const value = heatMapData[x][y];
+          <HeatMapGrid
+            data={mapDatas}
+            xLabels={xLabel}
+            yLabels={yLabel}
+            square
+            cellHeight='30.5px'
+            xLabelsPos='bottom'
+            onClick={(x, y) => {
+              if (heatMapData[x][y].meeting_id)
+                router.push(
+                  `/scheduling/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
+                );
+            }}
+            yLabelsPos='left'
+            xLabelsStyle={(index) => {
+              const isToday = dayjsLocal(arrayDates[index]).isToday();
+              return {
+                visibility: isToday ? 'visible' : 'hidden',
+                backgroundColor: isToday
+                  ? 'hsl(var(--chart-5))'
+                  : 'transparent',
+                borderRadius: '20px',
+                height: '2px ',
+                padding: 0,
+                marginTop: '2px',
+                width: '30.5px',
+              };
+            }}
+            yLabelsStyle={(index) => ({
+              color: index % 1 === 0 ? '#777' : 'transparent',
+              fontSize: '10px',
+            })}
+            cellStyle={(x: number, y: number) => {
+              const value = heatMapData[x][y];
 
-          return {
-            background:
-              value?.status === 'completed'
-                ? `bg-green-${900 - x * 100}`
-                : value?.status === 'confirmed'
-                  ? `bg-blue-${900 - x * 100}`
-                  : value?.status === 'cancelled'
-                    ? `bg-red-${900 - x * 100}`
-                    : 'bg-neutral-200',
-            fontSize: '4px',
-            borderRadius: '3px',
-            width: '29px',
-            height: '29px',
-            color: 'white',
-          };
-        }}
-      />
-    </div>
+              return {
+                background:
+                  value?.status === 'completed'
+                    ? `hsl(var(--chart-1))`
+                    : value?.status === 'confirmed'
+                      ? `hsl(var(--chart-4))` // need confirm color
+                      : value?.status === 'cancelled'
+                        ? `hsl(var(--chart-2))`
+                        : '#ebebeb',
+                // background:
+                //   value?.status === 'completed'
+                //     ? `bg-green-${900 - x * 100}`
+                //     : value?.status === 'confirmed'
+                //       ? `bg-blue-${900 - x * 100}`
+                //       : value?.status === 'cancelled'
+                //         ? `bg-red-${900 - x * 100}`
+                //         : 'grey',
+                fontSize: '4px',
+                borderRadius: '3px',
+                width: '29px',
+                height: '29px',
+                color: 'white',
+              };
+            }}
+          />
+        </div>
+      )}
+    </>
   );
 }
 

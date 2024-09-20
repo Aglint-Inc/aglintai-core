@@ -2,8 +2,8 @@ import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
 import React, { useEffect, useMemo } from 'react';
-import { fetchEmailTemplates } from 'src/app/(authenticated)/_company/_common/components/Templates/utils';
 
+import { fetchEmailTemplates } from '@/company/components/Templates/utils';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';

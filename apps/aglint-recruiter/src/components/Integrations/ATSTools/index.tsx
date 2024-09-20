@@ -1,11 +1,12 @@
+'use client';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import axios from 'axios';
 import { capitalize } from 'lodash';
-import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import ATSPopUps from '../ATSPopUps';
 import { IntegrationCard } from '../components/IntegrationCard';
@@ -17,7 +18,7 @@ import { updateIntegrations } from '../utils';
 
 function ATSTools({ integrations, refetch }) {
   const { toast } = useToast();
-  const router = useRouter();
+  const router = useRouterPro();
   const { recruiter } = useAuthDetails();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);

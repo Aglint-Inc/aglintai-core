@@ -11,9 +11,11 @@ import { BreadCrumb, SideBar, Top } from './Components';
 import { EditUserDialog } from './Dialogs/EditUser';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
+import { HeatmapUser } from './Heatmap';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
+import ScheduleAvailability from './ScheduleAvailability';
 import { UpcomingInterview } from './UpcomingInterviews';
 
 export default function InterviewerDetailsPage() {
@@ -31,6 +33,8 @@ export default function InterviewerDetailsPage() {
     upcomingInterviews: useRef(null),
     recentInterviews: useRef(null),
     interviewFeedback: useRef(null),
+    scheduleAvailability: useRef(null),
+    meetingOverview: useRef(null),
   };
   const userCardRef = useRef(null);
 
@@ -61,6 +65,7 @@ export default function InterviewerDetailsPage() {
 
   const { data: interviewerDetails, isLoading } = useInterviewer();
 
+  //--------------------------------------
   if (isLoading)
     return (
       <div className='flex min-h-screen w-full items-center justify-center'>
@@ -69,6 +74,7 @@ export default function InterviewerDetailsPage() {
     );
 
   const interviewer = null;
+
   return (
     <div className='container mx-auto py-8'>
       <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -77,7 +83,7 @@ export default function InterviewerDetailsPage() {
         <div className='sticky top-8'>
           <BreadCrumb name={interviewerDetails?.first_name} />
           <Header
-            avatar={interviewerDetails.avatar}
+            avatar={interviewerDetails?.avatar}
             setIsOpen={setIsOpen}
             name={getFullName(
               interviewerDetails.first_name,
@@ -103,7 +109,7 @@ export default function InterviewerDetailsPage() {
                 <KeyMatrics
                   declineCount={interviewerDetails.meeting_count.cancelled}
                   completedCount={interviewerDetails.meeting_count.completed}
-                  upcomingCount={interviewerDetails.meeting_count.upcoming}
+                  // upcomingCount={interviewerDetails.meeting_count.upcoming}
                   totalHour={interviewerDetails.meeting_count.completed_hour}
                 />
               </section>
@@ -131,6 +137,19 @@ export default function InterviewerDetailsPage() {
               </section>
               <section ref={sectionRefs.interviewFeedback}>
                 <Feedback feedbacks={interviewerDetails.feedbacks} />
+              </section>
+              <section ref={sectionRefs.meetingOverview}>
+                <HeatmapUser
+                  loadSetting={
+                    interviewerDetails?.scheduling_settings?.interviewLoad
+                  }
+                />
+              </section>
+              <section ref={sectionRefs.scheduleAvailability}>
+                <ScheduleAvailability
+                  schedulingSettings={interviewerDetails.scheduling_settings}
+                  interviewTodayWeek={interviewerDetails.interview_week_today}
+                />
               </section>
 
               {/* 
