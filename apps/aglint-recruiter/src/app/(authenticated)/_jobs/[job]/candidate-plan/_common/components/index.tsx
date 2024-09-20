@@ -6,8 +6,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
@@ -51,7 +52,7 @@ export const CandidatePlan = () => {
 };
 
 const BreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job } = useJob();
 
   return (

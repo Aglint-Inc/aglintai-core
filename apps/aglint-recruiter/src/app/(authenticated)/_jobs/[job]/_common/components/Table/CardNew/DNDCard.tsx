@@ -3,11 +3,13 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { useApplicationsStore } from '@/job/hooks';
-import { type Application } from '@/types/applications.types';
+import type { Application } from '@/job/types';
 
 import ApplicationCard from '.';
 
-type Props = { application: Application };
+type Props = {
+  application: Application;
+};
 
 const DNDCard = (props: Props) => {
   const count = useApplicationsStore((state) => state.checklist.length);

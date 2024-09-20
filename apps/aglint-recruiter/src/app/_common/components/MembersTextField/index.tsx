@@ -9,8 +9,6 @@ import {
 import { AlertCircle, Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
-
 export type MemberTypeAutoComplete = {
   user_id: string;
   first_name: string;
@@ -59,6 +57,7 @@ function MembersAutoComplete({
     <div className='flex w-full flex-col gap-2'>
       <div className='flex flex-row flex-wrap gap-2'>
         {selectedUsers.map((user) => {
+          const userName = getFullName(user.first_name, user.last_name);
           return (
             <div
               key={user.user_id}
@@ -66,13 +65,10 @@ function MembersAutoComplete({
                 pillColor ? `${pillColor}` : 'bg-neutral-300'
               }`}
             >
-              <MuiAvatar
-                src={user.profile_image}
-                level={getFullName(user?.first_name, user?.last_name)}
-                height='24px'
-                width='24px'
-                fontSize='12px'
-              />
+              <Avatar className='h-8 w-8'>
+                <AvatarImage src={user.profile_image} alt={userName} />
+                <AvatarFallback>{userName?.charAt(0)}</AvatarFallback>
+              </Avatar>
 
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
               <button
@@ -110,6 +106,7 @@ function MembersAutoComplete({
             </div>
           ) : (
             renderUsers.map((option, ind) => {
+              const userName = getFullName(option.first_name, option.last_name);
               return (
                 <div
                   key={ind}
@@ -138,13 +135,10 @@ function MembersAutoComplete({
                     ) && <Check size={16} />}
                   </div>
 
-                  <MuiAvatar
-                    src={option.profile_image}
-                    level={getFullName(option.first_name, option.last_name)}
-                    height='24px'
-                    width='24px'
-                    fontSize='12px'
-                  />
+                  <Avatar className='h-8 w-8'>
+                    <AvatarImage src={option.profile_image} alt={userName} />
+                    <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <div className='flex w-full flex-row items-center justify-between pl-2'>
                     <div className='one-line-clamp text-sm'>
                       {getFullName(option.first_name, option.last_name)}

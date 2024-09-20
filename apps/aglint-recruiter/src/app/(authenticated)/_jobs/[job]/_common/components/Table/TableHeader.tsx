@@ -1,19 +1,14 @@
 import { cn } from '@lib/utils';
-import { useSearchParams } from 'next/navigation';
 
-interface TableHeaderProps {
-  isAllChecked: boolean;
-  onSelectAll: () => void;
-  isResumeMatchVisible: boolean;
-  isInterviewVisible: boolean;
-}
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useApplicationsStore } from '@/job/hooks';
 
-export function TableHeader({
-  isResumeMatchVisible,
-  isInterviewVisible,
-}: TableHeaderProps) {
-  const searchParams = useSearchParams();
-  const section = searchParams.get('section');
+export function TableHeader() {
+  const { isScoringEnabled: isResumeMatchVisible } = useRolesAndPermissions();
+  const isInterviewVisible = useApplicationsStore((state) =>
+    state.cascadeVisibilites(),
+  ).interview;
+  const section = useApplicationsStore((state) => state.status);
 
   const interviewColShow =
     section === 'interview' ||

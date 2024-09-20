@@ -7,13 +7,14 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import React, { type FC } from 'react';
+import React, { type FC, Suspense } from 'react';
 import { Line } from 'react-chartjs-2';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { Loader } from '@/components/Common/Loader';
-import { useJobDashboard } from '@/job/hooks';
+import { useMetricsExperienceAndTenure } from '@/job/hooks';
 
-import { type DashboardGraphOptions } from '.';
+import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -118,17 +119,28 @@ const LineChart: React.FC<{
   );
 };
 
-const DashboardLineChart: FC<{
+export const DashboardLineChart: FC<{
   option: keyof Pick<
-    DashboardGraphOptions<'tenureAndExperience'>,
+    MetricsOptions<'experienceAndTenure'>,
     'experience' | 'tenure'
   >;
 }> = ({ option }) => {
-  const {
-    tenureAndExperience: { data: dataSet, status },
-  } = useJobDashboard();
-  if (status === 'pending') return <Loader />;
-  if (status === 'error') return <>Error</>;
+  return (
+    <ErrorBoundary fallback={<>Error</>}>
+      <Suspense fallback={<Loader />}>
+        <Content option={option} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
+const Content: FC<{
+  option: keyof Pick<
+    MetricsOptions<'experienceAndTenure'>,
+    'experience' | 'tenure'
+  >;
+}> = ({ option }) => {
+  const [dataSet] = useMetricsExperienceAndTenure();
   const experience = dataSet?.[option] ?? null;
   const total = experience
     ? Object.values(experience).reduce((acc, curr) => {
@@ -139,5 +151,3 @@ const DashboardLineChart: FC<{
   if (total === 0) return <NoDataAvailable />;
   return <LineChart experience={experience} />;
 };
-
-export default DashboardLineChart;

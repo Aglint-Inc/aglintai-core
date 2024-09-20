@@ -25,9 +25,11 @@ import {
   useUploadApplication,
   useUploadCsv,
   useUploadResume,
-} from '@/queries/job-applications';
+} from '@/queries/job';
 import { useJobUpdate } from '@/queries/jobs';
 import toast from '@/utils/toast';
+
+import { useCurrentJob } from '../hooks/useCurrentJob';
 
 const useJobContext = () => {
   const params = useParams();
@@ -54,7 +56,7 @@ const useJobContext = () => {
     [recruiter_id, jobsLoad],
   );
 
-  const job_id = useMemo(() => params.job as string, [params.job]);
+  const { job_id } = useCurrentJob();
 
   const job = useMemo(
     () =>

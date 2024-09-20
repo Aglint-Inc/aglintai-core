@@ -18,11 +18,12 @@ import { useInterviewerDeclines } from '../../hook/interview/interviewerMatrix.h
 
 export default function InterviewersDeclineTable() {
   const { data: members } = useMemberList();
-  const { data, isFetching } = useInterviewerDeclines();
+  const { data, isFetching, isError } = useInterviewerDeclines();
   return (
     <ReportCard
       title={'Interviewers'}
       isEmpty={!data?.length}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
       headerSlot={
         <div className='flex items-center space-x-2'>

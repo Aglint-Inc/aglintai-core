@@ -8,12 +8,13 @@ import {
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Zap } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
-import { useJob, useJobDashboard, useJobDashboardActions } from '@/job/hooks';
+import { useJob } from '@/job/hooks';
+import { useWorkflowsActions } from '@/job/workflows/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
@@ -58,7 +59,7 @@ export const JobWorkflowDashboard = () => {
 };
 
 const BreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job } = useJob();
   return (
     <Breadcrumb>
@@ -87,17 +88,13 @@ const BreadCrumbs = () => {
 };
 
 const Actions = () => {
-  const { manageJob } = useJobDashboard();
-  const { setPopup } = useJobDashboardActions();
+  const { manageJob } = useJob();
+  const { setOpen } = useWorkflowsActions();
   return (
     <>
       <div className='flex items-center justify-between gap-2'>
         {manageJob && (
-          <Button
-            variant='outline'
-            onClick={() => setPopup({ open: true })}
-            size='sm'
-          >
+          <Button variant='outline' onClick={() => setOpen(true)} size='sm'>
             <Zap className='mr-2 h-4 w-4' />
             Add
           </Button>

@@ -12,7 +12,7 @@ function Interviews() {
   return (
     <div className='container-lg mx-auto w-full px-12'>
       <header>
-        <div className='mb-8 flex items-center justify-between'>
+        <div className='mb-4 flex items-center justify-between'>
           <div>
             <h1 className='text-3xl font-semibold'>All Interviews</h1>
             <p className='mb-4 text-gray-600'>
@@ -33,6 +33,8 @@ function Interviews() {
 
         {/* Right Column: My Interviews and Recently Completed Interviews */}
         <div className='flex w-5/12 flex-col'>
+          <div className='p-12'></div>
+
           <MyInterviews />
 
           <Card>

@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Briefcase } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
@@ -17,6 +16,7 @@ import Seo from '@/components/Common/Seo';
 import { UIBadge } from '@/components/Common/UIBadge';
 import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
@@ -46,12 +46,12 @@ const Body = () => {
             <Edit />
             <Trigger />
             <ActionsProvider>
-            <Actions />
+              <Actions />
             </ActionsProvider>
           </>
         </div>
         <div className='w-4/12 flex-row space-y-1'>
-          <div className='flex items-center font-medium text-neutral-900 mb-4'>
+          <div className='mb-4 flex items-center font-medium text-neutral-900'>
             Connected Jobs
           </div>
           <div className='flex flex-col space-y-2'>
@@ -102,7 +102,7 @@ const WorkflowJob = ({
   >;
   workflow_id: string;
 }) => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { mutateAsync } = useJobWorkflowDisconnect({ id });
   const mutationState = useJobWorkflowMutations({ id });
   const loading = !!(mutationState?.remove ?? []).find(

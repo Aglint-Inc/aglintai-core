@@ -4,7 +4,6 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useCandidatePortalMessages } from 'src/app/(public)/candidate/(authenticated)/[application_id]/messages/_common/hooks';
 
@@ -12,6 +11,7 @@ import {
   useCandidatePortal,
   useCandidatePortalNavbar,
 } from '@/candidate/authenticated/hooks';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 
 import CandidatePortalLoader from './CandidatePortalLoader';
@@ -30,9 +30,9 @@ export default function Navigation() {
   const { data: messages, isPending: messagePending } =
     useCandidatePortalMessages();
   const { application_id } = useCandidatePortal();
-  const [signingOUt, setSigningOut] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
-  const router = useRouter();
+  const router = useRouterPro();
 
   if (isPending || messagePending)
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
@@ -114,7 +114,7 @@ export default function Navigation() {
                 setSigningOut(false);
               }}
             >
-              {signingOUt ? 'Loading...' : 'Logout'}
+              {signingOut ? 'Signing out...' : 'Logout'}
             </Button>
             <Link href={`/candidate/${application_id}/profile`}>
               <NavProfile

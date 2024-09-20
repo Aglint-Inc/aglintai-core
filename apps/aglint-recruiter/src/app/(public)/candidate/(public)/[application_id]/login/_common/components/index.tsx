@@ -7,6 +7,7 @@ import {
   getCandidateEmailByApplicationId,
   sendMagicLink,
 } from '@/candidate/authenticated/uilts';
+import { Loader } from '@/components/Common/Loader';
 import { supabase } from '@/utils/supabase/client';
 
 import { Send } from './Send';
@@ -58,7 +59,7 @@ const LoginPage = () => {
     setIsSending(false);
   };
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <Loader />;
 
   if (status === 'send')
     return (

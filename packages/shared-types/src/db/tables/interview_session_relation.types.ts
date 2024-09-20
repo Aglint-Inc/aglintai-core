@@ -1,4 +1,4 @@
-import { CustomFeedback } from "../common.types";
+import type { CustomFeedback } from "../common.types";
 import type { TableType } from "./index.types";
 
 export type CustomInterviewSessionRelation = TableType<

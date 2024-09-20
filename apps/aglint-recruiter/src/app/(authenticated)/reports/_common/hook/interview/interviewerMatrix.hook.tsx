@@ -82,7 +82,7 @@ export function useInterviewer_upcoming() {
 export function useInterviewerDeclines() {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching } = api.analytics.interviewer_rejections.useQuery(
+  const { data, isFetching, isError } = api.analytics.interviewer_rejections.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
@@ -97,5 +97,6 @@ export function useInterviewerDeclines() {
   return {
     data,
     isFetching: isFetching,
+    isError
   };
 }

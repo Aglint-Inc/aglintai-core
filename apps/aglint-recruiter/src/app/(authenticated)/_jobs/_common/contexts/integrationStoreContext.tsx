@@ -9,30 +9,36 @@ import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 import { INITIAL_STATE } from '@/jobs/constants';
+import {
+  type CreateContextStore,
+  getContextIntials,
+} from '@/utils/zustandContextHelpers';
 
 type Integrations = typeof INITIAL_STATE;
 
-type Store = {
-  intialIntegrations: Integrations;
+type State = {
   integrations: Integrations;
-  actions: {
-    // eslint-disable-next-line no-unused-vars
-    setIntegration: (integrations: Partial<Integrations>) => void;
-    handleClose: () => void;
-  };
 };
+
+const initial = Object.freeze({
+  integrations: INITIAL_STATE,
+});
+
+const getInitial = getContextIntials(initial);
+
+type Store = CreateContextStore<State>;
 
 const useIntegrationStoreContext = () => {
   const [store] = useState(
     createStore<Store>((set) => ({
-      intialIntegrations: INITIAL_STATE,
-      integrations: INITIAL_STATE,
+      initial,
+      ...getInitial(),
       actions: {
-        setIntegration: (integrations) =>
+        setIntegrations: (integrations) =>
           set((state) => ({
             integrations: { ...state.integrations, ...integrations },
           })),
-        handleClose: () => set(() => ({ integrations: INITIAL_STATE })),
+        resetIntegrations: () => set(() => ({ integrations: INITIAL_STATE })),
       },
     })),
   );

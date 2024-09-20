@@ -22,13 +22,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { Loader } from '@/components/Common/Loader';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
@@ -62,7 +62,7 @@ export const JobEmailTemplatesDashboard = () => {
 };
 
 const JobEmailTemplatesDashboardBreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job } = useJob();
 
   return (
@@ -228,7 +228,7 @@ const Sections = ({
 };
 
 export function useCurrJobTemps({ setSaving }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const [selectedTemp, setSelectedTemp] = useState<
     DatabaseEnums['email_slack_types']
   >('applicationRecieved_email_applicant');
@@ -244,7 +244,7 @@ export function useCurrJobTemps({ setSaving }) {
         await supabase
           .from('job_email_template')
           .select()
-          .eq('job_id', router.query.id),
+          .eq('job_id', router.params.id),
       );
       const templates: Partial<
         Record<
@@ -276,7 +276,7 @@ export function useCurrJobTemps({ setSaving }) {
             from_name: updated_val.from_name,
             subject: updated_val.subject,
           })
-          .eq('job_id', router.query.id)
+          .eq('job_id', router.params.id)
           .eq('type', updated_val.type)
           .select(),
       );

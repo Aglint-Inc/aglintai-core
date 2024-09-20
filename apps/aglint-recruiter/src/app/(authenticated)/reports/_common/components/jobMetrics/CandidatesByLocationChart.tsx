@@ -1,19 +1,25 @@
 import { Button } from '@components/ui/button';
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@components/ui/chart';
 import React from 'react';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { Cell, Legend, Pie, PieChart } from 'recharts';
 
 import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
 
 import { useJobLocations } from '../../hook/job/jobMatrix';
 
 export default function CandidatesByLocationChart() {
-  const { data, view, setView, isFetching } = useJobLocations();
+  const { data, view, setView, isFetching, isError } = useJobLocations();
 
   return (
     <ReportCard
       title={'Candidates By'}
       isEmpty={!data?.length}
       isLoading={isFetching}
+      error={isError ? 'Error fetching data' : undefined}
       headerSlot={
         <div className='flex items-center space-x-2'>
           <div className='flex space-x-2'>
@@ -39,15 +45,15 @@ export default function CandidatesByLocationChart() {
         </div>
       }
     >
-      <div className='h-[300px]'>
-        <ResponsiveContainer width='100%' height='100%'>
+      <div className='flex justify-center'>
+        <ChartContainer config={{}} className='max-h-[350px] min-h-[300px]'>
           <PieChart>
             <Pie
               data={data}
               cx='50%'
               cy='50%'
-              innerRadius={60}
-              outerRadius={80}
+              innerRadius={80}
+              outerRadius={100}
               fill='text-blue-500'
               paddingAngle={5}
               dataKey='value'
@@ -55,10 +61,11 @@ export default function CandidatesByLocationChart() {
               {data?.map((_entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={`text-${['blue', 'green', 'red', 'yellow', 'purple', 'pink', 'indigo', 'gray', 'orange', 'teal'][index % 10]}-500`}
+                  fill={`hsl(var(--chart-${(index % 5) + 1}))`}
                 />
               ))}
             </Pie>
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Legend
               layout='vertical'
               align='right'
@@ -71,7 +78,7 @@ export default function CandidatesByLocationChart() {
               )}
             />
           </PieChart>
-        </ResponsiveContainer>
+        </ChartContainer>
       </div>
     </ReportCard>
   );

@@ -11,6 +11,7 @@ import { FileText, Upload } from 'lucide-react';
 import React, { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 
@@ -92,9 +93,7 @@ export const ImportCsv: React.FC = () => {
     <div className='flex h-[500px] flex-col border-0 shadow-none'>
       <div className='flex-grow overflow-auto p-6'>
         {isLoading ? (
-          <div className='flex h-full w-full items-center justify-center'>
-            <p className='text-gray-500'>Loading...</p>
-          </div>
+          <Loader />
         ) : candidates.length ? (
           <div className='flex flex-col gap-2'>
             <CandidatesListTable candidates={candidates} />

@@ -1,6 +1,6 @@
 import { Button } from '@components/ui/button';
-import { useRouter } from 'next/router';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 
@@ -9,7 +9,7 @@ export default function EmptyJobDashboard({
   handleClickAddJob,
   showMsg = true,
 }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const { data: allIntegrations } = useAllIntegrations();
 
   return (

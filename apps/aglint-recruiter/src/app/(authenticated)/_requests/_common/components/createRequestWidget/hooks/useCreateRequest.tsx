@@ -1,4 +1,4 @@
-import { createContextStoreSelector } from '@/hooks/createContextStoreSelector';
+import { createContextStoreSelector } from '@/utils/zustandContextHelpers';
 
 import { CreateRequestContext } from '../contexts/createRequestContext';
 

@@ -4,8 +4,8 @@ import {
 } from '@aglint/shared-types';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+import { type InviteUserAPIType } from 'src/app/(authenticated)/_company/_common/components/TeamManagement/utils';
 
-import { type InviteUserAPIType } from '@/components/CompanyDetailComp/TeamManagement/utils';
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 import { companyType } from '@/utils/userRoles';

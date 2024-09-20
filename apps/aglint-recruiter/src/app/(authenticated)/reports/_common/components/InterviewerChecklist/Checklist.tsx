@@ -16,11 +16,12 @@ const CheckIcon = () => <Check className='h-4 w-4 text-green-500' />;
 const XIcon = () => <X className='h-4 w-4 text-red-500' />;
 
 export default function Checklist() {
-  const { data, isFetching } = useRequestMetics();
+  const { data, isFetching, isError } = useRequestMetics();
   return (
     <ReportCard
       title={'Coordinator Checklist'}
       isEmpty={!data?.length}
+      error={isError ? 'Error fetching data' : undefined}
       isLoading={isFetching}
     >
       <div className='overflow-x-auto'>

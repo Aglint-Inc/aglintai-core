@@ -8,14 +8,15 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
-import React, { type FC } from 'react';
+import React, { type FC, Suspense } from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { Loader } from '@/components/Common/Loader';
-import { useJobDashboard } from '@/job/hooks';
+import { useJob, useMetricsLocationPool } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 
-import { type DashboardGraphOptions } from '.';
+import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -113,15 +114,25 @@ export const DoughnutChart: React.FC<{
   );
 };
 
-const DashboardDoughnutChart: FC<{
-  option: keyof DashboardGraphOptions<'locations'>;
+export const DashboardDoughnutChart: FC<{
+  option: keyof MetricsOptions<'locationPool'>;
+}> = ({ option }) => {
+  return (
+    <ErrorBoundary fallback={<>Error</>}>
+      <Suspense fallback={<Loader />}>
+        <Content option={option} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
+const Content: FC<{
+  option: keyof MetricsOptions<'locationPool'>;
 }> = ({ option }) => {
   const {
-    locations: { data: locationPool, status },
     job: { processing_count },
-  } = useJobDashboard();
-  if (status === 'pending') return <Loader />;
-  if (status === 'error') return <>Error</>;
+  } = useJob();
+  const [locationPool] = useMetricsLocationPool();
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoDataAvailable />;
   const totalCount = Object.values(processing_count).reduce((acc, curr) => {
@@ -155,5 +166,3 @@ const DashboardDoughnutChart: FC<{
     </div>
   );
 };
-
-export default DashboardDoughnutChart;

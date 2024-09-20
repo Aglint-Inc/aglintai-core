@@ -80,7 +80,7 @@ const Content = () => {
     )
   )
     return (
-      <div className='flex flex-col items-center justify-center p-4'>
+      <div className='mx-auto flex flex-col items-center justify-center p-4'>
         <Medal className='mb-2 h-12 w-12 text-gray-500' />
         <p className='text-sm text-gray-600'>No skills found</p>
       </div>

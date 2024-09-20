@@ -9,7 +9,7 @@ import { interviewer_rejections } from './interviewer_reject';
 import { job } from './job';
 import { request_metrics } from './request_metrics';
 
-export const analyticsRouter = createTRPCRouter({
+export const analytics = createTRPCRouter({
   interview_count,
   interview_decline,
   interviewer_leaderboard,

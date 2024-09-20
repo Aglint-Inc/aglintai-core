@@ -1,9 +1,9 @@
-import { DatabaseEnums } from '../..';
-import { TableType } from './index.types';
+import type { DatabaseEnums } from "../..";
+import type { TableType } from "./index.types";
 
 export type CustomCompanyEmailTemplate = TableType<
-  'company_email_template',
+  "company_email_template",
   {
-    type: DatabaseEnums['email_slack_types']; // dont change
+    type: DatabaseEnums["email_slack_types"]; // dont change
   }
 >;

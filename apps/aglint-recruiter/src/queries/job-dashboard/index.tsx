@@ -7,36 +7,12 @@ import { type Job } from '../jobs/types';
 import { jobDashboardQueryKeys } from './keys';
 import { type DashboardTypes } from './types';
 
-export const useJobSkills = (job: Job) => {
-  const id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.skills({ id });
-  const response = useQuery({
-    queryKey,
-    enabled: !!job,
-    queryFn: () => getSkillsPool(id),
-    gcTime: job ? GC_TIME : 0,
-  });
-  return response;
-};
-
 export const useJobDashboardRefresh = () => {
   const queryClient = useQueryClient();
   return (id: string) => {
     const { queryKey } = jobDashboardQueryKeys.dashboard({ id });
     queryClient.invalidateQueries({ queryKey });
   };
-};
-
-export const useJobLocations = (job: Job) => {
-  const id = job?.id;
-  const { queryKey } = jobDashboardQueryKeys.locations({ id });
-  const response = useQuery({
-    queryKey,
-    enabled: !!job,
-    queryFn: () => getLocationPool(id),
-    gcTime: job ? GC_TIME : 0,
-  });
-  return response;
 };
 
 export const useJobTenureAndExperience = (job: Job) => {
@@ -72,23 +48,6 @@ const getTenureAndExperience = async (job_id: string) => {
       `Tenure and Experience RPC function failure: ${error.message}`,
     );
   return data as DashboardTypes['tenureAndExperience'];
-};
-
-const getSkillsPool = async (job_id: string) => {
-  const { data, error } = await supabase.rpc('getskillpools', {
-    jobid: job_id,
-  });
-  if (error)
-    throw new Error(`Skill pool RPC function failure: ${error.message}`);
-  return data as DashboardTypes['skills'];
-};
-
-const getLocationPool = async (job_id: string) => {
-  const { data, error } = await supabase.rpc('getlocationspool', {
-    jobid: job_id,
-  });
-  if (error) throw new Error(error.message);
-  return data as DashboardTypes['locations'];
 };
 
 export const getScheduleData = async (job_id: string) => {

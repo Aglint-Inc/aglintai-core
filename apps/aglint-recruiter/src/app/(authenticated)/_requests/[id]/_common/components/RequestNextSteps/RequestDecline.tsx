@@ -4,12 +4,12 @@ import {
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
 import React from 'react';
 
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRequest } from '@/context/RequestContext';
@@ -106,15 +106,15 @@ const RequestDecline = () => {
               <MemberRow
                 slotConflicts={<></>}
                 slotInterviewerImage={
-                  <MuiAvatar
-                    level={getFullName(
-                      declinedUserDetails.recruiter_user.first_name,
-                      declinedUserDetails.recruiter_user.last_name,
-                    )}
-                    src={declinedUserDetails.recruiter_user.profile_image}
-                    width={'100%'}
-                    height={'100%'}
-                  />
+                  <Avatar className='h-8 w-8'>
+                    <AvatarImage
+                      src={declinedUserDetails.recruiter_user.profile_image}
+                      alt={declinedUserDetails.recruiter_user.first_name}
+                    />
+                    <AvatarFallback>
+                      {declinedUserDetails.recruiter_user.first_name.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
                 }
                 iconTraining={<></>}
                 textName={getFullName(
@@ -152,15 +152,15 @@ const RequestDecline = () => {
                         />
                       }
                       slotInterviewerImage={
-                        <MuiAvatar
-                          level={getFullName(
-                            item.replacement_int.first_name,
-                            item.replacement_int.last_name,
-                          )}
-                          src={item.replacement_int.profile_image}
-                          width={'100%'}
-                          height={'100%'}
-                        />
+                        <Avatar className='h-8 w-8'>
+                          <AvatarImage
+                            src={item.replacement_int.profile_image}
+                            alt={item.replacement_int.first_name}
+                          />
+                          <AvatarFallback>
+                            {item.replacement_int.first_name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
                       }
                       iconTraining={<></>}
                       textName={getFullName(
