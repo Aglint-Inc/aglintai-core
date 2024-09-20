@@ -7,6 +7,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
+import { Calendar } from './Calendar';
 import { BreadCrumb, SideBar, Top } from './Components';
 import { EditUserDialog } from './Dialogs/EditUser';
 import { Feedback } from './FeedbackCard';
@@ -113,6 +114,7 @@ export default function InterviewerDetailsPage() {
                   totalHour={interviewerDetails.meeting_count.completed_hour}
                 />
               </section>
+              <Calendar />
 
               <section ref={sectionRefs.qualifications}>
                 <Qualifications

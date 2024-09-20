@@ -30,15 +30,15 @@
   --fc-bg-event-color: hsl(var(--muted));
   --fc-bg-event-opacity: 0.3;
   --fc-highlight-color: hsl(var(--primary) / 0.1);
-  --fc-today-bg-color: hsl(var(--primary) / 0.1);
   --fc-now-indicator-color: hsl(var(--destructive));
+  --fc-today-bg-color: hsl(var(--primary) / 0.05);
 }
 
 /* Additional custom styles */
 .fc-theme-standard .fc-scrollgrid,
 .fc-theme-standard td,
 .fc-theme-standard th {
-  border-color: hsl(var(--border));
+  border-color: hsl(var(--primary) / 0.12);
 }
 
 .fc .fc-daygrid-day.fc-day-today {
