@@ -6,30 +6,27 @@ export function CandidateScheduleCard({
   textDay = 'Day2',
   textDuration = '2 hour 45 Minutes',
   isTitle = true,
-  isSlotButtonVisible = true,
   isSelected = false,
   slotButton,
   slotSessionInfo,
-  onClickCard,
 }: {
   textDay?: string;
   textDuration?: string;
   isTitle?: boolean;
-  isSlotButtonVisible?: boolean;
   isSelected?: boolean;
   slotButton?: React.ReactNode;
   slotSessionInfo?: React.ReactNode;
-  onClickCard?: () => void;
 }) {
   return (
     <Card
       className={cn('relative overflow-hidden', isSelected && 'bg-neutral-100')}
-      onClick={onClickCard}
+      // onClick={onClickCard}
     >
       <CardContent className='space-y-4 p-4'>
         {isTitle && (
           <div className='flex items-center justify-between'>
             <span className='font-medium text-blue-600'>{textDay}</span>
+            {slotButton}
           </div>
         )}
         <div className='flex items-center justify-start space-x-4'>
@@ -39,14 +36,7 @@ export function CandidateScheduleCard({
             <span>{textDuration}</span>
           </div>
         </div>
-        {isSlotButtonVisible && (
-          <div className='absolute right-3 top-3'>{slotButton}</div>
-        )}
-        {isSelected && (
-          <div className='absolute inset-0 flex items-start justify-end bg-neutral-100 p-4'>
-            {slotButton}
-          </div>
-        )}
+
         <div className='space-y-2'>
           {slotSessionInfo || (
             <>
