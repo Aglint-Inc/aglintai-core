@@ -72,7 +72,7 @@ function ListSection({
             </div>
             {requests.length === 0 && (
               <Badge variant='outline' className='ml-2'>
-                No {sectionName.replace('_', ' ')} found
+                No {sectionName.replaceAll('_', ' ')} found
               </Badge>
             )}
           </div>
