@@ -69,7 +69,7 @@ jobs:
       - name: Deploy to Vercel
         run: |
           echo "Attempting to deploy..."
-          DEPLOYMENT_OUTPUT=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes 2>&1)
+          DEPLOYMENT_OUTPUT=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }} --yes 2>&1)
           echo "Deployment output: $DEPLOYMENT_OUTPUT"
           DEPLOYMENT_URL=$(echo "$DEPLOYMENT_OUTPUT" | grep -oP 'https:\/\/[^ ]+')
           if [ -z "$DEPLOYMENT_URL" ]; then
