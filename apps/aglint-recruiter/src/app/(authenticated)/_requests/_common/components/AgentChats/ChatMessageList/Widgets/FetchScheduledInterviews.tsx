@@ -21,7 +21,7 @@ function FetchScheduledInterviews({ chat }: { chat: ChatType }) {
       type: getScheduleType(session.interview_session[0].schedule_type),
       date: dayjsLocal(session.start_time).format('DD MMM YYYY'),
       link:
-        ROUTES['/scheduling/view']() +
+        ROUTES['/interviews/view']() +
         `?meeting_id=${session.id}&tab=candidate_details`,
       time: formatTimeWithTimeZone({
         start_time: session.start_time,

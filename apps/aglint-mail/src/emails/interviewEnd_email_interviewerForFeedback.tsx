@@ -12,7 +12,7 @@ export const dummy: EmailType = {
   companyLogo: companyLogoDummy,
   subject: '',
   interviewFeedbackLink:
-    'https://dev.aglinthq.com/scheduling/view?meeting_id=1a1505a6-4134-4a81-ba57-c84c29670e9b&tab=feedback',
+    'https://dev.aglinthq.com/interviews/view?meeting_id=1a1505a6-4134-4a81-ba57-c84c29670e9b&tab=feedback',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;

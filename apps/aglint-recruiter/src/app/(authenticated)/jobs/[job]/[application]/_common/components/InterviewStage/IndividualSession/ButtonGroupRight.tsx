@@ -28,7 +28,7 @@ function ButtonGroupRight({
           interview_meeting?.status === 'cancelled') && (
           <Link
             href={
-              ROUTES['/scheduling/view']() +
+              ROUTES['/interviews/view']() +
               `?meeting_id=${interview_meeting.id}&tab=candidate_details`
             }
           >

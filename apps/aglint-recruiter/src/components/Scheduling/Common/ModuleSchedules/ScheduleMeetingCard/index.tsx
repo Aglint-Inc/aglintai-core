@@ -34,7 +34,7 @@ function ScheduleMeetingCard({
         className='cursor-pointer'
         onClick={() => {
           router.push(
-            `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
+            `/interviews/view?meeting_id=${meetingDetails.id}&tab=job_details`,
           );
         }}
       >

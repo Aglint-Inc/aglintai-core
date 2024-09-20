@@ -194,12 +194,17 @@ const interviewTypes = {
     pageRouteBuilder([interviewTypes['/interview-pool'](), type_id]),
 } as const;
 
+const interviews = {
+  '/interviews': () => pageRouteBuilder([ROUTES.app(), 'interviews']),
+  '/interviews/all': () =>
+    pageRouteBuilder([interviews['/interviews'](), 'all']),
+  '/interviews/view': () =>
+    pageRouteBuilder([interviews['/interviews'](), 'view']),
+} as const;
+
 const scheduling = {
-  '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
   '/scheduling/invite/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([scheduling['/scheduling'](), 'invite', id]),
-  '/scheduling/view': () =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'view']),
 } as const;
 const screening = {
   '/screening': () => pageRouteBuilder([ROUTES.app(), 'screening']),
@@ -276,6 +281,7 @@ const ROUTES = {
   ...profile,
   ...profileLink,
   ...resetPassword,
+  ...interviews,
   ...scheduling,
   ...screening,
   ...screeningDashboard,

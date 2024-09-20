@@ -41,7 +41,7 @@ export const RecentInterviews = ({
                 <UIButton
                   onClick={() => {
                     router.push(
-                      `/scheduling/view?meeting_id=${interview.id}&tab=candidate_details`,
+                      `/interviews/view?meeting_id=${interview.id}&tab=candidate_details`,
                     );
                   }}
                   variant='outline'

@@ -103,7 +103,7 @@ const func = async (
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Hi team,\n\nThe interview with *${getFullName(cand_application.candidates.first_name, cand_application.candidates.last_name)}* scheduled for *${dayjsLocal(meeting_detail.start_time).tz('Asia/Colombo').format(DAYJS_FORMATS.DATE_FORMAT)} at ${dayjsLocal(meeting_detail.start_time).tz('Asia/Colombo').format(DAYJS_FORMATS.STAR_TIME_FORMAT)} ${getShortTimeZone('Asia/Colombo')}* has been cancelled.\n\n*<${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/view?meeting_id=${meeting_detail.id}&tab=candidate_details|View Meeting Details>*`,
+              text: `Hi team,\n\nThe interview with *${getFullName(cand_application.candidates.first_name, cand_application.candidates.last_name)}* scheduled for *${dayjsLocal(meeting_detail.start_time).tz('Asia/Colombo').format(DAYJS_FORMATS.DATE_FORMAT)} at ${dayjsLocal(meeting_detail.start_time).tz('Asia/Colombo').format(DAYJS_FORMATS.STAR_TIME_FORMAT)} ${getShortTimeZone('Asia/Colombo')}* has been cancelled.\n\n*<${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${meeting_detail.id}&tab=candidate_details|View Meeting Details>*`,
             },
             accessory: {
               type: 'image',

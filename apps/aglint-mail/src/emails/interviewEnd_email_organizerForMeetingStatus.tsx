@@ -13,7 +13,7 @@ export const dummy: EmailType = {
   companyLogo: companyLogoDummy,
   subject: '',
   meetingStatusUpdateLink:
-    'process.env.NEXT_PUBLIC_APP_URL/scheduling/view?meeting_id=meeting_ids&tab=candidate_details',
+    'process.env.NEXT_PUBLIC_APP_URL/interviews/view?meeting_id=meeting_ids&tab=candidate_details',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;

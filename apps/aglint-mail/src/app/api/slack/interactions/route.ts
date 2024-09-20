@@ -119,7 +119,7 @@ const meeting_status_organizer_decline = async (interaction_data: any) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
+          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
         },
       },
     ],

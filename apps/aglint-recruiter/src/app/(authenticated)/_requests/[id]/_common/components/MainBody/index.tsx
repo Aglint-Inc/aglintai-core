@@ -569,7 +569,7 @@ function SessionCards({
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(
-                            `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
+                            `/interviews/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
                             '_blank',
                           );
                         }}
