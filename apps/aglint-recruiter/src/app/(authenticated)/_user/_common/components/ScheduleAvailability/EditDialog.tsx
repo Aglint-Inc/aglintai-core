@@ -8,9 +8,11 @@ import { useParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import InterviewLimitInput from '@/company/components/Scheduling/InterviewLoad';
+import KeywordSection from '@/company/components/Scheduling/KeywordSection';
 import DayWithTime from '@/company/components/WorkingHours/WorkTime/DayWithTime';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
+import UITypography from '@/components/Common/UITypography';
 import { supabase } from '@/utils/supabase/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
@@ -41,6 +43,10 @@ export const EditForm = ({
   const [isSaving, setIsSaving] = useState(false);
   const [workingHours, setWorkingHours] = useState([]);
   const [timeZone, setTimeZone] = useState<TimeZoneType>(null);
+  const [freeKeyWords, setFreeKeywords] = useState([]);
+  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
+  const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
+  const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
   const [dailyLmit, setDailyLimit] = useState<interviewLoadType>({
     type: 'Hours',
     value: 20,
@@ -129,6 +135,16 @@ export const EditForm = ({
 
       setTimeZone(timeZoneCopy);
       setWorkingHours(workingHoursCopy);
+      setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
+      setSoftConflictsKeyWords(
+        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
+      );
+      setOutOfOffice(
+        schedulingSettingData?.schedulingKeyWords?.outOfOffice || [],
+      );
+      setRecruitingBlocks(
+        schedulingSettingData?.schedulingKeyWords?.recruitingBlocks || [],
+      );
     }
   }
 
@@ -149,6 +165,12 @@ export const EditForm = ({
         },
         timeZone: timeZone,
         workingHours: workingHours,
+        schedulingKeyWords: {
+          free: freeKeyWords,
+          SoftConflicts: softConflictsKeyWords,
+          outOfOffice: outOfOffice,
+          recruitingBlocks: recruitingBlocks,
+        },
       } as schedulingSettingType;
       await supabase
         .from('recruiter_user')
@@ -254,6 +276,74 @@ export const EditForm = ({
               />
             );
           })}
+        </div>
+        <div>
+          <div className='mb-4 flex flex-col gap-4'>
+            <UITypography
+              variant='p'
+              type='small'
+              className='mb-1 text-lg font-semibold'
+            >
+              Free
+            </UITypography>
+            <UITypography variant='p' type='small' className='mb-4'>
+              When these keywords appear in a calendar event title, overlapping
+              interviews will not be considered scheduling conflicts.
+            </UITypography>
+            <KeywordSection
+              keywords={freeKeyWords}
+              setKeywords={setFreeKeywords}
+            />
+          </div>
+          <div className='mb-4 flex flex-col gap-4'>
+            <UITypography
+              variant='p'
+              type='small'
+              className='mb-1 text-lg font-semibold'
+            >
+              Soft Conflicts
+            </UITypography>
+            <UITypography variant='p' type='small' className='mb-4'>
+              When these keywords are found in a calendar event title,
+              overlapping interviews will be marked as soft conflicts and will
+              require your confirmation to schedule.
+            </UITypography>
+            <KeywordSection
+              keywords={softConflictsKeyWords}
+              setKeywords={setSoftConflictsKeyWords}
+            />
+          </div>
+          <div className='mb-4 flex flex-col gap-4'>
+            <UITypography
+              variant='p'
+              type='small'
+              className='mb-1 text-lg font-semibold'
+            >
+              Out of Office
+            </UITypography>
+            <UITypography variant='p' type='small' className='mb-4'>
+              When any of these specified keywords appear in a calendar event
+              title, the day will be considered an Out of Office day, and
+              interviews will not be scheduled.
+            </UITypography>
+          </div>
+          <div className='mb-4 flex flex-col gap-4'>
+            <UITypography
+              variant='p'
+              type='small'
+              className='mb-1 text-lg font-semibold'
+            >
+              Recruiting Blocks
+            </UITypography>
+            <UITypography variant='p' type='small' className='mb-4'>
+              If these keywords are found in a calendar event title, these
+              blocks will be given first preference for scheduling interviews.
+            </UITypography>
+            <KeywordSection
+              keywords={recruitingBlocks}
+              setKeywords={setRecruitingBlocks}
+            />
+          </div>
         </div>
       </ScrollArea>
       <div className='flex w-full justify-end gap-4'>

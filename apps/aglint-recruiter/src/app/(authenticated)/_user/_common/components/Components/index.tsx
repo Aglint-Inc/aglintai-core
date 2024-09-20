@@ -181,6 +181,12 @@ export const SideBar = ({
           active={activeSection === 'scheduleAvailability'}
           onClick={() => scrollToSection('scheduleAvailability')}
         />
+        <SideNavItem
+          icon={Calendar}
+          label='Calendar'
+          active={activeSection === 'calendar'}
+          onClick={() => scrollToSection('calendar')}
+        />
         {/*<SideNavItem
       icon={BarChart}
       label='Performance'

@@ -18,7 +18,6 @@ import UITypography from '@/components/Common/UITypography';
 
 import { type useInterviewer } from '../../hooks/useInterviewer';
 import { EditForm } from './EditDialog';
-
 export default function ScheduleAvailability({
   schedulingSettings,
   interviewTodayWeek,
@@ -93,14 +92,14 @@ export default function ScheduleAvailability({
         </CardHeader>
         <CardContent>
           <div className='mb-6'>
-            <h3 className='mb-2 text-lg font-semibold'>Time Zone Infomation</h3>
+            <h3 className='mb-2 text-lg font-semibold'>Time Zone</h3>
             <UITypography variant='p' type='small'>
               {schedulingSettings?.timeZone?.label || ' - '}
             </UITypography>
           </div>
           <div className='mb-6'>
-            <h3 className='mb-2 text-lg font-semibold'>Time Zone Infomation</h3>
-            <div className='grid grid-cols-2 gap-4'>
+            <h3 className='mb-2 text-lg font-semibold'>Interview Load</h3>
+            <div className='flex gap-5'>
               {/* <div className='h-[100px] w-[200px] bg-gray-200'>
                 <UITypography>Today</UITypography>
                 <UITypography>
@@ -108,27 +107,33 @@ export default function ScheduleAvailability({
                   <p className='text-sm'>{today.label}</p>
                 </UITypography>
               </div> */}
-              <Card>
-                <CardHeader className='bg-secondary text-secondary-foreground'>
-                  <CardTitle>Today</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className='text-2xl font-bold'>{today.count}</p>
-                  <p className='text-sm'>{today.label}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='bg-secondary text-secondary-foreground'>
-                  <CardTitle>This Week</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className='text-2xl font-bold'>{thisWeek.count}</p>
-                  <p className='text-sm'>{thisWeek.label}</p>
-                </CardContent>
-              </Card>
+              <div className='h-fit min-w-[150px] rounded-sm border-[1px]'>
+                <UITypography className='bg-gray-100 px-4 py-2 text-lg font-semibold'>
+                  Today
+                </UITypography>
+                <div className='flex gap-2 px-4 py-2'>
+                  <UITypography className='text-sm font-bold'>
+                    {today.count}
+                  </UITypography>
+                  <UITypography className='text-sm'>{today.label}</UITypography>
+                </div>
+              </div>
+              <div className='h-fit min-w-[150px] rounded-sm border-[1px]'>
+                <UITypography className='bg-gray-100 px-4 py-2 text-lg font-semibold'>
+                  This Week
+                </UITypography>
+                <div className='flex gap-2 px-4 py-2'>
+                  <UITypography className='text-sm font-bold'>
+                    {thisWeek.count}
+                  </UITypography>
+                  <UITypography className='text-sm'>
+                    {thisWeek.label}
+                  </UITypography>
+                </div>
+              </div>
             </div>
           </div>
-          <div>
+          <div className='mb-6'>
             <h3 className='mb-2 text-lg font-semibold'>Working Hours</h3>
             <p className='mb-4 text-sm text-muted-foreground'>
               Set your company&apos;s working hours to define the availability
@@ -177,6 +182,79 @@ export default function ScheduleAvailability({
               </TableBody>
             </Table>
           </div>
+          <div className='mb-6'>
+            <h3 className='mb-2 text-lg font-semibold'>Scheduling Keywords</h3>
+            <div className='mb-6'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='mb-1 text-lg font-semibold'
+              >
+                Free
+              </UITypography>
+              <UITypography variant='p' type='small' className='mb-4'>
+                When these keywords appear in a calendar event title,
+                overlapping interviews will not be considered scheduling
+                conflicts.
+              </UITypography>
+              <ViewKeywords
+                keywords={schedulingSettings.schedulingKeyWords.free}
+                // setKeywords={setFreeKeywords}
+              />
+            </div>
+            <div className='mb-6'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='mb-1 text-lg font-semibold'
+              >
+                Soft Conflicts
+              </UITypography>
+              <UITypography variant='p' type='small' className='mb-4'>
+                When these keywords are found in a calendar event title,
+                overlapping interviews will be marked as soft conflicts and will
+                require your confirmation to schedule.
+              </UITypography>
+              <ViewKeywords
+                keywords={schedulingSettings.schedulingKeyWords.SoftConflicts}
+              />
+            </div>
+            <div className='mb-6'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='mb-1 text-lg font-semibold'
+              >
+                Out of Office
+              </UITypography>
+              <UITypography variant='p' type='small' className='mb-4'>
+                When any of these specified keywords appear in a calendar event
+                title, the day will be considered an Out of Office day, and
+                interviews will not be scheduled.
+              </UITypography>
+              <ViewKeywords
+                keywords={schedulingSettings.schedulingKeyWords.outOfOffice}
+              />
+            </div>
+            <div className='mb-6'>
+              <UITypography
+                variant='p'
+                type='small'
+                className='mb-1 text-lg font-semibold'
+              >
+                Recruiting Blocks
+              </UITypography>
+              <UITypography variant='p' type='small' className='mb-4'>
+                If these keywords are found in a calendar event title, these
+                blocks will be given first preference for scheduling interviews.
+              </UITypography>
+              <ViewKeywords
+                keywords={
+                  schedulingSettings.schedulingKeyWords.recruitingBlocks
+                }
+              />
+            </div>
+          </div>
         </CardContent>
       </Card>
       <UIDialog
@@ -194,3 +272,22 @@ export default function ScheduleAvailability({
     </>
   );
 }
+
+const ViewKeywords = ({ keywords }: { keywords: string[] }) => {
+  return (
+    <div className='flex flex-wrap gap-2'>
+      {keywords.map((keyword, i) => {
+        return (
+          <div
+            key={i}
+            className='w-fit rounded-full bg-gray-100 px-4 py-1 text-gray-900'
+          >
+            <UITypography type='small' variant='p'>
+              {keyword}
+            </UITypography>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
