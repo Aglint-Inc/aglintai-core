@@ -38,7 +38,7 @@ import { useEffect, useState } from 'react';
 import MemberCard from '@/components/Common/MemberCard';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
-import { UIDivider } from '@/components/Common/UIDivider';
+// import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { RequestProvider } from '@/context/RequestContext';
@@ -101,7 +101,7 @@ export default function ViewRequestDetails() {
   if (!isPlaceholderData && status === 'success' && !selectedRequest) {
     return (
       // we need to fix this empty state
-      <Alert variant='error'>
+      <Alert variant='destructive'>
         <AlertTitle>Request not found</AlertTitle>
       </Alert>
     );
@@ -140,8 +140,8 @@ export default function ViewRequestDetails() {
           </Breadcrumb>
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
-              <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-                Request Detail
+              <h1 className='mb-2 text-2xl text-gray-900'>
+                {capitalizeFirstLetter(selectedRequest?.title)}
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
@@ -224,24 +224,25 @@ export default function ViewRequestDetails() {
             </div>
           </div>
           <div className='flex'>
-            <div className='flex w-8/12 flex-col space-y-4 pr-4'>
+            <div className='flex w-8/12 flex-col space-y-4 pr-4 pb-6'>
               <Card className='bg-white shadow-sm'>
-                <CardHeader className='flex flex-row items-start justify-between pb-2'>
-                  <div>
+               <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                  {/* <div>
                     <CardTitle className='mb-2 text-xl font-semibold'>
                       Request Details
                     </CardTitle>
-                  </div>
-                </CardHeader>
+                  </div> */}
+                </CardHeader>  
                 <CardContent>
                   <div className='grid grid-cols-3 gap-6'>
                     <div className='col-span-2 grid grid-cols-2 gap-6'>
                       <div className='space-y-4'>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 group'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Status
                             </span>
+                            <div className='hidden group-hover:block'>
                             <UpdateDetails
                               handleChange={async ({ value }) => {
                                 const status =
@@ -260,6 +261,7 @@ export default function ViewRequestDetails() {
                                 <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
+                            </div>
                           </div>
                           <Badge
                             variant='outline'
@@ -268,11 +270,12 @@ export default function ViewRequestDetails() {
                             {capitalizeFirstLetter(selectedRequest?.status)}
                           </Badge>
                         </div>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 group'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Priority
                             </span>
+                            <div className='hidden group-hover:block'>
                             <UpdateDetails
                               handleChange={async ({ value }) => {
                                 const priority =
@@ -291,6 +294,7 @@ export default function ViewRequestDetails() {
                                 <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
                             />
+                            </div>
                           </div>
                           <Badge
                             variant='outline'
@@ -301,11 +305,12 @@ export default function ViewRequestDetails() {
                         </div>
                       </div>
                       <div className='space-y-4'>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 group'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Interview Date
                             </span>
+                            <div className='hidden group-hover:block'>
                             <UIDateRangePicker
                               value={dateRange}
                               onAccept={(dates) => {
@@ -330,7 +335,7 @@ export default function ViewRequestDetails() {
                               customButton={
                                 <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                               }
-                            />
+                            /></div>
                           </div>
                           <span className='text-sm'>
                             {dayjs(selectedRequest?.schedule_start_date).format(
@@ -342,11 +347,12 @@ export default function ViewRequestDetails() {
                               )}
                           </span>
                         </div>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 relative group'>
                           <div className='flex items-center justify-between'>
                             <h3 className='text-sm font-medium text-gray-500'>
                               Assigned to
                             </h3>
+                            <div className='hidden group-hover:block'>
                             <UpdateMembers
                               handleChange={async ({ user_id }) => {
                                 const assignee_id = user_id;
@@ -364,17 +370,19 @@ export default function ViewRequestDetails() {
                               }
                               members={members}
                             />
+                            </div>
                           </div>
                           <MemberCard selectedMember={selectedMember} />
                         </div>
                       </div>
                     </div>
                     <div className='space-y-4'>
-                      <div className='space-y-2'>
+                      <div className='space-y-2 relative group'>
                         <div className='flex items-center justify-between'>
                           <span className='text-sm font-medium text-gray-500'>
                             Request Type
                           </span>
+                          <div className='hidden group-hover:block'>
                           <UpdateDetails
                             handleChange={async ({ value }) => {
                               const type = value as unknown as Request['type'];
@@ -392,6 +400,7 @@ export default function ViewRequestDetails() {
                               <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                             }
                           />
+                          </div>
                         </div>
                         <div className='flex items-center space-x-2'>
                           <Calendar className='h-4 w-4 text-gray-500' />
@@ -535,11 +544,11 @@ function SessionCards({
         <h3 className='text-lg font-semibold'>Sessions</h3>
         <Badge variant='outline'>{sessions?.length} sessions</Badge>
       </div>
-      <div className='space-y-2 rounded-lg border'>
+      <div className='space-y-2'>
         {sessions &&
           sessions.map((session, index) => (
             <>
-              <Card key={index} className='shado-none border-0'>
+              <Card key={index} className='shadow-none rounded-md'>
                 <CardHeader
                   className='cursor-pointer px-4 py-2'
                   onClick={() => {
@@ -595,13 +604,14 @@ function SessionCards({
                   candidate={null}
                 />
               </Card>
-              <div className='px-2'>
+              <div className='px-0'>
                 {session?.interview_session?.break_duration ? (
-                  <div className='flex items-center justify-center space-x-2'>
-                    <UIDivider />
+                  <div>
+                   <Card className='rounded-md shadow-none py-2 border-dashed border-2 flex justify-between px-4'>
                     <div className='flex items-center space-x-2'>
-                      <Coffee className='h-4 w-4' /> <p>Break:</p>
+                      <Coffee className='h-4 w-4' /> <p>Break</p>
                     </div>
+                    <div className="pr-6">
                     <UISelectDropDown
                       className='max-w-[150px]'
                       fullWidth
@@ -618,7 +628,10 @@ function SessionCards({
                         ).then(() => refetchMeetings());
                       }}
                     />
-                    <UIDivider />
+                    </div>
+                    </Card>
+                  <div className='flex items-center justify-center space-x-2'>
+                  </div>
                   </div>
                 ) : null}
               </div>
@@ -626,6 +639,7 @@ function SessionCards({
           ))}
       </div>
     </div>
+   
   );
 }
 
