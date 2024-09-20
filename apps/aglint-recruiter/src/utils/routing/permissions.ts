@@ -51,7 +51,7 @@ const PERMISSIONS: Permissions = {
   '/interview-pool': ['view_interview_types'],
   '/interview-pool/[pool]': ['interview_types'],
   '/requests': ['job_module'],
-  '/requests/[id]': ['job_module'],
+  '/requests/[request]': ['job_module'],
   '/requests/history': ['job_module'],
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],

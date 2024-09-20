@@ -23,7 +23,9 @@ import { type groupByDateRange } from './utils';
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 
 function StepSlotOptions() {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const filteredSchedulingOptions = useSelfSchedulingFlowStore(
     (state) => state.filteredSchedulingOptions,
   );
@@ -36,7 +38,7 @@ function StepSlotOptions() {
 
   const selectedRequest = Object.values(requestList)
     .flat()
-    .find((request) => request?.id === (query?.id || ''));
+    .find((request) => request?.id === (requestId || ''));
 
   const dateRange = useSelfSchedulingFlowStore((state) => state.dateRange);
 
