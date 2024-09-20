@@ -1,4 +1,5 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
@@ -7,7 +8,6 @@ import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_co
 
 import Footer from '@/components/Common/Footer';
 import { Loader } from '@/components/Common/Loader';
-import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import timeZones from '@/utils/timeZone';
 
@@ -180,12 +180,13 @@ function Header({ candidateRequestAvailability, isSubmitted }) {
     <div className='w-lg flex flex-col items-center'>
       <div className='mb-4 flex items-center justify-center'>
         {candidateRequestAvailability?.recruiter.logo ? (
-          <MuiAvatar
-            height='100px'
-            width='100px'
-            level=''
-            src={candidateRequestAvailability?.recruiter.logo}
-          />
+          <Avatar className='h-[100px] w-[100px]'>
+            <AvatarImage
+              src={candidateRequestAvailability?.recruiter.logo}
+              alt='Recruiter logo'
+            />
+            <AvatarFallback>Logo</AvatarFallback>
+          </Avatar>
         ) : null}
       </div>
       <div
