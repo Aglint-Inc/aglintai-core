@@ -32,4 +32,5 @@ jobs:
         run: |
           echo "Attempting to deploy..."
           # Deploy to Vercel with --no-wait option and save stdout and stderr to files
+          vercel env pull --environment=preview --git-branch=development
           vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes --no-wait
