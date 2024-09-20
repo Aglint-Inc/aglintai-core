@@ -29,7 +29,6 @@ import {
   X,
 } from 'lucide-react';
 import { nanoid } from 'nanoid';
-import { useRouter } from 'next/router';
 import {
   type ChangeEventHandler,
   type FC,
@@ -46,6 +45,7 @@ import ScoreWheel, {
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TourProvider, useTour } from '@/context/TourContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 // import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -492,7 +492,7 @@ const Tag: FC<{
 };
 
 const Banners = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job, handleRegenerateJd, status } = useJob();
   if (status.loading) return <></>;
   if (status.description_error)
@@ -553,7 +553,7 @@ const Banners = () => {
 };
 
 const BreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job } = useJob();
   return (
     <Breadcrumb>

@@ -8,10 +8,10 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Briefcase } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 import { useWorkflow } from '@/workflow/hooks';
@@ -22,7 +22,7 @@ import {
 } from '@/workflows/hooks';
 
 export const DeletePopup = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { handleDeleteWorkflow } = useWorkflows();
   const { workflow } = useWorkflow();
   const deletion = useWorkflowsDeletion();

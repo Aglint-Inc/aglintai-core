@@ -5,7 +5,6 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Switch } from '@components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { AlertCircle } from 'lucide-react';
-import { useRouter } from 'next/router';
 import React, {
   type ChangeEventHandler,
   type Dispatch,
@@ -22,6 +21,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
@@ -457,7 +457,7 @@ const Interview = ({
     [training],
   );
 
-  const { push } = useRouter();
+  const { push } = useRouterPro();
 
   return (
     <>

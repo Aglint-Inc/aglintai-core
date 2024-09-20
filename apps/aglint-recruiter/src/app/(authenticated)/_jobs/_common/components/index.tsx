@@ -9,11 +9,11 @@ import {
 import { Skeleton } from '@components/ui/skeleton';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useIntegrationActions,
   useIntegrationStore,
@@ -29,7 +29,7 @@ import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
 const DashboardComp = () => {
-  const router = useRouter();
+  const router = useRouterPro();
   const {
     manageJob,
     jobs: { data },
@@ -82,8 +82,8 @@ const DashboardComp = () => {
           ) : (
             <div className='container-lg mx-auto w-full px-12'>
               <div className='flex flex-row justify-between'>
-              <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
-              <div className='ml-4'>{manageJob && <AddJob />}</div>
+                <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
+                <div className='ml-4'>{manageJob && <AddJob />}</div>
               </div>
               <div className='mb-4 flex flex-col gap-4'>
                 <div className='flex items-center justify-between'>
@@ -116,7 +116,7 @@ const DashboardComp = () => {
 export default DashboardComp;
 
 export function AddJob() {
-  const router = useRouter();
+  const router = useRouterPro();
   const integration = useIntegrationStore((state) => state.integrations);
   const { setIntegrations } = useIntegrationActions();
   const { data: integrations } = useAllIntegrations();

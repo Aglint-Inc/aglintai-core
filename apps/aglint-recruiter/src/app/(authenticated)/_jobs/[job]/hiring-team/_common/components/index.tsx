@@ -8,7 +8,6 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { CheckIcon } from 'lucide-react';
-import { useRouter } from 'next/router';
 import {
   type Dispatch,
   type SetStateAction,
@@ -18,6 +17,7 @@ import {
 } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { useJob } from '@/job/hooks';
@@ -152,7 +152,7 @@ const JobEdit = () => {
 };
 
 const BreadCrumbs = ({ job }: { job: Job }) => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
 
   return (
     <Breadcrumb>

@@ -16,10 +16,10 @@ import {
 } from '@components/ui/tooltip';
 import { AlertCircle, Briefcase, Clock, MapPin, Pin } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import EmptyState from '@/components/Common/EmptyStates/EmptyStates';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
 import { type Job } from '@/queries/jobs/types';
@@ -35,7 +35,7 @@ interface JobsListProps {
 
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const { handleJobPin } = useJobs();
-  const router = useRouter();
+  const router = useRouterPro();
 
   if (jobs?.length === 0) {
     return <EmptyState type={'job-jobList'} />;

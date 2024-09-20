@@ -6,14 +6,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { useRouter } from 'next/router';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 export const SharedBreadCrumbs = () => {
-  const router = useRouter();
+  const router = useRouterPro();
   const { job } = useJob();
 
   return (

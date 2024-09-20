@@ -6,13 +6,13 @@ import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
 import {
   useIntegrationActions,
@@ -33,7 +33,7 @@ export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
-  const router = useRouter();
+  const router = useRouterPro();
   const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

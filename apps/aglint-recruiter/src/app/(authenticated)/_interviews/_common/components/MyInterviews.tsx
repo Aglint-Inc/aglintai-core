@@ -4,12 +4,12 @@ import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import axios from 'axios';
 import { Calendar, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllIntegrations } from '@/queries/intergrations';
 
 import {
@@ -39,7 +39,7 @@ function MyInterviews() {
     })();
   }, []);
 
-  const router = useRouter();
+  const router = useRouterPro();
 
   const getConsent = async () => {
     try {

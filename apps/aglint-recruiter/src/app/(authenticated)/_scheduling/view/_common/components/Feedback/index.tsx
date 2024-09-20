@@ -23,7 +23,6 @@ import {
   User,
   Users,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
@@ -43,7 +42,6 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
-
 type FeedbackWindowInterviewersType = {
   [key: string]: {
     feedback: {
@@ -424,11 +422,11 @@ const InterviewerFeedback = ({
   interviewers.forEach((item) => {
     sessions[item.session.id] = [...(sessions[item.session.id] || []), item];
   });
-  const router = useRouter();
+  const router = useRouterPro();
   return (
     <>
       <div className='flex flex-col space-y-2 p-2'>
-        {router.pathname !== '/scheduling/view'
+        {router.pathName !== '/scheduling/view'
           ? Object.keys(sessions)
               .map((key) => {
                 const session = sessions[key] || [];

@@ -3,12 +3,12 @@ import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { DialogDescription, DialogTitle } from '@components/ui/dialog';
 import { FileQuestion } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
 
@@ -43,7 +43,7 @@ const InterviewDrawers = ({
   drawers,
   handleClose,
 }: InterviewDrawersProps) => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const {
     interviewModules: { data },
   } = useJobInterviewPlan();
