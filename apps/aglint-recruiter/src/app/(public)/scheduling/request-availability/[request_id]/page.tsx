@@ -2,13 +2,8 @@
 import React from 'react';
 
 import CandidateAvailability from './_common/components/MainBody';
-import AvailabilityLayout from './AvailabilityLayout';
 function RequestAvailability() {
-  return (
-    <AvailabilityLayout>
-      <CandidateAvailability />
-    </AvailabilityLayout>
-  );
+  return <CandidateAvailability />;
 }
 
 export default RequestAvailability;
