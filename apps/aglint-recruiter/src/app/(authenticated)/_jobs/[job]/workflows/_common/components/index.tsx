@@ -8,9 +8,9 @@ import {
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Zap } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { useJob } from '@/job/hooks';
@@ -59,7 +59,7 @@ export const JobWorkflowDashboard = () => {
 };
 
 const BreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job } = useJob();
   return (
     <Breadcrumb>

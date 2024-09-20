@@ -1,5 +1,5 @@
 'use client';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import {
   createContext,
   type PropsWithChildren,
@@ -8,6 +8,7 @@ import {
 } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
@@ -26,7 +27,7 @@ export const CandidatePortalProvider = async ({
 }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(true);
   const value = useCandidatePortalContext();
-  const router = useRouter();
+  const router = useRouterPro();
 
   useEffect(() => {
     const getSession = async () => {

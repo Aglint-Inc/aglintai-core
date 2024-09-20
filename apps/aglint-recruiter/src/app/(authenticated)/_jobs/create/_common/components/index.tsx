@@ -10,7 +10,6 @@ import {
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { AlertTriangle, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import {
   type Dispatch,
   type SetStateAction,
@@ -19,6 +18,7 @@ import {
 } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
@@ -182,7 +182,7 @@ const JobCreateForm = ({
 }) => {
   const [modal, setModal] = useState(false);
   const { handleJobCreate } = useJobs();
-  const { push } = useRouter();
+  const { push } = useRouterPro();
 
   const handleCreate = async () => {
     const newFields = validateForms(fields);

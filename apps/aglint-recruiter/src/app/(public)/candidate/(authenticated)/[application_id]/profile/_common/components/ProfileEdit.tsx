@@ -1,16 +1,17 @@
 'use client';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import CandidateForm from './CandidateForm';
 
 export function ProfileEdit() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useRouterPro();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const closeDialog = () => {

@@ -1,21 +1,13 @@
 'use client';
 import React from 'react';
 
-import Seo from '@/components/Common/Seo';
-import CandidateAvailability from '@/components/Scheduling/RequestAvailability/CandidateAvailability';
-import { RequestAvailabilityProvider } from '@/components/Scheduling/RequestAvailability/CandidateAvailability/_common/contexts/RequestAvailabilityContext';
-
+import CandidateAvailability from './_common/components/MainBody';
+import AvailabilityLayout from './AvailabilityLayout';
 function RequestAvailability() {
   return (
-    <>
-      <RequestAvailabilityProvider>
-        <Seo
-          title='Request Availability | Aglint AI'
-          description='AI for People Products'
-        />
-        <CandidateAvailability />
-      </RequestAvailabilityProvider>
-    </>
+    <AvailabilityLayout>
+      <CandidateAvailability />
+    </AvailabilityLayout>
   );
 }
 

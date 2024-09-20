@@ -1,9 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
-import { useRouter } from 'next/navigation';
-import React from 'react';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
 function CandidateDetails({
@@ -24,7 +23,7 @@ function CandidateDetails({
     end_date: string;
   };
 }) {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const items = [
     {
       icon: 'id_card',

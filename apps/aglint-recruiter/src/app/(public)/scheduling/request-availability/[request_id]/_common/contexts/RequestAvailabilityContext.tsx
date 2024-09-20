@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable no-unused-vars */
 import {
   type CandReqAvailableSlots,
@@ -10,6 +11,7 @@ import {
 import { ScheduleUtils } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs, { type Dayjs } from 'dayjs';
+import { useParams } from 'next/navigation';
 import {
   createContext,
   type Dispatch,
@@ -19,7 +21,6 @@ import {
   useState,
 } from 'react';
 
-import { useRouterPro } from '@/hooks/useRouterPro';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabase } from '@/utils/supabase/client';
 import { fillEmailTemplate } from '@/utils/support/supportUtils';
@@ -131,6 +132,9 @@ const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
   useContext(RequestAvailabilityContext);
 function RequestAvailabilityProvider({ children }) {
+  const params = useParams();
+  const request_id = params?.request_id;
+
   const [candidateRequestAvailability, setCandidateRequestAvailability] =
     useState<candidateRequestAvailabilityType | null>(null);
   const [dateSlots, setDateSlots] = useState<
@@ -154,7 +158,6 @@ function RequestAvailabilityProvider({ children }) {
   >([]);
 
   const [openDaySlotPopup, setOpenDaySlotPopup] = useState<null | number>(null);
-  const router = useRouterPro<{ request_id: string }>();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   async function getRequestAvailabilityData({ request_id }) {
@@ -164,6 +167,7 @@ function RequestAvailabilityProvider({ children }) {
         request_id: request_id,
       },
     );
+
     if (!requestAvailability) {
       setLoading(false);
       return;
@@ -173,6 +177,23 @@ function RequestAvailabilityProvider({ children }) {
       requestAvailability as candidateRequestAvailabilityType,
     );
 
+    if (requestAvailability?.slots) {
+      setDateSlots(requestAvailability?.slots || []);
+      setDaySlots(requestAvailability?.slots || []);
+      setIsSubmitted(true);
+      setLoading(false);
+      return;
+    }
+    if (!requestAvailability.visited) {
+      const { data: requestData } = await axios.post(
+        `/api/scheduling/request_availability/updateRequestAvailability`,
+        {
+          id: String(request_id),
+          data: { visited: true },
+        },
+      );
+      setCandidateRequestAvailability(requestData);
+    }
     // check multi-day
     const meetingsRound = ScheduleUtils.getSessionRounds(
       requestAvailability?.request_session_relation.map(
@@ -180,6 +201,7 @@ function RequestAvailabilityProvider({ children }) {
       ),
     ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
+
     try {
       await Promise.all(
         meetingsRound.map(async (_, idx) => {
@@ -209,12 +231,12 @@ function RequestAvailabilityProvider({ children }) {
     setLoading(false);
   }
   useEffect(() => {
-    if (router.params?.request_id) {
+    if (request_id) {
       getRequestAvailabilityData({
-        request_id: router.params?.request_id,
+        request_id: request_id,
       });
     }
-  }, [router.params?.request_id]);
+  }, [request_id]);
 
   // handle Click on DateCard
 
@@ -306,7 +328,7 @@ function RequestAvailabilityProvider({ children }) {
       const { data: requestData } = await axios.post(
         `/api/scheduling/request_availability/updateRequestAvailability`,
         {
-          id: String(router.params?.request_id),
+          id: String(request_id),
           data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
         },
       );
@@ -319,7 +341,7 @@ function RequestAvailabilityProvider({ children }) {
             slots: [{ round: 1, dates: selectedSlots[0].dates }],
             user_timezone: userTzDayjs.tz.guess(),
           },
-          id: String(router.params?.request_id),
+          id: String(request_id),
         },
       );
       setCandidateRequestAvailability(requestData);
