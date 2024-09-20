@@ -75,7 +75,7 @@ jobs:
         run: |
           echo "Attempting to deploy..."
           # Deploy to Vercel with --no-wait option and save stdout and stderr to files
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=prj_dBlI8sglpHkCEc8JlwIuy7fCRbar --yes --no-wait >deployment-url.txt 2>error.txt
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes --no-wait >deployment-url.txt 2>error.txt
 
           # Extract the deployment URL from the output file
           DEPLOYMENT_URL=$(grep -oP 'https:\/\/[^ ]+' deployment-url.txt | head -n1)
