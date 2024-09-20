@@ -67,13 +67,16 @@ function ImageUploadManual({
         <div className='z-1 absolute inset-0 flex items-center justify-center'>
           {!initImage ? (
             <FileUploader
+              focus={false}
               handleChange={onImageChange}
               name='file'
               types={['PNG', 'JPEG', 'JPG']}
             >
-              <Upload
-                className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
-              />
+              <div className='focus:outline-none'>
+                <Upload
+                  className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'} bg-red-300 focus:border-none focus:outline-none`}
+                />
+              </div>
             </FileUploader>
           ) : (
             <div
@@ -88,7 +91,7 @@ function ImageUploadManual({
                       imageFile.current = null;
                       if (setChanges) setChanges();
                     }}
-                    className='h-5 w-5'
+                    className='focus:outline-non h-5 w-5'
                   />
                 </div>
               )}

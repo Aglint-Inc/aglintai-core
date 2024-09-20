@@ -34,7 +34,7 @@ export default function InterviewerDetailsPage() {
     upcomingInterviews: useRef(null),
     recentInterviews: useRef(null),
     interviewFeedback: useRef(null),
-    scheduleAvailability: useRef(null),
+    scheduleAvailabilityRef: useRef(null),
     meetingOverview: useRef(null),
     calendar: useRef(null),
   };
@@ -43,8 +43,7 @@ export default function InterviewerDetailsPage() {
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
     const userCardBottom = userCardRef.current?.getBoundingClientRect().bottom;
-
-    setIsTopBarVisible(userCardBottom && scrollPosition > userCardBottom);
+    +setIsTopBarVisible(userCardBottom && scrollPosition > userCardBottom);
 
     Object.entries(sectionRefs).forEach(([key, ref]) => {
       if (ref.current && ref.current.getBoundingClientRect().top < 100) {
@@ -82,31 +81,35 @@ export default function InterviewerDetailsPage() {
       <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
       <div className=''>
-        <div className='sticky top-8'>
+        <div className='sticky top-0 z-10 bg-neutral-50'>
           <BreadCrumb name={interviewerDetails?.first_name} />
-          <Header
-            avatar={interviewerDetails?.avatar}
-            setIsOpen={setIsOpen}
-            name={getFullName(
-              interviewerDetails.first_name,
-              interviewerDetails.last_name,
-            )}
-            role={capitalizeAll(interviewerDetails.role)}
-            department={interviewerDetails.department}
-            location={interviewerDetails.location}
-            timeZone={interviewerDetails.timeZone}
-            email={interviewerDetails.email}
-            phone={interviewerDetails.phone}
-            userCardRef={userCardRef}
-          />
+          <div className=''>
+            <Header
+              avatar={interviewerDetails?.avatar}
+              setIsOpen={setIsOpen}
+              name={getFullName(
+                interviewerDetails.first_name,
+                interviewerDetails.last_name,
+              )}
+              role={capitalizeAll(interviewerDetails?.role || ' - ')}
+              department={interviewerDetails?.department || ' - '}
+              location={interviewerDetails?.location || ' - '}
+              timeZone={interviewerDetails?.timeZone || ' - '}
+              email={interviewerDetails?.email || ' - '}
+              phone={interviewerDetails?.phone || ' - '}
+              userCardRef={userCardRef}
+            />
+          </div>
         </div>
         {isShowFeature('SCHEDULING') && (
           <div className='flex gap-8'>
-            <SideBar
-              activeSection={activeSection}
-              scrollToSection={scrollToSection}
-            />
-            <main className='flex-1 space-y-6'>
+            <aside className='sticky top-[255px] w-64 flex-shrink-0 self-start'>
+              <SideBar
+                activeSection={activeSection}
+                scrollToSection={scrollToSection}
+              />
+            </aside>
+            <main className='relative z-0 flex-1 space-y-6'>
               <section ref={sectionRefs.overview}>
                 <KeyMatrics
                   declineCount={interviewerDetails.meeting_count.cancelled}
@@ -147,7 +150,7 @@ export default function InterviewerDetailsPage() {
                   }
                 />
               </section>
-              <section ref={sectionRefs.scheduleAvailability}>
+              <section ref={sectionRefs.scheduleAvailabilityRef}>
                 <ScheduleAvailability
                   schedulingSettings={interviewerDetails.scheduling_settings}
                   interviewTodayWeek={interviewerDetails.interview_week_today}
