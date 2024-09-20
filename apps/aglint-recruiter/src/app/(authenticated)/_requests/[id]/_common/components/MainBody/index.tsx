@@ -39,7 +39,7 @@ import { useEffect, useState } from 'react';
 import MemberCard from '@/components/Common/MemberCard';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
-import { UIDivider } from '@/components/Common/UIDivider';
+// import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { RequestProvider } from '@/context/RequestContext';
@@ -542,11 +542,11 @@ function SessionCards({
         <h3 className='text-lg font-semibold'>Sessions</h3>
         <Badge variant='outline'>{sessions?.length} sessions</Badge>
       </div>
-      <div className='space-y-2 rounded-lg border'>
+      <div className='space-y-2'>
         {sessions &&
           sessions.map((session, index) => (
             <>
-              <Card key={index} className='shado-none border-0'>
+              <Card key={index} className='shadow-none rounded-md'>
                 <CardHeader
                   className='cursor-pointer px-4 py-2'
                   onClick={() => {
@@ -602,10 +602,32 @@ function SessionCards({
                   candidate={null}
                 />
               </Card>
-              <div className='px-2'>
+              <div className='px-0'>
                 {session?.interview_session?.break_duration ? (
+                  <div>
+                   <Card className='rounded-md shadow-none py-2 border-dashed border-2 flex justify-between px-4'>
+                    <div className='flex items-center space-x-2'>
+                      <Coffee className='h-4 w-4' /> <p>Break</p>
+                    </div>
+                    <UISelectDropDown
+                      className='max-w-[150px]'
+                      fullWidth
+                      fieldSize='medium'
+                      menuOptions={breakDurations.map((ele) => ({
+                        name: getBreakLabel(ele),
+                        value: ele.toString(),
+                      }))}
+                      value={session.interview_session.break_duration.toString()}
+                      onValueChange={(value) => {
+                        updateInterviewSessionsDurations(
+                          session.interview_session.id,
+                          parseInt(value),
+                        ).then(() => refetchMeetings());
+                      }}
+                    />
+                    </Card>
                   <div className='flex items-center justify-center space-x-2'>
-                    <UIDivider />
+                    {/* <UIDivider />
                     <div className='flex items-center space-x-2'>
                       <Coffee className='h-4 w-4' /> <p>Break:</p>
                     </div>
@@ -625,7 +647,8 @@ function SessionCards({
                         ).then(() => refetchMeetings());
                       }}
                     />
-                    <UIDivider />
+                    <UIDivider /> */}
+                  </div>
                   </div>
                 ) : null}
               </div>
@@ -633,6 +656,7 @@ function SessionCards({
           ))}
       </div>
     </div>
+   
   );
 }
 
