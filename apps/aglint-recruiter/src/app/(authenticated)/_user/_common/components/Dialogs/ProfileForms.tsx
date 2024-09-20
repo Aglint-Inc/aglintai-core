@@ -1,6 +1,6 @@
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 import type {
   EmailFormFields,

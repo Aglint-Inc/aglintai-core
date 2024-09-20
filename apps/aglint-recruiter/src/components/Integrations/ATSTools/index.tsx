@@ -2,7 +2,7 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import axios from 'axios';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

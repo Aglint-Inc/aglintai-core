@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@components/ui/card';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { useMemo, useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 

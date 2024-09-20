@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 /* eslint-disable security/detect-object-injection */
 const ones = [

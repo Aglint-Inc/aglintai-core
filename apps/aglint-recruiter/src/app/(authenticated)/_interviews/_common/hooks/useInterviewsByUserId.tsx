@@ -1,6 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
-import _ from 'lodash';
 import { schedulesSupabase } from 'src/app/_common/utils/schedules-query';
 
 import { supabase } from '@/utils/supabase/client';
@@ -44,9 +43,9 @@ export const getInterviewsBYUserId = async ({
     .contains('confirmed_user_ids', [member_id])
     .eq('meeting_interviewers.is_confirmed', true);
 
-  if (typeof filter === 'string' || _.isArray(filter)) {
+  if (typeof filter === 'string' || Array.isArray(filter)) {
     if (typeof filter === 'string') query.eq('status', filter);
-    else if (_.isArray(filter)) query.in('status', filter);
+    else if (Array.isArray(filter)) query.in('status', filter);
   }
 
   const { data } = await query.throwOnError();

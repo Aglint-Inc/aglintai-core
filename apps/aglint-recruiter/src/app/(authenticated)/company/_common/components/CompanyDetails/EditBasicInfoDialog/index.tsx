@@ -9,7 +9,7 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import _ from 'lodash';
+import { isEqual } from 'lodash';
 import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
@@ -153,8 +153,7 @@ const EditBasicInfoDialog = ({
     ];
 
     for (const property of propertiesToCompare) {
-      if (!_.isEqual(recruiter['socials'], recruiterLocal['socials']))
-        return false;
+      if (!isEqual(recruiter[property], recruiterLocal[property])) return false;
       if (property === 'socials') continue;
       if (obj1[property] !== obj2[property]) {
         return false;
