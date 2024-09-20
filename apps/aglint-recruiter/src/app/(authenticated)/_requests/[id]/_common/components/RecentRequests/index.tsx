@@ -1,7 +1,7 @@
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { useApplicantRequests } from '@requests/hooks/useApplicantRequests';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, LayoutList } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -49,7 +49,12 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
         <CardContent>
           <div className='space-y-4'>
             {recentRequests.length === 0 ? (
-              <>Recent Requests Not Found ...</>
+              <div className='flex flex-col items-center justify-center space-y-2'>
+                <LayoutList className='h-8 w-8 text-gray-400' />
+                <span className='text-sm text-gray-500'>
+                  Recent Requests Not Found
+                </span>
+              </div>
             ) : (
               recentRequests.map((request, index) => {
                 const jobDetails = request.applications.public_jobs;
