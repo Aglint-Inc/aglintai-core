@@ -17,16 +17,11 @@ import SingleDaySessions from './SingleDaySessions';
 import SlotsSubmitted from './SlotsSubmitted';
 
 function CandidateAvailability() {
-  const router = useRouterPro();
   const {
     multiDaySessions,
     candidateRequestAvailability,
     loading,
     isSubmitted,
-    setIsSubmitted,
-    setCandidateRequestAvailability,
-    setDateSlots,
-    setDaySlots,
   } = useRequestAvailabilityContext();
   const [meetingsAndRounds, setMeetingsAndRound] = useState<{
     rounds: any[];
@@ -80,34 +75,15 @@ function CandidateAvailability() {
     return timeZones.find(({ tzCode }) => tzCode === tz);
   }, []);
 
-  const checkAndUpdate = async () => {
-    if (!candidateRequestAvailability.booking_confirmed) {
-      if (candidateRequestAvailability.slots) {
-        setIsSubmitted(true);
-        setDateSlots(candidateRequestAvailability.slots);
-        setDaySlots(candidateRequestAvailability.slots);
-      } else {
-        if (!candidateRequestAvailability.visited) {
-          const { data: requestData } = await axios.post(
-            `/api/scheduling/request_availability/updateRequestAvailability`,
-            {
-              id: String(router.params?.request_id),
-              data: { visited: true },
-            },
-          );
-          setCandidateRequestAvailability(requestData);
-        }
-      }
-    } else {
+  useEffect(() => {
+    if (
+      candidateRequestAvailability &&
+      candidateRequestAvailability.booking_confirmed
+    ) {
       getMeetings(
         interview_sessions.map((ele) => ele.id),
         candidateRequestAvailability.application_id,
       );
-    }
-  };
-  useEffect(() => {
-    if (candidateRequestAvailability?.id) {
-      checkAndUpdate();
     }
   }, [candidateRequestAvailability]);
   if (
