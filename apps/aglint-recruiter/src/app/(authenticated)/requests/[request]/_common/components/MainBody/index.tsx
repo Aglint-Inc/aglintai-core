@@ -101,7 +101,7 @@ export default function ViewRequestDetails() {
   if (!isPlaceholderData && status === 'success' && !selectedRequest) {
     return (
       // we need to fix this empty state
-      <Alert variant='destructive'>
+      <Alert variant='error'>
         <AlertTitle>Request not found</AlertTitle>
       </Alert>
     );
@@ -224,43 +224,43 @@ export default function ViewRequestDetails() {
             </div>
           </div>
           <div className='flex'>
-            <div className='flex w-8/12 flex-col space-y-4 pr-4 pb-6'>
+            <div className='flex w-8/12 flex-col space-y-4 pb-6 pr-4'>
               <Card className='bg-white shadow-sm'>
-               <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <CardHeader className='flex flex-row items-start justify-between pb-2'>
                   {/* <div>
                     <CardTitle className='mb-2 text-xl font-semibold'>
                       Request Details
                     </CardTitle>
                   </div> */}
-                </CardHeader>  
+                </CardHeader>
                 <CardContent>
                   <div className='grid grid-cols-3 gap-6'>
                     <div className='col-span-2 grid grid-cols-2 gap-6'>
                       <div className='space-y-4'>
-                        <div className='space-y-2 group'>
+                        <div className='group space-y-2'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Status
                             </span>
                             <div className='hidden group-hover:block'>
-                            <UpdateDetails
-                              handleChange={async ({ value }) => {
-                                const status =
-                                  value as unknown as Request['status'];
-                                await handleAsyncUpdateRequest({
-                                  payload: {
-                                    requestId: selectedRequest.id,
-                                    requestPayload: {
-                                      status,
+                              <UpdateDetails
+                                handleChange={async ({ value }) => {
+                                  const status =
+                                    value as unknown as Request['status'];
+                                  await handleAsyncUpdateRequest({
+                                    payload: {
+                                      requestId: selectedRequest.id,
+                                      requestPayload: {
+                                        status,
+                                      },
                                     },
-                                  },
-                                });
-                              }}
-                              items={REQUEST_STATUS_LIST}
-                              updateButton={
-                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
-                              }
-                            />
+                                  });
+                                }}
+                                items={REQUEST_STATUS_LIST}
+                                updateButton={
+                                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                                }
+                              />
                             </div>
                           </div>
                           <Badge
@@ -270,30 +270,30 @@ export default function ViewRequestDetails() {
                             {capitalizeFirstLetter(selectedRequest?.status)}
                           </Badge>
                         </div>
-                        <div className='space-y-2 group'>
+                        <div className='group space-y-2'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Priority
                             </span>
                             <div className='hidden group-hover:block'>
-                            <UpdateDetails
-                              handleChange={async ({ value }) => {
-                                const priority =
-                                  value as unknown as Request['priority'];
-                                await handleAsyncUpdateRequest({
-                                  payload: {
-                                    requestId: selectedRequest.id,
-                                    requestPayload: {
-                                      priority,
+                              <UpdateDetails
+                                handleChange={async ({ value }) => {
+                                  const priority =
+                                    value as unknown as Request['priority'];
+                                  await handleAsyncUpdateRequest({
+                                    payload: {
+                                      requestId: selectedRequest.id,
+                                      requestPayload: {
+                                        priority,
+                                      },
                                     },
-                                  },
-                                });
-                              }}
-                              items={REQUEST_URGENT_LIST}
-                              updateButton={
-                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
-                              }
-                            />
+                                  });
+                                }}
+                                items={REQUEST_URGENT_LIST}
+                                updateButton={
+                                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                                }
+                              />
                             </div>
                           </div>
                           <Badge
@@ -305,37 +305,38 @@ export default function ViewRequestDetails() {
                         </div>
                       </div>
                       <div className='space-y-4'>
-                        <div className='space-y-2 group'>
+                        <div className='group space-y-2'>
                           <div className='flex items-center justify-between'>
                             <span className='text-sm font-medium text-gray-500'>
                               Interview Date
                             </span>
                             <div className='hidden group-hover:block'>
-                            <UIDateRangePicker
-                              value={dateRange}
-                              onAccept={(dates) => {
-                                setDateRange(dates);
-                                if (dates) {
-                                  handleAsyncUpdateRequest({
-                                    payload: {
-                                      requestId: selectedRequest.id,
-                                      requestPayload: {
-                                        schedule_start_date: dayjs(
-                                          dates.from,
-                                        ).toISOString(),
-                                        schedule_end_date: dayjs(
-                                          dates.to,
-                                        ).toISOString(),
+                              <UIDateRangePicker
+                                value={dateRange}
+                                onAccept={(dates) => {
+                                  setDateRange(dates);
+                                  if (dates) {
+                                    handleAsyncUpdateRequest({
+                                      payload: {
+                                        requestId: selectedRequest.id,
+                                        requestPayload: {
+                                          schedule_start_date: dayjs(
+                                            dates.from,
+                                          ).toISOString(),
+                                          schedule_end_date: dayjs(
+                                            dates.to,
+                                          ).toISOString(),
+                                        },
                                       },
-                                    },
-                                  });
+                                    });
+                                  }
+                                }}
+                                disablePastDates={true}
+                                customButton={
+                                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                                 }
-                              }}
-                              disablePastDates={true}
-                              customButton={
-                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
-                              }
-                            /></div>
+                              />
+                            </div>
                           </div>
                           <span className='text-sm'>
                             {dayjs(selectedRequest?.schedule_start_date).format(
@@ -347,29 +348,29 @@ export default function ViewRequestDetails() {
                               )}
                           </span>
                         </div>
-                        <div className='space-y-2 relative group'>
+                        <div className='group relative space-y-2'>
                           <div className='flex items-center justify-between'>
                             <h3 className='text-sm font-medium text-gray-500'>
                               Assigned to
                             </h3>
                             <div className='hidden group-hover:block'>
-                            <UpdateMembers
-                              handleChange={async ({ user_id }) => {
-                                const assignee_id = user_id;
-                                await handleAsyncUpdateRequest({
-                                  payload: {
-                                    requestId: selectedRequest.id,
-                                    requestPayload: {
-                                      assignee_id,
+                              <UpdateMembers
+                                handleChange={async ({ user_id }) => {
+                                  const assignee_id = user_id;
+                                  await handleAsyncUpdateRequest({
+                                    payload: {
+                                      requestId: selectedRequest.id,
+                                      requestPayload: {
+                                        assignee_id,
+                                      },
                                     },
-                                  },
-                                });
-                              }}
-                              updateButton={
-                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
-                              }
-                              members={members}
-                            />
+                                  });
+                                }}
+                                updateButton={
+                                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                                }
+                                members={members}
+                              />
                             </div>
                           </div>
                           <MemberCard selectedMember={selectedMember} />
@@ -377,29 +378,30 @@ export default function ViewRequestDetails() {
                       </div>
                     </div>
                     <div className='space-y-4'>
-                      <div className='space-y-2 relative group'>
+                      <div className='group relative space-y-2'>
                         <div className='flex items-center justify-between'>
                           <span className='text-sm font-medium text-gray-500'>
                             Request Type
                           </span>
                           <div className='hidden group-hover:block'>
-                          <UpdateDetails
-                            handleChange={async ({ value }) => {
-                              const type = value as unknown as Request['type'];
-                              await handleAsyncUpdateRequest({
-                                payload: {
-                                  requestId: selectedRequest.id,
-                                  requestPayload: {
-                                    type,
+                            <UpdateDetails
+                              handleChange={async ({ value }) => {
+                                const type =
+                                  value as unknown as Request['type'];
+                                await handleAsyncUpdateRequest({
+                                  payload: {
+                                    requestId: selectedRequest.id,
+                                    requestPayload: {
+                                      type,
+                                    },
                                   },
-                                },
-                              });
-                            }}
-                            items={REQUEST_TYPE_LIST}
-                            updateButton={
-                              <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
-                            }
-                          />
+                                });
+                              }}
+                              items={REQUEST_TYPE_LIST}
+                              updateButton={
+                                <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                              }
+                            />
                           </div>
                         </div>
                         <div className='flex items-center space-x-2'>
@@ -548,7 +550,7 @@ function SessionCards({
         {sessions &&
           sessions.map((session, index) => (
             <>
-              <Card key={index} className='shadow-none rounded-md'>
+              <Card key={index} className='rounded-md shadow-none'>
                 <CardHeader
                   className='cursor-pointer px-4 py-2'
                   onClick={() => {
@@ -607,31 +609,30 @@ function SessionCards({
               <div className='px-0'>
                 {session?.interview_session?.break_duration ? (
                   <div>
-                   <Card className='rounded-md shadow-none py-2 border-dashed border-2 flex justify-between px-4'>
-                    <div className='flex items-center space-x-2'>
-                      <Coffee className='h-4 w-4' /> <p>Break</p>
-                    </div>
-                    <div className="pr-6">
-                    <UISelectDropDown
-                      className='max-w-[150px]'
-                      fullWidth
-                      fieldSize='medium'
-                      menuOptions={breakDurations.map((ele) => ({
-                        name: getBreakLabel(ele),
-                        value: ele.toString(),
-                      }))}
-                      value={session.interview_session.break_duration.toString()}
-                      onValueChange={(value) => {
-                        updateInterviewSessionsDurations(
-                          session.interview_session.id,
-                          parseInt(value),
-                        ).then(() => refetchMeetings());
-                      }}
-                    />
-                    </div>
+                    <Card className='flex justify-between rounded-md border-2 border-dashed px-4 py-2 shadow-none'>
+                      <div className='flex items-center space-x-2'>
+                        <Coffee className='h-4 w-4' /> <p>Break</p>
+                      </div>
+                      <div className='pr-6'>
+                        <UISelectDropDown
+                          className='max-w-[150px]'
+                          fullWidth
+                          fieldSize='medium'
+                          menuOptions={breakDurations.map((ele) => ({
+                            name: getBreakLabel(ele),
+                            value: ele.toString(),
+                          }))}
+                          value={session.interview_session.break_duration.toString()}
+                          onValueChange={(value) => {
+                            updateInterviewSessionsDurations(
+                              session.interview_session.id,
+                              parseInt(value),
+                            ).then(() => refetchMeetings());
+                          }}
+                        />
+                      </div>
                     </Card>
-                  <div className='flex items-center justify-center space-x-2'>
-                  </div>
+                    <div className='flex items-center justify-center space-x-2'></div>
                   </div>
                 ) : null}
               </div>
@@ -639,7 +640,6 @@ function SessionCards({
           ))}
       </div>
     </div>
-   
   );
 }
 
