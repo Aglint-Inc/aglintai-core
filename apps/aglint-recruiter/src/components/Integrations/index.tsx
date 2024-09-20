@@ -1,4 +1,4 @@
-
+'use client';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
@@ -26,7 +26,12 @@ function Integrations() {
                 process.
               </p>
             </div>
-            <UIButton  size='md' variant='default' leftIcon={<Send/>} onClick={() => setIsRequestNewOpen(true)}>
+            <UIButton
+              size='md'
+              variant='default'
+              leftIcon={<Send />}
+              onClick={() => setIsRequestNewOpen(true)}
+            >
               Request New
             </UIButton>
             <RequestNew
