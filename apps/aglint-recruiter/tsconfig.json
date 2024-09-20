@@ -64,6 +64,7 @@
         "./src/app/(authenticated)/_requests/history/_common/*"
       ],
       "@interviews/*": ["./src/app/(authenticated)/_interviews/_common/*"],
+      "@interviewers/*": ["./src/app/(authenticated)/interviewers/_common/*"],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],
