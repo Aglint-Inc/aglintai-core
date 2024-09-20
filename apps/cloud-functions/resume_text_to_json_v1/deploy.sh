@@ -1,0 +1,1 @@
+gcloud functions deploy resume_text_to_json_v1 --gen2 --runtime=nodejs18 --region=northamerica-northeast2 --source=. --entry-point=hello --trigger-http --allow-unauthenticated

@@ -1,0 +1,1 @@
+gcloud functions deploy review-candidate-application --gen2 --runtime=nodejs18 --region=us-east1 --source=. --entry-point=helloHttp --trigger-http --allow-unauthenticated

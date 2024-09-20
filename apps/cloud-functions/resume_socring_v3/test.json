@@ -1,0 +1,178 @@
+{
+  "jd_json": {
+  "title": "Software Developer",
+  "requirements": {
+    "education": {
+      "isRequired": true,
+      "requirements": [
+        {
+          "degree": "Bachelor's degree in Computer Science or related field"
+        }
+      ]
+    },
+    "certifications": {
+      "isRequired": false,
+      "list": []
+    },
+    "experience": {
+      "isTotalExperienceRequired": false,
+      "isRelevantExperienceRequired": false,
+      "totalExperience": {
+        "years": 0,
+        "months": 0
+      },
+      "relevantExperience": {
+        "years": 0,
+        "months": 0
+      }
+    }
+  },
+  "fresher": false,
+  "skills": {
+    "keySkills": ["Java", "C++", ".NET"],
+    "allSkills": ["Java", "C++", ".NET"]
+  }
+    }, 
+  "resume_json": {
+    "overview": "I am Jagruti Jadhav, a UI/UX Designer focused on bringing art to life in ingredients of design prints and online platforms with elements. I aim to achieve high career growth through a continuous learning process, keep myself dynamic, and visionary, and contribute to the growth of the organization.",
+    "work": [
+      {
+        "url": "https://www.emplay.com/",
+        "name": "Emplay Inc",
+        "skills_used": [
+          "Conversational UX Design",
+          "Wireframing",
+          "Prototyping",
+          "User Research",
+          "Chat-bot Design"
+        ],
+        "endDate": "2022 June",
+        "summary": "Designed and implemented conversational interfaces for various projects to improve user engagement and satisfaction. Collaborated with UX designers and developers to create wireframes and prototypes for chatbots, voice assistants, and other Flow designs.",
+        "position": "Conversational UX Designer (Internship)",
+        "startDate": "2021 Sept",
+        "highlights": []
+      },
+      {
+        "url": "https://www.emplay.com/",
+        "name": "Emplay Inc",
+        "skills_used": [
+          "Conversational UX Design",
+          "Wireframing",
+          "Prototyping",
+          "User Research",
+          "Chat-bot Design"
+        ],
+        "endDate": "2023 June",
+        "summary": "Assisted in the development and maintenance of design guidelines and best practices for conversational design. Built and maintained design systems, and style guides, and designed bot flow. Created detailed documentation and specifications to ensure accurate development and implementation of conversational interfaces.",
+        "position": "Conversational UX Designer",
+        "startDate": "2022 Aug",
+        "highlights": []
+      },
+      {
+        "url": "https://www.etherclouds.com/",
+        "name": "Ether Clouds",
+        "skills_used": [
+          "UI-UX Design"
+        ],
+        "endDate": "2023 July",
+        "summary": "Seeking freelance projects to create innovative and user-friendly websites for cloud-based companies, with a strong understanding of modern design principles.",
+        "position": "UI-UX Designer [contract]",
+        "startDate": "2023 June",
+        "highlights": []
+      }
+    ],
+    "basics": {
+      "url": "https://www.linkedin.com/in/jagruti-jadhav-ux/",
+      "email": "jagrutijadhav137@gmail.com",
+      "image": "",
+      "label": "UI/UX Designer",
+      "phone": "+91 90221 50429",
+      "summary": "I am Jagruti Jadhav, a UI/UX Designer focused on bringing art to life in ingredients of design prints and online platforms with elements. I aim to achieve high career growth through a continuous learning process, keep myself dynamic, and visionary, and contribute to the growth of the organization.",
+      "lastName": "Jadhav",
+      "location": {
+        "city": "",
+        "region": "",
+        "address": "",
+        "country": "",
+        "postalCode": ""
+      },
+      "profiles": [
+        {
+          "url": "https://www.linkedin.com/in/jagruti-jadhav-ux/",
+          "network": "LinkedIn",
+          "username": "jagruti-jadhav-ux"
+        },
+        {
+          "url": "https://www.behance.net/jagrutijadhav137",
+          "network": "Behance",
+          "username": "jagrutijadhav137"
+        }
+      ],
+      "firstName": "Jagruti"
+    },
+    "skills": [
+      {
+        "name": "UX Design",
+        "level": "",
+        "keywords": [
+          "Conversational Design",
+          "Wireframing",
+          "Prototyping",
+          "User Research",
+          "Chat-bot Design"
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "url": "",
+        "name": "Bot EMI",
+        "endDate": "",
+        "startDate": "",
+        "highlights": [],
+        "description": "Designed a chatbot for training employees. EMI is a bot name of an AI Robot i.e. Employee Managing Instructor (EMI)."
+      },
+      {
+        "url": "",
+        "name": "Cakery",
+        "endDate": "",
+        "startDate": "",
+        "highlights": [],
+        "description": "UI project for an online cake order. The idea was to design an interactive cake-ordering app that can deliver cake anytime and anywhere."
+      },
+      {
+        "url": "",
+        "name": "Think Like a Monk (Cover Page)",
+        "endDate": "",
+        "startDate": "",
+        "highlights": [],
+        "description": "Redesigning the cover page to give a touch of the author’s (Jay Shetty) past and present life."
+      }
+    ],
+    "education": [
+      {
+        "url": "",
+        "area": "Computer Science",
+        "score": "",
+        "courses": [],
+        "endDate": "2019",
+        "startDate": "2016",
+        "studyType": "Diploma",
+        "institution": "Government Polytechnic, Nashik (Autonomous Institute)"
+      },
+      {
+        "url": "",
+        "area": "Computer Science",
+        "score": "",
+        "courses": [],
+        "endDate": "2022",
+        "startDate": "2019",
+        "studyType": "Bachelor of Engineering",
+        "institution": "Parvati Genba Moze College of Engineering, Wagholi (Savitribai Phule Pune University)"
+      }
+    ],
+    "languages": [],
+    "certificates": []
+  },
+  "application_id": null
+}
