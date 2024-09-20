@@ -27,41 +27,9 @@ jobs:
       # Step 2: Install Vercel CLI globally
       - name: Install Vercel CLI
         run: npm install -g vercel
-
-      # Step 3: Pull Vercel environment information
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
-
       # Step 4: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           echo "Attempting to deploy..."
           # Deploy to Vercel with --no-wait option and save stdout and stderr to files
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes --no-wait >deployment-url.txt 2>error.txt
-
-          # Extract the deployment URL from the output file
-          DEPLOYMENT_URL=$(grep -oP 'https:\/\/[^ ]+' deployment-url.txt | head -n1)
-
-          if [ -n "$DEPLOYMENT_URL" ]; then
-            echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
-            echo "Deployment URL found: $DEPLOYMENT_URL"
-          else
-            echo "Failed to extract deployment URL. Deployment output:"
-            cat deployment-url.txt
-            echo "Error output:"
-            cat error.txt
-            exit 1
-          fi
-
-      # Step 5: Comment the deployment URL on the commit
-      - name: Comment Deployment URL
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.repos.createCommitComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha,
-              body: 'Preview deployed to: ${{ env.DEPLOYMENT_URL }}'
-            })
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes --no-wait
