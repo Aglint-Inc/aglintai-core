@@ -10,9 +10,8 @@ import type {
   PreferenceFormFields,
 } from 'src/app/_common/components/Profile/uitls';
 
+import { ShadcnPhoneInput } from '@/components/Common/UIPhoneInput/PhoneInput';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-
-import { ShadcnPhoneInput } from '../../../../../../../components/Common/UIPhoneInput/PhoneInput';
 
 export const ProfileForms = ({
   profile,
