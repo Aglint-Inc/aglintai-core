@@ -32,4 +32,7 @@ jobs:
         run: |
           echo "Attempting to deploy..."
           # Deploy to Vercel with --no-wait option and save stdout and stderr to files
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes --no-wait
+          vercel link --yes --project aglintai-core --token=FwDvfpIOFS0wNnXQCnyfz64Y --scope=team_hTaJ1NiDsIwZz12SrpuNG3o9
+          vercel env pull --token=FwDvfpIOFS0wNnXQCnyfz64Y --scope=team_hTaJ1NiDsIwZz12SrpuNG3o9 --environment=preview --git-branch=development
+          mv .env.local apps/aglint-recruiter/.env
+          vercel deploy --token=FwDvfpIOFS0wNnXQCnyfz64Y --scope=team_hTaJ1NiDsIwZz12SrpuNG3o9 --yes --no-wait
