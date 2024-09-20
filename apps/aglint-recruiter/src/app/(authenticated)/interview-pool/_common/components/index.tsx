@@ -10,10 +10,10 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
+import { useAllInterviewModules } from '@/authenticated/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
-import { useAllInterviewModules } from '../hooks';
 import { Header } from './Header';
 import { InterviewPoolList } from './InterviewPoolList';
 

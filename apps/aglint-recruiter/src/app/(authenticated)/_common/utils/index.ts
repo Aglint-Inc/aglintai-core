@@ -1,0 +1,1 @@
+export { getPauseMemberText } from './getPauseMemberText';

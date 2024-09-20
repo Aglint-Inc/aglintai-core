@@ -19,6 +19,7 @@ import { Pause, Play, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { getPauseMemberText } from '@/authenticated/utils';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -37,7 +38,6 @@ import {
   setSelUser,
   setTrainingStatus,
 } from '../../../stores/store';
-import { getPauseMemberText } from '../../../utils/utils';
 
 function Interviewers() {
   const { data: editModule } = useModuleAndUsers();

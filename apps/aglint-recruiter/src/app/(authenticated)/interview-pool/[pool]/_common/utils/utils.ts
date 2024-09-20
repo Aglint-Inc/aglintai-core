@@ -3,7 +3,6 @@ import {
   type DatabaseTableInsert,
   type PauseJson,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
 import axios from 'axios';
 import _ from 'lodash';
 import { type MemberType } from 'src/app/_common/types/memberType';
@@ -237,14 +236,4 @@ export const updateRelations = async (
     .from('interview_module_relation')
     .upsert(upsertRelations)
     .throwOnError();
-};
-
-export const getPauseMemberText = (
-  pause_json: DatabaseTable['interview_module_relation']['pause_json'],
-) => {
-  return !pause_json?.isManual
-    ? pause_json?.end_date
-      ? `Until ${dayjsLocal(pause_json.end_date).format('DD MMMM YYYY')}`
-      : '--'
-    : 'Indefinitely';
 };

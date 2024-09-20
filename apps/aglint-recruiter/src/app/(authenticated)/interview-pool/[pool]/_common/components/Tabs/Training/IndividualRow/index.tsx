@@ -8,6 +8,7 @@ import {
 import { ChevronDown, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 
+import { getPauseMemberText } from '@/authenticated/utils';
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -23,7 +24,6 @@ import {
   setSelUser,
 } from '../../../../stores/store';
 import { type PillsTraining } from '../../../../types/type';
-import { getPauseMemberText } from '../../../../utils/utils';
 import CollapseTrainingProgress from './Collapse';
 import { MemberListCardOption } from './MemberListCardOption';
 
