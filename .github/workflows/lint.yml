@@ -63,9 +63,20 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
+
       - name: Deploy to Vercel
         run: |
-          DEPLOYMENT_URL=$(vercel --token=${{ secrets.VERCEL_TOKEN }} --confirm)
+          echo "Attempting to deploy..."
+          DEPLOYMENT_OUTPUT=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes 2>&1)
+          echo "Deployment output: $DEPLOYMENT_OUTPUT"
+          DEPLOYMENT_URL=$(echo "$DEPLOYMENT_OUTPUT" | grep -oP 'https:\/\/[^ ]+')
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "Failed to extract deployment URL. Full output:"
+            echo "$DEPLOYMENT_OUTPUT"
+            exit 1
+          fi
           echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
 
       - name: Comment Deployment URL
