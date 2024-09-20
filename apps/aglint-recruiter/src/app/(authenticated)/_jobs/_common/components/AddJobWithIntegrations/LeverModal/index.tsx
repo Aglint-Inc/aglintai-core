@@ -6,13 +6,13 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { capitalize } from 'lodash';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import axios from '@/client/axios';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
   useIntegrationActions,
@@ -33,7 +33,7 @@ export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
-  const router = useRouter();
+  const router = useRouterPro();
   const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);

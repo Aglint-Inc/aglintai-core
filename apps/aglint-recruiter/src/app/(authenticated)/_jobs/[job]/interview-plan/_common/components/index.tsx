@@ -26,7 +26,6 @@ import {
   Trash,
   Trash2,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -38,6 +37,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { useJob } from '@/job/hooks';
@@ -257,7 +257,7 @@ const AddStageComponent = ({
 };
 
 const BreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { job } = useJob();
 
   return (

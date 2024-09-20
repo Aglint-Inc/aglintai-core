@@ -6,15 +6,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { useRouter } from 'next/router';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import { useWorkflow } from '../hooks';
 
 export const BreadCrumbs = () => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const { workflow } = useWorkflow();
   return (
     <Breadcrumb>

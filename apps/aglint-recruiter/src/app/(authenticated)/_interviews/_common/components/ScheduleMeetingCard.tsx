@@ -3,12 +3,12 @@ import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import { convertTimeZoneToAbbreviation } from '@interviews/utils';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
 import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import {
@@ -25,7 +25,7 @@ function ScheduleMeetingCard({
   meetingDetails: Awaited<ReturnType<typeof getAllInterviews>>[number];
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
-  const router = useRouter();
+  const router = useRouterPro();
   const interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
 
   return (

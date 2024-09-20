@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useWorkflowActionCreate,
   useWorkflowActionDelete,
@@ -14,7 +14,7 @@ import { useWorkflows } from '@/workflows/hooks';
 const useWorkflowContext = () => {
   const {
     query: { workflow: id },
-  } = useRouter();
+  } = useRouterPro();
   const {
     workflows: { data, status },
     workflowUpdate: {

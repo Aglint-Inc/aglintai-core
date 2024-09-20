@@ -36,13 +36,13 @@ import {
   XCircle,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import PublishButton from '@/components/Common/PublishButton';
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
 import { useJobs } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
@@ -169,7 +169,7 @@ const Switcher = () => {
 };
 
 const useSettingsActions = () => {
-  const { push, pathname } = useRouter();
+  const { push, pathname } = useRouterPro();
   const { handleJobDelete } = useJobs();
   const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

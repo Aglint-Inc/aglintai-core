@@ -9,7 +9,6 @@ import {
 } from '@components/ui/breadcrumb';
 import { Skeleton } from '@components/ui/skeleton';
 import { AlertTriangle, CheckIcon } from 'lucide-react';
-import { useRouter } from 'next/router';
 import {
   type Dispatch,
   type SetStateAction,
@@ -19,6 +18,7 @@ import {
 } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 // import { Settings } from '@/job/components/SharedTopNav/actions';
@@ -203,7 +203,7 @@ const JobEdit = () => {
 };
 
 const BreadCrumbs = ({ job }: { job: Job }) => {
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   return (
     <Breadcrumb>
       <BreadcrumbList>

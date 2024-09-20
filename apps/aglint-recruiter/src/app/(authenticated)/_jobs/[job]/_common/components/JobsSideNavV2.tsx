@@ -16,17 +16,17 @@ import {
   UserPlus,
   Workflow,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 const JobsSideNavV2 = () => {
-  const router = useRouter();
+  const router = useRouterPro();
   const { job, manageJob } = useJob();
   const { isScoringEnabled } = useRolesAndPermissions();
   const [isCloseJobDialogOpen, setIsCloseJobDialogOpen] = useState(false);

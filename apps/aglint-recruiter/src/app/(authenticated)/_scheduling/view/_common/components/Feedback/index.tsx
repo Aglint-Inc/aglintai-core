@@ -1,3 +1,13 @@
+import axios from '@/client/axios';
+import { ShowCode } from '@/components/Common/ShowCode';
+import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
+import UIDialog from '@/components/Common/UIDialog';
+import UITypography from '@/components/Common/UITypography';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type API_request_feedback } from '@/pages/api/request_feedback/type';
+import toast from '@/utils/toast';
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -23,27 +33,13 @@ import {
   User,
   Users,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
-
-import axios from '@/client/axios';
-import { ShowCode } from '@/components/Common/ShowCode';
-import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
-import { type API_request_feedback } from '@/pages/api/request_feedback/type';
-import toast from '@/utils/toast';
-
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 import {
   re_mapper,
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
-
 type FeedbackWindowInterviewersType = {
   [key: string]: {
     feedback: {
@@ -424,7 +420,7 @@ const InterviewerFeedback = ({
   interviewers.forEach((item) => {
     sessions[item.session.id] = [...(sessions[item.session.id] || []), item];
   });
-  const router = useRouter();
+  const router = useRouterPro();
   return (
     <>
       <div className='flex flex-col space-y-2 p-2'>

@@ -11,10 +11,10 @@ import {
 import { Skeleton } from '@components/ui/skeleton';
 import { Inbox, MoreHorizontal, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { memo } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { type Workflow } from '@/types/workflow.types';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
@@ -57,7 +57,7 @@ const Cards = (props: {
   data: ReturnType<typeof useWorkflows>['workflows']['data'];
 }) => {
   const { devlinkProps } = useWorkflows();
-  const { push } = useRouter();
+  const { push } = useRouterPro();
   const filters = useWorkflowsFilters();
   const { setDeletion } = useWorkflowsActions();
   const { workflowMutations: mutations } = useWorkflows();

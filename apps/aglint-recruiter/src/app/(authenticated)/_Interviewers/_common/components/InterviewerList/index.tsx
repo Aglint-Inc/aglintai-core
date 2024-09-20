@@ -10,9 +10,9 @@ import {
   Layers,
   MapPin,
 } from 'lucide-react';
-import { useRouter } from 'next/router';
 
 import UITypography from '@/components/Common/UITypography';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { type useAllInterviewers } from '../../hooks/useAllInterviewers';
 
@@ -33,7 +33,7 @@ export const InterviewerList = ({
   const qualified_first = interviewer.qualified_types?.slice(0, 2);
   const qualified_second = interviewer.qualified_types?.slice(2);
 
-  const router = useRouter();
+  const router = useRouterPro();
   return (
     <TableRow
       onClick={() => router.push(`/user/${interviewer.user_id}`)}
