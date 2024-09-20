@@ -30,7 +30,7 @@ export default function Navigation() {
   const { data: messages, isPending: messagePending } =
     useCandidatePortalMessages();
   const { application_id } = useCandidatePortal();
-  const [signingOUt, setSigningOut] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
   const router = useRouterPro();
 
@@ -114,7 +114,7 @@ export default function Navigation() {
                 setSigningOut(false);
               }}
             >
-              {signingOUt ? 'Loading...' : 'Logout'}
+              {signingOut ? 'Signing out...' : 'Logout'}
             </Button>
             <Link href={`/candidate/${application_id}/profile`}>
               <NavProfile

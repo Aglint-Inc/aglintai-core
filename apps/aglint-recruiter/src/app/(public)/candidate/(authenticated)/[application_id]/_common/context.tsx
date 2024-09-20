@@ -7,7 +7,11 @@ import {
   useState,
 } from 'react';
 
+<<<<<<< HEAD
 import { useRouterPro } from '@/hooks/useRouterPro';
+=======
+import { Loader } from '@/components/Common/Loader';
+>>>>>>> 77f7810b642e48bbb306a89eabe7308539729d90
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
@@ -50,7 +54,7 @@ export const CandidatePortalProvider = async ({
     getSession();
   }, []);
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <Loader />;
 
   const finalValue = { ...value };
   return (

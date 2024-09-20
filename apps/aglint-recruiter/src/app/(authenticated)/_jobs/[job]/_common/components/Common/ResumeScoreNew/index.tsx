@@ -4,8 +4,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertCircle, AlertTriangle, Loader2 } from 'lucide-react';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
 
+import { Loader } from '@/components/Common/Loader';
 import { type Application } from '@/types/applications.types';
 
 import { ScoreTag } from './ScoreTag';
@@ -59,20 +60,20 @@ export const ResumeScore = ({
 const ErrorIcon = () => (
   <div className='flex items-center space-x-1 text-red-500'>
     <AlertCircle size={16} />
-    <span>Not found</span>
+    <span>Resume not found</span>
   </div>
 );
 
 const WarningIcon = () => (
   <div className='flex items-center space-x-1 text-yellow-500'>
     <AlertTriangle size={16} />
-    <span>Not parsable</span>
+    <span>Resume not parsable</span>
   </div>
 );
 
 const Calculating = () => (
   <div className='flex items-center space-x-1 text-blue-500'>
-    <Loader2 size={16} className='animate-spin' />
+    <Loader size={16} className='animate-spin' />
     <span>Calculating</span>
   </div>
 );

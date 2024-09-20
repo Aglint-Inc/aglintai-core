@@ -57,6 +57,7 @@ function MembersAutoComplete({
     <div className='flex w-full flex-col gap-2'>
       <div className='flex flex-row flex-wrap gap-2'>
         {selectedUsers.map((user) => {
+          const userName = getFullName(user.first_name, user.last_name);
           return (
             <div
               key={user.user_id}
@@ -65,8 +66,8 @@ function MembersAutoComplete({
               }`}
             >
               <Avatar className='h-8 w-8'>
-                <AvatarImage src={user.profile_image} alt={user.name} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={user.profile_image} alt={userName} />
+                <AvatarFallback>{userName?.charAt(0)}</AvatarFallback>
               </Avatar>
 
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
@@ -105,6 +106,7 @@ function MembersAutoComplete({
             </div>
           ) : (
             renderUsers.map((option, ind) => {
+              const userName = getFullName(option.first_name, option.last_name);
               return (
                 <div
                   key={ind}
@@ -134,8 +136,8 @@ function MembersAutoComplete({
                   </div>
 
                   <Avatar className='h-8 w-8'>
-                    <AvatarImage src={option.profile_image} alt={option.name} />
-                    <AvatarFallback>{option.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={option.profile_image} alt={userName} />
+                    <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className='flex w-full flex-row items-center justify-between pl-2'>
                     <div className='one-line-clamp text-sm'>

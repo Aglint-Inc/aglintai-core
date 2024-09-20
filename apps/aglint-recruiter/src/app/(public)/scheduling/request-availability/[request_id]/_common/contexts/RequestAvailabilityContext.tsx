@@ -90,38 +90,42 @@ interface ContextValue {
   setIsSubmitted: (x: boolean) => void;
   selectedDate: null | Dayjs[];
   setSelectedDate: Dispatch<SetStateAction<null | Dayjs[]>>;
+  handleClickDate: ({
+    selectedDate,
+    day,
+  }: {
+    selectedDate: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][number];
+    day: number;
+  }) => void;
+  submitAvailability: () => void;
+  submitting: boolean;
+  setSubmitting: (x: boolean) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setDateSlots: () => {},
   candidateRequestAvailability: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCandidateRequestAvailability: () => {},
   loading: true,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setLoading: () => {},
   daySlots: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setDaySlots: () => {},
   selectedDateSlots: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedDateSlots: () => {},
   selectedSlots: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedSlots: () => {},
   multiDaySessions: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setMultiDaySessions: () => {},
   openDaySlotPopup: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setOpenDaySlotPopup: () => {},
   isSubmitted: false,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsSubmitted: () => {},
   selectedDate: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedDate: () => {},
+  handleClickDate: () => {},
+  submitAvailability: () => {},
+  submitting: false,
+  setSubmitting: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -212,6 +216,119 @@ function RequestAvailabilityProvider({ children }) {
     }
   }, [router.params?.request_id]);
 
+  // handle Click on DateCard
+
+  const handleClickDate = ({
+    selectedDate,
+    day,
+  }: {
+    selectedDate: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][number];
+    day: number;
+  }) => {
+    //@ts-ignore
+    setSelectedDateSlots((prevState) => {
+      // Check if the day exists in the state
+      const dayIndex = prevState.findIndex((slot) => slot.round === day);
+
+      if (dayIndex !== -1) {
+        // If the day exists, get the current dates for that day
+        const currentDates = prevState[dayIndex].dates;
+        const dateIndex = currentDates.indexOf(selectedDate);
+
+        if (dateIndex !== -1) {
+          // If the date already exists, remove it
+          const newDates = currentDates.filter((date) => date !== selectedDate);
+          return [
+            ...prevState.slice(0, dayIndex),
+            { ...prevState[dayIndex], dates: newDates },
+            ...prevState.slice(1 + dayIndex),
+          ];
+        } else {
+          // If the date does not exist, add it
+          return [
+            ...prevState.slice(0, dayIndex),
+            { ...prevState[dayIndex], dates: [...currentDates, selectedDate] },
+            ...prevState.slice(1 + dayIndex),
+          ];
+        }
+      } else {
+        // If the day does not exist, add a new object with the given day and selectedDate
+        return [...prevState, { round: day, dates: [selectedDate] }];
+      }
+    });
+    //@ts-ignore
+    setSelectedSlots((prevState) => {
+      const dayIndex = prevState.findIndex((slot) => slot.round === day);
+
+      if (dayIndex !== -1) {
+        const currentDates = prevState[dayIndex].dates;
+        const dateIndex = currentDates.findIndex(
+          (date) => date.curr_day === selectedDate.curr_day,
+        );
+
+        if (dateIndex !== -1) {
+          const newDates = currentDates.filter(
+            (date) => date.curr_day !== selectedDate.curr_day,
+          );
+          return [
+            ...prevState.slice(0, dayIndex),
+            { ...prevState[dayIndex], dates: newDates },
+            ...prevState.slice(dayIndex + 1),
+          ];
+        } else {
+          return [
+            ...prevState.slice(0, dayIndex),
+            {
+              ...prevState[dayIndex],
+              dates: [
+                ...currentDates,
+                { curr_day: selectedDate.curr_day, slots: [] },
+              ],
+            },
+            ...prevState.slice(dayIndex + 1),
+          ];
+        }
+      } else {
+        return [
+          ...prevState,
+          {
+            round: day,
+            dates: [{ curr_day: selectedDate.curr_day, slots: [] }],
+          },
+        ];
+      }
+    });
+  };
+  const [submitting, setSubmitting] = useState(false);
+  async function submitAvailability() {
+    setLoading(true);
+    if (multiDaySessions.length > 1) {
+      const { data: requestData } = await axios.post(
+        `/api/scheduling/request_availability/updateRequestAvailability`,
+        {
+          id: String(router.params?.request_id),
+          data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
+        },
+      );
+      setCandidateRequestAvailability(requestData);
+    } else {
+      const { data: requestData } = await axios.post(
+        `/api/scheduling/request_availability/updateRequestAvailability`,
+        {
+          data: {
+            slots: [{ round: 1, dates: selectedSlots[0].dates }],
+            user_timezone: userTzDayjs.tz.guess(),
+          },
+          id: String(router.params?.request_id),
+        },
+      );
+      setCandidateRequestAvailability(requestData);
+    }
+
+    setIsSubmitted(true);
+    setLoading(false);
+  }
+
   return (
     <RequestAvailabilityContext.Provider
       value={{
@@ -235,6 +352,10 @@ function RequestAvailabilityProvider({ children }) {
         setIsSubmitted,
         selectedDate,
         setSelectedDate,
+        handleClickDate,
+        submitAvailability,
+        submitting,
+        setSubmitting,
       }}
     >
       {children}

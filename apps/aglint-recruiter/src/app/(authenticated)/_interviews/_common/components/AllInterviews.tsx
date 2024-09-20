@@ -6,6 +6,8 @@ import {
 } from '@components/ui/breadcrumb';
 import { Calendar } from 'lucide-react';
 
+import { Loader } from '@/components/Common/Loader';
+
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
 import { useAllInterviews } from '../hooks/useAllInterviews';
 import AllInterviewFilters from './Filters/AllInterviewFilters';
@@ -44,9 +46,9 @@ function AllInterviews() {
       <div className='w-7/12 space-y-4'>
         <>
           <AllInterviewFilters />
-          {!isFetched && <div>Loading...</div>}
+          {!isFetched && <Loader />}
           {isFetched && schedules?.length === 0 && (
-            <div className='flex items-center justify-center rounded-md bg-neutral-100'>
+            <div className='flex items-center justify-center rounded-md'>
               <div className='w-[300px] max-w-sm p-2'>
                 <div className='flex flex-col items-center justify-center p-8 text-center'>
                   <Calendar className='mb-2 h-12 w-12 text-gray-400' />

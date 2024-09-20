@@ -102,7 +102,7 @@ const LeaderBoardWidgetComponent = ({
                     {(item.duration / 60).toFixed(1)} hours
                   </p>
                 </div>
-                <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-200'>
+                <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-100'>
                   <span className='text-sm font-medium'>{index + 1}</span>
                 </div>
               </div>

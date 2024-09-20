@@ -13,8 +13,8 @@ import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import dayjs from '@/utils/dayjs';
 
-import { useRequestAvailabilityContext } from '../../RequestAvailabilityContext';
-import { convertMinutesToHoursAndMinutes } from '../../utils';
+import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
+import { convertMinutesToHoursAndMinutes } from '../utils';
 
 function DaySessionCard({
   showDayCount = true,
@@ -29,12 +29,8 @@ function DaySessionCard({
   sessions: any;
   dates: any;
 }) {
-  const {
-    setOpenDaySlotPopup,
-
-    daySlots,
-    isSubmitted,
-  } = useRequestAvailabilityContext();
+  const { setOpenDaySlotPopup, daySlots, isSubmitted } =
+    useRequestAvailabilityContext();
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
   };

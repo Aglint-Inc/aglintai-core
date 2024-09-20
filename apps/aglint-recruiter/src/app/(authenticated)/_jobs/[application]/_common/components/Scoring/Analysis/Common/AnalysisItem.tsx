@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Badge } from '@components/ui/badge';
 
+import { Loader } from '@/components/Common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
@@ -17,7 +18,7 @@ export const AnalysisItem = ({
 }) => {
   const { data, status } = useApplicationDetails();
 
-  if (status === 'pending') return <>Loading...</>;
+  if (status === 'pending') return <Loader />;
 
   const scores = data?.score_json?.scores;
   const reasoning = data?.score_json?.reasoning;
