@@ -13,7 +13,7 @@ import { useWorkflows } from '@/workflows/hooks';
 
 const useWorkflowContext = () => {
   const {
-    query: { workflow: id },
+    params: { workflow: id },
   } = useRouterPro();
   const {
     workflows: { data, status },

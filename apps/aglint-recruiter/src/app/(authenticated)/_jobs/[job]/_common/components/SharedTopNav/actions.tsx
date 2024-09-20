@@ -169,7 +169,7 @@ const Switcher = () => {
 };
 
 const useSettingsActions = () => {
-  const { push, pathname } = useRouterPro();
+  const { push, pathName: pathname } = useRouterPro();
   const { handleJobDelete } = useJobs();
   const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

@@ -244,7 +244,7 @@ export function useCurrJobTemps({ setSaving }) {
         await supabase
           .from('job_email_template')
           .select()
-          .eq('job_id', router.query.id),
+          .eq('job_id', router.params.id),
       );
       const templates: Partial<
         Record<
@@ -276,7 +276,7 @@ export function useCurrJobTemps({ setSaving }) {
             from_name: updated_val.from_name,
             subject: updated_val.subject,
           })
-          .eq('job_id', router.query.id)
+          .eq('job_id', router.params.id)
           .eq('type', updated_val.type)
           .select(),
       );

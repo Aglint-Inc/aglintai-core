@@ -36,7 +36,7 @@ const JobsSideNavV2 = () => {
     router.push(ROUTES[route]({ job: job?.id }));
   };
 
-  const currentTab = router.pathname.split('/').filter((job) => job)[2];
+  const currentTab = router.pathName.split('/').filter((job) => job)[2];
 
   const navItems = [
     {
