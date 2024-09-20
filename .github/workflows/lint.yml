@@ -1,15 +1,20 @@
 name: Lint
 
+# Define when this workflow should run
 on:
   push:
     branches:
       - main
+      - development
+      - staging
+
   pull_request:
     branches:
       - main
       - development
       - staging
 
+# Set permissions for the workflow
 permissions:
   checks: write
   contents: write
@@ -20,16 +25,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the repository
       - name: Check out Git repository
         uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specify the Node.js version you need
+          node-version: "20"
 
+      # Step 3: Install project dependencies
       - name: Install Dependencies
         run: npm install
 
+      # Step 4: Run the linter in the specific directory
       - name: Run Linter
+        working-directory: apps/aglint-recruiter
         run: npm run lint
