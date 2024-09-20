@@ -384,13 +384,10 @@ const EditMember = ({
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-
-            {(member.role !== 'admin' ||
-              member.created_by === recruiterUser.user_id ||
-              member.user_id !== recruiterUser.user_id) && (
-              <>
-                <div className='grid grid-cols-2 gap-4'>
+              {(member.role !== 'admin' ||
+                member.created_by === recruiterUser.user_id ||
+                member.user_id !== recruiterUser.user_id) && (
+                <>
                   <div className='space-y-2'>
                     <Label htmlFor='role'>Role</Label>
                     <Select
@@ -440,21 +437,21 @@ const EditMember = ({
                       </Select>
                     </div>
                   )}
-                </div>
 
-                <div className='space-y-2'>
-                  <Label htmlFor='phone'>Phone</Label>
-                  <Input
-                    id='phone'
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({ ...form, phone: e.target.value })
-                    }
-                    className={formError.phone ? 'border-red-500' : ''}
-                  />
-                </div>
-              </>
-            )}
+                  <div className='space-y-2'>
+                    <Label htmlFor='phone'>Phone</Label>
+                    <Input
+                      id='phone'
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm({ ...form, phone: e.target.value })
+                      }
+                      className={formError.phone ? 'border-red-500' : ''}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
 
             <div className='mt-6 flex justify-end space-x-2'>
               <Button variant='outline' onClick={onClose}>

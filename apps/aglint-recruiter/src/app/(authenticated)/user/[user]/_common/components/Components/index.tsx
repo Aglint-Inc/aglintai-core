@@ -28,7 +28,7 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
     <>
       {interviewer ? (
         <div
-          className={`sticky top-0 z-10 bg-white shadow transition-all duration-300 ${isTopBarVisible ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+          className={`sticky top-0 z-10 bg-red-200 shadow transition-all duration-300 ${isTopBarVisible ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
         >
           <div className='mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8'>
             <div className='flex items-center justify-between'>
@@ -96,7 +96,7 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
 
 export const BreadCrumb = ({ name }) => {
   return (
-    <div className='mb-6'>
+    <div className='py-6'>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -138,58 +138,57 @@ export const SideBar = ({
   );
 
   return (
-    <aside className='sticky top-[275px] w-64 flex-shrink-0 self-start'>
-      <nav className='space-y-1'>
-        <SideNavItem
-          icon={UserCircle}
-          label='Overview'
-          active={activeSection === 'overview'}
-          onClick={() => scrollToSection('overview')}
-        />
-        <SideNavItem
-          icon={CheckCircle2}
-          label='Qualifications'
-          active={activeSection === 'qualifications'}
-          onClick={() => scrollToSection('qualifications')}
-        />
+    <nav className='space-y-1'>
+      <SideNavItem
+        icon={UserCircle}
+        label='Overview'
+        active={activeSection === 'overview'}
+        onClick={() => scrollToSection('overview')}
+      />
+      <SideNavItem
+        icon={CheckCircle2}
+        label='Qualifications'
+        active={activeSection === 'qualifications'}
+        onClick={() => scrollToSection('qualifications')}
+      />
 
-        <SideNavItem
-          icon={CalendarIcon}
-          label='Upcoming Interviews'
-          active={activeSection === 'upcomingInterviews'}
-          onClick={() => scrollToSection('upcomingInterviews')}
-        />
-        <SideNavItem
-          icon={Briefcase}
-          label='Recent Interviews'
-          active={activeSection === 'recentInterviews'}
-          onClick={() => scrollToSection('recentInterviews')}
-        />
-        <SideNavItem
-          icon={MessageSquare}
-          label='Interview Feedback'
-          active={activeSection === 'interviewFeedback'}
-          onClick={() => scrollToSection('interviewFeedback')}
-        />
-        <SideNavItem
-          icon={Projector}
-          label='Meeting Overview'
-          active={activeSection === 'meetingOverview'}
-          onClick={() => scrollToSection('meetingOverview')}
-        />
-        <SideNavItem
-          icon={Coffee}
-          label='Schedule Availability'
-          active={activeSection === 'scheduleAvailability'}
-          onClick={() => scrollToSection('scheduleAvailability')}
-        />
-        <SideNavItem
-          icon={Calendar}
-          label='Calendar'
-          active={activeSection === 'calendar'}
-          onClick={() => scrollToSection('calendar')}
-        />
-        {/*<SideNavItem
+      <SideNavItem
+        icon={CalendarIcon}
+        label='Upcoming Interviews'
+        active={activeSection === 'upcomingInterviews'}
+        onClick={() => scrollToSection('upcomingInterviews')}
+      />
+      <SideNavItem
+        icon={Briefcase}
+        label='Recent Interviews'
+        active={activeSection === 'recentInterviews'}
+        onClick={() => scrollToSection('recentInterviews')}
+      />
+      <SideNavItem
+        icon={MessageSquare}
+        label='Interview Feedback'
+        active={activeSection === 'interviewFeedback'}
+        onClick={() => scrollToSection('interviewFeedback')}
+      />
+      <SideNavItem
+        icon={Coffee}
+        label='Schedule Availability'
+        active={activeSection === 'scheduleAvailabilityRef'}
+        onClick={() => scrollToSection('scheduleAvailabilityRef')}
+      />
+      <SideNavItem
+        icon={Projector}
+        label='Meeting Overview'
+        active={activeSection === 'meetingOverview'}
+        onClick={() => scrollToSection('meetingOverview')}
+      />
+      <SideNavItem
+        icon={Calendar}
+        label='Calendar'
+        active={activeSection === 'calendar'}
+        onClick={() => scrollToSection('calendar')}
+      />
+      {/*<SideNavItem
       icon={BarChart}
       label='Performance'
       active={activeSection === 'performance'}
@@ -213,7 +212,6 @@ export const SideBar = ({
       active={activeSection === 'recentActivity'}
       onClick={() => scrollToSection('recentActivity')}
     />*/}
-      </nav>
-    </aside>
+    </nav>
   );
 };

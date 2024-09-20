@@ -90,7 +90,7 @@ export default function Heatmap({
         <div className='m-2'>
           <div className='mb-4 flex max-w-[1000px] items-center justify-between'>
             <div className='flex items-center space-x-1'>
-              <p className='min-w-[250px]'>
+              <p className='min-w-[280px]'>
                 Activity on{' '}
                 <span className='font-medium'>
                   {startDateUI} - {endDateUI}
