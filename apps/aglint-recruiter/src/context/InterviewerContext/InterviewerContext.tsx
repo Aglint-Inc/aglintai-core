@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
 import { createContext, type ReactNode, useContext } from 'react';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 
 interface InterviewerContextInterface {
@@ -29,11 +29,11 @@ const InterviewerContext = createContext<InterviewerContextInterface>(
 const useInterviewerContext = () => useContext(InterviewerContext);
 
 const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
+  const router = useRouterPro();
 
   const handelRemoveMemberFormPanel: InterviewerContextInterface['handelRemoveMemberFormPanel'] =
     async ({ panel_id, training_status }) => {
-      const user_id = router.query.member_id as string;
+      const user_id = router.params.member_id as string;
 
       return removeMemberFormPanel({
         panel_id,
@@ -45,7 +45,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handelUpdateSchedule: InterviewerContextInterface['handelUpdateSchedule'] =
     async ({ panel_id, pause_json, training_status }) => {
-      const user_id = router.query.member_id as string;
+      const user_id = router.params.member_id as string;
 
       return updateSchedule({
         panel_id,

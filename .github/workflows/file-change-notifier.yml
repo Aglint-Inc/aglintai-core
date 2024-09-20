@@ -48,8 +48,8 @@ jobs:
           fi
         shell: /usr/bin/bash -e {0}
 
-      # Send Slack Notification if files are updated
-      - name: Send Slack Notification
+      # Replace the Slack notification step with this:
+      - name: Notify Slack
         if: steps.diff-check.outputs.changes_detected == 'true'
         uses: 8398a7/action-slack@v3
         with:

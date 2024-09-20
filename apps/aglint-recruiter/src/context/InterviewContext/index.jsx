@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 const InterviewContext = createContext();

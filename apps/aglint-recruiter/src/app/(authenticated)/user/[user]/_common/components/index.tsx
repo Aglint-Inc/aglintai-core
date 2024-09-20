@@ -36,6 +36,7 @@ export default function InterviewerDetailsPage() {
     interviewFeedback: useRef(null),
     scheduleAvailability: useRef(null),
     meetingOverview: useRef(null),
+    calendar: useRef(null),
   };
   const userCardRef = useRef(null);
 
@@ -114,7 +115,6 @@ export default function InterviewerDetailsPage() {
                   totalHour={interviewerDetails.meeting_count.completed_hour}
                 />
               </section>
-              <Calendar />
 
               <section ref={sectionRefs.qualifications}>
                 <Qualifications
@@ -152,6 +152,9 @@ export default function InterviewerDetailsPage() {
                   schedulingSettings={interviewerDetails.scheduling_settings}
                   interviewTodayWeek={interviewerDetails.interview_week_today}
                 />
+              </section>
+              <section ref={sectionRefs.calendar}>
+                <Calendar />
               </section>
 
               {/* 
