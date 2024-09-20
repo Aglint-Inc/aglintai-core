@@ -2,12 +2,10 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import {
-  removeSessionsFromFilterJson,
-  removeSessionsFromRequestAvailability,
-} from 'src/app/(authenticated)/_scheduling/view/_common/utils';
 
 import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
+import { removeSessionsFromFilterJson } from '@/utils/scheduling/removeSessionsFromFilterJson';
+import { removeSessionsFromRequestAvailability } from '@/utils/scheduling/removeSessionsFromRequestAvailability';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { createClient } from '@/utils/supabase/server';
 

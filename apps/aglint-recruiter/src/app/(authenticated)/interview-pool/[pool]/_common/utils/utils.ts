@@ -4,7 +4,6 @@ import {
   type PauseJson,
 } from '@aglint/shared-types';
 import axios from 'axios';
-import _ from 'lodash';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
 import { supabase } from '@/utils/supabase/client';
@@ -54,9 +53,9 @@ export const fetchModuleSchedules = async (
     query.ilike('session_name', `%${changeText}%`);
   }
 
-  if (typeof filter === 'string' || _.isArray(filter)) {
+  if (typeof filter === 'string' || Array.isArray(filter)) {
     if (typeof filter === 'string') query.eq('status', filter);
-    else if (_.isArray(filter)) query.in('status', filter);
+    else if (Array.isArray(filter)) query.in('status', filter);
   }
 
   // if (filter) {

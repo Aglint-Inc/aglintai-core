@@ -141,7 +141,7 @@ export default function Heatmap({
             onClick={(x, y) => {
               if (heatMapData[x][y].meeting_id)
                 router.push(
-                  `/scheduling/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
+                  `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
                 );
             }}
             yLabelsPos='left'

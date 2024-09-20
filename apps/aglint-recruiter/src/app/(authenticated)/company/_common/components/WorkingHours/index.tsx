@@ -1,6 +1,6 @@
 import type { schedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 
 import { type TimezoneObj } from '@/utils/timeZone';

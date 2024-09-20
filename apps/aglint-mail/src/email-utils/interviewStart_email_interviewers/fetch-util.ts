@@ -94,7 +94,7 @@ export const fetchUtil: FetchUtilType<
     };
 
   const candLink = req_body.meeting_id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`
     : '';
 
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =
