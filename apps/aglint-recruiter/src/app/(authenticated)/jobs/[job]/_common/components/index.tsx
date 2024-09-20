@@ -26,7 +26,7 @@ export const ApplicationsDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <div className='min-h-screen min-w-full'>
+    <div className='z-10 min-h-screen min-w-full'>
       <div className='h-full space-y-6 p-8'>
         <div className='mb-6 flex items-center justify-between'>
           <div className='space-y-2'>
