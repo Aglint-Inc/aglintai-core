@@ -6,9 +6,9 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { cloneDeep } from 'lodash';
 import { useParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import InterviewLimitInput from 'src/app/(authenticated)/_company/_common/components/Scheduling/InterviewLoad';
-import DayWithTime from 'src/app/(authenticated)/_company/_common/components/WorkingHours/WorkTime/DayWithTime';
 
+import InterviewLimitInput from '@/company/components/Scheduling/InterviewLoad';
+import DayWithTime from '@/company/components/WorkingHours/WorkTime/DayWithTime';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import { supabase } from '@/utils/supabase/client';
