@@ -187,10 +187,10 @@ const EditBasicInfoDialog = ({
             )}
 
             <div className='flex items-center space-x-4'>
-              <div className='rounded-md border border-gray-200 p-4'>
+              <div className='max-w-[70px] rounded-md border border-gray-200'>
                 <ImageUploadManual
                   image={logo}
-                  size={10}
+                  size={64}
                   imageFile={imageFile}
                   setChanges={() => {
                     setIsImageChanged(true);
