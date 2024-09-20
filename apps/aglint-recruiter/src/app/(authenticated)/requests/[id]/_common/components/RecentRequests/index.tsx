@@ -20,7 +20,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
       : [];
   if (status === 'pending') {
     return (
-      <Card className='bg-white shadow-sm'>
+      <Card className='bg-white shadow-sm min-h-[500] '>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests
@@ -33,7 +33,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
     );
   } else
     return (
-      <Card className='bg-white shadow-sm mb-10'>
+      <Card className='bg-white shadow-sm mb-10 min-h-[200px]'>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests

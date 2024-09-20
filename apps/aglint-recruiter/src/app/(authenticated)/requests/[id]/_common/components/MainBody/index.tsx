@@ -609,6 +609,7 @@ function SessionCards({
                     <div className='flex items-center space-x-2'>
                       <Coffee className='h-4 w-4' /> <p>Break</p>
                     </div>
+                    <div className="pr-6">
                     <UISelectDropDown
                       className='max-w-[150px]'
                       fullWidth
@@ -625,6 +626,7 @@ function SessionCards({
                         ).then(() => refetchMeetings());
                       }}
                     />
+                    </div>
                     </Card>
                   <div className='flex items-center justify-center space-x-2'>
                     {/* <UIDivider />
