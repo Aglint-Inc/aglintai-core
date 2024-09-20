@@ -16,8 +16,10 @@ import {
   CalendarIcon,
   CheckCircle,
   CheckCircle2,
+  Coffee,
   Home,
   MessageSquare,
+  Projector,
   UserCircle,
 } from 'lucide-react';
 
@@ -170,13 +172,13 @@ export const SideBar = ({
           onClick={() => scrollToSection('interviewFeedback')}
         />
         <SideNavItem
-          icon={Calendar}
+          icon={Projector}
           label='Meeting Overview'
           active={activeSection === 'meetingOverview'}
           onClick={() => scrollToSection('meetingOverview')}
         />
         <SideNavItem
-          icon={Calendar}
+          icon={Coffee}
           label='Schedule Availability'
           active={activeSection === 'scheduleAvailability'}
           onClick={() => scrollToSection('scheduleAvailability')}

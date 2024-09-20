@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import { BarChart2 } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import axios from '@/client/axios';
