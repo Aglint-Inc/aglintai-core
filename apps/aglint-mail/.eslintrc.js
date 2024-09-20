@@ -18,7 +18,7 @@ module.exports = {
     JSX: true,
   },
   settings: {
-    "import/resolver": {
+    'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
@@ -52,8 +52,9 @@ module.exports = {
     'unicorn/filename-case': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
-    "@typescript-eslint/no-unused-expressions": "off",
-    "@typescript-eslint/restrict-template-expressions": "off",
+    '@typescript-eslint/no-unused-expressions': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
     'camelcase': 'off',
   },
+  cacheLocation: '.eslintcache',
 };
