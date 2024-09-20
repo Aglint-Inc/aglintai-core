@@ -1,3 +1,5 @@
+'use client';
+
 import CompletedRequests from '@requestHistory/CompletedRequests';
 import React from 'react';
 

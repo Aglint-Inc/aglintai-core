@@ -58,10 +58,10 @@
       "@/workflow/*": [
         "./src/app/(authenticated)/workflows/[workflow]/_common/*"
       ],
-      "@requests/*": ["./src/app/(authenticated)/_requests/_common/*"],
-      "@request/*": ["./src/app/(authenticated)/_requests/[id]/_common/*"],
+      "@requests/*": ["./src/app/(authenticated)/requests/_common/*"],
+      "@request/*": ["./src/app/(authenticated)/requests/[id]/_common/*"],
       "@requestHistory/*": [
-        "./src/app/(authenticated)/_requests/history/_common/*"
+        "./src/app/(authenticated)/requests/history/_common/*"
       ],
       "@interviews/*": ["./src/app/(authenticated)/interviews/_common/*"],
       "@interviewers/*": ["./src/app/(authenticated)/interviewers/_common/*"],

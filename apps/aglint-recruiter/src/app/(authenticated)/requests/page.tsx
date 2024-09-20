@@ -1,3 +1,5 @@
+'use client';
+
 import MainBody from '@requests/components/MainBody';
 
 function RequestsPage() {

@@ -1,9 +1,11 @@
+'use client';
+
 import React, { type PropsWithChildren } from 'react';
 
 import { RequestsProvider } from '@/context/RequestsContext';
 
-function RequestLayout({ children }: PropsWithChildren) {
+function Layout({ children }: PropsWithChildren) {
   return <RequestsProvider>{children}</RequestsProvider>;
 }
 
-export default RequestLayout;
+export default Layout;
