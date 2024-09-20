@@ -35,9 +35,10 @@ const interviewSchema = z
   })
   .merge(createRequestSchema.omit({ application: true }));
 
-const schema = interviewSchema.or(
+const schema = z.discriminatedUnion('status', [
+  interviewSchema,
   nonInterviewSchema,
-) satisfies ZodTypeToSchema<Params>;
+]) satisfies ZodTypeToSchema<Params>;
 
 const moveToInterview = async ({
   ctx,

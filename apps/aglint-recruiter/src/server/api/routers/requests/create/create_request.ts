@@ -13,7 +13,7 @@ export const createRequestSchema = z.object({
   sessions: z.array(z.string().uuid()),
   request: z.object({
     assignee_id: z.string().uuid(),
-    note: z.string(),
+    note: z.string().nullish(),
     priority: z.enum(['urgent', 'standard']),
     schedule_end_date: z.string(),
     schedule_start_date: z.string(),
