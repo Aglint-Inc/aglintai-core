@@ -192,7 +192,6 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isSelected={false}
         slotButton={null}
-        isSlotButtonVisible={true}
         textDuration={getDurationText(duration)}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
         isTitle={false}
