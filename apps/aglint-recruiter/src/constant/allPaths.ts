@@ -176,7 +176,7 @@ export const PATHS = [
   '/jobs/create',
   '/jobs',
   '/reports',
-  '/requests/[id]',
+  '/requests/[request]',
   '/requests/history',
   '/requests',
   '/user/[user]',

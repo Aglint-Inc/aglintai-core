@@ -17,7 +17,9 @@ import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
 
 function EmailPreviewSelfSchedule() {
   const [fetching, setFetching] = useState(false);
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const { recruiterUser } = useAuthDetails();
 
   const {
@@ -26,7 +28,7 @@ function EmailPreviewSelfSchedule() {
 
   const selectedRequest = Object.values(requestList)
     .flat()
-    .find((request) => request?.id === (query?.id || ''));
+    .find((request) => request?.id === (requestId || ''));
 
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {

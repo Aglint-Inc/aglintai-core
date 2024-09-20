@@ -12,13 +12,15 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import dayjs from '@/utils/dayjs';
 
 function RequestNotes() {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const {
     data: requestNotes,
     isFetched,
     refetch,
   } = useRequestNotes({
-    request_id: String(query?.id),
+    request_id: requestId,
   });
   const [note, setNote] = useState('');
   const [editorEnabled, setEditorEnabled] = useState(false);
@@ -36,7 +38,7 @@ function RequestNotes() {
       await updateRequestNotes({
         id: request_id as string,
         note: noteValue,
-        request_id: query?.id as string,
+        request_id: requestId,
         updated_at: dayjs().toISOString(),
       });
       setSaving(false);

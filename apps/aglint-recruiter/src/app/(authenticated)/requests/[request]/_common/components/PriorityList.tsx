@@ -17,7 +17,8 @@ import toast from '@/utils/toast';
 
 function PriorityList({ selectedFilter }: { selectedFilter: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
 
   const [, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -45,7 +46,7 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
                     if (selectedFilter !== priority) {
                       await handleAsyncUpdateRequest({
                         payload: {
-                          requestId: String(query?.id),
+                          requestId: requestId,
                           requestPayload: {
                             priority: priority,
                           },

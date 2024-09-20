@@ -13,7 +13,6 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Switch } from '@components/ui/switch';
-import { updateInterviewSessionsDurations } from '@request/functions';
 import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
@@ -56,6 +55,7 @@ import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
+import { updateInterviewSessionsDurations } from '../../functions';
 import CandidateAvailability from '../CandidateAvailability';
 import ConfirmAvailability from '../ConfirmAvailability';
 import { AvailabilityProvider } from '../ConfirmAvailability/RequestAvailabilityContext';
@@ -68,7 +68,9 @@ import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 
 export default function ViewRequestDetails() {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
@@ -81,7 +83,7 @@ export default function ViewRequestDetails() {
 
   const selectedRequest = Object.values(requestList)
     .flat()
-    .find((request) => request?.id === query?.id);
+    .find((request) => request?.id === requestId);
   const candidateDetails = selectedRequest?.applications?.candidates;
   const jobDetails = selectedRequest?.applications?.public_jobs;
   const selectedMember =
