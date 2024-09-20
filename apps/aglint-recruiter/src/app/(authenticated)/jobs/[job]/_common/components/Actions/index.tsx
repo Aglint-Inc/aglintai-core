@@ -102,12 +102,12 @@ const MoveAction = () => {
 };
 
 const MoveCandidateNew = () => {
-  const { mutate } = useApplicationsMove();
+  const { mutate, isPending } = useApplicationsMove();
   const { buttons, title, description } = useMeta(() => {
     mutate({
       status: 'new',
     });
-  });
+  }, isPending);
   return (
     <Popup
       title={title}
@@ -128,7 +128,7 @@ const MoveCandidateNew = () => {
 
 const MoveCandidateInterview = () => {
   const { isShowFeature } = useAuthDetails();
-  const { mutate } = useApplicationsMove();
+  const { mutate, isPending } = useApplicationsMove();
 
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
@@ -138,13 +138,17 @@ const MoveCandidateInterview = () => {
   const buttonText = isShowFeature('SCHEDULING') ? 'Request and Move' : 'Move';
   const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
 
-  const { buttons, title, description } = useMeta(() => {
-    mutate({
-      status: 'interview',
-      request,
-      sessions: selectedSession.map(({ id }) => id),
-    });
-  }, buttonText);
+  const { buttons, title, description } = useMeta(
+    () => {
+      mutate({
+        status: 'interview',
+        request: { ...request, note },
+        sessions: selectedSession.map(({ id }) => id),
+      });
+    },
+    isPending,
+    buttonText,
+  );
 
   return (
     <Popup
@@ -172,12 +176,12 @@ const MoveCandidateInterview = () => {
 };
 
 const MoveCandidateQualified = () => {
-  const { mutate } = useApplicationsMove();
+  const { mutate, isPending } = useApplicationsMove();
   const { buttons, title, description } = useMeta(() => {
     mutate({
       status: 'qualified',
     });
-  });
+  }, isPending);
 
   return (
     <Popup
@@ -191,12 +195,12 @@ const MoveCandidateQualified = () => {
 };
 
 const MoveCandidateDisqualified = () => {
-  const { mutate } = useApplicationsMove();
+  const { mutate, isPending } = useApplicationsMove();
   const { buttons, title, description } = useMeta(() => {
     mutate({
       status: 'disqualified',
     });
-  });
+  }, isPending);
 
   return (
     <>
@@ -225,17 +229,29 @@ const MoveCandidateDisqualified = () => {
   );
 };
 
-function useMeta(onSubmit: () => void, buttonText: string = null) {
+function useMeta(
+  onSubmit: () => void,
+  isPending = false,
+  buttonText: string = null,
+) {
   const checklist = useApplicationsStore((state) => state.checklist);
   const actionPopup = useApplicationsStore((state) => state.actionPopup);
   const { resetActionPopup } = useApplicationsActions();
   const buttons = (
     <>
-      <UIButton variant='secondary' onClick={() => resetActionPopup()}>
+      <UIButton
+        variant='secondary'
+        onClick={() => resetActionPopup()}
+        disabled={isPending}
+      >
         Cancel
       </UIButton>
 
-      <UIButton variant='default' onClick={() => onSubmit()}>
+      <UIButton
+        variant='default'
+        onClick={() => onSubmit()}
+        disabled={isPending}
+      >
         {buttonText ?? `Move to ${actionPopup}`}
       </UIButton>
     </>

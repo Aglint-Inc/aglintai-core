@@ -74,29 +74,22 @@ jobs:
       - name: Deploy to Vercel
         run: |
           echo "Attempting to deploy..."
-          # Start Vercel deployment in the background and capture its output
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }} --yes > deployment_output.txt 2>&1 &
-          DEPLOY_PID=$!
+          # Deploy to Vercel with --no-wait option and save stdout and stderr to files
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }} --yes --no-wait >deployment-url.txt 2>error.txt
 
-          # Wait for up to 5 seconds for the URL to appear
-          for i in {1..5}; do
-            if DEPLOYMENT_URL=$(grep -oP 'https:\/\/[^ ]+' deployment_output.txt | head -n1); then
-              echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
-              echo "Deployment URL found: $DEPLOYMENT_URL"
-              break
-            fi
-            sleep 1
-          done
+          # Extract the deployment URL from the output file
+          DEPLOYMENT_URL=$(grep -oP 'https:\/\/[^ ]+' deployment-url.txt | head -n1)
 
-          # If no URL found after 5 seconds, report an error
-          if [ -z "$DEPLOYMENT_URL" ]; then
-            echo "Failed to extract deployment URL within 5 seconds. Partial output:"
-            head -n 20 deployment_output.txt
+          if [ -n "$DEPLOYMENT_URL" ]; then
+            echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+            echo "Deployment URL found: $DEPLOYMENT_URL"
+          else
+            echo "Failed to extract deployment URL. Deployment output:"
+            cat deployment-url.txt
+            echo "Error output:"
+            cat error.txt
             exit 1
           fi
-
-          # Allow the deployment to continue in the background
-          disown $DEPLOY_PID
 
       # Step 5: Comment the deployment URL on the commit
       - name: Comment Deployment URL
