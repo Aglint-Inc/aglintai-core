@@ -4,13 +4,14 @@
 node_modules
 .pnp
 .pnp.js
-
 # Local env files
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+.vscode/notes.text
 
 # Testing
 coverage
@@ -36,4 +37,9 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
-package-lock.json
+
+/packages/aglint-ui/*
+apps/aglint-recruiter/script/*.js
+apps/aglint-recruiter/. cursorrules
+
+apps/aglint-recruiter/.cursorignore

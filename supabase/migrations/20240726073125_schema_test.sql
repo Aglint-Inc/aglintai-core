@@ -1,0 +1,1 @@
+alter publication supabase_realtime add  table public.workflow_action_logs

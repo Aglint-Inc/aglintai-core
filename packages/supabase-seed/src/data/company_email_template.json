@@ -1,0 +1,992 @@
+[
+  {
+    "id": "bcf67ec6-672b-488d-ae5f-1100e4280b26",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reminder: Upcoming Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>.</p><p></p><p>Please ensure everything is set for a smooth interview process.</p><p>Please find the details of your interview below:</p><p></p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interviewStart_email_organizer"
+  },
+  {
+    "id": "cb191d3a-30bf-40bf-8f1e-619bbcc15b5c",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "Interview reminder",
+    "body": "<p><strong>Scheduled with candidate :</strong><br><a target=\"_blank\" rel=\"noopener noreferrer\" class=\"c-link\" href=\"https://dev.aglinthq.com/scheduling/view?meeting_id=5ad7e0df-be62-4461-a069-33e884b70c4f&amp;tab=candidate_details\"><strong>Ashis Sarthak Singh - Staff Frontend Engineer</strong></a></p><p><strong>Meeting Place :</strong> In Person Meeting<br><strong>Meeting Time :</strong> July 15 03:30 AM - 04:00 AM IST<br><strong>Duration :</strong> 30 Minute      </p>",
+    "from_name": "",
+    "type": "interviewStart_slack_interviewers"
+  },
+  {
+    "id": "5470526d-f69c-4121-bb0e-8333bc0f57d2",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> </p><p>Please find the details for the interview below:</p><p><strong>Job:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span></p><p><strong>Candidate name:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> <br></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "confInterview_email_organizer"
+  },
+  {
+    "id": "e817c852-4cff-474d-808a-effc83859ac4",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reschedule Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> is requesting to reschedule their interview between <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"startDate\">{{startDate}}</span> and <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"endDate\">{{endDate}}</span> stating the reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"rescheduleReason\">{{rescheduleReason}}</span>.</p><p></p><p>Additional notes from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span>.</p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interReschedReq_email_recruiter"
+  },
+  {
+    "id": "79fae6d9-24e7-4189-a933-5f6f32a752a1",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Your Interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> is Confirmed</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We are pleased to confirm your interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Please find the details of your interview below.</p><p></p><p>Regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "confirmInterview_email_applicant"
+  },
+  {
+    "id": "8574e46d-8b6c-40db-b868-d01a3b403f9f",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "Invitation to a Phone Screening Session for {{firstName}} - {{jobTitle}} Position at {{companyName}}",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"recruiterName\">{{recruiterName}}</span>,</p><p></p><p>Please find the details for the interview below:</p><p>Candidate name: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> from job <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> <br></p><p>Thank you</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "{{recruiterName}}",
+    "type": "phoneScreen_email_candidate"
+  },
+  {
+    "id": "0ba1f00f-5239-4c59-a886-09ccabb788e4",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Accepted Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We are pleased to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has accepted the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>View Schedule details <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint AI</p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingAccepted_email_organizer"
+  },
+  {
+    "id": "3bcb6854-e6c1-4752-991d-d7ea939225ed",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Invitation to Debrief Session for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>Please join the debrief session to discuss <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> . Your insights are valuable to the selection process.</p><p>Thanks,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "debrief_email_interviewer"
+  },
+  {
+    "id": "5517fc9c-1771-4db6-83c9-c2d4e529246a",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Interview Cancellation: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>,</p><p></p><p>I regret to inform you that we need to cancel your scheduled interview session at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> .</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewCancel_email_applicant"
+  },
+  {
+    "id": "5ff1b4b2-8695-4310-849a-855ef5934387",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>  for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please submit your feedback at your earliest convenience.</p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "candidateBook_email_interviewerForFeedback"
+  },
+  {
+    "id": "a2ae93b6-2116-448d-b9c9-9d7762be0f9e",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewerForFeedback"
+  },
+  {
+    "id": "4da80e7e-7374-48c6-862e-5349c608514a",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewers"
+  },
+  {
+    "id": "4c567923-7b79-46c3-be2f-a3c771e73d40",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewerConfirmation_slack_interviewers"
+  },
+  {
+    "id": "dd6571ab-4188-4b1d-968d-47281c47963d",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Cancellation Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p></p><p>We have received a request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateLastName\">{{candidateLastName}}</span> to reschedule their interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position.</p><p></p><p>Cancel Reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"cancelReason\">{{cancelReason}}</span></p><p>Adittional Note: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span></p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,<br>Agllint AI Team</p><p></p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "InterviewCancelReq_email_recruiter"
+  },
+  {
+    "id": "713efd09-ae83-475d-9f6d-011949c37300",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Schedule Your Interview with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> - Important Next Step</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p><p></p><p>Congratulations! You have been selected for an interview at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"dateRange\">{{dateRange}}</span> . Optionally you can let me know your location to find the slots in your preffered region .</p><p>Alternatively you can use the following link to schedule your interview: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"selfScheduleLink\">{{selfScheduleLink}}</span></p><p>Looking forward to connecting with you</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "Aglint Ai",
+    "type": "agent_email_candidate"
+  },
+  {
+    "id": "ee844d07-829b-475d-a0cc-b6e52c844d40",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>'s Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with {{candidateName}} for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Your feedback is crucial in helping us make informed decisions. Please submit your feedback at your earliest convenience using the following link:</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span> </p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewEnd_email_interviewerForFeedback"
+  },
+  {
+    "id": "db22ab0a-5830-4b8f-8a54-3e43014bd455",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "candidateBook_slack_interviewerForConfirmation"
+  },
+  {
+    "id": "2baaf9ba-01a6-4f31-ae3e-b78a74210b39",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Scheduling Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">Thank you for submitting your application for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are pleased to announce that you have been selected for an assessment.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">You are welcome to choose an assessment time that suits your schedule. </p><p style=\"text-align: start\"></p><p style=\"text-align: start\">We wish you the best of luck and are eager to hear your insights!</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendSelfScheduleRequest_email_applicant"
+  },
+  {
+    "id": "60e9ac06-9182-4cc6-8e91-463a8d0c0f40",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reminder</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview you will be conducting for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please be prepared to join the interview on time.</p><p></p><p>Please find the interview details bellow.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-markdown\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_interviewers"
+  },
+  {
+    "id": "4e52770f-5609-4b8b-ae4e-9dab140f4281",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Declined Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We regret to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has declined the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please arrange for an alternative interviewer or reschedule as needed.</p><p>Change Interviewer <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p>Rescedule <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint Ai</p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingDeclined_email_organizer"
+  },
+  {
+    "id": "c33c3987-1e8b-4f4e-b069-96ce1bfc6212",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Provide Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>Thank you for applying for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We have reviewed your application and are impressed with your qualifications and experiences. We would like to invite you to participate in an interview to further discuss how your skills and experiences align with our needs.</p><p>To streamline the scheduling process, please click on the link below to select your availability for an interview:</p><p>Looking forward to your response.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{companyName}}",
+    "type": "sendAvailabilityRequest_email_applicant"
+  },
+  {
+    "id": "4da54fce-0aa9-4542-aad3-53a8f88a79df",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Re-requesting Interview Scheduling for  <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We hope this message finds you well. Recently, we sent you an invitation to schedule your assessment for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>We noticed that you haven't had the chance to select a time yet.</p><p>To ensure the process moves smoothly, we kindly ask you to choose an assessment time that suits your schedule at your earliest convenience.</p><p></p><p>We wish you the best of luck and look forward to hearing your insights!</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "rescheduleSelfSchedule_email_applicant"
+  },
+  {
+    "id": "a5a5ce43-1892-44bf-802a-e15868c1979c",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reminder: Schedule Your Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>This is a friendly reminder about the self-schedule interview request you received for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please use the below link to schedule your interview </p><p>Looking forward to connecting with you!</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "selfScheduleReminder_email_applicant"
+  },
+  {
+    "id": "ac17c28c-a396-4a7b-a9df-0eb8bf39e73f",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Accepted Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We are pleased to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has accepted the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>View Schedule details <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint AI</p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingAccepted_email_organizer"
+  },
+  {
+    "id": "c1c3b25d-693c-490e-bfe6-611035b90fb8",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>  for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please submit your feedback at your earliest convenience.</p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "candidateBook_email_interviewerForFeedback"
+  },
+  {
+    "id": "2887d0d8-c6f7-42d8-8acb-4dbf421ce0ba",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewerForFeedback"
+  },
+  {
+    "id": "d28bcbd4-39f7-4678-9ca1-fc89234b3991",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>'s Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with {{candidateName}} for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Your feedback is crucial in helping us make informed decisions. Please submit your feedback at your earliest convenience using the following link:</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span> </p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewEnd_email_interviewerForFeedback"
+  },
+  {
+    "id": "166fc6f0-a7dd-4724-9f3c-efadf9459fa1",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "candidateBook_slack_interviewerForConfirmation"
+  },
+  {
+    "id": "c6719cfe-d50c-4be1-bd9f-109d952c5d92",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reminder: Schedule Your Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>This is a friendly reminder about the self-schedule interview request you received for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please use the below link to schedule your interview </p><p>Looking forward to connecting with you!</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "selfScheduleReminder_email_applicant"
+  },
+  {
+    "id": "2ba8032c-44ef-4f06-8173-34aaa475df0a",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> ,</p><p></p><p>Please find the interview details below:</p><p><strong>Schedule:</strong></p><p>Find detailed schedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p><strong>Candidate Profile:</strong></p><p>Review candidate profile, resume, and score: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateProfileLink\">{{candidateProfileLink}}</span></p><p></p><p><strong>Interview Instructions:</strong></p><p>Please review the interview instructions: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewInstructionLink\">{{interviewInstructionLink}}</span></p><p></p><p><strong>Feedback Link:</strong></p><p>After the interview, kindly provide your feedback: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span></p><p></p><p><strong>Reschedule or Cancel:</strong></p><p>If you need to reschedule or cancel this meeting, please use the following link: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewDetails_calender_interviewer"
+  },
+  {
+    "id": "771846b2-12cb-434d-bcf5-78b4c7339ec4",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewers"
+  },
+  {
+    "id": "8793c97f-d4b1-40f0-a5e3-dd8c63a05a0a",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewerConfirmation_slack_interviewers"
+  },
+  {
+    "id": "0d909ab2-7996-43ed-bdfc-4b1c8e7fc929",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "Interview reminder",
+    "body": "<p><strong>Scheduled with candidate :</strong><br><a target=\"_blank\" rel=\"noopener noreferrer\" class=\"c-link\" href=\"https://dev.aglinthq.com/scheduling/view?meeting_id=5ad7e0df-be62-4461-a069-33e884b70c4f&amp;tab=candidate_details\"><strong>Ashis Sarthak Singh - Staff Frontend Engineer</strong></a></p><p><strong>Meeting Place :</strong> In Person Meeting<br><strong>Meeting Time :</strong> July 15 03:30 AM - 04:00 AM IST<br><strong>Duration :</strong> 30 Minute      </p>",
+    "from_name": "",
+    "type": "interviewStart_slack_interviewers"
+  },
+  {
+    "id": "91927739-e80d-42e1-a88b-ff3653227832",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Schedule Your Interview with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> - Important Next Step</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p><p></p><p>Congratulations! You have been selected for an interview at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"dateRange\">{{dateRange}}</span> . Optionally you can let me know your location to find the slots in your preffered region .</p><p>to find suitable slots.</p><p>Alternatively you can use the following link to schedule your interview: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"selfScheduleLink\">{{selfScheduleLink}}</span></p><p>Looking forward to connecting with you</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "Aglint Ai",
+    "type": "agent_email_candidate"
+  },
+  {
+    "id": "3b1d0f16-ff5c-43f5-9a89-6caee2d39f7f",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> </p><p>Please find the details for the interview below:</p><p><strong>Job:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span></p><p><strong>Candidate name:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> <br></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "confInterview_email_organizer"
+  },
+  {
+    "id": "acc0d962-b512-4e0e-a63b-d185515425bd",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Your Interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> is Confirmed</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We are pleased to confirm your interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Please find the details of your interview below.</p><p></p><p>Regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "confirmInterview_email_applicant"
+  },
+  {
+    "id": "9196c23a-4571-4113-9135-3a1c62eaa40d",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Invitation to Debrief Session for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>Please join the debrief session to discuss <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> . Your insights are valuable to the selection process.</p><p>Thanks,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "debrief_email_interviewer"
+  },
+  {
+    "id": "aa085b39-d0b3-4a7c-b149-9288c109a52f",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reschedule Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> is requesting to reschedule their interview between <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"startDate\">{{startDate}}</span> and <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"endDate\">{{endDate}}</span> stating the reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"rescheduleReason\">{{rescheduleReason}}</span>.</p><p></p><p>Additional notes from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span>.</p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interReschedReq_email_recruiter"
+  },
+  {
+    "id": "cbbc1b5c-9ace-43c8-b43d-87b2b3937e90",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Interview Cancellation: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>,</p><p></p><p>I regret to inform you that we need to cancel your scheduled interview session at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> .</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewCancel_email_applicant"
+  },
+  {
+    "id": "1b546a5a-56bc-41af-8fc3-c0199c4c03ee",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Declined Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We regret to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has declined the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please arrange for an alternative interviewer or reschedule as needed.</p><p>Change Interviewer <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p>Rescedule <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint Ai</p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingDeclined_email_organizer"
+  },
+  {
+    "id": "14f691c8-68b1-4c8b-9216-cefe41344874",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Cancellation Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p></p><p>We have received a request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateLastName\">{{candidateLastName}}</span> to reschedule their interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position.</p><p></p><p>Cancel Reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"cancelReason\">{{cancelReason}}</span></p><p>Adittional Note: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span></p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,<br>Agllint AI Team</p><p></p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "InterviewCancelReq_email_recruiter"
+  },
+  {
+    "id": "27318b96-fda6-4dee-8bdd-ecff2702ad15",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Interview Reminder: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about your upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please ensure you are prepared and join the interview on time. We are excited to learn more about your experiences and insights.</p><p></p><p>Please find the details of your interview below.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-yaml\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_applicant"
+  },
+  {
+    "id": "cf98852c-888a-4112-bd75-5376ee61a0c7",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reminder</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview you will be conducting for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please be prepared to join the interview on time.</p><p></p><p>Please find the interview details bellow.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-markdown\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_interviewers"
+  },
+  {
+    "id": "bbfe8f26-f28a-4495-a4b1-2403e4b3461c",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "Invitation to a Phone Screening Session for {{firstName}} - {{jobTitle}} Position at {{companyName}}",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"recruiterName\">{{recruiterName}}</span>,</p><p></p><p>Please find the details for the interview below:</p><p>Candidate name: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> from job <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> <br></p><p>Thank you</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "{{recruiterName}}",
+    "type": "phoneScreen_email_candidate"
+  },
+  {
+    "id": "6fe0c192-ba74-4c03-a8fc-e13f9ad72ad1",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reminder: Schedule Your Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>This is a friendly reminder about the self-schedule interview request you received for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please use the below link to schedule your interview </p><p>Looking forward to connecting with you!</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "selfScheduleReminder_email_applicant"
+  },
+  {
+    "id": "05d5a212-0f85-4c84-b7da-d68efe73a0ce",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reminder: Provide Your Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">I hope this message finds you well.</p><p style=\"text-align: start\">I am writing to follow up on my previous email regarding the interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are very interested in discussing your application and learning more about your experiences.</p><p style=\"text-align: start\">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated .</p><p style=\"text-align: start\">If you have any questions or need further information, please feel free to reach out.</p><p style=\"text-align: start\">Thank you, and I look forward to hearing from you soon.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendAvailReqReminder_email_applicant"
+  },
+  {
+    "id": "8b5e03cc-905e-43d8-9c49-0f4a173cd18a",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Scheduling Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">Thank you for submitting your application for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are pleased to announce that you have been selected for an assessment.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">You are welcome to choose an assessment time that suits your schedule. </p><p style=\"text-align: start\"></p><p style=\"text-align: start\">We wish you the best of luck and are eager to hear your insights!</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendSelfScheduleRequest_email_applicant"
+  },
+  {
+    "id": "16a83e60-8731-497f-91fe-557cdd87e2ab",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Provide Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>Thank you for applying for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We have reviewed your application and are impressed with your qualifications and experiences. We would like to invite you to participate in an interview to further discuss how your skills and experiences align with our needs.</p><p>To streamline the scheduling process, please click on the link below to select your availability for an interview:</p><p>Looking forward to your response.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{companyName}}",
+    "type": "sendAvailabilityRequest_email_applicant"
+  },
+  {
+    "id": "95d20afa-e48b-40b4-8a00-44127e54dc95",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Availability Re Request</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p>I hope this message finds you well.</p><p>I am writing to follow up regarding the availability check for your upcoming interview. It appears that the initial link we sent to confirm your availability might not have been received or may have encountered an issue.</p><p>To ensure we can schedule your interview at a convenient time, please find the link below to select your preferred time slots:</p><p>We apologize for any inconvenience this may have caused and appreciate your understanding.</p><p></p><p>Thank you for your cooperation. We look forward to speaking with you soon.<br></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p><p></p>",
+    "from_name": "{{companyName}}",
+    "type": "availabilityReqResend_email_candidate"
+  },
+  {
+    "id": "5bc327bf-db13-46ca-a775-ebb9633b8855",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> ,</p><p></p><p>Please find the interview details below:</p><p><strong>Schedule:</strong></p><p>Find detailed schedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p><strong>Candidate Profile:</strong></p><p>Review candidate profile, resume, and score: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateProfileLink\">{{candidateProfileLink}}</span></p><p></p><p><strong>Interview Instructions:</strong></p><p>Please review the interview instructions: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewInstructionLink\">{{interviewInstructionLink}}</span></p><p></p><p><strong>Feedback Link:</strong></p><p>After the interview, kindly provide your feedback: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span></p><p></p><p><strong>Reschedule or Cancel:</strong></p><p>If you need to reschedule or cancel this meeting, please use the following link: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewDetails_calender_interviewer"
+  },
+  {
+    "id": "e516e1b1-9145-49f5-9cf9-e044017042e0",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Re-requesting Interview Scheduling for  <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We hope this message finds you well. Recently, we sent you an invitation to schedule your assessment for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>We noticed that you haven't had the chance to select a time yet.</p><p>To ensure the process moves smoothly, we kindly ask you to choose an assessment time that suits your schedule at your earliest convenience.</p><p></p><p>We wish you the best of luck and look forward to hearing your insights!</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "rescheduleSelfSchedule_email_applicant"
+  },
+  {
+    "id": "caa9143a-547d-4ec0-a892-440d244cf508",
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "subject": "<p>Reminder: Upcoming Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>.</p><p></p><p>Please ensure everything is set for a smooth interview process.</p><p>Please find the details of your interview below:</p><p></p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interviewStart_email_organizer"
+  },
+  {
+    "id": "cbaf8ac5-0c54-4f2a-b3fa-7f529a12414f",
+    "created_at": "2024-07-15 11:22:59.728277+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "Welcome to Aglint",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p></p><p>Thank you for registering with Aglint! we are excited to have you on board, To ensure a smooth onboarding process, please have the following information ready:</p><p>For the company setup, keep the company name, location, and departments handy.</p><p>For user onboarding, have the names and emails addresses of hiring team members, as well as the roles of interviewers who will collaborate on hiring.</p><p>For job listings, get the job descriptions ready and indentify the hiring team for each job.</p><p>For user onboarding, have the names and email addresses of hiring team members, as well as the roles of interviewers who will collaborate on hiring.</p><p>For job listings, get the job descriptions ready and identify the hiring team for each job.</p><p>Additionally, organize interview plans for each job.</p><p>For interview types, define the types of interviews you will conduct, and prepare the necessary qualifications and training data.</p><p>Choose any integrations you need, such as ATS, Google Meet, Zoom, Slack, Google Workspace, or Microsoft Outlook.</p><p>One of our customer success team members will contact you soon. We appreciate your patience. Best regards, Aglint AI Customer Success Team</p><p></p><p>Best regards,</p><p>Aglint AI Customer </p><p>Success Team</p>",
+    "from_name": null,
+    "type": "onSignup_email_admin"
+  },
+  {
+    "id": "3acfca51-87fb-49fa-8a4a-1ec362b7637b",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewers"
+  },
+  {
+    "id": "409e0785-027f-4408-b0d2-f6ad4e90c810",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewerConfirmation_slack_interviewers"
+  },
+  {
+    "id": "38836f0a-e7d0-424c-ad74-9e8fbb0cdec3",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "Interview reminder",
+    "body": "<p><strong>Scheduled with candidate :</strong><br><a target=\"_blank\" rel=\"noopener noreferrer\" class=\"c-link\" href=\"https://dev.aglinthq.com/scheduling/view?meeting_id=5ad7e0df-be62-4461-a069-33e884b70c4f&amp;tab=candidate_details\"><strong>Ashis Sarthak Singh - Staff Frontend Engineer</strong></a></p><p><strong>Meeting Place :</strong> In Person Meeting<br><strong>Meeting Time :</strong> July 15 03:30 AM - 04:00 AM IST<br><strong>Duration :</strong> 30 Minute      </p>",
+    "from_name": "",
+    "type": "interviewStart_slack_interviewers"
+  },
+  {
+    "id": "70ed99c2-9ec1-4315-9849-2421ba98dd41",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Schedule Your Interview with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> - Important Next Step</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p><p></p><p>Congratulations! You have been selected for an interview at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"dateRange\">{{dateRange}}</span> . Optionally you can let me know your location to find the slots in your preffered region .</p><p>to find suitable slots.</p><p>Alternatively you can use the following link to schedule your interview: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"selfScheduleLink\">{{selfScheduleLink}}</span></p><p>Looking forward to connecting with you</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "Aglint Ai",
+    "type": "agent_email_candidate"
+  },
+  {
+    "id": "e3e756ce-1b75-48d2-b733-0c7f0303239e",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> </p><p>Please find the details for the interview below:</p><p><strong>Job:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span></p><p><strong>Candidate name:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> <br></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "confInterview_email_organizer"
+  },
+  {
+    "id": "7a2d6781-d7e9-4810-b623-2dd6635ff8e4",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Your Interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> is Confirmed</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We are pleased to confirm your interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Please find the details of your interview below.</p><p></p><p>Regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "confirmInterview_email_applicant"
+  },
+  {
+    "id": "7310a50b-df24-44bc-899c-35fe7254a250",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Invitation to Debrief Session for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>Please join the debrief session to discuss <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> . Your insights are valuable to the selection process.</p><p>Thanks,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "debrief_email_interviewer"
+  },
+  {
+    "id": "8cbdd8de-6e62-4148-8ab2-c7c68b0aaaae",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reschedule Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> is requesting to reschedule their interview between <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"startDate\">{{startDate}}</span> and <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"endDate\">{{endDate}}</span> stating the reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"rescheduleReason\">{{rescheduleReason}}</span>.</p><p></p><p>Additional notes from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span>.</p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interReschedReq_email_recruiter"
+  },
+  {
+    "id": "3375e491-7bc5-4ba7-a363-d24d6c40ce3e",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Interview Cancellation: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>,</p><p></p><p>I regret to inform you that we need to cancel your scheduled interview session at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> .</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewCancel_email_applicant"
+  },
+  {
+    "id": "de7d3948-3a17-4be5-af7d-d297a14454e2",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Cancellation Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p></p><p>We have received a request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateLastName\">{{candidateLastName}}</span> to reschedule their interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position.</p><p></p><p>Cancel Reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"cancelReason\">{{cancelReason}}</span></p><p>Adittional Note: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span></p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,<br>Agllint AI Team</p><p></p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "InterviewCancelReq_email_recruiter"
+  },
+  {
+    "id": "100c2e86-78e2-44ea-bd3a-b0e1d299b5f6",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Interview Reminder: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about your upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please ensure you are prepared and join the interview on time. We are excited to learn more about your experiences and insights.</p><p></p><p>Please find the details of your interview below.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-yaml\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_applicant"
+  },
+  {
+    "id": "5100920a-ef8b-4c30-a259-a27833749eef",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reminder</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview you will be conducting for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please be prepared to join the interview on time.</p><p></p><p>Please find the interview details bellow.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-markdown\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_interviewers"
+  },
+  {
+    "id": "92f804e6-16cb-4887-97e7-a2c4b62254dc",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "Invitation to a Phone Screening Session for {{firstName}} - {{jobTitle}} Position at {{companyName}}",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"recruiterName\">{{recruiterName}}</span>,</p><p></p><p>Please find the details for the interview below:</p><p>Candidate name: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> from job <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> <br></p><p>Thank you</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "{{recruiterName}}",
+    "type": "phoneScreen_email_candidate"
+  },
+  {
+    "id": "98ba4f1d-e1ce-425c-8c55-62839d90fcda",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reminder: Provide Your Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">I hope this message finds you well.</p><p style=\"text-align: start\">I am writing to follow up on my previous email regarding the interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are very interested in discussing your application and learning more about your experiences.</p><p style=\"text-align: start\">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated .</p><p style=\"text-align: start\">If you have any questions or need further information, please feel free to reach out.</p><p style=\"text-align: start\">Thank you, and I look forward to hearing from you soon.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendAvailReqReminder_email_applicant"
+  },
+  {
+    "id": "77d9d09f-aba8-44a1-8690-95828d71eaa4",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Scheduling Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">Thank you for submitting your application for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are pleased to announce that you have been selected for an assessment.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">You are welcome to choose an assessment time that suits your schedule. </p><p style=\"text-align: start\"></p><p style=\"text-align: start\">We wish you the best of luck and are eager to hear your insights!</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendSelfScheduleRequest_email_applicant"
+  },
+  {
+    "id": "4beeda6b-ce17-4b7e-9d2b-8bebe0507f53",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Provide Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>Thank you for applying for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We have reviewed your application and are impressed with your qualifications and experiences. We would like to invite you to participate in an interview to further discuss how your skills and experiences align with our needs.</p><p>To streamline the scheduling process, please click on the link below to select your availability for an interview:</p><p>Looking forward to your response.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{companyName}}",
+    "type": "sendAvailabilityRequest_email_applicant"
+  },
+  {
+    "id": "d141f5a7-04d5-4059-b57e-c41ce1ecb3e0",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Availability Re Request</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p>I hope this message finds you well.</p><p>I am writing to follow up regarding the availability check for your upcoming interview. It appears that the initial link we sent to confirm your availability might not have been received or may have encountered an issue.</p><p>To ensure we can schedule your interview at a convenient time, please find the link below to select your preferred time slots:</p><p>We apologize for any inconvenience this may have caused and appreciate your understanding.</p><p></p><p>Thank you for your cooperation. We look forward to speaking with you soon.<br></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p><p></p>",
+    "from_name": "{{companyName}}",
+    "type": "availabilityReqResend_email_candidate"
+  },
+  {
+    "id": "bcaa2256-3e54-49fd-a433-50658cc4104f",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> ,</p><p></p><p>Please find the interview details below:</p><p><strong>Schedule:</strong></p><p>Find detailed schedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p><strong>Candidate Profile:</strong></p><p>Review candidate profile, resume, and score: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateProfileLink\">{{candidateProfileLink}}</span></p><p></p><p><strong>Interview Instructions:</strong></p><p>Please review the interview instructions: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewInstructionLink\">{{interviewInstructionLink}}</span></p><p></p><p><strong>Feedback Link:</strong></p><p>After the interview, kindly provide your feedback: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span></p><p></p><p><strong>Reschedule or Cancel:</strong></p><p>If you need to reschedule or cancel this meeting, please use the following link: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewDetails_calender_interviewer"
+  },
+  {
+    "id": "b2982c3a-cb0e-4e94-b902-dfb292b32e05",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Re-requesting Interview Scheduling for  <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We hope this message finds you well. Recently, we sent you an invitation to schedule your assessment for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>We noticed that you haven't had the chance to select a time yet.</p><p>To ensure the process moves smoothly, we kindly ask you to choose an assessment time that suits your schedule at your earliest convenience.</p><p></p><p>We wish you the best of luck and look forward to hearing your insights!</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "rescheduleSelfSchedule_email_applicant"
+  },
+  {
+    "id": "008d41db-9b69-43ab-b93e-d22a12fa04c5",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reminder: Upcoming Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>.</p><p></p><p>Please ensure everything is set for a smooth interview process.</p><p>Please find the details of your interview below:</p><p></p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interviewStart_email_organizer"
+  },
+  {
+    "id": "eac2e182-f35d-4fe0-ac8c-96b6c2e08a5d",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Declined Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We regret to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has declined the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please arrange for an alternative interviewer or reschedule as needed.</p><p>Change Interviewer <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p>Rescedule <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint Ai</p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingDeclined_email_organizer"
+  },
+  {
+    "id": "f74993e8-9bee-4c60-af03-415a2653544c",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Accepted Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We are pleased to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has accepted the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>View Schedule details <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint AI</p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingAccepted_email_organizer"
+  },
+  {
+    "id": "e6c7fe05-76c3-472c-ba22-49cb834522ef",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>  for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please submit your feedback at your earliest convenience.</p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "candidateBook_email_interviewerForFeedback"
+  },
+  {
+    "id": "a8c400d3-581d-4a92-b1d0-52181cbe4ac4",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewerForFeedback"
+  },
+  {
+    "id": "18040044-42ac-4c87-b034-e674a5daf850",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>'s Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with {{candidateName}} for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Your feedback is crucial in helping us make informed decisions. Please submit your feedback at your earliest convenience using the following link:</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span> </p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewEnd_email_interviewerForFeedback"
+  },
+  {
+    "id": "c373e072-5c1d-4abf-91c6-48faeb96da7e",
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "candidateBook_slack_interviewerForConfirmation"
+  },
+  {
+    "id": "e6107f7f-05fe-49ef-a01b-2bc86e8812ad",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewers"
+  },
+  {
+    "id": "0fab61a6-9c93-474a-8493-25ecf9188b16",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewerConfirmation_slack_interviewers"
+  },
+  {
+    "id": "503a66c7-d31b-497e-a462-19b32f624c98",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "Interview reminder",
+    "body": "<p><strong>Scheduled with candidate :</strong><br><a target=\"_blank\" rel=\"noopener noreferrer\" class=\"c-link\" href=\"https://dev.aglinthq.com/scheduling/view?meeting_id=5ad7e0df-be62-4461-a069-33e884b70c4f&amp;tab=candidate_details\"><strong>Ashis Sarthak Singh - Staff Frontend Engineer</strong></a></p><p><strong>Meeting Place :</strong> In Person Meeting<br><strong>Meeting Time :</strong> July 15 03:30 AM - 04:00 AM IST<br><strong>Duration :</strong> 30 Minute      </p>",
+    "from_name": "",
+    "type": "interviewStart_slack_interviewers"
+  },
+  {
+    "id": "4569bebb-e224-4ee0-a5b5-036555df2fed",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Schedule Your Interview with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> - Important Next Step</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p><p></p><p>Congratulations! You have been selected for an interview at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Your qualifications are impressive, and we are excited to meet you and discuss them further.</p><p>Please let me know your availability within the following date range: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"dateRange\">{{dateRange}}</span> . Optionally you can let me know your location to find the slots in your preffered region .</p><p>to find suitable slots.</p><p>Alternatively you can use the following link to schedule your interview: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"selfScheduleLink\">{{selfScheduleLink}}</span></p><p>Looking forward to connecting with you</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "Aglint Ai",
+    "type": "agent_email_candidate"
+  },
+  {
+    "id": "e9ddda7e-dbce-4d75-9b6a-781d1e415f85",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> </p><p>Please find the details for the interview below:</p><p><strong>Job:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span></p><p><strong>Candidate name:</strong> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> <br></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "confInterview_email_organizer"
+  },
+  {
+    "id": "d11fc782-3a35-4b94-bdcc-e311dd9246ff",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Your Interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> is Confirmed</p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We are pleased to confirm your interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position. Please find the details of your interview below.</p><p></p><p>Regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "confirmInterview_email_applicant"
+  },
+  {
+    "id": "e8390638-5128-45cb-acbe-0a4b722f634d",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Invitation to Debrief Session for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>Please join the debrief session to discuss <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> 's interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> . Your insights are valuable to the selection process.</p><p>Thanks,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "debrief_email_interviewer"
+  },
+  {
+    "id": "0f3ebd6b-90ad-4802-95a5-3d36640e5766",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reschedule Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> is requesting to reschedule their interview between <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"startDate\">{{startDate}}</span> and <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"endDate\">{{endDate}}</span> stating the reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"rescheduleReason\">{{rescheduleReason}}</span>.</p><p></p><p>Additional notes from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span>.</p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interReschedReq_email_recruiter"
+  },
+  {
+    "id": "03476878-bbba-45f6-8457-e6605d40113b",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Interview Cancellation: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>,</p><p></p><p>I regret to inform you that we need to cancel your scheduled interview session at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> .</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewCancel_email_applicant"
+  },
+  {
+    "id": "9abee809-f2f8-429a-bca6-62c5b3b64959",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Cancellation Request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p></p><p>We have received a request from <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateLastName\">{{candidateLastName}}</span> to reschedule their interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position.</p><p></p><p>Cancel Reason: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"cancelReason\">{{cancelReason}}</span></p><p>Adittional Note: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"additionalRescheduleNotes\">{{additionalRescheduleNotes}}</span></p><p></p><p>Please review the request and take the necessary steps from here.</p><p>Here is the link to reschedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p>Here is the link to cancel: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,<br>Agllint AI Team</p><p></p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "InterviewCancelReq_email_recruiter"
+  },
+  {
+    "id": "e8930a7e-3f0d-4ad3-9593-a77c1ff30078",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Interview Reminder: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about your upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please ensure you are prepared and join the interview on time. We are excited to learn more about your experiences and insights.</p><p></p><p>Please find the details of your interview below.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-yaml\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_applicant"
+  },
+  {
+    "id": "7057c2f1-6e2c-4b0c-8e34-e2a6bac5b520",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reminder</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview you will be conducting for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please be prepared to join the interview on time.</p><p></p><p>Please find the interview details bellow.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-markdown\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_interviewers"
+  },
+  {
+    "id": "24580fef-f84f-4dff-8755-98bdb8b07949",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "Invitation to a Phone Screening Session for {{firstName}} - {{jobTitle}} Position at {{companyName}}",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"recruiterName\">{{recruiterName}}</span>,</p><p></p><p>Please find the details for the interview below:</p><p>Candidate name: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span> from job <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> <br></p><p>Thank you</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "from_name": "{{recruiterName}}",
+    "type": "phoneScreen_email_candidate"
+  },
+  {
+    "id": "6cb7fbb8-5dcd-4a85-b458-3d4dd2a20617",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reminder: Schedule Your Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>This is a friendly reminder about the self-schedule interview request you received for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please use the below link to schedule your interview </p><p>Looking forward to connecting with you!</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "selfScheduleReminder_email_applicant"
+  },
+  {
+    "id": "26d8cabc-cfa9-413c-bc73-8ec487d518df",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reminder: Provide Your Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">I hope this message finds you well.</p><p style=\"text-align: start\">I am writing to follow up on my previous email regarding the interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are very interested in discussing your application and learning more about your experiences.</p><p style=\"text-align: start\">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated .</p><p style=\"text-align: start\">If you have any questions or need further information, please feel free to reach out.</p><p style=\"text-align: start\">Thank you, and I look forward to hearing from you soon.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendAvailReqReminder_email_applicant"
+  },
+  {
+    "id": "84fc07aa-ca51-4980-be04-0f359d87a764",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Scheduling Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">Thank you for submitting your application for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are pleased to announce that you have been selected for an assessment.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">You are welcome to choose an assessment time that suits your schedule. </p><p style=\"text-align: start\"></p><p style=\"text-align: start\">We wish you the best of luck and are eager to hear your insights!</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendSelfScheduleRequest_email_applicant"
+  },
+  {
+    "id": "89434c2c-a7aa-400f-95a9-2565884b908b",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Provide Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>Thank you for applying for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We have reviewed your application and are impressed with your qualifications and experiences. We would like to invite you to participate in an interview to further discuss how your skills and experiences align with our needs.</p><p>To streamline the scheduling process, please click on the link below to select your availability for an interview:</p><p>Looking forward to your response.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{companyName}}",
+    "type": "sendAvailabilityRequest_email_applicant"
+  },
+  {
+    "id": "545aa526-7813-4c55-8a92-cad4c2c68f4e",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Availability Re Request</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p>I hope this message finds you well.</p><p>I am writing to follow up regarding the availability check for your upcoming interview. It appears that the initial link we sent to confirm your availability might not have been received or may have encountered an issue.</p><p>To ensure we can schedule your interview at a convenient time, please find the link below to select your preferred time slots:</p><p>We apologize for any inconvenience this may have caused and appreciate your understanding.</p><p></p><p>Thank you for your cooperation. We look forward to speaking with you soon.<br></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><p></p><p></p>",
+    "from_name": "{{companyName}}",
+    "type": "availabilityReqResend_email_candidate"
+  },
+  {
+    "id": "991bad3c-0023-4166-aa70-46125ae3747e",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>'s Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position</p>",
+    "body": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with {{candidateName}} for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Your feedback is crucial in helping us make informed decisions. Please submit your feedback at your earliest convenience using the following link:</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span> </p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewEnd_email_interviewerForFeedback"
+  },
+  {
+    "id": "c30a0923-efe8-41f5-b237-2912e452d3e6",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Interview Confirmation for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> ,</p><p></p><p>Please find the interview details below:</p><p><strong>Schedule:</strong></p><p>Find detailed schedule: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p><strong>Candidate Profile:</strong></p><p>Review candidate profile, resume, and score: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateProfileLink\">{{candidateProfileLink}}</span></p><p></p><p><strong>Interview Instructions:</strong></p><p>Please review the interview instructions: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewInstructionLink\">{{interviewInstructionLink}}</span></p><p></p><p><strong>Feedback Link:</strong></p><p>After the interview, kindly provide your feedback: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewFeedbackLink\">{{interviewFeedbackLink}}</span></p><p></p><p><strong>Reschedule or Cancel:</strong></p><p>If you need to reschedule or cancel this meeting, please use the following link: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateScheduleLink\">{{candidateScheduleLink}}</span></p><p></p><p>Thank you,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span><br><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewDetails_calender_interviewer"
+  },
+  {
+    "id": "804bc938-8ec0-4e23-b911-1947bf52cb9a",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Re-requesting Interview Scheduling for  <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p>We hope this message finds you well. Recently, we sent you an invitation to schedule your assessment for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>We noticed that you haven't had the chance to select a time yet.</p><p>To ensure the process moves smoothly, we kindly ask you to choose an assessment time that suits your schedule at your earliest convenience.</p><p></p><p>We wish you the best of luck and look forward to hearing your insights!</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "rescheduleSelfSchedule_email_applicant"
+  },
+  {
+    "id": "fd3ccfc9-98fb-4e08-907e-d6bcd312d7a3",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reminder: Upcoming Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerFirstName\">{{organizerFirstName}}</span> ,</p><p></p><p>This is a friendly reminder about the upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>.</p><p></p><p>Please ensure everything is set for a smooth interview process.</p><p>Please find the details of your interview below:</p><p></p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "interviewStart_email_organizer"
+  },
+  {
+    "id": "6ad9075b-e33e-4c3f-aca5-98d71c00c54f",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Declined Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We regret to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has declined the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please arrange for an alternative interviewer or reschedule as needed.</p><p>Change Interviewer <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p>Rescedule <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint Ai</p><p></p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingDeclined_email_organizer"
+  },
+  {
+    "id": "da28c43a-5046-4b28-9b5f-e6ab0c20b98d",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> Accepted Interview for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span></p>",
+    "body": "<p>Hi <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> ,</p><p></p><p>We are pleased to inform you that the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerName\">{{interviewerName}}</span> has accepted the interview request for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>View Schedule details <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"meetingDetailsLink\">{{meetingDetailsLink}}</span></p><p></p><p>Best regards,</p><p>Aglint AI</p>",
+    "from_name": "Aglint Ai",
+    "type": "meetingAccepted_email_organizer"
+  },
+  {
+    "id": "7dac3f71-ef07-40c3-ba0e-78c0faf7a19e",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Reminder: Feedback Required for <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Interview </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"interviewerFirstName\">{{interviewerFirstName}}</span>,</p><p>This is a friendly reminder to provide your feedback for the recent interview you conducted with <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateName\">{{candidateName}}</span>  for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> .</p><p></p><p>Please submit your feedback at your earliest convenience.</p><p>Thank you for your time and assistance.</p><p>Best regards,</p><p>Aglint AI Team</p>",
+    "from_name": "Aglint Ai",
+    "type": "candidateBook_email_interviewerForFeedback"
+  },
+  {
+    "id": "6e95a232-2a35-4c6f-a669-a81309c469dd",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "interviewEnd_slack_interviewerForFeedback"
+  },
+  {
+    "id": "fc74c2b2-92b4-4c62-bfef-6a8f4984cdf2",
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "",
+    "body": "",
+    "from_name": "",
+    "type": "candidateBook_slack_interviewerForConfirmation"
+  },
+  {
+    "id": "e5e28756-9c4b-4385-9481-01970e21fca7",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Availability Re Request</p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> ,</p><p>I hope this message finds you well.</p><p>I am writing to follow up regarding the availability check for your upcoming interview. It appears that the initial link we sent to confirm your availability might not have been received or may have encountered an issue.</p><p>To ensure we can schedule your interview at a convenient time, please find the link below to select your preferred time slots:</p><p>We apologize for any inconvenience this may have caused and appreciate your understanding.</p><p>Thank you for your cooperation. We look forward to speaking with you soon.</p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span> </p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team.</p>",
+    "from_name": "{{companyName}}",
+    "type": "availabilityReqResend_email_candidate"
+  },
+  {
+    "id": "5f41644e-8797-41da-a4a2-ed5716d88a92",
+    "created_at": "2024-07-15 15:29:33.970885+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "subject": "<p>Invitation to Join Aglint - Your Role: </p>",
+    "body": "<p>Dear {{interviewerName}}</p><p><span class=\\\"temp-variable\\\" data-type=\\\"temp-variable\\\" data-id=\\\"organizerName\\\">{{organizerName}}</span> has invited you to join the Aglint hiring platform as a [Role]. Please use the link below to reset your password, log in, and verify your details. You will receive further instructions from [Admin Name]. </p><p>[Reset Password Link]  </p><p>For any questions, reach out to <span class=\\\"temp-variable\\\" data-type=\\\"temp-variable\\\" data-id=\\\"organizerName\\\">{{organizerName}}</span> at {{or.  </p><p>Thanks,  [Company Name]  [Admin Name]</p>",
+    "from_name": null,
+    "type": "onInvite_email_user"
+  },
+  {
+    "id": "ff232d67-71cf-4a78-9364-b4d9a305c865",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Interview Reminder: <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span> ,</p><p>This is a friendly reminder about your upcoming interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>.</p><p></p><p>Please ensure you are prepared and join the interview on time. We are excited to learn more about your experiences and insights.</p><p></p><p>Please find the details of your interview below.</p><p></p><p>Best regards,</p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p><pre><code class=\"language-yaml\"></code></pre>",
+    "from_name": "{{organizerName}}",
+    "type": "interviewStart_email_applicant"
+  },
+  {
+    "id": "dc38b20b-b762-46ec-873e-d2f426dbea75",
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "subject": "<p>Reminder: Provide Your Availability for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> Position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> </p>",
+    "body": "<p>Dear <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"candidateFirstName\">{{candidateFirstName}}</span>,</p><p></p><p style=\"text-align: start\">I hope this message finds you well.</p><p style=\"text-align: start\">I am writing to follow up on my previous email regarding the interview for the <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"jobRole\">{{jobRole}}</span> position at <span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span>. We are very interested in discussing your application and learning more about your experiences.</p><p style=\"text-align: start\">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated .</p><p style=\"text-align: start\">If you have any questions or need further information, please feel free to reach out.</p><p style=\"text-align: start\">Thank you, and I look forward to hearing from you soon.</p><p style=\"text-align: start\"></p><p style=\"text-align: start\">Best regards,</p><p style=\"text-align: start\"><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"organizerName\">{{organizerName}}</span></p><p><span class=\"temp-variable\" data-type=\"temp-variable\" data-id=\"companyName\">{{companyName}}</span> Recruitment Team</p>",
+    "from_name": "{{organizerName}}",
+    "type": "sendAvailReqReminder_email_applicant"
+  }
+]

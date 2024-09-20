@@ -1,17 +1,25 @@
-import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import { useToast } from '@components/hooks/use-toast';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { Textarea } from '@components/ui/textarea';
 import axios from 'axios';
+import { ThumbsUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-import { IntegrationThanks } from '@/devlink2';
-import { ButtonPrimaryDefaultRegular, ConfirmationPopup } from '@/devlink3';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
-
-import { ShowCode } from '../../Common/ShowCode';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   const { recruiter } = useAuthDetails();
+  const { toast } = useToast();
   const descriptionRef = useRef<HTMLInputElement>();
   const nameRef = useRef<HTMLInputElement>();
   const [showThanks, setShowThanks] = useState(false);
@@ -28,7 +36,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
           await axios.post('/api/sendgrid', {
             fromEmail: recruiter.email,
             fromName: recruiter?.name,
-            email: ['raj@aglinthq.com', 'ravi@aglinthq.com'],
+            email: 'ravi@aglinthq.com',
             subject: 'Integration Tool Request',
             text: `
                   <body>
@@ -43,81 +51,77 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         });
       setShowThanks(true);
     } else {
-      toast.error('Please enter the name of the integration!');
+      toast({
+        variant: 'destructive',
+        title: 'Please enter the name of the integration!',
+      });
     }
   }
 
   return (
-    <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
-      open={isOpen}
-      onClose={close}
-      maxWidth={'md'}
-    >
-      <ShowCode.When isTrue={showThanks}>
-        <IntegrationThanks
-          slotButtonClose={
-            <ButtonPrimaryDefaultRegular
-              buttonText={'Close'}
-              buttonProps={{
-                onClick: () => {
-                  close();
-                  setTimeout(() => {
-                    setShowThanks(false);
-                  }, 500);
-                },
+    <Dialog open={isOpen} onOpenChange={close}>
+      <DialogContent className='sm:max-w-[425px]'>
+        {showThanks ? (
+          <div className='flex flex-col items-center justify-center p-6 text-center'>
+            <div className='mb-4 text-green-500'>
+              <ThumbsUp size={48} />
+            </div>
+            <h2 className='mb-2 text-2xl font-bold'>Thank You!</h2>
+            <p className='mb-6 text-gray-600'>
+              Thank you for your time. We will review your request and get back
+              to you.
+            </p>
+            <Button
+              onClick={() => {
+                close();
+                setTimeout(() => {
+                  setShowThanks(false);
+                }, 500);
               }}
-            />
-          }
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={!showThanks}>
-        <ConfirmationPopup
-          isIcon={false}
-          textPopupTitle={'Request Integration'}
-          textPopupDescription={
-            <Stack direction={'column'} spacing={'16px'}>
-              <Stack direction={'column'} spacing={'10px'}>
-                <Typography fontSize={'14px'} variant='body1'>
-                  Integration Name
-                </Typography>
-                <TextField
-                  inputRef={nameRef}
+              size='sm'
+              className='rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600'
+            >
+              Close
+            </Button>
+          </div>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Request Integration</DialogTitle>
+            </DialogHeader>
+            <div className='flex flex-col space-y-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='integration-name'>Integration Name</Label>
+                <Input
+                  id='integration-name'
+                  ref={nameRef}
                   placeholder='Enter the name of the integration'
                 />
-              </Stack>
-              <Stack direction={'column'} spacing={'10px'}>
-                <Typography fontSize={'14px'} variant='body1'>
-                  Description (Optional)
-                </Typography>
-                <TextField
-                  multiline
-                  minRows={5}
-                  placeholder='Add a brief description (optional)'
-                  inputRef={descriptionRef}
+              </div>
+              <div className='space-y-2'>
+                <Label htmlFor='integration-description'>Description</Label>
+                <Textarea
+                  id='integration-description'
+                  placeholder='Add a brief description (Optional)'
+                  className='resize-none'
                 />
-              </Stack>
-            </Stack>
-          }
-          onClickCancel={{
-            onClick: () => {
-              close();
-              setShowThanks(false);
-            },
-          }}
-          onClickAction={{
-            onClick: requestTool,
-          }}
-          isGreyButtonVisible={false}
-          textPopupButton={'Request'}
-        />
-      </ShowCode.When>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant='outline'
+                onClick={() => {
+                  close();
+                  setShowThanks(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={requestTool}>Request</Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
     </Dialog>
   );
 }

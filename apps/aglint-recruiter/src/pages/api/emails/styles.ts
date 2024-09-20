@@ -1,5 +1,5 @@
 export const main = {
-  backgroundColor: '#f8f9f9',
+  backgroundColor: '#F9F9F8',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   paddingTop: '60px',
@@ -8,7 +8,7 @@ export const main = {
 export const container = {
   backgroundColor: '#ffffff',
   margin: '0 auto',
-  padding: '20px 0 48px',
+  padding: '24px 0 48px',
   marginBottom: '64px',
   maxWidth: '700px',
 };
@@ -18,7 +18,7 @@ export const box = {
 };
 
 export const paragraph = {
-  color: '#49545c',
+  color: '#21201C',
   fontSize: '16px',
   lineHeight: '24px',
   textAlign: 'left' as const,
@@ -32,7 +32,7 @@ export const button = {
   padding: '12px',
   backgroundColor: '#2f3941',
   borderRadius: '4px',
-  color: 'white',
+  color: 'var(--white)',
 };
 
 export const title = {

@@ -1,181 +1,115 @@
-import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
-import {
-  FilledInputProps,
-  InputProps,
-  OutlinedInputProps,
-  Stack,
-  Typography
-} from '@mui/material';
-import MuiTextField from '@mui/material/TextField';
-import { errorMessages } from '@utils/errorMessages';
-import React, { useState } from 'react';
+import { Input, type InputProps } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import { cn } from '@lib/utils';
+import { AlertCircle } from 'lucide-react';
+import React, { forwardRef } from 'react';
 
-import UITypography from '../UITypography';
-type Props = {
-  value?: string | number;
-  type?: React.HTMLInputTypeAttribute;
-  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+type Props = InputProps & {
   error?: boolean;
   label?: string;
+  fieldSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
   labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
   helperText?: string;
-  disabled?: boolean;
-  required?: boolean;
-  multiline?: boolean;
-  minRows?: number;
-  maxRows?: number;
-  placeholder?: string;
-  fullWidth?: boolean;
-  name?: string;
-  rest?: any;
-  onSelect?: () => void;
-  // eslint-disable-next-line no-unused-vars
-  onFocus?: (e: any) => void;
-  onBlur?: () => void;
-  // eslint-disable-next-line no-unused-vars
-  onKeyDown?: (e: any) => void;
-  InputProps?:
-    | Partial<FilledInputProps>
-    | Partial<OutlinedInputProps>
-    | Partial<InputProps>;
-  defaultValue?: string | number;
-  children?: any;
-  height?: number;
-  noBorder?: boolean;
-  width?: string;
-  borderRadius?: number;
-  select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
+  defaultLabelColor?: string;
+  fullWidth?: boolean;
+  ref: React.ForwardedRef<HTMLInputElement>;
+  className?: string;
 };
 
-// eslint-disable-next-line react/display-name
-const UITextField = React.forwardRef(
+const UITextField = forwardRef<HTMLInputElement, Props>(
   (
     {
       disabled,
       error,
       helperText,
+      type = 'text',
+      secondaryText,
       label,
       labelSize = 'small',
-      onChange,
-      onSelect,
-      type = 'text',
-      placeholder = '',
+      labelBold = 'default',
+      defaultLabelColor = null,
       required,
-      value,
-      fullWidth = false,
-      name = null,
-      multiline = false,
-      minRows = 4.7,
-      maxRows = 4.7,
-      rest = undefined,
-      onKeyDown = () => {},
-      onBlur = () => {},
-      InputProps,
-      children,
-      defaultValue,
-      borderRadius = 4,
-      width,
-      select,
-      height,
-      secondaryText,
-      labelBold = 'default'
-    }: Props,
-    ref?: React.Ref<HTMLInputElement>
+      fullWidth,
+      id,
+      fieldSize,
+      className,
+      ...props
+    },
+    ref,
   ) => {
-    const [contentExceeded, setContentExceeded] = useState(false);
-    let labelColor = palette.grey[800];
+    const labelClasses = cn(
+      'text-neutral-900',
+      labelBold === 'default' ? 'font-semibold' : 'font-normal',
+      {
+        'text-sm': labelSize === 'small',
+        'text-base': labelSize === 'medium',
+        'text-lg': labelSize === 'large',
+        'text-xl': labelSize === 'xLarge',
+        'text-2xl': labelSize === 'xxLarge',
+        'text-3xl': labelSize === 'xxxLarge',
+      },
+      disabled && 'text-neutral-500',
+      defaultLabelColor,
+    );
 
-    if (disabled) {
-      labelColor = palette.grey[600];
-    }
+    const inputClasses = cn(
+      'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
+      fullWidth && 'w-full',
+      error ? 'border-red-500 focus-visible:ring-0' : 'border-neutral-300',
+      disabled && 'bg-neutral-100 text-neutral-500 cursor-not-allowed',
+      fieldSize === 'small'
+        ? 'h-6'
+        : fieldSize === 'medium'
+          ? 'h-8'
+          : fieldSize === 'large'
+            ? 'h-10'
+            : fieldSize === 'xLarge'
+              ? 'h-12'
+              : fieldSize === 'xxLarge'
+                ? 'h-14'
+                : fieldSize === 'xxxLarge'
+                  ? 'h-16'
+                  : 'h-10',
+      className,
+    );
 
     return (
-      <Stack
-        width={fullWidth ? '100%' : 'inherit'}
-        direction={'column'}
-        gap={'5px'}
-      >
+      <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
         {label && (
-          <Stack direction={'row'}>
-            <UITypography
-              type={labelSize}
-              color={labelColor}
-              fontBold={labelBold}
-            >
+          <div className='flex flex-row items-center'>
+            <Label htmlFor={id} className={labelClasses}>
               {label}
-            </UITypography>
-            {required && (
-              <Typography
-                sx={{ fontWeight: 600, color: palette.red[400], pl: 0.5 }}
-              >
-                <sup>*</sup>
-              </Typography>
-            )}
-          </Stack>
+            </Label>
+            {required && <span className='ml-1 text-red-500'>*</span>}{' '}
+            {/* Corrected color class */}
+          </div>
         )}
         {secondaryText && (
-          <Typography variant='body2'>{secondaryText}</Typography>
+          <p className='text-sm text-neutral-600'>{secondaryText}</p>
         )}
-        <MuiTextField
-          name={name}
-          margin='none'
-          select={select}
-          fullWidth={fullWidth}
-          value={value}
-          defaultValue={defaultValue}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          onSelect={onSelect}
-          error={error || contentExceeded}
-          disabled={disabled}
-          required={required}
-          variant='outlined'
-          placeholder={placeholder}
-          inputRef={ref}
-          multiline={multiline}
-          minRows={minRows}
-          maxRows={maxRows}
-          InputProps={{
-            ...InputProps
-          }}
-          onBlur={() => {
-            onBlur();
-            setContentExceeded(false);
-          }}
-          type={type}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              height: height ? `${height}px !important` : '100%',
-              borderRadius: `${borderRadius}px`
-            },
-            width: width
-          }}
-          {...rest}
-        >
-          {children}
-        </MuiTextField>
-        {(error || contentExceeded) && helperText && (
-          <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'start'}
-          >
-            <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
-            <UITypography type='small' color={palette.red[400]}>
-              {error
-                ? helperText
-                : contentExceeded
-                  ? errorMessages.maxCharExceeded
-                  : ''}
-            </UITypography>
-          </Stack>
-        )}
-      </Stack>
+        <div>
+          <Input
+            {...props}
+            ref={ref}
+            className={inputClasses}
+            disabled={disabled}
+            required={required}
+            type={type}
+          />
+          {error && helperText && (
+            <div className='mt-1 flex flex-row items-center'>
+              <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
+              <p className='text-sm text-red-700'>{helperText}</p>
+            </div>
+          )}
+        </div>
+      </div>
     );
-  }
+  },
 );
+
+UITextField.displayName = 'UITextField';
 
 export default UITextField;

@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Aglint AI Demo Helper",
+  "version": "1.0",
+  "description": "Aglint AI Demo Helper",
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "webNavigation",
+    "cookies",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "https://*.aglinthq.com/*",
+    "http://localhost:3000/*",
+    "http://localhost:9000/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.aglinthq.com/*", "http://localhost:3000/*"],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["dist/bundle.js"],
+      "matches": ["https://*.aglinthq.com/*", "http://localhost:3000/*"]
+    }
+  ]
+}

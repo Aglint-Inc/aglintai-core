@@ -9,23 +9,79 @@
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noErrorTruncation": true,
     "jsx": "preserve",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@devlink": ["./devlink/*"],
-      "@components/*": ["./src/components/*"],
-      "@config/*": ["./src/config/*"],
-      "@context/*": ["./src/context/*"],
-      "@defaultData/*": ["./src/defaultData/*"],
+      "@/api/*": ["./src/app/api/*"],
+      "@/candidate/authenticated/*": [
+        "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"
+      ],
+      "@/interview-pool/details/*": [
+        "./src/app/(authenticated)/_interview-pool/[pool]/_common/*"
+      ],
+      "@/interview-pool/*": [
+        "./src/app/(authenticated)/_interview-pool/_common/*"
+      ],
+      "@/jobs/*": ["./src/app/(authenticated)/jobs/_common/*"],
+      "@/scheduling/*": ["./src/app/(authenticated)/scheduling/_common/*"],
+      "@/jobs/create/*": ["./src/app/(authenticated)/jobs/create/_common/*"],
+      "@/job/*": ["./src/app/(authenticated)/jobs/[job]/_common/*"],
+      "@/job/interview-plan/*": [
+        "./src/app/(authenticated)/jobs/[job]/interview-plan/_common/*"
+      ],
+      "@/job/metrics/*": [
+        "./src/app/(authenticated)/jobs/[job]/metrics/_common/*"
+      ],
+      "@/job/job-details/*": [
+        "./src/app/(authenticated)/jobs/[job]/job-details/_common/*"
+      ],
+      "@/job/profile-score/*": [
+        "./src/app/(authenticated)/jobs/[job]/profile-score/_common/*"
+      ],
+      "@/job/workflows/*": [
+        "./src/app/(authenticated)/jobs/[job]/workflows/_common/*"
+      ],
+      "@/job/hiring-team/*": [
+        "./src/app/(authenticated)/jobs/[job]/hiring-team/_common/*"
+      ],
+      "@/jobs/job/application/*": [
+        "./src/app/(authenticated)/jobs/[job]/[application]/_common/*"
+      ],
+      "@/workflows/*": ["./src/app/(authenticated)/_workflows/_common/*"],
+      "@/workflow/*": [
+        "./src/app/(authenticated)/_workflows/[workflow]/_common/*"
+      ],
+      "@requests/*": ["./src/app/(authenticated)/_requests/_common/*"],
+      "@request/*": ["./src/app/(authenticated)/_requests/[id]/_common/*"],
+      "@requestHistory/*": [
+        "./src/app/(authenticated)/_requests/history/_common/*"
+      ],
+      "@interviews/*": ["./src/app/(authenticated)/_interviews/_common/*"],
+      "@/apiUtils/*": ["./src/apiUtils/*"],
+      "@/client/*": ["./src/client/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/constant/*": ["./src/constant/*"],
+      "@/context/*": ["./src/context/*"],
+      "@/extended/*": ["./src/extended/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/interface/*": ["./src/interface/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/queries/*": ["./src/queries/*"],
+      "@/server/*": ["./src/server/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/sqlFiles/*": ["./src/sqlFiles/*"],
+      "@/trpc/*": ["./src/trpc/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@components/*": ["./components/*"],
       "@styles/*": ["./styles/*"],
-      "@utils/*": ["./src/utils/*"],
       "@public/*": ["./public/*"],
-      "@types/*": ["./src/types/*"]
+      "@lib/*": ["./lib/*"]
     },
     "plugins": [
       {
@@ -43,7 +99,6 @@
     "src/components/Feedback/Session/index.jsx",
     "src/pages/api/getJobsPublic.js",
     ".next/types/**/*.ts"
-    // ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next"]
 }

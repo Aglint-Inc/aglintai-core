@@ -1,10 +1,24 @@
-import Seo from '@/src/components/Common/Seo';
-import SchedulingViewComp from '@/src/components/Scheduling/SchedulingView';
+import { useRouter } from 'next/router';
+import SchedulingViewComp from 'src/app/(authenticated)/_scheduling/view/_common/components';
+
+import Seo from '@/components/Common/Seo';
 
 function SchedulingViewPage() {
+  const {
+    query: { tab },
+  } = useRouter();
   return (
     <>
-      <Seo title={`Scheduling`} description='AI for People Products' />
+      {tab === 'candidate_details' && (
+        <Seo title='Candidate Details - Scheduling | Aglint AI' />
+      )}
+      {tab === 'job_details' && (
+        <Seo title='Job Details - Scheduling | Aglint AI' />
+      )}
+      {tab === 'instructions' && (
+        <Seo title='Instructions - Scheduling | Aglint AI' />
+      )}
+
       <SchedulingViewComp />
     </>
   );

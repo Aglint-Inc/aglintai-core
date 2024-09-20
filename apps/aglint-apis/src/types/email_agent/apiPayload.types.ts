@@ -17,7 +17,6 @@ export type EmailAgentPayload = {
     application_id: string;
     job_id: string;
     company_id: string;
-    schedule_id: string;
     company_logo: string;
     cand_application_status: string;
     candidate_time_zone: string | null;
@@ -26,11 +25,17 @@ export type EmailAgentPayload = {
     task_id: string;
     candidate_id: string;
     organizer_name: string;
+    organizer_timezone: string;
     interview_meetings: InterviewMeetingTypeDb[];
     meeting_summary: string;
     job_description: string;
     comp_scheduling_setting: schedulingSettingType;
     filter_id: string;
     email_subject: string;
+    agent_email: string;
+  };
+  schedule_chat_history: {
+    from_name: string;
+    subject: string;
   };
 };

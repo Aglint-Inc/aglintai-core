@@ -1,19 +1,15 @@
-import { Stack } from '@mui/material';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { LoaderSvg } from '@/devlink';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   AuthProvider,
   useAuthDetails,
-} from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+} from '@/context/AuthContext/AuthContext';
+import { supabase } from '@/utils/supabase/client';
 
 const AuthHoc = () => {
   return (
@@ -27,7 +23,7 @@ const AuthHoc = () => {
 
 const Google = () => {
   const router = useRouter();
-
+  const { toast } = useToast();
   const { recruiterUser, setRecruiterUser } = useAuthDetails();
 
   useEffect(() => {
@@ -58,13 +54,20 @@ const Google = () => {
           setRecruiterUser((prev) => ({
             ...prev,
             schedule_auth: {
+              email: email.data,
               access_token: tokens.access_token,
               refresh_token: tokens.refresh_token,
               expiry_date: tokens.expiry_date,
             },
           }));
-        } catch (err) {
-          toast.error(API_FAIL_MSG);
+        } catch (error) {
+          if (error instanceof Error) {
+            toast({
+              variant: 'destructive',
+              title: 'Error',
+              description: 'Something went wrong. Please try again.',
+            });
+          }
         } finally {
           const path = localStorage.getItem('gmail-redirect-path');
           if (path) {
@@ -79,15 +82,9 @@ const Google = () => {
 
   return (
     <>
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        width={'100vw'}
-        justifyContent={'center'}
-        height={'100vh'}
-      >
-        <LoaderSvg />
-      </Stack>
+      <div className='flex h-screen w-screen items-center justify-center'>
+        <Loader2 className='h-8 w-8 animate-spin' />
+      </div>
     </>
   );
 };

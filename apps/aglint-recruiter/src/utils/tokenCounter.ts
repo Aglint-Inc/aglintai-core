@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CompletionUsage } from 'openai/resources';
+import { type CompletionUsage } from 'openai/resources';
 
 export const tokenMeter = async ({
   company_name,
@@ -25,7 +25,7 @@ export const tokenMeter = async ({
         company_name: company_name,
       },
     );
-  } catch (error) {
-    //
+  } catch (err) {
+    console.error(err);
   }
 };

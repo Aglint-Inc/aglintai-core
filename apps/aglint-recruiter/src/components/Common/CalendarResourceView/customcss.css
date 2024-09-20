@@ -1,0 +1,71 @@
+/* FullCalendar Theming */
+:root {
+  --fc-small-font-size: 12px;
+  --fc-page-bg-color: hsl(var(--background));
+  --fc-neutral-bg-color: hsl(var(--muted));
+  --fc-neutral-text-color: hsl(var(--muted-foreground));
+  --fc-border-color: hsl(var(--border));
+
+  --fc-button-text-color: hsl(var(--primary-foreground));
+  --fc-button-bg-color: hsl(var(--primary));
+  --fc-button-border-color: hsl(var(--primary));
+  --fc-button-hover-bg-color: hsl(var(--primary) / 0.9);
+  --fc-button-hover-border-color: hsl(var(--primary) / 0.9);
+  --fc-button-active-bg-color: hsl(var(--primary) / 0.8);
+  --fc-button-active-border-color: hsl(var(--primary) / 0.8);
+
+  --fc-event-bg-color: transparent;
+  --fc-event-border-color: none;
+  --fc-event-text-color: var(--neutral-12);
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+
+  --fc-more-link-bg-color: hsl(var(--muted));
+  --fc-more-link-text-color: inherit;
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+  --fc-bg-event-color: hsl(var(--muted));
+  --fc-bg-event-opacity: 0.9;
+  --fc-highlight-color: rgba(188, 232, 241, 0.3);
+  --fc-today-bg-color: var(--accent-9);
+  --fc-now-indicator-color: var(--error-9);
+  --fc-non-business-color: #ebebeb80;
+}
+
+/* hidden a license */
+.fc-license-message,
+.fc-header-toolbar {
+  display: none !important;
+}
+
+/* ----------------------------------------------- */
+
+/* Optionally, hide the vertical and horizontal scrollbars */
+.fc .fc-scroller {
+  scrollbar-width: none; /* For Firefox */
+}
+.fc .fc-scroller::-webkit-scrollbar {
+  display: none; /* For WebKit browsers like Chrome, Safari, etc. */
+}
+
+.fc .fc-timegrid-body .fc-timegrid-slot,
+.fc .fc-timegrid-body .fc-timegrid-slot-lane {
+  background-color: white !important; /* Ensures all rows are white */
+}
+
+.fc th {
+  background: #f4f4f4 !important;
+}
+
+.fc-timegrid-slot,
+.fc-timegrid-slot-label {
+  height: 60px !important; /* Ensure this overrides any other styles */
+}
+
+.fc-toolbar.fc-header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--tw-bg-opacity);
+  border-bottom: 1px solid #ddd;
+}

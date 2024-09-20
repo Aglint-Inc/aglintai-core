@@ -1,0 +1,20 @@
+#reset {
+  display: flex;
+  gap: 20px;
+
+  .console {
+    padding-left: 20px;
+    border-left: 1px solid rgb(196, 196, 196);
+  }
+  .reset-btns-container {
+    display: flex;
+    gap: 20px;
+    & > div {
+      padding: 10px;
+      border-right: 1px solid #ccc;
+    }
+    & > div:last-child {
+      border-right: none;
+    }
+  }
+}

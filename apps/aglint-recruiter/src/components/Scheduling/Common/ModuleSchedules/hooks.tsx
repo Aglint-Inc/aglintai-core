@@ -1,8 +1,11 @@
-import { DatabaseEnums, schedulingSettingType } from '@aglint/shared-types';
+import {
+  type DatabaseEnums,
+  type schedulingSettingType,
+} from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { supabase } from '@/src/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 
 const today = dayjs().startOf('day');
 const firstDayOfWeek = dayjs().startOf('week').startOf('day').format();
@@ -13,14 +16,14 @@ export const useScheduleList = ({ user_id }) => {
   const query = useQuery({
     queryKey: ['get_scheduleList', user_id],
     queryFn: () => getScheduleList(user_id),
-    initialData: {
+    enabled: !!user_id,
+    placeholderData: {
       schedules: [],
       totalHoursToday: 0,
       totalHoursThisWeek: 0,
       totalInterviewsToday: 0,
       totalInterviewsThisWeek: 0,
     },
-    enabled: !!user_id,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_scheduleList', user_id] });
@@ -96,6 +99,7 @@ export type ScheduleListType = {
     start_time: string;
     status: DatabaseEnums['interview_schedule_status'];
     meeting_id: string;
+    module_id: string;
   };
   users: {
     email: string;
@@ -107,6 +111,7 @@ export type ScheduleListType = {
     profile_image: string;
     scheduling_settings: schedulingSettingType;
     training_type: DatabaseEnums['interviewer_type'];
+    is_confirmed: boolean;
     weekly_meetings: {
       end_time: string;
       duration: number;
@@ -114,4 +119,12 @@ export type ScheduleListType = {
     }[];
     accepted_status: DatabaseEnums['session_accepted_status'];
   }[];
+  candidate: {
+    candidate_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    application_id: string;
+  };
 }[];

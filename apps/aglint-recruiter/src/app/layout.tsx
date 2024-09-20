@@ -1,21 +1,38 @@
+import '@styles/globals.css';
+import 'regenerator-runtime/runtime';
+
+import { ThemeProvider } from '@components/theme-provider';
+import { Toaster } from '@components/ui/toaster';
 import React from 'react';
 
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
 export const metadata = {
-  title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
-  site_name: 'Aglint Inc',
-  description:
-    'Discover Aglint AI, the intelligent solution designed to enhance recruitment efficiency. Source, screen, rank, and schedule interviews with candidates faster than ever. Transform your hiring strategy with our AI-driven tools.',
-  icon: '/images/favicon.ico',
+  metadataBase: new URL(defaultUrl),
+  title: 'Aglint AI',
+  description: 'AI Recruiter for your company.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body>{children}</body>
+    <html lang='en' suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

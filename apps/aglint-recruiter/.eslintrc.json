@@ -1,8 +1,21 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": true
+  },
   "root": true,
-  "plugins": ["simple-import-sort", "jsx-a11y"],
+  "plugins": [
+    "@typescript-eslint",
+    "simple-import-sort",
+    "eslint-plugin-import",
+    //"eslint-plugin-react-compiler", //causing issues in the build
+    "jsx-a11y",
+    "@aglint/linter",
+    "unused-imports"
+  ],
   "env": {
-    "es6": true
+    "es6": true,
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -10,27 +23,63 @@
     "next/core-web-vitals",
     "prettier",
     "plugin:jsx-a11y/recommended",
-    "plugin:security/recommended"
+    "plugin:security/recommended-legacy",
+    "next/typescript" //reccomendded by next.js
   ],
   "ignorePatterns": [
+    "node_modules",
+    ".next",
     "devlink_queries",
-    "devlink*",
     "src/components/Icons",
-    "src/components/JobTracker/Activities/devlink",
     "src/types/*",
-    ".github"
+    ".github",
+    "components/ui",
+    "script/*"
   ],
   "rules": {
-    "no-unused-vars": "error",
-    "no-console": "error",
+    "@next/next/no-html-link-for-pages": ["error", "src/pages"],
+    "no-console": ["error", { "allow": ["error"] }],
     "react-hooks/exhaustive-deps": "off",
     "jsx-a11y/click-events-have-key-events": "off",
+    "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": "error"
+    "security/detect-object-injection": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/no-require-imports": "off",
+    "@typescript-eslint/no-empty-object-type": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ], //ignore unused variables starting with _
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/no-cycle": "error",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "fixStyle": "inline-type-imports"
+      }
+    ]
   },
+  "overrides": [
+    {
+      "files": ["**/*.tsx"],
+      "plugins": ["@aglint/linter"]
+    }
+  ],
   "settings": {
     "next": {
       "rootDir": "apps/aglint-recruiter"
+    },
+    "import/resolver": {
+      "typescript": {}
     }
   }
 }

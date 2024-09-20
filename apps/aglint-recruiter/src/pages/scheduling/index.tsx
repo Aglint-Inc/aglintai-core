@@ -1,26 +1,12 @@
-import Seo from '@/src/components/Common/Seo';
-import SchedulingMainComp from '@/src/components/Scheduling';
-import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
-import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import InterviewsLayout from 'src/app/(authenticated)/_interviews/InterviewsLayout';
+import InterviewsPage from 'src/app/(authenticated)/_interviews/page';
 
 function SchedulingMainPage() {
   return (
-    <>
-      <Seo
-        title={`Scheduling`}
-        description='AI for People Products'
-      />
-      <SchedulingMainComp />
-    </>
+    <InterviewsLayout>
+      <InterviewsPage />
+    </InterviewsLayout>
   );
 }
-
-SchedulingMainPage.privateProvider = function privateProvider(page) {
-  return (
-    <SchedulingProvider>
-      <InterviewerContextProvider>{page}</InterviewerContextProvider>
-    </SchedulingProvider>
-  );
-};
 
 export default SchedulingMainPage;

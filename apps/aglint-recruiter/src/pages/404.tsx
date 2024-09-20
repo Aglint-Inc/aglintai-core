@@ -1,19 +1,15 @@
-import { Page404 } from '@/devlink';
+import { NotFound } from '@/components/Common/404';
 
 import Seo from '../components/Common/Seo';
 
-export default function NotFoundPage() {
+export default function PageNotFound() {
   return (
     <>
       <Seo
-        title='Page not found'
+        title='Page Not Found - 404 | Aglint AI'
         description='AI for People Products'
       />
-      <Page404 />
+      <NotFound />
     </>
   );
 }
-
-// NotFoundPage.publicProvider = (page) => {
-//   return <>{page}</>;
-// };

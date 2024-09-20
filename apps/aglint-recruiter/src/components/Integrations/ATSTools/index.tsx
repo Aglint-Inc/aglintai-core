@@ -1,166 +1,193 @@
-import { RecruiterType } from '@aglint/shared-types';
-import { IconButton, TextField } from '@mui/material';
-import { IconEye, IconEyeOff } from '@tabler/icons-react';
+import { useToast } from '@components/hooks/use-toast';
+import { Input } from '@components/ui/input';
 import axios from 'axios';
 import { capitalize } from 'lodash';
-import posthog from 'posthog-js';
+import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
-import { IntegrationCard } from '@/devlink2';
-import {
-  ButtonGrey,
-  ButtonPrimaryDefaultRegular,
-  ButtonPrimaryOutlinedRegular,
-} from '@/devlink3';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import ATSPopUps from '../ATSPopUps';
-import { ATSType, PopUpReasonTypes } from '../types';
-import {
-  AshbyLogo,
-  GreenHouseLogo,
-  LeverLogo,
-  updateRecruiter,
-} from '../utils';
+import { IntegrationCard } from '../components/IntegrationCard';
+import { type ATSType, type PopUpReasonTypes } from '../types';
+import { updateIntegrations } from '../utils';
+// import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
+// import LeverLogo from '@public/images/svg/lever-logo.svg';
+// import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
-function ATSTools() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+function ATSTools({ integrations, refetch }) {
+  const { toast } = useToast();
+  const router = useRouter();
+  const { recruiter } = useAuthDetails();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
-  const [hideApiKey, setHideApiKey] = useState(true);
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(null);
+  // const { data: integrations, refetch } = useAllIntegrations();
 
-  async function action() {
-    const apiKey = inputRef.current && inputRef.current.value;
-    setLoading(true);
-    if (reason === 'disconnect_greenhouse') {
-      await updateRecruiter(recruiter.id, {
-        greenhouse_key: null,
-      } as RecruiterType).then((data: RecruiterType) => {
-        setRecruiter(data);
-      });
-    }
-    if (reason === 'disconnect_ashby') {
-      await updateRecruiter(recruiter.id, {
-        ashby_key: null,
-      } as RecruiterType).then((data: RecruiterType) => {
-        setRecruiter(data);
-      });
-    }
-    if (reason === 'disconnect_lever') {
-      await updateRecruiter(recruiter.id, {
-        lever_key: null,
-      } as RecruiterType).then((data: RecruiterType) => {
-        setRecruiter(data);
-      });
-    }
+  async function action(): Promise<boolean> {
+    try {
+      const apiKey = inputRef.current && inputRef.current.value;
+      setLoading(true);
+      if (reason === 'disconnect_greenhouse') {
+        await updateIntegrations({ greenhouse_key: null }, recruiter.id);
+      }
+      if (reason === 'disconnect_ashby') {
+        await updateIntegrations({ ashby_key: null }, recruiter.id);
+      }
+      if (reason === 'disconnect_lever') {
+        await updateIntegrations({ lever_key: null }, recruiter.id);
+      }
 
-    if (reason === 'connect_greenhouse' || reason === 'update_greenhouse') {
-      if (apiKey) {
-        try {
-          // verifying greenhouse key
-          const response = await axios.post('/api/greenhouse/getPostings', {
-            page: 1,
-            apiKey: apiKey,
-            isInitial: true,
-          });
-          if (response.status === 200 && response.data.length > 0) {
-            // updating key to database
-            const responseRec = await axios.post('/api/greenhouse/saveApiKey', {
-              recruiterId: recruiter.id,
+      if (reason === 'connect_greenhouse' || reason === 'update_greenhouse') {
+        if (apiKey) {
+          try {
+            // verifying greenhouse key
+            const response = await axios.post('/api/greenhouse/getPostings', {
+              page: 1,
               apiKey: apiKey,
+              isInitial: true,
             });
-            if (
-              responseRec.status === 200 &&
-              responseRec.data[0]?.greenhouse_key
-            ) {
-              setRecruiter(responseRec.data[0]);
-              posthog.capture('Green House Data Fetched');
+            if (response.status === 200 && response.data.length > 0) {
+              // updating key to database
+              const responseRec = await axios.post(
+                '/api/greenhouse/saveApiKey',
+                {
+                  recruiterId: recruiter.id,
+                  apiKey: apiKey,
+                },
+              );
+              if (
+                responseRec.status === 200 &&
+                responseRec.data[0]?.greenhouse_key
+              ) {
+                // Removedposthog.capture('Greenhouse Data Fetched');
+              }
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'API is invalid!',
+              });
+              setLoading(false);
+              return false;
             }
-          } else {
-            toast.error('API is invalid!');
+          } catch (error) {
+            toast({
+              variant: 'destructive',
+              title: 'Something went wrong.',
+            });
             setLoading(false);
-            return;
+            return false;
           }
-        } catch (error) {
-          toast.error('Something went wrong.');
-        }
-      } else {
-        toast.warning('Please provide API key.');
-        setLoading(false);
-        return;
-      }
-    }
-    if (reason === 'connect_ashby' || reason === 'update_ashby') {
-      if (apiKey) {
-        try {
-          // verifying greenhouse key
-          const response = await axios.post('/api/ashby/getPostings', {
-            page: 1,
-            apiKey: inputRef.current.value,
-            isInitial: true,
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Please provide API key.',
           });
-          if (response.status === 200 && response.data?.results?.length > 0) {
-            // updating key to database
-            const responseRec = await axios.post('/api/ashby/saveApiKey', {
-              recruiterId: recruiter.id,
-              apiKey: apiKey,
-            });
-            if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-              setRecruiter(responseRec.data[0]);
-              posthog.capture('Ashby Data Fetched');
-            }
-          } else {
-            toast.error('API is invalid.');
-            setLoading(false);
-            return;
-          }
-        } catch (error) {
-          toast.error('Something went wrong!');
+          setLoading(false);
+          return false;
         }
-      } else {
-        toast.warning('Please provide API key!');
-        setLoading(false);
-        return;
       }
-    }
-    if (reason === 'connect_lever' || reason === 'update_lever') {
-      if (apiKey) {
-        try {
-          // verifying greenhouse key
-          const response = await axios.post('/api/lever/getPostings', {
-            offset: 0,
-            apiKey: inputRef.current.value,
-            isInitial: true,
+      if (reason === 'connect_ashby' || reason === 'update_ashby') {
+        if (apiKey) {
+          try {
+            // verifying greenhouse key
+            const response = await axios.post('/api/ashby/getPostings', {
+              page: 1,
+              apiKey: inputRef.current.value,
+              isInitial: true,
+            });
+            if (response.status === 200 && response.data?.results?.length > 0) {
+              // updating key to database
+              const responseRec = await axios.post('/api/ashby/saveApiKey', {
+                recruiterId: recruiter.id,
+                apiKey: apiKey,
+              });
+              if (
+                responseRec.status === 200 &&
+                responseRec.data[0]?.ashby_key
+              ) {
+                //Removedposthog posthog.capture('Ashby Data Fetched');
+              }
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'API is invalid.',
+              });
+              setLoading(false);
+              return false;
+            }
+          } catch (error) {
+            toast({
+              variant: 'destructive',
+              title: 'Something went wrong!',
+            });
+            setLoading(false);
+            return false;
+          }
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Please provide API key!',
           });
-          if (response.status === 200 && response.data.data) {
-            // updating key to database
-            const responseRec = await axios.post('/api/lever/saveApiKey', {
-              recruiterId: recruiter.id,
-              apiKey: apiKey,
-            });
-            if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
-              setRecruiter(responseRec.data[0]);
-              posthog.capture('Lever Data Fetched');
-            }
-          } else {
-            toast.error('API is invalid!');
-            setLoading(false);
-            return;
-          }
-        } catch (error) {
-          toast.error('Something went wrong.');
+          setLoading(false);
+          return false;
         }
-      } else {
-        toast.warning('Please provide API key!');
-        setLoading(false);
-        return;
       }
+      if (reason === 'connect_lever' || reason === 'update_lever') {
+        if (apiKey) {
+          try {
+            // verifying greenhouse key
+            const response = await axios.post('/api/lever/getPostings', {
+              offset: 0,
+              apiKey: inputRef.current.value,
+              isInitial: true,
+            });
+            if (response.status === 200 && response.data.data) {
+              // updating key to database
+              const responseRec = await axios.post('/api/lever/saveApiKey', {
+                recruiterId: recruiter.id,
+                apiKey: apiKey,
+              });
+              if (
+                responseRec.status === 200 &&
+                responseRec.data[0]?.lever_key
+              ) {
+                // Removed posthog.capture('Lever Data Fetched');
+              }
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'API is invalid!',
+              });
+              setLoading(false);
+              return false;
+            }
+          } catch (error) {
+            toast({
+              variant: 'destructive',
+              title: 'Something went wrong.',
+            });
+            setLoading(false);
+            return false;
+          }
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Please provide API key!',
+          });
+          setLoading(false);
+          return false;
+        }
+      }
+      refetch();
+      close();
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-    close();
   }
 
   function close() {
@@ -199,18 +226,25 @@ function ATSTools() {
 
       setIsOpen(true);
       setReason('update_greenhouse');
-      await axios
-        .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.greenhouse_key,
-        })
-        .then(({ data }) => {
-          if (data) {
-            setTimeout(() => {
-              inputRef.current.value = (data as string) || '';
-              setInputValue(data);
-            }, 10);
-          }
+      try {
+        await axios
+          .post(`/api/decryptApiKey`, {
+            encryptData: integrations.greenhouse_key,
+          })
+          .then(({ data }) => {
+            if (data) {
+              setTimeout(() => {
+                inputRef.current.value = (data as string) || '';
+                setInputValue(data);
+              }, 10);
+            }
+          });
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Something went wrong.',
         });
+      }
       setLoading(false);
     }
     if (source === 'ashby') {
@@ -218,7 +252,7 @@ function ATSTools() {
       setReason('update_ashby');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.ashby_key,
+          encryptData: integrations.ashby_key,
         })
         .then(({ data }) => {
           if (data) {
@@ -235,7 +269,7 @@ function ATSTools() {
       setReason('update_lever');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.lever_key,
+          encryptData: integrations.lever_key,
         })
         .then(({ data }) => {
           if (data) {
@@ -265,68 +299,63 @@ function ATSTools() {
     {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
-      isConnected: recruiter?.greenhouse_key,
-      logo: <GreenHouseLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={recruiter?.greenhouse_key ? 'Edit API Key' : 'Connect'}
-          secondaryText={recruiter?.greenhouse_key ? 'Disconnect' : 'Learn How'}
-          secondaryAction={() => {
-            setLoading(false);
-            if (recruiter.greenhouse_key) disConnectApi('greenhouse');
-            else readDocs('greenhouse');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (recruiter.greenhouse_key) updateApi('greenhouse');
-            else connectApi('greenhouse');
-          }}
-        />
-      ),
+      isConnected: integrations?.greenhouse_key,
+      logo: <></>,
+      // logo: <GreenHouseLogo />,
+      primaryText: integrations?.greenhouse_key ? 'Settings' : 'Connect',
+      secondaryText: integrations?.greenhouse_key ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (integrations.greenhouse_key)
+          router.push('/integrations/greenhouse');
+        else connectApi('greenhouse');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (integrations.greenhouse_key) disConnectApi('greenhouse');
+        else readDocs('greenhouse');
+      },
+      learnHowLink: 'https://developers.greenhouse.io/harvest.html',
     },
     {
       name: 'lever' as ATSType,
       url: 'lever.co',
-      isConnected: recruiter?.lever_key,
-      logo: <LeverLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={recruiter?.lever_key ? 'Edit API Key' : 'Connect'}
-          secondaryText={recruiter?.lever_key ? 'Disconnect' : 'Learn How'}
-          secondaryAction={() => {
-            setLoading(false);
-            if (recruiter.lever_key) disConnectApi('lever');
-            else readDocs('lever');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (recruiter.lever_key) updateApi('lever');
-            else connectApi('lever');
-          }}
-        />
-      ),
+      isConnected: integrations?.lever_key,
+      logo: <></>,
+      // logo: <LeverLogo />,
+      primaryText: integrations?.lever_key ? 'Settings' : 'Connect',
+      secondaryText: integrations?.lever_key ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (integrations.lever_key) updateApi('lever');
+        else connectApi('lever');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (integrations.lever_key) disConnectApi('lever');
+        else readDocs('lever');
+      },
+      learnHowLink: 'https://hire.lever.co/developer/documentation',
     },
     {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
-      isConnected: recruiter?.ashby_key,
-      logo: <AshbyLogo />,
-      buttons: (
-        <CardButtons
-          primaryText={recruiter?.ashby_key ? 'Edit API Key' : 'Connect'}
-          secondaryText={recruiter?.ashby_key ? 'Disconnect' : 'Learn How'}
-          secondaryAction={() => {
-            setLoading(false);
-            if (recruiter.ashby_key) disConnectApi('ashby');
-            else readDocs('ashby');
-          }}
-          primaryAction={() => {
-            setLoading(false);
-            if (recruiter.ashby_key) updateApi('ashby');
-            else connectApi('ashby');
-          }}
-        />
-      ),
+      isConnected: integrations?.ashby_key,
+      logo: <></>,
+      // logo: <AshbyLogo />,
+      primaryText: integrations?.ashby_key ? 'Settings' : 'Connect',
+      secondaryText: integrations?.ashby_key ? 'Disconnect' : 'Learn How',
+      primaryAction: () => {
+        setLoading(false);
+        if (integrations.ashby_key) updateApi('ashby');
+        else connectApi('ashby');
+      },
+      secondaryAction: () => {
+        setLoading(false);
+        if (integrations.ashby_key) disConnectApi('ashby');
+        else readDocs('ashby');
+      },
+      learnHowLink: 'https://developers.ashbyhq.com/',
     },
   ];
   return (
@@ -335,40 +364,23 @@ function ATSTools() {
         {atsTools.map((item, i) => {
           return (
             <IntegrationCard
-              onClickCopyLink={{
-                onClick: () => {
-                  window.open('https://' + item.url);
-                },
-              }}
-              isConnectedVisible={!!item.isConnected}
               key={i}
+              slotLogo={item.logo}
               textName={capitalize(item.name)}
               textLink={item.url}
-              slotLogo={<>{item.logo}</>}
-              slotButton={item.buttons}
+              isConnected={item.isConnected}
+              primaryText={item.primaryText}
+              secondaryText={item.secondaryText}
+              primaryAction={item.primaryAction}
+              secondaryAction={item.secondaryAction}
+              learnHowLink={item.learnHowLink}
+              onClick={() => window.open('https://' + item.url)}
             />
           );
         })}
       </>
       <ATSPopUps // popup for Hr tools
-        popUpBody={
-          <TextField
-            type={hideApiKey ? 'password' : 'text'}
-            fullWidth
-            inputRef={inputRef}
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  onClick={() => {
-                    setHideApiKey((pre) => !pre);
-                  }}
-                >
-                  {hideApiKey ? <IconEyeOff /> : <IconEye />}
-                </IconButton>
-              ),
-            }}
-          />
-        }
+        popUpBody={<Input ref={inputRef} placeholder='Enter API Key' />}
         close={close}
         isOpen={isOpen}
         action={action}
@@ -381,41 +393,3 @@ function ATSTools() {
 }
 
 export default ATSTools;
-
-function CardButtons({
-  primaryAction,
-  secondaryAction,
-  primaryText,
-  secondaryText,
-}: {
-  primaryAction: () => void;
-  secondaryAction: () => void;
-  primaryText: string;
-  secondaryText: string;
-}) {
-  return (
-    <>
-      <ButtonGrey
-        onClickButton={{
-          onClick: secondaryAction,
-        }}
-        textLabel={secondaryText}
-      />
-      {primaryText === 'Edit API Key' ? (
-        <ButtonPrimaryOutlinedRegular
-          buttonProps={{
-            onClick: primaryAction,
-          }}
-          buttonText={primaryText}
-        />
-      ) : (
-        <ButtonPrimaryDefaultRegular
-          buttonProps={{
-            onClick: primaryAction,
-          }}
-          buttonText={primaryText}
-        />
-      )}
-    </>
-  );
-}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { google } from 'googleapis';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 const jwtClient = new google.auth.JWT(
   'job-posting@aglint-cloud-381414.iam.gserviceaccount.com',

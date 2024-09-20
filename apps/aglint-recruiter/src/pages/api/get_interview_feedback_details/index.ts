@@ -1,10 +1,10 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { API_get_interview_feedback_details } from './types';
+import { type API_get_interview_feedback_details } from './types';
 
-const supabase = createClient<CustomDatabase>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -50,7 +50,7 @@ const getInterviewDetails = async (interview_id: string) => {
   return supabase
     .from('interview_meeting')
     .select(
-      'candidate_feedback, interview_schedule( applications( public_jobs(id,logo, job_title, company)))',
+      'candidate_feedback,  applications( public_jobs(id, job_title,recruiter!public_jobs_recruiter_id_fkey(logo,name)))',
     )
     .eq('id', interview_id)
     .single()
@@ -58,9 +58,9 @@ const getInterviewDetails = async (interview_id: string) => {
       if (error) throw error;
       return {
         candidate_feedback: data.candidate_feedback,
-        company_logo: data.interview_schedule.applications.public_jobs.logo,
-        company_name: data.interview_schedule.applications.public_jobs.company,
-        job_title: data.interview_schedule.applications.public_jobs.job_title,
+        company_logo: data.applications.public_jobs.recruiter.logo,
+        company_name: data.applications.public_jobs.recruiter.name,
+        job_title: data.applications.public_jobs.job_title,
       };
     });
 };

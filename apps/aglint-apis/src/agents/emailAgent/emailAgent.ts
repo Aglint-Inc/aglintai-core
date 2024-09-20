@@ -10,7 +10,7 @@ import {RunnableSequence} from '@langchain/core/runnables';
 import {AIMessage, HumanMessage} from 'langchain/schema';
 import {EmailAgentPayload} from '../../types/email_agent/apiPayload.types';
 import {emailAgentPrompt} from './emailAgentPrompt';
-import {verifyAvailability} from './tools/verify_availability';
+import {findSlots} from './tools/findSlots';
 import {bookInterviewSlot} from './tools/bookInterviewSlot';
 import {cancelInterviewSlot} from './tools/cancelInterview';
 import {convertAgentResponseToEmailTemplate} from './tools/utils';
@@ -18,6 +18,7 @@ const MEMORY_KEY = 'chat_history';
 
 import {LoggerType} from '../../utils/scheduling_utils/getCandidateLogger';
 import {findTimeZone} from './tools/find-time-zone';
+import {getJobDescription} from './tools/getJobDescription';
 
 export async function emailAgentHandler(
   {history, payload}: EmailAgentPayload,
@@ -46,10 +47,11 @@ export async function emailAgentHandler(
   ]);
 
   const tools = [
-    verifyAvailability(payload, candLogger),
+    findSlots(payload, candLogger),
     bookInterviewSlot(payload, candLogger),
     cancelInterviewSlot(payload, candLogger),
     findTimeZone(payload, candLogger),
+    getJobDescription(payload),
   ];
 
   const modelWithFunctions = llm.bind({

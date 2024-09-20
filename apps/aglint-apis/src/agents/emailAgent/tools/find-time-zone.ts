@@ -1,10 +1,7 @@
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
 import {EmailAgentPayload} from '../../../types/email_agent/apiPayload.types';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../services/supabase/SupabaseAdmin';
 import {
   geoCodeLocation,
   getTimeZoneOfGeo,
@@ -12,6 +9,7 @@ import {
 import {appLogger} from '../../../services/logger';
 import {LoggerType} from '../../../utils/scheduling_utils/getCandidateLogger';
 import {agent_activities} from '../../../copies/agents_activity';
+import {supabaseWrap} from '@aglint/shared-utils';
 
 export const findTimeZone = (
   {candidate_id}: EmailAgentPayload['payload'],

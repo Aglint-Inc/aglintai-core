@@ -1,107 +1,109 @@
 /* eslint-disable security/detect-object-injection */
-/* eslint-disable no-console */
+import {
+  type APICandScheduleMailThankYou,
+  type TargetApiPayloadType,
+} from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { addScheduleActivity } from '@/src/components/Scheduling/AllSchedules/queries/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
+import { mailSender } from '@/utils/mailSender';
+import { addScheduleActivity } from '@/utils/scheduling/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+
+import { type ApiDebriefAddUsers } from './debrief-add-users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (!req.body.filter_id) {
-      return res.status(200).send('Missing filter_id');
-    }
+    const {
+      session_ids,
+      application_id,
+      filter_id,
+      availability_request_id,
+      is_debreif,
+    } = req.body as APICandScheduleMailThankYou;
 
-    const filter_id = req.body.filter_id;
-
-    const { data: filterJson, error: errFilterJson } = await supabaseAdmin
-      .from('interview_filter_json')
-      .select(
-        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(name, email_template)),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
-      )
-      .eq('id', filter_id);
-
-    if (errFilterJson) throw new Error();
-    console.log(filterJson);
-
-    const { data: sessions, error: errSessions } = await supabaseAdmin
-      .from('interview_session')
-      .select('*')
-      .in('id', filterJson[0].session_ids);
-
-    if (errSessions) throw new Error();
-
-    console.log(sessions);
+    const { meeting_data } = await fetchSessionDetails(
+      session_ids,
+      application_id,
+    );
 
     addScheduleActivity({
-      title: `Candidate confirmed ${sessions
-        .map((ses) => ses.name)
-        .join(' , ')}`,
-      application_id: filterJson[0].interview_schedule.application_id,
-      logger: filterJson[0].interview_schedule.application_id,
-      type: 'schedule',
+      title: `Booked ${meeting_data.map((ses) => ses.name).join(' , ')}`,
+      application_id: application_id,
+      logged_by: 'candidate',
       supabase: supabaseAdmin,
       created_by: null,
+      metadata: {
+        type: 'booking_confirmation',
+        sessions: meeting_data,
+        filter_id,
+        availability_request_id,
+        action: 'waiting',
+      },
     });
 
-    const emailTemplate = filterJson[0].interview_schedule.applications
-      .public_jobs.recruiter.email_template[
-      'candidate_invite_confirmation'
-    ] as {
-      subject: string;
-      body: string;
-    };
-
-    const company_name =
-      filterJson[0].interview_schedule.applications.public_jobs.recruiter.name;
-    const candidate_email =
-      filterJson[0].interview_schedule.applications.candidates.email;
-    const candidate_name =
-      filterJson[0].interview_schedule.applications.candidates.first_name;
-    const job_tile =
-      filterJson[0].interview_schedule.applications.public_jobs.job_title;
-    const schedule_name = `Interview for ${job_tile} - ${candidate_name}`;
-    const schedule_id = filterJson[0].interview_schedule.id;
-
-    if (emailTemplate) {
-      const { data, status } = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
-        {
-          fromEmail: `messenger@aglinthq.com`,
-          fromName: 'Aglint',
-          email: candidate_email,
-          subject: fillEmailTemplate(emailTemplate.subject, {
-            company_name: company_name,
-            schedule_name: schedule_name,
-            first_name: candidate_name,
-            last_name: '',
-            job_title: job_tile,
-          }),
-          text: fillEmailTemplate(emailTemplate.body, {
-            company_name: company_name,
-            schedule_name: schedule_name,
-            first_name: candidate_name,
-            last_name: '',
-            job_title: job_tile,
-            view_details: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>View Details</a>`,
-          }),
-        },
+    if (filter_id) {
+      const payloadDebriefAddUsers: ApiDebriefAddUsers = {
+        filter_id,
+      };
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/debrief-add-users`,
+        payloadDebriefAddUsers,
       );
-      if (status === 200) {
-        console.log(data);
-      } else {
-        console.log('Failed to send email');
-      }
-      return res.status(200).send(true);
-    } else {
-      console.log('unable to find email template ');
-      return res.status(400).send('unable to find email template ');
+      supabaseWrap(
+        await supabaseAdmin
+          .from('interview_filter_json')
+          .update({
+            confirmed_on: dayjsLocal().toISOString(),
+          })
+          .eq('id', filter_id),
+      );
     }
+
+    if (!is_debreif) {
+      const payload: TargetApiPayloadType<'confirmInterview_email_applicant'> =
+        {
+          availability_req_id: availability_request_id,
+          application_id: application_id,
+          session_ids: session_ids,
+          filter_id: filter_id,
+        };
+      await mailSender({
+        target_api: 'confirmInterview_email_applicant',
+        payload: {
+          ...payload,
+        },
+      });
+    }
+
+    return res.status(200).send('ok');
   } catch (error) {
-    // console.log('error', error);
-    return res.status(400).send(error.message);
+    console.error(error);
+    return res.status(500).send(error.message);
   }
 };
 
 export default handler;
+
+export const fetchSessionDetails = async (
+  session_ids: string[],
+  application_id: string,
+) => {
+  const meeting_data = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        '*,interview_meeting(id,start_time,end_time,status,cal_event_id,meeting_link),interview_session_relation(*,interview_module_relation(id,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
+      )
+      .in('id', session_ids),
+  );
+  const [application] = supabaseWrap(
+    await supabaseAdmin
+      .from('applications')
+      .select('id,candidates(id,first_name,last_name,email)')
+      .eq('id', application_id),
+  );
+  return { meeting_data, candidate: application.candidates };
+};

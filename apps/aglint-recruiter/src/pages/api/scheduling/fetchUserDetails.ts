@@ -1,30 +1,38 @@
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
+import { interviewPlanRecruiterUserQuery } from '@/utils/Constants';
 
-const supabase = createClient<Database>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
 
-interface BodyParamsFetchUserDetails {
+export type ApiFetchUserDetails = Awaited<ReturnType<typeof fetchUsers>>;
+
+export interface BodyParamsFetchUserDetails {
   recruiter_id: string;
-  status?: 'joined' | 'invited';
+  includeSupended?: boolean;
+  isCalendar?: boolean | null;
 }
 
-export type CompanyMembersAPI = ReturnType<typeof fetchUsers>;
+export type CompanyMembersAPI = Awaited<ReturnType<typeof fetchUsers>>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { recruiter_id, status = 'joined' } =
-      req.body as BodyParamsFetchUserDetails;
+    const {
+      recruiter_id,
+      includeSupended,
+      isCalendar = null,
+    } = req.body as BodyParamsFetchUserDetails;
 
-    const resUsers = await fetchUsers(recruiter_id, status);
-    if (resUsers.length) {
-      return res.status(200).json(resUsers);
-    }
+    const resUsers = await fetchUsers(
+      recruiter_id,
+      includeSupended,
+      isCalendar,
+    );
+    return res.status(200).json(resUsers);
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -32,18 +40,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (recruiter_id: string, status: string) => {
-  return supabase
+export const fetchUsers = async (
+  recruiter_id: string,
+  includeSuspended: boolean,
+  isCalendarConnected: boolean | null,
+) => {
+  const query = supabase
     .from('recruiter_relation')
     .select(
-      `role,recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery})`,
+      `manager_id, created_by, recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}, office_locations(*), departments(id,name)), roles(id,name)`,
     )
     .eq('recruiter_id', recruiter_id)
-    .eq('recruiter_user.join_status', status)
-    .then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      return data
-        .filter((item) => item.recruiter_user)
-        .map((item) => ({ ...item.recruiter_user, role: item.role }));
-    });
+    .eq('is_active', true);
+
+  if (includeSuspended) {
+    query.in('recruiter_user.status', ['active', 'suspended']);
+  } else {
+    query.in('recruiter_user.status', ['active']);
+  }
+
+  if (isCalendarConnected) {
+    query.eq('recruiter_user.is_calendar_connected', true);
+  }
+
+  return query.throwOnError().then(({ data, error }) => {
+    if (error) throw new Error(error.message);
+    const resAlter = data
+      .filter((item) => Boolean(item.recruiter_user))
+      .map((item) => ({
+        ...item.recruiter_user,
+        role: item.roles.name,
+        role_id: item.roles.id,
+        manager_id: item.manager_id,
+        created_by: item.created_by,
+      }));
+
+    return resAlter;
+  });
 };

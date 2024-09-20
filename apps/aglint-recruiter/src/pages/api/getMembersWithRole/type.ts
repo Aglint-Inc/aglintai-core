@@ -1,20 +1,8 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type ApiInterface } from '@/interface/NextApiRequest.interface';
 
-export type API_getMembersWithRole = {
-  request: {
-    id: string;
-  };
-  response:
-    | {
-        members: (DatabaseTable['recruiter_user'] & {
-          role: DatabaseEnums['user_roles'];
-          manager_id: string;
-        })[];
+import type { getMembers } from '.';
 
-        error: null;
-      }
-    | {
-        members: null;
-        error: string;
-      };
-};
+export interface API_getMembersWithRole extends ApiInterface {
+  request: object;
+  response: Awaited<ReturnType<typeof getMembers>>;
+}

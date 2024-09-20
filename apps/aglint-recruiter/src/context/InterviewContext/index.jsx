@@ -16,9 +16,9 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 
-import { handleAssessmentResultApi } from '@/src/apiUtils/assessment-result/utils';
-import interviewerList from '@/src/utils/interviewer_list';
-import toast from '@/src/utils/toast';
+import { handleAssessmentResultApi } from '@/apiUtils/assessment-result/utils';
+import interviewerList from '@/utils/interviewer_list';
+import toast from '@/utils/toast';
 
 import { useCandidateAssessment } from '../CandidateAssessment';
 const useInterviewContext = () => useContext(InterviewContext);

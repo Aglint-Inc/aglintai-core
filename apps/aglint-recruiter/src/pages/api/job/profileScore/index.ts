@@ -1,19 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 
-import { Database } from '@aglint/shared-types';
-import {
-  type CookieOptions,
-  createServerClient,
-  serialize,
-} from '@supabase/ssr';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { nanoid } from 'nanoid';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
-import { ChatCompletionMessageParam } from 'openai/resources';
+import { type ChatCompletionMessageParam } from 'openai/resources';
 
-import { distributeScoreWeights } from '@/src/components/JobProfileScore';
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { distributeScoreWeights } from '@/job/utils';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -30,68 +24,39 @@ const handler = async (
   res: NextApiResponse<JobProfileScoreApi['response']>,
 ) => {
   // eslint-disable-next-line no-unused-vars
-  const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return req.cookies[name];
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, value, options));
-        },
-        remove(name: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, '', options));
-        },
-      },
-    },
-  );
-  const { job_id } = req.body as JobProfileScoreApi['request'];
-  // await supabase
-  //   .from('public_jobs')
-  //   .update({ scoring_criteria_loading: false })
-  //   .eq('id', job_id);
-  // res.status(200).send();
-  // return;
-  const { data } = await supabase
+  const { job_id, regenerate = false } =
+    req.body as JobProfileScoreApi['request'];
+  const { data: job } = await supabaseAdmin
     .from('public_jobs')
     .select('description, draft, job_title')
-    .eq('id', job_id);
-  if (
-    !(
-      data &&
-      data[0] &&
-      data[0]?.draft &&
-      (data[0]?.draft as any)?.description &&
-      ((data[0]?.draft as any)?.description ?? '').length > 100
-    )
-  ) {
-    await supabase
+    .eq('id', job_id)
+    .single();
+  if ((job?.draft?.description ?? '').length < 100) {
+    await supabaseAdmin
       .from('public_jobs')
       .update({ scoring_criteria_loading: false })
       .eq('id', job_id);
     res.status(200).send();
     return;
   }
-  const timeoutPromise = new Promise((resolve, reject) => {
+  const timeoutPromise = new Promise((_resolve, reject) => {
     setTimeout(() => {
       reject(new Error('Timed out'));
     }, 250000);
   });
   try {
-    await supabase
+    await supabaseAdmin
       .from('public_jobs')
       .update({ scoring_criteria_loading: true })
-      .eq('id', job_id);
-    const job = data[0];
+      .eq('id', job_id)
+      .single();
     const jsonPromise = newJdJson(
       `Job role : ${job.job_title}
 
 Job description: ${(job.draft as any).description}`,
     );
     const json = await Promise.race([jsonPromise, timeoutPromise]);
-    const j: JdJsonType = {
+    const j: DatabaseTable['public_jobs']['jd_json'] = {
       title: job.job_title,
       level: json.jobLevel,
       rolesResponsibilities: arrItemToReactArr([
@@ -101,22 +66,19 @@ Job description: ${(job.draft as any).description}`,
       skills: arrItemToReactArr([...json.skills]),
       educations: arrItemToReactArr([...json.educations]),
     };
-    const descriptionHash = hashCode((job.draft as any).description);
     const weights = distributeScoreWeights(j);
-    await supabase
-      .from('public_jobs')
-      .update({
-        jd_json: j,
-        draft: { ...(job.draft as any), jd_json: j },
-        description_hash: descriptionHash,
-        scoring_criteria_loading: false,
-        parameter_weights: weights,
-      })
-      .eq('id', job_id);
+    const payload = {
+      jd_json: j,
+      draft: { ...(job.draft as any), jd_json: j },
+      scoring_criteria_loading: false,
+      parameter_weights: weights,
+    };
+    if (regenerate) delete payload.jd_json;
+    await supabaseAdmin.from('public_jobs').update(payload).eq('id', job_id);
     res.status(200).send();
     return;
   } catch (e) {
-    await supabase
+    await supabaseAdmin
       .from('public_jobs')
       .update({ scoring_criteria_loading: false })
       .eq('id', job_id);
@@ -126,7 +88,17 @@ Job description: ${(job.draft as any).description}`,
 };
 
 const arrItemToReactArr = (arr: any[]) => {
-  return arr.map((a) => ({ ...a, id: nanoid() }));
+  const unsafeArr = arr.map((a) => ({ ...a, id: nanoid() }));
+  return unsafeArr.reduce(
+    (acc, curr) => {
+      const field = (curr?.field ?? '').trim().toLowerCase();
+      if (acc.memo.includes(field)) return acc;
+      acc.arr.push(curr);
+      acc.memo.push(field);
+      return acc;
+    },
+    { arr: [], memo: [] },
+  ).arr;
 };
 
 // export const jdJson = async (description: string) => {
@@ -266,6 +238,7 @@ export default handler;
 export type JobProfileScoreApi = {
   request: {
     job_id: string;
+    regenerate?: boolean;
   };
   response: void;
 };

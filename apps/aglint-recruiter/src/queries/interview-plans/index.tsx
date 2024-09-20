@@ -1,49 +1,124 @@
-import { Database } from '@aglint/shared-types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
-
-import { useCurrentJob } from '../job-assessment/keys';
-import { jobDashboardQueryKeys } from '../job-dashboard/keys';
-import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';
+import { type DB } from '@aglint/shared-types';
 import {
-  InterviewPlansType,
-  InterviewSessionRelationType,
-  InterviewSessionUpdate,
-} from './types';
+  useMutation,
+  useMutationState,
+  useQueryClient,
+} from '@tanstack/react-query';
 
-export const useInterviewPlans = () => {
-  const queryClient = useQueryClient();
-  const { job, job_id } = useCurrentJob();
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
-  const response = useQuery({
-    queryKey,
-    queryFn: () => getInterviewPlansAPI(job_id),
-    enabled: !!(recruiter_id && job),
-  });
-  const refetch = async () => {
-    await Promise.allSettled([
-      queryClient.invalidateQueries({ queryKey }),
-      queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-    ]);
-  };
-  return { ...response, refetch };
-};
+import { useJob } from '@/job/hooks';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
+
+import { jobQueries } from '../job';
+import { interviewSessionMutationKeys } from './keys';
+import {
+  type InterviewPlansType,
+  type InterviewSessionRelationType,
+  type InterviewSessionUpdate,
+} from './types';
 
 export const useCreateInterviewPlan = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const { job_id, recruiter_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
-    mutationFn: async () => {
-      await createInterviewPlan(job_id);
+    mutationFn: async ({ name, order }: { name: string; order?: number }) => {
+      const data = await createInterviewPlan(name, id, recruiter_id, order);
+      await queryClient.invalidateQueries({ queryKey });
+      return data;
+    },
+    onError: () => {
+      toast.error('Unable to create interview plan.');
+    },
+  });
+  return mutation;
+};
+
+const mutationKey = ['interview-plan'];
+const mutationKeySwap = [...mutationKey, 'SWAP'];
+const mutationKeyUpdate = [...mutationKey, 'UPDATE'];
+const mutationKeyDelete = [...mutationKey, 'DELETE'];
+
+export const useInterviewPlanMutation = () => {
+  const swap = useMutationState({
+    filters: { mutationKey: mutationKeySwap, status: 'pending' },
+    select: (mutation) => mutation.state.variables as SwapPayload,
+  });
+  const update = useMutationState({
+    filters: { mutationKey: mutationKeyUpdate },
+    select: (mutation) => mutation.state.variables as UpdatePayload,
+  });
+  const remove = useMutationState({
+    filters: { mutationKey: mutationKeyDelete },
+    select: (mutation) => mutation.state.variables as DeletePayload,
+  });
+  return { swap, update, remove };
+};
+
+type UpdatePayload = {
+  id: string;
+  data: {
+    name?: string;
+    order?: number;
+  };
+};
+
+export const useUpdateInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
+  const mutation = useMutation({
+    mutationKey: mutationKeyUpdate,
+    mutationFn: async ({ id, data }: UpdatePayload) => {
+      await updateInterviewPlan(id, data);
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onError: () => {
+      toast.error('Unable to create interview plan.');
+    },
+  });
+  return mutation;
+};
+
+type SwapPayload = {
+  plan_id_1: string;
+  plan_id_2: string;
+};
+
+export const useSwapInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const { queryKey } = jobQueries.interview_plans({ id: job_id });
+  const mutation = useMutation({
+    mutationKey: mutationKeySwap,
+    mutationFn: async ({ plan_id_1, plan_id_2 }: SwapPayload) => {
+      await supabase
+        .rpc('swap_stage_order', { plan_id_1, plan_id_2 })
+        .throwOnError();
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onError: () => {
+      toast.error('Unable to move interview stage.');
+    },
+  });
+  return mutation;
+};
+
+type DeletePayload = {
+  id: string;
+};
+
+export const useDeleteInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
+  const mutation = useMutation({
+    mutationKey: mutationKeyDelete,
+    mutationFn: async ({ id }: DeletePayload) => {
+      await deleteInterviewPlan(id);
       await queryClient.invalidateQueries({ queryKey });
     },
     onError: () => {
@@ -55,17 +130,13 @@ export const useCreateInterviewPlan = () => {
 
 export const useAddInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: CreateInterviewSession) => {
       await createInterviewSession(args);
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-      ]);
+      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
     },
     onError: () => {
       toast.error('Unable to create interview session.');
@@ -76,8 +147,9 @@ export const useAddInterviewSession = () => {
 
 export const useUpdateInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -94,18 +166,18 @@ export const useUpdateInterviewSession = () => {
 
 export const useDeleteInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const { job_id, revalidateJobQueries } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.delete();
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
+
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: DeleteInterviewSession) => {
       await deleteInterviewSession(args);
       await Promise.allSettled([
         queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
+        revalidateJobQueries(),
       ]);
     },
     onError: () => {
@@ -117,8 +189,9 @@ export const useDeleteInterviewSession = () => {
 
 export const useEditInterviewSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -135,17 +208,14 @@ export const useEditInterviewSession = () => {
 
 export const useAddDebriefSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
-  const { queryKey: interviewPlanEnabled } =
-    jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
+
   const mutation = useMutation({
     mutationFn: async (args: CreateDebriefSession) => {
       await createDebriefSession(args);
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: interviewPlanEnabled }),
-      ]);
+      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
     },
     onError: () => {
       toast.error('Unable to create debrief session.');
@@ -156,8 +226,9 @@ export const useAddDebriefSession = () => {
 
 export const useEditDebriefSession = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
@@ -174,11 +245,12 @@ export const useEditDebriefSession = () => {
 
 export const useReorderInterviewSessions = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: {
-      updatedInterviewSessions: InterviewPlansType['interview_session'];
+      updatedInterviewSessions: InterviewPlansType[number]['interview_session'];
       interviewPlanId: string;
     }) => {
       const sessions = args.updatedInterviewSessions.map(
@@ -194,13 +266,17 @@ export const useReorderInterviewSessions = () => {
       await queryClient.cancelQueries({ queryKey });
       const oldInterviewPlan =
         queryClient.getQueryData<InterviewPlansType>(queryKey);
-      queryClient.setQueryData<InterviewPlansType>(queryKey, {
-        ...oldInterviewPlan,
-        interview_session: payload.updatedInterviewSessions,
-      });
+      queryClient.setQueryData<InterviewPlansType>(
+        queryKey,
+        oldInterviewPlan.map((item) =>
+          item.id === payload.interviewPlanId
+            ? { ...item, interview_session: payload.updatedInterviewSessions }
+            : item,
+        ),
+      );
       return { oldInterviewPlan };
     },
-    onError: (error, variables, context) => {
+    onError: (_error, _variables, context) => {
       toast.error('Unable to reorder sessions');
       queryClient.setQueryData<InterviewPlansType>(
         queryKey,
@@ -247,23 +323,45 @@ export const updateInterviewSession = async ({
   if (error) throw new Error(error.message);
 };
 
-export const createInterviewPlan = async (job_id: string) => {
+export const createInterviewPlan = async (
+  name: string,
+  job_id: string,
+  recruiter_id: string,
+  order = 1,
+) => {
   const { data, error } = await supabase
     .from('interview_plan')
-    .insert({ job_id })
+    .insert({ name, job_id, plan_order: order, recruiter_id })
     .select();
   if (error) throw new Error(error.message);
   return data[0];
 };
 
-export const getInterviewPlansAPI = async (job_id: string) => {
-  return (
-    await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`)
-  ).data as ReturnType<getInterviewPlansType>;
+export const updateInterviewPlan = async (
+  id: string,
+  { name, order }: { name?: string; order?: number },
+) => {
+  const { data, error } = await supabase
+    .from('interview_plan')
+    .update({ name, plan_order: order })
+    .eq('id', id)
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0];
+};
+
+export const deleteInterviewPlan = async (id: string) => {
+  const { data, error } = await supabase
+    .from('interview_plan')
+    .delete()
+    .eq('id', id)
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0];
 };
 
 export type CreateInterviewSession = Omit<
-  Database['public']['Functions']['insert_interview_session']['Args'],
+  DB['public']['Functions']['insert_interview_session']['Args'],
   'interview_module_relation_entries'
 > & {
   interview_module_relation_entries: Pick<
@@ -277,7 +375,7 @@ export const createInterviewSession = async (args: CreateInterviewSession) => {
 };
 
 export type EditInterviewSession = Omit<
-  Database['public']['Functions']['update_interview_session']['Args'],
+  DB['public']['Functions']['update_interview_session']['Args'],
   'interview_module_relation_entries'
 > & {
   interview_module_relation_entries: Pick<
@@ -290,30 +388,24 @@ export const editInterviewSession = async (args: EditInterviewSession) => {
   if (error) throw new Error(error.message);
 };
 
-export type CreateDebriefSession = Omit<
-  Database['public']['Functions']['insert_debrief_session']['Args'],
-  'members'
-> & {
-  members: Pick<InterviewSessionRelationType[number], 'id'>[];
-};
+export type CreateDebriefSession =
+  DB['public']['Functions']['insert_debrief_session']['Args'];
+
 export const createDebriefSession = async (args: CreateDebriefSession) => {
   const { error } = await supabase.rpc('insert_debrief_session', args);
   if (error) throw new Error(error.message);
 };
 
-export type UpdateDebriefSession = Omit<
-  Database['public']['Functions']['update_debrief_session']['Args'],
-  'interview_module_relation_entries'
-> & {
-  members: Pick<InterviewSessionRelationType[number], 'id'>[];
-};
+export type UpdateDebriefSession =
+  DB['public']['Functions']['update_debrief_session']['Args'];
+
 export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   const { error } = await supabase.rpc('update_debrief_session', args);
   if (error) throw new Error(error.message);
 };
 
 export type ReorderSessions = Omit<
-  Database['public']['Functions']['reorder_sessions']['Args'],
+  DB['public']['Functions']['reorder_sessions']['Args'],
   'sessions'
 > & {
   sessions: { id: string; session_order: number }[];

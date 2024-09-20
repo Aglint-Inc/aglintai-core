@@ -11,7 +11,7 @@ export const callStatus = async (req: Request, res: Response) => {
   try {
     const callStatus = body.CallStatus;
     if (callStatus === 'busy' || callStatus === 'no-answer') {
-      const cand_info = getCachedCandidateInfo(body.To);
+      const cand_info = await getCachedCandidateInfo(body.To);
       if (cand_info.req_payload.task_id) {
         const candLogger = getCandidateLogger(
           cand_info.req_payload.task_id,
@@ -27,13 +27,20 @@ export const callStatus = async (req: Request, res: Response) => {
             {
               '{time_format}': scheduled_time,
               '{candidate}': cand_info.candidate_name,
-            }
+            },
+            'phone_agent',
+            'schedule'
           );
         } else if (callStatus === 'no-answer') {
-          candLogger(agent_activities.phone_agent.phone_call.candidate_reject, {
-            '{time_format}': scheduled_time,
-            '{candidate}': cand_info.candidate_id,
-          });
+          candLogger(
+            agent_activities.phone_agent.phone_call.candidate_reject,
+            {
+              '{time_format}': scheduled_time,
+              '{candidate}': cand_info.candidate_id,
+            },
+            'phone_agent',
+            'schedule'
+          );
         }
       }
     }

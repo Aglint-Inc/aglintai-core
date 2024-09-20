@@ -131,3 +131,61 @@ select
     SELECT schedulercron();
     $$
 );
+
+select
+  cron.schedule(
+    'expire_new_applications',
+    '0 * * * *', 
+    $$
+      UPDATE applications
+      SET is_new false
+      WHERE is_new = true AND applied_at < now() - interval '6 hours' 
+    $$
+);
+
+select
+  cron.schedule(
+    'invoke-workflow_action_log_cron-every-minute',
+    '* * * * *', 
+    $$
+    select workflow_action_log_cron();
+    $$
+);
+
+select
+  cron.schedule(
+    'invoke-workflow_action_log_set_fail_cron-every-5-minute',
+    '*/5 * * * *', 
+    $$
+    select workflow_action_log_set_fail_cron();
+    $$
+);
+
+
+select
+  cron.schedule(
+    'expire_new_applications',
+    '0 * * * *', 
+    $$
+      select expire_new_applications();
+    $$
+);
+
+select
+  cron.schedule(
+    'fail_processing_applications',
+    '*/3 * * * *', 
+    $$
+      select fail_processing_applications();
+    $$
+);
+
+
+select
+  cron.schedule(
+    'lever-resume-save',
+    '*/1 * * * *', 
+    $$
+    select lever_resume_save();
+    $$
+);

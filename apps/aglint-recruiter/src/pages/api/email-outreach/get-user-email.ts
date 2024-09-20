@@ -1,8 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-const { google } = require('googleapis');
-
 // Import required modules
-const { OAuth2Client } = require('google-auth-library');
+import { OAuth2Client } from 'google-auth-library';
+import { google } from 'googleapis';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // Set up OAuth2 client
 const oAuth2Client = new OAuth2Client(

@@ -1,17 +1,17 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
+import { fillEmailTemplate } from '@/utils/support/supportUtils';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,11 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .json({ error: 'invalid request method', success: false });
   }
 
-  let recruiter = req.body.recruiter;
-  let fileId = req.body.fileId;
-  let post = req.body.post;
-  let profile = req.body.profile;
-  let uploadUrl = req.body.uploadUrl;
+  const recruiter = req.body.recruiter;
+  const fileId = req.body.fileId;
+  const post = req.body.post;
+  const profile = req.body.profile;
+  const uploadUrl = req.body.uploadUrl;
 
   if (!profile) {
     return res.status(400).send('No profile provided');
@@ -103,6 +103,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             job_id: post.id,
             status: 'new',
             candidate_file_id: fileId,
+            source: 'apply_link',
+            recruiter_id: recruiter.id,
           })
           .select();
 
@@ -159,6 +161,8 @@ const insertCandidate = async (
         job_id: jobId,
         status: 'new',
         candidate_file_id: fileId,
+        source: 'apply_link',
+        recruiter_id: recruiterId,
       })
       .select();
 

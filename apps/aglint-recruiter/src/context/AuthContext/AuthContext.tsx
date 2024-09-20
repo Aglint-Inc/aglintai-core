@@ -1,372 +1,222 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTableUpdate } from '@aglint/shared-types';
 import {
-  RecruiterRelationsType,
-  RecruiterType,
-  RecruiterUserType,
-  SocialsType,
+  type DatabaseTable,
+  type RecruiterUserType,
+  type SocialsType,
 } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
-import { pageRoutes } from '@utils/pageRouting';
-import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useQueryClient } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
 import posthog from 'posthog-js';
-import { useFeatureFlagEnabled } from 'posthog-js/react';
 import {
   createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react';
 
-import { LoaderSvg } from '@/devlink';
-import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
-import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
-import { featureFlag } from '@/src/utils/Constants';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import type { GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
+import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
-import { Session } from './types';
+import { type Session } from './types';
+import {
+  fetchUserLocation,
+  getUserDetails,
+  isRoutePublic,
+  updateJoinedStatus,
+} from './utils';
 
+type Features =
+  | 'SCORING'
+  | 'INTEGRATIONS'
+  | 'ROLES'
+  | 'REQUESTS'
+  | 'WORKFLOW'
+  | 'SCHEDULING'
+  | 'ANALYTICS'
+  | 'CANDIDATE_PORTAL'
+  | 'REPORTS'
+  | 'AGENT'
+  | 'THEMES';
 export interface ContextValue {
-  userDetails: Session | null;
   userCountry: string | null;
-  setUserDetails: (details: Session | null) => void;
-  recruiter: RecruiterType | null;
+  recruiter: GetUserDetailsAPI['response']['recruiter'];
+  userPermissions: {
+    role: string;
+    permissions: Partial<{
+      [_key in DatabaseTable['permissions']['name']]: boolean;
+    }>;
+  };
   recruiter_id: string | null;
-  setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
-  allRecruiterRelation: RecruiterRelationsType[];
-  setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
+  setRecruiter: Dispatch<SetStateAction<this['recruiter']>>;
   loading: boolean;
-  handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
-  handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
   setLoading: (loading: boolean) => void;
   handleLogout: () => Promise<void>;
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
-  members: RecruiterUserType[];
-  setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
-  handelMemberUpdate: (x: {
-    user_id: string;
-    data: DatabaseTableUpdate['recruiter_user'] & {
-      role?: DatabaseEnums['user_roles'];
-      manager_id?: string;
-    };
-  }) => Promise<boolean>;
-  isAllowed: (
-    roles: DatabaseEnums['user_roles'][],
-    flags?: featureFlag[],
-  ) => boolean;
-  allowAction: <T extends Function | ReactNode>(
-    func: T,
-    role: DatabaseEnums['user_roles'][],
-  ) => T;
-  isAssessmentEnabled: boolean;
-  isScreeningEnabled: boolean;
-  isSchedulingEnabled: boolean;
+  isShowFeature: (feature: Features) => boolean;
 }
 
-const defaultProvider = {
-  userDetails: null,
+const defaultProvider: ContextValue = {
   userCountry: 'us',
-  setUserDetails: () => {},
-  handleUpdateProfile: undefined,
-  handleUpdateEmail: undefined,
-  handleUpdatePassword: undefined,
   recruiter: null,
+  userPermissions: null,
   recruiter_id: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setRecruiter: () => {},
-  allRecruiterRelation: null,
-  setAllRecruiterRelation: () => {},
   loading: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
   recruiterUser: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setRecruiterUser: () => {},
-  members: [],
-  setMembers: () => {},
-  handelMemberUpdate: (x) => Promise.resolve(true),
-  isAllowed: (role) => true,
-  allowAction: (func, role) => func,
-  isAssessmentEnabled: false,
-  isScreeningEnabled: false,
-  isSchedulingEnabled: false,
+  isShowFeature: () => false,
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
-  const router = useRouter();
-  const [userDetails, setUserDetails] = useState<Session | null>(null);
-  const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
+  const queryClient = useQueryClient();
+  const router = useRouterPro();
+  const [recruiter, setRecruiter] = useState<ContextValue['recruiter']>(null);
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
   );
   const recruiter_id = recruiter?.id ?? null;
-  const [allRecruiterRelation, setAllRecruiterRelation] =
-    useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
   const [loading, setLoading] = useState<boolean>(true);
-  const [members, setMembers] = useState<RecruiterUserType[]>([]);
+  const [userPermissions, setUserPermissions] =
+    useState<ContextValue['userPermissions']>(null);
 
-  const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
-    setMembers(await getMembers(recruiter_id));
-  };
+  useEffect(() => {
+    Promise.all([
+      getSupabaseSession(),
+      fetchUserLocation().then((res) => {
+        setUserCountry(res);
+      }),
+    ]);
+  }, []);
 
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
-      if (!data?.session) {
-        throw new Error();
+      if (!data?.session || error) {
+        toast.error('Session not found');
+        handleLogout();
+        return;
       }
-      if (data?.session?.user?.new_email) {
-        const { data: newData, error } = await supabase.auth.refreshSession();
-        if (!error) {
-          setUserDetails(newData.session);
-        }
-      } else {
-        setUserDetails(data.session);
-      }
-      if (router.route !== pageRoutes.LOADING && data?.session?.user?.id) {
+
+      if (data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
       handleLogout();
-    } finally {
-      setLoading(false);
     }
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    // const { data: recruiterUser, error: errorUser } = await supabase
-    //   .from('recruiter_user')
-    //   .select('*')
-    //   .eq('user_id', userDetails.user.id);
-    // if (!errorUser && recruiterUser.length > 0) {
-    //   if (recruiterUser[0].is_suspended) {
-    //     toast.error('Your account is suspended.');
-    //     return setTimeout(() => {
-    //       handleLogout();
-    //     }, 300);
-    //   }
-    const { data: recruiterRel, error: errorRel } = await supabase
-      .from('recruiter_relation')
-      .select(
-        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
-      )
-      .match({ user_id: userDetails.user.id, is_active: true })
-      .single();
+    const recruiterRel = await getUserDetails();
+    // get user permissions
+    const rolePermissions: ContextValue['userPermissions'] = {
+      role: recruiterRel?.roles?.name || null,
+      permissions:
+        recruiterRel?.roles?.role_permissions.reduce(
+          (prev, curr) => {
+            prev[curr.permissions.name] = true;
+            return prev;
+          },
+          {} as ContextValue['userPermissions']['permissions'],
+        ) || {},
+    };
 
-    if (!errorRel) {
+    setUserPermissions(rolePermissions);
+
+    if (recruiterRel?.recruiter_user) {
       posthog.identify(userDetails.user.email, {
         Email: userDetails.user.email,
         CompanyId: recruiterRel.recruiter.id,
       });
       const recruiterUser = recruiterRel.recruiter_user;
-      (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
-        handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
-      setRecruiterUser({
-        ...recruiterUser,
-        role: recruiterRel.role,
-        manager_id: recruiterRel.manager_id,
-      });
+
+      if (recruiterUser.status !== 'active') {
+        updateJoinedStatus(recruiterUser.user_id);
+      }
+
+      setRecruiterUser(recruiterUser);
       setRecruiter({
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
-      if (recruiterRel.role === 'admin' || recruiterRel.role === 'recruiter') {
-        await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
-      }
+      setLoading(false);
     } else {
       toast.error('Something went wrong! Please try logging in again.');
     }
-    // } else {
-    //   toast.error('Something went wrong! Please try logging in again.');
-    // }
   };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut({
       scope: 'local',
     });
+    queryClient.removeQueries();
     posthog.reset();
     if (!error) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
     }
   };
-
-  const fetchUserLocation = async () => {
-    try {
-      const response = await fetch('https://ipinfo.io/json', {
-        headers: {
-          Authorization: `Bearer e82b96e5cb0802`,
-        },
-      });
-      const data = await response.json();
-      const country = data.country; // Extract the country code from the response
-      setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
-    } catch (error) {
-      setUserCountry('us');
-    }
-  };
-
-  const handleUpdateProfile = async (
-    details: Partial<RecruiterUserType>,
-    id?: string,
-  ): Promise<boolean> => {
-    const { data, error } = await supabase
-      .from('recruiter_user')
-      .update({
-        ...details,
-        manager_id: undefined,
-        role: undefined,
-        last_login: undefined,
-      })
-      .eq('user_id', id || userDetails.user.id)
-      .select()
-      .single();
-    if (!error) {
-      setRecruiterUser({
-        ...details,
-        ...data,
-      } as RecruiterUserType);
-      return true;
-    } else {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
-      return false;
-    }
-  };
-
-  const handleUpdateEmail = async (
-    email: string,
-    showToast: boolean = false,
-  ): Promise<boolean> => {
-    const { error } = await supabase.auth.updateUser(
-      {
-        email: email,
-      },
-      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/login` },
-    );
-    if (error) {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
-      return false;
-    } else {
-      showToast && toast.success(`Confirmation email sent.`);
-      return true;
-    }
-  };
-
-  const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
-    user_id,
-    data,
-  }) => {
-    if (!user_id && data && recruiter.id) return Promise.resolve(false);
-    return updateMember({
-      data: { ...data, user_id },
-      recruiter_id: recruiter.id,
-    }).then((data) => {
-      if (data) {
-        setMembers((prev) =>
-          prev.map((item) => {
-            return data.user_id === item.user_id
-              ? ({ ...item, ...data } as RecruiterUserType)
-              : item;
-          }),
-        );
-        return true;
-      }
-      return false;
-    });
-  };
-
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
-
-  // role based access
-  const isAllowed: ContextValue['isAllowed'] = (roles, flags) => {
-    if (recruiterUser) {
-      if (flags?.length)
-        for (let item of flags) {
-          if (!posthog.isFeatureEnabled(item)) return false;
-        }
-      return roles.includes(recruiterUser.role);
-    }
-    return false;
-  };
-
-  const allowAction: ContextValue['allowAction'] = <
-    T extends Function | ReactNode,
-  >(
-    func: T,
-    role,
-  ) => {
-    if (recruiterUser && role.includes(recruiterUser.role)) {
-      return func;
-    }
-
-    // Return an empty function if func is a function
-    if (typeof func === 'function') {
-      return (() => {}) as unknown as T;
-    }
-    // Return an empty fragment if func is a React node
-    return (<></>) as T;
-  };
-
-  useEffect(() => {
-    Promise.all([getSupabaseSession(), fetchUserLocation()]);
-  }, []);
 
   useEffect(() => {
     if (router.isReady) {
       const redirect = window.location.href;
-      if (isRoutePublic(router.route)) return;
-      else if (!loading && !userDetails?.user)
+      if (isRoutePublic(router.pathName)) return;
+      else if (!loading && !recruiterUser?.user_id)
         router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
     }
   }, [router.isReady, loading]);
 
-  useEffect(() => {
-    if (router.isReady && userDetails?.user) {
-      const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
-      if (feature && !posthog.isFeatureEnabled(feature)) {
-        // eslint-disable-next-line no-console
-        console.log('Feature not enabled');
-        router.push(pageRoutes.JOBS);
+  const isShowFeature = useCallback(
+    (feature: Features) => {
+      if (recruiter?.recruiter_preferences) {
+        const recruiterPref: Record<Features, boolean> = {
+          SCORING: recruiter.recruiter_preferences.scoring,
+          INTEGRATIONS: recruiter.recruiter_preferences.integrations,
+          ROLES: recruiter.recruiter_preferences.roles,
+          REQUESTS: recruiter.recruiter_preferences.request,
+          WORKFLOW: recruiter.recruiter_preferences.workflow,
+          SCHEDULING: recruiter.recruiter_preferences.scheduling,
+          ANALYTICS: recruiter.recruiter_preferences.analytics,
+          CANDIDATE_PORTAL: recruiter.recruiter_preferences.candidate_portal,
+          AGENT: recruiter.recruiter_preferences.agent,
+          REPORTS: recruiter.recruiter_preferences.reports,
+          THEMES: recruiter.recruiter_preferences.themes,
+        };
+        return recruiterPref[feature];
       }
-    }
-  }, [router.pathname, userDetails]);
-
+      return false;
+    },
+    [recruiter?.recruiter_preferences],
+  );
   return (
     <AuthContext.Provider
       value={{
-        userDetails,
         userCountry,
-        setUserDetails,
         recruiter,
+        userPermissions,
         recruiter_id,
-        handleUpdateProfile,
-        handleUpdateEmail,
         setRecruiter,
         loading,
         setLoading,
         handleLogout,
         recruiterUser,
-        allRecruiterRelation: allRecruiterRelation,
-        setAllRecruiterRelation,
         setRecruiterUser,
-        members,
-        setMembers,
-        handelMemberUpdate,
-        isAllowed,
-        allowAction,
-        isAssessmentEnabled,
-        isScreeningEnabled,
-        isSchedulingEnabled,
+        isShowFeature,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -378,61 +228,8 @@ export { AuthContext, AuthProvider };
 
 const AuthLoader = () => {
   return (
-    <Stack height={'100vh'} justifyContent={'center'} alignItems={'center'}>
-      <LoaderSvg />
-    </Stack>
+    <div className='flex h-screen w-full items-center justify-center'>
+      <Loader />
+    </div>
   );
-};
-
-const isRoutePublic = (path = '') => {
-  const whiteListedRoutes = [
-    pageRoutes.LOGIN,
-    pageRoutes.SIGNUP,
-    pageRoutes.MOCKTEST,
-    pageRoutes.PHONESCREEN,
-    pageRoutes.CONFIRM_SCHEDULE,
-  ];
-  for (const route of whiteListedRoutes) {
-    if (path.startsWith(route)) {
-      return true;
-    }
-  }
-};
-
-const pageFeatureMapper = {
-  [pageRoutes.ASSISTANT]: 'isAssistantEnabled',
-  [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
-  [pageRoutes.AGENT]: 'isAgentEnabled',
-  [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
-  [pageRoutes.SUPPORT]: 'isSupportEnabled',
-  [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
-};
-
-const updateMember = ({
-  data,
-  recruiter_id,
-}: {
-  data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
-    user_id: string;
-    role?: DatabaseEnums['user_roles'];
-    manager_id?: string;
-  };
-  recruiter_id: string;
-}) => {
-  const body: API_setMembersWithRole['request'] = { data: data, recruiter_id };
-  return axios
-    .post<API_setMembersWithRole['response']>('/api/setMembersWithRole', body)
-    .then(({ data }) => {
-      if (data.error) throw new Error(data.error);
-      return data.data;
-    });
-};
-
-const getMembers = (id: string) => {
-  return axios
-    .post<API_getMembersWithRole['response']>('/api/getMembersWithRole', { id })
-    .then(({ data }) => {
-      if (data.error) throw new Error(data.error);
-      return data.members;
-    });
 };

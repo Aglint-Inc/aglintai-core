@@ -1,14 +1,15 @@
-import { JobType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { type JobType } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseServiceKey: string = process.env.SUPABASE_SERVICE_KEY || '';
-const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export default async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const jobs: JobType[] | null = await fetchJobIds();

@@ -16,21 +16,21 @@
 //   }
 // }
 
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { addHttps, getUrlHost } from '@/src/utils/fetchCompDetails';
+import { addHttps, getUrlHost } from '@/utils/fetchCompDetails';
 
-export const supabaseAdmin = createClient<Database>(
+const supabaseAdmin = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_KEY || '',
 );
 export default async function handler(req, res) {
   try {
-    let dbFormatterUrl = addHttps(getUrlHost(addHttps(req.body.domain_name)));
-    let [result] = supabaseWrap(
+    const dbFormatterUrl = addHttps(getUrlHost(addHttps(req.body.domain_name)));
+    const [result] = supabaseWrap(
       await supabaseAdmin
         .from('company_search_cache')
         .select()

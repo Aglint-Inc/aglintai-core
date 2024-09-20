@@ -20,6 +20,6 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
 export default Header;
 
 const hr = {
-  borderColor: '#d8dcde',
+  borderColor: 'border-neutral-300',
   margin: '20px 0',
 };

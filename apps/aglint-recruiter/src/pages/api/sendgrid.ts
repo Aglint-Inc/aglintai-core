@@ -1,32 +1,26 @@
 /* eslint-disable no-console */
 
-import { getOutboundEmail } from '@/src/utils/scheduling_v2/get-outbound-email';
+import { type APISendgridPayload } from '@aglint/shared-types';
+import sgMail from '@sendgrid/mail';
 
-const sgMail = require('@sendgrid/mail');
+import { getOutboundEmail } from '@/utils/scheduling_v2/get-outbound-email';
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export type BodyParmsSendgrid = {
-  fromEmail: string;
-  fromName: string;
-  subject: string;
-  text: string;
-  email: string;
-  headers: Record<string, any>;
-};
-
 export default async function handler(req, res) {
-  let details = req.body as BodyParmsSendgrid;
+  const { email, fromEmail, fromName, headers, subject, text, attachments } =
+    req.body as APISendgridPayload;
 
   try {
     const msg: any = {
-      to: details.email, // Change to your recipient
+      to: email, // Change to your recipient
       from: {
-        email: details.fromEmail ?? 'admin@aglinthq.com',
-        name: details.fromName ?? 'Aglint Admin',
+        email: fromEmail ?? 'admin@aglinthq.com',
+        name: fromName ?? 'Aglint Admin',
       }, // Change to your verified sender
-      subject: details.subject,
-      html: details.text,
-      headers: details.headers,
+      subject: subject,
+      html: text,
+      headers: headers,
+      attachments: attachments,
     };
 
     console.log(msg.to);

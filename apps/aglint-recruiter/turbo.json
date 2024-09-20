@@ -1,17 +1,23 @@
 {
   "extends": ["//"],
-  "globalDotEnv": [".env"],
-  "pipeline": {
+  "globalDependencies": [".env"],
+  "tasks": {
     "build": {
-      "dotEnv": [
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
         ".env.production.local",
         ".env.local",
         ".env.production",
         ".env"
       ]
     },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
     "dev": {
-      "dotEnv": [
+      "inputs": [
+        "$TURBO_DEFAULT$",
         ".env.development.local",
         ".env.local",
         ".env.development",
@@ -19,7 +25,7 @@
       ]
     },
     "test": {
-      "dotEnv": [".env.test.local", ".env.test", ".env"]
+      "inputs": ["$TURBO_DEFAULT$", ".env.test.local", ".env.test", ".env"]
     }
   }
 }

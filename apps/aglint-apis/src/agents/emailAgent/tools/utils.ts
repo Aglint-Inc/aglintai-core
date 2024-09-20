@@ -1,14 +1,14 @@
 import {envConfig} from '../../../config';
 import axios from 'axios';
-import {FindSlots, InterviewSlotsRespAPI} from './types';
+import {InterviewSlotsRespAPI} from './types';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import {SessionsCombType} from '@aglint/shared-types';
+import {APIFindInterviewSlot, SessionsCombType} from '@aglint/shared-types';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const findAvailableSlots = async (payload: FindSlots) => {
+export const findAvailableSlots = async (payload: APIFindInterviewSlot) => {
   const {data} = await axios.post(
     `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/find_interview_slots`,
     payload

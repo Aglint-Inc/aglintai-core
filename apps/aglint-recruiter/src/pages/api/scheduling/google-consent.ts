@@ -1,7 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
 // Import required modules
-const { OAuth2Client } = require('google-auth-library');
+import { OAuth2Client } from 'google-auth-library';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // Set up OAuth2 client
 const oAuth2Client = new OAuth2Client(
@@ -9,7 +8,7 @@ const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
   `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
 );
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',
@@ -19,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/calendar.readonly',
+        'https://www.googleapis.com/auth/calendar',
       ],
     });
 

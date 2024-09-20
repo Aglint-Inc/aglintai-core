@@ -1,10 +1,9 @@
-import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { API_reset_password } from './type';
+import { type API_reset_password } from './type';
 
-const supabase = createClient<Database>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -26,7 +25,6 @@ export default async function handler(
     }
 
     const isAllowed = await server_checkUserRolePermissions({
-      getVal: (name) => req.cookies[String(name)],
       roles: ['admin'],
     });
     if (isAllowed) {
@@ -60,8 +58,9 @@ const getResponse = (data: { passwordReset?: boolean; error?: string }) => {
   return { passwordReset: false, error: null, ...data };
 };
 
-import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums, type DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 /**
  * Checks if a user has certain roles based on their authentication.
@@ -98,28 +97,29 @@ import { createServerClient } from '@supabase/ssr';
  * - Handle any errors thrown by the function or returned from the asynchronous operations.
  */
 export const server_checkUserRolePermissions = async ({
-  getVal,
   roles,
 }: {
-  // eslint-disable-next-line no-unused-vars
-  getVal: (name: string) => string;
   roles: DatabaseEnums['user_roles'][];
 }) => {
+  const cookieStore = cookies();
   try {
-    const supabase = createServerClient<CustomDatabase>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    const supabase = createServerClient<DB>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       {
         cookies: {
-          get(name: string) {
-            return getVal(name);
+          getAll() {
+            return cookieStore.getAll();
           },
-          //   set(name: string, value: string, options: { [key: string]: any }) {
-          //     res.setHeader('Set-Cookie', `${name}=${value}; ${options}`);
-          //   },
-          //   remove(name: string) {
-          //     res.setHeader('Set-Cookie', `${name}=; Max-Age=0`);
-          //   },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options),
+              );
+            } catch {
+              //
+            }
+          },
         },
       },
     );
@@ -129,13 +129,12 @@ export const server_checkUserRolePermissions = async ({
       if (data.user.id) {
         return supabase
           .from('recruiter_relation')
-          .select('role')
+          .select('id,roles(name)')
           .eq('user_id', data.user.id)
           .eq('is_active', true)
-          .single()
           .then(({ data, error }) => {
             if (error) throw new Error(error.message);
-            return roles.includes(data.role);
+            return (roles as string[]).includes(data[0].roles.name);
           });
       }
       throw new Error('Failed to load auth user.');
@@ -178,20 +177,27 @@ export const server_checkUserRolePermissions = async ({
  * - The function retrieves the user's role and ID from the database based on authentication status.
  * - Handle any errors thrown by the function or returned from the asynchronous operations.
  */
-export const server_getUserRoleAndId = async ({
-  getVal,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  getVal: (name: string) => string;
-}) => {
+export const server_getUserRoleAndId = async () => {
+  const cookieStore = cookies();
   try {
-    const supabase = createServerClient<CustomDatabase>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    const supabase = createServerClient<DB>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       {
         cookies: {
-          get(name: string) {
-            return getVal(name);
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options),
+              );
+            } catch {
+              // The `setAll` method was called from a Server Component.
+              // This can be ignored if you have middleware refreshing
+              // user sessions.
+            }
           },
         },
       },
@@ -202,13 +208,12 @@ export const server_getUserRoleAndId = async ({
       if (data.user.id) {
         return supabase
           .from('recruiter_relation')
-          .select('role')
+          .select('id,roles(name)')
           .eq('user_id', data.user.id)
           .eq('is_active', true)
-          .single()
           .then(({ data: dataR, error }) => {
             if (error) throw new Error(error.message);
-            return { role: dataR.role, user_id: data.user.id };
+            return { role: dataR[0].roles.name, user_id: data.user.id };
           });
       }
       throw new Error('Failed to load auth user.');

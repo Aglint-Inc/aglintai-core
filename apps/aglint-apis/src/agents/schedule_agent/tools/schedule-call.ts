@@ -39,7 +39,7 @@ export const scheduleTheCall = () => {
     args: z.infer<typeof schema>;
     candLogger: LoggerType;
   }) => {
-    const condidate_info = getCachedCandidateInfo(cand_phone);
+    const condidate_info = await getCachedCandidateInfo(cand_phone);
 
     let parsedData = null;
     try {

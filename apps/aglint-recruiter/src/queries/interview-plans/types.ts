@@ -1,19 +1,17 @@
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
-import { getInterviewPlansAPI } from '.';
+import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
 
-export type InterviewPlansType = Awaited<
-  ReturnType<typeof getInterviewPlansAPI>
->;
+export type InterviewPlansType = GetInterviewPlansType['respone'];
 
 export type InterviewSessionType =
-  InterviewPlansType['interview_session'][number];
+  InterviewPlansType[number]['interview_session'][number];
 export type InterviewSessionRelationType =
-  InterviewPlansType['interview_session'][number]['interview_session_relation'];
+  InterviewPlansType[number]['interview_session'][number]['interview_session_relation'];
 
 export type AddCompanyMember = {
   plan_id: string;
 };
 
 export type InterviewSessionUpdate =
-  Database['public']['Tables']['interview_session']['Update'];
+  DB['public']['Tables']['interview_session']['Update'];

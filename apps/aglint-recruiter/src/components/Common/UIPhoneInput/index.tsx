@@ -1,187 +1,118 @@
-/* eslint-disable no-unused-vars */
-import 'react-phone-input-2/lib/style.css';
+'use client';
 
-import Icon from '@components/Common/Icons/Icon';
-import { palette } from '@context/Theme/Theme';
-import { Stack } from '@mui/material';
-// import countries from '@utils/CountryUtils';
+import { Button } from '@components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@components/ui/command';
+import { Input } from '@components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { cn } from '@lib/utils';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import React from 'react';
-import PhoneInput, { CountryData } from 'react-phone-input-2';
+import { useEffect, useRef, useState } from 'react';
 
-import UITypography from '../UITypography';
-type Props = {
-  value?: string;
-  type?: React.HTMLInputTypeAttribute;
-  onChange?(
-    value: string,
-    data: CountryData | {},
-    event: React.ChangeEvent<HTMLInputElement>,
-    formattedValue: string
-  ): void;
-  error?: boolean;
-  label?: string;
-  labelBold?: 'default' | 'normal';
-  labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
-  helperText?: string;
-  disabled?: boolean;
-  required?: boolean;
-  placeholder?: string;
-  onFocus?: () => void;
-  onBlur?: (
-    event: React.FocusEvent<HTMLInputElement>,
-    data: CountryData | {}
-  ) => void;
-  defaultCountry?: string;
-  setDefaultCountry?: () => void;
-};
+const countries = [
+  { name: 'United States', code: 'US', dialCode: '+1', flag: '🇺🇸' },
+  { name: 'United Kingdom', code: 'GB', dialCode: '+44', flag: '🇬🇧' },
+  { name: 'Canada', code: 'CA', dialCode: '+1', flag: '🇨🇦' },
+  { name: 'Australia', code: 'AU', dialCode: '+61', flag: '🇦🇺' },
+  { name: 'Germany', code: 'DE', dialCode: '+49', flag: '🇩🇪' },
+  { name: 'France', code: 'FR', dialCode: '+33', flag: '🇫🇷' },
+  { name: 'Japan', code: 'JP', dialCode: '+81', flag: '🇯🇵' },
+  { name: 'Brazil', code: 'BR', dialCode: '+55', flag: '🇧🇷' },
+  { name: 'India', code: 'IN', dialCode: '+91', flag: '🇮🇳' },
+  { name: 'China', code: 'CN', dialCode: '+86', flag: '🇨🇳' },
+];
 
-// eslint-disable-next-line react/display-name
-const UIPhoneInput = ({
-  disabled,
-  error,
-  helperText,
-  label,
-  labelBold = 'default',
-  labelSize = 'medium',
-  onChange,
-  placeholder = '',
-  required,
-  value,
-  onFocus = () => {},
-  onBlur = () => {},
-  defaultCountry,
-  setDefaultCountry = () => {}
-}: Props) => {
-  let labelColor = palette.grey[800];
-  if (disabled) {
-    labelColor = palette.grey[600];
-  }
+export default function UIPhoneInput({
+  phoneNumber,
+  setPhoneNumber,
+  country,
+  isError,
+}: {
+  phoneNumber: string;
+  // eslint-disable-next-line no-unused-vars
+  setPhoneNumber: (value: string) => void;
+  country: string;
+  isError: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(country);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const selectedCountry = countries.find((c) => c.code === value);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [value]);
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value.replace(/\D/g, '');
+    setPhoneNumber(`${selectedCountry?.dialCode} ${input}`);
+  };
 
   return (
-    <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'0px'}>
-      {label && (
-        <UITypography type={labelSize} color={labelColor} fontBold={labelBold}>
-          {label}
-          {required && <sup>*</sup>}
-        </UITypography>
-      )}
-      <PhoneInput
-        autoFormat={true}
-        // onlyCountries={countries.map((c) => c.code)}
-        enableLongNumbers
-        copyNumbersOnly={false}
-        country={defaultCountry ? defaultCountry.toLowerCase() : null}
-        value={value}
-        onChange={(value, data, event, formattedValue) => {
-          if (
-            // @ts-ignore
-            countRept(formattedValue, /\d/g) <= countRept(data.format, /\./g)
-          ) {
-            onChange(value, data, event, formattedValue);
-          } else {
-            // event.preventDefault();
-            onChange(
-              value,
-              data,
-              event,
-              // @ts-ignore
-              formattedValue.substring(0, data.format.length)
-            );
-          }
-        }}
-        isValid={!error}
-        disabled={disabled}
-        placeholder={placeholder}
-        onFocus={() => {
-          if (onFocus) onFocus();
-        }}
-        onBlur={(value, country) => {
-          if (required) onBlur(value, country);
-        }}
-        inputProps={{
-          sx: {
-            width: '100%',
-            '& .form-control': {
-              width: '100%'
-            }
-          },
-          value: value
-        }}
-      />
-      {error && (
-        <Stack
-          direction={'row'}
-          alignItems={'center'}
-          justifyContent={'start'}
-          spacing={'2px'}
-        >
-          <Stack className='placeholder-icon'>
-            <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
-          </Stack>
-          <Stack className='placeholder'>
-            <UITypography type='small' color={palette.red[400]}>
-              {error ? helperText : ''}
-            </UITypography>
-          </Stack>
-        </Stack>
-      )}
-    </Stack>
+    <div
+      className={`mx-auto w-full max-w-sm ${isError ? 'border-red-500' : ''}`}
+    >
+      <div className='relative'>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant='outline'
+              role='combobox'
+              aria-expanded={open}
+              className='absolute left-0 top-0 h-full w-[80px] justify-between rounded-r-none border-r-0'
+            >
+              {selectedCountry?.flag}
+              <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-[200px] p-0'>
+            <Command>
+              <CommandInput placeholder='Search country...' />
+              <CommandEmpty>No country found.</CommandEmpty>
+              <CommandGroup>
+                {countries.map((country) => (
+                  <CommandItem
+                    key={country.code}
+                    onSelect={() => {
+                      setValue(country.code);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        value === country.code ? 'opacity-100' : 'opacity-0',
+                      )}
+                    />
+                    {country.flag} {country.name} ({country.dialCode})
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </Command>
+          </PopoverContent>
+        </Popover>
+        <Input
+          type='tel'
+          placeholder='Phone number'
+          value={phoneNumber}
+          onChange={handlePhoneChange}
+          className={`pl-[90px] ${isError ? 'border-red-500' : ''}`}
+          ref={inputRef}
+        />
+      </div>
+    </div>
   );
-};
-
-export const customPhoneStyle = {
-  '& .react-tel-input .flag-dropdown': {
-    borderColor: palette.grey[300]
-  },
-  '& .country-list': {
-    width: 'fit-content !important',
-    minWidth: '200px'
-    // position: 'fixed !important',
-  },
-  '& .react-tel-input .form-control.invalid-number , & .react-tel-input .flag-dropdown.invalid-number':
-    {
-      backgroundColor: '#ffffff',
-      borderColor: palette.red[400]
-    },
-  '& .react-tel-input .form-control.invalid-number:focus': {
-    backgroundColor: '#ffffff',
-    borderColor: palette.red[400],
-    outline: '3px solid',
-    outlineColor: palette.red[300]
-  },
-  '& .react-tel-input .form-control:focus , & .react-tel-input .flag-dropdown:focus':
-    {
-      outline: '3px solid',
-      outlineColor: palette.blue[300]
-      // borderColor: palette.blue[400],
-    },
-  '& .react-tel-input .form-control': {
-    width: '100%',
-    height: 'unset',
-    lineHeight: 0,
-    fontSize: '14px',
-    borderColor: palette.grey[300]
-  },
-  '& input': {
-    padding: '10px 10px'
-  }
-};
-
-export default UIPhoneInput;
-
-export const phonePatternError = (format, value) => {
-  if (
-    !value ||
-    !value?.trim() ||
-    countRept(value, /\d/g) != countRept(format, /\./g)
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-function countRept(string, regex) {
-  var patternArray = string?.match(regex);
-  return patternArray ? patternArray.length : 0;
 }

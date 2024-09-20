@@ -1,74 +1,51 @@
-import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { server_check_permissions } from './utils/middleware/util';
 import { allowedPaths } from './utils/paths/allowed';
+import PERMISSIONS from './utils/routing/permissions';
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
+  const requestUrl = request.nextUrl.pathname;
+  if (isAllowedPaths(requestUrl)) {
+    return NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+  }
+
+  const { isAllowed, id, rec_id, role } = await server_check_permissions({
+    getVal: (name) => request.cookies.get(name)?.value,
+    // eslint-disable-next-line security/detect-object-injection
+    permissions: PERMISSIONS[requestUrl],
+  });
+
+  if (requestUrl.startsWith('/api/')) {
+    if (isAllowed) {
+      // user this headers to get id and role for requester
+      request.headers.append('x-requester-id', id);
+      request.headers.append('x-requester-rec_id', rec_id);
+      request.headers.append('x-requester-role', role);
+    } else {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+    }
+  } else {
+    // not login
+    if (!isAllowed) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+  return NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
-  const requestUrl = request.nextUrl.pathname;
-  if (isAllowedPaths(requestUrl) || process.env.NODE_ENV === 'development') {
-    return response;
-  }
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-        },
-      },
-    },
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  // if user is signed in and the current path is / redirect the user to /account
-  if (user && allowedPaths.has(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  // if user is not signed in and the current path is not /login redirect the user to /
-  if (!user && !allowedPaths.has(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  return response;
 }
 
 export const config = {
   matcher: ['/login', '/', '/signup', '/api/:function*'],
 };
 
-const isAllowedPaths = (reqUrl = '') => {
-  return allowedPaths.has(reqUrl);
+const isAllowedPaths = (reqUrl: any) => {
+  return reqUrl.startsWith('/api/trpc') || allowedPaths.has(reqUrl);
 };

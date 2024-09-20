@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+
+import { decrypt } from '../decryptApiKey';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-const crypto = require('crypto');
 
 export default function handler(req, res) {
   const apiKey = req.body.apiKey;
@@ -62,12 +63,4 @@ export default function handler(req, res) {
   } else {
     return res.status(400).send('No ApiKey provided');
   }
-}
-
-// Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
 }

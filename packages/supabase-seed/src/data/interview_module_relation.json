@@ -1,0 +1,174 @@
+[
+  {
+    "id": "e819e048-8e71-4295-aca8-a37611a2dddc",
+    "user_id": "70fb688f-e8d5-4335-9a28-fc4dfc294737",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "962beeb2-685f-48ab-9c78-157cc4187ba4",
+    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": null,
+    "training_status": "training"
+  },
+  {
+    "id": "26bdf931-42ae-4016-87d2-7ec6946a6883",
+    "user_id": "ae5eceb7-24f3-4550-9784-b56c354e0978",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "922e758b-d24a-4ddd-8267-b2c868716e30",
+    "user_id": "d0ad9f54-521a-4fc1-bd2f-face74c29f6a",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "2345a642-13f0-4c54-967d-9205a0722728",
+    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": {
+      "end_date": "",
+      "isManual": true,
+      "start_date": ""
+    },
+    "training_status": "qualified"
+  },
+  {
+    "id": "5d39a0af-a6af-45e1-a8b7-6cd42b06af63",
+    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "module_id": "e6f79ab6-9b41-49d3-9e27-c040782c66a4",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "64b5ed3d-9dfd-444d-a575-005551e30170",
+    "user_id": "70fb688f-e8d5-4335-9a28-fc4dfc294737",
+    "module_id": "e6f79ab6-9b41-49d3-9e27-c040782c66a4",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "3577fa6b-9bae-4224-8b5b-e57bc4f5537f",
+    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "9523fc61-0453-46f0-aebf-539587cd4781",
+    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "1200ad55-c9de-4e6a-988b-2c3734eab321",
+    "user_id": "ae5eceb7-24f3-4550-9784-b56c354e0978",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "b7a3a114-8742-4b8e-aabf-a280034438a3",
+    "user_id": "d0ad9f54-521a-4fc1-bd2f-face74c29f6a",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "813686f9-7b5f-47c0-8dca-697580066e94",
+    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "27e4bce3-9fad-40ea-a321-f60605a23075",
+    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "module_id": "42129877-23b8-46f7-b41a-e33039c067ed",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "f2e6339d-2ce8-4ee4-9ad5-feab85cc2a56",
+    "user_id": "70fb688f-e8d5-4335-9a28-fc4dfc294737",
+    "module_id": "42129877-23b8-46f7-b41a-e33039c067ed",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "3ccf09d6-d099-49f4-8c5f-79f1fcba268b",
+    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "pause_json": null,
+    "training_status": "training"
+  },
+  {
+    "id": "74636562-76d9-4cbb-9c8e-d89780a8f8c8",
+    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "module_id": "0f337bba-fd0b-41ed-b356-408d9c4a8b5c",
+    "pause_json": null,
+    "training_status": "training"
+  },
+  {
+    "id": "ba076a80-8c0b-4014-bb2c-6f7fea4f2c2c",
+    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "module_id": "42129877-23b8-46f7-b41a-e33039c067ed",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "7de1c61d-7495-4a8a-8bcb-5bf211414da2",
+    "user_id": "70fb688f-e8d5-4335-9a28-fc4dfc294737",
+    "module_id": "0f337bba-fd0b-41ed-b356-408d9c4a8b5c",
+    "pause_json": null,
+    "training_status": "training"
+  },
+  {
+    "id": "2f229be5-b848-423c-896f-33aced6f356a",
+    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "module_id": "0f337bba-fd0b-41ed-b356-408d9c4a8b5c",
+    "pause_json": null,
+    "training_status": "training"
+  },
+  {
+    "id": "998455ee-5337-4ad4-9363-80226ebe9bc4",
+    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "module_id": "aa3c3dc1-ce9c-41ff-bf06-750bc1559c4c",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "43eeffb5-74d1-46b4-9a99-fbfc15b2b9dc",
+    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "module_id": "e6f79ab6-9b41-49d3-9e27-c040782c66a4",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "c1b87ef6-acf0-4b7a-add2-fe1352234472",
+    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "pause_json": null,
+    "training_status": "training"
+  },
+  {
+    "id": "94efe09f-dc40-4516-b004-0c8cb5bb97bd",
+    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "module_id": "e6f79ab6-9b41-49d3-9e27-c040782c66a4",
+    "pause_json": null,
+    "training_status": "qualified"
+  },
+  {
+    "id": "1cfa38d9-a45c-4a7d-a5bb-1f16f7fc915a",
+    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "pause_json": null,
+    "training_status": "qualified"
+  }
+]

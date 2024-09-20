@@ -1,34 +1,32 @@
-import { CalendarEvent } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type CalendarEvent } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { Interviewer } from '@/src/utils/event_book/book_session';
-import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
+import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   calender_event: CalendarEvent;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { calender_event } = req.body as BodyParams;
+  const { calender_event } = req.body as BodyParams;
   if (!calender_event) return res.status(400).send('missing Fields');
   try {
     const { comp_cred, recruiter } = await getRecruiterCredentials({
       email: calender_event.organizer.email,
     });
 
-    const google_cal = new GoogleCalender({
-      company_cred: comp_cred,
-      recruiter,
-    });
+    const google_cal = new GoogleCalender(comp_cred, recruiter);
 
     await google_cal.authorizeUser();
+
     await google_cal.updateEventStatus(calender_event.id, 'cancelled');
 
     return res.status(200).send('ok');
   } catch (error) {
+    console.error(error.message);
     res.status(500).send(error.message);
   }
 };
@@ -39,35 +37,20 @@ const getRecruiterCredentials = async ({ email }) => {
   const [rec_user] = supabaseWrap(
     await supabaseAdmin.from('recruiter_user').select().eq('email', email),
   );
+
   const user_id = rec_user.user_id;
-  const promises = [
-    (async () => {
-      const [rec] = supabaseWrap(
-        await supabaseAdmin
-          .from('recruiter_relation')
-          .select('recruiter(*)')
-          .eq('user_id', user_id),
-      );
-      if (!rec.recruiter.service_json) return null;
-      return JSON.parse(decrypt_string(rec.recruiter.service_json));
-    })(),
-    (async () => {
-      const [rec] = supabaseWrap(
-        await supabaseAdmin
-          .from('recruiter_user')
-          .select('schedule_auth')
-          .eq('user_id', user_id),
-      );
-
-      return rec.schedule_auth;
-    })(),
-  ];
-
-  const [comp_cred, user_schedule_auth] = await Promise.all(promises);
-  const r: Interviewer = {
+  const [rec] = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_relation')
+      .select(
+        'recruiter(integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(schedule_auth)',
+      )
+      .eq('user_id', user_id),
+  );
+  const r: CalEventAttendeesAuthDetails = {
     email,
-    schedule_auth: user_schedule_auth,
+    schedule_auth: rec.recruiter_user.schedule_auth as any,
     user_id,
   };
-  return { comp_cred, recruiter: r };
+  return { comp_cred: rec.recruiter.integrations.service_json, recruiter: r };
 };

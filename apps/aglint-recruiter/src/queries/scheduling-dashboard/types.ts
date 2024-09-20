@@ -1,11 +1,11 @@
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
 import { type useCompanyMembers } from '../company-members';
 import { type InterviewModulesType } from '../interview-modules/types';
-import { getInterviewTrainingProgressAPI } from '.';
+import { type getInterviewTrainingProgressAPI } from '.';
 
-type Enums = Database['public']['Enums'];
-export type Functions = Database['public']['Functions'];
+type Enums = DB['public']['Enums'];
+export type Functions = DB['public']['Functions'];
 
 export type SchedulingDashboardTypes = {
   interviewMeetingStatus: Functions['get_interview_meeting_status_count']['Returns'];
@@ -17,7 +17,7 @@ export type SchedulingDashboardTypes = {
     {
       training_status_count: {
         // eslint-disable-next-line no-unused-vars
-        [id in Enums['status_training']]: number;
+        [_id in Enums['status_training']]: number;
       };
     }
   >;
@@ -48,9 +48,9 @@ export type CustomType<
   T,
   U extends T extends any[]
     ? // eslint-disable-next-line no-unused-vars
-      Partial<{ [id in keyof T[number]]: any }>
+      Partial<{ [_id in keyof T[number]]: any }>
     : // eslint-disable-next-line no-unused-vars
-      Partial<{ [id in keyof T]: any }>,
+      Partial<{ [_id in keyof T]: any }>,
 > = T extends any[] ? (Omit<T[number], keyof U> & U)[] : Omit<T, keyof U> & U;
 
 type TrainingTypes = Exclude<Enums['interviewer_type'], 'qualified'>;
@@ -58,7 +58,6 @@ type TrainingTypes = Exclude<Enums['interviewer_type'], 'qualified'>;
 type InterviewTrainingProgressType = ({
   recruiter_user: Pick<
     ReturnType<typeof useCompanyMembers>['data'][number],
-    | 'department'
     | 'email'
     | 'first_name'
     | 'last_name'
@@ -69,5 +68,5 @@ type InterviewTrainingProgressType = ({
   module: Pick<InterviewModulesType[number], 'name' | 'settings' | 'id'>;
 } & {
   // eslint-disable-next-line no-unused-vars
-  count: { [key in TrainingTypes]: number };
+  count: { [_key in TrainingTypes]: number };
 })[];

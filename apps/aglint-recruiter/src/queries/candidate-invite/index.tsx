@@ -1,19 +1,23 @@
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
+import {
+  type APICandidateConfirmSlotNoConflict,
+  type APIVerifyRecruiterSelectedSlots,
+  type CandidateDirectBookingType,
+} from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import dayjs from 'dayjs';
 
-import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
+import { useInviteParams } from '@/context/CandidateInviteContext/useInviteParams';
 import {
-  ApiResponseAllSlots,
-  ApiResponseCandidateInvite,
-} from '@/src/pages/api/scheduling/invite';
-import toast from '@/src/utils/toast';
+  type ApiResponseAllSlots,
+  type ApiResponseCandidateInvite,
+} from '@/pages/api/scheduling/invite';
 
 import { candidateInviteKeys } from './keys';
 
 export const useInviteMeta = () => {
   const { enabled, ...params } = useInviteParams();
+
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const query = useQuery({
     queryKey,
@@ -29,7 +33,6 @@ export const useInviteSlots = (params: InviteSlotsParams) => {
   const { queryKey } = candidateInviteKeys.inviteSlotsWithFilter(params);
   const query = useQuery({
     queryKey,
-    retry: 3,
     queryFn: () => getInviteSlots(params),
   });
   return query;
@@ -38,15 +41,30 @@ export const useInviteSlots = (params: InviteSlotsParams) => {
 export const useConfirmSlots = () => {
   const queryClient = useQueryClient();
   // eslint-disable-next-line no-unused-vars
-  const { enabled, ...params } = useInviteParams();
+  const { enabled: _, ...params } = useInviteParams();
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
-    mutationFn: async (bodyParams: APICandidateConfirmSlot) => {
-      await confirmSlots(bodyParams);
+    mutationFn: async ({
+      bodyParams,
+      is_agent_link,
+    }: {
+      bodyParams: CandidateDirectBookingType;
+      is_agent_link: boolean;
+    }) => {
+      const no_conf_payload: APICandidateConfirmSlotNoConflict = {
+        cand_tz: dayjsLocal.tz.guess(),
+        filter_id: bodyParams.filter_id,
+        selected_slot: {
+          slot_start_time: bodyParams.selected_plan[0].start_time,
+        },
+        agent_type: 'candidate',
+      };
+      if (is_agent_link) {
+        await confirmSlotNoConflict(no_conf_payload);
+      } else {
+        await confirmSlots(bodyParams);
+      }
       await queryClient.invalidateQueries({ queryKey });
-    },
-    onError: (error) => {
-      toast.error(error);
     },
   });
   return mutation;
@@ -62,16 +80,24 @@ const getInviteMeta = async (
   return res.data as ApiResponseCandidateInvite;
 };
 
-const confirmSlots = async (bodyParams: APICandidateConfirmSlot) => {
+const confirmSlots = async (bodyParams: CandidateDirectBookingType) => {
   try {
     const res = await axios.post(
-      '/api/scheduling/v1/confirm_interview_slot',
+      '/api/scheduling/v1/booking/candidate-self-schedule',
       bodyParams,
     );
     if (res.status !== 200) throw new Error('Internal server error');
   } catch (e) {
     throw new Error(e);
   }
+};
+const confirmSlotNoConflict = async (
+  bodyParams: APICandidateConfirmSlotNoConflict,
+) => {
+  await axios.post(
+    '/api/scheduling/v1/booking/confirm-slot-no-conflicts',
+    bodyParams,
+  );
 };
 
 export type InviteMetaParams = {
@@ -83,23 +109,29 @@ export type InviteMetaParams = {
 };
 
 export type InviteSlotsParams = {
-  filter_json: ApiResponseCandidateInvite['filter_json'];
-  recruiter: ApiResponseCandidateInvite['recruiter'];
+  filter_json_id: string;
   user_tz: string;
 };
-const getInviteSlots = async ({ filter_json, user_tz }: InviteSlotsParams) => {
+const getInviteSlots = async ({
+  filter_json_id,
+  user_tz,
+}: InviteSlotsParams) => {
   try {
+    const paylod: APIVerifyRecruiterSelectedSlots = {
+      filter_json_id,
+      candidate_tz: user_tz,
+      api_options: {
+        include_conflicting_slots: {
+          show_conflicts_events: true,
+          show_soft_conflicts: true,
+          out_of_working_hrs: true,
+        },
+      },
+    };
     const resSchOpt = await axios.post(
-      '/api/scheduling/v1/find_slots_date_range',
+      '/api/scheduling/v1/verify-recruiter-selected-slots',
       {
-        session_ids: filter_json.session_ids,
-        recruiter_id: filter_json.recruiter_id,
-        date_range_start:
-          filter_json.start_date > dayjs().format('DD/MM/YYYY')
-            ? filter_json.start_date
-            : dayjs().format('DD/MM/YYYY'),
-        date_range_end: filter_json.end_date,
-        user_tz: user_tz,
+        ...paylod,
       },
     );
     if (resSchOpt.status !== 200) {

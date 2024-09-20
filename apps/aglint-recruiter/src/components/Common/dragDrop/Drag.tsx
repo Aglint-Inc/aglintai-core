@@ -1,47 +1,42 @@
-import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
 export const Drag = ({ id, index, ...props }) => {
-  const [onHovered, setonHovered] = useState(false);
+  const [onHovered, setOnHovered] = useState(false);
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => {
         return (
           <div
             onMouseEnter={() => {
-              setonHovered(true);
+              setOnHovered(true);
             }}
             onMouseLeave={() => {
-              setonHovered(false);
+              setOnHovered(false);
             }}
             ref={provided.innerRef}
-            className={snapshot.isDragging ? 'draggable dragging' : 'draggable'}
+            className={`${snapshot.isDragging ? 'draggable dragging' : 'draggable'}`}
             {...provided.draggableProps}
             {...props}
           >
-            <Stack position={'relative'} px={'10px'} my={2}>
+            <div className='relative my-2 px-3'>
               <div
-                className='drag-handle'
+                className='drag-handle absolute -left-1 z-[2] mt-4'
                 {...provided.dragHandleProps}
                 style={{
-                  marginTop: '15px',
-                  position: 'absolute',
-                  left: '-5px',
-                  zIndex: 2,
-                  display: onHovered || snapshot.isDragging ? 'block' : 'none'
+                  display: onHovered || snapshot.isDragging ? 'block' : 'none',
                 }}
               >
                 <Image
                   src='/images/svg/drag.svg'
                   alt='drag'
-                  width={10}
-                  height={20}
+                  width={12}
+                  height={24}
                 />
               </div>
               {props.children}
-            </Stack>
+            </div>
           </div>
         );
       }}

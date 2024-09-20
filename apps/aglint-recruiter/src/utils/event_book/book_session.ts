@@ -1,119 +1,50 @@
-const { v4: uuidv4 } = require('uuid');
-
 import {
-  CompServiceKeyCred,
-  InterviewSession,
-  NewCalenderEvent,
-  RecruiterUserType,
+  type NewCalenderEvent,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { v4 as uuidv4 } from 'uuid';
 
+// eslint-disable-next-line import/no-cycle
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
-import { getOutboundEmail } from '../scheduling_v2/get-outbound-email';
-const { google } = require('googleapis');
-const { OAuth2Client } = require('google-auth-library');
-
-export type GetAuthParams = {
-  company_cred: CompServiceKeyCred;
-  recruiter: Interviewer;
-};
-
-export const getUserCalAuth = async ({
-  company_cred,
-  recruiter,
-}: GetAuthParams) => {
-  try {
-    if (recruiter.schedule_auth) {
-      const oAuth2Client = new OAuth2Client(
-        process.env.GOOGLE_SCHEDULE_CLIENT_ID,
-        process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
-      );
-      const schedule_auth = recruiter.schedule_auth as any;
-      oAuth2Client.setCredentials({
-        access_token: schedule_auth.access_token,
-        refresh_token: schedule_auth.refresh_token,
-      });
-      return oAuth2Client;
-    } else {
-      const jwtClient = new google.auth.JWT({
-        email: company_cred.client_email,
-        key: company_cred.private_key,
-        scopes: ['https://www.googleapis.com/auth/calendar'],
-        subject: recruiter.email,
-      });
-
-      await jwtClient.authorize();
-      return jwtClient;
-    }
-  } catch (error) {
-    return null;
-  }
-};
-
-export const getSuperAdminAuth = async (
-  company_cred: GetAuthParams['company_cred'],
-  admin_email,
-) => {
-  const jwtClient = new google.auth.JWT({
-    email: company_cred.client_email,
-    key: company_cred.private_key,
-    scopes: ['https://www.googleapis.com/auth/calendar'],
-    subject: admin_email,
-  });
-
-  await jwtClient.authorize();
-  return jwtClient;
-};
-
-export type Interviewer = Pick<
-  RecruiterUserType,
-  'user_id' | 'schedule_auth' | 'email'
->;
-
-export type Organizer = Pick<
-  RecruiterUserType,
-  'user_id' | 'schedule_auth' | 'email'
-> & { timezone: string };
+import { getCalEventDescription } from './getCalEventDescription';
+import type {
+  CalEventAttendeesAuthDetails,
+  CalEventOrganizerAuthDetails,
+} from './types';
 
 export const bookSession = async ({
-  candidate_email,
-  end_time,
-  interviewers,
-  organizer,
-  schedule_name,
-  start_time,
-  company_cred,
-  session_id,
-  meet_type,
+  cal_event_attendees,
+  cal_event_organizer,
+  candidate_name,
+  company_cred_hash_str,
   company_id,
-  duration,
-  description,
+  job_title,
+  meeting_id,
+  session,
 }: {
-  schedule_name: string;
-  start_time: string;
-  end_time: string;
-  interviewers: Interviewer[];
-  candidate_email: string | null;
-  organizer: Organizer;
-  company_cred: CompServiceKeyCred;
-  session_id: string;
-  meet_type: InterviewSession['schedule_type'];
+  session: SessionCombinationRespType;
   company_id: string;
-  duration: number;
-  description: string;
+  meeting_id: string;
+  candidate_name: string;
+  job_title: string;
+  cal_event_organizer: CalEventOrganizerAuthDetails;
+  cal_event_attendees: CalEventAttendeesAuthDetails[];
+  company_cred_hash_str: string;
 }) => {
+  const event_name = `${session.module_name} : ${candidate_name} for ${job_title}`;
+  const event_description = getCalEventDescription(meeting_id);
   const calendar_event: NewCalenderEvent = {
-    summary: schedule_name,
+    summary: event_name,
     start: {
-      dateTime: start_time,
-      timeZone: organizer.timezone,
+      dateTime: session.start_time,
+      timeZone: cal_event_organizer.timezone,
     },
     end: {
-      dateTime: end_time,
-      timeZone: organizer.timezone,
+      dateTime: session.end_time,
+      timeZone: cal_event_organizer.timezone,
     },
-    attendees: interviewers.map((int) => ({
+    attendees: cal_event_attendees.map((int) => ({
       email: (int.schedule_auth as any)?.email ?? int.email,
     })),
     reminders: {
@@ -126,23 +57,23 @@ export const bookSession = async ({
     conferenceData: {
       createRequest: null,
     },
-    description: description,
+    description: event_description,
   };
-  if (meet_type === 'google_meet') {
+  if (session.schedule_type === 'google_meet') {
     calendar_event.conferenceData.createRequest = {
       requestId: uuidv4(),
     };
-  } else if (meet_type === 'zoom') {
+  } else if (session.schedule_type === 'zoom') {
     try {
       const zoom_meet = new ZoomMeet(company_id);
       await zoom_meet.authorizeUser();
       const schd_meet = await zoom_meet.createMeeting({
-        topic: schedule_name,
-        agenda: schedule_name,
+        topic: event_name,
+        agenda: event_name,
         default_password: false,
-        duration: duration,
-        start_time: start_time,
-        timezone: organizer.timezone ?? 'Asia/columbo',
+        duration: session.duration,
+        start_time: session.start_time,
+        timezone: cal_event_organizer.timezone,
         type: 2,
         settings: {
           host_video: false,
@@ -165,37 +96,33 @@ export const bookSession = async ({
         },
       ];
     } catch (err) {
+      console.error(err);
       calendar_event.conferenceData.createRequest = {
         requestId: uuidv4(),
       };
     }
   }
-
-  if (candidate_email) {
-    calendar_event.attendees.push({
-      email: (await getOutboundEmail(candidate_email)) as string,
-    });
-  }
-
-  const google_cal = new GoogleCalender({
-    recruiter: organizer,
-    company_cred,
-  });
+  const google_cal = new GoogleCalender(
+    company_cred_hash_str,
+    cal_event_organizer,
+  );
   await google_cal.authorizeUser();
   const cal_event = await google_cal.createCalenderEvent(calendar_event);
-  const attendees_promises = interviewers.map(async (int) => {
+  const attendees_promises = cal_event_attendees.map(async (int) => {
     try {
       const email = (int.schedule_auth as any)?.email ?? int.email;
-      const int_cal = new GoogleCalender({
-        company_cred,
-        recruiter: int,
-      });
+      const int_cal = new GoogleCalender(company_cred_hash_str, int);
       await int_cal.authorizeUser();
       await int_cal.importEvent(cal_event, email);
     } catch (err) {
+      console.error(err);
       //ignore if importing the event is failed
     }
   });
   await Promise.all(attendees_promises);
-  return { session_id, cal_event };
+  return {
+    session_id: session.session_id,
+    cal_event,
+    meeting_id: session.meeting_id,
+  };
 };

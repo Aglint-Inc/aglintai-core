@@ -1,40 +1,47 @@
-import { CalendarEvent, NewCalenderEvent } from '@aglint/shared-types';
-
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  type CalendarEvent,
+  type NewCalenderEvent,
+} from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { google } from 'googleapis';
 
 import {
-  GetAuthParams,
-  getSuperAdminAuth,
-  getUserCalAuth,
-} from '../../utils/event_book/book_session';
+  type CalEventAttendeesAuthDetails,
+  type GetAuthParams,
+} from '@/utils/event_book/types';
+import { getSuperAdminAuth } from '@/utils/scheduling/getSuperAdminAuth';
+import { getUserCalAuth } from '@/utils/scheduling/getUserCalAuth';
+
 import { decrypt_string } from '../../utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '../../utils/supabase/supabaseAdmin';
-
-const { google } = require('googleapis');
 
 export class GoogleCalender {
   private recruiter_user_id;
   private auth_details: GetAuthParams;
   private user_auth: any;
   constructor(
-    _auth_details: GetAuthParams | null,
+    _comp_domain_cred_hash: string | null,
+    _recruiter_auth: CalEventAttendeesAuthDetails | null,
     _recruiter_user_id: string = null,
   ) {
-    if (_auth_details) {
-      this.auth_details = _auth_details;
-    }
+    this.auth_details = {
+      company_cred: _comp_domain_cred_hash
+        ? JSON.parse(decrypt_string(_comp_domain_cred_hash))
+        : null,
+      recruiter: _recruiter_auth,
+    };
     if (_recruiter_user_id) {
       this.recruiter_user_id = _recruiter_user_id;
     }
   }
 
   public async authorizeUser() {
-    if (!this.auth_details) {
+    if (this.recruiter_user_id) {
       const [rec_relns] = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_relation')
           .select(
-            'recruiter(service_json),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
+            'recruiter(integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
           )
           .eq('user_id', this.recruiter_user_id)
           .then(({ data, error }) => ({
@@ -50,9 +57,9 @@ export class GoogleCalender {
           user_id: this.recruiter_user_id,
         },
       };
-      if (rec_relns.recruiter.service_json) {
+      if (rec_relns.recruiter.integrations.service_json) {
         this.auth_details.company_cred = JSON.parse(
-          decrypt_string(rec_relns.recruiter.service_json),
+          decrypt_string(rec_relns.recruiter.integrations.service_json),
         );
       }
       this.user_auth = await getUserCalAuth({
@@ -71,19 +78,21 @@ export class GoogleCalender {
     const [company] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter_relation')
-        .select('recruiter(service_json,domain_admin_email)')
+        .select('recruiter(integrations(service_json,domain_admin_email))')
         .eq('recruiter_id', company_id),
     );
-    if (!company.recruiter.service_json) {
+    if (!company.recruiter.integrations.service_json) {
       throw new Error('Invalid Company Service Cred');
     }
     this.auth_details = {
-      company_cred: JSON.parse(decrypt_string(company.recruiter.service_json)),
+      company_cred: JSON.parse(
+        decrypt_string(company.recruiter.integrations.service_json),
+      ),
       recruiter: null,
     };
     this.user_auth = await getSuperAdminAuth(
       this.auth_details.company_cred,
-      company.recruiter.domain_admin_email,
+      company.recruiter.integrations.domain_admin_email,
     );
   }
   public async getAllCalenderEvents(start_date: string, end_date: string) {
@@ -113,21 +122,25 @@ export class GoogleCalender {
 
   public async createCalenderEvent(new_cal_event: NewCalenderEvent) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    //@ts-expect-error
     const response = await calendar.events.insert({
-      calendarId: 'primary', // 'primary' refers to the user's primary calendar
+      calendarId: 'primary',
       resource: new_cal_event,
       conferenceDataVersion: 1,
       sendNotifications: true,
     });
+    //@ts-expect-error
     return response.data as CalendarEvent;
   }
   public async importEvent(event, attendeeEmail) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    //@ts-expect-error
     const response = await calendar.events.import({
       calendarId: attendeeEmail, // Use the attendee's email as the calendar ID
       resource: event,
       sendNotifications: true,
     });
+    //@ts-expect-error
     return response.data;
   }
   public async updateEventStatus(event_id: string, status: 'cancelled') {
@@ -152,7 +165,7 @@ export class GoogleCalender {
       },
       sendNotifications: true,
     });
-    return response.data;
+    return response.data as CalendarEvent;
   }
   public async changeMeetingOrganizer(
     from_calender: string,
@@ -167,5 +180,63 @@ export class GoogleCalender {
     });
 
     return result.data;
+  }
+  public async watchEvents(organizer_id: string) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+
+    const watchResponse = await calendar.events.watch({
+      requestBody: {
+        id: `${process.env.NEXT_PUBLIC_ENV}-${organizer_id}`,
+        type: 'web_hook',
+        // address: process.env.NEXT_PUBLIC_NGROK + '/api/google-calender/webhook',
+        address:
+          process.env.NEXT_PUBLIC_HOST_NAME + '/api/google-calender/webhook',
+        // params: {
+        //   ttl: '3600',
+        // },
+      },
+      calendarId: 'primary',
+    });
+    return watchResponse.data;
+  }
+  public async stopWatch(channel_id: string, resource_id: string) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const response = await calendar.channels.stop({
+      requestBody: {
+        id: channel_id, // The unique channel ID
+        resourceId: resource_id, // The resource ID from the watch response
+      },
+    });
+    return response.data;
+  }
+  public async fullCalendarSync(sync_token: string | null) {
+    let events: CalendarEvent[] = [];
+    let pageToken = null;
+    let syncToken = sync_token; // Initially, this will be null for the first sync
+
+    do {
+      const requestParams = {
+        calendarId: 'primary',
+        singleEvents: true,
+        showDeleted: true,
+        maxResults: 2500,
+        pageToken: pageToken,
+        syncToken,
+      };
+
+      if (syncToken) {
+        delete requestParams.pageToken;
+      }
+      const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+      const response = await calendar.events.list(requestParams);
+      if (response.data.items && response.data.items.length > 0) {
+        events = events.concat(response.data.items as CalendarEvent[]);
+      }
+      pageToken = response.data.nextPageToken;
+
+      syncToken = response.data.nextSyncToken;
+    } while (pageToken);
+
+    return { events, syncToken };
   }
 }

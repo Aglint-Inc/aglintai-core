@@ -1,0 +1,1 @@
+ALTER TABLE public_jobs add column remote_id text;

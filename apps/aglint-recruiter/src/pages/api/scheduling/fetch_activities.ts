@@ -1,10 +1,8 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import type { DB, SupabaseType } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { fetchAllActivities } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
-
-const supabase = createClient<CustomDatabase>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -25,11 +23,12 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const { application_id } = req.body;
+      const { application_id, session_id } = req.body;
       if (application_id) {
         const resActivities = await fetchAllActivities({
           application_id,
           supabase,
+          session_id,
         });
         return res.send({
           data: resActivities,
@@ -51,3 +50,40 @@ export default async function handler(
     } as ApiResponseActivities);
   }
 }
+
+export const fetchAllActivities = async ({
+  application_id,
+  supabase,
+  session_id,
+}: {
+  application_id: string;
+  supabase: SupabaseType;
+  session_id?: string;
+}) => {
+  const query = supabase
+    .from('application_logs')
+    .select(
+      '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*)',
+    )
+    .eq('application_id', application_id)
+    .eq('module', 'scheduler');
+
+  if (session_id) {
+    const { data } = await supabase
+      .from('new_tasks')
+      .select('*,task_session_relation(id)')
+      .eq('task_session_relation.session_id', session_id)
+      .not('task_session_relation', 'is', null);
+
+    if (data.length === 0) {
+      return [];
+    } else {
+      const taskIds = [...new Set(data.map((item) => item.id))];
+      query.in('new_tasks.id', taskIds).not('new_tasks', 'is', null);
+    }
+  }
+
+  const { data } = await query.throwOnError();
+
+  return data;
+};

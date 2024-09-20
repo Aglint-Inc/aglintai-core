@@ -1,122 +1,140 @@
-import { Collapse, Stack } from '@mui/material';
+import { getFullName } from '@aglint/shared-utils';
+import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import dayjs from 'dayjs';
+import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
+import { MembersList } from 'src/app/_common/components/MembersList';
 
-import { StatusBadge } from '@/devlink2';
-import { MyScheduleSubCard } from '@/devlink3';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { getBreakLabel } from '@/utils/getBreakLabel';
 
-import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../AllSchedules/utils';
+} from '../../../../../utils/scheduling/colors_and_enums';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
-import { ScheduleListType } from '../hooks';
-import InterviewerDetailsCard from './InterviewerDetailCard';
+import InterviewerUserDetail from '../../InterviewerUserDetail';
+import { MyScheduleSubCard } from './MyScheduleSubCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
 }: {
-  meetingDetails: ScheduleListType[number];
+  meetingDetails: Awaited<ReturnType<typeof getAllInterviews>>[number];
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
+  const interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
+
   return (
     <>
-      <Stack
-        sx={{
-          cursor: 'pointer',
-        }}
+      <div
+        className='cursor-pointer'
         onClick={() => {
           router.push(
-            `/scheduling/view?meeting_id=${meetingDetails.interview_meeting.meeting_id}&tab=candidate_details`,
+            `/scheduling/view?meeting_id=${meetingDetails.id}&tab=job_details`,
           );
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={{
-            onClick: (e) => {
-              setCollapseOpen((pre) => !pre);
-              e.stopPropagation();
-            },
+          onClickDropdownIocn={(e) => {
+            setCollapseOpen((pre) => !pre);
+            e.stopPropagation();
           }}
+          isDropdownIconVisible={interviewers.length > 0}
+          isMembersListVisible={interviewers.length > 0 && collapseOpen}
           slotMembersList={
             <>
-              <Collapse in={collapseOpen}>
-                <Stack direction={'column'} gap={'10px'}>
-                  {meetingDetails.users.map((user, i) => {
+              <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
+                <div className='flex flex-col space-y-2'>
+                  <MembersList
+                    slotImage={<User size={40} />}
+                    textName={getFullName(
+                      meetingDetails.applications.candidates.first_name,
+                      meetingDetails.applications.candidates.last_name,
+                    )}
+                    isDesignationVisible={true}
+                    textDesignation={'Candidate'}
+                    textTime={null}
+                  />
+                  {interviewers.map((user) => {
                     return (
-                      <InterviewerDetailsCard
-                        key={i}
-                        meetingTiming={{
-                          startDate:
-                            meetingDetails.interview_meeting.start_time,
-                          endDate: meetingDetails.interview_meeting.end_time,
-                        }}
-                        user={user}
-                      />
+                      <>
+                        <InterviewerUserDetail
+                          key={user.email}
+                          interview_meeting={{
+                            end_time: meetingDetails.end_time,
+                            start_time: meetingDetails.start_time,
+                            status: meetingDetails.status,
+                          }}
+                          accepted_status={user.accepted_status}
+                          cancelReason={user.cancel_reasons?.find(
+                            (can) =>
+                              can.session_relation_id ===
+                              user.session_relation_id,
+                          )}
+                          userDetails={{
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            user_id: user.user_id,
+                            position: user.position,
+                            profile_image: user.profile_image,
+                          }}
+                          interviewerTimeZone={user.tz_code}
+                          isCalendarConnected={true}
+                          isPaused={false}
+                          pause_json={null}
+                          trainingType={user.training_type}
+                          interviewerType={user.interviewer_type}
+                        />
+                      </>
                     );
                   })}
-                </Stack>
-              </Collapse>
+                </div>
+              </div>
             </>
           }
-          textTime={`${dayjs(meetingDetails.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails.interview_meeting?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
-          textMeetingPlatform={getScheduleType(
-            meetingDetails?.interview_meeting.schedule_type,
-          )}
-          textMeetingTitle={meetingDetails?.interview_meeting?.session_name}
+          textTime={`${dayjs(meetingDetails?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
+          textMeetingPlatform={getScheduleType(meetingDetails?.schedule_type)}
+          textMeetingTitle={meetingDetails?.session_name}
           slotMeetingIcon={
-            <IconScheduleType
-              type={meetingDetails?.interview_meeting?.schedule_type}
-            />
+            <IconScheduleType type={meetingDetails?.schedule_type} />
           }
           isMeetingPlatformVisible={
-            meetingDetails.interview_meeting?.schedule_type === 'google_meet' ||
-            meetingDetails.interview_meeting?.schedule_type === 'zoom'
+            meetingDetails?.schedule_type === 'google_meet' ||
+            meetingDetails?.schedule_type === 'zoom'
           }
           isDurationVisible={true}
           isPhoneCallVisible={false}
-          isTimeVisible={Boolean(meetingDetails.interview_meeting?.start_time)}
-          slotStatus={
-            <StatusBadge
-              isCancelledVisible={
-                meetingDetails.interview_meeting?.status === 'cancelled'
-              }
-              isConfirmedVisible={
-                meetingDetails.interview_meeting?.status === 'confirmed'
-              }
-              isWaitingVisible={
-                meetingDetails.interview_meeting?.status === 'waiting'
-              }
-              isCompletedVisible={
-                meetingDetails.interview_meeting?.status === 'completed'
-              }
-              isNotScheduledVisible={
-                meetingDetails.interview_meeting?.status === 'not_scheduled'
-              }
-            />
-          }
+          isTimeVisible={Boolean(meetingDetails?.start_time)}
+          slotStatus={<MeetingStatusBadge status={meetingDetails.status} />}
           isLocationVisible={false}
-          textDuration={getBreakLabel(
-            meetingDetails.interview_meeting.session_duration,
-          )}
-          textJob={meetingDetails?.interview_meeting?.job_title}
+          textDuration={getBreakLabel(meetingDetails.session_duration)}
+          slotAvatarWithName={
+            <div className='flex items-center space-x-2'>
+              <User className='h-4 w-4' />
+              <span className='text-sm font-medium'>
+                {getFullName(
+                  meetingDetails.applications.candidates.first_name,
+                  meetingDetails.applications.candidates.last_name,
+                )}
+              </span>
+            </div>
+          }
+          isAvatarWithNameVisible={!collapseOpen}
+          textJob={
+            <div className='flex flex-row items-center space-y-5'>
+              <span>{meetingDetails?.public_jobs.job_title}</span>
+            </div>
+          }
           bgColorProps={{
-            style: {
-              background: getScheduleBgcolor(
-                meetingDetails.interview_meeting?.status,
-              ),
-              color: getScheduleTextcolor(
-                meetingDetails.interview_meeting?.status,
-              ),
-            },
+            background: getScheduleBgcolor(meetingDetails.status),
+            color: getScheduleTextcolor(meetingDetails.status),
           }}
         />
-      </Stack>
+      </div>
     </>
   );
 }

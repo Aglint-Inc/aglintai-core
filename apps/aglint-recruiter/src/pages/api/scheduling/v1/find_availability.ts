@@ -1,69 +1,46 @@
 /* eslint-disable no-console */
-import dayjs from 'dayjs';
+import { type DateRangePlansType } from '@aglint/shared-types';
+import { schema_find_availability_payload } from '@aglint/shared-utils';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import * as v from 'valibot';
 
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
-import { ApiFindAvailability } from '@aglint/shared-types';
-import { has } from 'lodash';
-import { NextApiRequest, NextApiResponse } from 'next';
-
-const required_fields = ['recruiter_id', 'start_date', 'end_date'];
+export type ApiResponseFindAvailability = {
+  slots: DateRangePlansType[];
+  availabilities: CandidatesSchedulingV2['calendar_events'];
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let {
-      session_ids,
-      recruiter_id,
-      start_date,
-      end_date,
-      user_tz,
-      is_debreif = false,
-    } = req.body as ApiFindAvailability;
+    const parsedData = v.parse(schema_find_availability_payload, {
+      ...req.body,
+      options: req.body.options || {
+        include_conflicting_slots: {},
+      },
+    });
+    parsedData.options.return_empty_slots_err = true;
+    const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
 
-    required_fields.forEach((field) => {
-      if (!has(req.body, field)) {
-        throw new Error(`missing Field ${field}`);
-      }
+    await cand_schedule.fetchDetails({
+      params: {
+        company_id: parsedData.recruiter_id,
+        req_user_tz: parsedData.candidate_tz,
+        session_ids: parsedData.session_ids,
+        start_date_str: parsedData.start_date_str,
+        end_date_str: parsedData.end_date_str,
+      },
     });
 
-    const start_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      start_date,
-      user_tz,
-      true,
-    );
-    const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      end_date,
-      user_tz,
-      false,
-    );
+    const availabilities = cand_schedule.calendar_events;
 
-    const cand_schedule = new CandidatesScheduling(
-      {
-        company_id: recruiter_id,
-        session_ids,
-        user_tz,
-      },
-      {
-        end_date_js: end_date_js,
-        start_date_js: start_date_js,
-      },
-    );
-
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchInterviewrsCalEvents();
-    const combs = cand_schedule.findMultiDayComb();
-
-    return res.status(200).json({
-      plan_combs: is_debreif ? combs : combs.slice(0, 20),
-      total: combs.length,
-    });
+    const slots = cand_schedule.findAvailabilitySlotsDateRange();
+    return res.status(200).json({ slots, availabilities });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).send(error.message);
+    console.log(error);
+    return res
+      .status(error.status ?? 500)
+      .json({ name: error.name, message: error.message });
   }
 };
 

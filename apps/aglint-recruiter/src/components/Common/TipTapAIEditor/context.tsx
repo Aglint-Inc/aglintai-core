@@ -1,4 +1,4 @@
-import { Editor } from '@tiptap/react';
+import { type Editor } from '@tiptap/react';
 import { createContext, useContext } from 'react';
 
 // import { TipTapAIAutoGenActions } from '@/data/prompts/tiptap/autoGenSection';

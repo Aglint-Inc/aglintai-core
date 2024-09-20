@@ -1,64 +1,64 @@
 import dayjs from 'dayjs';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../../../services/supabase/SupabaseAdmin';
+import {supabaseAdmin} from '../../../../services/supabase/SupabaseAdmin';
 
 import {getFullName} from '../../../../utils/getFullName';
 import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
+import {DatabaseTable, EmailTemplateAPi} from '@aglint/shared-types';
+import {envConfig} from 'src/config';
 import {
-  CandidateType,
-  EmailTemplateFields,
-  InterviewFilterJsonType,
-  InterviewScheduleTypeDB,
-  JobApplcationDB,
-  PublicJobsType,
-  RecruiterType,
-  ScheduleAgentChatHistoryTypeDB,
-} from '@aglint/shared-types';
+  DAYJS_FORMATS,
+  ScheduleUtils,
+  fillCompEmailTemplate,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 
 export const fetchEmailAgentCandDetails = async (
-  cand_email: string,
   thread_id: string,
   cand_email_body: string
 ) => {
   const [cand_rec] = supabaseWrap(
     await supabaseAdmin
-      .from('scheduling-agent-chat-history')
+      .from('scheduling_agent_chat_history')
       .select(
-        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(*))))'
+        '*, interview_filter_json(* ,applications(*,public_jobs(id,recruiter_id,job_title,description,company:recruiter!public_jobs_recruiter_id_fkey(id,name,logo),recruiter!public_jobs_recruiter_id_fkey(scheduling_settings)), candidates(id,email,first_name,last_name,timezone)))'
       )
       .eq('thread_id', thread_id)
   );
-
+  const job = cand_rec.interview_filter_json.applications.public_jobs;
+  const [agent_email_temp] = supabaseWrap(
+    await supabaseAdmin
+      .from('company_email_template')
+      .select()
+      .eq('recruiter_id', job.recruiter_id)
+      .eq('type', 'agent_email_candidate')
+  );
+  const [agent_data] = supabaseWrap(
+    await supabaseAdmin
+      .from('integrations')
+      .select()
+      .eq('recruiter_id', job.recruiter_id)
+  );
+  const sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select(
+        '*,interview_meeting(*,recruiter_user(first_name,last_name,scheduling_settings))'
+      )
+      .in('id', cand_rec.interview_filter_json.session_ids)
+  );
+  if (!sessions[0].interview_meeting) {
+    throw new Error('No meeting found');
+  }
   if (!cand_rec) {
     // this email is not from candidate
     // handle this later
     return null;
   }
 
-  const job =
-    cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
-  const candidate =
-    cand_rec.interview_filter_json.interview_schedule.applications.candidates;
+  const candidate = cand_rec.interview_filter_json.applications.candidates;
 
-  const filter_json = cand_rec.interview_filter_json.filter_json as unknown as {
-    end_date: string;
-    start_date: string;
-    session_ids: string[];
-    recruiter_id: string;
-    organizer_name: string;
-  };
+  const filter_json = cand_rec.interview_filter_json.filter_json;
 
-  const sessions = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_session')
-      .select('*,interview_meeting(*)')
-      .in('id', filter_json.session_ids)
-  );
-  if (!sessions[0].interview_meeting) {
-    throw new Error('No meeting found');
-  }
   const meet_status = sessions[0].interview_meeting.status;
 
   if (meet_status === 'completed') {
@@ -92,41 +92,57 @@ export const fetchEmailAgentCandDetails = async (
         `- meeting break ${sess.break_duration} \n\n`;
     });
   }
+  const meeting_organizer = sessions[0].interview_meeting.recruiter_user;
 
-  const getInitialEmailTemplate = () => {
-    const email_details = {
-      '[candidateFirstName]': candidate.first_name,
-      '[companyName]': job.company,
-      '[jobRole]': job.job_title,
+  const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
+    {
+      candidateFirstName: candidate.first_name,
+      companyName: job.company.name,
+      jobRole: job.job_title,
+      OrganizerTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
+      selfScheduleLink: '',
+      organizerName: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name
+      ),
+      candidateLastName: candidate.last_name,
+      candidateName: getFullName(candidate.first_name, candidate.last_name),
+      organizerFirstName: meeting_organizer.first_name,
+      organizerLastName: meeting_organizer.last_name,
+      dateRange: `${ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.start_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(
+        DAYJS_FORMATS.DATE_FORMAT
+      )} - ${ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.end_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMATZ)}`,
     };
-    const templates = job.recruiter.email_template as any;
-    if (!templates['init_email_agent']) {
-      throw new Error('init_email_agent Email template not found');
-    }
-    return fillEmailTemplate(templates['init_email_agent'], email_details);
-  };
-
-  const email_details = getInitialEmailTemplate();
-
-  // TODO: delete this code later
-  const getUsTime = (d: string) => {
-    const [date, month, year] = d.split('/');
-    return [month, date, year].join('/');
-  };
+  const filled_temp = fillCompEmailTemplate(
+    comp_email_placeholder,
+    agent_email_temp
+  );
 
   const agent_payload: EmailAgentPayload = {
     history: cand_rec.chat_history,
     payload: {
-      candidate_email: cand_rec.candidate_email,
+      candidate_email:
+        cand_rec.interview_filter_json.applications.candidates.email,
       candidate_name: getFullName(candidate.first_name, candidate.last_name),
-      company_name: job.company,
-      start_date: getUsTime(filter_json.start_date),
-      end_date: getUsTime(filter_json.end_date),
+      company_name: job.company.name,
+      start_date: ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.start_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMAT),
+      end_date: ScheduleUtils.convertDateFormatToDayjs(
+        filter_json.end_date,
+        meeting_organizer.scheduling_settings.timeZone.tzCode
+      ).format(DAYJS_FORMATS.DATE_FORMATZ),
       job_role: job.job_title,
-      company_logo: job.logo,
+      company_logo: job.company.logo,
       company_id: job.recruiter_id,
       job_id: job.id,
-      schedule_id: cand_rec.interview_filter_json.schedule_id,
       cand_application_status: sessions[0].interview_meeting.status,
       candidate_time_zone: candidate.timezone,
       interv_plan_summary: plan_summary,
@@ -134,67 +150,28 @@ export const fetchEmailAgentCandDetails = async (
       new_cand_msg: cand_email_body,
       interview_sessions: sessions.filter(s => s.session_type !== 'debrief'),
       task_id: cand_rec.task_id,
-      candidate_id:
-        cand_rec.interview_filter_json.interview_schedule.applications
-          .candidates.id,
-      organizer_name: filter_json.organizer_name ?? job.company,
-      interview_meetings: sessions.map(ses => ses.interview_meeting),
+      candidate_id: cand_rec.interview_filter_json.applications.candidates.id,
+      organizer_name: getFullName(
+        meeting_organizer.first_name,
+        meeting_organizer.last_name
+      ),
+      organizer_timezone: meeting_organizer.scheduling_settings.timeZone.tzCode,
+      interview_meetings: sessions.map(
+        ses => ses.interview_meeting as DatabaseTable['interview_meeting']
+      ),
       meeting_summary,
       job_description: job.description,
       comp_scheduling_setting: job.recruiter.scheduling_settings as any,
       filter_id: cand_rec.interview_filter_json.id,
-      email_subject: email_details.subject,
+      email_subject: filled_temp.subject,
+      agent_email:
+        envConfig.LOCAL_AGENT_EMAIL ?? agent_data.schedule_agent_email,
+    },
+    schedule_chat_history: {
+      from_name: cand_rec.email_from_name,
+      subject: cand_rec.email_subject,
     },
   };
 
   return agent_payload;
-};
-
-type CandidateScheduleDetails = ScheduleAgentChatHistoryTypeDB & {
-  interview_filter_json: InterviewFilterJsonType & {
-    interview_schedule: Pick<
-      InterviewScheduleTypeDB,
-      'id' | 'application_id'
-    > & {
-      applications: Pick<JobApplcationDB, 'id'> & {
-        candidates: Pick<
-          CandidateType,
-          'first_name' | 'last_name' | 'email' | 'id' | 'timezone'
-        >;
-        public_jobs: Pick<
-          PublicJobsType,
-          | 'recruiter_id'
-          | 'company'
-          | 'id'
-          | 'logo'
-          | 'job_title'
-          | 'description'
-        > & {
-          recruiter: Pick<
-            RecruiterType,
-            'scheduling_settings' | 'email_template'
-          >;
-        };
-      };
-    };
-  };
-};
-
-const fillEmailTemplate = (
-  email_template: EmailTemplateFields,
-  dynamic_fields: Record<string, string>
-): EmailTemplateFields => {
-  const updated_template = {...email_template};
-  for (const key of Object.keys(dynamic_fields)) {
-    updated_template.subject = updated_template.subject.replaceAll(
-      key,
-      dynamic_fields[String(key)]
-    );
-    updated_template.body = updated_template.body.replaceAll(
-      key,
-      dynamic_fields[String(key)]
-    );
-  }
-
-  return updated_template;
 };

@@ -1,11 +1,8 @@
 /* eslint-disable no-console */
-import {
-  type CookieOptions,
-  createServerClient,
-  serialize,
-} from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import { cookies } from 'next/headers';
 
 // Add your logic to process the webhook data
 
@@ -13,20 +10,23 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const cookieStore = cookies();
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
-        get(name: string) {
-          // eslint-disable-next-line security/detect-object-injection
-          return req.cookies[name];
+        getAll() {
+          return cookieStore.getAll();
         },
-        set(name: string, value: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, value, options));
-        },
-        remove(name: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, '', options));
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
+          } catch {
+            //
+          }
         },
       },
     },

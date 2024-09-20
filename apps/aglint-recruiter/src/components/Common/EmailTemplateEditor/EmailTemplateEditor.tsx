@@ -1,9 +1,6 @@
-import { Stack } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect } from 'react';
-
-import { palette } from '@/src/context/Theme/Theme';
 
 import Commands from './Commands';
 import { AiPromptNodeSchema } from './CustomNodes/AiPromptNodeSchema';
@@ -54,37 +51,12 @@ const EmailTemplateEditor = ({
   }, [editor, defaultJson]);
 
   return (
-    <>
-      <Stack
-        sx={{
-          border: `1px solid ${palette.grey[300]}`,
-          borderRadius: '5px',
-          '& .ProseMirror': {
-            minHeight: '250px',
-            width: '100%',
-            wordBreak: 'break-word',
-            px: '12px',
-            py: '12px',
-          },
-          '.tiptap p.is-editor-empty:first-child::before ': {
-            color: '#adb5bd',
-            content: 'attr(data-placeholder)',
-            float: 'left',
-            height: 0,
-            'pointer-events': 'none',
-          },
-          '& .ProseMirror-focused': {
-            outline: 0,
-          },
-          '&  span .mention': {
-            backgroundColor: 'red',
-            color: 'red',
-          },
-        }}
-      >
-        <EditorContent editor={editor} />
-      </Stack>
-    </>
+    <div className='rounded-md border border-neutral-300'>
+      <EditorContent
+        editor={editor}
+        className='[&_.ProseMirror-focused]:outline-none [&_.ProseMirror]:min-h-[250px] [&_.ProseMirror]:w-full [&_.ProseMirror]:break-words [&_.ProseMirror]:px-3 [&_.ProseMirror]:py-3 [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-700 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_span_.mention]:bg-red-500 [&_span_.mention]:text-red-700'
+      />
+    </div>
   );
 };
 

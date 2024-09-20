@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,27 +26,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .status(405)
       .json({ error: 'invalid request method', success: false });
   }
+  console.log(req.body);
 
   if (!req.body.job_id) {
     return res.status(400).send('No job_id provided');
   }
 
-  let jobs = [];
+  const response = await getResponse(req.body.job_id);
 
-  const { data: recruiter, error } = await supabase
-    .from('recruiter')
-    .select('*')
-    .eq('id', req.body.job_id);
-  if (!error && recruiter?.length > 0) {
-    const { data: jobsDb, error: errorJob } = await supabase
-      .from('public_jobs')
-      .select('*')
-      .eq('recruiter_id', recruiter[0].id);
-    if (!errorJob) {
-      jobs = jobsDb;
-    }
-    return res.status(200).send({ recruiter: recruiter[0], jobs: jobs });
-  }
+  res.status(200).send(response);
 };
 
 export default handler;
+
+const getResponse = async (rec_id: string) => {
+  const { jobs, ...recruiter } = await getJob(rec_id);
+  return { recruiter, jobs };
+};
+
+const getJob = async (rec_id: string) =>
+  (
+    await supabase
+      .from('recruiter')
+      .select(
+        'id, logo, name, office_locations(*),company_overview, employee_size, socials, company_website, industry, jobs:public_jobs(*,departments(*))',
+      )
+      .eq('id', rec_id)
+      .single()
+      .throwOnError()
+  ).data;
+
+export type CompanyPostAPI = Awaited<ReturnType<typeof getResponse>>;

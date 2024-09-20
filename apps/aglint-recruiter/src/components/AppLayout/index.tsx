@@ -1,328 +1,190 @@
-//import ResizeWindowContext from '@context/resizeWindow/context';
-import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
-import { pageRoutes } from '@utils/pageRouting';
-import { LottieComponentProps } from 'lottie-react';
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useRef, useState } from 'react';
+import '@styles/globals.css';
 
-import { NavBottom } from '@/devlink';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import {
-  CompanyProfileHeader,
-  NavProfileBlock,
-  ResponsiveBanner,
-} from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import ResizeWindowContext from '@/src/context/ResizeWindow/context';
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import defaultCompanyLogo from '@public/images/default-company-logo.svg';
+import { LogOut, Settings, User } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import Icon from '../Common/Icons/Icon';
-import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
-import CompanyList from './CompanyList';
-import MenuLottie from './MenuLottie';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useMemberList } from '@/hooks/useMemberList';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import PERMISSIONS from '@/utils/routing/permissions';
+import ROUTES from '@/utils/routing/routes';
+import { capitalizeAll } from '@/utils/text/textUtils';
+
+import defaultProfileImage from '../../../public/images/default-user-profile.svg';
+import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
 
-export default function AppLayout({ children }) {
-  const lottieRef = useRef<LottieComponentProps>(null);
-  const { handleLogout } = useAuthDetails();
-  const { recruiter, recruiterUser, userDetails } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const router = useRouter();
-  const { windowSize } = useContext(ResizeWindowContext);
-  const [expand, setExpand] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(false);
-  const companyName = recruiter?.name;
+export default function AppLayout({ children, appRouter = false }) {
+  const { checkPermissions } = useRolesAndPermissions();
+  const { recruiter, recruiterUser, isShowFeature, handleLogout } =
+    useAuthDetails();
+  const router = useRouterPro();
   const logo = recruiter?.logo;
-  const profileName = `${recruiterUser?.first_name} ${recruiterUser?.last_name}`;
-  const profileImage = recruiterUser?.profile_image;
+  const name = recruiter?.name;
 
-  const handleSignOut = () => {
-    queryClient.removeQueries();
-    handleLogout();
-  };
+  const { data: members } = useMemberList();
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
-      if (
-        router.pathname === pageRoutes.JOBS ||
-        router.pathname === pageRoutes.COMPANY ||
-        router.pathname === pageRoutes.CANDIDATES ||
-        router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.SETTINGS ||
-        router.pathname === pageRoutes.PROFILE
-      ) {
-        setExpand(true);
-      } else {
-        setExpand(false);
-      }
-    } else {
-      setExpand(false);
-    }
-  }, []);
+  const userDetails = members?.find(
+    (member) => member.user_id === recruiterUser.user_id,
+  );
 
-  useEffect(() => {
-    if (windowSize.innerWidth < 991) {
-      const status = router.query.status;
-      if (status) {
-        setExpand(false);
-      }
-      if (
-        router.pathname === pageRoutes.CANDIDATES ||
-        router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.COMPANY
-      ) {
-        setExpand(false);
-      }
-      setTimeout(() => {
-        setLoadingProgress(false);
-      }, 1000);
-    }
-  }, [router]);
-  if (isEnvProd() && windowSize?.innerWidth < 1000) {
-    return <ResponsiveBanner />;
-  }
+  const isHorizontalNav = !isShowFeature('SCHEDULING');
+
   return (
-    <Stack zIndex={2000} direction={'row'}>
-      <Stack
-        display={windowSize?.innerWidth < 991 ? 'none' : 'flex'}
-        direction={'row'}
-      >
-        <Stack
-          paddingTop={'12px !important'}
-          borderRight={'1px solid'}
-          borderColor={'grey.200'}
-          position={'relative'}
-          // p={'28px 20px 12px 16px'}
-          // pt={'28px'}
-          // bgcolor={'#25282A'}
-          width={'70px'}
-          p={'12px 10px'}
-        >
-          <Stack
-            width={'100%'}
-            alignItems={'center'}
-            height={'100%'}
-            justifyContent={'space-between'}
-          >
-            <Stack
-              height={'100%'}
-              width={'100%'}
-              spacing={'10px'}
-              alignItems={'center'}
-            >
-              {userDetails?.user.user_metadata.role?.toLowerCase() ===
-              'company' ? (
-                <Stack direction={'row'} mb={'20px !important'}>
-                  <Avatar
-                    src={logo}
-                    variant='rounded'
-                    sx={{
-                      background: '#fff',
-                      '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
-                      },
-                    }}
-                  >
-                    <Icon
-                      variant='CompanyOutlined'
-                      height='100%'
-                      width='100%'
-                      color='#87929D'
-                    />
-                  </Avatar>
-                </Stack>
-              ) : (
-                <Stack direction={'row'} mb={'20px !important'}>
-                  <CompanyList />
-                </Stack>
-              )}
-              <SideNavbar />
-            </Stack>
-            <NavBottom
-              onClickProfile={{
-                onClick: () => router.push(pageRoutes.PROFILE),
-              }}
-              onClickLogout={{
-                onClick: () => {
-                  handleSignOut();
-                },
-              }}
-              slotProfile={
-                <Avatar
-                  src={profileImage}
-                  variant='rounded'
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    '& .MuiAvatar-img ': {
-                      objectFit: 'cover',
-                    },
-                  }}
-                />
-              }
-            />
-          </Stack>
-        </Stack>
-      </Stack>
+    <>
+      {isHorizontalNav && (
+        <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
+          <div className='flex items-center space-x-4'>
+            <Link href='/jobs'>
+              <Image
+                src={logo || defaultCompanyLogo}
+                alt={name}
+                width={32}
+                height={32}
+                className='rounded-sm'
+                style={{ objectFit: 'contain' }}
+              />
+            </Link>
+            <div className='flex space-x-2'>
+              <Button variant='ghost' asChild>
+                <Link href='/jobs'>Jobs</Link>
+              </Button>
+            </div>
+          </div>
+          <div className='flex items-center'>
+            <Button variant='ghost' asChild>
+              <Link href='/company?tab=company-info'>
+                <Settings className='mr-2 h-5 w-5' strokeWidth={1.5} />
+                Settings
+              </Link>
+            </Button>
 
-      <Stack width={'100%'} height={'100vh'} overflow={'auto'}>
-        {/* ========================================  mobile navebar ======================================== */}
-        <Stack display={windowSize?.innerWidth < 991 ? 'block' : 'none'}>
-          <Stack
-            zIndex={2000}
-            width={'100vw'}
-            position={'absolute'}
-            top={0}
-            left={0}
-            sx={{
-              transition: 'opacity 0.2s',
-              opacity: loadingProgress ? 1 : 0,
-            }}
-          >
-            <LinearProgress
-              sx={{
-                height: '1px',
-                borderRadius: '5px',
-                backgroundColor: '#3d1100',
-                '& span': {
-                  backgroundColor: 'orange.500',
-                },
-              }}
-            />
-          </Stack>
-          <Stack width={'100%'} minHeight={'66px'} />
-          <Stack
-            position={'fixed'}
-            top={-1}
-            right={0}
-            zIndex={6}
-            minHeight={'66px'}
-            maxHeight={'66px'}
-            width={'100%'}
-            direction={'row'}
-            bgcolor={'#25282a'}
-            justifyContent={'right'}
-          />
-          <Stack
-            position={'fixed'}
-            top={-1}
-            left={0}
-            zIndex={9}
-            minHeight={'66px'}
-            maxHeight={'66px'}
-            width={'100%'}
-            direction={'row'}
-            justifyContent={'left'}
-          >
-            <Stack
-              onClick={() => {
-                setExpand((pre) => !pre);
-              }}
-              width={'130px'}
-              position={'absolute'}
-              top={'-33px'}
-              left={'-44px'}
-            >
-              <MenuLottie lottieRef={lottieRef} isStop={expand} />
-            </Stack>
-            <Stack
-              width={'calc(100% - 80px)'}
-              position={'absolute'}
-              top={'17px'}
-              left={'60px'}
-            >
-              <CompanyProfileHeader
-                onclickCompany={{
-                  onClick: () => router.push(pageRoutes.COMPANY),
-                }}
-                companyName={companyName}
-                slotLogo={
-                  <Avatar
-                    src={logo}
-                    variant='rounded'
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#fff',
-                      '& .MuiAvatar-img ': {
-                        objectFit: 'cover',
-                      },
-                    }}
-                  />
+            <Button variant='link' asChild>
+              <Link
+                href={
+                  ROUTES['/user/[user]']({
+                    user_id: recruiterUser?.user_id,
+                  }) + '?profile=true'
                 }
-              />
-            </Stack>
-          </Stack>
-          <Stack width={'100vw'}>
-            <Drawer
-              sx={{
-                '& .MuiDrawer-paper': {
-                  border: 'none !important',
-                  bgcolor: '#25282a !important',
-                  width: '100%',
-                  padding: '0 30px 10px 30px',
-                },
-                zIndex: 8,
-              }}
-              transitionDuration={400}
-              anchor={'left'}
-              onClose={() => setExpand(false)}
-              open={windowSize?.innerWidth < 991 && expand}
-              variant='persistent'
-            >
-              <Stack
-                height={'100%'}
-                justifyContent={'space-between'}
-                pt={'88px'}
               >
-                <Stack spacing={'10px'}>
-                  <SideNavbar />
-                </Stack>
-              </Stack>
-              <NavProfileBlock
-                onclickProfile={{
-                  onClick: () => router.push(pageRoutes.PROFILE),
-                }}
-                onclickLogout={{
-                  onClick: () => {
-                    handleSignOut();
-                  },
-                }}
-                profileName={profileName}
-                slotProfileImage={
-                  <Avatar
-                    src={profileImage}
-                    variant='rounded'
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#1f1f1f',
-                      '& .MuiAvatar-img ': {
-                        objectFit: 'cover',
-                      },
-                    }}
+                {recruiterUser?.profile_image ? (
+                  // <Image
+                  //   src={recruiterUser?.profile_image}
+                  //   alt={recruiterUser?.first_name || 'User'}
+                  //   width={32}
+                  //   height={32}
+                  //   className='rounded-full'
+                  //   style={{ objectFit: 'cover' }}
+                  // />
+                  <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                    <AvatarImage
+                      src={userDetails?.profile_image || defaultProfileImage}
+                      alt='@shadcn'
+                    />
+                    <AvatarFallback className='rounded-[4px]'>
+                      <User className='text-gray-700' />
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <User className='h-5 w-5' strokeWidth={1.5} />
+                )}
+              </Link>
+            </Button>
+
+            <Button variant='link' onClick={handleLogout} asChild>
+              <Link href='#'>
+                <LogOut className='mr-2 h-5 w-5' strokeWidth={1.5} />
+              </Link>
+            </Button>
+          </div>
+        </nav>
+      )}
+      <div className='flex flex-1'>
+        {!isHorizontalNav && (
+          <nav className='fixed flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
+            <div className='flex flex-grow flex-col items-center py-3'>
+              <Button variant='link' className='mt-4' asChild>
+                <Link href='/jobs'>
+                  <Image
+                    src={logo || defaultCompanyLogo}
+                    alt={name}
+                    width={40}
+                    height={40}
+                    className='mb-5 rounded-sm'
+                    style={{ objectFit: 'contain' }}
                   />
-                }
-              />
-            </Drawer>
-            <Stack
-              zIndex={7}
-              position={'fixed'}
-              top={0}
-              left={0}
-              height={'100vh'}
-              bgcolor={'#00000088'}
-              width={'100vw'}
-              sx={{
-                pointerEvents: !expand && 'none',
-                opacity: expand ? 1 : 0,
-                transition: 'opacity 0.4s',
-              }}
-              onClick={() => setExpand(false)}
-            ></Stack>
-          </Stack>
-        </Stack>
-        {children}
-      </Stack>
-    </Stack>
+                </Link>
+              </Button>
+              <SideNavbar />
+            </div>
+            <div className='mb-3 flex flex-col items-center space-y-3'>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant='link' asChild>
+                    <Link
+                      href={
+                        ROUTES['/user/[user]']({
+                          user_id: recruiterUser?.user_id,
+                        }) + '?profile=true'
+                      }
+                    >
+                      <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                        <AvatarImage
+                          src={
+                            userDetails?.profile_image || defaultProfileImage
+                          }
+                          alt='@shadcn'
+                        />
+                        <AvatarFallback className='rounded-[4px]'>
+                          <User className='text-gray-600' strokeWidth={1.5} />
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className='sr-only'>Your profile</span>
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent align='center' side='right'>
+                  <p>
+                    {capitalizeAll(userDetails?.first_name) || 'Your profile'}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant='link' onClick={handleLogout}>
+                    <LogOut className='h-5 w-5' strokeWidth={1.5} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent align='center' side='right'>
+                  <p>Logout</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </nav>
+        )}
+        <main
+          className={`flex min-h-screen w-full bg-gray-50 pt-8 ${
+            isHorizontalNav ? '' : 'ml-16'
+          }`}
+        >
+          {appRouter ||
+          checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+            children
+          ) : (
+            <NotFound />
+          )}
+        </main>
+      </div>
+    </>
   );
 }

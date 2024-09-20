@@ -1,24 +1,22 @@
 import {
-  CandidateType,
-  JobApplcationDB,
-  JobTypeDB,
-  RecruiterType,
+  type CandidateType,
+  type JobApplcationDB,
+  type JobTypeDB,
 } from '@aglint/shared-types';
-import { Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Input } from '@components/ui/input';
 import axios from 'axios';
-import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { CloudUpload, Loader2, Trash } from 'lucide-react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
-import { palette } from '@/src/context/Theme/Theme';
-import { errorMessages } from '@/src/utils/errorMessages';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
-
-import Icon from '../../Common/Icons/Icon';
-import LoaderGrey from '../../Common/LoaderGrey';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type PublicJobAPI } from '@/pages/api/jobpost/read';
+import { errorMessages } from '@/utils/errorMessages';
+import { supabase } from '@/utils/supabase/client';
+import toast from '@/utils/toast';
 
 const initialError = () => {
   return {
@@ -77,7 +75,7 @@ function UploadDB({
   setThank: Dispatch<SetStateAction<boolean>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setApplication: Dispatch<SetStateAction<JobApplcationDB>>;
-  recruiter: RecruiterType;
+  recruiter: PublicJobAPI['recruiter'];
   setCandidate: Dispatch<SetStateAction<CandidateType[]>>;
 }) {
   const [profile, setProfile] = useState<any>({
@@ -94,17 +92,17 @@ function UploadDB({
   const [isDisabled, setIsDisabled] = useState(false);
   // eslint-disable-next-line no-unused-vars
 
-  const router = useRouter();
+  const router = useRouterPro<{ college_name: string; branch: string }>();
 
   useEffect(() => {
-    if (router?.isReady && router?.query?.college_name) {
+    if (router.queryParams.college_name) {
       setProfile({
         ...profile,
-        college_name: router?.query?.college_name,
-        branch: router?.query?.branch,
+        college_name: router.queryParams.college_name,
+        branch: router.queryParams.branch,
       });
     }
-  }, [router]);
+  }, [router.queryParams.college_name]);
 
   const uploadFile = (file) => {
     setFile(file);
@@ -162,7 +160,7 @@ function UploadDB({
   const submitHandler = async () => {
     if (checked && validate()) {
       setIsDisabled(true);
-      let fileId = uuidv4();
+      const fileId = uuidv4();
       let uploadUrl = null;
       const { data } = await supabase.storage
         .from('resume-job-post')
@@ -217,219 +215,129 @@ function UploadDB({
   }, [profile]);
 
   return (
-    <Stack
-      id='scrollTarget'
-      sx={{
-        background: palette.grey[100],
-        p: { xs: '10px', mm: '30px' },
-        borderRadius: '10px',
-      }}
-    >
-      <Stack direction={'row'} spacing={2} justifyContent={'space-between'}>
-        <Typography variant='h3'>Apply for this job.</Typography>
-        <Typography variant='caption' color={'#000'}>
-          <span style={{ color: 'red' }}>*</span> Required
-        </Typography>
-      </Stack>
-      <Grid container spacing={'20px'} pt={'20px'}>
-        <Grid item xs={12} sm={6} md={6}>
-          <TextField
+    <div className='rounded-lg bg-neutral-100 p-4 sm:p-8'>
+      <div className='mb-6 flex items-center justify-between'>
+        <h2 className='text-2xl font-bold'>Apply for this job.</h2>
+        <p className='text-sm'>
+          <span className='text-red-500'>*</span> Required
+        </p>
+      </div>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+        <div>
+          <Input
             required
-            id='first_name'
-            margin='none'
-            fullWidth
-            label='First Name'
-            error={error.firstName.error}
-            helperText={error.firstName.error ? error.firstName.msg : null}
+            placeholder='First Name'
             value={profile?.firstName}
-            onChange={(e) => {
-              setProfile({ ...profile, firstName: e.target.value });
-            }}
+            onChange={(e) =>
+              setProfile({ ...profile, firstName: e.target.value })
+            }
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <TextField
-            id='last_name'
-            margin='none'
-            fullWidth
-            label='Last Name'
+        </div>
+        <div>
+          <Input
+            placeholder='Last Name'
             value={profile?.lastName}
-            onChange={(e) => {
-              setProfile({ ...profile, lastName: e.target.value });
-            }}
-            error={error.lastName.error}
-            helperText={error.lastName.error ? error.lastName.msg : null}
+            onChange={(e) =>
+              setProfile({ ...profile, lastName: e.target.value })
+            }
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <TextField
+        </div>
+        <div>
+          <Input
             required
-            id='email'
-            margin='none'
-            fullWidth
-            label='Email'
+            placeholder='Email'
             value={profile?.email}
-            onChange={(e) => {
-              setProfile({ ...profile, email: e.target.value });
-            }}
-            error={error.email.error}
-            helperText={error.email.error ? error.email.msg : null}
+            onChange={(e) => setProfile({ ...profile, email: e.target.value })}
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <TextField
-            id='phone'
-            margin='none'
-            fullWidth
-            label='Phone'
+        </div>
+        <div>
+          <Input
+            placeholder='Phone'
             value={profile?.phoneNumber}
-            onChange={(e) => {
-              setProfile({ ...profile, phoneNumber: e.target.value });
-            }}
+            onChange={(e) =>
+              setProfile({ ...profile, phoneNumber: e.target.value })
+            }
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            sx={{ px: '3px' }}
-            value={profile.usn}
-            fullWidth
-            margin='none'
-            id='linkedIn-url'
-            label='LinkedIn URL'
+        </div>
+        <div className='col-span-full'>
+          <Input
             placeholder='https://www.linkedin.com/in/your-id'
-            error={error.linkedinUrl.error}
-            helperText={error.linkedinUrl.error ? error.linkedinUrl.msg : null}
-            onChange={(e) => {
-              setProfile({ ...profile, linkedin: e.target.value });
-            }}
+            value={profile.linkedin}
+            onChange={(e) =>
+              setProfile({ ...profile, linkedin: e.target.value })
+            }
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Stack position={'relative'}>
-            {/* <Stack direction={'row'} justifyContent={'flex-end'} pb={'8px'}>
-              <Typography variant='caption'>* Optional</Typography>
-            </Stack> */}
-
+        </div>
+        <div className='col-span-full'>
+          <div className='relative'>
             <FileUploader
               handleChange={uploadFile}
               name='file'
               types={fileTypes}
             >
-              <Stack
-                sx={{
-                  border: '1px dashed',
-                  borderColor: palette.grey[600],
-                  borderRadius: 1,
-                  py: '40px',
-                  px: '20px',
-                  cursor: 'pointer',
-                  background: '#fff',
-                }}
-                direction='row'
-                spacing={2}
-                alignItems={'center'}
-                justifyContent={'center'}
-              >
-                {!file && (
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                  >
-                    <path
-                      d='M1 14.5C1 12.1716 2.22429 10.1291 4.06426 8.9812C4.56469 5.044 7.92686 2 12 2C16.0731 2 19.4353 5.044 19.9357 8.9812C21.7757 10.1291 23 12.1716 23 14.5C23 17.9216 20.3562 20.7257 17 20.9811L7 21C3.64378 20.7257 1 17.9216 1 14.5ZM16.8483 18.9868C19.1817 18.8093 21 16.8561 21 14.5C21 12.927 20.1884 11.4962 18.8771 10.6781L18.0714 10.1754L17.9517 9.23338C17.5735 6.25803 15.0288 4 12 4C8.97116 4 6.42647 6.25803 6.0483 9.23338L5.92856 10.1754L5.12288 10.6781C3.81156 11.4962 3 12.927 3 14.5C3 16.8561 4.81833 18.8093 7.1517 18.9868L7.325 19H16.675L16.8483 18.9868ZM13 13V17H11V13H8L12 8L16 13H13Z'
-                      fill='#2F3941'
-                    />
-                  </svg>
-                )}
-                <Typography variant='body2' sx={{ textAlgin: 'center' }}>
+              <div className='flex cursor-pointer items-center justify-center rounded-md border border-dashed border-neutral-300 bg-white p-8'>
+                {!file && <CloudUpload className='mr-2 h-6 w-6' />}
+                <p className='text-center'>
                   {file
                     ? `Uploaded File: ${file?.name}`
                     : 'Please upload your resume in PDF or DOC format.'}
-                </Typography>
-              </Stack>
+                </p>
+              </div>
             </FileUploader>
             {file && (
-              <IconButton
-                sx={{ zIndex: 1000, position: 'absolute', right: 20, top: 34 }}
+              <Button
+                variant='ghost'
+                size='sm'
+                className='absolute right-2 top-2'
                 onClick={(e) => {
                   e.stopPropagation();
                   setFile(null);
                 }}
               >
-                <Icon variant='TrashIcon' />
-              </IconButton>
+                <Trash className='h-4 w-4' />
+              </Button>
             )}
             {error.file.error && (
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'start'}
-                px={1.5}
-                pt={0.5}
-              >
-                <Typography variant='caption' color={'error.main'}>
-                  {error.file.msg}
-                </Typography>
-              </Stack>
+              <p className='ml-1 mt-1 text-sm text-red-500'>{error.file.msg}</p>
             )}
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <Stack direction={'row'} spacing={1} alignItems={'center'}>
+          </div>
+        </div>
+        <div className='col-span-full'>
+          <div className='flex items-center space-x-2'>
             <Checkbox
-              isChecked={checked}
-              onClickCheck={{
-                onClick: () => {
-                  setChecked(!checked);
-                },
-              }}
+              checked={checked}
+              onCheckedChange={() => setChecked(!checked)}
             />
-
-            <Stack direction={'row'} spacing={'4px'} sx={{ flexWrap: 'wrap' }}>
-              <Typography
-                variant='caption'
-                color={!checked && 'error.main'}
-                sx={{ cursor: 'default' }}
-              >
+            <div className='flex flex-wrap items-center space-x-1'>
+              <p className={`text-sm ${!checked ? 'text-red-500' : ''}`}>
                 By applying, you are agreeing to the
-              </Typography>
-              <Typography
-                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                variant='caption'
-                color={!checked && 'error.main'}
-                onClick={() => {
-                  window.open('https://www.aglinthq.com/terms', '_blank');
-                }}
+              </p>
+              <button
+                className={`text-sm underline ${!checked ? 'text-red-500' : ''}`}
+                onClick={() =>
+                  window.open('https://www.aglinthq.com/terms', '_blank')
+                }
               >
                 terms and conditions
-              </Typography>
-            </Stack>
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <ButtonPrimaryRegular
-            isDisabled={Boolean(router.query.preview)}
-            slotEndIcon={
-              <Stack justifyContent={'center'} alignItems={'center'}>
-                <LoaderGrey />
-              </Stack>
-            }
-            isEndIcon={isDisabled}
-            onClickButton={{
-              onClick: () => {
-                if (!isDisabled) submitHandler();
-              },
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className='col-span-full'>
+          <Button
+            disabled={isDisabled}
+            onClick={() => {
+              if (!isDisabled) submitHandler();
             }}
-            textLabel='Apply Now'
-          />
-        </Grid>
-      </Grid>
-    </Stack>
+          >
+            {isDisabled ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : null}
+            Apply Now
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
 

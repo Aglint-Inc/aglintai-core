@@ -1,38 +1,45 @@
-import { Stack } from '@mui/system';
-import Link from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-// import FontFamily from '@tiptap/extension-font-family'
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
-import { Plugin, PluginKey } from '@tiptap/pm/state';
-import { EditorContent, Extension, useEditor } from '@tiptap/react';
-import { Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import React, { useEffect, useState } from 'react';
+import { type DatabaseEnums } from '@aglint/shared-types';
+import { Skeleton } from '@components/ui/skeleton';
+import { type Editor, EditorContent, useEditor } from '@tiptap/react';
+import React, { useState } from 'react';
 
-import { SkeletonParagraph } from '@/devlink2';
-import { palette } from '@/src/context/Theme/Theme';
-
-import { TipTapAIEditorCtxType, TipTapCtx } from './context';
+import { type TipTapAIEditorCtxType, TipTapCtx } from './context';
+import {
+  getEmailTemplateExtns,
+  getEmailTemplateExtnsNoHeading,
+} from './customExtns/extns/getEmailTemplateExtns';
+import {
+  getRegularEditorConfigs,
+  getRegularEditorNoHeadingsConfigs,
+} from './customExtns/extns/getRegularEditorConfigs';
 import MenuBtns from './MenuBtns';
-import styles from './TipTapAIEditor.module.scss';
 
 export type TipTapAIEditorParams = {
-  placeholder: string;
-  initialValue: string | undefined;
+  placeholder?: string;
+  initialValue?: string | undefined;
   enablAI?: boolean;
   // eslint-disable-next-line no-unused-vars
-  handleChange: (s: string) => void;
+  handleChange?: (s: string) => void;
   showWarnOnEdit?: () => void;
+  toolbar?: boolean;
   defaultJson?: any;
+  padding?: number | string;
   loader?: {
     isLoading: boolean;
     count: number;
   };
   disabled?: boolean;
+  onfocus?: () => void;
+  onblur?: () => void;
+  singleLine?: boolean;
+  height?: string;
+  minHeight?: string;
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
+  editor_type?: 'email' | 'regular';
+  template_type?: DatabaseEnums['email_slack_types'];
+  isSize?: boolean;
+  isAlign?: boolean;
 };
 
 const TipTapAIEditor = ({
@@ -44,10 +51,19 @@ const TipTapAIEditor = ({
     isLoading: false,
     count: 1,
   },
-  defaultJson,
+  singleLine = false,
+  height = 'auto',
+  minHeight = 'auto',
   disabled = false,
   border = false,
   borderRadius,
+  editor_type = 'regular',
+  template_type,
+  toolbar = true,
+  onfocus,
+  onblur,
+  isSize = true,
+  isAlign = true,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -56,30 +72,20 @@ const TipTapAIEditor = ({
   const [selectedText, setSelectedText] =
     useState<TipTapAIEditorCtxType['selectedText']>('');
 
-  // const [isAiGenerating, setIsAiGenerating] = useState(false);
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      EventHandler,
-      Placeholder.configure({
-        placeholder: placeholder || '',
-      }),
-      Link.configure({
-        openOnClick: false,
-        validate: (href) => /^https?:\/\//.test(href),
-      }),
-      TextAlign.configure({
-        alignments: ['left', 'right', 'center'],
-        types: ['heading', 'paragraph'],
-      }),
-      Underline,
-      TextStyle.configure({}),
-    ],
+    extensions:
+      editor_type === 'regular'
+        ? isSize
+          ? getRegularEditorConfigs({ placeholder })
+          : getRegularEditorNoHeadingsConfigs({ placeholder })
+        : isSize
+          ? getEmailTemplateExtns({ placeholder, template_type })
+          : getEmailTemplateExtnsNoHeading({ placeholder, template_type }),
     editable: !disabled,
     content: initialValue || '',
-    onBlur() {
-      // editor.commands.unsetHighlight();
-    },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onBlur() {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onFocus() {},
     onSelectionUpdate({ editor }) {
       const { view, state } = editor;
@@ -90,7 +96,6 @@ const TipTapAIEditor = ({
         to: to,
       });
       setSelectedText(text);
-      // editor.commands.setHighlight();
     },
     onUpdate({ editor }) {
       if (editor.isEmpty) {
@@ -103,12 +108,19 @@ const TipTapAIEditor = ({
       attributes: {
         spellcheck: 'false',
       },
+      handleKeyDown(_view, event) {
+        // if singleLine and dropdown open enter key will work otherwise enter not work.if multiline enterkey will work on all situation
+        if (!singleLine || event.key !== 'Enter') {
+          return false;
+        }
+        if (document.querySelector('.tippy-box')) {
+          return false;
+        }
+        return true;
+      },
     },
   }) as Editor;
 
-  useEffect(() => {
-    if (editor && defaultJson) editor.commands.setContent(defaultJson, true);
-  }, [defaultJson, editor]);
   return (
     <TipTapCtx.Provider
       value={{
@@ -118,163 +130,53 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <Stack
-        sx={{
-          ...(border && {
-            mt: '8px',
-            border: '1px solid',
-            borderColor: palette.grey[300],
-            borderRadius: borderRadius || '4px',
-          }),
-        }}
-      >
-        <div className={styles.tipTapEditorContainer}>
-          {editor && (
-            <>
-              <MenuBtns borderRadius={(border && borderRadius) || '4px'} />
-            </>
+      <div className='overflow-hidden rounded-md border'>
+        <div>
+          {editor && toolbar && (
+            <div
+              className={`${disabled ? 'pointer-events-none opacity-50' : ''}`}
+            >
+              <MenuBtns
+                borderRadius={(border && borderRadius) || 'rounded-md'}
+                isSize={isSize}
+                isAlign={isAlign}
+              />
+            </div>
           )}
-          <Stack
-            position={'relative'}
-            sx={{
-              '& .ProseMirror': {
-                minHeight: '250px',
-                width: '100%',
-                wordBreak: 'break-word',
-              },
-              '& .ProseMirror *::selection': {
-                background: '#EDF8F4',
-              },
-              '.tiptap p.is-editor-empty:first-child::before ': {
-                color: '#adb5bd',
-                content: 'attr(data-placeholder)',
-                float: 'left',
-                height: 0,
-                'pointer-events': 'none',
-              },
-              '& .ProseMirror-focused': {
-                outline: 0,
-              },
+          <div
+            className={`relative ${disabled ? 'pointer-events-none opacity-50' : ''} overflow-auto rounded-md bg-white`}
+            style={{
+              minHeight: minHeight,
+              height: height,
             }}
           >
-            {/* {isAiGenerating && (
-            <Stack
-              zIndex={1}
-              position={'absolute'}
-              width={'100%'}
-              height={'100%'}
-              bgcolor={palette.grey[100]}
-              direction={'row'}
-              justifyContent={'center'}
-              alignItems={'center'}
+            <div
+              className={`[&_.ProseMirror]:w-full [&_.ProseMirror]:break-words [&_.ProseMirror]:${disabled ? 'text-neutral-3 cursor-default' : 'text-neutral-12 cursor-auto'} [&_.ProseMirror_*::selection]:bg-accent-4 [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-9 [&_.ProseMirror-focused]:outline-none [&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-[#f7ebfc] [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-[#B552E2] [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]`}
+              style={{
+                height: height !== 'auto' ? height : 'auto',
+              }}
             >
-              <Loader />
-            </Stack>
-          )} */}
-
-            <Stack p={2}>
-              {loader.isLoading ? (
-                <Stack gap={1}>
-                  {[...Array(loader.count)].map((e, i) => (
-                    <SkeletonParagraph key={i} />
-                  ))}
-                </Stack>
-              ) : (
-                <EditorContent editor={editor} />
-              )}
-            </Stack>
-          </Stack>
-
-          {/* {enablAI && (
-          <GenerateDescription
-            isAiGenerating={isAiGenerating}
-            setIsAiGenerating={setIsAiGenerating}
-          />
-        )} */}
+              <div className={`${singleLine ? 'px-4 py-2' : 'p-4'}`}>
+                {loader.isLoading ? (
+                  <div className='flex flex-col gap-1'>
+                    {[...Array(loader.count)].map((_e, i) => (
+                      <Skeleton key={i} className='h-3 w-full' />
+                    ))}
+                  </div>
+                ) : (
+                  <EditorContent
+                    onFocus={onfocus}
+                    onBlur={onblur}
+                    editor={editor}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-      </Stack>
+      </div>
     </TipTapCtx.Provider>
   );
 };
 
 export default TipTapAIEditor;
-
-export const EventHandler = Extension.create({
-  name: 'eventHandler',
-
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey('tiptapPaste'),
-        props: {
-          handlePaste(view, event) {
-            const pastedHTML = event.clipboardData.getData('text/html');
-
-            if (pastedHTML.includes('•')) {
-              const { state, dispatch } = view;
-              const json = convertTextToProseMirrorJSON(
-                event.clipboardData.getData('text/plain'),
-              );
-              const content = state.schema.nodeFromJSON(json);
-              // Create a new state with modifications
-              const newState = state.tr.insert(
-                state.doc.content.size - 2,
-                content,
-              );
-
-              // Dispatch the transaction to update the state
-              event.preventDefault();
-              dispatch(newState);
-              return true;
-            }
-          },
-        },
-      }),
-    ];
-  },
-});
-
-function convertTextToProseMirrorJSON(text) {
-  const lines = text.split('\n');
-  let isInBulletList = false;
-  let json = { type: 'doc', content: [] };
-  let currentListItem = null;
-
-  lines.forEach((line) => {
-    const trimmedLine = line.trim();
-
-    if (trimmedLine.startsWith('•') || trimmedLine.startsWith('●')) {
-      // Start or continue a bullet list
-      if (!isInBulletList) {
-        isInBulletList = true;
-        json.content.push({ type: 'bulletList', content: [] });
-      }
-
-      // Create a new list item
-      currentListItem = { type: 'listItem', content: [] };
-      json.content[json.content.length - 1].content.push(currentListItem);
-
-      // Add the content of the list item if not empty
-      const listItemContent = trimmedLine.slice(1).trim();
-      if (listItemContent.length > 0) {
-        currentListItem.content.push({
-          type: 'paragraph',
-          content: [{ type: 'text', text: listItemContent }],
-        });
-      }
-    } else {
-      // Not a bullet point, treat as a regular paragraph
-      isInBulletList = false;
-
-      // Add the content of the paragraph if not empty
-      if (trimmedLine.length > 0) {
-        json.content.push({
-          type: 'paragraph',
-          content: [{ type: 'text', text: trimmedLine }],
-        });
-      }
-    }
-  });
-
-  return json;
-}

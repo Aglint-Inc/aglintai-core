@@ -1,64 +1,42 @@
 /* eslint-disable no-console */
 import dayjs from 'dayjs';
-
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import { APIFindSlotsDateRange } from '@aglint/shared-types';
-import { has } from 'lodash';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { schema_find_availability_payload } from '@aglint/shared-utils';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import * as v from 'valibot';
 
-const required_fields = ['recruiter_id', 'date_range_start', 'date_range_end'];
+import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let {
-      session_ids,
-      recruiter_id,
-      date_range_start,
-      date_range_end,
-      user_tz,
-    } = req.body as APIFindSlotsDateRange;
-
-    required_fields.forEach((field) => {
-      if (!has(req.body, field)) {
-        throw new Error(`missing Field ${field}`);
-      }
+    const parsedData = v.parse(schema_find_availability_payload, {
+      ...req.body,
+      options: req.body.options || {
+        include_conflicting_slots: {},
+      },
     });
 
-    const start_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      date_range_start,
-      user_tz,
-      true,
-    );
-    const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      date_range_end,
-      user_tz,
-      false,
-    );
-
-    const cand_schedule = new CandidatesScheduling(
-      {
-        company_id: recruiter_id,
-        session_ids,
-        user_tz,
+    const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
+    await cand_schedule.fetchDetails({
+      params: {
+        company_id: parsedData.recruiter_id,
+        session_ids: parsedData.session_ids,
+        req_user_tz: parsedData.candidate_tz,
+        start_date_str: parsedData.start_date_str,
+        end_date_str: parsedData.end_date_str,
       },
-      {
-        start_date_js: start_date_js,
-        end_date_js: end_date_js,
-      },
-    );
-
-    await cand_schedule.fetchDetails();
-    await cand_schedule.fetchInterviewrsCalEvents();
+    });
     const all_day_plans = cand_schedule.findCandSlotsForDateRange();
 
     return res.status(200).json(all_day_plans);
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error.message);
+    return res
+      .status(error.status ?? 500)
+      .json({ name: error.name, message: error.message });
   }
 };
 

@@ -17,6 +17,6 @@ export const addHttps = (url = '') => {
 };
 
 export const getUrlHost = (website_url) => {
-  let url = new URL(website_url);
+  const url = new URL(website_url);
   return url.origin;
 };

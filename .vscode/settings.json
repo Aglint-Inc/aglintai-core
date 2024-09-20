@@ -1,13 +1,46 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always" // use always for both manual and auto saves
+    // "source.fixAll": "always" // use always for both manual and auto saves
   },
+  "eslint.workingDirectories": [
+    "./apps/aglint-recruiter",
+    "./apps/mobile-backend"
+  ],
   "cSpell.words": [
+    "aglint",
+    "asce",
+    "Breadcrum",
+    "datetime",
+    "devlink",
+    "fullcalendar",
+    "hookform",
+    "Leaderboard",
+    "lucide",
     "nextjs",
+    "notprovidet",
+    "plpgsql",
     "posthog",
     "sendgrid",
+    "Shadcn",
+    "sourcer",
     "supabase",
+    "tanstack",
     "tiptap",
+    "Topbar",
+    "TRPC",
     "webflow"
-  ]
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.retool_types/**": true,
+    ".cache": true,
+    "retool.config.json": true
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": ["@radix-ui/*"]
 }

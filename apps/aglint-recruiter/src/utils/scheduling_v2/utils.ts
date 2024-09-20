@@ -1,27 +1,29 @@
 import {
-  holidayType,
-  PlanCombinationType,
-  schedulingSettingType,
-  SessionCombinationType,
-  SessionInterviewerApiRespType,
-  SessionInterviewerType,
-  SessionsCombType,
-  SessionSlotType,
+  type DateRangePlansType,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
+} from '@aglint/shared-types';
+import {
+  type holidayType,
+  type schedulingSettingType,
+  type SessionInterviewerApiRespType,
+  type SessionInterviewerType,
+  type SessionsCombType,
+  type SessionSlotType,
 } from '@aglint/shared-types/src';
-import dayjs, { Dayjs } from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { type Dayjs } from 'dayjs';
 import { nanoid } from 'nanoid';
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(isSameOrAfter);
-dayjs.extend(isSameOrBefore);
 
-export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
-  const convertCombsToTimeSlot = (all_plan_combs: PlanCombinationType[]) => {
-    const convertSessionCombToSlot = (session_comb: SessionCombinationType) => {
+export const combineSlots = (
+  plan_combs: DateRangePlansType['interview_rounds'],
+) => {
+  const convertCombsToTimeSlot = (
+    all_plan_combs: PlanCombinationRespType[],
+  ) => {
+    const convertSessionCombToSlot = (
+      session_comb: SessionCombinationRespType,
+    ) => {
       const session_slot: SessionSlotType = {
         break_duration: session_comb.break_duration,
         duration: session_comb.duration,
@@ -35,11 +37,12 @@ export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
         session_type: session_comb.session_type,
         start_time: session_comb.start_time,
         end_time: session_comb.end_time,
+        meeting_id: session_comb.meeting_id,
       };
       return session_slot;
     };
 
-    let mp = new Map<string, SessionsCombType>();
+    const mp = new Map<string, SessionsCombType>();
     for (const plan_comb of all_plan_combs) {
       const slot_start_time = plan_comb.sessions[0].start_time;
       const slot = mp.get(slot_start_time);
@@ -60,7 +63,7 @@ export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
 
   const multi_day_slots: SessionsCombType[][] = [];
   for (const curr_comb of plan_combs) {
-    const curr_day_session_slots = convertCombsToTimeSlot(curr_comb);
+    const curr_day_session_slots = convertCombsToTimeSlot(curr_comb.plans);
     multi_day_slots.push(curr_day_session_slots);
   }
   return multi_day_slots;
@@ -75,6 +78,9 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
     training_type: i.training_type,
     interviewer_type: i.interviewer_type,
     interview_module_relation_id: i.interview_module_relation_id,
+    user_id: i.user_id,
+    int_tz: i.int_tz,
+    position: i.position,
   }));
 
   return r;
@@ -87,12 +93,12 @@ export const getNextWorkingDay = (
 ) => {
   let nxt_day = curr_day.add(day_gap, 'day');
 
-  let flag = true;
+  const flag = true;
   while (flag) {
     // is curr day holiday
     if (
       comp_schedule_setting.totalDaysOff.find((holiday: holidayType) =>
-        nxt_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date'),
+        nxt_day.isSame(dayjsLocal(holiday.date, 'DD MMM YYYY'), 'date'),
       )
     ) {
       nxt_day = nxt_day.add(1, 'day');

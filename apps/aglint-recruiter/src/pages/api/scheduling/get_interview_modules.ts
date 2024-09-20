@@ -1,10 +1,10 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
+import { interviewPlanRecruiterUserQuery } from '@/utils/Constants';
 
-const supabase = createClient<CustomDatabase>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const { recruiter_id } = req.query as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof Parameters<getInterviewModulesType>[0]]: string;
+      [_id in keyof Parameters<getInterviewModulesType>[0]]: string;
     };
     if (recruiter_id) {
       const resInterviewModules = await getInterviewModules({ recruiter_id });
@@ -38,18 +38,20 @@ const getInterviewModules = async ({
   const { data, error } = await supabase
     .from('interview_module')
     .select(
-      `*, interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))`,
+      `*, interview_module_relation(id, training_status, is_archived, pause_json, recruiter_user(${interviewPlanRecruiterUserQuery}))`,
     )
+    .eq('is_archived', false)
     .eq('recruiter_id', recruiter_id);
   if (error) throw new Error(error.message);
   return data.map(({ interview_module_relation, ...rest }) => {
-    const members = interview_module_relation.map(
-      ({ recruiter_user, id, training_status }) => ({
+    const members = interview_module_relation
+      .filter((rel) => !rel.is_archived)
+      .map(({ recruiter_user, id, training_status, pause_json }) => ({
         ...recruiter_user,
-        moduleUserId: id,
+        module_relation_id: id,
         training_status,
-      }),
-    );
+        paused: !!pause_json,
+      }));
     return { ...rest, members };
   });
 };

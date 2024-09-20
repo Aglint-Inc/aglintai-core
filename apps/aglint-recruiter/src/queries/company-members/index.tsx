@@ -1,17 +1,15 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
 
 import { companyMembersKeys } from './keys';
 
 export const useCompanyMembers = () => {
   const queryClient = useQueryClient();
   const { recruiter_id } = useAuthDetails();
-  const { queryKey } = companyMembersKeys.filterWithRecruiterId({
-    recruiter_id,
-  });
+  const { queryKey } = companyMembersKeys.companyMembers();
   const response = useQuery({
     queryKey,
     queryFn: () => getCompanyMembers({ recruiter_id }),
@@ -31,8 +29,16 @@ export const getCompanyMembers = async ({
   const res = await axios.post('/api/scheduling/fetchUserDetails', {
     recruiter_id,
   });
-  const allUsers = (res.data as unknown as Awaited<CompanyMembersAPI>) || [];
+  const allUsers = (res.data as unknown as CompanyMembersAPI) || [];
   return allUsers;
 };
 
-export type CompanyMember = Omit<Awaited<CompanyMembersAPI>[number], 'role'>;
+export type CompanyMember = Omit<
+  CompanyMembersAPI[number],
+  | 'role'
+  | 'office_locations'
+  | 'departments'
+  | 'role_id'
+  | 'manager_id'
+  | 'created_by'
+>;

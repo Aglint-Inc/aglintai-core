@@ -8,7 +8,7 @@ import {
   AudioWebsocketProtocol,
   AudioEncoding,
 } from 'retell-sdk/models/components';
-import {addCallerToCache} from '../../services/cache/cache-db';
+import {addCallerToCache} from '../cache/cache-db';
 import {appLogger} from '../logger';
 
 export class TwilioClient {
@@ -146,7 +146,7 @@ export class TwilioClient {
             sampleRate: 8000,
           });
           if (callResponse.callDetail) {
-            addCallerToCache(callResponse.callDetail.callId, req.body);
+            await addCallerToCache(callResponse.callDetail.callId, req.body);
             // Start phone call websocket
             const response = new VoiceResponse();
             const start = response.connect() as any;

@@ -1,11 +1,11 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { SchedulingDashboardTypes } from '@/src/queries/scheduling-dashboard/types';
-import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
+import { type SchedulingDashboardTypes } from '@/queries/scheduling-dashboard/types';
+import { interviewPlanRecruiterUserQuery } from '@/utils/Constants';
 
-const supabase = createClient<CustomDatabase>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -21,7 +21,7 @@ export default async function handler(
   if (req.method === 'GET') {
     const { recruiter_id } = req.query as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof Parameters<getInterviewTrainingProgressType>[0]]: string;
+      [_id in keyof Parameters<getInterviewTrainingProgressType>[0]]: string;
     };
     if (recruiter_id) {
       const resInterviewTrainingProgress = await getInterviewTrainingProgress({

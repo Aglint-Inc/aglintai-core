@@ -1,55 +1,23 @@
-import { useRouter } from 'next/router';
-
-import { pageRoutes } from '@/src/utils/pageRouting';
-
-import { appKey } from '..';
+import type { JobRequisite } from '../job';
+import { jobQueries } from '../job';
 
 export const jobDashboardQueryKeys = {
-  all: { queryKey: [appKey, 'job_dashboard'] as string[] },
-  job: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }],
+  dashboard: (args: JobRequisite) => ({
+    queryKey: [...jobQueries.job(args).queryKey, 'dashboard'] as string[],
   }),
-  matches: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'matches'],
+  matches: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'matches'],
   }),
-  skills: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'skills'],
-  }),
-  locations: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'locations'],
-  }),
-  assessments: ({ job_id }: { job_id: string }) => ({
+  tenureAndExperience: (args: JobRequisite) => ({
     queryKey: [
-      ...jobDashboardQueryKeys.all.queryKey,
-      { job_id },
-      'assessments',
-    ],
-  }),
-  tenureAndExperience: ({ job_id }: { job_id: string }) => ({
-    queryKey: [
-      ...jobDashboardQueryKeys.all.queryKey,
-      { job_id },
+      ...jobDashboardQueryKeys.dashboard(args).queryKey,
       'tenureAndExperience',
     ],
   }),
-  schedules: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'schedules'],
+  schedules: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'schedules'],
   }),
-  interviewPlanEnabled: ({ job_id }: { job_id: string }) => ({
-    queryKey: [
-      ...jobDashboardQueryKeys.all.queryKey,
-      { job_id },
-      'interviewPlanEnabled',
-    ],
+  workflows: (args: JobRequisite) => ({
+    queryKey: [...jobDashboardQueryKeys.dashboard(args).queryKey, 'workflows'],
   }),
 } as const;
-
-export const useJobId = () => {
-  const router = useRouter();
-  const job_id = (
-    (router?.pathname ?? null).startsWith(pageRoutes.JOBDASHBOARD)
-      ? router?.query?.id ?? null
-      : null
-  ) as string;
-  return { job_id };
-};

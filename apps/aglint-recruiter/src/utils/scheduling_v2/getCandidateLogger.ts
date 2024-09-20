@@ -1,10 +1,5 @@
-import { SubTaskProgress } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
-
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 /* eslint-disable no-unused-vars */
 type TitleAttrType = {
@@ -18,44 +13,41 @@ export type LoggerType = (
   log_msg: string,
   title_attr: TitleAttrType,
   created?: 'candidate' | 'phone_agent' | 'email_agent',
-  progress_type?: SubTaskProgress['progress_type'],
+  progress_type?: DatabaseTable['new_tasks_progress']['progress_type'],
   transcript?: Record<string, any> | Record<string, any>[],
 ) => Promise<void>;
 
 export const getCandidateLogger = (
-  task_id: string,
   candidate_name: string,
   candidate_id: string,
   default_created: 'candidate' | 'phone_agent' | 'email_agent',
 ) => {
-  const logger: LoggerType = async (
-    log_msg,
-    title_attr,
-    created,
-    progress_type,
-    transcript,
-  ) => {
-    let created_by = null;
+  const logger: LoggerType = async (_log_msg, title_attr, created) => {
+    let _created_by = null;
     if (!created) {
       created = default_created;
     }
     if (created === 'candidate') {
-      created_by = {
+      _created_by = {
         id: candidate_id,
         name: 'Candidate',
       };
     } else if (created === 'phone_agent') {
-      created_by = {
+      _created_by = {
         id: PhoneAgentId,
         name: 'Phone Agent',
       };
     } else if (created === 'email_agent') {
-      created_by = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _created_by = {
         id: EmailAgentId,
         name: 'Email Agent',
       };
     }
-    if (Object.keys(title_attr).includes('{candidate}')) {
+    if (
+      title_attr['{candidate}'] &&
+      Object.keys(title_attr).includes('{candidate}')
+    ) {
       title_attr['{candidate}'] = candidate_name;
     }
 
@@ -73,29 +65,6 @@ export const getCandidateLogger = (
     //     );
     //   }
     // }
-
-    try {
-      if (!task_id) return;
-      supabaseWrap(
-        await supabaseAdmin
-          .from('new_tasks_progress')
-          .insert({
-            created_by: {
-              id: created_by.id,
-              name: created_by.name,
-            },
-            title: log_msg,
-            jsonb_data: transcript ?? null,
-            task_id: task_id,
-            progress_type: progress_type,
-            created_at: userTzDayjs().toISOString(),
-            title_meta: title_attr,
-          })
-          .select(),
-      );
-    } catch (error) {
-      // console.log(error);
-    }
   };
   return logger;
 };

@@ -1,23 +1,22 @@
 /* eslint-disable security/detect-object-injection */
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
-import dayjs from '@utils/dayjs';
-import { useRouter } from 'next/router';
+import { type CandidateDirectBookingType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { TimezoneObj } from '@/src/components/Scheduling/Settings';
-import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
 import {
   useConfirmSlots,
   useInviteMeta,
-  useInviteSlots,
-} from '@/src/queries/candidate-invite';
-import { getFullName } from '@/src/utils/jsonResume';
-import timeZones from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
+  type useInviteSlots,
+} from '@/queries/candidate-invite';
+import dayjs from '@/utils/dayjs';
+import timeZones, { type TimezoneObj } from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
 const useInviteActions = () => {
-  const router = useRouter();
-
+  const router = useRouterPro<{ filter_id: string; task_id?: string }>();
   const meta = useInviteMeta();
 
   const { mutateAsync, isPending } = useConfirmSlots();
@@ -30,8 +29,7 @@ const useInviteActions = () => {
   const [timezone, setTimezone] = useState<TimezoneObj>(initialTimezone);
 
   const params: Parameters<typeof useInviteSlots>[0] = {
-    filter_json: meta?.data?.filter_json ?? null,
-    recruiter: meta?.data?.recruiter ?? null,
+    filter_json_id: meta?.data?.filter_json.id ?? null,
     user_tz: timezone?.tzCode ?? null,
   };
 
@@ -55,27 +53,46 @@ const useInviteActions = () => {
   );
 
   const handleSubmit = async () => {
-    const bodyParams = {
-      candidate_plan: selectedSlots,
-      recruiter_id: meta.data.recruiter.id,
-      user_tz: timezone.tzCode,
-      candidate_email: meta.data.candidate.email,
-      schedule_id: meta.data.schedule.id,
-      filter_id: router.query.filter_id,
-      task_id: router.query?.task_id,
-      agent_type: 'self',
-      candidate_id: meta.data.candidate.id,
-      candidate_name: getFullName(
-        meta.data.candidate.first_name,
-        meta.data.candidate.last_name,
-      ),
-    } as APICandidateConfirmSlot;
+    const candSelectedSlots = selectedSlots.map((s) => s.sessions);
+
+    const bodyParams: CandidateDirectBookingType = {
+      cand_tz: timezone.tzCode,
+      filter_id: router.queryParams.filter_id as string,
+      selected_plan: candSelectedSlots.map((slot) => ({
+        start_time: slot[0].start_time,
+        end_time: slot[slot.length - 1].end_time,
+      })),
+    };
     try {
       if (!isPending) {
-        await mutateAsync(bodyParams);
+        await mutateAsync({
+          bodyParams,
+          is_agent_link: !meta.data.filter_json.selected_options,
+        });
       } else {
         toast.warning('Confirming slots. Please wait.');
       }
+    } catch {
+      toast.error('Unable to book slots.');
+    }
+  };
+
+  const handleViewedOn = async () => {
+    try {
+      const bodyParams: ApiBodyOpenSelfScheduling = {
+        application_id: meta.data.application_id,
+        filter_id: meta.data.filter_json.id,
+        sesssion_name: meta.data.meetings.map(
+          (ses) => ses.interview_session.name,
+        ),
+        timezone: dayjsLocal.tz.guess(),
+        candidate_id: meta.data.candidate.id,
+      };
+
+      await axios.post(
+        '/api/scheduling/application/openselfscheduling',
+        bodyParams,
+      );
     } catch {
       //
     }
@@ -96,22 +113,8 @@ const useInviteActions = () => {
     setDetailsPop,
     handleSelectSlot,
     handleSubmit,
+    handleViewedOn,
   };
 };
 
 export default useInviteActions;
-
-export const useInviteParams = (): BodyParamsCandidateInvite & {
-  enabled: boolean;
-} => {
-  const { query } = useRouter();
-  const schedule_id = (query?.id ?? null) as string;
-  const filter_id = (query?.filter_id ?? null) as string;
-  const user_tz = dayjs?.tz?.guess() ?? null;
-  return {
-    schedule_id,
-    filter_id,
-    user_tz,
-    enabled: !!(schedule_id && filter_id && user_tz),
-  };
-};

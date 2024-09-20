@@ -1,20 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
-const crypto = require('crypto');
-import { Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { splitFullName } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+import { splitFullName } from '@/jobs/components/AddJobWithIntegrations/utils';
+
+import { decrypt } from '../decryptApiKey';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
 
-let bucketName = 'resume-job-post';
+const bucketName = 'resume-job-post';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const json = req.body.ats_json;
@@ -22,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const job_id = req.body.job_id;
   const apiKey = req.body.apikey;
   const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
-  let fileId = uuidv4();
+  const fileId = uuidv4();
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');
   console.log('ats_json_id', json.id);
   console.log('recruiter_id', recruiter_id);
@@ -40,13 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     if (json) {
-      await supabase
-        .from('application_reference')
-        .update({ is_processed: true })
-        .eq('recruiter_id', recruiter_id)
-        .eq('ats_json->>id', json.id);
-
-      let application = json;
+      const application = json;
       if (!application?.candidate?.primaryEmailAddress?.value) {
         console.log('no email in ashby application');
         return res.status(200).json('no email in ashby application');
@@ -69,18 +64,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .json('email already exists in job application table');
       }
       //get candidate info from ashby
-      let candidate = await getCandidate(
+      const candidate = await getCandidate(
         application.candidate.id,
         base64decryptedApiKey,
       );
       if (candidate?.results?.fileHandles[0]?.handle) {
         //get resume info from ashby
-        let resume = await getResume(
+        const resume = await getResume(
           candidate?.results?.fileHandles[0]?.handle,
           base64decryptedApiKey,
         );
         if (resume?.results?.url) {
-          let cand = {
+          const cand = {
             first_name: splitFullName(candidate.results.name).firstName,
             last_name: splitFullName(candidate.results.name).lastName,
             email: application.candidate.primaryEmailAddress.value,
@@ -119,7 +114,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               fileId,
             );
           } else {
-            let candCreated = await createCandidate(cand, recruiter_id);
+            const candCreated = await createCandidate(cand, recruiter_id);
 
             if (candCreated) {
               const res = await uploadResume(fileId, resume.results.url);
@@ -170,14 +165,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-// Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
-}
-
 const getCandidate = async (id: string, key: string): Promise<any> => {
   const options = {
     method: 'POST',
@@ -212,6 +199,7 @@ const getResume = async (handle: string, key: string): Promise<any> => {
 
 const createJobApplication = async (
   candidate_id: string,
+  recruiter_id: string,
   job_id: string,
   created_at: string,
   fileId?: string,
@@ -224,6 +212,8 @@ const createJobApplication = async (
       applied_at: created_at,
       is_resume_fetching: false,
       candidate_file_id: fileId,
+      source: 'ashby',
+      recruiter_id,
     })
     .select();
 };
@@ -257,7 +247,7 @@ const uploadResume = async (fileId: string, url: string) => {
     throw new Error(`Failed to fetch file from URL: ${responseUrl.statusText}`);
   }
 
-  let extension = responseUrl.headers['content-type'];
+  const extension = responseUrl.headers['content-type'];
   let type;
 
   if (extension === 'application/pdf') {

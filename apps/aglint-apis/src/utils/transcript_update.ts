@@ -1,5 +1,4 @@
 import {PhoneAgentId} from '@aglint/shared-utils';
-import {supabaseWrap, supabaseAdmin} from '../services/supabase/SupabaseAdmin';
 import {LoggerType} from './scheduling_utils/getCandidateLogger';
 import {fetchTranascript} from './scheduling_utils/retell_transcript';
 
@@ -14,16 +13,6 @@ export async function transcript_update(
   const call_detail = await fetchTranascript(callId);
   if (call_detail) {
     try {
-      supabaseWrap(
-        await supabaseAdmin
-          .from('candidate_phone_call')
-          .update({
-            call_transcript: call_detail.transcript,
-            recording_url: call_detail.recordingUrl,
-          })
-          .eq('retell_call_id', callId)
-      );
-
       if (call_detail.transcript) {
         const transf_script = call_detail.transcript
           .split('\n')

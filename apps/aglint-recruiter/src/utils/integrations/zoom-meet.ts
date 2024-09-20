@@ -1,15 +1,14 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
-
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';
 import { decrypt_string } from './crypt-funcs';
 import {
-  TokenType,
-  ZoomCreateMeetingParams,
-  ZoomMeetCred,
-  ZoomMeetingResp,
+  type TokenType,
+  type ZoomCreateMeetingParams,
+  type ZoomMeetCred,
+  type ZoomMeetingResp,
 } from './types';
 
 export class ZoomMeet {
@@ -21,7 +20,7 @@ export class ZoomMeet {
   public async authorizeUser() {
     const [rec] = supabaseWrap(
       await supabaseAdmin
-        .from('recruiter')
+        .from('integrations')
         .select('zoom_auth')
         .eq('id', this.recruiter_id),
     );

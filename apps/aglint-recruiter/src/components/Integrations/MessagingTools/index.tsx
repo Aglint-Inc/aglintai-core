@@ -1,48 +1,40 @@
 import { capitalize } from 'lodash';
-import React from 'react';
 
-import { IntegrationCard } from '@/devlink2';
-
-import { MessagingToolsType } from '../types';
-import { SlackLogo, TeamsLogo } from '../utils';
+import { IntegrationCard } from '../components/IntegrationCard';
+import { type MessagingToolsType } from '../types';
+// import SlackLogo from '@public/images/svg/slack-logo.svg';
 
 function MessagingTools() {
   const messagingTools = [
     {
       name: 'slack' as MessagingToolsType,
       url: 'slack.com',
-      logo: <SlackLogo />,
+      // logo: <SlackLogo />,
+      logo: <></>,
     },
-    {
-      name: 'teams' as MessagingToolsType,
-      url: 'teams.live.com',
-      logo: <TeamsLogo />,
-    },
+    // {
+    //   name: 'teams' as MessagingToolsType,
+    //   url: 'teams.live.com',
+    //   logo: <TeamsLogo />,
+    // },
   ];
 
   return (
-    <>
-      {messagingTools.map((item, i) => {
-        return (
-          <IntegrationCard
-            onClickCopyLink={{
-              onClick: () => {
-                window.open(
-                  'https://' +
-                    item.url.replace('slack.com', 'slack.com/signin'),
-                );
-              },
-            }}
-            isComingSoon={true}
-            isConnectedVisible={false}
-            key={i}
-            textName={capitalize(item.name)}
-            textLink={item.url}
-            slotLogo={<>{item.logo}</>}
-          />
-        );
-      })}
-    </>
+    <div className='grid gap-4'>
+      {messagingTools.map((item, i) => (
+        <IntegrationCard
+          key={i}
+          slotLogo={item.logo}
+          textName={capitalize(item.name)}
+          textLink={item.url}
+          onClick={() => {
+            window.open(
+              'https://' + item.url.replace('slack.com', 'slack.com/signin'),
+            );
+          }}
+        />
+      ))}
+    </div>
   );
 }
 

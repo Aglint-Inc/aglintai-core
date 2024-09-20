@@ -1,79 +1,121 @@
-import { DatabaseTable } from '@aglint/shared-types';
-import { Avatar, TextField } from '@mui/material';
+import { type DatabaseTable } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Textarea } from '@components/ui/textarea';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { Loader2, Star } from 'lucide-react';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-import { FeedbackCandidate } from '@/devlink3';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import toast from '@/src/utils/toast';
+import Seo from '@/components/Common/Seo';
 
-import { API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
-import { API_save_interview_feedback } from '../../api/save_interview_feedback/types';
+import { type API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
+import { type API_save_interview_feedback } from '../../api/save_interview_feedback/types';
 
 const InterviewFeedbackPage = () => {
-  const [form, setForm] = React.useState({ rating: 2, feedback: '' });
+  const [form, setForm] = React.useState({ rating: 0, feedback: '' });
   const { details, isLoadingDetails, submitFeedback } = useInterviewFeedback(
     useSearchParams().get('interview'),
   );
-  return isLoadingDetails ? (
-    <DynamicLoader />
-  ) : (
-    <FeedbackCandidate
-      slotLogo={
-        <Avatar
-          variant='rounded'
-          src={details.company_logo}
-          sx={{ width: '100%', height: '100px' }}
-          alt={`${details.company_name} logo`}
-        />
-      }
-      isNotSatisfiedActive={form.rating === 1}
-      onClickNotSatisfied={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 1 })),
-      }}
-      isSatisfiedActive={form.rating === 2}
-      onClickSatisfy={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 2 })),
-      }}
-      isNeutralActive={form.rating === 3}
-      onClickNeutral={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 3 })),
-      }}
-      isVerySatisfiedActive={form.rating === 4}
-      onClickVerySatisfy={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 4 })),
-      }}
-      onClickSubmit={{
-        onClick: () => {
-          submitFeedback({ rating: 10, feedback: 'hi' });
-        },
-      }}
-      slotFeedbackInput={
-        <TextField
-          fullWidth
-          multiline
-          minRows={7}
-          maxRows={7}
-          value={form.feedback}
-          onChange={(e) =>
-            setForm((pre) => ({
-              ...pre,
-              feedback: (e.target.value || '').trim(),
-            }))
-          }
-        />
-      }
-      isRatingVisible={details.candidate_feedback === null}
-      isThankYouVisible={details.candidate_feedback !== null}
-    />
+
+  const handleRatingChange = (rating: number) => {
+    setForm((prev) => ({ ...prev, rating }));
+  };
+
+  const handleSubmit = () => {
+    submitFeedback({ rating: form.rating * 2, feedback: form.feedback });
+  };
+
+  if (isLoadingDetails) {
+    return (
+      <>
+        <Seo title='Feedback - Interview | Aglint AI' />
+        <div className='flex min-h-screen items-center justify-center'>
+          <Loader2 className='h-8 w-8 animate-spin text-primary' />
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Seo title='Feedback - Interview | Aglint AI' />
+      <div className='min-h-screen bg-gradient-to-b from-blue-100 to-white px-4 py-12 sm:px-6 lg:px-8'>
+        <Card className='mx-auto max-w-2xl'>
+          <CardHeader className='text-center'>
+            <div className='mb-4'>
+              {details.company_logo && (
+                <Image
+                  src={details.company_logo}
+                  alt={`${details.company_name} logo`}
+                  width={100}
+                  height={100}
+                  className='mx-auto rounded-lg'
+                />
+              )}
+            </div>
+            <CardTitle className='text-2xl font-bold text-gray-800'>
+              {details.candidate_feedback === null
+                ? 'How was your interview experience?'
+                : 'Thank you for your feedback!'}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {details.candidate_feedback === null ? (
+              <div className='space-y-6'>
+                <div className='flex justify-center space-x-2'>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`h-10 w-10 cursor-pointer ${
+                        star <= form.rating
+                          ? 'fill-current text-yellow-400'
+                          : 'text-gray-300'
+                      }`}
+                      onClick={() => handleRatingChange(star)}
+                    />
+                  ))}
+                </div>
+                <Textarea
+                  placeholder='Please share your thoughts about the interview...'
+                  value={form.feedback}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      feedback: e.target.value.trim(),
+                    }))
+                  }
+                  rows={5}
+                  className='w-full rounded-md border p-2'
+                />
+                <Button
+                  onClick={handleSubmit}
+                  className='w-full'
+                  disabled={form.rating === 0}
+                >
+                  Submit Feedback
+                </Button>
+              </div>
+            ) : (
+              <p className='text-center text-lg text-gray-600'>
+                We appreciate your input. It helps us improve our interview
+                process.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
 export default InterviewFeedbackPage;
 
 const useInterviewFeedback = (interview_id: string) => {
+  const { toast } = useToast();
   const {
     data: details,
     status,
@@ -89,22 +131,34 @@ const useInterviewFeedback = (interview_id: string) => {
     mutationFn: (
       feedback: Parameters<typeof saveInterviewFeedback>[0]['feedback'],
     ) => saveInterviewFeedback({ id: interview_id, feedback }),
-    onSuccess(data, feedback) {
+    onSuccess(_data, feedback) {
       queryClient.setQueryData(
         [`interview_feedback_${interview_id}`],
         (prevData: Awaited<ReturnType<typeof getInterviewDetails>>) => {
           return { ...prevData, candidate_feedback: feedback };
         },
       );
-      toast.success('Feedback submitted successfully');
+      toast({
+        variant: 'default',
+        title: 'Success',
+        description: 'Feedback submitted successfully',
+      });
     },
     onError() {
-      toast.error('Failed to submit feedback');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to submit feedback',
+      });
     },
   });
   const submitFeedback = (...pera: Parameters<typeof mutateAsync>) =>
     mutateAsync(...pera).catch(() => {
-      toast.error('Failed to submit feedback');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to submit feedback',
+      });
     });
   return {
     details,

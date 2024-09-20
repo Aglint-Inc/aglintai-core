@@ -1,0 +1,11 @@
+// floders
+node_modules
+src
+Docker
+
+
+// files
+.gitignore
+.dockerignore
+.env
+.env.*

@@ -1,9 +1,1 @@
-export type SchedulingTab =
-  | 'candidates'
-  | 'myschedules'
-  | 'interviewtypes'
-  | 'interviewers'
-  | 'interviewmodules'
-  | 'settings'
-  | 'dashboard'
-  | 'schedules';
+export type SchedulingTab = 'my_interviews' | 'metrics' | 'interviews';

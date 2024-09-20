@@ -1,11 +1,8 @@
-import {SubTaskProgress} from '@aglint/shared-types';
-import {
-  supabaseWrap,
-  supabaseAdmin,
-} from '../../services/supabase/SupabaseAdmin';
+import {DatabaseEnums} from '@aglint/shared-types';
+import {supabaseAdmin} from '../../services/supabase/SupabaseAdmin';
 
 import {dayjsLocal} from '../dayjsLocal/dayjsLocal';
-import {PhoneAgentId, EmailAgentId} from '@aglint/shared-utils';
+import {EmailAgentId, PhoneAgentId, supabaseWrap} from '@aglint/shared-utils';
 
 type TitleAttrType = {
   '{candidate}'?: string | undefined;
@@ -18,7 +15,7 @@ export type LoggerType = (
   log_msg: string,
   title_attr: TitleAttrType,
   created?: 'candidate' | 'phone_agent' | 'email_agent',
-  progress_type?: SubTaskProgress['progress_type'],
+  progress_type?: DatabaseEnums['progress_type'],
   transcript?: Record<string, any> | Record<string, any>[]
 ) => Promise<void>;
 

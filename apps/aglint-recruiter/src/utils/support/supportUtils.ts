@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
-import { palette } from '@/src/context/Theme/Theme';
-import { Job } from '@/src/queries/job/types';
+import { type DatabaseTable } from '@aglint/shared-types';
+
+import { type Job } from '@/queries/jobs/types';
 
 const Priority = {
   low: '#467B7C',
@@ -82,7 +82,8 @@ export function fillEmailTemplate(
     date_range?: string;
     reschedule_reason?: string;
     additional_reschedule_notes?: string;
-    cancle_reason?:string;
+    cancle_reason?: string;
+    availability_link?: string;
   },
 ) {
   let filledTemplate = template;
@@ -104,7 +105,8 @@ export function fillEmailTemplate(
     '[dateRange]': email.date_range,
     '[rescheduleReason]': email.reschedule_reason,
     '[additionalRescheduleNotes]': email.additional_reschedule_notes,
-    '[cancleReason]':email.cancle_reason
+    '[cancleReason]': email.cancle_reason,
+    '[availabilityLink]': email.availability_link,
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {
@@ -118,39 +120,39 @@ export function fillEmailTemplate(
 
 const allCandidateStatusColor = {
   'invitation not sent': {
-    color: palette.red[500],
-    backgroundColor: palette.red[100],
+    color: 'text-red-700',
+    backgroundColor: 'bg-red-200',
   },
   'invitation sent': {
-    color: palette.yellow[600],
-    backgroundColor: palette.red[100],
+    color: 'text-yellow-700',
+    backgroundColor: 'bg-yellow-100',
   },
   'invitation accepted': {
-    color: palette.kale[600],
-    backgroundColor: palette.kale[200],
+    color: 'text-green-700',
+    backgroundColor: 'bg-green-200',
   },
   'invitation rejected': {
-    color: '#8B008B',
-    backgroundColor: 'rgba(139, 0, 139, 0.10)',
+    color: 'text-red-700',
+    backgroundColor: 'bg-red-200',
   },
   'invitation expired': {
-    color: palette.red[500],
-    backgroundColor: palette.red[500],
+    color: 'text-red-700',
+    backgroundColor: 'bg-red-200',
   },
   'invitation completed': {
-    color: palette.blue[600],
-    backgroundColor: palette.blue[100],
+    color: 'text-accent-700',
+    backgroundColor: 'bg-accent-100',
   },
   'invitation incomplete': {
-    color: palette.grey[700],
-    backgroundColor: palette.grey[200],
+    color: 'text-neutral-700',
+    backgroundColor: 'bg-neutral-200',
   },
 };
 export const getCandidateStatusColor = (key: string) => {
   return (
     allCandidateStatusColor[String(key).toLocaleLowerCase()] || {
-      color: palette.grey[700],
-      backgroundColor: palette.grey[200],
+      color: 'text-neutral-700',
+      backgroundColor: 'bg-neutral-200',
     }
   );
 };
@@ -178,7 +180,7 @@ export type QualificationRelevance =
   | 'more match';
 
 export const getOverallResumeScore = (
-  scores: ScoreJson['scores'],
+  scores: DatabaseTable['applications']['score_json']['scores'],
   parameter_weights: Job['parameter_weights'],
 ) => {
   return Math.trunc(
