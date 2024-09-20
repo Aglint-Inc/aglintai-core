@@ -3,7 +3,7 @@ import { Label } from '@components/ui/label';
 
 function CalendarFilter({ setFilter, filter }) {
   return (
-    <div className='mb-2 flex flex-row gap-2 pb-[100px]'>
+    <div className='!mt-4 flex flex-row gap-2'>
       <div className='flex flex-row items-center gap-1'>
         <Checkbox
           id='confirmed'

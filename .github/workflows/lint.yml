@@ -1,11 +1,11 @@
-name: Lint
+name: Lint and Preview Deploy
 
 # Define when this workflow should run
 on:
   push:
-    branches: [main, development, staging]
+    branches: [development]
   pull_request:
-    branches: [main, development, staging]
+    branches: [development]
 
 # Set permissions for the workflow
 permissions:
@@ -49,3 +49,44 @@ jobs:
           cd apps/aglint-recruiter && npm run lint
         env:
           NODE_OPTIONS: --max-old-space-size=4096
+
+  preview-deploy:
+    name: Preview Deploy to Vercel
+    needs: lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/development'
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
+
+      - name: Deploy to Vercel
+        run: |
+          echo "Attempting to deploy..."
+          DEPLOYMENT_OUTPUT=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes 2>&1)
+          echo "Deployment output: $DEPLOYMENT_OUTPUT"
+          DEPLOYMENT_URL=$(echo "$DEPLOYMENT_OUTPUT" | grep -oP 'https:\/\/[^ ]+')
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "Failed to extract deployment URL. Full output:"
+            echo "$DEPLOYMENT_OUTPUT"
+            exit 1
+          fi
+          echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+
+      - name: Comment Deployment URL
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: 'Preview deployed to: ${{ env.DEPLOYMENT_URL }}'
+            })
