@@ -34,7 +34,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # Step 4: Cache Turborepo
+      # Step 4: Cache Turborepo for faster subsequent runs
       - name: Cache Turborepo
         uses: actions/cache@v4
         with:
@@ -42,6 +42,7 @@ jobs:
           key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-turbo-
+
       # Step 5: Run the linter for all workspaces
       - name: Run Linter
         run: |
@@ -52,33 +53,52 @@ jobs:
 
   preview-deploy:
     name: Preview Deploy to Vercel
-    needs: lint
+    needs: lint # This job will only run if the lint job succeeds
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/development'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/development' # Only run on pushes to development branch
 
     steps:
+      # Step 1: Check out the repository
       - name: Check out Git repository
         uses: actions/checkout@v4
 
+      # Step 2: Install Vercel CLI globally
       - name: Install Vercel CLI
         run: npm install -g vercel
 
+      # Step 3: Pull Vercel environment information
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
 
+      # Step 4: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           echo "Attempting to deploy..."
-          DEPLOYMENT_OUTPUT=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }} --yes 2>&1)
-          echo "Deployment output: $DEPLOYMENT_OUTPUT"
-          DEPLOYMENT_URL=$(echo "$DEPLOYMENT_OUTPUT" | grep -oP 'https:\/\/[^ ]+')
+          # Start Vercel deployment in the background and capture its output
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }} --yes > deployment_output.txt 2>&1 &
+          DEPLOY_PID=$!
+
+          # Wait for up to 5 seconds for the URL to appear
+          for i in {1..5}; do
+            if DEPLOYMENT_URL=$(grep -oP 'https:\/\/[^ ]+' deployment_output.txt | head -n1); then
+              echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+              echo "Deployment URL found: $DEPLOYMENT_URL"
+              break
+            fi
+            sleep 1
+          done
+
+          # If no URL found after 5 seconds, report an error
           if [ -z "$DEPLOYMENT_URL" ]; then
-            echo "Failed to extract deployment URL. Full output:"
-            echo "$DEPLOYMENT_OUTPUT"
+            echo "Failed to extract deployment URL within 5 seconds. Partial output:"
+            head -n 20 deployment_output.txt
             exit 1
           fi
-          echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
 
+          # Allow the deployment to continue in the background
+          disown $DEPLOY_PID
+
+      # Step 5: Comment the deployment URL on the commit
       - name: Comment Deployment URL
         uses: actions/github-script@v6
         with:
