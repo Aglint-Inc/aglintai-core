@@ -7,8 +7,8 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { Briefcase } from 'lucide-react';
-import { getPauseMemberText } from 'src/app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 
+import { getPauseMemberText } from '@/authenticated/utils';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '@/components/Common/Icons/InterviewerTrainingTypeIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
