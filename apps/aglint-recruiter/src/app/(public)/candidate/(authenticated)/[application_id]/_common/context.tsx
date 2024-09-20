@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
@@ -49,7 +50,7 @@ export const CandidatePortalProvider = async ({
     getSession();
   }, []);
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <Loader />;
 
   const finalValue = { ...value };
   return (

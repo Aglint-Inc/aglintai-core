@@ -1,5 +1,7 @@
 import { Calendar } from 'lucide-react';
 
+import { Loader } from '@/components/Common/Loader';
+
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
 import { useAllInterviews } from '../hooks/useAllInterviews';
 import UpComingInterviewFilters from './Filters/upComingFilter';
@@ -14,7 +16,7 @@ function UpComingInterviews() {
   return (
     <>
       <UpComingInterviewFilters />
-      {!isFetched && <div>Loading...</div>}
+      {!isFetched && <Loader />}
       {isFetched && schedules?.length === 0 && (
         <div className='flex items-center justify-center'>
           <div className='w-[300px] max-w-sm p-2'>

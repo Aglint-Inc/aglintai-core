@@ -4,6 +4,7 @@ import { Button } from '@components/ui/button';
 import { AlertCircle, Loader2, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
@@ -76,14 +77,7 @@ function EmailPreview({
           Back
         </Button>
         <Button disabled={loading} onClick={onSubmit}>
-          {loading ? (
-            <div className='flex items-center'>
-              <RefreshCcw className='mr-2 h-4 w-4 animate-spin' />
-              Loading...
-            </div>
-          ) : (
-            'Request Availability'
-          )}
+          {loading ? <Loader /> : 'Request Availability'}
         </Button>
       </div>
 

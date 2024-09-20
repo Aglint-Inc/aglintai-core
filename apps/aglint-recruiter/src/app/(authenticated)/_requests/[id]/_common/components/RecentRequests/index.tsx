@@ -5,6 +5,7 @@ import { ChevronDown, LayoutList } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function RecentRequests({ applicationId }: { applicationId: string }) {
@@ -26,15 +27,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='space-y-4'>
-            <div>
-              <div className='space-y-2'>
-                <div className='flex items-center justify-between'>
-                  <span className='text-sm'>Loading...</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Loader />
         </CardContent>
       </Card>
     );

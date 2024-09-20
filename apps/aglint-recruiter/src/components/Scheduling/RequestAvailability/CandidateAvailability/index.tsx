@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
 import Footer from '@/components/Common/Footer';
+import { Loader } from '@/components/Common/Loader';
 import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import timeZones from '@/utils/timeZone';
@@ -133,11 +134,7 @@ function CandidateAvailability() {
     );
   }
   if (loading) {
-    return (
-      <div className='flex h-screen w-full items-center justify-center bg-neutral-100'>
-        <div className='w-[120px] -translate-y-1/2'>Loading...</div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!candidateRequestAvailability) {

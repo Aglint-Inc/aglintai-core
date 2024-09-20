@@ -3,6 +3,8 @@ import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
+
 import { usePortalSettings } from '../../../hooks/hook';
 
 export function ConfigureCoverImage() {
@@ -73,11 +75,7 @@ export function ConfigureCoverImage() {
                 <ImagePlus className='h-10 w-10' />
                 Add Cover Image
               </Button>
-              {isCoverUploading && (
-                <div className='absolute left-0 top-0 z-10 flex h-[190px] w-[380px] items-center justify-center bg-white'>
-                  Uploading ...
-                </div>
-              )}
+              {isCoverUploading && <Loader />}
             </div>
           )}
           {/* Button to edit and remove the image only if there is an image */}
