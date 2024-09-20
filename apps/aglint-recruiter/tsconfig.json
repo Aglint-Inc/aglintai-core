@@ -59,7 +59,7 @@
         "./src/app/(authenticated)/workflows/[workflow]/_common/*"
       ],
       "@requests/*": ["./src/app/(authenticated)/requests/_common/*"],
-      "@request/*": ["./src/app/(authenticated)/requests/[id]/_common/*"],
+      "@request/*": ["./src/app/(authenticated)/requests/[request]/_common/*"],
       "@requestHistory/*": [
         "./src/app/(authenticated)/requests/history/_common/*"
       ],

@@ -9,18 +9,20 @@ import { Loader } from '@/components/Common/Loader';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function RecentRequests({ applicationId }: { applicationId: string }) {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { data: requestList, status } = useApplicantRequests({
     application_id: applicationId,
   });
   const recentRequests =
     status === 'success'
-      ? requestList.filter((item) => item.id !== query?.id)
+      ? requestList.filter((item) => item.id !== requestId)
       : [];
   if (status === 'pending') {
     return (
-      <Card className='bg-white shadow-sm'>
+      <Card className='bg-white shadow-sm min-h-[500] '>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests
@@ -33,7 +35,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
     );
   } else
     return (
-      <Card className='bg-white shadow-sm'>
+      <Card className='bg-white shadow-sm mb-10 min-h-[200px]'>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests

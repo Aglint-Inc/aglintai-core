@@ -30,6 +30,8 @@ import {
 
 function ConfirmAvailability() {
   const params = useParams();
+  const requestId = params?.request as string;
+
   const {
     setSelectedDayAvailableBlocks,
     selectedDateSlots,
@@ -87,7 +89,7 @@ function ConfirmAvailability() {
           no_slot_reasons: [],
         },
         user_tz: userTzDayjs.tz.guess(),
-        request_id: params.id as string,
+        request_id: requestId,
       };
 
       try {

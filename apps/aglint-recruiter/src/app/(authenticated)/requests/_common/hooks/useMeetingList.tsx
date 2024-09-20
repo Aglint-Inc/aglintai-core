@@ -6,8 +6,9 @@ import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/applicat
 
 export const useMeetingList = () => {
   const params = useParams();
+  const requestId = params?.request as string;
   const queryClient = useQueryClient();
-  const request_id = params.id as string;
+  const request_id = requestId;
   const query = useQuery({
     queryKey: ['get_meeting_list', request_id],
     refetchInterval: 30000,

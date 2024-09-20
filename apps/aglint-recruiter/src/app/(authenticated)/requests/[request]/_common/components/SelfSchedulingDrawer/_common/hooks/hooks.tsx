@@ -40,9 +40,11 @@ export const useSelfSchedulingDrawer = ({
 }: {
   refetch: () => void;
 }) => {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const { recruiter, recruiterUser } = useAuthDetails();
-  const request_id = (query?.id || '') as string;
+  const request_id = requestId || '';
   const { data } = useMeetingList();
   const allSessions = data || [];
   const selectedSessionIds = allSessions?.map(
