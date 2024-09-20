@@ -23,7 +23,7 @@ function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
         session.interview_session.interview_meeting.start_time,
       ).format('DD MMM YYYY'),
       link:
-        ROUTES['/scheduling/view']() +
+        ROUTES['/interviews/view']() +
         `?meeting_id=${session.interview_session.interview_meeting.id}&tab=candidate_details`,
       time: formatTimeWithTimeZone({
         start_time: session.interview_session.interview_meeting.start_time,

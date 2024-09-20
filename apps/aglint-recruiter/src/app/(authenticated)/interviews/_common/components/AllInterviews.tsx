@@ -27,7 +27,7 @@ function AllInterviews() {
               <BreadcrumbLink href='/scheduling'>Interviews</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href='/scheduling/all'>
+              <BreadcrumbLink href='/interviews/all'>
                 All Interviews
               </BreadcrumbLink>
             </BreadcrumbItem>

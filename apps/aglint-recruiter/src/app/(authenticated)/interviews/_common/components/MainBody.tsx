@@ -42,7 +42,7 @@ function Interviews() {
               <CardTitle className='text-lg font-semibold'>
                 <div className='flex justify-between'>
                   <h1>Recently Completed</h1>
-                  <Link href={'/scheduling/all'}>
+                  <Link href={'/interviews/all'}>
                     <UIButton size='sm' variant='ghost'>
                       View All
                     </UIButton>

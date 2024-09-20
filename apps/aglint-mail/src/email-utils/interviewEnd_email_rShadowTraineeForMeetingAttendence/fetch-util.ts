@@ -52,7 +52,7 @@ export const fetchUtil: FetchUtilType<
     const reverseShadowCount =
       trainee_data.reverse_shadow_confirmed_count +
       trainee_data.reverse_shadow_completed_count;
-    const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
+    const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
 
     const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['comp_email_placeholders'] =
       {

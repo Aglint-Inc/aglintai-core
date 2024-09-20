@@ -245,7 +245,7 @@ const colorPick = (status) => {
 //           size={'sm'}
 //           onClick={() =>
 //             router.push(
-//               `/scheduling/view?meeting_id=${data.meeting_interviewers[0].meeting_id}&tab=candidate_details`,
+//               `/interviews/view?meeting_id=${data.meeting_interviewers[0].meeting_id}&tab=candidate_details`,
 //             )
 //           }
 //         >

@@ -1,8 +1,8 @@
 export const getCalEventDescription = (meeting_id) => {
-  const instruction_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=${meeting_id}&tab=instructions`;
-  const profile_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
-  const feedback_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=${meeting_id}&tab=feedback`;
-  const reschedule_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
+  const instruction_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=instructions`;
+  const profile_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=candidate_details`;
+  const feedback_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=feedback`;
+  const reschedule_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=candidate_details`;
   return (
     `<p>Interview Details:</p>` +
     `<p>Candidate Profile: <a href="${profile_link}">here</a>.</p>` +
