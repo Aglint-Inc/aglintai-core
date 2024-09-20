@@ -3,12 +3,10 @@ import {
   type DatabaseTableInsert,
   type SupabaseType,
 } from '@aglint/shared-types';
-import {
-  removeSessionsFromFilterJson,
-  removeSessionsFromRequestAvailability,
-} from 'src/app/(authenticated)/_scheduling/view/_common/utils';
 
 import { getOrganizerId } from './getOrganizerId';
+import { removeSessionsFromFilterJson } from './removeSessionsFromFilterJson';
+import { removeSessionsFromRequestAvailability } from './removeSessionsFromRequestAvailability';
 import { resetSessionRelations } from './resetSessionRelations';
 
 export const handleMeetingsOrganizerResetRelations = async ({
