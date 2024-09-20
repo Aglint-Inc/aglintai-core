@@ -1,1 +1,0 @@
-gcloud functions deploy ts_template --gen2 --runtime=nodejs18 --region=us-central1 --source=. --entry-point=helloHttp --trigger-http --allow-unauthenticated

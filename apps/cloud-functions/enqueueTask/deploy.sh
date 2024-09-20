@@ -1,1 +1,0 @@
-gcloud functions deploy enqueueTask --runtime nodejs18 --trigger-http --allow-unauthenticated

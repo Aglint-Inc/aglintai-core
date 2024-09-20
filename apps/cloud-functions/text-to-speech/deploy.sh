@@ -1,1 +1,0 @@
-gcloud functions deploy  text-to-speech --gen2 --runtime=nodejs18 --region=us-west1 --source=. --entry-point=helloHttp --trigger-http --allow-unauthenticated 

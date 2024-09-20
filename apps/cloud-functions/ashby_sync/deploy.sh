@@ -1,1 +1,0 @@
-gcloud functions deploy ashby_sync --gen2 --runtime=nodejs18 --region=us-central1 --source=./ashby_sync/ --entry-point=hello --trigger-http --allow-unauthenticated
