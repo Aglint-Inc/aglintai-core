@@ -67,3 +67,7 @@
 .fc-header-toolbar {
   display: none !important;
 }
+
+.fc-daygrid-day-frame {
+  height: 120px !important; /* Adjust the height to your preference */
+}
