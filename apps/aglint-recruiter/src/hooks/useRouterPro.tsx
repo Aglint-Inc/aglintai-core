@@ -1,3 +1,4 @@
+'use Client';
 import {
   useParams,
   usePathname,
