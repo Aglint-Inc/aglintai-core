@@ -19,6 +19,17 @@ const query = async ({
       .throwOnError()
   ).data;
 
+  const interview = (
+    await db
+      .from('all_interviewers')
+      .select(
+        'total_hours_this_week,total_hours_today,total_interviews_this_week,total_interviews_today',
+      )
+      .eq('user_id', user_id)
+      .single()
+      .throwOnError()
+  ).data;
+
   const interview_type = (
     await db
       .from('module_relations_view')
@@ -87,6 +98,8 @@ const query = async ({
     empolyment: user.employment,
     Linkedin: user.linked_in,
     department: user.departments?.name,
+    scheduling_settings: user.scheduling_settings,
+    interview_week_today: interview,
     location: [
       user.office_locations?.city,
       user.office_locations?.region,
