@@ -8,12 +8,12 @@ type SchemaType = ZodTypeToSchema<
   DatabaseFunctions['create_session_request']['Args']
 >;
 
-export const schema = z.object({
+export const createRequestSchema = z.object({
   application: z.string().uuid(),
   sessions: z.array(z.string().uuid()),
   request: z.object({
     assignee_id: z.string().uuid(),
-    note: z.string(),
+    note: z.string().nullish(),
     priority: z.enum(['urgent', 'standard']),
     schedule_end_date: z.string(),
     schedule_start_date: z.string(),
@@ -26,7 +26,10 @@ export const schema = z.object({
   }),
 }) satisfies SchemaType;
 
-const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
+const mutation = async ({
+  ctx,
+  input,
+}: PrivateProcedure<typeof createRequestSchema>) => {
   const [
     {
       data: { name },
@@ -59,4 +62,6 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
     .throwOnError();
 };
 
-export const create_request = privateProcedure.input(schema).mutation(mutation);
+export const create_request = privateProcedure
+  .input(createRequestSchema)
+  .mutation(mutation);

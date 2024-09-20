@@ -1,14 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Building2, Loader2, Trash2, Upload, UserCircle } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
 function ImageUploadManual({
   image,
-  size,
+  size = 64,
   imageFile,
   setChanges = null,
 }: {
@@ -17,7 +17,7 @@ function ImageUploadManual({
   imageFile: any;
   setChanges?: () => void;
 }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const [loading, setLoading] = useState<boolean>();
   const [isStackHovered, setIsStackHovered] = useState(false);
 
@@ -44,14 +44,14 @@ function ImageUploadManual({
         onMouseEnter={() => setIsStackHovered(true)}
         onMouseLeave={() => setIsStackHovered(false)}
       >
-        <Avatar className={`w-${size} h-${size} rounded-lg`}>
+        <Avatar className={`w-[${size}px] h-[${size}px] rounded-lg`}>
           <AvatarImage
             src={initImage || '/images/emptyProfile.jpg'}
             alt='Profile'
             className='object-cover'
           />
           <AvatarFallback>
-            {router.route.includes(ROUTES['/profile']()) ? (
+            {router.pathName.includes(ROUTES['/profile']()) ? (
               <UserCircle className='h-6 w-6 text-neutral-600' />
             ) : (
               <Building2 className='h-6 w-6 text-neutral-600' />
@@ -67,13 +67,16 @@ function ImageUploadManual({
         <div className='z-1 absolute inset-0 flex items-center justify-center'>
           {!initImage ? (
             <FileUploader
+              focus={false}
               handleChange={onImageChange}
               name='file'
               types={['PNG', 'JPEG', 'JPG']}
             >
-              <Upload
-                className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'}`}
-              />
+              <div className='focus:outline-none'>
+                <Upload
+                  className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'} bg-red-300 focus:border-none focus:outline-none`}
+                />
+              </div>
             </FileUploader>
           ) : (
             <div
@@ -88,7 +91,7 @@ function ImageUploadManual({
                       imageFile.current = null;
                       if (setChanges) setChanges();
                     }}
-                    className='h-5 w-5'
+                    className='focus:outline-non h-5 w-5'
                   />
                 </div>
               )}

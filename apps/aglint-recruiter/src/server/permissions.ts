@@ -1,6 +1,8 @@
 import type { ApiPermissions } from './utils';
 
 export const API_PERMISSIONS: ApiPermissions = {
+  ats: [],
+  jobs: ['job_module'],
   scheduling: ['scheduling_module'],
   textTransform: ['job_module'],
   interviewers: ['job_module'],
@@ -9,5 +11,5 @@ export const API_PERMISSIONS: ApiPermissions = {
   example: [],
   candidatePortal: [],
   requests: [],
-  ats: [],
+  application: ['job_module'],
 };

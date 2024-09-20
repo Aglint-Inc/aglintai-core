@@ -1,5 +1,4 @@
 import { type SessionsCombType } from '@aglint/shared-types';
-import CandidateSlotLoad from '@public/lottie/CandidateSlotLoad';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -9,6 +8,7 @@ import React, {
 } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useCandidateInvite } from '@/context/CandidateInviteContext';
@@ -58,7 +58,7 @@ const MultiDayLoading = () => {
   return (
     <div className={'flex justify-center'}>
       <div className={'w-[120px]'}>
-        <CandidateSlotLoad />
+        <Loader />
       </div>
     </div>
   );
@@ -223,7 +223,7 @@ const ScheduleCard = (props: ScheduleCardProps) => {
 
   const handleSelect = (session: Parameters<typeof handleSelectSlot>['1']) => {
     handleSelectSlot(props.index, session);
-    setOpen(false);
+    // setOpen(false);
   };
 
   const duration = (props?.round?.sessions ?? []).reduce((acc, curr) => {
@@ -244,12 +244,18 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         slotButton={
           enabled ? (
             isSelected ? (
-              <UIButton onClick={() => setOpen(true)}>
-                <Repeat className='h-4 w-4' />
-              </UIButton>
+              <UIButton
+                size='sm'
+                onClick={() => setOpen(true)}
+                icon={<Repeat className='h-4 w-4' />}
+              ></UIButton>
             ) : (
-              <UIButton variant='outline' onClick={() => setOpen(true)}>
-                <Plus size={'sm'} />
+              <UIButton
+                size='sm'
+                variant='outline'
+                onClick={() => setOpen(true)}
+              >
+                <Plus className='h-4 w-4' size={'sm'} />
                 Select Option
               </UIButton>
             )
@@ -270,9 +276,33 @@ const ScheduleCard = (props: ScheduleCardProps) => {
             <Sessions sessions={props.round.sessions} showBreak={false} />
           )
         }
-        onClickCard={() => setOpen(true)}
       />
-      <UIDialog open={open} onClose={() => setOpen(false)}>
+      <UIDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        slotButtons={
+          <>
+            <UIButton
+              variant='ghost'
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              onClick={() => {
+                setOpen(false);
+              }}
+              variant='default'
+            >
+              Choose
+            </UIButton>
+          </>
+        }
+        size='lg'
+        title='Select Date and Time'
+      >
         <CandidateInviteCalendar
           sessions={sessions}
           selections={selectedSlots}

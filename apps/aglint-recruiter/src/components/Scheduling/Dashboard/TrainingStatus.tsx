@@ -1,6 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { BarChart2 } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { useInterviewTrainingStatus } from '@/queries/scheduling-dashboard';
 import ROUTES from '@/utils/routing/routes';

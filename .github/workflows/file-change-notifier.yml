@@ -1,0 +1,67 @@
+name: File Change Notifier
+
+on:
+  push:
+    branches:
+      - development # Monitors the 'development' branch
+
+jobs:
+  file_change_watch:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Get the previous commit hash
+      - name: Get Previous Commit Hash
+        id: previous-commit
+        run: |
+          echo "::set-output name=prev_hash::$(git rev-parse HEAD^1)"
+
+      # Get the current commit hash
+      - name: Get Current Commit Hash
+        id: current-commit
+        run: |
+          echo "::set-output name=current_hash::$(git rev-parse HEAD)"
+
+      # Get commit author and email
+      - name: Get Commit Author
+        id: commit-info
+        run: |
+          AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
+          echo "::set-output name=author_name::$AUTHOR_NAME"
+          echo "::set-output name=author_email::$AUTHOR_EMAIL"
+
+      # Check for file changes in specific folders or files
+      - name: Diff Check
+        id: diff-check
+        run: |
+          git fetch --prune --unshallow
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          if grep -E 'package.json|tsconfig.json|.eslintrc.js|tailwind.config.js|turbo.json|packages/ui/src/' changed_files.txt; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          fi
+        shell: /usr/bin/bash -e {0}
+
+      # Replace the Slack notification step with this:
+      - name: Notify Slack
+        if: steps.diff-check.outputs.changes_detected == 'true'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            🚨 Code changes detected in the *development* branch.
+            *Author*: ${{ steps.commit-info.outputs.author_name }} (${{ steps.commit-info.outputs.author_email }})
+            Changed Files:
+            ```
+            ${{ steps.diff-check.outputs.changed_files }}
+            ```
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

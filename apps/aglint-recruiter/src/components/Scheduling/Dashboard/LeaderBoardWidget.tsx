@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
@@ -7,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { useInterviewLeaderboard } from '@/queries/scheduling-dashboard';
-import { getFullName } from '@/utils/jsonResume';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import SchedulingDropdown from './SchedulingDropdown';
@@ -102,7 +102,7 @@ const LeaderBoardWidgetComponent = ({
                     {(item.duration / 60).toFixed(1)} hours
                   </p>
                 </div>
-                <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-200'>
+                <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-100'>
                   <span className='text-sm font-medium'>{index + 1}</span>
                 </div>
               </div>

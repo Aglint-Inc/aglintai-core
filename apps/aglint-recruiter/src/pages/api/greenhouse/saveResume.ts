@@ -9,7 +9,7 @@ if (!storageUrl) {
   throw new Error('NEXT_PUBLIC_SUPABASE_URL not set');
 }
 
-export type saveResumeAPI = {
+export type SaveResumeAPI = {
   request: {
     application_id: string;
     resume: string;
@@ -26,7 +26,8 @@ export default async function handler(req, res) {
     return res.status(405).end();
   }
   const { application_id, candidate_id, resume } =
-    req.body as saveResumeAPI['request'];
+    req.body as SaveResumeAPI['request'];
+
   if (application_id || resume) {
     if (
       resume.includes('pdf') ||

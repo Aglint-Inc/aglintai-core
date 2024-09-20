@@ -28,7 +28,7 @@ const updateProfileSchema = z.object({
   >
 >;
 
-export const candidatePortalRouter = createTRPCRouter({
+export const candidatePortal = createTRPCRouter({
   // get interviews -------------------------------------------------------------
   get_interviews: publicProcedure
     .input(candidatePortalSchema)

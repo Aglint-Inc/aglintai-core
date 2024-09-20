@@ -45,11 +45,11 @@ export const navList: {
   {
     text: 'Interviews',
     SubComponents: null,
-    route: ROUTES['/scheduling']() + '?tab=interviews',
+    route: ROUTES['/interviews']() + '?tab=interviews',
     comingSoon: false,
     isVisible: true,
     permission: ['scheduling_module'],
-    active: ['/scheduling'],
+    active: ['/interviews'],
   },
 
   {
@@ -100,7 +100,7 @@ export const navList: {
   {
     text: 'Reports',
     SubComponents: null,
-    route: '/reports??tab=interviewMetrics',
+    route: '/reports?tab=interviewMetrics',
     comingSoon: false,
     isVisible: true,
     permission: ['company_settings_module'],

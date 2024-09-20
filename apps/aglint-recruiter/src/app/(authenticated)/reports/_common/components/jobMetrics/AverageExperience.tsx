@@ -18,7 +18,7 @@ export default function AverageExperience() {
           {isFetching ? (
             <Skeleton className='h-[60px] w-[100px]' />
           ) : (
-            data.avg_total_exp
+            data.avg_total_exp || '-'
           )}
         </div>
         <div className='mb-4 text-2xl font-semibold'>Years</div>

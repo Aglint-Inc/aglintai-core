@@ -9,13 +9,14 @@ import {
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data, isFetched } = api.analytics.interview_count.useQuery(
+  const { data, isFetching, isError } = api.analytics.interview_count.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
@@ -54,7 +55,7 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
       },
     ) || {},
   ).map(([name, value]) => ({
-    name,
+    name: capitalizeFirstLetter(name),
     value,
   }));
   return {
@@ -65,25 +66,27 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
         ...data,
         date,
       })),
-    isFetched,
+    isFetching,
+    isError,
   };
 }
 export function useDeclineCount() {
   const { recruiter } = useAuthDetails();
   const { filters } = useAnalyticsContext();
-  const { data } = api.analytics.interview_decline.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      location_id: filters.location,
-      department_id: filters.department,
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-      trpc: TRPC_CLIENT_CONTEXT,
-    },
-  );
+  const { data, isFetching, isError } =
+    api.analytics.interview_decline.useQuery(
+      {
+        recruiter_id: recruiter.id,
+        job_id: filters.job,
+        location_id: filters.location,
+        department_id: filters.department,
+        data_range: filters.dateRange,
+      },
+      {
+        enabled: !!recruiter.id,
+        trpc: TRPC_CLIENT_CONTEXT,
+      },
+    );
   const groupedData = data
     ? //@ts-ignore
       groupByDate(data, 'day', filters.dateRange, { cancelled: 0 })
@@ -96,8 +99,11 @@ export function useDeclineCount() {
       date: item[0],
       cancelled: item[1].cancelled || null,
     })),
+    isFetching,
+    isError,
   };
 }
+
 function groupByDate<T extends { [key: string]: number }>(
   data: {
     created_at?: string;

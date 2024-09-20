@@ -5,10 +5,9 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { BarChart2 } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { DoughnutChart } from '@/job/metrics/components/doughnut';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
 import { useCancelRescheduleReasons } from '@/queries/scheduling-dashboard';
-
-import { DoughnutChart } from '../../../app/(authenticated)/_jobs/[job]/metrics/_common/components/doughnut';
 
 const CancelReasons = () => {
   const [reasonType, setReasonType] =

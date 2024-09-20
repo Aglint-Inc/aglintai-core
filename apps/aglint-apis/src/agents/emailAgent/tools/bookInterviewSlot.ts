@@ -1,12 +1,7 @@
 import {envConfig} from '../../../config';
 import axios from 'axios';
-import dayjs from 'dayjs';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 import {EmailAgentPayload} from '../../../types/email_agent/apiPayload.types';
 import {LoggerType} from '../../../utils/scheduling_utils/getCandidateLogger';
@@ -68,7 +63,6 @@ export const bookInterviewSlot = (
           const payload: APICandidateConfirmSlotNoConflict = {
             cand_tz: time_zone,
             filter_id: cand_info.filter_id,
-            task_id: cand_info.task_id,
             agent_type: 'email_agent',
             selected_slot: {
               slot_start_time: req_slot_time.format(),

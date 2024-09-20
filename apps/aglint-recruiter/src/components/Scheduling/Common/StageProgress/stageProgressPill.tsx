@@ -1,98 +1,48 @@
 import { forwardRef, memo, type Ref } from 'react';
 
 import type { StageProgressProps } from '.';
-import { StagePipelineSmall } from './StagePipelineSmall';
 
 export type StageProgressPillProps = {
   pillProps: ReturnType<typeof getPlanPillProps>[number];
-} & {
-  position: 'ending' | 'middle' | 'starting' | 'lone';
+  isLast: boolean;
+  isActive: boolean;
 };
 
 const StageProgressPill = memo(
   forwardRef(
     (
-      // eslint-disable-next-line no-unused-vars
-      { position = 'middle', pillProps }: StageProgressPillProps,
+      { pillProps, isLast, isActive }: StageProgressPillProps,
       ref: Ref<HTMLDivElement>,
     ) => {
-      const isLeft = position !== 'ending' && position !== 'lone';
-      const isRight = position !== 'starting' && position !== 'lone';
       return (
-        <div ref={ref} className='flex flex-col'>
-          <StagePipelineSmall
-            isRight={isLeft}
-            isLeft={isRight}
-            color={pillProps.color}
-            showText={pillProps.showText}
-            textStageName={pillProps.name}
-            iconName={pillProps.icon}
-          />
+        <div
+          ref={ref}
+          className={`relative flex h-8 items-center ${isActive ? 'bg-blue-100' : 'bg-gray-100'} ${isLast ? 'rounded-r-md' : ''} z-1 px-3`}
+        >
+          <span
+            className={`ml-2 block w-[80px] text-sm ${isActive ? 'text-blue-600' : 'text-gray-500'}`}
+          >
+            {pillProps.name}
+          </span>
+          {!isLast && (
+            <div
+              className={`absolute -right-[10px] top-0 h-0 w-0 border-b-[16px] border-l-[10px] border-t-[16px] border-b-transparent border-t-transparent ${isActive ? 'border-l-blue-100' : 'border-l-gray-100'} z-10`}
+            />
+          )}
         </div>
       );
     },
   ),
 );
-StageProgressPill.displayName = 'StageProgressPill';
-export default StageProgressPill;
 
 export const getPlanPillProps = (
   interview_plans: StageProgressProps['interview_plans'],
 ) => {
-  return interview_plans.reduce(
-    (acc, curr) => {
-      const total = Object.values(curr.status ?? {}).reduce((acc, curr) => {
-        acc += curr;
-        return acc;
-      }, 0);
-      if (curr.status.not_scheduled === total) {
-        if (acc.flag) {
-          acc.flag = false;
-          acc.pills.push({
-            color: 'neutral',
-            icon: 'not_started',
-            showText: true,
-            name: curr.name,
-          });
-        } else
-          acc.pills.push({
-            color: 'neutral',
-            icon: 'brightness_1',
-            showText: false,
-            name: curr.name,
-          });
-      } else if (curr.status.completed === total) {
-        acc.pills.push({
-          color: 'success',
-          icon: 'check_circle',
-          showText: false,
-          name: curr.name,
-        });
-      } else if (acc.flag) {
-        acc.flag = false;
-        acc.pills.push({
-          color: 'info',
-          icon: 'atr',
-          showText: true,
-          name: curr.name,
-        });
-      } else
-        acc.pills.push({
-          color: 'info',
-          icon: 'atr',
-          showText: false,
-          name: curr.name,
-        });
-      return acc;
-    },
-    {
-      pills: [] as {
-        color: string;
-        icon: string;
-        showText: boolean;
-        name: string;
-      }[],
-      flag: true,
-    },
-  ).pills;
+  return interview_plans.map((plan, index) => ({
+    step: index + 1,
+    name: plan.name,
+  }));
 };
+
+StageProgressPill.displayName = 'StageProgressPill';
+export default StageProgressPill;

@@ -1,5 +1,5 @@
 'use client';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import {
   createContext,
   type PropsWithChildren,
@@ -7,12 +7,14 @@ import {
   useState,
 } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 const useCandidatePortalContext = () => {
   const params = useParams();
-  const application_id = params?.application_id as string;
+  const application_id = params?.application as string;
   void api.candidatePortal.get_profile.usePrefetchQuery({ application_id });
   return { application_id };
 };
@@ -25,7 +27,7 @@ export const CandidatePortalProvider = async ({
 }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(true);
   const value = useCandidatePortalContext();
-  const router = useRouter();
+  const router = useRouterPro();
 
   useEffect(() => {
     const getSession = async () => {
@@ -49,7 +51,7 @@ export const CandidatePortalProvider = async ({
     getSession();
   }, []);
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <Loader />;
 
   const finalValue = { ...value };
   return (

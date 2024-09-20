@@ -11,7 +11,7 @@ import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 import { useState } from 'react';
 import superjson from 'superjson';
 
-import { type AppRouter } from '../server/api/root';
+import type { AppRouter } from '../server/api/root';
 import { createQueryClient } from './query-client';
 
 // import { createTRPCClient } from '@trpc/client';

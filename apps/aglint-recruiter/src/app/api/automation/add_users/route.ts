@@ -1,10 +1,14 @@
-import { type schedulingSettingType } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type RecruiterUserType,
+  type schedulingSettingType,
+  type SupabaseType,
+} from '@aglint/shared-types';
 import { NextResponse } from 'next/server';
 
-import { type InviteUserAPIType } from '@/components/CompanyDetailComp/TeamManagement/utils';
-import { registerMember } from '@/pages/api/invite_user';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 import timeZone from '@/utils/timeZone';
+import { companyType } from '@/utils/userRoles';
 
 export const dynamic = 'force-dynamic';
 
@@ -98,6 +102,7 @@ export async function POST(req) {
         department_id: departmentId,
         role_id: role.id,
         role: role.name,
+        is_calendar_connected: true,
         manager_id:
           role.name === 'admin'
             ? null
@@ -133,10 +138,112 @@ export async function POST(req) {
     });
 
     return NextResponse.json(
-      { message: 'success', data: addedUserEmails },
+      { message: 'success', data: 'addedUserEmails' },
       { status: 200 },
     );
   } catch (e) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }
+
+// ---------------------
+
+export async function registerMember(
+  supabaseAdmin: SupabaseType,
+  user: Omit<InviteUserAPIType['request']['users'][number], 'manager_id'> & {
+    manager_id?: string;
+    remote_id?: string;
+  },
+  recruiter_id: string,
+  create_id: string,
+) {
+  const { data, error } = await supabaseAdmin.auth.admin.createUser({
+    email: user.email,
+    password: 'Welcome@123',
+    user_metadata: {
+      name: `${user.first_name} ${user.last_name || ''}`.trim(),
+      role: companyType.COMPANY,
+      roles: companyType.COMPANY,
+      is_invite: 'true',
+      // invite_user: recruiter_user,
+    },
+    email_confirm: true,
+  });
+  if (error) throw new Error(error.message);
+  const email = data.user.email;
+  const userId = data.user.id;
+  const { data: recUser } = await supabaseAdmin
+    .from('recruiter_user')
+    .insert({
+      user_id: userId,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: email,
+      position: user.position,
+      is_calendar_connected: true,
+      department_id: user.department_id,
+      office_location_id: user.office_location_id,
+      employment: user.employment,
+      status: 'invited',
+      scheduling_settings: user.scheduling_settings,
+      remote_id: user.remote_id,
+    })
+    .select(
+      '*,  office_location:office_locations(*), department:departments(id,name)',
+    )
+    .single()
+    .throwOnError();
+
+  const { data: relation, error: relationError } = await supabaseAdmin
+    .from('recruiter_relation')
+    .insert({
+      recruiter_id,
+      user_id: userId,
+      role: 'interviewer',
+      role_id: user.role_id,
+      manager_id: user.manager_id,
+      is_active: true,
+      created_by: create_id,
+    })
+    .select('id, role_id, manager_id, created_by, roles(name)')
+    .single();
+  if (relationError) {
+    throw new Error(
+      'user relation creation failed!\n message' + relationError.message,
+    );
+  }
+
+  const recUserType: RecruiterUserType = {
+    ...recUser,
+    role_id: relation.role_id,
+    role: relation.roles.name,
+    manager_id: relation.manager_id,
+    created_by: relation.created_by,
+    recruiter_relation_id: relation.id,
+  };
+  return recUserType;
+}
+
+type InviteUserAPIType = {
+  request: {
+    users: (Pick<
+      DatabaseTable['recruiter_user'],
+      | 'first_name'
+      | 'last_name'
+      | 'email'
+      | 'position'
+      | 'department_id'
+      | 'office_location_id'
+      | 'employment'
+      | 'scheduling_settings'
+    > & {
+      role_id: string;
+      manager_id: string;
+    })[];
+    recruiter_id: string;
+  };
+  response: {
+    created: boolean;
+    user: RecruiterUserType;
+  };
+};

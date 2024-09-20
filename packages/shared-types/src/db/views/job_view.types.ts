@@ -1,10 +1,10 @@
-import {
+import type {
   CustomApplicationStatus,
   CustomJobParamters,
   CustomLocation,
 } from "../common.types";
-import { Database } from "../schema.types";
-import { Custom } from "../utils.types";
+import type { Database } from "../schema.types";
+import type { Custom } from "../utils.types";
 import type { ViewType } from "./index.types";
 
 export type CustomJobView = ViewType<"job_view", CustomJobViewAllParamters>;

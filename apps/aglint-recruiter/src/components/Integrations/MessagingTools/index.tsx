@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type MessagingToolsType } from '../types';

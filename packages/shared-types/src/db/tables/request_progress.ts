@@ -1,9 +1,9 @@
-import { DatabaseTable } from '../..';
-import { EventNodeType, EventStatusType } from '../../workflow';
-import type { TableType } from './index.types';
+import type { DatabaseTable } from "../..";
+import type { EventNodeType, EventStatusType } from "../../workflow";
+import type { TableType } from "./index.types";
 
 export type CustomRequestProgress = TableType<
-  'request_progress',
+  "request_progress",
   {
     status: EventStatusType;
     event_type: EventNodeType;
@@ -19,7 +19,7 @@ export type CustomRequestProgress = TableType<
       };
       filter_json_id?: string;
       avail_req_id?: string;
-      candidate_submitted_slots?: DatabaseTable['candidate_request_availability']['slots'];
+      candidate_submitted_slots?: DatabaseTable["candidate_request_availability"]["slots"];
       re_requested_date?: {
         start_date: string;
         end_date: string;

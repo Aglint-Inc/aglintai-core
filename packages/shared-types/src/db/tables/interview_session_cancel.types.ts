@@ -1,4 +1,4 @@
-import { CustomInterviewSessionCancelRow } from "../common.types";
+import type { CustomInterviewSessionCancelRow } from "../common.types";
 import type { TableType } from "./index.types";
 
 export type CustomInterviewSessionCancel = TableType<

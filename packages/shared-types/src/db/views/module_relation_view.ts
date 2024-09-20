@@ -1,6 +1,4 @@
-import {
-  PauseJson
-} from "../..";
+import type { PauseJson } from "../..";
 import type { ViewType } from "./index.types";
 
 export type CustomModuleRelationView = ViewType<

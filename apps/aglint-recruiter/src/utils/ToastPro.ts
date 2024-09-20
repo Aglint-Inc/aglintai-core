@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import {
   createToast,
   type Message,

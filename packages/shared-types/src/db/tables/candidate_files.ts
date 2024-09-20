@@ -1,4 +1,4 @@
-import { TableType } from "./index.types";
+import type { TableType } from "./index.types";
 
 export type CustomCandidateFiles = TableType<
   "candidate_files",

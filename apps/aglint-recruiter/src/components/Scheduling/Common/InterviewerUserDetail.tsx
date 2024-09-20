@@ -8,10 +8,10 @@ import {
 } from '@components/ui/tooltip';
 import { Briefcase } from 'lucide-react';
 
+import { getPauseMemberText } from '@/authenticated/utils';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
 
-import { getPauseMemberText } from '../../../app/(authenticated)/_interview-pool/[pool]/_common/utils/utils';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
 import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
 

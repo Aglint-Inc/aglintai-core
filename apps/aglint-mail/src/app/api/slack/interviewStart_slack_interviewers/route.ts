@@ -57,7 +57,7 @@ const func = async (
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `* ${session_details.session_name} sheduled with candidate :*\n*<${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/view?meeting_id=${interviewer.meeting_id}&tab=candidate_details|${getFullName(candidate.first_name, candidate.last_name)} - ${application.public_jobs.job_title}>*`,
+          text: `* ${session_details.session_name} sheduled with candidate :*\n*<${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${interviewer.meeting_id}&tab=candidate_details|${getFullName(candidate.first_name, candidate.last_name)} - ${application.public_jobs.job_title}>*`,
         },
       },
       {

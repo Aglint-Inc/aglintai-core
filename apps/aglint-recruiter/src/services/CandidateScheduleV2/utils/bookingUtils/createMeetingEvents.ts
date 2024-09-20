@@ -1,9 +1,9 @@
 import { type SessionCombinationRespType } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 
 import { bookSession } from '@/utils/event_book/book_session';
 import { fetchMeetingsInfo } from '@/utils/event_book/fetchMeetingsInfo';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
-import { getFullName } from '@/utils/jsonResume';
 
 import { type CandidatesSchedulingV2 } from '../../CandidatesSchedulingV2';
 import { type ConfirmInt, type ScheduleDBDetails } from './types';
