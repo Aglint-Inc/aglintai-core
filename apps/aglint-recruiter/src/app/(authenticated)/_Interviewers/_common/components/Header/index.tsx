@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction } from 'react';
-import { useAllInterviewModules } from 'src/app/(authenticated)/_interview-pool/_common/hooks';
 
+import { useAllInterviewModules } from '@/authenticated/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
