@@ -5,7 +5,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { BarChart2, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';

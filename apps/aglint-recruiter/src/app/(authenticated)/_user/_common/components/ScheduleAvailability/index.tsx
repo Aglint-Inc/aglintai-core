@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 

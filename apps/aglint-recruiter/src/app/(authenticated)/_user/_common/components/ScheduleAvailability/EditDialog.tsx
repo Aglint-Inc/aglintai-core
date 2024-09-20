@@ -3,7 +3,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Label } from '@components/ui/label';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { useParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 

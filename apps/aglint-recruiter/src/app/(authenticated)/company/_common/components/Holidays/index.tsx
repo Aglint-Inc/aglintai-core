@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { Calendar as CalendarIcon, Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 

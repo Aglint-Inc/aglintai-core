@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { schedulesSupabase } from 'src/app/_common/utils/schedules-query';
 import { z } from 'zod';
 
@@ -16,9 +15,9 @@ const query = async ({
   const query = schedulesSupabase(db)
     .eq('module_id', module_id)
     .eq('meeting_interviewers.is_confirmed', true);
-  if (typeof filter === 'string' || _.isArray(filter)) {
+  if (typeof filter === 'string' || Array.isArray(filter)) {
     if (typeof filter === 'string') query.eq('status', filter);
-    else if (_.isArray(filter)) query.in('status', filter);
+    else if (Array.isArray(filter)) query.in('status', filter);
   }
   const { data } = await query.throwOnError();
   return data;

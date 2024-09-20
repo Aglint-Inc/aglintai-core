@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
