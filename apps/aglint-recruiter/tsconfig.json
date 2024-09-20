@@ -18,14 +18,16 @@
     "baseUrl": ".",
     "paths": {
       "@/api/*": ["./src/app/api/*"],
+      "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
+      "@/company/*": ["./src/app/(authenticated)/company/_common/*"],
       "@/candidate/authenticated/*": [
         "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"
       ],
       "@/interview-pool/details/*": [
-        "./src/app/(authenticated)/_interview-pool/[pool]/_common/*"
+        "./src/app/(authenticated)/interview-pool/[pool]/_common/*"
       ],
       "@/interview-pool/*": [
-        "./src/app/(authenticated)/_interview-pool/_common/*"
+        "./src/app/(authenticated)/interview-pool/_common/*"
       ],
       "@/jobs/*": ["./src/app/(authenticated)/jobs/_common/*"],
       "@/scheduling/*": ["./src/app/(authenticated)/scheduling/_common/*"],
@@ -62,6 +64,7 @@
         "./src/app/(authenticated)/_requests/history/_common/*"
       ],
       "@interviews/*": ["./src/app/(authenticated)/_interviews/_common/*"],
+      "@interviewers/*": ["./src/app/(authenticated)/interviewers/_common/*"],
       "@/apiUtils/*": ["./src/apiUtils/*"],
       "@/client/*": ["./src/client/*"],
       "@/components/*": ["./src/components/*"],

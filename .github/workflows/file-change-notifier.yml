@@ -39,12 +39,14 @@ jobs:
       - name: Diff Check
         id: diff-check
         run: |
-          git diff --name-only ${{ steps.previous-commit.outputs.prev_hash }} ${{ steps.current-commit.outputs.current_hash }} > changed_files.txt
+          git fetch --prune --unshallow
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
           if grep -E 'package.json|tsconfig.json|.eslintrc.js|tailwind.config.js|turbo.json|packages/ui/src/' changed_files.txt; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           else
             echo "changes_detected=false" >> $GITHUB_OUTPUT
           fi
+        shell: /usr/bin/bash -e {0}
 
       # Send Slack Notification if files are updated
       - name: Send Slack Notification
