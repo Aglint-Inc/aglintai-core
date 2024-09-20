@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import { Loader2 } from 'lucide-react';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -102,7 +101,6 @@ const AddMember = ({
     role: false,
     manager: false,
   });
-
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState<string>(null);
   const { data: roleOptions } = useRolesOptions();
@@ -419,6 +417,7 @@ const AddMember = ({
                 variant='default'
                 className='w-full'
                 disabled={isSubmittable}
+                isLoading={isDisable}
                 onClick={() => {
                   setIsDisable(true);
                   if (checkValidation()) {
@@ -429,11 +428,11 @@ const AddMember = ({
                 Invite
               </UIButton>
             </div>
-            {isDisable && (
+            {/* {isDisable && (
               <div className='flex items-center justify-center'>
                 <Loader2 className='h-6 w-6 animate-spin text-primary' />
               </div>
-            )}
+            )} */}
           </>
         ) : menu === 'pendingMember' ? (
           <div className='space-y-4'>

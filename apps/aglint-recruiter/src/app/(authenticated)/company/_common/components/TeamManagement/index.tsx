@@ -1,4 +1,3 @@
-
 import { Skeleton } from '@components/ui/skeleton';
 import {
   Table,
@@ -120,62 +119,71 @@ const TeamManagement = () => {
   useEffect(() => {
     if (filteredMembers.length) setIsInitialLoading(false);
   }, [filteredMembers.length]);
+
   const [open, setOpen] = useState(false);
+
+  const memberList = members
+    .filter((mem) => mem.status === 'active')
+    .map((mem) => ({
+      id: mem.user_id,
+      name: getFullName(mem.first_name, mem.last_name),
+    }));
+
   return (
     <>
       <AddMember
-        memberList={[]}
+        memberList={memberList || []}
         menu='addMember'
         onClose={() => setOpen(false)}
         open={open}
-        defaultRole={{ role: 'Hiring Manager', role_id: '2' }}
+        defaultRole={{
+          role: 'Hiring Manager',
+          role_id: '5aac490c-cfcb-4e41-8756-5aca8532edf8',
+        }}
         pendingList={[]}
       />
       <div className='flex flex-col'>
         <div className='flex justify-between'>
           <div className='max-w-[700px]'>
-          <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
-          <p className='mb-6 text-gray-600'>
-          Invite your hiring team members and manage their roles and profile
-          details in one place. Assign roles such as interviewer, hiring
-          manager, or recruiter to ensure an organized team structure and
-          compliance with user permissions in the organization.
-        </p>
+            <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
+            <p className='mb-6 text-gray-600'>
+              Invite your hiring team members and manage their roles and profile
+              details in one place. Assign roles such as interviewer, hiring
+              manager, or recruiter to ensure an organized team structure and
+              compliance with user permissions in the organization.
+            </p>
           </div>
-        
-        <div className='row flex justify-end pb-4'>
-          {canManage &&
-            (remote_sync.isEnabled ? (
-              <div className='flex flex-col space-y-2'>
+
+          <div className='row flex justify-end pb-4'>
+            {canManage &&
+              (remote_sync.isEnabled ? (
+                <div className='flex flex-col space-y-2'>
+                  <UIButton
+                    variant='outline'
+                    size='sm'
+                    onClick={remote_sync.sync}
+                    className='flex items-center'
+                  >
+                    <RefreshCw className='mr-2 h-4 w-4' />
+                    Sync Team ({last_sync})
+                  </UIButton>
+                </div>
+              ) : (
                 <UIButton
-                  variant='outline'
+                  leftIcon={<Send />}
+                  variant='default'
                   size='sm'
-                  onClick={remote_sync.sync}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
                   className='flex items-center'
                 >
-                  <RefreshCw className='mr-2 h-4 w-4' />
-                  Sync Team ({last_sync})
+                  Invite Member
                 </UIButton>
-              </div>
-            ) : (
-              <UIButton
-              leftIcon={<Send/>}
-                variant='default'
-                size='sm'
-                onClick={() => {
-                  setOpen(true);
-                }}
-                className='flex items-center'
-              >
-                Invite Member
-              </UIButton>
-            ))}
+              ))}
+          </div>
         </div>
-        </div>
-       
-       
 
-       
         <FilterHeader
           search={{
             setValue: setSearchText,
