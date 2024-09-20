@@ -9,14 +9,16 @@ import { Loader } from '@/components/Common/Loader';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function RecentRequests({ applicationId }: { applicationId: string }) {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
+
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { data: requestList, status } = useApplicantRequests({
     application_id: applicationId,
   });
   const recentRequests =
     status === 'success'
-      ? requestList.filter((item) => item.id !== query?.id)
+      ? requestList.filter((item) => item.id !== requestId)
       : [];
   if (status === 'pending') {
     return (

@@ -7,9 +7,9 @@ import { RequestProvider } from '@/context/RequestContext';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const params = useParams();
-  return (
-    <RequestProvider request_id={String(params.id)}>{children}</RequestProvider>
-  );
+  const requestId = params?.request as string;
+
+  return <RequestProvider request_id={requestId}>{children}</RequestProvider>;
 }
 
 export default Layout;
