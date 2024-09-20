@@ -12,7 +12,7 @@ import type {
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
-import { ShadcnPhoneInput } from '../../../../../../components/Common/UIPhoneInput/PhoneInput';
+import { ShadcnPhoneInput } from '../../../../../../../components/Common/UIPhoneInput/PhoneInput';
 
 export const ProfileForms = ({
   profile,
