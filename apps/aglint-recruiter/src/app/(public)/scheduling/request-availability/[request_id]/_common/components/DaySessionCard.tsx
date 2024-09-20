@@ -13,8 +13,8 @@ import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import dayjs from '@/utils/dayjs';
 
-import { convertMinutesToHoursAndMinutes } from '../../../utils';
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
+import { convertMinutesToHoursAndMinutes } from '../utils';
 
 function DaySessionCard({
   showDayCount = true,

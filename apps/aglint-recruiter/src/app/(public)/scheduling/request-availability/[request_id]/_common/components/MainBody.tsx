@@ -11,10 +11,10 @@ import MuiAvatar from '@/components/Common/MuiAvatar';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import timeZones from '@/utils/timeZone';
 
-import MultiDaySessions from './_common/components/MultiDaySessions';
-import SingleDaySessions from './_common/components/SingleDaySessions';
-import SlotsSubmitted from './_common/components/SlotsSubmitted';
-import { useRequestAvailabilityContext } from './_common/contexts/RequestAvailabilityContext';
+import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
+import MultiDaySessions from './MultiDaySessions';
+import SingleDaySessions from './SingleDaySessions';
+import SlotsSubmitted from './SlotsSubmitted';
 
 function CandidateAvailability() {
   const router = useRouterPro();
