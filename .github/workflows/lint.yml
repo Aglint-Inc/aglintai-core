@@ -22,7 +22,7 @@ permissions:
 jobs:
   lint:
     name: Run Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-4-cores # Use a larger runner
 
     steps:
       # Step 1: Check out the repository
@@ -39,7 +39,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Run the linter in the specific directory
+      # Step 4: Cache Turborepo
+      - name: Cache Turborepo
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      # Step 5: Run the linter for all workspaces
       - name: Run Linter
-        working-directory: apps/aglint-recruiter
-        run: npm run lint
+        run: npx turbo run lint --cache-dir=.turbo
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
