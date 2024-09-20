@@ -1,6 +1,5 @@
-import { RangePicker } from 'src/app/(authenticated)/_jobs/[application]/_common/components/ScheduleDialog';
-
 import { UIButton } from '@/components/Common/UIButton';
+import { RangePicker } from '@/jobs/job/application/components/ScheduleDialog';
 
 import { useSelfSchedulingDrawer } from '../../../hooks/hooks';
 import {
