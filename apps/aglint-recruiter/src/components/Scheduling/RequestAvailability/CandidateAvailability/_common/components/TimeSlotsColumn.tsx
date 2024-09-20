@@ -5,9 +5,9 @@ import { X } from 'lucide-react';
 
 import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
 
-import { useRequestAvailabilityContext } from '../../../RequestAvailabilityContext';
+import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 
-function SlotColumn({
+function TimeSlotsColumn({
   slotTime,
   onClose,
 }: {
@@ -147,4 +147,4 @@ function SlotColumn({
   );
 }
 
-export default SlotColumn;
+export default TimeSlotsColumn;
