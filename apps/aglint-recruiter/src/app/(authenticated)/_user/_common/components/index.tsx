@@ -109,7 +109,7 @@ export default function InterviewerDetailsPage() {
                 <KeyMatrics
                   declineCount={interviewerDetails.meeting_count.cancelled}
                   completedCount={interviewerDetails.meeting_count.completed}
-                  upcomingCount={interviewerDetails.meeting_count.upcoming}
+                  // upcomingCount={interviewerDetails.meeting_count.upcoming}
                   totalHour={interviewerDetails.meeting_count.completed_hour}
                 />
               </section>
