@@ -19,6 +19,7 @@ const getApplicationMeta = async (
     ctx: { db },
     input: { application_id },
   } = ctx;
+
   return (
     await db
       .from('application_view')

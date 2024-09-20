@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Building2, Loader2, Trash2, Upload, UserCircle } from 'lucide-react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
 function ImageUploadManual({
@@ -17,7 +17,7 @@ function ImageUploadManual({
   imageFile: any;
   setChanges?: () => void;
 }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const [loading, setLoading] = useState<boolean>();
   const [isStackHovered, setIsStackHovered] = useState(false);
 
@@ -51,7 +51,7 @@ function ImageUploadManual({
             className='object-cover'
           />
           <AvatarFallback>
-            {router.route.includes(ROUTES['/profile']()) ? (
+            {router.pathName.includes(ROUTES['/profile']()) ? (
               <UserCircle className='h-6 w-6 text-neutral-600' />
             ) : (
               <Building2 className='h-6 w-6 text-neutral-600' />

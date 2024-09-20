@@ -4,7 +4,7 @@ import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { AlertTriangle, CalendarIcon } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import ROUTES from '@/utils/routing/routes';
 
